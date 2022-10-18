@@ -36,13 +36,13 @@ const debounce = <T extends (...args: any[]) => void>(fn: T, ms: number) => {
 
 const DEFAULT_ITEM_HEIGHT = 40; // 50
 
-const findStartIndexFromEndIndex = (
+const findBeforeIndex = (
   caches: Cache[],
-  endIndex: number,
+  index: number,
   viewportHeight: number
 ): number => {
   let sum = 0;
-  let i = endIndex - 1;
+  let i = index;
   while (i > 0) {
     sum += caches[i]!._height;
     if (sum >= viewportHeight) {
@@ -53,13 +53,13 @@ const findStartIndexFromEndIndex = (
   return max(i, 0);
 };
 
-const findEndIndexFromStartIndex = (
+const findAfterIndex = (
   caches: Cache[],
-  startIndex: number,
+  index: number,
   viewportHeight: number
 ): number => {
   let sum = 0;
-  let i = startIndex + 1;
+  let i = index;
   while (i < caches.length - 1) {
     sum += caches[i]!._height;
     if (sum >= viewportHeight) {
@@ -268,14 +268,14 @@ const reducer: Reducer<
       let nextStartIndex: number;
       if (action._isScrollingDown) {
         // scrolling down
-        nextStartIndex = findEndIndexFromStartIndex(
+        nextStartIndex = findAfterIndex(
           state._caches,
           action._index,
           max(0, -boundingClientRect.top)
         );
       } else {
         // scrolling up
-        nextStartIndex = findStartIndexFromEndIndex(
+        nextStartIndex = findBeforeIndex(
           state._caches,
           action._index,
           max(0, boundingClientRect.top)
@@ -481,11 +481,7 @@ export const List = ({
   const scrollHeight = caches.reduce((acc, c) => acc + c._height, 0); // TODO get from cache
 
   const items: (ReactElement | null)[] = [];
-  const endIndex = findEndIndexFromStartIndex(
-    caches,
-    startIndex,
-    viewportHeight
-  );
+  const endIndex = findAfterIndex(caches, startIndex, viewportHeight);
   let offset = computeTop(
     caches.map((c) => c._height),
     max(0, startIndex)
