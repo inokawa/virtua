@@ -34,6 +34,7 @@ const debounce = <T extends (...args: any[]) => void>(fn: T, ms: number) => {
   return debouncedFn;
 };
 
+const DEFAULT_ITEM_MARGIN_COUNT = 4;
 const DEFAULT_ITEM_HEIGHT = 40; // 50
 
 const findBeforeIndex = (
@@ -294,6 +295,7 @@ const reducer: Reducer<
 export type ListProps = {
   children: ReactElement | ReactElement[];
   itemHeight?: number;
+  itemMargin?: number;
   style?: CSSProperties;
   innerStyle?: CSSProperties;
 };
@@ -301,6 +303,7 @@ export type ListProps = {
 export const List = ({
   children,
   itemHeight = DEFAULT_ITEM_HEIGHT,
+  itemMargin = DEFAULT_ITEM_MARGIN_COUNT,
   style: styleProp,
   innerStyle: innerStyleProp,
 }: ListProps): ReactElement => {
@@ -481,19 +484,27 @@ export const List = ({
   const scrollHeight = caches.reduce((acc, c) => acc + c._height, 0); // TODO get from cache
 
   const items: (ReactElement | null)[] = [];
-  const endIndex = findAfterIndex(caches, startIndex, viewportHeight);
-  let offset = computeTop(
-    caches.map((c) => c._height),
-    max(0, startIndex)
+  const endIndex = useMemo(
+    () => findAfterIndex(caches, startIndex, viewportHeight),
+    [caches, startIndex, viewportHeight]
+  );
+
+  const startIndexWithMargin = max(startIndex - itemMargin,0);
+  const endIndexWithMargin = min( endIndex + itemMargin,caches.length - 1,);
+  let offset = useMemo(
+    () =>
+      computeTop(
+        caches.map((c) => c._height),
+        max(0, startIndexWithMargin)
+      ),
+    [caches, startIndexWithMargin]
   ); // TODO get from cache
-  for (let i = startIndex; i <= endIndex; i++) {
+  for (let i = startIndexWithMargin; i <= endIndexWithMargin; i++) {
     const e = elements[i]!;
     items.push(
-      caches[i] ? (
-        <Item key={e.key || i} _handle={handle} _index={i} _top={offset}>
-          {e}
-        </Item>
-      ) : null
+      <Item key={e.key || i} _handle={handle} _index={i} _top={offset}>
+        {e}
+      </Item>
     );
     offset += caches[i]!._height;
   }
