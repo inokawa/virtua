@@ -37,10 +37,10 @@ const debounce = <T extends (...args: any[]) => void>(fn: T, ms: number) => {
 const DEFAULT_ITEM_MARGIN_COUNT = 4;
 const DEFAULT_ITEM_HEIGHT = 40; // 50
 
-const findBeforeIndex = (
-  caches: Cache[],
+const findIndexBefore = (
   index: number,
-  viewportHeight: number
+  viewportHeight: number,
+  caches: Cache[]
 ): number => {
   let sum = 0;
   let i = index;
@@ -54,10 +54,10 @@ const findBeforeIndex = (
   return max(i, 0);
 };
 
-const findAfterIndex = (
-  caches: Cache[],
+const findIndexAfter = (
   index: number,
-  viewportHeight: number
+  viewportHeight: number,
+  caches: Cache[]
 ): number => {
   let sum = 0;
   let i = index;
@@ -86,7 +86,7 @@ interface ScrollerProps {
   _scrollRef: RefObject<HTMLDivElement>;
   _style: CSSProperties;
   _innerStyle?: CSSProperties;
-  children: ReactNode;
+  _items: ReactNode;
   _totalHeight: number;
   _handle: Handle;
 }
@@ -139,7 +139,7 @@ class Scroller extends PureComponent<ScrollerProps, ScrollerState> {
   render() {
     return (
       <div ref={this._ref} style={this.props._style}>
-        <div style={this.props._innerStyle}>{this.props.children}</div>
+        <div style={this.props._innerStyle}>{this.props._items}</div>
       </div>
     );
   }
@@ -196,11 +196,11 @@ const resetCaches = (
 ): Cache[] => {
   return array.reduce<Cache[]>((acc, _, i) => {
     const c = caches[i];
-    const height = c?._height ?? itemHeight;
+    const height = c ? c._height : itemHeight;
     acc.push({
       _height: height,
       _offset: (acc.length ? acc[acc.length - 1]!._offset : 0) + height,
-      _isMeasuredHeight: c?._isMeasuredHeight ?? false,
+      _isMeasuredHeight: c ? c._isMeasuredHeight : false,
     });
     return acc;
   }, []);
@@ -269,17 +269,17 @@ const reducer: Reducer<
       let nextStartIndex: number;
       if (action._isScrollingDown) {
         // scrolling down
-        nextStartIndex = findAfterIndex(
-          state._caches,
+        nextStartIndex = findIndexAfter(
           action._index,
-          max(0, -boundingClientRect.top)
+          max(0, -boundingClientRect.top),
+          state._caches
         );
       } else {
         // scrolling up
-        nextStartIndex = findBeforeIndex(
-          state._caches,
+        nextStartIndex = findIndexBefore(
           action._index,
-          max(0, boundingClientRect.top)
+          max(0, boundingClientRect.top),
+          state._caches
         );
       }
       if (nextStartIndex === state._startIndex) {
@@ -485,17 +485,17 @@ export const List = ({
 
   const items: (ReactElement | null)[] = [];
   const endIndex = useMemo(
-    () => findAfterIndex(caches, startIndex, viewportHeight),
+    () => findIndexAfter(startIndex, viewportHeight, caches),
     [caches, startIndex, viewportHeight]
   );
 
-  const startIndexWithMargin = max(startIndex - itemMargin,0);
-  const endIndexWithMargin = min( endIndex + itemMargin,caches.length - 1,);
+  const startIndexWithMargin = max(startIndex - itemMargin, 0);
+  const endIndexWithMargin = min(endIndex + itemMargin, caches.length - 1);
   let offset = useMemo(
     () =>
       computeTop(
         caches.map((c) => c._height),
-        max(0, startIndexWithMargin)
+        startIndexWithMargin
       ),
     [caches, startIndexWithMargin]
   ); // TODO get from cache
@@ -533,8 +533,7 @@ export const List = ({
       )}
       _totalHeight={scrollHeight}
       _handle={handle}
-    >
-      {viewportHeight !== 0 && items}
-    </Scroller>
+      _items={viewportHeight !== 0 && items}
+    />
   );
 };
