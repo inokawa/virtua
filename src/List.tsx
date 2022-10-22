@@ -35,8 +35,16 @@ const debounce = <T extends (...args: any[]) => void>(fn: T, ms: number) => {
   return debouncedFn;
 };
 
+const UNCACHED_ITEM_HEIGHT = -1;
 const DEFAULT_ITEM_MARGIN_COUNT = 4;
 const DEFAULT_ITEM_HEIGHT = 40; // 50
+
+const resolveItemHeight = (
+  height: number,
+  defaultItemHeight: number
+): number => {
+  return height === UNCACHED_ITEM_HEIGHT ? defaultItemHeight : height;
+};
 
 const findIndexBefore = (
   index: number,
@@ -47,7 +55,7 @@ const findIndexBefore = (
   let sum = 0;
   let i = index;
   while (i > 0) {
-    sum += cache[i] || defaultItemHeight;
+    sum += resolveItemHeight(cache[i]!, defaultItemHeight);
     if (sum >= viewportHeight) {
       break;
     }
@@ -65,7 +73,7 @@ const findIndexAfter = (
   let sum = 0;
   let i = index;
   while (i < cache.length - 1) {
-    sum += cache[i] || defaultItemHeight;
+    sum += resolveItemHeight(cache[i]!, defaultItemHeight);
     if (sum >= viewportHeight) {
       break;
     }
@@ -84,7 +92,7 @@ const computeTop = (
     if (i === index) {
       break;
     }
-    top += cache[i] || defaultItemHeight;
+    top += resolveItemHeight(cache[i]!, defaultItemHeight);
   }
   return top;
 };
@@ -191,7 +199,7 @@ type ObserverHandle = {
 };
 
 const resetCache = (array: unknown[], cache?: number[]): number[] => {
-  return array.map((_, i) => (cache && cache[i]) || 0);
+  return array.map((_, i) => (cache && cache[i]) ?? UNCACHED_ITEM_HEIGHT);
 };
 
 const RESET_CACHE = 0;
@@ -493,7 +501,10 @@ export const List = forwardRef<ListHandle, ListProps>(
       });
     }, [elements.length]);
 
-    const scrollHeight = cache.reduce((acc, c) => acc + (c || itemHeight), 0);
+    const scrollHeight = cache.reduce(
+      (acc, c) => acc + resolveItemHeight(c, itemHeight),
+      0
+    );
 
     const items: (ReactElement | null)[] = [];
     const endIndex = useMemo(
@@ -514,7 +525,7 @@ export const List = forwardRef<ListHandle, ListProps>(
           {e}
         </Item>
       );
-      offset += cache[i] || itemHeight;
+      offset += resolveItemHeight(cache[i]!, itemHeight);
     }
 
     return (
