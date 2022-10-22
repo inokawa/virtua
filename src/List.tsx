@@ -12,6 +12,7 @@ import {
   useLayoutEffect,
   Reducer,
   useReducer,
+  forwardRef,
 } from "react";
 
 const min = Math.min;
@@ -20,7 +21,7 @@ const max = Math.max;
 const debounce = <T extends (...args: any[]) => void>(fn: T, ms: number) => {
   let id: NodeJS.Timeout | null = null;
   const cancel = () => {
-    if (id !== null) {
+    if (id != null) {
       clearTimeout(id);
     }
   };
@@ -88,7 +89,7 @@ interface ScrollerProps {
   _innerStyle?: CSSProperties;
   _items: ReactNode;
   _totalHeight: number;
-  _handle: Handle;
+  _handle: ObserverHandle;
 }
 
 interface ScrollerState {}
@@ -147,7 +148,7 @@ class Scroller extends PureComponent<ScrollerProps, ScrollerState> {
 
 type ItemProps = {
   children: ReactElement;
-  _handle: Handle;
+  _handle: ObserverHandle;
   _index: number;
   _top: number;
 };
@@ -177,7 +178,7 @@ const Item = memo(
   }
 );
 
-type Handle = {
+type ObserverHandle = {
   _init: (rootElement: HTMLElement) => () => void;
   _observe: (itemElement: HTMLElement, index: number) => () => void;
   _isScrollingUp: boolean;
@@ -292,6 +293,8 @@ const reducer: Reducer<
   }
 };
 
+export type ListHandle = {};
+
 export type ListProps = {
   children: ReactElement | ReactElement[];
   itemHeight?: number;
@@ -300,240 +303,258 @@ export type ListProps = {
   innerStyle?: CSSProperties;
 };
 
-export const List = ({
-  children,
-  itemHeight = DEFAULT_ITEM_HEIGHT,
-  itemMargin = DEFAULT_ITEM_MARGIN_COUNT,
-  style: styleProp,
-  innerStyle: innerStyleProp,
-}: ListProps): ReactElement => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  // memoize element instances
-  const elements = useMemo(
-    () => Children.toArray(children) as ReactElement[],
-    [children]
-  );
-
-  const [
+export const List = forwardRef<ListHandle, ListProps>(
+  (
     {
-      _startIndex: startIndex,
-      _viewportHeight: viewportHeight,
-      _caches: caches,
+      children,
+      itemHeight = DEFAULT_ITEM_HEIGHT,
+      itemMargin = DEFAULT_ITEM_MARGIN_COUNT,
+      style: styleProp,
+      innerStyle: innerStyleProp,
     },
-    dispatch,
-  ] = useReducer(reducer, [elements, itemHeight], init);
-
-  const handle = useState((): Handle => {
-    let ro: ResizeObserver;
-    let io: IntersectionObserver;
-
-    let isScrollingUp = false;
-
-    const onScrollEnd = debounce(() => {
-      isScrollingUp = false;
-    }, 200);
-
-    const mountedIndexes = new WeakMap<HTMLElement, number>();
-
-    return {
-      _init(root) {
-        ro = new ResizeObserver((entries) => {
-          for (const entry of entries) {
-            if (entry.target === root) {
-              dispatch({
-                _type: UPDATE_VIEWPORT_HEIGHT,
-                _height: entry.contentRect.height,
-              });
-            } else {
-              const index = mountedIndexes.get(entry.target as HTMLElement);
-              if (index != null) {
-                dispatch({
-                  _type: UPDATE_ITEM_HEIGHT,
-                  _height: entry.contentRect.height,
-                  _index: index,
-                });
-              }
-            }
-          }
-        });
-        io = new IntersectionObserver(
-          (entries) => {
-            const topExits: IntersectionObserverEntry[] = [];
-            const bottomExits: IntersectionObserverEntry[] = [];
-            const topEnters: IntersectionObserverEntry[] = [];
-            const bottomEnters: IntersectionObserverEntry[] = [];
-
-            entries.forEach((entry) => {
-              if (
-                entry.boundingClientRect.top +
-                  entry.boundingClientRect.height / 2 <=
-                entry.rootBounds!.top + entry.rootBounds!.height / 2
-              ) {
-                // top intersection
-                if (!entry.isIntersecting) {
-                  // maybe scrolling down
-                  // top exit
-                  topExits.push(entry);
-                } else {
-                  // maybe scrolling up
-                  // top enter
-                  topEnters.push(entry);
-                }
-              } else {
-                // bottom intersection
-                if (!entry.isIntersecting) {
-                  // maybe scrolling up
-                  // bottom exit
-                  bottomExits.push(entry);
-                } else {
-                  // maybe scrolling down
-                  // bottom enter
-                  bottomEnters.push(entry);
-                }
-              }
-            });
-
-            if (topExits.length) {
-              const entry = topExits.reduce((prev, entry) => {
-                if (!prev) return entry;
-                if (
-                  prev.boundingClientRect.top > entry.boundingClientRect.top
-                ) {
-                  return entry;
-                } else {
-                  return prev;
-                }
-              });
-              const index = mountedIndexes.get(entry.target as HTMLElement);
-              if (index != null) {
-                dispatch({
-                  _type: HANDLE_ITEM_EXIT,
-                  _index: index,
-                  _isScrollingDown: true,
-                  _entry: entry,
-                });
-              }
-            }
-
-            if (bottomExits.length) {
-              const entry = bottomExits.reduce((prev, entry) => {
-                if (!prev) return entry;
-                if (
-                  prev.boundingClientRect.top < entry.boundingClientRect.top
-                ) {
-                  return entry;
-                } else {
-                  return prev;
-                }
-              });
-              const index = mountedIndexes.get(entry.target as HTMLElement);
-              if (index != null) {
-                dispatch({
-                  _type: HANDLE_ITEM_EXIT,
-                  _index: index,
-                  _isScrollingDown: false,
-                  _entry: entry,
-                });
-              }
-            }
-            if (
-              bottomExits.length + topEnters.length >
-              bottomEnters.length + topExits.length
-            ) {
-              isScrollingUp = true;
-              onScrollEnd();
-            }
-          },
-          {
-            root: root,
-          }
-        );
-
-        ro.observe(root);
-        return () => {
-          ro.disconnect();
-          io.disconnect();
-        };
-      },
-      _observe(el, i) {
-        mountedIndexes.set(el, i);
-        ro.observe(el);
-        io.observe(el);
-        return () => {
-          mountedIndexes.delete(el);
-          ro.unobserve(el);
-          io.unobserve(el);
-        };
-      },
-      get _isScrollingUp() {
-        return isScrollingUp;
-      },
-    };
-  })[0];
-
-  useLayoutEffect(() => handle._init(wrapperRef.current!), []);
-
-  useLayoutEffect(() => {
-    dispatch({
-      _type: RESET_CACHE,
-      _elements: elements,
-      _height: itemHeight,
-    });
-  }, [elements.length]);
-
-  const scrollHeight = caches.reduce((acc, c) => acc + c._height, 0); // TODO get from cache
-
-  const items: (ReactElement | null)[] = [];
-  const endIndex = useMemo(
-    () => findIndexAfter(startIndex, viewportHeight, caches),
-    [caches, startIndex, viewportHeight]
-  );
-
-  const startIndexWithMargin = max(startIndex - itemMargin, 0);
-  const endIndexWithMargin = min(endIndex + itemMargin, caches.length - 1);
-  let offset = useMemo(
-    () =>
-      computeTop(
-        caches.map((c) => c._height),
-        startIndexWithMargin
-      ),
-    [caches, startIndexWithMargin]
-  ); // TODO get from cache
-  for (let i = startIndexWithMargin; i <= endIndexWithMargin; i++) {
-    const e = elements[i]!;
-    items.push(
-      <Item key={e.key || i} _handle={handle} _index={i} _top={offset}>
-        {e}
-      </Item>
+    ref
+  ): ReactElement => {
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    // memoize element instances
+    const elements = useMemo(
+      () => Children.toArray(children) as ReactElement[],
+      [children]
     );
-    offset += caches[i]!._height;
-  }
 
-  return (
-    <Scroller
-      _scrollRef={wrapperRef}
-      _style={useMemo<CSSProperties>(
-        () => ({
-          width: "100%",
-          height: "100%",
-          maxHeight: "100%",
-          overflowY: "scroll",
-          ...styleProp,
-        }),
-        [styleProp]
-      )}
-      _innerStyle={useMemo<CSSProperties>(
-        () => ({
-          position: "relative",
-          height:
-            scrollHeight >= viewportHeight ? scrollHeight : viewportHeight,
-          ...innerStyleProp,
-        }),
-        [scrollHeight, viewportHeight, innerStyleProp]
-      )}
-      _totalHeight={scrollHeight}
-      _handle={handle}
-      _items={viewportHeight !== 0 && items}
-    />
-  );
-};
+    const [
+      {
+        _startIndex: startIndex,
+        _viewportHeight: viewportHeight,
+        _caches: caches,
+      },
+      dispatch,
+    ] = useReducer(reducer, [elements, itemHeight], init);
+
+    const handle = useState((): ObserverHandle => {
+      let ro: ResizeObserver;
+      let io: IntersectionObserver;
+
+      let isScrollingUp = false;
+
+      const onScrollEnd = debounce(() => {
+        isScrollingUp = false;
+      }, 200);
+
+      const mountedIndexes = new WeakMap<HTMLElement, number>();
+
+      return {
+        _init(root) {
+          ro = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+              if (entry.target === root) {
+                dispatch({
+                  _type: UPDATE_VIEWPORT_HEIGHT,
+                  _height: entry.contentRect.height,
+                });
+              } else {
+                const index = mountedIndexes.get(entry.target as HTMLElement);
+                if (index != null) {
+                  dispatch({
+                    _type: UPDATE_ITEM_HEIGHT,
+                    _height: entry.contentRect.height,
+                    _index: index,
+                  });
+                }
+              }
+            }
+          });
+          io = new IntersectionObserver(
+            (entries) => {
+              const topExits: IntersectionObserverEntry[] = [];
+              const bottomExits: IntersectionObserverEntry[] = [];
+              const topEnters: IntersectionObserverEntry[] = [];
+              const bottomEnters: IntersectionObserverEntry[] = [];
+
+              entries.forEach((entry) => {
+                if (
+                  entry.boundingClientRect.top +
+                    entry.boundingClientRect.height / 2 <=
+                  entry.rootBounds!.top + entry.rootBounds!.height / 2
+                ) {
+                  // top intersection
+                  if (!entry.isIntersecting) {
+                    // maybe scrolling down
+                    // top exit
+                    topExits.push(entry);
+                  } else {
+                    // maybe scrolling up
+                    // top enter
+                    topEnters.push(entry);
+                  }
+                } else {
+                  // bottom intersection
+                  if (!entry.isIntersecting) {
+                    // maybe scrolling up
+                    // bottom exit
+                    bottomExits.push(entry);
+                  } else {
+                    // maybe scrolling down
+                    // bottom enter
+                    bottomEnters.push(entry);
+                  }
+                }
+              });
+
+              if (topExits.length) {
+                const entry = topExits.reduce((prev, entry) => {
+                  if (!prev) return entry;
+                  // take latest entry
+                  if (prev.time < entry.time) {
+                    return entry;
+                  } else if (prev.time > entry.time) {
+                    return prev;
+                  }
+                  // same time
+                  if (
+                    prev.boundingClientRect.top > entry.boundingClientRect.top
+                  ) {
+                    return entry;
+                  } else {
+                    return prev;
+                  }
+                });
+                const index = mountedIndexes.get(entry.target as HTMLElement);
+                if (index != null) {
+                  dispatch({
+                    _type: HANDLE_ITEM_EXIT,
+                    _index: index,
+                    _isScrollingDown: true,
+                    _entry: entry,
+                  });
+                }
+              }
+
+              if (bottomExits.length) {
+                const entry = bottomExits.reduce((prev, entry) => {
+                  if (!prev) return entry;
+                  // take latest entry
+                  if (prev.time < entry.time) {
+                    return entry;
+                  } else if (prev.time > entry.time) {
+                    return prev;
+                  }
+                  // same time
+                  if (
+                    prev.boundingClientRect.top < entry.boundingClientRect.top
+                  ) {
+                    return entry;
+                  } else {
+                    return prev;
+                  }
+                });
+                const index = mountedIndexes.get(entry.target as HTMLElement);
+                if (index != null) {
+                  dispatch({
+                    _type: HANDLE_ITEM_EXIT,
+                    _index: index,
+                    _isScrollingDown: false,
+                    _entry: entry,
+                  });
+                }
+              }
+              if (
+                bottomExits.length + topEnters.length >
+                bottomEnters.length + topExits.length
+              ) {
+                isScrollingUp = true;
+                onScrollEnd();
+              }
+            },
+            {
+              root: root,
+            }
+          );
+
+          ro.observe(root);
+          return () => {
+            ro.disconnect();
+            io.disconnect();
+          };
+        },
+        _observe(el, i) {
+          mountedIndexes.set(el, i);
+          ro.observe(el);
+          io.observe(el);
+          return () => {
+            mountedIndexes.delete(el);
+            ro.unobserve(el);
+            io.unobserve(el);
+          };
+        },
+        get _isScrollingUp() {
+          return isScrollingUp;
+        },
+      };
+    })[0];
+
+    useLayoutEffect(() => handle._init(wrapperRef.current!), []);
+
+    useLayoutEffect(() => {
+      dispatch({
+        _type: RESET_CACHE,
+        _elements: elements,
+        _height: itemHeight,
+      });
+    }, [elements.length]);
+
+    const scrollHeight = caches.reduce((acc, c) => acc + c._height, 0); // TODO get from cache
+
+    const items: (ReactElement | null)[] = [];
+    const endIndex = useMemo(
+      () => findIndexAfter(startIndex, viewportHeight, caches),
+      [caches, startIndex, viewportHeight]
+    );
+
+    const startIndexWithMargin = max(startIndex - itemMargin, 0);
+    const endIndexWithMargin = min(endIndex + itemMargin, caches.length - 1);
+    let offset = useMemo(
+      () =>
+        computeTop(
+          caches.map((c) => c._height),
+          startIndexWithMargin
+        ),
+      [caches, startIndexWithMargin]
+    ); // TODO get from cache
+    for (let i = startIndexWithMargin; i <= endIndexWithMargin; i++) {
+      const e = elements[i]!;
+      items.push(
+        <Item key={e.key || i} _handle={handle} _index={i} _top={offset}>
+          {e}
+        </Item>
+      );
+      offset += caches[i]!._height;
+    }
+
+    return (
+      <Scroller
+        _scrollRef={wrapperRef}
+        _style={useMemo<CSSProperties>(
+          () => ({
+            width: "100%",
+            height: "100%",
+            overflowY: "auto",
+            ...styleProp,
+          }),
+          [styleProp]
+        )}
+        _innerStyle={useMemo<CSSProperties>(
+          () => ({
+            position: "relative",
+            height:
+              scrollHeight >= viewportHeight ? scrollHeight : viewportHeight,
+            ...innerStyleProp,
+          }),
+          [scrollHeight, viewportHeight, innerStyleProp]
+        )}
+        _totalHeight={scrollHeight}
+        _handle={handle}
+        _items={viewportHeight !== 0 && items}
+      />
+    );
+  }
+);
