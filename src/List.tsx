@@ -41,12 +41,13 @@ const DEFAULT_ITEM_HEIGHT = 40; // 50
 const findIndexBefore = (
   index: number,
   viewportHeight: number,
-  caches: Cache[]
+  cache: number[],
+  defaultItemHeight: number
 ): number => {
   let sum = 0;
   let i = index;
   while (i > 0) {
-    sum += caches[i]!._height;
+    sum += cache[i] || defaultItemHeight;
     if (sum >= viewportHeight) {
       break;
     }
@@ -58,27 +59,32 @@ const findIndexBefore = (
 const findIndexAfter = (
   index: number,
   viewportHeight: number,
-  caches: Cache[]
+  cache: number[],
+  defaultItemHeight: number
 ): number => {
   let sum = 0;
   let i = index;
-  while (i < caches.length - 1) {
-    sum += caches[i]!._height;
+  while (i < cache.length - 1) {
+    sum += cache[i] || defaultItemHeight;
     if (sum >= viewportHeight) {
       break;
     }
     i++;
   }
-  return min(i, caches.length - 1);
+  return min(i, cache.length - 1);
 };
 
-const computeTop = (heights: number[], index: number): number => {
+const computeTop = (
+  cache: number[],
+  index: number,
+  defaultItemHeight: number
+): number => {
   let top = 0;
-  for (let i = 0; i < heights.length; i++) {
+  for (let i = 0; i < cache.length; i++) {
     if (i === index) {
       break;
     }
-    top += heights[i]!;
+    top += cache[i] || defaultItemHeight;
   }
   return top;
 };
@@ -184,27 +190,8 @@ type ObserverHandle = {
   _isScrollingUp: boolean;
 };
 
-type Cache = {
-  _height: number;
-  _offset: number;
-  _isMeasuredHeight: boolean;
-};
-
-const resetCaches = (
-  array: unknown[],
-  caches: Cache[],
-  itemHeight: number
-): Cache[] => {
-  return array.reduce<Cache[]>((acc, _, i) => {
-    const c = caches[i];
-    const height = c ? c._height : itemHeight;
-    acc.push({
-      _height: height,
-      _offset: (acc.length ? acc[acc.length - 1]!._offset : 0) + height,
-      _isMeasuredHeight: c ? c._isMeasuredHeight : false,
-    });
-    return acc;
-  }, []);
+const resetCache = (array: unknown[], cache?: number[]): number[] => {
+  return array.map((_, i) => (cache && cache[i]) || 0);
 };
 
 const RESET_CACHE = 0;
@@ -215,16 +202,18 @@ const HANDLE_ITEM_EXIT = 3;
 type State = {
   _startIndex: number;
   _viewportHeight: number;
-  _caches: Cache[];
+  _itemHeight: number;
+  _cache: number[];
 };
-const init = ([elements, height]: [
-  _elements: unknown[],
-  _height: number
+const init = ([elements, itemHeight]: [
+  elements: unknown[],
+  itemHeight: number
 ]): State => {
   return {
     _startIndex: 0,
     _viewportHeight: 0,
-    _caches: resetCaches(elements, [], height),
+    _itemHeight: itemHeight,
+    _cache: resetCache(elements),
   };
 };
 const reducer: Reducer<
@@ -243,15 +232,14 @@ const reducer: Reducer<
     case RESET_CACHE:
       return {
         ...state,
-        _caches: resetCaches(action._elements, state._caches, action._height),
+        _cache: resetCache(action._elements, state._cache),
       };
     case UPDATE_ITEM_HEIGHT:
       const { _index: index, _height: height } = action;
-      const prevCache = state._caches[index];
-      if (!prevCache || prevCache._height === height) {
+      if (state._cache[index] === height) {
         return state;
       }
-      state._caches[index] = { ...prevCache, _height: height };
+      state._cache[index] = height;
 
       return {
         ...state,
@@ -273,14 +261,16 @@ const reducer: Reducer<
         nextStartIndex = findIndexAfter(
           action._index,
           max(0, -boundingClientRect.top),
-          state._caches
+          state._cache,
+          state._itemHeight
         );
       } else {
         // scrolling up
         nextStartIndex = findIndexBefore(
           action._index,
           max(0, boundingClientRect.top),
-          state._caches
+          state._cache,
+          state._itemHeight
         );
       }
       if (nextStartIndex === state._startIndex) {
@@ -307,7 +297,7 @@ export const List = forwardRef<ListHandle, ListProps>(
   (
     {
       children,
-      itemHeight = DEFAULT_ITEM_HEIGHT,
+      itemHeight: itemHeightProp = DEFAULT_ITEM_HEIGHT,
       itemMargin = DEFAULT_ITEM_MARGIN_COUNT,
       style: styleProp,
       innerStyle: innerStyleProp,
@@ -325,10 +315,11 @@ export const List = forwardRef<ListHandle, ListProps>(
       {
         _startIndex: startIndex,
         _viewportHeight: viewportHeight,
-        _caches: caches,
+        _itemHeight: itemHeight,
+        _cache: cache,
       },
       dispatch,
-    ] = useReducer(reducer, [elements, itemHeight], init);
+    ] = useReducer(reducer, [elements, itemHeightProp], init);
 
     const handle = useState((): ObserverHandle => {
       let ro: ResizeObserver;
@@ -498,28 +489,24 @@ export const List = forwardRef<ListHandle, ListProps>(
       dispatch({
         _type: RESET_CACHE,
         _elements: elements,
-        _height: itemHeight,
+        _height: itemHeightProp,
       });
     }, [elements.length]);
 
-    const scrollHeight = caches.reduce((acc, c) => acc + c._height, 0); // TODO get from cache
+    const scrollHeight = cache.reduce((acc, c) => acc + (c || itemHeight), 0);
 
     const items: (ReactElement | null)[] = [];
     const endIndex = useMemo(
-      () => findIndexAfter(startIndex, viewportHeight, caches),
-      [caches, startIndex, viewportHeight]
+      () => findIndexAfter(startIndex, viewportHeight, cache, itemHeight),
+      [cache, startIndex, viewportHeight, itemHeight]
     );
 
     const startIndexWithMargin = max(startIndex - itemMargin, 0);
-    const endIndexWithMargin = min(endIndex + itemMargin, caches.length - 1);
+    const endIndexWithMargin = min(endIndex + itemMargin, cache.length - 1);
     let offset = useMemo(
-      () =>
-        computeTop(
-          caches.map((c) => c._height),
-          startIndexWithMargin
-        ),
-      [caches, startIndexWithMargin]
-    ); // TODO get from cache
+      () => computeTop(cache, startIndexWithMargin, itemHeight),
+      [cache, startIndexWithMargin, itemHeight]
+    );
     for (let i = startIndexWithMargin; i <= endIndexWithMargin; i++) {
       const e = elements[i]!;
       items.push(
@@ -527,7 +514,7 @@ export const List = forwardRef<ListHandle, ListProps>(
           {e}
         </Item>
       );
-      offset += caches[i]!._height;
+      offset += cache[i] || itemHeight;
     }
 
     return (
