@@ -206,6 +206,7 @@ const RESET_CACHE = 0;
 const UPDATE_ITEM_HEIGHT = 1;
 const UPDATE_VIEWPORT_HEIGHT = 2;
 const HANDLE_ITEM_EXIT = 3;
+const HANDLE_SCROLL = 4;
 
 type State = {
   _startIndex: number;
@@ -235,6 +236,7 @@ const reducer: Reducer<
       _isScrollingDown: boolean;
       _entry: IntersectionObserverEntry;
     }
+  | { _type: typeof HANDLE_SCROLL; _offset: number }
 > = (state, action) => {
   switch (action._type) {
     case RESET_CACHE:
@@ -288,6 +290,20 @@ const reducer: Reducer<
         ...state,
         _startIndex: nextStartIndex,
       };
+    case HANDLE_SCROLL:
+      const startIndex = findIndexAfter(
+        0,
+        action._offset,
+        state._cache,
+        state._itemHeight
+      );
+      if (startIndex === state._startIndex) {
+        return state;
+      }
+      return {
+        ...state,
+        _startIndex: startIndex,
+      };
   }
 };
 
@@ -333,6 +349,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       let ro: ResizeObserver;
       let io: IntersectionObserver;
 
+      let mountedCount = 0;
       let isScrollingUp = false;
 
       const onScrollEnd = debounce(() => {
@@ -364,6 +381,18 @@ export const List = forwardRef<ListHandle, ListProps>(
           });
           io = new IntersectionObserver(
             (entries) => {
+              if (
+                mountedCount === entries.length &&
+                entries.every((e) => !e.isIntersecting)
+              ) {
+                // all items would exit in fast scrolling
+                dispatch({
+                  _type: HANDLE_SCROLL,
+                  _offset: root.scrollTop,
+                });
+                return;
+              }
+
               const topExits: IntersectionObserverEntry[] = [];
               const bottomExits: IntersectionObserverEntry[] = [];
               const topEnters: IntersectionObserverEntry[] = [];
@@ -476,10 +505,12 @@ export const List = forwardRef<ListHandle, ListProps>(
           };
         },
         _observe(el, i) {
+          mountedCount++;
           mountedIndexes.set(el, i);
           ro.observe(el);
           io.observe(el);
           return () => {
+            mountedCount--;
             mountedIndexes.delete(el);
             ro.unobserve(el);
             io.unobserve(el);
