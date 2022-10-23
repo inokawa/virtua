@@ -203,7 +203,7 @@ const resetCache = (array: unknown[], cache?: number[]): number[] => {
 };
 
 const RESET_CACHE = 0;
-const UPDATE_ITEM_HEIGHT = 1;
+const UPDATE_ITEM_HEIGHTS = 1;
 const UPDATE_VIEWPORT_HEIGHT = 2;
 const HANDLE_ITEM_EXIT = 3;
 const HANDLE_SCROLL = 4;
@@ -228,7 +228,11 @@ const init = ([elements, itemHeight]: [
 const reducer: Reducer<
   State,
   | { _type: typeof RESET_CACHE; _elements: unknown[]; _height: number }
-  | { _type: typeof UPDATE_ITEM_HEIGHT; _index: number; _height: number }
+  | {
+      _type: typeof UPDATE_ITEM_HEIGHTS;
+      _indexes: number[];
+      _heights: number[];
+    }
   | { _type: typeof UPDATE_VIEWPORT_HEIGHT; _height: number }
   | {
       _type: typeof HANDLE_ITEM_EXIT;
@@ -244,12 +248,14 @@ const reducer: Reducer<
         ...state,
         _cache: resetCache(action._elements, state._cache),
       };
-    case UPDATE_ITEM_HEIGHT:
-      const { _index: index, _height: height } = action;
-      if (state._cache[index] === height) {
+    case UPDATE_ITEM_HEIGHTS:
+      const { _indexes: indexes, _heights: heights } = action;
+      if (indexes.every((index, i) => state._cache[index] === heights[i]!)) {
         return state;
       }
-      state._cache[index] = height;
+      indexes.forEach((index, i) => {
+        state._cache[index] = heights[i]!;
+      });
 
       return {
         ...state,
@@ -361,6 +367,8 @@ export const List = forwardRef<ListHandle, ListProps>(
       return {
         _init(root) {
           ro = new ResizeObserver((entries) => {
+            const resizedItemHeights: number[] = [];
+            const resizedItemIndexes: number[] = [];
             for (const entry of entries) {
               if (entry.target === root) {
                 dispatch({
@@ -370,15 +378,21 @@ export const List = forwardRef<ListHandle, ListProps>(
               } else {
                 const index = mountedIndexes.get(entry.target as HTMLElement);
                 if (index != null) {
-                  dispatch({
-                    _type: UPDATE_ITEM_HEIGHT,
-                    _height: entry.contentRect.height,
-                    _index: index,
-                  });
+                  resizedItemHeights.push(entry.contentRect.height);
+                  resizedItemIndexes.push(index);
                 }
               }
             }
+
+            if (resizedItemHeights.length) {
+              dispatch({
+                _type: UPDATE_ITEM_HEIGHTS,
+                _heights: resizedItemHeights,
+                _indexes: resizedItemIndexes,
+              });
+            }
           });
+
           io = new IntersectionObserver(
             (entries) => {
               if (
