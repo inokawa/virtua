@@ -1,5 +1,5 @@
 {
-  "name": "infitiny",
+  "name": "virtua",
   "version": "0.0.0",
   "description": "",
   "main": "lib/index.js",
@@ -48,7 +48,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/inokawa/infitiny.git"
+    "url": "git+https://github.com/inokawa/virtua.git"
   },
   "keywords": [
     "react",
@@ -64,7 +64,7 @@
   "author": "inokawa <stratoooo-taster@yahoo.co.jp> (https://github.com/inokawa/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/inokawa/infitiny/issues"
+    "url": "https://github.com/inokawa/virtua/issues"
   },
-  "homepage": "https://github.com/inokawa/infitiny#readme"
+  "homepage": "https://github.com/inokawa/virtua#readme"
 }
