@@ -13,6 +13,7 @@ import {
   Reducer,
   useReducer,
   forwardRef,
+  useImperativeHandle,
 } from "react";
 
 const min = Math.min;
@@ -323,7 +324,9 @@ const reducer: Reducer<
   }
 };
 
-export type ListHandle = {};
+export type ListHandle = {
+  scrollTo(index: number): void;
+};
 
 export type ListProps = {
   children: ReactElement | ReactElement[];
@@ -555,6 +558,18 @@ export const List = forwardRef<ListHandle, ListProps>(
         _height: itemHeightProp,
       });
     }, [elements.length]);
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        scrollTo(index) {
+          if (wrapperRef.current) {
+            wrapperRef.current.scrollTop = computeTop(cache, index, itemHeight);
+          }
+        },
+      }),
+      [ref, cache, itemHeight]
+    );
 
     const scrollHeight = cache.reduce(
       (acc, c) => acc + resolveItemHeight(c, itemHeight),
