@@ -165,10 +165,17 @@ type ItemProps = {
   _handle: ObserverHandle;
   _index: number;
   _top: number;
+  _hide: boolean;
 };
 
 const Item = memo(
-  ({ children, _handle, _index, _top: top }: ItemProps): ReactElement => {
+  ({
+    children,
+    _handle,
+    _index,
+    _top: top,
+    _hide: hide,
+  }: ItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
     const style = useMemo<CSSProperties>(
@@ -178,8 +185,11 @@ const Item = memo(
         position: "absolute",
         width: "100%",
         top,
+        ...(hide && {
+          visibility: "hidden",
+        }),
       }),
-      [top]
+      [top, hide]
     );
 
     useLayoutEffect(() => _handle._observe(ref.current!, _index), []);
@@ -566,7 +576,13 @@ export const List = forwardRef<ListHandle, ListProps>(
     for (let i = startIndexWithMargin; i <= endIndexWithMargin; i++) {
       const e = elements[i]!;
       items.push(
-        <Item key={e.key || i} _handle={handle} _index={i} _top={offset}>
+        <Item
+          key={e.key || i}
+          _handle={handle}
+          _index={i}
+          _top={offset}
+          _hide={cache[i] === UNCACHED_ITEM_HEIGHT}
+        >
           {e}
         </Item>
       );
