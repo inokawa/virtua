@@ -1,13 +1,10 @@
 import {
-  PureComponent,
   Children,
   memo,
   useState,
   useRef,
   useMemo,
-  RefObject,
   CSSProperties,
-  ReactNode,
   ReactElement,
   useLayoutEffect,
   Reducer,
@@ -19,23 +16,7 @@ import {
 const min = Math.min;
 const max = Math.max;
 
-const debounce = <T extends (...args: any[]) => void>(fn: T, ms: number) => {
-  let id: NodeJS.Timeout | null = null;
-  const cancel = () => {
-    if (id != null) {
-      clearTimeout(id);
-    }
-  };
-  const debouncedFn = (...args: Parameters<T>) => {
-    cancel();
-    id = setTimeout(() => {
-      id = null;
-      fn(...args);
-    }, ms);
-  };
-  return debouncedFn;
-};
-
+const NO_SCROLL_JUMP = 0;
 const UNCACHED_ITEM_HEIGHT = -1;
 const DEFAULT_ITEM_MARGIN_COUNT = 4;
 const DEFAULT_ITEM_HEIGHT = 40; // 50
@@ -98,69 +79,6 @@ const computeTop = (
   return top;
 };
 
-interface ScrollerProps {
-  _scrollRef: RefObject<HTMLDivElement>;
-  _style: CSSProperties;
-  _innerStyle?: CSSProperties;
-  _items: ReactNode;
-  _totalHeight: number;
-  _handle: ObserverHandle;
-}
-
-interface ScrollerState {}
-
-const FromTop = 0;
-const FromBottom = 1;
-type From = typeof FromTop | typeof FromBottom;
-
-type ScrollerSnapshot = [from: From, offset: number] | null;
-
-class Scroller extends PureComponent<ScrollerProps, ScrollerState> {
-  private _ref: RefObject<HTMLDivElement>;
-
-  constructor(props: ScrollerProps) {
-    super(props);
-    this._ref = props._scrollRef;
-  }
-
-  getSnapshotBeforeUpdate(prevProps: ScrollerProps): ScrollerSnapshot {
-    if (
-      prevProps._totalHeight !== this.props._totalHeight &&
-      this._ref.current &&
-      this.props._handle._isScrollingUp
-    ) {
-      return [
-        FromBottom,
-        this._ref.current.scrollHeight - this._ref.current.scrollTop,
-      ];
-    }
-    return null;
-  }
-
-  componentDidUpdate(
-    _prevProps: ScrollerProps,
-    _prevState: ScrollerState,
-    snapshot: ScrollerSnapshot
-  ) {
-    if (snapshot && this._ref.current) {
-      if (snapshot[0] === FromTop) {
-        this._ref.current.scrollTop = snapshot[1];
-      } else {
-        this._ref.current.scrollTop =
-          this._ref.current.scrollHeight - snapshot[1];
-      }
-    }
-  }
-
-  render() {
-    return (
-      <div ref={this._ref} style={this.props._style}>
-        <div style={this.props._innerStyle}>{this.props._items}</div>
-      </div>
-    );
-  }
-}
-
 type ItemProps = {
   children: ReactElement;
   _handle: ObserverHandle;
@@ -206,7 +124,6 @@ const Item = memo(
 type ObserverHandle = {
   _init: (rootElement: HTMLElement) => () => void;
   _observe: (itemElement: HTMLElement, index: number) => () => void;
-  _isScrollingUp: boolean;
 };
 
 const resetCache = (array: unknown[], cache?: number[]): number[] => {
@@ -224,6 +141,7 @@ type State = {
   _viewportHeight: number;
   _itemHeight: number;
   _cache: number[];
+  _jump: number;
 };
 const init = ([elements, itemHeight]: [
   elements: unknown[],
@@ -234,6 +152,7 @@ const init = ([elements, itemHeight]: [
     _viewportHeight: 0,
     _itemHeight: itemHeight,
     _cache: resetCache(elements),
+    _jump: NO_SCROLL_JUMP,
   };
 };
 const reducer: Reducer<
@@ -264,12 +183,29 @@ const reducer: Reducer<
       if (indexes.every((index, i) => state._cache[index] === heights[i]!)) {
         return state;
       }
+      let prevTotal = 0;
+      let total = 0;
       indexes.forEach((index, i) => {
+        if (index <= state._startIndex) {
+          prevTotal += resolveItemHeight(
+            state._cache[index]!,
+            state._itemHeight
+          );
+          total += heights[i]!;
+        }
         state._cache[index] = heights[i]!;
       });
 
+      let jumped = false;
+      const prevJump = state._jump;
+      const jump = prevTotal - total;
+      if (jump !== 0 && jump !== prevJump) {
+        jumped = true;
+      }
+
       return {
         ...state,
+        _jump: jumped ? jump : NO_SCROLL_JUMP,
       };
     case UPDATE_VIEWPORT_HEIGHT:
       if (state._viewportHeight === action._height) {
@@ -360,6 +296,7 @@ export const List = forwardRef<ListHandle, ListProps>(
         _viewportHeight: viewportHeight,
         _itemHeight: itemHeight,
         _cache: cache,
+        _jump: jump,
       },
       dispatch,
     ] = useReducer(reducer, [elements, itemHeightProp], init);
@@ -369,11 +306,6 @@ export const List = forwardRef<ListHandle, ListProps>(
       let io: IntersectionObserver;
 
       let mountedCount = 0;
-      let isScrollingUp = false;
-
-      const onScrollEnd = debounce(() => {
-        isScrollingUp = false;
-      }, 200);
 
       const mountedIndexes = new WeakMap<HTMLElement, number>();
 
@@ -422,8 +354,8 @@ export const List = forwardRef<ListHandle, ListProps>(
 
               const topExits: IntersectionObserverEntry[] = [];
               const bottomExits: IntersectionObserverEntry[] = [];
-              const topEnters: IntersectionObserverEntry[] = [];
-              const bottomEnters: IntersectionObserverEntry[] = [];
+              // const topEnters: IntersectionObserverEntry[] = [];
+              // const bottomEnters: IntersectionObserverEntry[] = [];
 
               entries.forEach((entry) => {
                 if (
@@ -439,7 +371,7 @@ export const List = forwardRef<ListHandle, ListProps>(
                   } else {
                     // maybe scrolling up
                     // top enter
-                    topEnters.push(entry);
+                    // topEnters.push(entry);
                   }
                 } else {
                   // bottom intersection
@@ -450,7 +382,7 @@ export const List = forwardRef<ListHandle, ListProps>(
                   } else {
                     // maybe scrolling down
                     // bottom enter
-                    bottomEnters.push(entry);
+                    // bottomEnters.push(entry);
                   }
                 }
               });
@@ -512,13 +444,6 @@ export const List = forwardRef<ListHandle, ListProps>(
                   });
                 }
               }
-              if (
-                bottomExits.length + topEnters.length >
-                bottomEnters.length + topExits.length
-              ) {
-                isScrollingUp = true;
-                onScrollEnd();
-              }
             },
             {
               root: root,
@@ -543,9 +468,6 @@ export const List = forwardRef<ListHandle, ListProps>(
             io.unobserve(el);
           };
         },
-        get _isScrollingUp() {
-          return isScrollingUp;
-        },
       };
     })[0];
 
@@ -558,6 +480,12 @@ export const List = forwardRef<ListHandle, ListProps>(
         _height: itemHeightProp,
       });
     }, [elements.length]);
+
+    useLayoutEffect(() => {
+      if (jump !== NO_SCROLL_JUMP && wrapperRef.current) {
+        wrapperRef.current.scrollTop -= jump;
+      }
+    }, [jump]);
 
     useImperativeHandle(
       ref,
@@ -605,9 +533,9 @@ export const List = forwardRef<ListHandle, ListProps>(
     }
 
     return (
-      <Scroller
-        _scrollRef={wrapperRef}
-        _style={useMemo<CSSProperties>(
+      <div
+        ref={wrapperRef}
+        style={useMemo<CSSProperties>(
           () => ({
             width: "100%",
             height: "100%",
@@ -616,19 +544,21 @@ export const List = forwardRef<ListHandle, ListProps>(
           }),
           [styleProp]
         )}
-        _innerStyle={useMemo<CSSProperties>(
-          () => ({
-            position: "relative",
-            height:
-              scrollHeight >= viewportHeight ? scrollHeight : viewportHeight,
-            ...innerStyleProp,
-          }),
-          [scrollHeight, viewportHeight, innerStyleProp]
-        )}
-        _totalHeight={scrollHeight}
-        _handle={handle}
-        _items={viewportHeight !== 0 && items}
-      />
+      >
+        <div
+          style={useMemo<CSSProperties>(
+            () => ({
+              position: "relative",
+              height:
+                scrollHeight >= viewportHeight ? scrollHeight : viewportHeight,
+              ...innerStyleProp,
+            }),
+            [scrollHeight, viewportHeight, innerStyleProp]
+          )}
+        >
+          {viewportHeight !== 0 && items}
+        </div>
+      </div>
     );
   }
 );
