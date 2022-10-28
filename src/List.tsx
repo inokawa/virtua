@@ -432,17 +432,21 @@ export const List = forwardRef<ListHandle, ListProps>(
       }
     }, [jump]);
 
-    useImperativeHandle(
-      ref,
-      () => ({
-        scrollTo(index) {
-          if (wrapperRef.current) {
-            wrapperRef.current.scrollTop = computeTop(index, cache, itemHeight);
+    useImperativeHandle(ref, () => ({
+      scrollTo(index) {
+        if (wrapperRef.current) {
+          let top = computeTop(index, cache, itemHeight);
+          if (scrollHeight - (top + viewportHeight) <= 0) {
+            top = scrollHeight - viewportHeight;
           }
-        },
-      }),
-      [ref, cache, itemHeight]
-    );
+          dispatch({
+            _type: HANDLE_SCROLL,
+            _offset: (wrapperRef.current.scrollTop = top),
+          });
+        }
+      },
+    }));
+
 
     const scrollHeight = cache.reduce(
       (acc, c) => acc + resolveItemHeight(c, itemHeight),
