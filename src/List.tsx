@@ -12,72 +12,19 @@ import {
   forwardRef,
   useImperativeHandle,
 } from "react";
-
-const min = Math.min;
-const max = Math.max;
+import {
+  computeTop,
+  findIndexAfter,
+  findIndexBefore,
+  resetCache,
+  resolveItemHeight,
+  UNCACHED_ITEM_HEIGHT,
+} from "./cache";
+import { max, min } from "./utils";
 
 const NO_SCROLL_JUMP = 0;
-const UNCACHED_ITEM_HEIGHT = -1;
 const DEFAULT_ITEM_MARGIN_COUNT = 4;
 const DEFAULT_ITEM_HEIGHT = 40; // 50
-
-const resolveItemHeight = (
-  height: number,
-  defaultItemHeight: number
-): number => {
-  return height === UNCACHED_ITEM_HEIGHT ? defaultItemHeight : height;
-};
-
-const findIndexBefore = (
-  index: number,
-  viewportHeight: number,
-  cache: number[],
-  defaultItemHeight: number
-): number => {
-  let sum = 0;
-  let i = index;
-  while (i > 0) {
-    sum += resolveItemHeight(cache[i]!, defaultItemHeight);
-    if (sum >= viewportHeight) {
-      break;
-    }
-    i--;
-  }
-  return max(i, 0);
-};
-
-const findIndexAfter = (
-  index: number,
-  viewportHeight: number,
-  cache: number[],
-  defaultItemHeight: number
-): number => {
-  let sum = 0;
-  let i = index;
-  while (i < cache.length - 1) {
-    sum += resolveItemHeight(cache[i]!, defaultItemHeight);
-    if (sum >= viewportHeight) {
-      break;
-    }
-    i++;
-  }
-  return min(i, cache.length - 1);
-};
-
-const computeTop = (
-  cache: number[],
-  index: number,
-  defaultItemHeight: number
-): number => {
-  let top = 0;
-  for (let i = 0; i < cache.length; i++) {
-    if (i === index) {
-      break;
-    }
-    top += resolveItemHeight(cache[i]!, defaultItemHeight);
-  }
-  return top;
-};
 
 type ItemProps = {
   children: ReactElement;
@@ -126,10 +73,6 @@ type ObserverHandle = {
   _observe: (itemElement: HTMLElement, index: number) => () => void;
 };
 
-const resetCache = (array: unknown[], cache?: number[]): number[] => {
-  return array.map((_, i) => (cache && cache[i]) ?? UNCACHED_ITEM_HEIGHT);
-};
-
 const RESET_CACHE = 0;
 const UPDATE_ITEM_HEIGHTS = 1;
 const UPDATE_VIEWPORT_HEIGHT = 2;
@@ -143,6 +86,7 @@ type State = {
   _cache: number[];
   _jump: number;
 };
+
 const init = ([elements, itemHeight]: [
   elements: unknown[],
   itemHeight: number
@@ -155,6 +99,7 @@ const init = ([elements, itemHeight]: [
     _jump: NO_SCROLL_JUMP,
   };
 };
+
 const reducer: Reducer<
   State,
   | { _type: typeof RESET_CACHE; _elements: unknown[]; _height: number }
@@ -492,7 +437,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       () => ({
         scrollTo(index) {
           if (wrapperRef.current) {
-            wrapperRef.current.scrollTop = computeTop(cache, index, itemHeight);
+            wrapperRef.current.scrollTop = computeTop(index, cache, itemHeight);
           }
         },
       }),
@@ -513,7 +458,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     const startIndexWithMargin = max(startIndex - itemMargin, 0);
     const endIndexWithMargin = min(endIndex + itemMargin, cache.length - 1);
     let offset = useMemo(
-      () => computeTop(cache, startIndexWithMargin, itemHeight),
+      () => computeTop(startIndexWithMargin, cache, itemHeight),
       [cache, startIndexWithMargin, itemHeight]
     );
     for (let i = startIndexWithMargin; i <= endIndexWithMargin; i++) {
