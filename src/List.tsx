@@ -425,7 +425,11 @@ export const List = forwardRef<ListHandle, ListProps>(
     }, [elements.length]);
 
     useLayoutEffect(() => {
-      if (jump !== NO_SCROLL_JUMP && wrapperRef.current) {
+      if (
+        jump !== NO_SCROLL_JUMP &&
+        wrapperRef.current &&
+        wrapperRef.current.scrollTop !== 0
+      ) {
         wrapperRef.current.scrollTop -= jump;
       }
     }, [jump]);
