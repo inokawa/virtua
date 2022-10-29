@@ -16,6 +16,7 @@ import {
   computeTop,
   findIndexAfter,
   findIndexBefore,
+  findStartIndexWithOffset,
   resetCache,
   resolveItemHeight,
   UNCACHED_ITEM_HEIGHT,
@@ -189,8 +190,7 @@ const reducer: Reducer<
         _startIndex: nextStartIndex,
       };
     case HANDLE_SCROLL:
-      const startIndex = findIndexAfter(
-        0,
+      const startIndex = findStartIndexWithOffset(
         action._offset,
         state._cache,
         state._itemHeight

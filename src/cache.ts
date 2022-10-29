@@ -45,6 +45,15 @@ export const findIndexAfter = (
   return min(i, cache.length - 1);
 };
 
+export const findStartIndexWithOffset = (
+  offset: number,
+  cache: number[],
+  defaultItemHeight: number
+): number => {
+  const startIndex = findIndexAfter(0, offset, cache, defaultItemHeight);
+  return startIndex;
+};
+
 export const computeTop = (
   index: number,
   cache: number[],
