@@ -250,9 +250,10 @@ export const List = forwardRef<ListHandle, ListProps>(
       let ro: ResizeObserver;
       let io: IntersectionObserver;
 
-      let mountedCount = 0;
+      let viewedCount = 0;
 
-      const mountedIndexes = new WeakMap<HTMLElement, number>();
+      const mountedIndexes = new WeakMap<Element, number>();
+      const viewedIndexes = new WeakMap<Element, number>();
 
       return {
         _init(root) {
@@ -266,7 +267,7 @@ export const List = forwardRef<ListHandle, ListProps>(
                   _height: entry.contentRect.height,
                 });
               } else {
-                const index = mountedIndexes.get(entry.target as HTMLElement);
+                const index = mountedIndexes.get(entry.target);
                 if (index != null) {
                   resizedItemHeights.push(entry.contentRect.height);
                   resizedItemIndexes.push(index);
@@ -285,10 +286,40 @@ export const List = forwardRef<ListHandle, ListProps>(
 
           io = new IntersectionObserver(
             (entries) => {
-              if (
-                mountedCount === entries.length &&
-                entries.every((e) => !e.isIntersecting)
-              ) {
+              const topExits: IntersectionObserverEntry[] = [];
+              const bottomExits: IntersectionObserverEntry[] = [];
+
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  // enter
+                  const index = mountedIndexes.get(entry.target);
+                  if (index != null) {
+                    viewedIndexes.set(entry.target, index);
+                    viewedCount++;
+                  }
+                } else {
+                  // exit
+                  if (viewedIndexes.has(entry.target)) {
+                    viewedIndexes.delete(entry.target);
+                    viewedCount--;
+                  }
+                  if (
+                    entry.boundingClientRect.top +
+                      entry.boundingClientRect.height / 2 <=
+                    entry.rootBounds!.top + entry.rootBounds!.height / 2
+                  ) {
+                    // maybe scrolling down
+                    // top exit
+                    topExits.push(entry);
+                  } else {
+                    // maybe scrolling up
+                    // bottom exit
+                    bottomExits.push(entry);
+                  }
+                }
+              });
+
+              if (viewedCount === 0) {
                 // all items would exit in fast scrolling
                 dispatch({
                   _type: HANDLE_SCROLL,
@@ -296,41 +327,6 @@ export const List = forwardRef<ListHandle, ListProps>(
                 });
                 return;
               }
-
-              const topExits: IntersectionObserverEntry[] = [];
-              const bottomExits: IntersectionObserverEntry[] = [];
-              // const topEnters: IntersectionObserverEntry[] = [];
-              // const bottomEnters: IntersectionObserverEntry[] = [];
-
-              entries.forEach((entry) => {
-                if (
-                  entry.boundingClientRect.top +
-                    entry.boundingClientRect.height / 2 <=
-                  entry.rootBounds!.top + entry.rootBounds!.height / 2
-                ) {
-                  // top intersection
-                  if (!entry.isIntersecting) {
-                    // maybe scrolling down
-                    // top exit
-                    topExits.push(entry);
-                  } else {
-                    // maybe scrolling up
-                    // top enter
-                    // topEnters.push(entry);
-                  }
-                } else {
-                  // bottom intersection
-                  if (!entry.isIntersecting) {
-                    // maybe scrolling up
-                    // bottom exit
-                    bottomExits.push(entry);
-                  } else {
-                    // maybe scrolling down
-                    // bottom enter
-                    // bottomEnters.push(entry);
-                  }
-                }
-              });
 
               if (topExits.length) {
                 const entry = topExits.reduce((prev, entry) => {
@@ -350,7 +346,7 @@ export const List = forwardRef<ListHandle, ListProps>(
                     return prev;
                   }
                 });
-                const index = mountedIndexes.get(entry.target as HTMLElement);
+                const index = mountedIndexes.get(entry.target);
                 if (index != null) {
                   dispatch({
                     _type: HANDLE_ITEM_EXIT,
@@ -379,7 +375,7 @@ export const List = forwardRef<ListHandle, ListProps>(
                     return prev;
                   }
                 });
-                const index = mountedIndexes.get(entry.target as HTMLElement);
+                const index = mountedIndexes.get(entry.target);
                 if (index != null) {
                   dispatch({
                     _type: HANDLE_ITEM_EXIT,
@@ -402,13 +398,15 @@ export const List = forwardRef<ListHandle, ListProps>(
           };
         },
         _observe(el, i) {
-          mountedCount++;
           mountedIndexes.set(el, i);
           ro.observe(el);
           io.observe(el);
           return () => {
-            mountedCount--;
             mountedIndexes.delete(el);
+            if (viewedIndexes.has(el)) {
+              viewedIndexes.delete(el);
+              viewedCount--;
+            }
             ro.unobserve(el);
             io.unobserve(el);
           };
@@ -439,14 +437,10 @@ export const List = forwardRef<ListHandle, ListProps>(
           if (scrollHeight - (top + viewportHeight) <= 0) {
             top = scrollHeight - viewportHeight;
           }
-          dispatch({
-            _type: HANDLE_SCROLL,
-            _offset: (wrapperRef.current.scrollTop = top),
-          });
+          wrapperRef.current.scrollTop = top;
         }
       },
     }));
-
 
     const scrollHeight = cache.reduce(
       (acc, c) => acc + resolveItemHeight(c, itemHeight),
