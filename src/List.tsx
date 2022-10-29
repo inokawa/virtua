@@ -11,6 +11,7 @@ import {
   useReducer,
   forwardRef,
   useImperativeHandle,
+  ReactNode,
 } from "react";
 import {
   computeTop,
@@ -28,7 +29,7 @@ const DEFAULT_ITEM_MARGIN_COUNT = 4;
 const DEFAULT_ITEM_HEIGHT = 40; // 50
 
 type ItemProps = {
-  children: ReactElement;
+  children: ReactNode;
   _handle: ObserverHandle;
   _index: number;
   _top: number;
@@ -119,12 +120,13 @@ const reducer: Reducer<
   | { _type: typeof HANDLE_SCROLL; _offset: number }
 > = (state, action) => {
   switch (action._type) {
-    case RESET_CACHE:
+    case RESET_CACHE: {
       return {
         ...state,
         _cache: resetCache(action._elements, state._cache),
       };
-    case UPDATE_ITEM_HEIGHTS:
+    }
+    case UPDATE_ITEM_HEIGHTS: {
       const { _indexes: indexes, _heights: heights } = action;
       if (indexes.every((index, i) => state._cache[index] === heights[i]!)) {
         return state;
@@ -153,7 +155,8 @@ const reducer: Reducer<
         ...state,
         _jump: jumped ? jump : NO_SCROLL_JUMP,
       };
-    case UPDATE_VIEWPORT_HEIGHT:
+    }
+    case UPDATE_VIEWPORT_HEIGHT: {
       if (state._viewportHeight === action._height) {
         return state;
       }
@@ -161,13 +164,14 @@ const reducer: Reducer<
         ...state,
         _viewportHeight: action._height,
       };
-    case HANDLE_ITEM_EXIT:
+    }
+    case HANDLE_ITEM_EXIT: {
       const { boundingClientRect } = action._entry;
 
-      let nextStartIndex: number;
+      let startIndex: number;
       if (action._isScrollingDown) {
         // scrolling down
-        nextStartIndex = findIndexAfter(
+        startIndex = findIndexAfter(
           action._index,
           max(0, -boundingClientRect.top),
           state._cache,
@@ -175,21 +179,22 @@ const reducer: Reducer<
         );
       } else {
         // scrolling up
-        nextStartIndex = findIndexBefore(
+        startIndex = findIndexBefore(
           action._index,
           max(0, boundingClientRect.top),
           state._cache,
           state._itemHeight
         );
       }
-      if (nextStartIndex === state._startIndex) {
+      if (startIndex === state._startIndex) {
         return state;
       }
       return {
         ...state,
-        _startIndex: nextStartIndex,
+        _startIndex: startIndex,
       };
-    case HANDLE_SCROLL:
+    }
+    case HANDLE_SCROLL: {
       const startIndex = findStartIndexWithOffset(
         action._offset,
         state._cache,
@@ -202,6 +207,7 @@ const reducer: Reducer<
         ...state,
         _startIndex: startIndex,
       };
+    }
   }
 };
 
@@ -210,7 +216,7 @@ export type ListHandle = {
 };
 
 export type ListProps = {
-  children: ReactElement | ReactElement[];
+  children: ReactNode;
   itemHeight?: number;
   itemMargin?: number;
   style?: CSSProperties;
@@ -228,12 +234,9 @@ export const List = forwardRef<ListHandle, ListProps>(
     },
     ref
   ): ReactElement => {
-    const wrapperRef = useRef<HTMLDivElement>(null);
+    const rootRef = useRef<HTMLDivElement>(null);
     // memoize element instances
-    const elements = useMemo(
-      () => Children.toArray(children) as ReactElement[],
-      [children]
-    );
+    const elements = useMemo(() => Children.toArray(children), [children]);
 
     const [
       {
@@ -414,7 +417,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       };
     })[0];
 
-    useLayoutEffect(() => handle._init(wrapperRef.current!), []);
+    useLayoutEffect(() => handle._init(rootRef.current!), []);
 
     useLayoutEffect(() => {
       dispatch({
@@ -427,21 +430,21 @@ export const List = forwardRef<ListHandle, ListProps>(
     useLayoutEffect(() => {
       if (
         jump !== NO_SCROLL_JUMP &&
-        wrapperRef.current &&
-        wrapperRef.current.scrollTop !== 0
+        rootRef.current &&
+        rootRef.current.scrollTop !== 0
       ) {
-        wrapperRef.current.scrollTop -= jump;
+        rootRef.current.scrollTop -= jump;
       }
     }, [jump]);
 
     useImperativeHandle(ref, () => ({
       scrollTo(index) {
-        if (wrapperRef.current) {
+        if (rootRef.current) {
           let top = computeTop(index, cache, itemHeight);
           if (scrollHeight - (top + viewportHeight) <= 0) {
             top = scrollHeight - viewportHeight;
           }
-          wrapperRef.current.scrollTop = top;
+          rootRef.current.scrollTop = top;
         }
       },
     }));
@@ -467,7 +470,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       const e = elements[i]!;
       items.push(
         <Item
-          key={e.key || i}
+          key={(e as { key?: ReactElement["key"] }).key || i}
           _handle={handle}
           _index={i}
           _top={offset}
@@ -481,7 +484,7 @@ export const List = forwardRef<ListHandle, ListProps>(
 
     return (
       <div
-        ref={wrapperRef}
+        ref={rootRef}
         style={useMemo<CSSProperties>(
           () => ({
             width: "100%",
@@ -496,6 +499,7 @@ export const List = forwardRef<ListHandle, ListProps>(
           style={useMemo<CSSProperties>(
             () => ({
               position: "relative",
+              width: "100%",
               height:
                 scrollHeight >= viewportHeight ? scrollHeight : viewportHeight,
               ...innerStyleProp,
