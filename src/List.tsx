@@ -24,7 +24,6 @@ import {
 } from "./cache";
 import { max, min } from "./utils";
 
-const NO_SCROLL_JUMP = 0;
 const DEFAULT_ITEM_MARGIN_COUNT = 4;
 const DEFAULT_ITEM_HEIGHT = 40; // 50
 
@@ -81,12 +80,14 @@ const UPDATE_VIEWPORT_HEIGHT = 2;
 const HANDLE_ITEM_EXIT = 3;
 const HANDLE_SCROLL = 4;
 
+type ScrollJump = { _top: number; _bottom: number };
+
 type State = {
   _startIndex: number;
   _viewportHeight: number;
   _itemHeight: number;
   _cache: number[];
-  _jump: number;
+  _jump: ScrollJump;
 };
 
 const init = ([elements, itemHeight]: [
@@ -98,7 +99,7 @@ const init = ([elements, itemHeight]: [
     _viewportHeight: 0,
     _itemHeight: itemHeight,
     _cache: resetCache(elements),
-    _jump: NO_SCROLL_JUMP,
+    _jump: { _top: 0, _bottom: 0 },
   };
 };
 
@@ -131,29 +132,25 @@ const reducer: Reducer<
       if (indexes.every((index, i) => state._cache[index] === heights[i]!)) {
         return state;
       }
-      let prevTotal = 0;
-      let total = 0;
+
+      let topJump = 0;
+      let bottomJump = 0;
       indexes.forEach((index, i) => {
         if (index <= state._startIndex) {
-          prevTotal += resolveItemHeight(
-            state._cache[index]!,
-            state._itemHeight
-          );
-          total += heights[i]!;
+          topJump +=
+            heights[i]! -
+            resolveItemHeight(state._cache[index]!, state._itemHeight);
+        } else {
+          bottomJump +=
+            heights[i]! -
+            resolveItemHeight(state._cache[index]!, state._itemHeight);
         }
         state._cache[index] = heights[i]!;
       });
 
-      let jumped = false;
-      const prevJump = state._jump;
-      const jump = prevTotal - total;
-      if (jump !== 0 && jump !== prevJump) {
-        jumped = true;
-      }
-
       return {
         ...state,
-        _jump: jumped ? jump : NO_SCROLL_JUMP,
+        _jump: { _top: topJump, _bottom: bottomJump },
       };
     }
     case UPDATE_VIEWPORT_HEIGHT: {
@@ -417,6 +414,20 @@ export const List = forwardRef<ListHandle, ListProps>(
       };
     })[0];
 
+    const scrollHeight = cache.reduce(
+      (acc, c) => acc + resolveItemHeight(c, itemHeight),
+      0
+    );
+
+    const items: (ReactElement | null)[] = [];
+    const endIndex = useMemo(
+      () => findIndexAfter(startIndex, viewportHeight, cache, itemHeight),
+      [cache, startIndex, viewportHeight, itemHeight]
+    );
+
+    const startIndexWithMargin = max(startIndex - itemMargin, 0);
+    const endIndexWithMargin = min(endIndex + itemMargin, cache.length - 1);
+
     useLayoutEffect(() => handle._init(rootRef.current!), []);
 
     useLayoutEffect(() => {
@@ -428,12 +439,16 @@ export const List = forwardRef<ListHandle, ListProps>(
     }, [elements.length]);
 
     useLayoutEffect(() => {
-      if (
-        jump !== NO_SCROLL_JUMP &&
-        rootRef.current &&
-        rootRef.current.scrollTop !== 0
-      ) {
-        rootRef.current.scrollTop -= jump;
+      if (rootRef.current) {
+        if (
+          jump._top &&
+          !(startIndex === 0 && rootRef.current.scrollTop === 0)
+        ) {
+          rootRef.current.scrollTop += jump._top;
+        }
+        if (jump._bottom && endIndex - (cache.length - 1) === 0) {
+          rootRef.current.scrollTop += jump._bottom;
+        }
       }
     }, [jump]);
 
@@ -449,19 +464,6 @@ export const List = forwardRef<ListHandle, ListProps>(
       },
     }));
 
-    const scrollHeight = cache.reduce(
-      (acc, c) => acc + resolveItemHeight(c, itemHeight),
-      0
-    );
-
-    const items: (ReactElement | null)[] = [];
-    const endIndex = useMemo(
-      () => findIndexAfter(startIndex, viewportHeight, cache, itemHeight),
-      [cache, startIndex, viewportHeight, itemHeight]
-    );
-
-    const startIndexWithMargin = max(startIndex - itemMargin, 0);
-    const endIndexWithMargin = min(endIndex + itemMargin, cache.length - 1);
     let offset = useMemo(
       () => computeTop(startIndexWithMargin, cache, itemHeight),
       [cache, startIndexWithMargin, itemHeight]
