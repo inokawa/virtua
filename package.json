@@ -27,7 +27,7 @@
     "@storybook/addon-links": "6.5.10",
     "@storybook/react": "6.5.10",
     "@storybook/test-runner": "0.7.0",
-    "@testing-library/react": "13.1.1",
+    "@testing-library/react": "13.4.0",
     "@types/react": "18.0.18",
     "babel-plugin-replace-import-extensions": "1.0.1",
     "concurrently": "7.2.2",
