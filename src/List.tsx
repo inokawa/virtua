@@ -469,17 +469,20 @@ export const List = forwardRef<ListHandle, ListProps>(
       [cache, startIndexWithMargin, itemHeight]
     );
     for (let i = startIndexWithMargin; i <= endIndexWithMargin; i++) {
-      const e = elements[i]!;
+      // elements could be undefined when children length changed
+      const e = elements[i];
       items.push(
-        <Item
-          key={(e as { key?: ReactElement["key"] }).key || i}
-          _handle={handle}
-          _index={i}
-          _top={offset}
-          _hide={cache[i] === UNCACHED_ITEM_HEIGHT}
-        >
-          {e}
-        </Item>
+        e ? (
+          <Item
+            key={(e as { key?: ReactElement["key"] }).key || i}
+            _handle={handle}
+            _index={i}
+            _top={offset}
+            _hide={cache[i] === UNCACHED_ITEM_HEIGHT}
+          >
+            {e}
+          </Item>
+        ) : null
       );
       offset += resolveItemHeight(cache[i]!, itemHeight);
     }
