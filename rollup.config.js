@@ -1,5 +1,4 @@
 import typescript from "@rollup/plugin-typescript";
-import { getBabelOutputPlugin } from "@rollup/plugin-babel";
 import { terser } from "rollup-plugin-terser";
 import pkg from "./package.json";
 
@@ -23,15 +22,6 @@ export default {
       outDir: ".",
       declaration: true,
       exclude: ["**/*.{spec,stories}.*"],
-    }),
-    getBabelOutputPlugin({
-      plugins: [
-        "@babel/plugin-transform-react-pure-annotations",
-        [
-          "replace-import-extensions",
-          { "^react/jsx-runtime$": "react/jsx-runtime.js" },
-        ],
-      ],
     }),
     terser({
       ecma: 2015,
