@@ -7,7 +7,6 @@ import {
   CSSProperties,
   ReactElement,
   useLayoutEffect,
-  Reducer,
   useReducer,
   forwardRef,
   useImperativeHandle,
@@ -16,12 +15,18 @@ import {
 import {
   computeTop,
   findIndexAfter,
-  findIndexBefore,
-  findStartIndexWithOffset,
-  resetCache,
   resolveItemHeight,
   UNCACHED_ITEM_HEIGHT,
 } from "./cache";
+import {
+  HANDLE_ITEM_EXIT,
+  HANDLE_SCROLL,
+  init,
+  reducer,
+  RESET_CACHE,
+  UPDATE_ITEM_HEIGHTS,
+  UPDATE_VIEWPORT_HEIGHT,
+} from "./state";
 import { max, min } from "./utils";
 
 const DEFAULT_ITEM_MARGIN_COUNT = 4;
@@ -72,140 +77,6 @@ const Item = memo(
 type ObserverHandle = {
   _init: (rootElement: HTMLElement) => () => void;
   _observe: (itemElement: HTMLElement, index: number) => () => void;
-};
-
-const RESET_CACHE = 0;
-const UPDATE_ITEM_HEIGHTS = 1;
-const UPDATE_VIEWPORT_HEIGHT = 2;
-const HANDLE_ITEM_EXIT = 3;
-const HANDLE_SCROLL = 4;
-
-type ScrollJump = { _top: number; _bottom: number };
-
-type State = {
-  _startIndex: number;
-  _viewportHeight: number;
-  _itemHeight: number;
-  _cache: number[];
-  _jump: ScrollJump;
-};
-
-const init = ([elements, itemHeight]: [
-  elements: unknown[],
-  itemHeight: number
-]): State => {
-  return {
-    _startIndex: 0,
-    _viewportHeight: 0,
-    _itemHeight: itemHeight,
-    _cache: resetCache(elements),
-    _jump: { _top: 0, _bottom: 0 },
-  };
-};
-
-const reducer: Reducer<
-  State,
-  | { _type: typeof RESET_CACHE; _elements: unknown[]; _height: number }
-  | {
-      _type: typeof UPDATE_ITEM_HEIGHTS;
-      _indexes: number[];
-      _heights: number[];
-    }
-  | { _type: typeof UPDATE_VIEWPORT_HEIGHT; _height: number }
-  | {
-      _type: typeof HANDLE_ITEM_EXIT;
-      _index: number;
-      _isScrollingDown: boolean;
-      _entry: IntersectionObserverEntry;
-    }
-  | { _type: typeof HANDLE_SCROLL; _offset: number }
-> = (state, action) => {
-  switch (action._type) {
-    case RESET_CACHE: {
-      return {
-        ...state,
-        _cache: resetCache(action._elements, state._cache),
-      };
-    }
-    case UPDATE_ITEM_HEIGHTS: {
-      const { _indexes: indexes, _heights: heights } = action;
-      if (indexes.every((index, i) => state._cache[index] === heights[i]!)) {
-        return state;
-      }
-
-      let topJump = 0;
-      let bottomJump = 0;
-      indexes.forEach((index, i) => {
-        if (index <= state._startIndex) {
-          topJump +=
-            heights[i]! -
-            resolveItemHeight(state._cache[index]!, state._itemHeight);
-        } else {
-          bottomJump +=
-            heights[i]! -
-            resolveItemHeight(state._cache[index]!, state._itemHeight);
-        }
-        state._cache[index] = heights[i]!;
-      });
-
-      return {
-        ...state,
-        _jump: { _top: topJump, _bottom: bottomJump },
-      };
-    }
-    case UPDATE_VIEWPORT_HEIGHT: {
-      if (state._viewportHeight === action._height) {
-        return state;
-      }
-      return {
-        ...state,
-        _viewportHeight: action._height,
-      };
-    }
-    case HANDLE_ITEM_EXIT: {
-      const { boundingClientRect } = action._entry;
-
-      let startIndex: number;
-      if (action._isScrollingDown) {
-        // scrolling down
-        startIndex = findIndexAfter(
-          action._index,
-          max(0, -boundingClientRect.top),
-          state._cache,
-          state._itemHeight
-        );
-      } else {
-        // scrolling up
-        startIndex = findIndexBefore(
-          action._index,
-          max(0, boundingClientRect.top),
-          state._cache,
-          state._itemHeight
-        );
-      }
-      if (startIndex === state._startIndex) {
-        return state;
-      }
-      return {
-        ...state,
-        _startIndex: startIndex,
-      };
-    }
-    case HANDLE_SCROLL: {
-      const startIndex = findStartIndexWithOffset(
-        action._offset,
-        state._cache,
-        state._itemHeight
-      );
-      if (startIndex === state._startIndex) {
-        return state;
-      }
-      return {
-        ...state,
-        _startIndex: startIndex,
-      };
-    }
-  }
 };
 
 export type ListHandle = {
