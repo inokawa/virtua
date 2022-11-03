@@ -27,6 +27,24 @@ import {
 } from "./state";
 import { max, min } from "./utils";
 
+const debounce = <T extends (...args: any[]) => void>(fn: T, ms: number) => {
+  let id: NodeJS.Timeout | null = null;
+  const cancel = () => {
+    if (id != null) {
+      clearTimeout(id);
+    }
+  };
+  const debouncedFn = (...args: Parameters<T>) => {
+    cancel();
+    id = setTimeout(() => {
+      id = null;
+      fn(...args);
+    }, ms);
+  };
+  debouncedFn._cancel = cancel;
+  return debouncedFn;
+};
+
 const DEFAULT_ITEM_MARGIN_COUNT = 2;
 const DEFAULT_ITEM_HEIGHT = 40; // 50
 
@@ -125,6 +143,19 @@ export const List = forwardRef<ListHandle, ListProps>(
 
       return {
         _init(root) {
+          // Estimating scroll position from intersections can fail when items were mounted outside of viewport and intersection didn't happen.
+          // This situation rarely occurs in fast scrolling with scroll bar.
+          // So get scroll position from element while there are no items in viewport.
+          const requestSync = debounce(() => {
+            if (viewedCount) return;
+
+            dispatch({
+              _type: HANDLE_SCROLL,
+              _offset: root.scrollTop,
+            });
+            requestSync();
+          }, 200);
+
           ro = new ResizeObserver((entries) => {
             const resizedItemHeights: number[] = [];
             const resizedItemIndexes: number[] = [];
@@ -180,12 +211,14 @@ export const List = forwardRef<ListHandle, ListProps>(
                 }
               });
 
-              if (viewedCount === 0) {
+              if (!viewedCount) {
                 // all items would exit in fast scrolling
                 dispatch({
                   _type: HANDLE_SCROLL,
                   _offset: root.scrollTop,
                 });
+
+                requestSync();
                 return;
               }
 
@@ -207,6 +240,7 @@ export const List = forwardRef<ListHandle, ListProps>(
           return () => {
             ro.disconnect();
             io.disconnect();
+            requestSync._cancel();
           };
         },
         _observe(el, i) {
