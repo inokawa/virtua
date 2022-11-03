@@ -71,7 +71,7 @@ export const useVirtualState = (elements: unknown[], itemHeight: number) => {
           let topJump = 0;
           let bottomJump = 0;
           indexes.forEach((index, i) => {
-            if (index <= state._startIndex) {
+            if (index < state._startIndex) {
               topJump +=
                 heights[i]! -
                 resolveItemHeight(state._cache[index]!, itemHeight);

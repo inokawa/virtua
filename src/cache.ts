@@ -58,7 +58,21 @@ export const findStartIndexWithOffset = (
   cache: number[],
   defaultItemHeight: number
 ): number => {
-  return findIndexAfter(0, offset, cache, defaultItemHeight);
+  const index = 0;
+  let sum = 0;
+  let i = index;
+  while (i < cache.length - 1) {
+    const h = resolveItemHeight(cache[i]!, defaultItemHeight);
+    sum += h;
+    i++;
+    if (sum >= offset) {
+      if (sum - h / 2 >= offset) {
+        i--;
+      }
+      break;
+    }
+  }
+  return min(max(i, index), cache.length - 1);
 };
 
 export const computeTop = (

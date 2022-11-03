@@ -223,52 +223,49 @@ describe(`${findIndexAfter.name} and ${findIndexBefore.name}`, () => {
 });
 
 describe(findStartIndexWithOffset.name, () => {
-  it("should get start if offset is 0", () => {
+  it("should get start if offset is at start", () => {
     expect(findStartIndexWithOffset(0, filledHeights, 30)).toBe(0);
   });
 
+  it("should get index if offset fits half of index 1 and 2", () => {
+    expect(findStartIndexWithOffset(10, filledHeights, 30)).toBe(0);
+  });
+
+  it("should get index if offset fits half of index 1 and 2 + 1px", () => {
+    expect(findStartIndexWithOffset(11, filledHeights, 30)).toBe(1);
+  });
+
+  it("should get index if offset fits half of index 1 and 2 - 1px", () => {
+    expect(findStartIndexWithOffset(9, filledHeights, 30)).toBe(0);
+  });
+
   it("should get index if offset fits index 1", () => {
-    expect(findStartIndexWithOffset(20, filledHeights, 30)).toBe(0);
+    expect(findStartIndexWithOffset(20, filledHeights, 30)).toBe(1);
   });
 
   it("should get index if offset is index 1 + 1px", () => {
-    expect(findStartIndexWithOffset(21, filledHeights, 30)).toBe(0);
+    expect(findStartIndexWithOffset(21, filledHeights, 30)).toBe(1);
   });
 
   it("should get index if offset is index 1 - 1px", () => {
-    expect(findStartIndexWithOffset(19, filledHeights, 30)).toBe(0);
+    expect(findStartIndexWithOffset(19, filledHeights, 30)).toBe(1);
   });
 
   it("should get index if offset fits index 2", () => {
-    expect(findStartIndexWithOffset(40, filledHeights, 30)).toBe(1);
+    expect(findStartIndexWithOffset(40, filledHeights, 30)).toBe(2);
   });
 
   it("should get index if offset is index 2 + 1px", () => {
-    expect(findStartIndexWithOffset(41, filledHeights, 30)).toBe(1);
+    expect(findStartIndexWithOffset(41, filledHeights, 30)).toBe(2);
   });
 
   it("should get index if offset is index 2 - 1px", () => {
-    expect(findStartIndexWithOffset(39, filledHeights, 30)).toBe(1);
+    expect(findStartIndexWithOffset(39, filledHeights, 30)).toBe(2);
   });
 
-  it("should get same index if target is at start", () => {
-    const index = 0;
-    const offset = computeTop(index, filledHeights, 30);
-    expect(offset).toBe(sum(filledHeights.slice(0, index)));
-    expect(findStartIndexWithOffset(offset, filledHeights, 30)).toBe(index);
-  });
-
-  it("should get same index if target is at mid", () => {
-    const index = 2;
-    const offset = computeTop(index, filledHeights, 30);
-    expect(offset).toBe(sum(filledHeights.slice(0, index)));
-    expect(findStartIndexWithOffset(offset, filledHeights, 30)).toBe(index - 1);
-  });
-
-  it("should get same index if target is at end", () => {
-    const index = filledHeights.length - 1;
-    const offset = computeTop(index, filledHeights, 30);
-    expect(offset).toBe(sum(filledHeights.slice(0, index)));
-    expect(findStartIndexWithOffset(offset, filledHeights, 30)).toBe(index - 1);
+  it("should get index if offset is at end", () => {
+    expect(
+      findStartIndexWithOffset(sum(filledHeights), filledHeights, 30)
+    ).toBe(filledHeights.length - 1);
   });
 });
