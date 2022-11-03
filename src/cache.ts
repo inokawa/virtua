@@ -18,13 +18,17 @@ export const findIndexBefore = (
   let sum = 0;
   let i = index;
   while (i > 0) {
-    sum += resolveItemHeight(cache[i]!, defaultItemHeight);
+    const h = resolveItemHeight(cache[i]!, defaultItemHeight);
+    sum += h;
     if (sum >= viewportHeight) {
+      if (sum - h / 2 > viewportHeight) {
+        i++;
+      }
       break;
     }
     i--;
   }
-  return max(i, 0);
+  return max(min(i, index), 0);
 };
 
 export const findIndexAfter = (
@@ -36,13 +40,17 @@ export const findIndexAfter = (
   let sum = 0;
   let i = index;
   while (i < cache.length - 1) {
-    sum += resolveItemHeight(cache[i]!, defaultItemHeight);
+    const h = resolveItemHeight(cache[i]!, defaultItemHeight);
+    sum += h;
     if (sum >= viewportHeight) {
+      if (sum - h / 2 > viewportHeight) {
+        i--;
+      }
       break;
     }
     i++;
   }
-  return min(i, cache.length - 1);
+  return min(max(i, index), cache.length - 1);
 };
 
 export const findStartIndexWithOffset = (
@@ -50,8 +58,7 @@ export const findStartIndexWithOffset = (
   cache: number[],
   defaultItemHeight: number
 ): number => {
-  const startIndex = findIndexAfter(0, offset, cache, defaultItemHeight);
-  return startIndex;
+  return findIndexAfter(0, offset, cache, defaultItemHeight);
 };
 
 export const computeTop = (

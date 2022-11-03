@@ -26,7 +26,7 @@ exports[`should render 5 children 1`] = `
     style="width: 100%; height: 100%; overflow-y: auto;"
   >
     <div
-      style="position: relative; width: 100%; height: 240px;"
+      style="position: relative; width: 100%; height: 230px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; top: 0px;"
@@ -47,13 +47,6 @@ exports[`should render 5 children 1`] = `
       >
         <div>
           2
-        </div>
-      </div>
-      <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; top: 150px;"
-      >
-        <div>
-          3
         </div>
       </div>
     </div>
@@ -134,7 +127,7 @@ exports[`should render many children 1`] = `
     style="width: 100%; height: 100%; overflow-y: auto;"
   >
     <div
-      style="position: relative; width: 100%; height: 40040px;"
+      style="position: relative; width: 100%; height: 40030px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; top: 0px;"
@@ -155,13 +148,6 @@ exports[`should render many children 1`] = `
       >
         <div>
           2
-        </div>
-      </div>
-      <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; top: 150px;"
-      >
-        <div>
-          3
         </div>
       </div>
     </div>
@@ -198,7 +184,7 @@ exports[`should render with given width / height 1`] = `
     style="width: 100px; height: 800px; overflow-y: auto;"
   >
     <div
-      style="position: relative; width: 100%; height: 240px;"
+      style="position: relative; width: 100%; height: 230px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; top: 0px;"
@@ -219,13 +205,6 @@ exports[`should render with given width / height 1`] = `
       >
         <div>
           2
-        </div>
-      </div>
-      <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; top: 150px;"
-      >
-        <div>
-          3
         </div>
       </div>
     </div>

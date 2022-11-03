@@ -65,26 +65,40 @@ describe(findIndexAfter.name, () => {
     });
   });
 
-  describe("change viewport", () => {
-    it("should get if viewport fits cache", () => {
-      expect(findIndexAfter(1, 100, filledHeights, 30)).toBe(5);
-    });
+  it("should get argument index if viewport is 0 and index is at start", () => {
+    expect(findIndexAfter(0, 0, filledHeights, 30)).toBe(0);
+  });
 
-    it("should get next if viewport is bit larger than cache", () => {
-      expect(findIndexAfter(1, 101, filledHeights, 30)).toBe(6);
-    });
+  it("should get argument index if viewport is 0 and index is at start + 1", () => {
+    expect(findIndexAfter(1, 0, filledHeights, 30)).toBe(1);
+  });
 
-    it("should get next if viewport is a little bit larger than cache", () => {
-      expect(findIndexAfter(1, 100.01, filledHeights, 30)).toBe(6);
-    });
+  it("should get same if viewport fits cache", () => {
+    expect(findIndexAfter(1, 100, filledHeights, 30)).toBe(5);
+  });
 
-    it("should get if viewport is bit smaller than cache", () => {
-      expect(findIndexAfter(1, 99, filledHeights, 30)).toBe(5);
-    });
+  it("should get next if viewport is 1/2 item height larger than cache", () => {
+    expect(findIndexAfter(1, 110, filledHeights, 30)).toBe(6);
+  });
 
-    it("should get if viewport is a little bit smaller than cache", () => {
-      expect(findIndexAfter(1, 99.99, filledHeights, 30)).toBe(5);
-    });
+  it("should get same if viewport is 1/2 - 1px item height larger than cache", () => {
+    expect(findIndexAfter(1, 109, filledHeights, 30)).toBe(5);
+  });
+
+  it("should get same if viewport is bit larger than cache", () => {
+    expect(findIndexAfter(1, 101, filledHeights, 30)).toBe(5);
+  });
+
+  it("should get same if viewport is a little bit larger than cache", () => {
+    expect(findIndexAfter(1, 100.01, filledHeights, 30)).toBe(5);
+  });
+
+  it("should get same if viewport is bit smaller than cache", () => {
+    expect(findIndexAfter(1, 99, filledHeights, 30)).toBe(5);
+  });
+
+  it("should get same if viewport is a little bit smaller than cache", () => {
+    expect(findIndexAfter(1, 99.99, filledHeights, 30)).toBe(5);
   });
 
   it("should resolve default height", () => {
@@ -113,35 +127,49 @@ describe(findIndexBefore.name, () => {
     });
   });
 
-  describe("change viewport", () => {
-    it("should get if viewport fits cache", () => {
-      const last = filledHeights.length - 1;
-      expect(findIndexBefore(last - 1, 100, filledHeights, 30)).toBe(last - 5);
-    });
+  it("should get argument index if viewport is 0 and index is at end", () => {
+    const last = filledHeights.length - 1;
+    expect(findIndexBefore(last, 0, filledHeights, 30)).toBe(last);
+  });
 
-    it("should get prev if viewport is bit larger than cache", () => {
-      const last = filledHeights.length - 1;
-      expect(findIndexBefore(last - 1, 101, filledHeights, 30)).toBe(last - 6);
-    });
+  it("should get argument index if viewport is 0 and index is at end - 1", () => {
+    const last = filledHeights.length - 1;
+    expect(findIndexBefore(last - 1, 0, filledHeights, 30)).toBe(last - 1);
+  });
 
-    it("should get prev if viewport is a little bit larger than cache", () => {
-      const last = filledHeights.length - 1;
-      expect(findIndexBefore(last - 1, 100.01, filledHeights, 30)).toBe(
-        last - 6
-      );
-    });
+  it("should get same if viewport fits cache", () => {
+    const last = filledHeights.length - 1;
+    expect(findIndexBefore(last - 1, 100, filledHeights, 30)).toBe(last - 5);
+  });
 
-    it("should get if viewport is bit smaller than cache", () => {
-      const last = filledHeights.length - 1;
-      expect(findIndexBefore(last - 1, 99, filledHeights, 30)).toBe(last - 5);
-    });
+  it("should get prev if viewport is 1/2 item height larger than cache", () => {
+    const last = filledHeights.length - 1;
+    expect(findIndexBefore(last - 1, 110, filledHeights, 30)).toBe(last - 6);
+  });
 
-    it("should get if viewport is a little bit smaller than cache", () => {
-      const last = filledHeights.length - 1;
-      expect(findIndexBefore(last - 1, 99.99, filledHeights, 30)).toBe(
-        last - 5
-      );
-    });
+  it("should get same if viewport is 1/2 - 1px item height larger than cache", () => {
+    const last = filledHeights.length - 1;
+    expect(findIndexBefore(last - 1, 109, filledHeights, 30)).toBe(last - 5);
+  });
+
+  it("should get same if viewport is bit larger than cache", () => {
+    const last = filledHeights.length - 1;
+    expect(findIndexBefore(last - 1, 101, filledHeights, 30)).toBe(last - 5);
+  });
+
+  it("should get same if viewport is a little bit larger than cache", () => {
+    const last = filledHeights.length - 1;
+    expect(findIndexBefore(last - 1, 100.01, filledHeights, 30)).toBe(last - 5);
+  });
+
+  it("should get same if viewport is bit smaller than cache", () => {
+    const last = filledHeights.length - 1;
+    expect(findIndexBefore(last - 1, 99, filledHeights, 30)).toBe(last - 5);
+  });
+
+  it("should get same if viewport is a little bit smaller than cache", () => {
+    const last = filledHeights.length - 1;
+    expect(findIndexBefore(last - 1, 99.99, filledHeights, 30)).toBe(last - 5);
   });
 
   it("should resolve default height", () => {
@@ -195,6 +223,34 @@ describe(`${findIndexAfter.name} and ${findIndexBefore.name}`, () => {
 });
 
 describe(findStartIndexWithOffset.name, () => {
+  it("should get start if offset is 0", () => {
+    expect(findStartIndexWithOffset(0, filledHeights, 30)).toBe(0);
+  });
+
+  it("should get index if offset fits index 1", () => {
+    expect(findStartIndexWithOffset(20, filledHeights, 30)).toBe(0);
+  });
+
+  it("should get index if offset is index 1 + 1px", () => {
+    expect(findStartIndexWithOffset(21, filledHeights, 30)).toBe(0);
+  });
+
+  it("should get index if offset is index 1 - 1px", () => {
+    expect(findStartIndexWithOffset(19, filledHeights, 30)).toBe(0);
+  });
+
+  it("should get index if offset fits index 2", () => {
+    expect(findStartIndexWithOffset(40, filledHeights, 30)).toBe(1);
+  });
+
+  it("should get index if offset is index 2 + 1px", () => {
+    expect(findStartIndexWithOffset(41, filledHeights, 30)).toBe(1);
+  });
+
+  it("should get index if offset is index 2 - 1px", () => {
+    expect(findStartIndexWithOffset(39, filledHeights, 30)).toBe(1);
+  });
+
   it("should get same index if target is at start", () => {
     const index = 0;
     const offset = computeTop(index, filledHeights, 30);
