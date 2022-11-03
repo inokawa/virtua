@@ -11,7 +11,7 @@ import { max } from "./utils";
 export const RESET_CACHE = 0;
 export const UPDATE_ITEM_HEIGHTS = 1;
 export const UPDATE_VIEWPORT_HEIGHT = 2;
-export const HANDLE_ITEM_EXIT = 3;
+export const HANDLE_ITEM_INTERSECTION = 3;
 export const HANDLE_SCROLL = 4;
 
 export type ScrollJump = { _top: number; _bottom: number };
@@ -47,9 +47,8 @@ export const reducer: Reducer<
     }
   | { _type: typeof UPDATE_VIEWPORT_HEIGHT; _height: number }
   | {
-      _type: typeof HANDLE_ITEM_EXIT;
+      _type: typeof HANDLE_ITEM_INTERSECTION;
       _index: number;
-      _isScrollingDown: boolean;
       _entry: IntersectionObserverEntry;
     }
   | { _type: typeof HANDLE_SCROLL; _offset: number }
@@ -96,20 +95,21 @@ export const reducer: Reducer<
         _viewportHeight: action._height,
       };
     }
-    case HANDLE_ITEM_EXIT: {
-      const { boundingClientRect } = action._entry;
+    case HANDLE_ITEM_INTERSECTION: {
+      const { boundingClientRect, rootBounds } = action._entry;
       let startIndex: number;
-      if (action._isScrollingDown) {
+      const top = boundingClientRect.top - rootBounds!.top;
+      if (top <= 0) {
         startIndex = findIndexAfter(
           action._index,
-          max(0, -boundingClientRect.top),
+          max(0, -top),
           state._cache,
           state._itemHeight
         );
       } else {
         startIndex = findIndexBefore(
           action._index,
-          max(0, boundingClientRect.top),
+          max(0, top),
           state._cache,
           state._itemHeight
         );

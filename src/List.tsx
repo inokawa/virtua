@@ -19,7 +19,7 @@ import {
   UNCACHED_ITEM_HEIGHT,
 } from "./cache";
 import {
-  HANDLE_ITEM_EXIT,
+  HANDLE_ITEM_INTERSECTION,
   HANDLE_SCROLL,
   init,
   reducer,
@@ -29,7 +29,7 @@ import {
 } from "./state";
 import { max, min } from "./utils";
 
-const DEFAULT_ITEM_MARGIN_COUNT = 4;
+const DEFAULT_ITEM_MARGIN_COUNT = 2;
 const DEFAULT_ITEM_HEIGHT = 40; // 50
 
 type ItemProps = {
@@ -157,10 +157,16 @@ export const List = forwardRef<ListHandle, ListProps>(
 
           io = new IntersectionObserver(
             (entries) => {
-              const topExits: IntersectionObserverEntry[] = [];
-              const bottomExits: IntersectionObserverEntry[] = [];
-
+              let latestEntry: IntersectionObserverEntry | undefined;
               entries.forEach((entry) => {
+                // take latest entry
+                if (
+                  (!latestEntry || latestEntry.time < entry.time) &&
+                  mountedIndexes.has(entry.target)
+                ) {
+                  latestEntry = entry;
+                }
+
                 if (entry.isIntersecting) {
                   // enter
                   const index = mountedIndexes.get(entry.target);
@@ -174,19 +180,6 @@ export const List = forwardRef<ListHandle, ListProps>(
                     viewedIndexes.delete(entry.target);
                     viewedCount--;
                   }
-                  if (
-                    entry.boundingClientRect.top +
-                      entry.boundingClientRect.height / 2 <=
-                    entry.rootBounds!.top + entry.rootBounds!.height / 2
-                  ) {
-                    // maybe scrolling down
-                    // top exit
-                    topExits.push(entry);
-                  } else {
-                    // maybe scrolling up
-                    // bottom exit
-                    bottomExits.push(entry);
-                  }
                 }
               });
 
@@ -199,66 +192,17 @@ export const List = forwardRef<ListHandle, ListProps>(
                 return;
               }
 
-              if (topExits.length) {
-                const entry = topExits.reduce((prev, entry) => {
-                  if (!prev) return entry;
-                  // take latest entry
-                  if (prev.time < entry.time) {
-                    return entry;
-                  } else if (prev.time > entry.time) {
-                    return prev;
-                  }
-                  // same time
-                  if (
-                    prev.boundingClientRect.top > entry.boundingClientRect.top
-                  ) {
-                    return entry;
-                  } else {
-                    return prev;
-                  }
+              if (latestEntry) {
+                dispatch({
+                  _type: HANDLE_ITEM_INTERSECTION,
+                  _index: mountedIndexes.get(latestEntry.target)!,
+                  _entry: latestEntry,
                 });
-                const index = mountedIndexes.get(entry.target);
-                if (index != null) {
-                  dispatch({
-                    _type: HANDLE_ITEM_EXIT,
-                    _index: index,
-                    _isScrollingDown: true,
-                    _entry: entry,
-                  });
-                }
-              }
-
-              if (bottomExits.length) {
-                const entry = bottomExits.reduce((prev, entry) => {
-                  if (!prev) return entry;
-                  // take latest entry
-                  if (prev.time < entry.time) {
-                    return entry;
-                  } else if (prev.time > entry.time) {
-                    return prev;
-                  }
-                  // same time
-                  if (
-                    prev.boundingClientRect.top < entry.boundingClientRect.top
-                  ) {
-                    return entry;
-                  } else {
-                    return prev;
-                  }
-                });
-                const index = mountedIndexes.get(entry.target);
-                if (index != null) {
-                  dispatch({
-                    _type: HANDLE_ITEM_EXIT,
-                    _index: index,
-                    _isScrollingDown: false,
-                    _entry: entry,
-                  });
-                }
               }
             },
             {
               root: root,
+              threshold: 1,
             }
           );
 
