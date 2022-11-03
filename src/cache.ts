@@ -9,29 +9,51 @@ export const resolveItemHeight = (
   return height === UNCACHED_ITEM_HEIGHT ? defaultItemHeight : height;
 };
 
-export const findIndexBefore = (
+export const findStartIndexBefore = (
   index: number,
-  viewportHeight: number,
+  distance: number,
   cache: number[],
   defaultItemHeight: number
 ): number => {
   let sum = 0;
   let i = index;
   while (i > 0) {
+    i--;
     const h = resolveItemHeight(cache[i]!, defaultItemHeight);
     sum += h;
-    if (sum >= viewportHeight) {
-      if (sum - h / 2 > viewportHeight) {
+    if (sum >= distance) {
+      if (sum - h / 2 > distance) {
         i++;
       }
       break;
     }
-    i--;
   }
   return max(min(i, index), 0);
 };
 
-export const findIndexAfter = (
+export const findStartIndexAfter = (
+  index: number,
+  distance: number,
+  cache: number[],
+  defaultItemHeight: number
+): number => {
+  let sum = 0;
+  let i = index;
+  while (i < cache.length - 1) {
+    const h = resolveItemHeight(cache[i]!, defaultItemHeight);
+    sum += h;
+    i++;
+    if (sum >= distance) {
+      if (sum - h / 2 > distance) {
+        i--;
+      }
+      break;
+    }
+  }
+  return min(max(i, index), cache.length - 1);
+};
+
+export const findEndIndex = (
   index: number,
   viewportHeight: number,
   cache: number[],

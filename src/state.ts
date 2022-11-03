@@ -1,7 +1,7 @@
 import { Reducer, useReducer } from "react";
 import {
-  findIndexAfter,
-  findIndexBefore,
+  findStartIndexAfter,
+  findStartIndexBefore,
   findStartIndexWithOffset,
   resetCache,
   resolveItemHeight,
@@ -102,14 +102,14 @@ export const useVirtualState = (elements: unknown[], itemHeight: number) => {
           let startIndex: number;
           const top = boundingClientRect.top - rootBounds!.top;
           if (top <= 0) {
-            startIndex = findIndexAfter(
+            startIndex = findStartIndexAfter(
               action._index,
               max(0, -top),
               state._cache,
               itemHeight
             );
           } else {
-            startIndex = findIndexBefore(
+            startIndex = findStartIndexBefore(
               action._index,
               max(0, top),
               state._cache,

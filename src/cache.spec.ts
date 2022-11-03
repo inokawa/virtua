@@ -2,9 +2,10 @@ import { describe, it, expect } from "@jest/globals";
 import {
   resolveItemHeight,
   computeTop,
-  findIndexAfter,
-  findIndexBefore,
+  findStartIndexAfter,
+  findStartIndexBefore,
   findStartIndexWithOffset,
+  findEndIndex,
 } from "./cache";
 
 const sum = (cache: number[]): number => {
@@ -44,181 +45,263 @@ describe(computeTop.name, () => {
   });
 });
 
-describe(findIndexAfter.name, () => {
+describe(findEndIndex.name, () => {
   describe("change index", () => {
     it("should get if index is at start", () => {
-      expect(findIndexAfter(0, 100, filledHeights, 30)).toBe(4);
+      expect(findEndIndex(0, 100, filledHeights, 30)).toBe(4);
     });
 
     it("should get if index is at start + 1", () => {
-      expect(findIndexAfter(1, 100, filledHeights, 30)).toBe(5);
+      expect(findEndIndex(1, 100, filledHeights, 30)).toBe(5);
     });
 
     it("should get last if index is at end", () => {
       const last = filledHeights.length - 1;
-      expect(findIndexAfter(last, 100, filledHeights, 30)).toBe(last);
+      expect(findEndIndex(last, 100, filledHeights, 30)).toBe(last);
     });
 
     it("should get if index is at end - 1", () => {
       const last = filledHeights.length - 1;
-      expect(findIndexAfter(last - 1, 100, filledHeights, 30)).toBe(last);
+      expect(findEndIndex(last - 1, 100, filledHeights, 30)).toBe(last);
     });
   });
 
   it("should get argument index if viewport is 0 and index is at start", () => {
-    expect(findIndexAfter(0, 0, filledHeights, 30)).toBe(0);
+    expect(findEndIndex(0, 0, filledHeights, 30)).toBe(0);
   });
 
   it("should get argument index if viewport is 0 and index is at start + 1", () => {
-    expect(findIndexAfter(1, 0, filledHeights, 30)).toBe(1);
+    expect(findEndIndex(1, 0, filledHeights, 30)).toBe(1);
   });
 
   it("should get same if viewport fits cache", () => {
-    expect(findIndexAfter(1, 100, filledHeights, 30)).toBe(5);
+    expect(findEndIndex(1, 100, filledHeights, 30)).toBe(5);
   });
 
   it("should get next if viewport is 1/2 item height larger than cache", () => {
-    expect(findIndexAfter(1, 110, filledHeights, 30)).toBe(6);
+    expect(findEndIndex(1, 110, filledHeights, 30)).toBe(6);
   });
 
   it("should get same if viewport is 1/2 - 1px item height larger than cache", () => {
-    expect(findIndexAfter(1, 109, filledHeights, 30)).toBe(5);
+    expect(findEndIndex(1, 109, filledHeights, 30)).toBe(5);
   });
 
   it("should get same if viewport is bit larger than cache", () => {
-    expect(findIndexAfter(1, 101, filledHeights, 30)).toBe(5);
+    expect(findEndIndex(1, 101, filledHeights, 30)).toBe(5);
   });
 
   it("should get same if viewport is a little bit larger than cache", () => {
-    expect(findIndexAfter(1, 100.01, filledHeights, 30)).toBe(5);
+    expect(findEndIndex(1, 100.01, filledHeights, 30)).toBe(5);
   });
 
   it("should get same if viewport is bit smaller than cache", () => {
-    expect(findIndexAfter(1, 99, filledHeights, 30)).toBe(5);
+    expect(findEndIndex(1, 99, filledHeights, 30)).toBe(5);
   });
 
   it("should get same if viewport is a little bit smaller than cache", () => {
-    expect(findIndexAfter(1, 99.99, filledHeights, 30)).toBe(5);
+    expect(findEndIndex(1, 99.99, filledHeights, 30)).toBe(5);
   });
 
   it("should resolve default height", () => {
-    expect(findIndexAfter(0, 100, emptyHeights, 25)).toBe(3);
+    expect(findEndIndex(0, 100, emptyHeights, 25)).toBe(3);
   });
 });
 
-describe(findIndexBefore.name, () => {
+describe(findStartIndexAfter.name, () => {
   describe("change index", () => {
-    it("should get if index is at end", () => {
+    it("should get if index is at start", () => {
+      expect(findStartIndexAfter(0, 40, filledHeights, 30)).toBe(2);
+    });
+
+    it("should get if index is at start + 1", () => {
+      expect(findStartIndexAfter(1, 40, filledHeights, 30)).toBe(3);
+    });
+
+    it("should get last if index is at end", () => {
       const last = filledHeights.length - 1;
-      expect(findIndexBefore(last, 100, filledHeights, 30)).toBe(last - 4);
+      expect(findStartIndexAfter(last, 40, filledHeights, 30)).toBe(last);
     });
 
     it("should get if index is at end - 1", () => {
       const last = filledHeights.length - 1;
-      expect(findIndexBefore(last - 1, 100, filledHeights, 30)).toBe(last - 5);
+      expect(findStartIndexAfter(last - 1, 40, filledHeights, 30)).toBe(last);
+    });
+  });
+
+  it("should get argument index if viewport is 0 and index is at start", () => {
+    expect(findStartIndexAfter(0, 0, filledHeights, 30)).toBe(0);
+  });
+
+  it("should get argument index if viewport is 0 and index is at start + 1", () => {
+    expect(findStartIndexAfter(1, 0, filledHeights, 30)).toBe(1);
+  });
+
+  it("should get same if viewport fits cache", () => {
+    expect(findStartIndexAfter(1, 40, filledHeights, 30)).toBe(3);
+  });
+
+  it("should get next if viewport is 1/2 item height larger than cache", () => {
+    expect(findStartIndexAfter(1, 50, filledHeights, 30)).toBe(4);
+  });
+
+  it("should get same if viewport is 1/2 - 1px item height larger than cache", () => {
+    expect(findStartIndexAfter(1, 49, filledHeights, 30)).toBe(3);
+  });
+
+  it("should get same if viewport is bit larger than cache", () => {
+    expect(findStartIndexAfter(1, 41, filledHeights, 30)).toBe(3);
+  });
+
+  it("should get same if viewport is a little bit larger than cache", () => {
+    expect(findStartIndexAfter(1, 40.01, filledHeights, 30)).toBe(3);
+  });
+
+  it("should get same if viewport is bit smaller than cache", () => {
+    expect(findStartIndexAfter(1, 39, filledHeights, 30)).toBe(3);
+  });
+
+  it("should get same if viewport is a little bit smaller than cache", () => {
+    expect(findStartIndexAfter(1, 39.99, filledHeights, 30)).toBe(3);
+  });
+
+  it("should resolve default height", () => {
+    expect(findStartIndexAfter(0, 100, emptyHeights, 25)).toBe(4);
+  });
+});
+
+describe(findStartIndexBefore.name, () => {
+  describe("change index", () => {
+    it("should get if index is at end", () => {
+      const last = filledHeights.length - 1;
+      expect(findStartIndexBefore(last, 40, filledHeights, 30)).toBe(last - 2);
+    });
+
+    it("should get if index is at end - 1", () => {
+      const last = filledHeights.length - 1;
+      expect(findStartIndexBefore(last - 1, 40, filledHeights, 30)).toBe(
+        last - 3
+      );
     });
 
     it("should get start if index is at start", () => {
-      expect(findIndexBefore(0, 100, filledHeights, 30)).toBe(0);
+      expect(findStartIndexBefore(0, 40, filledHeights, 30)).toBe(0);
     });
 
     it("should get if index is at start + 1", () => {
-      expect(findIndexBefore(1, 100, filledHeights, 30)).toBe(0);
+      expect(findStartIndexBefore(1, 40, filledHeights, 30)).toBe(0);
     });
   });
 
   it("should get argument index if viewport is 0 and index is at end", () => {
     const last = filledHeights.length - 1;
-    expect(findIndexBefore(last, 0, filledHeights, 30)).toBe(last);
+    expect(findStartIndexBefore(last, 0, filledHeights, 30)).toBe(last);
   });
 
   it("should get argument index if viewport is 0 and index is at end - 1", () => {
     const last = filledHeights.length - 1;
-    expect(findIndexBefore(last - 1, 0, filledHeights, 30)).toBe(last - 1);
+    expect(findStartIndexBefore(last - 1, 0, filledHeights, 30)).toBe(last - 1);
   });
 
   it("should get same if viewport fits cache", () => {
     const last = filledHeights.length - 1;
-    expect(findIndexBefore(last - 1, 100, filledHeights, 30)).toBe(last - 5);
+    expect(findStartIndexBefore(last - 1, 40, filledHeights, 30)).toBe(
+      last - 3
+    );
   });
 
   it("should get prev if viewport is 1/2 item height larger than cache", () => {
     const last = filledHeights.length - 1;
-    expect(findIndexBefore(last - 1, 110, filledHeights, 30)).toBe(last - 6);
+    expect(findStartIndexBefore(last - 1, 50, filledHeights, 30)).toBe(
+      last - 4
+    );
   });
 
   it("should get same if viewport is 1/2 - 1px item height larger than cache", () => {
     const last = filledHeights.length - 1;
-    expect(findIndexBefore(last - 1, 109, filledHeights, 30)).toBe(last - 5);
+    expect(findStartIndexBefore(last - 1, 49, filledHeights, 30)).toBe(
+      last - 3
+    );
   });
 
   it("should get same if viewport is bit larger than cache", () => {
     const last = filledHeights.length - 1;
-    expect(findIndexBefore(last - 1, 101, filledHeights, 30)).toBe(last - 5);
+    expect(findStartIndexBefore(last - 1, 41, filledHeights, 30)).toBe(
+      last - 3
+    );
   });
 
   it("should get same if viewport is a little bit larger than cache", () => {
     const last = filledHeights.length - 1;
-    expect(findIndexBefore(last - 1, 100.01, filledHeights, 30)).toBe(last - 5);
+    expect(findStartIndexBefore(last - 1, 40.01, filledHeights, 30)).toBe(
+      last - 3
+    );
   });
 
   it("should get same if viewport is bit smaller than cache", () => {
     const last = filledHeights.length - 1;
-    expect(findIndexBefore(last - 1, 99, filledHeights, 30)).toBe(last - 5);
+    expect(findStartIndexBefore(last - 1, 39, filledHeights, 30)).toBe(
+      last - 3
+    );
   });
 
   it("should get same if viewport is a little bit smaller than cache", () => {
     const last = filledHeights.length - 1;
-    expect(findIndexBefore(last - 1, 99.99, filledHeights, 30)).toBe(last - 5);
+    expect(findStartIndexBefore(last - 1, 39.99, filledHeights, 30)).toBe(
+      last - 3
+    );
   });
 
   it("should resolve default height", () => {
     const last = filledHeights.length - 1;
-    expect(findIndexBefore(last, 100, emptyHeights, 25)).toBe(last - 3);
+    expect(findStartIndexBefore(last, 100, emptyHeights, 25)).toBe(last - 4);
   });
 });
 
-describe(`${findIndexAfter.name} and ${findIndexBefore.name}`, () => {
+describe(`${findStartIndexAfter.name} and ${findStartIndexBefore.name}`, () => {
   it("should get same index if startIndex is at start", () => {
     const viewport = 100;
     const start = 0;
-    const end = findIndexAfter(start, viewport, filledHeights, 30);
-    expect(findIndexBefore(end, viewport, filledHeights, 30)).toBe(start);
+    const end = findStartIndexAfter(start, viewport, filledHeights, 30);
+    expect(findStartIndexBefore(end, viewport, filledHeights, 30)).toBe(start);
   });
 
   it("should get same index if startIndex is at start + 1", () => {
     const viewport = 100;
     const start = 1;
-    const end = findIndexAfter(start, viewport, filledHeights, 30);
-    expect(findIndexBefore(end, viewport, filledHeights, 30)).toBe(start);
+    const end = findStartIndexAfter(start, viewport, filledHeights, 30);
+    expect(findStartIndexBefore(end, viewport, filledHeights, 30)).toBe(start);
   });
 
   it("should get different index if startIndex is at end", () => {
     const viewport = 100;
     const start = filledHeights.length - 1;
-    const end = findIndexAfter(start, viewport, filledHeights, 30);
-    expect(findIndexBefore(end, viewport, filledHeights, 30)).toBe(start - 4);
+    const end = findStartIndexAfter(start, viewport, filledHeights, 30);
+    expect(findStartIndexBefore(end, viewport, filledHeights, 30)).toBe(
+      start - 5
+    );
   });
 
   it("should get same index if endIndex is at end", () => {
     const viewport = 100;
     const end = filledHeights.length - 1;
-    const start = findIndexBefore(end, viewport, filledHeights, 30);
-    expect(findIndexAfter(start, viewport, filledHeights, 30)).toBe(end);
+    const start = findStartIndexBefore(end, viewport, filledHeights, 30);
+    expect(findStartIndexAfter(start, viewport, filledHeights, 30)).toBe(end);
   });
 
   it("should get same index if endIndex is at end - 1", () => {
     const viewport = 100;
     const start = filledHeights.length - 2;
-    const end = findIndexBefore(start, viewport, filledHeights, 30);
-    expect(findIndexAfter(end, viewport, filledHeights, 30)).toBe(start);
+    const end = findStartIndexBefore(start, viewport, filledHeights, 30);
+    expect(findStartIndexAfter(end, viewport, filledHeights, 30)).toBe(start);
   });
 
   it("should get different index if endIndex is at start", () => {
     const viewport = 100;
     const end = 0;
-    const start = findIndexBefore(end, viewport, filledHeights, 30);
-    expect(findIndexAfter(start, viewport, filledHeights, 30)).toBe(end + 4);
+    const start = findStartIndexBefore(end, viewport, filledHeights, 30);
+    expect(findStartIndexAfter(start, viewport, filledHeights, 30)).toBe(
+      end + 5
+    );
   });
 });
 

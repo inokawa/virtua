@@ -13,7 +13,7 @@ import {
 } from "react";
 import {
   computeTop,
-  findIndexAfter,
+  findEndIndex,
   resolveItemHeight,
   UNCACHED_ITEM_HEIGHT,
 } from "./cache";
@@ -267,7 +267,7 @@ export const List = forwardRef<ListHandle, ListProps>(
 
     const items: (ReactElement | null)[] = [];
     const endIndex = useMemo(
-      () => findIndexAfter(startIndex, viewportHeight, cache, itemHeight),
+      () => findEndIndex(startIndex, viewportHeight, cache, itemHeight),
       [cache, startIndex, viewportHeight, itemHeight]
     );
 
