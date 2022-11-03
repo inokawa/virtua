@@ -26,7 +26,7 @@ export default {
     terser({
       ecma: 2015,
       module: true,
-      compress: { passes: 3, unsafe: true },
+      compress: { passes: 3, unsafe: true, keep_fargs: false },
       mangle: { properties: { regex: "^_" } },
       format: {
         // https://github.com/terser/terser/pull/550
