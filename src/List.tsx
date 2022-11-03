@@ -7,7 +7,6 @@ import {
   CSSProperties,
   ReactElement,
   useLayoutEffect,
-  useReducer,
   forwardRef,
   useImperativeHandle,
   ReactNode,
@@ -21,11 +20,10 @@ import {
 import {
   HANDLE_ITEM_INTERSECTION,
   HANDLE_SCROLL,
-  init,
-  reducer,
   RESET_CACHE,
   UPDATE_ITEM_HEIGHTS,
   UPDATE_VIEWPORT_HEIGHT,
+  useVirtualState,
 } from "./state";
 import { max, min } from "./utils";
 
@@ -95,7 +93,7 @@ export const List = forwardRef<ListHandle, ListProps>(
   (
     {
       children,
-      itemHeight: itemHeightProp = DEFAULT_ITEM_HEIGHT,
+      itemHeight = DEFAULT_ITEM_HEIGHT,
       itemMargin = DEFAULT_ITEM_MARGIN_COUNT,
       style: styleProp,
       innerStyle: innerStyleProp,
@@ -110,12 +108,11 @@ export const List = forwardRef<ListHandle, ListProps>(
       {
         _startIndex: startIndex,
         _viewportHeight: viewportHeight,
-        _itemHeight: itemHeight,
         _cache: cache,
         _jump: jump,
       },
       dispatch,
-    ] = useReducer(reducer, [elements, itemHeightProp], init);
+    ] = useVirtualState(elements, itemHeight);
 
     const handle = useState((): ObserverHandle => {
       let ro: ResizeObserver;
@@ -249,7 +246,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       dispatch({
         _type: RESET_CACHE,
         _elements: elements,
-        _height: itemHeightProp,
+        _height: itemHeight,
       });
     }, [elements.length]);
 
