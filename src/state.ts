@@ -4,21 +4,21 @@ import {
   findStartIndexBefore,
   findStartIndexWithOffset,
   resetCache,
-  resolveItemHeight,
+  resolveItemSize,
 } from "./cache";
 import { max } from "./utils";
 
 export const RESET_CACHE = 0;
-export const UPDATE_ITEM_HEIGHTS = 1;
-export const UPDATE_VIEWPORT_HEIGHT = 2;
+export const UPDATE_ITEM_SIZES = 1;
+export const UPDATE_VIEWPORT_SIZE = 2;
 export const HANDLE_ITEM_INTERSECTION = 3;
 export const HANDLE_SCROLL = 4;
 
-export type ScrollJump = { _top: number; _bottom: number };
+export type ScrollJump = { _start: number; _end: number };
 
 type State = {
   _startIndex: number;
-  _viewportHeight: number;
+  _viewportSize: number;
   _cache: number[];
   _jump: ScrollJump;
 };
@@ -26,27 +26,27 @@ type State = {
 const init = (elements: unknown[]): State => {
   return {
     _startIndex: 0,
-    _viewportHeight: 0,
+    _viewportSize: 0,
     _cache: resetCache(elements),
-    _jump: { _top: 0, _bottom: 0 },
+    _jump: { _start: 0, _end: 0 },
   };
 };
 
-export const useVirtualState = (elements: unknown[], itemHeight: number) => {
+export const useVirtualState = (elements: unknown[], itemSize: number) => {
   return useReducer<
     Reducer<
       State,
-      | { _type: typeof RESET_CACHE; _elements: unknown[]; _height: number }
+      | { _type: typeof RESET_CACHE; _elements: unknown[] }
       | {
-          _type: typeof UPDATE_ITEM_HEIGHTS;
+          _type: typeof UPDATE_ITEM_SIZES;
           _indexes: number[];
-          _heights: number[];
+          _sizes: number[];
         }
-      | { _type: typeof UPDATE_VIEWPORT_HEIGHT; _height: number }
+      | { _type: typeof UPDATE_VIEWPORT_SIZE; _size: number }
       | {
           _type: typeof HANDLE_ITEM_INTERSECTION;
           _index: number;
-          _entry: IntersectionObserverEntry;
+          _offset: number;
         }
       | { _type: typeof HANDLE_SCROLL; _offset: number }
     >,
@@ -60,11 +60,9 @@ export const useVirtualState = (elements: unknown[], itemHeight: number) => {
             _cache: resetCache(action._elements, state._cache),
           };
         }
-        case UPDATE_ITEM_HEIGHTS: {
-          const { _indexes: indexes, _heights: heights } = action;
-          if (
-            indexes.every((index, i) => state._cache[index] === heights[i]!)
-          ) {
+        case UPDATE_ITEM_SIZES: {
+          const { _indexes: indexes, _sizes: sizes } = action;
+          if (indexes.every((index, i) => state._cache[index] === sizes[i]!)) {
             return state;
           }
 
@@ -73,47 +71,43 @@ export const useVirtualState = (elements: unknown[], itemHeight: number) => {
           indexes.forEach((index, i) => {
             if (index < state._startIndex) {
               topJump +=
-                heights[i]! -
-                resolveItemHeight(state._cache[index]!, itemHeight);
+                sizes[i]! - resolveItemSize(state._cache[index]!, itemSize);
             } else {
               bottomJump +=
-                heights[i]! -
-                resolveItemHeight(state._cache[index]!, itemHeight);
+                sizes[i]! - resolveItemSize(state._cache[index]!, itemSize);
             }
-            state._cache[index] = heights[i]!;
+            state._cache[index] = sizes[i]!;
           });
 
           return {
             ...state,
-            _jump: { _top: topJump, _bottom: bottomJump },
+            _jump: { _start: topJump, _end: bottomJump },
           };
         }
-        case UPDATE_VIEWPORT_HEIGHT: {
-          if (state._viewportHeight === action._height) {
+        case UPDATE_VIEWPORT_SIZE: {
+          if (state._viewportSize === action._size) {
             return state;
           }
           return {
             ...state,
-            _viewportHeight: action._height,
+            _viewportSize: action._size,
           };
         }
         case HANDLE_ITEM_INTERSECTION: {
-          const { boundingClientRect, rootBounds } = action._entry;
           let startIndex: number;
-          const top = boundingClientRect.top - rootBounds!.top;
-          if (top <= 0) {
+          if (action._offset <= 0) {
             startIndex = findStartIndexAfter(
               action._index,
-              max(0, -top),
+              max(0, -action._offset),
               state._cache,
-              itemHeight
+              itemSize
             );
           } else {
             startIndex = findStartIndexBefore(
               action._index,
-              max(0, top),
+              max(0, action._offset),
               state._cache,
-              itemHeight
+              itemSize
             );
           }
 
@@ -129,7 +123,7 @@ export const useVirtualState = (elements: unknown[], itemHeight: number) => {
           const startIndex = findStartIndexWithOffset(
             action._offset,
             state._cache,
-            itemHeight
+            itemSize
           );
           if (startIndex === state._startIndex) {
             return state;

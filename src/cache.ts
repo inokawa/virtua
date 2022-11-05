@@ -1,25 +1,25 @@
 import { max, min } from "./utils";
 
-export const UNCACHED_ITEM_HEIGHT = -1;
+export const UNCACHED_ITEM_SIZE = -1;
 
-export const resolveItemHeight = (
-  height: number,
-  defaultItemHeight: number
+export const resolveItemSize = (
+  size: number,
+  defaultItemSize: number
 ): number => {
-  return height === UNCACHED_ITEM_HEIGHT ? defaultItemHeight : height;
+  return size === UNCACHED_ITEM_SIZE ? defaultItemSize : size;
 };
 
 export const findStartIndexBefore = (
   index: number,
   distance: number,
   cache: number[],
-  defaultItemHeight: number
+  defaultItemSize: number
 ): number => {
   let sum = 0;
   let i = index;
   while (i > 0) {
     i--;
-    const h = resolveItemHeight(cache[i]!, defaultItemHeight);
+    const h = resolveItemSize(cache[i]!, defaultItemSize);
     sum += h;
     if (sum >= distance) {
       if (sum - h / 2 > distance) {
@@ -35,12 +35,12 @@ export const findStartIndexAfter = (
   index: number,
   distance: number,
   cache: number[],
-  defaultItemHeight: number
+  defaultItemSize: number
 ): number => {
   let sum = 0;
   let i = index;
   while (i < cache.length - 1) {
-    const h = resolveItemHeight(cache[i]!, defaultItemHeight);
+    const h = resolveItemSize(cache[i]!, defaultItemSize);
     sum += h;
     i++;
     if (sum >= distance) {
@@ -55,17 +55,17 @@ export const findStartIndexAfter = (
 
 export const findEndIndex = (
   index: number,
-  viewportHeight: number,
+  viewportSize: number,
   cache: number[],
-  defaultItemHeight: number
+  defaultItemSize: number
 ): number => {
   let sum = 0;
   let i = index;
   while (i < cache.length - 1) {
-    const h = resolveItemHeight(cache[i]!, defaultItemHeight);
+    const h = resolveItemSize(cache[i]!, defaultItemSize);
     sum += h;
-    if (sum >= viewportHeight) {
-      if (sum - h / 2 > viewportHeight) {
+    if (sum >= viewportSize) {
+      if (sum - h / 2 > viewportSize) {
         i--;
       }
       break;
@@ -78,13 +78,13 @@ export const findEndIndex = (
 export const findStartIndexWithOffset = (
   offset: number,
   cache: number[],
-  defaultItemHeight: number
+  defaultItemSize: number
 ): number => {
   const index = 0;
   let sum = 0;
   let i = index;
   while (i < cache.length - 1) {
-    const h = resolveItemHeight(cache[i]!, defaultItemHeight);
+    const h = resolveItemSize(cache[i]!, defaultItemSize);
     sum += h;
     i++;
     if (sum >= offset) {
@@ -97,21 +97,21 @@ export const findStartIndexWithOffset = (
   return min(max(i, index), cache.length - 1);
 };
 
-export const computeTop = (
+export const computeStartOffset = (
   index: number,
   cache: number[],
-  defaultItemHeight: number
+  defaultItemSize: number
 ): number => {
   let top = 0;
   for (let i = 0; i < cache.length; i++) {
     if (i === index) {
       break;
     }
-    top += resolveItemHeight(cache[i]!, defaultItemHeight);
+    top += resolveItemSize(cache[i]!, defaultItemSize);
   }
   return top;
 };
 
 export const resetCache = (array: unknown[], cache?: number[]): number[] => {
-  return array.map((_, i) => (cache && cache[i]) ?? UNCACHED_ITEM_HEIGHT);
+  return array.map((_, i) => (cache && cache[i]) ?? UNCACHED_ITEM_SIZE);
 };

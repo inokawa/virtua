@@ -1,7 +1,7 @@
 import { describe, it, expect } from "@jest/globals";
 import {
-  resolveItemHeight,
-  computeTop,
+  resolveItemSize,
+  computeStartOffset,
   findStartIndexAfter,
   findStartIndexBefore,
   findStartIndexWithOffset,
@@ -15,33 +15,33 @@ const sum = (cache: number[]): number => {
 const filledHeights = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
 const emptyHeights = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
 
-describe(resolveItemHeight.name, () => {
+describe(resolveItemSize.name, () => {
   it("should get height", () => {
-    expect(resolveItemHeight(10, 20)).toBe(10);
+    expect(resolveItemSize(10, 20)).toBe(10);
   });
   it("should get default height", () => {
-    expect(resolveItemHeight(-1, 20)).toBe(20);
+    expect(resolveItemSize(-1, 20)).toBe(20);
   });
 });
 
-describe(computeTop.name, () => {
+describe(computeStartOffset.name, () => {
   it("should get 0 if index is at start", () => {
-    expect(computeTop(0, filledHeights, 30)).toBe(0);
+    expect(computeStartOffset(0, filledHeights, 30)).toBe(0);
   });
 
   it("should get 1 item if index is at start", () => {
-    expect(computeTop(1, filledHeights, 30)).toBe(20);
+    expect(computeStartOffset(1, filledHeights, 30)).toBe(20);
   });
 
   it("should get total - 1 item if index is at last", () => {
     const last = filledHeights.length - 1;
-    expect(computeTop(last, filledHeights, 30)).toBe(
+    expect(computeStartOffset(last, filledHeights, 30)).toBe(
       sum(filledHeights) - filledHeights[last]!
     );
   });
 
   it("should resolve default height", () => {
-    expect(computeTop(2, emptyHeights, 30)).toBe(60);
+    expect(computeStartOffset(2, emptyHeights, 30)).toBe(60);
   });
 });
 
