@@ -1,9 +1,263 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should render 1 children 1`] = `
+exports[`layout === horizontal should render 1 children 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow-y: auto;"
+    style="width: 100%; height: 100%; overflow: auto;"
+  >
+    <div
+      style="position: relative; width: 100px; height: 100%;"
+    >
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 0px;"
+      >
+        <div>
+          0
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`layout === horizontal should render 5 children 1`] = `
+<DocumentFragment>
+  <div
+    style="width: 100%; height: 100%; overflow: auto;"
+  >
+    <div
+      style="position: relative; width: 500px; height: 100%;"
+    >
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 0px;"
+      >
+        <div>
+          0
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 100px;"
+      >
+        <div>
+          1
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 200px;"
+      >
+        <div>
+          2
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 300px;"
+      >
+        <div>
+          3
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 400px;"
+      >
+        <div>
+          4
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`layout === horizontal should render component 1`] = `
+<DocumentFragment>
+  <div
+    style="width: 100%; height: 100%; overflow: auto;"
+  >
+    <div
+      style="position: relative; width: 300px; height: 100%;"
+    >
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 0px;"
+      >
+        <div>
+          component
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 100px;"
+      >
+        <div>
+          component
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 200px;"
+      >
+        <div>
+          component
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`layout === horizontal should render fragments 1`] = `
+<DocumentFragment>
+  <div
+    style="width: 100%; height: 100%; overflow: auto;"
+  >
+    <div
+      style="position: relative; width: 200px; height: 100%;"
+    >
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 0px;"
+      >
+        <div>
+          fragment
+        </div>
+        <div>
+          fragment
+        </div>
+        <div>
+          fragment
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 100px;"
+      >
+        <div>
+          fragment
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`layout === horizontal should render many children 1`] = `
+<DocumentFragment>
+  <div
+    style="width: 100%; height: 100%; overflow: auto;"
+  >
+    <div
+      style="position: relative; width: 40300px; height: 100%;"
+    >
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 0px;"
+      >
+        <div>
+          0
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 100px;"
+      >
+        <div>
+          1
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 200px;"
+      >
+        <div>
+          2
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 300px;"
+      >
+        <div>
+          3
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 400px;"
+      >
+        <div>
+          4
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`layout === horizontal should render non elements 1`] = `
+<DocumentFragment>
+  <div
+    style="width: 100%; height: 100%; overflow: auto;"
+  >
+    <div
+      style="position: relative; width: 200px; height: 100%;"
+    >
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 0px;"
+      >
+        string
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 100px;"
+      >
+        123
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`layout === horizontal should render with given width / height 1`] = `
+<DocumentFragment>
+  <div
+    style="width: 100px; height: 800px; overflow: auto;"
+  >
+    <div
+      style="position: relative; width: 500px; height: 100%;"
+    >
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 0px;"
+      >
+        <div>
+          0
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 100px;"
+      >
+        <div>
+          1
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 200px;"
+      >
+        <div>
+          2
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 300px;"
+      >
+        <div>
+          3
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; left: 400px;"
+      >
+        <div>
+          4
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`layout === vertical should render 1 children 1`] = `
+<DocumentFragment>
+  <div
+    style="width: 100%; height: 100%; overflow: auto;"
   >
     <div
       style="position: relative; width: 100%; height: 50px;"
@@ -20,10 +274,10 @@ exports[`should render 1 children 1`] = `
 </DocumentFragment>
 `;
 
-exports[`should render 5 children 1`] = `
+exports[`layout === vertical should render 5 children 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow-y: auto;"
+    style="width: 100%; height: 100%; overflow: auto;"
   >
     <div
       style="position: relative; width: 100%; height: 230px;"
@@ -54,10 +308,10 @@ exports[`should render 5 children 1`] = `
 </DocumentFragment>
 `;
 
-exports[`should render component 1`] = `
+exports[`layout === vertical should render component 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow-y: auto;"
+    style="width: 100%; height: 100%; overflow: auto;"
   >
     <div
       style="position: relative; width: 100%; height: 150px;"
@@ -88,10 +342,10 @@ exports[`should render component 1`] = `
 </DocumentFragment>
 `;
 
-exports[`should render fragments 1`] = `
+exports[`layout === vertical should render fragments 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow-y: auto;"
+    style="width: 100%; height: 100%; overflow: auto;"
   >
     <div
       style="position: relative; width: 100%; height: 100px;"
@@ -121,10 +375,10 @@ exports[`should render fragments 1`] = `
 </DocumentFragment>
 `;
 
-exports[`should render many children 1`] = `
+exports[`layout === vertical should render many children 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow-y: auto;"
+    style="width: 100%; height: 100%; overflow: auto;"
   >
     <div
       style="position: relative; width: 100%; height: 40030px;"
@@ -155,10 +409,10 @@ exports[`should render many children 1`] = `
 </DocumentFragment>
 `;
 
-exports[`should render non elements 1`] = `
+exports[`layout === vertical should render non elements 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow-y: auto;"
+    style="width: 100%; height: 100%; overflow: auto;"
   >
     <div
       style="position: relative; width: 100%; height: 100px;"
@@ -178,10 +432,10 @@ exports[`should render non elements 1`] = `
 </DocumentFragment>
 `;
 
-exports[`should render with given width / height 1`] = `
+exports[`layout === vertical should render with given width / height 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100px; height: 800px; overflow-y: auto;"
+    style="width: 100px; height: 800px; overflow: auto;"
   >
     <div
       style="position: relative; width: 100%; height: 230px;"

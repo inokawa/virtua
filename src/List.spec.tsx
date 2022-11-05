@@ -1,4 +1,4 @@
-import { afterEach, it, expect } from "@jest/globals";
+import { afterEach, it, expect, describe } from "@jest/globals";
 import { render, cleanup } from "@testing-library/react";
 
 import { List } from ".";
@@ -82,92 +82,186 @@ global.IntersectionObserver = class {
 
 afterEach(cleanup);
 
-it("should render 1 children", async () => {
-  const { asFragment } = render(
-    <List>
-      <div>0</div>
-    </List>
-  );
-  expect(asFragment()).toMatchSnapshot();
+describe("layout === vertical", () => {
+  it("should render 1 children", async () => {
+    const { asFragment } = render(
+      <List>
+        <div>0</div>
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render 5 children", () => {
+    const { asFragment } = render(
+      <List>
+        <div>0</div>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render many children", () => {
+    const { asFragment } = render(
+      <List>
+        {Array.from({ length: 1000 }).map((_, i) => (
+          <div key={i}>{i}</div>
+        ))}
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render non elements", () => {
+    const { asFragment } = render(
+      <List>
+        string
+        {true}
+        {false}
+        {null}
+        {undefined}
+        {123}
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render fragments", () => {
+    const { asFragment } = render(
+      <List>
+        <>
+          <div>fragment</div>
+          <div>fragment</div>
+          <div>fragment</div>
+        </>
+        <>
+          <div>fragment</div>
+        </>
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render component", () => {
+    const Comp = ({ children }: { children: React.ReactNode }) => (
+      <div>{children}</div>
+    );
+    const { asFragment } = render(
+      <List>
+        <Comp>component</Comp>
+        <Comp>component</Comp>
+        <Comp>component</Comp>
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render with given width / height", () => {
+    const { asFragment } = render(
+      <List style={{ width: 100, height: 800 }}>
+        <div>0</div>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
 });
 
-it("should render 5 children", () => {
-  const { asFragment } = render(
-    <List>
-      <div>0</div>
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-    </List>
-  );
-  expect(asFragment()).toMatchSnapshot();
-});
+describe("layout === horizontal", () => {
+  it("should render 1 children", async () => {
+    const { asFragment } = render(
+      <List layout="horizontal">
+        <div>0</div>
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
 
-it("should render many children", () => {
-  const { asFragment } = render(
-    <List>
-      {Array.from({ length: 1000 }).map((_, i) => (
-        <div key={i}>{i}</div>
-      ))}
-    </List>
-  );
-  expect(asFragment()).toMatchSnapshot();
-});
+  it("should render 5 children", () => {
+    const { asFragment } = render(
+      <List layout="horizontal">
+        <div>0</div>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
 
-it("should render non elements", () => {
-  const { asFragment } = render(
-    <List>
-      string
-      {true}
-      {false}
-      {null}
-      {undefined}
-      {123}
-    </List>
-  );
-  expect(asFragment()).toMatchSnapshot();
-});
+  it("should render many children", () => {
+    const { asFragment } = render(
+      <List layout="horizontal">
+        {Array.from({ length: 1000 }).map((_, i) => (
+          <div key={i}>{i}</div>
+        ))}
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
 
-it("should render fragments", () => {
-  const { asFragment } = render(
-    <List>
-      <>
-        <div>fragment</div>
-        <div>fragment</div>
-        <div>fragment</div>
-      </>
-      <>
-        <div>fragment</div>
-      </>
-    </List>
-  );
-  expect(asFragment()).toMatchSnapshot();
-});
+  it("should render non elements", () => {
+    const { asFragment } = render(
+      <List layout="horizontal">
+        string
+        {true}
+        {false}
+        {null}
+        {undefined}
+        {123}
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
 
-it("should render component", () => {
-  const Comp = ({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  );
-  const { asFragment } = render(
-    <List>
-      <Comp>component</Comp>
-      <Comp>component</Comp>
-      <Comp>component</Comp>
-    </List>
-  );
-  expect(asFragment()).toMatchSnapshot();
-});
+  it("should render fragments", () => {
+    const { asFragment } = render(
+      <List layout="horizontal">
+        <>
+          <div>fragment</div>
+          <div>fragment</div>
+          <div>fragment</div>
+        </>
+        <>
+          <div>fragment</div>
+        </>
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
 
-it("should render with given width / height", () => {
-  const { asFragment } = render(
-    <List style={{ width: 100, height: 800 }}>
-      <div>0</div>
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-    </List>
-  );
-  expect(asFragment()).toMatchSnapshot();
+  it("should render component", () => {
+    const Comp = ({ children }: { children: React.ReactNode }) => (
+      <div>{children}</div>
+    );
+    const { asFragment } = render(
+      <List layout="horizontal">
+        <Comp>component</Comp>
+        <Comp>component</Comp>
+        <Comp>component</Comp>
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render with given width / height", () => {
+    const { asFragment } = render(
+      <List layout="horizontal" style={{ width: 100, height: 800 }}>
+        <div>0</div>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
 });

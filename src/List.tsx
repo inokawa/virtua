@@ -31,11 +31,14 @@ import { debounce, max, min } from "./utils";
 const DEFAULT_ITEM_MARGIN_COUNT = 2;
 const DEFAULT_ITEM_SIZE = 40; // 50
 
+export type Layout = "vertical" | "horizontal";
+
 type ItemProps = {
   children: ReactNode;
   _handle: ObserverHandle;
   _index: number;
-  _top: number;
+  _offset: number;
+  _isHorizontal: boolean;
   _hide: boolean;
 };
 
@@ -44,7 +47,8 @@ const Item = memo(
     children,
     _handle,
     _index,
-    _top: top,
+    _offset: offset,
+    _isHorizontal: isHorizontal,
     _hide: hide,
   }: ItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
@@ -54,13 +58,14 @@ const Item = memo(
         margin: "0",
         padding: "0",
         position: "absolute",
-        width: "100%",
-        top,
+        ...(isHorizontal
+          ? { display: "flex", height: "100%", left: offset }
+          : { width: "100%", top: offset }),
         ...(hide && {
           visibility: "hidden",
         }),
       }),
-      [top, hide]
+      [offset, isHorizontal, hide]
     );
 
     useLayoutEffect(() => _handle._observe(ref.current!, _index), []);
@@ -79,8 +84,9 @@ export type ListHandle = {
 
 export type ListProps = {
   children: ReactNode;
-  itemHeight?: number;
+  itemSize?: number;
   itemMargin?: number;
+  layout?: Layout;
   style?: CSSProperties;
   innerStyle?: CSSProperties;
 };
@@ -89,8 +95,9 @@ export const List = forwardRef<ListHandle, ListProps>(
   (
     {
       children,
-      itemHeight = DEFAULT_ITEM_SIZE,
+      itemSize = DEFAULT_ITEM_SIZE,
       itemMargin = DEFAULT_ITEM_MARGIN_COUNT,
+      layout,
       style: styleProp,
       innerStyle: innerStyleProp,
     },
@@ -100,15 +107,17 @@ export const List = forwardRef<ListHandle, ListProps>(
     // memoize element instances
     const elements = useMemo(() => Children.toArray(children), [children]);
 
+    const isHorizontal = layout === "horizontal";
+
     const [
       {
         _startIndex: startIndex,
-        _viewportSize: viewportHeight,
+        _viewportSize: viewportSize,
         _cache: cache,
         _jump: jump,
       },
       dispatch,
-    ] = useVirtualState(elements, itemHeight);
+    ] = useVirtualState(elements, itemSize);
 
     const handle = useState((): ObserverHandle => {
       let ro: ResizeObserver;
@@ -129,33 +138,39 @@ export const List = forwardRef<ListHandle, ListProps>(
 
             dispatch({
               _type: HANDLE_SCROLL,
-              _offset: root.scrollTop,
+              _offset: isHorizontal ? root.scrollLeft : root.scrollTop,
             });
             requestSync();
           }, 200);
 
           ro = new ResizeObserver((entries) => {
-            const resizedItemHeights: number[] = [];
+            const resizedItemSizes: number[] = [];
             const resizedItemIndexes: number[] = [];
             for (const entry of entries) {
               if (entry.target === root) {
                 dispatch({
                   _type: UPDATE_VIEWPORT_SIZE,
-                  _size: entry.contentRect.height,
+                  _size: isHorizontal
+                    ? entry.contentRect.width
+                    : entry.contentRect.height,
                 });
               } else {
                 const index = mountedIndexes.get(entry.target);
                 if (index != null) {
-                  resizedItemHeights.push(entry.contentRect.height);
+                  resizedItemSizes.push(
+                    isHorizontal
+                      ? entry.contentRect.width
+                      : entry.contentRect.height
+                  );
                   resizedItemIndexes.push(index);
                 }
               }
             }
 
-            if (resizedItemHeights.length) {
+            if (resizedItemSizes.length) {
               dispatch({
                 _type: UPDATE_ITEM_SIZES,
-                _sizes: resizedItemHeights,
+                _sizes: resizedItemSizes,
                 _indexes: resizedItemIndexes,
               });
             }
@@ -193,7 +208,7 @@ export const List = forwardRef<ListHandle, ListProps>(
                 // all items would exit in fast scrolling
                 dispatch({
                   _type: HANDLE_SCROLL,
-                  _offset: root.scrollTop,
+                  _offset: isHorizontal ? root.scrollLeft : root.scrollTop,
                 });
 
                 requestSync();
@@ -204,9 +219,11 @@ export const List = forwardRef<ListHandle, ListProps>(
                 dispatch({
                   _type: HANDLE_ITEM_INTERSECTION,
                   _index: mountedIndexes.get(latestEntry.target)!,
-                  _offset:
-                    latestEntry.boundingClientRect.top -
-                    latestEntry.rootBounds!.top,
+                  _offset: isHorizontal
+                    ? latestEntry.boundingClientRect.left -
+                      latestEntry.rootBounds!.left
+                    : latestEntry.boundingClientRect.top -
+                      latestEntry.rootBounds!.top,
                 });
               }
             },
@@ -240,15 +257,15 @@ export const List = forwardRef<ListHandle, ListProps>(
       };
     })[0];
 
-    const scrollHeight = cache.reduce(
-      (acc, c) => acc + resolveItemSize(c, itemHeight),
+    const scrollSize = cache.reduce(
+      (acc, c) => acc + resolveItemSize(c, itemSize),
       0
     );
 
     const items: (ReactElement | null)[] = [];
     const endIndex = useMemo(
-      () => findEndIndex(startIndex, viewportHeight, cache, itemHeight),
-      [cache, startIndex, viewportHeight, itemHeight]
+      () => findEndIndex(startIndex, viewportSize, cache, itemSize),
+      [cache, startIndex, viewportSize, itemSize]
     );
 
     const startIndexWithMargin = max(startIndex - itemMargin, 0);
@@ -267,12 +284,25 @@ export const List = forwardRef<ListHandle, ListProps>(
       if (rootRef.current) {
         if (
           jump._start &&
-          !(startIndex === 0 && rootRef.current.scrollTop === 0)
+          !(
+            startIndex === 0 &&
+            (isHorizontal
+              ? rootRef.current.scrollLeft
+              : rootRef.current.scrollTop) === 0
+          )
         ) {
-          rootRef.current.scrollTop += jump._start;
+          if (isHorizontal) {
+            rootRef.current.scrollLeft += jump._start;
+          } else {
+            rootRef.current.scrollTop += jump._start;
+          }
         }
         if (jump._end && endIndex - (cache.length - 1) === 0) {
-          rootRef.current.scrollTop += jump._end;
+          if (isHorizontal) {
+            rootRef.current.scrollLeft += jump._end;
+          } else {
+            rootRef.current.scrollTop += jump._end;
+          }
         }
       }
     }, [jump]);
@@ -280,18 +310,22 @@ export const List = forwardRef<ListHandle, ListProps>(
     useImperativeHandle(ref, () => ({
       scrollTo(index) {
         if (rootRef.current) {
-          let top = computeStartOffset(index, cache, itemHeight);
-          if (scrollHeight - (top + viewportHeight) <= 0) {
-            top = scrollHeight - viewportHeight;
+          let offset = computeStartOffset(index, cache, itemSize);
+          if (scrollSize - (offset + viewportSize) <= 0) {
+            offset = scrollSize - viewportSize;
           }
-          rootRef.current.scrollTop = top;
+          if (isHorizontal) {
+            rootRef.current.scrollLeft = offset;
+          } else {
+            rootRef.current.scrollTop = offset;
+          }
         }
       },
     }));
 
     let offset = useMemo(
-      () => computeStartOffset(startIndexWithMargin, cache, itemHeight),
-      [cache, startIndexWithMargin, itemHeight]
+      () => computeStartOffset(startIndexWithMargin, cache, itemSize),
+      [cache, startIndexWithMargin, itemSize]
     );
     for (let i = startIndexWithMargin; i <= endIndexWithMargin; i++) {
       // elements could be undefined when children length changed
@@ -302,14 +336,15 @@ export const List = forwardRef<ListHandle, ListProps>(
             key={(e as { key?: ReactElement["key"] }).key || i}
             _handle={handle}
             _index={i}
-            _top={offset}
+            _offset={offset}
+            _isHorizontal={isHorizontal}
             _hide={cache[i] === UNCACHED_ITEM_SIZE}
           >
             {e}
           </Item>
         ) : null
       );
-      offset += resolveItemSize(cache[i]!, itemHeight);
+      offset += resolveItemSize(cache[i]!, itemSize);
     }
 
     return (
@@ -319,25 +354,25 @@ export const List = forwardRef<ListHandle, ListProps>(
           () => ({
             width: "100%",
             height: "100%",
-            overflowY: "auto",
+            overflow: "auto",
             ...styleProp,
           }),
           [styleProp]
         )}
       >
         <div
-          style={useMemo<CSSProperties>(
-            () => ({
+          style={useMemo<CSSProperties>(() => {
+            const crampedScrollSize =
+              scrollSize >= viewportSize ? scrollSize : viewportSize;
+            return {
               position: "relative",
-              width: "100%",
-              height:
-                scrollHeight >= viewportHeight ? scrollHeight : viewportHeight,
+              width: isHorizontal ? crampedScrollSize : "100%",
+              height: isHorizontal ? "100%" : crampedScrollSize,
               ...innerStyleProp,
-            }),
-            [scrollHeight, viewportHeight, innerStyleProp]
-          )}
+            };
+          }, [scrollSize, viewportSize, innerStyleProp, isHorizontal])}
         >
-          {viewportHeight !== 0 && items}
+          {viewportSize !== 0 && items}
         </div>
       </div>
     );
