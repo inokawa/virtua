@@ -113,7 +113,8 @@ export const List = forwardRef<ListHandle, ListProps>(
       {
         _startIndex: startIndex,
         _viewportSize: viewportSize,
-        _cache: cache,
+        _scrollSize: scrollSize,
+        _sizes: sizes,
         _jump: jump,
       },
       dispatch,
@@ -257,19 +258,14 @@ export const List = forwardRef<ListHandle, ListProps>(
       };
     })[0];
 
-    const scrollSize = cache.reduce(
-      (acc, c) => acc + resolveItemSize(c, itemSize),
-      0
-    );
-
     const items: (ReactElement | null)[] = [];
     const endIndex = useMemo(
-      () => findEndIndex(startIndex, viewportSize, cache, itemSize),
-      [cache, startIndex, viewportSize, itemSize]
+      () => findEndIndex(startIndex, viewportSize, sizes, itemSize),
+      [sizes, startIndex, viewportSize, itemSize]
     );
 
     const startIndexWithMargin = max(startIndex - itemMargin, 0);
-    const endIndexWithMargin = min(endIndex + itemMargin, cache.length - 1);
+    const endIndexWithMargin = min(endIndex + itemMargin, sizes.length - 1);
 
     useLayoutEffect(() => handle._init(rootRef.current!), []);
 
@@ -297,7 +293,7 @@ export const List = forwardRef<ListHandle, ListProps>(
             rootRef.current.scrollTop += jump._start;
           }
         }
-        if (jump._end && endIndex - (cache.length - 1) === 0) {
+        if (jump._end && endIndex - (sizes.length - 1) === 0) {
           if (isHorizontal) {
             rootRef.current.scrollLeft += jump._end;
           } else {
@@ -310,7 +306,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     useImperativeHandle(ref, () => ({
       scrollTo(index) {
         if (rootRef.current) {
-          let offset = computeStartOffset(index, cache, itemSize);
+          let offset = computeStartOffset(index, sizes, itemSize);
           if (scrollSize - (offset + viewportSize) <= 0) {
             offset = scrollSize - viewportSize;
           }
@@ -324,8 +320,8 @@ export const List = forwardRef<ListHandle, ListProps>(
     }));
 
     let offset = useMemo(
-      () => computeStartOffset(startIndexWithMargin, cache, itemSize),
-      [cache, startIndexWithMargin, itemSize]
+      () => computeStartOffset(startIndexWithMargin, sizes, itemSize),
+      [sizes, startIndexWithMargin, itemSize]
     );
     for (let i = startIndexWithMargin; i <= endIndexWithMargin; i++) {
       // elements could be undefined when children length changed
@@ -338,13 +334,13 @@ export const List = forwardRef<ListHandle, ListProps>(
             _index={i}
             _offset={offset}
             _isHorizontal={isHorizontal}
-            _hide={cache[i] === UNCACHED_ITEM_SIZE}
+            _hide={sizes[i] === UNCACHED_ITEM_SIZE}
           >
             {e}
           </Item>
         ) : null
       );
-      offset += resolveItemSize(cache[i]!, itemSize);
+      offset += resolveItemSize(sizes[i]!, itemSize);
     }
 
     return (

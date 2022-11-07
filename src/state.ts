@@ -5,6 +5,7 @@ import {
   findStartIndexWithOffset,
   resetCache,
   resolveItemSize,
+  calculateAllSize,
 } from "./cache";
 import { max } from "./utils";
 
@@ -19,7 +20,8 @@ export type ScrollJump = { _start: number; _end: number };
 type State = {
   _startIndex: number;
   _viewportSize: number;
-  _cache: number[];
+  _scrollSize: number;
+  _sizes: number[]; // mutatable cache
   _jump: ScrollJump;
 };
 
@@ -41,14 +43,16 @@ type Actions =
 const reducer = (state: State, action: Actions, itemSize: number): State => {
   switch (action._type) {
     case RESET_CACHE: {
+      const sizes = resetCache(action._elements, state._sizes);
       return {
         ...state,
-        _cache: resetCache(action._elements, state._cache),
+        _sizes: sizes,
+        _scrollSize: calculateAllSize(sizes, itemSize),
       };
     }
     case UPDATE_ITEM_SIZES: {
       const { _indexes: indexes, _sizes: sizes } = action;
-      if (indexes.every((index, i) => state._cache[index] === sizes[i]!)) {
+      if (indexes.every((index, i) => state._sizes[index] === sizes[i]!)) {
         return state;
       }
 
@@ -57,16 +61,17 @@ const reducer = (state: State, action: Actions, itemSize: number): State => {
       indexes.forEach((index, i) => {
         if (index < state._startIndex) {
           topJump +=
-            sizes[i]! - resolveItemSize(state._cache[index]!, itemSize);
+            sizes[i]! - resolveItemSize(state._sizes[index]!, itemSize);
         } else {
           bottomJump +=
-            sizes[i]! - resolveItemSize(state._cache[index]!, itemSize);
+            sizes[i]! - resolveItemSize(state._sizes[index]!, itemSize);
         }
-        state._cache[index] = sizes[i]!;
+        state._sizes[index] = sizes[i]!;
       });
 
       return {
         ...state,
+        _scrollSize: calculateAllSize(state._sizes, itemSize),
         _jump: { _start: topJump, _end: bottomJump },
       };
     }
@@ -85,14 +90,14 @@ const reducer = (state: State, action: Actions, itemSize: number): State => {
         startIndex = findStartIndexAfter(
           action._index,
           max(0, -action._offset),
-          state._cache,
+          state._sizes,
           itemSize
         );
       } else {
         startIndex = findStartIndexBefore(
           action._index,
           max(0, action._offset),
-          state._cache,
+          state._sizes,
           itemSize
         );
       }
@@ -108,7 +113,7 @@ const reducer = (state: State, action: Actions, itemSize: number): State => {
     case HANDLE_SCROLL: {
       const startIndex = findStartIndexWithOffset(
         action._offset,
-        state._cache,
+        state._sizes,
         itemSize
       );
       if (startIndex === state._startIndex) {
@@ -130,10 +135,12 @@ export const useVirtualState = (
   itemSize: number
 ): [State, (action: Actions) => void] => {
   const [state, setState] = useState(() => {
+    const sizes = resetCache(elements);
     return {
       _startIndex: 0,
       _viewportSize: 0,
-      _cache: resetCache(elements),
+      _scrollSize: calculateAllSize(sizes, itemSize),
+      _sizes: sizes,
       _jump: { _start: 0, _end: 0 },
     };
   });

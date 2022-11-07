@@ -9,6 +9,10 @@ export const resolveItemSize = (
   return size === UNCACHED_ITEM_SIZE ? defaultItemSize : size;
 };
 
+export const calculateAllSize = (sizes: number[], itemSize: number): number => {
+  return sizes.reduce((acc, c) => acc + resolveItemSize(c, itemSize), 0);
+};
+
 export const findStartIndexBefore = (
   index: number,
   distance: number,
