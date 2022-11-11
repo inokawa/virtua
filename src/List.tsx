@@ -384,6 +384,7 @@ export const List = forwardRef<ListHandle, ListProps>(
             height: "100%",
             overflow: isHorizontal ? "auto hidden" : "hidden auto",
             position: "relative",
+            contain: "strict",
             ...(reverse && {
               display: "flex",
               flexDirection: isHorizontal ? "row-reverse" : "column-reverse",
