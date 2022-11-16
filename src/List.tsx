@@ -6,7 +6,6 @@ import {
   useMemo,
   CSSProperties,
   ReactElement,
-  useLayoutEffect,
   forwardRef,
   useImperativeHandle,
   ReactNode,
@@ -26,6 +25,7 @@ import {
   useVirtualState,
 } from "./state";
 import type { ObserverHandle } from "./types";
+import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { debounce, max, min } from "./utils";
 
 const DEFAULT_ITEM_MARGIN_COUNT = 2;
@@ -79,7 +79,7 @@ const Item = memo(
       };
     }, [offset, isHorizontal, isReversed, hide]);
 
-    useLayoutEffect(() => _handle._observe(ref.current!, _index), []);
+    useIsomorphicLayoutEffect(() => _handle._observe(ref.current!, _index), []);
 
     return (
       <div ref={ref} style={style}>
@@ -295,16 +295,16 @@ export const List = forwardRef<ListHandle, ListProps>(
     const startIndexWithMargin = max(startIndex - itemMargin, 0);
     const endIndexWithMargin = min(endIndex + itemMargin, sizes.length - 1);
 
-    useLayoutEffect(() => handle._init(rootRef.current!), []);
+    useIsomorphicLayoutEffect(() => handle._init(rootRef.current!), []);
 
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       dispatch({
         _type: RESET_CACHE,
         _elements: elements,
       });
     }, [elements.length]);
 
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (rootRef.current) {
         if (
           jump._start &&
