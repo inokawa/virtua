@@ -1,4 +1,4 @@
 export type ObserverHandle = {
-  _init: (rootElement: HTMLElement) => () => void;
+  _init: (rootElement: HTMLElement, wrapperElement: HTMLElement) => () => void;
   _observe: (itemElement: HTMLElement, index: number) => () => void;
 };

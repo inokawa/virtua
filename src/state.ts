@@ -19,7 +19,8 @@ export type ScrollJump = { _start: number; _end: number };
 
 type State = {
   _startIndex: number;
-  _viewportSize: number;
+  _viewportWidth: number;
+  _viewportHeight: number;
   _scrollSize: number;
   _sizes: number[]; // mutatable cache
   _jump: ScrollJump;
@@ -32,7 +33,7 @@ type Actions =
       _indexes: number[];
       _sizes: number[];
     }
-  | { _type: typeof UPDATE_VIEWPORT_SIZE; _size: number }
+  | { _type: typeof UPDATE_VIEWPORT_SIZE; _width: number; _height: number }
   | {
       _type: typeof HANDLE_ITEM_INTERSECTION;
       _index: number;
@@ -76,12 +77,16 @@ const reducer = (state: State, action: Actions, itemSize: number): State => {
       };
     }
     case UPDATE_VIEWPORT_SIZE: {
-      if (state._viewportSize === action._size) {
+      if (
+        state._viewportWidth === action._width &&
+        state._viewportHeight === action._height
+      ) {
         return state;
       }
       return {
         ...state,
-        _viewportSize: action._size,
+        _viewportWidth: action._width,
+        _viewportHeight: action._height,
       };
     }
     case HANDLE_ITEM_INTERSECTION: {
@@ -138,7 +143,8 @@ export const useVirtualState = (
     const sizes = resetCache(elements);
     return {
       _startIndex: 0,
-      _viewportSize: 0,
+      _viewportWidth: 0,
+      _viewportHeight: 0,
       _scrollSize: calculateAllSize(sizes, itemSize),
       _sizes: sizes,
       _jump: { _start: 0, _end: 0 },

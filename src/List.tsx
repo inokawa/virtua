@@ -72,6 +72,7 @@ const Item = memo(
         margin: "0",
         padding: "0",
         position: "absolute",
+        overflow: "hidden",
         ...position,
         ...(hide && {
           visibility: "hidden",
@@ -116,6 +117,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     },
     ref
   ): ReactElement => {
+    const wrapperRef = useRef<HTMLDivElement>(null);
     const rootRef = useRef<HTMLDivElement>(null);
     // memoize element instances
     const elements = useMemo(() => Children.toArray(children), [children]);
@@ -125,13 +127,16 @@ export const List = forwardRef<ListHandle, ListProps>(
     const [
       {
         _startIndex: startIndex,
-        _viewportSize: viewportSize,
+        _viewportWidth: viewportWidth,
+        _viewportHeight: viewportHeight,
         _scrollSize: scrollSize,
         _sizes: sizes,
         _jump: jump,
       },
       dispatch,
     ] = useVirtualState(elements, itemSize);
+
+    const viewportSize = isHorizontal ? viewportWidth : viewportHeight;
 
     const handle = useState((): ObserverHandle => {
       let ro: ResizeObserver;
@@ -143,7 +148,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       const viewedIndexes = new WeakMap<Element, number>();
 
       return {
-        _init(root) {
+        _init(root, wrapper) {
           // Estimating scroll position from intersections can fail when items were mounted outside of viewport and intersection didn't happen.
           // This situation rarely occurs in fast scrolling with scroll bar.
           // So get scroll position from element while there are no items in viewport.
@@ -167,12 +172,11 @@ export const List = forwardRef<ListHandle, ListProps>(
             const resizedItemSizes: number[] = [];
             const resizedItemIndexes: number[] = [];
             for (const entry of entries) {
-              if (entry.target === root) {
+              if (entry.target === wrapper) {
                 dispatch({
                   _type: UPDATE_VIEWPORT_SIZE,
-                  _size: isHorizontal
-                    ? entry.contentRect.width
-                    : entry.contentRect.height,
+                  _width: entry.contentRect.width,
+                  _height: entry.contentRect.height,
                 });
               } else {
                 const index = mountedIndexes.get(entry.target);
@@ -262,7 +266,7 @@ export const List = forwardRef<ListHandle, ListProps>(
             }
           );
 
-          ro.observe(root);
+          ro.observe(wrapper);
           return () => {
             ro.disconnect();
             io.disconnect();
@@ -295,7 +299,10 @@ export const List = forwardRef<ListHandle, ListProps>(
     const startIndexWithMargin = max(startIndex - itemMargin, 0);
     const endIndexWithMargin = min(endIndex + itemMargin, sizes.length - 1);
 
-    useIsomorphicLayoutEffect(() => handle._init(rootRef.current!), []);
+    useIsomorphicLayoutEffect(
+      () => handle._init(rootRef.current!, wrapperRef.current!),
+      []
+    );
 
     useIsomorphicLayoutEffect(() => {
       dispatch({
@@ -377,36 +384,53 @@ export const List = forwardRef<ListHandle, ListProps>(
 
     return (
       <div
-        ref={rootRef}
+        ref={wrapperRef}
         style={useMemo<CSSProperties>(() => {
           return {
             width: "100%",
             height: "100%",
-            overflow: isHorizontal ? "auto hidden" : "hidden auto",
+            overflow: "hidden",
             position: "relative",
-            contain: "strict",
-            ...(reverse && {
-              display: "flex",
-              flexDirection: isHorizontal ? "row-reverse" : "column-reverse",
-            }),
             ...styleProp,
           };
-        }, [styleProp, isHorizontal, reverse])}
+        }, [styleProp])}
       >
         <div
-          style={useMemo<CSSProperties>(() => {
-            const crampedScrollSize =
-              scrollSize >= viewportSize ? scrollSize : viewportSize;
-            return {
-              width: isHorizontal ? crampedScrollSize : "100%",
-              height: isHorizontal ? "100%" : crampedScrollSize,
-              minWidth: isHorizontal ? crampedScrollSize : "100%",
-              minHeight: isHorizontal ? "100%" : crampedScrollSize,
-              ...innerStyleProp,
-            };
-          }, [scrollSize, viewportSize, innerStyleProp, isHorizontal])}
+          ref={rootRef}
+          style={useMemo<CSSProperties>(
+            () => ({
+              width: viewportWidth,
+              height: viewportHeight,
+              overflow: isHorizontal ? "auto hidden" : "hidden auto",
+              position: "absolute",
+              padding: 0,
+              margin: 0,
+              top: 0,
+              left: 0,
+              ...(reverse && {
+                display: "flex",
+                flexDirection: isHorizontal ? "row-reverse" : "column-reverse",
+              }),
+            }),
+            [viewportHeight, viewportWidth, isHorizontal, reverse]
+          )}
         >
-          {viewportSize !== 0 && items}
+          <div
+            style={useMemo<CSSProperties>(() => {
+              const crampedScrollSize =
+                scrollSize >= viewportSize ? scrollSize : viewportSize;
+              return {
+                position: "relative",
+                width: isHorizontal ? crampedScrollSize : "100%",
+                height: isHorizontal ? "100%" : crampedScrollSize,
+                minWidth: isHorizontal ? crampedScrollSize : "100%",
+                minHeight: isHorizontal ? "100%" : crampedScrollSize,
+                ...innerStyleProp,
+              };
+            }, [scrollSize, viewportSize, innerStyleProp, isHorizontal])}
+          >
+            {viewportSize !== 0 && items}
+          </div>
         </div>
       </div>
     );
