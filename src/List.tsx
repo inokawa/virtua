@@ -72,7 +72,6 @@ const Item = memo(
         margin: "0",
         padding: "0",
         position: "absolute",
-        overflow: "hidden",
         ...position,
         ...(hide && {
           visibility: "hidden",
