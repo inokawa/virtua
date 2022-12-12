@@ -16,6 +16,7 @@
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
     "storybook:test": "concurrently -k -s first -n \"SB,TEST\" -c \"magenta,blue\" \"npm run storybook -- --quiet --no-open\" \"wait-on tcp:6006 && test-storybook\"",
+    "typedoc": "typedoc",
     "prepublishOnly": "rimraf lib && npm run build"
   },
   "dependencies": {},
@@ -41,6 +42,8 @@
     "rollup-plugin-terser": "7.0.2",
     "storybook": "^7.0.0-alpha.54",
     "ts-jest": "29.0.0",
+    "typedoc": "0.23.22",
+    "typedoc-plugin-markdown": "3.14.0",
     "typescript": "4.6.4",
     "wait-on": "6.0.1"
   },
