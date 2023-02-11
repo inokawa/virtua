@@ -8,6 +8,7 @@ import {
   forwardRef,
   useImperativeHandle,
   ReactNode,
+  UIEventHandler,
 } from "react";
 import {
   computeStartOffset,
@@ -100,6 +101,7 @@ export type ListProps = {
   reverse?: boolean;
   style?: CSSProperties;
   innerStyle?: CSSProperties;
+  onScroll?: UIEventHandler<HTMLDivElement>;
 };
 
 export const List = forwardRef<ListHandle, ListProps>(
@@ -112,6 +114,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       reverse,
       style: styleProp,
       innerStyle: innerStyleProp,
+      onScroll,
     },
     ref
   ): ReactElement => {
@@ -416,6 +419,7 @@ export const List = forwardRef<ListHandle, ListProps>(
             }),
             [viewportHeight, viewportWidth, isHorizontal, reverse]
           )}
+          onScroll={onScroll}
         >
           <div
             style={useMemo<CSSProperties>(() => {
