@@ -31,14 +31,12 @@ import { debounce, max, min } from "./utils";
 const DEFAULT_ITEM_MARGIN_COUNT = 2;
 const DEFAULT_ITEM_SIZE = 40; // 50
 
-export type Layout = "vertical" | "horizontal";
-
 type ItemProps = {
   children: ReactNode;
   _handle: ObserverHandle;
   _index: number;
   _offset: number;
-  _isHorizontal: boolean;
+  _isHorizontal: boolean | undefined;
   _isReversed: boolean | undefined;
   _hide: boolean;
 };
@@ -55,34 +53,34 @@ const Item = memo(
   }: ItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
-    const style = useMemo<CSSProperties>(() => {
-      const position = isHorizontal
-        ? {
-            display: "flex",
-            height: "100%",
-            top: 0,
-            ...(isReversed ? { right: offset } : { left: offset }),
-          }
-        : {
-            width: "100%",
-            left: 0,
-            ...(isReversed ? { bottom: offset } : { top: offset }),
-          };
-      return {
-        margin: "0",
-        padding: "0",
-        position: "absolute",
-        ...position,
-        ...(hide && {
-          visibility: "hidden",
-        }),
-      };
-    }, [offset, isHorizontal, isReversed, hide]);
-
     useIsomorphicLayoutEffect(() => _handle._observe(ref.current!, _index), []);
 
     return (
-      <div ref={ref} style={style}>
+      <div
+        ref={ref}
+        style={useMemo<CSSProperties>(() => {
+          return {
+            margin: "0",
+            padding: "0",
+            position: "absolute",
+            ...(isHorizontal
+              ? {
+                  display: "flex",
+                  height: "100%",
+                  top: 0,
+                  ...(isReversed ? { right: offset } : { left: offset }),
+                }
+              : {
+                  width: "100%",
+                  left: 0,
+                  ...(isReversed ? { bottom: offset } : { top: offset }),
+                }),
+            ...(hide && {
+              visibility: "hidden",
+            }),
+          };
+        }, [offset, isHorizontal, isReversed, hide])}
+      >
         {children}
       </div>
     );
@@ -97,7 +95,7 @@ export type ListProps = {
   children: ReactNode;
   itemSize?: number;
   itemMargin?: number;
-  layout?: Layout;
+  horizontal?: boolean;
   reverse?: boolean;
   style?: CSSProperties;
   innerStyle?: CSSProperties;
@@ -110,7 +108,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       children,
       itemSize = DEFAULT_ITEM_SIZE,
       itemMargin = DEFAULT_ITEM_MARGIN_COUNT,
-      layout,
+      horizontal: isHorizontal,
       reverse,
       style: styleProp,
       innerStyle: innerStyleProp,
@@ -120,8 +118,6 @@ export const List = forwardRef<ListHandle, ListProps>(
   ): ReactElement => {
     // memoize element instances
     const elements = useMemo(() => Children.toArray(children), [children]);
-
-    const isHorizontal = layout === "horizontal";
 
     const [
       {

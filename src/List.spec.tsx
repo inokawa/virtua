@@ -177,7 +177,7 @@ describe("layout === vertical", () => {
 describe("layout === horizontal", () => {
   it("should render 1 children", async () => {
     const { asFragment } = render(
-      <List layout="horizontal">
+      <List horizontal>
         <div>0</div>
       </List>
     );
@@ -186,7 +186,7 @@ describe("layout === horizontal", () => {
 
   it("should render 5 children", () => {
     const { asFragment } = render(
-      <List layout="horizontal">
+      <List horizontal>
         <div>0</div>
         <div>1</div>
         <div>2</div>
@@ -199,7 +199,7 @@ describe("layout === horizontal", () => {
 
   it("should render many children", () => {
     const { asFragment } = render(
-      <List layout="horizontal">
+      <List horizontal>
         {Array.from({ length: 1000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
@@ -210,7 +210,7 @@ describe("layout === horizontal", () => {
 
   it("should render non elements", () => {
     const { asFragment } = render(
-      <List layout="horizontal">
+      <List horizontal>
         string
         {true}
         {false}
@@ -224,7 +224,7 @@ describe("layout === horizontal", () => {
 
   it("should render fragments", () => {
     const { asFragment } = render(
-      <List layout="horizontal">
+      <List horizontal>
         <>
           <div>fragment</div>
           <div>fragment</div>
@@ -243,7 +243,7 @@ describe("layout === horizontal", () => {
       <div>{children}</div>
     );
     const { asFragment } = render(
-      <List layout="horizontal">
+      <List horizontal>
         <Comp>component</Comp>
         <Comp>component</Comp>
         <Comp>component</Comp>
@@ -254,7 +254,7 @@ describe("layout === horizontal", () => {
 
   it("should render with given width / height", () => {
     const { asFragment } = render(
-      <List layout="horizontal" style={{ width: 100, height: 800 }}>
+      <List horizontal style={{ width: 100, height: 800 }}>
         <div>0</div>
         <div>1</div>
         <div>2</div>
