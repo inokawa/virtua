@@ -19,7 +19,6 @@
     "typedoc": "typedoc",
     "prepublishOnly": "rimraf lib && npm run build"
   },
-  "dependencies": {},
   "devDependencies": {
     "@babel/plugin-transform-react-pure-annotations": "7.18.6",
     "@rollup/plugin-typescript": "8.3.4",
@@ -29,6 +28,8 @@
     "@storybook/test-runner": "0.10.0-next.2",
     "@testing-library/react": "13.4.0",
     "@types/react": "18.0.18",
+    "@types/react-virtualized": "9.21.21",
+    "@types/react-window": "1.8.5",
     "concurrently": "7.2.2",
     "esbuild": "0.15.16",
     "esbuild-loader": "2.20.0",
@@ -37,6 +38,10 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-is": "18.1.0",
+    "react-virtual": "2.10.4",
+    "react-virtualized": "9.22.3",
+    "react-virtuoso": "4.1.0",
+    "react-window": "1.8.8",
     "rimraf": "3.0.2",
     "rollup": "2.75.5",
     "rollup-plugin-terser": "7.0.2",

@@ -2,6 +2,8 @@ import typescript from "@rollup/plugin-typescript";
 import { terser } from "rollup-plugin-terser";
 import pkg from "./package.json";
 
+const keys = (p) => Object.keys(p || {});
+
 export default {
   input: "src/index.ts",
   output: [
@@ -37,8 +39,7 @@ export default {
     }),
   ],
   external: (id) =>
-    [
-      ...Object.keys(pkg.dependencies),
-      ...Object.keys(pkg.devDependencies),
-    ].some((d) => id.startsWith(d)),
+    [...keys(pkg.dependencies), ...keys(pkg.devDependencies)].some((d) =>
+      id.startsWith(d)
+    ),
 };
