@@ -1,7 +1,6 @@
 import {
   Children,
   memo,
-  useState,
   useRef,
   useMemo,
   CSSProperties,
@@ -116,8 +115,6 @@ export const List = forwardRef<ListHandle, ListProps>(
     },
     ref
   ): ReactElement => {
-    const wrapperRef = useRef<HTMLDivElement>(null);
-    const rootRef = useRef<HTMLDivElement>(null);
     // memoize element instances
     const elements = useMemo(() => Children.toArray(children), [children]);
 
@@ -135,160 +132,166 @@ export const List = forwardRef<ListHandle, ListProps>(
       dispatch,
     ] = useVirtualState(elements, itemSize);
 
-    const viewportSize = isHorizontal ? viewportWidth : viewportHeight;
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const rootRef = useRef<HTMLDivElement>(null);
 
-    const handle = useState((): ObserverHandle => {
-      let ro: ResizeObserver;
-      let io: IntersectionObserver;
+    const handleRef = useRef<ObserverHandle>();
+    const handle =
+      handleRef.current ||
+      (handleRef.current = ((): ObserverHandle => {
+        let ro: ResizeObserver;
+        let io: IntersectionObserver;
 
-      let viewedCount = 0;
+        let viewedCount = 0;
 
-      const mountedIndexes = new WeakMap<Element, number>();
-      const viewedIndexes = new WeakMap<Element, number>();
+        const mountedIndexes = new WeakMap<Element, number>();
+        const viewedIndexes = new WeakMap<Element, number>();
 
-      return {
-        _init(root, wrapper) {
-          // Estimating scroll position from intersections can fail when items were mounted outside of viewport and intersection didn't happen.
-          // This situation rarely occurs in fast scrolling with scroll bar.
-          // So get scroll position from element while there are no items in viewport.
-          const requestSync = debounce(() => {
-            if (viewedCount) return;
+        return {
+          _init(root, wrapper) {
+            // Estimating scroll position from intersections can fail when items were mounted outside of viewport and intersection didn't happen.
+            // This situation rarely occurs in fast scrolling with scroll bar.
+            // So get scroll position from element while there are no items in viewport.
+            const requestSync = debounce(() => {
+              if (viewedCount) return;
 
-            dispatch({
-              _type: HANDLE_SCROLL,
-              _offset: isHorizontal
-                ? reverse
-                  ? -root.scrollLeft
-                  : root.scrollLeft
-                : reverse
-                ? -root.scrollTop
-                : root.scrollTop,
-            });
-            requestSync();
-          }, 200);
-
-          ro = new ResizeObserver((entries) => {
-            const resizedItemSizes: number[] = [];
-            const resizedItemIndexes: number[] = [];
-            for (const entry of entries) {
-              if (entry.target === wrapper) {
-                dispatch({
-                  _type: UPDATE_VIEWPORT_SIZE,
-                  _width: entry.contentRect.width,
-                  _height: entry.contentRect.height,
-                });
-              } else {
-                const index = mountedIndexes.get(entry.target);
-                if (index != null) {
-                  resizedItemSizes.push(
-                    isHorizontal
-                      ? entry.contentRect.width
-                      : entry.contentRect.height
-                  );
-                  resizedItemIndexes.push(index);
-                }
-              }
-            }
-
-            if (resizedItemSizes.length) {
               dispatch({
-                _type: UPDATE_ITEM_SIZES,
-                _sizes: resizedItemSizes,
-                _indexes: resizedItemIndexes,
+                _type: HANDLE_SCROLL,
+                _offset: isHorizontal
+                  ? reverse
+                    ? -root.scrollLeft
+                    : root.scrollLeft
+                  : reverse
+                  ? -root.scrollTop
+                  : root.scrollTop,
               });
-            }
-          });
+              requestSync();
+            }, 200);
 
-          io = new IntersectionObserver(
-            (entries) => {
-              let latestEntry: IntersectionObserverEntry | undefined;
-              entries.forEach((entry) => {
-                // take latest entry
-                if (
-                  (!latestEntry || latestEntry.time < entry.time) &&
-                  mountedIndexes.has(entry.target)
-                ) {
-                  latestEntry = entry;
-                }
-
-                if (entry.isIntersecting) {
-                  // enter
+            ro = new ResizeObserver((entries) => {
+              const resizedItemSizes: number[] = [];
+              const resizedItemIndexes: number[] = [];
+              for (const entry of entries) {
+                if (entry.target === wrapper) {
+                  dispatch({
+                    _type: UPDATE_VIEWPORT_SIZE,
+                    _width: entry.contentRect.width,
+                    _height: entry.contentRect.height,
+                  });
+                } else {
                   const index = mountedIndexes.get(entry.target);
                   if (index != null) {
-                    viewedIndexes.set(entry.target, index);
-                    viewedCount++;
-                  }
-                } else {
-                  // exit
-                  if (viewedIndexes.has(entry.target)) {
-                    viewedIndexes.delete(entry.target);
-                    viewedCount--;
+                    resizedItemSizes.push(
+                      isHorizontal
+                        ? entry.contentRect.width
+                        : entry.contentRect.height
+                    );
+                    resizedItemIndexes.push(index);
                   }
                 }
-              });
-
-              if (!viewedCount) {
-                // all items would exit in fast scrolling
-                dispatch({
-                  _type: HANDLE_SCROLL,
-                  _offset: isHorizontal
-                    ? reverse
-                      ? -root.scrollLeft
-                      : root.scrollLeft
-                    : reverse
-                    ? -root.scrollTop
-                    : root.scrollTop,
-                });
-
-                requestSync();
-                return;
               }
 
-              if (latestEntry) {
-                const { boundingClientRect, rootBounds, target } = latestEntry;
+              if (resizedItemSizes.length) {
                 dispatch({
-                  _type: HANDLE_ITEM_INTERSECTION,
-                  _index: mountedIndexes.get(target)!,
-                  _offset: isHorizontal
-                    ? reverse
-                      ? rootBounds!.right - boundingClientRect.right
-                      : boundingClientRect.left - rootBounds!.left
-                    : reverse
-                    ? rootBounds!.bottom - boundingClientRect.bottom
-                    : boundingClientRect.top - rootBounds!.top,
+                  _type: UPDATE_ITEM_SIZES,
+                  _sizes: resizedItemSizes,
+                  _indexes: resizedItemIndexes,
                 });
               }
-            },
-            {
-              root: root,
-              threshold: 1,
-            }
-          );
+            });
 
-          ro.observe(wrapper);
-          return () => {
-            ro.disconnect();
-            io.disconnect();
-            requestSync._cancel();
-          };
-        },
-        _observe(el, i) {
-          mountedIndexes.set(el, i);
-          ro.observe(el);
-          io.observe(el);
-          return () => {
-            mountedIndexes.delete(el);
-            if (viewedIndexes.has(el)) {
-              viewedIndexes.delete(el);
-              viewedCount--;
-            }
-            ro.unobserve(el);
-            io.unobserve(el);
-          };
-        },
-      };
-    })[0];
+            io = new IntersectionObserver(
+              (entries) => {
+                let latestEntry: IntersectionObserverEntry | undefined;
+                entries.forEach((entry) => {
+                  // take latest entry
+                  if (
+                    (!latestEntry || latestEntry.time < entry.time) &&
+                    mountedIndexes.has(entry.target)
+                  ) {
+                    latestEntry = entry;
+                  }
 
+                  if (entry.isIntersecting) {
+                    // enter
+                    const index = mountedIndexes.get(entry.target);
+                    if (index != null) {
+                      viewedIndexes.set(entry.target, index);
+                      viewedCount++;
+                    }
+                  } else {
+                    // exit
+                    if (viewedIndexes.has(entry.target)) {
+                      viewedIndexes.delete(entry.target);
+                      viewedCount--;
+                    }
+                  }
+                });
+
+                if (!viewedCount) {
+                  // all items would exit in fast scrolling
+                  dispatch({
+                    _type: HANDLE_SCROLL,
+                    _offset: isHorizontal
+                      ? reverse
+                        ? -root.scrollLeft
+                        : root.scrollLeft
+                      : reverse
+                      ? -root.scrollTop
+                      : root.scrollTop,
+                  });
+
+                  requestSync();
+                  return;
+                }
+
+                if (latestEntry) {
+                  const { boundingClientRect, rootBounds, target } =
+                    latestEntry;
+                  dispatch({
+                    _type: HANDLE_ITEM_INTERSECTION,
+                    _index: mountedIndexes.get(target)!,
+                    _offset: isHorizontal
+                      ? reverse
+                        ? rootBounds!.right - boundingClientRect.right
+                        : boundingClientRect.left - rootBounds!.left
+                      : reverse
+                      ? rootBounds!.bottom - boundingClientRect.bottom
+                      : boundingClientRect.top - rootBounds!.top,
+                  });
+                }
+              },
+              {
+                root: root,
+                threshold: 1,
+              }
+            );
+
+            ro.observe(wrapper);
+            return () => {
+              ro.disconnect();
+              io.disconnect();
+              requestSync._cancel();
+            };
+          },
+          _observe(el, i) {
+            mountedIndexes.set(el, i);
+            ro.observe(el);
+            io.observe(el);
+            return () => {
+              mountedIndexes.delete(el);
+              if (viewedIndexes.has(el)) {
+                viewedIndexes.delete(el);
+                viewedCount--;
+              }
+              ro.unobserve(el);
+              io.unobserve(el);
+            };
+          },
+        };
+      })());
+
+    const viewportSize = isHorizontal ? viewportWidth : viewportHeight;
     const items: (ReactElement | null)[] = [];
     const endIndex = useMemo(
       () => findEndIndex(startIndex, viewportSize, sizes, itemSize),
