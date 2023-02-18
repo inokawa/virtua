@@ -311,10 +311,12 @@ export const List = forwardRef<ListHandle, ListProps>(
 
     useIsomorphicLayoutEffect(() => {
       if (rootRef.current) {
+        const isStartInView = startIndex === 0;
+        const isEndInView = endIndex - (sizes.length - 1) === 0;
         if (
           jump._start &&
           !(
-            startIndex === 0 &&
+            isStartInView &&
             (isHorizontal
               ? rootRef.current.scrollLeft
               : rootRef.current.scrollTop) === 0
@@ -326,7 +328,7 @@ export const List = forwardRef<ListHandle, ListProps>(
             rootRef.current.scrollTop += jump._start;
           }
         }
-        if (jump._end && endIndex - (sizes.length - 1) === 0) {
+        if (jump._end && !isStartInView && isEndInView) {
           if (isHorizontal) {
             rootRef.current.scrollLeft += jump._end;
           } else {
