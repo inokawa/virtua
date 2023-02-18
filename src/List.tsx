@@ -10,6 +10,7 @@ import {
   ReactNode,
   UIEventHandler,
 } from "react";
+import { flushSync } from "react-dom";
 import {
   computeStartOffset,
   findEndIndex,
@@ -145,22 +146,27 @@ export const List = forwardRef<ListHandle, ListProps>(
 
         return {
           _init(root, wrapper) {
+            const syncViewportToScrollPosition = () => {
+              flushSync(() => {
+                dispatch({
+                  _type: HANDLE_SCROLL,
+                  _offset: isHorizontal
+                    ? reverse
+                      ? -root.scrollLeft
+                      : root.scrollLeft
+                    : reverse
+                    ? -root.scrollTop
+                    : root.scrollTop,
+                });
+              });
+            };
+
             // Estimating scroll position from intersections can fail when items were mounted outside of viewport and intersection didn't happen.
             // This situation rarely occurs in fast scrolling with scroll bar.
             // So get scroll position from element while there are no items in viewport.
             const requestSync = debounce(() => {
               if (viewedCount) return;
-
-              dispatch({
-                _type: HANDLE_SCROLL,
-                _offset: isHorizontal
-                  ? reverse
-                    ? -root.scrollLeft
-                    : root.scrollLeft
-                  : reverse
-                  ? -root.scrollTop
-                  : root.scrollTop,
-              });
+              syncViewportToScrollPosition();
               requestSync();
             }, 200);
 
@@ -226,17 +232,7 @@ export const List = forwardRef<ListHandle, ListProps>(
 
                 if (!viewedCount) {
                   // all items would exit in fast scrolling
-                  dispatch({
-                    _type: HANDLE_SCROLL,
-                    _offset: isHorizontal
-                      ? reverse
-                        ? -root.scrollLeft
-                        : root.scrollLeft
-                      : reverse
-                      ? -root.scrollTop
-                      : root.scrollTop,
-                  });
-
+                  syncViewportToScrollPosition();
                   requestSync();
                   return;
                 }
