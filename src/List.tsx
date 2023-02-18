@@ -28,9 +28,6 @@ import type { ObserverHandle } from "./types";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { debounce, max, min } from "./utils";
 
-const DEFAULT_ITEM_MARGIN_COUNT = 2;
-const DEFAULT_ITEM_SIZE = 40; // 50
-
 type ItemProps = {
   children: ReactNode;
   _handle: ObserverHandle;
@@ -87,11 +84,11 @@ const Item = memo(
   }
 );
 
-export type ListHandle = {
+export interface ListHandle {
   scrollTo(index: number): void;
-};
+}
 
-export type ListProps = {
+export interface ListProps {
   children: ReactNode;
   itemSize?: number;
   itemMargin?: number;
@@ -100,14 +97,14 @@ export type ListProps = {
   style?: CSSProperties;
   innerStyle?: CSSProperties;
   onScroll?: UIEventHandler<HTMLDivElement>;
-};
+}
 
 export const List = forwardRef<ListHandle, ListProps>(
   (
     {
       children,
-      itemSize = DEFAULT_ITEM_SIZE,
-      itemMargin = DEFAULT_ITEM_MARGIN_COUNT,
+      itemSize = 40,
+      itemMargin = 6,
       horizontal: isHorizontal,
       reverse,
       style: styleProp,
