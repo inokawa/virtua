@@ -27,7 +27,7 @@ type State = {
 };
 
 type Actions =
-  | { _type: typeof RESET_CACHE; _elements: unknown[] }
+  | { _type: typeof RESET_CACHE; _length: number }
   | {
       _type: typeof UPDATE_ITEM_SIZES;
       _indexes: number[];
@@ -44,7 +44,7 @@ type Actions =
 const reducer = (state: State, action: Actions, itemSize: number): State => {
   switch (action._type) {
     case RESET_CACHE: {
-      const sizes = resetCache(action._elements, state._sizes);
+      const sizes = resetCache(action._length, state._sizes);
       return {
         ...state,
         _sizes: sizes,
@@ -136,11 +136,11 @@ const reducer = (state: State, action: Actions, itemSize: number): State => {
 // So imitate useReducer with useState for performance.
 // https://github.com/facebook/react/pull/22445
 export const useVirtualState = (
-  elements: unknown[],
+  itemCount: number,
   itemSize: number
 ): [State, (action: Actions) => void] => {
   const [state, setState] = useState(() => {
-    const sizes = resetCache(elements);
+    const sizes = resetCache(itemCount);
     return {
       _startIndex: 0,
       _viewportWidth: 0,

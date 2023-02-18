@@ -116,6 +116,9 @@ export const computeStartOffset = (
   return top;
 };
 
-export const resetCache = (array: unknown[], cache?: number[]): number[] => {
-  return array.map((_, i) => (cache && cache[i]) ?? UNCACHED_ITEM_SIZE);
+export const resetCache = (length: number, cache?: number[]): number[] => {
+  return Array.from(
+    { length },
+    (_, i) => (cache && cache[i]) ?? UNCACHED_ITEM_SIZE
+  );
 };

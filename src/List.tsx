@@ -86,6 +86,8 @@ const Item = memo(
   }
 );
 
+const isInvalidElement = <T,>(e: T) => e == null || typeof e === "boolean";
+
 export interface ListHandle {
   scrollTo(index: number): void;
 }
@@ -119,8 +121,17 @@ export const List = forwardRef<ListHandle, ListProps>(
     },
     ref
   ): ReactElement => {
-    // memoize element instances
-    const elements = useMemo(() => Children.toArray(children), [children]);
+    // memoize element count
+    const count = useMemo(() => {
+      let i = 0;
+      Children.forEach(children, (e) => {
+        if (isInvalidElement(e)) {
+          return;
+        }
+        i++;
+      });
+      return i;
+    }, [children]);
 
     const [
       {
@@ -132,7 +143,7 @@ export const List = forwardRef<ListHandle, ListProps>(
         _jump: jump,
       },
       dispatch,
-    ] = useVirtualState(elements, itemSize);
+    ] = useVirtualState(count, itemSize);
 
     const wrapperRef = useRef<HTMLDivElement>(null);
     const rootRef = useRef<HTMLDivElement>(null);
@@ -290,7 +301,6 @@ export const List = forwardRef<ListHandle, ListProps>(
       })());
 
     const viewportSize = isHorizontal ? viewportWidth : viewportHeight;
-    const items: (ReactElement | null)[] = [];
     const endIndex = useMemo(
       () => findEndIndex(startIndex, viewportSize, sizes, itemSize),
       [sizes, startIndex, viewportSize, itemSize]
@@ -307,9 +317,9 @@ export const List = forwardRef<ListHandle, ListProps>(
     useIsomorphicLayoutEffect(() => {
       dispatch({
         _type: RESET_CACHE,
-        _elements: elements,
+        _length: count,
       });
-    }, [elements.length]);
+    }, [count]);
 
     useIsomorphicLayoutEffect(() => {
       if (rootRef.current) {
@@ -341,13 +351,13 @@ export const List = forwardRef<ListHandle, ListProps>(
     }, [jump]);
 
     useEffect(() => {
-      const endMargin = elements.length - 1 - endIndex;
+      const endMargin = count - 1 - endIndex;
       if (
         onEndReached &&
         endMargin <= endThreshold &&
-        onEndReachedCalledIndex.current < elements.length
+        onEndReachedCalledIndex.current < count
       ) {
-        onEndReachedCalledIndex.current = elements.length;
+        onEndReachedCalledIndex.current = count;
         onEndReached();
       }
     }, [endIndex]);
@@ -375,13 +385,20 @@ export const List = forwardRef<ListHandle, ListProps>(
       () => computeStartOffset(startIndexWithMargin, sizes, itemSize),
       [sizes, startIndexWithMargin, itemSize]
     );
-    for (let i = startIndexWithMargin; i <= endIndexWithMargin; i++) {
-      // elements could be undefined when children length changed
-      const e = elements[i];
-      items.push(
-        e ? (
+
+    let i = -1;
+    const items = Children.map(children, (e) => {
+      if (isInvalidElement(e)) {
+        return;
+      }
+      i++;
+      if (i < startIndexWithMargin || i > endIndexWithMargin) {
+        return;
+      }
+      const item =
+        e != null ? (
           <Item
-            key={(e as { key?: ReactElement["key"] }).key || i}
+            key={(e as { key?: ReactElement["key"] })?.key || i}
             _handle={handle}
             _index={i}
             _offset={offset}
@@ -391,10 +408,10 @@ export const List = forwardRef<ListHandle, ListProps>(
           >
             {e}
           </Item>
-        ) : null
-      );
+        ) : null;
       offset += resolveItemSize(sizes[i]!, itemSize);
-    }
+      return item;
+    });
 
     return (
       <div
