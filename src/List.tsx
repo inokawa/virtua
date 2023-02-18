@@ -9,6 +9,7 @@ import {
   useImperativeHandle,
   ReactNode,
   UIEventHandler,
+  useEffect,
 } from "react";
 import { flushSync } from "react-dom";
 import {
@@ -95,9 +96,11 @@ export interface ListProps {
   itemMargin?: number;
   horizontal?: boolean;
   reverse?: boolean;
+  endThreshold?: number;
   style?: CSSProperties;
   innerStyle?: CSSProperties;
   onScroll?: UIEventHandler<HTMLDivElement>;
+  onEndReached?: () => void;
 }
 
 export const List = forwardRef<ListHandle, ListProps>(
@@ -108,9 +111,11 @@ export const List = forwardRef<ListHandle, ListProps>(
       itemMargin = 6,
       horizontal: isHorizontal,
       reverse,
+      endThreshold = 0,
       style: styleProp,
       innerStyle: innerStyleProp,
       onScroll,
+      onEndReached,
     },
     ref
   ): ReactElement => {
@@ -131,6 +136,7 @@ export const List = forwardRef<ListHandle, ListProps>(
 
     const wrapperRef = useRef<HTMLDivElement>(null);
     const rootRef = useRef<HTMLDivElement>(null);
+    const onEndReachedCalledIndex = useRef<number>(-1);
 
     const handleRef = useRef<ObserverHandle>();
     const handle =
@@ -333,6 +339,18 @@ export const List = forwardRef<ListHandle, ListProps>(
         }
       }
     }, [jump]);
+
+    useEffect(() => {
+      const endMargin = elements.length - 1 - endIndex;
+      if (
+        onEndReached &&
+        endMargin <= endThreshold &&
+        onEndReachedCalledIndex.current < elements.length
+      ) {
+        onEndReachedCalledIndex.current = elements.length;
+        onEndReached();
+      }
+    }, [endIndex]);
 
     useImperativeHandle(ref, () => ({
       scrollTo(index) {
