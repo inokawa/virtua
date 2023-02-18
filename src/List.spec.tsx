@@ -82,7 +82,7 @@ global.IntersectionObserver = class {
 
 afterEach(cleanup);
 
-describe("layout === vertical", () => {
+describe("vertical", () => {
   it("should render 1 children", async () => {
     const { asFragment } = render(
       <List>
@@ -105,10 +105,32 @@ describe("layout === vertical", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render many children", () => {
+  it("should render 100 children", () => {
+    const { asFragment } = render(
+      <List>
+        {Array.from({ length: 100 }).map((_, i) => (
+          <div key={i}>{i}</div>
+        ))}
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render 1000 children", () => {
     const { asFragment } = render(
       <List>
         {Array.from({ length: 1000 }).map((_, i) => (
+          <div key={i}>{i}</div>
+        ))}
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render 10000 children", () => {
+    const { asFragment } = render(
+      <List>
+        {Array.from({ length: 10000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
       </List>
@@ -174,7 +196,7 @@ describe("layout === vertical", () => {
   });
 });
 
-describe("layout === horizontal", () => {
+describe("horizontal", () => {
   it("should render 1 children", async () => {
     const { asFragment } = render(
       <List horizontal>
@@ -197,10 +219,32 @@ describe("layout === horizontal", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render many children", () => {
+  it("should render 100 children", () => {
+    const { asFragment } = render(
+      <List horizontal>
+        {Array.from({ length: 100 }).map((_, i) => (
+          <div key={i}>{i}</div>
+        ))}
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render 1000 children", () => {
     const { asFragment } = render(
       <List horizontal>
         {Array.from({ length: 1000 }).map((_, i) => (
+          <div key={i}>{i}</div>
+        ))}
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render 10000 children", () => {
+    const { asFragment } = render(
+      <List horizontal>
+        {Array.from({ length: 10000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
       </List>
@@ -260,6 +304,30 @@ describe("layout === horizontal", () => {
         <div>2</div>
         <div>3</div>
         <div>4</div>
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+});
+
+describe("reverse", () => {
+  it("should render if vertical", () => {
+    const { asFragment } = render(
+      <List>
+        {Array.from({ length: 100 }).map((_, i) => (
+          <div key={i}>{i}</div>
+        ))}
+      </List>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render if horizontal", () => {
+    const { asFragment } = render(
+      <List horizontal>
+        {Array.from({ length: 100 }).map((_, i) => (
+          <div key={i}>{i}</div>
+        ))}
       </List>
     );
     expect(asFragment()).toMatchSnapshot();
