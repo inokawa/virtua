@@ -1,8 +1,7 @@
 import typescript from "@rollup/plugin-typescript";
 import { terser } from "rollup-plugin-terser";
+import { getBabelOutputPlugin } from "@rollup/plugin-babel";
 import pkg from "./package.json";
-
-const keys = (p) => Object.keys(p || {});
 
 export default {
   input: "src/index.ts",
@@ -25,6 +24,20 @@ export default {
       declaration: true,
       exclude: ["**/*.{spec,stories}.*"],
     }),
+    getBabelOutputPlugin({
+      plugins: [
+        "@babel/plugin-transform-react-pure-annotations",
+        [
+          "replace-import-extensions",
+          {
+            "^use-sync-external-store/shim$":
+              "use-sync-external-store/shim/index.js",
+            "^use-sync-external-store/shim/with-selector$":
+              "use-sync-external-store/shim/with-selector.js",
+          },
+        ],
+      ],
+    }),
     terser({
       ecma: 2015,
       module: true,
@@ -39,7 +52,8 @@ export default {
     }),
   ],
   external: (id) =>
-    [...keys(pkg.dependencies), ...keys(pkg.devDependencies)].some((d) =>
-      id.startsWith(d)
-    ),
+    [
+      ...Object.keys(pkg.dependencies),
+      ...Object.keys(pkg.devDependencies),
+    ].some((d) => id.startsWith(d)),
 };

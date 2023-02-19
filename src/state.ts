@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useRef } from "react";
 import {
   findStartIndexAfter,
   findStartIndexBefore,
@@ -17,12 +17,14 @@ export const HANDLE_SCROLL = 4;
 
 export type ScrollJump = { _start: number; _end: number };
 
+type Cache = { _sizes: number[] };
+
 type State = {
   _startIndex: number;
   _viewportWidth: number;
   _viewportHeight: number;
   _scrollSize: number;
-  _sizes: number[]; // mutatable cache
+  _cache: Cache; // mutatable cache
   _jump: ScrollJump;
 };
 
@@ -44,16 +46,18 @@ type Actions =
 const reducer = (state: State, action: Actions, itemSize: number): State => {
   switch (action._type) {
     case RESET_CACHE: {
-      const sizes = resetCache(action._length, state._sizes);
+      const sizes = resetCache(action._length, state._cache._sizes);
       return {
         ...state,
-        _sizes: sizes,
+        _cache: { _sizes: sizes },
         _scrollSize: calculateAllSize(sizes, itemSize),
       };
     }
     case UPDATE_ITEM_SIZES: {
       const { _indexes: indexes, _sizes: sizes } = action;
-      if (indexes.every((index, i) => state._sizes[index] === sizes[i]!)) {
+      if (
+        indexes.every((index, i) => state._cache._sizes[index] === sizes[i]!)
+      ) {
         return state;
       }
 
@@ -62,17 +66,17 @@ const reducer = (state: State, action: Actions, itemSize: number): State => {
       indexes.forEach((index, i) => {
         if (index < state._startIndex) {
           topJump +=
-            sizes[i]! - resolveItemSize(state._sizes[index]!, itemSize);
+            sizes[i]! - resolveItemSize(state._cache._sizes[index]!, itemSize);
         } else {
           bottomJump +=
-            sizes[i]! - resolveItemSize(state._sizes[index]!, itemSize);
+            sizes[i]! - resolveItemSize(state._cache._sizes[index]!, itemSize);
         }
-        state._sizes[index] = sizes[i]!;
+        state._cache._sizes[index] = sizes[i]!;
       });
 
       return {
         ...state,
-        _scrollSize: calculateAllSize(state._sizes, itemSize),
+        _scrollSize: calculateAllSize(state._cache._sizes, itemSize),
         _jump: { _start: topJump, _end: bottomJump },
       };
     }
@@ -95,14 +99,14 @@ const reducer = (state: State, action: Actions, itemSize: number): State => {
         startIndex = findStartIndexAfter(
           action._index,
           max(0, -action._offset),
-          state._sizes,
+          state._cache._sizes,
           itemSize
         );
       } else {
         startIndex = findStartIndexBefore(
           action._index,
           max(0, action._offset),
-          state._sizes,
+          state._cache._sizes,
           itemSize
         );
       }
@@ -118,7 +122,7 @@ const reducer = (state: State, action: Actions, itemSize: number): State => {
     case HANDLE_SCROLL: {
       const startIndex = findStartIndexWithOffset(
         action._offset,
-        state._sizes,
+        state._cache._sizes,
         itemSize
       );
       if (startIndex === state._startIndex) {
@@ -132,29 +136,48 @@ const reducer = (state: State, action: Actions, itemSize: number): State => {
   }
 };
 
-// In React 18, useReducer causes rerender even if the state update didn't change anything.
-// So imitate useReducer with useState for performance.
-// https://github.com/facebook/react/pull/22445
-export const useVirtualState = (
-  itemCount: number,
-  itemSize: number
-): [State, (action: Actions) => void] => {
-  const [state, setState] = useState(() => {
-    const sizes = resetCache(itemCount);
-    return {
-      _startIndex: 0,
-      _viewportWidth: 0,
-      _viewportHeight: 0,
-      _scrollSize: calculateAllSize(sizes, itemSize),
-      _sizes: sizes,
-      _jump: { _start: 0, _end: 0 },
-    };
-  });
+export type Store = {
+  _getStore(): State;
+  _subscribe(cb: () => void): () => void;
+  _update(action: Actions): void;
+};
 
-  return [
-    state,
-    useCallback((action: Actions) => {
-      setState((prev) => reducer(prev, action, itemSize));
-    }, []),
-  ];
+// https://github.com/facebook/react/issues/25191#issuecomment-1237456448
+export const useVirtualStore = (itemCount: number, itemSize: number): Store => {
+  const ref = useRef<Store | undefined>();
+  return (
+    ref.current ||
+    (ref.current = (() => {
+      const subscribers = new Set<() => void>();
+      const sizes = resetCache(itemCount);
+      let state: State = {
+        _startIndex: 0,
+        _viewportWidth: 0,
+        _viewportHeight: 0,
+        _scrollSize: calculateAllSize(sizes, itemSize),
+        _cache: { _sizes: sizes },
+        _jump: { _start: 0, _end: 0 },
+      };
+      return {
+        _getStore(): State {
+          return state;
+        },
+        _subscribe(cb: () => void) {
+          subscribers.add(cb);
+          return () => {
+            subscribers.delete(cb);
+          };
+        },
+        _update: (action: Actions) => {
+          const nextState = reducer(state, action, itemSize);
+          if (state !== nextState) {
+            state = nextState;
+            subscribers.forEach((cb) => {
+              cb();
+            });
+          }
+        },
+      };
+    })())
+  );
 };

@@ -11,7 +11,8 @@ import {
   UIEventHandler,
   useEffect,
 } from "react";
-import { flushSync } from "react-dom";
+import { useSyncExternalStore } from "use-sync-external-store/shim";
+import { useSyncExternalStoreWithSelector } from "use-sync-external-store/shim/with-selector";
 import {
   computeStartOffset,
   findEndIndex,
@@ -24,7 +25,7 @@ import {
   RESET_CACHE,
   UPDATE_ITEM_SIZES,
   UPDATE_VIEWPORT_SIZE,
-  useVirtualState,
+  useVirtualStore,
 } from "./state";
 import type { ObserverHandle } from "./types";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
@@ -133,18 +134,43 @@ export const List = forwardRef<ListHandle, ListProps>(
       return i;
     }, [children]);
 
-    const [
-      {
-        _startIndex: startIndex,
-        _viewportWidth: viewportWidth,
-        _viewportHeight: viewportHeight,
-        _scrollSize: scrollSize,
-        _sizes: sizes,
-        _jump: jump,
-      },
-      dispatch,
-    ] = useVirtualState(count, itemSize);
-
+    const store = useVirtualStore(count, itemSize);
+    const startIndex = useSyncExternalStoreWithSelector(
+      store._subscribe,
+      store._getStore,
+      store._getStore,
+      (s) => s._startIndex
+    );
+    const viewportWidth = useSyncExternalStoreWithSelector(
+      store._subscribe,
+      store._getStore,
+      store._getStore,
+      (s) => s._viewportWidth
+    );
+    const viewportHeight = useSyncExternalStoreWithSelector(
+      store._subscribe,
+      store._getStore,
+      store._getStore,
+      (s) => s._viewportHeight
+    );
+    const scrollSize = useSyncExternalStoreWithSelector(
+      store._subscribe,
+      store._getStore,
+      store._getStore,
+      (s) => s._scrollSize
+    );
+    const cache = useSyncExternalStoreWithSelector(
+      store._subscribe,
+      store._getStore,
+      store._getStore,
+      (s) => s._cache
+    );
+    const jump = useSyncExternalStoreWithSelector(
+      store._subscribe,
+      store._getStore,
+      store._getStore,
+      (s) => s._jump
+    );
     const wrapperRef = useRef<HTMLDivElement>(null);
     const rootRef = useRef<HTMLDivElement>(null);
     const onEndReachedCalledIndex = useRef<number>(-1);
@@ -164,17 +190,15 @@ export const List = forwardRef<ListHandle, ListProps>(
         return {
           _init(root, wrapper) {
             const syncViewportToScrollPosition = () => {
-              flushSync(() => {
-                dispatch({
-                  _type: HANDLE_SCROLL,
-                  _offset: isHorizontal
-                    ? reverse
-                      ? -root.scrollLeft
-                      : root.scrollLeft
-                    : reverse
-                    ? -root.scrollTop
-                    : root.scrollTop,
-                });
+              store._update({
+                _type: HANDLE_SCROLL,
+                _offset: isHorizontal
+                  ? reverse
+                    ? -root.scrollLeft
+                    : root.scrollLeft
+                  : reverse
+                  ? -root.scrollTop
+                  : root.scrollTop,
               });
             };
 
@@ -192,7 +216,7 @@ export const List = forwardRef<ListHandle, ListProps>(
               const resizedItemIndexes: number[] = [];
               for (const entry of entries) {
                 if (entry.target === wrapper) {
-                  dispatch({
+                  store._update({
                     _type: UPDATE_VIEWPORT_SIZE,
                     _width: entry.contentRect.width,
                     _height: entry.contentRect.height,
@@ -211,7 +235,7 @@ export const List = forwardRef<ListHandle, ListProps>(
               }
 
               if (resizedItemSizes.length) {
-                dispatch({
+                store._update({
                   _type: UPDATE_ITEM_SIZES,
                   _sizes: resizedItemSizes,
                   _indexes: resizedItemIndexes,
@@ -257,7 +281,7 @@ export const List = forwardRef<ListHandle, ListProps>(
                 if (latestEntry) {
                   const { boundingClientRect, rootBounds, target } =
                     latestEntry;
-                  dispatch({
+                  store._update({
                     _type: HANDLE_ITEM_INTERSECTION,
                     _index: mountedIndexes.get(target)!,
                     _offset: isHorizontal
@@ -300,6 +324,7 @@ export const List = forwardRef<ListHandle, ListProps>(
         };
       })());
 
+    const sizes = cache._sizes;
     const viewportSize = isHorizontal ? viewportWidth : viewportHeight;
     const endIndex = useMemo(
       () => findEndIndex(startIndex, viewportSize, sizes, itemSize),
@@ -315,7 +340,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     );
 
     useIsomorphicLayoutEffect(() => {
-      dispatch({
+      store._update({
         _type: RESET_CACHE,
         _length: count,
       });
