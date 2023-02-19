@@ -123,6 +123,7 @@ export type Store = {
   _getViewportWidth(): number;
   _getViewportHeight(): number;
   _getViewportSize(): number;
+  _getViewportSizeInitialized(): boolean;
   _getScrollSize(): number;
   _getJump(): ScrollJump;
   _subscribe(cb: () => void): () => void;
@@ -176,6 +177,9 @@ export const useVirtualStore = (
         },
         _getViewportSize() {
           return getViewportSize();
+        },
+        _getViewportSizeInitialized() {
+          return getViewportSize() !== 0;
         },
         _getScrollSize() {
           return computeTotalSize(state._cache as Writeable<Cache>);

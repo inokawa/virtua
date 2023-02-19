@@ -10,6 +10,7 @@ import {
   ReactNode,
   UIEventHandler,
   useEffect,
+  RefObject,
 } from "react";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
 import {
@@ -87,6 +88,101 @@ const Item = memo(
 
 const isInvalidElement = <T,>(e: T) => e == null || typeof e === "boolean";
 
+const Window = ({
+  children,
+  _store: store,
+  _ref: ref,
+  _onScroll: onScroll,
+  _isHorizontal: isHorizontal,
+  _reverse: reverse,
+}: {
+  children: ReactNode;
+  _store: Store;
+  _ref: RefObject<HTMLDivElement>;
+  _onScroll: UIEventHandler<HTMLDivElement> | undefined;
+  _isHorizontal: boolean | undefined;
+  _reverse: boolean | undefined;
+}) => {
+  const viewportWidth = useSyncExternalStore(
+    store._subscribe,
+    store._getViewportWidth,
+    store._getViewportWidth
+  );
+  const viewportHeight = useSyncExternalStore(
+    store._subscribe,
+    store._getViewportHeight,
+    store._getViewportHeight
+  );
+
+  return (
+    <div
+      ref={ref}
+      style={useMemo<CSSProperties>(
+        () => ({
+          width: viewportWidth,
+          height: viewportHeight,
+          overflow: isHorizontal ? "auto hidden" : "hidden auto",
+          position: "absolute",
+          padding: 0,
+          margin: 0,
+          top: 0,
+          left: 0,
+          ...(reverse && {
+            display: "flex",
+            flexDirection: isHorizontal ? "row-reverse" : "column-reverse",
+          }),
+        }),
+        [viewportHeight, viewportWidth, isHorizontal, reverse]
+      )}
+      onScroll={onScroll}
+    >
+      {children}
+    </div>
+  );
+};
+
+const Inner = ({
+  children,
+  _store: store,
+  _style: style,
+  _isHorizontal: isHorizontal,
+}: {
+  children: ReactNode;
+  _store: Store;
+  _style: CSSProperties | undefined;
+  _isHorizontal: boolean | undefined;
+}) => {
+  const scrollSize = useSyncExternalStore(
+    store._subscribe,
+    store._getScrollSize,
+    store._getScrollSize
+  );
+  const viewportSize = useSyncExternalStore(
+    store._subscribe,
+    store._getViewportSize,
+    store._getViewportSize
+  );
+
+  return (
+    <div
+      style={useMemo<CSSProperties>(() => {
+        const clampedScrollSize =
+          scrollSize >= viewportSize ? scrollSize : viewportSize;
+        return {
+          position: "relative",
+          width: isHorizontal ? clampedScrollSize : "100%",
+          height: isHorizontal ? "100%" : clampedScrollSize,
+          minWidth: isHorizontal ? clampedScrollSize : "100%",
+          minHeight: isHorizontal ? "100%" : clampedScrollSize,
+          ...style,
+        };
+      }, [scrollSize, viewportSize, style, isHorizontal])}
+    >
+      {children}
+    </div>
+  );
+};
+
 export interface ListHandle {
   scrollTo(index: number): void;
 }
@@ -133,11 +229,6 @@ export const List = forwardRef<ListHandle, ListProps>(
     }, [children]);
 
     const store = useVirtualStore(count, itemSize, isHorizontal);
-    const scrollSize = useSyncExternalStore(
-      store._subscribe,
-      store._getScrollSize,
-      store._getScrollSize
-    );
     const startIndex = useSyncExternalStore(
       store._subscribe,
       store._getStartIndex,
@@ -148,20 +239,10 @@ export const List = forwardRef<ListHandle, ListProps>(
       store._getEndIndex,
       store._getEndIndex
     );
-    const viewportWidth = useSyncExternalStore(
+    const isViewportInitialized = useSyncExternalStore(
       store._subscribe,
-      store._getViewportWidth,
-      store._getViewportWidth
-    );
-    const viewportHeight = useSyncExternalStore(
-      store._subscribe,
-      store._getViewportHeight,
-      store._getViewportHeight
-    );
-    const viewportSize = useSyncExternalStore(
-      store._subscribe,
-      store._getViewportSize,
-      store._getViewportSize
+      store._getViewportSizeInitialized,
+      store._getViewportSizeInitialized
     );
     const jump = useSyncExternalStore(
       store._subscribe,
@@ -169,7 +250,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       store._getJump
     );
     const wrapperRef = useRef<HTMLDivElement>(null);
-    const rootRef = useRef<HTMLDivElement>(null);
+    const scrollRef = useRef<HTMLDivElement>(null);
     const onEndReachedCalledIndex = useRef<number>(-1);
 
     const handleRef = useRef<ObserverHandle>();
@@ -325,7 +406,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     const endIndexWithMargin = min(endIndex + itemMargin, count - 1);
 
     useIsomorphicLayoutEffect(
-      () => handle._init(rootRef.current!, wrapperRef.current!),
+      () => handle._init(scrollRef.current!, wrapperRef.current!),
       []
     );
 
@@ -337,7 +418,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     }, [count]);
 
     useIsomorphicLayoutEffect(() => {
-      if (rootRef.current) {
+      if (scrollRef.current) {
         const isStartInView = startIndex === 0;
         const isEndInView = endIndex - (count - 1) === 0;
         if (
@@ -345,21 +426,21 @@ export const List = forwardRef<ListHandle, ListProps>(
           !(
             isStartInView &&
             (isHorizontal
-              ? rootRef.current.scrollLeft
-              : rootRef.current.scrollTop) === 0
+              ? scrollRef.current.scrollLeft
+              : scrollRef.current.scrollTop) === 0
           )
         ) {
           if (isHorizontal) {
-            rootRef.current.scrollLeft += jump._start;
+            scrollRef.current.scrollLeft += jump._start;
           } else {
-            rootRef.current.scrollTop += jump._start;
+            scrollRef.current.scrollTop += jump._start;
           }
         }
         if (jump._end && !isStartInView && isEndInView) {
           if (isHorizontal) {
-            rootRef.current.scrollLeft += jump._end;
+            scrollRef.current.scrollLeft += jump._end;
           } else {
-            rootRef.current.scrollTop += jump._end;
+            scrollRef.current.scrollTop += jump._end;
           }
         }
       }
@@ -379,8 +460,10 @@ export const List = forwardRef<ListHandle, ListProps>(
 
     useImperativeHandle(ref, () => ({
       scrollTo(index) {
-        if (rootRef.current) {
+        if (scrollRef.current) {
           let offset = store._getItemOffset(index);
+          const scrollSize = store._getScrollSize();
+          const viewportSize = store._getViewportSize();
           if (scrollSize - (offset + viewportSize) <= 0) {
             offset = scrollSize - viewportSize;
           }
@@ -388,9 +471,9 @@ export const List = forwardRef<ListHandle, ListProps>(
             offset *= -1;
           }
           if (isHorizontal) {
-            rootRef.current.scrollLeft = offset;
+            scrollRef.current.scrollLeft = offset;
           } else {
-            rootRef.current.scrollTop = offset;
+            scrollRef.current.scrollTop = offset;
           }
         }
       },
@@ -433,44 +516,21 @@ export const List = forwardRef<ListHandle, ListProps>(
           };
         }, [styleProp])}
       >
-        <div
-          ref={rootRef}
-          style={useMemo<CSSProperties>(
-            () => ({
-              width: viewportWidth,
-              height: viewportHeight,
-              overflow: isHorizontal ? "auto hidden" : "hidden auto",
-              position: "absolute",
-              padding: 0,
-              margin: 0,
-              top: 0,
-              left: 0,
-              ...(reverse && {
-                display: "flex",
-                flexDirection: isHorizontal ? "row-reverse" : "column-reverse",
-              }),
-            }),
-            [viewportHeight, viewportWidth, isHorizontal, reverse]
-          )}
-          onScroll={onScroll}
+        <Window
+          _ref={scrollRef}
+          _store={store}
+          _isHorizontal={isHorizontal}
+          _reverse={reverse}
+          _onScroll={onScroll}
         >
-          <div
-            style={useMemo<CSSProperties>(() => {
-              const crampedScrollSize =
-                scrollSize >= viewportSize ? scrollSize : viewportSize;
-              return {
-                position: "relative",
-                width: isHorizontal ? crampedScrollSize : "100%",
-                height: isHorizontal ? "100%" : crampedScrollSize,
-                minWidth: isHorizontal ? crampedScrollSize : "100%",
-                minHeight: isHorizontal ? "100%" : crampedScrollSize,
-                ...innerStyleProp,
-              };
-            }, [scrollSize, viewportSize, innerStyleProp, isHorizontal])}
+          <Inner
+            _store={store}
+            _style={innerStyleProp}
+            _isHorizontal={isHorizontal}
           >
-            {viewportSize !== 0 && items}
-          </div>
-        </div>
+            {isViewportInitialized && items}
+          </Inner>
+        </Window>
       </div>
     );
   }
