@@ -28,7 +28,7 @@ global.ResizeObserver = class {
           bottom: 0,
           left: 0,
           right: 0,
-          width: ITEM_HEIGHT,
+          width: ITEM_WIDTH,
           height: VIEWPORT_HEIGHT,
           x: 0,
           y: 0,
