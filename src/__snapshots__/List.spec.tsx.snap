@@ -136,20 +136,6 @@ exports[`horizontal should render 100 children 1`] = `
             6
           </div>
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 700px;"
-        >
-          <div>
-            7
-          </div>
-        </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 800px;"
-        >
-          <div>
-            8
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -216,20 +202,6 @@ exports[`horizontal should render 1000 children 1`] = `
             6
           </div>
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 700px;"
-        >
-          <div>
-            7
-          </div>
-        </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 800px;"
-        >
-          <div>
-            8
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -294,20 +266,6 @@ exports[`horizontal should render 10000 children 1`] = `
         >
           <div>
             6
-          </div>
-        </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 700px;"
-        >
-          <div>
-            7
-          </div>
-        </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 800px;"
-        >
-          <div>
-            8
           </div>
         </div>
       </div>
@@ -528,20 +486,6 @@ exports[`reverse should render if horizontal 1`] = `
         >
           <div>
             6
-          </div>
-        </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 700px;"
-        >
-          <div>
-            7
-          </div>
-        </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 800px;"
-        >
-          <div>
-            8
           </div>
         </div>
       </div>
