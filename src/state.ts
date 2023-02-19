@@ -4,32 +4,35 @@ import {
   findStartIndexBefore,
   findStartIndexWithOffset,
   resetCache,
-  resolveItemSize,
-  calculateAllSize,
+  getItemSize,
+  computeTotalSize,
+  findEndIndex,
+  computeStartOffset,
+  Cache,
+  UNCACHED,
+  setItemSize,
 } from "./cache";
+import type { Writeable } from "./types";
 import { max } from "./utils";
 
-export const RESET_CACHE = 0;
+export const UPDATE_CACHE_LENGTH = 0;
 export const UPDATE_ITEM_SIZES = 1;
 export const UPDATE_VIEWPORT_SIZE = 2;
 export const HANDLE_ITEM_INTERSECTION = 3;
 export const HANDLE_SCROLL = 4;
 
-export type ScrollJump = { _start: number; _end: number };
-
-type Cache = { _sizes: number[] };
+export type ScrollJump = Readonly<{ _start: number; _end: number }>;
 
 type State = {
   _startIndex: number;
   _viewportWidth: number;
   _viewportHeight: number;
-  _scrollSize: number;
-  _cache: Cache; // mutatable cache
+  _cache: Cache;
   _jump: ScrollJump;
 };
 
 type Actions =
-  | { _type: typeof RESET_CACHE; _length: number }
+  | { _type: typeof UPDATE_CACHE_LENGTH; _length: number }
   | {
       _type: typeof UPDATE_ITEM_SIZES;
       _indexes: number[];
@@ -43,135 +46,152 @@ type Actions =
     }
   | { _type: typeof HANDLE_SCROLL; _offset: number };
 
-const reducer = (state: State, action: Actions, itemSize: number): State => {
+const mutate = (state: State, action: Actions, itemSize: number): boolean => {
   switch (action._type) {
-    case RESET_CACHE: {
-      const sizes = resetCache(action._length, state._cache._sizes);
-      return {
-        ...state,
-        _cache: { _sizes: sizes },
-        _scrollSize: calculateAllSize(sizes, itemSize),
-      };
+    case UPDATE_CACHE_LENGTH: {
+      if (state._cache._length === action._length) return false;
+      state._cache = resetCache(action._length, itemSize, state._cache);
+      return true;
     }
     case UPDATE_ITEM_SIZES: {
       const { _indexes: indexes, _sizes: sizes } = action;
       if (
         indexes.every((index, i) => state._cache._sizes[index] === sizes[i]!)
       ) {
-        return state;
+        return false;
       }
 
       let topJump = 0;
       let bottomJump = 0;
       indexes.forEach((index, i) => {
         if (index < state._startIndex) {
-          topJump +=
-            sizes[i]! - resolveItemSize(state._cache._sizes[index]!, itemSize);
+          topJump += sizes[i]! - getItemSize(state._cache, index);
         } else {
-          bottomJump +=
-            sizes[i]! - resolveItemSize(state._cache._sizes[index]!, itemSize);
+          bottomJump += sizes[i]! - getItemSize(state._cache, index);
         }
-        state._cache._sizes[index] = sizes[i]!;
+        setItemSize(state._cache as Writeable<Cache>, index, sizes[i]!);
       });
 
-      return {
-        ...state,
-        _scrollSize: calculateAllSize(state._cache._sizes, itemSize),
-        _jump: { _start: topJump, _end: bottomJump },
-      };
+      state._jump = { _start: topJump, _end: bottomJump };
+      return true;
     }
     case UPDATE_VIEWPORT_SIZE: {
       if (
         state._viewportWidth === action._width &&
         state._viewportHeight === action._height
       ) {
-        return state;
+        return false;
       }
-      return {
-        ...state,
-        _viewportWidth: action._width,
-        _viewportHeight: action._height,
-      };
+      state._viewportWidth = action._width;
+      state._viewportHeight = action._height;
+      return true;
     }
     case HANDLE_ITEM_INTERSECTION: {
-      let startIndex: number;
-      if (action._offset <= 0) {
-        startIndex = findStartIndexAfter(
-          action._index,
-          max(0, -action._offset),
-          state._cache._sizes,
-          itemSize
-        );
-      } else {
-        startIndex = findStartIndexBefore(
-          action._index,
-          max(0, action._offset),
-          state._cache._sizes,
-          itemSize
-        );
-      }
-
-      if (startIndex === state._startIndex) {
-        return state;
-      }
-      return {
-        ...state,
-        _startIndex: startIndex,
-      };
+      const prev = state._startIndex;
+      return (
+        (state._startIndex =
+          action._offset <= 0
+            ? findStartIndexAfter(
+                action._index,
+                max(0, -action._offset),
+                state._cache
+              )
+            : findStartIndexBefore(
+                action._index,
+                max(0, action._offset),
+                state._cache
+              )) !== prev
+      );
     }
     case HANDLE_SCROLL: {
-      const startIndex = findStartIndexWithOffset(
-        action._offset,
-        state._cache._sizes,
-        itemSize
+      const prev = state._startIndex;
+      return (
+        (state._startIndex = findStartIndexWithOffset(
+          action._offset,
+          state._cache
+        )) !== prev
       );
-      if (startIndex === state._startIndex) {
-        return state;
-      }
-      return {
-        ...state,
-        _startIndex: startIndex,
-      };
     }
   }
 };
 
 export type Store = {
-  _getStore(): State;
+  _getStartIndex(): number;
+  _getEndIndex(): number;
+  _getIsItemHeightUnCached(index: number): boolean;
+  _getItemOffset(index: number): number;
+  _getViewportWidth(): number;
+  _getViewportHeight(): number;
+  _getViewportSize(): number;
+  _getScrollSize(): number;
+  _getJump(): ScrollJump;
   _subscribe(cb: () => void): () => void;
   _update(action: Actions): void;
 };
 
 // https://github.com/facebook/react/issues/25191#issuecomment-1237456448
-export const useVirtualStore = (itemCount: number, itemSize: number): Store => {
+export const useVirtualStore = (
+  itemCount: number,
+  itemSize: number,
+  isHorizontal: boolean | undefined
+): Store => {
   const ref = useRef<Store | undefined>();
   return (
     ref.current ||
     (ref.current = (() => {
       const subscribers = new Set<() => void>();
-      const sizes = resetCache(itemCount);
-      let state: State = {
+      const state: Readonly<State> = {
         _startIndex: 0,
         _viewportWidth: 0,
         _viewportHeight: 0,
-        _scrollSize: calculateAllSize(sizes, itemSize),
-        _cache: { _sizes: sizes },
+        _cache: resetCache(itemCount, itemSize),
         _jump: { _start: 0, _end: 0 },
       };
+
+      const getViewportSize = (): number =>
+        isHorizontal ? state._viewportWidth : state._viewportHeight;
+
       return {
-        _getStore(): State {
-          return state;
+        _getStartIndex() {
+          return state._startIndex;
         },
-        _subscribe(cb: () => void) {
+        _getEndIndex() {
+          return findEndIndex(
+            state._startIndex,
+            getViewportSize(),
+            state._cache
+          );
+        },
+        _getIsItemHeightUnCached(index) {
+          return state._cache._sizes[index] === UNCACHED;
+        },
+        _getItemOffset(index) {
+          return computeStartOffset(index, state._cache as Writeable<Cache>);
+        },
+        _getViewportWidth() {
+          return state._viewportWidth;
+        },
+        _getViewportHeight() {
+          return state._viewportHeight;
+        },
+        _getViewportSize() {
+          return getViewportSize();
+        },
+        _getScrollSize() {
+          return computeTotalSize(state._cache as Writeable<Cache>);
+        },
+        _getJump() {
+          return state._jump;
+        },
+        _subscribe(cb) {
           subscribers.add(cb);
           return () => {
             subscribers.delete(cb);
           };
         },
-        _update: (action: Actions) => {
-          const nextState = reducer(state, action, itemSize);
-          if (state !== nextState) {
-            state = nextState;
+        _update(action) {
+          const mutated = mutate(state, action, itemSize);
+          if (mutated) {
             subscribers.forEach((cb) => {
               cb();
             });

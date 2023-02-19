@@ -12,17 +12,11 @@ import {
   useEffect,
 } from "react";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
-import { useSyncExternalStoreWithSelector } from "use-sync-external-store/shim/with-selector";
-import {
-  computeStartOffset,
-  findEndIndex,
-  resolveItemSize,
-  UNCACHED_ITEM_SIZE,
-} from "./cache";
 import {
   HANDLE_ITEM_INTERSECTION,
   HANDLE_SCROLL,
-  RESET_CACHE,
+  UPDATE_CACHE_LENGTH,
+  Store,
   UPDATE_ITEM_SIZES,
   UPDATE_VIEWPORT_SIZE,
   useVirtualStore,
@@ -32,28 +26,32 @@ import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { debounce, max, min } from "./utils";
 
 type ItemProps = {
-  children: ReactNode;
+  _element: ReactNode;
   _handle: ObserverHandle;
+  _store: Store;
   _index: number;
-  _offset: number;
   _isHorizontal: boolean | undefined;
   _isReversed: boolean | undefined;
-  _hide: boolean;
 };
 
 const Item = memo(
   ({
-    children,
-    _handle,
-    _index,
-    _offset: offset,
+    _element: children,
+    _handle: handle,
+    _store: store,
+    _index: index,
     _isHorizontal: isHorizontal,
     _isReversed: isReversed,
-    _hide: hide,
   }: ItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
-    useIsomorphicLayoutEffect(() => _handle._observe(ref.current!, _index), []);
+    const getOffset = () => store._getItemOffset(index);
+    const getHide = () => store._getIsItemHeightUnCached(index);
+
+    const offset = useSyncExternalStore(store._subscribe, getOffset, getOffset);
+    const hide = useSyncExternalStore(store._subscribe, getHide, getHide);
+
+    useIsomorphicLayoutEffect(() => handle._observe(ref.current!, index), []);
 
     return (
       <div
@@ -134,42 +132,41 @@ export const List = forwardRef<ListHandle, ListProps>(
       return i;
     }, [children]);
 
-    const store = useVirtualStore(count, itemSize);
-    const startIndex = useSyncExternalStoreWithSelector(
+    const store = useVirtualStore(count, itemSize, isHorizontal);
+    const scrollSize = useSyncExternalStore(
       store._subscribe,
-      store._getStore,
-      store._getStore,
-      (s) => s._startIndex
+      store._getScrollSize,
+      store._getScrollSize
     );
-    const viewportWidth = useSyncExternalStoreWithSelector(
+    const startIndex = useSyncExternalStore(
       store._subscribe,
-      store._getStore,
-      store._getStore,
-      (s) => s._viewportWidth
+      store._getStartIndex,
+      store._getStartIndex
     );
-    const viewportHeight = useSyncExternalStoreWithSelector(
+    const endIndex = useSyncExternalStore(
       store._subscribe,
-      store._getStore,
-      store._getStore,
-      (s) => s._viewportHeight
+      store._getEndIndex,
+      store._getEndIndex
     );
-    const scrollSize = useSyncExternalStoreWithSelector(
+    const viewportWidth = useSyncExternalStore(
       store._subscribe,
-      store._getStore,
-      store._getStore,
-      (s) => s._scrollSize
+      store._getViewportWidth,
+      store._getViewportWidth
     );
-    const cache = useSyncExternalStoreWithSelector(
+    const viewportHeight = useSyncExternalStore(
       store._subscribe,
-      store._getStore,
-      store._getStore,
-      (s) => s._cache
+      store._getViewportHeight,
+      store._getViewportHeight
     );
-    const jump = useSyncExternalStoreWithSelector(
+    const viewportSize = useSyncExternalStore(
       store._subscribe,
-      store._getStore,
-      store._getStore,
-      (s) => s._jump
+      store._getViewportSize,
+      store._getViewportSize
+    );
+    const jump = useSyncExternalStore(
+      store._subscribe,
+      store._getJump,
+      store._getJump
     );
     const wrapperRef = useRef<HTMLDivElement>(null);
     const rootRef = useRef<HTMLDivElement>(null);
@@ -324,15 +321,8 @@ export const List = forwardRef<ListHandle, ListProps>(
         };
       })());
 
-    const sizes = cache._sizes;
-    const viewportSize = isHorizontal ? viewportWidth : viewportHeight;
-    const endIndex = useMemo(
-      () => findEndIndex(startIndex, viewportSize, sizes, itemSize),
-      [sizes, startIndex, viewportSize, itemSize]
-    );
-
     const startIndexWithMargin = max(startIndex - itemMargin, 0);
-    const endIndexWithMargin = min(endIndex + itemMargin, sizes.length - 1);
+    const endIndexWithMargin = min(endIndex + itemMargin, count - 1);
 
     useIsomorphicLayoutEffect(
       () => handle._init(rootRef.current!, wrapperRef.current!),
@@ -341,7 +331,7 @@ export const List = forwardRef<ListHandle, ListProps>(
 
     useIsomorphicLayoutEffect(() => {
       store._update({
-        _type: RESET_CACHE,
+        _type: UPDATE_CACHE_LENGTH,
         _length: count,
       });
     }, [count]);
@@ -349,7 +339,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     useIsomorphicLayoutEffect(() => {
       if (rootRef.current) {
         const isStartInView = startIndex === 0;
-        const isEndInView = endIndex - (sizes.length - 1) === 0;
+        const isEndInView = endIndex - (count - 1) === 0;
         if (
           jump._start &&
           !(
@@ -390,7 +380,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     useImperativeHandle(ref, () => ({
       scrollTo(index) {
         if (rootRef.current) {
-          let offset = computeStartOffset(index, sizes, itemSize);
+          let offset = store._getItemOffset(index);
           if (scrollSize - (offset + viewportSize) <= 0) {
             offset = scrollSize - viewportSize;
           }
@@ -406,11 +396,6 @@ export const List = forwardRef<ListHandle, ListProps>(
       },
     }));
 
-    let offset = useMemo(
-      () => computeStartOffset(startIndexWithMargin, sizes, itemSize),
-      [sizes, startIndexWithMargin, itemSize]
-    );
-
     let i = -1;
     const items = Children.map(children, (e) => {
       if (isInvalidElement(e)) {
@@ -425,16 +410,13 @@ export const List = forwardRef<ListHandle, ListProps>(
           <Item
             key={(e as { key?: ReactElement["key"] })?.key || i}
             _handle={handle}
+            _store={store}
+            _element={e}
             _index={i}
-            _offset={offset}
             _isHorizontal={isHorizontal}
             _isReversed={reverse}
-            _hide={sizes[i] === UNCACHED_ITEM_SIZE}
-          >
-            {e}
-          </Item>
+          />
         ) : null;
-      offset += resolveItemSize(sizes[i]!, itemSize);
       return item;
     });
 
