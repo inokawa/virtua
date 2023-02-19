@@ -479,29 +479,31 @@ export const List = forwardRef<ListHandle, ListProps>(
       },
     }));
 
-    let i = -1;
-    const items = Children.map(children, (e) => {
-      if (isInvalidElement(e)) {
-        return;
-      }
-      i++;
-      if (i < startIndexWithMargin || i > endIndexWithMargin) {
-        return;
-      }
-      const item =
-        e != null ? (
-          <Item
-            key={(e as { key?: ReactElement["key"] })?.key || i}
-            _handle={handle}
-            _store={store}
-            _element={e}
-            _index={i}
-            _isHorizontal={isHorizontal}
-            _isReversed={reverse}
-          />
-        ) : null;
-      return item;
-    });
+    const items = useMemo(() => {
+      let i = -1;
+      return Children.map(children, (e) => {
+        if (isInvalidElement(e)) {
+          return;
+        }
+        i++;
+        if (i < startIndexWithMargin || i > endIndexWithMargin) {
+          return;
+        }
+        const item =
+          e != null ? (
+            <Item
+              key={(e as { key?: ReactElement["key"] })?.key || i}
+              _handle={handle}
+              _store={store}
+              _element={e}
+              _index={i}
+              _isHorizontal={isHorizontal}
+              _isReversed={reverse}
+            />
+          ) : null;
+        return item;
+      });
+    }, [children, startIndexWithMargin, endIndexWithMargin]);
 
     return (
       <div
