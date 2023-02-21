@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SSR should succeed with renderToStaticMarkup 1`] = `"<div style="width:100%;height:100%;overflow:hidden;position:relative"><div style="width:0;height:0;overflow:hidden auto;position:absolute;padding:0;margin:0;top:0;left:0"><div style="position:relative;width:100%;height:40000px;min-width:100%;min-height:40000px"></div></div></div>"`;
+
+exports[`SSR should succeed with renderToString 1`] = `"<div style="width:100%;height:100%;overflow:hidden;position:relative"><div style="width:0;height:0;overflow:hidden auto;position:absolute;padding:0;margin:0;top:0;left:0"><div style="position:relative;width:100%;height:40000px;min-width:100%;min-height:40000px"></div></div></div>"`;
