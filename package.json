@@ -23,6 +23,7 @@
     "@babel/plugin-transform-react-pure-annotations": "7.18.6",
     "@dnd-kit/core": "6.0.8",
     "@dnd-kit/sortable": "7.0.2",
+    "@faker-js/faker": "7.6.0",
     "@rollup/plugin-typescript": "8.3.4",
     "@storybook/addon-docs": "7.0.0-alpha.54",
     "@storybook/react": "7.0.0-alpha.54",
