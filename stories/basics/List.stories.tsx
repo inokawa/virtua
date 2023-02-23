@@ -246,38 +246,6 @@ export const WithState: StoryObj = {
   },
 };
 
-export const WithPaddingAndMargin: StoryObj = {
-  render: () => {
-    return (
-      <List
-        style={{
-          height: "100vh",
-          // width: 500,
-          border: "solid 1px red",
-          background: "lightgray",
-        }}
-      >
-        {Array.from({ length: 1000 }).map((_, i) => {
-          return (
-            <div
-              key={i}
-              style={{
-                height: 80,
-                background: "#fff",
-                margin: 10,
-                padding: 10,
-                borderRadius: 8,
-              }}
-            >
-              {i}
-            </div>
-          );
-        })}
-      </List>
-    );
-  },
-};
-
 export const Zoom: StoryObj = {
   render: () => {
     return (
