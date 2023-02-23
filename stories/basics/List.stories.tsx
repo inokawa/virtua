@@ -75,9 +75,7 @@ const createRows = (num: number) => {
 
 export const Default: StoryObj = {
   render: () => {
-    return (
-      <List style={{ height: `calc(100vh - 30px)` }}>{createRows(1000)}</List>
-    );
+    return <List style={{ height: "100vh" }}>{createRows(1000)}</List>;
   },
 };
 
@@ -102,7 +100,7 @@ const createColumns = (num: number) => {
 export const Horizontal: StoryObj = {
   render: () => {
     return (
-      <List style={{ width: `calc(100vw - 30px)`, height: 400 }} horizontal>
+      <List style={{ width: "100vw", height: 400 }} horizontal>
         {createColumns(1000)}
       </List>
     );
@@ -112,7 +110,7 @@ export const Horizontal: StoryObj = {
 export const Reverse: StoryObj = {
   render: () => {
     return (
-      <List style={{ height: `calc(100vh - 30px)` }} reverse>
+      <List style={{ height: "100vh" }} reverse>
         {createRows(1000)}
       </List>
     );
@@ -126,7 +124,7 @@ export const InfiniteScrolling: StoryObj = {
     const [fetching, setFetching] = useState(false);
     return (
       <List
-        style={{ height: `calc(100vh - 30px)` }}
+        style={{ height: "100vh" }}
         endThreshold={30}
         onEndReached={async () => {
           setFetching(true);
@@ -146,7 +144,7 @@ export const InfiniteScrolling: StoryObj = {
 export const Nested: StoryObj = {
   render: () => {
     return (
-      <List style={{ width: 800, height: `calc(100vh - 30px)` }}>
+      <List style={{ width: 800, height: "100vh" }}>
         {Array.from({ length: 100 }).map((_, i) => (
           <List key={i} style={{ height: 200, border: "solid 1px gray" }}>
             {createRows(100)}
@@ -199,7 +197,7 @@ export const ScrollTo: StoryObj = {
             scroll to 999
           </button>
         </div>
-        <List ref={ref} style={{ height: `calc(100vh - 30px)` }}>
+        <List ref={ref} style={{ height: "100vh" }}>
           {createRows(1000)}
         </List>
       </div>
@@ -215,7 +213,7 @@ export const WithState: StoryObj = {
       4: true,
     });
     return (
-      <List style={{ height: `calc(100vh - 30px)` }}>
+      <List style={{ height: "100vh" }}>
         {Array.from({ length: 1000 }).map((_, i) => {
           const active = !!actives[i];
           return (
@@ -253,7 +251,7 @@ export const WithPaddingAndMargin: StoryObj = {
     return (
       <List
         style={{
-          height: `calc(100vh - 30px)`,
+          height: "100vh",
           // width: 500,
           border: "solid 1px red",
           background: "lightgray",
@@ -283,7 +281,7 @@ export const WithPaddingAndMargin: StoryObj = {
 export const Zoom: StoryObj = {
   render: () => {
     return (
-      <List style={{ height: `calc(100vh - 30px)` }}>
+      <List style={{ height: "100vh" }}>
         {Array.from({ length: 1000 }).map((_, i) => {
           return (
             <div
@@ -318,9 +316,7 @@ export const IncreasingItems: StoryObj = {
         clearInterval(timer);
       };
     });
-    return (
-      <List style={{ height: `calc(100vh - 30px)` }}>{createRows(row)}</List>
-    );
+    return <List style={{ height: "100vh" }}>{createRows(row)}</List>;
   },
 };
 
@@ -335,10 +331,6 @@ export const IncreasingItemsReversed: StoryObj = {
         clearInterval(timer);
       };
     });
-    return (
-      <List style={{ height: `calc(100vh - 30px)` }}>
-        {createRows(row).reverse()}
-      </List>
-    );
+    return <List style={{ height: "100vh" }}>{createRows(row).reverse()}</List>;
   },
 };

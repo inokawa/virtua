@@ -5,7 +5,13 @@ export const parameters = {
 
 export const decorators = [
   (Story) => (
-    <div style={{ background: "whitesmoke", padding: 10 }}>
+    <div
+      style={{
+        background: "whitesmoke",
+        width: "100vw",
+        height: "100vh",
+      }}
+    >
       <Story />
     </div>
   ),
