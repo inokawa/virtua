@@ -475,6 +475,8 @@ export const List = forwardRef<ListHandle, ListProps>(
           } else {
             scrollRef.current.scrollTop = offset;
           }
+          // Sync viewport to scroll destination
+          store._update({ _type: HANDLE_SCROLL, _offset: offset });
         }
       },
     }));
