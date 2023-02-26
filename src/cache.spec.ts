@@ -9,6 +9,7 @@ import {
   findStartIndexWithOffset,
   findEndIndex,
   Cache,
+  hasUnmeasuredItemsInRange,
 } from "./cache";
 import type { Writeable } from "./types";
 import { range } from "./utils";
@@ -669,5 +670,43 @@ describe(findStartIndexWithOffset.name, () => {
     expect(findStartIndexWithOffset(sum(cache._sizes), cache)).toBe(
       cache._sizes.length - 1
     );
+  });
+});
+
+describe(hasUnmeasuredItemsInRange.name, () => {
+  it("should return false if all measured", () => {
+    const sizes = [10, 10, 10, 10];
+    const cache: Cache = {
+      _length: sizes.length,
+      _sizes: sizes,
+      _measuredOffsetIndex: 0,
+      _offsets: [0],
+      _defaultItemSize: 30,
+    };
+    expect(hasUnmeasuredItemsInRange(0, sizes.length - 1, cache)).toBe(false);
+  });
+
+  it("should return true if start is not measured", () => {
+    const sizes = [10, -1, 10, 10];
+    const cache: Cache = {
+      _length: sizes.length,
+      _sizes: sizes,
+      _measuredOffsetIndex: 0,
+      _offsets: [0],
+      _defaultItemSize: 30,
+    };
+    expect(hasUnmeasuredItemsInRange(1, 2, cache)).toBe(true);
+  });
+
+  it("should return true if end is not measured", () => {
+    const sizes = [10, 10, -1, 10];
+    const cache: Cache = {
+      _length: sizes.length,
+      _sizes: sizes,
+      _measuredOffsetIndex: 0,
+      _offsets: [0],
+      _defaultItemSize: 30,
+    };
+    expect(hasUnmeasuredItemsInRange(1, 2, cache)).toBe(true);
   });
 });

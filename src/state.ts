@@ -11,6 +11,7 @@ import {
   Cache,
   UNCACHED,
   setItemSize,
+  hasUnmeasuredItemsInRange,
 } from "./cache";
 import type { Writeable } from "./types";
 import { max } from "./utils";
@@ -118,7 +119,8 @@ const mutate = (state: State, action: Actions, itemSize: number): boolean => {
 export type Store = {
   _getStartIndex(): number;
   _getEndIndex(): number;
-  _getIsItemHeightUnCached(index: number): boolean;
+  _isUnmeasuredItem(index: number): boolean;
+  _hasUnmeasuredItemsInRange(startIndex: number): boolean;
   _getItemOffset(index: number): number;
   _getViewportWidth(): number;
   _getViewportHeight(): number;
@@ -163,8 +165,15 @@ export const useVirtualStore = (
             state._cache
           );
         },
-        _getIsItemHeightUnCached(index) {
+        _isUnmeasuredItem(index) {
           return state._cache._sizes[index] === UNCACHED;
+        },
+        _hasUnmeasuredItemsInRange(startIndex: number): boolean {
+          return hasUnmeasuredItemsInRange(
+            startIndex,
+            findEndIndex(startIndex, getViewportSize(), state._cache),
+            state._cache
+          );
         },
         _getItemOffset(index) {
           return computeStartOffset(index, state._cache as Writeable<Cache>);

@@ -125,6 +125,19 @@ export const findStartIndexWithOffset = (
   return min(max(i, index), cache._length - 1);
 };
 
+export const hasUnmeasuredItemsInRange = (
+  startIndex: number,
+  endIndex: number,
+  cache: Cache
+): boolean => {
+  for (let i = startIndex; i <= endIndex; i++) {
+    if (cache._sizes[i] === UNCACHED) {
+      return true;
+    }
+  }
+  return false;
+};
+
 export const computeStartOffset = (
   index: number,
   cache: Writeable<Cache>

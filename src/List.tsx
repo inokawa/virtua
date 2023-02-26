@@ -47,7 +47,7 @@ const Item = memo(
     const ref = useRef<HTMLDivElement>(null);
 
     const getOffset = () => store._getItemOffset(index);
-    const getHide = () => store._getIsItemHeightUnCached(index);
+    const getHide = () => store._isUnmeasuredItem(index);
 
     const offset = useSyncExternalStore(store._subscribe, getOffset, getOffset);
     const hide = useSyncExternalStore(store._subscribe, getHide, getHide);
@@ -460,20 +460,37 @@ export const List = forwardRef<ListHandle, ListProps>(
 
     useImperativeHandle(ref, () => ({
       scrollTo(index) {
-        if (scrollRef.current) {
-          let offset = store._getItemOffset(index);
-          const scrollSize = store._getScrollSize();
-          const viewportSize = store._getViewportSize();
-          if (scrollSize - (offset + viewportSize) <= 0) {
-            offset = scrollSize - viewportSize;
-          }
-          if (reverse) {
-            offset *= -1;
-          }
+        const el = scrollRef.current;
+        if (!el) return;
+
+        let offset = store._getItemOffset(index);
+        if (reverse) {
+          offset *= -1;
+        }
+        const scrollSize = store._getScrollSize();
+        const viewportSize = store._getViewportSize();
+        const endReached = scrollSize - (offset + viewportSize) <= 0;
+        if (endReached) {
+          offset = scrollSize - viewportSize;
+        }
+
+        if (endReached && store._hasUnmeasuredItemsInRange(index)) {
+          // Mount items to measure sizes before scrolling to avoid wrong calculation
+          store._update({ _type: HANDLE_SCROLL, _offset: offset });
+          // HACK: then scroll in next tick
+          setTimeout(() => {
+            const offset = store._getItemOffset(index);
+            if (isHorizontal) {
+              el.scrollLeft = offset;
+            } else {
+              el.scrollTop = offset;
+            }
+          });
+        } else {
           if (isHorizontal) {
-            scrollRef.current.scrollLeft = offset;
+            el.scrollLeft = offset;
           } else {
-            scrollRef.current.scrollTop = offset;
+            el.scrollTop = offset;
           }
           // Sync viewport to scroll destination
           store._update({ _type: HANDLE_SCROLL, _offset: offset });
