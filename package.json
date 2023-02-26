@@ -40,6 +40,7 @@
     "jest-environment-jsdom": "29.0.2",
     "re-resizable": "6.9.9",
     "react": "18.1.0",
+    "react-content-loader": "6.2.0",
     "react-dom": "18.1.0",
     "react-is": "18.1.0",
     "react-virtual": "2.10.4",
