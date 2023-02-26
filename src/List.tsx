@@ -463,6 +463,8 @@ export const List = forwardRef<ListHandle, ListProps>(
         const el = scrollRef.current;
         if (!el) return;
 
+        index = max(min(index, count - 1), 0);
+
         let offset = store._getItemOffset(index);
         if (reverse) {
           offset *= -1;
