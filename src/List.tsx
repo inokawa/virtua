@@ -510,19 +510,17 @@ export const List = forwardRef<ListHandle, ListProps>(
         if (i < startIndexWithMargin || i > endIndexWithMargin) {
           return;
         }
-        const item =
-          e != null ? (
-            <Item
-              key={(e as { key?: ReactElement["key"] })?.key || i}
-              _handle={handle}
-              _store={store}
-              _element={e}
-              _index={i}
-              _isHorizontal={isHorizontal}
-              _isReversed={reverse}
-            />
-          ) : null;
-        return item;
+        return e != null ? (
+          <Item
+            key={(e as { key?: ReactElement["key"] })?.key || i}
+            _handle={handle}
+            _store={store}
+            _element={e}
+            _index={i}
+            _isHorizontal={isHorizontal}
+            _isReversed={reverse}
+          />
+        ) : null;
       });
     }, [children, startIndexWithMargin, endIndexWithMargin]);
 
