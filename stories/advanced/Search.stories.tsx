@@ -7,12 +7,6 @@ export default {
   component: List,
 } as Meta;
 
-type Data = {
-  id: string;
-  name: string;
-  description: string;
-};
-
 const rowStyle: CSSProperties = {
   borderBottom: "solid 1px #ccc",
   display: "flex",
@@ -24,6 +18,12 @@ const idColStyle: CSSProperties = {
 };
 const nameColStyle: CSSProperties = {
   minWidth: 240,
+};
+
+type Data = {
+  id: string;
+  name: string;
+  description: string;
 };
 
 const Row = ({ id, name, description }: Data) => {

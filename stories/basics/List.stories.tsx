@@ -6,55 +6,6 @@ export default {
   component: List,
 } as Meta;
 
-const Spinner = (props: { hidden: boolean }) => {
-  return (
-    <>
-      <div
-        style={{
-          height: 100,
-          display: props.hidden ? "none" : "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "white",
-        }}
-      >
-        <span className="loader" />
-      </div>
-      <style>
-        {`
-      .loader {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        position: relative;
-        animation: rotate 1s linear infinite
-      }
-      .loader::before {
-        content: "";
-        box-sizing: border-box;
-        position: absolute;
-        inset: 0px;
-        border-radius: 50%;
-        border: 5px solid #ccc;
-        animation: prixClipFix 2s linear infinite ;
-      }
-  
-      @keyframes rotate {
-        100%   {transform: rotate(360deg)}
-      }
-  
-      @keyframes prixClipFix {
-          0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
-          25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
-          50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
-          75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
-          100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
-      }`}
-      </style>
-    </>
-  );
-};
-
 const createRows = (num: number) => {
   const heights = [20, 40, 80, 77];
   return Array.from({ length: num }).map((_, i) => {
@@ -112,30 +63,6 @@ export const Reverse: StoryObj = {
     return (
       <List style={{ height: "100vh" }} reverse>
         {createRows(1000)}
-      </List>
-    );
-  },
-};
-
-export const InfiniteScrolling: StoryObj = {
-  render: () => {
-    const ITEM_BATCH_COUNT = 50;
-    const [count, setCount] = useState(ITEM_BATCH_COUNT);
-    const [fetching, setFetching] = useState(false);
-    return (
-      <List
-        style={{ height: "100vh" }}
-        endThreshold={30}
-        onEndReached={async () => {
-          setFetching(true);
-          await new Promise((r) => setTimeout(r, 1000));
-          setCount((prev) => prev + ITEM_BATCH_COUNT);
-          setFetching(false);
-        }}
-      >
-        {createRows(count)}
-        {/* Now hide spinner without unmounting because onEndReached is called twice due to item length change */}
-        <Spinner hidden={!fetching} />
       </List>
     );
   },
