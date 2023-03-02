@@ -123,6 +123,8 @@ const Window = ({
           height: viewportHeight,
           overflow: isHorizontal ? "auto hidden" : "hidden auto",
           position: "absolute",
+          // contain: "strict",
+          // transform: "translate3d(0px, 0px, 0px)",
           padding: 0,
           margin: 0,
           top: 0,
