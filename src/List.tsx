@@ -8,7 +8,6 @@ import {
   forwardRef,
   useImperativeHandle,
   ReactNode,
-  UIEventHandler,
   useEffect,
   RefObject,
 } from "react";
@@ -92,14 +91,12 @@ const Window = ({
   children,
   _store: store,
   _ref: ref,
-  _onScroll: onScroll,
   _isHorizontal: isHorizontal,
   _reverse: reverse,
 }: {
   children: ReactNode;
   _store: Store;
   _ref: RefObject<HTMLDivElement>;
-  _onScroll: UIEventHandler<HTMLDivElement> | undefined;
   _isHorizontal: boolean | undefined;
   _reverse: boolean | undefined;
 }) => {
@@ -136,7 +133,6 @@ const Window = ({
         }),
         [viewportHeight, viewportWidth, isHorizontal, reverse]
       )}
-      onScroll={onScroll}
     >
       {children}
     </div>
@@ -198,7 +194,6 @@ export interface ListProps {
   endThreshold?: number;
   style?: CSSProperties;
   innerStyle?: CSSProperties;
-  onScroll?: UIEventHandler<HTMLDivElement>;
   onEndReached?: () => void;
 }
 
@@ -213,7 +208,6 @@ export const List = forwardRef<ListHandle, ListProps>(
       endThreshold = 0,
       style: styleProp,
       innerStyle: innerStyleProp,
-      onScroll,
       onEndReached,
     },
     ref
@@ -544,7 +538,6 @@ export const List = forwardRef<ListHandle, ListProps>(
           _store={store}
           _isHorizontal={isHorizontal}
           _reverse={reverse}
-          _onScroll={onScroll}
         >
           <Inner
             _store={store}
