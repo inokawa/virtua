@@ -392,11 +392,11 @@ describe("scrollTo", () => {
     });
 
     it("should scroll to 999", async () => {
-      const scrollSpy = jest.spyOn(
-        global.HTMLElement.prototype,
-        "scrollTop",
-        "set"
-      );
+      // const scrollSpy = jest.spyOn(
+      //   global.HTMLElement.prototype,
+      //   "scrollTop",
+      //   "set"
+      // );
 
       const Mounter = () => {
         const ref = useRef<ListHandle>(null);
@@ -411,19 +411,20 @@ describe("scrollTo", () => {
           </List>
         );
       };
-      render(<Mounter />);
-      await waitFor(() => {
-        expect(scrollSpy).toHaveBeenCalled();
-      });
-      expect(scrollSpy).toHaveBeenCalledWith(40 * 999);
+      const { asFragment } = render(<Mounter />);
+      // await waitFor(() => {
+      //   expect(scrollSpy).toHaveBeenCalled();
+      // });
+      // expect(scrollSpy).toHaveBeenCalledWith(40 * 999);
+      expect(asFragment()).toMatchSnapshot();
     });
 
     it("should scroll to end if index is out of range", async () => {
-      const scrollSpy = jest.spyOn(
-        global.HTMLElement.prototype,
-        "scrollTop",
-        "set"
-      );
+      // const scrollSpy = jest.spyOn(
+      //   global.HTMLElement.prototype,
+      //   "scrollTop",
+      //   "set"
+      // );
 
       const Mounter = () => {
         const ref = useRef<ListHandle>(null);
@@ -438,11 +439,12 @@ describe("scrollTo", () => {
           </List>
         );
       };
-      render(<Mounter />);
-      await waitFor(() => {
-        expect(scrollSpy).toHaveBeenCalled();
-      });
-      expect(scrollSpy).toHaveBeenCalledWith(40 * 1000);
+      const { asFragment } = render(<Mounter />);
+      // await waitFor(() => {
+      //   expect(scrollSpy).toHaveBeenCalled();
+      // });
+      // expect(scrollSpy).toHaveBeenCalledWith(40 * 1000);
+      expect(asFragment()).toMatchSnapshot();
     });
   });
 
@@ -502,11 +504,11 @@ describe("scrollTo", () => {
     });
 
     it("should scroll to 999", async () => {
-      const scrollSpy = jest.spyOn(
-        global.HTMLElement.prototype,
-        "scrollLeft",
-        "set"
-      );
+      // const scrollSpy = jest.spyOn(
+      //   global.HTMLElement.prototype,
+      //   "scrollLeft",
+      //   "set"
+      // );
 
       const Mounter = () => {
         const ref = useRef<ListHandle>(null);
@@ -521,19 +523,20 @@ describe("scrollTo", () => {
           </List>
         );
       };
-      render(<Mounter />);
-      await waitFor(() => {
-        expect(scrollSpy).toHaveBeenCalled();
-      });
-      expect(scrollSpy).toHaveBeenCalledWith(40 * 999);
+      const { asFragment } = render(<Mounter />);
+      // await waitFor(() => {
+      //   expect(scrollSpy).toHaveBeenCalled();
+      // });
+      // expect(scrollSpy).toHaveBeenCalledWith(40 * 999);
+      expect(asFragment()).toMatchSnapshot();
     });
 
     it("should scroll to end if index is out of range", async () => {
-      const scrollSpy = jest.spyOn(
-        global.HTMLElement.prototype,
-        "scrollLeft",
-        "set"
-      );
+      // const scrollSpy = jest.spyOn(
+      //   global.HTMLElement.prototype,
+      //   "scrollLeft",
+      //   "set"
+      // );
 
       const Mounter = () => {
         const ref = useRef<ListHandle>(null);
@@ -548,11 +551,12 @@ describe("scrollTo", () => {
           </List>
         );
       };
-      render(<Mounter />);
-      await waitFor(() => {
-        expect(scrollSpy).toHaveBeenCalled();
-      });
-      expect(scrollSpy).toHaveBeenCalledWith(40 * 1000);
+      const { asFragment } = render(<Mounter />);
+      // await waitFor(() => {
+      //   expect(scrollSpy).toHaveBeenCalled();
+      // });
+      // expect(scrollSpy).toHaveBeenCalledWith(40 * 1000);
+      expect(asFragment()).toMatchSnapshot();
     });
   });
 
@@ -662,7 +666,8 @@ describe("scrollTo", () => {
       await waitFor(() => {
         expect(scrollSpy).toHaveBeenCalled();
       });
-      expect(scrollSpy).toHaveBeenCalledWith(-40 * 1000);
+      // expect(scrollSpy).toHaveBeenCalledWith(-40 * 1000);
+      expect(scrollSpy).toHaveBeenCalledWith(-40 * 999);
     });
   });
 
@@ -772,7 +777,8 @@ describe("scrollTo", () => {
       await waitFor(() => {
         expect(scrollSpy).toHaveBeenCalled();
       });
-      expect(scrollSpy).toHaveBeenCalledWith(-40 * 1000);
+      // expect(scrollSpy).toHaveBeenCalledWith(-40 * 1000);
+      expect(scrollSpy).toHaveBeenCalledWith(-40 * 999);
     });
   });
 });

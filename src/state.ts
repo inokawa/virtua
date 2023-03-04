@@ -1,33 +1,39 @@
-import { useCallback, useState } from "react";
+import { useRef } from "react";
 import {
   findStartIndexAfter,
   findStartIndexBefore,
   findStartIndexWithOffset,
   resetCache,
-  resolveItemSize,
-  calculateAllSize,
+  getItemSize,
+  computeTotalSize,
+  findEndIndex,
+  computeStartOffset,
+  Cache,
+  UNCACHED,
+  setItemSize,
+  hasUnmeasuredItemsInRange,
 } from "./cache";
+import type { Writeable } from "./types";
 import { max } from "./utils";
 
-export const RESET_CACHE = 0;
+export const UPDATE_CACHE_LENGTH = 0;
 export const UPDATE_ITEM_SIZES = 1;
 export const UPDATE_VIEWPORT_SIZE = 2;
 export const HANDLE_ITEM_INTERSECTION = 3;
 export const HANDLE_SCROLL = 4;
 
-export type ScrollJump = { _start: number; _end: number };
+export type ScrollJump = Readonly<{ _start: number; _end: number }>;
 
 type State = {
   _startIndex: number;
   _viewportWidth: number;
   _viewportHeight: number;
-  _scrollSize: number;
-  _sizes: number[]; // mutatable cache
+  _cache: Cache;
   _jump: ScrollJump;
 };
 
 type Actions =
-  | { _type: typeof RESET_CACHE; _length: number }
+  | { _type: typeof UPDATE_CACHE_LENGTH; _length: number }
   | {
       _type: typeof UPDATE_ITEM_SIZES;
       _indexes: number[];
@@ -41,120 +47,170 @@ type Actions =
     }
   | { _type: typeof HANDLE_SCROLL; _offset: number };
 
-const reducer = (state: State, action: Actions, itemSize: number): State => {
+const mutate = (state: State, action: Actions, itemSize: number): boolean => {
   switch (action._type) {
-    case RESET_CACHE: {
-      const sizes = resetCache(action._length, state._sizes);
-      return {
-        ...state,
-        _sizes: sizes,
-        _scrollSize: calculateAllSize(sizes, itemSize),
-      };
+    case UPDATE_CACHE_LENGTH: {
+      if (state._cache._length === action._length) return false;
+      state._cache = resetCache(action._length, itemSize, state._cache);
+      return true;
     }
     case UPDATE_ITEM_SIZES: {
       const { _indexes: indexes, _sizes: sizes } = action;
-      if (indexes.every((index, i) => state._sizes[index] === sizes[i]!)) {
-        return state;
+      if (
+        indexes.every((index, i) => state._cache._sizes[index] === sizes[i]!)
+      ) {
+        return false;
       }
 
       let topJump = 0;
       let bottomJump = 0;
       indexes.forEach((index, i) => {
         if (index < state._startIndex) {
-          topJump +=
-            sizes[i]! - resolveItemSize(state._sizes[index]!, itemSize);
+          topJump += sizes[i]! - getItemSize(state._cache, index);
         } else {
-          bottomJump +=
-            sizes[i]! - resolveItemSize(state._sizes[index]!, itemSize);
+          bottomJump += sizes[i]! - getItemSize(state._cache, index);
         }
-        state._sizes[index] = sizes[i]!;
+        setItemSize(state._cache as Writeable<Cache>, index, sizes[i]!);
       });
 
-      return {
-        ...state,
-        _scrollSize: calculateAllSize(state._sizes, itemSize),
-        _jump: { _start: topJump, _end: bottomJump },
-      };
+      state._jump = { _start: topJump, _end: bottomJump };
+      return true;
     }
     case UPDATE_VIEWPORT_SIZE: {
       if (
         state._viewportWidth === action._width &&
         state._viewportHeight === action._height
       ) {
-        return state;
+        return false;
       }
-      return {
-        ...state,
-        _viewportWidth: action._width,
-        _viewportHeight: action._height,
-      };
+      state._viewportWidth = action._width;
+      state._viewportHeight = action._height;
+      return true;
     }
     case HANDLE_ITEM_INTERSECTION: {
-      let startIndex: number;
-      if (action._offset <= 0) {
-        startIndex = findStartIndexAfter(
-          action._index,
-          max(0, -action._offset),
-          state._sizes,
-          itemSize
-        );
-      } else {
-        startIndex = findStartIndexBefore(
-          action._index,
-          max(0, action._offset),
-          state._sizes,
-          itemSize
-        );
-      }
-
-      if (startIndex === state._startIndex) {
-        return state;
-      }
-      return {
-        ...state,
-        _startIndex: startIndex,
-      };
+      const prev = state._startIndex;
+      return (
+        (state._startIndex =
+          action._offset <= 0
+            ? findStartIndexAfter(
+                action._index,
+                max(0, -action._offset),
+                state._cache
+              )
+            : findStartIndexBefore(
+                action._index,
+                max(0, action._offset),
+                state._cache
+              )) !== prev
+      );
     }
     case HANDLE_SCROLL: {
-      const startIndex = findStartIndexWithOffset(
-        action._offset,
-        state._sizes,
-        itemSize
+      const prev = state._startIndex;
+      return (
+        (state._startIndex = findStartIndexWithOffset(
+          action._offset,
+          state._cache
+        )) !== prev
       );
-      if (startIndex === state._startIndex) {
-        return state;
-      }
-      return {
-        ...state,
-        _startIndex: startIndex,
-      };
     }
   }
 };
 
-// In React 18, useReducer causes rerender even if the state update didn't change anything.
-// So imitate useReducer with useState for performance.
-// https://github.com/facebook/react/pull/22445
-export const useVirtualState = (
-  itemCount: number,
-  itemSize: number
-): [State, (action: Actions) => void] => {
-  const [state, setState] = useState(() => {
-    const sizes = resetCache(itemCount);
-    return {
-      _startIndex: 0,
-      _viewportWidth: 0,
-      _viewportHeight: 0,
-      _scrollSize: calculateAllSize(sizes, itemSize),
-      _sizes: sizes,
-      _jump: { _start: 0, _end: 0 },
-    };
-  });
+export type Store = {
+  _getStartIndex(): number;
+  _getEndIndex(): number;
+  _isUnmeasuredItem(index: number): boolean;
+  _hasUnmeasuredItemsInRange(startIndex: number): boolean;
+  _getItemOffset(index: number): number;
+  _getViewportWidth(): number;
+  _getViewportHeight(): number;
+  _getViewportSize(): number;
+  _getViewportSizeInitialized(): boolean;
+  _getScrollSize(): number;
+  _getJump(): ScrollJump;
+  _subscribe(cb: () => void): () => void;
+  _update(action: Actions): void;
+};
 
-  return [
-    state,
-    useCallback((action: Actions) => {
-      setState((prev) => reducer(prev, action, itemSize));
-    }, []),
-  ];
+// https://github.com/facebook/react/issues/25191#issuecomment-1237456448
+export const useVirtualStore = (
+  itemCount: number,
+  itemSize: number,
+  isHorizontal: boolean | undefined
+): Store => {
+  const ref = useRef<Store | undefined>();
+  return (
+    ref.current ||
+    (ref.current = (() => {
+      const subscribers = new Set<() => void>();
+      const state: Readonly<State> = {
+        _startIndex: 0,
+        _viewportWidth: 0,
+        _viewportHeight: 0,
+        _cache: resetCache(itemCount, itemSize),
+        _jump: { _start: 0, _end: 0 },
+      };
+
+      const getViewportSize = (): number =>
+        isHorizontal ? state._viewportWidth : state._viewportHeight;
+
+      return {
+        _getStartIndex() {
+          return state._startIndex;
+        },
+        _getEndIndex() {
+          return findEndIndex(
+            state._startIndex,
+            getViewportSize(),
+            state._cache
+          );
+        },
+        _isUnmeasuredItem(index) {
+          return state._cache._sizes[index] === UNCACHED;
+        },
+        _hasUnmeasuredItemsInRange(startIndex: number): boolean {
+          return hasUnmeasuredItemsInRange(
+            startIndex,
+            findEndIndex(startIndex, getViewportSize(), state._cache),
+            state._cache
+          );
+        },
+        _getItemOffset(index) {
+          return computeStartOffset(index, state._cache as Writeable<Cache>);
+        },
+        _getViewportWidth() {
+          return state._viewportWidth;
+        },
+        _getViewportHeight() {
+          return state._viewportHeight;
+        },
+        _getViewportSize() {
+          return getViewportSize();
+        },
+        _getViewportSizeInitialized() {
+          return getViewportSize() !== 0;
+        },
+        _getScrollSize() {
+          return computeTotalSize(state._cache as Writeable<Cache>);
+        },
+        _getJump() {
+          return state._jump;
+        },
+        _subscribe(cb) {
+          subscribers.add(cb);
+          return () => {
+            subscribers.delete(cb);
+          };
+        },
+        _update(action) {
+          const mutated = mutate(state, action, itemSize);
+          if (mutated) {
+            subscribers.forEach((cb) => {
+              cb();
+            });
+          }
+        },
+      };
+    })())
+  );
 };

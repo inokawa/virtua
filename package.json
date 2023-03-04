@@ -19,11 +19,15 @@
     "typedoc": "typedoc",
     "prepublishOnly": "rimraf lib && npm run build"
   },
+  "dependencies": {
+    "use-sync-external-store": "^1.2.0"
+  },
   "devDependencies": {
     "@babel/plugin-transform-react-pure-annotations": "7.18.6",
     "@dnd-kit/core": "6.0.8",
     "@dnd-kit/sortable": "7.0.2",
     "@faker-js/faker": "7.6.0",
+    "@rollup/plugin-babel": "5.3.1",
     "@rollup/plugin-typescript": "8.3.4",
     "@storybook/addon-docs": "7.0.0-alpha.54",
     "@storybook/react": "7.0.0-alpha.54",
@@ -33,6 +37,8 @@
     "@types/react": "18.0.18",
     "@types/react-virtualized": "9.21.21",
     "@types/react-window": "1.8.5",
+    "@types/use-sync-external-store": "0.0.3",
+    "babel-plugin-replace-import-extensions": "1.0.1",
     "concurrently": "7.2.2",
     "esbuild": "0.15.16",
     "esbuild-loader": "2.20.0",

@@ -60,11 +60,8 @@ export const Default: StoryObj = {
     const [value, setValue] = useState("Hello world!");
 
     useEffect(() => {
-      // FIXME: remove setTimeout
-      setTimeout(() => {
-        if (!ref.current) return;
-        ref.current.scrollTo(items.length - 1);
-      }, 100);
+      if (!ref.current) return;
+      ref.current.scrollTo(items.length - 1);
     }, [items.length]);
 
     useEffect(() => {

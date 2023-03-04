@@ -1,6 +1,9 @@
 export const min = Math.min;
 export const max = Math.max;
 
+export const range = <T>(length: number, cb: (i: number) => T): T[] =>
+  Array.from({ length }, (_, i) => cb(i));
+
 export const debounce = <T extends (...args: any[]) => void>(
   fn: T,
   ms: number
