@@ -25,3 +25,17 @@ export const debounce = <T extends (...args: any[]) => void>(
   debouncedFn._cancel = cancel;
   return debouncedFn;
 };
+
+export const throttle = <T extends (...args: any[]) => void>(
+  fn: T,
+  ms: number
+) => {
+  let time = Date.now() - ms;
+  return (...args: Parameters<T>) => {
+    const now = Date.now();
+    if (time + ms < now) {
+      time = now;
+      fn(...args);
+    }
+  };
+};

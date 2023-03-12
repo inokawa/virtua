@@ -42,51 +42,9 @@ export const computeTotalSize = (cache: Writeable<Cache>): number => {
   return top;
 };
 
-export const findStartIndexBefore = (
-  index: number,
-  distance: number,
-  cache: Cache
-): number => {
-  let sum = 0;
-  let i = index;
-  while (i > 0) {
-    i--;
-    const h = getItemSize(cache, i);
-    sum += h;
-    if (sum >= distance) {
-      if (sum - h / 2 > distance) {
-        i++;
-      }
-      break;
-    }
-  }
-  return max(min(i, index), 0);
-};
-
-export const findStartIndexAfter = (
-  index: number,
-  distance: number,
-  cache: Cache
-): number => {
-  let sum = 0;
-  let i = index;
-  while (i < cache._length - 1) {
-    const h = getItemSize(cache, i);
-    sum += h;
-    i++;
-    if (sum >= distance) {
-      if (sum - h / 2 > distance) {
-        i--;
-      }
-      break;
-    }
-  }
-  return min(max(i, index), cache._length - 1);
-};
-
 export const findEndIndex = (
   index: number,
-  viewportSize: number,
+  distance: number,
   cache: Cache
 ): number => {
   let sum = 0;
@@ -94,8 +52,8 @@ export const findEndIndex = (
   while (i < cache._length - 1) {
     const h = getItemSize(cache, i);
     sum += h;
-    if (sum >= viewportSize) {
-      if (sum - h / 2 > viewportSize) {
+    if (sum >= distance) {
+      if (sum - h / 2 > distance) {
         i--;
       }
       break;
@@ -159,7 +117,7 @@ export const computeStartOffset = (
   index: number,
   cache: Writeable<Cache>
 ): number => {
-  if (!cache._length) return 0
+  if (!cache._length) return 0;
   if (cache._measuredOffsetIndex >= index) {
     return cache._offsets[index]!;
   }

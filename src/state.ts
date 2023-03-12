@@ -1,7 +1,5 @@
 import { useRef } from "react";
 import {
-  findStartIndexAfter,
-  findStartIndexBefore,
   findStartIndexWithOffset,
   resetCache,
   getItemSize,
@@ -14,13 +12,11 @@ import {
   hasUnmeasuredItemsInRange,
 } from "./cache";
 import type { Writeable } from "./types";
-import { max } from "./utils";
 
 export const UPDATE_CACHE_LENGTH = 0;
 export const UPDATE_ITEM_SIZES = 1;
 export const UPDATE_VIEWPORT_SIZE = 2;
-export const HANDLE_ITEM_INTERSECTION = 3;
-export const HANDLE_SCROLL = 4;
+export const HANDLE_SCROLL = 3;
 
 export type ScrollJump = Readonly<[index: number, sizeDiff: number][]>;
 
@@ -40,11 +36,6 @@ type Actions =
       _sizes: number[];
     }
   | { _type: typeof UPDATE_VIEWPORT_SIZE; _width: number; _height: number }
-  | {
-      _type: typeof HANDLE_ITEM_INTERSECTION;
-      _index: number;
-      _offset: number;
-    }
   | { _type: typeof HANDLE_SCROLL; _offset: number };
 
 const mutate = (state: State, action: Actions, itemSize: number): boolean => {
@@ -81,29 +72,15 @@ const mutate = (state: State, action: Actions, itemSize: number): boolean => {
       state._viewportHeight = action._height;
       return true;
     }
-    case HANDLE_ITEM_INTERSECTION: {
-      const prev = state._startIndex;
-      return (
-        (state._startIndex =
-          action._offset <= 0
-            ? findStartIndexAfter(
-                action._index,
-                max(0, -action._offset),
-                state._cache
-              )
-            : findStartIndexBefore(
-                action._index,
-                max(0, action._offset),
-                state._cache
-              )) !== prev
-      );
-    }
     case HANDLE_SCROLL: {
       const prevStartIndex = state._startIndex;
       const prevOffset = computeStartOffset(
         prevStartIndex,
         state._cache as Writeable<Cache>
       );
+      if (prevOffset === action._offset) {
+        return false;
+      }
       return (
         (state._startIndex = findStartIndexWithOffset(
           action._offset,

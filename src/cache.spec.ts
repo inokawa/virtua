@@ -4,8 +4,6 @@ import {
   setItemSize,
   computeTotalSize,
   computeStartOffset,
-  findStartIndexAfter,
-  findStartIndexBefore,
   findStartIndexWithOffset,
   findEndIndex,
   Cache,
