@@ -268,15 +268,13 @@ export const List = forwardRef<ListHandle, ListProps>(
         return {
           _init(root, wrapper) {
             const syncViewportToScrollPosition = () => {
+              let offset = isHorizontal ? root.scrollLeft : root.scrollTop;
+              if (reverse) {
+                offset *= -1;
+              }
               store._update({
                 _type: HANDLE_SCROLL,
-                _offset: isHorizontal
-                  ? reverse
-                    ? -root.scrollLeft
-                    : root.scrollLeft
-                  : reverse
-                  ? -root.scrollTop
-                  : root.scrollTop,
+                _offset: offset,
               });
             };
 
@@ -303,9 +301,7 @@ export const List = forwardRef<ListHandle, ListProps>(
                   const index = mountedIndexes.get(entry.target);
                   if (index != null) {
                     resizedItemSizes.push(
-                      isHorizontal
-                        ? entry.contentRect.width
-                        : entry.contentRect.height
+                      entry.contentRect[isHorizontal ? "width" : "height"]
                     );
                     resizedItemIndexes.push(index);
                   }
@@ -425,23 +421,15 @@ export const List = forwardRef<ListHandle, ListProps>(
           jump._start &&
           !(
             isStartInView &&
-            (isHorizontal
-              ? scrollRef.current.scrollLeft
-              : scrollRef.current.scrollTop) === 0
+            scrollRef.current[isHorizontal ? "scrollLeft" : "scrollTop"] === 0
           )
         ) {
-          if (isHorizontal) {
-            scrollRef.current.scrollLeft += jump._start;
-          } else {
-            scrollRef.current.scrollTop += jump._start;
-          }
+          scrollRef.current[isHorizontal ? "scrollLeft" : "scrollTop"] +=
+            jump._start;
         }
         if (jump._end && !isStartInView && isEndInView) {
-          if (isHorizontal) {
-            scrollRef.current.scrollLeft += jump._end;
-          } else {
-            scrollRef.current.scrollTop += jump._end;
-          }
+          scrollRef.current[isHorizontal ? "scrollLeft" : "scrollTop"] +=
+            jump._end;
         }
       }
     }, [jump]);
@@ -481,19 +469,11 @@ export const List = forwardRef<ListHandle, ListProps>(
           store._update({ _type: HANDLE_SCROLL, _offset: offset });
           // HACK: then scroll in next tick
           setTimeout(() => {
-            const offset = store._getItemOffset(index);
-            if (isHorizontal) {
-              el.scrollLeft = offset;
-            } else {
-              el.scrollTop = offset;
-            }
+            el[isHorizontal ? "scrollLeft" : "scrollTop"] =
+              store._getItemOffset(index);
           });
         } else {
-          if (isHorizontal) {
-            el.scrollLeft = offset;
-          } else {
-            el.scrollTop = offset;
-          }
+          el[isHorizontal ? "scrollLeft" : "scrollTop"] = offset;
           // Sync viewport to scroll destination
           store._update({ _type: HANDLE_SCROLL, _offset: offset });
         }
