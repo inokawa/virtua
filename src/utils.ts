@@ -1,5 +1,6 @@
 export const min = Math.min;
 export const max = Math.max;
+export const abs = Math.abs;
 
 export const range = <T>(length: number, cb: (i: number) => T): T[] =>
   Array.from({ length }, (_, i) => cb(i));

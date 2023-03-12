@@ -22,7 +22,7 @@ import {
   useVirtualStore,
 } from "./state";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { debounce, max, min } from "./utils";
+import { abs, debounce, max, min } from "./utils";
 
 type ObserverHandle = {
   _init: (rootElement: HTMLElement, wrapperElement: HTMLElement) => () => void;
@@ -268,10 +268,10 @@ export const List = forwardRef<ListHandle, ListProps>(
         return {
           _init(root, wrapper) {
             const syncViewportToScrollPosition = () => {
-              let offset = isHorizontal ? root.scrollLeft : root.scrollTop;
-              if (reverse) {
-                offset *= -1;
-              }
+              // The scrollTop/scrollLeft may be minus in reverse scrolling
+              const offset = abs(
+                isHorizontal ? root.scrollLeft : root.scrollTop
+              );
               store._update({
                 _type: HANDLE_SCROLL,
                 _offset: offset,
