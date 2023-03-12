@@ -5,8 +5,3 @@ export type DeepReadonly<T> = {
 export type Writeable<T> = {
   -readonly [key in keyof T]: Writeable<T[key]>;
 };
-
-export type ObserverHandle = {
-  _init: (rootElement: HTMLElement, wrapperElement: HTMLElement) => () => void;
-  _observe: (itemElement: HTMLElement, index: number) => () => void;
-};

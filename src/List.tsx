@@ -21,9 +21,13 @@ import {
   UPDATE_VIEWPORT_SIZE,
   useVirtualStore,
 } from "./state";
-import type { ObserverHandle } from "./types";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { debounce, max, min } from "./utils";
+
+type ObserverHandle = {
+  _init: (rootElement: HTMLElement, wrapperElement: HTMLElement) => () => void;
+  _observe: (itemElement: HTMLElement, index: number) => () => void;
+};
 
 type ItemProps = {
   _element: ReactNode;
