@@ -21,7 +21,7 @@ import {
   useVirtualStore,
 } from "./state";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { debounce, max, min, throttle } from "./utils";
+import { debounce, max, min } from "./utils";
 
 type ObserverHandle = {
   _init: (rootElement: HTMLElement, wrapperElement: HTMLElement) => () => void;
@@ -276,14 +276,14 @@ export const List = forwardRef<ListHandle, ListProps>(
 
             // We are throttling scroll event so event may not be fired when you stop scrolling
             // So check scroll position once just after scrolling stopped
-            const requestSync = debounce(() => {
+            const onScrollStopped = debounce(() => {
               syncViewportToScrollPosition();
             }, 300);
 
-            const onScroll = throttle(() => {
+            const onScroll = () => {
               syncViewportToScrollPosition();
-              requestSync();
-            }, 100);
+              onScrollStopped();
+            };
 
             ro = new ResizeObserver((entries) => {
               const resizedItemSizes: number[] = [];
@@ -316,12 +316,12 @@ export const List = forwardRef<ListHandle, ListProps>(
             });
 
             ro.observe(wrapper);
-            root.addEventListener("scroll", onScroll, { passive: true });
+            root.addEventListener("scroll", onScroll);
 
             return () => {
               ro.disconnect();
               root.removeEventListener("scroll", onScroll);
-              requestSync._cancel();
+              onScrollStopped._cancel();
             };
           },
           _observe(el, i) {
