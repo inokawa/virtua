@@ -65,6 +65,7 @@ const Item = memo(
             margin: "0",
             padding: "0",
             position: "absolute",
+            // willChange: "transform",
             ...(isHorizontal
               ? {
                   display: "flex",
@@ -126,6 +127,8 @@ const Window = ({
           position: "absolute",
           // contain: "strict",
           // transform: "translate3d(0px, 0px, 0px)",
+          // willChange: "scroll-position",
+          // backfaceVisibility: "hidden",
           padding: 0,
           margin: 0,
           top: 0,
