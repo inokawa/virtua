@@ -627,47 +627,47 @@ describe(findStartIndexWithOffset.name, () => {
   };
 
   it("should get start if offset is at start", () => {
-    expect(findStartIndexWithOffset(0, cache)).toBe(0);
+    expect(findStartIndexWithOffset(0, cache, 0, 0)).toBe(0);
   });
 
   it("should get index if offset fits half of index 1 and 2", () => {
-    expect(findStartIndexWithOffset(10, cache)).toBe(0);
+    expect(findStartIndexWithOffset(10, cache, 0, 0)).toBe(0);
   });
 
   it("should get index if offset fits half of index 1 and 2 + 1px", () => {
-    expect(findStartIndexWithOffset(11, cache)).toBe(1);
+    expect(findStartIndexWithOffset(11, cache, 0, 0)).toBe(1);
   });
 
   it("should get index if offset fits half of index 1 and 2 - 1px", () => {
-    expect(findStartIndexWithOffset(9, cache)).toBe(0);
+    expect(findStartIndexWithOffset(9, cache, 0, 0)).toBe(0);
   });
 
   it("should get index if offset fits index 1", () => {
-    expect(findStartIndexWithOffset(20, cache)).toBe(1);
+    expect(findStartIndexWithOffset(20, cache, 0, 0)).toBe(1);
   });
 
   it("should get index if offset is index 1 + 1px", () => {
-    expect(findStartIndexWithOffset(21, cache)).toBe(1);
+    expect(findStartIndexWithOffset(21, cache, 0, 0)).toBe(1);
   });
 
   it("should get index if offset is index 1 - 1px", () => {
-    expect(findStartIndexWithOffset(19, cache)).toBe(1);
+    expect(findStartIndexWithOffset(19, cache, 0, 0)).toBe(1);
   });
 
   it("should get index if offset fits index 2", () => {
-    expect(findStartIndexWithOffset(40, cache)).toBe(2);
+    expect(findStartIndexWithOffset(40, cache, 0, 0)).toBe(2);
   });
 
   it("should get index if offset is index 2 + 1px", () => {
-    expect(findStartIndexWithOffset(41, cache)).toBe(2);
+    expect(findStartIndexWithOffset(41, cache, 0, 0)).toBe(2);
   });
 
   it("should get index if offset is index 2 - 1px", () => {
-    expect(findStartIndexWithOffset(39, cache)).toBe(2);
+    expect(findStartIndexWithOffset(39, cache, 0, 0)).toBe(2);
   });
 
   it("should get index if offset is at end", () => {
-    expect(findStartIndexWithOffset(sum(cache._sizes), cache)).toBe(
+    expect(findStartIndexWithOffset(sum(cache._sizes), cache, 0, 0)).toBe(
       cache._sizes.length - 1
     );
   });

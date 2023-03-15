@@ -106,23 +106,39 @@ export const findEndIndex = (
 
 export const findStartIndexWithOffset = (
   offset: number,
-  cache: Cache
+  cache: Cache,
+  prevStartIndex: number,
+  prevOffset: number
 ): number => {
-  const index = 0;
-  let sum = 0;
-  let i = index;
-  while (i < cache._length - 1) {
-    const h = getItemSize(cache, i);
-    sum += h;
-    i++;
-    if (sum >= offset) {
-      if (sum - h / 2 >= offset) {
-        i--;
+  let sum = prevOffset;
+  let i = prevStartIndex;
+  if (offset > prevOffset) {
+    while (i < cache._length - 1) {
+      const h = getItemSize(cache, i);
+      sum += h;
+      i++;
+      if (sum >= offset) {
+        if (sum - h / 2 >= offset) {
+          i--;
+        }
+        break;
       }
-      break;
+    }
+  } else {
+    while (i > 0) {
+      i--;
+      const h = getItemSize(cache, i);
+      sum -= h;
+      if (sum <= offset) {
+        if (sum + h / 2 <= offset) {
+          i++;
+        }
+        break;
+      }
     }
   }
-  return min(max(i, index), cache._length - 1);
+
+  return min(max(i, 0), cache._length - 1);
 };
 
 export const hasUnmeasuredItemsInRange = (

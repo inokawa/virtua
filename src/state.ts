@@ -105,12 +105,18 @@ const mutate = (state: State, action: Actions, itemSize: number): boolean => {
       );
     }
     case HANDLE_SCROLL: {
-      const prev = state._startIndex;
+      const prevStartIndex = state._startIndex;
+      const prevOffset = computeStartOffset(
+        prevStartIndex,
+        state._cache as Writeable<Cache>
+      );
       return (
         (state._startIndex = findStartIndexWithOffset(
           action._offset,
-          state._cache
-        )) !== prev
+          state._cache,
+          prevStartIndex,
+          prevOffset
+        )) !== prevStartIndex
       );
     }
   }
