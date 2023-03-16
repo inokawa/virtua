@@ -263,32 +263,124 @@ export const List = forwardRef<ListHandle, ListProps>(
         let ro: ResizeObserver;
         let io: IntersectionObserver;
 
-        let viewedCount = 0;
+        let scrollable: HTMLElement;
 
         const mountedIndexes = new WeakMap<Element, number>();
-        const viewedIndexes = new WeakMap<Element, number>();
+        const mountedElements = new Map<number, Element>();
+        const mountedIndexArray: number[] = [];
+
+        let prevOffset = -1;
+        const syncViewportToScrollPosition = () => {
+          // The scrollTop/scrollLeft may be minus in reverse scrolling
+          const offset = abs(
+            isHorizontal ? scrollable.scrollLeft : scrollable.scrollTop
+          );
+          if (prevOffset === offset) {
+            return;
+          }
+          prevOffset = offset;
+          console.log(offset);
+
+          store._update({
+            _type: HANDLE_SCROLL,
+            _offset: offset,
+          });
+        };
+
+        const requestSync = debounce(() => {
+          syncViewportToScrollPosition();
+          requestSync();
+        }, 200);
+
+        const intersect = (entries: IntersectionObserverEntry[]) => {
+          let latestEntry: IntersectionObserverEntry | undefined;
+          entries.forEach((entry) => {
+            // take latest entry
+            if (
+              (!latestEntry || latestEntry.time < entry.time) &&
+              mountedIndexes.has(entry.target)
+            ) {
+              latestEntry = entry;
+            }
+          });
+
+          if (latestEntry) {
+            const { boundingClientRect, rootBounds, target } = latestEntry;
+            store._update({
+              _type: HANDLE_ITEM_INTERSECTION,
+              _index: mountedIndexes.get(target)!,
+              _offset: isHorizontal
+                ? reverse
+                  ? rootBounds!.right - boundingClientRect.right
+                  : boundingClientRect.left - rootBounds!.left
+                : reverse
+                ? rootBounds!.bottom - boundingClientRect.bottom
+                : boundingClientRect.top - rootBounds!.top,
+            });
+          }
+        };
+
+        const tempObserving = new Set<number>();
+        const updateObserve = (i: number, add?: boolean) => {
+          if (add) {
+            mountedIndexArray.push(i);
+            if (mountedIndexArray.length <= 2) {
+              io.observe(mountedElements.get(i)!);
+              tempObserving.add(i);
+              return;
+            }
+            mountedIndexArray.sort((a, b) => a - b);
+            const idx = mountedIndexArray.indexOf(i);
+            if (idx === 0) {
+              io.observe(mountedElements.get(i)!);
+              io.unobserve(mountedElements.get(mountedIndexArray[idx + 1]!)!);
+              tempObserving.add(i);
+              tempObserving.delete(mountedIndexArray[idx + 1]!);
+            } else if (idx === mountedIndexArray.length - 1) {
+              io.observe(mountedElements.get(i)!);
+              io.unobserve(mountedElements.get(mountedIndexArray[idx - 1]!)!);
+              tempObserving.add(i);
+              tempObserving.delete(mountedIndexArray[idx - 1]!);
+            }
+          } else {
+            const idx = mountedIndexArray.indexOf(i);
+            if (idx === -1) return;
+            if (idx === 0) {
+              io.unobserve(mountedElements.get(i)!);
+              tempObserving.delete(i);
+              if (mountedIndexArray.length > 2) {
+                io.observe(mountedElements.get(mountedIndexArray[idx + 1]!)!);
+                tempObserving.add(mountedIndexArray[idx + 1]!);
+              }
+            } else if (idx === mountedIndexArray.length - 1) {
+              io.unobserve(mountedElements.get(i)!);
+              tempObserving.delete(i);
+              if (mountedIndexArray.length > 2) {
+                io.observe(mountedElements.get(mountedIndexArray[idx - 1]!)!);
+                tempObserving.add(mountedIndexArray[idx - 1]!);
+              }
+            }
+            mountedIndexArray.splice(idx, 1);
+          }
+        };
+
+        const observe = (el: HTMLElement, i: number) => {
+          mountedIndexes.set(el, i);
+          mountedElements.set(i, el);
+          updateObserve(i, true);
+
+          return () => {
+            updateObserve(i);
+            mountedIndexes.delete(el);
+            mountedElements.delete(i);
+
+            intersect(io.takeRecords());
+          };
+        };
 
         return {
           _init(root, wrapper) {
-            const syncViewportToScrollPosition = () => {
-              // The scrollTop/scrollLeft may be minus in reverse scrolling
-              const offset = abs(
-                isHorizontal ? root.scrollLeft : root.scrollTop
-              );
-              store._update({
-                _type: HANDLE_SCROLL,
-                _offset: offset,
-              });
-            };
-
-            // Estimating scroll position from intersections can fail when items were mounted outside of viewport and intersection didn't happen.
-            // This situation rarely occurs in fast scrolling with scroll bar.
-            // So get scroll position from element while there are no items in viewport.
-            const requestSync = debounce(() => {
-              if (viewedCount) return;
-              syncViewportToScrollPosition();
-              requestSync();
-            }, 200);
+            scrollable = root;
 
             ro = new ResizeObserver((entries) => {
               const resizedItemSizes: number[] = [];
@@ -320,62 +412,10 @@ export const List = forwardRef<ListHandle, ListProps>(
               }
             });
 
-            io = new IntersectionObserver(
-              (entries) => {
-                let latestEntry: IntersectionObserverEntry | undefined;
-                entries.forEach((entry) => {
-                  // take latest entry
-                  if (
-                    (!latestEntry || latestEntry.time < entry.time) &&
-                    mountedIndexes.has(entry.target)
-                  ) {
-                    latestEntry = entry;
-                  }
-
-                  if (entry.isIntersecting) {
-                    // enter
-                    const index = mountedIndexes.get(entry.target);
-                    if (index != null) {
-                      viewedIndexes.set(entry.target, index);
-                      viewedCount++;
-                    }
-                  } else {
-                    // exit
-                    if (viewedIndexes.has(entry.target)) {
-                      viewedIndexes.delete(entry.target);
-                      viewedCount--;
-                    }
-                  }
-                });
-
-                if (!viewedCount) {
-                  // all items would exit in fast scrolling
-                  syncViewportToScrollPosition();
-                  requestSync();
-                  return;
-                }
-
-                if (latestEntry) {
-                  const { boundingClientRect, rootBounds, target } =
-                    latestEntry;
-                  store._update({
-                    _type: HANDLE_ITEM_INTERSECTION,
-                    _index: mountedIndexes.get(target)!,
-                    _offset: isHorizontal
-                      ? reverse
-                        ? rootBounds!.right - boundingClientRect.right
-                        : boundingClientRect.left - rootBounds!.left
-                      : reverse
-                      ? rootBounds!.bottom - boundingClientRect.bottom
-                      : boundingClientRect.top - rootBounds!.top,
-                  });
-                }
-              },
-              {
-                root: root,
-                threshold: 1,
-              }
-            );
+            io = new IntersectionObserver(intersect, {
+              root: root,
+              threshold: 1,
+            });
 
             ro.observe(wrapper);
             return () => {
@@ -385,17 +425,11 @@ export const List = forwardRef<ListHandle, ListProps>(
             };
           },
           _observe(el, i) {
-            mountedIndexes.set(el, i);
             ro.observe(el);
-            io.observe(el);
+            const unobserve = observe(el, i);
             return () => {
-              mountedIndexes.delete(el);
-              if (viewedIndexes.has(el)) {
-                viewedIndexes.delete(el);
-                viewedCount--;
-              }
               ro.unobserve(el);
-              io.unobserve(el);
+              unobserve();
             };
           },
         };
