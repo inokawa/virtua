@@ -417,23 +417,32 @@ export const List = forwardRef<ListHandle, ListProps>(
     }, [count]);
 
     useIsomorphicLayoutEffect(() => {
-      if (scrollRef.current) {
-        const isStartInView = startIndex === 0;
-        const isEndInView = endIndex - (count - 1) === 0;
-        if (
-          jump._start &&
-          !(
-            isStartInView &&
-            scrollRef.current[isHorizontal ? "scrollLeft" : "scrollTop"] === 0
-          )
-        ) {
-          scrollRef.current[isHorizontal ? "scrollLeft" : "scrollTop"] +=
-            jump._start;
+      if (!scrollRef.current || !jump.length) return;
+      const isStartInView = startIndex === 0;
+      const isEndInView = endIndex - (count - 1) === 0;
+
+      let topJump = 0;
+      let bottomJump = 0;
+      jump.forEach(([index, diff]) => {
+        if (index < startIndex) {
+          topJump += diff;
+        } else {
+          bottomJump += diff;
         }
-        if (jump._end && !isStartInView && isEndInView) {
-          scrollRef.current[isHorizontal ? "scrollLeft" : "scrollTop"] +=
-            jump._end;
-        }
+      });
+
+      if (
+        topJump &&
+        !(
+          isStartInView &&
+          scrollRef.current[isHorizontal ? "scrollLeft" : "scrollTop"] === 0
+        )
+      ) {
+        scrollRef.current[isHorizontal ? "scrollLeft" : "scrollTop"] += topJump;
+      }
+      if (bottomJump && !isStartInView && isEndInView) {
+        scrollRef.current[isHorizontal ? "scrollLeft" : "scrollTop"] +=
+          bottomJump;
       }
     }, [jump]);
 

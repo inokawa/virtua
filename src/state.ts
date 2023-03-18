@@ -22,7 +22,7 @@ export const UPDATE_VIEWPORT_SIZE = 2;
 export const HANDLE_ITEM_INTERSECTION = 3;
 export const HANDLE_SCROLL = 4;
 
-export type ScrollJump = Readonly<{ _start: number; _end: number }>;
+export type ScrollJump = Readonly<[index: number, sizeDiff: number][]>;
 
 type State = {
   _startIndex: number;
@@ -62,18 +62,12 @@ const mutate = (state: State, action: Actions, itemSize: number): boolean => {
         return false;
       }
 
-      let topJump = 0;
-      let bottomJump = 0;
+      const jump: [index: number, sizeDiff: number][] = [];
       indexes.forEach((index, i) => {
-        if (index < state._startIndex) {
-          topJump += sizes[i]! - getItemSize(state._cache, index);
-        } else {
-          bottomJump += sizes[i]! - getItemSize(state._cache, index);
-        }
+        jump.push([index, sizes[i]! - getItemSize(state._cache, index)]);
         setItemSize(state._cache as Writeable<Cache>, index, sizes[i]!);
       });
-
-      state._jump = { _start: topJump, _end: bottomJump };
+      state._jump = jump;
       return true;
     }
     case UPDATE_VIEWPORT_SIZE: {
@@ -154,7 +148,7 @@ export const useVirtualStore = (
         _viewportWidth: 0,
         _viewportHeight: 0,
         _cache: resetCache(itemCount, itemSize),
-        _jump: { _start: 0, _end: 0 },
+        _jump: [],
       };
 
       const getViewportSize = (): number =>
