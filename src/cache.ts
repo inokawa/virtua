@@ -26,6 +26,7 @@ export const setItemSize = (
 };
 
 export const computeTotalSize = (cache: Writeable<Cache>): number => {
+  if (!cache._length) return 0;
   const lastIndex = cache._length - 1;
   if (cache._measuredOffsetIndex >= lastIndex) {
     return cache._offsets[lastIndex]! + getItemSize(cache, lastIndex);
@@ -158,6 +159,7 @@ export const computeStartOffset = (
   index: number,
   cache: Writeable<Cache>
 ): number => {
+  if (!cache._length) return 0
   if (cache._measuredOffsetIndex >= index) {
     return cache._offsets[index]!;
   }

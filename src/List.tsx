@@ -226,7 +226,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     ref
   ): ReactElement => {
     // memoize element count
-    const count = useMemo(() => {
+    const rawCount = useMemo(() => {
       let i = 0;
       Children.forEach(children, (e) => {
         if (isInvalidElement(e)) {
@@ -237,7 +237,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       return i;
     }, [children]);
 
-    const store = useVirtualStore(count, itemSize, isHorizontal);
+    const store = useVirtualStore(rawCount, itemSize, isHorizontal);
     const startIndex = useSyncExternalStore(
       store._subscribe,
       store._getStartIndex,
@@ -407,20 +407,24 @@ export const List = forwardRef<ListHandle, ListProps>(
         };
       })());
 
+    // The elements length and cached items length are different just after element is added/removed.
+    const count = min(rawCount, store._getItemCount());
+
     const startIndexWithMargin = max(startIndex - itemMargin, 0);
     const endIndexWithMargin = min(endIndex + itemMargin, count - 1);
+
+    // So update cache length. Updating state in render will cause warn so use useEffect for now.
+    useIsomorphicLayoutEffect(() => {
+      store._update({
+        _type: UPDATE_CACHE_LENGTH,
+        _length: rawCount,
+      });
+    }, [rawCount]);
 
     useIsomorphicLayoutEffect(
       () => handle._init(scrollRef.current!, wrapperRef.current!),
       []
     );
-
-    useIsomorphicLayoutEffect(() => {
-      store._update({
-        _type: UPDATE_CACHE_LENGTH,
-        _length: count,
-      });
-    }, [count]);
 
     useIsomorphicLayoutEffect(() => {
       if (!scrollRef.current || !jump.length) return;

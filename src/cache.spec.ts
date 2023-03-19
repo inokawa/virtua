@@ -174,6 +174,20 @@ describe(computeTotalSize.name, () => {
     ]);
   });
 
+  it("should return 0 if cache length is 0", () => {
+    const filledSizes: number[] = [];
+    const emptyOffsets: number[] = [];
+    const cache: Writeable<Cache> = {
+      _length: filledSizes.length,
+      _sizes: filledSizes,
+      _measuredOffsetIndex: 0,
+      _offsets: emptyOffsets,
+      _defaultItemSize: 30,
+    };
+    expect(computeTotalSize(cache)).toBe(0);
+    expect(cache._offsets).toEqual([]);
+  });
+
   describe("with cached offsets", () => {
     it("should start from cached offset if measuredOffsetIndex is at cached", () => {
       const filledSizes = range(10, () => 20);
