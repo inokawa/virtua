@@ -93,13 +93,13 @@ const Item = memo(
 const isInvalidElement = <T,>(e: T) => e == null || typeof e === "boolean";
 
 const Window = ({
-  children,
+  _children: children,
   _store: store,
   _ref: ref,
   _isHorizontal: isHorizontal,
   _reverse: reverse,
 }: {
-  children: ReactNode;
+  _children: ReactNode;
   _store: Store;
   _ref: RefObject<HTMLDivElement>;
   _isHorizontal: boolean | undefined;
@@ -147,12 +147,12 @@ const Window = ({
 };
 
 const Inner = ({
-  children,
+  _children: children,
   _store: store,
   _style: style,
   _isHorizontal: isHorizontal,
 }: {
-  children: ReactNode;
+  _children: ReactNode;
   _store: Store;
   _style: CSSProperties | undefined;
   _isHorizontal: boolean | undefined;
@@ -173,12 +173,14 @@ const Inner = ({
       style={useMemo<CSSProperties>(() => {
         const clampedScrollSize =
           scrollSize >= viewportSize ? scrollSize : viewportSize;
+        const width = isHorizontal ? clampedScrollSize : "100%";
+        const height = isHorizontal ? "100%" : clampedScrollSize;
         return {
           position: "relative",
-          width: isHorizontal ? clampedScrollSize : "100%",
-          height: isHorizontal ? "100%" : clampedScrollSize,
-          minWidth: isHorizontal ? clampedScrollSize : "100%",
-          minHeight: isHorizontal ? "100%" : clampedScrollSize,
+          width,
+          height,
+          minWidth: width,
+          minHeight: height,
           ...style,
         };
       }, [scrollSize, viewportSize, style, isHorizontal])}
@@ -549,15 +551,15 @@ export const List = forwardRef<ListHandle, ListProps>(
           _store={store}
           _isHorizontal={isHorizontal}
           _reverse={reverse}
-        >
-          <Inner
-            _store={store}
-            _style={innerStyleProp}
-            _isHorizontal={isHorizontal}
-          >
-            {isViewportInitialized && items}
-          </Inner>
-        </Window>
+          _children={
+            <Inner
+              _store={store}
+              _style={innerStyleProp}
+              _isHorizontal={isHorizontal}
+              _children={isViewportInitialized && items}
+            />
+          }
+        />
       </div>
     );
   }
