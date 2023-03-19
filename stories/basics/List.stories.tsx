@@ -84,48 +84,36 @@ export const Nested: StoryObj = {
 
 export const ScrollTo: StoryObj = {
   render: () => {
+    const LENGTH = 1000;
+    const [dest, setDest] = useState(567);
     const ref = useRef<ListHandle>(null);
     return (
       <div>
         <div>
+          <input
+            type="number"
+            value={dest}
+            onChange={(e) => {
+              setDest(Number(e.target.value));
+            }}
+          />
           <button
             onClick={() => {
-              ref.current?.scrollTo(0);
+              ref.current?.scrollTo(dest);
             }}
           >
-            scroll to 0
+            scroll
           </button>
           <button
             onClick={() => {
-              ref.current?.scrollTo(250);
+              setDest(Math.round(LENGTH * Math.random()));
             }}
           >
-            scroll to 250
-          </button>
-          <button
-            onClick={() => {
-              ref.current?.scrollTo(500);
-            }}
-          >
-            scroll to 500
-          </button>
-          <button
-            onClick={() => {
-              ref.current?.scrollTo(750);
-            }}
-          >
-            scroll to 750
-          </button>
-          <button
-            onClick={() => {
-              ref.current?.scrollTo(999);
-            }}
-          >
-            scroll to 999
+            randomize
           </button>
         </div>
         <List ref={ref} style={{ height: "100vh" }}>
-          {createRows(1000)}
+          {createRows(LENGTH)}
         </List>
       </div>
     );
@@ -226,6 +214,10 @@ export const IncreasingItemsReversed: StoryObj = {
         clearInterval(timer);
       };
     });
-    return <List style={{ height: "100vh" }}>{createRows(row).reverse()}</List>;
+    return (
+      <List style={{ height: "100vh" }} reverse>
+        {createRows(row)}
+      </List>
+    );
   },
 };

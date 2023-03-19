@@ -123,7 +123,7 @@ export const Default: StoryObj = {
               setValue(e.target.value);
             }}
             onKeyDown={(e) => {
-              if (e.keyCode === 13 && e.shiftKey) {
+              if (e.code === "Enter" && (e.ctrlKey || e.metaKey)) {
                 submit();
                 e.preventDefault();
               }
