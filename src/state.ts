@@ -128,6 +128,7 @@ export type Store = {
   _getViewportSizeInitialized(): boolean;
   _getScrollSize(): number;
   _getJump(): ScrollJump;
+  _waitForScrollDestinationItemsMeasured(): Promise<void>;
   _subscribe(cb: () => void): () => void;
   _update(action: Actions): void;
 };
@@ -150,9 +151,10 @@ export const useVirtualStore = (
         _cache: resetCache(itemCount, itemSize),
         _jump: [],
       };
-
       const getViewportSize = (): number =>
         isHorizontal ? state._viewportWidth : state._viewportHeight;
+
+      let scrollToQueue: [() => void, () => void] | undefined;
 
       return {
         _getStartIndex() {
@@ -196,6 +198,26 @@ export const useVirtualStore = (
         _getJump() {
           return state._jump;
         },
+        _waitForScrollDestinationItemsMeasured() {
+          if (scrollToQueue) {
+            // Cancel waiting scrollTo
+            scrollToQueue[1]();
+          }
+          // The measurement will be done asynchronously and the timing is not predictable so we use promise.
+          // For example, ResizeObserver may not fire when window is not visible.
+          return new Promise((resolve, reject) => {
+            scrollToQueue = [
+              () => {
+                // HACK: It should be resolved in the next tick that is after React's render
+                setTimeout(() => {
+                  resolve();
+                  scrollToQueue = undefined;
+                });
+              },
+              reject,
+            ];
+          });
+        },
         _subscribe(cb) {
           subscribers.add(cb);
           return () => {
@@ -208,6 +230,9 @@ export const useVirtualStore = (
             subscribers.forEach((cb) => {
               cb();
             });
+            if (scrollToQueue && action._type === UPDATE_ITEM_SIZES) {
+              scrollToQueue[0]();
+            }
           }
         },
       };

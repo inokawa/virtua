@@ -459,32 +459,47 @@ export const List = forwardRef<ListHandle, ListProps>(
     }, [endIndex]);
 
     useImperativeHandle(ref, () => ({
-      scrollTo(index) {
+      scrollTo: async (index) => {
         const el = scrollRef.current;
         if (!el) return;
 
         index = max(min(index, count - 1), 0);
 
-        let offset = store._getItemOffset(index);
-        if (reverse) {
-          offset *= -1;
-        }
-        const scrollSize = store._getScrollSize();
-        const viewportSize = store._getViewportSize();
-        const endReached = scrollSize - (offset + viewportSize) <= 0;
-        if (endReached) {
-          offset = scrollSize - viewportSize;
-        }
+        const getScrollDestination = (): number => {
+          let offset = store._getItemOffset(index);
+          if (reverse) {
+            offset *= -1;
+          }
+          const scrollSize = store._getScrollSize();
+          const viewportSize = store._getViewportSize();
+          const endReached = scrollSize - (offset + viewportSize) <= 0;
+          if (endReached) {
+            offset = scrollSize - viewportSize;
+          }
+          return offset;
+        };
 
-        if (endReached && store._hasUnmeasuredItemsInRange(index)) {
-          // Mount items to measure sizes before scrolling to avoid wrong calculation
-          store._update({ _type: HANDLE_SCROLL, _offset: offset });
-          // HACK: then scroll in next tick
-          setTimeout(() => {
-            el[isHorizontal ? "scrollLeft" : "scrollTop"] =
-              store._getItemOffset(index);
-          });
+        if (store._hasUnmeasuredItemsInRange(index)) {
+          do {
+            // In order to scroll to the correct position, mount the items and measure their sizes before scrolling.
+            store._update({
+              _type: HANDLE_SCROLL,
+              _offset: getScrollDestination(),
+            });
+            try {
+              // Wait for the scroll destination items to be measured.
+              await store._waitForScrollDestinationItemsMeasured();
+            } catch (e) {
+              // canceled
+              return;
+            }
+          } while (store._hasUnmeasuredItemsInRange(index));
+
+          // Scroll with the updated value
+          el[isHorizontal ? "scrollLeft" : "scrollTop"] =
+            getScrollDestination();
         } else {
+          const offset = getScrollDestination();
           el[isHorizontal ? "scrollLeft" : "scrollTop"] = offset;
           // Sync viewport to scroll destination
           store._update({ _type: HANDLE_SCROLL, _offset: offset });
