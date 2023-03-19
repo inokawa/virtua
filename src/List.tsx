@@ -55,7 +55,11 @@ const Item = memo(
     const offset = useSyncExternalStore(store._subscribe, getOffset, getOffset);
     const hide = useSyncExternalStore(store._subscribe, getHide, getHide);
 
-    useIsomorphicLayoutEffect(() => handle._observe(ref.current!, index), []);
+    // The index may be changed if elements are inserted to or removed from the start of props.children
+    useIsomorphicLayoutEffect(
+      () => handle._observe(ref.current!, index),
+      [index]
+    );
 
     return (
       <div
