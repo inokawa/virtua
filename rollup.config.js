@@ -32,8 +32,6 @@ export default {
           {
             "^use-sync-external-store/shim$":
               "use-sync-external-store/shim/index.js",
-            "^use-sync-external-store/shim/with-selector$":
-              "use-sync-external-store/shim/with-selector.js",
           },
         ],
       ],
