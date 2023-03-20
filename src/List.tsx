@@ -22,7 +22,7 @@ import {
   useVirtualStore,
 } from "./state";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { abs, debounce, max, min } from "./utils";
+import { debounce, max, min } from "./utils";
 
 type ObserverHandle = {
   _init: (rootElement: HTMLElement, wrapperElement: HTMLElement) => () => void;
@@ -35,7 +35,6 @@ type ItemProps = {
   _store: Store;
   _index: number;
   _isHorizontal: boolean | undefined;
-  _isReversed: boolean | undefined;
 };
 
 const Item = memo(
@@ -45,7 +44,6 @@ const Item = memo(
     _store: store,
     _index: index,
     _isHorizontal: isHorizontal,
-    _isReversed: isReversed,
   }: ItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -75,18 +73,18 @@ const Item = memo(
                   display: "flex",
                   height: "100%",
                   top: 0,
-                  ...(isReversed ? { right: offset } : { left: offset }),
+                  ...{ left: offset },
                 }
               : {
                   width: "100%",
                   left: 0,
-                  ...(isReversed ? { bottom: offset } : { top: offset }),
+                  ...{ top: offset },
                 }),
             ...(hide && {
               visibility: "hidden",
             }),
           };
-        }, [offset, isHorizontal, isReversed, hide])}
+        }, [offset, isHorizontal, hide])}
       >
         {children}
       </div>
@@ -101,13 +99,11 @@ const Window = ({
   _store: store,
   _ref: ref,
   _isHorizontal: isHorizontal,
-  _reverse: reverse,
 }: {
   _children: ReactNode;
   _store: Store;
   _ref: RefObject<HTMLDivElement>;
   _isHorizontal: boolean | undefined;
-  _reverse: boolean | undefined;
 }) => {
   const viewportWidth = useSyncExternalStore(
     store._subscribe,
@@ -137,12 +133,8 @@ const Window = ({
           margin: 0,
           top: 0,
           left: 0,
-          ...(reverse && {
-            display: "flex",
-            flexDirection: isHorizontal ? "row-reverse" : "column-reverse",
-          }),
         }),
-        [viewportHeight, viewportWidth, isHorizontal, reverse]
+        [viewportHeight, viewportWidth, isHorizontal]
       )}
     >
       {children}
@@ -203,7 +195,6 @@ export interface ListProps {
   itemSize?: number;
   itemMargin?: number;
   horizontal?: boolean;
-  reverse?: boolean;
   endThreshold?: number;
   style?: CSSProperties;
   innerStyle?: CSSProperties;
@@ -217,7 +208,6 @@ export const List = forwardRef<ListHandle, ListProps>(
       itemSize = 40,
       itemMargin = 6,
       horizontal: isHorizontal,
-      reverse,
       endThreshold = 0,
       style: styleProp,
       innerStyle: innerStyleProp,
@@ -278,11 +268,9 @@ export const List = forwardRef<ListHandle, ListProps>(
         return {
           _init(root, wrapper) {
             const syncViewportToScrollPosition = () => {
-              // The scrollTop/scrollLeft may be minus in reverse scrolling
-              const offset = abs(root[scrollToKey]);
               store._update({
                 _type: HANDLE_SCROLL,
-                _offset: offset,
+                _offset: root[scrollToKey],
               });
             };
 
@@ -367,11 +355,7 @@ export const List = forwardRef<ListHandle, ListProps>(
                     _type: HANDLE_ITEM_INTERSECTION,
                     _index: mountedIndexes.get(target)!,
                     _offset: isHorizontal
-                      ? reverse
-                        ? rootBounds!.right - boundingClientRect.right
-                        : boundingClientRect.left - rootBounds!.left
-                      : reverse
-                      ? rootBounds!.bottom - boundingClientRect.bottom
+                      ? boundingClientRect.left - rootBounds!.left
                       : boundingClientRect.top - rootBounds!.top,
                   });
                 }
@@ -496,10 +480,10 @@ export const List = forwardRef<ListHandle, ListProps>(
 
           // Scroll with the updated value
           const offset = getScrollDestination();
-          el[scrollToKey] = reverse ? -offset : offset;
+          el[scrollToKey] = offset;
         } else {
           const offset = getScrollDestination();
-          el[scrollToKey] = reverse ? -offset : offset;
+          el[scrollToKey] = offset;
           // Sync viewport to scroll destination
           store._update({ _type: HANDLE_SCROLL, _offset: offset });
         }
@@ -524,7 +508,6 @@ export const List = forwardRef<ListHandle, ListProps>(
             _element={e}
             _index={i}
             _isHorizontal={isHorizontal}
-            _isReversed={reverse}
           />
         ) : null;
       });
@@ -547,7 +530,6 @@ export const List = forwardRef<ListHandle, ListProps>(
           _ref={scrollRef}
           _store={store}
           _isHorizontal={isHorizontal}
-          _reverse={reverse}
           _children={
             <Inner
               _store={store}

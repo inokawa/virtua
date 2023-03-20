@@ -58,16 +58,6 @@ export const Horizontal: StoryObj = {
   },
 };
 
-export const Reverse: StoryObj = {
-  render: () => {
-    return (
-      <List style={{ height: "100vh" }} reverse>
-        {createRows(1000)}
-      </List>
-    );
-  },
-};
-
 export const Nested: StoryObj = {
   render: () => {
     return (
@@ -200,24 +190,5 @@ export const IncreasingItems: StoryObj = {
       };
     });
     return <List style={{ height: "100vh" }}>{createRows(row)}</List>;
-  },
-};
-
-export const IncreasingItemsReversed: StoryObj = {
-  render: () => {
-    const [row, setRows] = useState<number>(0);
-    useEffect(() => {
-      const timer = setInterval(() => {
-        setRows((prev) => prev + 4);
-      }, 500);
-      return () => {
-        clearInterval(timer);
-      };
-    });
-    return (
-      <List style={{ height: "100vh" }} reverse>
-        {createRows(row)}
-      </List>
-    );
   },
 };

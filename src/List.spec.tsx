@@ -1,8 +1,8 @@
-import { afterEach, it, expect, describe, /*jest*/ } from "@jest/globals";
-import { render, cleanup, /*waitFor*/ } from "@testing-library/react";
+import { afterEach, it, expect, describe /*jest*/ } from "@jest/globals";
+import { render, cleanup /*waitFor*/ } from "@testing-library/react";
 // import { useEffect, useRef } from "react";
 
-import { List, /*ListHandle */} from ".";
+import { List /*ListHandle */ } from ".";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -311,29 +311,29 @@ describe("horizontal", () => {
   });
 });
 
-describe("reverse", () => {
-  it("should render if vertical", () => {
-    const { asFragment } = render(
-      <List>
-        {Array.from({ length: 100 }).map((_, i) => (
-          <div key={i}>{i}</div>
-        ))}
-      </List>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
+// describe("reverse", () => {
+//   it("should render if vertical", () => {
+//     const { asFragment } = render(
+//       <List>
+//         {Array.from({ length: 100 }).map((_, i) => (
+//           <div key={i}>{i}</div>
+//         ))}
+//       </List>
+//     );
+//     expect(asFragment()).toMatchSnapshot();
+//   });
 
-  it("should render if horizontal", () => {
-    const { asFragment } = render(
-      <List horizontal>
-        {Array.from({ length: 100 }).map((_, i) => (
-          <div key={i}>{i}</div>
-        ))}
-      </List>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-});
+//   it("should render if horizontal", () => {
+//     const { asFragment } = render(
+//       <List horizontal>
+//         {Array.from({ length: 100 }).map((_, i) => (
+//           <div key={i}>{i}</div>
+//         ))}
+//       </List>
+//     );
+//     expect(asFragment()).toMatchSnapshot();
+//   });
+// });
 
 // describe("scrollTo", () => {
 //   describe("vertical", () => {
