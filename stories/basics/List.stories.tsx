@@ -58,15 +58,41 @@ export const Horizontal: StoryObj = {
   },
 };
 
-export const Nested: StoryObj = {
+export const Sticky: StoryObj = {
   render: () => {
     return (
-      <List style={{ width: 800, height: "100vh" }}>
-        {Array.from({ length: 100 }).map((_, i) => (
-          <List key={i} style={{ height: 200, border: "solid 1px gray" }}>
-            {createRows(100)}
-          </List>
-        ))}
+      <List style={{ height: "100vh" }} itemSize={570}>
+        {Array.from({ length: 100 }).map((_, i) => {
+          return (
+            <div
+              key={i}
+              style={{
+                borderBottom: "solid 1px #ccc",
+              }}
+            >
+              {Array.from({ length: 10 }).map((_, j) => {
+                const isGroupTop = j === 0;
+                return (
+                  <div
+                    key={j}
+                    style={{
+                      height: 60,
+                      background: "#fff",
+                      ...(isGroupTop && {
+                        top: 0,
+                        height: 30,
+                        position: "sticky",
+                        borderBottom: "solid 1px #ccc",
+                      }),
+                    }}
+                  >
+                    {isGroupTop ? i : `${i} - ${j}`}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
       </List>
     );
   },
@@ -114,8 +140,10 @@ export const WithState: StoryObj = {
   render: () => {
     const [actives, setActives] = useState<{ [key: number]: boolean }>({
       0: true,
-      2: true,
-      4: true,
+      3: true,
+      6: true,
+      9: true,
+      12: true,
     });
     return (
       <List style={{ height: "100vh" }}>
@@ -127,7 +155,7 @@ export const WithState: StoryObj = {
               style={{
                 height: active ? 160 : 80,
                 borderBottom: "solid 1px #ccc",
-                background: active ? "red" : "#fff",
+                background: active ? "#ddd" : "#fff",
                 display: "flex",
                 alignItems: "flex-start",
               }}
@@ -151,44 +179,76 @@ export const WithState: StoryObj = {
   },
 };
 
-export const Zoom: StoryObj = {
-  render: () => {
-    return (
-      <List style={{ height: "100vh" }}>
-        {Array.from({ length: 1000 }).map((_, i) => {
-          return (
-            <div
-              key={i}
-              style={{
-                height: 80,
-                background: "#fff",
-                borderBottom: "solid 1px #ccc",
-                zoom: i % 4,
-                transformOrigin: "center top",
-              }}
-            >
-              {i}
-            </div>
-          );
-        })}
-      </List>
-    );
-  },
-};
-
 // TODO: nth-type-selector
 
 export const IncreasingItems: StoryObj = {
   render: () => {
-    const [row, setRows] = useState<number>(0);
+    const BATCH_LENGTH = 4;
+    const createRows = (num: number, offset: number) => {
+      return Array.from({ length: num }).map((_, i) => {
+        i += offset;
+        return i;
+      });
+    };
+
+    const [prepend, setPrepend] = useState(false);
+    const [rows, setRows] = useState(() => createRows(BATCH_LENGTH, 0));
     useEffect(() => {
       const timer = setInterval(() => {
-        setRows((prev) => prev + 4);
+        setRows((prev) =>
+          prepend
+            ? [...createRows(BATCH_LENGTH, prev[0] - BATCH_LENGTH), ...prev]
+            : [...prev, ...createRows(BATCH_LENGTH, prev[prev.length - 1]! + 1)]
+        );
       }, 500);
       return () => {
         clearInterval(timer);
       };
     });
-    return <List style={{ height: "100vh" }}>{createRows(row)}</List>;
+
+    const heights = [20, 40, 80, 77];
+
+    return (
+      <div>
+        <div>
+          <label style={{ marginRight: 4 }}>
+            <input
+              type="radio"
+              style={{ marginLeft: 4 }}
+              checked={!prepend}
+              onChange={() => {
+                setPrepend(false);
+              }}
+            />
+            append
+          </label>
+          <label style={{ marginRight: 4 }}>
+            <input
+              type="radio"
+              style={{ marginLeft: 4 }}
+              checked={prepend}
+              onChange={() => {
+                setPrepend(true);
+              }}
+            />
+            prepend
+          </label>
+        </div>
+        <List style={{ height: "100vh" }}>
+          {rows.map((d, i) => (
+            <div
+              key={d}
+              style={{
+                height: heights[i % 4],
+                borderBottom: "solid 1px #ccc",
+                background: "#fff",
+              }}
+            >
+              {d}
+            </div>
+          ))}
+        </List>
+      </div>
+    );
   },
 };

@@ -104,7 +104,7 @@ export const InfiniteScrolling: StoryObj = {
         endThreshold={30}
         onEndReached={async () => {
           setFetching(true);
-          await new Promise((r) => setTimeout(r, 1000));
+          await new Promise((r) => setTimeout(r, 1500));
           setItems((prev) => [...prev, ...createItems()]);
           setFetching(false);
         }}
