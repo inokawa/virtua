@@ -23,9 +23,18 @@ import {
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { debounce, max, min } from "./utils";
 
+const SCROLL_STOP = 0;
+const SCROLL_DOWN = 1;
+const SCROLL_UP = 2;
+type ScrollDirection =
+  | typeof SCROLL_STOP
+  | typeof SCROLL_DOWN
+  | typeof SCROLL_UP;
+
 type ObserverHandle = {
   _init: (rootElement: HTMLElement, wrapperElement: HTMLElement) => () => void;
   _observe: (itemElement: HTMLElement, index: number) => () => void;
+  _getScrollDirection: () => ScrollDirection;
 };
 
 type ItemProps = {
@@ -258,6 +267,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       (handleRef.current = ((): ObserverHandle => {
         let ro: ResizeObserver;
         let prevOffset = -1;
+        let scrollDirection: ScrollDirection = SCROLL_STOP;
         const mountedIndexes = new WeakMap<Element, number>();
 
         return {
@@ -267,6 +277,7 @@ export const List = forwardRef<ListHandle, ListProps>(
               if (prevOffset === offset) {
                 return;
               }
+              scrollDirection = prevOffset > offset ? SCROLL_UP : SCROLL_DOWN;
               prevOffset = offset;
               store._update({
                 _type: HANDLE_SCROLL,
@@ -274,10 +285,10 @@ export const List = forwardRef<ListHandle, ListProps>(
               });
             };
 
-            // We are throttling scroll event so event may not be fired when you stop scrolling
-            // So check scroll position once just after scrolling stopped
             const onScrollStopped = debounce(() => {
+              // Check scroll position once just after scrolling stopped
               syncViewportToScrollPosition();
+              scrollDirection = SCROLL_STOP;
             }, 300);
 
             const onScroll = () => {
@@ -332,6 +343,9 @@ export const List = forwardRef<ListHandle, ListProps>(
               ro.unobserve(el);
             };
           },
+          _getScrollDirection() {
+            return scrollDirection;
+          },
         };
       })());
 
@@ -356,24 +370,12 @@ export const List = forwardRef<ListHandle, ListProps>(
 
     useIsomorphicLayoutEffect(() => {
       if (!scrollRef.current || !jump.length) return;
-      const isStartInView = startIndex === 0;
-      const isEndInView = endIndex - (count - 1) === 0;
 
-      let topJump = 0;
-      let bottomJump = 0;
-      jump.forEach(([index, diff]) => {
-        if (index < startIndex) {
-          topJump += diff;
-        } else {
-          bottomJump += diff;
+      if (handle._getScrollDirection() === SCROLL_UP) {
+        const diff = jump.reduce((acc, [, j]) => acc + j, 0);
+        if (diff) {
+          scrollRef.current[scrollToKey] += diff;
         }
-      });
-
-      if (topJump && !(isStartInView && scrollRef.current[scrollToKey] === 0)) {
-        scrollRef.current[scrollToKey] += topJump;
-      }
-      if (bottomJump && !isStartInView && isEndInView) {
-        scrollRef.current[scrollToKey] += bottomJump;
       }
     }, [jump]);
 
