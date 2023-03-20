@@ -225,6 +225,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     },
     ref
   ): ReactElement => {
+    const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
     // memoize element count
     const rawCount = useMemo(() => {
       let i = 0;
@@ -278,9 +279,7 @@ export const List = forwardRef<ListHandle, ListProps>(
           _init(root, wrapper) {
             const syncViewportToScrollPosition = () => {
               // The scrollTop/scrollLeft may be minus in reverse scrolling
-              const offset = abs(
-                isHorizontal ? root.scrollLeft : root.scrollTop
-              );
+              const offset = abs(root[scrollToKey]);
               store._update({
                 _type: HANDLE_SCROLL,
                 _offset: offset,
@@ -441,18 +440,11 @@ export const List = forwardRef<ListHandle, ListProps>(
         }
       });
 
-      if (
-        topJump &&
-        !(
-          isStartInView &&
-          scrollRef.current[isHorizontal ? "scrollLeft" : "scrollTop"] === 0
-        )
-      ) {
-        scrollRef.current[isHorizontal ? "scrollLeft" : "scrollTop"] += topJump;
+      if (topJump && !(isStartInView && scrollRef.current[scrollToKey] === 0)) {
+        scrollRef.current[scrollToKey] += topJump;
       }
       if (bottomJump && !isStartInView && isEndInView) {
-        scrollRef.current[isHorizontal ? "scrollLeft" : "scrollTop"] +=
-          bottomJump;
+        scrollRef.current[scrollToKey] += bottomJump;
       }
     }, [jump]);
 
@@ -506,11 +498,10 @@ export const List = forwardRef<ListHandle, ListProps>(
           } while (store._hasUnmeasuredItemsInRange(index));
 
           // Scroll with the updated value
-          el[isHorizontal ? "scrollLeft" : "scrollTop"] =
-            getScrollDestination();
+          el[scrollToKey] = getScrollDestination();
         } else {
           const offset = getScrollDestination();
-          el[isHorizontal ? "scrollLeft" : "scrollTop"] = offset;
+          el[scrollToKey] = offset;
           // Sync viewport to scroll destination
           store._update({ _type: HANDLE_SCROLL, _offset: offset });
         }
