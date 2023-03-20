@@ -469,9 +469,6 @@ export const List = forwardRef<ListHandle, ListProps>(
 
         const getScrollDestination = (): number => {
           let offset = store._getItemOffset(index);
-          if (reverse) {
-            offset *= -1;
-          }
           const scrollSize = store._getScrollSize();
           const viewportSize = store._getViewportSize();
           const endReached = scrollSize - (offset + viewportSize) <= 0;
@@ -498,10 +495,11 @@ export const List = forwardRef<ListHandle, ListProps>(
           } while (store._hasUnmeasuredItemsInRange(index));
 
           // Scroll with the updated value
-          el[scrollToKey] = getScrollDestination();
+          const offset = getScrollDestination();
+          el[scrollToKey] = reverse ? -offset : offset;
         } else {
           const offset = getScrollDestination();
-          el[scrollToKey] = offset;
+          el[scrollToKey] = reverse ? -offset : offset;
           // Sync viewport to scroll destination
           store._update({ _type: HANDLE_SCROLL, _offset: offset });
         }
