@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/virtua) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/virtua) [![check](https://github.com/inokawa/virtua/actions/workflows/check.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/check.yml) [![demo](https://github.com/inokawa/virtua/actions/workflows/demo.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/demo.yml)
 
-Simple, small, performant and flexible virtual list component for [React](https://github.com/facebook/react).
+Simple, fast, small and flexible virtual list component for [React](https://github.com/facebook/react).
 
 ## Install
 
@@ -13,6 +13,8 @@ npm install virtua
 ### Requirements
 
 - react >= 16.14
+
+If you use ESM and webpack 5, use react >= 18 to avoid [Can't resolve `react/jsx-runtime` error](https://github.com/facebook/react/issues/20235).
 
 ## Usage
 
@@ -26,7 +28,7 @@ export const App = () => {
         <div
           key={i}
           style={{
-            height: 100,
+            height: Math.floor(Math.random() * 10) * 10 + 5,
             borderBottom: "solid 1px gray",
             background: "white",
           }}
