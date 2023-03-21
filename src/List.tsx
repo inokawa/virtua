@@ -13,7 +13,6 @@ import {
 } from "react";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
 import {
-  HANDLE_ITEM_INTERSECTION,
   HANDLE_SCROLL,
   UPDATE_CACHE_LENGTH,
   Store,
@@ -24,9 +23,18 @@ import {
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { debounce, max, min } from "./utils";
 
+const SCROLL_STOP = 0;
+const SCROLL_DOWN = 1;
+const SCROLL_UP = 2;
+type ScrollDirection =
+  | typeof SCROLL_STOP
+  | typeof SCROLL_DOWN
+  | typeof SCROLL_UP;
+
 type ObserverHandle = {
   _init: (rootElement: HTMLElement, wrapperElement: HTMLElement) => () => void;
   _observe: (itemElement: HTMLElement, index: number) => () => void;
+  _getScrollDirection: () => ScrollDirection;
 };
 
 type ItemProps = {
@@ -258,30 +266,35 @@ export const List = forwardRef<ListHandle, ListProps>(
       handleRef.current ||
       (handleRef.current = ((): ObserverHandle => {
         let ro: ResizeObserver;
-        let io: IntersectionObserver;
-
-        let viewedCount = 0;
-
+        let prevOffset = -1;
+        let scrollDirection: ScrollDirection = SCROLL_STOP;
         const mountedIndexes = new WeakMap<Element, number>();
-        const viewedIndexes = new WeakMap<Element, number>();
 
         return {
           _init(root, wrapper) {
             const syncViewportToScrollPosition = () => {
+              const offset = root[scrollToKey];
+              if (prevOffset === offset) {
+                return;
+              }
+              scrollDirection = prevOffset > offset ? SCROLL_UP : SCROLL_DOWN;
+              prevOffset = offset;
               store._update({
                 _type: HANDLE_SCROLL,
                 _offset: root[scrollToKey],
               });
             };
 
-            // Estimating scroll position from intersections can fail when items were mounted outside of viewport and intersection didn't happen.
-            // This situation rarely occurs in fast scrolling with scroll bar.
-            // So get scroll position from element while there are no items in viewport.
-            const requestSync = debounce(() => {
-              if (viewedCount) return;
+            const onScrollStopped = debounce(() => {
+              // Check scroll position once just after scrolling stopped
               syncViewportToScrollPosition();
-              requestSync();
-            }, 200);
+              scrollDirection = SCROLL_STOP;
+            }, 300);
+
+            const onScroll = () => {
+              syncViewportToScrollPosition();
+              onScrollStopped();
+            };
 
             ro = new ResizeObserver((entries) => {
               const resizedItemSizes: number[] = [];
@@ -313,79 +326,25 @@ export const List = forwardRef<ListHandle, ListProps>(
               }
             });
 
-            io = new IntersectionObserver(
-              (entries) => {
-                let latestEntry: IntersectionObserverEntry | undefined;
-                entries.forEach((entry) => {
-                  // take latest entry
-                  if (
-                    (!latestEntry || latestEntry.time < entry.time) &&
-                    mountedIndexes.has(entry.target)
-                  ) {
-                    latestEntry = entry;
-                  }
-
-                  if (entry.isIntersecting) {
-                    // enter
-                    const index = mountedIndexes.get(entry.target);
-                    if (index != null) {
-                      viewedIndexes.set(entry.target, index);
-                      viewedCount++;
-                    }
-                  } else {
-                    // exit
-                    if (viewedIndexes.has(entry.target)) {
-                      viewedIndexes.delete(entry.target);
-                      viewedCount--;
-                    }
-                  }
-                });
-
-                if (!viewedCount) {
-                  // all items would exit in fast scrolling
-                  syncViewportToScrollPosition();
-                  requestSync();
-                  return;
-                }
-
-                if (latestEntry) {
-                  const { boundingClientRect, rootBounds, target } =
-                    latestEntry;
-                  store._update({
-                    _type: HANDLE_ITEM_INTERSECTION,
-                    _index: mountedIndexes.get(target)!,
-                    _offset: isHorizontal
-                      ? boundingClientRect.left - rootBounds!.left
-                      : boundingClientRect.top - rootBounds!.top,
-                  });
-                }
-              },
-              {
-                root: root,
-                threshold: 1,
-              }
-            );
-
             ro.observe(wrapper);
+            root.addEventListener("scroll", onScroll);
+
             return () => {
               ro.disconnect();
-              io.disconnect();
-              requestSync._cancel();
+              root.removeEventListener("scroll", onScroll);
+              onScrollStopped._cancel();
             };
           },
           _observe(el, i) {
             mountedIndexes.set(el, i);
             ro.observe(el);
-            io.observe(el);
             return () => {
               mountedIndexes.delete(el);
-              if (viewedIndexes.has(el)) {
-                viewedIndexes.delete(el);
-                viewedCount--;
-              }
               ro.unobserve(el);
-              io.unobserve(el);
             };
+          },
+          _getScrollDirection() {
+            return scrollDirection;
           },
         };
       })());
@@ -411,24 +370,12 @@ export const List = forwardRef<ListHandle, ListProps>(
 
     useIsomorphicLayoutEffect(() => {
       if (!scrollRef.current || !jump.length) return;
-      const isStartInView = startIndex === 0;
-      const isEndInView = endIndex - (count - 1) === 0;
 
-      let topJump = 0;
-      let bottomJump = 0;
-      jump.forEach(([index, diff]) => {
-        if (index < startIndex) {
-          topJump += diff;
-        } else {
-          bottomJump += diff;
+      if (handle._getScrollDirection() === SCROLL_UP) {
+        const diff = jump.reduce((acc, [, j]) => acc + j, 0);
+        if (diff) {
+          scrollRef.current[scrollToKey] += diff;
         }
-      });
-
-      if (topJump && !(isStartInView && scrollRef.current[scrollToKey] === 0)) {
-        scrollRef.current[scrollToKey] += topJump;
-      }
-      if (bottomJump && !isStartInView && isEndInView) {
-        scrollRef.current[scrollToKey] += bottomJump;
       }
     }, [jump]);
 

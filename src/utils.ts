@@ -10,16 +10,17 @@ export const debounce = <T extends (...args: any[]) => void>(
   ms: number
 ) => {
   let id: NodeJS.Timeout | null = null;
+
   const cancel = () => {
     if (id != null) {
       clearTimeout(id);
     }
   };
-  const debouncedFn = (...args: Parameters<T>) => {
+  const debouncedFn = () => {
     cancel();
     id = setTimeout(() => {
       id = null;
-      fn(...args);
+      fn();
     }, ms);
   };
   debouncedFn._cancel = cancel;
