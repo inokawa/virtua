@@ -22,6 +22,7 @@ export const setItemSize = (
   size: number
 ) => {
   cache._sizes[index] = size;
+  // mark as dirty
   cache._measuredOffsetIndex = min(index, cache._measuredOffsetIndex);
 };
 

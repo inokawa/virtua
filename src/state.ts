@@ -47,6 +47,7 @@ const mutate = (state: State, action: Actions, itemSize: number): boolean => {
     }
     case UPDATE_ITEM_SIZES: {
       const { _indexes: indexes, _sizes: sizes } = action;
+      // Skip if all items are cached and not updated
       if (
         indexes.every((index, i) => state._cache._sizes[index] === sizes[i]!)
       ) {
