@@ -42,27 +42,6 @@ export const computeTotalSize = (cache: Writeable<Cache>): number => {
   return top;
 };
 
-export const findEndIndex = (
-  cache: Cache,
-  index: number,
-  distance: number
-): number => {
-  let sum = 0;
-  let i = index;
-  while (i < cache._length - 1) {
-    const h = getItemSize(cache, i);
-    sum += h;
-    if (sum >= distance) {
-      if (sum - h / 2 > distance) {
-        i--;
-      }
-      break;
-    }
-    i++;
-  }
-  return min(max(i, index), cache._length - 1);
-};
-
 const findIndex = (cache: Cache, i: number, distance: number): number => {
   let sum = 0;
   if (distance >= 0) {
@@ -104,6 +83,8 @@ export const findStartIndexWithOffset = (
 ): number => {
   return findIndex(cache, prevStartIndex, offset - prevOffset);
 };
+
+export const findEndIndex = findIndex;
 
 export const hasUnmeasuredItemsInRange = (
   cache: Cache,

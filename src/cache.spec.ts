@@ -326,7 +326,7 @@ describe(computeStartOffset.name, () => {
   });
 });
 
-describe(findEndIndex.name, () => {
+describe("findEndIndex", () => {
   const filledSizes = range(10, () => 20);
   const cache: Cache = {
     _length: filledSizes.length,
@@ -338,11 +338,11 @@ describe(findEndIndex.name, () => {
 
   describe("change index", () => {
     it("should get if index is at start", () => {
-      expect(findEndIndex(cache, 0, 100)).toBe(4);
+      expect(findEndIndex(cache, 0, 100)).toBe(5);
     });
 
     it("should get if index is at start + 1", () => {
-      expect(findEndIndex(cache, 1, 100)).toBe(5);
+      expect(findEndIndex(cache, 1, 100)).toBe(6);
     });
 
     it("should get last if index is at end", () => {
@@ -365,31 +365,35 @@ describe(findEndIndex.name, () => {
   });
 
   it("should get same if viewport fits cache", () => {
-    expect(findEndIndex(cache, 1, 100)).toBe(5);
+    expect(findEndIndex(cache, 1, 100)).toBe(6);
   });
 
-  it("should get next if viewport is 1/2 item height larger than cache", () => {
+  it("should get same if viewport is 1/2 item height larger than cache", () => {
     expect(findEndIndex(cache, 1, 110)).toBe(6);
   });
 
   it("should get same if viewport is 1/2 - 1px item height larger than cache", () => {
-    expect(findEndIndex(cache, 1, 109)).toBe(5);
+    expect(findEndIndex(cache, 1, 109)).toBe(6);
+  });
+
+  it("should get next if viewport is 1/2 + 1px item height larger than cache", () => {
+    expect(findEndIndex(cache, 1, 111)).toBe(7);
   });
 
   it("should get same if viewport is bit larger than cache", () => {
-    expect(findEndIndex(cache, 1, 101)).toBe(5);
+    expect(findEndIndex(cache, 1, 101)).toBe(6);
   });
 
   it("should get same if viewport is a little bit larger than cache", () => {
-    expect(findEndIndex(cache, 1, 100.01)).toBe(5);
+    expect(findEndIndex(cache, 1, 100.01)).toBe(6);
   });
 
   it("should get same if viewport is bit smaller than cache", () => {
-    expect(findEndIndex(cache, 1, 99)).toBe(5);
+    expect(findEndIndex(cache, 1, 99)).toBe(6);
   });
 
   it("should get same if viewport is a little bit smaller than cache", () => {
-    expect(findEndIndex(cache, 1, 99.99)).toBe(5);
+    expect(findEndIndex(cache, 1, 99.99)).toBe(6);
   });
 
   it("should resolve default height", () => {
@@ -401,11 +405,11 @@ describe(findEndIndex.name, () => {
       _offsets: [0],
       _defaultItemSize: 25,
     };
-    expect(findEndIndex(emptyCache, 0, 100)).toBe(3);
+    expect(findEndIndex(emptyCache, 0, 100)).toBe(4);
   });
 });
 
-describe(findStartIndexWithOffset.name, () => {
+describe("findStartIndex", () => {
   it("should resolve default height", () => {
     const emptySizes = range(10, () => -1);
     const emptyCache: Cache = {
