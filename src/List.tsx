@@ -267,6 +267,7 @@ export const List = forwardRef<ListHandle, ListProps>(
         let ro: ResizeObserver;
         let prevOffset = -1;
         let scrollDirection: ScrollDirection = SCROLL_STOP;
+        let resized = false;
         const mountedIndexes = new WeakMap<Element, number>();
 
         return {
@@ -276,7 +277,13 @@ export const List = forwardRef<ListHandle, ListProps>(
               if (prevOffset === offset) {
                 return;
               }
-              scrollDirection = prevOffset > offset ? SCROLL_UP : SCROLL_DOWN;
+              // Skip scroll direction detection just after resizing because it may result in the opposite direction.
+              // Scroll events are dispatched enough so it's ok to skip some of them.
+              if (scrollDirection === SCROLL_STOP || !resized) {
+                scrollDirection = prevOffset > offset ? SCROLL_UP : SCROLL_DOWN;
+              } else {
+                resized = false;
+              }
               store._update({
                 _type: HANDLE_SCROLL,
                 _offset: (prevOffset = offset),
@@ -321,6 +328,7 @@ export const List = forwardRef<ListHandle, ListProps>(
                   _sizes: resizedItemSizes,
                   _indexes: resizedItemIndexes,
                 });
+                resized = true;
               }
             });
 
