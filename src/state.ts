@@ -46,15 +46,16 @@ const mutate = (state: State, action: Actions, itemSize: number): boolean => {
       return true;
     }
     case UPDATE_ITEM_SIZES: {
-      const { _indexes: indexes, _sizes: sizes } = action;
-      if (
-        indexes.every((index, i) => state._cache._sizes[index] === sizes[i]!)
-      ) {
+      const sizes = action._sizes;
+      const updated = action._indexes.filter(
+        (index, i) => state._cache._sizes[index] !== sizes[i]!
+      );
+      if (!updated.length) {
         return false;
       }
 
       const jump: [index: number, sizeDiff: number][] = [];
-      indexes.forEach((index, i) => {
+      updated.forEach((index, i) => {
         jump.push([index, sizes[i]! - getItemSize(state._cache, index)]);
         setItemSize(state._cache as Writeable<Cache>, index, sizes[i]!);
       });
