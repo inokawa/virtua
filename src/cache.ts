@@ -43,9 +43,9 @@ export const computeTotalSize = (cache: Writeable<Cache>): number => {
 };
 
 export const findEndIndex = (
+  cache: Cache,
   index: number,
-  distance: number,
-  cache: Cache
+  distance: number
 ): number => {
   let sum = 0;
   let i = index;
@@ -63,33 +63,29 @@ export const findEndIndex = (
   return min(max(i, index), cache._length - 1);
 };
 
-export const findStartIndexWithOffset = (
-  offset: number,
-  cache: Cache,
-  prevStartIndex: number,
-  prevOffset: number
-): number => {
-  let sum = prevOffset;
-  let i = prevStartIndex;
-  if (offset > prevOffset) {
+const findIndex = (cache: Cache, i: number, distance: number): number => {
+  let sum = 0;
+  if (distance >= 0) {
+    // search forward
     while (i < cache._length - 1) {
       const h = getItemSize(cache, i);
       sum += h;
       i++;
-      if (sum >= offset) {
-        if (sum - h / 2 >= offset) {
+      if (sum >= distance) {
+        if (sum - h / 2 >= distance) {
           i--;
         }
         break;
       }
     }
   } else {
+    // search backward
     while (i > 0) {
       i--;
       const h = getItemSize(cache, i);
       sum -= h;
-      if (sum <= offset) {
-        if (sum + h / 2 < offset) {
+      if (sum <= distance) {
+        if (sum + h / 2 < distance) {
           i++;
         }
         break;
@@ -100,10 +96,19 @@ export const findStartIndexWithOffset = (
   return min(max(i, 0), cache._length - 1);
 };
 
+export const findStartIndexWithOffset = (
+  cache: Cache,
+  offset: number,
+  prevStartIndex: number,
+  prevOffset: number
+): number => {
+  return findIndex(cache, prevStartIndex, offset - prevOffset);
+};
+
 export const hasUnmeasuredItemsInRange = (
+  cache: Cache,
   startIndex: number,
-  endIndex: number,
-  cache: Cache
+  endIndex: number
 ): boolean => {
   for (let i = startIndex; i <= endIndex; i++) {
     if (cache._sizes[i] === UNCACHED) {
@@ -114,8 +119,8 @@ export const hasUnmeasuredItemsInRange = (
 };
 
 export const computeStartOffset = (
-  index: number,
-  cache: Writeable<Cache>
+  cache: Writeable<Cache>,
+  index: number
 ): number => {
   if (!cache._length) return 0;
   if (cache._measuredOffsetIndex >= index) {

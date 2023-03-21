@@ -230,7 +230,7 @@ describe(computeStartOffset.name, () => {
       _offsets: emptyOffsets,
       _defaultItemSize: 30,
     };
-    expect(computeStartOffset(0, cache)).toBe(0);
+    expect(computeStartOffset(cache, 0)).toBe(0);
     expect(cache._offsets).toEqual([0, -1, -1, -1, -1, -1, -1, -1, -1, -1]);
   });
 
@@ -244,7 +244,7 @@ describe(computeStartOffset.name, () => {
       _offsets: emptyOffsets,
       _defaultItemSize: 30,
     };
-    expect(computeStartOffset(1, cache)).toBe(20);
+    expect(computeStartOffset(cache, 1)).toBe(20);
     expect(cache._offsets).toEqual([0, 20, -1, -1, -1, -1, -1, -1, -1, -1]);
   });
 
@@ -259,7 +259,7 @@ describe(computeStartOffset.name, () => {
       _defaultItemSize: 30,
     };
     const last = filledSizes.length - 1;
-    expect(computeStartOffset(last, cache)).toBe(
+    expect(computeStartOffset(cache, last)).toBe(
       sum(filledSizes) - filledSizes[last]!
     );
     expect(cache._offsets).toEqual([
@@ -277,7 +277,7 @@ describe(computeStartOffset.name, () => {
       _offsets: emptyOffsets,
       _defaultItemSize: 30,
     };
-    expect(computeStartOffset(2, cache)).toBe(60);
+    expect(computeStartOffset(cache, 2)).toBe(60);
     expect(cache._offsets).toEqual([0, 30, 60, -1, -1, -1, -1, -1, -1, -1]);
   });
 
@@ -292,7 +292,7 @@ describe(computeStartOffset.name, () => {
         _offsets: offsets,
         _defaultItemSize: 30,
       };
-      expect(computeStartOffset(2, cache)).toBe(22);
+      expect(computeStartOffset(cache, 2)).toBe(22);
       expect(cache._offsets).toEqual([0, 11, 22, 33, -1, -1, -1, -1, -1, -1]);
     });
 
@@ -306,7 +306,7 @@ describe(computeStartOffset.name, () => {
         _offsets: offsets,
         _defaultItemSize: 30,
       };
-      expect(computeStartOffset(3, cache)).toBe(33);
+      expect(computeStartOffset(cache, 3)).toBe(33);
       expect(cache._offsets).toEqual([0, 11, 22, 33, -1, -1, -1, -1, -1, -1]);
     });
 
@@ -320,7 +320,7 @@ describe(computeStartOffset.name, () => {
         _offsets: offsets,
         _defaultItemSize: 30,
       };
-      expect(computeStartOffset(5, cache)).toBe(33 + 20 * 2);
+      expect(computeStartOffset(cache, 5)).toBe(33 + 20 * 2);
       expect(cache._offsets).toEqual([0, 11, 22, 33, 53, 73, -1, -1, -1, -1]);
     });
   });
@@ -338,58 +338,58 @@ describe(findEndIndex.name, () => {
 
   describe("change index", () => {
     it("should get if index is at start", () => {
-      expect(findEndIndex(0, 100, cache)).toBe(4);
+      expect(findEndIndex(cache, 0, 100)).toBe(4);
     });
 
     it("should get if index is at start + 1", () => {
-      expect(findEndIndex(1, 100, cache)).toBe(5);
+      expect(findEndIndex(cache, 1, 100)).toBe(5);
     });
 
     it("should get last if index is at end", () => {
       const last = filledSizes.length - 1;
-      expect(findEndIndex(last, 100, cache)).toBe(last);
+      expect(findEndIndex(cache, last, 100)).toBe(last);
     });
 
     it("should get if index is at end - 1", () => {
       const last = filledSizes.length - 1;
-      expect(findEndIndex(last - 1, 100, cache)).toBe(last);
+      expect(findEndIndex(cache, last - 1, 100)).toBe(last);
     });
   });
 
   it("should get argument index if viewport is 0 and index is at start", () => {
-    expect(findEndIndex(0, 0, cache)).toBe(0);
+    expect(findEndIndex(cache, 0, 0)).toBe(0);
   });
 
   it("should get argument index if viewport is 0 and index is at start + 1", () => {
-    expect(findEndIndex(1, 0, cache)).toBe(1);
+    expect(findEndIndex(cache, 1, 0)).toBe(1);
   });
 
   it("should get same if viewport fits cache", () => {
-    expect(findEndIndex(1, 100, cache)).toBe(5);
+    expect(findEndIndex(cache, 1, 100)).toBe(5);
   });
 
   it("should get next if viewport is 1/2 item height larger than cache", () => {
-    expect(findEndIndex(1, 110, cache)).toBe(6);
+    expect(findEndIndex(cache, 1, 110)).toBe(6);
   });
 
   it("should get same if viewport is 1/2 - 1px item height larger than cache", () => {
-    expect(findEndIndex(1, 109, cache)).toBe(5);
+    expect(findEndIndex(cache, 1, 109)).toBe(5);
   });
 
   it("should get same if viewport is bit larger than cache", () => {
-    expect(findEndIndex(1, 101, cache)).toBe(5);
+    expect(findEndIndex(cache, 1, 101)).toBe(5);
   });
 
   it("should get same if viewport is a little bit larger than cache", () => {
-    expect(findEndIndex(1, 100.01, cache)).toBe(5);
+    expect(findEndIndex(cache, 1, 100.01)).toBe(5);
   });
 
   it("should get same if viewport is bit smaller than cache", () => {
-    expect(findEndIndex(1, 99, cache)).toBe(5);
+    expect(findEndIndex(cache, 1, 99)).toBe(5);
   });
 
   it("should get same if viewport is a little bit smaller than cache", () => {
-    expect(findEndIndex(1, 99.99, cache)).toBe(5);
+    expect(findEndIndex(cache, 1, 99.99)).toBe(5);
   });
 
   it("should resolve default height", () => {
@@ -401,7 +401,7 @@ describe(findEndIndex.name, () => {
       _offsets: [0],
       _defaultItemSize: 25,
     };
-    expect(findEndIndex(0, 100, emptyCache)).toBe(3);
+    expect(findEndIndex(emptyCache, 0, 100)).toBe(3);
   });
 });
 
@@ -416,7 +416,7 @@ describe(findStartIndexWithOffset.name, () => {
       _defaultItemSize: 25,
     };
 
-    expect(findStartIndexWithOffset(100, emptyCache, 0, 0)).toBe(4);
+    expect(findStartIndexWithOffset(emptyCache, 100, 0, 0)).toBe(4);
   });
 
   describe("start from start", () => {
@@ -430,67 +430,67 @@ describe(findStartIndexWithOffset.name, () => {
     };
 
     it("should get start if offset is at start", () => {
-      expect(findStartIndexWithOffset(0, cache, 0, 0)).toBe(0);
+      expect(findStartIndexWithOffset(cache, 0, 0, 0)).toBe(0);
     });
 
     it("should get start if offset is at start + 1px", () => {
-      expect(findStartIndexWithOffset(1, cache, 0, 0)).toBe(0);
+      expect(findStartIndexWithOffset(cache, 1, 0, 0)).toBe(0);
     });
 
     it("should get end if offset is at end", () => {
-      expect(findStartIndexWithOffset(sum(cache._sizes), cache, 0, 0)).toBe(
+      expect(findStartIndexWithOffset(cache, sum(cache._sizes), 0, 0)).toBe(
         cache._length - 1
       );
     });
 
     it("should get end if offset is at end - 1px", () => {
-      expect(findStartIndexWithOffset(sum(cache._sizes) - 1, cache, 0, 0)).toBe(
+      expect(findStartIndexWithOffset(cache, sum(cache._sizes) - 1, 0, 0)).toBe(
         cache._length - 1
       );
     });
 
     it("should get 1 if offset fits index 1", () => {
-      expect(findStartIndexWithOffset(20, cache, 0, 0)).toBe(1);
+      expect(findStartIndexWithOffset(cache, 20, 0, 0)).toBe(1);
     });
 
     it("should get 1 if offset fits index 1 + 1px", () => {
-      expect(findStartIndexWithOffset(21, cache, 0, 0)).toBe(1);
+      expect(findStartIndexWithOffset(cache, 21, 0, 0)).toBe(1);
     });
 
     it("should get 1 if offset fits index 1 - 1px", () => {
-      expect(findStartIndexWithOffset(19, cache, 0, 0)).toBe(1);
+      expect(findStartIndexWithOffset(cache, 19, 0, 0)).toBe(1);
     });
 
     it("should get 1 if offset fits index 1.5", () => {
-      expect(findStartIndexWithOffset(30, cache, 0, 0)).toBe(1);
+      expect(findStartIndexWithOffset(cache, 30, 0, 0)).toBe(1);
     });
 
     it("should get 2 if offset fits index 1.5 + 1px", () => {
-      expect(findStartIndexWithOffset(31, cache, 0, 0)).toBe(2);
+      expect(findStartIndexWithOffset(cache, 31, 0, 0)).toBe(2);
     });
 
     it("should get 2 if offset fits index 1.5 + 0.01px", () => {
-      expect(findStartIndexWithOffset(30.01, cache, 0, 0)).toBe(2);
+      expect(findStartIndexWithOffset(cache, 30.01, 0, 0)).toBe(2);
     });
 
     it("should get 1 if offset fits index 1.5 - 1px", () => {
-      expect(findStartIndexWithOffset(29, cache, 0, 0)).toBe(1);
+      expect(findStartIndexWithOffset(cache, 29, 0, 0)).toBe(1);
     });
 
     it("should get 1 if offset fits index 1.5 - 0.01px", () => {
-      expect(findStartIndexWithOffset(29.99, cache, 0, 0)).toBe(1);
+      expect(findStartIndexWithOffset(cache, 29.99, 0, 0)).toBe(1);
     });
 
     it("should get 2 if offset fits index 2", () => {
-      expect(findStartIndexWithOffset(40, cache, 0, 0)).toBe(2);
+      expect(findStartIndexWithOffset(cache, 40, 0, 0)).toBe(2);
     });
 
     it("should get 2 if offset fits index 2 + 1px", () => {
-      expect(findStartIndexWithOffset(41, cache, 0, 0)).toBe(2);
+      expect(findStartIndexWithOffset(cache, 41, 0, 0)).toBe(2);
     });
 
     it("should get 2 if offset fits index 2 - 1px", () => {
-      expect(findStartIndexWithOffset(39, cache, 0, 0)).toBe(2);
+      expect(findStartIndexWithOffset(cache, 39, 0, 0)).toBe(2);
     });
   });
 
@@ -508,21 +508,21 @@ describe(findStartIndexWithOffset.name, () => {
 
     it("should get start if offset is at start", () => {
       expect(
-        findStartIndexWithOffset(0, cache, cache._length, offset(cache._length))
+        findStartIndexWithOffset(cache, 0, cache._length, offset(cache._length))
       ).toBe(0);
     });
 
     it("should get start if offset is at start + 1px", () => {
       expect(
-        findStartIndexWithOffset(1, cache, cache._length, offset(cache._length))
+        findStartIndexWithOffset(cache, 1, cache._length, offset(cache._length))
       ).toBe(0);
     });
 
     it("should get end if offset is at end", () => {
       expect(
         findStartIndexWithOffset(
-          offset(cache._length),
           cache,
+          offset(cache._length),
           cache._length,
           offset(cache._length)
         )
@@ -532,8 +532,8 @@ describe(findStartIndexWithOffset.name, () => {
     it("should get end if offset is at end - 1px", () => {
       expect(
         findStartIndexWithOffset(
-          offset(cache._length) - 1,
           cache,
+          offset(cache._length) - 1,
           cache._length,
           offset(cache._length)
         )
@@ -543,8 +543,8 @@ describe(findStartIndexWithOffset.name, () => {
     it("should get 1 if offset fits index 1", () => {
       expect(
         findStartIndexWithOffset(
-          20,
           cache,
+          20,
           cache._length,
           offset(cache._length)
         )
@@ -554,8 +554,8 @@ describe(findStartIndexWithOffset.name, () => {
     it("should get 1 if offset fits index 1 + 1px", () => {
       expect(
         findStartIndexWithOffset(
-          21,
           cache,
+          21,
           cache._length,
           offset(cache._length)
         )
@@ -565,8 +565,8 @@ describe(findStartIndexWithOffset.name, () => {
     it("should get 1 if offset fits index 1 - 1px", () => {
       expect(
         findStartIndexWithOffset(
-          19,
           cache,
+          19,
           cache._length,
           offset(cache._length)
         )
@@ -576,8 +576,8 @@ describe(findStartIndexWithOffset.name, () => {
     it("should get 1 if offset fits index 1.5", () => {
       expect(
         findStartIndexWithOffset(
-          30,
           cache,
+          30,
           cache._length,
           offset(cache._length)
         )
@@ -587,8 +587,8 @@ describe(findStartIndexWithOffset.name, () => {
     it("should get 2 if offset fits index 1.5 + 1px", () => {
       expect(
         findStartIndexWithOffset(
-          31,
           cache,
+          31,
           cache._length,
           offset(cache._length)
         )
@@ -598,8 +598,8 @@ describe(findStartIndexWithOffset.name, () => {
     it("should get 2 if offset fits index 1.5 + 0.01px", () => {
       expect(
         findStartIndexWithOffset(
-          30.01,
           cache,
+          30.01,
           cache._length,
           offset(cache._length)
         )
@@ -609,8 +609,8 @@ describe(findStartIndexWithOffset.name, () => {
     it("should get 1 if offset fits index 1.5 - 1px", () => {
       expect(
         findStartIndexWithOffset(
-          29,
           cache,
+          29,
           cache._length,
           offset(cache._length)
         )
@@ -620,8 +620,8 @@ describe(findStartIndexWithOffset.name, () => {
     it("should get 1 if offset fits index 1.5 - 0.01px", () => {
       expect(
         findStartIndexWithOffset(
-          29.99,
           cache,
+          29.99,
           cache._length,
           offset(cache._length)
         )
@@ -631,8 +631,8 @@ describe(findStartIndexWithOffset.name, () => {
     it("should get 2 if offset fits index 2", () => {
       expect(
         findStartIndexWithOffset(
-          40,
           cache,
+          40,
           cache._length,
           offset(cache._length)
         )
@@ -642,8 +642,8 @@ describe(findStartIndexWithOffset.name, () => {
     it("should get 2 if offset fits index 2 + 1px", () => {
       expect(
         findStartIndexWithOffset(
-          41,
           cache,
+          41,
           cache._length,
           offset(cache._length)
         )
@@ -653,8 +653,8 @@ describe(findStartIndexWithOffset.name, () => {
     it("should get 2 if offset fits index 2 - 1px", () => {
       expect(
         findStartIndexWithOffset(
-          39,
           cache,
+          39,
           cache._length,
           offset(cache._length)
         )
@@ -675,27 +675,27 @@ describe(findStartIndexWithOffset.name, () => {
     const offset = (i: number) => sum(cache._sizes.slice(0, i));
 
     it("should get start if offset is at start", () => {
-      expect(findStartIndexWithOffset(0, cache, 4, offset(4))).toBe(0);
+      expect(findStartIndexWithOffset(cache, 0, 4, offset(4))).toBe(0);
     });
 
     it("should get end if offset is at end", () => {
       expect(
-        findStartIndexWithOffset(sum(cache._sizes), cache, 4, offset(4))
+        findStartIndexWithOffset(cache, sum(cache._sizes), 4, offset(4))
       ).toBe(cache._sizes.length - 1);
     });
 
     it("should get prevStartIndex if offset fits prevStartIndex", () => {
-      expect(findStartIndexWithOffset(offset(4), cache, 4, offset(4))).toBe(4);
+      expect(findStartIndexWithOffset(cache, offset(4), 4, offset(4))).toBe(4);
     });
 
     it("should get prevStartIndex if offset fits prevStartIndex + 1px", () => {
-      expect(findStartIndexWithOffset(offset(4) + 1, cache, 4, offset(4))).toBe(
+      expect(findStartIndexWithOffset(cache, offset(4) + 1, 4, offset(4))).toBe(
         4
       );
     });
 
     it("should get prevStartIndex if offset fits prevStartIndex - 1px", () => {
-      expect(findStartIndexWithOffset(offset(4) - 1, cache, 4, offset(4))).toBe(
+      expect(findStartIndexWithOffset(cache, offset(4) - 1, 4, offset(4))).toBe(
         4
       );
     });
@@ -712,7 +712,7 @@ describe(hasUnmeasuredItemsInRange.name, () => {
       _offsets: [0],
       _defaultItemSize: 30,
     };
-    expect(hasUnmeasuredItemsInRange(0, sizes.length - 1, cache)).toBe(false);
+    expect(hasUnmeasuredItemsInRange(cache, 0, sizes.length - 1)).toBe(false);
   });
 
   it("should return true if start is not measured", () => {
@@ -724,7 +724,7 @@ describe(hasUnmeasuredItemsInRange.name, () => {
       _offsets: [0],
       _defaultItemSize: 30,
     };
-    expect(hasUnmeasuredItemsInRange(1, 2, cache)).toBe(true);
+    expect(hasUnmeasuredItemsInRange(cache, 1, 2)).toBe(true);
   });
 
   it("should return true if end is not measured", () => {
@@ -736,6 +736,6 @@ describe(hasUnmeasuredItemsInRange.name, () => {
       _offsets: [0],
       _defaultItemSize: 30,
     };
-    expect(hasUnmeasuredItemsInRange(1, 2, cache)).toBe(true);
+    expect(hasUnmeasuredItemsInRange(cache, 1, 2)).toBe(true);
   });
 });

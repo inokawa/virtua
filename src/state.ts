@@ -75,16 +75,16 @@ const mutate = (state: State, action: Actions, itemSize: number): boolean => {
     case HANDLE_SCROLL: {
       const prevStartIndex = state._startIndex;
       const prevOffset = computeStartOffset(
-        prevStartIndex,
-        state._cache as Writeable<Cache>
+        state._cache as Writeable<Cache>,
+        prevStartIndex
       );
       if (prevOffset === action._offset) {
         return false;
       }
       return (
         (state._startIndex = findStartIndexWithOffset(
-          action._offset,
           state._cache,
+          action._offset,
           prevStartIndex,
           prevOffset
         )) !== prevStartIndex
@@ -140,23 +140,23 @@ export const useVirtualStore = (
         },
         _getEndIndex() {
           return findEndIndex(
+            state._cache,
             state._startIndex,
-            getViewportSize(),
-            state._cache
+            getViewportSize()
           );
         },
         _isUnmeasuredItem(index) {
           return state._cache._sizes[index] === UNCACHED;
         },
-        _hasUnmeasuredItemsInRange(startIndex: number): boolean {
+        _hasUnmeasuredItemsInRange(startIndex) {
           return hasUnmeasuredItemsInRange(
+            state._cache,
             startIndex,
-            findEndIndex(startIndex, getViewportSize(), state._cache),
-            state._cache
+            findEndIndex(state._cache, startIndex, getViewportSize())
           );
         },
         _getItemOffset(index) {
-          return computeStartOffset(index, state._cache as Writeable<Cache>);
+          return computeStartOffset(state._cache as Writeable<Cache>, index);
         },
         _getViewportWidth() {
           return state._viewportWidth;
