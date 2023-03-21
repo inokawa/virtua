@@ -71,27 +71,26 @@ const Item = memo(
       <div
         ref={ref}
         style={useMemo<CSSProperties>(() => {
-          return {
+          const style: CSSProperties = {
             margin: "0",
             padding: "0",
             position: "absolute",
             // willChange: "transform",
-            ...(isHorizontal
-              ? {
-                  display: "flex",
-                  height: "100%",
-                  top: 0,
-                  ...{ left: offset },
-                }
-              : {
-                  width: "100%",
-                  left: 0,
-                  ...{ top: offset },
-                }),
-            ...(hide && {
-              visibility: "hidden",
-            }),
           };
+          if (isHorizontal) {
+            style.display = "flex";
+            style.height = "100%";
+            style.top = 0;
+            style.left = offset;
+          } else {
+            style.width = "100%";
+            style.left = 0;
+            style.top = offset;
+          }
+          if (hide) {
+            style.visibility = "hidden";
+          }
+          return style;
         }, [offset, isHorizontal, hide])}
       >
         {children}
@@ -278,10 +277,9 @@ export const List = forwardRef<ListHandle, ListProps>(
                 return;
               }
               scrollDirection = prevOffset > offset ? SCROLL_UP : SCROLL_DOWN;
-              prevOffset = offset;
               store._update({
                 _type: HANDLE_SCROLL,
-                _offset: root[scrollToKey],
+                _offset: (prevOffset = offset),
               });
             };
 
@@ -426,8 +424,7 @@ export const List = forwardRef<ListHandle, ListProps>(
           } while (store._hasUnmeasuredItemsInRange(index));
 
           // Scroll with the updated value
-          const offset = getScrollDestination();
-          el[scrollToKey] = offset;
+          el[scrollToKey] = getScrollDestination();
         } else {
           const offset = getScrollDestination();
           el[scrollToKey] = offset;
