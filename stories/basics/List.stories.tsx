@@ -115,7 +115,7 @@ export const ScrollTo: StoryObj = {
           />
           <button
             onClick={() => {
-              ref.current?.scrollTo(dest);
+              ref.current?.scrollToIndex(dest);
             }}
           >
             scroll

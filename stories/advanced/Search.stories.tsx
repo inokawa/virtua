@@ -99,7 +99,7 @@ export const Default: StoryObj = {
                 const targetIdStar = String(targetId);
                 const index = filtered.findIndex((d) => d.id === targetIdStar);
                 if (index === -1) return;
-                ref.current?.scrollTo(index);
+                ref.current?.scrollToIndex(index);
               }}
             />
           </label>

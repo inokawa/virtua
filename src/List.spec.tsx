@@ -335,7 +335,7 @@ describe("horizontal", () => {
 //   });
 // });
 
-// describe("scrollTo", () => {
+// describe("scrollToIndex", () => {
 //   describe("vertical", () => {
 //     it("should scroll to 0", async () => {
 //       const scrollSpy = jest.spyOn(
@@ -347,7 +347,7 @@ describe("horizontal", () => {
 //       const Mounter = () => {
 //         const ref = useRef<ListHandle>(null);
 //         useEffect(() => {
-//           ref.current?.scrollTo(0);
+//           ref.current?.scrollToIndex(0);
 //         }, []);
 //         return (
 //           <List ref={ref}>
@@ -374,7 +374,7 @@ describe("horizontal", () => {
 //       const Mounter = () => {
 //         const ref = useRef<ListHandle>(null);
 //         useEffect(() => {
-//           ref.current?.scrollTo(567);
+//           ref.current?.scrollToIndex(567);
 //         }, []);
 //         return (
 //           <List ref={ref}>
@@ -401,7 +401,7 @@ describe("horizontal", () => {
 //       const Mounter = () => {
 //         const ref = useRef<ListHandle>(null);
 //         useEffect(() => {
-//           ref.current?.scrollTo(999);
+//           ref.current?.scrollToIndex(999);
 //         }, []);
 //         return (
 //           <List ref={ref}>
@@ -429,7 +429,7 @@ describe("horizontal", () => {
 //       const Mounter = () => {
 //         const ref = useRef<ListHandle>(null);
 //         useEffect(() => {
-//           ref.current?.scrollTo(9999);
+//           ref.current?.scrollToIndex(9999);
 //         }, []);
 //         return (
 //           <List ref={ref}>
@@ -459,7 +459,7 @@ describe("horizontal", () => {
 //       const Mounter = () => {
 //         const ref = useRef<ListHandle>(null);
 //         useEffect(() => {
-//           ref.current?.scrollTo(0);
+//           ref.current?.scrollToIndex(0);
 //         }, []);
 //         return (
 //           <List horizontal ref={ref}>
@@ -486,7 +486,7 @@ describe("horizontal", () => {
 //       const Mounter = () => {
 //         const ref = useRef<ListHandle>(null);
 //         useEffect(() => {
-//           ref.current?.scrollTo(567);
+//           ref.current?.scrollToIndex(567);
 //         }, []);
 //         return (
 //           <List horizontal ref={ref}>
@@ -513,7 +513,7 @@ describe("horizontal", () => {
 //       const Mounter = () => {
 //         const ref = useRef<ListHandle>(null);
 //         useEffect(() => {
-//           ref.current?.scrollTo(999);
+//           ref.current?.scrollToIndex(999);
 //         }, []);
 //         return (
 //           <List horizontal ref={ref}>
@@ -541,7 +541,7 @@ describe("horizontal", () => {
 //       const Mounter = () => {
 //         const ref = useRef<ListHandle>(null);
 //         useEffect(() => {
-//           ref.current?.scrollTo(9999);
+//           ref.current?.scrollToIndex(9999);
 //         }, []);
 //         return (
 //           <List horizontal ref={ref}>
@@ -571,7 +571,7 @@ describe("horizontal", () => {
 //       const Mounter = () => {
 //         const ref = useRef<ListHandle>(null);
 //         useEffect(() => {
-//           ref.current?.scrollTo(0);
+//           ref.current?.scrollToIndex(0);
 //         }, []);
 //         return (
 //           <List reverse ref={ref}>
@@ -598,7 +598,7 @@ describe("horizontal", () => {
 //       const Mounter = () => {
 //         const ref = useRef<ListHandle>(null);
 //         useEffect(() => {
-//           ref.current?.scrollTo(567);
+//           ref.current?.scrollToIndex(567);
 //         }, []);
 //         return (
 //           <List reverse ref={ref}>
@@ -625,7 +625,7 @@ describe("horizontal", () => {
 //       const Mounter = () => {
 //         const ref = useRef<ListHandle>(null);
 //         useEffect(() => {
-//           ref.current?.scrollTo(999);
+//           ref.current?.scrollToIndex(999);
 //         }, []);
 //         return (
 //           <List reverse ref={ref}>
@@ -652,7 +652,7 @@ describe("horizontal", () => {
 //       const Mounter = () => {
 //         const ref = useRef<ListHandle>(null);
 //         useEffect(() => {
-//           ref.current?.scrollTo(9999);
+//           ref.current?.scrollToIndex(9999);
 //         }, []);
 //         return (
 //           <List reverse ref={ref}>
@@ -682,7 +682,7 @@ describe("horizontal", () => {
 //       const Mounter = () => {
 //         const ref = useRef<ListHandle>(null);
 //         useEffect(() => {
-//           ref.current?.scrollTo(0);
+//           ref.current?.scrollToIndex(0);
 //         }, []);
 //         return (
 //           <List horizontal reverse ref={ref}>
@@ -709,7 +709,7 @@ describe("horizontal", () => {
 //       const Mounter = () => {
 //         const ref = useRef<ListHandle>(null);
 //         useEffect(() => {
-//           ref.current?.scrollTo(567);
+//           ref.current?.scrollToIndex(567);
 //         }, []);
 //         return (
 //           <List horizontal reverse ref={ref}>
@@ -736,7 +736,7 @@ describe("horizontal", () => {
 //       const Mounter = () => {
 //         const ref = useRef<ListHandle>(null);
 //         useEffect(() => {
-//           ref.current?.scrollTo(999);
+//           ref.current?.scrollToIndex(999);
 //         }, []);
 //         return (
 //           <List horizontal reverse ref={ref}>
@@ -763,7 +763,7 @@ describe("horizontal", () => {
 //       const Mounter = () => {
 //         const ref = useRef<ListHandle>(null);
 //         useEffect(() => {
-//           ref.current?.scrollTo(9999);
+//           ref.current?.scrollToIndex(9999);
 //         }, []);
 //         return (
 //           <List horizontal reverse ref={ref}>

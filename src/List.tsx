@@ -190,27 +190,67 @@ const Inner = ({
   );
 };
 
+/**
+ * Methods of {@link List}.
+ */
 export interface ListHandle {
-  scrollTo(index: number): void;
+  /**
+   * Scroll to the item specified by index.
+   * @param index index of item
+   */
+  scrollToIndex(index: number): void;
 }
 
+/**
+ * Props of {@link List}.
+ */
 export interface ListProps {
+  /**
+   * Elements rendered by this component.
+   */
   children: ReactNode;
+  /**
+   * Item size hint for unmeasured items. It's recommended to specify this prop if item sizes are fixed and known. It will help to reduce scroll jump when items are measured.
+   * @defaultValue 40
+   */
   itemSize?: number;
-  itemMargin?: number;
+  /**
+   * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
+   * @defaultValue 6
+   */
+  overscan?: number;
+  /**
+   * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
+   */
   horizontal?: boolean;
+  /**
+   * Number of items to be the margin from the end of the scroll. See also {@link onEndReached}.
+   * @defaultValue 0
+   */
   endThreshold?: number;
+  /**
+   * Inline style prop to override style of outer element.
+   */
   style?: CSSProperties;
+  /**
+   * Inline style prop to override style of scrollable element.
+   */
   innerStyle?: CSSProperties;
+  /**
+   * Callback invoked when scrolling reached to the end. The margin from the end is specified by {@link endThreshold}.
+   */
   onEndReached?: () => void;
 }
 
+/**
+ * Virtualized list component. See {@link ListProps} and {@link ListHandle}.
+ */
 export const List = forwardRef<ListHandle, ListProps>(
   (
     {
       children,
       itemSize = 40,
-      itemMargin = 6,
+      overscan = 6,
       horizontal: isHorizontal,
       endThreshold = 0,
       style: styleProp,
@@ -343,8 +383,8 @@ export const List = forwardRef<ListHandle, ListProps>(
     // The elements length and cached items length are different just after element is added/removed.
     const count = min(rawCount, store._getItemCount());
 
-    const startIndexWithMargin = max(startIndex - itemMargin, 0);
-    const endIndexWithMargin = min(endIndex + itemMargin, count - 1);
+    const startIndexWithMargin = max(startIndex - overscan, 0);
+    const endIndexWithMargin = min(endIndex + overscan, count - 1);
 
     // So update cache length. Updating state in render will cause warn so use useEffect for now.
     useIsomorphicLayoutEffect(() => {
@@ -385,7 +425,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     useImperativeHandle(
       ref,
       () => ({
-        scrollTo: async (index) => {
+        scrollToIndex: async (index) => {
           const el = scrollRef.current;
           if (!el) return;
 
