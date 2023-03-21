@@ -32,8 +32,7 @@ type Actions =
   | { _type: typeof UPDATE_CACHE_LENGTH; _length: number }
   | {
       _type: typeof UPDATE_ITEM_SIZES;
-      _indexes: number[];
-      _sizes: number[];
+      _entries: [index: number, size: number][];
     }
   | { _type: typeof UPDATE_VIEWPORT_SIZE; _width: number; _height: number }
   | { _type: typeof HANDLE_SCROLL; _offset: number };
@@ -46,18 +45,18 @@ const mutate = (state: State, action: Actions, itemSize: number): boolean => {
       return true;
     }
     case UPDATE_ITEM_SIZES: {
-      const { _indexes: indexes, _sizes: sizes } = action;
+      const updated = action._entries.filter(
+        ([index, size]) => state._cache._sizes[index] !== size
+      );
       // Skip if all items are cached and not updated
-      if (
-        indexes.every((index, i) => state._cache._sizes[index] === sizes[i]!)
-      ) {
+      if (!updated.length) {
         return false;
       }
 
       const jump: [index: number, sizeDiff: number][] = [];
-      indexes.forEach((index, i) => {
-        jump.push([index, sizes[i]! - getItemSize(state._cache, index)]);
-        setItemSize(state._cache as Writeable<Cache>, index, sizes[i]!);
+      updated.forEach(([index, size]) => {
+        jump.push([index, size - getItemSize(state._cache, index)]);
+        setItemSize(state._cache as Writeable<Cache>, index, size);
       });
       state._jump = jump;
       return true;

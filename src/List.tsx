@@ -302,8 +302,7 @@ export const List = forwardRef<ListHandle, ListProps>(
             };
 
             ro = new ResizeObserver((entries) => {
-              const resizedItemSizes: number[] = [];
-              const resizedItemIndexes: number[] = [];
+              const resizes: [index: number, size: number][] = [];
               for (const entry of entries) {
                 if (entry.target === wrapper) {
                   store._update({
@@ -314,19 +313,18 @@ export const List = forwardRef<ListHandle, ListProps>(
                 } else {
                   const index = mountedIndexes.get(entry.target);
                   if (index != null) {
-                    resizedItemSizes.push(
-                      entry.contentRect[isHorizontal ? "width" : "height"]
-                    );
-                    resizedItemIndexes.push(index);
+                    resizes.push([
+                      index,
+                      entry.contentRect[isHorizontal ? "width" : "height"],
+                    ]);
                   }
                 }
               }
 
-              if (resizedItemSizes.length) {
+              if (resizes.length) {
                 store._update({
                   _type: UPDATE_ITEM_SIZES,
-                  _sizes: resizedItemSizes,
-                  _indexes: resizedItemIndexes,
+                  _entries: resizes,
                 });
                 resized = true;
               }
