@@ -89,7 +89,7 @@ export const findStartIndexWithOffset = (
       const h = getItemSize(cache, i);
       sum -= h;
       if (sum <= offset) {
-        if (sum + h / 2 <= offset) {
+        if (sum + h / 2 < offset) {
           i++;
         }
         break;

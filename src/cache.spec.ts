@@ -405,283 +405,300 @@ describe(findEndIndex.name, () => {
   });
 });
 
-describe(findStartIndexAfter.name, () => {
-  const filledSizes = range(10, () => 20);
-  const cache: Cache = {
-    _length: filledSizes.length,
-    _sizes: filledSizes,
-    _measuredOffsetIndex: 0,
-    _offsets: [0],
-    _defaultItemSize: 30,
-  };
-
-  describe("change index", () => {
-    it("should get if index is at start", () => {
-      expect(findStartIndexAfter(0, 40, cache)).toBe(2);
-    });
-
-    it("should get if index is at start + 1", () => {
-      expect(findStartIndexAfter(1, 40, cache)).toBe(3);
-    });
-
-    it("should get last if index is at end", () => {
-      const last = filledSizes.length - 1;
-      expect(findStartIndexAfter(last, 40, cache)).toBe(last);
-    });
-
-    it("should get if index is at end - 1", () => {
-      const last = filledSizes.length - 1;
-      expect(findStartIndexAfter(last - 1, 40, cache)).toBe(last);
-    });
-  });
-
-  it("should get argument index if viewport is 0 and index is at start", () => {
-    expect(findStartIndexAfter(0, 0, cache)).toBe(0);
-  });
-
-  it("should get argument index if viewport is 0 and index is at start + 1", () => {
-    expect(findStartIndexAfter(1, 0, cache)).toBe(1);
-  });
-
-  it("should get same if viewport fits cache", () => {
-    expect(findStartIndexAfter(1, 40, cache)).toBe(3);
-  });
-
-  it("should get next if viewport is 1/2 item height larger than cache", () => {
-    expect(findStartIndexAfter(1, 50, cache)).toBe(4);
-  });
-
-  it("should get same if viewport is 1/2 - 1px item height larger than cache", () => {
-    expect(findStartIndexAfter(1, 49, cache)).toBe(3);
-  });
-
-  it("should get same if viewport is bit larger than cache", () => {
-    expect(findStartIndexAfter(1, 41, cache)).toBe(3);
-  });
-
-  it("should get same if viewport is a little bit larger than cache", () => {
-    expect(findStartIndexAfter(1, 40.01, cache)).toBe(3);
-  });
-
-  it("should get same if viewport is bit smaller than cache", () => {
-    expect(findStartIndexAfter(1, 39, cache)).toBe(3);
-  });
-
-  it("should get same if viewport is a little bit smaller than cache", () => {
-    expect(findStartIndexAfter(1, 39.99, cache)).toBe(3);
-  });
-
-  it("should resolve default height", () => {
-    const emptySizes = range(10, () => -1);
-    const emptyCache: Cache = {
-      _length: emptySizes.length,
-      _sizes: emptySizes,
-      _measuredOffsetIndex: 0,
-      _offsets: [0],
-      _defaultItemSize: 25,
-    };
-
-    expect(findStartIndexAfter(0, 100, emptyCache)).toBe(4);
-  });
-});
-
-describe(findStartIndexBefore.name, () => {
-  const filledSizes = range(10, () => 20);
-  const cache: Cache = {
-    _length: filledSizes.length,
-    _sizes: filledSizes,
-    _measuredOffsetIndex: 0,
-    _offsets: [0],
-    _defaultItemSize: 30,
-  };
-
-  describe("change index", () => {
-    it("should get if index is at end", () => {
-      const last = filledSizes.length - 1;
-      expect(findStartIndexBefore(last, 40, cache)).toBe(last - 2);
-    });
-
-    it("should get if index is at end - 1", () => {
-      const last = filledSizes.length - 1;
-      expect(findStartIndexBefore(last - 1, 40, cache)).toBe(last - 3);
-    });
-
-    it("should get start if index is at start", () => {
-      expect(findStartIndexBefore(0, 40, cache)).toBe(0);
-    });
-
-    it("should get if index is at start + 1", () => {
-      expect(findStartIndexBefore(1, 40, cache)).toBe(0);
-    });
-  });
-
-  it("should get argument index if viewport is 0 and index is at end", () => {
-    const last = filledSizes.length - 1;
-    expect(findStartIndexBefore(last, 0, cache)).toBe(last);
-  });
-
-  it("should get argument index if viewport is 0 and index is at end - 1", () => {
-    const last = filledSizes.length - 1;
-    expect(findStartIndexBefore(last - 1, 0, cache)).toBe(last - 1);
-  });
-
-  it("should get same if viewport fits cache", () => {
-    const last = filledSizes.length - 1;
-    expect(findStartIndexBefore(last - 1, 40, cache)).toBe(last - 3);
-  });
-
-  it("should get prev if viewport is 1/2 item height larger than cache", () => {
-    const last = filledSizes.length - 1;
-    expect(findStartIndexBefore(last - 1, 50, cache)).toBe(last - 4);
-  });
-
-  it("should get same if viewport is 1/2 - 1px item height larger than cache", () => {
-    const last = filledSizes.length - 1;
-    expect(findStartIndexBefore(last - 1, 49, cache)).toBe(last - 3);
-  });
-
-  it("should get same if viewport is bit larger than cache", () => {
-    const last = filledSizes.length - 1;
-    expect(findStartIndexBefore(last - 1, 41, cache)).toBe(last - 3);
-  });
-
-  it("should get same if viewport is a little bit larger than cache", () => {
-    const last = filledSizes.length - 1;
-    expect(findStartIndexBefore(last - 1, 40.01, cache)).toBe(last - 3);
-  });
-
-  it("should get same if viewport is bit smaller than cache", () => {
-    const last = filledSizes.length - 1;
-    expect(findStartIndexBefore(last - 1, 39, cache)).toBe(last - 3);
-  });
-
-  it("should get same if viewport is a little bit smaller than cache", () => {
-    const last = filledSizes.length - 1;
-    expect(findStartIndexBefore(last - 1, 39.99, cache)).toBe(last - 3);
-  });
-
-  it("should resolve default height", () => {
-    const emptySizes = range(10, () => -1);
-    const emptyCache: Cache = {
-      _length: emptySizes.length,
-      _sizes: emptySizes,
-      _measuredOffsetIndex: 0,
-      _offsets: [0],
-      _defaultItemSize: 25,
-    };
-
-    const last = filledSizes.length - 1;
-    expect(findStartIndexBefore(last, 100, emptyCache)).toBe(last - 4);
-  });
-});
-
-describe(`${findStartIndexAfter.name} and ${findStartIndexBefore.name}`, () => {
-  const filledSizes = range(10, () => 20);
-  const cache: Cache = {
-    _length: filledSizes.length,
-    _sizes: filledSizes,
-    _measuredOffsetIndex: 0,
-    _offsets: [0],
-    _defaultItemSize: 30,
-  };
-
-  it("should get same index if startIndex is at start", () => {
-    const viewport = 100;
-    const start = 0;
-    const end = findStartIndexAfter(start, viewport, cache);
-    expect(findStartIndexBefore(end, viewport, cache)).toBe(start);
-  });
-
-  it("should get same index if startIndex is at start + 1", () => {
-    const viewport = 100;
-    const start = 1;
-    const end = findStartIndexAfter(start, viewport, cache);
-    expect(findStartIndexBefore(end, viewport, cache)).toBe(start);
-  });
-
-  it("should get different index if startIndex is at end", () => {
-    const viewport = 100;
-    const start = filledSizes.length - 1;
-    const end = findStartIndexAfter(start, viewport, cache);
-    expect(findStartIndexBefore(end, viewport, cache)).toBe(start - 5);
-  });
-
-  it("should get same index if endIndex is at end", () => {
-    const viewport = 100;
-    const end = filledSizes.length - 1;
-    const start = findStartIndexBefore(end, viewport, cache);
-    expect(findStartIndexAfter(start, viewport, cache)).toBe(end);
-  });
-
-  it("should get same index if endIndex is at end - 1", () => {
-    const viewport = 100;
-    const start = filledSizes.length - 2;
-    const end = findStartIndexBefore(start, viewport, cache);
-    expect(findStartIndexAfter(end, viewport, cache)).toBe(start);
-  });
-
-  it("should get different index if endIndex is at start", () => {
-    const viewport = 100;
-    const end = 0;
-    const start = findStartIndexBefore(end, viewport, cache);
-    expect(findStartIndexAfter(start, viewport, cache)).toBe(end + 5);
-  });
-});
-
 describe(findStartIndexWithOffset.name, () => {
-  const filledSizes = range(10, () => 20);
-  const cache: Cache = {
-    _length: filledSizes.length,
-    _sizes: filledSizes,
-    _measuredOffsetIndex: 0,
-    _offsets: [0],
-    _defaultItemSize: 30,
-  };
+  it("should resolve default height", () => {
+    const emptySizes = range(10, () => -1);
+    const emptyCache: Cache = {
+      _length: emptySizes.length,
+      _sizes: emptySizes,
+      _measuredOffsetIndex: 0,
+      _offsets: [0],
+      _defaultItemSize: 25,
+    };
 
-  it("should get start if offset is at start", () => {
-    expect(findStartIndexWithOffset(0, cache, 0, 0)).toBe(0);
+    expect(findStartIndexWithOffset(100, emptyCache, 0, 0)).toBe(4);
   });
 
-  it("should get index if offset fits half of index 1 and 2", () => {
-    expect(findStartIndexWithOffset(10, cache, 0, 0)).toBe(0);
+  describe("start from start", () => {
+    const filledSizes = range(10, () => 20);
+    const cache: Cache = {
+      _length: filledSizes.length,
+      _sizes: filledSizes,
+      _measuredOffsetIndex: filledSizes.length - 1,
+      _offsets: [0],
+      _defaultItemSize: 30,
+    };
+
+    it("should get start if offset is at start", () => {
+      expect(findStartIndexWithOffset(0, cache, 0, 0)).toBe(0);
+    });
+
+    it("should get start if offset is at start + 1px", () => {
+      expect(findStartIndexWithOffset(1, cache, 0, 0)).toBe(0);
+    });
+
+    it("should get end if offset is at end", () => {
+      expect(findStartIndexWithOffset(sum(cache._sizes), cache, 0, 0)).toBe(
+        cache._length - 1
+      );
+    });
+
+    it("should get end if offset is at end - 1px", () => {
+      expect(findStartIndexWithOffset(sum(cache._sizes) - 1, cache, 0, 0)).toBe(
+        cache._length - 1
+      );
+    });
+
+    it("should get 1 if offset fits index 1", () => {
+      expect(findStartIndexWithOffset(20, cache, 0, 0)).toBe(1);
+    });
+
+    it("should get 1 if offset fits index 1 + 1px", () => {
+      expect(findStartIndexWithOffset(21, cache, 0, 0)).toBe(1);
+    });
+
+    it("should get 1 if offset fits index 1 - 1px", () => {
+      expect(findStartIndexWithOffset(19, cache, 0, 0)).toBe(1);
+    });
+
+    it("should get 1 if offset fits index 1.5", () => {
+      expect(findStartIndexWithOffset(30, cache, 0, 0)).toBe(1);
+    });
+
+    it("should get 2 if offset fits index 1.5 + 1px", () => {
+      expect(findStartIndexWithOffset(31, cache, 0, 0)).toBe(2);
+    });
+
+    it("should get 2 if offset fits index 1.5 + 0.01px", () => {
+      expect(findStartIndexWithOffset(30.01, cache, 0, 0)).toBe(2);
+    });
+
+    it("should get 1 if offset fits index 1.5 - 1px", () => {
+      expect(findStartIndexWithOffset(29, cache, 0, 0)).toBe(1);
+    });
+
+    it("should get 1 if offset fits index 1.5 - 0.01px", () => {
+      expect(findStartIndexWithOffset(29.99, cache, 0, 0)).toBe(1);
+    });
+
+    it("should get 2 if offset fits index 2", () => {
+      expect(findStartIndexWithOffset(40, cache, 0, 0)).toBe(2);
+    });
+
+    it("should get 2 if offset fits index 2 + 1px", () => {
+      expect(findStartIndexWithOffset(41, cache, 0, 0)).toBe(2);
+    });
+
+    it("should get 2 if offset fits index 2 - 1px", () => {
+      expect(findStartIndexWithOffset(39, cache, 0, 0)).toBe(2);
+    });
   });
 
-  it("should get index if offset fits half of index 1 and 2 + 1px", () => {
-    expect(findStartIndexWithOffset(11, cache, 0, 0)).toBe(1);
+  describe("start from end", () => {
+    const filledSizes = range(10, () => 20);
+    const cache: Cache = {
+      _length: filledSizes.length,
+      _sizes: filledSizes,
+      _measuredOffsetIndex: filledSizes.length - 1,
+      _offsets: [0],
+      _defaultItemSize: 30,
+    };
+
+    const offset = (i: number) => sum(cache._sizes.slice(0, i));
+
+    it("should get start if offset is at start", () => {
+      expect(
+        findStartIndexWithOffset(0, cache, cache._length, offset(cache._length))
+      ).toBe(0);
+    });
+
+    it("should get start if offset is at start + 1px", () => {
+      expect(
+        findStartIndexWithOffset(1, cache, cache._length, offset(cache._length))
+      ).toBe(0);
+    });
+
+    it("should get end if offset is at end", () => {
+      expect(
+        findStartIndexWithOffset(
+          offset(cache._length),
+          cache,
+          cache._length,
+          offset(cache._length)
+        )
+      ).toBe(cache._length - 1);
+    });
+
+    it("should get end if offset is at end - 1px", () => {
+      expect(
+        findStartIndexWithOffset(
+          offset(cache._length) - 1,
+          cache,
+          cache._length,
+          offset(cache._length)
+        )
+      ).toBe(cache._length - 1);
+    });
+
+    it("should get 1 if offset fits index 1", () => {
+      expect(
+        findStartIndexWithOffset(
+          20,
+          cache,
+          cache._length,
+          offset(cache._length)
+        )
+      ).toBe(1);
+    });
+
+    it("should get 1 if offset fits index 1 + 1px", () => {
+      expect(
+        findStartIndexWithOffset(
+          21,
+          cache,
+          cache._length,
+          offset(cache._length)
+        )
+      ).toBe(1);
+    });
+
+    it("should get 1 if offset fits index 1 - 1px", () => {
+      expect(
+        findStartIndexWithOffset(
+          19,
+          cache,
+          cache._length,
+          offset(cache._length)
+        )
+      ).toBe(1);
+    });
+
+    it("should get 1 if offset fits index 1.5", () => {
+      expect(
+        findStartIndexWithOffset(
+          30,
+          cache,
+          cache._length,
+          offset(cache._length)
+        )
+      ).toBe(1);
+    });
+
+    it("should get 2 if offset fits index 1.5 + 1px", () => {
+      expect(
+        findStartIndexWithOffset(
+          31,
+          cache,
+          cache._length,
+          offset(cache._length)
+        )
+      ).toBe(2);
+    });
+
+    it("should get 2 if offset fits index 1.5 + 0.01px", () => {
+      expect(
+        findStartIndexWithOffset(
+          30.01,
+          cache,
+          cache._length,
+          offset(cache._length)
+        )
+      ).toBe(2);
+    });
+
+    it("should get 1 if offset fits index 1.5 - 1px", () => {
+      expect(
+        findStartIndexWithOffset(
+          29,
+          cache,
+          cache._length,
+          offset(cache._length)
+        )
+      ).toBe(1);
+    });
+
+    it("should get 1 if offset fits index 1.5 - 0.01px", () => {
+      expect(
+        findStartIndexWithOffset(
+          29.99,
+          cache,
+          cache._length,
+          offset(cache._length)
+        )
+      ).toBe(1);
+    });
+
+    it("should get 2 if offset fits index 2", () => {
+      expect(
+        findStartIndexWithOffset(
+          40,
+          cache,
+          cache._length,
+          offset(cache._length)
+        )
+      ).toBe(2);
+    });
+
+    it("should get 2 if offset fits index 2 + 1px", () => {
+      expect(
+        findStartIndexWithOffset(
+          41,
+          cache,
+          cache._length,
+          offset(cache._length)
+        )
+      ).toBe(2);
+    });
+
+    it("should get 2 if offset fits index 2 - 1px", () => {
+      expect(
+        findStartIndexWithOffset(
+          39,
+          cache,
+          cache._length,
+          offset(cache._length)
+        )
+      ).toBe(2);
+    });
   });
 
-  it("should get index if offset fits half of index 1 and 2 - 1px", () => {
-    expect(findStartIndexWithOffset(9, cache, 0, 0)).toBe(0);
-  });
+  describe("start from middle", () => {
+    const filledSizes = range(10, () => 20);
+    const cache: Cache = {
+      _length: filledSizes.length,
+      _sizes: filledSizes,
+      _measuredOffsetIndex: filledSizes.length - 1,
+      _offsets: [0],
+      _defaultItemSize: 30,
+    };
 
-  it("should get index if offset fits index 1", () => {
-    expect(findStartIndexWithOffset(20, cache, 0, 0)).toBe(1);
-  });
+    const offset = (i: number) => sum(cache._sizes.slice(0, i));
 
-  it("should get index if offset is index 1 + 1px", () => {
-    expect(findStartIndexWithOffset(21, cache, 0, 0)).toBe(1);
-  });
+    it("should get start if offset is at start", () => {
+      expect(findStartIndexWithOffset(0, cache, 4, offset(4))).toBe(0);
+    });
 
-  it("should get index if offset is index 1 - 1px", () => {
-    expect(findStartIndexWithOffset(19, cache, 0, 0)).toBe(1);
-  });
+    it("should get end if offset is at end", () => {
+      expect(
+        findStartIndexWithOffset(sum(cache._sizes), cache, 4, offset(4))
+      ).toBe(cache._sizes.length - 1);
+    });
 
-  it("should get index if offset fits index 2", () => {
-    expect(findStartIndexWithOffset(40, cache, 0, 0)).toBe(2);
-  });
+    it("should get prevStartIndex if offset fits prevStartIndex", () => {
+      expect(findStartIndexWithOffset(offset(4), cache, 4, offset(4))).toBe(4);
+    });
 
-  it("should get index if offset is index 2 + 1px", () => {
-    expect(findStartIndexWithOffset(41, cache, 0, 0)).toBe(2);
-  });
+    it("should get prevStartIndex if offset fits prevStartIndex + 1px", () => {
+      expect(findStartIndexWithOffset(offset(4) + 1, cache, 4, offset(4))).toBe(
+        4
+      );
+    });
 
-  it("should get index if offset is index 2 - 1px", () => {
-    expect(findStartIndexWithOffset(39, cache, 0, 0)).toBe(2);
-  });
-
-  it("should get index if offset is at end", () => {
-    expect(findStartIndexWithOffset(sum(cache._sizes), cache, 0, 0)).toBe(
-      cache._sizes.length - 1
-    );
+    it("should get prevStartIndex if offset fits prevStartIndex - 1px", () => {
+      expect(findStartIndexWithOffset(offset(4) - 1, cache, 4, offset(4))).toBe(
+        4
+      );
+    });
   });
 });
 
