@@ -11,7 +11,6 @@ import {
   useEffect,
   RefObject,
 } from "react";
-import { useSyncExternalStore } from "use-sync-external-store/shim";
 import {
   HANDLE_SCROLL,
   UPDATE_CACHE_LENGTH,
@@ -21,6 +20,7 @@ import {
   useVirtualStore,
 } from "./state";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
+import { useSyncExternalStore } from "./useSyncExternalStore";
 import { debounce, max, min } from "./utils";
 
 const SCROLL_STOP = 0;
@@ -55,11 +55,12 @@ const Item = memo(
   }: ItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
-    const getOffset = () => store._getItemOffset(index);
-    const getHide = () => store._isUnmeasuredItem(index);
-
-    const offset = useSyncExternalStore(store._subscribe, getOffset, getOffset);
-    const hide = useSyncExternalStore(store._subscribe, getHide, getHide);
+    const offset = useSyncExternalStore(store._subscribe, () =>
+      store._getItemOffset(index)
+    );
+    const hide = useSyncExternalStore(store._subscribe, () =>
+      store._isUnmeasuredItem(index)
+    );
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(
@@ -114,12 +115,10 @@ const Window = ({
 }) => {
   const viewportWidth = useSyncExternalStore(
     store._subscribe,
-    store._getViewportWidth,
     store._getViewportWidth
   );
   const viewportHeight = useSyncExternalStore(
     store._subscribe,
-    store._getViewportHeight,
     store._getViewportHeight
   );
 
@@ -162,12 +161,10 @@ const Inner = ({
 }) => {
   const scrollSize = useSyncExternalStore(
     store._subscribe,
-    store._getScrollSize,
     store._getScrollSize
   );
   const viewportSize = useSyncExternalStore(
     store._subscribe,
-    store._getViewportSize,
     store._getViewportSize
   );
 
@@ -238,24 +235,14 @@ export const List = forwardRef<ListHandle, ListProps>(
     const store = useVirtualStore(rawCount, itemSize, isHorizontal);
     const startIndex = useSyncExternalStore(
       store._subscribe,
-      store._getStartIndex,
       store._getStartIndex
     );
-    const endIndex = useSyncExternalStore(
-      store._subscribe,
-      store._getEndIndex,
-      store._getEndIndex
-    );
+    const endIndex = useSyncExternalStore(store._subscribe, store._getEndIndex);
     const isViewportInitialized = useSyncExternalStore(
       store._subscribe,
-      store._getViewportSizeInitialized,
       store._getViewportSizeInitialized
     );
-    const jump = useSyncExternalStore(
-      store._subscribe,
-      store._getJump,
-      store._getJump
-    );
+    const jump = useSyncExternalStore(store._subscribe, store._getJump);
     const wrapperRef = useRef<HTMLDivElement>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
     const onEndReachedCalledIndex = useRef<number>(-1);
@@ -395,50 +382,54 @@ export const List = forwardRef<ListHandle, ListProps>(
       }
     }, [endIndex]);
 
-    useImperativeHandle(ref, () => ({
-      scrollTo: async (index) => {
-        const el = scrollRef.current;
-        if (!el) return;
+    useImperativeHandle(
+      ref,
+      () => ({
+        scrollTo: async (index) => {
+          const el = scrollRef.current;
+          if (!el) return;
 
-        index = max(min(index, count - 1), 0);
+          index = max(min(index, count - 1), 0);
 
-        const getScrollDestination = (): number => {
-          let offset = store._getItemOffset(index);
-          const scrollSize = store._getScrollSize();
-          const viewportSize = store._getViewportSize();
-          const endReached = scrollSize - (offset + viewportSize) <= 0;
-          if (endReached) {
-            offset = scrollSize - viewportSize;
-          }
-          return offset;
-        };
-
-        if (store._hasUnmeasuredItemsInRange(index)) {
-          do {
-            // In order to scroll to the correct position, mount the items and measure their sizes before scrolling.
-            store._update({
-              _type: HANDLE_SCROLL,
-              _offset: getScrollDestination(),
-            });
-            try {
-              // Wait for the scroll destination items to be measured.
-              await store._waitForScrollDestinationItemsMeasured();
-            } catch (e) {
-              // canceled
-              return;
+          const getScrollDestination = (): number => {
+            let offset = store._getItemOffset(index);
+            const scrollSize = store._getScrollSize();
+            const viewportSize = store._getViewportSize();
+            const endReached = scrollSize - (offset + viewportSize) <= 0;
+            if (endReached) {
+              offset = scrollSize - viewportSize;
             }
-          } while (store._hasUnmeasuredItemsInRange(index));
+            return offset;
+          };
 
-          // Scroll with the updated value
-          el[scrollToKey] = getScrollDestination();
-        } else {
-          const offset = getScrollDestination();
-          el[scrollToKey] = offset;
-          // Sync viewport to scroll destination
-          store._update({ _type: HANDLE_SCROLL, _offset: offset });
-        }
-      },
-    }));
+          if (store._hasUnmeasuredItemsInRange(index)) {
+            do {
+              // In order to scroll to the correct position, mount the items and measure their sizes before scrolling.
+              store._update({
+                _type: HANDLE_SCROLL,
+                _offset: getScrollDestination(),
+              });
+              try {
+                // Wait for the scroll destination items to be measured.
+                await store._waitForScrollDestinationItemsMeasured();
+              } catch (e) {
+                // canceled
+                return;
+              }
+            } while (store._hasUnmeasuredItemsInRange(index));
+
+            // Scroll with the updated value
+            el[scrollToKey] = getScrollDestination();
+          } else {
+            const offset = getScrollDestination();
+            el[scrollToKey] = offset;
+            // Sync viewport to scroll destination
+            store._update({ _type: HANDLE_SCROLL, _offset: offset });
+          }
+        },
+      }),
+      [count]
+    );
 
     const items = useMemo(() => {
       let i = -1;
