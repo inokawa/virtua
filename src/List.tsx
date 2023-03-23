@@ -76,17 +76,13 @@ const Item = memo(
             margin: "0",
             padding: "0",
             position: "absolute",
+            [isHorizontal ? "height" : "width"]: "100%",
+            [isHorizontal ? "top" : "left"]: 0,
+            [isHorizontal ? "left" : "top"]: offset,
             // willChange: "transform",
           };
           if (isHorizontal) {
             style.display = "flex";
-            style.height = "100%";
-            style.top = 0;
-            style.left = offset;
-          } else {
-            style.width = "100%";
-            style.left = 0;
-            style.top = offset;
           }
           if (hide) {
             style.visibility = "hidden";
@@ -280,7 +276,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     const endIndex = useSyncExternalStore(store._subscribe, store._getEndIndex);
     const isViewportInitialized = useSyncExternalStore(
       store._subscribe,
-      store._getViewportSizeInitialized
+      store._isViewportSizeInitialized
     );
     const jump = useSyncExternalStore(store._subscribe, store._getJump);
     const wrapperRef = useRef<HTMLDivElement>(null);

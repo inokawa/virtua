@@ -102,7 +102,7 @@ export type Store = {
   _getViewportWidth(): number;
   _getViewportHeight(): number;
   _getViewportSize(): number;
-  _getViewportSizeInitialized(): boolean;
+  _isViewportSizeInitialized(): boolean;
   _getScrollSize(): number;
   _getItemCount(): number;
   _getJump(): ScrollJump;
@@ -167,7 +167,7 @@ export const useVirtualStore = (
         _getViewportSize() {
           return getViewportSize();
         },
-        _getViewportSizeInitialized() {
+        _isViewportSizeInitialized() {
           return getViewportSize() !== 0;
         },
         _getScrollSize() {

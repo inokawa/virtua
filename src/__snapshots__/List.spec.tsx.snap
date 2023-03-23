@@ -12,7 +12,7 @@ exports[`horizontal should render 1 children 1`] = `
         style="position: relative; width: 100px; height: 100%; min-width: 100px; min-height: 100%;"
       >
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 0px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
         >
           <div>
             0
@@ -36,35 +36,35 @@ exports[`horizontal should render 5 children 1`] = `
         style="position: relative; width: 500px; height: 100%; min-width: 500px; min-height: 100%;"
       >
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 0px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
         >
           <div>
             0
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 100px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
         >
           <div>
             1
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 200px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
         >
           <div>
             2
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 300px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; display: flex;"
         >
           <div>
             3
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 400px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; display: flex;"
         >
           <div>
             4
@@ -88,56 +88,56 @@ exports[`horizontal should render 100 children 1`] = `
         style="position: relative; width: 4540px; height: 100%; min-width: 4540px; min-height: 100%;"
       >
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 0px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
         >
           <div>
             0
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 100px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
         >
           <div>
             1
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 200px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
         >
           <div>
             2
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 300px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; display: flex;"
         >
           <div>
             3
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 400px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; display: flex;"
         >
           <div>
             4
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 500px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 500px; display: flex;"
         >
           <div>
             5
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 600px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 600px; display: flex;"
         >
           <div>
             6
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 700px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 700px; display: flex;"
         >
           <div>
             7
@@ -161,56 +161,56 @@ exports[`horizontal should render 1000 children 1`] = `
         style="position: relative; width: 40540px; height: 100%; min-width: 40540px; min-height: 100%;"
       >
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 0px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
         >
           <div>
             0
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 100px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
         >
           <div>
             1
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 200px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
         >
           <div>
             2
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 300px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; display: flex;"
         >
           <div>
             3
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 400px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; display: flex;"
         >
           <div>
             4
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 500px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 500px; display: flex;"
         >
           <div>
             5
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 600px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 600px; display: flex;"
         >
           <div>
             6
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 700px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 700px; display: flex;"
         >
           <div>
             7
@@ -234,56 +234,56 @@ exports[`horizontal should render 10000 children 1`] = `
         style="position: relative; width: 400540px; height: 100%; min-width: 400540px; min-height: 100%;"
       >
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 0px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
         >
           <div>
             0
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 100px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
         >
           <div>
             1
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 200px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
         >
           <div>
             2
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 300px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; display: flex;"
         >
           <div>
             3
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 400px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; display: flex;"
         >
           <div>
             4
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 500px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 500px; display: flex;"
         >
           <div>
             5
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 600px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 600px; display: flex;"
         >
           <div>
             6
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 700px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 700px; display: flex;"
         >
           <div>
             7
@@ -307,21 +307,21 @@ exports[`horizontal should render component 1`] = `
         style="position: relative; width: 300px; height: 100%; min-width: 300px; min-height: 100%;"
       >
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 0px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
         >
           <div>
             component
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 100px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
         >
           <div>
             component
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 200px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
         >
           <div>
             component
@@ -345,7 +345,7 @@ exports[`horizontal should render fragments 1`] = `
         style="position: relative; width: 200px; height: 100%; min-width: 200px; min-height: 100%;"
       >
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 0px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
         >
           <div>
             fragment
@@ -358,7 +358,7 @@ exports[`horizontal should render fragments 1`] = `
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 100px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
         >
           <div>
             fragment
@@ -382,12 +382,12 @@ exports[`horizontal should render non elements 1`] = `
         style="position: relative; width: 200px; height: 100%; min-width: 200px; min-height: 100%;"
       >
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 0px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
         >
           string
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 100px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
         >
           123
         </div>
@@ -409,35 +409,35 @@ exports[`horizontal should render with given width / height 1`] = `
         style="position: relative; width: 500px; height: 100%; min-width: 500px; min-height: 100%;"
       >
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 0px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
         >
           <div>
             0
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 100px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
         >
           <div>
             1
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 200px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
         >
           <div>
             2
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 300px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; display: flex;"
         >
           <div>
             3
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; display: flex; height: 100%; top: 0px; left: 400px;"
+          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; display: flex;"
         >
           <div>
             4
