@@ -189,8 +189,8 @@ export const useVirtualStore = (
           return new Promise((resolve, reject) => {
             scrollToQueue = [
               () => {
-                // HACK: It should be resolved in the next tick that is after React's render
-                setTimeout(() => {
+                // HACK: It should be resolved in the next microtask that is after React's render
+                Promise.resolve().then(() => {
                   resolve();
                   scrollToQueue = undefined;
                 });
