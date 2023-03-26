@@ -26,15 +26,18 @@ import { debounce, max, min } from "./utils";
 const SCROLL_STOP = 0;
 const SCROLL_DOWN = 1;
 const SCROLL_UP = 2;
+const SCROLL_MANUAL = 3;
 type ScrollDirection =
   | typeof SCROLL_STOP
   | typeof SCROLL_DOWN
-  | typeof SCROLL_UP;
+  | typeof SCROLL_UP
+  | typeof SCROLL_MANUAL;
 
 type ObserverHandle = {
   _init: (rootElement: HTMLElement, wrapperElement: HTMLElement) => () => void;
   _observe: (itemElement: HTMLElement, index: number) => () => void;
   _getScrollDirection: () => ScrollDirection;
+  _startManuallScroll: () => void;
 };
 
 type ItemProps = {
@@ -303,7 +306,11 @@ export const List = forwardRef<ListHandle, ListProps>(
               // Skip scroll direction detection just after resizing because it may result in the opposite direction.
               // Scroll events are dispatched enough so it's ok to skip some of them.
               if (scrollDirection === SCROLL_STOP || !resized) {
-                scrollDirection = prevOffset > offset ? SCROLL_UP : SCROLL_DOWN;
+                // Ignore until manual scrolling
+                if (scrollDirection !== SCROLL_MANUAL) {
+                  scrollDirection =
+                    prevOffset > offset ? SCROLL_UP : SCROLL_DOWN;
+                }
               } else {
                 resized = false;
               }
@@ -373,6 +380,9 @@ export const List = forwardRef<ListHandle, ListProps>(
           _getScrollDirection() {
             return scrollDirection;
           },
+          _startManuallScroll() {
+            scrollDirection = SCROLL_MANUAL;
+          },
         };
       })());
 
@@ -398,11 +408,35 @@ export const List = forwardRef<ListHandle, ListProps>(
     useIsomorphicLayoutEffect(() => {
       if (!scrollRef.current || !jump.length) return;
 
-      if (handle._getScrollDirection() === SCROLL_UP) {
+      // Compensate scroll jump
+      const scrollDirection = handle._getScrollDirection();
+      if (scrollDirection === SCROLL_UP) {
         const diff = jump.reduce((acc, [, j]) => acc + j, 0);
         if (diff) {
           scrollRef.current[scrollToKey] += diff;
         }
+      } else if (scrollDirection === SCROLL_MANUAL) {
+        const isStartInView = startIndex === 0;
+        const isEndInView = endIndex - (count - 1) === 0;
+        const diff = jump.reduce((acc, [index, j]) => {
+          if (index < startIndex) {
+            // Keep start if scroll position is not stuck to the start
+            if (!isStartInView) {
+              acc += j;
+            }
+          } else {
+            // Keep end if scroll position is stuck to the end
+            if (!isStartInView && isEndInView) {
+              acc += j;
+            }
+          }
+          return acc;
+        }, 0);
+        if (diff) {
+          scrollRef.current[scrollToKey] += diff;
+        }
+      } else {
+        // NOP
       }
     }, [jump]);
 
@@ -464,6 +498,8 @@ export const List = forwardRef<ListHandle, ListProps>(
             // Sync viewport to scroll destination
             store._update({ _type: HANDLE_SCROLL, _offset: offset });
           }
+
+          handle._startManuallScroll();
         },
       }),
       [count]
