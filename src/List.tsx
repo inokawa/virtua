@@ -429,10 +429,12 @@ export const List = forwardRef<ListHandle, ListProps>(
 
           const getScrollDestination = (): number => {
             let offset = store._getItemOffset(index);
-            const scrollSize = store._getScrollSize();
+            // Use element's scrollHeight/scrollWidth instead of stored scrollSize.
+            // This is because stored size may differ from the actual size, for example when a new item is added and not yet measured.
+            const scrollSize = isHorizontal ? el.scrollWidth : el.scrollHeight;
             const viewportSize = store._getViewportSize();
-            const endReached = scrollSize - (offset + viewportSize) <= 0;
-            if (endReached) {
+            if (scrollSize - (offset + viewportSize) <= 0) {
+              // Adjust if the offset is over the end, to get correct startIndex.
               offset = scrollSize - viewportSize;
             }
             return offset;
