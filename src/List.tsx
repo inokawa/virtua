@@ -33,6 +33,8 @@ type ScrollDirection =
   | typeof SCROLL_UP
   | typeof SCROLL_MANUAL;
 
+const INITIAL_END_REACHED_INDEX = -1;
+
 type ObserverHandle = {
   _init: (rootElement: HTMLElement, wrapperElement: HTMLElement) => () => void;
   _observe: (itemElement: HTMLElement, index: number) => () => void;
@@ -284,7 +286,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     const jump = useSyncExternalStore(store._subscribe, store._getJump);
     const wrapperRef = useRef<HTMLDivElement>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
-    const onEndReachedCalledIndex = useRef<number>(-1);
+    const onEndReachedCalledIndex = useRef<number>(INITIAL_END_REACHED_INDEX);
 
     const handleRef = useRef<ObserverHandle>();
     const handle =
@@ -441,9 +443,15 @@ export const List = forwardRef<ListHandle, ListProps>(
     }, [jump]);
 
     useEffect(() => {
+      if (!onEndReached) return;
+
+      if (onEndReachedCalledIndex.current > count) {
+        // Probably items have been refreshed, so reset index
+        onEndReachedCalledIndex.current = INITIAL_END_REACHED_INDEX;
+      }
+
       const endMargin = count - 1 - endIndex;
       if (
-        onEndReached &&
         endMargin <= endThreshold &&
         onEndReachedCalledIndex.current < count
       ) {

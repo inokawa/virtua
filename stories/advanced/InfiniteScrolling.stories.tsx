@@ -102,6 +102,7 @@ export const InfiniteScrolling: StoryObj = {
       <List
         style={{ height: "100vh" }}
         endThreshold={30}
+        itemSize={200}
         onEndReached={async () => {
           setFetching(true);
           await new Promise((r) => setTimeout(r, 1500));
