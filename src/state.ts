@@ -99,8 +99,6 @@ export type Store = {
   _isUnmeasuredItem(index: number): boolean;
   _hasUnmeasuredItemsInRange(startIndex: number): boolean;
   _getItemOffset(index: number): number;
-  _getViewportWidth(): number;
-  _getViewportHeight(): number;
   _getViewportSize(): number;
   _isViewportSizeInitialized(): boolean;
   _getScrollSize(): number;
@@ -157,12 +155,6 @@ export const useVirtualStore = (
         },
         _getItemOffset(index) {
           return computeStartOffset(state._cache as Writeable<Cache>, index);
-        },
-        _getViewportWidth() {
-          return state._viewportWidth;
-        },
-        _getViewportHeight() {
-          return state._viewportHeight;
         },
         _getViewportSize() {
           return getViewportSize();
