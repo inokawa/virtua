@@ -3,20 +3,16 @@
 exports[`horizontal should render 1 children 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow: hidden; position: relative;"
+    style="overflow: auto hidden; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: auto hidden; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 100px; height: 100%; min-width: 100px; min-height: 100%;"
     >
       <div
-        style="position: relative; width: 100px; height: 100%; min-width: 100px; min-height: 100%;"
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
-        >
-          <div>
-            0
-          </div>
+        <div>
+          0
         </div>
       </div>
     </div>
@@ -27,48 +23,44 @@ exports[`horizontal should render 1 children 1`] = `
 exports[`horizontal should render 5 children 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow: hidden; position: relative;"
+    style="overflow: auto hidden; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: auto hidden; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 500px; height: 100%; min-width: 500px; min-height: 100%;"
     >
       <div
-        style="position: relative; width: 500px; height: 100%; min-width: 500px; min-height: 100%;"
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
-        >
-          <div>
-            0
-          </div>
+        <div>
+          0
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
-        >
-          <div>
-            1
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
+      >
+        <div>
+          1
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
-        >
-          <div>
-            2
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
+      >
+        <div>
+          2
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; display: flex;"
-        >
-          <div>
-            3
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; display: flex;"
+      >
+        <div>
+          3
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; display: flex;"
-        >
-          <div>
-            4
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; display: flex;"
+      >
+        <div>
+          4
         </div>
       </div>
     </div>
@@ -79,69 +71,65 @@ exports[`horizontal should render 5 children 1`] = `
 exports[`horizontal should render 100 children 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow: hidden; position: relative;"
+    style="overflow: auto hidden; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: auto hidden; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 4540px; height: 100%; min-width: 4540px; min-height: 100%;"
     >
       <div
-        style="position: relative; width: 4540px; height: 100%; min-width: 4540px; min-height: 100%;"
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
-        >
-          <div>
-            0
-          </div>
+        <div>
+          0
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
-        >
-          <div>
-            1
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
+      >
+        <div>
+          1
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
-        >
-          <div>
-            2
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
+      >
+        <div>
+          2
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; display: flex;"
-        >
-          <div>
-            3
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; display: flex;"
+      >
+        <div>
+          3
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; display: flex;"
-        >
-          <div>
-            4
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; display: flex;"
+      >
+        <div>
+          4
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 500px; display: flex;"
-        >
-          <div>
-            5
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 500px; display: flex;"
+      >
+        <div>
+          5
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 600px; display: flex;"
-        >
-          <div>
-            6
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 600px; display: flex;"
+      >
+        <div>
+          6
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 700px; display: flex;"
-        >
-          <div>
-            7
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 700px; display: flex;"
+      >
+        <div>
+          7
         </div>
       </div>
     </div>
@@ -152,69 +140,65 @@ exports[`horizontal should render 100 children 1`] = `
 exports[`horizontal should render 1000 children 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow: hidden; position: relative;"
+    style="overflow: auto hidden; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: auto hidden; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 40540px; height: 100%; min-width: 40540px; min-height: 100%;"
     >
       <div
-        style="position: relative; width: 40540px; height: 100%; min-width: 40540px; min-height: 100%;"
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
-        >
-          <div>
-            0
-          </div>
+        <div>
+          0
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
-        >
-          <div>
-            1
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
+      >
+        <div>
+          1
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
-        >
-          <div>
-            2
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
+      >
+        <div>
+          2
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; display: flex;"
-        >
-          <div>
-            3
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; display: flex;"
+      >
+        <div>
+          3
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; display: flex;"
-        >
-          <div>
-            4
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; display: flex;"
+      >
+        <div>
+          4
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 500px; display: flex;"
-        >
-          <div>
-            5
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 500px; display: flex;"
+      >
+        <div>
+          5
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 600px; display: flex;"
-        >
-          <div>
-            6
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 600px; display: flex;"
+      >
+        <div>
+          6
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 700px; display: flex;"
-        >
-          <div>
-            7
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 700px; display: flex;"
+      >
+        <div>
+          7
         </div>
       </div>
     </div>
@@ -225,69 +209,65 @@ exports[`horizontal should render 1000 children 1`] = `
 exports[`horizontal should render 10000 children 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow: hidden; position: relative;"
+    style="overflow: auto hidden; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: auto hidden; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 400540px; height: 100%; min-width: 400540px; min-height: 100%;"
     >
       <div
-        style="position: relative; width: 400540px; height: 100%; min-width: 400540px; min-height: 100%;"
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
-        >
-          <div>
-            0
-          </div>
+        <div>
+          0
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
-        >
-          <div>
-            1
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
+      >
+        <div>
+          1
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
-        >
-          <div>
-            2
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
+      >
+        <div>
+          2
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; display: flex;"
-        >
-          <div>
-            3
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; display: flex;"
+      >
+        <div>
+          3
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; display: flex;"
-        >
-          <div>
-            4
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; display: flex;"
+      >
+        <div>
+          4
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 500px; display: flex;"
-        >
-          <div>
-            5
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 500px; display: flex;"
+      >
+        <div>
+          5
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 600px; display: flex;"
-        >
-          <div>
-            6
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 600px; display: flex;"
+      >
+        <div>
+          6
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 700px; display: flex;"
-        >
-          <div>
-            7
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 700px; display: flex;"
+      >
+        <div>
+          7
         </div>
       </div>
     </div>
@@ -298,34 +278,30 @@ exports[`horizontal should render 10000 children 1`] = `
 exports[`horizontal should render component 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow: hidden; position: relative;"
+    style="overflow: auto hidden; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: auto hidden; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 300px; height: 100%; min-width: 300px; min-height: 100%;"
     >
       <div
-        style="position: relative; width: 300px; height: 100%; min-width: 300px; min-height: 100%;"
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
-        >
-          <div>
-            component
-          </div>
+        <div>
+          component
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
-        >
-          <div>
-            component
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
+      >
+        <div>
+          component
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
-        >
-          <div>
-            component
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
+      >
+        <div>
+          component
         </div>
       </div>
     </div>
@@ -336,33 +312,29 @@ exports[`horizontal should render component 1`] = `
 exports[`horizontal should render fragments 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow: hidden; position: relative;"
+    style="overflow: auto hidden; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: auto hidden; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 200px; height: 100%; min-width: 200px; min-height: 100%;"
     >
       <div
-        style="position: relative; width: 200px; height: 100%; min-width: 200px; min-height: 100%;"
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
-        >
-          <div>
-            fragment
-          </div>
-          <div>
-            fragment
-          </div>
-          <div>
-            fragment
-          </div>
+        <div>
+          fragment
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
-        >
-          <div>
-            fragment
-          </div>
+        <div>
+          fragment
+        </div>
+        <div>
+          fragment
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
+      >
+        <div>
+          fragment
         </div>
       </div>
     </div>
@@ -373,24 +345,20 @@ exports[`horizontal should render fragments 1`] = `
 exports[`horizontal should render non elements 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow: hidden; position: relative;"
+    style="overflow: auto hidden; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: auto hidden; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 200px; height: 100%; min-width: 200px; min-height: 100%;"
     >
       <div
-        style="position: relative; width: 200px; height: 100%; min-width: 200px; min-height: 100%;"
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
-        >
-          string
-        </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
-        >
-          123
-        </div>
+        string
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
+      >
+        123
       </div>
     </div>
   </div>
@@ -400,48 +368,44 @@ exports[`horizontal should render non elements 1`] = `
 exports[`horizontal should render with given width / height 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100px; height: 800px; overflow: hidden; position: relative;"
+    style="overflow: auto hidden; position: relative; contain: strict; width: 100px; height: 800px; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: auto hidden; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 500px; height: 100%; min-width: 500px; min-height: 100%;"
     >
       <div
-        style="position: relative; width: 500px; height: 100%; min-width: 500px; min-height: 100%;"
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
-        >
-          <div>
-            0
-          </div>
+        <div>
+          0
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
-        >
-          <div>
-            1
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; display: flex;"
+      >
+        <div>
+          1
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
-        >
-          <div>
-            2
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; display: flex;"
+      >
+        <div>
+          2
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; display: flex;"
-        >
-          <div>
-            3
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; display: flex;"
+      >
+        <div>
+          3
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; display: flex;"
-        >
-          <div>
-            4
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; display: flex;"
+      >
+        <div>
+          4
         </div>
       </div>
     </div>
@@ -452,20 +416,16 @@ exports[`horizontal should render with given width / height 1`] = `
 exports[`vertical should render 1 children 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow: hidden; position: relative;"
+    style="overflow: hidden auto; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: hidden auto; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 100%; height: 50px; min-width: 100%; min-height: 50px;"
     >
       <div
-        style="position: relative; width: 100%; height: 50px; min-width: 100%; min-height: 50px;"
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
-        >
-          <div>
-            0
-          </div>
+        <div>
+          0
         </div>
       </div>
     </div>
@@ -476,48 +436,44 @@ exports[`vertical should render 1 children 1`] = `
 exports[`vertical should render 5 children 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow: hidden; position: relative;"
+    style="overflow: hidden auto; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: hidden auto; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 100%; height: 250px; min-width: 100%; min-height: 250px;"
     >
       <div
-        style="position: relative; width: 100%; height: 250px; min-width: 100%; min-height: 250px;"
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
-        >
-          <div>
-            0
-          </div>
+        <div>
+          0
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px;"
-        >
-          <div>
-            1
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px;"
+      >
+        <div>
+          1
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px;"
-        >
-          <div>
-            2
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px;"
+      >
+        <div>
+          2
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px;"
-        >
-          <div>
-            3
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px;"
+      >
+        <div>
+          3
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px;"
-        >
-          <div>
-            4
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px;"
+      >
+        <div>
+          4
         </div>
       </div>
     </div>
@@ -528,69 +484,65 @@ exports[`vertical should render 5 children 1`] = `
 exports[`vertical should render 100 children 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow: hidden; position: relative;"
+    style="overflow: hidden auto; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: hidden auto; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 100%; height: 4080px; min-width: 100%; min-height: 4080px;"
     >
       <div
-        style="position: relative; width: 100%; height: 4080px; min-width: 100%; min-height: 4080px;"
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
-        >
-          <div>
-            0
-          </div>
+        <div>
+          0
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px;"
-        >
-          <div>
-            1
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px;"
+      >
+        <div>
+          1
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px;"
-        >
-          <div>
-            2
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px;"
+      >
+        <div>
+          2
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px;"
-        >
-          <div>
-            3
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px;"
+      >
+        <div>
+          3
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px;"
-        >
-          <div>
-            4
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px;"
+      >
+        <div>
+          4
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 250px;"
-        >
-          <div>
-            5
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 250px;"
+      >
+        <div>
+          5
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 300px;"
-        >
-          <div>
-            6
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 300px;"
+      >
+        <div>
+          6
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 350px;"
-        >
-          <div>
-            7
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 350px;"
+      >
+        <div>
+          7
         </div>
       </div>
     </div>
@@ -601,69 +553,65 @@ exports[`vertical should render 100 children 1`] = `
 exports[`vertical should render 1000 children 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow: hidden; position: relative;"
+    style="overflow: hidden auto; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: hidden auto; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 100%; height: 40080px; min-width: 100%; min-height: 40080px;"
     >
       <div
-        style="position: relative; width: 100%; height: 40080px; min-width: 100%; min-height: 40080px;"
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
-        >
-          <div>
-            0
-          </div>
+        <div>
+          0
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px;"
-        >
-          <div>
-            1
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px;"
+      >
+        <div>
+          1
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px;"
-        >
-          <div>
-            2
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px;"
+      >
+        <div>
+          2
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px;"
-        >
-          <div>
-            3
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px;"
+      >
+        <div>
+          3
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px;"
-        >
-          <div>
-            4
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px;"
+      >
+        <div>
+          4
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 250px;"
-        >
-          <div>
-            5
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 250px;"
+      >
+        <div>
+          5
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 300px;"
-        >
-          <div>
-            6
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 300px;"
+      >
+        <div>
+          6
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 350px;"
-        >
-          <div>
-            7
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 350px;"
+      >
+        <div>
+          7
         </div>
       </div>
     </div>
@@ -674,69 +622,65 @@ exports[`vertical should render 1000 children 1`] = `
 exports[`vertical should render 10000 children 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow: hidden; position: relative;"
+    style="overflow: hidden auto; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: hidden auto; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 100%; height: 400080px; min-width: 100%; min-height: 400080px;"
     >
       <div
-        style="position: relative; width: 100%; height: 400080px; min-width: 100%; min-height: 400080px;"
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
-        >
-          <div>
-            0
-          </div>
+        <div>
+          0
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px;"
-        >
-          <div>
-            1
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px;"
+      >
+        <div>
+          1
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px;"
-        >
-          <div>
-            2
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px;"
+      >
+        <div>
+          2
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px;"
-        >
-          <div>
-            3
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px;"
+      >
+        <div>
+          3
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px;"
-        >
-          <div>
-            4
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px;"
+      >
+        <div>
+          4
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 250px;"
-        >
-          <div>
-            5
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 250px;"
+      >
+        <div>
+          5
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 300px;"
-        >
-          <div>
-            6
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 300px;"
+      >
+        <div>
+          6
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 350px;"
-        >
-          <div>
-            7
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 350px;"
+      >
+        <div>
+          7
         </div>
       </div>
     </div>
@@ -747,34 +691,30 @@ exports[`vertical should render 10000 children 1`] = `
 exports[`vertical should render component 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow: hidden; position: relative;"
+    style="overflow: hidden auto; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: hidden auto; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 100%; height: 150px; min-width: 100%; min-height: 150px;"
     >
       <div
-        style="position: relative; width: 100%; height: 150px; min-width: 100%; min-height: 150px;"
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
-        >
-          <div>
-            component
-          </div>
+        <div>
+          component
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px;"
-        >
-          <div>
-            component
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px;"
+      >
+        <div>
+          component
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px;"
-        >
-          <div>
-            component
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px;"
+      >
+        <div>
+          component
         </div>
       </div>
     </div>
@@ -785,33 +725,29 @@ exports[`vertical should render component 1`] = `
 exports[`vertical should render fragments 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow: hidden; position: relative;"
+    style="overflow: hidden auto; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: hidden auto; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100px; min-width: 100%; min-height: 100px;"
     >
       <div
-        style="position: relative; width: 100%; height: 100px; min-width: 100%; min-height: 100px;"
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
-        >
-          <div>
-            fragment
-          </div>
-          <div>
-            fragment
-          </div>
-          <div>
-            fragment
-          </div>
+        <div>
+          fragment
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px;"
-        >
-          <div>
-            fragment
-          </div>
+        <div>
+          fragment
+        </div>
+        <div>
+          fragment
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px;"
+      >
+        <div>
+          fragment
         </div>
       </div>
     </div>
@@ -822,24 +758,20 @@ exports[`vertical should render fragments 1`] = `
 exports[`vertical should render non elements 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100%; height: 100%; overflow: hidden; position: relative;"
+    style="overflow: hidden auto; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: hidden auto; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100px; min-width: 100%; min-height: 100px;"
     >
       <div
-        style="position: relative; width: 100%; height: 100px; min-width: 100%; min-height: 100px;"
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
-        >
-          string
-        </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px;"
-        >
-          123
-        </div>
+        string
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px;"
+      >
+        123
       </div>
     </div>
   </div>
@@ -849,48 +781,44 @@ exports[`vertical should render non elements 1`] = `
 exports[`vertical should render with given width / height 1`] = `
 <DocumentFragment>
   <div
-    style="width: 100px; height: 800px; overflow: hidden; position: relative;"
+    style="overflow: hidden auto; position: relative; contain: strict; width: 100px; height: 800px; padding: 0px; margin: 0px;"
   >
     <div
-      style="width: 100px; height: 50px; overflow: hidden auto; position: absolute; padding: 0px; margin: 0px; top: 0px; left: 0px;"
+      style="position: absolute; top: 0px; left: 0px; width: 100%; height: 250px; min-width: 100%; min-height: 250px;"
     >
       <div
-        style="position: relative; width: 100%; height: 250px; min-width: 100%; min-height: 250px;"
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
-        >
-          <div>
-            0
-          </div>
+        <div>
+          0
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px;"
-        >
-          <div>
-            1
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px;"
+      >
+        <div>
+          1
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px;"
-        >
-          <div>
-            2
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px;"
+      >
+        <div>
+          2
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px;"
-        >
-          <div>
-            3
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px;"
+      >
+        <div>
+          3
         </div>
-        <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px;"
-        >
-          <div>
-            4
-          </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px;"
+      >
+        <div>
+          4
         </div>
       </div>
     </div>
