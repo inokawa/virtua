@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
-import React, { useEffect, useRef, useState } from "react";
-import { List, ListHandle } from "../../src";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
+import { List, ListHandle, CustomComponentProps } from "../../src";
 
 export default {
   component: List,
@@ -179,8 +179,6 @@ export const WithState: StoryObj = {
   },
 };
 
-// TODO: nth-type-selector
-
 export const IncreasingItems: StoryObj = {
   render: () => {
     const BATCH_LENGTH = 4;
@@ -249,6 +247,44 @@ export const IncreasingItems: StoryObj = {
           ))}
         </List>
       </div>
+    );
+  },
+};
+
+const UlList = forwardRef<HTMLUListElement, CustomComponentProps>(
+  ({ children, style }, ref) => {
+    return (
+      <ul ref={ref} style={{ ...style, margin: 0 }}>
+        {children}
+      </ul>
+    );
+  }
+);
+const Li = forwardRef<HTMLLIElement, CustomComponentProps>(
+  ({ children, style }, ref) => {
+    return (
+      <li ref={ref} style={{ ...style, marginLeft: 40 }}>
+        {children}
+      </li>
+    );
+  }
+);
+
+export const Ul: StoryObj = {
+  render: () => {
+    return (
+      <List
+        style={{
+          width: 400,
+          height: 400,
+          background: "#fff",
+        }}
+        innerElement={UlList}
+        itemElement={Li}
+        overscan={20}
+      >
+        {Array.from({ length: 1000 }).map((_, i) => i)}
+      </List>
     );
   },
 };

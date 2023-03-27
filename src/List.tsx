@@ -43,19 +43,21 @@ type ObserverHandle = {
 };
 
 type ItemProps = {
-  _element: ReactNode;
+  _children: ReactNode;
   _handle: ObserverHandle;
   _store: Store;
   _index: number;
+  _element: "div";
   _isHorizontal: boolean | undefined;
 };
 
 const Item = memo(
   ({
-    _element: children,
+    _children: children,
     _handle: handle,
     _store: store,
     _index: index,
+    _element: Element,
     _isHorizontal: isHorizontal,
   }: ItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
@@ -74,7 +76,7 @@ const Item = memo(
     );
 
     return (
-      <div
+      <Element
         ref={ref}
         style={useMemo<CSSProperties>(() => {
           const style: CSSProperties = {
@@ -96,7 +98,7 @@ const Item = memo(
         }, [offset, isHorizontal, hide])}
       >
         {children}
-      </div>
+      </Element>
     );
   }
 );
@@ -106,16 +108,18 @@ const isInvalidElement = <T,>(e: T) => e == null || typeof e === "boolean";
 const Window = ({
   _children: children,
   _ref: ref,
+  _element: Element,
   _style: style,
   _isHorizontal: isHorizontal,
 }: {
   _children: ReactNode;
   _ref: RefObject<HTMLDivElement>;
+  _element: "div";
   _style: CSSProperties | undefined;
   _isHorizontal: boolean | undefined;
 }) => {
   return (
-    <div
+    <Element
       ref={ref}
       style={useMemo<CSSProperties>(
         () => ({
@@ -125,6 +129,8 @@ const Window = ({
           // transform: "translate3d(0px, 0px, 0px)",
           // willChange: "scroll-position",
           // backfaceVisibility: "hidden",
+          width: "100%",
+          height: "100%",
           padding: 0,
           margin: 0,
           ...style,
@@ -133,18 +139,20 @@ const Window = ({
       )}
     >
       {children}
-    </div>
+    </Element>
   );
 };
 
 const Inner = ({
   _children: children,
   _store: store,
+  _element: Element,
   _style: style,
   _isHorizontal: isHorizontal,
 }: {
   _children: ReactNode;
   _store: Store;
+  _element: "div";
   _style: CSSProperties | undefined;
   _isHorizontal: boolean | undefined;
 }) => {
@@ -158,7 +166,7 @@ const Inner = ({
   );
 
   return (
-    <div
+    <Element
       style={useMemo<CSSProperties>(() => {
         const clampedScrollSize =
           scrollSize >= viewportSize ? scrollSize : viewportSize;
@@ -177,9 +185,20 @@ const Inner = ({
       }, [scrollSize, viewportSize, style, isHorizontal])}
     >
       {children}
-    </div>
+    </Element>
   );
 };
+
+export interface CustomComponentProps {
+  style: CSSProperties;
+  children: ReactNode;
+}
+
+export type CustomComponent = React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<CustomComponentProps> & React.RefAttributes<any>
+>;
+
+type CustomElementType = keyof JSX.IntrinsicElements | CustomComponent;
 
 /**
  * Methods of {@link List}.
@@ -220,13 +239,28 @@ export interface ListProps {
    */
   endThreshold?: number;
   /**
-   * Inline style prop to override style of outer element.
+   * Inline style prop to override style of scrollable element.
    */
   style?: CSSProperties;
   /**
-   * Inline style prop to override style of scrollable element.
+   * Inline style prop to override style of inner element.
    */
   innerStyle?: CSSProperties;
+  /**
+   * Customized element type for scrollable element.
+   * @defaultValue "div"
+   */
+  element?: CustomElementType;
+  /**
+   * Customized element type for inner element.
+   * @defaultValue "div"
+   */
+  innerElement?: CustomElementType;
+  /**
+   * Customized element type for item element.
+   * @defaultValue "div"
+   */
+  itemElement?: CustomElementType;
   /**
    * Callback invoked when scrolling reached to the end. The margin from the end is specified by {@link endThreshold}.
    */
@@ -246,6 +280,9 @@ export const List = forwardRef<ListHandle, ListProps>(
       endThreshold = 0,
       style: styleProp,
       innerStyle: innerStyleProp,
+      element = "div",
+      innerElement = "div",
+      itemElement = "div",
       onEndReached,
     },
     ref
@@ -514,9 +551,10 @@ export const List = forwardRef<ListHandle, ListProps>(
             key={(e as { key?: ReactElement["key"] })?.key || i}
             _handle={handle}
             _store={store}
-            _element={e}
             _index={i}
+            _element={itemElement as "div"}
             _isHorizontal={isHorizontal}
+            _children={e}
           />
         ) : null;
       });
@@ -526,10 +564,12 @@ export const List = forwardRef<ListHandle, ListProps>(
       <Window
         _ref={scrollRef}
         _isHorizontal={isHorizontal}
+        _element={element as "div"}
         _style={styleProp}
         _children={
           <Inner
             _store={store}
+            _element={innerElement as "div"}
             _style={innerStyleProp}
             _isHorizontal={isHorizontal}
             _children={isViewportInitialized && items}
