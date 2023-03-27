@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["global-externals:@storybook/addons", "../../.storybook/manager.js"],
+  "sourcesContent": ["export default __STORYBOOKADDONS__;\nconst { addons, types, mockChannel } = __STORYBOOKADDONS__;\nexport { addons, types, mockChannel };", "import { addons } from \"@storybook/addons\";\n\naddons.setConfig({\n  showPanel: false,\n});\n"],
+  "mappings": ";AAAA,IAAOA,EAAQ,oBACT,CAAE,OAAAC,EAAQ,MAAAC,EAAO,YAAAC,CAAY,EAAI,oBCCvCC,EAAO,UAAU,CACf,UAAW,EACb,CAAC",
+  "names": ["addons_default", "addons", "types", "mockChannel", "addons"]
+}
