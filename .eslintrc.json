@@ -19,7 +19,7 @@
   },
   "overrides": [
     {
-      "files": ["**/*.{jsx,tsx}"],
+      "files": ["src/**/*.{jsx,tsx}"],
       "extends": ["plugin:react-hooks/recommended"]
     }
   ]

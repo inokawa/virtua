@@ -1,7 +1,7 @@
 {
   "name": "virtua",
   "version": "0.0.0",
-  "description": "",
+  "description": "Simple, fast, small and flexible virtual list component for React.",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
   "types": "lib/index.d.ts",
@@ -18,7 +18,7 @@
     "storybook:build": "storybook build",
     "storybook:test": "concurrently -k -s first -n \"SB,TEST\" -c \"magenta,blue\" \"npm run storybook -- --quiet --no-open\" \"wait-on tcp:6006 && test-storybook\"",
     "typedoc": "typedoc",
-    "prepublishOnly": "rimraf lib && npm run build"
+    "prepublishOnly": "npm run typedoc && rimraf lib && npm run build"
   },
   "dependencies": {
     "use-sync-external-store": "^1.2.0"
@@ -85,9 +85,12 @@
     "grid",
     "table",
     "flex",
+    "scrolling",
     "virtual",
     "virtualized",
-    "infinite"
+    "virtualization",
+    "infinite",
+    "windowing"
   ],
   "author": "inokawa <stratoooo-taster@yahoo.co.jp> (https://github.com/inokawa/)",
   "license": "MIT",

@@ -220,7 +220,7 @@ export interface ListProps {
    */
   children: ReactNode;
   /**
-   * Item size hint for unmeasured items. It's recommended to specify this prop if item sizes are fixed and known. It will help to reduce scroll jump when items are measured.
+   * Item size hint for unmeasured items. It's recommended to specify this prop if item sizes are fixed and known, or much larger than the defaultValue. It will help to reduce scroll jump when items are measured.
    * @defaultValue 40
    */
   itemSize?: number;
