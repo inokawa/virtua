@@ -97,7 +97,7 @@ const Item = memo(
             style.visibility = "hidden";
           }
           return style;
-        }, [offset, isHorizontal, hide])}
+        }, [offset, isHorizontal, isRtl, hide])}
       >
         {children}
       </Element>
@@ -186,7 +186,7 @@ const Inner = ({
           minHeight: height,
           ...style,
         };
-      }, [scrollSize, viewportSize, style, isHorizontal])}
+      }, [scrollSize, viewportSize, style, isHorizontal, isRtl])}
     >
       {children}
     </Element>
