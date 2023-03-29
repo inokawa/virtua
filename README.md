@@ -4,6 +4,15 @@
 
 Simple, fast, small and flexible virtual list component for [React](https://github.com/facebook/react).
 
+- Virtualization with minimal setup.
+- As fast as alternatives (and also faster in several cases!).
+- Keeping bundle size small as much as possible (Currently [about 2.8kB gzipped](https://bundlephobia.com/package/virtua)).
+- Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, rtl direction, sticky, infinite scrolling, placeholder, scrollTo, dnd, table, and more.
+
+## Demo
+
+https://inokawa.github.io/virtua/
+
 ## Install
 
 ```sh
