@@ -21,7 +21,7 @@ import {
 } from "./state";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSyncExternalStore } from "./useSyncExternalStore";
-import { debounce, max, min } from "./utils";
+import { abs, debounce, max, min } from "./utils";
 
 const SCROLL_STOP = 0;
 const SCROLL_DOWN = 1;
@@ -39,7 +39,7 @@ type ObserverHandle = {
   _init: (rootElement: HTMLElement) => () => void;
   _observe: (itemElement: HTMLElement, index: number) => () => void;
   _getScrollDirection: () => ScrollDirection;
-  _startManuallScroll: () => void;
+  _updateScrollPosition: (offset: number, diff?: boolean) => void;
 };
 
 type ItemProps = {
@@ -49,6 +49,7 @@ type ItemProps = {
   _index: number;
   _element: "div";
   _isHorizontal: boolean | undefined;
+  _isRtl: boolean | undefined;
 };
 
 const Item = memo(
@@ -59,6 +60,7 @@ const Item = memo(
     _index: index,
     _element: Element,
     _isHorizontal: isHorizontal,
+    _isRtl: isRtl,
   }: ItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -84,8 +86,8 @@ const Item = memo(
             padding: "0",
             position: "absolute",
             [isHorizontal ? "height" : "width"]: "100%",
-            [isHorizontal ? "top" : "left"]: 0,
-            [isHorizontal ? "left" : "top"]: offset,
+            [isHorizontal ? "top" : isRtl ? "right" : "left"]: 0,
+            [isHorizontal ? (isRtl ? "right" : "left") : "top"]: offset,
             // willChange: "transform",
           };
           if (isHorizontal) {
@@ -149,12 +151,14 @@ const Inner = ({
   _element: Element,
   _style: style,
   _isHorizontal: isHorizontal,
+  _isRtl: isRtl,
 }: {
   _children: ReactNode;
   _store: Store;
   _element: "div";
   _style: CSSProperties | undefined;
   _isHorizontal: boolean | undefined;
+  _isRtl: boolean | undefined;
 }) => {
   const scrollSize = useSyncExternalStore(
     store._subscribe,
@@ -175,7 +179,7 @@ const Inner = ({
         return {
           position: "absolute",
           top: 0,
-          left: 0,
+          [isRtl ? "right" : "left"]: 0,
           width,
           height,
           minWidth: width,
@@ -234,6 +238,10 @@ export interface ListProps {
    */
   horizontal?: boolean;
   /**
+   * You have to set true if you use this component under `direction: rtl` style.
+   */
+  rtl?: boolean;
+  /**
    * Number of items to be the margin from the end of the scroll. See also {@link onEndReached}.
    * @defaultValue 0
    */
@@ -277,6 +285,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       itemSize = 40,
       overscan = 6,
       horizontal: isHorizontal,
+      rtl: isRtl,
       endThreshold = 0,
       style: styleProp,
       innerStyle: innerStyleProp,
@@ -287,7 +296,6 @@ export const List = forwardRef<ListHandle, ListProps>(
     },
     ref
   ): ReactElement => {
-    const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
     // memoize element count
     const rawCount = useMemo(() => {
       let i = 0;
@@ -322,12 +330,22 @@ export const List = forwardRef<ListHandle, ListProps>(
         let prevOffset = -1;
         let scrollDirection: ScrollDirection = SCROLL_STOP;
         let resized = false;
+        let isNegativeOffset: boolean | undefined;
+        let rootElement: HTMLElement | undefined;
+        const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
         const mountedIndexes = new WeakMap<Element, number>();
 
         return {
           _init(root) {
+            rootElement = root;
+
             const syncViewportToScrollPosition = () => {
-              const offset = root[scrollToKey];
+              let offset = root[scrollToKey];
+              if (isRtl) {
+                // The scroll position may be negative value in rtl direction.
+                // https://github.com/othree/jquery.rtl-scroll-type
+                offset = abs(offset);
+              }
               if (prevOffset === offset) {
                 return;
               }
@@ -408,8 +426,28 @@ export const List = forwardRef<ListHandle, ListProps>(
           _getScrollDirection() {
             return scrollDirection;
           },
-          _startManuallScroll() {
-            scrollDirection = SCROLL_MANUAL;
+          _updateScrollPosition(offset, diff) {
+            if (!rootElement) return;
+            if (isRtl) {
+              if (isNegativeOffset == null) {
+                // Assume offset type in rtl direction.
+                // The scroll position is negative in spec however its not in some browsers, for example Chrome earlier than v85.
+                // https://github.com/othree/jquery.rtl-scroll-type
+                const prev = rootElement[scrollToKey];
+                rootElement[scrollToKey] = 1;
+                isNegativeOffset = rootElement[scrollToKey] === 0;
+                rootElement[scrollToKey] = prev;
+              }
+              if (isNegativeOffset) {
+                offset *= -1;
+              }
+            }
+            if (diff) {
+              rootElement[scrollToKey] += offset;
+            } else {
+              rootElement[scrollToKey] = offset;
+              scrollDirection = SCROLL_MANUAL;
+            }
           },
         };
       })());
@@ -431,14 +469,14 @@ export const List = forwardRef<ListHandle, ListProps>(
     useIsomorphicLayoutEffect(() => handle._init(scrollRef.current!), []);
 
     useIsomorphicLayoutEffect(() => {
-      if (!scrollRef.current || !jump.length) return;
+      if (!jump.length) return;
 
       // Compensate scroll jump
       const scrollDirection = handle._getScrollDirection();
       if (scrollDirection === SCROLL_UP) {
         const diff = jump.reduce((acc, [, j]) => acc + j, 0);
         if (diff) {
-          scrollRef.current[scrollToKey] += diff;
+          handle._updateScrollPosition(diff, true);
         }
       } else if (scrollDirection === SCROLL_MANUAL) {
         const isStartInView = startIndex === 0;
@@ -458,7 +496,7 @@ export const List = forwardRef<ListHandle, ListProps>(
           return acc;
         }, 0);
         if (diff) {
-          scrollRef.current[scrollToKey] += diff;
+          handle._updateScrollPosition(diff, true);
         }
       } else {
         // NOP
@@ -492,7 +530,7 @@ export const List = forwardRef<ListHandle, ListProps>(
 
           index = max(min(index, count - 1), 0);
 
-          const getScrollDestination = (): number => {
+          const getOffset = (): number => {
             let offset = store._getItemOffset(index);
             // Use element's scrollHeight/scrollWidth instead of stored scrollSize.
             // This is because stored size may differ from the actual size, for example when a new item is added and not yet measured.
@@ -510,7 +548,7 @@ export const List = forwardRef<ListHandle, ListProps>(
               // In order to scroll to the correct position, mount the items and measure their sizes before scrolling.
               store._update({
                 _type: HANDLE_SCROLL,
-                _offset: getScrollDestination(),
+                _offset: getOffset(),
               });
               try {
                 // Wait for the scroll destination items to be measured.
@@ -522,15 +560,13 @@ export const List = forwardRef<ListHandle, ListProps>(
             } while (store._hasUnmeasuredItemsInRange(index));
 
             // Scroll with the updated value
-            el[scrollToKey] = getScrollDestination();
+            handle._updateScrollPosition(getOffset());
           } else {
-            const offset = getScrollDestination();
-            el[scrollToKey] = offset;
+            const offset = getOffset();
+            handle._updateScrollPosition(offset);
             // Sync viewport to scroll destination
             store._update({ _type: HANDLE_SCROLL, _offset: offset });
           }
-
-          handle._startManuallScroll();
         },
       }),
       [count]
@@ -554,6 +590,7 @@ export const List = forwardRef<ListHandle, ListProps>(
             _index={i}
             _element={itemElement as "div"}
             _isHorizontal={isHorizontal}
+            _isRtl={isRtl}
             _children={e}
           />
         ) : null;
@@ -572,6 +609,7 @@ export const List = forwardRef<ListHandle, ListProps>(
             _element={innerElement as "div"}
             _style={innerStyleProp}
             _isHorizontal={isHorizontal}
+            _isRtl={isRtl}
             _children={isViewportInitialized && items}
           />
         }

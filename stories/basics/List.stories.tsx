@@ -31,18 +31,17 @@ export const Default: StoryObj = {
 };
 
 const createColumns = (num: number) => {
-  const heights = [20, 40, 80, 77];
   return Array.from({ length: num }).map((_, i) => {
     return (
       <div
         key={i}
         style={{
-          width: heights[i % 4],
+          width: i % 3 === 0 ? 100 : 60,
           borderRight: "solid 1px #ccc",
           background: "#fff",
         }}
       >
-        {i}
+        Column {i}
       </div>
     );
   });
@@ -51,9 +50,20 @@ const createColumns = (num: number) => {
 export const Horizontal: StoryObj = {
   render: () => {
     return (
-      <List style={{ width: "100vw", height: 400 }} horizontal>
-        {createColumns(1000)}
-      </List>
+      <div>
+        <div style={{ padding: 10, direction: "ltr" }}>
+          <div>ltr</div>
+          <List style={{ width: "100%", height: 200 }} horizontal>
+            {createColumns(1000)}
+          </List>
+        </div>
+        <div style={{ padding: 10, direction: "rtl" }}>
+          <div>rtl</div>
+          <List style={{ width: "100%", height: 200 }} horizontal rtl>
+            {createColumns(1000)}
+          </List>
+        </div>
+      </div>
     );
   },
 };
