@@ -36,8 +36,8 @@ type ScrollDirection =
 const INITIAL_END_REACHED_INDEX = -1;
 
 type ObserverHandle = {
-  _init: (rootElement: HTMLElement) => () => void;
-  _observe: (itemElement: HTMLElement, index: number) => () => void;
+  _initRoot: (rootElement: HTMLElement) => () => void;
+  _initItem: (itemElement: HTMLElement, index: number) => () => void;
   _getScrollDirection: () => ScrollDirection;
   _updateScrollPosition: (offset: number, diff?: boolean) => void;
 };
@@ -73,7 +73,7 @@ const Item = memo(
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(
-      () => handle._observe(ref.current!, index),
+      () => handle._initItem(ref.current!, index),
       [index]
     );
 
@@ -363,7 +363,7 @@ export const List = forwardRef<ListHandle, ListProps>(
         });
 
         return {
-          _init(root) {
+          _initRoot(root) {
             rootElement = root;
 
             const syncViewportToScrollPosition = () => {
@@ -413,7 +413,7 @@ export const List = forwardRef<ListHandle, ListProps>(
               onScrollStopped._cancel();
             };
           },
-          _observe(el, i) {
+          _initItem(el, i) {
             mountedIndexes.set(el, i);
             ro.observe(el);
             return () => {
@@ -464,7 +464,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       });
     }, [rawCount]);
 
-    useIsomorphicLayoutEffect(() => handle._init(scrollRef.current!), []);
+    useIsomorphicLayoutEffect(() => handle._initRoot(scrollRef.current!), []);
 
     useIsomorphicLayoutEffect(() => {
       if (!jump.length) return;
