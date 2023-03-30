@@ -163,24 +163,38 @@ export const WithState: StoryObj = {
             <div
               key={i}
               style={{
-                height: active ? 160 : 80,
                 borderBottom: "solid 1px #ccc",
-                background: active ? "#ddd" : "#fff",
+                background: active ? "lightpink" : "#fff",
                 display: "flex",
-                alignItems: "flex-start",
+                flexDirection: "row",
+                transition: "0.5s ease",
               }}
             >
-              <input
-                type="checkbox"
-                checked={active}
-                onChange={() => {
-                  setActives((prev) => ({
-                    ...prev,
-                    [i]: !prev[i],
-                  }));
+              <div>
+                <button
+                  style={{ height: "100%" }}
+                  onClick={() => {
+                    setActives((prev) => ({
+                      ...prev,
+                      [i]: !prev[i],
+                    }));
+                  }}
+                >
+                  {active ? "close" : "open"}
+                </button>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flex: 1,
+                  height: active ? 200 : 40,
+                  transition: "0.5s ease",
                 }}
-              />
-              {i}
+              >
+                {i}
+              </div>
             </div>
           );
         })}
