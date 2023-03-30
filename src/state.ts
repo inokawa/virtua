@@ -100,7 +100,6 @@ export type Store = {
   _hasUnmeasuredItemsInRange(startIndex: number): boolean;
   _getItemOffset(index: number): number;
   _getViewportSize(): number;
-  _isViewportSizeInitialized(): boolean;
   _getScrollSize(): number;
   _getItemCount(): number;
   _getJump(): ScrollJump;
@@ -158,9 +157,6 @@ export const useVirtualStore = (
         },
         _getViewportSize() {
           return getViewportSize();
-        },
-        _isViewportSizeInitialized() {
-          return getViewportSize() !== 0;
         },
         _getScrollSize() {
           return computeTotalSize(state._cache as Writeable<Cache>);
