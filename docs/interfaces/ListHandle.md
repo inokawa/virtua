@@ -28,4 +28,4 @@ Scroll to the item specified by index.
 
 #### Defined in
 
-[src/List.tsx:211](https://github.com/inokawa/virtua/blob/c382460/src/List.tsx#L211)
+[src/List.tsx:215](https://github.com/inokawa/virtua/blob/08b8ba7/src/List.tsx#L215)
