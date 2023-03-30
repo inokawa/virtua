@@ -326,7 +326,6 @@ export const List = forwardRef<ListHandle, ListProps>(
     const handle =
       handleRef.current ||
       (handleRef.current = ((): ObserverHandle => {
-        let ro: ResizeObserver;
         let prevOffset = -1;
         let scrollDirection: ScrollDirection = SCROLL_STOP;
         let resized = false;
@@ -334,6 +333,34 @@ export const List = forwardRef<ListHandle, ListProps>(
         let rootElement: HTMLElement | undefined;
         const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
         const mountedIndexes = new WeakMap<Element, number>();
+        const ro = new ResizeObserver((entries) => {
+          const resizes: [index: number, size: number][] = [];
+          for (const entry of entries) {
+            if (entry.target === rootElement) {
+              store._update({
+                _type: UPDATE_VIEWPORT_SIZE,
+                _width: entry.contentRect.width,
+                _height: entry.contentRect.height,
+              });
+            } else {
+              const index = mountedIndexes.get(entry.target);
+              if (index != null) {
+                resizes.push([
+                  index,
+                  entry.contentRect[isHorizontal ? "width" : "height"],
+                ]);
+              }
+            }
+          }
+
+          if (resizes.length) {
+            store._update({
+              _type: UPDATE_ITEM_SIZES,
+              _entries: resizes,
+            });
+            resized = true;
+          }
+        });
 
         return {
           _init(root) {
@@ -376,35 +403,6 @@ export const List = forwardRef<ListHandle, ListProps>(
               syncViewportToScrollPosition();
               onScrollStopped();
             };
-
-            ro = new ResizeObserver((entries) => {
-              const resizes: [index: number, size: number][] = [];
-              for (const entry of entries) {
-                if (entry.target === root) {
-                  store._update({
-                    _type: UPDATE_VIEWPORT_SIZE,
-                    _width: entry.contentRect.width,
-                    _height: entry.contentRect.height,
-                  });
-                } else {
-                  const index = mountedIndexes.get(entry.target);
-                  if (index != null) {
-                    resizes.push([
-                      index,
-                      entry.contentRect[isHorizontal ? "width" : "height"],
-                    ]);
-                  }
-                }
-              }
-
-              if (resizes.length) {
-                store._update({
-                  _type: UPDATE_ITEM_SIZES,
-                  _entries: resizes,
-                });
-                resized = true;
-              }
-            });
 
             ro.observe(root);
             root.addEventListener("scroll", onScroll);
