@@ -314,10 +314,6 @@ export const List = forwardRef<ListHandle, ListProps>(
       store._getStartIndex
     );
     const endIndex = useSyncExternalStore(store._subscribe, store._getEndIndex);
-    const isViewportInitialized = useSyncExternalStore(
-      store._subscribe,
-      store._isViewportSizeInitialized
-    );
     const jump = useSyncExternalStore(store._subscribe, store._getJump);
     const scrollRef = useRef<HTMLDivElement>(null);
     const onEndReachedCalledIndex = useRef<number>(INITIAL_END_REACHED_INDEX);
@@ -326,6 +322,10 @@ export const List = forwardRef<ListHandle, ListProps>(
     const handle =
       handleRef.current ||
       (handleRef.current = ((): ObserverHandle => {
+        // For SSR
+        if (typeof ResizeObserver === "undefined") {
+          return {} as any as ObserverHandle;
+        }
         let prevOffset = -1;
         let scrollDirection: ScrollDirection = SCROLL_STOP;
         let resized = false;
@@ -608,7 +608,7 @@ export const List = forwardRef<ListHandle, ListProps>(
             _style={innerStyleProp}
             _isHorizontal={isHorizontal}
             _isRtl={isRtl}
-            _children={isViewportInitialized && items}
+            _children={items}
           />
         }
       />

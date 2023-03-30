@@ -74,7 +74,7 @@ exports[`horizontal should render 100 children 1`] = `
     style="overflow: auto hidden; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="position: absolute; top: 0px; left: 0px; width: 4540px; height: 100%; min-width: 4540px; min-height: 100%;"
+      style="position: absolute; top: 0px; left: 0px; width: 4480px; height: 100%; min-width: 4480px; min-height: 100%;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
@@ -143,7 +143,7 @@ exports[`horizontal should render 1000 children 1`] = `
     style="overflow: auto hidden; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="position: absolute; top: 0px; left: 0px; width: 40540px; height: 100%; min-width: 40540px; min-height: 100%;"
+      style="position: absolute; top: 0px; left: 0px; width: 40480px; height: 100%; min-width: 40480px; min-height: 100%;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
@@ -212,7 +212,7 @@ exports[`horizontal should render 10000 children 1`] = `
     style="overflow: auto hidden; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="position: absolute; top: 0px; left: 0px; width: 400540px; height: 100%; min-width: 400540px; min-height: 100%;"
+      style="position: absolute; top: 0px; left: 0px; width: 400480px; height: 100%; min-width: 400480px; min-height: 100%;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
