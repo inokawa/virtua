@@ -6,10 +6,10 @@ import { renderToString, renderToStaticMarkup } from "react-dom/server";
 import { List } from "./List";
 
 describe("SSR", () => {
-  it("should succeed with renderToString", () => {
+  it("should render 10 items with renderToString", () => {
     expect(
       renderToString(
-        <List>
+        <List overscan={10}>
           {Array.from({ length: 1000 }).map((_, i) => (
             <div key={i}>{i}</div>
           ))}
@@ -18,10 +18,10 @@ describe("SSR", () => {
     ).toMatchSnapshot();
   });
 
-  it("should succeed with renderToStaticMarkup", () => {
+  it("should render 10 items with renderToStaticMarkup", () => {
     expect(
       renderToStaticMarkup(
-        <List>
+        <List overscan={10}>
           {Array.from({ length: 1000 }).map((_, i) => (
             <div key={i}>{i}</div>
           ))}
