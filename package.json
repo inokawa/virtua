@@ -59,7 +59,7 @@
     "react-is": "18.1.0",
     "react-virtual": "2.10.4",
     "react-virtualized": "9.22.3",
-    "react-virtuoso": "4.1.0",
+    "react-virtuoso": "4.1.1",
     "react-window": "1.8.8",
     "rimraf": "3.0.2",
     "rollup": "2.75.5",
