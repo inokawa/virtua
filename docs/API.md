@@ -46,4 +46,4 @@ node_modules/@types/react/index.d.ts:350
 
 #### Defined in
 
-[src/List.tsx:201](https://github.com/inokawa/virtua/blob/dd70dd7/src/List.tsx#L201)
+[src/List.tsx:204](https://github.com/inokawa/virtua/blob/83d24e7/src/List.tsx#L204)
