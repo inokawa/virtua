@@ -65,7 +65,7 @@
     "rollup": "2.75.5",
     "rollup-plugin-terser": "7.0.2",
     "storybook": "^7.0.0-rc.6",
-    "ts-jest": "29.0.0",
+    "ts-jest": "29.0.5",
     "typedoc": "0.23.22",
     "typedoc-plugin-markdown": "3.14.0",
     "typescript": "5.0.2",
