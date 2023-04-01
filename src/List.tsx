@@ -105,7 +105,10 @@ const Item = memo(
   }
 );
 
-const isInvalidElement = <T,>(e: T) => e == null || typeof e === "boolean";
+const isInvalidElement = <T extends ReactNode>(
+  e: T
+): e is Extract<T, null | undefined | boolean> =>
+  e == null || typeof e === "boolean";
 
 const Window = ({
   _children: children,
@@ -572,15 +575,15 @@ export const List = forwardRef<ListHandle, ListProps>(
 
     const items = useMemo(() => {
       let i = -1;
-      return Children.map(children, (e) => {
+      return Children.map(children, (e): ReactElement | null => {
         if (isInvalidElement(e)) {
-          return;
+          return null;
         }
         i++;
         if (i < startIndexWithMargin || i > endIndexWithMargin) {
-          return;
+          return null;
         }
-        return e != null ? (
+        return (
           <Item
             key={(e as { key?: ReactElement["key"] })?.key || i}
             _handle={handle}
@@ -591,7 +594,7 @@ export const List = forwardRef<ListHandle, ListProps>(
             _isRtl={isRtl}
             _children={e}
           />
-        ) : null;
+        );
       });
     }, [children, startIndexWithMargin, endIndexWithMargin]);
 
