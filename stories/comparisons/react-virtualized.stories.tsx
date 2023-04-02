@@ -7,23 +7,9 @@ import {
 } from "react-virtualized/dist/es/CellMeasurer";
 import RVList from "react-virtualized/dist/es/List";
 import { List } from "../../src";
-import { ScrollInput } from "./components";
+import { ItemWithRenderCount, ScrollInput } from "./components";
 
 const ROW_COUNT = 1000;
-const heights = [20, 40, 80, 77];
-const Row = ({ index: i }: { index: number }) => {
-  return (
-    <div
-      style={{
-        height: heights[i % heights.length],
-        borderBottom: "solid 1px #ccc",
-        background: "#fff",
-      }}
-    >
-      {i}
-    </div>
-  );
-};
 
 export default {
   component: RVList,
@@ -54,7 +40,7 @@ export const DynamicHeight: StoryObj = {
         <div style={{ display: "flex", flexDirection: "row", flex: 1, gap: 8 }}>
           <List style={{ flex: 1 }}>
             {Array.from({ length: ROW_COUNT }).map((_, i) => (
-              <Row key={i} index={i} />
+              <ItemWithRenderCount key={i} index={i} />
             ))}
           </List>
           <div style={{ flex: 1 }}>
@@ -76,7 +62,7 @@ export const DynamicHeight: StoryObj = {
                     >
                       {({ registerChild }) => (
                         <div ref={registerChild} style={style}>
-                          <Row index={i} />
+                          <ItemWithRenderCount index={i} />
                         </div>
                       )}
                     </CellMeasurer>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef, useEffect, useRef } from "react";
 
 export const ScrollInput = ({ count }: { count: number }) => {
   return (
@@ -26,3 +26,30 @@ export const ScrollInput = ({ count }: { count: number }) => {
     </label>
   );
 };
+
+const heights = [20, 40, 80, 77];
+export const ItemWithRenderCount = forwardRef<
+  HTMLDivElement,
+  { index: number }
+>(({ index: i }, ref) => {
+  const count = useRef(1);
+  useEffect(() => {
+    count.current += 1;
+  });
+  return (
+    <div
+      ref={ref}
+      style={{
+        height: heights[i % heights.length],
+        borderBottom: "solid 1px #ccc",
+        background: "#fff",
+        display: "flex",
+        justifyContent: "stretch",
+        padding: "4px 20px",
+      }}
+    >
+      <div style={{ flex: 1 }}>{i}</div>
+      <div>rendered: {count.current}</div>
+    </div>
+  );
+});

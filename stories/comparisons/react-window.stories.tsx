@@ -3,23 +3,9 @@ import { Meta, StoryObj } from "@storybook/react";
 import AutoSizer from "react-virtualized/dist/es/AutoSizer";
 import { VariableSizeList as RWList } from "react-window";
 import { List } from "../../src";
-import { ScrollInput } from "./components";
+import { ItemWithRenderCount, ScrollInput } from "./components";
 
 const ROW_COUNT = 1000;
-const heights = [20, 40, 80, 77];
-const Row = ({ index: i }: { index: number }) => {
-  return (
-    <div
-      style={{
-        height: heights[i % heights.length],
-        borderBottom: "solid 1px #ccc",
-        background: "#fff",
-      }}
-    >
-      {i}
-    </div>
-  );
-};
 
 const RWRow = ({
   index: i,
@@ -34,18 +20,7 @@ const RWRow = ({
       setHeight(i, ref.current.getBoundingClientRect().height);
     }
   }, []);
-  return (
-    <div
-      ref={ref}
-      style={{
-        height: heights[i % heights.length],
-        borderBottom: "solid 1px #ccc",
-        background: "#fff",
-      }}
-    >
-      {i}
-    </div>
-  );
+  return <ItemWithRenderCount ref={ref} index={i} />;
 };
 
 export default {
@@ -79,7 +54,7 @@ export const DynamicHeight: StoryObj = {
         <div style={{ display: "flex", flexDirection: "row", flex: 1, gap: 8 }}>
           <List style={{ flex: 1 }}>
             {Array.from({ length: ROW_COUNT }).map((_, i) => (
-              <Row key={i} index={i} />
+              <ItemWithRenderCount key={i} index={i} />
             ))}
           </List>
           <div style={{ flex: 1 }}>
