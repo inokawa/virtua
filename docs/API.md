@@ -36,7 +36,7 @@ Virtualized list component. See [ListProps](interfaces/ListProps.md) and [ListHa
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:350
+node_modules/@types/react/index.d.ts:361
 
 ## Type Aliases
 
@@ -46,4 +46,4 @@ node_modules/@types/react/index.d.ts:350
 
 #### Defined in
 
-[src/List.tsx:204](https://github.com/inokawa/virtua/blob/83d24e7/src/List.tsx#L204)
+[src/react/List.tsx:204](https://github.com/inokawa/virtua/blob/537df5d/src/react/List.tsx#L204)
