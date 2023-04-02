@@ -4,7 +4,7 @@ import { Virtuoso } from "react-virtuoso";
 import { List } from "../../src";
 import { ItemWithRenderCount, ScrollInput } from "./components";
 
-const ROW_COUNT = 1000;
+const ROW_COUNT = 10000;
 
 export default {
   component: Virtuoso,

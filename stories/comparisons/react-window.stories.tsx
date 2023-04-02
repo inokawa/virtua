@@ -5,7 +5,7 @@ import { VariableSizeList as RWList } from "react-window";
 import { List } from "../../src";
 import { ItemWithRenderCount, ScrollInput } from "./components";
 
-const ROW_COUNT = 1000;
+const ROW_COUNT = 10000;
 
 const RWRow = ({
   index: i,
