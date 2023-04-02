@@ -579,15 +579,16 @@ export const List = forwardRef<ListHandle, ListProps>(
 
     const items = useMemo(() => {
       let i = -1;
-      return Children.map(children, (e): ReactElement | null => {
+      const elements: ReactElement[] = [];
+      Children.forEach(children, (e) => {
         if (isInvalidElement(e)) {
-          return null;
+          return;
         }
         i++;
         if (i < startIndexWithMargin || i > endIndexWithMargin) {
-          return null;
+          return;
         }
-        return (
+        elements.push(
           <Item
             key={(e as { key?: ReactElement["key"] })?.key || i}
             _handle={handle}
@@ -600,6 +601,7 @@ export const List = forwardRef<ListHandle, ListProps>(
           />
         );
       });
+      return elements;
     }, [children, startIndexWithMargin, endIndexWithMargin]);
 
     return (
