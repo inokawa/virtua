@@ -2,7 +2,7 @@ import { afterEach, it, expect, describe /*jest*/ } from "@jest/globals";
 import { render, cleanup /*waitFor*/ } from "@testing-library/react";
 // import { useEffect, useRef } from "react";
 
-import { List /*ListHandle */ } from ".";
+import { List /*ListHandle */ } from "./List";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;

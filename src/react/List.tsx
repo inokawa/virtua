@@ -14,14 +14,14 @@ import {
 import {
   HANDLE_SCROLL,
   UPDATE_CACHE_LENGTH,
-  Store,
+  VirtualStore,
   UPDATE_ITEM_SIZES,
   UPDATE_VIEWPORT_SIZE,
-  useVirtualStore,
-} from "./state";
+  createVirtualStore,
+} from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSyncExternalStore } from "./useSyncExternalStore";
-import { abs, debounce, max, min } from "./utils";
+import { abs, debounce, max, min } from "../core/utils";
 
 const SCROLL_STOP = 0;
 const SCROLL_DOWN = 1;
@@ -45,7 +45,7 @@ type ObserverHandle = {
 type ItemProps = {
   _children: ReactNode;
   _handle: ObserverHandle;
-  _store: Store;
+  _store: VirtualStore;
   _index: number;
   _element: "div";
   _isHorizontal: boolean | undefined;
@@ -157,7 +157,7 @@ const Inner = ({
   _isRtl: isRtl,
 }: {
   _children: ReactNode;
-  _store: Store;
+  _store: VirtualStore;
   _element: "div";
   _style: CSSProperties | undefined;
   _isHorizontal: boolean | undefined;
@@ -311,7 +311,11 @@ export const List = forwardRef<ListHandle, ListProps>(
       return i;
     }, [children]);
 
-    const store = useVirtualStore(rawCount, itemSize, isHorizontal);
+    // https://github.com/facebook/react/issues/25191#issuecomment-1237456448
+    const storeRef = useRef<VirtualStore | undefined>();
+    const store =
+      storeRef.current ||
+      (storeRef.current = createVirtualStore(rawCount, itemSize, isHorizontal));
     const startIndex = useSyncExternalStore(
       store._subscribe,
       store._getStartIndex

@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import {
   findStartIndexWithOffset,
   resetCache,
@@ -93,7 +92,7 @@ const mutate = (state: State, action: Actions, itemSize: number): boolean => {
   }
 };
 
-export type Store = {
+export type VirtualStore = {
   _getStartIndex(): number;
   _getEndIndex(): number;
   _isUnmeasuredItem(index: number): boolean;
@@ -108,103 +107,92 @@ export type Store = {
   _update(action: Actions): void;
 };
 
-// https://github.com/facebook/react/issues/25191#issuecomment-1237456448
-export const useVirtualStore = (
+export const createVirtualStore = (
   itemCount: number,
   itemSize: number,
   isHorizontal: boolean | undefined
-): Store => {
-  const ref = useRef<Store | undefined>();
-  return (
-    ref.current ||
-    (ref.current = (() => {
-      const subscribers = new Set<() => void>();
-      const state: Readonly<State> = {
-        _startIndex: 0,
-        _viewportWidth: 0,
-        _viewportHeight: 0,
-        _cache: resetCache(itemCount, itemSize),
-        _jump: [],
-      };
-      const getViewportSize = (): number =>
-        isHorizontal ? state._viewportWidth : state._viewportHeight;
+): VirtualStore => {
+  const subscribers = new Set<() => void>();
+  const state: Readonly<State> = {
+    _startIndex: 0,
+    _viewportWidth: 0,
+    _viewportHeight: 0,
+    _cache: resetCache(itemCount, itemSize),
+    _jump: [],
+  };
+  const getViewportSize = (): number =>
+    isHorizontal ? state._viewportWidth : state._viewportHeight;
 
-      let scrollToQueue: [() => void, () => void] | undefined;
+  let scrollToQueue: [() => void, () => void] | undefined;
 
-      return {
-        _getStartIndex() {
-          return state._startIndex;
-        },
-        _getEndIndex() {
-          return findEndIndex(
-            state._cache,
-            state._startIndex,
-            getViewportSize()
-          );
-        },
-        _isUnmeasuredItem(index) {
-          return state._cache._sizes[index] === UNCACHED;
-        },
-        _hasUnmeasuredItemsInRange(startIndex) {
-          return hasUnmeasuredItemsInRange(
-            state._cache,
-            startIndex,
-            findEndIndex(state._cache, startIndex, getViewportSize())
-          );
-        },
-        _getItemOffset(index) {
-          return computeStartOffset(state._cache as Writeable<Cache>, index);
-        },
-        _getViewportSize() {
-          return getViewportSize();
-        },
-        _getScrollSize() {
-          return computeTotalSize(state._cache as Writeable<Cache>);
-        },
-        _getItemCount() {
-          return state._cache._length;
-        },
-        _getJump() {
-          return state._jump;
-        },
-        _waitForScrollDestinationItemsMeasured() {
-          if (scrollToQueue) {
-            // Cancel waiting scrollTo
-            scrollToQueue[1]();
-          }
-          // The measurement will be done asynchronously and the timing is not predictable so we use promise.
-          // For example, ResizeObserver may not fire when window is not visible.
-          return new Promise((resolve, reject) => {
-            scrollToQueue = [
-              () => {
-                // HACK: It should be resolved in the next microtask that is after React's render
-                Promise.resolve().then(() => {
-                  resolve();
-                  scrollToQueue = undefined;
-                });
-              },
-              reject,
-            ];
-          });
-        },
-        _subscribe(cb) {
-          subscribers.add(cb);
-          return () => {
-            subscribers.delete(cb);
-          };
-        },
-        _update(action) {
-          const mutated = mutate(state, action, itemSize);
-          if (mutated) {
-            subscribers.forEach((cb) => {
-              cb();
+  return {
+    _getStartIndex() {
+      return state._startIndex;
+    },
+    _getEndIndex() {
+      return findEndIndex(state._cache, state._startIndex, getViewportSize());
+    },
+    _isUnmeasuredItem(index) {
+      return state._cache._sizes[index] === UNCACHED;
+    },
+    _hasUnmeasuredItemsInRange(startIndex) {
+      return hasUnmeasuredItemsInRange(
+        state._cache,
+        startIndex,
+        findEndIndex(state._cache, startIndex, getViewportSize())
+      );
+    },
+    _getItemOffset(index) {
+      return computeStartOffset(state._cache as Writeable<Cache>, index);
+    },
+    _getViewportSize() {
+      return getViewportSize();
+    },
+    _getScrollSize() {
+      return computeTotalSize(state._cache as Writeable<Cache>);
+    },
+    _getItemCount() {
+      return state._cache._length;
+    },
+    _getJump() {
+      return state._jump;
+    },
+    _waitForScrollDestinationItemsMeasured() {
+      if (scrollToQueue) {
+        // Cancel waiting scrollTo
+        scrollToQueue[1]();
+      }
+      // The measurement will be done asynchronously and the timing is not predictable so we use promise.
+      // For example, ResizeObserver may not fire when window is not visible.
+      return new Promise((resolve, reject) => {
+        scrollToQueue = [
+          () => {
+            // HACK: It should be resolved in the next microtask that is after React's render
+            Promise.resolve().then(() => {
+              resolve();
+              scrollToQueue = undefined;
             });
-            if (scrollToQueue && action._type === UPDATE_ITEM_SIZES) {
-              scrollToQueue[0]();
-            }
-          }
-        },
+          },
+          reject,
+        ];
+      });
+    },
+    _subscribe(cb) {
+      subscribers.add(cb);
+      return () => {
+        subscribers.delete(cb);
       };
-    })())
-  );
+    },
+    _update(action) {
+      const mutated = mutate(state, action, itemSize);
+      if (mutated) {
+        subscribers.forEach((cb) => {
+          cb();
+        });
+        if (scrollToQueue && action._type === UPDATE_ITEM_SIZES) {
+          scrollToQueue[0]();
+        }
+      }
+    },
+  };
 };
