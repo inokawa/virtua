@@ -18,7 +18,7 @@ export const Default: StoryObj = {
             <input
               type="range"
               value={zoom}
-              min={1}
+              min={0.1}
               max={10}
               step={0.01}
               style={{ width: "85%" }}
