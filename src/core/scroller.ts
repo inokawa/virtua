@@ -28,49 +28,53 @@ export const createScroller = (
   isHorizontal: boolean | undefined,
   isRtl: boolean | undefined
 ): Scroller => {
-  // For SSR
-  if (typeof ResizeObserver === "undefined") {
-    return {} as any as Scroller;
-  }
   let prevOffset = -1;
   let scrollDirection: ScrollDirection = SCROLL_STOP;
   let resized = false;
   let isNegativeOffset: boolean | undefined;
   let rootElement: HTMLElement | undefined;
+  let _ro: ResizeObserver | undefined;
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const mountedIndexes = new WeakMap<Element, number>();
-  const ro = new ResizeObserver((entries) => {
-    const resizes: [index: number, size: number][] = [];
-    for (const entry of entries) {
-      if (entry.target === rootElement) {
-        store._update({
-          _type: UPDATE_VIEWPORT_SIZE,
-          _width: entry.contentRect.width,
-          _height: entry.contentRect.height,
-        });
-      } else {
-        const index = mountedIndexes.get(entry.target);
-        if (index != null) {
-          resizes.push([
-            index,
-            entry.contentRect[isHorizontal ? "width" : "height"],
-          ]);
+  const getResizeObserver = (): ResizeObserver => {
+    // Initialize ResizeObserver lazily for SSR
+    return (
+      _ro ||
+      (_ro = new ResizeObserver((entries) => {
+        const resizes: [index: number, size: number][] = [];
+        for (const entry of entries) {
+          if (entry.target === rootElement) {
+            store._update({
+              _type: UPDATE_VIEWPORT_SIZE,
+              _width: entry.contentRect.width,
+              _height: entry.contentRect.height,
+            });
+          } else {
+            const index = mountedIndexes.get(entry.target);
+            if (index != null) {
+              resizes.push([
+                index,
+                entry.contentRect[isHorizontal ? "width" : "height"],
+              ]);
+            }
+          }
         }
-      }
-    }
 
-    if (resizes.length) {
-      store._update({
-        _type: UPDATE_ITEM_SIZES,
-        _entries: resizes,
-      });
-      resized = true;
-    }
-  });
+        if (resizes.length) {
+          store._update({
+            _type: UPDATE_ITEM_SIZES,
+            _entries: resizes,
+          });
+          resized = true;
+        }
+      }))
+    );
+  };
 
   return {
     _initRoot(root) {
       rootElement = root;
+      const ro = getResizeObserver();
 
       const syncViewportToScrollPosition = () => {
         let offset = root[scrollToKey];
@@ -119,6 +123,7 @@ export const createScroller = (
       };
     },
     _initItem(el, i) {
+      const ro = getResizeObserver();
       mountedIndexes.set(el, i);
       ro.observe(el);
       return () => {
