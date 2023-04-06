@@ -199,10 +199,23 @@ type CustomElementType = keyof JSX.IntrinsicElements | CustomComponent;
  */
 export interface ListHandle {
   /**
+   * Get current scrollTop or scrollLeft.
+   */
+  scrollOffset: number;
+  /**
+   * Get current scrollHeight or scrollWidth.
+   */
+  scrollSize: number;
+  /**
    * Scroll to the item specified by index.
    * @param index index of item
    */
   scrollToIndex(index: number): void;
+  /**
+   * Scroll to the item specified by offset.
+   * @param offset offset from start
+   */
+  scrollToOffset(offset: number): void;
 }
 
 /**
@@ -388,18 +401,21 @@ export const List = forwardRef<ListHandle, ListProps>(
 
     useImperativeHandle(
       ref,
-      () => ({
-        scrollToIndex: async (index) => {
+      () => {
+        const getScrollSize = (): number => {
           const el = scrollRef.current;
-          if (!el) return;
-
-          index = max(min(index, count - 1), 0);
-
+          if (!el) return 0;
+          // Use element's scrollHeight/scrollWidth instead of stored scrollSize.
+          // This is because stored size may differ from the actual size, for example when a new item is added and not yet measured.
+          return isHorizontal ? el.scrollWidth : el.scrollHeight;
+        };
+        const scrollTo = async (
+          index: number,
+          getCurrentOffset: () => number
+        ) => {
           const getOffset = (): number => {
-            let offset = store._getItemOffset(index);
-            // Use element's scrollHeight/scrollWidth instead of stored scrollSize.
-            // This is because stored size may differ from the actual size, for example when a new item is added and not yet measured.
-            const scrollSize = isHorizontal ? el.scrollWidth : el.scrollHeight;
+            let offset = getCurrentOffset();
+            const scrollSize = getScrollSize();
             const viewportSize = store._getViewportSize();
             if (scrollSize - (offset + viewportSize) <= 0) {
               // Adjust if the offset is over the end, to get correct startIndex.
@@ -432,8 +448,27 @@ export const List = forwardRef<ListHandle, ListProps>(
             // Sync viewport to scroll destination
             store._update({ _type: HANDLE_SCROLL, _offset: offset });
           }
-        },
-      }),
+        };
+
+        return {
+          get scrollOffset() {
+            return handle._getScrollPosition();
+          },
+          get scrollSize() {
+            return getScrollSize();
+          },
+          scrollToIndex(index) {
+            index = max(min(index, count - 1), 0);
+
+            scrollTo(index, () => store._getItemOffset(index));
+          },
+          scrollToOffset(offset) {
+            offset = max(offset, 0);
+
+            scrollTo(store._getItemIndexForScrollTo(offset), () => offset);
+          },
+        };
+      },
       [count]
     );
 
