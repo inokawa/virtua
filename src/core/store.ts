@@ -102,6 +102,7 @@ export type VirtualStore = {
   _getScrollSize(): number;
   _getItemCount(): number;
   _getJump(): ScrollJump;
+  _getItemIndexForScrollTo(offset: number): number;
   _waitForScrollDestinationItemsMeasured(): Promise<void>;
   _subscribe(cb: () => void): () => void;
   _update(action: Actions): void;
@@ -156,6 +157,9 @@ export const createVirtualStore = (
     },
     _getJump() {
       return state._jump;
+    },
+    _getItemIndexForScrollTo(offset) {
+      return findStartIndexWithOffset(state._cache, offset, 0, 0);
     },
     _waitForScrollDestinationItemsMeasured() {
       if (scrollToQueue) {

@@ -111,32 +111,51 @@ export const Sticky: StoryObj = {
 export const ScrollTo: StoryObj = {
   render: () => {
     const LENGTH = 1000;
-    const [dest, setDest] = useState(567);
+    const [scrollIndex, setScrollIndex] = useState(567);
+    const [scrollOffset, setScrollOffset] = useState(1000);
     const ref = useRef<ListHandle>(null);
     return (
       <div>
         <div>
           <input
             type="number"
-            value={dest}
+            value={scrollIndex}
             onChange={(e) => {
-              setDest(Number(e.target.value));
+              setScrollIndex(Number(e.target.value));
             }}
           />
           <button
             onClick={() => {
-              ref.current?.scrollToIndex(dest);
+              ref.current?.scrollToIndex(scrollIndex);
             }}
           >
-            scroll
+            scroll to index
           </button>
           <button
             onClick={() => {
-              setDest(Math.round(LENGTH * Math.random()));
+              setScrollIndex(Math.round(LENGTH * Math.random()));
             }}
           >
             randomize
           </button>
+        </div>
+        <div>
+          <div>
+            <input
+              type="number"
+              value={scrollOffset}
+              onChange={(e) => {
+                setScrollOffset(Number(e.target.value));
+              }}
+            />
+            <button
+              onClick={() => {
+                ref.current?.scrollToOffset(scrollOffset);
+              }}
+            >
+              scroll to offset
+            </button>
+          </div>
         </div>
         <List ref={ref} style={{ height: "100vh" }}>
           {createRows(LENGTH)}
