@@ -41,6 +41,7 @@ export const createScroller = (
     return (
       _ro ||
       (_ro = new ResizeObserver((entries) => {
+        // https://www.w3.org/TR/resize-observer/#intro
         const resizes: [index: number, size: number][] = [];
         for (const entry of entries) {
           if (entry.target === rootElement) {
