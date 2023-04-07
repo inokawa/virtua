@@ -53,3 +53,24 @@ export const ItemWithRenderCount = forwardRef<
     </div>
   );
 });
+
+export const HeavyItem = forwardRef<HTMLDivElement, { index: number }>(
+  ({ index: i }, ref) => {
+    let count = 0;
+    while (count <= 10000000) {
+      count++;
+    }
+    return (
+      <div
+        ref={ref}
+        style={{
+          height: 50,
+          borderBottom: "solid 1px #ccc",
+          background: "#fff",
+        }}
+      >
+        {i}
+      </div>
+    );
+  }
+);
