@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import { useVirtual } from "react-virtual";
+import { useVirtual } from "@tanstack/react-virtual";
 import { List } from "../../src";
 import { HeavyItem, ItemWithRenderCount, ScrollInput } from "./components";
 

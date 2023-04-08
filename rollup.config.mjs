@@ -1,7 +1,7 @@
 import typescript from "@rollup/plugin-typescript";
 import { terser } from "rollup-plugin-terser";
 import { getBabelOutputPlugin } from "@rollup/plugin-babel";
-import pkg from "./package.json";
+import pkg from "./package.json" assert { type: "json" };
 
 export default {
   input: "src/index.ts",

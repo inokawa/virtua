@@ -18,7 +18,6 @@ module.exports = {
         {
           loader: "esbuild-loader",
           options: {
-            loader: "tsx",
             target: "es2018",
             implementation: require("esbuild"),
           },
