@@ -3,9 +3,12 @@ import { Meta, StoryObj } from "@storybook/react";
 import AutoSizer from "react-virtualized/dist/es/AutoSizer";
 import { VariableSizeList as RWList } from "react-window";
 import { List } from "../../src";
-import { HeavyItem, ItemWithRenderCount, ScrollInput } from "./components";
-
-const ROW_COUNT = 10000;
+import {
+  HeavyItem,
+  ItemWithRenderCount,
+  ScrollInput,
+  SimpleItem,
+} from "./components";
 
 const RWRow = ({
   index: i,
@@ -26,12 +29,14 @@ const RWRow = ({
 };
 
 const ReactWindowList = ({
+  count,
   Component,
 }: {
+  count: number;
   Component: typeof ItemWithRenderCount;
 }) => {
   const heightsCache = useMemo<number[]>(
-    () => Array.from({ length: ROW_COUNT }).map(() => 50),
+    () => Array.from({ length: count }).map(() => 50),
     []
   );
   const rwListRef = useRef<RWList>(null);
@@ -48,7 +53,7 @@ const ReactWindowList = ({
           ref={rwListRef}
           width={width}
           height={height}
-          itemCount={ROW_COUNT}
+          itemCount={count}
           itemSize={getHeight}
         >
           {({ index: i, style }) => (
@@ -68,6 +73,7 @@ export default {
 
 export const DynamicHeight: StoryObj = {
   render: () => {
+    const ROW_COUNT = 10000;
     return (
       <div
         style={{ height: "100vh", display: "flex", flexDirection: "column" }}
@@ -86,7 +92,10 @@ export const DynamicHeight: StoryObj = {
             ))}
           </List>
           <div style={{ flex: 1 }}>
-            <ReactWindowList Component={ItemWithRenderCount} />
+            <ReactWindowList
+              count={ROW_COUNT}
+              Component={ItemWithRenderCount}
+            />
           </div>
         </div>
       </div>
@@ -96,6 +105,7 @@ export const DynamicHeight: StoryObj = {
 
 export const HeavyComponent: StoryObj = {
   render: () => {
+    const ROW_COUNT = 10000;
     return (
       <div
         style={{ height: "100vh", display: "flex", flexDirection: "column" }}
@@ -114,7 +124,36 @@ export const HeavyComponent: StoryObj = {
             ))}
           </List>
           <div style={{ flex: 1 }}>
-            <ReactWindowList Component={HeavyItem} />
+            <ReactWindowList count={ROW_COUNT} Component={HeavyItem} />
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const OneMillion: StoryObj = {
+  render: () => {
+    const ROW_COUNT = 1000000;
+    return (
+      <div
+        style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+      >
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <div style={{ flex: 1 }}>virtua</div>
+          <div style={{ flex: 1 }}>react-window</div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <ScrollInput count={ROW_COUNT} />
+        </div>
+        <div style={{ display: "flex", flexDirection: "row", flex: 1, gap: 8 }}>
+          <List style={{ flex: 1 }}>
+            {Array.from({ length: ROW_COUNT }).map((_, i) => (
+              <SimpleItem key={i} index={i} />
+            ))}
+          </List>
+          <div style={{ flex: 1 }}>
+            <ReactWindowList count={ROW_COUNT} Component={SimpleItem} />
           </div>
         </div>
       </div>

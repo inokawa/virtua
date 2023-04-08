@@ -74,3 +74,20 @@ export const HeavyItem = forwardRef<HTMLDivElement, { index: number }>(
     );
   }
 );
+
+export const SimpleItem = forwardRef<HTMLDivElement, { index: number }>(
+  ({ index: i }, ref) => {
+    return (
+      <div
+        ref={ref}
+        style={{
+          height: 50,
+          borderBottom: "solid 1px #ccc",
+          background: "#fff",
+        }}
+      >
+        {i}
+      </div>
+    );
+  }
+);

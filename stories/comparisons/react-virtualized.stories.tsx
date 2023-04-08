@@ -7,17 +7,22 @@ import {
 } from "react-virtualized/dist/es/CellMeasurer";
 import RVList from "react-virtualized/dist/es/List";
 import { List } from "../../src";
-import { HeavyItem, ItemWithRenderCount, ScrollInput } from "./components";
-
-const ROW_COUNT = 10000;
+import {
+  HeavyItem,
+  ItemWithRenderCount,
+  ScrollInput,
+  SimpleItem,
+} from "./components";
 
 export default {
   component: RVList,
 } as Meta;
 
 const ReactVirtualizedList = ({
+  count,
   Component,
 }: {
+  count: number;
   Component: typeof ItemWithRenderCount;
 }) => {
   const virtualizedCache = useMemo(
@@ -35,7 +40,7 @@ const ReactVirtualizedList = ({
           deferredMeasurementCache={virtualizedCache}
           width={width}
           height={height}
-          rowCount={ROW_COUNT}
+          rowCount={count}
           rowHeight={virtualizedCache.rowHeight}
           rowRenderer={({ index: i, key, style, parent }) => (
             <CellMeasurer
@@ -60,6 +65,7 @@ const ReactVirtualizedList = ({
 
 export const DynamicHeight: StoryObj = {
   render: () => {
+    const ROW_COUNT = 10000;
     return (
       <div
         style={{ height: "100vh", display: "flex", flexDirection: "column" }}
@@ -78,7 +84,10 @@ export const DynamicHeight: StoryObj = {
             ))}
           </List>
           <div style={{ flex: 1 }}>
-            <ReactVirtualizedList Component={ItemWithRenderCount} />
+            <ReactVirtualizedList
+              count={ROW_COUNT}
+              Component={ItemWithRenderCount}
+            />
           </div>
         </div>
       </div>
@@ -88,6 +97,7 @@ export const DynamicHeight: StoryObj = {
 
 export const HeavyComponent: StoryObj = {
   render: () => {
+    const ROW_COUNT = 10000;
     return (
       <div
         style={{ height: "100vh", display: "flex", flexDirection: "column" }}
@@ -106,7 +116,36 @@ export const HeavyComponent: StoryObj = {
             ))}
           </List>
           <div style={{ flex: 1 }}>
-            <ReactVirtualizedList Component={HeavyItem} />
+            <ReactVirtualizedList count={ROW_COUNT} Component={HeavyItem} />
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const OneMillion: StoryObj = {
+  render: () => {
+    const ROW_COUNT = 1000000;
+    return (
+      <div
+        style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+      >
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <div style={{ flex: 1 }}>virtua</div>
+          <div style={{ flex: 1 }}>react-virtualized</div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <ScrollInput count={ROW_COUNT} />
+        </div>
+        <div style={{ display: "flex", flexDirection: "row", flex: 1, gap: 8 }}>
+          <List style={{ flex: 1 }}>
+            {Array.from({ length: ROW_COUNT }).map((_, i) => (
+              <SimpleItem key={i} index={i} />
+            ))}
+          </List>
+          <div style={{ flex: 1 }}>
+            <ReactVirtualizedList count={ROW_COUNT} Component={SimpleItem} />
           </div>
         </div>
       </div>

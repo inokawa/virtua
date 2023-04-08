@@ -2,9 +2,12 @@ import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import { Virtuoso } from "react-virtuoso";
 import { List } from "../../src";
-import { HeavyItem, ItemWithRenderCount, ScrollInput } from "./components";
-
-const ROW_COUNT = 10000;
+import {
+  HeavyItem,
+  ItemWithRenderCount,
+  ScrollInput,
+  SimpleItem,
+} from "./components";
 
 export default {
   component: Virtuoso,
@@ -14,9 +17,11 @@ const listStyle = { flex: 1 };
 
 const rvRenderer = (i) => <ItemWithRenderCount key={i} index={i} />;
 const rvHeavyItemRenderer = (i) => <HeavyItem key={i} index={i} />;
+const rvSimpleItemRenderer = (i) => <SimpleItem key={i} index={i} />;
 
 export const DynamicHeight: StoryObj = {
   render: () => {
+    const ROW_COUNT = 10000;
     return (
       <div
         style={{ height: "100vh", display: "flex", flexDirection: "column" }}
@@ -49,6 +54,7 @@ export const DynamicHeight: StoryObj = {
 
 export const HeavyComponent: StoryObj = {
   render: () => {
+    const ROW_COUNT = 10000;
     return (
       <div
         style={{ height: "100vh", display: "flex", flexDirection: "column" }}
@@ -71,6 +77,39 @@ export const HeavyComponent: StoryObj = {
               style={listStyle}
               totalCount={ROW_COUNT}
               itemContent={rvHeavyItemRenderer}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const OneMillion: StoryObj = {
+  render: () => {
+    const ROW_COUNT = 1000000;
+    return (
+      <div
+        style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+      >
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <div style={{ flex: 1 }}>virtua</div>
+          <div style={{ flex: 1 }}>react-virtuoso</div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <ScrollInput count={ROW_COUNT} />
+        </div>
+        <div style={{ display: "flex", flexDirection: "row", flex: 1, gap: 8 }}>
+          <List style={listStyle}>
+            {Array.from({ length: ROW_COUNT }).map((_, i) => (
+              <SimpleItem key={i} index={i} />
+            ))}
+          </List>
+          <div style={{ flex: 1 }}>
+            <Virtuoso
+              style={listStyle}
+              totalCount={ROW_COUNT}
+              itemContent={rvSimpleItemRenderer}
             />
           </div>
         </div>

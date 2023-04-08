@@ -2,17 +2,26 @@ import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import useVirtual from "react-cool-virtual";
 import { List } from "../../src";
-import { HeavyItem, ItemWithRenderCount, ScrollInput } from "./components";
-
-const ROW_COUNT = 10000;
+import {
+  HeavyItem,
+  ItemWithRenderCount,
+  ScrollInput,
+  SimpleItem,
+} from "./components";
 
 export default {
   component: useVirtual,
 };
 
-const RVList = ({ Component }: { Component: typeof ItemWithRenderCount }) => {
+const RVList = ({
+  count,
+  Component,
+}: {
+  count: number;
+  Component: typeof ItemWithRenderCount;
+}) => {
   const { outerRef, innerRef, items } = useVirtual({
-    itemCount: ROW_COUNT,
+    itemCount: count,
   });
   return (
     <div ref={outerRef} style={{ flex: 1, overflow: "auto" }}>
@@ -27,6 +36,7 @@ const RVList = ({ Component }: { Component: typeof ItemWithRenderCount }) => {
 
 export const DynamicHeight: StoryObj = {
   render: () => {
+    const ROW_COUNT = 10000;
     return (
       <div
         style={{ height: "100vh", display: "flex", flexDirection: "column" }}
@@ -52,7 +62,7 @@ export const DynamicHeight: StoryObj = {
               <ItemWithRenderCount key={i} index={i} />
             ))}
           </List>
-          <RVList Component={ItemWithRenderCount} />
+          <RVList count={ROW_COUNT} Component={ItemWithRenderCount} />
         </div>
       </div>
     );
@@ -61,6 +71,7 @@ export const DynamicHeight: StoryObj = {
 
 export const HeavyComponent: StoryObj = {
   render: () => {
+    const ROW_COUNT = 10000;
     return (
       <div
         style={{ height: "100vh", display: "flex", flexDirection: "column" }}
@@ -86,7 +97,42 @@ export const HeavyComponent: StoryObj = {
               <HeavyItem key={i} index={i} />
             ))}
           </List>
-          <RVList Component={HeavyItem} />
+          <RVList count={ROW_COUNT} Component={HeavyItem} />
+        </div>
+      </div>
+    );
+  },
+};
+
+export const OneMillion: StoryObj = {
+  render: () => {
+    const ROW_COUNT = 1000000;
+    return (
+      <div
+        style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+      >
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <div style={{ flex: 1 }}>virtua</div>
+          <div style={{ flex: 1 }}>react-cool-virtual</div>
+        </div>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <ScrollInput count={ROW_COUNT} />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            flex: 1,
+            gap: 8,
+            overflow: "hidden",
+          }}
+        >
+          <List style={{ flex: 1 }}>
+            {Array.from({ length: ROW_COUNT }).map((_, i) => (
+              <SimpleItem key={i} index={i} />
+            ))}
+          </List>
+          <RVList count={ROW_COUNT} Component={SimpleItem} />
         </div>
       </div>
     );
