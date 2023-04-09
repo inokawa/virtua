@@ -1,10 +1,39 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { List } from "../../src";
-import React, { useState } from "react";
+import { CustomComponentProps, List } from "../../src";
+import React, {
+  createContext,
+  forwardRef,
+  useContext,
+  useLayoutEffect,
+  useState,
+} from "react";
 
 export default {
   component: List,
 } as Meta;
+
+const ZoomContext = createContext(1);
+const ListItem = forwardRef<HTMLDivElement, CustomComponentProps>(
+  ({ children, style }, ref) => {
+    const zoom = useContext(ZoomContext);
+    const [height, setHeight] = useState<number | undefined>();
+    useLayoutEffect(() => {
+      if (Math.round(zoom * 10000) === 10000) {
+        setHeight(undefined);
+        return;
+      }
+      if (!ref || !("current" in ref) || !ref.current) return;
+      const rect = ref.current.children[0].getBoundingClientRect();
+      setHeight(rect.height);
+    }, [ref, zoom]);
+
+    return (
+      <div ref={ref} style={{ ...style, height }}>
+        {children}
+      </div>
+    );
+  }
+);
 
 export const Default: StoryObj = {
   name: "Zoomable",
@@ -29,24 +58,26 @@ export const Default: StoryObj = {
           </label>
         </div>
         <div style={{ overflow: "hidden" }}>
-          <List style={{ height: "100vh" }}>
-            {Array.from({ length: 1000 }).map((_, i) => {
-              return (
-                <div
-                  key={i}
-                  style={{
-                    height: 40,
-                    background: "#fff",
-                    borderBottom: "solid 1px #ccc",
-                    zoom: zoom,
-                    transformOrigin: "center top",
-                  }}
-                >
-                  {i}
-                </div>
-              );
-            })}
-          </List>
+          <ZoomContext.Provider value={zoom}>
+            <List style={{ height: "100vh" }} itemElement={ListItem}>
+              {Array.from({ length: 1000 }).map((_, i) => {
+                return (
+                  <div
+                    key={i}
+                    style={{
+                      height: 40,
+                      background: "#fff",
+                      borderBottom: "solid 1px #ccc",
+                      transform: `scale(${zoom})`,
+                      transformOrigin: "left top",
+                    }}
+                  >
+                    {i}
+                  </div>
+                );
+              })}
+            </List>
+          </ZoomContext.Provider>
         </div>
       </div>
     );
