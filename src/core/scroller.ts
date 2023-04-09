@@ -27,7 +27,8 @@ export type Scroller = {
 export const createScroller = (
   store: VirtualStore,
   isHorizontal: boolean | undefined,
-  isRtl: boolean | undefined
+  isRtl: boolean | undefined,
+  notifyStop: () => void
 ): Scroller => {
   let prevOffset = -1;
   let scrollDirection: ScrollDirection = SCROLL_STOP;
@@ -108,6 +109,7 @@ export const createScroller = (
         // Check scroll position once just after scrolling stopped
         syncViewportToScrollPosition();
         scrollDirection = SCROLL_STOP;
+        notifyStop();
       }, 300);
 
       const onScroll = () => {
