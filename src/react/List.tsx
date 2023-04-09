@@ -10,6 +10,7 @@ import {
   ReactNode,
   useEffect,
   RefObject,
+  useState,
 } from "react";
 import {
   HANDLE_SCROLL,
@@ -299,23 +300,28 @@ export const List = forwardRef<ListHandle, ListProps>(
     },
     ref
   ): ReactElement => {
-    // memoize element count
-    const rawCount = useMemo(() => {
-      let i = 0;
+    // Memoize element array
+    const elements = useMemo(() => {
+      const arr: ReactNode[] = [];
       Children.forEach(children, (e) => {
         if (isInvalidElement(e)) {
           return;
         }
-        i++;
+        arr.push(e);
       });
-      return i;
+      return arr;
     }, [children]);
+    const elementsCount = elements.length;
 
     // https://github.com/facebook/react/issues/25191#issuecomment-1237456448
     const storeRef = useRef<VirtualStore | undefined>();
     const store =
       storeRef.current ||
-      (storeRef.current = createVirtualStore(rawCount, itemSize, isHorizontal));
+      (storeRef.current = createVirtualStore(
+        elementsCount,
+        itemSize,
+        isHorizontal
+      ));
     const startIndex = useSyncExternalStore(
       store._subscribe,
       store._getStartIndex
@@ -325,24 +331,24 @@ export const List = forwardRef<ListHandle, ListProps>(
     const scrollRef = useRef<HTMLDivElement>(null);
     const onEndReachedCalledIndex = useRef<number>(INITIAL_END_REACHED_INDEX);
 
+    const [mountedIndexes, reset] = useState<Set<number>>(new Set<number>());
     const handleRef = useRef<Scroller>();
     const handle =
       handleRef.current ||
-      (handleRef.current = createScroller(store, isHorizontal, isRtl));
+      (handleRef.current = createScroller(store, isHorizontal, isRtl, () => {
+        reset(new Set());
+      }));
 
     // The elements length and cached items length are different just after element is added/removed.
-    const count = min(rawCount, store._getItemCount());
-
-    const startIndexWithMargin = max(startIndex - overscan, 0);
-    const endIndexWithMargin = min(endIndex + overscan, count - 1);
+    const count = min(elementsCount, store._getItemCount());
 
     // So update cache length. Updating state in render will cause warn so use useEffect for now.
     useIsomorphicLayoutEffect(() => {
       store._update({
         _type: UPDATE_CACHE_LENGTH,
-        _length: rawCount,
+        _length: elementsCount,
       });
-    }, [rawCount]);
+    }, [elementsCount]);
 
     useIsomorphicLayoutEffect(() => handle._initRoot(scrollRef.current!), []);
 
@@ -472,18 +478,17 @@ export const List = forwardRef<ListHandle, ListProps>(
       [count]
     );
 
+    const startIndexWithMargin = max(startIndex - overscan, 0);
+    const endIndexWithMargin = min(endIndex + overscan, count - 1);
     const items = useMemo(() => {
-      let i = -1;
-      const elements: ReactElement[] = [];
-      Children.forEach(children, (e) => {
-        if (isInvalidElement(e)) {
-          return;
-        }
-        i++;
-        if (i < startIndexWithMargin || i > endIndexWithMargin) {
-          return;
-        }
-        elements.push(
+      const res: ReactElement[] = [];
+      for (let i = startIndexWithMargin; i <= endIndexWithMargin; i++) {
+        // https://github.com/sergi/virtual-list/commit/8e7e06dc63568334c1ab809ea83c1be36572e9ed
+        mountedIndexes.add(i);
+      }
+      mountedIndexes.forEach((i) => {
+        const e = elements[i];
+        res.push(
           <Item
             key={(e as { key?: ReactElement["key"] })?.key || i}
             _handle={handle}
@@ -496,8 +501,8 @@ export const List = forwardRef<ListHandle, ListProps>(
           />
         );
       });
-      return elements;
-    }, [children, startIndexWithMargin, endIndexWithMargin]);
+      return res;
+    }, [elements, mountedIndexes, startIndexWithMargin, endIndexWithMargin]);
 
     return (
       <Window
