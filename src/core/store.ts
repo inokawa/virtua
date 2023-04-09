@@ -102,6 +102,8 @@ export type VirtualStore = {
   _getScrollSize(): number;
   _getItemCount(): number;
   _getJump(): ScrollJump;
+  _isHorizontal(): boolean;
+  _isRtl(): boolean;
   _getItemIndexForScrollTo(offset: number): number;
   _waitForScrollDestinationItemsMeasured(): Promise<void>;
   _subscribe(cb: () => void): () => void;
@@ -111,7 +113,8 @@ export type VirtualStore = {
 export const createVirtualStore = (
   itemCount: number,
   itemSize: number,
-  isHorizontal: boolean | undefined
+  isHorizontal: boolean,
+  isRtl: boolean
 ): VirtualStore => {
   const subscribers = new Set<() => void>();
   const state: Readonly<State> = {
@@ -157,6 +160,12 @@ export const createVirtualStore = (
     },
     _getJump() {
       return state._jump;
+    },
+    _isHorizontal() {
+      return isHorizontal;
+    },
+    _isRtl() {
+      return isRtl;
     },
     _getItemIndexForScrollTo(offset) {
       return findStartIndexWithOffset(state._cache, offset, 0, 0);
