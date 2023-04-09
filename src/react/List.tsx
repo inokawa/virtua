@@ -32,7 +32,7 @@ const INITIAL_END_REACHED_INDEX = -1;
 
 type ItemProps = {
   _children: ReactNode;
-  _handle: Scroller;
+  _scroller: Scroller;
   _store: VirtualStore;
   _index: number;
   _element: "div";
@@ -41,7 +41,7 @@ type ItemProps = {
 const Item = memo(
   ({
     _children: children,
-    _handle: handle,
+    _scroller: scroller,
     _store: store,
     _index: index,
     _element: Element,
@@ -57,7 +57,7 @@ const Item = memo(
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(
-      () => handle._initItem(ref.current!, index),
+      () => scroller._initItem(ref.current!, index),
       [index]
     );
 
@@ -325,14 +325,14 @@ export const List = forwardRef<ListHandle, ListProps>(
     );
     const endIndex = useSyncExternalStore(store._subscribe, store._getEndIndex);
     const jump = useSyncExternalStore(store._subscribe, store._getJump);
-    const scrollRef = useRef<HTMLDivElement>(null);
+    const rootRef = useRef<HTMLDivElement>(null);
     const onEndReachedCalledIndex = useRef<number>(INITIAL_END_REACHED_INDEX);
 
     const [mountedIndexes, reset] = useState<Set<number>>(new Set<number>());
-    const handleRef = useRef<Scroller>();
-    const handle =
-      handleRef.current ||
-      (handleRef.current = createScroller(store, () => {
+    const scrollerRef = useRef<Scroller>();
+    const scroller =
+      scrollerRef.current ||
+      (scrollerRef.current = createScroller(store, () => {
         reset(new Set());
       }));
 
@@ -347,17 +347,17 @@ export const List = forwardRef<ListHandle, ListProps>(
       });
     }, [elementsCount]);
 
-    useIsomorphicLayoutEffect(() => handle._initRoot(scrollRef.current!), []);
+    useIsomorphicLayoutEffect(() => scroller._initRoot(rootRef.current!), []);
 
     useIsomorphicLayoutEffect(() => {
       if (!jump.length) return;
 
       // Compensate scroll jump
-      const scrollDirection = handle._getScrollDirection();
+      const scrollDirection = scroller._getScrollDirection();
       if (scrollDirection === SCROLL_UP) {
         const diff = jump.reduce((acc, [, j]) => acc + j, 0);
         if (diff) {
-          handle._updateScrollPosition(diff, true);
+          scroller._updateScrollPosition(diff, true);
         }
       } else if (scrollDirection === SCROLL_MANUAL) {
         const isStartInView = startIndex === 0;
@@ -377,7 +377,7 @@ export const List = forwardRef<ListHandle, ListProps>(
           return acc;
         }, 0);
         if (diff) {
-          handle._updateScrollPosition(diff, true);
+          scroller._updateScrollPosition(diff, true);
         }
       } else {
         // NOP
@@ -406,7 +406,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       ref,
       () => {
         const getScrollSize = (): number => {
-          const el = scrollRef.current;
+          const el = rootRef.current;
           if (!el) return 0;
           // Use element's scrollHeight/scrollWidth instead of stored scrollSize.
           // This is because stored size may differ from the actual size, for example when a new item is added and not yet measured.
@@ -444,10 +444,10 @@ export const List = forwardRef<ListHandle, ListProps>(
             } while (store._hasUnmeasuredItemsInRange(index));
 
             // Scroll with the updated value
-            handle._updateScrollPosition(getOffset());
+            scroller._updateScrollPosition(getOffset());
           } else {
             const offset = getOffset();
-            handle._updateScrollPosition(offset);
+            scroller._updateScrollPosition(offset);
             // Sync viewport to scroll destination
             store._update({ _type: HANDLE_SCROLL, _offset: offset });
           }
@@ -455,7 +455,7 @@ export const List = forwardRef<ListHandle, ListProps>(
 
         return {
           get scrollOffset() {
-            return handle._getScrollPosition();
+            return scroller._getScrollPosition();
           },
           get scrollSize() {
             return getScrollSize();
@@ -488,7 +488,7 @@ export const List = forwardRef<ListHandle, ListProps>(
         res.push(
           <Item
             key={(e as { key?: ReactElement["key"] })?.key || i}
-            _handle={handle}
+            _scroller={scroller}
             _store={store}
             _index={i}
             _element={itemElement as "div"}
@@ -501,7 +501,7 @@ export const List = forwardRef<ListHandle, ListProps>(
 
     return (
       <Window
-        _ref={scrollRef}
+        _ref={rootRef}
         _store={store}
         _element={element as "div"}
         _style={styleProp}
