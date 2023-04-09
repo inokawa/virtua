@@ -36,8 +36,6 @@ type ItemProps = {
   _store: VirtualStore;
   _index: number;
   _element: "div";
-  _isHorizontal: boolean | undefined;
-  _isRtl: boolean | undefined;
 };
 
 const Item = memo(
@@ -47,8 +45,6 @@ const Item = memo(
     _store: store,
     _index: index,
     _element: Element,
-    _isHorizontal: isHorizontal,
-    _isRtl: isRtl,
   }: ItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -69,6 +65,8 @@ const Item = memo(
       <Element
         ref={ref}
         style={useMemo<CSSProperties>(() => {
+          const isHorizontal = store._isHorizontal();
+          const isRtl = store._isRtl();
           const style: CSSProperties = {
             margin: "0",
             padding: "0",
@@ -85,7 +83,7 @@ const Item = memo(
             style.visibility = "hidden";
           }
           return style;
-        }, [offset, isHorizontal, isRtl, hide])}
+        }, [offset, hide])}
       >
         {children}
       </Element>
@@ -101,22 +99,22 @@ const isInvalidElement = <T extends ReactNode>(
 const Window = ({
   _children: children,
   _ref: ref,
+  _store: store,
   _element: Element,
   _style: style,
-  _isHorizontal: isHorizontal,
 }: {
   _children: ReactNode;
   _ref: RefObject<HTMLDivElement>;
+  _store: VirtualStore;
   _element: "div";
   _style: CSSProperties | undefined;
-  _isHorizontal: boolean | undefined;
 }) => {
   return (
     <Element
       ref={ref}
       style={useMemo<CSSProperties>(
         () => ({
-          overflow: isHorizontal ? "auto hidden" : "hidden auto",
+          overflow: store._isHorizontal() ? "auto hidden" : "hidden auto",
           position: "relative",
           contain: "strict",
           // transform: "translate3d(0px, 0px, 0px)",
@@ -128,7 +126,7 @@ const Window = ({
           margin: 0,
           ...style,
         }),
-        [isHorizontal, style]
+        [style]
       )}
     >
       {children}
@@ -141,15 +139,11 @@ const Inner = ({
   _store: store,
   _element: Element,
   _style: style,
-  _isHorizontal: isHorizontal,
-  _isRtl: isRtl,
 }: {
   _children: ReactNode;
   _store: VirtualStore;
   _element: "div";
   _style: CSSProperties | undefined;
-  _isHorizontal: boolean | undefined;
-  _isRtl: boolean | undefined;
 }) => {
   const scrollSize = useSyncExternalStore(
     store._subscribe,
@@ -159,10 +153,12 @@ const Inner = ({
     store._subscribe,
     store._getViewportSize
   );
-
   return (
     <Element
       style={useMemo<CSSProperties>(() => {
+        const isHorizontal = store._isHorizontal();
+        const isRtl = store._isRtl();
+
         const clampedScrollSize =
           scrollSize >= viewportSize ? scrollSize : viewportSize;
         const width = isHorizontal ? clampedScrollSize : "100%";
@@ -177,7 +173,7 @@ const Inner = ({
           minHeight: height,
           ...style,
         };
-      }, [scrollSize, viewportSize, style, isHorizontal, isRtl])}
+      }, [scrollSize, viewportSize, style])}
     >
       {children}
     </Element>
@@ -286,10 +282,10 @@ export const List = forwardRef<ListHandle, ListProps>(
   (
     {
       children,
-      itemSize = 40,
+      itemSize: itemSizeProp = 40,
       overscan = 6,
-      horizontal: isHorizontal,
-      rtl: isRtl,
+      horizontal: horizontalProp,
+      rtl: rtlProp,
       endThreshold = 0,
       style: styleProp,
       innerStyle: innerStyleProp,
@@ -319,8 +315,9 @@ export const List = forwardRef<ListHandle, ListProps>(
       storeRef.current ||
       (storeRef.current = createVirtualStore(
         elementsCount,
-        itemSize,
-        isHorizontal
+        itemSizeProp,
+        !!horizontalProp,
+        !!rtlProp
       ));
     const startIndex = useSyncExternalStore(
       store._subscribe,
@@ -335,7 +332,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     const handleRef = useRef<Scroller>();
     const handle =
       handleRef.current ||
-      (handleRef.current = createScroller(store, isHorizontal, isRtl, () => {
+      (handleRef.current = createScroller(store, () => {
         reset(new Set());
       }));
 
@@ -413,7 +410,7 @@ export const List = forwardRef<ListHandle, ListProps>(
           if (!el) return 0;
           // Use element's scrollHeight/scrollWidth instead of stored scrollSize.
           // This is because stored size may differ from the actual size, for example when a new item is added and not yet measured.
-          return isHorizontal ? el.scrollWidth : el.scrollHeight;
+          return store._isHorizontal() ? el.scrollWidth : el.scrollHeight;
         };
         const scrollTo = async (
           index: number,
@@ -495,8 +492,6 @@ export const List = forwardRef<ListHandle, ListProps>(
             _store={store}
             _index={i}
             _element={itemElement as "div"}
-            _isHorizontal={isHorizontal}
-            _isRtl={isRtl}
             _children={e}
           />
         );
@@ -507,7 +502,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     return (
       <Window
         _ref={scrollRef}
-        _isHorizontal={isHorizontal}
+        _store={store}
         _element={element as "div"}
         _style={styleProp}
         _children={
@@ -515,8 +510,6 @@ export const List = forwardRef<ListHandle, ListProps>(
             _store={store}
             _element={innerElement as "div"}
             _style={innerStyleProp}
-            _isHorizontal={isHorizontal}
-            _isRtl={isRtl}
             _children={items}
           />
         }

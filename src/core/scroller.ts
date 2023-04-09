@@ -26,8 +26,6 @@ export type Scroller = {
 
 export const createScroller = (
   store: VirtualStore,
-  isHorizontal: boolean | undefined,
-  isRtl: boolean | undefined,
   notifyStop: () => void
 ): Scroller => {
   let prevOffset = -1;
@@ -36,6 +34,8 @@ export const createScroller = (
   let isNegativeOffset: boolean | undefined;
   let rootElement: HTMLElement | undefined;
   let _ro: ResizeObserver | undefined;
+  const isHorizontal = store._isHorizontal();
+  const isRtl = store._isRtl();
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const mountedIndexes = new WeakMap<Element, number>();
   const getResizeObserver = (): ResizeObserver => {
