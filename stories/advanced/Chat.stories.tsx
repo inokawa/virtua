@@ -14,6 +14,7 @@ export default {
 } as Meta;
 
 type Data = {
+  id: number;
   value: string;
   me: boolean;
 };
@@ -45,14 +46,20 @@ const Item = ({ value, me }: Data) => {
 export const Default: StoryObj = {
   name: "Chat",
   render: () => {
+    const id = useRef(0);
+    const createItem = ({
+      value = faker.lorem.paragraphs(1),
+      me = false,
+    }: {
+      value?: string;
+      me?: boolean;
+    } = {}): Data => ({
+      id: id.current++,
+      value: value,
+      me,
+    });
     const [items, setItems] = useState(() =>
-      Array.from(
-        { length: 100 },
-        (): Data => ({
-          value: faker.lorem.paragraphs(1),
-          me: false,
-        })
-      )
+      Array.from({ length: 100 }, () => createItem())
     );
 
     const ref = useRef<ListHandle>(null);
@@ -70,10 +77,7 @@ export const Default: StoryObj = {
       const setTimer = () => {
         timer = setTimeout(() => {
           if (canceled) return;
-          setItems((p) => [
-            ...p,
-            { value: faker.lorem.paragraphs(1), me: false },
-          ]);
+          setItems((p) => [...p, createItem()]);
           setTimer();
         }, 5000);
       };
@@ -89,7 +93,7 @@ export const Default: StoryObj = {
     const disabled = !value.length;
     const submit = () => {
       if (disabled) return;
-      setItems((p) => [...p, { value, me: true }]);
+      setItems((p) => [...p, createItem({ value, me: true })]);
       setValue("");
     };
 
@@ -104,7 +108,7 @@ export const Default: StoryObj = {
       >
         <List ref={ref} style={{ flex: 1 }}>
           {items.map((d, i) => (
-            <Item key={i} {...d} />
+            <Item key={d.id} {...d} />
           ))}
         </List>
         <form

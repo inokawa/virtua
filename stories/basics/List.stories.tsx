@@ -115,7 +115,9 @@ export const ScrollTo: StoryObj = {
     const [scrollOffset, setScrollOffset] = useState(1000);
     const ref = useRef<ListHandle>(null);
     return (
-      <div>
+      <div
+        style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+      >
         <div>
           <input
             type="number"
@@ -157,7 +159,7 @@ export const ScrollTo: StoryObj = {
             </button>
           </div>
         </div>
-        <List ref={ref} style={{ height: "100vh" }}>
+        <List ref={ref} style={{ flex: 1 }}>
           {createRows(LENGTH)}
         </List>
       </div>
@@ -250,7 +252,9 @@ export const IncreasingItems: StoryObj = {
     const heights = [20, 40, 80, 77];
 
     return (
-      <div>
+      <div
+        style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+      >
         <div>
           <label style={{ marginRight: 4 }}>
             <input
@@ -275,7 +279,7 @@ export const IncreasingItems: StoryObj = {
             prepend
           </label>
         </div>
-        <List style={{ height: "100vh" }}>
+        <List style={{ flex: 1 }}>
           {rows.map((d, i) => (
             <div
               key={d}

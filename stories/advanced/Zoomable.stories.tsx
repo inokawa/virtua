@@ -57,7 +57,13 @@ export const Default: StoryObj = {
             />
           </label>
         </div>
-        <div style={{ overflow: "hidden" }}>
+        <div
+          style={{
+            overflow: "hidden",
+            width: 500,
+            height: 500,
+          }}
+        >
           <ZoomContext.Provider value={zoom}>
             <List style={{ height: "100vh" }} itemElement={ListItem}>
               {Array.from({ length: 1000 }).map((_, i) => {
