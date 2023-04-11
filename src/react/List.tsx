@@ -13,7 +13,6 @@ import {
   useState,
 } from "react";
 import {
-  HANDLE_SCROLL,
   UPDATE_CACHE_LENGTH,
   VirtualStore,
   createVirtualStore,
@@ -405,70 +404,25 @@ export const List = forwardRef<ListHandle, ListProps>(
     useImperativeHandle(
       ref,
       () => {
-        const getScrollSize = (): number => {
-          const el = rootRef.current;
-          if (!el) return 0;
-          // Use element's scrollHeight/scrollWidth instead of stored scrollSize.
-          // This is because stored size may differ from the actual size, for example when a new item is added and not yet measured.
-          return store._isHorizontal() ? el.scrollWidth : el.scrollHeight;
-        };
-        const scrollTo = async (
-          index: number,
-          getCurrentOffset: () => number
-        ) => {
-          const getOffset = (): number => {
-            let offset = getCurrentOffset();
-            const scrollSize = getScrollSize();
-            const viewportSize = store._getViewportSize();
-            if (scrollSize - (offset + viewportSize) <= 0) {
-              // Adjust if the offset is over the end, to get correct startIndex.
-              offset = scrollSize - viewportSize;
-            }
-            return offset;
-          };
-
-          if (store._hasUnmeasuredItemsInRange(index)) {
-            do {
-              // In order to scroll to the correct position, mount the items and measure their sizes before scrolling.
-              store._update({
-                _type: HANDLE_SCROLL,
-                _offset: getOffset(),
-              });
-              try {
-                // Wait for the scroll destination items to be measured.
-                await store._waitForScrollDestinationItemsMeasured();
-              } catch (e) {
-                // canceled
-                return;
-              }
-            } while (store._hasUnmeasuredItemsInRange(index));
-
-            // Scroll with the updated value
-            scroller._updateScrollPosition(getOffset());
-          } else {
-            const offset = getOffset();
-            scroller._updateScrollPosition(offset);
-            // Sync viewport to scroll destination
-            store._update({ _type: HANDLE_SCROLL, _offset: offset });
-          }
-        };
-
         return {
           get scrollOffset() {
             return scroller._getScrollPosition();
           },
           get scrollSize() {
-            return getScrollSize();
+            return scroller._getActualScrollSize();
           },
           scrollToIndex(index) {
             index = max(min(index, count - 1), 0);
 
-            scrollTo(index, () => store._getItemOffset(index));
+            scroller._scrollTo(index, () => store._getItemOffset(index));
           },
           scrollToOffset(offset) {
             offset = max(offset, 0);
 
-            scrollTo(store._getItemIndexForScrollTo(offset), () => offset);
+            scroller._scrollTo(
+              store._getItemIndexForScrollTo(offset),
+              () => offset
+            );
           },
         };
       },

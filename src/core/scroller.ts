@@ -21,7 +21,9 @@ export type Scroller = {
   _initItem: (itemElement: HTMLElement, index: number) => () => void;
   _getScrollPosition: () => number;
   _getScrollDirection: () => ScrollDirection;
+  _getActualScrollSize: () => number;
   _updateScrollPosition: (offset: number, diff?: boolean) => void;
+  _scrollTo: (index: number, getCurrentOffset: () => number) => void;
 };
 
 export const createScroller = (
@@ -72,6 +74,74 @@ export const createScroller = (
         }
       }))
     );
+  };
+  const getActualScrollSize = (): number => {
+    if (!rootElement) return 0;
+    // Use element's scrollHeight/scrollWidth instead of stored scrollSize.
+    // This is because stored size may differ from the actual size, for example when a new item is added and not yet measured.
+    return store._isHorizontal()
+      ? rootElement.scrollWidth
+      : rootElement.scrollHeight;
+  };
+  const updateScrollPosition = (offset: number, diff?: boolean) => {
+    if (!rootElement) return;
+    if (isRtl) {
+      if (isNegativeOffset == null) {
+        // Assume offset type in rtl direction.
+        // The scroll position is negative in spec however its not in some browsers, for example Chrome earlier than v85.
+        // https://github.com/othree/jquery.rtl-scroll-type
+        const prev = rootElement[scrollToKey];
+        rootElement[scrollToKey] = 1;
+        isNegativeOffset = rootElement[scrollToKey] === 0;
+        rootElement[scrollToKey] = prev;
+      }
+      if (isNegativeOffset) {
+        offset *= -1;
+      }
+    }
+    if (diff) {
+      rootElement[scrollToKey] += offset;
+    } else {
+      rootElement[scrollToKey] = offset;
+      scrollDirection = SCROLL_MANUAL;
+    }
+  };
+  const scrollTo = async (index: number, getCurrentOffset: () => number) => {
+    const getOffset = (): number => {
+      let offset = getCurrentOffset();
+      const scrollSize = getActualScrollSize();
+      const viewportSize = store._getViewportSize();
+      if (scrollSize - (offset + viewportSize) <= 0) {
+        // Adjust if the offset is over the end, to get correct startIndex.
+        offset = scrollSize - viewportSize;
+      }
+      return offset;
+    };
+
+    if (store._hasUnmeasuredItemsInRange(index)) {
+      do {
+        // In order to scroll to the correct position, mount the items and measure their sizes before scrolling.
+        store._update({
+          _type: HANDLE_SCROLL,
+          _offset: getOffset(),
+        });
+        try {
+          // Wait for the scroll destination items to be measured.
+          await store._waitForScrollDestinationItemsMeasured();
+        } catch (e) {
+          // canceled
+          return;
+        }
+      } while (store._hasUnmeasuredItemsInRange(index));
+
+      // Scroll with the updated value
+      updateScrollPosition(getOffset());
+    } else {
+      const offset = getOffset();
+      updateScrollPosition(offset);
+      // Sync viewport to scroll destination
+      store._update({ _type: HANDLE_SCROLL, _offset: offset });
+    }
   };
 
   return {
@@ -142,28 +212,8 @@ export const createScroller = (
     _getScrollDirection() {
       return scrollDirection;
     },
-    _updateScrollPosition(offset, diff) {
-      if (!rootElement) return;
-      if (isRtl) {
-        if (isNegativeOffset == null) {
-          // Assume offset type in rtl direction.
-          // The scroll position is negative in spec however its not in some browsers, for example Chrome earlier than v85.
-          // https://github.com/othree/jquery.rtl-scroll-type
-          const prev = rootElement[scrollToKey];
-          rootElement[scrollToKey] = 1;
-          isNegativeOffset = rootElement[scrollToKey] === 0;
-          rootElement[scrollToKey] = prev;
-        }
-        if (isNegativeOffset) {
-          offset *= -1;
-        }
-      }
-      if (diff) {
-        rootElement[scrollToKey] += offset;
-      } else {
-        rootElement[scrollToKey] = offset;
-        scrollDirection = SCROLL_MANUAL;
-      }
-    },
+    _getActualScrollSize: getActualScrollSize,
+    _updateScrollPosition: updateScrollPosition,
+    _scrollTo: scrollTo,
   };
 };
