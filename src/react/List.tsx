@@ -95,6 +95,42 @@ const isInvalidElement = <T extends ReactNode>(
 ): e is Extract<T, null | undefined | boolean> =>
   e == null || typeof e === "boolean";
 
+export interface CustomWindowComponentProps {
+  children: ReactNode;
+  style: CSSProperties;
+  scrollSize: number;
+  horizontal: boolean;
+  rtl: boolean;
+}
+
+const DefaultWindow = forwardRef<any, CustomWindowComponentProps>(
+  ({ children, style, scrollSize, horizontal, rtl }, ref): ReactElement => {
+    return (
+      <div ref={ref} style={style}>
+        <div
+          style={useMemo<CSSProperties>(() => {
+            const width = horizontal ? scrollSize : "100%";
+            const height = horizontal ? "100%" : scrollSize;
+            return {
+              position: "absolute",
+              top: 0,
+              [rtl ? "right" : "left"]: 0,
+              width,
+              height,
+              minWidth: width,
+              minHeight: height,
+            };
+          }, [scrollSize])}
+        >
+          {children}
+        </div>
+      </div>
+    );
+  }
+);
+
+export type CustomWindowComponent = typeof DefaultWindow;
+
 const Window = ({
   _children: children,
   _ref: ref,
@@ -105,15 +141,30 @@ const Window = ({
   _children: ReactNode;
   _ref: RefObject<HTMLDivElement>;
   _store: VirtualStore;
-  _element: "div";
+  _element: CustomWindowComponent;
   _style: CSSProperties | undefined;
 }) => {
+  const scrollSize = useSyncExternalStore(
+    store._subscribe,
+    store._getScrollSize
+  );
+  const viewportSize = useSyncExternalStore(
+    store._subscribe,
+    store._getViewportSize
+  );
+  const clampedScrollSize =
+    scrollSize >= viewportSize ? scrollSize : viewportSize;
+
+  const horizontal = store._isHorizontal();
   return (
     <Element
       ref={ref}
+      scrollSize={clampedScrollSize}
+      horizontal={horizontal}
+      rtl={store._isRtl()}
       style={useMemo<CSSProperties>(
         () => ({
-          overflow: store._isHorizontal() ? "auto hidden" : "hidden auto",
+          overflow: horizontal ? "auto hidden" : "hidden auto",
           position: "relative",
           contain: "strict",
           // transform: "translate3d(0px, 0px, 0px)",
@@ -133,62 +184,18 @@ const Window = ({
   );
 };
 
-const Inner = ({
-  _children: children,
-  _store: store,
-  _element: Element,
-  _style: style,
-}: {
-  _children: ReactNode;
-  _store: VirtualStore;
-  _element: "div";
-  _style: CSSProperties | undefined;
-}) => {
-  const scrollSize = useSyncExternalStore(
-    store._subscribe,
-    store._getScrollSize
-  );
-  const viewportSize = useSyncExternalStore(
-    store._subscribe,
-    store._getViewportSize
-  );
-  return (
-    <Element
-      style={useMemo<CSSProperties>(() => {
-        const isHorizontal = store._isHorizontal();
-        const isRtl = store._isRtl();
-
-        const clampedScrollSize =
-          scrollSize >= viewportSize ? scrollSize : viewportSize;
-        const width = isHorizontal ? clampedScrollSize : "100%";
-        const height = isHorizontal ? "100%" : clampedScrollSize;
-        return {
-          position: "absolute",
-          top: 0,
-          [isRtl ? "right" : "left"]: 0,
-          width,
-          height,
-          minWidth: width,
-          minHeight: height,
-          ...style,
-        };
-      }, [scrollSize, viewportSize, style])}
-    >
-      {children}
-    </Element>
-  );
-};
-
-export interface CustomComponentProps {
+export interface CustomItemComponentProps {
   style: CSSProperties;
   children: ReactNode;
 }
 
-export type CustomComponent = React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<CustomComponentProps> & React.RefAttributes<any>
+export type CustomItemComponent = React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<CustomItemComponentProps> & React.RefAttributes<any>
 >;
 
-type CustomElementType = keyof JSX.IntrinsicElements | CustomComponent;
+type CustomItemComponentOrElement =
+  | keyof JSX.IntrinsicElements
+  | CustomItemComponent;
 
 /**
  * Methods of {@link List}.
@@ -250,24 +257,15 @@ export interface ListProps {
    */
   style?: CSSProperties;
   /**
-   * Inline style prop to override style of inner element.
-   */
-  innerStyle?: CSSProperties;
-  /**
    * Customized element type for scrollable element.
    * @defaultValue "div"
    */
-  element?: CustomElementType;
-  /**
-   * Customized element type for inner element.
-   * @defaultValue "div"
-   */
-  innerElement?: CustomElementType;
+  element?: CustomWindowComponent;
   /**
    * Customized element type for item element.
    * @defaultValue "div"
    */
-  itemElement?: CustomElementType;
+  itemElement?: CustomItemComponentOrElement;
   /**
    * Callback invoked when scrolling reached to the end. The margin from the end is specified by {@link endThreshold}.
    */
@@ -287,9 +285,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       rtl: rtlProp,
       endThreshold = 0,
       style: styleProp,
-      innerStyle: innerStyleProp,
-      element = "div",
-      innerElement = "div",
+      element = DefaultWindow,
       itemElement = "div",
       onEndReached,
     },
@@ -457,16 +453,9 @@ export const List = forwardRef<ListHandle, ListProps>(
       <Window
         _ref={rootRef}
         _store={store}
-        _element={element as "div"}
+        _element={element}
         _style={styleProp}
-        _children={
-          <Inner
-            _store={store}
-            _element={innerElement as "div"}
-            _style={innerStyleProp}
-            _children={items}
-          />
-        }
+        _children={items}
       />
     );
   }

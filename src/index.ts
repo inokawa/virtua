@@ -2,6 +2,8 @@ export { List } from "./react/List";
 export type {
   ListProps,
   ListHandle,
-  CustomComponent,
-  CustomComponentProps,
+  CustomItemComponent,
+  CustomItemComponentProps,
+  CustomWindowComponent,
+  CustomWindowComponentProps,
 } from "./react/List";
