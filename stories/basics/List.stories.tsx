@@ -1,6 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { forwardRef, useEffect, useRef, useState } from "react";
-import { List, ListHandle, CustomComponentProps } from "../../src";
+import {
+  List,
+  ListHandle,
+  CustomItemComponentProps,
+  CustomWindowComponentProps,
+} from "../../src";
 
 export default {
   component: List,
@@ -298,16 +303,18 @@ export const IncreasingItems: StoryObj = {
   },
 };
 
-const UlList = forwardRef<HTMLUListElement, CustomComponentProps>(
-  ({ children, style }, ref) => {
+const UlList = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
+  ({ children, style, scrollSize }, ref) => {
     return (
-      <ul ref={ref} style={{ ...style, margin: 0 }}>
-        {children}
-      </ul>
+      <div ref={ref} style={style}>
+        <ul style={{ position: "relative", height: scrollSize, margin: 0 }}>
+          {children}
+        </ul>
+      </div>
     );
   }
 );
-const Li = forwardRef<HTMLLIElement, CustomComponentProps>(
+const Li = forwardRef<HTMLLIElement, CustomItemComponentProps>(
   ({ children, style }, ref) => {
     return (
       <li ref={ref} style={{ ...style, marginLeft: 40 }}>
@@ -326,7 +333,7 @@ export const Ul: StoryObj = {
           height: 400,
           background: "#fff",
         }}
-        innerElement={UlList}
+        element={UlList}
         itemElement={Li}
         overscan={20}
       >

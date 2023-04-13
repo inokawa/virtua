@@ -7,7 +7,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { CustomComponentProps, List } from "../../src";
+import { List } from "../../src";
+import { CustomWindowComponentProps } from "../../src/react/List";
 
 export default {
   component: List,
@@ -15,23 +16,26 @@ export default {
 
 const COLUMN_WIDTHS = [100, 200, 300, 100, 200, 300, 100, 300, 400, 200];
 
-const TableList = forwardRef<HTMLTableSectionElement, CustomComponentProps>(
-  ({ children, style }, ref) => {
-    const [headerHeight, setHeaderHeight] = useState<number>(0);
-    const headerRef = useRef<HTMLTableSectionElement>(null);
-    useLayoutEffect(() => {
-      if (!headerRef.current) return;
-      setHeaderHeight(headerRef.current.getBoundingClientRect().height);
-    }, []);
+const TableList = forwardRef<
+  HTMLTableSectionElement,
+  CustomWindowComponentProps
+>(({ children, style, scrollSize }, ref) => {
+  const [headerHeight, setHeaderHeight] = useState<number>(0);
+  const headerRef = useRef<HTMLTableSectionElement>(null);
+  useLayoutEffect(() => {
+    if (!headerRef.current) return;
+    setHeaderHeight(headerRef.current.getBoundingClientRect().height);
+  }, []);
 
-    const baseThStyle: CSSProperties = {
-      color: "white",
-      background: "darkgray",
-    };
-    return (
+  const baseThStyle: CSSProperties = {
+    color: "white",
+    background: "darkgray",
+  };
+  return (
+    <div style={style} ref={ref}>
       <table
         style={{
-          height: style.height,
+          height: scrollSize,
           tableLayout: "fixed",
           borderCollapse: "collapse",
           whiteSpace: "nowrap",
@@ -61,18 +65,20 @@ const TableList = forwardRef<HTMLTableSectionElement, CustomComponentProps>(
           </tr>
         </thead>
         <tbody
-          ref={ref}
           style={{
-            ...style,
+            height: scrollSize,
             marginTop: headerHeight,
+            position: "absolute",
+            top: 0,
+            left: 0,
           }}
         >
           {children}
         </tbody>
       </table>
-    );
-  }
-);
+    </div>
+  );
+});
 
 export const Table: StoryObj = {
   render: () => {
@@ -84,7 +90,7 @@ export const Table: StoryObj = {
           background: "#fff",
           overflow: "auto",
         }}
-        innerElement={TableList}
+        element={TableList}
         itemElement="tr"
       >
         {Array.from({ length: 1000 }).map((_, i) => (

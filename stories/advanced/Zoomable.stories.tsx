@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { CustomComponentProps, List } from "../../src";
+import { CustomItemComponentProps, List } from "../../src";
 import React, {
   createContext,
   forwardRef,
@@ -13,7 +13,7 @@ export default {
 } as Meta;
 
 const ZoomContext = createContext(1);
-const ListItem = forwardRef<HTMLDivElement, CustomComponentProps>(
+const ListItem = forwardRef<HTMLDivElement, CustomItemComponentProps>(
   ({ children, style }, ref) => {
     const zoom = useContext(ZoomContext);
     const [height, setHeight] = useState<number | undefined>();
