@@ -317,7 +317,7 @@ const UlList = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
 const Li = forwardRef<HTMLLIElement, CustomItemComponentProps>(
   ({ children, style }, ref) => {
     return (
-      <li ref={ref} style={{ ...style, marginLeft: 40 }}>
+      <li ref={ref} style={{ ...style, marginLeft: 30 }}>
         {children}
       </li>
     );
@@ -327,18 +327,31 @@ const Li = forwardRef<HTMLLIElement, CustomItemComponentProps>(
 export const Ul: StoryObj = {
   render: () => {
     return (
-      <List
+      <div
         style={{
           width: 400,
           height: 400,
-          background: "#fff",
+          border: "solid 1px darkgray",
+          borderRadius: 8,
+          background: "lightgray",
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
         }}
-        element={UlList}
-        itemElement={Li}
-        overscan={20}
       >
-        {Array.from({ length: 1000 }).map((_, i) => i)}
-      </List>
+        <div style={{ padding: 4 }}>header</div>
+        <List
+          style={{
+            flex: 1,
+            background: "#fff",
+          }}
+          element={UlList}
+          itemElement={Li}
+          overscan={20}
+        >
+          {Array.from({ length: 1000 }).map((_, i) => i)}
+        </List>
+      </div>
     );
   },
 };
