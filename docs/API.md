@@ -10,11 +10,13 @@
 
 - [ListProps](interfaces/ListProps.md)
 - [ListHandle](interfaces/ListHandle.md)
-- [CustomComponentProps](interfaces/CustomComponentProps.md)
+- [CustomItemComponentProps](interfaces/CustomItemComponentProps.md)
+- [CustomWindowComponentProps](interfaces/CustomWindowComponentProps.md)
 
 ### Type Aliases
 
-- [CustomComponent](API.md#customcomponent)
+- [CustomItemComponent](API.md#customitemcomponent)
+- [CustomWindowComponent](API.md#customwindowcomponent)
 
 ## Functions
 
@@ -40,10 +42,20 @@ node_modules/@types/react/index.d.ts:361
 
 ## Type Aliases
 
-### CustomComponent
+### CustomItemComponent
 
-Ƭ **CustomComponent**: `React.ForwardRefExoticComponent`<`React.PropsWithoutRef`<[`CustomComponentProps`](interfaces/CustomComponentProps.md)\> & `React.RefAttributes`<`any`\>\>
+Ƭ **CustomItemComponent**: `React.ForwardRefExoticComponent`<`React.PropsWithoutRef`<[`CustomItemComponentProps`](interfaces/CustomItemComponentProps.md)\> & `React.RefAttributes`<`any`\>\>
 
 #### Defined in
 
-[src/react/List.tsx:192](https://github.com/inokawa/virtua/blob/49a4f18/src/react/List.tsx#L192)
+[src/react/List.tsx:192](https://github.com/inokawa/virtua/blob/26ea7f2/src/react/List.tsx#L192)
+
+___
+
+### CustomWindowComponent
+
+Ƭ **CustomWindowComponent**: typeof `DefaultWindow`
+
+#### Defined in
+
+[src/react/List.tsx:132](https://github.com/inokawa/virtua/blob/26ea7f2/src/react/List.tsx#L132)

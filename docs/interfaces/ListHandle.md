@@ -24,7 +24,7 @@ Get current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/react/List.tsx:205](https://github.com/inokawa/virtua/blob/49a4f18/src/react/List.tsx#L205)
+[src/react/List.tsx:207](https://github.com/inokawa/virtua/blob/26ea7f2/src/react/List.tsx#L207)
 
 ___
 
@@ -36,7 +36,7 @@ Get current scrollHeight or scrollWidth.
 
 #### Defined in
 
-[src/react/List.tsx:209](https://github.com/inokawa/virtua/blob/49a4f18/src/react/List.tsx#L209)
+[src/react/List.tsx:211](https://github.com/inokawa/virtua/blob/26ea7f2/src/react/List.tsx#L211)
 
 ## Methods
 
@@ -58,7 +58,7 @@ Scroll to the item specified by index.
 
 #### Defined in
 
-[src/react/List.tsx:214](https://github.com/inokawa/virtua/blob/49a4f18/src/react/List.tsx#L214)
+[src/react/List.tsx:216](https://github.com/inokawa/virtua/blob/26ea7f2/src/react/List.tsx#L216)
 
 ___
 
@@ -80,4 +80,4 @@ Scroll to the item specified by offset.
 
 #### Defined in
 
-[src/react/List.tsx:219](https://github.com/inokawa/virtua/blob/49a4f18/src/react/List.tsx#L219)
+[src/react/List.tsx:221](https://github.com/inokawa/virtua/blob/26ea7f2/src/react/List.tsx#L221)
