@@ -15,7 +15,7 @@
 
 #### Defined in
 
-[src/react/List.tsx:188](https://github.com/inokawa/virtua/blob/26ea7f2/src/react/List.tsx#L188)
+[src/react/List.tsx:188](https://github.com/inokawa/virtua/blob/0de8d13/src/react/List.tsx#L188)
 
 ___
 
@@ -25,4 +25,4 @@ ___
 
 #### Defined in
 
-[src/react/List.tsx:189](https://github.com/inokawa/virtua/blob/26ea7f2/src/react/List.tsx#L189)
+[src/react/List.tsx:189](https://github.com/inokawa/virtua/blob/0de8d13/src/react/List.tsx#L189)

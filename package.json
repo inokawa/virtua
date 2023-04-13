@@ -1,6 +1,6 @@
 {
   "name": "virtua",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Simple, fast, small and flexible virtual list component for React.",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
