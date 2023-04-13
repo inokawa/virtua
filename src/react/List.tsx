@@ -65,14 +65,14 @@ const Item = memo(
         ref={ref}
         style={useMemo<CSSProperties>(() => {
           const isHorizontal = store._isHorizontal();
-          const isRtl = store._isRtl();
+          const leftOrRightKey = store._isRtl() ? "right" : "left";
           const style: CSSProperties = {
-            margin: "0",
-            padding: "0",
+            margin: 0,
+            padding: 0,
             position: "absolute",
             [isHorizontal ? "height" : "width"]: "100%",
-            [isHorizontal ? "top" : isRtl ? "right" : "left"]: 0,
-            [isHorizontal ? (isRtl ? "right" : "left") : "top"]: offset,
+            [isHorizontal ? "top" : leftOrRightKey]: 0,
+            [isHorizontal ? leftOrRightKey : "top"]: offset,
             // willChange: "transform",
           };
           if (isHorizontal) {

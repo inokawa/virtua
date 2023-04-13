@@ -9,7 +9,7 @@ export const debounce = <T extends (...args: any[]) => void>(
   fn: T,
   ms: number
 ) => {
-  let id: NodeJS.Timeout | null = null;
+  let id: NodeJS.Timeout | undefined | null;
 
   const cancel = () => {
     if (id != null) {
