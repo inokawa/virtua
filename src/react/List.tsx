@@ -258,7 +258,7 @@ export interface ListProps {
   style?: CSSProperties;
   /**
    * Customized element type for scrollable element.
-   * @defaultValue "div"
+   * @defaultValue {@link DefaultWindow}
    */
   element?: CustomWindowComponent;
   /**
