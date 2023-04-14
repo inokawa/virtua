@@ -26,8 +26,8 @@ import {
   SCROLL_MANUAL,
   SCROLL_UP,
 } from "../core/scroller";
-
-const refKey = "current";
+import { refKey } from "./utils";
+import { useStatic } from "./useStatic";
 
 const INITIAL_END_REACHED_INDEX = -1;
 
@@ -307,15 +307,14 @@ export const List = forwardRef<ListHandle, ListProps>(
     const elementsCount = elements.length;
 
     // https://github.com/facebook/react/issues/25191#issuecomment-1237456448
-    const storeRef = useRef<VirtualStore>();
-    const store =
-      storeRef[refKey] ||
-      (storeRef[refKey] = createVirtualStore(
+    const store = useStatic(() =>
+      createVirtualStore(
         elementsCount,
         itemSizeProp,
         !!horizontalProp,
         !!rtlProp
-      ));
+      )
+    );
     const startIndex = useSyncExternalStore(
       store._subscribe,
       store._getStartIndex
@@ -326,12 +325,11 @@ export const List = forwardRef<ListHandle, ListProps>(
     const onEndReachedCalledIndex = useRef<number>(INITIAL_END_REACHED_INDEX);
 
     const [mountedIndexes, reset] = useState<Set<number>>(new Set<number>());
-    const scrollerRef = useRef<Scroller>();
-    const scroller =
-      scrollerRef[refKey] ||
-      (scrollerRef[refKey] = createScroller(store, () => {
+    const scroller = useStatic(() =>
+      createScroller(store, () => {
         reset(new Set());
-      }));
+      })
+    );
 
     // The elements length and cached items length are different just after element is added/removed.
     const count = min(elementsCount, store._getItemCount());
