@@ -1,7 +1,7 @@
 import {
-  HANDLE_SCROLL,
-  UPDATE_ITEM_SIZES,
-  UPDATE_VIEWPORT_SIZE,
+  ACTION_HANDLE_SCROLL,
+  ACTION_UPDATE_ITEM_SIZES,
+  ACTION_UPDATE_VIEWPORT,
   VirtualStore,
 } from "./store";
 import { abs, debounce } from "./utils";
@@ -49,8 +49,7 @@ export const createScroller = (
         const resizes: [index: number, size: number][] = [];
         for (const entry of entries) {
           if (entry.target === rootElement) {
-            store._update({
-              _type: UPDATE_VIEWPORT_SIZE,
+            store._update(ACTION_UPDATE_VIEWPORT, {
               _width: entry.contentRect.width,
               _height: entry.contentRect.height,
             });
@@ -66,10 +65,7 @@ export const createScroller = (
         }
 
         if (resizes.length) {
-          store._update({
-            _type: UPDATE_ITEM_SIZES,
-            _entries: resizes,
-          });
+          store._update(ACTION_UPDATE_ITEM_SIZES, resizes);
           resized = true;
         }
       }))
@@ -121,10 +117,7 @@ export const createScroller = (
     if (store._hasUnmeasuredItemsInRange(index)) {
       do {
         // In order to scroll to the correct position, mount the items and measure their sizes before scrolling.
-        store._update({
-          _type: HANDLE_SCROLL,
-          _offset: getOffset(),
-        });
+        store._update(ACTION_HANDLE_SCROLL, getOffset());
         try {
           // Wait for the scroll destination items to be measured.
           await store._waitForScrollDestinationItemsMeasured();
@@ -140,7 +133,7 @@ export const createScroller = (
       const offset = getOffset();
       updateScrollPosition(offset);
       // Sync viewport to scroll destination
-      store._update({ _type: HANDLE_SCROLL, _offset: offset });
+      store._update(ACTION_HANDLE_SCROLL, offset);
     }
   };
 
@@ -169,10 +162,7 @@ export const createScroller = (
         } else {
           resized = false;
         }
-        store._update({
-          _type: HANDLE_SCROLL,
-          _offset: (prevOffset = offset),
-        });
+        store._update(ACTION_HANDLE_SCROLL, (prevOffset = offset));
       };
 
       const onScrollStopped = debounce(() => {

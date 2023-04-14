@@ -13,7 +13,7 @@ import {
   useState,
 } from "react";
 import {
-  UPDATE_CACHE_LENGTH,
+  ACTION_UPDATE_CACHE_LENGTH,
   VirtualStore,
   createVirtualStore,
 } from "../core/store";
@@ -336,10 +336,7 @@ export const List = forwardRef<ListHandle, ListProps>(
 
     // So update cache length. Updating state in render will cause warn so use useEffect for now.
     useIsomorphicLayoutEffect(() => {
-      store._update({
-        _type: UPDATE_CACHE_LENGTH,
-        _length: elementsCount,
-      });
+      store._update(ACTION_UPDATE_CACHE_LENGTH, elementsCount);
     }, [elementsCount]);
 
     useIsomorphicLayoutEffect(() => scroller._initRoot(rootRef[refKey]!), []);

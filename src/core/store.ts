@@ -12,11 +12,6 @@ import {
 } from "./cache";
 import type { Writeable } from "./types";
 
-export const UPDATE_CACHE_LENGTH = 0;
-export const UPDATE_ITEM_SIZES = 1;
-export const UPDATE_VIEWPORT_SIZE = 2;
-export const HANDLE_SCROLL = 3;
-
 export type ScrollJump = Readonly<[index: number, sizeDiff: number][]>;
 
 type State = {
@@ -27,70 +22,22 @@ type State = {
   _jump: ScrollJump;
 };
 
+export const ACTION_UPDATE_CACHE_LENGTH = 0;
+export const ACTION_UPDATE_ITEM_SIZES = 1;
+export const ACTION_UPDATE_VIEWPORT = 2;
+export const ACTION_HANDLE_SCROLL = 3;
+
 type Actions =
-  | { _type: typeof UPDATE_CACHE_LENGTH; _length: number }
-  | {
-      _type: typeof UPDATE_ITEM_SIZES;
-      _entries: [index: number, size: number][];
-    }
-  | { _type: typeof UPDATE_VIEWPORT_SIZE; _width: number; _height: number }
-  | { _type: typeof HANDLE_SCROLL; _offset: number };
-
-const mutate = (state: State, action: Actions, itemSize: number): boolean => {
-  switch (action._type) {
-    case UPDATE_CACHE_LENGTH: {
-      if (state._cache._length === action._length) return false;
-      state._cache = resetCache(action._length, itemSize, state._cache);
-      return true;
-    }
-    case UPDATE_ITEM_SIZES: {
-      const updated = action._entries.filter(
-        ([index, size]) => state._cache._sizes[index] !== size
-      );
-      // Skip if all items are cached and not updated
-      if (!updated.length) {
-        return false;
-      }
-
-      const jump: [index: number, sizeDiff: number][] = [];
-      updated.forEach(([index, size]) => {
-        jump.push([index, size - getItemSize(state._cache, index)]);
-        setItemSize(state._cache as Writeable<Cache>, index, size);
-      });
-      state._jump = jump;
-      return true;
-    }
-    case UPDATE_VIEWPORT_SIZE: {
-      if (
-        state._viewportWidth === action._width &&
-        state._viewportHeight === action._height
-      ) {
-        return false;
-      }
-      state._viewportWidth = action._width;
-      state._viewportHeight = action._height;
-      return true;
-    }
-    case HANDLE_SCROLL: {
-      const prevStartIndex = state._startIndex;
-      const prevOffset = computeStartOffset(
-        state._cache as Writeable<Cache>,
-        prevStartIndex
-      );
-      if (prevOffset === action._offset) {
-        return false;
-      }
-      return (
-        (state._startIndex = findStartIndexWithOffset(
-          state._cache,
-          action._offset,
-          prevStartIndex,
-          prevOffset
-        )) !== prevStartIndex
-      );
-    }
-  }
-};
+  | [type: typeof ACTION_UPDATE_CACHE_LENGTH, length: number]
+  | [
+      type: typeof ACTION_UPDATE_ITEM_SIZES,
+      entries: [index: number, size: number][]
+    ]
+  | [
+      type: typeof ACTION_UPDATE_VIEWPORT,
+      rect: { _width: number; _height: number }
+    ]
+  | [type: typeof ACTION_HANDLE_SCROLL, offset: number];
 
 export type VirtualStore = {
   _getStartIndex(): number;
@@ -107,7 +54,7 @@ export type VirtualStore = {
   _getItemIndexForScrollTo(offset: number): number;
   _waitForScrollDestinationItemsMeasured(): Promise<void>;
   _subscribe(cb: () => void): () => void;
-  _update(action: Actions): void;
+  _update(...action: Actions): void;
 };
 
 export const createVirtualStore = (
@@ -117,7 +64,7 @@ export const createVirtualStore = (
   isRtl: boolean
 ): VirtualStore => {
   const subscribers = new Set<() => void>();
-  const state: Readonly<State> = {
+  const state: State = {
     _startIndex: 0,
     _viewportWidth: 0,
     _viewportHeight: 0,
@@ -196,13 +143,68 @@ export const createVirtualStore = (
         subscribers.delete(cb);
       };
     },
-    _update(action) {
-      const mutated = mutate(state, action, itemSize);
+    _update(type, payload) {
+      const mutated = ((): boolean => {
+        switch (type) {
+          case ACTION_UPDATE_CACHE_LENGTH: {
+            if (state._cache._length === payload) return false;
+            state._cache = resetCache(payload, itemSize, state._cache);
+            return true;
+          }
+          case ACTION_UPDATE_ITEM_SIZES: {
+            const updated = payload.filter(
+              ([index, size]) => state._cache._sizes[index] !== size
+            );
+            // Skip if all items are cached and not updated
+            if (!updated.length) {
+              return false;
+            }
+
+            const jump: [index: number, sizeDiff: number][] = [];
+            updated.forEach(([index, size]) => {
+              jump.push([index, size - getItemSize(state._cache, index)]);
+              setItemSize(state._cache as Writeable<Cache>, index, size);
+            });
+            state._jump = jump;
+            return true;
+          }
+          case ACTION_UPDATE_VIEWPORT: {
+            if (
+              state._viewportWidth === payload._width &&
+              state._viewportHeight === payload._height
+            ) {
+              return false;
+            }
+            state._viewportWidth = payload._width;
+            state._viewportHeight = payload._height;
+            return true;
+          }
+          case ACTION_HANDLE_SCROLL: {
+            const prevStartIndex = state._startIndex;
+            const prevOffset = computeStartOffset(
+              state._cache as Writeable<Cache>,
+              prevStartIndex
+            );
+            if (prevOffset === payload) {
+              return false;
+            }
+            return (
+              (state._startIndex = findStartIndexWithOffset(
+                state._cache,
+                payload,
+                prevStartIndex,
+                prevOffset
+              )) !== prevStartIndex
+            );
+          }
+        }
+      })();
+
       if (mutated) {
         subscribers.forEach((cb) => {
           cb();
         });
-        if (scrollToQueue && action._type === UPDATE_ITEM_SIZES) {
+        if (scrollToQueue && type === ACTION_UPDATE_ITEM_SIZES) {
           scrollToQueue[0]();
         }
       }
