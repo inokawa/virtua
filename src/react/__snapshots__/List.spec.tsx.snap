@@ -74,7 +74,7 @@ exports[`horizontal should render 100 children 1`] = `
     style="overflow: auto hidden; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="position: absolute; top: 0px; left: 0px; width: 4480px; height: 100%; min-width: 4480px; min-height: 100%;"
+      style="position: absolute; top: 0px; left: 0px; width: 4360px; height: 100%; min-width: 4360px; min-height: 100%;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
@@ -116,20 +116,6 @@ exports[`horizontal should render 100 children 1`] = `
       >
         <div>
           5
-        </div>
-      </div>
-      <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 600px; display: flex;"
-      >
-        <div>
-          6
-        </div>
-      </div>
-      <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 700px; display: flex;"
-      >
-        <div>
-          7
         </div>
       </div>
     </div>
@@ -143,7 +129,7 @@ exports[`horizontal should render 1000 children 1`] = `
     style="overflow: auto hidden; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="position: absolute; top: 0px; left: 0px; width: 40480px; height: 100%; min-width: 40480px; min-height: 100%;"
+      style="position: absolute; top: 0px; left: 0px; width: 40360px; height: 100%; min-width: 40360px; min-height: 100%;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
@@ -185,20 +171,6 @@ exports[`horizontal should render 1000 children 1`] = `
       >
         <div>
           5
-        </div>
-      </div>
-      <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 600px; display: flex;"
-      >
-        <div>
-          6
-        </div>
-      </div>
-      <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 700px; display: flex;"
-      >
-        <div>
-          7
         </div>
       </div>
     </div>
@@ -212,7 +184,7 @@ exports[`horizontal should render 10000 children 1`] = `
     style="overflow: auto hidden; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="position: absolute; top: 0px; left: 0px; width: 400480px; height: 100%; min-width: 400480px; min-height: 100%;"
+      style="position: absolute; top: 0px; left: 0px; width: 400360px; height: 100%; min-width: 400360px; min-height: 100%;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; display: flex;"
@@ -254,20 +226,6 @@ exports[`horizontal should render 10000 children 1`] = `
       >
         <div>
           5
-        </div>
-      </div>
-      <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 600px; display: flex;"
-      >
-        <div>
-          6
-        </div>
-      </div>
-      <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 700px; display: flex;"
-      >
-        <div>
-          7
         </div>
       </div>
     </div>
@@ -487,7 +445,7 @@ exports[`vertical should render 100 children 1`] = `
     style="overflow: hidden auto; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="position: absolute; top: 0px; left: 0px; width: 100%; height: 4080px; min-width: 100%; min-height: 4080px;"
+      style="position: absolute; top: 0px; left: 0px; width: 100%; height: 4060px; min-width: 100%; min-height: 4060px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
@@ -529,20 +487,6 @@ exports[`vertical should render 100 children 1`] = `
       >
         <div>
           5
-        </div>
-      </div>
-      <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 300px;"
-      >
-        <div>
-          6
-        </div>
-      </div>
-      <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 350px;"
-      >
-        <div>
-          7
         </div>
       </div>
     </div>
@@ -556,7 +500,7 @@ exports[`vertical should render 1000 children 1`] = `
     style="overflow: hidden auto; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="position: absolute; top: 0px; left: 0px; width: 100%; height: 40080px; min-width: 100%; min-height: 40080px;"
+      style="position: absolute; top: 0px; left: 0px; width: 100%; height: 40060px; min-width: 100%; min-height: 40060px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
@@ -598,20 +542,6 @@ exports[`vertical should render 1000 children 1`] = `
       >
         <div>
           5
-        </div>
-      </div>
-      <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 300px;"
-      >
-        <div>
-          6
-        </div>
-      </div>
-      <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 350px;"
-      >
-        <div>
-          7
         </div>
       </div>
     </div>
@@ -625,7 +555,7 @@ exports[`vertical should render 10000 children 1`] = `
     style="overflow: hidden auto; position: relative; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
   >
     <div
-      style="position: absolute; top: 0px; left: 0px; width: 100%; height: 400080px; min-width: 100%; min-height: 400080px;"
+      style="position: absolute; top: 0px; left: 0px; width: 100%; height: 400060px; min-width: 100%; min-height: 400060px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px;"
@@ -667,20 +597,6 @@ exports[`vertical should render 10000 children 1`] = `
       >
         <div>
           5
-        </div>
-      </div>
-      <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 300px;"
-      >
-        <div>
-          6
-        </div>
-      </div>
-      <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 350px;"
-      >
-        <div>
-          7
         </div>
       </div>
     </div>

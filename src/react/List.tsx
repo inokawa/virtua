@@ -238,7 +238,7 @@ export interface ListProps {
   itemSize?: number;
   /**
    * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
-   * @defaultValue 6
+   * @defaultValue 4
    */
   overscan?: number;
   /**
@@ -282,7 +282,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     {
       children,
       itemSize: itemSizeProp = 40,
-      overscan = 6,
+      overscan = 4,
       horizontal: horizontalProp,
       rtl: rtlProp,
       endThreshold = 0,
