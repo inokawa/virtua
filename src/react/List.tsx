@@ -27,6 +27,8 @@ import {
   SCROLL_UP,
 } from "../core/scroller";
 
+const refKey = "current";
+
 const INITIAL_END_REACHED_INDEX = -1;
 
 type ItemProps = {
@@ -56,7 +58,7 @@ const Item = memo(
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(
-      () => scroller._initItem(ref.current!, index),
+      () => scroller._initItem(ref[refKey]!, index),
       [index]
     );
 
@@ -305,10 +307,10 @@ export const List = forwardRef<ListHandle, ListProps>(
     const elementsCount = elements.length;
 
     // https://github.com/facebook/react/issues/25191#issuecomment-1237456448
-    const storeRef = useRef<VirtualStore | undefined>();
+    const storeRef = useRef<VirtualStore>();
     const store =
-      storeRef.current ||
-      (storeRef.current = createVirtualStore(
+      storeRef[refKey] ||
+      (storeRef[refKey] = createVirtualStore(
         elementsCount,
         itemSizeProp,
         !!horizontalProp,
@@ -326,8 +328,8 @@ export const List = forwardRef<ListHandle, ListProps>(
     const [mountedIndexes, reset] = useState<Set<number>>(new Set<number>());
     const scrollerRef = useRef<Scroller>();
     const scroller =
-      scrollerRef.current ||
-      (scrollerRef.current = createScroller(store, () => {
+      scrollerRef[refKey] ||
+      (scrollerRef[refKey] = createScroller(store, () => {
         reset(new Set());
       }));
 
@@ -342,7 +344,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       });
     }, [elementsCount]);
 
-    useIsomorphicLayoutEffect(() => scroller._initRoot(rootRef.current!), []);
+    useIsomorphicLayoutEffect(() => scroller._initRoot(rootRef[refKey]!), []);
 
     useIsomorphicLayoutEffect(() => {
       if (!jump.length) return;
@@ -382,17 +384,17 @@ export const List = forwardRef<ListHandle, ListProps>(
     useEffect(() => {
       if (!onEndReached) return;
 
-      if (onEndReachedCalledIndex.current > count) {
+      if (onEndReachedCalledIndex[refKey] > count) {
         // Probably items have been refreshed, so reset index
-        onEndReachedCalledIndex.current = INITIAL_END_REACHED_INDEX;
+        onEndReachedCalledIndex[refKey] = INITIAL_END_REACHED_INDEX;
       }
 
       const endMargin = count - 1 - endIndex;
       if (
         endMargin <= endThreshold &&
-        onEndReachedCalledIndex.current < count
+        onEndReachedCalledIndex[refKey] < count
       ) {
-        onEndReachedCalledIndex.current = count;
+        onEndReachedCalledIndex[refKey] = count;
         onEndReached();
       }
     }, [endIndex]);
