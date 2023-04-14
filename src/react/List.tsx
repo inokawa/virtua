@@ -28,6 +28,7 @@ import {
 } from "../core/scroller";
 import { refKey } from "./utils";
 import { useStatic } from "./useStatic";
+import { useEvent } from "./useEvent";
 
 const INITIAL_END_REACHED_INDEX = -1;
 
@@ -280,6 +281,10 @@ export interface ListProps {
    * Callback invoked when scrolling reached to the end. The margin from the end is specified by {@link endThreshold}.
    */
   onEndReached?: () => void;
+  /**
+   * Callback invoked when scrolling stops.
+   */
+  onScrollStop?: () => void;
 }
 
 /**
@@ -298,6 +303,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       element = DefaultWindow,
       itemElement = "div",
       onEndReached,
+      onScrollStop: onScrollStopProp,
     },
     ref
   ): ReactElement => {
@@ -329,7 +335,9 @@ export const List = forwardRef<ListHandle, ListProps>(
     );
     const jump = useSyncExternalStore(store._subscribe, store._getJump);
     const rootRef = useRef<HTMLDivElement>(null);
+
     const onEndReachedCalledIndex = useRef<number>(INITIAL_END_REACHED_INDEX);
+    const onScrollStop = useEvent(onScrollStopProp);
 
     const [mountedIndexes, reset] = useState<Set<number>>(new Set<number>());
     const [scrolling, setScrolling] = useState(false);
@@ -338,6 +346,7 @@ export const List = forwardRef<ListHandle, ListProps>(
         setScrolling(isScrolling);
         if (!isScrolling) {
           reset(new Set());
+          onScrollStop();
         }
       })
     );
