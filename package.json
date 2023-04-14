@@ -44,7 +44,6 @@
     "@types/react-window": "1.8.5",
     "@types/use-sync-external-store": "0.0.3",
     "@typescript-eslint/parser": "5.55.0",
-    "babel-plugin-replace-import-extensions": "1.0.1",
     "concurrently": "7.2.2",
     "esbuild": "0.17.15",
     "esbuild-loader": "3.0.1",

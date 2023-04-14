@@ -25,16 +25,7 @@ export default {
       exclude: ["**/*.{spec,stories}.*"],
     }),
     getBabelOutputPlugin({
-      plugins: [
-        "@babel/plugin-transform-react-pure-annotations",
-        [
-          "replace-import-extensions",
-          {
-            "^use-sync-external-store/shim$":
-              "use-sync-external-store/shim/index.js",
-          },
-        ],
-      ],
+      plugins: ["@babel/plugin-transform-react-pure-annotations"],
     }),
     terser({
       ecma: 2015,
