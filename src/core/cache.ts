@@ -1,5 +1,5 @@
 import type { DeepReadonly, Writeable } from "./types";
-import { max, min, range } from "./utils";
+import { exists, max, min, range } from "./utils";
 
 export const UNCACHED = -1;
 
@@ -134,7 +134,7 @@ export const resetCache = (
       : 0,
     _sizes: range(length, (i) => {
       const size = cache && cache._sizes[i];
-      if (size != null) {
+      if (exists(size)) {
         return size;
       }
       return UNCACHED;
@@ -145,7 +145,7 @@ export const resetCache = (
         return 0;
       }
       const offset = cache && cache._offsets[i];
-      if (offset != null) {
+      if (exists(offset)) {
         return offset;
       }
       return UNCACHED;

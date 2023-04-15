@@ -19,7 +19,7 @@ import {
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSyncExternalStore } from "./useSyncExternalStore";
-import { max, min } from "../core/utils";
+import { exists, max, min } from "../core/utils";
 import {
   createScroller,
   Scroller,
@@ -95,7 +95,7 @@ const Item = memo(
 const isInvalidElement = <T extends ReactNode>(
   e: T
 ): e is Extract<T, null | undefined | boolean> =>
-  e == null || typeof e === "boolean";
+  !exists(e) || typeof e === "boolean";
 
 export interface CustomWindowComponentProps {
   children: ReactNode;

@@ -4,7 +4,7 @@ import {
   ACTION_UPDATE_VIEWPORT,
   VirtualStore,
 } from "./store";
-import { abs, debounce } from "./utils";
+import { abs, debounce, exists } from "./utils";
 
 export const SCROLL_STOP = 0;
 export const SCROLL_DOWN = 1;
@@ -55,7 +55,7 @@ export const createScroller = (
             });
           } else {
             const index = mountedIndexes.get(entry.target);
-            if (index != null) {
+            if (exists(index)) {
               resizes.push([
                 index,
                 entry.contentRect[isHorizontal ? "width" : "height"],
@@ -82,7 +82,7 @@ export const createScroller = (
   const updateScrollPosition = (offset: number, diff?: boolean) => {
     if (!rootElement) return;
     if (isRtl) {
-      if (isNegativeOffset == null) {
+      if (!exists(isNegativeOffset)) {
         // Assume offset type in rtl direction.
         // The scroll position is negative in spec however its not in some browsers, for example Chrome earlier than v85.
         // https://github.com/othree/jquery.rtl-scroll-type
