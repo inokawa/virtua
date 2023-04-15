@@ -50,26 +50,22 @@ const findIndex = (cache: Cache, i: number, distance: number): number => {
   if (distance >= 0) {
     // search forward
     while (i < cache._length - 1) {
-      const h = getItemSize(cache, i++);
-      sum += h;
-      if (sum >= distance) {
-        if (sum - h / 2 >= distance) {
-          i--;
-        }
+      if ((sum += getItemSize(cache, i++)) >= distance) {
         break;
       }
+    }
+    if (sum - getItemSize(cache, i) / 2 >= distance) {
+      i--;
     }
   } else {
     // search backward
     while (i > 0) {
-      const h = getItemSize(cache, --i);
-      sum -= h;
-      if (sum <= distance) {
-        if (sum + h / 2 < distance) {
-          i++;
-        }
+      if ((sum -= getItemSize(cache, --i)) <= distance) {
         break;
       }
+    }
+    if (sum + getItemSize(cache, i) / 2 < distance) {
+      i++;
     }
   }
 
