@@ -14,14 +14,6 @@ import type { Writeable } from "./types";
 
 export type ScrollJump = Readonly<[index: number, sizeDiff: number][]>;
 
-type State = {
-  _startIndex: number;
-  _viewportWidth: number;
-  _viewportHeight: number;
-  _cache: Cache;
-  _jump: ScrollJump;
-};
-
 export const ACTION_UPDATE_CACHE_LENGTH = 0;
 export const ACTION_UPDATE_ITEM_SIZES = 1;
 export const ACTION_UPDATE_VIEWPORT = 2;
@@ -63,50 +55,48 @@ export const createVirtualStore = (
   isHorizontal: boolean,
   isRtl: boolean
 ): VirtualStore => {
-  const subscribers = new Set<() => void>();
-  const state: State = {
-    _startIndex: 0,
-    _viewportWidth: 0,
-    _viewportHeight: 0,
-    _cache: resetCache(itemCount, itemSize),
-    _jump: [],
-  };
-  const getViewportSize = (): number =>
-    isHorizontal ? state._viewportWidth : state._viewportHeight;
-
+  let viewportWidth = 0;
+  let viewportHeight = 0;
+  let startIndex = 0;
+  let jump: ScrollJump = [];
+  let cache = resetCache(itemCount, itemSize);
   let scrollToQueue: [() => void, () => void] | undefined;
+
+  const subscribers = new Set<() => void>();
+  const getViewportSize = (): number =>
+    isHorizontal ? viewportWidth : viewportHeight;
 
   return {
     _getStartIndex() {
-      return state._startIndex;
+      return startIndex;
     },
     _getEndIndex() {
-      return findEndIndex(state._cache, state._startIndex, getViewportSize());
+      return findEndIndex(cache, startIndex, getViewportSize());
     },
     _isUnmeasuredItem(index) {
-      return state._cache._sizes[index] === UNCACHED;
+      return cache._sizes[index] === UNCACHED;
     },
     _hasUnmeasuredItemsInRange(startIndex) {
       return hasUnmeasuredItemsInRange(
-        state._cache,
+        cache,
         startIndex,
-        findEndIndex(state._cache, startIndex, getViewportSize())
+        findEndIndex(cache, startIndex, getViewportSize())
       );
     },
     _getItemOffset(index) {
-      return computeStartOffset(state._cache as Writeable<Cache>, index);
+      return computeStartOffset(cache as Writeable<Cache>, index);
     },
     _getViewportSize() {
       return getViewportSize();
     },
     _getScrollSize() {
-      return computeTotalSize(state._cache as Writeable<Cache>);
+      return computeTotalSize(cache as Writeable<Cache>);
     },
     _getItemCount() {
-      return state._cache._length;
+      return cache._length;
     },
     _getJump() {
-      return state._jump;
+      return jump;
     },
     _isHorizontal() {
       return isHorizontal;
@@ -115,7 +105,7 @@ export const createVirtualStore = (
       return isRtl;
     },
     _getItemIndexForScrollTo(offset) {
-      return findStartIndexWithOffset(state._cache, offset, 0, 0);
+      return findStartIndexWithOffset(cache, offset, 0, 0);
     },
     _waitForScrollDestinationItemsMeasured() {
       if (scrollToQueue) {
@@ -147,50 +137,50 @@ export const createVirtualStore = (
       const mutated = ((): boolean => {
         switch (type) {
           case ACTION_UPDATE_CACHE_LENGTH: {
-            if (state._cache._length === payload) return false;
-            state._cache = resetCache(payload, itemSize, state._cache);
+            if (cache._length === payload) return false;
+            cache = resetCache(payload, itemSize, cache);
             return true;
           }
           case ACTION_UPDATE_ITEM_SIZES: {
             const updated = payload.filter(
-              ([index, size]) => state._cache._sizes[index] !== size
+              ([index, size]) => cache._sizes[index] !== size
             );
             // Skip if all items are cached and not updated
             if (!updated.length) {
               return false;
             }
 
-            const jump: [index: number, sizeDiff: number][] = [];
+            const updatedJump: [index: number, sizeDiff: number][] = [];
             updated.forEach(([index, size]) => {
-              jump.push([index, size - getItemSize(state._cache, index)]);
-              setItemSize(state._cache as Writeable<Cache>, index, size);
+              updatedJump.push([index, size - getItemSize(cache, index)]);
+              setItemSize(cache as Writeable<Cache>, index, size);
             });
-            state._jump = jump;
+            jump = updatedJump;
             return true;
           }
           case ACTION_UPDATE_VIEWPORT: {
             if (
-              state._viewportWidth === payload._width &&
-              state._viewportHeight === payload._height
+              viewportWidth === payload._width &&
+              viewportHeight === payload._height
             ) {
               return false;
             }
-            state._viewportWidth = payload._width;
-            state._viewportHeight = payload._height;
+            viewportWidth = payload._width;
+            viewportHeight = payload._height;
             return true;
           }
           case ACTION_HANDLE_SCROLL: {
-            const prevStartIndex = state._startIndex;
+            const prevStartIndex = startIndex;
             const prevOffset = computeStartOffset(
-              state._cache as Writeable<Cache>,
+              cache as Writeable<Cache>,
               prevStartIndex
             );
             if (prevOffset === payload) {
               return false;
             }
             return (
-              (state._startIndex = findStartIndexWithOffset(
-                state._cache,
+              (startIndex = findStartIndexWithOffset(
+                cache,
                 payload,
                 prevStartIndex,
                 prevOffset
