@@ -1,6 +1,7 @@
 export const min = Math.min;
 export const max = Math.max;
 export const abs = Math.abs;
+export const now = Date.now;
 
 export const exists = <T>(v: T): v is Exclude<T, null | undefined> => v != null;
 
@@ -27,4 +28,18 @@ export const debounce = <T extends (...args: any[]) => void>(
   };
   debouncedFn._cancel = cancel;
   return debouncedFn;
+};
+
+export const throttle = <T extends (...args: any[]) => void>(
+  fn: T,
+  ms: number
+) => {
+  let time = now() - ms;
+  return (...args: Parameters<T>) => {
+    const n = now();
+    if (time + ms < n) {
+      time = n;
+      fn(...args);
+    }
+  };
 };
