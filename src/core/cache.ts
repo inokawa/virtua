@@ -129,13 +129,26 @@ export const resetCache = (
   return {
     _defaultItemSize: itemSize,
     _length: length,
-    _measuredOffsetIndex:
-      (cache && min(cache._measuredOffsetIndex, length - 1)) ?? 0,
-    _sizes: range(length, (i) => (cache && cache._sizes[i]) ?? UNCACHED),
-    _offsets: range(length, (i) =>
-      i === 0
-        ? 0 // first offset must be 0
-        : (cache && cache._offsets[i]) ?? UNCACHED
-    ),
+    _measuredOffsetIndex: cache
+      ? min(cache._measuredOffsetIndex, length - 1)
+      : 0,
+    _sizes: range(length, (i) => {
+      const size = cache && cache._sizes[i];
+      if (size != null) {
+        return size;
+      }
+      return UNCACHED;
+    }),
+    _offsets: range(length, (i) => {
+      if (i === 0) {
+        // first offset must be 0
+        return 0;
+      }
+      const offset = cache && cache._offsets[i];
+      if (offset != null) {
+        return offset;
+      }
+      return UNCACHED;
+    }),
   };
 };
