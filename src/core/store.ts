@@ -13,6 +13,7 @@ import {
 import type { Writeable } from "./types";
 
 export type ScrollJump = Readonly<[index: number, sizeDiff: number][]>;
+export type ItemResize = [index: number, size: number];
 
 export const ACTION_UPDATE_CACHE_LENGTH = 0;
 export const ACTION_UPDATE_ITEM_SIZES = 1;
@@ -21,10 +22,7 @@ export const ACTION_HANDLE_SCROLL = 3;
 
 type Actions =
   | [type: typeof ACTION_UPDATE_CACHE_LENGTH, length: number]
-  | [
-      type: typeof ACTION_UPDATE_ITEM_SIZES,
-      entries: [index: number, size: number][]
-    ]
+  | [type: typeof ACTION_UPDATE_ITEM_SIZES, entries: ItemResize[]]
   | [
       type: typeof ACTION_UPDATE_VIEWPORT,
       rect: { _width: number; _height: number }

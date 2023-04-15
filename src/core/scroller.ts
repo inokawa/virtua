@@ -2,6 +2,7 @@ import {
   ACTION_HANDLE_SCROLL,
   ACTION_UPDATE_ITEM_SIZES,
   ACTION_UPDATE_VIEWPORT,
+  ItemResize,
   VirtualStore,
 } from "./store";
 import { abs, debounce, throttle, exists } from "./utils";
@@ -46,7 +47,7 @@ export const createScroller = (
       _ro ||
       (_ro = new ResizeObserver((entries) => {
         // https://www.w3.org/TR/resize-observer/#intro
-        const resizes: [index: number, size: number][] = [];
+        const resizes: ItemResize[] = [];
         for (const entry of entries) {
           if (entry.target === rootElement) {
             store._update(ACTION_UPDATE_VIEWPORT, {
