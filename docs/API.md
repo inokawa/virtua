@@ -48,7 +48,7 @@ node_modules/@types/react/index.d.ts:361
 
 #### Defined in
 
-[src/react/List.tsx:192](https://github.com/inokawa/virtua/blob/0de8d13/src/react/List.tsx#L192)
+[src/react/List.tsx:194](https://github.com/inokawa/virtua/blob/bcc05ab/src/react/List.tsx#L194)
 
 ___
 
@@ -58,4 +58,4 @@ ___
 
 #### Defined in
 
-[src/react/List.tsx:132](https://github.com/inokawa/virtua/blob/0de8d13/src/react/List.tsx#L132)
+[src/react/List.tsx:134](https://github.com/inokawa/virtua/blob/bcc05ab/src/react/List.tsx#L134)
