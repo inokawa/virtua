@@ -26,23 +26,44 @@ export const setItemSize = (
   cache._measuredOffsetIndex = min(index, cache._measuredOffsetIndex);
 };
 
-export const computeTotalSize = (cache: Writeable<Cache>): number => {
+const computeOffset = (
+  cache: Writeable<Cache>,
+  index: number,
+  isTotal?: boolean
+): number => {
   if (!cache._length) return 0;
-  const lastIndex = cache._length - 1;
-  if (cache._measuredOffsetIndex >= lastIndex) {
-    return cache._offsets[lastIndex]! + getItemSize(cache, lastIndex);
+  if (cache._measuredOffsetIndex >= index) {
+    if (isTotal) {
+      return cache._offsets[index]! + getItemSize(cache, index);
+    } else {
+      return cache._offsets[index]!;
+    }
   }
 
   let i = cache._measuredOffsetIndex;
   let top = cache._offsets[i]!;
-  while (i <= lastIndex) {
+  while (i <= index) {
     cache._offsets[i] = top;
+    if (i === index && !isTotal) {
+      break;
+    }
     top += getItemSize(cache, i);
     i++;
   }
-
-  cache._measuredOffsetIndex = lastIndex;
+  // mark as measured
+  cache._measuredOffsetIndex = index;
   return top;
+};
+
+export const computeTotalSize = (cache: Writeable<Cache>): number => {
+  return computeOffset(cache, cache._length - 1, true);
+};
+
+export const computeStartOffset = (
+  cache: Writeable<Cache>,
+  index: number
+): number => {
+  return computeOffset(cache, index);
 };
 
 const findIndex = (cache: Cache, i: number, distance: number): number => {
@@ -94,29 +115,6 @@ export const hasUnmeasuredItemsInRange = (
     }
   }
   return false;
-};
-
-export const computeStartOffset = (
-  cache: Writeable<Cache>,
-  index: number
-): number => {
-  if (!cache._length) return 0;
-  if (cache._measuredOffsetIndex >= index) {
-    return cache._offsets[index]!;
-  }
-
-  let i = cache._measuredOffsetIndex;
-  let top = cache._offsets[i]!;
-  while (i <= index) {
-    cache._offsets[i] = top;
-    if (i === index) {
-      break;
-    }
-    top += getItemSize(cache, i);
-    i++;
-  }
-  cache._measuredOffsetIndex = index;
-  return top;
 };
 
 export const resetCache = (
