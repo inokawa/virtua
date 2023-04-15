@@ -33,10 +33,12 @@ export const computeTotalSize = (cache: Writeable<Cache>): number => {
     return cache._offsets[lastIndex]! + getItemSize(cache, lastIndex);
   }
 
-  let top = cache._offsets[cache._measuredOffsetIndex]!;
-  for (let i = cache._measuredOffsetIndex; i <= lastIndex; i++) {
+  let i = cache._measuredOffsetIndex;
+  let top = cache._offsets[i]!;
+  while (i <= lastIndex) {
     cache._offsets[i] = top;
     top += getItemSize(cache, i);
+    i++;
   }
 
   cache._measuredOffsetIndex = lastIndex;
@@ -48,9 +50,8 @@ const findIndex = (cache: Cache, i: number, distance: number): number => {
   if (distance >= 0) {
     // search forward
     while (i < cache._length - 1) {
-      const h = getItemSize(cache, i);
+      const h = getItemSize(cache, i++);
       sum += h;
-      i++;
       if (sum >= distance) {
         if (sum - h / 2 >= distance) {
           i--;
@@ -61,8 +62,7 @@ const findIndex = (cache: Cache, i: number, distance: number): number => {
   } else {
     // search backward
     while (i > 0) {
-      i--;
-      const h = getItemSize(cache, i);
+      const h = getItemSize(cache, --i);
       sum -= h;
       if (sum <= distance) {
         if (sum + h / 2 < distance) {
@@ -109,13 +109,15 @@ export const computeStartOffset = (
     return cache._offsets[index]!;
   }
 
-  let top = cache._offsets[cache._measuredOffsetIndex]!;
-  for (let i = cache._measuredOffsetIndex; i <= index; i++) {
+  let i = cache._measuredOffsetIndex;
+  let top = cache._offsets[i]!;
+  while (i <= index) {
     cache._offsets[i] = top;
     if (i === index) {
       break;
     }
     top += getItemSize(cache, i);
+    i++;
   }
   cache._measuredOffsetIndex = index;
   return top;
