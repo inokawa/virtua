@@ -4,7 +4,7 @@ import {
   ACTION_UPDATE_VIEWPORT,
   VirtualStore,
 } from "./store";
-import { abs, debounce, exists } from "./utils";
+import { abs, debounce, throttle, exists } from "./utils";
 
 export const SCROLL_STOP = 0;
 export const SCROLL_DOWN = 1;
@@ -170,19 +170,45 @@ export const createScroller = (
         syncViewportToScrollPosition();
         scrollDirection = SCROLL_STOP;
         notifyStop();
-      }, 300);
+      }, 150);
 
       const onScroll = () => {
         syncViewportToScrollPosition();
         onScrollStopped();
       };
 
+      // Infer scroll state also from wheel events
+      // Sometimes scroll events do not fire when frame dropped even if the visual have been already scrolled
+      const onWheel = throttle((e: WheelEvent) => {
+        if (scrollDirection === SCROLL_STOP) {
+          // Scroll start should be detected with scroll event
+          return;
+        }
+        if (e.ctrlKey) {
+          // Probably a pinch-to-zoom gesture
+          return;
+        }
+        // Get delta before checking deltaMode for firefox behavior
+        // https://github.com/w3c/uievents/issues/181#issuecomment-392648065
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=1392460#c34
+        if (isHorizontal ? e.deltaX : e.deltaY) {
+          if (
+            prevOffset > 0 &&
+            prevOffset < store._getScrollSize() - store._getViewportSize()
+          ) {
+            onScrollStopped();
+          }
+        }
+      }, 50);
+
       ro.observe(root);
       root.addEventListener("scroll", onScroll);
+      root.addEventListener("wheel", onWheel, { passive: true });
 
       return () => {
         ro.disconnect();
         root.removeEventListener("scroll", onScroll);
+        root.removeEventListener("wheel", onWheel);
         onScrollStopped._cancel();
       };
     },
