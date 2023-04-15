@@ -1,5 +1,5 @@
 import typescript from "@rollup/plugin-typescript";
-import { terser } from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
 import { getBabelOutputPlugin } from "@rollup/plugin-babel";
 import pkg from "./package.json" assert { type: "json" };
 
@@ -30,7 +30,7 @@ export default {
     terser({
       ecma: 2015,
       module: true,
-      compress: { passes: 3, unsafe: true, keep_fargs: false },
+      compress: { passes: 5, unsafe: true, keep_fargs: false },
       mangle: { properties: { regex: "^_" } },
       format: {
         // https://github.com/terser/terser/pull/550
