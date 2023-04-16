@@ -58,6 +58,8 @@
     "react-cool-virtual": "0.7.0",
     "react-dom": "18.2.0",
     "react-is": "18.2.0",
+    "react-merge-refs": "2.0.1",
+    "react-select": "5.7.2",
     "react-virtualized": "9.22.3",
     "react-virtuoso": "4.2.0",
     "react-window": "1.8.8",
