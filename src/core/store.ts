@@ -14,6 +14,7 @@ import type { Writeable } from "./types";
 
 export type ScrollJump = Readonly<[index: number, sizeDiff: number][]>;
 export type ItemResize = [index: number, size: number];
+type ItemsRange = [startIndex: number, endIndex: number];
 
 export const ACTION_UPDATE_CACHE_LENGTH = 0;
 export const ACTION_UPDATE_ITEM_SIZES = 1;
@@ -30,8 +31,7 @@ type Actions =
   | [type: typeof ACTION_HANDLE_SCROLL, offset: number];
 
 export type VirtualStore = {
-  _getStartIndex(): number;
-  _getEndIndex(): number;
+  _getRange(): ItemsRange;
   _isUnmeasuredItem(index: number): boolean;
   _hasUnmeasuredItemsInRange(startIndex: number): boolean;
   _getItemOffset(index: number): number;
@@ -55,21 +55,34 @@ export const createVirtualStore = (
 ): VirtualStore => {
   let viewportWidth = 0;
   let viewportHeight = 0;
-  let startIndex = 0;
+  let scrollOffset = 0;
   let jump: ScrollJump = [];
   let cache = resetCache(itemCount, itemSize);
-  let scrollToQueue: [() => void, () => void] | undefined;
+  let _prevRange: ItemsRange = [0, 0];
+  let _scrollToQueue: [() => void, () => void] | undefined;
 
   const subscribers = new Set<() => void>();
   const getViewportSize = (): number =>
     isHorizontal ? viewportWidth : viewportHeight;
 
   return {
-    _getStartIndex() {
-      return startIndex;
-    },
-    _getEndIndex() {
-      return findEndIndex(cache, startIndex, getViewportSize());
+    _getRange() {
+      const [prevStartIndex, prevEndIndex] = _prevRange;
+      const prevOffset = computeStartOffset(
+        cache as Writeable<Cache>,
+        prevStartIndex
+      );
+      const start = findStartIndexWithOffset(
+        cache,
+        scrollOffset,
+        prevStartIndex,
+        prevOffset
+      );
+      const end = findEndIndex(cache, start, getViewportSize());
+      if (prevStartIndex === start && prevEndIndex === end) {
+        return _prevRange;
+      }
+      return (_prevRange = [start, end]);
     },
     _isUnmeasuredItem(index) {
       return cache._sizes[index] === UNCACHED;
@@ -106,19 +119,19 @@ export const createVirtualStore = (
       return findStartIndexWithOffset(cache, offset, 0, 0);
     },
     _waitForScrollDestinationItemsMeasured() {
-      if (scrollToQueue) {
+      if (_scrollToQueue) {
         // Cancel waiting scrollTo
-        scrollToQueue[1]();
+        _scrollToQueue[1]();
       }
       // The measurement will be done asynchronously and the timing is not predictable so we use promise.
       // For example, ResizeObserver may not fire when window is not visible.
       return new Promise((resolve, reject) => {
-        scrollToQueue = [
+        _scrollToQueue = [
           () => {
             // HACK: It should be resolved in the next microtask that is after React's render
             Promise.resolve().then(() => {
               resolve();
-              scrollToQueue = undefined;
+              _scrollToQueue = undefined;
             });
           },
           reject,
@@ -168,22 +181,8 @@ export const createVirtualStore = (
             return true;
           }
           case ACTION_HANDLE_SCROLL: {
-            const prevStartIndex = startIndex;
-            const prevOffset = computeStartOffset(
-              cache as Writeable<Cache>,
-              prevStartIndex
-            );
-            if (prevOffset === payload) {
-              return false;
-            }
-            return (
-              (startIndex = findStartIndexWithOffset(
-                cache,
-                payload,
-                prevStartIndex,
-                prevOffset
-              )) !== prevStartIndex
-            );
+            const prevOffset = scrollOffset;
+            return (scrollOffset = payload) !== prevOffset;
           }
         }
       })();
@@ -192,8 +191,8 @@ export const createVirtualStore = (
         subscribers.forEach((cb) => {
           cb();
         });
-        if (scrollToQueue && type === ACTION_UPDATE_ITEM_SIZES) {
-          scrollToQueue[0]();
+        if (_scrollToQueue && type === ACTION_UPDATE_ITEM_SIZES) {
+          _scrollToQueue[0]();
         }
       }
     },

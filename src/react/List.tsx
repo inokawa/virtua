@@ -315,11 +315,10 @@ export const List = forwardRef<ListHandle, ListProps>(
         !!rtlProp
       )
     );
-    const startIndex = useSyncExternalStore(
+    const [startIndex, endIndex] = useSyncExternalStore(
       store._subscribe,
-      store._getStartIndex
+      store._getRange
     );
-    const endIndex = useSyncExternalStore(store._subscribe, store._getEndIndex);
     const jump = useSyncExternalStore(store._subscribe, store._getJump);
     const rootRef = useRef<HTMLDivElement>(null);
     const onEndReachedCalledIndex = useRef<number>(INITIAL_END_REACHED_INDEX);

@@ -336,21 +336,21 @@ describe("findEndIndex", () => {
     _defaultItemSize: 30,
   };
 
-  describe("change index", () => {
-    it("should get if index is at start", () => {
+  describe("change offset", () => {
+    it("should get if offset is at start", () => {
       expect(findEndIndex(cache, 0, 100)).toBe(5);
     });
 
-    it("should get if index is at start + 1", () => {
+    it("should get if offset is at start + 1", () => {
       expect(findEndIndex(cache, 1, 100)).toBe(6);
     });
 
-    it("should get last if index is at end", () => {
+    it("should get last if offset is at end", () => {
       const last = filledSizes.length - 1;
       expect(findEndIndex(cache, last, 100)).toBe(last);
     });
 
-    it("should get if index is at end - 1", () => {
+    it("should get if offset is at end - 1", () => {
       const last = filledSizes.length - 1;
       expect(findEndIndex(cache, last - 1, 100)).toBe(last);
     });
@@ -702,6 +702,22 @@ describe("findStartIndex", () => {
       expect(findStartIndexWithOffset(cache, offset(4) - 1, 4, offset(4))).toBe(
         4
       );
+    });
+  });
+
+  describe("both", () => {
+    const filledSizes = range(10, (i) => (i % 2 === 0 ? 21 : 41));
+    const cache: Cache = {
+      _length: filledSizes.length,
+      _sizes: filledSizes,
+      _measuredOffsetIndex: filledSizes.length - 1,
+      _offsets: [0],
+      _defaultItemSize: 30,
+    };
+
+    it("should get same in forward and backward search", () => {
+      expect(findStartIndexWithOffset(cache, 1, 0, 0)).toBe(0);
+      expect(findStartIndexWithOffset(cache, 1, 1, filledSizes[0]!)).toBe(0);
     });
   });
 });
