@@ -2,12 +2,17 @@
 
 ![npm](https://img.shields.io/npm/v/virtua) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/virtua) ![npm](https://img.shields.io/npm/dw/virtua) [![check](https://github.com/inokawa/virtua/actions/workflows/check.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/check.yml) [![demo](https://github.com/inokawa/virtua/actions/workflows/demo.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/demo.yml)
 
-Simple, fast, small and flexible virtual list component for [React](https://github.com/facebook/react).
+A zero-config, fast and small (3kB) virtual list component for [React](https://github.com/facebook/react).
 
-- Virtualization with minimal setup.
-- As fast as alternatives (and also faster in several cases!).
-- Keeping bundle size small as much as possible (Currently [about 3kB gzipped](https://bundlephobia.com/package/virtua)).
-- Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, rtl direction, sticky, infinite scrolling, placeholder, scrollTo, dnd, table, and more.
+## Motivation
+
+This project is a challenge to rethink virtualization. The goals are...
+
+- **Minimal setup:** This library is designed to give the best performance with no configuration, not like alternatives, and also it handles common hard things in the real world (dynamic size measurement, scroll position adjustment in bottom-up scrolling and imperative scrolling, etc).
+- **Fast:** Scrolling without frame drop needs optimization in many aspects (reduce CPU usage, reduce GC, [reduce layout recalculation](https://gist.github.com/paulirish/5d52fb081b3570c81e3a), optimize for frameworks, etc). We are trying to combine the best of them.
+- **Small:** Its bundle size should be small as much as possible to be friendly with modern web development. Currently [about 3kB gzipped](https://bundlephobia.com/package/virtua).
+- **Flexible:** Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, rtl direction, sticky, infinite scrolling, placeholder, scrollTo, dnd, table, and more. See [live demo](#demo).
+- **Framework agnostic (WIP):** Currently only for React but we could support Vue, Svelte, Solid and more in the future.
 
 ## Demo
 
