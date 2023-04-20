@@ -65,7 +65,7 @@ const Item = memo(
     return (
       <Element
         ref={ref}
-        style={useMemo<CSSProperties>(() => {
+        style={useMemo((): CSSProperties => {
           const isHorizontal = store._isHorizontal();
           const leftOrRightKey = store._isRtl() ? "right" : "left";
           const style: CSSProperties = {
@@ -114,7 +114,7 @@ const DefaultWindow = forwardRef<any, CustomWindowComponentProps>(
     return (
       <div ref={ref} style={style}>
         <div
-          style={useMemo<CSSProperties>(() => {
+          style={useMemo((): CSSProperties => {
             const width = horizontal ? scrollSize : "100%";
             const height = horizontal ? "100%" : scrollSize;
             return {
@@ -172,8 +172,8 @@ const Window = ({
       scrolling={scrolling}
       horizontal={horizontal}
       rtl={store._isRtl()}
-      style={useMemo<CSSProperties>(
-        () => ({
+      style={useMemo(
+        (): CSSProperties => ({
           overflow: horizontal ? "auto hidden" : "hidden auto",
           position: "relative",
           contain: "strict",
