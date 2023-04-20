@@ -101,12 +101,16 @@ export interface CustomWindowComponentProps {
   children: ReactNode;
   style: CSSProperties;
   scrollSize: number;
+  scrolling: boolean;
   horizontal: boolean;
   rtl: boolean;
 }
 
 const DefaultWindow = forwardRef<any, CustomWindowComponentProps>(
-  ({ children, style, scrollSize, horizontal, rtl }, ref): ReactElement => {
+  (
+    { children, style, scrollSize, scrolling, horizontal, rtl },
+    ref
+  ): ReactElement => {
     return (
       <div ref={ref} style={style}>
         <div
@@ -121,8 +125,9 @@ const DefaultWindow = forwardRef<any, CustomWindowComponentProps>(
               height,
               minWidth: width,
               minHeight: height,
+              pointerEvents: scrolling ? "none" : "auto",
             };
-          }, [scrollSize])}
+          }, [scrollSize, scrolling])}
         >
           {children}
         </div>
@@ -138,12 +143,14 @@ const Window = ({
   _ref: ref,
   _store: store,
   _element: Element,
+  _scrolling: scrolling,
   _style: style,
 }: {
   _children: ReactNode;
   _ref: RefObject<HTMLDivElement>;
   _store: VirtualStore;
   _element: CustomWindowComponent;
+  _scrolling: boolean;
   _style: CSSProperties | undefined;
 }) => {
   const scrollSize = useSyncExternalStore(
@@ -162,6 +169,7 @@ const Window = ({
     <Element
       ref={ref}
       scrollSize={clampedScrollSize}
+      scrolling={scrolling}
       horizontal={horizontal}
       rtl={store._isRtl()}
       style={useMemo<CSSProperties>(
@@ -324,9 +332,13 @@ export const List = forwardRef<ListHandle, ListProps>(
     const onEndReachedCalledIndex = useRef<number>(INITIAL_END_REACHED_INDEX);
 
     const [mountedIndexes, reset] = useState<Set<number>>(new Set<number>());
+    const [scrolling, setScrolling] = useState(false);
     const scroller = useStatic(() =>
-      createScroller(store, () => {
-        reset(new Set());
+      createScroller(store, (isScrolling) => {
+        setScrolling(isScrolling);
+        if (!isScrolling) {
+          reset(new Set());
+        }
       })
     );
 
@@ -450,6 +462,7 @@ export const List = forwardRef<ListHandle, ListProps>(
         _ref={rootRef}
         _store={store}
         _element={element}
+        _scrolling={scrolling}
         _style={styleProp}
         _children={items}
       />
