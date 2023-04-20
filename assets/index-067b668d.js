@@ -1,0 +1,2 @@
+import{R as n}from"./index-fcd6345f.js";const u=n.createContext({});function m(t){return e;function e(o){const r=c(o.components);return n.createElement(t,{...o,allComponents:r})}}function c(t){const e=n.useContext(u);return n.useMemo(()=>typeof t=="function"?t(e):{...e,...t},[e,t])}const i={};function s({components:t,children:e,disableParentContext:o}){let r=c(t);return o&&(r=t||i),n.createElement(u.Provider,{value:r},e)}export{u as MDXContext,s as MDXProvider,c as useMDXComponents,m as withMDXComponents};
+//# sourceMappingURL=index-067b668d.js.map
