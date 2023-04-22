@@ -98,6 +98,9 @@ const isInvalidElement = <T extends ReactNode>(
 ): e is Extract<T, null | undefined | boolean> =>
   !exists(e) || typeof e === "boolean";
 
+/**
+ * Props of customized scrollable component.
+ */
 export interface CustomWindowComponentProps {
   children: ReactNode;
   style: CSSProperties;
@@ -195,6 +198,9 @@ const Window = ({
   );
 };
 
+/**
+ * Props of customized item component.
+ */
 export interface CustomItemComponentProps {
   style: CSSProperties;
   children: ReactNode;
@@ -268,12 +274,12 @@ export interface ListProps {
    */
   style?: CSSProperties;
   /**
-   * Customized element type for scrollable element.
+   * Customized element type for scrollable element. This element will get {@link CustomWindowComponentProps} as props.
    * @defaultValue {@link DefaultWindow}
    */
   element?: CustomWindowComponent;
   /**
-   * Customized element type for item element.
+   * Customized element type for item element. This element will get {@link CustomItemComponentProps} as props.
    * @defaultValue "div"
    */
   itemElement?: CustomItemComponentOrElement;
@@ -283,6 +289,7 @@ export interface ListProps {
   onEndReached?: () => void;
   /**
    * Callback invoked whenever scroll offset changes.
+   * @param offset Current scrollTop or scrollLeft.
    */
   onScroll?: (offset: number) => void;
   /**
