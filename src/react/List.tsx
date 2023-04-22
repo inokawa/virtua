@@ -161,18 +161,13 @@ const Window = ({
     store._subscribe,
     store._getScrollSize
   );
-  const viewportSize = useSyncExternalStore(
-    store._subscribe,
-    store._getViewportSize
-  );
-  const clampedScrollSize =
-    scrollSize >= viewportSize ? scrollSize : viewportSize;
 
   const horizontal = store._isHorizontal();
+
   return (
     <Element
       ref={ref}
-      scrollSize={clampedScrollSize}
+      scrollSize={scrollSize}
       scrolling={scrolling}
       horizontal={horizontal}
       rtl={store._isRtl()}
