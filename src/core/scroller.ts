@@ -29,7 +29,8 @@ export type Scroller = {
 
 export const createScroller = (
   store: VirtualStore,
-  onScrollStateChange: (scrolling: boolean) => void
+  emitScrollOffsetChange: (offset: number) => void,
+  emitScrollStateChange: (scrolling: boolean) => void
 ): Scroller => {
   let prevOffset = -1;
   let scrollDirection: ScrollDirection = SCROLL_STOP;
@@ -164,20 +165,21 @@ export const createScroller = (
           resized = false;
         }
         store._update(ACTION_HANDLE_SCROLL, (prevOffset = offset));
+        emitScrollOffsetChange(offset);
       };
 
       const onScrollStopped = debounce(() => {
         // Check scroll position once just after scrolling stopped
         syncViewportToScrollPosition();
         scrollDirection = SCROLL_STOP;
-        onScrollStateChange(false);
+        emitScrollStateChange(false);
       }, 150);
 
       const onScroll = () => {
         const isScrollStart = scrollDirection === SCROLL_STOP;
         syncViewportToScrollPosition();
         if (isScrollStart) {
-          onScrollStateChange(true);
+          emitScrollStateChange(true);
         }
         onScrollStopped();
       };

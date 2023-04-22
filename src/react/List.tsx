@@ -282,6 +282,10 @@ export interface ListProps {
    */
   onEndReached?: () => void;
   /**
+   * Callback invoked whenever scroll offset changes.
+   */
+  onScroll?: (offset: number) => void;
+  /**
    * Callback invoked when scrolling stops.
    */
   onScrollStop?: () => void;
@@ -303,6 +307,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       element = DefaultWindow,
       itemElement = "div",
       onEndReached,
+      onScroll: onScrollProp,
       onScrollStop: onScrollStopProp,
     },
     ref
@@ -337,12 +342,13 @@ export const List = forwardRef<ListHandle, ListProps>(
     const rootRef = useRef<HTMLDivElement>(null);
 
     const onEndReachedCalledIndex = useRef<number>(INITIAL_END_REACHED_INDEX);
+    const onScroll = useEvent(onScrollProp);
     const onScrollStop = useEvent(onScrollStopProp);
 
     const [mountedIndexes, reset] = useState<Set<number>>(new Set<number>());
     const [scrolling, setScrolling] = useState(false);
     const scroller = useStatic(() =>
-      createScroller(store, (isScrolling) => {
+      createScroller(store, onScroll, (isScrolling) => {
         setScrolling(isScrolling);
         if (!isScrolling) {
           reset(new Set());
