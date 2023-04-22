@@ -16,6 +16,8 @@ Props of [List](../API.md#list).
 - [element](ListProps.md#element)
 - [itemElement](ListProps.md#itemelement)
 - [onEndReached](ListProps.md#onendreached)
+- [onScroll](ListProps.md#onscroll)
+- [onScrollStop](ListProps.md#onscrollstop)
 
 ## Properties
 
@@ -27,7 +29,7 @@ Elements rendered by this component.
 
 #### Defined in
 
-[src/react/List.tsx:241](https://github.com/inokawa/virtua/blob/0778171/src/react/List.tsx#L241)
+[src/react/List.tsx:242](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L242)
 
 ___
 
@@ -43,7 +45,7 @@ Item size hint for unmeasured items. It's recommended to specify this prop if it
 
 #### Defined in
 
-[src/react/List.tsx:246](https://github.com/inokawa/virtua/blob/0778171/src/react/List.tsx#L246)
+[src/react/List.tsx:247](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L247)
 
 ___
 
@@ -59,7 +61,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/react/List.tsx:251](https://github.com/inokawa/virtua/blob/0778171/src/react/List.tsx#L251)
+[src/react/List.tsx:252](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L252)
 
 ___
 
@@ -71,7 +73,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/List.tsx:255](https://github.com/inokawa/virtua/blob/0778171/src/react/List.tsx#L255)
+[src/react/List.tsx:256](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L256)
 
 ___
 
@@ -83,7 +85,7 @@ You have to set true if you use this component under `direction: rtl` style.
 
 #### Defined in
 
-[src/react/List.tsx:259](https://github.com/inokawa/virtua/blob/0778171/src/react/List.tsx#L259)
+[src/react/List.tsx:260](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L260)
 
 ___
 
@@ -99,7 +101,7 @@ Number of items to be the margin from the end of the scroll. See also [onEndReac
 
 #### Defined in
 
-[src/react/List.tsx:264](https://github.com/inokawa/virtua/blob/0778171/src/react/List.tsx#L264)
+[src/react/List.tsx:265](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L265)
 
 ___
 
@@ -111,7 +113,7 @@ Inline style prop to override style of scrollable element.
 
 #### Defined in
 
-[src/react/List.tsx:268](https://github.com/inokawa/virtua/blob/0778171/src/react/List.tsx#L268)
+[src/react/List.tsx:269](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L269)
 
 ___
 
@@ -127,7 +129,7 @@ DefaultWindow
 
 #### Defined in
 
-[src/react/List.tsx:273](https://github.com/inokawa/virtua/blob/0778171/src/react/List.tsx#L273)
+[src/react/List.tsx:274](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L274)
 
 ___
 
@@ -143,7 +145,7 @@ Customized element type for item element.
 
 #### Defined in
 
-[src/react/List.tsx:278](https://github.com/inokawa/virtua/blob/0778171/src/react/List.tsx#L278)
+[src/react/List.tsx:279](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L279)
 
 ___
 
@@ -163,4 +165,50 @@ Callback invoked when scrolling reached to the end. The margin from the end is s
 
 #### Defined in
 
-[src/react/List.tsx:282](https://github.com/inokawa/virtua/blob/0778171/src/react/List.tsx#L282)
+[src/react/List.tsx:283](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L283)
+
+___
+
+### onScroll
+
+• `Optional` **onScroll**: (`offset`: `number`) => `void`
+
+#### Type declaration
+
+▸ (`offset`): `void`
+
+Callback invoked whenever scroll offset changes.
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `offset` | `number` |
+
+##### Returns
+
+`void`
+
+#### Defined in
+
+[src/react/List.tsx:287](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L287)
+
+___
+
+### onScrollStop
+
+• `Optional` **onScrollStop**: () => `void`
+
+#### Type declaration
+
+▸ (): `void`
+
+Callback invoked when scrolling stops.
+
+##### Returns
+
+`void`
+
+#### Defined in
+
+[src/react/List.tsx:291](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L291)
