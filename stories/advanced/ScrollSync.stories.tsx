@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import React, { useRef } from "react";
+import React, { startTransition, useRef } from "react";
 import { List, ListHandle } from "../../src";
 
 const createRows = (num: number) => {
@@ -33,15 +33,17 @@ export const ScrollSync: StoryObj = {
         style={{
           display: "flex",
           flexDirection: "row",
-          width: 800,
-          height: 400,
+          width: "100%",
+          height: "100%",
         }}
       >
         <List
           ref={leftRef}
           style={{ flex: 1 }}
           onScroll={(offset) => {
-            rightRef.current?.scrollToOffset(offset);
+            startTransition(() => {
+              rightRef.current?.scrollToOffset(offset);
+            });
           }}
         >
           {createRows(1000)}
@@ -50,7 +52,9 @@ export const ScrollSync: StoryObj = {
           ref={rightRef}
           style={{ flex: 1 }}
           onScroll={(offset) => {
-            leftRef.current?.scrollToOffset(offset);
+            startTransition(() => {
+              leftRef.current?.scrollToOffset(offset);
+            });
           }}
         >
           {createRows(1000)}
