@@ -380,24 +380,32 @@ export const List = forwardRef<ListHandle, ListProps>(
           scroller._updateScrollPosition(diff, true);
         }
       } else if (scrollDirection === SCROLL_MANUAL) {
-        const isStartInView = startIndex === 0;
-        const isEndInView = endIndex - (count - 1) === 0;
-        const diff = jump.reduce((acc, [index, j]) => {
-          if (index < startIndex) {
-            // Keep start if scroll position is not stuck to the start
-            if (!isStartInView) {
-              acc += j;
+        const offset = store._getScrollOffset();
+        if (offset === 0) {
+          // Do nothing to stick to the start
+        } else {
+          const allDiff = jump.reduce((acc, [, j]) => acc + j, 0);
+          if (
+            store._getScrollSize() -
+              (offset + store._getViewportSize() + allDiff) <=
+            0
+          ) {
+            // Keep end to stick to the end
+            if (allDiff) {
+              scroller._updateScrollPosition(offset + allDiff);
             }
           } else {
-            // Keep end if scroll position is stuck to the end
-            if (!isStartInView && isEndInView) {
-              acc += j;
+            // Keep start at mid
+            const diff = jump.reduce((acc, [index, j]) => {
+              if (index < startIndex) {
+                acc += j;
+              }
+              return acc;
+            }, 0);
+            if (diff) {
+              scroller._updateScrollPosition(diff, true);
             }
           }
-          return acc;
-        }, 0);
-        if (diff) {
-          scroller._updateScrollPosition(diff, true);
         }
       } else {
         // NOP
