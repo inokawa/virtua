@@ -20,7 +20,6 @@ type ScrollDirection =
 export type Scroller = {
   _initRoot: (rootElement: HTMLElement) => () => void;
   _initItem: (itemElement: HTMLElement, index: number) => () => void;
-  _getScrollPosition: () => number;
   _getScrollDirection: () => ScrollDirection;
   _getActualScrollSize: () => number;
   _updateScrollPosition: (offset: number, diff?: boolean) => void;
@@ -227,10 +226,6 @@ export const createScroller = (
         mountedIndexes.delete(el);
         ro.unobserve(el);
       };
-    },
-    _getScrollPosition() {
-      if (!rootElement) return 0;
-      return rootElement[scrollToKey];
     },
     _getScrollDirection() {
       return scrollDirection;

@@ -427,7 +427,7 @@ export const List = forwardRef<ListHandle, ListProps>(
       () => {
         return {
           get scrollOffset() {
-            return scroller._getScrollPosition();
+            return store._getScrollOffset();
           },
           get scrollSize() {
             return scroller._getActualScrollSize();
