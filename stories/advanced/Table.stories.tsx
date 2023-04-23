@@ -7,11 +7,10 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { List } from "../../src";
-import { CustomWindowComponentProps } from "../../src/react/List";
+import { VList, CustomWindowComponentProps } from "../../src";
 
 export default {
-  component: List,
+  component: VList,
 } as Meta;
 
 const COLUMN_WIDTHS = [100, 200, 300, 100, 200, 300, 100, 300, 400, 200];
@@ -83,7 +82,7 @@ const TableList = forwardRef<
 export const Table: StoryObj = {
   render: () => {
     return (
-      <List
+      <VList
         style={{
           width: "100%",
           height: "75%",
@@ -107,7 +106,7 @@ export const Table: StoryObj = {
             ))}
           </Fragment>
         ))}
-      </List>
+      </VList>
     );
   },
 };

@@ -203,9 +203,9 @@ type CustomItemComponentOrElement =
   | CustomItemComponent;
 
 /**
- * Methods of {@link List}.
+ * Methods of {@link VList}.
  */
-export interface ListHandle {
+export interface VListHandle {
   /**
    * Get current scrollTop or scrollLeft.
    */
@@ -236,9 +236,9 @@ export interface ListHandle {
 }
 
 /**
- * Props of {@link List}.
+ * Props of {@link VList}.
  */
-export interface ListProps extends WindowComponentAttributes {
+export interface VListProps extends WindowComponentAttributes {
   /**
    * Elements rendered by this component.
    */
@@ -292,9 +292,9 @@ export interface ListProps extends WindowComponentAttributes {
 }
 
 /**
- * Virtualized list component. See {@link ListProps} and {@link ListHandle}.
+ * Virtualized list component. See {@link VListProps} and {@link VListHandle}.
  */
-export const List = forwardRef<ListHandle, ListProps>(
+export const VList = forwardRef<VListHandle, VListProps>(
   (
     {
       children,

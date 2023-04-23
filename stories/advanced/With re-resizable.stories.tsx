@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { List } from "../../src";
+import { VList } from "../../src";
 import React, { CSSProperties, useCallback, useState } from "react";
 import { Enable, Resizable } from "re-resizable";
 
 export default {
-  component: List,
+  component: VList,
 } as Meta;
 
 const itemStyle: CSSProperties = {
@@ -65,7 +65,7 @@ export const Default: StoryObj = {
         defaultSize={{ width: 400, height: 400 }}
         style={{ border: "solid 4px #ccc" }}
       >
-        <List style={{ width: "100%", height: "100%" }}>
+        <VList style={{ width: "100%", height: "100%" }}>
           {Array.from({ length: 1000 }, (_, i) => (
             <ResizableItem
               key={i}
@@ -74,7 +74,7 @@ export const Default: StoryObj = {
               onResize={onResize}
             />
           ))}
-        </List>
+        </VList>
       </Resizable>
     );
   },

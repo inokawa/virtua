@@ -1,14 +1,14 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import {
-  List,
-  ListHandle,
+  VList,
+  VListHandle,
   CustomItemComponentProps,
   CustomWindowComponentProps,
 } from "../../src";
 
 export default {
-  component: List,
+  component: VList,
 } as Meta;
 
 const createRows = (num: number) => {
@@ -31,7 +31,7 @@ const createRows = (num: number) => {
 
 export const Default: StoryObj = {
   render: () => {
-    return <List style={{ height: "100vh" }}>{createRows(1000)}</List>;
+    return <VList style={{ height: "100vh" }}>{createRows(1000)}</VList>;
   },
 };
 
@@ -58,15 +58,15 @@ export const Horizontal: StoryObj = {
       <div>
         <div style={{ padding: 10, direction: "ltr" }}>
           <div>ltr</div>
-          <List style={{ width: "100%", height: 200 }} horizontal>
+          <VList style={{ width: "100%", height: 200 }} horizontal>
             {createColumns(1000)}
-          </List>
+          </VList>
         </div>
         <div style={{ padding: 10, direction: "rtl" }}>
           <div>rtl</div>
-          <List style={{ width: "100%", height: 200 }} horizontal rtl>
+          <VList style={{ width: "100%", height: 200 }} horizontal rtl>
             {createColumns(1000)}
-          </List>
+          </VList>
         </div>
       </div>
     );
@@ -76,7 +76,7 @@ export const Horizontal: StoryObj = {
 export const PaddingAndMargin: StoryObj = {
   render: () => {
     return (
-      <List
+      <VList
         style={{
           width: 400,
           height: 400,
@@ -100,7 +100,7 @@ export const PaddingAndMargin: StoryObj = {
             </div>
           );
         })}
-      </List>
+      </VList>
     );
   },
 };
@@ -108,7 +108,7 @@ export const PaddingAndMargin: StoryObj = {
 export const Sticky: StoryObj = {
   render: () => {
     return (
-      <List style={{ height: "100vh" }} itemSize={570}>
+      <VList style={{ height: "100vh" }} itemSize={570}>
         {Array.from({ length: 100 }).map((_, i) => {
           return (
             <div
@@ -140,7 +140,7 @@ export const Sticky: StoryObj = {
             </div>
           );
         })}
-      </List>
+      </VList>
     );
   },
 };
@@ -150,7 +150,7 @@ export const ScrollTo: StoryObj = {
     const LENGTH = 1000;
     const [scrollIndex, setScrollIndex] = useState(567);
     const [scrollOffset, setScrollOffset] = useState(1000);
-    const ref = useRef<ListHandle>(null);
+    const ref = useRef<VListHandle>(null);
     return (
       <div
         style={{ height: "100vh", display: "flex", flexDirection: "column" }}
@@ -203,9 +203,9 @@ export const ScrollTo: StoryObj = {
             </button>
           </div>
         </div>
-        <List ref={ref} style={{ flex: 1 }}>
+        <VList ref={ref} style={{ flex: 1 }}>
           {createRows(LENGTH)}
-        </List>
+        </VList>
       </div>
     );
   },
@@ -221,7 +221,7 @@ export const WithState: StoryObj = {
       12: true,
     });
     return (
-      <List style={{ height: "100vh" }}>
+      <VList style={{ height: "100vh" }}>
         {Array.from({ length: 1000 }).map((_, i) => {
           const active = !!actives[i];
           return (
@@ -263,7 +263,7 @@ export const WithState: StoryObj = {
             </div>
           );
         })}
-      </List>
+      </VList>
     );
   },
 };
@@ -323,7 +323,7 @@ export const IncreasingItems: StoryObj = {
             prepend
           </label>
         </div>
-        <List style={{ flex: 1 }}>
+        <VList style={{ flex: 1 }}>
           {rows.map((d, i) => (
             <div
               key={d}
@@ -336,7 +336,7 @@ export const IncreasingItems: StoryObj = {
               {d}
             </div>
           ))}
-        </List>
+        </VList>
       </div>
     );
   },
@@ -379,7 +379,7 @@ export const Ul: StoryObj = {
         }}
       >
         <div style={{ padding: 4 }}>header</div>
-        <List
+        <VList
           style={{
             flex: 1,
             background: "#fff",
@@ -389,7 +389,7 @@ export const Ul: StoryObj = {
           overscan={20}
         >
           {Array.from({ length: 1000 }).map((_, i) => i)}
-        </List>
+        </VList>
       </div>
     );
   },

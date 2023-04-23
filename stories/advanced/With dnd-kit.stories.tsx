@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { List } from "../../src";
+import { VList } from "../../src";
 import React, { CSSProperties, forwardRef, useCallback, useState } from "react";
 import {
   DndContext,
@@ -20,7 +20,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 
 export default {
-  component: List,
+  component: VList,
 } as Meta;
 
 const Item = forwardRef<HTMLDivElement, { id: number; style?: CSSProperties }>(
@@ -105,11 +105,11 @@ export const Default: StoryObj = {
         }, [])}
       >
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          <List style={{ width: 400, height: 600 }}>
+          <VList style={{ width: 400, height: 600 }}>
             {items.map((id) => (
               <SortableItem key={id} id={id} />
             ))}
-          </List>
+          </VList>
         </SortableContext>
         <DragOverlay>
           {activeId != null ? <Item id={activeId} /> : null}

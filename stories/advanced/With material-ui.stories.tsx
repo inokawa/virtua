@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { List } from "../../src";
+import { VList } from "../../src";
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import ListItem from "@mui/material/ListItem";
@@ -9,7 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 
 export default {
-  component: List,
+  component: VList,
 } as Meta;
 
 export const Default: StoryObj = {
@@ -25,7 +25,7 @@ export const Default: StoryObj = {
           bgcolor: "background.paper",
         }}
       >
-        <List style={{ width: "100%", height: "100%" }}>
+        <VList style={{ width: "100%", height: "100%" }}>
           {Array.from({ length: 1000 }, (_, i) => {
             const labelId = `checkbox-list-label-${i}`;
             return (
@@ -53,7 +53,7 @@ export const Default: StoryObj = {
               </ListItem>
             );
           })}
-        </List>
+        </VList>
       </Box>
     );
   },

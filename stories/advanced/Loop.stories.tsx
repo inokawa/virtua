@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { useLayoutEffect, useMemo, useRef } from "react";
-import { List, ListHandle } from "../../src";
+import { VList, VListHandle } from "../../src";
 
 export default {
-  component: List,
+  component: VList,
 } as Meta;
 
 const Row = ({ i }: { i: number }) => {
@@ -29,7 +29,7 @@ const Row = ({ i }: { i: number }) => {
 
 export const Loop: StoryObj = {
   render: () => {
-    const ref = useRef<ListHandle>(null);
+    const ref = useRef<VListHandle>(null);
 
     const ITEM_LENGTH = 10;
     const items = useMemo(() => Array.from({ length: ITEM_LENGTH }), []);
@@ -42,7 +42,7 @@ export const Loop: StoryObj = {
       <div
         style={{ height: "100vh", display: "flex", flexDirection: "column" }}
       >
-        <List
+        <VList
           ref={ref}
           style={{ flex: 1 }}
           itemSize={200}
@@ -66,7 +66,7 @@ export const Loop: StoryObj = {
           {items.map((d, i) => (
             <Row key={i + "-2"} i={i} />
           ))}
-        </List>
+        </VList>
       </div>
     );
   },

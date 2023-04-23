@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { List, ListHandle } from "../../src";
+import { VList, VListHandle } from "../../src";
 import React, { CSSProperties, useMemo, useRef, useState } from "react";
 import { faker } from "@faker-js/faker";
 
 export default {
-  component: List,
+  component: VList,
 } as Meta;
 
 const rowStyle: CSSProperties = {
@@ -50,7 +50,7 @@ export const Default: StoryObj = {
       )
     )[0];
 
-    const ref = useRef<ListHandle>(null);
+    const ref = useRef<VListHandle>(null);
 
     const [value, setValue] = useState("");
     const [scrollValue, setScrollValue] = useState(0);
@@ -137,13 +137,13 @@ export const Default: StoryObj = {
           }}
         >
           <Row id="id" name="name" description="description" />
-          <List ref={ref} style={{ flex: 1 }}>
+          <VList ref={ref} style={{ flex: 1 }}>
             {!filtered.length ? (
               <div>No data.</div>
             ) : (
               filtered.map((d, i) => <Row key={i} {...d} />)
             )}
-          </List>
+          </VList>
         </div>
       </div>
     );

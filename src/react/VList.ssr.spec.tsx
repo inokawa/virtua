@@ -3,17 +3,17 @@
  */
 import { it, describe, expect } from "@jest/globals";
 import { renderToString, renderToStaticMarkup } from "react-dom/server";
-import { List } from "./List";
+import { VList } from "./VList";
 
 describe("SSR", () => {
   it("should render 10 items with renderToString", () => {
     expect(
       renderToString(
-        <List overscan={10}>
+        <VList overscan={10}>
           {Array.from({ length: 1000 }).map((_, i) => (
             <div key={i}>{i}</div>
           ))}
-        </List>
+        </VList>
       )
     ).toMatchSnapshot();
   });
@@ -21,11 +21,11 @@ describe("SSR", () => {
   it("should render 10 items with renderToStaticMarkup", () => {
     expect(
       renderToStaticMarkup(
-        <List overscan={10}>
+        <VList overscan={10}>
           {Array.from({ length: 1000 }).map((_, i) => (
             <div key={i}>{i}</div>
           ))}
-        </List>
+        </VList>
       )
     ).toMatchSnapshot();
   });
