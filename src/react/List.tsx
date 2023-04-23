@@ -25,8 +25,6 @@ import { refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useEvent } from "./useEvent";
 
-const INITIAL_END_REACHED_INDEX = -1;
-
 type ItemProps = {
   _children: ReactNode;
   _scroller: Scroller;
@@ -255,11 +253,6 @@ export interface ListProps {
    */
   rtl?: boolean;
   /**
-   * Number of items to be the margin from the end of the scroll. See also {@link onEndReached}.
-   * @defaultValue 0
-   */
-  endThreshold?: number;
-  /**
    * Inline style prop to override style of scrollable element.
    */
   style?: CSSProperties;
@@ -274,10 +267,6 @@ export interface ListProps {
    */
   itemElement?: CustomItemComponentOrElement;
   /**
-   * Callback invoked when scrolling reached to the end. The margin from the end is specified by {@link endThreshold}.
-   */
-  onEndReached?: () => void;
-  /**
    * Callback invoked whenever scroll offset changes.
    * @param offset Current scrollTop or scrollLeft.
    */
@@ -286,6 +275,15 @@ export interface ListProps {
    * Callback invoked when scrolling stops.
    */
   onScrollStop?: () => void;
+  /**
+   * Callback invoked when visible items range changes.
+   * @param payload `start` is the start index of viewable items. `end` is the end index of viewable items. `count` is the total count of items.
+   */
+  onRangeChange?: (payload: {
+    start: number;
+    end: number;
+    count: number;
+  }) => void;
 }
 
 /**
@@ -299,13 +297,12 @@ export const List = forwardRef<ListHandle, ListProps>(
       overscan = 4,
       horizontal: horizontalProp,
       rtl: rtlProp,
-      endThreshold = 0,
       style: styleProp,
       element = DefaultWindow,
       itemElement = "div",
-      onEndReached,
       onScroll: onScrollProp,
       onScrollStop: onScrollStopProp,
+      onRangeChange: onRangeChangeProp,
     },
     ref
   ): ReactElement => {
@@ -338,7 +335,6 @@ export const List = forwardRef<ListHandle, ListProps>(
     const jump = useSyncExternalStore(store._subscribe, store._getJump);
     const rootRef = useRef<HTMLDivElement>(null);
 
-    const onEndReachedCalledIndex = useRef<number>(INITIAL_END_REACHED_INDEX);
     const onScroll = useEvent(onScrollProp);
     const onScrollStop = useEvent(onScrollStopProp);
 
@@ -371,22 +367,14 @@ export const List = forwardRef<ListHandle, ListProps>(
     }, [jump]);
 
     useEffect(() => {
-      if (!onEndReached) return;
+      if (!onRangeChangeProp) return;
 
-      if (onEndReachedCalledIndex[refKey] > count) {
-        // Probably items have been refreshed, so reset index
-        onEndReachedCalledIndex[refKey] = INITIAL_END_REACHED_INDEX;
-      }
-
-      const endMargin = count - 1 - endIndex;
-      if (
-        endMargin <= endThreshold &&
-        onEndReachedCalledIndex[refKey] < count
-      ) {
-        onEndReachedCalledIndex[refKey] = count;
-        onEndReached();
-      }
-    }, [endIndex]);
+      onRangeChangeProp({
+        start: startIndex,
+        end: endIndex,
+        count,
+      });
+    }, [startIndex, endIndex]);
 
     useImperativeHandle(
       ref,
