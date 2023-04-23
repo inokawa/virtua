@@ -18,6 +18,8 @@ export type ScrollJump = Readonly<ItemJump[]>;
 export type ItemResize = [index: number, size: number];
 type ItemsRange = [startIndex: number, endIndex: number];
 
+export type ScrollMode = "rtl";
+
 export const SCROLL_STOP = 0;
 export const SCROLL_DOWN = 1;
 export const SCROLL_UP = 2;

@@ -64,7 +64,7 @@ export const Horizontal: StoryObj = {
         </div>
         <div style={{ padding: 10, direction: "rtl" }}>
           <div>rtl</div>
-          <VList style={{ width: "100%", height: 200 }} horizontal rtl>
+          <VList style={{ width: "100%", height: 200 }} horizontal mode="rtl">
             {createColumns(1000)}
           </VList>
         </div>

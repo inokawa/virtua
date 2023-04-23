@@ -13,7 +13,7 @@ import {
   useState,
   ReactFragment,
 } from "react";
-import { VirtualStore, createVirtualStore } from "../core/store";
+import { ScrollMode, VirtualStore, createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSyncExternalStore } from "./useSyncExternalStore";
 import { exists, max, min } from "../core/utils";
@@ -252,9 +252,11 @@ export interface VListProps extends WindowComponentAttributes {
    */
   horizontal?: boolean;
   /**
-   * You have to set true if you use this component under `direction: rtl` style.
+   * Scroll modes that should be set in certain situations.
+   *
+   * - `rtl`: You have to set this mode if you use this component under `direction: rtl` style.
    */
-  rtl?: boolean;
+  mode?: ScrollMode;
   /**
    * Customized element type for scrollable element. This element will get {@link CustomWindowComponentProps} as props.
    * @defaultValue {@link DefaultWindow}
@@ -304,7 +306,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       overscan = 4,
       initialItemCount,
       horizontal: horizontalProp,
-      rtl: rtlProp,
+      mode,
       element = DefaultWindow,
       itemElement = "div",
       onScroll: onScrollProp,
@@ -334,7 +336,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const [scrolling, setScrolling] = useState(false);
     const [store, resizer, scroller, isHorizontal, isRtl] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
-      const _isRtl = !!rtlProp;
+      const _isRtl = mode === "rtl";
       const _store = createVirtualStore(
         count,
         itemSizeProp,

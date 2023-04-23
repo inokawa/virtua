@@ -1,3 +1,4 @@
+export type { ScrollMode } from "./core/store";
 export { VList } from "./react/VList";
 export type {
   VListProps,
