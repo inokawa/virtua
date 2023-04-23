@@ -3,6 +3,7 @@ import {
   ACTION_UPDATE_ITEM_SIZES,
   ACTION_UPDATE_VIEWPORT,
   ItemResize,
+  ScrollJump,
   VirtualStore,
 } from "./store";
 import { abs, debounce, throttle, exists } from "./utils";
@@ -20,10 +21,9 @@ type ScrollDirection =
 export type Scroller = {
   _initRoot: (rootElement: HTMLElement) => () => void;
   _initItem: (itemElement: HTMLElement, index: number) => () => void;
-  _getScrollDirection: () => ScrollDirection;
   _getActualScrollSize: () => number;
-  _updateScrollPosition: (offset: number, diff?: boolean) => void;
   _scrollTo: (index: number, getCurrentOffset: () => number) => void;
+  _fixScrollJump: (jump: ScrollJump, startIndex: number) => void;
 };
 
 export const createScroller = (
@@ -227,11 +227,46 @@ export const createScroller = (
         ro.unobserve(el);
       };
     },
-    _getScrollDirection() {
-      return scrollDirection;
-    },
     _getActualScrollSize: getActualScrollSize,
-    _updateScrollPosition: updateScrollPosition,
     _scrollTo: scrollTo,
+    _fixScrollJump: (jump, startIndex) => {
+      // Compensate scroll jump
+      if (scrollDirection === SCROLL_UP) {
+        const diff = jump.reduce((acc, [, j]) => acc + j, 0);
+        if (diff) {
+          updateScrollPosition(diff, true);
+        }
+      } else if (scrollDirection === SCROLL_MANUAL) {
+        const offset = store._getScrollOffset();
+        if (offset === 0) {
+          // Do nothing to stick to the start
+        } else {
+          const allDiff = jump.reduce((acc, [, j]) => acc + j, 0);
+          if (
+            store._getScrollSize() -
+              (offset + store._getViewportSize() + allDiff) <=
+            0
+          ) {
+            // Keep end to stick to the end
+            if (allDiff) {
+              updateScrollPosition(offset + allDiff);
+            }
+          } else {
+            // Keep start at mid
+            const diff = jump.reduce((acc, [index, j]) => {
+              if (index < startIndex) {
+                acc += j;
+              }
+              return acc;
+            }, 0);
+            if (diff) {
+              updateScrollPosition(diff, true);
+            }
+          }
+        }
+      } else {
+        // NOP
+      }
+    },
   };
 };

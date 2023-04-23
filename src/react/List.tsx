@@ -20,12 +20,7 @@ import {
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSyncExternalStore } from "./useSyncExternalStore";
 import { exists, max, min } from "../core/utils";
-import {
-  createScroller,
-  Scroller,
-  SCROLL_MANUAL,
-  SCROLL_UP,
-} from "../core/scroller";
+import { createScroller, Scroller } from "../core/scroller";
 import { refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useEvent } from "./useEvent";
@@ -372,44 +367,7 @@ export const List = forwardRef<ListHandle, ListProps>(
     useIsomorphicLayoutEffect(() => {
       if (!jump.length) return;
 
-      // Compensate scroll jump
-      const scrollDirection = scroller._getScrollDirection();
-      if (scrollDirection === SCROLL_UP) {
-        const diff = jump.reduce((acc, [, j]) => acc + j, 0);
-        if (diff) {
-          scroller._updateScrollPosition(diff, true);
-        }
-      } else if (scrollDirection === SCROLL_MANUAL) {
-        const offset = store._getScrollOffset();
-        if (offset === 0) {
-          // Do nothing to stick to the start
-        } else {
-          const allDiff = jump.reduce((acc, [, j]) => acc + j, 0);
-          if (
-            store._getScrollSize() -
-              (offset + store._getViewportSize() + allDiff) <=
-            0
-          ) {
-            // Keep end to stick to the end
-            if (allDiff) {
-              scroller._updateScrollPosition(offset + allDiff);
-            }
-          } else {
-            // Keep start at mid
-            const diff = jump.reduce((acc, [index, j]) => {
-              if (index < startIndex) {
-                acc += j;
-              }
-              return acc;
-            }, 0);
-            if (diff) {
-              scroller._updateScrollPosition(diff, true);
-            }
-          }
-        }
-      } else {
-        // NOP
-      }
+      scroller._fixScrollJump(jump, startIndex);
     }, [jump]);
 
     useEffect(() => {
