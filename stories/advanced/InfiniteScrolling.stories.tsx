@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import React, { CSSProperties, useState } from "react";
+import React, { CSSProperties, startTransition, useRef, useState } from "react";
 import { List } from "../../src";
 import { faker } from "@faker-js/faker";
 
@@ -84,38 +84,58 @@ const Row = ({ name, text }: Data) => {
   );
 };
 
-const createItem = (): Data => ({
-  id: String(Math.random()),
-  name: `${faker.name.firstName()} ${faker.name.lastName()}`,
-  text: faker.lorem.paragraphs(4),
-});
-
-const ITEM_BATCH_COUNT = 50;
-const createItems = () =>
-  Array.from({ length: ITEM_BATCH_COUNT }, () => createItem());
-
 export const InfiniteScrolling: StoryObj = {
   render: () => {
+    const id = useRef(0);
+    const createItem = (): Data => ({
+      id: String(id.current++),
+      name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      text: faker.lorem.paragraphs(4),
+    });
+
+    const ITEM_BATCH_COUNT = 50;
+    const createItems = () =>
+      Array.from({ length: ITEM_BATCH_COUNT }, () => createItem());
+
     const [items, setItems] = useState(createItems);
     const [fetching, setFetching] = useState(false);
+    const [range, setRange] = useState([-1, -1]);
+    const fetchedCountRef = useRef(-1);
     return (
-      <List
-        style={{ height: "100vh" }}
-        endThreshold={30}
-        itemSize={200}
-        onEndReached={async () => {
-          setFetching(true);
-          await new Promise((r) => setTimeout(r, 1500));
-          setItems((prev) => [...prev, ...createItems()]);
-          setFetching(false);
-        }}
+      <div
+        style={{ height: "100vh", display: "flex", flexDirection: "column" }}
       >
-        {items.map((d) => (
-          <Row id={d.id} name={d.name} text={d.text} />
-        ))}
-        {/* Now hide spinner without unmounting because onEndReached is called twice due to item length change */}
-        <Spinner hidden={!fetching} />
-      </List>
+        <div
+          style={{
+            background: "white",
+            borderBottom: "solid 1px #ccc",
+          }}
+        >
+          items: {items.length} index: ({range[0]}, {range[1]})
+        </div>
+        <List
+          style={{ flex: 1 }}
+          itemSize={200}
+          onRangeChange={async ({ start, end, count }) => {
+            startTransition(() => {
+              setRange([start, end]);
+            });
+            if (end + 30 > count && fetchedCountRef.current < count) {
+              fetchedCountRef.current = count;
+              setFetching(true);
+              await new Promise((r) => setTimeout(r, 1500));
+              setItems((prev) => [...prev, ...createItems()]);
+              setFetching(false);
+            }
+          }}
+        >
+          {items.map((d) => (
+            <Row id={d.id} name={d.name} text={d.text} />
+          ))}
+          {/* Now hide spinner without unmounting because onRangeChange is called twice due to item length change */}
+          <Spinner hidden={!fetching} />
+        </List>
+      </div>
     );
   },
 };
