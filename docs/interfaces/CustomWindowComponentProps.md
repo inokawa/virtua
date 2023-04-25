@@ -1,5 +1,7 @@
 # Interface: CustomWindowComponentProps
 
+Props of customized scrollable component.
+
 ## Table of contents
 
 ### Properties
@@ -19,7 +21,7 @@
 
 #### Defined in
 
-[src/react/List.tsx:102](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L102)
+[src/react/List.tsx:100](https://github.com/inokawa/virtua/blob/e00e786/src/react/List.tsx#L100)
 
 ___
 
@@ -29,7 +31,7 @@ ___
 
 #### Defined in
 
-[src/react/List.tsx:103](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L103)
+[src/react/List.tsx:101](https://github.com/inokawa/virtua/blob/e00e786/src/react/List.tsx#L101)
 
 ___
 
@@ -39,7 +41,7 @@ ___
 
 #### Defined in
 
-[src/react/List.tsx:104](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L104)
+[src/react/List.tsx:102](https://github.com/inokawa/virtua/blob/e00e786/src/react/List.tsx#L102)
 
 ___
 
@@ -49,7 +51,7 @@ ___
 
 #### Defined in
 
-[src/react/List.tsx:105](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L105)
+[src/react/List.tsx:103](https://github.com/inokawa/virtua/blob/e00e786/src/react/List.tsx#L103)
 
 ___
 
@@ -59,7 +61,7 @@ ___
 
 #### Defined in
 
-[src/react/List.tsx:106](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L106)
+[src/react/List.tsx:104](https://github.com/inokawa/virtua/blob/e00e786/src/react/List.tsx#L104)
 
 ___
 
@@ -69,4 +71,4 @@ ___
 
 #### Defined in
 
-[src/react/List.tsx:107](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L107)
+[src/react/List.tsx:105](https://github.com/inokawa/virtua/blob/e00e786/src/react/List.tsx#L105)

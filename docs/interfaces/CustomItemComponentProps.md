@@ -1,5 +1,7 @@
 # Interface: CustomItemComponentProps
 
+Props of customized item component.
+
 ## Table of contents
 
 ### Properties
@@ -15,7 +17,7 @@
 
 #### Defined in
 
-[src/react/List.tsx:199](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L199)
+[src/react/List.tsx:195](https://github.com/inokawa/virtua/blob/e00e786/src/react/List.tsx#L195)
 
 ___
 
@@ -25,4 +27,4 @@ ___
 
 #### Defined in
 
-[src/react/List.tsx:200](https://github.com/inokawa/virtua/blob/6085b71/src/react/List.tsx#L200)
+[src/react/List.tsx:196](https://github.com/inokawa/virtua/blob/e00e786/src/react/List.tsx#L196)
