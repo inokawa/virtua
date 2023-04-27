@@ -220,10 +220,15 @@ export interface ListHandle {
    */
   scrollToIndex(index: number): void;
   /**
-   * Scroll to the item specified by offset.
+   * Scroll to the given offset.
    * @param offset offset from start
    */
-  scrollToOffset(offset: number): void;
+  scrollTo(offset: number): void;
+  /**
+   * Scroll by the given offset.
+   * @param offset offset from current position
+   */
+  scrollBy(offset: number): void;
 }
 
 /**
@@ -379,6 +384,15 @@ export const List = forwardRef<ListHandle, ListProps>(
     useImperativeHandle(
       ref,
       () => {
+        const scrollTo = (offset: number) => {
+          offset = max(offset, 0);
+
+          scroller._scrollTo(
+            store._getItemIndexForScrollTo(offset),
+            () => offset
+          );
+        };
+
         return {
           get scrollOffset() {
             return store._getScrollOffset();
@@ -391,13 +405,9 @@ export const List = forwardRef<ListHandle, ListProps>(
 
             scroller._scrollTo(index, () => store._getItemOffset(index));
           },
-          scrollToOffset(offset) {
-            offset = max(offset, 0);
-
-            scroller._scrollTo(
-              store._getItemIndexForScrollTo(offset),
-              () => offset
-            );
+          scrollTo,
+          scrollBy(offset) {
+            scrollTo(store._getScrollOffset() + offset);
           },
         };
       },

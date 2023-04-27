@@ -42,7 +42,7 @@ export const ScrollSync: StoryObj = {
           style={{ flex: 1 }}
           onScroll={(offset) => {
             startTransition(() => {
-              rightRef.current?.scrollToOffset(offset);
+              rightRef.current?.scrollTo(offset);
             });
           }}
         >
@@ -53,7 +53,7 @@ export const ScrollSync: StoryObj = {
           style={{ flex: 1 }}
           onScroll={(offset) => {
             startTransition(() => {
-              leftRef.current?.scrollToOffset(offset);
+              leftRef.current?.scrollTo(offset);
             });
           }}
         >

@@ -157,10 +157,17 @@ export const ScrollTo: StoryObj = {
             />
             <button
               onClick={() => {
-                ref.current?.scrollToOffset(scrollOffset);
+                ref.current?.scrollTo(scrollOffset);
               }}
             >
               scroll to offset
+            </button>
+            <button
+              onClick={() => {
+                ref.current?.scrollBy(scrollOffset);
+              }}
+            >
+              scroll by offset
             </button>
           </div>
         </div>
