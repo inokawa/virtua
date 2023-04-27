@@ -209,11 +209,11 @@ export interface ListHandle {
   /**
    * Get current scrollTop or scrollLeft.
    */
-  scrollOffset: number;
+  readonly scrollOffset: number;
   /**
    * Get current scrollHeight or scrollWidth.
    */
-  scrollSize: number;
+  readonly scrollSize: number;
   /**
    * Scroll to the item specified by index.
    * @param index index of item
