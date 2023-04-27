@@ -384,15 +384,6 @@ export const List = forwardRef<ListHandle, ListProps>(
     useImperativeHandle(
       ref,
       () => {
-        const scrollTo = (offset: number) => {
-          offset = max(offset, 0);
-
-          scroller._scrollTo(
-            store._getItemIndexForScrollTo(offset),
-            () => offset
-          );
-        };
-
         return {
           get scrollOffset() {
             return store._getScrollOffset();
@@ -401,13 +392,11 @@ export const List = forwardRef<ListHandle, ListProps>(
             return scroller._getActualScrollSize();
           },
           scrollToIndex(index) {
-            index = max(min(index, count - 1), 0);
-
-            scroller._scrollTo(index, () => store._getItemOffset(index));
+            scroller._scrollToIndex(index, count);
           },
-          scrollTo,
+          scrollTo: scroller._scrollTo,
           scrollBy(offset) {
-            scrollTo(store._getScrollOffset() + offset);
+            scroller._scrollTo(store._getScrollOffset() + offset);
           },
         };
       },

@@ -6,7 +6,7 @@ import {
   ScrollJump,
   VirtualStore,
 } from "./store";
-import { abs, debounce, throttle, exists } from "./utils";
+import { abs, debounce, throttle, exists, max, min } from "./utils";
 
 export const SCROLL_STOP = 0;
 export const SCROLL_DOWN = 1;
@@ -22,7 +22,8 @@ export type Scroller = {
   _initRoot: (rootElement: HTMLElement) => () => void;
   _initItem: (itemElement: HTMLElement, index: number) => () => void;
   _getActualScrollSize: () => number;
-  _scrollTo: (index: number, getCurrentOffset: () => number) => void;
+  _scrollTo: (offset: number) => void;
+  _scrollToIndex: (index: number, count: number) => void;
   _fixScrollJump: (jump: ScrollJump, startIndex: number) => void;
 };
 
@@ -138,6 +139,9 @@ export const createScroller = (
     }
   };
 
+  const calcTotalJump = (jump: ScrollJump): number =>
+    jump.reduce((acc, [, j]) => acc + j, 0);
+
   return {
     _initRoot(root) {
       rootElement = root;
@@ -228,11 +232,20 @@ export const createScroller = (
       };
     },
     _getActualScrollSize: getActualScrollSize,
-    _scrollTo: scrollTo,
+    _scrollTo(offset) {
+      offset = max(offset, 0);
+
+      scrollTo(store._getItemIndexForScrollTo(offset), () => offset);
+    },
+    _scrollToIndex(index, count) {
+      index = max(min(index, count - 1), 0);
+
+      scrollTo(index, () => store._getItemOffset(index));
+    },
     _fixScrollJump: (jump, startIndex) => {
       // Compensate scroll jump
       if (scrollDirection === SCROLL_UP) {
-        const diff = jump.reduce((acc, [, j]) => acc + j, 0);
+        const diff = calcTotalJump(jump);
         if (diff) {
           updateScrollPosition(diff, true);
         }
@@ -241,7 +254,7 @@ export const createScroller = (
         if (offset === 0) {
           // Do nothing to stick to the start
         } else {
-          const allDiff = jump.reduce((acc, [, j]) => acc + j, 0);
+          const allDiff = calcTotalJump(jump);
           if (
             store._getScrollSize() -
               (offset + store._getViewportSize() + allDiff) <=
