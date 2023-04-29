@@ -21,7 +21,7 @@ jobs:
           cache: "npm"
 
       - run: npm ci
-      - run: STORYBOOK_DEPLOY=true npm run storybook:build
+      - run: npm run storybook:build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
