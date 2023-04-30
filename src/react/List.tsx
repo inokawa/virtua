@@ -11,6 +11,7 @@ import {
   useEffect,
   RefObject,
   useState,
+  ReactFragment,
 } from "react";
 import {
   ACTION_UPDATE_CACHE_LENGTH,
@@ -313,7 +314,7 @@ export const List = forwardRef<ListHandle, ListProps>(
   ): ReactElement => {
     // Memoize element array
     const elements = useMemo(() => {
-      const arr: ReactNode[] = [];
+      const arr: (ReactElement | ReactFragment | string | number)[] = [];
       Children.forEach(children, (e) => {
         if (isInvalidElement(e)) {
           return;
