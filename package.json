@@ -62,7 +62,7 @@
     "react-select": "5.7.2",
     "react-virtualized": "9.22.5",
     "react-virtuoso": "4.2.0",
-    "react-window": "1.8.8",
+    "react-window": "1.8.9",
     "rimraf": "3.0.2",
     "rollup": "3.20.2",
     "storybook": "^7.0.6",
