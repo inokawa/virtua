@@ -101,28 +101,22 @@ export interface CustomWindowComponentProps {
   scrollSize: number;
   scrolling: boolean;
   horizontal: boolean;
-  rtl: boolean;
 }
 
 const DefaultWindow = forwardRef<any, CustomWindowComponentProps>(
   (
-    { children, style, scrollSize, scrolling, horizontal, rtl },
+    { children, style, scrollSize, scrolling, horizontal },
     ref
   ): ReactElement => {
     return (
       <div ref={ref} style={style}>
         <div
           style={useMemo((): CSSProperties => {
-            const width = horizontal ? scrollSize : "100%";
-            const height = horizontal ? "100%" : scrollSize;
             return {
-              position: "absolute",
-              top: 0,
-              [rtl ? "right" : "left"]: 0,
-              width,
-              height,
-              minWidth: width,
-              minHeight: height,
+              position: "relative",
+              width: horizontal ? scrollSize : "100%",
+              height: horizontal ? "100%" : scrollSize,
+              overflow: "hidden",
               pointerEvents: scrolling ? "none" : "auto",
             };
           }, [scrollSize, scrolling])}
@@ -164,11 +158,9 @@ const Window = ({
       scrollSize={scrollSize}
       scrolling={scrolling}
       horizontal={horizontal}
-      rtl={store._isRtl()}
       style={useMemo(
         (): CSSProperties => ({
           overflow: horizontal ? "auto hidden" : "hidden auto",
-          position: "relative",
           contain: "strict",
           // transform: "translate3d(0px, 0px, 0px)",
           // willChange: "scroll-position",
