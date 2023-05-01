@@ -371,6 +371,54 @@ exports[`horizontal should render with given width / height 1`] = `
 </DocumentFragment>
 `;
 
+exports[`should change components 1`] = `
+<DocumentFragment>
+  <div
+    style="overflow: hidden auto; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px;"
+  >
+    <ul
+      style="position: relative; height: 250px; margin: 0px;"
+    >
+      <li
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+      >
+        <div>
+          0
+        </div>
+      </li>
+      <li
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+      >
+        <div>
+          1
+        </div>
+      </li>
+      <li
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+      >
+        <div>
+          2
+        </div>
+      </li>
+      <li
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+      >
+        <div>
+          3
+        </div>
+      </li>
+      <li
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+      >
+        <div>
+          4
+        </div>
+      </li>
+    </ul>
+  </div>
+</DocumentFragment>
+`;
+
 exports[`vertical should render 1 children 1`] = `
 <DocumentFragment>
   <div

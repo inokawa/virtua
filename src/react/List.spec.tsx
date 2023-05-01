@@ -2,7 +2,8 @@ import { afterEach, it, expect, describe /*jest*/ } from "@jest/globals";
 import { render, cleanup /*waitFor*/ } from "@testing-library/react";
 // import { useEffect, useRef } from "react";
 
-import { List /*ListHandle */ } from "./List";
+import { CustomWindowComponentProps, List /*ListHandle */ } from "./List";
+import { forwardRef } from "react";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -82,6 +83,30 @@ global.IntersectionObserver = class {
 };
 
 afterEach(cleanup);
+
+it("should change components", async () => {
+  const UlList = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
+    ({ children, style, scrollSize }, ref) => {
+      return (
+        <div ref={ref} style={style}>
+          <ul style={{ position: "relative", height: scrollSize, margin: 0 }}>
+            {children}
+          </ul>
+        </div>
+      );
+    }
+  );
+  const { asFragment } = render(
+    <List element={UlList} itemElement="li">
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+    </List>
+  );
+  expect(asFragment()).toMatchSnapshot();
+});
 
 describe("vertical", () => {
   it("should render 1 children", async () => {
