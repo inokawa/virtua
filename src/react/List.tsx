@@ -24,7 +24,7 @@ import { exists, max, min } from "../core/utils";
 import { createScroller, Scroller } from "../core/scroller";
 import { refKey } from "./utils";
 import { useStatic } from "./useStatic";
-import { useEvent } from "./useEvent";
+import { useRefWithUpdate } from "./useRefWithUpdate";
 
 type ItemProps = {
   _children: ReactNode;
@@ -341,19 +341,25 @@ export const List = forwardRef<ListHandle, ListProps>(
     const jump = useSyncExternalStore(store._subscribe, store._getJump);
     const rootRef = useRef<HTMLDivElement>(null);
 
-    const onScroll = useEvent(onScrollProp);
-    const onScrollStop = useEvent(onScrollStopProp);
+    const onScroll = useRefWithUpdate(onScrollProp);
+    const onScrollStop = useRefWithUpdate(onScrollStopProp);
 
     const [mountedIndexes, reset] = useState<Set<number>>(new Set<number>());
     const [scrolling, setScrolling] = useState(false);
     const scroller = useStatic(() =>
-      createScroller(store, onScroll, (isScrolling) => {
-        setScrolling(isScrolling);
-        if (!isScrolling) {
-          reset(new Set());
-          onScrollStop();
+      createScroller(
+        store,
+        (offset) => {
+          onScroll[refKey] && onScroll[refKey](offset);
+        },
+        (isScrolling) => {
+          setScrolling(isScrolling);
+          if (!isScrolling) {
+            reset(new Set());
+            onScrollStop[refKey] && onScrollStop[refKey]();
+          }
         }
-      })
+      )
     );
 
     // The elements length and cached items length are different just after element is added/removed.
