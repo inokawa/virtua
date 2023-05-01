@@ -73,6 +73,38 @@ export const Horizontal: StoryObj = {
   },
 };
 
+export const PaddingAndMargin: StoryObj = {
+  render: () => {
+    return (
+      <List
+        style={{
+          width: 400,
+          height: 400,
+          padding: "80px 20px",
+          background: "lightgray",
+        }}
+      >
+        {Array.from({ length: 1000 }).map((_, i) => {
+          return (
+            <div
+              key={i}
+              style={{
+                height: 100,
+                borderRadius: 8,
+                margin: 10,
+                padding: 10,
+                background: "white",
+              }}
+            >
+              {i}
+            </div>
+          );
+        })}
+      </List>
+    );
+  },
+};
+
 export const Sticky: StoryObj = {
   render: () => {
     return (

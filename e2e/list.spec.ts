@@ -83,7 +83,7 @@ test("check if horizontally scrollable in direction:rtl", async ({ page }) => {
   await page.goto(storyUrl("basics-list--horizontal"));
 
   await page.waitForSelector(scrollableSelector);
-  const scrollable = (await page.$$(scrollableSelector))[1]!;
+  const scrollable = (await page.$$(scrollableSelector))[2]!;
 
   // check if start is displayed
   await expect(await scrollable.innerText()).toContain("0");
