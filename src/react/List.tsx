@@ -70,13 +70,11 @@ const Item = memo(
             [isHorizontal ? "height" : "width"]: "100%",
             [isHorizontal ? "top" : leftOrRightKey]: 0,
             [isHorizontal ? leftOrRightKey : "top"]: offset,
+            visibility: hide ? "hidden" : "visible",
             // willChange: "transform",
           };
           if (isHorizontal) {
             style.display = "flex";
-          }
-          if (hide) {
-            style.visibility = "hidden";
           }
           return style;
         }, [offset, hide])}
@@ -114,9 +112,10 @@ const DefaultWindow = forwardRef<any, CustomWindowComponentProps>(
           style={useMemo((): CSSProperties => {
             return {
               position: "relative",
+              overflow: "hidden",
+              visibility: "hidden",
               width: horizontal ? scrollSize : "100%",
               height: horizontal ? "100%" : scrollSize,
-              overflow: "hidden",
               pointerEvents: scrolling ? "none" : "auto",
             };
           }, [scrollSize, scrolling])}
