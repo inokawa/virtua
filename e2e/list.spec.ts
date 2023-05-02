@@ -137,34 +137,30 @@ test.describe("smoke", () => {
 });
 
 test.describe("check if scroll jump compensation works", () => {
-  test.beforeEach(async ({ page }) => {
+  test("vertical start -> end", async ({ page }) => {
     await page.goto(storyUrl("basics-list--default"));
-  });
-
-  test("top -> bottom", async ({ page }) => {
     const scrollable = await page.waitForSelector(scrollableSelector);
     await scrollable.waitForElementState("stable");
 
     // check if start is displayed
     await expect((await getFirstItem(scrollable)).text).toEqual("0");
 
-    // check if offset from top is always keeped
+    // check if offset from start is always keeped
     await scrollable.click();
-    const viewport = await scrollable.evaluate(
-      (e) => (e as HTMLElement).offsetHeight
-    );
+    const min = 200;
     const initial = await scrollable.evaluate((e) => e.scrollTop);
     let prev = initial;
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowDown", { delay: 10 });
-      let offsetFromTop = await scrollable.evaluate((e) => e.scrollTop);
-      await expect(offsetFromTop).toBeGreaterThanOrEqual(prev);
-      prev = offsetFromTop;
+      let offset = await scrollable.evaluate((e) => e.scrollTop);
+      await expect(offset).toBeGreaterThanOrEqual(prev);
+      prev = offset;
     }
-    await expect(prev).toBeGreaterThan(initial + viewport / 2);
+    await expect(prev).toBeGreaterThan(initial + min);
   });
 
-  test("bottom -> top", async ({ page }) => {
+  test("vertical end -> start", async ({ page }) => {
+    await page.goto(storyUrl("basics-list--default"));
     const scrollable = await page.waitForSelector(scrollableSelector);
     await scrollable.waitForElementState("stable");
 
@@ -174,24 +170,73 @@ test.describe("check if scroll jump compensation works", () => {
     // scroll to the end
     await scrollToBottom(scrollable);
 
-    // check if offset from bottom is always keeped
+    // check if offset from end is always keeped
     await scrollable.click();
-    const viewport = await scrollable.evaluate(
-      (e) => (e as HTMLElement).offsetHeight
-    );
+    const min = 200;
     const initial = await scrollable.evaluate(
       (e) => e.scrollHeight - e.scrollTop
     );
     let prev = initial;
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowUp", { delay: 10 });
-      let offsetFromBottom = await scrollable.evaluate(
+      let offset = await scrollable.evaluate(
         (e) => e.scrollHeight - e.scrollTop
       );
-      await expect(offsetFromBottom).toBeGreaterThanOrEqual(prev);
-      prev = offsetFromBottom;
+      await expect(offset).toBeGreaterThanOrEqual(prev);
+      prev = offset;
     }
-    await expect(prev).toBeGreaterThan(initial + viewport / 2);
+    await expect(prev).toBeGreaterThan(initial + min);
+  });
+
+  test("horizontal start -> end", async ({ page }) => {
+    await page.goto(storyUrl("basics-list--horizontal"));
+    const scrollable = await page.waitForSelector(scrollableSelector);
+    await scrollable.waitForElementState("stable");
+
+    // check if start is displayed
+    await expect((await getFirstItem(scrollable)).text).toEqual("Column 0");
+
+    // check if offset from start is always keeped
+    await scrollable.click();
+    const min = 200;
+    const initial = await scrollable.evaluate((e) => e.scrollLeft);
+    let prev = initial;
+    for (let i = 0; i < 500; i++) {
+      await page.keyboard.press("ArrowRight", { delay: 10 });
+      let offset = await scrollable.evaluate((e) => e.scrollLeft);
+      await expect(offset).toBeGreaterThanOrEqual(prev);
+      prev = offset;
+    }
+    await expect(prev).toBeGreaterThan(initial + min);
+  });
+
+  test("horizontal end -> start", async ({ page }) => {
+    await page.goto(storyUrl("basics-list--horizontal"));
+    const scrollable = await page.waitForSelector(scrollableSelector);
+    await scrollable.waitForElementState("stable");
+
+    // check if start is displayed
+    await expect((await getFirstItem(scrollable)).text).toEqual("Column 0");
+
+    // scroll to the end
+    await scrollToRight(scrollable);
+
+    // check if offset from end is always keeped
+    await scrollable.click();
+    const min = 200;
+    const initial = await scrollable.evaluate(
+      (e) => e.scrollWidth - e.scrollLeft
+    );
+    let prev = initial;
+    for (let i = 0; i < 500; i++) {
+      await page.keyboard.press("ArrowLeft", { delay: 10 });
+      let offset = await scrollable.evaluate(
+        (e) => e.scrollWidth - e.scrollLeft
+      );
+      await expect(offset).toBeGreaterThanOrEqual(prev);
+      prev = offset;
+    }
+    await expect(prev).toBeGreaterThan(initial + min);
   });
 });
 
