@@ -112,7 +112,6 @@ const DefaultWindow = forwardRef<any, CustomWindowComponentProps>(
           style={useMemo((): CSSProperties => {
             return {
               position: "relative",
-              overflow: "hidden",
               visibility: "hidden",
               width: horizontal ? scrollSize : "100%",
               height: horizontal ? "100%" : scrollSize,

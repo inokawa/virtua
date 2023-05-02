@@ -122,7 +122,7 @@ test.describe("smoke", () => {
     await page.goto(storyUrl("basics-list--horizontal"));
 
     await page.waitForSelector(scrollableSelector);
-    const scrollable = (await page.$$(scrollableSelector))[2]!;
+    const scrollable = (await page.$$(scrollableSelector))[1]!;
     await scrollable.waitForElementState("stable");
 
     // check if start is displayed
@@ -133,6 +133,28 @@ test.describe("smoke", () => {
 
     // check if the end is displayed
     await expect(await scrollable.innerText()).toContain("999");
+  });
+
+  test("sticky", async ({ page }) => {
+    await page.goto(storyUrl("basics-list--sticky"));
+
+    const scrollable = await page.waitForSelector(scrollableSelector);
+    await scrollable.waitForElementState("stable");
+
+    // check if start is displayed
+    await expect((await getFirstItem(scrollable)).text).toEqual("0");
+
+    // check if sticky items are always on top
+    await scrollable.click();
+    for (let i = 0; i < 5; i++) {
+      await page.keyboard.press("PageDown", { delay: 500 });
+      await expect(await scrollable.evaluate((e) => e.scrollTop)).not.toEqual(
+        0
+      );
+      const text = (await getFirstItem(scrollable)).text;
+      await expect(text).not.toContain("-");
+      await expect(Number(text)).not.toBeNaN();
+    }
   });
 });
 
