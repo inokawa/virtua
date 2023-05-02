@@ -118,6 +118,69 @@ test("check if horizontally scrollable in direction:rtl", async ({ page }) => {
   await expect(await scrollable.innerText()).toContain("999");
 });
 
+test.describe("check if scroll jump compensation works", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(storyUrl("basics-list--default"));
+  });
+
+  test("top -> bottom", async ({ page }) => {
+    const scrollable = await page.waitForSelector(scrollableSelector);
+    await scrollable.waitForElementState("stable");
+
+    // check if start is displayed
+    await expect((await getFirstItem(scrollable)).text).toEqual("0");
+
+    // check if offset from top is always keeped
+    await scrollable.click();
+    const initial = await scrollable.evaluate((e) => e.scrollTop);
+    let prev = initial;
+    for (let i = 0; i < 500; i++) {
+      await page.keyboard.press("ArrowDown");
+      await page.waitForTimeout(10);
+      let offsetFromTop = await scrollable.evaluate((e) => e.scrollTop);
+      await expect(offsetFromTop).toBeGreaterThanOrEqual(prev);
+      prev = offsetFromTop;
+    }
+    await expect(prev).not.toEqual(initial);
+  });
+
+  test("bottom -> top", async ({ page }) => {
+    const scrollable = await page.waitForSelector(scrollableSelector);
+    await scrollable.waitForElementState("stable");
+
+    // check if start is displayed
+    await expect((await getFirstItem(scrollable)).text).toEqual("0");
+
+    // scroll to the end
+    await scrollable.evaluate((e) => {
+      e.scrollTop = e.scrollHeight;
+    });
+    await scrollable.waitForElementState("stable");
+    // FIXME: scroll twice to reach definitely
+    await scrollable.evaluate((e) => {
+      e.scrollTop = e.scrollHeight;
+    });
+    await scrollable.waitForElementState("stable");
+
+    // check if offset from bottom is always keeped
+    await scrollable.click();
+    const initial = await scrollable.evaluate(
+      (e) => e.scrollHeight - e.scrollTop
+    );
+    let prev = initial;
+    for (let i = 0; i < 500; i++) {
+      await page.keyboard.press("ArrowUp");
+      await page.waitForTimeout(10);
+      let offsetFromBottom = await scrollable.evaluate(
+        (e) => e.scrollHeight - e.scrollTop
+      );
+      await expect(offsetFromBottom).toBeGreaterThanOrEqual(prev);
+      prev = offsetFromBottom;
+    }
+    await expect(prev).not.toEqual(initial);
+  });
+});
+
 test.describe("check if scrollToIndex works", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(storyUrl("basics-list--scroll-to"));
