@@ -4,6 +4,7 @@ const storyUrl = (id: string) =>
   `http://localhost:6006/iframe.html?id=${id}&viewMode=story`;
 
 const scrollableSelector = '*[style*="overflow"]';
+const itemsSelector = '*[style*="top"]';
 
 const approxymate = (v: number): number => Math.round(v / 100) * 100;
 
@@ -133,6 +134,87 @@ test.describe("smoke", () => {
 
     // check if the end is displayed
     await expect(await scrollable.innerText()).toContain("999");
+  });
+
+  test("padding", async ({ page }) => {
+    const scrollToBottom = async (
+      scrollable: ElementHandle<HTMLElement | SVGElement>
+    ) => {
+      // scroll repeatedly to reach definitely
+      await scrollable.evaluate(async (e) => {
+        await new Promise<void>((res) => {
+          const scroll = () => {
+            if (
+              e.scrollTop + (e as HTMLElement).offsetHeight >=
+              e.scrollHeight
+            ) {
+              e.removeEventListener("scroll", scroll);
+              res();
+            }
+            e.scrollTop = e.scrollHeight;
+          };
+          e.addEventListener("scroll", scroll);
+          e.scrollTop = e.scrollHeight;
+        });
+      });
+
+      await scrollable.waitForElementState("stable");
+      // wait for item measureing
+      // const items =
+      await Promise.all(
+        (
+          await scrollable.$$(itemsSelector)
+        ).map(async (i) => {
+          try {
+            await i.waitForElementState("stable");
+          } catch (e) {
+            // NOP
+          }
+        })
+      );
+
+      await scrollable.evaluate((e) => {
+        e.scrollTop = e.scrollHeight;
+      });
+    };
+
+    await page.goto(storyUrl("basics-list--padding-and-margin"));
+
+    const scrollable = await page.waitForSelector(scrollableSelector);
+    await scrollable.waitForElementState("stable");
+
+    const [topPadding, bottomPadding] = await scrollable.evaluate((e) => {
+      const s = getComputedStyle(e);
+      return [parseInt(s.paddingTop), parseInt(s.paddingBottom)];
+    });
+    await expect(topPadding).toBeGreaterThan(10);
+    await expect(bottomPadding).toBeGreaterThan(10);
+
+    // check if start is displayed
+    const topItem = (await scrollable.$$(itemsSelector))[0];
+    await expect(await topItem.textContent()).toEqual("0");
+    await expect(
+      await (async () => {
+        const rootRect = (await scrollable.boundingBox())!;
+        const itemRect = (await topItem.boundingBox())!;
+        return itemRect.y - rootRect.y;
+      })()
+    ).toEqual(topPadding);
+
+    // scroll to the end
+    await scrollToBottom(scrollable);
+
+    // check if the end is displayed
+    const items = await scrollable.$$(itemsSelector);
+    const bottomItem = items[items.length - 1];
+    await expect(await bottomItem.textContent()).toEqual("999");
+    await expect(
+      await (async () => {
+        const rootRect = (await scrollable.boundingBox())!;
+        const itemRect = (await bottomItem.boundingBox())!;
+        return rootRect.y + rootRect.height - (itemRect.y + itemRect.height);
+      })()
+    ).toEqual(bottomPadding);
   });
 
   test("sticky", async ({ page }) => {
