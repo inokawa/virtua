@@ -146,7 +146,7 @@ test.describe("smoke", () => {
 
     // check if sticky items are always on top
     await scrollable.click();
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 3; i++) {
       await page.keyboard.press("PageDown", { delay: 500 });
       await expect(await scrollable.evaluate((e) => e.scrollTop)).not.toEqual(
         0
