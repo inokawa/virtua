@@ -31,14 +31,27 @@ const getLastItem = (scrollable: ElementHandle<HTMLElement | SVGElement>) => {
     };
   });
 };
+const getFirstItemRtl = (
+  scrollable: ElementHandle<HTMLElement | SVGElement>
+) => {
+  return scrollable.evaluate((s) => {
+    const rect = s.getBoundingClientRect();
+    const el = document.elementFromPoint(rect.right - 1, rect.top + 1)!;
+    return {
+      text: el.textContent!,
+      top: el.getBoundingClientRect().top - rect.top,
+    };
+  });
+};
 
 test("check if vertically scrollable", async ({ page }) => {
   await page.goto(storyUrl("basics-list--default"));
 
   const scrollable = await page.waitForSelector(scrollableSelector);
+  await scrollable.waitForElementState("stable");
 
   // check if start is displayed
-  await expect(await scrollable.innerText()).toContain("0");
+  await expect((await getFirstItem(scrollable)).text).toEqual("0");
 
   // scroll to the end
   await scrollable.evaluate((e) => {
@@ -60,9 +73,10 @@ test("check if horizontally scrollable", async ({ page }) => {
 
   await page.waitForSelector(scrollableSelector);
   const scrollable = (await page.$$(scrollableSelector))[0]!;
+  await scrollable.waitForElementState("stable");
 
   // check if start is displayed
-  await expect(await scrollable.innerText()).toContain("0");
+  await expect((await getFirstItem(scrollable)).text).toEqual("Column 0");
 
   // scroll to the end
   await scrollable.evaluate((e) => {
@@ -84,9 +98,10 @@ test("check if horizontally scrollable in direction:rtl", async ({ page }) => {
 
   await page.waitForSelector(scrollableSelector);
   const scrollable = (await page.$$(scrollableSelector))[2]!;
+  await scrollable.waitForElementState("stable");
 
   // check if start is displayed
-  await expect(await scrollable.innerText()).toContain("0");
+  await expect((await getFirstItemRtl(scrollable)).text).toEqual("Column 0");
 
   // scroll to the end
   await scrollable.evaluate((e) => {
