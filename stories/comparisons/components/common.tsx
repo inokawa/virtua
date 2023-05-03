@@ -27,6 +27,8 @@ export const ScrollInput = ({ count }: { count: number }) => {
   );
 };
 
+export type TestComponent = typeof ItemWithRenderCount;
+
 const heights = [20, 40, 80, 77];
 export const ItemWithRenderCount = forwardRef<
   HTMLDivElement,

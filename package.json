@@ -70,6 +70,7 @@
     "typedoc": "0.23.28",
     "typedoc-plugin-markdown": "3.14.0",
     "typescript": "5.0.4",
+    "virtua": "^0.1.12",
     "vite": "4.3.3",
     "wait-on": "6.0.1"
   },

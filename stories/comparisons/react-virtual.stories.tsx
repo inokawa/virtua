@@ -1,58 +1,17 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import { useVirtual } from "@tanstack/react-virtual";
-import { List } from "../../src";
 import {
   HeavyItem,
   ItemWithRenderCount,
   ScrollInput,
   SimpleItem,
-} from "./components";
+} from "./components/common";
+import { ReactVirtualList } from "./components/react-virtual";
+import { VirtuaList } from "./components/virtua";
 
 export default {
-  component: useVirtual,
-};
-
-const RVList = ({
-  count,
-  Component,
-}: {
-  count: number;
-  Component: typeof ItemWithRenderCount;
-}) => {
-  const parentRef = useRef<HTMLDivElement>(null);
-  const rowVirtualizer = useVirtual({
-    size: count,
-    parentRef,
-  });
-  return (
-    <div ref={parentRef} style={{ flex: 1, overflow: "auto" }}>
-      <div
-        style={{
-          height: `${rowVirtualizer.totalSize}px`,
-          width: "100%",
-          position: "relative",
-        }}
-      >
-        {rowVirtualizer.virtualItems.map((item) => (
-          <div
-            key={item.key}
-            ref={item.measureRef}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              transform: `translateY(${item.start}px)`,
-            }}
-          >
-            <Component index={item.index} />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
+  component: ItemWithRenderCount,
+} satisfies Meta;
 
 export const DynamicHeight: StoryObj = {
   render: () => {
@@ -77,12 +36,8 @@ export const DynamicHeight: StoryObj = {
             overflow: "hidden",
           }}
         >
-          <List style={{ flex: 1 }}>
-            {Array.from({ length: ROW_COUNT }).map((_, i) => (
-              <ItemWithRenderCount key={i} index={i} />
-            ))}
-          </List>
-          <RVList count={ROW_COUNT} Component={ItemWithRenderCount} />
+          <VirtuaList count={ROW_COUNT} Component={ItemWithRenderCount} />
+          <ReactVirtualList count={ROW_COUNT} Component={ItemWithRenderCount} />
         </div>
       </div>
     );
@@ -112,12 +67,8 @@ export const HeavyComponent: StoryObj = {
             overflow: "hidden",
           }}
         >
-          <List style={{ flex: 1 }}>
-            {Array.from({ length: ROW_COUNT }).map((_, i) => (
-              <HeavyItem key={i} index={i} />
-            ))}
-          </List>
-          <RVList count={ROW_COUNT} Component={HeavyItem} />
+          <VirtuaList count={ROW_COUNT} Component={HeavyItem} />
+          <ReactVirtualList count={ROW_COUNT} Component={HeavyItem} />
         </div>
       </div>
     );
@@ -147,12 +98,8 @@ export const OneMillion: StoryObj = {
             overflow: "hidden",
           }}
         >
-          <List style={{ flex: 1 }}>
-            {Array.from({ length: ROW_COUNT }).map((_, i) => (
-              <SimpleItem key={i} index={i} />
-            ))}
-          </List>
-          <RVList count={ROW_COUNT} Component={SimpleItem} />
+          <VirtuaList count={ROW_COUNT} Component={SimpleItem} />
+          <ReactVirtualList count={ROW_COUNT} Component={SimpleItem} />
         </div>
       </div>
     );

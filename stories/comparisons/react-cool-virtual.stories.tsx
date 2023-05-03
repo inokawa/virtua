@@ -1,38 +1,17 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import useVirtual from "react-cool-virtual";
-import { List } from "../../src";
 import {
   HeavyItem,
   ItemWithRenderCount,
   ScrollInput,
   SimpleItem,
-} from "./components";
+} from "./components/common";
+import { ReactCoolVirtualList } from "./components/react-cool-virtual";
+import { VirtuaList } from "./components/virtua";
 
 export default {
-  component: useVirtual,
-};
-
-const RVList = ({
-  count,
-  Component,
-}: {
-  count: number;
-  Component: typeof ItemWithRenderCount;
-}) => {
-  const { outerRef, innerRef, items } = useVirtual({
-    itemCount: count,
-  });
-  return (
-    <div ref={outerRef} style={{ flex: 1, overflow: "auto" }}>
-      <div ref={innerRef}>
-        {items.map(({ index, measureRef }) => (
-          <Component key={index} index={index} ref={measureRef} />
-        ))}
-      </div>
-    </div>
-  );
-};
+  component: ItemWithRenderCount,
+} satisfies Meta;
 
 export const DynamicHeight: StoryObj = {
   render: () => {
@@ -57,12 +36,11 @@ export const DynamicHeight: StoryObj = {
             overflow: "hidden",
           }}
         >
-          <List style={{ flex: 1 }}>
-            {Array.from({ length: ROW_COUNT }).map((_, i) => (
-              <ItemWithRenderCount key={i} index={i} />
-            ))}
-          </List>
-          <RVList count={ROW_COUNT} Component={ItemWithRenderCount} />
+          <VirtuaList count={ROW_COUNT} Component={ItemWithRenderCount} />
+          <ReactCoolVirtualList
+            count={ROW_COUNT}
+            Component={ItemWithRenderCount}
+          />
         </div>
       </div>
     );
@@ -92,12 +70,8 @@ export const HeavyComponent: StoryObj = {
             overflow: "hidden",
           }}
         >
-          <List style={{ flex: 1 }}>
-            {Array.from({ length: ROW_COUNT }).map((_, i) => (
-              <HeavyItem key={i} index={i} />
-            ))}
-          </List>
-          <RVList count={ROW_COUNT} Component={HeavyItem} />
+          <VirtuaList count={ROW_COUNT} Component={HeavyItem} />
+          <ReactCoolVirtualList count={ROW_COUNT} Component={HeavyItem} />
         </div>
       </div>
     );
@@ -127,12 +101,8 @@ export const OneMillion: StoryObj = {
             overflow: "hidden",
           }}
         >
-          <List style={{ flex: 1 }}>
-            {Array.from({ length: ROW_COUNT }).map((_, i) => (
-              <SimpleItem key={i} index={i} />
-            ))}
-          </List>
-          <RVList count={ROW_COUNT} Component={SimpleItem} />
+          <VirtuaList count={ROW_COUNT} Component={SimpleItem} />
+          <ReactCoolVirtualList count={ROW_COUNT} Component={SimpleItem} />
         </div>
       </div>
     );

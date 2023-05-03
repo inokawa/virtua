@@ -1,23 +1,17 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import { Virtuoso } from "react-virtuoso";
-import { List } from "../../src";
 import {
   HeavyItem,
   ItemWithRenderCount,
   ScrollInput,
   SimpleItem,
-} from "./components";
+} from "./components/common";
+import { ReactVirtuosoList } from "./components/react-virtuoso";
+import { VirtuaList } from "./components/virtua";
 
 export default {
-  component: Virtuoso,
-} as Meta;
-
-const listStyle = { flex: 1 };
-
-const rvRenderer = (i) => <ItemWithRenderCount key={i} index={i} />;
-const rvHeavyItemRenderer = (i) => <HeavyItem key={i} index={i} />;
-const rvSimpleItemRenderer = (i) => <SimpleItem key={i} index={i} />;
+  component: ItemWithRenderCount,
+} satisfies Meta;
 
 export const DynamicHeight: StoryObj = {
   render: () => {
@@ -34,18 +28,11 @@ export const DynamicHeight: StoryObj = {
           <ScrollInput count={ROW_COUNT} />
         </div>
         <div style={{ display: "flex", flexDirection: "row", flex: 1, gap: 8 }}>
-          <List style={listStyle}>
-            {Array.from({ length: ROW_COUNT }).map((_, i) => (
-              <ItemWithRenderCount key={i} index={i} />
-            ))}
-          </List>
-          <div style={{ flex: 1 }}>
-            <Virtuoso
-              style={listStyle}
-              totalCount={ROW_COUNT}
-              itemContent={rvRenderer}
-            />
-          </div>
+          <VirtuaList count={ROW_COUNT} Component={ItemWithRenderCount} />
+          <ReactVirtuosoList
+            count={ROW_COUNT}
+            Component={ItemWithRenderCount}
+          />
         </div>
       </div>
     );
@@ -67,18 +54,8 @@ export const HeavyComponent: StoryObj = {
           <ScrollInput count={ROW_COUNT} />
         </div>
         <div style={{ display: "flex", flexDirection: "row", flex: 1, gap: 8 }}>
-          <List style={listStyle}>
-            {Array.from({ length: ROW_COUNT }).map((_, i) => (
-              <HeavyItem key={i} index={i} />
-            ))}
-          </List>
-          <div style={{ flex: 1 }}>
-            <Virtuoso
-              style={listStyle}
-              totalCount={ROW_COUNT}
-              itemContent={rvHeavyItemRenderer}
-            />
-          </div>
+          <VirtuaList count={ROW_COUNT} Component={HeavyItem} />
+          <ReactVirtuosoList count={ROW_COUNT} Component={HeavyItem} />
         </div>
       </div>
     );
@@ -100,18 +77,8 @@ export const OneMillion: StoryObj = {
           <ScrollInput count={ROW_COUNT} />
         </div>
         <div style={{ display: "flex", flexDirection: "row", flex: 1, gap: 8 }}>
-          <List style={listStyle}>
-            {Array.from({ length: ROW_COUNT }).map((_, i) => (
-              <SimpleItem key={i} index={i} />
-            ))}
-          </List>
-          <div style={{ flex: 1 }}>
-            <Virtuoso
-              style={listStyle}
-              totalCount={ROW_COUNT}
-              itemContent={rvSimpleItemRenderer}
-            />
-          </div>
+          <VirtuaList count={ROW_COUNT} Component={SimpleItem} />
+          <ReactVirtuosoList count={ROW_COUNT} Component={SimpleItem} />
         </div>
       </div>
     );
