@@ -19,4 +19,4 @@ import{j as e,a as t}from"./jsx-runtime-c3d7f245.js";import{r as l}from"./index-
     return <Frame count={ROW_COUNT} ItemComponent={SimpleItem} />;
   }
 }`,...(g=(U=i.parameters)==null?void 0:U.docs)==null?void 0:g.source}}};const le=["RenderCount","DynamicHeight","HeavyComponent","OneMillion"];export{n as DynamicHeight,a as HeavyComponent,i as OneMillion,o as RenderCount,le as __namedExportsOrder,ce as default};
-//# sourceMappingURL=comparison.stories-781907e4.js.map
+//# sourceMappingURL=comparisons.stories-781907e4.js.map
