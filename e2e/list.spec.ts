@@ -1,89 +1,17 @@
 import { test, expect, ElementHandle } from "@playwright/test";
-
-const storyUrl = (id: string) =>
-  `http://localhost:6006/iframe.html?id=${id}&viewMode=story`;
-
-const scrollableSelector = '*[style*="overflow"]';
-const itemsSelector = '*[style*="top"]';
-
-const approxymate = (v: number): number => Math.round(v / 100) * 100;
-
-const clearInput = (input: ElementHandle<HTMLInputElement>) =>
-  input.evaluate((element) => (element.value = ""));
-
-const getFirstItem = (scrollable: ElementHandle<HTMLElement | SVGElement>) => {
-  return scrollable.evaluate((s) => {
-    const rect = s.getBoundingClientRect();
-    const el = document.elementFromPoint(rect.left + 1, rect.top + 1)!;
-    return {
-      text: el.textContent!,
-      top: el.getBoundingClientRect().top - rect.top,
-    };
-  });
-};
-
-const getLastItem = (scrollable: ElementHandle<HTMLElement | SVGElement>) => {
-  return scrollable.evaluate((s) => {
-    const rect = s.getBoundingClientRect();
-    const el = document.elementFromPoint(rect.left + 1, rect.bottom - 1)!;
-    return {
-      text: el.textContent!,
-      bottom: el.getBoundingClientRect().bottom - rect.bottom,
-    };
-  });
-};
-const getFirstItemRtl = (
-  scrollable: ElementHandle<HTMLElement | SVGElement>
-) => {
-  return scrollable.evaluate((s) => {
-    const rect = s.getBoundingClientRect();
-    const el = document.elementFromPoint(rect.right - 1, rect.top + 1)!;
-    return {
-      text: el.textContent!,
-      top: el.getBoundingClientRect().top - rect.top,
-    };
-  });
-};
-
-const scrollToBottom = async (
-  scrollable: ElementHandle<HTMLElement | SVGElement>
-) => {
-  await scrollable.evaluate((e) => {
-    e.scrollTop = e.scrollHeight;
-  });
-  await scrollable.waitForElementState("stable");
-  // FIXME: scroll twice to reach definitely
-  await scrollable.evaluate((e) => {
-    e.scrollTop = e.scrollHeight;
-  });
-  await scrollable.waitForElementState("stable");
-};
-const scrollToRight = async (
-  scrollable: ElementHandle<HTMLElement | SVGElement>
-) => {
-  await scrollable.evaluate((e) => {
-    e.scrollLeft = e.scrollWidth;
-  });
-  await scrollable.waitForElementState("stable");
-  // FIXME: scroll twice to reach definitely
-  await scrollable.evaluate((e) => {
-    e.scrollLeft = e.scrollWidth;
-  });
-  await scrollable.waitForElementState("stable");
-};
-const scrollToLeft = async (
-  scrollable: ElementHandle<HTMLElement | SVGElement>
-) => {
-  await scrollable.evaluate((e) => {
-    e.scrollLeft = -e.scrollWidth;
-  });
-  await scrollable.waitForElementState("stable");
-  // FIXME: scroll twice to reach definitely
-  await scrollable.evaluate((e) => {
-    e.scrollLeft = -e.scrollWidth;
-  });
-  await scrollable.waitForElementState("stable");
-};
+import {
+  storyUrl,
+  scrollableSelector,
+  itemsSelector,
+  getFirstItem,
+  getLastItem,
+  getFirstItemRtl,
+  scrollToBottom,
+  scrollToLeft,
+  scrollToRight,
+  clearInput,
+  approxymate,
+} from "./utils";
 
 test.describe("smoke", () => {
   test("vertically scrollable", async ({ page }) => {
