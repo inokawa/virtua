@@ -1,5 +1,12 @@
-import React, { useEffect, useMemo, useRef } from "react";
-import { TestComponent } from "./common";
+import React, {
+  Ref,
+  memo,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from "react";
+import { ListHandle, TestComponent } from "./common";
 import AutoSizer from "react-virtualized/dist/es/AutoSizer";
 import { VariableSizeList as RWList } from "react-window";
 
@@ -21,43 +28,56 @@ const RWRow = ({
   return <Component ref={ref} index={i} />;
 };
 
-export const ReactWindowList = ({
-  count,
-  Component,
-}: {
-  count: number;
-  Component: TestComponent;
-}) => {
-  const heightsCache = useMemo<number[]>(
-    () => Array.from({ length: count }).map(() => 50),
-    []
-  );
-  const rwListRef = useRef<RWList>(null);
-  const getHeight = (i: number) => heightsCache[i];
-  const setHeight = (index: number, height: number) => {
-    heightsCache[index] = height;
-    rwListRef.current?.resetAfterIndex(index);
-  };
+export const ReactWindowList = memo(
+  ({
+    count,
+    Component,
+    handle,
+  }: {
+    count: number;
+    Component: TestComponent;
+    handle?: Ref<ListHandle>;
+  }) => {
+    const heightsCache = useMemo<number[]>(
+      () => Array.from({ length: count }).map(() => 50),
+      []
+    );
+    const ref = useRef<RWList>(null);
+    const getHeight = (i: number) => heightsCache[i];
+    const setHeight = (index: number, height: number) => {
+      heightsCache[index] = height;
+      ref.current?.resetAfterIndex(index);
+    };
+    useImperativeHandle(handle, () => ({
+      scrollToIndex: (i) => {
+        ref.current?.scrollToItem(i);
+      },
+    }));
 
-  return (
-    <div style={{ flex: 1 }}>
-      <AutoSizer>
-        {({ width, height }) => (
-          <RWList
-            ref={rwListRef}
-            width={width}
-            height={height}
-            itemCount={count}
-            itemSize={getHeight}
-          >
-            {({ index: i, style }) => (
-              <div style={style} key={i}>
-                <RWRow index={i} setHeight={setHeight} Component={Component} />
-              </div>
-            )}
-          </RWList>
-        )}
-      </AutoSizer>
-    </div>
-  );
-};
+    return (
+      <div style={{ flex: 1 }}>
+        <AutoSizer>
+          {({ width, height }) => (
+            <RWList
+              ref={ref}
+              width={width}
+              height={height}
+              itemCount={count}
+              itemSize={getHeight}
+            >
+              {({ index: i, style }) => (
+                <div style={style} key={i}>
+                  <RWRow
+                    index={i}
+                    setHeight={setHeight}
+                    Component={Component}
+                  />
+                </div>
+              )}
+            </RWList>
+          )}
+        </AutoSizer>
+      </div>
+    );
+  }
+);

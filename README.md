@@ -61,6 +61,10 @@ And see [examples](./stories) for more usages.
 
 - [API reference](./docs/API.md)
 
+## Benchmarks
+
+WIP
+
 ## Contribute
 
 All contributions are welcome.
