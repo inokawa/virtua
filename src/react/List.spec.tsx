@@ -84,11 +84,27 @@ global.IntersectionObserver = class {
 
 afterEach(cleanup);
 
+it("should pass attributes to element", async () => {
+  const { asFragment } = render(
+    <List
+      id="id"
+      className="class"
+      tabIndex={0}
+      role="list"
+      aria-label="test"
+      style={{ background: "red" }}
+    >
+      <div>0</div>
+    </List>
+  );
+  expect(asFragment()).toMatchSnapshot();
+});
+
 it("should change components", async () => {
   const UlList = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
-    ({ children, style, scrollSize }, ref) => {
+    ({ children, attrs, scrollSize }, ref) => {
       return (
-        <div ref={ref} style={style}>
+        <div ref={ref} {...attrs}>
           <ul style={{ position: "relative", height: scrollSize, margin: 0 }}>
             {children}
           </ul>

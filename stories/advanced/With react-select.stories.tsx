@@ -16,12 +16,13 @@ export default {
 const MenuListContext = createContext<Omit<MenuListProps, "children">>(null!);
 
 const Window = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
-  ({ children, style, scrollSize }, ref) => {
+  ({ children, attrs, scrollSize }, ref) => {
     const { maxHeight, innerProps, innerRef } = useContext(MenuListContext);
     return (
       <div
         ref={mergeRefs([ref, innerRef])}
-        style={{ ...style, height: maxHeight, maxHeight }}
+        {...attrs}
+        style={{ ...attrs.style, height: maxHeight, maxHeight }}
         {...innerProps}
       >
         <div style={{ position: "relative", height: scrollSize }}>

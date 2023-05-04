@@ -19,7 +19,7 @@ const COLUMN_WIDTHS = [100, 200, 300, 100, 200, 300, 100, 300, 400, 200];
 const TableList = forwardRef<
   HTMLTableSectionElement,
   CustomWindowComponentProps
->(({ children, style, scrollSize }, ref) => {
+>(({ children, scrollSize, attrs }, ref) => {
   const [headerHeight, setHeaderHeight] = useState<number>(0);
   const headerRef = useRef<HTMLTableSectionElement>(null);
   useLayoutEffect(() => {
@@ -32,7 +32,7 @@ const TableList = forwardRef<
     background: "darkgray",
   };
   return (
-    <div style={style} ref={ref}>
+    <div {...attrs} ref={ref}>
       <table
         style={{
           height: scrollSize,
