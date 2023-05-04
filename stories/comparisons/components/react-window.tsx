@@ -55,29 +55,23 @@ export const ReactWindowList = memo(
     }));
 
     return (
-      <div style={{ flex: 1 }}>
-        <AutoSizer>
-          {({ width, height }) => (
-            <RWList
-              ref={ref}
-              width={width}
-              height={height}
-              itemCount={count}
-              itemSize={getHeight}
-            >
-              {({ index: i, style }) => (
-                <div style={style} key={i}>
-                  <RWRow
-                    index={i}
-                    setHeight={setHeight}
-                    Component={Component}
-                  />
-                </div>
-              )}
-            </RWList>
-          )}
-        </AutoSizer>
-      </div>
+      <AutoSizer>
+        {({ width, height }) => (
+          <RWList
+            ref={ref}
+            width={width}
+            height={height}
+            itemCount={count}
+            itemSize={getHeight}
+          >
+            {({ index: i, style }) => (
+              <div style={style} key={i}>
+                <RWRow index={i} setHeight={setHeight} Component={Component} />
+              </div>
+            )}
+          </RWList>
+        )}
+      </AutoSizer>
     );
   }
 );

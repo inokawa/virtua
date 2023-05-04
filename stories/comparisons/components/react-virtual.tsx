@@ -22,7 +22,10 @@ export const ReactVirtualList = memo(
     }));
 
     return (
-      <div ref={parentRef} style={{ flex: 1, overflow: "auto" }}>
+      <div
+        ref={parentRef}
+        style={{ width: "100%", height: "100%", overflow: "auto" }}
+      >
         <div
           style={{
             height: `${rowVirtualizer.totalSize}px`,

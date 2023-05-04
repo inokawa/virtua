@@ -12,7 +12,7 @@ export default {
   component: ReactWindowList,
   decorators: [
     (Story) => (
-      <div style={{ height: "100vh", display: "flex" }}>
+      <div style={{ height: "100vh" }}>
         <Story />
       </div>
     ),
