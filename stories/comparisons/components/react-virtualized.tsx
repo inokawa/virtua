@@ -33,35 +33,33 @@ export const ReactVirtualizedList = memo(
     }));
 
     return (
-      <div style={{ flex: 1 }}>
-        <AutoSizer>
-          {({ width, height }) => (
-            <List
-              ref={ref}
-              deferredMeasurementCache={virtualizedCache}
-              width={width}
-              height={height}
-              rowCount={count}
-              rowHeight={virtualizedCache.rowHeight}
-              rowRenderer={({ index: i, key, style, parent }) => (
-                <CellMeasurer
-                  key={key}
-                  cache={virtualizedCache}
-                  columnIndex={0}
-                  rowIndex={i}
-                  parent={parent}
-                >
-                  {({ registerChild }) => (
-                    <div ref={registerChild} style={style}>
-                      <Component index={i} />
-                    </div>
-                  )}
-                </CellMeasurer>
-              )}
-            />
-          )}
-        </AutoSizer>
-      </div>
+      <AutoSizer>
+        {({ width, height }) => (
+          <List
+            ref={ref}
+            deferredMeasurementCache={virtualizedCache}
+            width={width}
+            height={height}
+            rowCount={count}
+            rowHeight={virtualizedCache.rowHeight}
+            rowRenderer={({ index: i, key, style, parent }) => (
+              <CellMeasurer
+                key={key}
+                cache={virtualizedCache}
+                columnIndex={0}
+                rowIndex={i}
+                parent={parent}
+              >
+                {({ registerChild }) => (
+                  <div ref={registerChild} style={style}>
+                    <Component index={i} />
+                  </div>
+                )}
+              </CellMeasurer>
+            )}
+          />
+        )}
+      </AutoSizer>
     );
   }
 );

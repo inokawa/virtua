@@ -2,8 +2,6 @@ import React, { Ref, memo, useImperativeHandle, useRef } from "react";
 import { List, ListHandle as VListHandle } from "virtua";
 import { ListHandle, TestComponent } from "./common";
 
-const listStyle = { flex: 1 };
-
 export const VirtuaList = memo(
   ({
     count,
@@ -22,7 +20,7 @@ export const VirtuaList = memo(
     }));
 
     return (
-      <List ref={ref} style={listStyle}>
+      <List ref={ref}>
         {Array.from({ length: count }).map((_, i) => (
           <Component key={i} index={i} />
         ))}

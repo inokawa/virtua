@@ -20,7 +20,10 @@ export const ReactCoolVirtualList = memo(
     }));
 
     return (
-      <div ref={outerRef} style={{ flex: 1, overflow: "auto" }}>
+      <div
+        ref={outerRef}
+        style={{ width: "100%", height: "100%", overflow: "auto" }}
+      >
         <div ref={innerRef}>
           {items.map(({ index, measureRef }) => (
             <Component key={index} index={index} ref={measureRef} />

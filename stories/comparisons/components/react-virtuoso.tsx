@@ -2,8 +2,6 @@ import React, { Ref, memo, useImperativeHandle, useMemo, useRef } from "react";
 import { ListHandle, TestComponent } from "./common";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 
-const listStyle = { flex: 1 };
-
 export const ReactVirtuosoList = memo(
   ({
     count,
@@ -24,7 +22,6 @@ export const ReactVirtuosoList = memo(
     return (
       <Virtuoso
         ref={ref}
-        style={listStyle}
         totalCount={count}
         itemContent={useMemo(() => (i) => <Component key={i} index={i} />, [])}
       />

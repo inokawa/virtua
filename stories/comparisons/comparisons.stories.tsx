@@ -138,12 +138,20 @@ const Frame = ({
           overflow: "hidden",
         }}
       >
-        <VirtuaList handle={leftRef} count={count} Component={ItemComponent} />
-        <ComparedList
-          handle={rightRef}
-          count={count}
-          Component={ItemComponent}
-        />
+        <div style={{ width: "50%" }}>
+          <VirtuaList
+            handle={leftRef}
+            count={count}
+            Component={ItemComponent}
+          />
+        </div>
+        <div style={{ width: "50%" }}>
+          <ComparedList
+            handle={rightRef}
+            count={count}
+            Component={ItemComponent}
+          />
+        </div>
       </div>
     </div>
   );
