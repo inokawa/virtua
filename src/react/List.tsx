@@ -90,24 +90,30 @@ const isInvalidElement = <T extends ReactNode>(
 ): e is Extract<T, null | undefined | boolean> =>
   !exists(e) || typeof e === "boolean";
 
+export type WindowComponentAttributes = Pick<
+  React.HTMLAttributes<HTMLElement>,
+  "className" | "style" | "id" | "role" | "tabIndex"
+> &
+  React.AriaAttributes;
+
 /**
  * Props of customized scrollable component.
  */
 export interface CustomWindowComponentProps {
   children: ReactNode;
-  style: CSSProperties;
   scrollSize: number;
   scrolling: boolean;
   horizontal: boolean;
+  attrs: WindowComponentAttributes;
 }
 
 const DefaultWindow = forwardRef<any, CustomWindowComponentProps>(
   (
-    { children, style, scrollSize, scrolling, horizontal },
+    { children, scrollSize, scrolling, horizontal, attrs },
     ref
   ): ReactElement => {
     return (
-      <div ref={ref} style={style}>
+      <div ref={ref} {...attrs}>
         <div
           style={useMemo((): CSSProperties => {
             return {
@@ -134,14 +140,14 @@ const Window = ({
   _store: store,
   _element: Element,
   _scrolling: scrolling,
-  _style: style,
+  _attrs: attrs,
 }: {
   _children: ReactNode;
   _ref: RefObject<HTMLDivElement>;
   _store: VirtualStore;
   _element: CustomWindowComponent;
   _scrolling: boolean;
-  _style: CSSProperties | undefined;
+  _attrs: WindowComponentAttributes;
 }) => {
   const scrollSize = useSyncExternalStore(
     store._subscribe,
@@ -156,20 +162,23 @@ const Window = ({
       scrollSize={scrollSize}
       scrolling={scrolling}
       horizontal={horizontal}
-      style={useMemo(
-        (): CSSProperties => ({
-          overflow: horizontal ? "auto hidden" : "hidden auto",
-          contain: "strict",
-          // transform: "translate3d(0px, 0px, 0px)",
-          // willChange: "scroll-position",
-          // backfaceVisibility: "hidden",
-          width: "100%",
-          height: "100%",
-          padding: 0,
-          margin: 0,
-          ...style,
+      attrs={useMemo(
+        () => ({
+          ...attrs,
+          style: {
+            overflow: horizontal ? "auto hidden" : "hidden auto",
+            contain: "strict",
+            // transform: "translate3d(0px, 0px, 0px)",
+            // willChange: "scroll-position",
+            // backfaceVisibility: "hidden",
+            width: "100%",
+            height: "100%",
+            padding: 0,
+            margin: 0,
+            ...attrs.style,
+          },
         }),
-        [style]
+        [attrs]
       )}
     >
       {children}
@@ -229,7 +238,7 @@ export interface ListHandle {
 /**
  * Props of {@link List}.
  */
-export interface ListProps {
+export interface ListProps extends WindowComponentAttributes {
   /**
    * Elements rendered by this component.
    */
@@ -252,10 +261,6 @@ export interface ListProps {
    * You have to set true if you use this component under `direction: rtl` style.
    */
   rtl?: boolean;
-  /**
-   * Inline style prop to override style of scrollable element.
-   */
-  style?: CSSProperties;
   /**
    * Customized element type for scrollable element. This element will get {@link CustomWindowComponentProps} as props.
    * @defaultValue {@link DefaultWindow}
@@ -297,12 +302,12 @@ export const List = forwardRef<ListHandle, ListProps>(
       overscan = 4,
       horizontal: horizontalProp,
       rtl: rtlProp,
-      style: styleProp,
       element = DefaultWindow,
       itemElement = "div",
       onScroll: onScrollProp,
       onScrollStop: onScrollStopProp,
       onRangeChange: onRangeChangeProp,
+      ...windowAttrs
     },
     ref
   ): ReactElement => {
@@ -437,8 +442,8 @@ export const List = forwardRef<ListHandle, ListProps>(
         _store={store}
         _element={element}
         _scrolling={scrolling}
-        _style={styleProp}
         _children={items}
+        _attrs={windowAttrs}
       />
     );
   }

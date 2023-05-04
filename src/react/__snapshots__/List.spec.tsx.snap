@@ -419,6 +419,31 @@ exports[`should change components 1`] = `
 </DocumentFragment>
 `;
 
+exports[`should pass attributes to element 1`] = `
+<DocumentFragment>
+  <div
+    aria-label="test"
+    class="class"
+    id="id"
+    role="list"
+    style="overflow: hidden auto; contain: strict; width: 100%; height: 100%; padding: 0px; margin: 0px; background: red;"
+    tabindex="0"
+  >
+    <div
+      style="position: relative; visibility: hidden; width: 100%; height: 50px; pointer-events: auto;"
+    >
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+      >
+        <div>
+          0
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
 exports[`vertical should render 1 children 1`] = `
 <DocumentFragment>
   <div

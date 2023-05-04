@@ -6,4 +6,5 @@ export type {
   CustomItemComponentProps,
   CustomWindowComponent,
   CustomWindowComponentProps,
+  WindowComponentAttributes,
 } from "./react/List";
