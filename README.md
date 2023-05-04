@@ -4,6 +4,8 @@
 
 A zero-config, fast and small (3kB) virtual list component for [React](https://github.com/facebook/react).
 
+If you want to check the difference with the alternatives right away, [see comparison section](#comparison).
+
 ## Motivation
 
 This project is a challenge to rethink virtualization. The goals are...
@@ -61,9 +63,30 @@ And see [examples](./stories) for more usages.
 
 - [API reference](./docs/API.md)
 
-## Benchmarks
+## Comparison
+
+### Benchmarks
 
 WIP
+
+### Features
+
+|                   | [virtua](https://github.com/inokawa/virtua)              | [react-virtuoso](https://github.com/petyosi/react-virtuoso)       | [react-virtualized](https://github.com/bvaughn/react-virtualized)                                                                                                      | [react-window](https://github.com/bvaughn/react-window)                                            | [react-virtual](https://github.com/TanStack/virtual)            | [react-cool-virtual](https://github.com/wellyshen/react-cool-virtual) |
+| :---------------- | :------------------------------------------------------- | :---------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------- | :-------------------------------------------------------------------- |
+| Bundle size       | [3.1kB gzipped](https://bundlephobia.com/package/virtua) | [15.6kB gzipped](https://bundlephobia.com/package/react-virtuoso) | [27.4kB gzipped](https://bundlephobia.com/package/react-virtualized)                                                                                                   | [6.4kB gzipped](https://bundlephobia.com/package/react-window)                                     | [2.3kB gzipped](https://bundlephobia.com/package/react-virtual) | [3.1kB gzipped](https://bundlephobia.com/package/react-cool-virtual)  |
+| Vertical scroll   | ✅                                                       | ✅                                                                | ✅                                                                                                                                                                     | ✅                                                                                                 | 🟠 (needs customization)                                        | 🟠 (needs customization)                                              |
+| Horizontal scroll | ✅                                                       | ✅                                                                | ✅                                                                                                                                                                     | ✅                                                                                                 | 🟠 (needs customization)                                        | 🟠 (needs customization)                                              |
+| Grid              | ❌                                                       | ✅                                                                | ✅                                                                                                                                                                     | ✅                                                                                                 | 🟠 (needs customization)                                        | 🟠 (needs customization)                                              |
+| Table             | 🟠 (needs customization)                                 | ✅                                                                | ✅                                                                                                                                                                     | 🟠 (needs customization)                                                                           | 🟠 (needs customization)                                        | 🟠 (needs customization)                                              |
+| Dynamic list size | ✅                                                       | ✅                                                                | 🟠 (needs [AutoSizer](https://github.com/bvaughn/react-virtualized/blob/master/docs/AutoSizer.md))                                                                     | 🟠 (needs [AutoSizer](https://github.com/bvaughn/react-virtualized/blob/master/docs/AutoSizer.md)) | ✅                                                              | ✅                                                                    |
+| Dynamic item size | ✅                                                       | ✅                                                                | 🟠 (needs [CellMeasurer](https://github.com/bvaughn/react-virtualized/blob/master/docs/CellMeasurer.md) and has wrong destination when scrolling to item imperatively) | 🟠 (needs additional codes and has wrong destination when scrolling to item imperatively)          | 🟠 (has wrong destination when scrolling to item imperatively)  | 🟠 (has wrong destination when scrolling to item imperatively)        |
+| Reverse scroll    | ✅                                                       | ✅                                                                | ❌                                                                                                                                                                     | ❌                                                                                                 | ❌                                                              | ❌                                                                    |
+| Infinite scroll   | ✅                                                       | ✅                                                                | 🟠 (needs [InfiniteLoader](https://github.com/bvaughn/react-virtualized/blob/master/docs/InfiniteLoader.md))                                                           | 🟠 (needs [react-window-infinite-loader](https://github.com/bvaughn/react-window-infinite-loader)) | ✅                                                              | ✅                                                                    |
+| RTL               | ✅                                                       | ❌                                                                | ✅                                                                                                                                                                     | ✅                                                                                                 | ❌                                                              | ❌                                                                    |
+
+- ✅ - Built-in supported
+- 🟠 - Supported but partial, limited or requires some user custom code
+- ❌ - Not officially supported
 
 ## Contribute
 
