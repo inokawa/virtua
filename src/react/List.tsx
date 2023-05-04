@@ -206,6 +206,10 @@ export interface ListHandle {
    */
   readonly scrollSize: number;
   /**
+   * Get current offsetHeight or offsetWidth.
+   */
+  readonly viewportSize: number;
+  /**
    * Scroll to the item specified by index.
    * @param index index of item
    */
@@ -387,6 +391,9 @@ export const List = forwardRef<ListHandle, ListProps>(
           },
           get scrollSize() {
             return scroller._getActualScrollSize();
+          },
+          get viewportSize() {
+            return store._getViewportSize();
           },
           scrollToIndex(index) {
             scroller._scrollToIndex(index, count);

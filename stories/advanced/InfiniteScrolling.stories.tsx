@@ -130,7 +130,7 @@ export const InfiniteScrolling: StoryObj = {
           }}
         >
           {items.map((d) => (
-            <Row id={d.id} name={d.name} text={d.text} />
+            <Row key={d.id} id={d.id} name={d.name} text={d.text} />
           ))}
           {/* Now hide spinner without unmounting because onRangeChange is called twice due to item length change */}
           <Spinner hidden={!fetching} />
