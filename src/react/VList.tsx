@@ -422,16 +422,19 @@ export const VList = forwardRef<VListHandle, VListProps>(
       }
       mountedIndexes.forEach((i) => {
         const e = elements[i];
-        res.push(
-          <Item
-            key={(e as { key?: ReactElement["key"] })?.key || i}
-            _scroller={scroller}
-            _store={store}
-            _index={i}
-            _element={itemElement as "div"}
-            _children={e}
-          />
-        );
+        // This can be undefined when items are removed
+        if (exists(e)) {
+          res.push(
+            <Item
+              key={(e as { key?: ReactElement["key"] })?.key || i}
+              _scroller={scroller}
+              _store={store}
+              _index={i}
+              _element={itemElement as "div"}
+              _children={e}
+            />
+          );
+        }
       });
       return res;
     }, [elements, mountedIndexes, startIndexWithMargin, endIndexWithMargin]);
