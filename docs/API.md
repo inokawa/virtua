@@ -4,12 +4,12 @@
 
 ### Functions
 
-- [List](API.md#list)
+- [VList](API.md#vlist)
 
 ### Interfaces
 
-- [ListProps](interfaces/ListProps.md)
-- [ListHandle](interfaces/ListHandle.md)
+- [VListProps](interfaces/VListProps.md)
+- [VListHandle](interfaces/VListHandle.md)
 - [CustomItemComponentProps](interfaces/CustomItemComponentProps.md)
 - [CustomWindowComponentProps](interfaces/CustomWindowComponentProps.md)
 
@@ -17,20 +17,21 @@
 
 - [CustomItemComponent](API.md#customitemcomponent)
 - [CustomWindowComponent](API.md#customwindowcomponent)
+- [WindowComponentAttributes](API.md#windowcomponentattributes)
 
 ## Functions
 
-### List
+### VList
 
-▸ **List**(`props`): ``null`` \| `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
+▸ **VList**(`props`): ``null`` \| `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
 
-Virtualized list component. See [ListProps](interfaces/ListProps.md) and [ListHandle](interfaces/ListHandle.md).
+Virtualized list component. See [VListProps](interfaces/VListProps.md) and [VListHandle](interfaces/VListHandle.md).
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `props` | [`ListProps`](interfaces/ListProps.md) & `RefAttributes`<[`ListHandle`](interfaces/ListHandle.md)\> |
+| `props` | [`VListProps`](interfaces/VListProps.md) & `RefAttributes`<[`VListHandle`](interfaces/VListHandle.md)\> |
 
 #### Returns
 
@@ -48,7 +49,7 @@ node_modules/@types/react/index.d.ts:361
 
 #### Defined in
 
-[src/react/List.tsx:199](https://github.com/inokawa/virtua/blob/e00e786/src/react/List.tsx#L199)
+[src/react/VList.tsx:197](https://github.com/inokawa/virtua/blob/c8b3bd6/src/react/VList.tsx#L197)
 
 ___
 
@@ -58,4 +59,14 @@ ___
 
 #### Defined in
 
-[src/react/List.tsx:138](https://github.com/inokawa/virtua/blob/e00e786/src/react/List.tsx#L138)
+[src/react/VList.tsx:135](https://github.com/inokawa/virtua/blob/c8b3bd6/src/react/VList.tsx#L135)
+
+___
+
+### WindowComponentAttributes
+
+Ƭ **WindowComponentAttributes**: `Pick`<`React.HTMLAttributes`<`HTMLElement`\>, ``"className"`` \| ``"style"`` \| ``"id"`` \| ``"role"`` \| ``"tabIndex"``\> & `React.AriaAttributes`
+
+#### Defined in
+
+[src/react/VList.tsx:93](https://github.com/inokawa/virtua/blob/c8b3bd6/src/react/VList.tsx#L93)
