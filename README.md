@@ -35,11 +35,11 @@ If you use ESM and webpack 5, use react >= 18 to avoid [Can't resolve `react/jsx
 ## Usage
 
 ```tsx
-import { List } from "virtua";
+import { VList } from "virtua";
 
 export const App = () => {
   return (
-    <List style={{ height: 800 }}>
+    <VList style={{ height: 800 }}>
       {Array.from({ length: 1000 }).map((_, i) => (
         <div
           key={i}
@@ -52,7 +52,7 @@ export const App = () => {
           {i}
         </div>
       ))}
-    </List>
+    </VList>
   );
 };
 ```

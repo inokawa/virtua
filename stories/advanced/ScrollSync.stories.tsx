@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { startTransition, useRef } from "react";
-import { List, ListHandle } from "../../src";
+import { VList, VListHandle } from "../../src";
 
 const createRows = (num: number) => {
   const heights = [20, 40, 80, 77];
@@ -21,13 +21,13 @@ const createRows = (num: number) => {
 };
 
 export default {
-  component: List,
+  component: VList,
 } as Meta;
 
 export const ScrollSync: StoryObj = {
   render: () => {
-    const leftRef = useRef<ListHandle>(null);
-    const rightRef = useRef<ListHandle>(null);
+    const leftRef = useRef<VListHandle>(null);
+    const rightRef = useRef<VListHandle>(null);
     return (
       <div
         style={{
@@ -37,7 +37,7 @@ export const ScrollSync: StoryObj = {
           height: "100%",
         }}
       >
-        <List
+        <VList
           ref={leftRef}
           style={{ flex: 1 }}
           onScroll={(offset) => {
@@ -47,8 +47,8 @@ export const ScrollSync: StoryObj = {
           }}
         >
           {createRows(1000)}
-        </List>
-        <List
+        </VList>
+        <VList
           ref={rightRef}
           style={{ flex: 1 }}
           onScroll={(offset) => {
@@ -58,7 +58,7 @@ export const ScrollSync: StoryObj = {
           }}
         >
           {createRows(1000)}
-        </List>
+        </VList>
       </div>
     );
   },

@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { List, ListHandle } from "../../src";
+import { VList, VListHandle } from "../../src";
 import React, {
   CSSProperties,
   useEffect,
@@ -10,7 +10,7 @@ import React, {
 import { faker } from "@faker-js/faker";
 
 export default {
-  component: List,
+  component: VList,
 } as Meta;
 
 type Data = {
@@ -62,7 +62,7 @@ export const Default: StoryObj = {
       Array.from({ length: 100 }, () => createItem())
     );
 
-    const ref = useRef<ListHandle>(null);
+    const ref = useRef<VListHandle>(null);
 
     const [value, setValue] = useState("Hello world!");
 
@@ -106,11 +106,11 @@ export const Default: StoryObj = {
           flexDirection: "column",
         }}
       >
-        <List ref={ref} style={{ flex: 1 }}>
+        <VList ref={ref} style={{ flex: 1 }}>
           {items.map((d, i) => (
             <Item key={d.id} {...d} />
           ))}
-        </List>
+        </VList>
         <form
           style={{ margin: 10 }}
           onSubmit={(e) => {

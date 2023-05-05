@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { CSSProperties, startTransition, useRef, useState } from "react";
-import { List } from "../../src";
+import { VList } from "../../src";
 import { faker } from "@faker-js/faker";
 
 export default {
-  component: List,
+  component: VList,
 } as Meta;
 
 const Spinner = (props: { hidden: boolean }) => {
@@ -113,7 +113,7 @@ export const InfiniteScrolling: StoryObj = {
         >
           items: {items.length} index: ({range[0]}, {range[1]})
         </div>
-        <List
+        <VList
           style={{ flex: 1 }}
           itemSize={200}
           onRangeChange={async ({ start, end, count }) => {
@@ -134,7 +134,7 @@ export const InfiniteScrolling: StoryObj = {
           ))}
           {/* Now hide spinner without unmounting because onRangeChange is called twice due to item length change */}
           <Spinner hidden={!fetching} />
-        </List>
+        </VList>
       </div>
     );
   },

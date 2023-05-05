@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { CustomItemComponentProps, List } from "../../src";
+import { CustomItemComponentProps, VList } from "../../src";
 import React, {
   createContext,
   forwardRef,
@@ -9,7 +9,7 @@ import React, {
 } from "react";
 
 export default {
-  component: List,
+  component: VList,
 } as Meta;
 
 const ZoomContext = createContext(1);
@@ -65,7 +65,7 @@ export const Default: StoryObj = {
           }}
         >
           <ZoomContext.Provider value={zoom}>
-            <List style={{ height: "100vh" }} itemElement={ListItem}>
+            <VList style={{ height: "100vh" }} itemElement={ListItem}>
               {Array.from({ length: 1000 }).map((_, i) => {
                 return (
                   <div
@@ -82,7 +82,7 @@ export const Default: StoryObj = {
                   </div>
                 );
               })}
-            </List>
+            </VList>
           </ZoomContext.Provider>
         </div>
       </div>

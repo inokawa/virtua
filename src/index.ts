@@ -1,10 +1,10 @@
-export { List } from "./react/List";
+export { VList } from "./react/VList";
 export type {
-  ListProps,
-  ListHandle,
+  VListProps,
+  VListHandle,
   CustomItemComponent,
   CustomItemComponentProps,
   CustomWindowComponent,
   CustomWindowComponentProps,
   WindowComponentAttributes,
-} from "./react/List";
+} from "./react/VList";

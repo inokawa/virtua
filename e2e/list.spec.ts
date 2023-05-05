@@ -15,7 +15,7 @@ import {
 
 test.describe("smoke", () => {
   test("vertically scrollable", async ({ page }) => {
-    await page.goto(storyUrl("basics-list--default"));
+    await page.goto(storyUrl("basics-vlist--default"));
 
     const scrollable = await page.waitForSelector(scrollableSelector);
     await scrollable.waitForElementState("stable");
@@ -31,7 +31,7 @@ test.describe("smoke", () => {
   });
 
   test("horizontally scrollable", async ({ page }) => {
-    await page.goto(storyUrl("basics-list--horizontal"));
+    await page.goto(storyUrl("basics-vlist--horizontal"));
 
     await page.waitForSelector(scrollableSelector);
     const scrollable = (await page.$$(scrollableSelector))[0]!;
@@ -48,7 +48,7 @@ test.describe("smoke", () => {
   });
 
   test("horizontally scrollable in direction:rtl", async ({ page }) => {
-    await page.goto(storyUrl("basics-list--horizontal"));
+    await page.goto(storyUrl("basics-vlist--horizontal"));
 
     await page.waitForSelector(scrollableSelector);
     const scrollable = (await page.$$(scrollableSelector))[1]!;
@@ -106,7 +106,7 @@ test.describe("smoke", () => {
       });
     };
 
-    await page.goto(storyUrl("basics-list--padding-and-margin"));
+    await page.goto(storyUrl("basics-vlist--padding-and-margin"));
 
     const scrollable = await page.waitForSelector(scrollableSelector);
     await scrollable.waitForElementState("stable");
@@ -146,7 +146,7 @@ test.describe("smoke", () => {
   });
 
   test("sticky", async ({ page }) => {
-    await page.goto(storyUrl("basics-list--sticky"));
+    await page.goto(storyUrl("basics-vlist--sticky"));
 
     const scrollable = await page.waitForSelector(scrollableSelector);
     await scrollable.waitForElementState("stable");
@@ -170,7 +170,7 @@ test.describe("smoke", () => {
 
 test.describe("check if scroll jump compensation works", () => {
   test("vertical start -> end", async ({ page }) => {
-    await page.goto(storyUrl("basics-list--default"));
+    await page.goto(storyUrl("basics-vlist--default"));
     const scrollable = await page.waitForSelector(scrollableSelector);
     await scrollable.waitForElementState("stable");
 
@@ -192,7 +192,7 @@ test.describe("check if scroll jump compensation works", () => {
   });
 
   test("vertical end -> start", async ({ page }) => {
-    await page.goto(storyUrl("basics-list--default"));
+    await page.goto(storyUrl("basics-vlist--default"));
     const scrollable = await page.waitForSelector(scrollableSelector);
     await scrollable.waitForElementState("stable");
 
@@ -221,7 +221,7 @@ test.describe("check if scroll jump compensation works", () => {
   });
 
   test("horizontal start -> end", async ({ page }) => {
-    await page.goto(storyUrl("basics-list--horizontal"));
+    await page.goto(storyUrl("basics-vlist--horizontal"));
     const scrollable = await page.waitForSelector(scrollableSelector);
     await scrollable.waitForElementState("stable");
 
@@ -243,7 +243,7 @@ test.describe("check if scroll jump compensation works", () => {
   });
 
   test("horizontal end -> start", async ({ page }) => {
-    await page.goto(storyUrl("basics-list--horizontal"));
+    await page.goto(storyUrl("basics-vlist--horizontal"));
     const scrollable = await page.waitForSelector(scrollableSelector);
     await scrollable.waitForElementState("stable");
 
@@ -274,7 +274,7 @@ test.describe("check if scroll jump compensation works", () => {
 
 test.describe("check if scrollToIndex works", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(storyUrl("basics-list--scroll-to"));
+    await page.goto(storyUrl("basics-vlist--scroll-to"));
   });
 
   test("mid", async ({ page }) => {
@@ -374,7 +374,7 @@ test.describe("check if scrollToIndex works", () => {
 
 test.describe("check if scrollTo works", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(storyUrl("basics-list--scroll-to"));
+    await page.goto(storyUrl("basics-vlist--scroll-to"));
   });
 
   test("down and up", async ({ page }) => {
@@ -419,7 +419,7 @@ test.describe("check if scrollTo works", () => {
 
 test.describe("check if scrollBy works", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(storyUrl("basics-list--scroll-to"));
+    await page.goto(storyUrl("basics-vlist--scroll-to"));
   });
 
   test("down and up", async ({ page }) => {

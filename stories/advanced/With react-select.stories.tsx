@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { CustomWindowComponentProps, List } from "../../src";
+import { CustomWindowComponentProps, VList } from "../../src";
 import React, { createContext, forwardRef, useContext } from "react";
 import Select, { MenuListProps } from "react-select";
 import { faker } from "@faker-js/faker";
@@ -10,7 +10,7 @@ const options = Array.from({ length: 1000 }, (_, i) => ({
   label: faker.music.songName(),
 }));
 export default {
-  component: List,
+  component: VList,
 } as Meta;
 
 const MenuListContext = createContext<Omit<MenuListProps, "children">>(null!);
@@ -36,7 +36,7 @@ const Window = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
 const MenuList = ({ children, ...rest }: MenuListProps) => {
   return (
     <MenuListContext.Provider value={rest}>
-      <List element={Window}>{children}</List>
+      <VList element={Window}>{children}</VList>
     </MenuListContext.Provider>
   );
 };

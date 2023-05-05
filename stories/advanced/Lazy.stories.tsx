@@ -6,11 +6,11 @@ import React, {
   Suspense,
   useState,
 } from "react";
-import { List } from "../../src";
+import { VList } from "../../src";
 import { Facebook } from "react-content-loader";
 
 export default {
-  component: List,
+  component: VList,
 } as Meta;
 
 const Skeleton = () => {
@@ -50,7 +50,7 @@ export const Default: StoryObj = {
     )[0];
 
     return (
-      <List style={{ height: "100vh" }}>
+      <VList style={{ height: "100vh" }}>
         {heavyComps.map((HeavyComp, i) => (
           <Item key={i}>
             <Suspense fallback={<Skeleton />}>
@@ -58,7 +58,7 @@ export const Default: StoryObj = {
             </Suspense>
           </Item>
         ))}
-      </List>
+      </VList>
     );
   },
 };
