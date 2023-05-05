@@ -86,7 +86,7 @@ Elements rendered by this component.
 
 #### Defined in
 
-[src/react/VList.tsx:245](https://github.com/inokawa/virtua/blob/c8b3bd6/src/react/VList.tsx#L245)
+[src/react/VList.tsx:245](https://github.com/inokawa/virtua/blob/3a77116/src/react/VList.tsx#L245)
 
 ___
 
@@ -102,7 +102,7 @@ Item size hint for unmeasured items. It's recommended to specify this prop if it
 
 #### Defined in
 
-[src/react/VList.tsx:250](https://github.com/inokawa/virtua/blob/c8b3bd6/src/react/VList.tsx#L250)
+[src/react/VList.tsx:250](https://github.com/inokawa/virtua/blob/3a77116/src/react/VList.tsx#L250)
 
 ___
 
@@ -118,7 +118,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/react/VList.tsx:255](https://github.com/inokawa/virtua/blob/c8b3bd6/src/react/VList.tsx#L255)
+[src/react/VList.tsx:255](https://github.com/inokawa/virtua/blob/3a77116/src/react/VList.tsx#L255)
 
 ___
 
@@ -130,7 +130,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/VList.tsx:259](https://github.com/inokawa/virtua/blob/c8b3bd6/src/react/VList.tsx#L259)
+[src/react/VList.tsx:259](https://github.com/inokawa/virtua/blob/3a77116/src/react/VList.tsx#L259)
 
 ___
 
@@ -142,7 +142,7 @@ You have to set true if you use this component under `direction: rtl` style.
 
 #### Defined in
 
-[src/react/VList.tsx:263](https://github.com/inokawa/virtua/blob/c8b3bd6/src/react/VList.tsx#L263)
+[src/react/VList.tsx:263](https://github.com/inokawa/virtua/blob/3a77116/src/react/VList.tsx#L263)
 
 ___
 
@@ -158,7 +158,7 @@ DefaultWindow
 
 #### Defined in
 
-[src/react/VList.tsx:268](https://github.com/inokawa/virtua/blob/c8b3bd6/src/react/VList.tsx#L268)
+[src/react/VList.tsx:268](https://github.com/inokawa/virtua/blob/3a77116/src/react/VList.tsx#L268)
 
 ___
 
@@ -174,7 +174,7 @@ Customized element type for item element. This element will get [CustomItemCompo
 
 #### Defined in
 
-[src/react/VList.tsx:273](https://github.com/inokawa/virtua/blob/c8b3bd6/src/react/VList.tsx#L273)
+[src/react/VList.tsx:273](https://github.com/inokawa/virtua/blob/3a77116/src/react/VList.tsx#L273)
 
 ___
 
@@ -200,7 +200,7 @@ Callback invoked whenever scroll offset changes.
 
 #### Defined in
 
-[src/react/VList.tsx:278](https://github.com/inokawa/virtua/blob/c8b3bd6/src/react/VList.tsx#L278)
+[src/react/VList.tsx:278](https://github.com/inokawa/virtua/blob/3a77116/src/react/VList.tsx#L278)
 
 ___
 
@@ -220,7 +220,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/react/VList.tsx:282](https://github.com/inokawa/virtua/blob/c8b3bd6/src/react/VList.tsx#L282)
+[src/react/VList.tsx:282](https://github.com/inokawa/virtua/blob/3a77116/src/react/VList.tsx#L282)
 
 ___
 
@@ -249,7 +249,7 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/react/VList.tsx:287](https://github.com/inokawa/virtua/blob/c8b3bd6/src/react/VList.tsx#L287)
+[src/react/VList.tsx:287](https://github.com/inokawa/virtua/blob/3a77116/src/react/VList.tsx#L287)
 
 ___
 
@@ -263,7 +263,7 @@ WindowComponentAttributes.className
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1868
+node_modules/@types/react/ts5.0/index.d.ts:1854
 
 ___
 
@@ -277,7 +277,7 @@ WindowComponentAttributes.style
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1880
+node_modules/@types/react/ts5.0/index.d.ts:1866
 
 ___
 
@@ -291,7 +291,7 @@ WindowComponentAttributes.id
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1874
+node_modules/@types/react/ts5.0/index.d.ts:1860
 
 ___
 
@@ -305,7 +305,7 @@ WindowComponentAttributes.role
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1889
+node_modules/@types/react/ts5.0/index.d.ts:1875
 
 ___
 
@@ -319,7 +319,7 @@ WindowComponentAttributes.tabIndex
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1881
+node_modules/@types/react/ts5.0/index.d.ts:1867
 
 ___
 
@@ -335,7 +335,7 @@ WindowComponentAttributes.aria-activedescendant
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1600
+node_modules/@types/react/ts5.0/index.d.ts:1586
 
 ___
 
@@ -351,7 +351,7 @@ WindowComponentAttributes.aria-atomic
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1602
+node_modules/@types/react/ts5.0/index.d.ts:1588
 
 ___
 
@@ -368,7 +368,7 @@ WindowComponentAttributes.aria-autocomplete
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1607
+node_modules/@types/react/ts5.0/index.d.ts:1593
 
 ___
 
@@ -384,7 +384,7 @@ WindowComponentAttributes.aria-busy
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1609
+node_modules/@types/react/ts5.0/index.d.ts:1595
 
 ___
 
@@ -405,7 +405,7 @@ WindowComponentAttributes.aria-checked
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1614
+node_modules/@types/react/ts5.0/index.d.ts:1600
 
 ___
 
@@ -425,7 +425,7 @@ WindowComponentAttributes.aria-colcount
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1619
+node_modules/@types/react/ts5.0/index.d.ts:1605
 
 ___
 
@@ -446,7 +446,7 @@ WindowComponentAttributes.aria-colindex
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1624
+node_modules/@types/react/ts5.0/index.d.ts:1610
 
 ___
 
@@ -467,7 +467,7 @@ WindowComponentAttributes.aria-colspan
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1629
+node_modules/@types/react/ts5.0/index.d.ts:1615
 
 ___
 
@@ -487,7 +487,7 @@ WindowComponentAttributes.aria-controls
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1634
+node_modules/@types/react/ts5.0/index.d.ts:1620
 
 ___
 
@@ -503,7 +503,7 @@ WindowComponentAttributes.aria-current
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1636
+node_modules/@types/react/ts5.0/index.d.ts:1622
 
 ___
 
@@ -523,7 +523,7 @@ WindowComponentAttributes.aria-describedby
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1641
+node_modules/@types/react/ts5.0/index.d.ts:1627
 
 ___
 
@@ -543,7 +543,7 @@ WindowComponentAttributes.aria-details
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1646
+node_modules/@types/react/ts5.0/index.d.ts:1632
 
 ___
 
@@ -564,7 +564,7 @@ WindowComponentAttributes.aria-disabled
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1651
+node_modules/@types/react/ts5.0/index.d.ts:1637
 
 ___
 
@@ -584,7 +584,7 @@ WindowComponentAttributes.aria-dropeffect
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1656
+node_modules/@types/react/ts5.0/index.d.ts:1642
 
 ___
 
@@ -605,7 +605,7 @@ WindowComponentAttributes.aria-errormessage
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1661
+node_modules/@types/react/ts5.0/index.d.ts:1647
 
 ___
 
@@ -621,7 +621,7 @@ WindowComponentAttributes.aria-expanded
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1663
+node_modules/@types/react/ts5.0/index.d.ts:1649
 
 ___
 
@@ -638,7 +638,7 @@ WindowComponentAttributes.aria-flowto
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1668
+node_modules/@types/react/ts5.0/index.d.ts:1654
 
 ___
 
@@ -658,7 +658,7 @@ WindowComponentAttributes.aria-grabbed
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1673
+node_modules/@types/react/ts5.0/index.d.ts:1659
 
 ___
 
@@ -674,7 +674,7 @@ WindowComponentAttributes.aria-haspopup
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1675
+node_modules/@types/react/ts5.0/index.d.ts:1661
 
 ___
 
@@ -694,7 +694,7 @@ WindowComponentAttributes.aria-hidden
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1680
+node_modules/@types/react/ts5.0/index.d.ts:1666
 
 ___
 
@@ -714,7 +714,7 @@ WindowComponentAttributes.aria-invalid
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1685
+node_modules/@types/react/ts5.0/index.d.ts:1671
 
 ___
 
@@ -730,7 +730,7 @@ WindowComponentAttributes.aria-keyshortcuts
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1687
+node_modules/@types/react/ts5.0/index.d.ts:1673
 
 ___
 
@@ -750,7 +750,7 @@ WindowComponentAttributes.aria-label
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1692
+node_modules/@types/react/ts5.0/index.d.ts:1678
 
 ___
 
@@ -770,7 +770,7 @@ WindowComponentAttributes.aria-labelledby
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1697
+node_modules/@types/react/ts5.0/index.d.ts:1683
 
 ___
 
@@ -786,7 +786,7 @@ WindowComponentAttributes.aria-level
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1699
+node_modules/@types/react/ts5.0/index.d.ts:1685
 
 ___
 
@@ -802,7 +802,7 @@ WindowComponentAttributes.aria-live
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1701
+node_modules/@types/react/ts5.0/index.d.ts:1687
 
 ___
 
@@ -818,7 +818,7 @@ WindowComponentAttributes.aria-modal
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1703
+node_modules/@types/react/ts5.0/index.d.ts:1689
 
 ___
 
@@ -834,7 +834,7 @@ WindowComponentAttributes.aria-multiline
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1705
+node_modules/@types/react/ts5.0/index.d.ts:1691
 
 ___
 
@@ -850,7 +850,7 @@ WindowComponentAttributes.aria-multiselectable
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1707
+node_modules/@types/react/ts5.0/index.d.ts:1693
 
 ___
 
@@ -866,7 +866,7 @@ WindowComponentAttributes.aria-orientation
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1709
+node_modules/@types/react/ts5.0/index.d.ts:1695
 
 ___
 
@@ -887,7 +887,7 @@ WindowComponentAttributes.aria-owns
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1715
+node_modules/@types/react/ts5.0/index.d.ts:1701
 
 ___
 
@@ -904,7 +904,7 @@ WindowComponentAttributes.aria-placeholder
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1720
+node_modules/@types/react/ts5.0/index.d.ts:1706
 
 ___
 
@@ -924,7 +924,7 @@ WindowComponentAttributes.aria-posinset
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1725
+node_modules/@types/react/ts5.0/index.d.ts:1711
 
 ___
 
@@ -945,7 +945,7 @@ WindowComponentAttributes.aria-pressed
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1730
+node_modules/@types/react/ts5.0/index.d.ts:1716
 
 ___
 
@@ -965,7 +965,7 @@ WindowComponentAttributes.aria-readonly
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1735
+node_modules/@types/react/ts5.0/index.d.ts:1721
 
 ___
 
@@ -985,7 +985,7 @@ WindowComponentAttributes.aria-relevant
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1740
+node_modules/@types/react/ts5.0/index.d.ts:1726
 
 ___
 
@@ -1001,7 +1001,7 @@ WindowComponentAttributes.aria-required
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1742
+node_modules/@types/react/ts5.0/index.d.ts:1728
 
 ___
 
@@ -1017,7 +1017,7 @@ WindowComponentAttributes.aria-roledescription
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1744
+node_modules/@types/react/ts5.0/index.d.ts:1730
 
 ___
 
@@ -1037,7 +1037,7 @@ WindowComponentAttributes.aria-rowcount
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1749
+node_modules/@types/react/ts5.0/index.d.ts:1735
 
 ___
 
@@ -1058,7 +1058,7 @@ WindowComponentAttributes.aria-rowindex
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1754
+node_modules/@types/react/ts5.0/index.d.ts:1740
 
 ___
 
@@ -1079,7 +1079,7 @@ WindowComponentAttributes.aria-rowspan
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1759
+node_modules/@types/react/ts5.0/index.d.ts:1745
 
 ___
 
@@ -1100,7 +1100,7 @@ WindowComponentAttributes.aria-selected
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1764
+node_modules/@types/react/ts5.0/index.d.ts:1750
 
 ___
 
@@ -1120,7 +1120,7 @@ WindowComponentAttributes.aria-setsize
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1769
+node_modules/@types/react/ts5.0/index.d.ts:1755
 
 ___
 
@@ -1136,7 +1136,7 @@ WindowComponentAttributes.aria-sort
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1771
+node_modules/@types/react/ts5.0/index.d.ts:1757
 
 ___
 
@@ -1152,7 +1152,7 @@ WindowComponentAttributes.aria-valuemax
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1773
+node_modules/@types/react/ts5.0/index.d.ts:1759
 
 ___
 
@@ -1168,7 +1168,7 @@ WindowComponentAttributes.aria-valuemin
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1775
+node_modules/@types/react/ts5.0/index.d.ts:1761
 
 ___
 
@@ -1188,7 +1188,7 @@ WindowComponentAttributes.aria-valuenow
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1780
+node_modules/@types/react/ts5.0/index.d.ts:1766
 
 ___
 
@@ -1204,4 +1204,4 @@ WindowComponentAttributes.aria-valuetext
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1782
+node_modules/@types/react/ts5.0/index.d.ts:1768
