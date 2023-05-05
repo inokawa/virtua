@@ -2,6 +2,10 @@
 
 ## Table of contents
 
+### Functions
+
+- [VList](API.md#vlist)
+
 ### Interfaces
 
 - [VListProps](interfaces/VListProps.md)
@@ -14,40 +18,6 @@
 - [CustomItemComponent](API.md#customitemcomponent)
 - [CustomWindowComponent](API.md#customwindowcomponent)
 - [WindowComponentAttributes](API.md#windowcomponentattributes)
-
-### Functions
-
-- [VList](API.md#vlist)
-
-## Type Aliases
-
-### CustomItemComponent
-
-Ƭ **CustomItemComponent**: `React.ForwardRefExoticComponent`<`React.PropsWithoutRef`<[`CustomItemComponentProps`](interfaces/CustomItemComponentProps.md)\> & `React.RefAttributes`<`any`\>\>
-
-#### Defined in
-
-[src/react/VList.tsx:197](https://github.com/inokawa/virtua/blob/3a77116/src/react/VList.tsx#L197)
-
-___
-
-### CustomWindowComponent
-
-Ƭ **CustomWindowComponent**: typeof `DefaultWindow`
-
-#### Defined in
-
-[src/react/VList.tsx:135](https://github.com/inokawa/virtua/blob/3a77116/src/react/VList.tsx#L135)
-
-___
-
-### WindowComponentAttributes
-
-Ƭ **WindowComponentAttributes**: `Pick`<`React.HTMLAttributes`<`HTMLElement`\>, ``"className"`` \| ``"style"`` \| ``"id"`` \| ``"role"`` \| ``"tabIndex"``\> & `React.AriaAttributes`
-
-#### Defined in
-
-[src/react/VList.tsx:93](https://github.com/inokawa/virtua/blob/3a77116/src/react/VList.tsx#L93)
 
 ## Functions
 
@@ -70,3 +40,33 @@ Virtualized list component. See [VListProps](interfaces/VListProps.md) and [VLis
 #### Defined in
 
 node_modules/@types/react/ts5.0/index.d.ts:345
+
+## Type Aliases
+
+### CustomItemComponent
+
+Ƭ **CustomItemComponent**: `React.ForwardRefExoticComponent`<`React.PropsWithoutRef`<[`CustomItemComponentProps`](interfaces/CustomItemComponentProps.md)\> & `React.RefAttributes`<`any`\>\>
+
+#### Defined in
+
+[src/react/VList.tsx:197](https://github.com/inokawa/virtua/blob/97b3ce9/src/react/VList.tsx#L197)
+
+___
+
+### CustomWindowComponent
+
+Ƭ **CustomWindowComponent**: typeof `DefaultWindow`
+
+#### Defined in
+
+[src/react/VList.tsx:135](https://github.com/inokawa/virtua/blob/97b3ce9/src/react/VList.tsx#L135)
+
+___
+
+### WindowComponentAttributes
+
+Ƭ **WindowComponentAttributes**: `Pick`<`React.HTMLAttributes`<`HTMLElement`\>, ``"className"`` \| ``"style"`` \| ``"id"`` \| ``"role"`` \| ``"tabIndex"``\> & `React.AriaAttributes`
+
+#### Defined in
+
+[src/react/VList.tsx:93](https://github.com/inokawa/virtua/blob/97b3ce9/src/react/VList.tsx#L93)
