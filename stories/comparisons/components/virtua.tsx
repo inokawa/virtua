@@ -1,5 +1,5 @@
 import React, { Ref, memo, useImperativeHandle, useRef } from "react";
-import { List, ListHandle as VListHandle } from "virtua";
+import { VList, VListHandle } from "virtua";
 import { ListHandle, TestComponent } from "./common";
 
 export const VirtuaList = memo(
@@ -20,11 +20,11 @@ export const VirtuaList = memo(
     }));
 
     return (
-      <List ref={ref}>
+      <VList ref={ref}>
         {Array.from({ length: count }).map((_, i) => (
           <Component key={i} index={i} />
         ))}
-      </List>
+      </VList>
     );
   }
 );
