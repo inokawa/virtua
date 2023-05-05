@@ -1,9 +1,9 @@
-import { afterEach, it, expect, describe /*jest*/ } from "@jest/globals";
+import { afterEach, it, expect, describe, jest } from "@jest/globals";
 import { render, cleanup /*waitFor*/ } from "@testing-library/react";
 // import { useEffect, useRef } from "react";
 
 import { CustomWindowComponentProps, VList /*VListHandle */ } from "./VList";
-import { forwardRef } from "react";
+import { Profiler, ReactElement, forwardRef, useEffect, useState } from "react";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -122,6 +122,170 @@ it("should change components", async () => {
     </VList>
   );
   expect(asFragment()).toMatchSnapshot();
+});
+
+describe("render count", () => {
+  it("should render on mount", () => {
+    const rootFn = jest.fn();
+    const itemCount = 4;
+    const itemFns = Array.from({ length: itemCount }, (_) => jest.fn());
+
+    render(
+      <Profiler id="root" onRender={rootFn}>
+        <VList>
+          {Array.from({ length: itemCount }, (_, i) => {
+            const key = `item-${i}`;
+            return (
+              <Profiler key={key} id={key} onRender={itemFns[i]!}>
+                <div>{i}</div>
+              </Profiler>
+            );
+          })}
+        </VList>
+      </Profiler>
+    );
+
+    expect(rootFn).toBeCalledTimes(2);
+    itemFns.forEach((itemFn) => {
+      expect(itemFn).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it("should render on mount many items", () => {
+    const rootFn = jest.fn();
+    const itemCount = 100;
+    const itemFns = Array.from({ length: itemCount }, (_) => jest.fn());
+
+    render(
+      <Profiler id="root" onRender={rootFn}>
+        <VList>
+          {Array.from({ length: itemCount }, (_, i) => {
+            const key = `item-${i}`;
+            return (
+              <Profiler key={key} id={key} onRender={itemFns[i]!}>
+                <div>{i}</div>
+              </Profiler>
+            );
+          })}
+        </VList>
+      </Profiler>
+    );
+
+    expect(rootFn).toBeCalledTimes(3);
+    itemFns.forEach((itemFn) => {
+      expect(itemFn.mock.calls.length).toBeLessThanOrEqual(1);
+    });
+  });
+
+  it("should render on length change", () => {
+    let ready = false;
+    const wrap = (f: (...args: any[]) => void) => {
+      return (...args: any[]) => {
+        if (!ready) return;
+        f(...args);
+      };
+    };
+    const rootFn = jest.fn();
+
+    const itemCount = 4;
+    const itemFns = Array.from({ length: itemCount }, (_) => jest.fn());
+
+    const Mounter = ({
+      children,
+      count: initialCount,
+    }: {
+      children: (count: number) => ReactElement;
+      count: number;
+    }): ReactElement => {
+      const [count, setCount] = useState(initialCount);
+      useEffect(() => {
+        ready = true;
+        setCount((prev) => {
+          return prev - 1;
+        });
+      }, []);
+      return children(count);
+    };
+
+    render(
+      <Mounter count={itemCount}>
+        {(count) => (
+          <Profiler id="root" onRender={wrap(rootFn)}>
+            <VList>
+              {Array.from({ length: count }, (_, i) => {
+                const key = `item-${i}`;
+                return (
+                  <Profiler key={key} id={key} onRender={wrap(itemFns[i]!)}>
+                    <div>{i}</div>
+                  </Profiler>
+                );
+              })}
+            </VList>
+          </Profiler>
+        )}
+      </Mounter>
+    );
+
+    expect(rootFn).toBeCalledTimes(3);
+    itemFns.forEach((itemFn, i) => {
+      expect(itemFn).toBeCalledTimes(i === itemFns.length - 1 ? 0 : 1);
+    });
+  });
+
+  it("should render on length change many items", () => {
+    let ready = false;
+    const wrap = (f: (...args: any[]) => void) => {
+      return (...args: any[]) => {
+        if (!ready) return;
+        f(...args);
+      };
+    };
+    const rootFn = jest.fn();
+
+    const itemCount = 100;
+    const itemFns = Array.from({ length: itemCount }, (_) => jest.fn());
+
+    const Mounter = ({
+      children,
+      count: initialCount,
+    }: {
+      children: (count: number) => ReactElement;
+      count: number;
+    }): ReactElement => {
+      const [count, setCount] = useState(initialCount);
+      useEffect(() => {
+        ready = true;
+        setCount((prev) => {
+          return prev - 1;
+        });
+      }, []);
+      return children(count);
+    };
+
+    render(
+      <Mounter count={itemCount}>
+        {(count) => (
+          <Profiler id="root" onRender={wrap(rootFn)}>
+            <VList>
+              {Array.from({ length: count }, (_, i) => {
+                const key = `item-${i}`;
+                return (
+                  <Profiler key={key} id={key} onRender={wrap(itemFns[i]!)}>
+                    <div>{i}</div>
+                  </Profiler>
+                );
+              })}
+            </VList>
+          </Profiler>
+        )}
+      </Mounter>
+    );
+
+    expect(rootFn).toBeCalledTimes(4);
+    itemFns.forEach((itemFn) => {
+      expect(itemFn.mock.calls.length).toBeLessThanOrEqual(2);
+    });
+  });
 });
 
 describe("vertical", () => {
