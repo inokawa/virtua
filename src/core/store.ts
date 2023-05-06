@@ -16,13 +16,11 @@ export type ScrollJump = Readonly<[index: number, sizeDiff: number][]>;
 export type ItemResize = [index: number, size: number];
 type ItemsRange = [startIndex: number, endIndex: number];
 
-export const ACTION_UPDATE_CACHE_LENGTH = 0;
 export const ACTION_UPDATE_ITEM_SIZES = 1;
 export const ACTION_UPDATE_VIEWPORT = 2;
 export const ACTION_HANDLE_SCROLL = 3;
 
 type Actions =
-  | [type: typeof ACTION_UPDATE_CACHE_LENGTH, length: number]
   | [type: typeof ACTION_UPDATE_ITEM_SIZES, entries: ItemResize[]]
   | [
       type: typeof ACTION_UPDATE_VIEWPORT,
@@ -38,7 +36,6 @@ export type VirtualStore = {
   _getScrollOffset(): number;
   _getViewportSize(): number;
   _getScrollSize(): number;
-  _getItemCount(): number;
   _getJump(): ScrollJump;
   _isHorizontal(): boolean;
   _isRtl(): boolean;
@@ -46,6 +43,7 @@ export type VirtualStore = {
   _waitForScrollDestinationItemsMeasured(): Promise<void>;
   _subscribe(cb: () => void): () => void;
   _update(...action: Actions): void;
+  _updateCacheLength(length: number): void;
 };
 
 export const createVirtualStore = (
@@ -107,9 +105,6 @@ export const createVirtualStore = (
     _getScrollSize() {
       return computeTotalSize(cache as Writeable<Cache>);
     },
-    _getItemCount() {
-      return cache._length;
-    },
     _getJump() {
       return jump;
     },
@@ -151,11 +146,6 @@ export const createVirtualStore = (
     _update(type, payload) {
       const mutated = ((): boolean => {
         switch (type) {
-          case ACTION_UPDATE_CACHE_LENGTH: {
-            if (cache._length === payload) return false;
-            cache = resetCache(payload, itemSize, cache);
-            return true;
-          }
           case ACTION_UPDATE_ITEM_SIZES: {
             const updated = payload.filter(
               ([index, size]) => cache._sizes[index] !== size
@@ -199,6 +189,11 @@ export const createVirtualStore = (
           _scrollToQueue[0]();
         }
       }
+    },
+    _updateCacheLength(length) {
+      // It's ok to be updated in render because states should be calculated consistently regardless cache length
+      if (cache._length === length) return;
+      cache = resetCache(length, itemSize, cache);
     },
   };
 };
