@@ -17,7 +17,7 @@ Props of customized item component.
 
 #### Defined in
 
-[src/react/VList.tsx:193](https://github.com/inokawa/virtua/blob/97b3ce9/src/react/VList.tsx#L193)
+[src/react/VList.tsx:189](https://github.com/inokawa/virtua/blob/7d43c50/src/react/VList.tsx#L189)
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 #### Defined in
 
-[src/react/VList.tsx:194](https://github.com/inokawa/virtua/blob/97b3ce9/src/react/VList.tsx#L194)
+[src/react/VList.tsx:190](https://github.com/inokawa/virtua/blob/7d43c50/src/react/VList.tsx#L190)
