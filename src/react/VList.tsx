@@ -13,11 +13,7 @@ import {
   useState,
   ReactFragment,
 } from "react";
-import {
-  ACTION_UPDATE_CACHE_LENGTH,
-  VirtualStore,
-  createVirtualStore,
-} from "../core/store";
+import { VirtualStore, createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSyncExternalStore } from "./useSyncExternalStore";
 import { exists, max, min } from "../core/utils";
@@ -322,17 +318,15 @@ export const VList = forwardRef<VListHandle, VListProps>(
       });
       return arr;
     }, [children]);
-    const elementsCount = elements.length;
+    const count = elements.length;
 
     // https://github.com/facebook/react/issues/25191#issuecomment-1237456448
     const store = useStatic(() =>
-      createVirtualStore(
-        elementsCount,
-        itemSizeProp,
-        !!horizontalProp,
-        !!rtlProp
-      )
+      createVirtualStore(count, itemSizeProp, !!horizontalProp, !!rtlProp)
     );
+    // The elements length and cached items length are different just after element is added/removed.
+    store._updateCacheLength(count);
+
     const [startIndex, endIndex] = useSyncExternalStore(
       store._subscribe,
       store._getRange
@@ -360,14 +354,6 @@ export const VList = forwardRef<VListHandle, VListProps>(
         }
       )
     );
-
-    // The elements length and cached items length are different just after element is added/removed.
-    const count = min(elementsCount, store._getItemCount());
-
-    // So update cache length. Updating state in render will cause warn so use useEffect for now.
-    useIsomorphicLayoutEffect(() => {
-      store._update(ACTION_UPDATE_CACHE_LENGTH, elementsCount);
-    }, [elementsCount]);
 
     useIsomorphicLayoutEffect(() => scroller._initRoot(rootRef[refKey]!), []);
 
