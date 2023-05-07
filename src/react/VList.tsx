@@ -15,7 +15,7 @@ import {
 } from "react";
 import { VirtualStore, createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { useSyncExternalStore } from "./useSyncExternalStore";
+import { useStore } from "./useStore";
 import { exists, max, min } from "../core/utils";
 import { createScroller, Scroller } from "../core/scroller";
 import { refKey } from "./utils";
@@ -40,12 +40,8 @@ const Item = memo(
   }: ItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
-    const offset = useSyncExternalStore(store._subscribe, () =>
-      store._getItemOffset(index)
-    );
-    const hide = useSyncExternalStore(store._subscribe, () =>
-      store._isUnmeasuredItem(index)
-    );
+    const offset = useStore(store, () => store._getItemOffset(index));
+    const hide = useStore(store, () => store._isUnmeasuredItem(index));
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(
@@ -145,10 +141,7 @@ const Window = ({
   _scrolling: boolean;
   _attrs: WindowComponentAttributes;
 }) => {
-  const scrollSize = useSyncExternalStore(
-    store._subscribe,
-    store._getScrollSize
-  );
+  const scrollSize = useStore(store, store._getScrollSize);
 
   const horizontal = store._isHorizontal();
 
@@ -362,11 +355,8 @@ export const VList = forwardRef<VListHandle, VListProps>(
     // The elements length and cached items length are different just after element is added/removed.
     store._updateCacheLength(count);
 
-    const [startIndex, endIndex] = useSyncExternalStore(
-      store._subscribe,
-      store._getRange
-    );
-    const jump = useSyncExternalStore(store._subscribe, store._getJump);
+    const [startIndex, endIndex] = useStore(store, store._getRange);
+    const jump = useStore(store, store._getJump);
     const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => scroller._initRoot(rootRef[refKey]!), []);
