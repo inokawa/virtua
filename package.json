@@ -59,6 +59,7 @@
     "react-dom": "18.2.0",
     "react-is": "18.2.0",
     "react-merge-refs": "2.0.1",
+    "react-pull-to-refresh": "2.0.1",
     "react-select": "5.7.3",
     "react-virtualized": "9.22.5",
     "react-virtuoso": "4.3.5",
