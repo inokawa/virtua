@@ -6,7 +6,19 @@ import {
   ScrollJump,
   VirtualStore,
 } from "./store";
-import { abs, debounce, throttle, exists, max, min } from "./utils";
+import { debounce, throttle, exists, max, min, memoizeOnce } from "./utils";
+
+// The scroll position may be negative value in rtl direction.
+// https://github.com/othree/jquery.rtl-scroll-type
+const hasNegativeOffsetInRtl = memoizeOnce(
+  (scrollable: HTMLElement, key: "scrollTop" | "scrollLeft") => {
+    const prev = scrollable[key];
+    scrollable[key] = 1;
+    const isNegative = scrollable[key] === 0;
+    scrollable[key] = prev;
+    return isNegative;
+  }
+);
 
 export const SCROLL_STOP = 0;
 export const SCROLL_DOWN = 1;
@@ -35,7 +47,6 @@ export const createScroller = (
   let prevOffset = -1;
   let scrollDirection: ScrollDirection = SCROLL_STOP;
   let resized = false;
-  let isNegativeOffset: boolean | undefined;
   let rootElement: HTMLElement | undefined;
   let _ro: ResizeObserver | undefined;
   const isHorizontal = store._isHorizontal();
@@ -84,16 +95,7 @@ export const createScroller = (
   const updateScrollPosition = (offset: number, diff?: boolean) => {
     if (!rootElement) return;
     if (isRtl) {
-      if (!exists(isNegativeOffset)) {
-        // Assume offset type in rtl direction.
-        // The scroll position is negative in spec however its not in some browsers, for example Chrome earlier than v85.
-        // https://github.com/othree/jquery.rtl-scroll-type
-        const prev = rootElement[scrollToKey];
-        rootElement[scrollToKey] = 1;
-        isNegativeOffset = rootElement[scrollToKey] === 0;
-        rootElement[scrollToKey] = prev;
-      }
-      if (isNegativeOffset) {
+      if (hasNegativeOffsetInRtl(rootElement, scrollToKey)) {
         offset *= -1;
       }
     }
@@ -150,9 +152,9 @@ export const createScroller = (
       const syncViewportToScrollPosition = () => {
         let offset = root[scrollToKey];
         if (isRtl) {
-          // The scroll position may be negative value in rtl direction.
-          // https://github.com/othree/jquery.rtl-scroll-type
-          offset = abs(offset);
+          if (hasNegativeOffsetInRtl(root, scrollToKey)) {
+            offset *= -1;
+          }
         }
         if (prevOffset === offset) {
           return;

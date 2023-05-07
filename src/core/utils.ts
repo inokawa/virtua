@@ -1,6 +1,5 @@
 export const min = Math.min;
 export const max = Math.max;
-export const abs = Math.abs;
 export const now = Date.now;
 
 export const exists = <T>(v: T): v is Exclude<T, null | undefined> => v != null;
@@ -42,4 +41,17 @@ export const throttle = <T extends (...args: any[]) => void>(
       fn(...args);
     }
   };
+};
+
+export const memoizeOnce = <F extends (...args: any[]) => any>(fn: F): F => {
+  let called = false;
+  let cache: ReturnType<F>;
+
+  return ((...args) => {
+    if (!called) {
+      called = true;
+      cache = fn(...args);
+    }
+    return cache;
+  }) as F;
 };
