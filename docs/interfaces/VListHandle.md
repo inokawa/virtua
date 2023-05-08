@@ -4,53 +4,17 @@ Methods of [VList](../API.md#vlist).
 
 ## Table of contents
 
-### Properties
-
-- [scrollOffset](VListHandle.md#scrolloffset)
-- [scrollSize](VListHandle.md#scrollsize)
-- [viewportSize](VListHandle.md#viewportsize)
-
 ### Methods
 
 - [scrollToIndex](VListHandle.md#scrolltoindex)
 - [scrollTo](VListHandle.md#scrollto)
 - [scrollBy](VListHandle.md#scrollby)
 
-## Properties
+### Properties
 
-### scrollOffset
-
-• `Readonly` **scrollOffset**: `number`
-
-Get current scrollTop or scrollLeft.
-
-#### Defined in
-
-[src/react/VList.tsx:208](https://github.com/inokawa/virtua/blob/7d43c50/src/react/VList.tsx#L208)
-
-___
-
-### scrollSize
-
-• `Readonly` **scrollSize**: `number`
-
-Get current scrollHeight or scrollWidth.
-
-#### Defined in
-
-[src/react/VList.tsx:212](https://github.com/inokawa/virtua/blob/7d43c50/src/react/VList.tsx#L212)
-
-___
-
-### viewportSize
-
-• `Readonly` **viewportSize**: `number`
-
-Get current offsetHeight or offsetWidth.
-
-#### Defined in
-
-[src/react/VList.tsx:216](https://github.com/inokawa/virtua/blob/7d43c50/src/react/VList.tsx#L216)
+- [scrollOffset](VListHandle.md#scrolloffset)
+- [scrollSize](VListHandle.md#scrollsize)
+- [viewportSize](VListHandle.md#viewportsize)
 
 ## Methods
 
@@ -72,7 +36,7 @@ Scroll to the item specified by index.
 
 #### Defined in
 
-[src/react/VList.tsx:221](https://github.com/inokawa/virtua/blob/7d43c50/src/react/VList.tsx#L221)
+[src/react/VList.tsx:221](https://github.com/inokawa/virtua/blob/8c6c738/src/react/VList.tsx#L221)
 
 ___
 
@@ -94,7 +58,7 @@ Scroll to the given offset.
 
 #### Defined in
 
-[src/react/VList.tsx:226](https://github.com/inokawa/virtua/blob/7d43c50/src/react/VList.tsx#L226)
+[src/react/VList.tsx:226](https://github.com/inokawa/virtua/blob/8c6c738/src/react/VList.tsx#L226)
 
 ___
 
@@ -116,4 +80,40 @@ Scroll by the given offset.
 
 #### Defined in
 
-[src/react/VList.tsx:231](https://github.com/inokawa/virtua/blob/7d43c50/src/react/VList.tsx#L231)
+[src/react/VList.tsx:231](https://github.com/inokawa/virtua/blob/8c6c738/src/react/VList.tsx#L231)
+
+## Properties
+
+### scrollOffset
+
+• `Readonly` **scrollOffset**: `number`
+
+Get current scrollTop or scrollLeft.
+
+#### Defined in
+
+[src/react/VList.tsx:208](https://github.com/inokawa/virtua/blob/8c6c738/src/react/VList.tsx#L208)
+
+___
+
+### scrollSize
+
+• `Readonly` **scrollSize**: `number`
+
+Get current scrollHeight or scrollWidth.
+
+#### Defined in
+
+[src/react/VList.tsx:212](https://github.com/inokawa/virtua/blob/8c6c738/src/react/VList.tsx#L212)
+
+___
+
+### viewportSize
+
+• `Readonly` **viewportSize**: `number`
+
+Get current offsetHeight or offsetWidth.
+
+#### Defined in
+
+[src/react/VList.tsx:216](https://github.com/inokawa/virtua/blob/8c6c738/src/react/VList.tsx#L216)
