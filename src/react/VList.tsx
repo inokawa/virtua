@@ -278,11 +278,19 @@ export interface VListProps extends WindowComponentAttributes {
   onScrollStop?: () => void;
   /**
    * Callback invoked when visible items range changes.
-   * @param payload `start` is the start index of viewable items. `end` is the end index of viewable items. `count` is the total count of items.
    */
   onRangeChange?: (payload: {
+    /**
+     * The start index of viewable items.
+     */
     start: number;
+    /**
+     * The end index of viewable items.
+     */
     end: number;
+    /**
+     * The total count of items.
+     */
     count: number;
   }) => void;
 }
