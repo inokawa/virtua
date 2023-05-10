@@ -1,5 +1,6 @@
 import {
   ACTION_HANDLE_SCROLL,
+  ACTION_HANDLE_MANUAL_SCROLL,
   ACTION_UPDATE_ITEM_SIZES,
   ACTION_UPDATE_VIEWPORT,
   ItemResize,
@@ -39,11 +40,7 @@ export type Scroller = {
   _fixScrollJump: (jump: ScrollJump, startIndex: number) => void;
 };
 
-export const createScroller = (
-  store: VirtualStore,
-  emitScrollOffsetChange: (offset: number) => void,
-  emitScrollStateChange: (scrolling: boolean) => void
-): Scroller => {
+export const createScroller = (store: VirtualStore): Scroller => {
   let prevOffset = -1;
   let scrollDirection: ScrollDirection = SCROLL_STOP;
   let resized = false;
@@ -121,7 +118,7 @@ export const createScroller = (
     if (store._hasUnmeasuredItemsInRange(index)) {
       do {
         // In order to scroll to the correct position, mount the items and measure their sizes before scrolling.
-        store._update(ACTION_HANDLE_SCROLL, getOffset());
+        store._update(ACTION_HANDLE_MANUAL_SCROLL, getOffset());
         try {
           // Wait for the scroll destination items to be measured.
           await store._waitForScrollDestinationItemsMeasured();
@@ -137,7 +134,7 @@ export const createScroller = (
       const offset = getOffset();
       updateScrollPosition(offset);
       // Sync viewport to scroll destination
-      store._update(ACTION_HANDLE_SCROLL, offset);
+      store._update(ACTION_HANDLE_MANUAL_SCROLL, offset);
     }
   };
 
@@ -170,21 +167,20 @@ export const createScroller = (
           resized = false;
         }
         store._update(ACTION_HANDLE_SCROLL, (prevOffset = offset));
-        emitScrollOffsetChange(offset);
       };
 
       const onScrollStopped = debounce(() => {
         // Check scroll position once just after scrolling stopped
         syncViewportToScrollPosition();
         scrollDirection = SCROLL_STOP;
-        emitScrollStateChange(false);
+        store._updateIsScrolling(false);
       }, 150);
 
       const onScroll = () => {
         const isScrollStart = scrollDirection === SCROLL_STOP;
         syncViewportToScrollPosition();
         if (isScrollStart) {
-          emitScrollStateChange(true);
+          store._updateIsScrolling(true);
         }
         onScrollStopped();
       };

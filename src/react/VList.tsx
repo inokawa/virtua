@@ -333,6 +333,11 @@ export const VList = forwardRef<VListHandle, VListProps>(
     }, [children]);
     const count = elements.length;
 
+    const onScroll = useRefWithUpdate(onScrollProp);
+    const onScrollStop = useRefWithUpdate(onScrollStopProp);
+
+    const [mountedIndexes, reset] = useState<Set<number>>(new Set<number>());
+    const [scrolling, setScrolling] = useState(false);
     // https://github.com/facebook/react/issues/25191#issuecomment-1237456448
     const store = useStatic(() =>
       createVirtualStore(
@@ -340,7 +345,17 @@ export const VList = forwardRef<VListHandle, VListProps>(
         itemSizeProp,
         !!horizontalProp,
         !!rtlProp,
-        initialItemCount
+        initialItemCount,
+        (isScrolling) => {
+          setScrolling(isScrolling);
+          if (!isScrolling) {
+            reset(new Set());
+            onScrollStop[refKey] && onScrollStop[refKey]();
+          }
+        },
+        (offset) => {
+          onScroll[refKey] && onScroll[refKey](offset);
+        }
       )
     );
     // The elements length and cached items length are different just after element is added/removed.
@@ -353,26 +368,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const jump = useSyncExternalStore(store._subscribe, store._getJump);
     const rootRef = useRef<HTMLDivElement>(null);
 
-    const onScroll = useRefWithUpdate(onScrollProp);
-    const onScrollStop = useRefWithUpdate(onScrollStopProp);
-
-    const [mountedIndexes, reset] = useState<Set<number>>(new Set<number>());
-    const [scrolling, setScrolling] = useState(false);
-    const scroller = useStatic(() =>
-      createScroller(
-        store,
-        (offset) => {
-          onScroll[refKey] && onScroll[refKey](offset);
-        },
-        (isScrolling) => {
-          setScrolling(isScrolling);
-          if (!isScrolling) {
-            reset(new Set());
-            onScrollStop[refKey] && onScrollStop[refKey]();
-          }
-        }
-      )
-    );
+    const scroller = useStatic(() => createScroller(store));
 
     useIsomorphicLayoutEffect(() => scroller._initRoot(rootRef[refKey]!), []);
 

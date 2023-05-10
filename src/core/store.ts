@@ -20,6 +20,7 @@ type ItemsRange = [startIndex: number, endIndex: number];
 export const ACTION_UPDATE_ITEM_SIZES = 1;
 export const ACTION_UPDATE_VIEWPORT = 2;
 export const ACTION_HANDLE_SCROLL = 3;
+export const ACTION_HANDLE_MANUAL_SCROLL = 4;
 
 type Actions =
   | [type: typeof ACTION_UPDATE_ITEM_SIZES, entries: ItemResize[]]
@@ -27,7 +28,8 @@ type Actions =
       type: typeof ACTION_UPDATE_VIEWPORT,
       rect: { _width: number; _height: number }
     ]
-  | [type: typeof ACTION_HANDLE_SCROLL, offset: number];
+  | [type: typeof ACTION_HANDLE_SCROLL, offset: number]
+  | [type: typeof ACTION_HANDLE_MANUAL_SCROLL, offset: number];
 
 export type VirtualStore = {
   _getRange(): ItemsRange;
@@ -44,6 +46,7 @@ export type VirtualStore = {
   _waitForScrollDestinationItemsMeasured(): Promise<void>;
   _subscribe(cb: () => void): () => void;
   _update(...action: Actions): void;
+  _updateIsScrolling(scrolling: boolean): void;
   _updateCacheLength(length: number): void;
 };
 
@@ -52,7 +55,9 @@ export const createVirtualStore = (
   itemSize: number,
   isHorizontal: boolean,
   isRtl: boolean,
-  initialItemCount: number = 0
+  initialItemCount: number = 0,
+  emitScrollStateChange: (scrolling: boolean) => void,
+  emitScrollOffsetChange: (offset: number) => void
 ): VirtualStore => {
   let viewportWidth = isHorizontal
     ? itemSize * max(initialItemCount - 1, 0)
@@ -180,7 +185,8 @@ export const createVirtualStore = (
             viewportHeight = payload._height;
             return true;
           }
-          case ACTION_HANDLE_SCROLL: {
+          case ACTION_HANDLE_SCROLL:
+          case ACTION_HANDLE_MANUAL_SCROLL: {
             const prevOffset = scrollOffset;
             return (scrollOffset = payload) !== prevOffset;
           }
@@ -191,10 +197,16 @@ export const createVirtualStore = (
         subscribers.forEach((cb) => {
           cb();
         });
-        if (_scrollToQueue && type === ACTION_UPDATE_ITEM_SIZES) {
+
+        if (type === ACTION_HANDLE_SCROLL) {
+          emitScrollOffsetChange(scrollOffset);
+        } else if (_scrollToQueue && type === ACTION_UPDATE_ITEM_SIZES) {
           _scrollToQueue[0]();
         }
       }
+    },
+    _updateIsScrolling(scrolling) {
+      emitScrollStateChange(scrolling);
     },
     _updateCacheLength(length) {
       // It's ok to be updated in render because states should be calculated consistently regardless cache length
