@@ -250,6 +250,10 @@ export interface VListProps extends WindowComponentAttributes {
    */
   overscan?: number;
   /**
+   * If set, the specified amount of items will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
+   */
+  initialItemCount?: number;
+  /**
    * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
    */
   horizontal?: boolean;
@@ -304,6 +308,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       children,
       itemSize: itemSizeProp = 40,
       overscan = 4,
+      initialItemCount,
       horizontal: horizontalProp,
       rtl: rtlProp,
       element = DefaultWindow,
@@ -330,7 +335,13 @@ export const VList = forwardRef<VListHandle, VListProps>(
 
     // https://github.com/facebook/react/issues/25191#issuecomment-1237456448
     const store = useStatic(() =>
-      createVirtualStore(count, itemSizeProp, !!horizontalProp, !!rtlProp)
+      createVirtualStore(
+        count,
+        itemSizeProp,
+        !!horizontalProp,
+        !!rtlProp,
+        initialItemCount
+      )
     );
     // The elements length and cached items length are different just after element is added/removed.
     store._updateCacheLength(count);

@@ -11,6 +11,7 @@ import {
   hasUnmeasuredItemsInRange,
 } from "./cache";
 import type { Writeable } from "./types";
+import { max } from "./utils";
 
 export type ScrollJump = Readonly<[index: number, sizeDiff: number][]>;
 export type ItemResize = [index: number, size: number];
@@ -50,14 +51,19 @@ export const createVirtualStore = (
   itemCount: number,
   itemSize: number,
   isHorizontal: boolean,
-  isRtl: boolean
+  isRtl: boolean,
+  initialItemCount: number = 0
 ): VirtualStore => {
-  let viewportWidth = 0;
-  let viewportHeight = 0;
+  let viewportWidth = isHorizontal
+    ? itemSize * max(initialItemCount - 1, 0)
+    : 0;
+  let viewportHeight = !isHorizontal
+    ? itemSize * max(initialItemCount - 1, 0)
+    : 0;
   let scrollOffset = 0;
   let jump: ScrollJump = [];
   let cache = resetCache(itemCount, itemSize);
-  let _prevRange: ItemsRange = [0, 0];
+  let _prevRange: ItemsRange = [0, initialItemCount];
   let _scrollToQueue: [() => void, () => void] | undefined;
 
   const subscribers = new Set<() => void>();

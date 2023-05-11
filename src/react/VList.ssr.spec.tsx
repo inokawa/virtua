@@ -4,29 +4,90 @@
 import { it, describe, expect } from "@jest/globals";
 import { renderToString, renderToStaticMarkup } from "react-dom/server";
 import { VList } from "./VList";
+import { JSDOM } from "jsdom";
+
+const LIST_ID = "list-id";
 
 describe("SSR", () => {
-  it("should render 10 items with renderToString", () => {
+  it("should render items with renderToString and vertical", () => {
+    const COUNT = 10;
+    const OVERSCAN = 4;
+    const html = renderToString(
+      <VList id={LIST_ID} initialItemCount={COUNT} overscan={OVERSCAN}>
+        {Array.from({ length: 1000 }).map((_, i) => (
+          <div key={i}>{i}</div>
+        ))}
+      </VList>
+    );
+    expect(html).toMatchSnapshot();
+
     expect(
-      renderToString(
-        <VList overscan={10}>
-          {Array.from({ length: 1000 }).map((_, i) => (
-            <div key={i}>{i}</div>
-          ))}
-        </VList>
-      )
-    ).toMatchSnapshot();
+      new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
+        .childElementCount
+    ).toEqual(COUNT + OVERSCAN);
   });
 
-  it("should render 10 items with renderToStaticMarkup", () => {
+  it("should render items with renderToStaticMarkup and vertical", () => {
+    const COUNT = 10;
+    const OVERSCAN = 4;
+    const html = renderToStaticMarkup(
+      <VList id={LIST_ID} initialItemCount={COUNT} overscan={OVERSCAN}>
+        {Array.from({ length: 1000 }).map((_, i) => (
+          <div key={i}>{i}</div>
+        ))}
+      </VList>
+    );
+    expect(html).toMatchSnapshot();
+
     expect(
-      renderToStaticMarkup(
-        <VList overscan={10}>
-          {Array.from({ length: 1000 }).map((_, i) => (
-            <div key={i}>{i}</div>
-          ))}
-        </VList>
-      )
-    ).toMatchSnapshot();
+      new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
+        .childElementCount
+    ).toEqual(COUNT + OVERSCAN);
+  });
+
+  it("should render items with renderToString and horizontal", () => {
+    const COUNT = 10;
+    const OVERSCAN = 4;
+    const html = renderToString(
+      <VList
+        id={LIST_ID}
+        initialItemCount={COUNT}
+        overscan={OVERSCAN}
+        horizontal
+      >
+        {Array.from({ length: 1000 }).map((_, i) => (
+          <div key={i}>{i}</div>
+        ))}
+      </VList>
+    );
+    expect(html).toMatchSnapshot();
+
+    expect(
+      new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
+        .childElementCount
+    ).toEqual(COUNT + OVERSCAN);
+  });
+
+  it("should render items with renderToStaticMarkup and horizontal", () => {
+    const COUNT = 10;
+    const OVERSCAN = 4;
+    const html = renderToStaticMarkup(
+      <VList
+        id={LIST_ID}
+        initialItemCount={COUNT}
+        overscan={OVERSCAN}
+        horizontal
+      >
+        {Array.from({ length: 1000 }).map((_, i) => (
+          <div key={i}>{i}</div>
+        ))}
+      </VList>
+    );
+    expect(html).toMatchSnapshot();
+
+    expect(
+      new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
+        .childElementCount
+    ).toEqual(COUNT + OVERSCAN);
   });
 });
