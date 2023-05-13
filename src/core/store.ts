@@ -55,7 +55,6 @@ export type VirtualStore = {
   _update(...action: Actions): void;
   _getScrollDirection(): ScrollDirection;
   _setScrollDirection(direction: ScrollDirection): void;
-  _scrollStart(): void;
   _updateCacheLength(length: number): void;
 };
 
@@ -72,7 +71,7 @@ export const createVirtualStore = (
   let scrollOffset = 0;
   let jump: ScrollJump = [];
   let cache = resetCache(itemCount, itemSize);
-  let _scrollDirection: ScrollDirection = SCROLL_STOP;
+  let scrollDirection: ScrollDirection = SCROLL_STOP;
   let _prevRange: ItemsRange = [0, initialItemCount];
   let _scrollToQueue: [() => void, () => void] | undefined;
 
@@ -205,16 +204,19 @@ export const createVirtualStore = (
       }
     },
     _getScrollDirection() {
-      return _scrollDirection;
+      return scrollDirection;
     },
     _setScrollDirection(dir) {
-      _scrollDirection = dir;
-      if (_scrollDirection === SCROLL_STOP) {
+      const prev = scrollDirection;
+      scrollDirection = dir;
+      if (scrollDirection === SCROLL_STOP) {
         onScrollStateChange(false);
+      } else if (
+        prev === SCROLL_STOP &&
+        (scrollDirection === SCROLL_DOWN || scrollDirection === SCROLL_UP)
+      ) {
+        onScrollStateChange(true);
       }
-    },
-    _scrollStart() {
-      onScrollStateChange(true);
     },
     _updateCacheLength(length) {
       // It's ok to be updated in render because states should be calculated consistently regardless cache length

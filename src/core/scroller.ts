@@ -161,11 +161,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
       }, 150);
 
       const onScroll = () => {
-        const isScrollStart = store._getScrollDirection() === SCROLL_STOP;
         syncViewportToScrollPosition();
-        if (isScrollStart) {
-          store._scrollStart();
-        }
         onScrollStopped();
       };
 
