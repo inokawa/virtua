@@ -1,8 +1,8 @@
 import {
-  ACTION_HANDLE_SCROLL,
-  ACTION_HANDLE_MANUAL_SCROLL,
-  ACTION_UPDATE_ITEM_SIZES,
-  ACTION_UPDATE_VIEWPORT,
+  ACTION_SCROLL,
+  ACTION_MANUAL_SCROLL,
+  ACTION_ITEM_RESIZE,
+  ACTION_WINDOW_RESIZE,
   ItemResize,
   ScrollJump,
   VirtualStore,
@@ -48,6 +48,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
   const isHorizontal = store._isHorizontal();
   const isRtl = store._isRtl();
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
+  const sizeKey = isHorizontal ? "width" : "height";
   const mountedIndexes = new WeakMap<Element, number>();
 
   // Initialize ResizeObserver lazily for SSR
@@ -55,25 +56,19 @@ export const createScroller = (store: VirtualStore): Scroller => {
     return new ResizeObserver((entries) => {
       // https://www.w3.org/TR/resize-observer/#intro
       const resizes: ItemResize[] = [];
-      for (const entry of entries) {
-        if (entry.target === rootElement) {
-          store._update(ACTION_UPDATE_VIEWPORT, {
-            _width: entry.contentRect.width,
-            _height: entry.contentRect.height,
-          });
+      for (const { target, contentRect } of entries) {
+        if (target === rootElement) {
+          store._update(ACTION_WINDOW_RESIZE, contentRect[sizeKey]);
         } else {
-          const index = mountedIndexes.get(entry.target);
+          const index = mountedIndexes.get(target);
           if (exists(index)) {
-            resizes.push([
-              index,
-              entry.contentRect[isHorizontal ? "width" : "height"],
-            ]);
+            resizes.push([index, contentRect[sizeKey]]);
           }
         }
       }
 
       if (resizes.length) {
-        store._update(ACTION_UPDATE_ITEM_SIZES, resizes);
+        store._update(ACTION_ITEM_RESIZE, resizes);
         resized = true;
       }
     });
@@ -82,9 +77,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
     if (!rootElement) return 0;
     // Use element's scrollHeight/scrollWidth instead of stored scrollSize.
     // This is because stored size may differ from the actual size, for example when a new item is added and not yet measured.
-    return store._isHorizontal()
-      ? rootElement.scrollWidth
-      : rootElement.scrollHeight;
+    return isHorizontal ? rootElement.scrollWidth : rootElement.scrollHeight;
   };
   const updateScrollPosition = (offset: number, diff?: boolean) => {
     if (!rootElement) return;
@@ -115,7 +108,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
     if (store._hasUnmeasuredItemsInRange(index)) {
       do {
         // In order to scroll to the correct position, mount the items and measure their sizes before scrolling.
-        store._update(ACTION_HANDLE_MANUAL_SCROLL, getOffset());
+        store._update(ACTION_MANUAL_SCROLL, getOffset());
         try {
           // Wait for the scroll destination items to be measured.
           await store._waitForScrollDestinationItemsMeasured();
@@ -131,7 +124,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
       const offset = getOffset();
       updateScrollPosition(offset);
       // Sync viewport to scroll destination
-      store._update(ACTION_HANDLE_MANUAL_SCROLL, offset);
+      store._update(ACTION_MANUAL_SCROLL, offset);
     }
   };
 
@@ -163,7 +156,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
         } else {
           resized = false;
         }
-        store._update(ACTION_HANDLE_SCROLL, (prevOffset = offset));
+        store._update(ACTION_SCROLL, (prevOffset = offset));
       };
 
       const onScrollStopped = debounce(() => {

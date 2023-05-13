@@ -17,19 +17,16 @@ export type ScrollJump = Readonly<[index: number, sizeDiff: number][]>;
 export type ItemResize = [index: number, size: number];
 type ItemsRange = [startIndex: number, endIndex: number];
 
-export const ACTION_UPDATE_ITEM_SIZES = 1;
-export const ACTION_UPDATE_VIEWPORT = 2;
-export const ACTION_HANDLE_SCROLL = 3;
-export const ACTION_HANDLE_MANUAL_SCROLL = 4;
+export const ACTION_ITEM_RESIZE = 1;
+export const ACTION_WINDOW_RESIZE = 2;
+export const ACTION_SCROLL = 3;
+export const ACTION_MANUAL_SCROLL = 4;
 
 type Actions =
-  | [type: typeof ACTION_UPDATE_ITEM_SIZES, entries: ItemResize[]]
-  | [
-      type: typeof ACTION_UPDATE_VIEWPORT,
-      rect: { _width: number; _height: number }
-    ]
-  | [type: typeof ACTION_HANDLE_SCROLL, offset: number]
-  | [type: typeof ACTION_HANDLE_MANUAL_SCROLL, offset: number];
+  | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
+  | [type: typeof ACTION_WINDOW_RESIZE, size: number]
+  | [type: typeof ACTION_SCROLL, offset: number]
+  | [type: typeof ACTION_MANUAL_SCROLL, offset: number];
 
 export type VirtualStore = {
   _getRange(): ItemsRange;
@@ -56,15 +53,10 @@ export const createVirtualStore = (
   isHorizontal: boolean,
   isRtl: boolean,
   initialItemCount: number = 0,
-  emitScrollStateChange: (scrolling: boolean) => void,
-  emitScrollOffsetChange: (offset: number) => void
+  onScrollStateChange: (scrolling: boolean) => void,
+  onScrollOffsetChange: (offset: number) => void
 ): VirtualStore => {
-  let viewportWidth = isHorizontal
-    ? itemSize * max(initialItemCount - 1, 0)
-    : 0;
-  let viewportHeight = !isHorizontal
-    ? itemSize * max(initialItemCount - 1, 0)
-    : 0;
+  let viewportSize = itemSize * max(initialItemCount - 1, 0);
   let scrollOffset = 0;
   let jump: ScrollJump = [];
   let cache = resetCache(itemCount, itemSize);
@@ -72,8 +64,6 @@ export const createVirtualStore = (
   let _scrollToQueue: [() => void, () => void] | undefined;
 
   const subscribers = new Set<() => void>();
-  const getViewportSize = (): number =>
-    isHorizontal ? viewportWidth : viewportHeight;
 
   return {
     _getRange() {
@@ -88,7 +78,7 @@ export const createVirtualStore = (
         prevStartIndex,
         prevOffset
       );
-      const end = findEndIndex(cache, start, getViewportSize());
+      const end = findEndIndex(cache, start, viewportSize);
       if (prevStartIndex === start && prevEndIndex === end) {
         return _prevRange;
       }
@@ -101,7 +91,7 @@ export const createVirtualStore = (
       return hasUnmeasuredItemsInRange(
         cache,
         startIndex,
-        findEndIndex(cache, startIndex, getViewportSize())
+        findEndIndex(cache, startIndex, viewportSize)
       );
     },
     _getItemOffset(index) {
@@ -111,7 +101,7 @@ export const createVirtualStore = (
       return scrollOffset;
     },
     _getViewportSize() {
-      return getViewportSize();
+      return viewportSize;
     },
     _getScrollSize() {
       return computeTotalSize(cache as Writeable<Cache>);
@@ -157,7 +147,7 @@ export const createVirtualStore = (
     _update(type, payload) {
       const mutated = ((): boolean => {
         switch (type) {
-          case ACTION_UPDATE_ITEM_SIZES: {
+          case ACTION_ITEM_RESIZE: {
             const updated = payload.filter(
               ([index, size]) => cache._sizes[index] !== size
             );
@@ -174,19 +164,15 @@ export const createVirtualStore = (
             jump = updatedJump;
             return true;
           }
-          case ACTION_UPDATE_VIEWPORT: {
-            if (
-              viewportWidth === payload._width &&
-              viewportHeight === payload._height
-            ) {
+          case ACTION_WINDOW_RESIZE: {
+            if (viewportSize === payload) {
               return false;
             }
-            viewportWidth = payload._width;
-            viewportHeight = payload._height;
+            viewportSize = payload;
             return true;
           }
-          case ACTION_HANDLE_SCROLL:
-          case ACTION_HANDLE_MANUAL_SCROLL: {
+          case ACTION_SCROLL:
+          case ACTION_MANUAL_SCROLL: {
             const prevOffset = scrollOffset;
             return (scrollOffset = payload) !== prevOffset;
           }
@@ -198,15 +184,15 @@ export const createVirtualStore = (
           cb();
         });
 
-        if (type === ACTION_HANDLE_SCROLL) {
-          emitScrollOffsetChange(scrollOffset);
-        } else if (_scrollToQueue && type === ACTION_UPDATE_ITEM_SIZES) {
+        if (type === ACTION_SCROLL) {
+          onScrollOffsetChange(scrollOffset);
+        } else if (_scrollToQueue && type === ACTION_ITEM_RESIZE) {
           _scrollToQueue[0]();
         }
       }
     },
     _updateIsScrolling(scrolling) {
-      emitScrollStateChange(scrolling);
+      onScrollStateChange(scrolling);
     },
     _updateCacheLength(length) {
       // It's ok to be updated in render because states should be calculated consistently regardless cache length
