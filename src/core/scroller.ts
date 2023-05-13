@@ -15,15 +15,14 @@ import { debounce, throttle, exists, max, min, memoizeOnce } from "./utils";
 
 // The scroll position may be negative value in rtl direction.
 // https://github.com/othree/jquery.rtl-scroll-type
-const hasNegativeOffsetInRtl = memoizeOnce(
-  (scrollable: HTMLElement, key: "scrollTop" | "scrollLeft") => {
-    const prev = scrollable[key];
-    scrollable[key] = 1;
-    const isNegative = scrollable[key] === 0;
-    scrollable[key] = prev;
-    return isNegative;
-  }
-);
+const hasNegativeOffsetInRtl = memoizeOnce((scrollable: HTMLElement) => {
+  const key = "scrollLeft";
+  const prev = scrollable[key];
+  scrollable[key] = 1;
+  const isNegative = scrollable[key] === 0;
+  scrollable[key] = prev;
+  return isNegative;
+});
 
 export type Scroller = {
   _initRoot: (rootElement: HTMLElement) => () => void;
@@ -73,8 +72,8 @@ export const createScroller = (store: VirtualStore): Scroller => {
   };
   const updateScrollPosition = (offset: number, diff?: boolean) => {
     if (!rootElement) return;
-    if (isRtl) {
-      if (hasNegativeOffsetInRtl(rootElement, scrollToKey)) {
+    if (isHorizontal && isRtl) {
+      if (hasNegativeOffsetInRtl(rootElement)) {
         offset *= -1;
       }
     }
@@ -130,8 +129,8 @@ export const createScroller = (store: VirtualStore): Scroller => {
 
       const syncViewportToScrollPosition = () => {
         let offset = root[scrollToKey];
-        if (isRtl) {
-          if (hasNegativeOffsetInRtl(root, scrollToKey)) {
+        if (isHorizontal && isRtl) {
+          if (hasNegativeOffsetInRtl(root)) {
             offset *= -1;
           }
         }
