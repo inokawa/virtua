@@ -6,6 +6,10 @@ import {
   ItemResize,
   ScrollJump,
   VirtualStore,
+  SCROLL_MANUAL,
+  SCROLL_STOP,
+  SCROLL_UP,
+  SCROLL_DOWN,
 } from "./store";
 import { debounce, throttle, exists, max, min, memoizeOnce } from "./utils";
 
@@ -21,16 +25,6 @@ const hasNegativeOffsetInRtl = memoizeOnce(
   }
 );
 
-export const SCROLL_STOP = 0;
-export const SCROLL_DOWN = 1;
-export const SCROLL_UP = 2;
-export const SCROLL_MANUAL = 3;
-type ScrollDirection =
-  | typeof SCROLL_STOP
-  | typeof SCROLL_DOWN
-  | typeof SCROLL_UP
-  | typeof SCROLL_MANUAL;
-
 export type Scroller = {
   _initRoot: (rootElement: HTMLElement) => () => void;
   _initItem: (itemElement: HTMLElement, index: number) => () => void;
@@ -41,8 +35,6 @@ export type Scroller = {
 };
 
 export const createScroller = (store: VirtualStore): Scroller => {
-  let prevOffset = -1;
-  let scrollDirection: ScrollDirection = SCROLL_STOP;
   let resized = false;
   let rootElement: HTMLElement | undefined;
   const isHorizontal = store._isHorizontal();
@@ -90,7 +82,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
       rootElement[scrollToKey] += offset;
     } else {
       rootElement[scrollToKey] = offset;
-      scrollDirection = SCROLL_MANUAL;
+      store._setScrollDirection(SCROLL_MANUAL);
     }
   };
   const scrollTo = async (index: number, getCurrentOffset: () => number) => {
@@ -143,31 +135,35 @@ export const createScroller = (store: VirtualStore): Scroller => {
             offset *= -1;
           }
         }
+        const prevOffset = store._getScrollOffset();
         if (prevOffset === offset) {
           return;
         }
+        const scrollDirection = store._getScrollDirection();
         // Skip scroll direction detection just after resizing because it may result in the opposite direction.
         // Scroll events are dispatched enough so it's ok to skip some of them.
-        if (scrollDirection === SCROLL_STOP || !resized) {
+        if (
+          (scrollDirection === SCROLL_STOP || !resized) &&
           // Ignore until manual scrolling
-          if (scrollDirection !== SCROLL_MANUAL) {
-            scrollDirection = prevOffset > offset ? SCROLL_UP : SCROLL_DOWN;
-          }
-        } else {
-          resized = false;
+          scrollDirection !== SCROLL_MANUAL
+        ) {
+          store._setScrollDirection(
+            prevOffset > offset ? SCROLL_UP : SCROLL_DOWN
+          );
         }
-        store._update(ACTION_SCROLL, (prevOffset = offset));
+        resized = false;
+        store._update(ACTION_SCROLL, offset);
       };
 
       const onScrollStopped = debounce(() => {
         // Check scroll position once just after scrolling stopped
         syncViewportToScrollPosition();
-        scrollDirection = SCROLL_STOP;
+        store._setScrollDirection(SCROLL_STOP);
         store._updateIsScrolling(false);
       }, 150);
 
       const onScroll = () => {
-        const isScrollStart = scrollDirection === SCROLL_STOP;
+        const isScrollStart = store._getScrollDirection() === SCROLL_STOP;
         syncViewportToScrollPosition();
         if (isScrollStart) {
           store._updateIsScrolling(true);
@@ -178,7 +174,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
       // Infer scroll state also from wheel events
       // Sometimes scroll events do not fire when frame dropped even if the visual have been already scrolled
       const onWheel = throttle((e: WheelEvent) => {
-        if (scrollDirection === SCROLL_STOP) {
+        if (store._getScrollDirection() === SCROLL_STOP) {
           // Scroll start should be detected with scroll event
           return;
         }
@@ -190,9 +186,10 @@ export const createScroller = (store: VirtualStore): Scroller => {
         // https://github.com/w3c/uievents/issues/181#issuecomment-392648065
         // https://bugzilla.mozilla.org/show_bug.cgi?id=1392460#c34
         if (isHorizontal ? e.deltaX : e.deltaY) {
+          const offset = store._getScrollOffset();
           if (
-            prevOffset > 0 &&
-            prevOffset < store._getScrollSize() - store._getViewportSize()
+            offset > 0 &&
+            offset < store._getScrollSize() - store._getViewportSize()
           ) {
             onScrollStopped();
           }
@@ -231,6 +228,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
       scrollTo(index, () => store._getItemOffset(index));
     },
     _fixScrollJump: (jump, startIndex) => {
+      const scrollDirection = store._getScrollDirection();
       // Compensate scroll jump
       if (scrollDirection === SCROLL_UP) {
         const diff = calcTotalJump(jump);

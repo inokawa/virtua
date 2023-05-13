@@ -17,6 +17,16 @@ export type ScrollJump = Readonly<[index: number, sizeDiff: number][]>;
 export type ItemResize = [index: number, size: number];
 type ItemsRange = [startIndex: number, endIndex: number];
 
+export const SCROLL_STOP = 0;
+export const SCROLL_DOWN = 1;
+export const SCROLL_UP = 2;
+export const SCROLL_MANUAL = 3;
+type ScrollDirection =
+  | typeof SCROLL_STOP
+  | typeof SCROLL_DOWN
+  | typeof SCROLL_UP
+  | typeof SCROLL_MANUAL;
+
 export const ACTION_ITEM_RESIZE = 1;
 export const ACTION_WINDOW_RESIZE = 2;
 export const ACTION_SCROLL = 3;
@@ -43,6 +53,8 @@ export type VirtualStore = {
   _waitForScrollDestinationItemsMeasured(): Promise<void>;
   _subscribe(cb: () => void): () => void;
   _update(...action: Actions): void;
+  _getScrollDirection(): ScrollDirection;
+  _setScrollDirection(direction: ScrollDirection): void;
   _updateIsScrolling(scrolling: boolean): void;
   _updateCacheLength(length: number): void;
 };
@@ -60,6 +72,7 @@ export const createVirtualStore = (
   let scrollOffset = 0;
   let jump: ScrollJump = [];
   let cache = resetCache(itemCount, itemSize);
+  let _scrollDirection: ScrollDirection = SCROLL_STOP;
   let _prevRange: ItemsRange = [0, initialItemCount];
   let _scrollToQueue: [() => void, () => void] | undefined;
 
@@ -190,6 +203,12 @@ export const createVirtualStore = (
           _scrollToQueue[0]();
         }
       }
+    },
+    _getScrollDirection() {
+      return _scrollDirection;
+    },
+    _setScrollDirection(dir) {
+      _scrollDirection = dir;
     },
     _updateIsScrolling(scrolling) {
       onScrollStateChange(scrolling);
