@@ -339,8 +339,8 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const [mountedIndexes, reset] = useState<Set<number>>(new Set<number>());
     const [scrolling, setScrolling] = useState(false);
     // https://github.com/facebook/react/issues/25191#issuecomment-1237456448
-    const store = useStatic(() =>
-      createVirtualStore(
+    const [store, scroller] = useStatic(() => {
+      const _store = createVirtualStore(
         count,
         itemSizeProp,
         !!horizontalProp,
@@ -356,8 +356,9 @@ export const VList = forwardRef<VListHandle, VListProps>(
         (offset) => {
           onScroll[refKey] && onScroll[refKey](offset);
         }
-      )
-    );
+      );
+      return [_store, createScroller(_store)];
+    });
     // The elements length and cached items length are different just after element is added/removed.
     store._updateCacheLength(count);
 
@@ -367,8 +368,6 @@ export const VList = forwardRef<VListHandle, VListProps>(
     );
     const jump = useSyncExternalStore(store._subscribe, store._getJump);
     const rootRef = useRef<HTMLDivElement>(null);
-
-    const scroller = useStatic(() => createScroller(store));
 
     useIsomorphicLayoutEffect(() => scroller._initRoot(rootRef[refKey]!), []);
 

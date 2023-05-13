@@ -45,42 +45,39 @@ export const createScroller = (store: VirtualStore): Scroller => {
   let scrollDirection: ScrollDirection = SCROLL_STOP;
   let resized = false;
   let rootElement: HTMLElement | undefined;
-  let _ro: ResizeObserver | undefined;
   const isHorizontal = store._isHorizontal();
   const isRtl = store._isRtl();
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const mountedIndexes = new WeakMap<Element, number>();
-  const getResizeObserver = (): ResizeObserver => {
-    // Initialize ResizeObserver lazily for SSR
-    return (
-      _ro ||
-      (_ro = new ResizeObserver((entries) => {
-        // https://www.w3.org/TR/resize-observer/#intro
-        const resizes: ItemResize[] = [];
-        for (const entry of entries) {
-          if (entry.target === rootElement) {
-            store._update(ACTION_UPDATE_VIEWPORT, {
-              _width: entry.contentRect.width,
-              _height: entry.contentRect.height,
-            });
-          } else {
-            const index = mountedIndexes.get(entry.target);
-            if (exists(index)) {
-              resizes.push([
-                index,
-                entry.contentRect[isHorizontal ? "width" : "height"],
-              ]);
-            }
+
+  // Initialize ResizeObserver lazily for SSR
+  const getResizeObserver = memoizeOnce(() => {
+    return new ResizeObserver((entries) => {
+      // https://www.w3.org/TR/resize-observer/#intro
+      const resizes: ItemResize[] = [];
+      for (const entry of entries) {
+        if (entry.target === rootElement) {
+          store._update(ACTION_UPDATE_VIEWPORT, {
+            _width: entry.contentRect.width,
+            _height: entry.contentRect.height,
+          });
+        } else {
+          const index = mountedIndexes.get(entry.target);
+          if (exists(index)) {
+            resizes.push([
+              index,
+              entry.contentRect[isHorizontal ? "width" : "height"],
+            ]);
           }
         }
+      }
 
-        if (resizes.length) {
-          store._update(ACTION_UPDATE_ITEM_SIZES, resizes);
-          resized = true;
-        }
-      }))
-    );
-  };
+      if (resizes.length) {
+        store._update(ACTION_UPDATE_ITEM_SIZES, resizes);
+        resized = true;
+      }
+    });
+  });
   const getActualScrollSize = (): number => {
     if (!rootElement) return 0;
     // Use element's scrollHeight/scrollWidth instead of stored scrollSize.
