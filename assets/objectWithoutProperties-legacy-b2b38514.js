@@ -1,2 +1,0 @@
-System.register(["./objectWithoutPropertiesLoose-legacy-06a78b29.js"],(function(e,t){"use strict";var r;return{setters:[e=>{r=e._}],execute:function(){e("_",(function(e,t){if(null==e)return{};var o,n,s=r(e,t);if(Object.getOwnPropertySymbols){var c=Object.getOwnPropertySymbols(e);for(n=0;n<c.length;n++)o=c[n],t.indexOf(o)>=0||Object.prototype.propertyIsEnumerable.call(e,o)&&(s[o]=e[o])}return s}))}}}));
-//# sourceMappingURL=objectWithoutProperties-legacy-b2b38514.js.map
