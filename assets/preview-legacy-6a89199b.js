@@ -1,0 +1,2 @@
+System.register(["./jsx-runtime-legacy-57aaa4c0.js","./index-legacy-612e7deb.js"],(function(e,s){"use strict";var t;return{setters:[e=>{t=e.j},null],execute:function(){e("parameters",{actions:{argTypesRegex:"^on[A-Z].*"},layout:"fullscreen",options:{storySort:{order:["basics","advanced","comparisons"]}}}),e("decorators",[e=>t("div",{style:{background:"whitesmoke",width:"100vw",height:"100vh"},children:t(e,{})})])}}}));
+//# sourceMappingURL=preview-legacy-6a89199b.js.map
