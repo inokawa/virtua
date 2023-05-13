@@ -43,7 +43,7 @@ export const throttle = <T extends (...args: any[]) => void>(
   };
 };
 
-export const memoizeOnce = <F extends (...args: any[]) => any>(fn: F): F => {
+export const once = <F extends (...args: any[]) => any>(fn: F): F => {
   let called: undefined | boolean;
   let cache: ReturnType<F>;
 

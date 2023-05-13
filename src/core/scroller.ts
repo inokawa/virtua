@@ -11,11 +11,11 @@ import {
   SCROLL_UP,
   SCROLL_DOWN,
 } from "./store";
-import { debounce, throttle, exists, max, min, memoizeOnce } from "./utils";
+import { debounce, throttle, exists, max, min, once } from "./utils";
 
 // The scroll position may be negative value in rtl direction.
 // https://github.com/othree/jquery.rtl-scroll-type
-const hasNegativeOffsetInRtl = memoizeOnce((scrollable: HTMLElement) => {
+const hasNegativeOffsetInRtl = once((scrollable: HTMLElement) => {
   const key = "scrollLeft";
   const prev = scrollable[key];
   scrollable[key] = 1;
@@ -43,7 +43,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
   const mountedIndexes = new WeakMap<Element, number>();
 
   // Initialize ResizeObserver lazily for SSR
-  const getResizeObserver = memoizeOnce(() => {
+  const getResizeObserver = once(() => {
     return new ResizeObserver((entries) => {
       // https://www.w3.org/TR/resize-observer/#intro
       const resizes: ItemResize[] = [];
@@ -70,7 +70,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
     // This is because stored size may differ from the actual size, for example when a new item is added and not yet measured.
     return isHorizontal ? rootElement.scrollWidth : rootElement.scrollHeight;
   };
-  const updateScrollPosition = (offset: number, diff?: boolean) => {
+  const scrollTo = (offset: number, diff?: boolean) => {
     if (!rootElement) return;
     if (isHorizontal && isRtl) {
       if (hasNegativeOffsetInRtl(rootElement)) {
@@ -84,7 +84,10 @@ export const createScroller = (store: VirtualStore): Scroller => {
       store._setScrollDirection(SCROLL_MANUAL);
     }
   };
-  const scrollTo = async (index: number, getCurrentOffset: () => number) => {
+  const scrollManually = async (
+    index: number,
+    getCurrentOffset: () => number
+  ) => {
     const getOffset = (): number => {
       let offset = getCurrentOffset();
       const scrollSize = getActualScrollSize();
@@ -110,10 +113,10 @@ export const createScroller = (store: VirtualStore): Scroller => {
       } while (store._hasUnmeasuredItemsInRange(index));
 
       // Scroll with the updated value
-      updateScrollPosition(getOffset());
+      scrollTo(getOffset());
     } else {
       const offset = getOffset();
-      updateScrollPosition(offset);
+      scrollTo(offset);
       // Sync viewport to scroll destination
       store._update(ACTION_MANUAL_SCROLL, offset);
     }
@@ -214,12 +217,12 @@ export const createScroller = (store: VirtualStore): Scroller => {
     _scrollTo(offset) {
       offset = max(offset, 0);
 
-      scrollTo(store._getItemIndexForScrollTo(offset), () => offset);
+      scrollManually(store._getItemIndexForScrollTo(offset), () => offset);
     },
     _scrollToIndex(index, count) {
       index = max(min(index, count - 1), 0);
 
-      scrollTo(index, () => store._getItemOffset(index));
+      scrollManually(index, () => store._getItemOffset(index));
     },
     _fixScrollJump: (jump, startIndex) => {
       const scrollDirection = store._getScrollDirection();
@@ -227,7 +230,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
       if (scrollDirection === SCROLL_UP) {
         const diff = calcTotalJump(jump);
         if (diff) {
-          updateScrollPosition(diff, true);
+          scrollTo(diff, true);
         }
       } else if (scrollDirection === SCROLL_MANUAL) {
         const offset = store._getScrollOffset();
@@ -242,7 +245,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
           ) {
             // Keep end to stick to the end
             if (allDiff) {
-              updateScrollPosition(offset + allDiff);
+              scrollTo(offset + allDiff);
             }
           } else {
             // Keep start at mid
@@ -253,7 +256,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
               return acc;
             }, 0);
             if (diff) {
-              updateScrollPosition(diff, true);
+              scrollTo(diff, true);
             }
           }
         }
