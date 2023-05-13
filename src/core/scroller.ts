@@ -158,14 +158,13 @@ export const createScroller = (store: VirtualStore): Scroller => {
         // Check scroll position once just after scrolling stopped
         syncViewportToScrollPosition();
         store._setScrollDirection(SCROLL_STOP);
-        store._updateIsScrolling(false);
       }, 150);
 
       const onScroll = () => {
         const isScrollStart = store._getScrollDirection() === SCROLL_STOP;
         syncViewportToScrollPosition();
         if (isScrollStart) {
-          store._updateIsScrolling(true);
+          store._scrollStart();
         }
         onScrollStopped();
       };
