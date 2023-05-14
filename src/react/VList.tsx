@@ -28,7 +28,6 @@ type ItemProps = {
   _store: VirtualStore;
   _index: number;
   _element: "div";
-  _isOffscreen: boolean;
 };
 
 const Item = memo(
@@ -38,20 +37,11 @@ const Item = memo(
     _store: store,
     _index: index,
     _element: Element,
-    _isOffscreen: isOffscreen,
   }: ItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
-    const offset = useStore(
-      store,
-      () => store._getItemOffset(index),
-      isOffscreen
-    );
-    const hide = useStore(
-      store,
-      () => store._isUnmeasuredItem(index),
-      isOffscreen
-    );
+    const offset = useStore(store, () => store._getItemOffset(index));
+    const hide = useStore(store, () => store._isUnmeasuredItem(index));
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(
@@ -72,14 +62,14 @@ const Item = memo(
             [isHorizontal ? "height" : "width"]: "100%",
             [isHorizontal ? "top" : leftOrRightKey]: 0,
             [isHorizontal ? leftOrRightKey : "top"]: offset,
-            visibility: hide || isOffscreen ? "hidden" : "visible",
+            visibility: hide ? "hidden" : "visible",
             // willChange: "transform",
           };
           if (isHorizontal) {
             style.display = "flex";
           }
           return style;
-        }, [offset, hide, isOffscreen])}
+        }, [offset, hide])}
       >
         {children}
       </Element>
@@ -432,7 +422,6 @@ export const VList = forwardRef<VListHandle, VListProps>(
               _index={i}
               _element={itemElement as "div"}
               _children={e}
-              _isOffscreen={i < startIndexWithMargin || i > endIndexWithMargin}
             />
           );
         }
