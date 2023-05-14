@@ -1,9 +1,14 @@
 import { afterEach, it, expect, describe, jest } from "@jest/globals";
-import { render, cleanup /*waitFor*/ } from "@testing-library/react";
-// import { useEffect, useRef } from "react";
-
-import { CustomWindowComponentProps, VList /*VListHandle */ } from "./VList";
-import { Profiler, ReactElement, forwardRef, useEffect, useState } from "react";
+import { render, cleanup, waitFor } from "@testing-library/react";
+import { CustomWindowComponentProps, VList, VListHandle } from "./VList";
+import {
+  Profiler,
+  ReactElement,
+  forwardRef,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -539,3 +544,155 @@ describe("horizontal", () => {
 //     expect(asFragment()).toMatchSnapshot();
 //   });
 // });
+
+describe("onScroll", () => {
+  const LIST_ID = "test-id";
+
+  it("should call callbacks on scroll in vertical", async () => {
+    const onScroll = jest.fn();
+    const onScrollStop = jest.fn();
+    const dests = [123, 200, 357];
+    const Mounter = () => {
+      useEffect(() => {
+        const el = document.getElementById(LIST_ID)!;
+        dests.forEach((dest) => {
+          el.scrollTop = dest;
+          el.dispatchEvent(new Event("scroll"));
+        });
+      }, []);
+      return (
+        <VList id={LIST_ID} onScroll={onScroll} onScrollStop={onScrollStop}>
+          {Array.from({ length: 1000 }).map((_, i) => (
+            <div key={i}>{i}</div>
+          ))}
+        </VList>
+      );
+    };
+    render(<Mounter />);
+    await waitFor(() => {
+      expect(onScrollStop).toHaveBeenCalled();
+    });
+    expect(onScroll).toHaveBeenCalledTimes(dests.length);
+    dests.forEach((d, i) => {
+      expect(onScroll).toHaveBeenNthCalledWith(i + 1, d);
+    });
+    expect(onScrollStop).toHaveBeenCalledTimes(1);
+  });
+
+  it("should call callbacks on scroll in horizontal", async () => {
+    const onScroll = jest.fn();
+    const onScrollStop = jest.fn();
+    const dests = [123, 200, 357];
+    const Mounter = () => {
+      useEffect(() => {
+        const el = document.getElementById(LIST_ID)!;
+        dests.forEach((dest) => {
+          el.scrollLeft = dest;
+          el.dispatchEvent(new Event("scroll"));
+        });
+      }, []);
+      return (
+        <VList
+          id={LIST_ID}
+          horizontal
+          onScroll={onScroll}
+          onScrollStop={onScrollStop}
+        >
+          {Array.from({ length: 1000 }).map((_, i) => (
+            <div key={i}>{i}</div>
+          ))}
+        </VList>
+      );
+    };
+    render(<Mounter />);
+    await waitFor(() => {
+      expect(onScrollStop).toHaveBeenCalled();
+    });
+    expect(onScroll).toHaveBeenCalledTimes(dests.length);
+    dests.forEach((d, i) => {
+      expect(onScroll).toHaveBeenNthCalledWith(i + 1, d);
+    });
+    expect(onScrollStop).toHaveBeenCalledTimes(1);
+  });
+
+  it("should call callbacks on imperative scroll in vertical", async () => {
+    const onScroll = jest.fn();
+    const onScrollStop = jest.fn();
+    const dests = [123, 200, 357];
+    const Mounter = () => {
+      const ref = useRef<VListHandle>(null);
+      useEffect(() => {
+        const el = document.getElementById(LIST_ID)!;
+        dests.forEach((dest) => {
+          setTimeout(() => {
+            ref.current?.scrollTo(dest);
+            el.scrollTop = dest;
+            el.dispatchEvent(new Event("scroll"));
+          });
+        });
+      }, []);
+      return (
+        <VList
+          ref={ref}
+          id={LIST_ID}
+          onScroll={onScroll}
+          onScrollStop={onScrollStop}
+        >
+          {Array.from({ length: 1000 }).map((_, i) => (
+            <div key={i}>{i}</div>
+          ))}
+        </VList>
+      );
+    };
+    render(<Mounter />);
+    await waitFor(() => {
+      expect(onScrollStop).toHaveBeenCalled();
+    });
+    expect(onScroll).toHaveBeenCalledTimes(dests.length);
+    dests.forEach((d, i) => {
+      expect(onScroll).toHaveBeenNthCalledWith(i + 1, d);
+    });
+    expect(onScrollStop).toHaveBeenCalledTimes(1);
+  });
+
+  it("should call callbacks on imperative scroll in horizontal", async () => {
+    const onScroll = jest.fn();
+    const onScrollStop = jest.fn();
+    const dests = [123, 200, 357];
+    const Mounter = () => {
+      const ref = useRef<VListHandle>(null);
+      useEffect(() => {
+        const el = document.getElementById(LIST_ID)!;
+        dests.forEach((dest) => {
+          setTimeout(() => {
+            ref.current?.scrollTo(dest);
+            el.scrollLeft = dest;
+            el.dispatchEvent(new Event("scroll"));
+          });
+        });
+      }, []);
+      return (
+        <VList
+          ref={ref}
+          id={LIST_ID}
+          horizontal
+          onScroll={onScroll}
+          onScrollStop={onScrollStop}
+        >
+          {Array.from({ length: 1000 }).map((_, i) => (
+            <div key={i}>{i}</div>
+          ))}
+        </VList>
+      );
+    };
+    render(<Mounter />);
+    await waitFor(() => {
+      expect(onScrollStop).toHaveBeenCalled();
+    });
+    expect(onScroll).toHaveBeenCalledTimes(dests.length);
+    dests.forEach((d, i) => {
+      expect(onScroll).toHaveBeenNthCalledWith(i + 1, d);
+    });
+    expect(onScrollStop).toHaveBeenCalledTimes(1);
+  });
+});
