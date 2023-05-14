@@ -38,8 +38,6 @@ type Actions =
   | [type: typeof ACTION_SCROLL, offset: number]
   | [type: typeof ACTION_MANUAL_SCROLL, offset: number];
 
-type Subscriber = (sync?: boolean) => void;
-
 export type VirtualStore = {
   _getRange(): ItemsRange;
   _isUnmeasuredItem(index: number): boolean;
@@ -53,7 +51,7 @@ export type VirtualStore = {
   _isRtl(): boolean;
   _getItemIndexForScrollTo(offset: number): number;
   _waitForScrollDestinationItemsMeasured(): Promise<void>;
-  _subscribe(cb: Subscriber): () => void;
+  _subscribe(cb: () => void): () => void;
   _update(...action: Actions): void;
   _getScrollDirection(): ScrollDirection;
   _setScrollDirection(direction: ScrollDirection): void;
@@ -77,7 +75,7 @@ export const createVirtualStore = (
   let _prevRange: ItemsRange = [0, initialItemCount];
   let _scrollToQueue: [() => void, () => void] | undefined;
 
-  const subscribers = new Set<Subscriber>();
+  const subscribers = new Set<() => void>();
 
   return {
     _getRange() {
@@ -195,9 +193,7 @@ export const createVirtualStore = (
 
       if (mutated) {
         subscribers.forEach((cb) => {
-          cb(
-            type === ACTION_ITEM_RESIZE || type === ACTION_SCROLL ? true : false
-          );
+          cb();
         });
 
         if (type === ACTION_SCROLL) {
