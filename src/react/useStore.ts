@@ -4,11 +4,17 @@ import { useRefWithUpdate } from "./useRefWithUpdate";
 import { refKey } from "./utils";
 import { VirtualStore } from "../core/store";
 
-export const useStore = <T>(store: VirtualStore, getSnapShot: () => T): T => {
+export const useStore = <T>(
+  store: VirtualStore,
+  getSnapShot: () => T,
+  disabled?: boolean
+): T => {
   const getter = useRefWithUpdate(getSnapShot);
   const [state, setState] = useState(getSnapShot);
 
   useLayoutEffect(() => {
+    if (disabled) return;
+
     const update = () => {
       setState(getter[refKey]);
     };
@@ -19,7 +25,7 @@ export const useStore = <T>(store: VirtualStore, getSnapShot: () => T): T => {
         update();
       }
     });
-  }, []);
+  }, [disabled]);
 
   return state;
 };
