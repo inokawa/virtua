@@ -14,7 +14,7 @@ This project is a challenge to rethink virtualization. The goals are...
 - **Fast:** Scrolling without frame drop needs optimization in many aspects (reduce CPU usage, reduce GC, [reduce layout recalculation](https://gist.github.com/paulirish/5d52fb081b3570c81e3a), optimize for frameworks, etc). We are trying to combine the best of them.
 - **Small:** Its bundle size should be small as much as possible to be friendly with modern web development. Currently [about 3kB gzipped](https://bundlephobia.com/package/virtua).
 - **Flexible:** Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, rtl direction, sticky, infinite scrolling, placeholder, scrollTo, dnd, table, and more. See [live demo](#demo).
-- **Framework agnostic (WIP):** Currently only for React but we could support Vue, Svelte, Solid, Web Components and more in the future.
+- **Framework agnostic (WIP):** Currently only for [React](https://react.dev/) but we could support [Vue](https://vuejs.org/), [Svelte](https://svelte.dev/), [Solid](https://www.solidjs.com/), [Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components) and more in the future.
 
 ## Demo
 
