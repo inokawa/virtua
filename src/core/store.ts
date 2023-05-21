@@ -18,6 +18,9 @@ export type ScrollJump = Readonly<ItemJump[]>;
 export type ItemResize = [index: number, size: number];
 type ItemsRange = [startIndex: number, endIndex: number];
 
+export const calcTotalJump = (jump: ScrollJump): number =>
+  jump.reduce((acc, [j]) => acc + j, 0);
+
 export const SCROLL_STOP = 0;
 export const SCROLL_DOWN = 1;
 export const SCROLL_UP = 2;
@@ -47,12 +50,14 @@ export type VirtualStore = {
   _getScrollOffset(): number;
   _getViewportSize(): number;
   _getScrollSize(): number;
-  _getJump(): ScrollJump;
+  _getJumpCount(): number;
+  _flushJump(): [jump: ScrollJump, manual: boolean] | undefined;
   _isHorizontal(): boolean;
   _isRtl(): boolean;
   _getItemIndexForScrollTo(offset: number): number;
   _waitForScrollDestinationItemsMeasured(): Promise<void>;
   _subscribe(cb: () => void): () => void;
+  _subscribeJump(cb: () => void): () => void;
   _update(...action: Actions): void;
   _getScrollDirection(): ScrollDirection;
   _setScrollDirection(direction: ScrollDirection): void;
@@ -71,12 +76,30 @@ export const createVirtualStore = (
   let viewportSize = itemSize * max(initialItemCount - 1, 0);
   let scrollOffset = 0;
   let jump: ItemJump[] = [];
+  let _jumpCount = 0;
+  let _isJumpWithScroll = false;
+  let pendingJump = 0;
   let cache = resetCache(itemCount, itemSize);
   let scrollDirection: ScrollDirection = SCROLL_STOP;
   let _prevRange: ItemsRange = [0, initialItemCount];
   let _scrollToQueue: [() => void, () => void] | undefined;
 
   const subscribers = new Set<() => void>();
+  const jumpSubscribers = new Set<() => void>();
+
+  const applyJumpToState = () => {
+    if (pendingJump) {
+      jump.push([pendingJump, 0]);
+      pendingJump = 0;
+      _isJumpWithScroll = true;
+    }
+    if (jump.length) {
+      _jumpCount++;
+      jumpSubscribers.forEach((cb) => {
+        cb();
+      });
+    }
+  };
 
   return {
     _getRange() {
@@ -108,7 +131,7 @@ export const createVirtualStore = (
       );
     },
     _getItemOffset(index) {
-      return computeStartOffset(cache as Writeable<Cache>, index);
+      return computeStartOffset(cache as Writeable<Cache>, index) - pendingJump;
     },
     _getScrollOffset() {
       return scrollOffset;
@@ -119,8 +142,16 @@ export const createVirtualStore = (
     _getScrollSize() {
       return computeTotalSize(cache as Writeable<Cache>);
     },
-    _getJump() {
-      return jump;
+    _getJumpCount() {
+      return _jumpCount;
+    },
+    _flushJump() {
+      if (!jump.length) return;
+      const prevIsJumpWithScroll = _isJumpWithScroll;
+      const prevJump = jump;
+      _isJumpWithScroll = false;
+      jump = [];
+      return [prevJump, !prevIsJumpWithScroll];
     },
     _isHorizontal() {
       return isHorizontal;
@@ -157,7 +188,14 @@ export const createVirtualStore = (
         subscribers.delete(cb);
       };
     },
+    _subscribeJump(cb) {
+      jumpSubscribers.add(cb);
+      return () => {
+        jumpSubscribers.delete(cb);
+      };
+    },
     _update(type, payload) {
+      let shouldFlushJump: boolean | undefined;
       const mutated = ((): boolean => {
         switch (type) {
           case ACTION_ITEM_RESIZE: {
@@ -174,7 +212,15 @@ export const createVirtualStore = (
               updatedJump.push([size - getItemSize(cache, index), index]);
               setItemSize(cache as Writeable<Cache>, index, size);
             });
-            jump = updatedJump;
+
+            if (scrollDirection === SCROLL_MANUAL) {
+              jump = updatedJump;
+              shouldFlushJump = true;
+            } else if (scrollDirection === SCROLL_UP) {
+              pendingJump += calcTotalJump(updatedJump);
+            } else {
+              // Do nothing
+            }
             return true;
           }
           case ACTION_WINDOW_RESIZE: {
@@ -187,6 +233,9 @@ export const createVirtualStore = (
           case ACTION_SCROLL:
           case ACTION_MANUAL_SCROLL: {
             const prevOffset = scrollOffset;
+            if (payload < viewportSize) {
+              shouldFlushJump = true;
+            }
             return (scrollOffset = payload) !== prevOffset;
           }
         }
@@ -196,6 +245,9 @@ export const createVirtualStore = (
         subscribers.forEach((cb) => {
           cb();
         });
+        if (shouldFlushJump) {
+          applyJumpToState();
+        }
 
         if (type === ACTION_SCROLL) {
           onScrollOffsetChange(scrollOffset);
@@ -210,6 +262,9 @@ export const createVirtualStore = (
     _setScrollDirection(dir) {
       const prev = scrollDirection;
       scrollDirection = dir;
+      if (prev !== scrollDirection && scrollDirection !== SCROLL_MANUAL) {
+        applyJumpToState();
+      }
       if (scrollDirection === SCROLL_STOP) {
         onScrollStateChange(false);
       } else if (
