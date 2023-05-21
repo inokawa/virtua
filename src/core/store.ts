@@ -13,7 +13,8 @@ import {
 import type { Writeable } from "./types";
 import { max } from "./utils";
 
-export type ScrollJump = Readonly<[index: number, sizeDiff: number][]>;
+type ItemJump = [sizeDiff: number, index: number];
+export type ScrollJump = Readonly<ItemJump[]>;
 export type ItemResize = [index: number, size: number];
 type ItemsRange = [startIndex: number, endIndex: number];
 
@@ -69,7 +70,7 @@ export const createVirtualStore = (
 ): VirtualStore => {
   let viewportSize = itemSize * max(initialItemCount - 1, 0);
   let scrollOffset = 0;
-  let jump: ScrollJump = [];
+  let jump: ItemJump[] = [];
   let cache = resetCache(itemCount, itemSize);
   let scrollDirection: ScrollDirection = SCROLL_STOP;
   let _prevRange: ItemsRange = [0, initialItemCount];
@@ -168,9 +169,9 @@ export const createVirtualStore = (
               return false;
             }
 
-            const updatedJump: [index: number, sizeDiff: number][] = [];
+            const updatedJump: ItemJump[] = [];
             updated.forEach(([index, size]) => {
-              updatedJump.push([index, size - getItemSize(cache, index)]);
+              updatedJump.push([size - getItemSize(cache, index), index]);
               setItemSize(cache as Writeable<Cache>, index, size);
             });
             jump = updatedJump;

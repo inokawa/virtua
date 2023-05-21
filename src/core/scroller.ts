@@ -123,7 +123,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
   };
 
   const calcTotalJump = (jump: ScrollJump): number =>
-    jump.reduce((acc, [, j]) => acc + j, 0);
+    jump.reduce((acc, [j]) => acc + j, 0);
 
   return {
     _initRoot(root) {
@@ -249,7 +249,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
             }
           } else {
             // Keep start at mid
-            const diff = jump.reduce((acc, [index, j]) => {
+            const diff = jump.reduce((acc, [j, index]) => {
               if (index < startIndex) {
                 acc += j;
               }
