@@ -39,7 +39,7 @@ export type Scroller = {
 };
 
 export const createScroller = (store: VirtualStore): Scroller => {
-  let resized = false;
+  let jumped = false;
   let rootElement: HTMLElement | undefined;
   const isHorizontal = store._isHorizontal();
   const isRtl = store._isRtl();
@@ -65,7 +65,6 @@ export const createScroller = (store: VirtualStore): Scroller => {
 
       if (resizes.length) {
         store._update(ACTION_ITEM_RESIZE, resizes);
-        resized = true;
       }
     });
   });
@@ -147,7 +146,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
         // Skip scroll direction detection just after resizing because it may result in the opposite direction.
         // Scroll events are dispatched enough so it's ok to skip some of them.
         if (
-          (scrollDirection === SCROLL_STOP || !resized) &&
+          (scrollDirection === SCROLL_STOP || !jumped) &&
           // Ignore until manual scrolling
           scrollDirection !== SCROLL_MANUAL
         ) {
@@ -155,7 +154,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
             prevOffset > offset ? SCROLL_UP : SCROLL_DOWN
           );
         }
-        resized = false;
+        jumped = false;
         store._update(ACTION_SCROLL, offset);
       };
 
@@ -259,6 +258,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
       } else {
         const diff = calcTotalJump(jump);
         if (diff) {
+          jumped = true;
           scrollTo(diff, true);
         }
       }
