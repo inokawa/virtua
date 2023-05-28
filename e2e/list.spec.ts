@@ -184,7 +184,7 @@ test.describe("check if scroll jump compensation works", () => {
     let prev = initial;
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowDown", { delay: 10 });
-      let offset = await scrollable.evaluate((e) => e.scrollTop);
+      const offset = await scrollable.evaluate((e) => e.scrollTop);
       await expect(offset).toBeGreaterThanOrEqual(prev);
       prev = offset;
     }
@@ -205,19 +205,15 @@ test.describe("check if scroll jump compensation works", () => {
     // check if offset from end is always keeped
     await scrollable.click();
     const min = 200;
-    const initial = await scrollable.evaluate(
-      (e) => e.scrollHeight - e.scrollTop
-    );
+    const initial = await scrollable.evaluate((e) => e.scrollTop);
     let prev = initial;
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowUp", { delay: 10 });
-      let offset = await scrollable.evaluate(
-        (e) => e.scrollHeight - e.scrollTop
-      );
-      await expect(offset).toBeGreaterThanOrEqual(prev);
+      const offset = await scrollable.evaluate((e) => e.scrollTop);
+      await expect(offset).toBeLessThanOrEqual(prev);
       prev = offset;
     }
-    await expect(prev).toBeGreaterThan(initial + min);
+    await expect(prev).toBeLessThanOrEqual(initial - min);
   });
 
   test("horizontal start -> end", async ({ page }) => {
@@ -235,7 +231,7 @@ test.describe("check if scroll jump compensation works", () => {
     let prev = initial;
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowRight", { delay: 10 });
-      let offset = await scrollable.evaluate((e) => e.scrollLeft);
+      const offset = await scrollable.evaluate((e) => e.scrollLeft);
       await expect(offset).toBeGreaterThanOrEqual(prev);
       prev = offset;
     }
@@ -256,19 +252,15 @@ test.describe("check if scroll jump compensation works", () => {
     // check if offset from end is always keeped
     await scrollable.click();
     const min = 200;
-    const initial = await scrollable.evaluate(
-      (e) => e.scrollWidth - e.scrollLeft
-    );
+    const initial = await scrollable.evaluate((e) => e.scrollLeft);
     let prev = initial;
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowLeft", { delay: 10 });
-      let offset = await scrollable.evaluate(
-        (e) => e.scrollWidth - e.scrollLeft
-      );
-      await expect(offset).toBeGreaterThanOrEqual(prev);
+      const offset = await scrollable.evaluate((e) => e.scrollLeft);
+      await expect(offset).toBeLessThanOrEqual(prev);
       prev = offset;
     }
-    await expect(prev).toBeGreaterThan(initial + min);
+    await expect(prev).toBeLessThanOrEqual(initial - min);
   });
 });
 
