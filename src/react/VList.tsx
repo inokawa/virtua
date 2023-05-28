@@ -366,20 +366,16 @@ export const VList = forwardRef<VListHandle, VListProps>(
       store._subscribe,
       store._getRange
     );
-    const jumpCount = useSyncExternalStore(
-      store._subscribeJump,
-      store._getJumpCount
-    );
+    const jump = useSyncExternalStore(store._subscribe, store._getJump);
     const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => scroller._initRoot(rootRef[refKey]!), []);
 
     useIsomorphicLayoutEffect(() => {
-      const jump = store._flushJump();
-      if (!jump) return;
+      if (!jump.length) return;
 
-      scroller._fixScrollJump(jump[0], jump[1], startIndex);
-    }, [jumpCount]);
+      scroller._fixScrollJump(jump, startIndex);
+    }, [jump]);
 
     useEffect(() => {
       if (!onRangeChangeProp) return;

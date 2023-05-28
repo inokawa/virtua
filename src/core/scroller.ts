@@ -10,7 +10,6 @@ import {
   SCROLL_STOP,
   SCROLL_UP,
   SCROLL_DOWN,
-  calcTotalJump,
 } from "./store";
 import { debounce, throttle, exists, max, min, once } from "./utils";
 
@@ -31,15 +30,11 @@ export type Scroller = {
   _getActualScrollSize: () => number;
   _scrollTo: (offset: number) => void;
   _scrollToIndex: (index: number, count: number) => void;
-  _fixScrollJump: (
-    jump: ScrollJump,
-    isManual: boolean,
-    startIndex: number
-  ) => void;
+  _fixScrollJump: (jump: ScrollJump, startIndex: number) => void;
 };
 
 export const createScroller = (store: VirtualStore): Scroller => {
-  let jumped = false;
+  let resized = false;
   let rootElement: HTMLElement | undefined;
   const isHorizontal = store._isHorizontal();
   const isRtl = store._isRtl();
@@ -65,6 +60,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
 
       if (resizes.length) {
         store._update(ACTION_ITEM_RESIZE, resizes);
+        resized = true;
       }
     });
   });
@@ -126,6 +122,9 @@ export const createScroller = (store: VirtualStore): Scroller => {
     }
   };
 
+  const calcTotalJump = (jump: ScrollJump): number =>
+    jump.reduce((acc, [j]) => acc + j, 0);
+
   return {
     _initRoot(root) {
       rootElement = root;
@@ -146,7 +145,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
         // Skip scroll direction detection just after resizing because it may result in the opposite direction.
         // Scroll events are dispatched enough so it's ok to skip some of them.
         if (
-          (scrollDirection === SCROLL_STOP || !jumped) &&
+          (scrollDirection === SCROLL_STOP || !resized) &&
           // Ignore until manual scrolling
           scrollDirection !== SCROLL_MANUAL
         ) {
@@ -154,7 +153,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
             prevOffset > offset ? SCROLL_UP : SCROLL_DOWN
           );
         }
-        jumped = false;
+        resized = false;
         store._update(ACTION_SCROLL, offset);
       };
 
@@ -225,9 +224,15 @@ export const createScroller = (store: VirtualStore): Scroller => {
 
       scrollManually(index, () => store._getItemOffset(index));
     },
-    _fixScrollJump: (jump, isManual, startIndex) => {
+    _fixScrollJump: (jump, startIndex) => {
+      const scrollDirection = store._getScrollDirection();
       // Compensate scroll jump
-      if (isManual) {
+      if (scrollDirection === SCROLL_UP) {
+        const diff = calcTotalJump(jump);
+        if (diff) {
+          scrollTo(diff, true);
+        }
+      } else if (scrollDirection === SCROLL_MANUAL) {
         const offset = store._getScrollOffset();
         if (offset === 0) {
           // Do nothing to stick to the start
@@ -256,11 +261,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
           }
         }
       } else {
-        const diff = calcTotalJump(jump);
-        if (diff) {
-          jumped = true;
-          scrollTo(diff, true);
-        }
+        // NOP
       }
     },
   };
