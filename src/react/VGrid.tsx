@@ -11,7 +11,7 @@ import {
 } from "react";
 import { VirtualStore, createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { useSyncExternalStore } from "./useSyncExternalStore";
+import { useStore } from "./useStore";
 import { max, min } from "../core/utils";
 import { createScroller } from "../core/scroller";
 import { refKey } from "./utils";
@@ -61,22 +61,22 @@ const Cell = memo(
   }: CellProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
-    const top = useSyncExternalStore(verticalStore._subscribe, () =>
+    const top = useStore(verticalStore, () =>
       verticalStore._getItemOffset(rowIndex)
     );
-    const left = useSyncExternalStore(horizontalStore._subscribe, () =>
+    const left = useStore(horizontalStore, () =>
       horizontalStore._getItemOffset(colIndex)
     );
-    const vHide = useSyncExternalStore(verticalStore._subscribe, () =>
+    const vHide = useStore(verticalStore, () =>
       verticalStore._isUnmeasuredItem(rowIndex)
     );
-    const hHide = useSyncExternalStore(horizontalStore._subscribe, () =>
+    const hHide = useStore(horizontalStore, () =>
       horizontalStore._isUnmeasuredItem(colIndex)
     );
-    const height = useSyncExternalStore(verticalStore._subscribe, () =>
+    const height = useStore(verticalStore, () =>
       verticalStore._getItemSize(rowIndex)
     );
-    const width = useSyncExternalStore(horizontalStore._subscribe, () =>
+    const width = useStore(horizontalStore, () =>
       horizontalStore._getItemSize(colIndex)
     );
 
@@ -165,8 +165,8 @@ const Window = ({
   _scrolling: boolean;
   _attrs: WindowComponentAttributes;
 }) => {
-  const height = useSyncExternalStore(vStore._subscribe, vStore._getScrollSize);
-  const width = useSyncExternalStore(hStore._subscribe, hStore._getScrollSize);
+  const height = useStore(vStore, vStore._getScrollSize);
+  const width = useStore(hStore, hStore._getScrollSize);
 
   return (
     <Element
@@ -325,22 +325,10 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     vStore._updateCacheLength(rowCount);
     hStore._updateCacheLength(colCount);
 
-    const [startRowIndex, endRowIndex] = useSyncExternalStore(
-      vStore._subscribe,
-      vStore._getRange
-    );
-    const [startColIndex, endColIndex] = useSyncExternalStore(
-      hStore._subscribe,
-      hStore._getRange
-    );
-    const verticalJump = useSyncExternalStore(
-      vStore._subscribe,
-      vStore._getJump
-    );
-    const horizontalJump = useSyncExternalStore(
-      hStore._subscribe,
-      hStore._getJump
-    );
+    const [startRowIndex, endRowIndex] = useStore(vStore, vStore._getRange);
+    const [startColIndex, endColIndex] = useStore(hStore, hStore._getRange);
+    const verticalJump = useStore(vStore, vStore._getJump);
+    const horizontalJump = useStore(hStore, hStore._getJump);
     const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {

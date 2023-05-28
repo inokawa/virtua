@@ -15,7 +15,7 @@ import {
 } from "react";
 import { VirtualStore, createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { useSyncExternalStore } from "./useSyncExternalStore";
+import { useStore } from "./useStore";
 import { exists, max, min } from "../core/utils";
 import { createScroller } from "../core/scroller";
 import { isInvalidElement, refKey } from "./utils";
@@ -34,6 +34,7 @@ type ItemProps = {
   _element: "div";
   _isHorizontal: boolean;
   _isRtl: boolean;
+  _isOffscreen: boolean;
 };
 
 const Item = memo(
@@ -45,14 +46,19 @@ const Item = memo(
     _element: Element,
     _isHorizontal: isHorizontal,
     _isRtl: isRtl,
+    _isOffscreen: isOffscreen,
   }: ItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
-    const offset = useSyncExternalStore(store._subscribe, () =>
-      store._getItemOffset(index)
+    const offset = useStore(
+      store,
+      () => store._getItemOffset(index),
+      isOffscreen
     );
-    const hide = useSyncExternalStore(store._subscribe, () =>
-      store._isUnmeasuredItem(index)
+    const hide = useStore(
+      store,
+      () => store._isUnmeasuredItem(index),
+      isOffscreen
     );
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
@@ -73,14 +79,14 @@ const Item = memo(
             [isHorizontal ? "height" : "width"]: "100%",
             [isHorizontal ? "top" : leftOrRightKey]: 0,
             [isHorizontal ? leftOrRightKey : "top"]: offset,
-            visibility: hide ? "hidden" : "visible",
+            visibility: hide || isOffscreen ? "hidden" : "visible",
             // willChange: "transform",
           };
           if (isHorizontal) {
             style.display = "flex";
           }
           return style;
-        }, [offset, hide])}
+        }, [offset, hide, isOffscreen])}
       >
         {children}
       </Element>
@@ -143,10 +149,7 @@ const Window = ({
   _attrs: WindowComponentAttributes;
   _isHorizontal: boolean;
 }) => {
-  const scrollSize = useSyncExternalStore(
-    store._subscribe,
-    store._getScrollableDomSize
-  );
+  const scrollSize = useStore(store, store._getScrollSize);
 
   return (
     <Element
@@ -369,11 +372,8 @@ export const VList = forwardRef<VListHandle, VListProps>(
     // The elements length and cached items length are different just after element is added/removed.
     store._updateCacheLength(count);
 
-    const [startIndex, endIndex] = useSyncExternalStore(
-      store._subscribe,
-      store._getRange
-    );
-    const jump = useSyncExternalStore(store._subscribe, store._getJump);
+    const [startIndex, endIndex] = useStore(store, store._getRange);
+    const jump = useStore(store, store._getJump);
     const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {
@@ -449,6 +449,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
               _children={e}
               _isHorizontal={isHorizontal}
               _isRtl={isRtl}
+              _isOffscreen={i < startIndexWithMargin || i > endIndexWithMargin}
             />
           );
         }
