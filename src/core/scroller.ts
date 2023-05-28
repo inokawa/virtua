@@ -1,3 +1,4 @@
+import { hasNegativeOffsetInRtl } from "./dom";
 import {
   ACTION_SCROLL,
   ACTION_MANUAL_SCROLL,
@@ -12,17 +13,6 @@ import {
   SCROLL_DOWN,
 } from "./store";
 import { debounce, throttle, exists, max, min, once } from "./utils";
-
-// The scroll position may be negative value in rtl direction.
-// https://github.com/othree/jquery.rtl-scroll-type
-const hasNegativeOffsetInRtl = once((scrollable: HTMLElement) => {
-  const key = "scrollLeft";
-  const prev = scrollable[key];
-  scrollable[key] = 1;
-  const isNegative = scrollable[key] === 0;
-  scrollable[key] = prev;
-  return isNegative;
-});
 
 export type Scroller = {
   _initRoot: (rootElement: HTMLElement) => () => void;
