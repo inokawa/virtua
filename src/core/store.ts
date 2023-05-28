@@ -100,10 +100,6 @@ export const createVirtualStore = (
       });
     }
   };
-  const discardJump = () => {
-    pendingJump = 0;
-    jump = [];
-  };
 
   return {
     _getRange() {
@@ -237,15 +233,7 @@ export const createVirtualStore = (
           case ACTION_SCROLL:
           case ACTION_MANUAL_SCROLL: {
             const prevOffset = scrollOffset;
-            if (
-              (payload < prevOffset
-                ? prevOffset - payload
-                : payload - prevOffset) >
-              viewportSize * 2
-            ) {
-              // When scrolled a lot, we would not recognize the amount of jump so we can discard them.
-              discardJump();
-            } else if (payload < viewportSize) {
+            if (payload < viewportSize) {
               shouldFlushJump = true;
             }
             return (scrollOffset = payload) !== prevOffset;
