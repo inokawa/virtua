@@ -34,7 +34,7 @@
     "@mui/material": "5.12.3",
     "@playwright/test": "^1.33.0",
     "@rollup/plugin-babel": "6.0.3",
-    "@rollup/plugin-terser": "0.4.1",
+    "@rollup/plugin-terser": "0.4.3",
     "@rollup/plugin-typescript": "11.1.0",
     "@storybook/addon-docs": "7.0.8",
     "@storybook/react": "7.0.8",
