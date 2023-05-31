@@ -42,7 +42,7 @@
     "@storybook/test-runner": "0.10.0",
     "@tanstack/react-virtual": "3.0.0-alpha.0",
     "@testing-library/react": "14.0.0",
-    "@types/react": "18.2.5",
+    "@types/react": "18.2.7",
     "@types/react-virtualized": "9.21.21",
     "@types/react-window": "1.8.5",
     "@types/use-sync-external-store": "0.0.3",
