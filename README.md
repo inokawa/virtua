@@ -34,6 +34,8 @@ If you use ESM and webpack 5, use react >= 18 to avoid [Can't resolve `react/jsx
 
 ## Usage
 
+### Vertical scroll
+
 ```tsx
 import { VList } from "virtua";
 
@@ -46,6 +48,31 @@ export const App = () => {
           style={{
             height: Math.floor(Math.random() * 10) * 10 + 10,
             borderBottom: "solid 1px gray",
+            background: "white",
+          }}
+        >
+          {i}
+        </div>
+      ))}
+    </VList>
+  );
+};
+```
+
+### Horizontal scroll
+
+```tsx
+import { VList } from "virtua";
+
+export const App = () => {
+  return (
+    <VList style={{ height: 400 }} horizontal>
+      {Array.from({ length: 1000 }).map((_, i) => (
+        <div
+          key={i}
+          style={{
+            width: Math.floor(Math.random() * 10) * 10 + 10,
+            borderRight: "solid 1px gray",
             background: "white",
           }}
         >
