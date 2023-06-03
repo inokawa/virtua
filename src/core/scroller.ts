@@ -1,5 +1,5 @@
 import { hasNegativeOffsetInRtl } from "./dom";
-import { createResizer } from "./resizer";
+import { Resizer } from "./resizer";
 import {
   ACTION_SCROLL,
   ACTION_MANUAL_SCROLL,
@@ -14,16 +14,17 @@ import { debounce, throttle, max, min } from "./utils";
 
 export type Scroller = {
   _initRoot: (rootElement: HTMLElement) => () => void;
-  _initItem: (itemElement: HTMLElement, index: number) => () => void;
   _getActualScrollSize: () => number;
   _scrollTo: (offset: number) => void;
   _scrollToIndex: (index: number, count: number) => void;
   _fixScrollJump: (jump: ScrollJump, startIndex: number) => void;
 };
 
-export const createScroller = (store: VirtualStore): Scroller => {
+export const createScroller = (
+  store: VirtualStore,
+  resizer: Resizer
+): Scroller => {
   let rootElement: HTMLElement | undefined;
-  const resizer = createResizer(store);
   const isHorizontal = store._isHorizontal();
   const isRtl = store._isRtl();
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
@@ -167,7 +168,6 @@ export const createScroller = (store: VirtualStore): Scroller => {
         onScrollStopped._cancel();
       };
     },
-    _initItem: resizer._observeItem,
     _getActualScrollSize: getActualScrollSize,
     _scrollTo(offset) {
       offset = max(offset, 0);
