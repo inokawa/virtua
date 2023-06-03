@@ -376,8 +376,9 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {
-      const unobserve = resizer._observeRoot(rootRef[refKey]!);
-      const cleanup = scroller._initRoot(rootRef[refKey]!);
+      const root = rootRef[refKey]!;
+      const unobserve = resizer._observeRoot(root);
+      const cleanup = scroller._initRoot(root);
       return () => {
         unobserve();
         cleanup();
