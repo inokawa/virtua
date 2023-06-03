@@ -6,7 +6,7 @@ export const parameters = {
   layout: "fullscreen",
   options: {
     storySort: {
-      order: ["basics", "advanced", "comparisons"],
+      order: ["basics", ["VList", "VGrid"], "advanced", "comparisons"],
     },
   },
 };
