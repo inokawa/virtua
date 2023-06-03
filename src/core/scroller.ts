@@ -1,10 +1,8 @@
 import { hasNegativeOffsetInRtl } from "./dom";
+import { createResizer } from "./resizer";
 import {
   ACTION_SCROLL,
   ACTION_MANUAL_SCROLL,
-  ACTION_ITEM_RESIZE,
-  ACTION_WINDOW_RESIZE,
-  ItemResize,
   ScrollJump,
   VirtualStore,
   SCROLL_MANUAL,
@@ -12,7 +10,7 @@ import {
   SCROLL_UP,
   SCROLL_DOWN,
 } from "./store";
-import { debounce, throttle, exists, max, min, once } from "./utils";
+import { debounce, throttle, max, min } from "./utils";
 
 export type Scroller = {
   _initRoot: (rootElement: HTMLElement) => () => void;
@@ -24,36 +22,12 @@ export type Scroller = {
 };
 
 export const createScroller = (store: VirtualStore): Scroller => {
-  let resized = false;
   let rootElement: HTMLElement | undefined;
+  const resizer = createResizer(store);
   const isHorizontal = store._isHorizontal();
   const isRtl = store._isRtl();
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
-  const sizeKey = isHorizontal ? "width" : "height";
-  const mountedIndexes = new WeakMap<Element, number>();
 
-  // Initialize ResizeObserver lazily for SSR
-  const getResizeObserver = once(() => {
-    return new ResizeObserver((entries) => {
-      // https://www.w3.org/TR/resize-observer/#intro
-      const resizes: ItemResize[] = [];
-      for (const { target, contentRect } of entries) {
-        if (target === rootElement) {
-          store._update(ACTION_WINDOW_RESIZE, contentRect[sizeKey]);
-        } else {
-          const index = mountedIndexes.get(target);
-          if (exists(index)) {
-            resizes.push([index, contentRect[sizeKey]]);
-          }
-        }
-      }
-
-      if (resizes.length) {
-        store._update(ACTION_ITEM_RESIZE, resizes);
-        resized = true;
-      }
-    });
-  });
   const getActualScrollSize = (): number => {
     if (!rootElement) return 0;
     // Use element's scrollHeight/scrollWidth instead of stored scrollSize.
@@ -118,7 +92,6 @@ export const createScroller = (store: VirtualStore): Scroller => {
   return {
     _initRoot(root) {
       rootElement = root;
-      const ro = getResizeObserver();
 
       const syncViewportToScrollPosition = () => {
         let offset = root[scrollToKey];
@@ -134,6 +107,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
         const scrollDirection = store._getScrollDirection();
         // Skip scroll direction detection just after resizing because it may result in the opposite direction.
         // Scroll events are dispatched enough so it's ok to skip some of them.
+        const resized = resizer._isJustResized();
         if (
           (scrollDirection === SCROLL_STOP || !resized) &&
           // Ignore until manual scrolling
@@ -143,7 +117,6 @@ export const createScroller = (store: VirtualStore): Scroller => {
             prevOffset > offset ? SCROLL_UP : SCROLL_DOWN
           );
         }
-        resized = false;
         store._update(ACTION_SCROLL, offset);
       };
 
@@ -183,26 +156,18 @@ export const createScroller = (store: VirtualStore): Scroller => {
         }
       }, 50);
 
-      ro.observe(root);
+      const cleanup = resizer._observeRoot(root);
       root.addEventListener("scroll", onScroll);
       root.addEventListener("wheel", onWheel, { passive: true });
 
       return () => {
-        ro.disconnect();
+        cleanup();
         root.removeEventListener("scroll", onScroll);
         root.removeEventListener("wheel", onWheel);
         onScrollStopped._cancel();
       };
     },
-    _initItem(el, i) {
-      const ro = getResizeObserver();
-      mountedIndexes.set(el, i);
-      ro.observe(el);
-      return () => {
-        mountedIndexes.delete(el);
-        ro.unobserve(el);
-      };
-    },
+    _initItem: resizer._observeItem,
     _getActualScrollSize: getActualScrollSize,
     _scrollTo(offset) {
       offset = max(offset, 0);
