@@ -1,5 +1,4 @@
 import { hasNegativeOffsetInRtl } from "./dom";
-import { Resizer } from "./resizer";
 import {
   ACTION_SCROLL,
   ACTION_MANUAL_SCROLL,
@@ -22,7 +21,7 @@ export type Scroller = {
 
 export const createScroller = (
   store: VirtualStore,
-  resizer: Resizer
+  isJustResized: () => boolean
 ): Scroller => {
   let rootElement: HTMLElement | undefined;
   const isHorizontal = store._isHorizontal();
@@ -108,7 +107,7 @@ export const createScroller = (
         const scrollDirection = store._getScrollDirection();
         // Skip scroll direction detection just after resizing because it may result in the opposite direction.
         // Scroll events are dispatched enough so it's ok to skip some of them.
-        const resized = resizer._isJustResized();
+        const resized = isJustResized();
         if (
           (scrollDirection === SCROLL_STOP || !resized) &&
           // Ignore until manual scrolling
@@ -157,12 +156,10 @@ export const createScroller = (
         }
       }, 50);
 
-      const cleanup = resizer._observeRoot(root);
       root.addEventListener("scroll", onScroll);
       root.addEventListener("wheel", onWheel, { passive: true });
 
       return () => {
-        cleanup();
         root.removeEventListener("scroll", onScroll);
         root.removeEventListener("wheel", onWheel);
         onScrollStopped._cancel();

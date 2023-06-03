@@ -359,7 +359,11 @@ export const VList = forwardRef<VListHandle, VListProps>(
         }
       );
       const _resizer = createResizer(_store);
-      return [_store, _resizer, createScroller(_store, _resizer)];
+      return [
+        _store,
+        _resizer,
+        createScroller(_store, _resizer._isJustResized),
+      ];
     });
     // The elements length and cached items length are different just after element is added/removed.
     store._updateCacheLength(count);
@@ -371,7 +375,14 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const jump = useSyncExternalStore(store._subscribe, store._getJump);
     const rootRef = useRef<HTMLDivElement>(null);
 
-    useIsomorphicLayoutEffect(() => scroller._initRoot(rootRef[refKey]!), []);
+    useIsomorphicLayoutEffect(() => {
+      const unobserve = resizer._observeRoot(rootRef[refKey]!);
+      const cleanup = scroller._initRoot(rootRef[refKey]!);
+      return () => {
+        unobserve();
+        cleanup();
+      };
+    }, []);
 
     useIsomorphicLayoutEffect(() => {
       if (!jump.length) return;
