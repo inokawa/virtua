@@ -1,5 +1,4 @@
 import { hasNegativeOffsetInRtl } from "./dom";
-import { createResizer } from "./resizer";
 import {
   ACTION_SCROLL,
   ACTION_MANUAL_SCROLL,
@@ -14,16 +13,17 @@ import { debounce, throttle, max, min } from "./utils";
 
 export type Scroller = {
   _initRoot: (rootElement: HTMLElement) => () => void;
-  _initItem: (itemElement: HTMLElement, index: number) => () => void;
   _getActualScrollSize: () => number;
   _scrollTo: (offset: number) => void;
   _scrollToIndex: (index: number, count: number) => void;
   _fixScrollJump: (jump: ScrollJump, startIndex: number) => void;
 };
 
-export const createScroller = (store: VirtualStore): Scroller => {
+export const createScroller = (
+  store: VirtualStore,
+  isJustResized: () => boolean
+): Scroller => {
   let rootElement: HTMLElement | undefined;
-  const resizer = createResizer(store);
   const isHorizontal = store._isHorizontal();
   const isRtl = store._isRtl();
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
@@ -107,7 +107,7 @@ export const createScroller = (store: VirtualStore): Scroller => {
         const scrollDirection = store._getScrollDirection();
         // Skip scroll direction detection just after resizing because it may result in the opposite direction.
         // Scroll events are dispatched enough so it's ok to skip some of them.
-        const resized = resizer._isJustResized();
+        const resized = isJustResized();
         if (
           (scrollDirection === SCROLL_STOP || !resized) &&
           // Ignore until manual scrolling
@@ -156,18 +156,15 @@ export const createScroller = (store: VirtualStore): Scroller => {
         }
       }, 50);
 
-      const cleanup = resizer._observeRoot(root);
       root.addEventListener("scroll", onScroll);
       root.addEventListener("wheel", onWheel, { passive: true });
 
       return () => {
-        cleanup();
         root.removeEventListener("scroll", onScroll);
         root.removeEventListener("wheel", onWheel);
         onScrollStopped._cancel();
       };
     },
-    _initItem: resizer._observeItem,
     _getActualScrollSize: getActualScrollSize,
     _scrollTo(offset) {
       offset = max(offset, 0);

@@ -17,14 +17,15 @@ import { VirtualStore, createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSyncExternalStore } from "./useSyncExternalStore";
 import { exists, max, min } from "../core/utils";
-import { createScroller, Scroller } from "../core/scroller";
+import { createScroller } from "../core/scroller";
 import { refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useRefWithUpdate } from "./useRefWithUpdate";
+import { Resizer, createResizer } from "../core/resizer";
 
 type ItemProps = {
   _children: ReactNode;
-  _scroller: Scroller;
+  _resizer: Resizer;
   _store: VirtualStore;
   _index: number;
   _element: "div";
@@ -33,7 +34,7 @@ type ItemProps = {
 const Item = memo(
   ({
     _children: children,
-    _scroller: scroller,
+    _resizer: resizer,
     _store: store,
     _index: index,
     _element: Element,
@@ -49,7 +50,7 @@ const Item = memo(
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(
-      () => scroller._initItem(ref[refKey]!, index),
+      () => resizer._observeItem(ref[refKey]!, index),
       [index]
     );
 
@@ -339,7 +340,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const [mountedIndexes, reset] = useState<Set<number>>(new Set<number>());
     const [scrolling, setScrolling] = useState(false);
     // https://github.com/facebook/react/issues/25191#issuecomment-1237456448
-    const [store, scroller] = useStatic(() => {
+    const [store, resizer, scroller] = useStatic(() => {
       const _store = createVirtualStore(
         count,
         itemSizeProp,
@@ -357,7 +358,12 @@ export const VList = forwardRef<VListHandle, VListProps>(
           onScroll[refKey] && onScroll[refKey](offset);
         }
       );
-      return [_store, createScroller(_store)];
+      const _resizer = createResizer(_store);
+      return [
+        _store,
+        _resizer,
+        createScroller(_store, _resizer._isJustResized),
+      ];
     });
     // The elements length and cached items length are different just after element is added/removed.
     store._updateCacheLength(count);
@@ -369,7 +375,14 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const jump = useSyncExternalStore(store._subscribe, store._getJump);
     const rootRef = useRef<HTMLDivElement>(null);
 
-    useIsomorphicLayoutEffect(() => scroller._initRoot(rootRef[refKey]!), []);
+    useIsomorphicLayoutEffect(() => {
+      const unobserve = resizer._observeRoot(rootRef[refKey]!);
+      const cleanup = scroller._initRoot(rootRef[refKey]!);
+      return () => {
+        unobserve();
+        cleanup();
+      };
+    }, []);
 
     useIsomorphicLayoutEffect(() => {
       if (!jump.length) return;
@@ -427,7 +440,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
           res.push(
             <Item
               key={(e as { key?: ReactElement["key"] })?.key || i}
-              _scroller={scroller}
+              _resizer={resizer}
               _store={store}
               _index={i}
               _element={itemElement as "div"}
