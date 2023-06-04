@@ -5,6 +5,7 @@
 ### Functions
 
 - [VList](API.md#vlist)
+- [VGrid](API.md#vgrid)
 
 ### Interfaces
 
@@ -12,11 +13,17 @@
 - [VListHandle](interfaces/VListHandle.md)
 - [CustomItemComponentProps](interfaces/CustomItemComponentProps.md)
 - [CustomWindowComponentProps](interfaces/CustomWindowComponentProps.md)
+- [VGridProps](interfaces/VGridProps.md)
+- [VGridHandle](interfaces/VGridHandle.md)
+- [CustomCellComponentProps](interfaces/CustomCellComponentProps.md)
+- [CustomGridWindowComponentProps](interfaces/CustomGridWindowComponentProps.md)
 
 ### Type Aliases
 
 - [CustomItemComponent](API.md#customitemcomponent)
 - [CustomWindowComponent](API.md#customwindowcomponent)
+- [CustomCellComponent](API.md#customcellcomponent)
+- [CustomGridWindowComponent](API.md#customgridwindowcomponent)
 - [WindowComponentAttributes](API.md#windowcomponentattributes)
 
 ## Functions
@@ -39,7 +46,29 @@ Virtualized list component. See [VListProps](interfaces/VListProps.md) and [VLis
 
 #### Defined in
 
-node_modules/@types/react/ts5.0/index.d.ts:345
+node_modules/@types/react/ts5.0/index.d.ts:351
+
+___
+
+### VGrid
+
+▸ **VGrid**(`props`): ``null`` \| `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
+
+Virtualized grid component. See [VGridProps](interfaces/VGridProps.md) and [VGridHandle](interfaces/VGridHandle.md).
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `props` | [`VGridProps`](interfaces/VGridProps.md) & `RefAttributes`<[`VGridHandle`](interfaces/VGridHandle.md)\> |
+
+#### Returns
+
+``null`` \| `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
+
+#### Defined in
+
+node_modules/@types/react/ts5.0/index.d.ts:351
 
 ## Type Aliases
 
@@ -49,7 +78,7 @@ node_modules/@types/react/ts5.0/index.d.ts:345
 
 #### Defined in
 
-[src/react/VList.tsx:193](https://github.com/inokawa/virtua/blob/8c6c738/src/react/VList.tsx#L193)
+[src/react/VList.tsx:184](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L184)
 
 ___
 
@@ -59,7 +88,27 @@ ___
 
 #### Defined in
 
-[src/react/VList.tsx:131](https://github.com/inokawa/virtua/blob/8c6c738/src/react/VList.tsx#L131)
+[src/react/VList.tsx:122](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L122)
+
+___
+
+### CustomCellComponent
+
+Ƭ **CustomCellComponent**: `React.ForwardRefExoticComponent`<`React.PropsWithoutRef`<[`CustomCellComponentProps`](interfaces/CustomCellComponentProps.md)\> & `React.RefAttributes`<`any`\>\>
+
+#### Defined in
+
+[src/react/VGrid.tsx:32](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VGrid.tsx#L32)
+
+___
+
+### CustomGridWindowComponent
+
+Ƭ **CustomGridWindowComponent**: typeof `DefaultWindow`
+
+#### Defined in
+
+[src/react/VGrid.tsx:147](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VGrid.tsx#L147)
 
 ___
 
@@ -69,4 +118,4 @@ ___
 
 #### Defined in
 
-[src/react/VList.tsx:89](https://github.com/inokawa/virtua/blob/8c6c738/src/react/VList.tsx#L89)
+[src/react/types.ts:1](https://github.com/inokawa/virtua/blob/8e03f83/src/react/types.ts#L1)

@@ -1,6 +1,6 @@
 # Interface: CustomWindowComponentProps
 
-Props of customized scrollable component.
+Props of customized scrollable component for [VList](../API.md#vlist).
 
 ## Table of contents
 
@@ -20,7 +20,7 @@ Props of customized scrollable component.
 
 #### Defined in
 
-[src/react/VList.tsx:99](https://github.com/inokawa/virtua/blob/8c6c738/src/react/VList.tsx#L99)
+[src/react/VList.tsx:90](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L90)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[src/react/VList.tsx:100](https://github.com/inokawa/virtua/blob/8c6c738/src/react/VList.tsx#L100)
+[src/react/VList.tsx:91](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L91)
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-[src/react/VList.tsx:101](https://github.com/inokawa/virtua/blob/8c6c738/src/react/VList.tsx#L101)
+[src/react/VList.tsx:92](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L92)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[src/react/VList.tsx:102](https://github.com/inokawa/virtua/blob/8c6c738/src/react/VList.tsx#L102)
+[src/react/VList.tsx:93](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L93)
 
 ___
 
@@ -60,4 +60,4 @@ ___
 
 #### Defined in
 
-[src/react/VList.tsx:103](https://github.com/inokawa/virtua/blob/8c6c738/src/react/VList.tsx#L103)
+[src/react/VList.tsx:94](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L94)

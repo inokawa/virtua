@@ -1,101 +1,141 @@
-# Interface: VListProps
+# Interface: VGridProps
 
-Props of [VList](../API.md#vlist).
+Props of [VGrid](../API.md#vgrid).
 
 ## Hierarchy
 
 - [`WindowComponentAttributes`](../API.md#windowcomponentattributes)
 
-  ↳ **`VListProps`**
+  ↳ **`VGridProps`**
 
 ## Table of contents
 
 ### Properties
 
-- [children](VListProps.md#children)
-- [itemSize](VListProps.md#itemsize)
-- [overscan](VListProps.md#overscan)
-- [initialItemCount](VListProps.md#initialitemcount)
-- [horizontal](VListProps.md#horizontal)
-- [rtl](VListProps.md#rtl)
-- [element](VListProps.md#element)
-- [itemElement](VListProps.md#itemelement)
-- [onScroll](VListProps.md#onscroll)
-- [onScrollStop](VListProps.md#onscrollstop)
-- [onRangeChange](VListProps.md#onrangechange)
-- [className](VListProps.md#classname)
-- [style](VListProps.md#style)
-- [id](VListProps.md#id)
-- [role](VListProps.md#role)
-- [tabIndex](VListProps.md#tabindex)
-- [aria-activedescendant](VListProps.md#aria-activedescendant)
-- [aria-atomic](VListProps.md#aria-atomic)
-- [aria-autocomplete](VListProps.md#aria-autocomplete)
-- [aria-busy](VListProps.md#aria-busy)
-- [aria-checked](VListProps.md#aria-checked)
-- [aria-colcount](VListProps.md#aria-colcount)
-- [aria-colindex](VListProps.md#aria-colindex)
-- [aria-colspan](VListProps.md#aria-colspan)
-- [aria-controls](VListProps.md#aria-controls)
-- [aria-current](VListProps.md#aria-current)
-- [aria-describedby](VListProps.md#aria-describedby)
-- [aria-details](VListProps.md#aria-details)
-- [aria-disabled](VListProps.md#aria-disabled)
-- [aria-dropeffect](VListProps.md#aria-dropeffect)
-- [aria-errormessage](VListProps.md#aria-errormessage)
-- [aria-expanded](VListProps.md#aria-expanded)
-- [aria-flowto](VListProps.md#aria-flowto)
-- [aria-grabbed](VListProps.md#aria-grabbed)
-- [aria-haspopup](VListProps.md#aria-haspopup)
-- [aria-hidden](VListProps.md#aria-hidden)
-- [aria-invalid](VListProps.md#aria-invalid)
-- [aria-keyshortcuts](VListProps.md#aria-keyshortcuts)
-- [aria-label](VListProps.md#aria-label)
-- [aria-labelledby](VListProps.md#aria-labelledby)
-- [aria-level](VListProps.md#aria-level)
-- [aria-live](VListProps.md#aria-live)
-- [aria-modal](VListProps.md#aria-modal)
-- [aria-multiline](VListProps.md#aria-multiline)
-- [aria-multiselectable](VListProps.md#aria-multiselectable)
-- [aria-orientation](VListProps.md#aria-orientation)
-- [aria-owns](VListProps.md#aria-owns)
-- [aria-placeholder](VListProps.md#aria-placeholder)
-- [aria-posinset](VListProps.md#aria-posinset)
-- [aria-pressed](VListProps.md#aria-pressed)
-- [aria-readonly](VListProps.md#aria-readonly)
-- [aria-relevant](VListProps.md#aria-relevant)
-- [aria-required](VListProps.md#aria-required)
-- [aria-roledescription](VListProps.md#aria-roledescription)
-- [aria-rowcount](VListProps.md#aria-rowcount)
-- [aria-rowindex](VListProps.md#aria-rowindex)
-- [aria-rowspan](VListProps.md#aria-rowspan)
-- [aria-selected](VListProps.md#aria-selected)
-- [aria-setsize](VListProps.md#aria-setsize)
-- [aria-sort](VListProps.md#aria-sort)
-- [aria-valuemax](VListProps.md#aria-valuemax)
-- [aria-valuemin](VListProps.md#aria-valuemin)
-- [aria-valuenow](VListProps.md#aria-valuenow)
-- [aria-valuetext](VListProps.md#aria-valuetext)
+- [children](VGridProps.md#children)
+- [row](VGridProps.md#row)
+- [col](VGridProps.md#col)
+- [cellHeight](VGridProps.md#cellheight)
+- [cellWidth](VGridProps.md#cellwidth)
+- [overscan](VGridProps.md#overscan)
+- [initialRowCount](VGridProps.md#initialrowcount)
+- [initialColCount](VGridProps.md#initialcolcount)
+- [rtl](VGridProps.md#rtl)
+- [element](VGridProps.md#element)
+- [cellElement](VGridProps.md#cellelement)
+- [className](VGridProps.md#classname)
+- [style](VGridProps.md#style)
+- [id](VGridProps.md#id)
+- [role](VGridProps.md#role)
+- [tabIndex](VGridProps.md#tabindex)
+- [aria-activedescendant](VGridProps.md#aria-activedescendant)
+- [aria-atomic](VGridProps.md#aria-atomic)
+- [aria-autocomplete](VGridProps.md#aria-autocomplete)
+- [aria-busy](VGridProps.md#aria-busy)
+- [aria-checked](VGridProps.md#aria-checked)
+- [aria-colcount](VGridProps.md#aria-colcount)
+- [aria-colindex](VGridProps.md#aria-colindex)
+- [aria-colspan](VGridProps.md#aria-colspan)
+- [aria-controls](VGridProps.md#aria-controls)
+- [aria-current](VGridProps.md#aria-current)
+- [aria-describedby](VGridProps.md#aria-describedby)
+- [aria-details](VGridProps.md#aria-details)
+- [aria-disabled](VGridProps.md#aria-disabled)
+- [aria-dropeffect](VGridProps.md#aria-dropeffect)
+- [aria-errormessage](VGridProps.md#aria-errormessage)
+- [aria-expanded](VGridProps.md#aria-expanded)
+- [aria-flowto](VGridProps.md#aria-flowto)
+- [aria-grabbed](VGridProps.md#aria-grabbed)
+- [aria-haspopup](VGridProps.md#aria-haspopup)
+- [aria-hidden](VGridProps.md#aria-hidden)
+- [aria-invalid](VGridProps.md#aria-invalid)
+- [aria-keyshortcuts](VGridProps.md#aria-keyshortcuts)
+- [aria-label](VGridProps.md#aria-label)
+- [aria-labelledby](VGridProps.md#aria-labelledby)
+- [aria-level](VGridProps.md#aria-level)
+- [aria-live](VGridProps.md#aria-live)
+- [aria-modal](VGridProps.md#aria-modal)
+- [aria-multiline](VGridProps.md#aria-multiline)
+- [aria-multiselectable](VGridProps.md#aria-multiselectable)
+- [aria-orientation](VGridProps.md#aria-orientation)
+- [aria-owns](VGridProps.md#aria-owns)
+- [aria-placeholder](VGridProps.md#aria-placeholder)
+- [aria-posinset](VGridProps.md#aria-posinset)
+- [aria-pressed](VGridProps.md#aria-pressed)
+- [aria-readonly](VGridProps.md#aria-readonly)
+- [aria-relevant](VGridProps.md#aria-relevant)
+- [aria-required](VGridProps.md#aria-required)
+- [aria-roledescription](VGridProps.md#aria-roledescription)
+- [aria-rowcount](VGridProps.md#aria-rowcount)
+- [aria-rowindex](VGridProps.md#aria-rowindex)
+- [aria-rowspan](VGridProps.md#aria-rowspan)
+- [aria-selected](VGridProps.md#aria-selected)
+- [aria-setsize](VGridProps.md#aria-setsize)
+- [aria-sort](VGridProps.md#aria-sort)
+- [aria-valuemax](VGridProps.md#aria-valuemax)
+- [aria-valuemin](VGridProps.md#aria-valuemin)
+- [aria-valuenow](VGridProps.md#aria-valuenow)
+- [aria-valuetext](VGridProps.md#aria-valuetext)
 
 ## Properties
 
 ### children
 
-• **children**: `ReactNode`
+• **children**: (`arg`: { `rowIndex`: `number` ; `colIndex`: `number`  }) => `ReactNode`
 
-Elements rendered by this component.
+#### Type declaration
+
+▸ (`arg`): `ReactNode`
+
+A function to create elements rendered by this component.
+
+##### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `arg` | `Object` | - |
+| `arg.rowIndex` | `number` | row index of cell |
+| `arg.colIndex` | `number` | column index of cell |
+
+##### Returns
+
+`ReactNode`
 
 #### Defined in
 
-[src/react/VList.tsx:232](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L232)
+[src/react/VGrid.tsx:211](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VGrid.tsx#L211)
 
 ___
 
-### itemSize
+### row
 
-• `Optional` **itemSize**: `number`
+• **row**: `number`
 
-Item size hint for unmeasured items. It's recommended to specify this prop if item sizes are fixed and known, or much larger than the defaultValue. It will help to reduce scroll jump when items are measured.
+Total row length of grid.
+
+#### Defined in
+
+[src/react/VGrid.tsx:224](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VGrid.tsx#L224)
+
+___
+
+### col
+
+• **col**: `number`
+
+Total column length of grid.
+
+#### Defined in
+
+[src/react/VGrid.tsx:228](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VGrid.tsx#L228)
+
+___
+
+### cellHeight
+
+• `Optional` **cellHeight**: `number`
+
+Cell height hint for unmeasured items. It's recommended to specify this prop if item sizes are fixed and known, or much larger than the defaultValue. It will help to reduce scroll jump when items are measured.
 
 **`Default Value`**
 
@@ -103,7 +143,23 @@ Item size hint for unmeasured items. It's recommended to specify this prop if it
 
 #### Defined in
 
-[src/react/VList.tsx:237](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L237)
+[src/react/VGrid.tsx:233](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VGrid.tsx#L233)
+
+___
+
+### cellWidth
+
+• `Optional` **cellWidth**: `number`
+
+Cell width hint for unmeasured items. It's recommended to specify this prop if item sizes are fixed and known, or much larger than the defaultValue. It will help to reduce scroll jump when items are measured.
+
+**`Default Value`**
+
+100
+
+#### Defined in
+
+[src/react/VGrid.tsx:238](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VGrid.tsx#L238)
 
 ___
 
@@ -111,39 +167,39 @@ ___
 
 • `Optional` **overscan**: `number`
 
-Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
+Number of items to render above/below the visible bounds of the grid. You can increase to avoid showing blank items in fast scrolling.
 
 **`Default Value`**
 
-4
+2
 
 #### Defined in
 
-[src/react/VList.tsx:242](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L242)
+[src/react/VGrid.tsx:243](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VGrid.tsx#L243)
 
 ___
 
-### initialItemCount
+### initialRowCount
 
-• `Optional` **initialItemCount**: `number`
+• `Optional` **initialRowCount**: `number`
 
-If set, the specified amount of items will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
+If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
 
 #### Defined in
 
-[src/react/VList.tsx:246](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L246)
+[src/react/VGrid.tsx:247](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VGrid.tsx#L247)
 
 ___
 
-### horizontal
+### initialColCount
 
-• `Optional` **horizontal**: `boolean`
+• `Optional` **initialColCount**: `number`
 
-If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
+If set, the specified amount of cols will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
 
 #### Defined in
 
-[src/react/VList.tsx:250](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L250)
+[src/react/VGrid.tsx:251](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VGrid.tsx#L251)
 
 ___
 
@@ -155,15 +211,15 @@ You have to set true if you use this component under `direction: rtl` style.
 
 #### Defined in
 
-[src/react/VList.tsx:254](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L254)
+[src/react/VGrid.tsx:255](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VGrid.tsx#L255)
 
 ___
 
 ### element
 
-• `Optional` **element**: `ForwardRefExoticComponent`<[`CustomWindowComponentProps`](CustomWindowComponentProps.md) & `RefAttributes`<`any`\>\>
+• `Optional` **element**: `ForwardRefExoticComponent`<[`CustomGridWindowComponentProps`](CustomGridWindowComponentProps.md) & `RefAttributes`<`any`\>\>
 
-Customized element type for scrollable element. This element will get [CustomWindowComponentProps](CustomWindowComponentProps.md) as props.
+Customized element type for scrollable element. This element will get [CustomGridWindowComponentProps](CustomGridWindowComponentProps.md) as props.
 
 **`Default Value`**
 
@@ -171,15 +227,15 @@ DefaultWindow
 
 #### Defined in
 
-[src/react/VList.tsx:259](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L259)
+[src/react/VGrid.tsx:260](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VGrid.tsx#L260)
 
 ___
 
-### itemElement
+### cellElement
 
-• `Optional` **itemElement**: `CustomItemComponentOrElement`
+• `Optional` **cellElement**: `CustomCellComponentOrElement`
 
-Customized element type for item element. This element will get [CustomItemComponentProps](CustomItemComponentProps.md) as props.
+Customized element type for cell element. This element will get [CustomCellComponentProps](CustomCellComponentProps.md) as props.
 
 **`Default Value`**
 
@@ -187,82 +243,7 @@ Customized element type for item element. This element will get [CustomItemCompo
 
 #### Defined in
 
-[src/react/VList.tsx:264](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L264)
-
-___
-
-### onScroll
-
-• `Optional` **onScroll**: (`offset`: `number`) => `void`
-
-#### Type declaration
-
-▸ (`offset`): `void`
-
-Callback invoked whenever scroll offset changes.
-
-##### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `offset` | `number` | Current scrollTop or scrollLeft. |
-
-##### Returns
-
-`void`
-
-#### Defined in
-
-[src/react/VList.tsx:269](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L269)
-
-___
-
-### onScrollStop
-
-• `Optional` **onScrollStop**: () => `void`
-
-#### Type declaration
-
-▸ (): `void`
-
-Callback invoked when scrolling stops.
-
-##### Returns
-
-`void`
-
-#### Defined in
-
-[src/react/VList.tsx:273](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L273)
-
-___
-
-### onRangeChange
-
-• `Optional` **onRangeChange**: (`payload`: { `start`: `number` ; `end`: `number` ; `count`: `number`  }) => `void`
-
-#### Type declaration
-
-▸ (`payload`): `void`
-
-Callback invoked when visible items range changes.
-
-##### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `payload` | `Object` | - |
-| `payload.start` | `number` | The start index of viewable items. |
-| `payload.end` | `number` | The end index of viewable items. |
-| `payload.count` | `number` | The total count of items. |
-
-##### Returns
-
-`void`
-
-#### Defined in
-
-[src/react/VList.tsx:277](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L277)
+[src/react/VGrid.tsx:265](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VGrid.tsx#L265)
 
 ___
 

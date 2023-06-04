@@ -1,6 +1,6 @@
 # Interface: CustomItemComponentProps
 
-Props of customized item component.
+Props of customized item component for [VList](../API.md#vlist).
 
 ## Table of contents
 
@@ -17,7 +17,7 @@ Props of customized item component.
 
 #### Defined in
 
-[src/react/VList.tsx:189](https://github.com/inokawa/virtua/blob/8c6c738/src/react/VList.tsx#L189)
+[src/react/VList.tsx:180](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L180)
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 #### Defined in
 
-[src/react/VList.tsx:190](https://github.com/inokawa/virtua/blob/8c6c738/src/react/VList.tsx#L190)
+[src/react/VList.tsx:181](https://github.com/inokawa/virtua/blob/8e03f83/src/react/VList.tsx#L181)
