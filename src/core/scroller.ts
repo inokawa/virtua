@@ -21,11 +21,11 @@ export type Scroller = {
 
 export const createScroller = (
   store: VirtualStore,
+  isHorizontal: boolean,
+  isRtl: boolean,
   isJustResized: () => boolean
 ): Scroller => {
   let rootElement: HTMLElement | undefined;
-  const isHorizontal = store._isHorizontal();
-  const isRtl = store._isRtl();
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
 
   const getActualScrollSize = (): number => {

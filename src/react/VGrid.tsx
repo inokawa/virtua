@@ -45,6 +45,7 @@ type CellProps = {
   _rowIndex: number;
   _colIndex: number;
   _element: "div";
+  _isRtl: boolean;
 };
 
 const Cell = memo(
@@ -56,6 +57,7 @@ const Cell = memo(
     _rowIndex: rowIndex,
     _colIndex: colIndex,
     _element: Element,
+    _isRtl: isRtl,
   }: CellProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -94,7 +96,7 @@ const Cell = memo(
             padding: 0,
             position: "absolute",
             top: top,
-            [verticalStore._isRtl() ? "right" : "left"]: left,
+            [isRtl ? "right" : "left"]: left,
             visibility: vHide || hHide ? "hidden" : "visible",
             minHeight: height,
             minWidth: width,
@@ -288,36 +290,35 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
   ): ReactElement => {
     const [verticalScrolling, setVerticalScrolling] = useState(false);
     const [horizontalScrolling, setHorizontalScrolling] = useState(false);
-    // https://github.com/facebook/react/issues/25191#issuecomment-1237456448
-    const [vStore, hStore, resizer, vScroller, hScroller] = useStatic(() => {
-      const dummy = () => {};
-      const _vs = createVirtualStore(
-        rowCount,
-        cellHeight,
-        false,
-        !!rtlProp,
-        initialRowCount,
-        setVerticalScrolling,
-        dummy
-      );
-      const _hs = createVirtualStore(
-        colCount,
-        cellWidth,
-        true,
-        !!rtlProp,
-        initialColCount,
-        setHorizontalScrolling,
-        dummy
-      );
-      const resizer = createGridResizer(_vs, _hs);
-      return [
-        _vs,
-        _hs,
-        resizer,
-        createScroller(_vs, () => resizer._isJustResized()),
-        createScroller(_hs, () => resizer._isJustResized(true)),
-      ];
-    });
+    const [vStore, hStore, resizer, vScroller, hScroller, isRtl] = useStatic(
+      () => {
+        const _isRtl = !!rtlProp;
+        const dummy = () => {};
+        const _vs = createVirtualStore(
+          rowCount,
+          cellHeight,
+          initialRowCount,
+          setVerticalScrolling,
+          dummy
+        );
+        const _hs = createVirtualStore(
+          colCount,
+          cellWidth,
+          initialColCount,
+          setHorizontalScrolling,
+          dummy
+        );
+        const resizer = createGridResizer(_vs, _hs);
+        return [
+          _vs,
+          _hs,
+          resizer,
+          createScroller(_vs, false, _isRtl, () => resizer._isJustResized()),
+          createScroller(_hs, true, _isRtl, () => resizer._isJustResized(true)),
+          _isRtl,
+        ];
+      }
+    );
     // The elements length and cached items length are different just after element is added/removed.
     vStore._updateCacheLength(rowCount);
     hStore._updateCacheLength(colCount);
@@ -395,6 +396,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
               _colIndex={j}
               _element={itemElement as "div"}
               _children={render(i, j)}
+              _isRtl={isRtl}
             />
           );
         }

@@ -6,10 +6,10 @@ import {
 } from "./store";
 import { exists, max, once } from "./utils";
 
-export const createResizer = (store: VirtualStore) => {
+export const createResizer = (store: VirtualStore, isHorizontal: boolean) => {
   let resized = false;
   let rootElement: HTMLElement | undefined;
-  const sizeKey = store._isHorizontal() ? "width" : "height";
+  const sizeKey = isHorizontal ? "width" : "height";
   const mountedIndexes = new WeakMap<Element, number>();
 
   // Initialize ResizeObserver lazily for SSR

@@ -30,6 +30,8 @@ type ItemProps = {
   _store: VirtualStore;
   _index: number;
   _element: "div";
+  _isHorizontal: boolean;
+  _isRtl: boolean;
 };
 
 const Item = memo(
@@ -39,6 +41,8 @@ const Item = memo(
     _store: store,
     _index: index,
     _element: Element,
+    _isHorizontal: isHorizontal,
+    _isRtl: isRtl,
   }: ItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -59,8 +63,7 @@ const Item = memo(
       <Element
         ref={ref}
         style={useMemo((): CSSProperties => {
-          const isHorizontal = store._isHorizontal();
-          const leftOrRightKey = store._isRtl() ? "right" : "left";
+          const leftOrRightKey = isRtl ? "right" : "left";
           const style: CSSProperties = {
             margin: 0,
             padding: 0,
@@ -128,6 +131,7 @@ const Window = ({
   _element: Element,
   _scrolling: scrolling,
   _attrs: attrs,
+  _isHorizontal: horizontal,
 }: {
   _children: ReactNode;
   _ref: RefObject<HTMLDivElement>;
@@ -135,13 +139,12 @@ const Window = ({
   _element: CustomWindowComponent;
   _scrolling: boolean;
   _attrs: WindowComponentAttributes;
+  _isHorizontal: boolean;
 }) => {
   const scrollSize = useSyncExternalStore(
     store._subscribe,
     store._getScrollSize
   );
-
-  const horizontal = store._isHorizontal();
 
   return (
     <Element
@@ -329,13 +332,12 @@ export const VList = forwardRef<VListHandle, VListProps>(
 
     const [mountedIndexes, reset] = useState<Set<number>>(new Set<number>());
     const [scrolling, setScrolling] = useState(false);
-    // https://github.com/facebook/react/issues/25191#issuecomment-1237456448
-    const [store, resizer, scroller] = useStatic(() => {
+    const [store, resizer, scroller, isHorizontal, isRtl] = useStatic(() => {
+      const _isHorizontal = !!horizontalProp;
+      const _isRtl = !!rtlProp;
       const _store = createVirtualStore(
         count,
         itemSizeProp,
-        !!horizontalProp,
-        !!rtlProp,
         initialItemCount,
         (isScrolling) => {
           setScrolling(isScrolling);
@@ -348,11 +350,14 @@ export const VList = forwardRef<VListHandle, VListProps>(
           onScroll[refKey] && onScroll[refKey](offset);
         }
       );
-      const _resizer = createResizer(_store);
+
+      const _resizer = createResizer(_store, _isHorizontal);
       return [
         _store,
         _resizer,
-        createScroller(_store, _resizer._isJustResized),
+        createScroller(_store, _isHorizontal, _isRtl, _resizer._isJustResized),
+        _isHorizontal,
+        _isRtl,
       ];
     });
     // The elements length and cached items length are different just after element is added/removed.
@@ -436,6 +441,8 @@ export const VList = forwardRef<VListHandle, VListProps>(
               _index={i}
               _element={itemElement as "div"}
               _children={e}
+              _isHorizontal={isHorizontal}
+              _isRtl={isRtl}
             />
           );
         }
@@ -451,6 +458,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
         _scrolling={scrolling}
         _children={items}
         _attrs={windowAttrs}
+        _isHorizontal={isHorizontal}
       />
     );
   }
