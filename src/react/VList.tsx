@@ -18,10 +18,11 @@ import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSyncExternalStore } from "./useSyncExternalStore";
 import { exists, max, min } from "../core/utils";
 import { createScroller } from "../core/scroller";
-import { refKey } from "./utils";
+import { isInvalidElement, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useRefWithUpdate } from "./useRefWithUpdate";
 import { Resizer, createResizer } from "../core/resizer";
+import { WindowComponentAttributes } from "..";
 
 type ItemProps = {
   _children: ReactNode;
@@ -82,19 +83,8 @@ const Item = memo(
   }
 );
 
-const isInvalidElement = <T extends ReactNode>(
-  e: T
-): e is Extract<T, null | undefined | boolean> =>
-  !exists(e) || typeof e === "boolean";
-
-export type WindowComponentAttributes = Pick<
-  React.HTMLAttributes<HTMLElement>,
-  "className" | "style" | "id" | "role" | "tabIndex"
-> &
-  React.AriaAttributes;
-
 /**
- * Props of customized scrollable component.
+ * Props of customized scrollable component for {@link VList}.
  */
 export interface CustomWindowComponentProps {
   children: ReactNode;
@@ -184,7 +174,7 @@ const Window = ({
 };
 
 /**
- * Props of customized item component.
+ * Props of customized item component for {@link VList}.
  */
 export interface CustomItemComponentProps {
   style: CSSProperties;
