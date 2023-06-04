@@ -1,0 +1,2 @@
+System.register([],(function(e,r){"use strict";return{execute:function(){function r(e){var t,n,f="";if("string"==typeof e||"number"==typeof e)f+=e;else if("object"==typeof e)if(Array.isArray(e))for(t=0;t<e.length;t++)e[t]&&(n=r(e[t]))&&(f&&(f+=" "),f+=n);else for(t in e)e[t]&&(f&&(f+=" "),f+=t);return f}e("c",(function(){for(var e,t,n=0,f="";n<arguments.length;)(e=arguments[n++])&&(t=r(e))&&(f&&(f+=" "),f+=t);return f}))}}}));
+//# sourceMappingURL=clsx.m-legacy-aaf3e3f6.js.map

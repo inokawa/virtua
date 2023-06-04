@@ -1,0 +1,30 @@
+import{j as g}from"./jsx-runtime-c3d7f245.js";import{r as n}from"./index-c6dae603.js";import{a as z,r as m,u as y,i as J,b as A,g as D,c as K,h as U,d as Y,m as B,e as F}from"./resizer-5270f707.js";const W=o=>{const i=n.useRef(o);return z(()=>{i[m]=o},[o]),i},G=n.memo(({_children:o,_resizer:i,_store:e,_index:s,_element:c})=>{const a=n.useRef(null),f=y(e._subscribe,()=>e._getItemOffset(s)),d=y(e._subscribe,()=>e._isUnmeasuredItem(s));return z(()=>i._observeItem(a[m],s),[s]),g(c,{ref:a,style:n.useMemo(()=>{const p=e._isHorizontal(),S=e._isRtl()?"right":"left",b={margin:0,padding:0,position:"absolute",[p?"height":"width"]:"100%",[p?"top":S]:0,[p?S:"top"]:f,visibility:d?"hidden":"visible"};return p&&(b.display="flex"),b},[f,d]),children:o})}),Q=n.forwardRef(({children:o,scrollSize:i,scrolling:e,horizontal:s,attrs:c},a)=>g("div",{ref:a,...c,children:g("div",{style:n.useMemo(()=>({position:"relative",visibility:"hidden",width:s?i:"100%",height:s?"100%":i,pointerEvents:e?"none":"auto"}),[i,e]),children:o})})),X=({_children:o,_ref:i,_store:e,_element:s,_scrolling:c,_attrs:a})=>{const f=y(e._subscribe,e._getScrollSize),d=e._isHorizontal();return g(s,{ref:i,scrollSize:f,scrolling:c,horizontal:d,attrs:n.useMemo(()=>({...a,style:{overflow:d?"auto hidden":"hidden auto",contain:"strict",width:"100%",height:"100%",padding:0,margin:0,...a.style}}),[a]),children:o})},L=n.forwardRef(({children:o,itemSize:i=40,overscan:e=4,initialItemCount:s,horizontal:c,rtl:a,element:f=Q,itemElement:d="div",onScroll:p,onScrollStop:S,onRangeChange:b,...M},O)=>{const w=n.useMemo(()=>{const t=[];return n.Children.forEach(o,r=>{J(r)||t.push(r)}),t},[o]),h=w.length,R=W(p),x=W(S),[V,H]=n.useState(new Set),[P,j]=n.useState(!1),[u,E,_]=A(()=>{const t=K(h,i,!!c,!!a,s,l=>{j(l),l||(H(new Set),x[m]&&x[m]())},l=>{R[m]&&R[m](l)}),r=U(t);return[t,r,Y(t,r._isJustResized)]});u._updateCacheLength(h);const[v,C]=y(u._subscribe,u._getRange),I=y(u._subscribe,u._getJump),k=n.useRef(null);z(()=>{const t=k[m],r=E._observeRoot(t),l=_._initRoot(t);return()=>{r(),l()}},[]),z(()=>{I.length&&_._fixScrollJump(I,v)},[I]),n.useEffect(()=>{b&&b({start:v,end:C,count:h})},[v,C]),n.useImperativeHandle(O,()=>({get scrollOffset(){return u._getScrollOffset()},get scrollSize(){return _._getActualScrollSize()},get viewportSize(){return u._getViewportSize()},scrollToIndex(t){_._scrollToIndex(t,h)},scrollTo:_._scrollTo,scrollBy(t){_._scrollTo(u._getScrollOffset()+t)}}),[h]);const q=B(v-e,0),T=F(C+e,h-1),N=n.useMemo(()=>{const t=[];for(let r=q;r<=T;r++)V.add(r);return V.forEach(r=>{const l=w[r];D(l)&&t.push(g(G,{_resizer:E,_store:u,_index:r,_element:d,_children:l},(l==null?void 0:l.key)||r))}),t},[w,V,q,T]);return g(X,{_ref:k,_store:u,_element:f,_scrolling:P,_children:N,_attrs:M})});try{L.displayName="VList",L.__docgenInfo={description:"Virtualized list component. See {@link VListProps} and {@link VListHandle}.",displayName:"VList",props:{children:{defaultValue:null,description:"Elements rendered by this component.",name:"children",required:!0,type:{name:"ReactNode"}},itemSize:{defaultValue:null,description:`Item size hint for unmeasured items. It's recommended to specify this prop if item sizes are fixed and known, or much larger than the defaultValue. It will help to reduce scroll jump when items are measured.
+@defaultValue 40`,name:"itemSize",required:!1,type:{name:"number"}},overscan:{defaultValue:{value:"4"},description:`Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
+@defaultValue 4`,name:"overscan",required:!1,type:{name:"number"}},initialItemCount:{defaultValue:null,description:"If set, the specified amount of items will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.",name:"initialItemCount",required:!1,type:{name:"number"}},horizontal:{defaultValue:null,description:"If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.",name:"horizontal",required:!1,type:{name:"boolean"}},rtl:{defaultValue:null,description:"You have to set true if you use this component under `direction: rtl` style.",name:"rtl",required:!1,type:{name:"boolean"}},element:{defaultValue:{value:`forwardRef<any, CustomWindowComponentProps>(
+  (
+    { children, scrollSize, scrolling, horizontal, attrs },
+    ref
+  ): ReactElement => {
+    return (
+      <div ref={ref} {...attrs}>
+        <div
+          style={useMemo((): CSSProperties => {
+            return {
+              position: "relative",
+              visibility: "hidden",
+              width: horizontal ? scrollSize : "100%",
+              height: horizontal ? "100%" : scrollSize,
+              pointerEvents: scrolling ? "none" : "auto",
+            };
+          }, [scrollSize, scrolling])}
+        >
+          {children}
+        </div>
+      </div>
+    );
+  }
+)`},description:`Customized element type for scrollable element. This element will get {@link CustomWindowComponentProps} as props.
+@defaultValue {@link DefaultWindow }`,name:"element",required:!1,type:{name:"ForwardRefExoticComponent<CustomWindowComponentProps & RefAttributes<any>>"}},itemElement:{defaultValue:{value:"div"},description:`Customized element type for item element. This element will get {@link CustomItemComponentProps} as props.
+@defaultValue "div"`,name:"itemElement",required:!1,type:{name:"CustomItemComponentOrElement"}},onScroll:{defaultValue:null,description:`Callback invoked whenever scroll offset changes.
+@param offset Current scrollTop or scrollLeft.`,name:"onScroll",required:!1,type:{name:"(offset: number) => void"}},onScrollStop:{defaultValue:null,description:"Callback invoked when scrolling stops.",name:"onScrollStop",required:!1,type:{name:"() => void"}},onRangeChange:{defaultValue:null,description:"Callback invoked when visible items range changes.",name:"onRangeChange",required:!1,type:{name:"(payload: { start: number; end: number; count: number; }) => void"}}}}}catch(o){}export{L as V};
+//# sourceMappingURL=VList-7170cff1.js.map
