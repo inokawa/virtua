@@ -289,36 +289,35 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const [verticalScrolling, setVerticalScrolling] = useState(false);
     const [horizontalScrolling, setHorizontalScrolling] = useState(false);
     // https://github.com/facebook/react/issues/25191#issuecomment-1237456448
-    const [vStore, hStore, resizer, verticalScroller, horizontalScroller] =
-      useStatic(() => {
-        const dummy = () => {};
-        const _vs = createVirtualStore(
-          rowCount,
-          cellHeight,
-          false,
-          !!rtlProp,
-          initialRowCount,
-          setVerticalScrolling,
-          dummy
-        );
-        const _hs = createVirtualStore(
-          colCount,
-          cellWidth,
-          true,
-          !!rtlProp,
-          initialColCount,
-          setHorizontalScrolling,
-          dummy
-        );
-        const resizer = createGridResizer(_vs, _hs);
-        return [
-          _vs,
-          _hs,
-          resizer,
-          createScroller(_vs, () => resizer._isJustResized()),
-          createScroller(_hs, () => resizer._isJustResized(true)),
-        ];
-      });
+    const [vStore, hStore, resizer, vScroller, hScroller] = useStatic(() => {
+      const dummy = () => {};
+      const _vs = createVirtualStore(
+        rowCount,
+        cellHeight,
+        false,
+        !!rtlProp,
+        initialRowCount,
+        setVerticalScrolling,
+        dummy
+      );
+      const _hs = createVirtualStore(
+        colCount,
+        cellWidth,
+        true,
+        !!rtlProp,
+        initialColCount,
+        setHorizontalScrolling,
+        dummy
+      );
+      const resizer = createGridResizer(_vs, _hs);
+      return [
+        _vs,
+        _hs,
+        resizer,
+        createScroller(_vs, () => resizer._isJustResized()),
+        createScroller(_hs, () => resizer._isJustResized(true)),
+      ];
+    });
     // The elements length and cached items length are different just after element is added/removed.
     vStore._updateCacheLength(rowCount);
     hStore._updateCacheLength(colCount);
@@ -344,8 +343,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
       const unobserve = resizer._observeRoot(root);
-      const vCleanup = verticalScroller._initRoot(root);
-      const hCleanup = horizontalScroller._initRoot(root);
+      const vCleanup = vScroller._initRoot(root);
+      const hCleanup = hScroller._initRoot(root);
       return () => {
         unobserve();
         vCleanup();
@@ -355,12 +354,12 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
 
     useIsomorphicLayoutEffect(() => {
       if (verticalJump.length) {
-        verticalScroller._fixScrollJump(verticalJump, startRowIndex);
+        vScroller._fixScrollJump(verticalJump, startRowIndex);
       }
     }, [verticalJump]);
     useIsomorphicLayoutEffect(() => {
       if (horizontalJump.length) {
-        horizontalScroller._fixScrollJump(horizontalJump, startColIndex);
+        hScroller._fixScrollJump(horizontalJump, startColIndex);
       }
     }, [horizontalJump]);
 
