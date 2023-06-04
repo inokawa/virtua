@@ -6,7 +6,8 @@ export const hasNegativeOffsetInRtl = once((scrollable: HTMLElement) => {
   const key = "scrollLeft";
   const prev = scrollable[key];
   scrollable[key] = 1;
-  const isNegative = scrollable[key] === 0;
+  // scrollLeft can be positive under some specific situations even if negative mode, so we use `<` for now.
+  const isNegative = scrollable[key] < 1;
   scrollable[key] = prev;
   return isNegative;
 });
