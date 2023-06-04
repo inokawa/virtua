@@ -1,2 +1,0 @@
-System.register(["./jsx-runtime-legacy-fe2b3564.js","./index-legacy-612e7deb.js"],(function(e,t){"use strict";var s;return{setters:[e=>{s=e.j},null],execute:function(){e("parameters",{actions:{argTypesRegex:"^on[A-Z].*"},layout:"fullscreen",options:{storySort:{order:["basics",["VList","VGrid"],"advanced","comparisons"]}}}),e("decorators",[e=>s("div",{style:{background:"whitesmoke",width:"100vw",height:"100vh"},children:s(e,{})})])}}}));
-//# sourceMappingURL=preview-legacy-5d2734e5.js.map

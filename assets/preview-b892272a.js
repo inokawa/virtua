@@ -1,0 +1,2 @@
+import{j as o}from"./jsx-runtime-f8a6c6ea.js";import"./index-5284b0bf.js";const e={actions:{argTypesRegex:"^on[A-Z].*"},layout:"fullscreen",options:{storySort:{order:["basics",["VList","VGrid"],"advanced","comparisons"]}}},i=[r=>o("div",{style:{background:"whitesmoke",width:"100vw",height:"100vh"},children:o(r,{})})];export{i as decorators,e as parameters};
+//# sourceMappingURL=preview-b892272a.js.map

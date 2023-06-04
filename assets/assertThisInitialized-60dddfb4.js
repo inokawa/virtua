@@ -1,2 +1,0 @@
-function s(){return s=Object.assign?Object.assign.bind():function(t){for(var n=1;n<arguments.length;n++){var r=arguments[n];for(var e in r)Object.prototype.hasOwnProperty.call(r,e)&&(t[e]=r[e])}return t},s.apply(this,arguments)}function i(t,n){return i=Object.setPrototypeOf?Object.setPrototypeOf.bind():function(e,o){return e.__proto__=o,e},i(t,n)}function a(t){if(t===void 0)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return t}export{s as _,a,i as b};
-//# sourceMappingURL=assertThisInitialized-60dddfb4.js.map
