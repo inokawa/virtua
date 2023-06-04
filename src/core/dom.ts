@@ -1,6 +1,10 @@
 import { once } from "./utils";
 
 // The scroll position may be negative value in rtl direction.
+//
+// left  right result
+// -100  0     true    spec compliant
+// 0     100   false   probably Chrome earlier than v85
 // https://github.com/othree/jquery.rtl-scroll-type
 export const hasNegativeOffsetInRtl = once((scrollable: HTMLElement) => {
   const key = "scrollLeft";

@@ -34,12 +34,19 @@ export const createScroller = (
     // This is because stored size may differ from the actual size, for example when a new item is added and not yet measured.
     return isHorizontal ? rootElement.scrollWidth : rootElement.scrollHeight;
   };
+  const normalizeRtlOffset = (offset: number, diff?: boolean): number => {
+    if (hasNegativeOffsetInRtl(rootElement!)) {
+      return -offset;
+    } else {
+      return diff
+        ? -offset
+        : store._getScrollSize() - store._getViewportSize() - offset;
+    }
+  };
   const scrollTo = (offset: number, diff?: boolean) => {
     if (!rootElement) return;
     if (isHorizontal && isRtl) {
-      if (hasNegativeOffsetInRtl(rootElement)) {
-        offset *= -1;
-      }
+      offset = normalizeRtlOffset(offset, diff);
     }
     if (diff) {
       rootElement[scrollToKey] += offset;
@@ -96,9 +103,7 @@ export const createScroller = (
       const syncViewportToScrollPosition = () => {
         let offset = root[scrollToKey];
         if (isHorizontal && isRtl) {
-          if (hasNegativeOffsetInRtl(root)) {
-            offset *= -1;
-          }
+          offset = normalizeRtlOffset(offset);
         }
         const prevOffset = store._getScrollOffset();
         if (prevOffset === offset) {
