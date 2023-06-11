@@ -105,6 +105,20 @@ export const PaddingAndMargin: StoryObj = {
   },
 };
 
+export const Reverse: StoryObj = {
+  render: () => {
+    const ref = useRef<VListHandle>(null);
+    useEffect(() => {
+      ref.current?.scrollToIndex(999);
+    }, []);
+    return (
+      <VList ref={ref} style={{ height: "100vh" }} mode="reverse">
+        {createRows(1000)}
+      </VList>
+    );
+  },
+};
+
 export const Sticky: StoryObj = {
   render: () => {
     return (

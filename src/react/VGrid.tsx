@@ -298,6 +298,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           rowCount,
           cellHeight,
           initialRowCount,
+          false,
           setVerticalScrolling,
           dummy
         );
@@ -305,6 +306,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           colCount,
           cellWidth,
           initialColCount,
+          false,
           setHorizontalScrolling,
           dummy
         );

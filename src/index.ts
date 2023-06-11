@@ -1,4 +1,3 @@
-export type { ScrollMode } from "./core/store";
 export { VList } from "./react/VList";
 export type {
   VListProps,
@@ -7,6 +6,7 @@ export type {
   CustomItemComponentProps,
   CustomWindowComponent,
   CustomWindowComponentProps,
+  ScrollMode,
 } from "./react/VList";
 export { VGrid } from "./react/VGrid";
 export type {

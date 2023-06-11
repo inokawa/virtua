@@ -13,7 +13,7 @@ import {
   useState,
   ReactFragment,
 } from "react";
-import { ScrollMode, VirtualStore, createVirtualStore } from "../core/store";
+import { VirtualStore, createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSyncExternalStore } from "./useSyncExternalStore";
 import { exists, max, min } from "../core/utils";
@@ -23,6 +23,8 @@ import { useStatic } from "./useStatic";
 import { useRefWithUpdate } from "./useRefWithUpdate";
 import { Resizer, createResizer } from "../core/resizer";
 import { WindowComponentAttributes } from "..";
+
+export type ScrollMode = "reverse" | "rtl";
 
 type ItemProps = {
   _children: ReactNode;
@@ -143,7 +145,7 @@ const Window = ({
 }) => {
   const scrollSize = useSyncExternalStore(
     store._subscribe,
-    store._getScrollSize
+    store._getScrollableDomSize
   );
 
   return (
@@ -254,6 +256,7 @@ export interface VListProps extends WindowComponentAttributes {
   /**
    * Scroll modes that should be set in certain situations.
    *
+   * - `reverse`: This mode will Adjust some styles to be suitable for bottom-to-top scrolling.
    * - `rtl`: You have to set this mode if you use this component under `direction: rtl` style.
    */
   mode?: ScrollMode;
@@ -341,6 +344,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
         count,
         itemSizeProp,
         initialItemCount,
+        mode === "reverse",
         (isScrolling) => {
           setScrolling(isScrolling);
           if (!isScrolling) {

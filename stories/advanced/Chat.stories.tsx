@@ -106,7 +106,7 @@ export const Default: StoryObj = {
           flexDirection: "column",
         }}
       >
-        <VList ref={ref} style={{ flex: 1 }}>
+        <VList ref={ref} style={{ flex: 1 }} mode="reverse">
           {items.map((d, i) => (
             <Item key={d.id} {...d} />
           ))}
