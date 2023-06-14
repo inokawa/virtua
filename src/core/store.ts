@@ -48,6 +48,7 @@ export type VirtualStore = {
   _getScrollOffset(): number;
   _getViewportSize(): number;
   _getScrollSize(): number;
+  _getScrollableDomSize(): number;
   _getJump(): ScrollJump;
   _getItemIndexForScrollTo(offset: number): number;
   _waitForScrollDestinationItemsMeasured(): Promise<void>;
@@ -62,6 +63,7 @@ export const createVirtualStore = (
   itemCount: number,
   itemSize: number,
   initialItemCount: number = 0,
+  isReverse: boolean,
   onScrollStateChange: (scrolling: boolean) => void,
   onScrollOffsetChange: (offset: number) => void
 ): VirtualStore => {
@@ -74,6 +76,8 @@ export const createVirtualStore = (
   let _scrollToQueue: [() => void, () => void] | undefined;
 
   const subscribers = new Set<() => void>();
+  const getScrollSize = (): number =>
+    computeTotalSize(cache as Writeable<Cache>);
 
   return {
     _getRange() {
@@ -105,7 +109,11 @@ export const createVirtualStore = (
       );
     },
     _getItemOffset(index) {
-      return computeStartOffset(cache as Writeable<Cache>, index);
+      const offset = computeStartOffset(cache as Writeable<Cache>, index);
+      if (isReverse) {
+        return offset + max(0, viewportSize - getScrollSize());
+      }
+      return offset;
     },
     _getItemSize(index) {
       return getItemSize(cache, index);
@@ -117,7 +125,10 @@ export const createVirtualStore = (
       return viewportSize;
     },
     _getScrollSize() {
-      return computeTotalSize(cache as Writeable<Cache>);
+      return getScrollSize();
+    },
+    _getScrollableDomSize() {
+      return max(getScrollSize(), viewportSize);
     },
     _getJump() {
       return jump;

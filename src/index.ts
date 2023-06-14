@@ -6,6 +6,7 @@ export type {
   CustomItemComponentProps,
   CustomWindowComponent,
   CustomWindowComponentProps,
+  ScrollMode,
 } from "./react/VList";
 export { VGrid } from "./react/VGrid";
 export type {

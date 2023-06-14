@@ -64,7 +64,7 @@ export const Horizontal: StoryObj = {
         </div>
         <div style={{ padding: 10, direction: "rtl" }}>
           <div>rtl</div>
-          <VList style={{ width: "100%", height: 200 }} horizontal rtl>
+          <VList style={{ width: "100%", height: 200 }} horizontal mode="rtl">
             {createColumns(1000)}
           </VList>
         </div>
@@ -100,6 +100,20 @@ export const PaddingAndMargin: StoryObj = {
             </div>
           );
         })}
+      </VList>
+    );
+  },
+};
+
+export const Reverse: StoryObj = {
+  render: () => {
+    const ref = useRef<VListHandle>(null);
+    useEffect(() => {
+      ref.current?.scrollToIndex(999);
+    }, []);
+    return (
+      <VList ref={ref} style={{ height: "100vh" }} mode="reverse">
+        {createRows(1000)}
       </VList>
     );
   },
