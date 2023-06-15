@@ -61,23 +61,35 @@ const Cell = memo(
   }: CellProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
-    const top = useStore(verticalStore, () =>
-      verticalStore._getItemOffset(rowIndex)
+    const top = useStore(
+      verticalStore,
+      () => verticalStore._getItemOffset(rowIndex),
+      true
     );
-    const left = useStore(horizontalStore, () =>
-      horizontalStore._getItemOffset(colIndex)
+    const left = useStore(
+      horizontalStore,
+      () => horizontalStore._getItemOffset(colIndex),
+      true
     );
-    const vHide = useStore(verticalStore, () =>
-      verticalStore._isUnmeasuredItem(rowIndex)
+    const vHide = useStore(
+      verticalStore,
+      () => verticalStore._isUnmeasuredItem(rowIndex),
+      true
     );
-    const hHide = useStore(horizontalStore, () =>
-      horizontalStore._isUnmeasuredItem(colIndex)
+    const hHide = useStore(
+      horizontalStore,
+      () => horizontalStore._isUnmeasuredItem(colIndex),
+      true
     );
-    const height = useStore(verticalStore, () =>
-      verticalStore._getItemSize(rowIndex)
+    const height = useStore(
+      verticalStore,
+      () => verticalStore._getItemSize(rowIndex),
+      true
     );
-    const width = useStore(horizontalStore, () =>
-      horizontalStore._getItemSize(colIndex)
+    const width = useStore(
+      horizontalStore,
+      () => horizontalStore._getItemSize(colIndex),
+      true
     );
 
     // The index may be changed if elements are inserted to or removed from the start of props.children

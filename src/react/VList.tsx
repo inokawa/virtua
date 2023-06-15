@@ -34,7 +34,6 @@ type ItemProps = {
   _element: "div";
   _isHorizontal: boolean;
   _isRtl: boolean;
-  _isOffscreen: boolean;
 };
 
 const Item = memo(
@@ -46,20 +45,11 @@ const Item = memo(
     _element: Element,
     _isHorizontal: isHorizontal,
     _isRtl: isRtl,
-    _isOffscreen: isOffscreen,
   }: ItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
-    const offset = useStore(
-      store,
-      () => store._getItemOffset(index),
-      isOffscreen
-    );
-    const hide = useStore(
-      store,
-      () => store._isUnmeasuredItem(index),
-      isOffscreen
-    );
+    const offset = useStore(store, () => store._getItemOffset(index), true);
+    const hide = useStore(store, () => store._isUnmeasuredItem(index), true);
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(
@@ -79,14 +69,14 @@ const Item = memo(
             [isHorizontal ? "height" : "width"]: "100%",
             [isHorizontal ? "top" : leftOrRightKey]: 0,
             [isHorizontal ? leftOrRightKey : "top"]: offset,
-            visibility: hide || isOffscreen ? "hidden" : "visible",
+            visibility: hide ? "hidden" : "visible",
             // willChange: "transform",
           };
           if (isHorizontal) {
             style.display = "flex";
           }
           return style;
-        }, [offset, hide, isOffscreen])}
+        }, [offset, hide])}
       >
         {children}
       </Element>
@@ -166,6 +156,8 @@ const Window = ({
             // transform: "translate3d(0px, 0px, 0px)",
             // willChange: "scroll-position",
             // backfaceVisibility: "hidden",
+            // https://github.com/bvaughn/react-window/issues/395
+            // willChange: "transform",
             width: "100%",
             height: "100%",
             padding: 0,
@@ -338,7 +330,6 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const onScroll = useRefWithUpdate(onScrollProp);
     const onScrollStop = useRefWithUpdate(onScrollStopProp);
 
-    const [mountedIndexes, reset] = useState<Set<number>>(new Set<number>());
     const [scrolling, setScrolling] = useState(false);
     const [store, resizer, scroller, isHorizontal, isRtl] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
@@ -351,7 +342,6 @@ export const VList = forwardRef<VListHandle, VListProps>(
         (isScrolling) => {
           setScrolling(isScrolling);
           if (!isScrolling) {
-            reset(new Set());
             onScrollStop[refKey] && onScrollStop[refKey]();
           }
         },
@@ -432,10 +422,6 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const items = useMemo(() => {
       const res: ReactElement[] = [];
       for (let i = startIndexWithMargin; i <= endIndexWithMargin; i++) {
-        // https://github.com/sergi/virtual-list/commit/8e7e06dc63568334c1ab809ea83c1be36572e9ed
-        mountedIndexes.add(i);
-      }
-      mountedIndexes.forEach((i) => {
         const e = elements[i];
         // This can be undefined when items are removed
         if (exists(e)) {
@@ -449,13 +435,12 @@ export const VList = forwardRef<VListHandle, VListProps>(
               _children={e}
               _isHorizontal={isHorizontal}
               _isRtl={isRtl}
-              _isOffscreen={i < startIndexWithMargin || i > endIndexWithMargin}
             />
           );
         }
-      });
+      }
       return res;
-    }, [elements, mountedIndexes, startIndexWithMargin, endIndexWithMargin]);
+    }, [elements, startIndexWithMargin, endIndexWithMargin]);
 
     return (
       <Window

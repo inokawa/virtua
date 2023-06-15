@@ -11,7 +11,7 @@ import {
   hasUnmeasuredItemsInRange,
 } from "./cache";
 import type { Writeable } from "./types";
-import { max } from "./utils";
+import { abs, max } from "./utils";
 
 type ItemJump = [sizeDiff: number, index: number];
 export type ScrollJump = Readonly<ItemJump[]>;
@@ -165,6 +165,7 @@ export const createVirtualStore = (
       };
     },
     _update(type, payload) {
+      let shouldSync: boolean | undefined;
       const mutated = ((): boolean => {
         switch (type) {
           case ACTION_ITEM_RESIZE: {
@@ -182,6 +183,7 @@ export const createVirtualStore = (
               setItemSize(cache as Writeable<Cache>, index, size);
             });
             jump = updatedJump;
+            shouldSync = true;
             return true;
           }
           case ACTION_WINDOW_RESIZE: {
@@ -194,20 +196,21 @@ export const createVirtualStore = (
           case ACTION_SCROLL:
           case ACTION_MANUAL_SCROLL: {
             const prevOffset = scrollOffset;
-            return (scrollOffset = payload) !== prevOffset;
+            const updated = (scrollOffset = payload) !== prevOffset;
+            // Ignore manual scroll because it would be called in useEffect/useLayoutEffect and cause the warn below.
+            // Warning: flushSync was called from inside a lifecycle method. React cannot flush when React is already rendering. Consider moving this call to a scheduler task or micro task.
+            if (updated && type === ACTION_SCROLL) {
+              // Update synchronously if scrolled a lot
+              shouldSync = abs(prevOffset - payload) > viewportSize;
+            }
+            return updated;
           }
         }
       })();
 
       if (mutated) {
         subscribers.forEach((cb) => {
-          cb(
-            type === ACTION_ITEM_RESIZE ||
-              type === ACTION_SCROLL ||
-              type === ACTION_MANUAL_SCROLL
-              ? true
-              : false
-          );
+          cb(shouldSync);
         });
 
         if (type === ACTION_SCROLL) {

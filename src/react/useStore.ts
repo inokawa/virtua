@@ -7,16 +7,14 @@ import { VirtualStore } from "../core/store";
 export const useStore = <T>(
   store: VirtualStore,
   getSnapShot: () => T,
-  disabled?: boolean
+  shouldGetLatest?: boolean
 ): T => {
-  const getter = useRefWithUpdate(getSnapShot);
   const [state, setState] = useState(getSnapShot);
+  const getter = useRefWithUpdate(getSnapShot);
 
   useLayoutEffect(() => {
-    if (disabled) return;
-
     const update = () => {
-      setState(getter[refKey]);
+      setState(() => getter[refKey]());
     };
     return store._subscribe((sync) => {
       if (sync) {
@@ -25,7 +23,14 @@ export const useStore = <T>(
         update();
       }
     });
-  }, [disabled]);
+  }, []);
 
+  // especially for sort of items
+  if (shouldGetLatest) {
+    const snap = getSnapShot();
+    if (state !== snap) {
+      setState(snap);
+    }
+  }
   return state;
 };
