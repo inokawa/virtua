@@ -184,7 +184,7 @@ test.describe("check if scroll jump compensation works", () => {
     let prev = initial;
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowDown", { delay: 10 });
-      let offset = await scrollable.evaluate((e) => e.scrollTop);
+      const offset = await scrollable.evaluate((e) => e.scrollTop);
       await expect(offset).toBeGreaterThanOrEqual(prev);
       prev = offset;
     }
@@ -211,7 +211,7 @@ test.describe("check if scroll jump compensation works", () => {
     let prev = initial;
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowUp", { delay: 10 });
-      let offset = await scrollable.evaluate(
+      const offset = await scrollable.evaluate(
         (e) => e.scrollHeight - e.scrollTop
       );
       await expect(offset).toBeGreaterThanOrEqual(prev);
@@ -235,7 +235,7 @@ test.describe("check if scroll jump compensation works", () => {
     let prev = initial;
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowRight", { delay: 10 });
-      let offset = await scrollable.evaluate((e) => e.scrollLeft);
+      const offset = await scrollable.evaluate((e) => e.scrollLeft);
       await expect(offset).toBeGreaterThanOrEqual(prev);
       prev = offset;
     }
@@ -262,7 +262,7 @@ test.describe("check if scroll jump compensation works", () => {
     let prev = initial;
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowLeft", { delay: 10 });
-      let offset = await scrollable.evaluate(
+      const offset = await scrollable.evaluate(
         (e) => e.scrollWidth - e.scrollLeft
       );
       await expect(offset).toBeGreaterThanOrEqual(prev);
