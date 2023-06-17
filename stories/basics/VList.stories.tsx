@@ -357,12 +357,10 @@ export const IncreasingItems: StoryObj = {
 };
 
 const UlList = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
-  ({ children, attrs, scrollSize }, ref) => {
+  ({ children, attrs, height }, ref) => {
     return (
       <div ref={ref} {...attrs}>
-        <ul style={{ position: "relative", height: scrollSize, margin: 0 }}>
-          {children}
-        </ul>
+        <ul style={{ position: "relative", height, margin: 0 }}>{children}</ul>
       </div>
     );
   }

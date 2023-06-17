@@ -21,7 +21,7 @@ const RefreshContext = createContext(async () => {});
 const listStyle = { width: 400, height: 600 };
 
 const Window = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
-  ({ children, attrs, scrollSize }, ref) => {
+  ({ children, attrs, height }, ref) => {
     const onRefresh = useContext(RefreshContext);
 
     return (
@@ -30,7 +30,7 @@ const Window = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
         style={{ ...listStyle, position: "relative", overflow: "hidden" }}
       >
         <div ref={ref} {...attrs}>
-          <div style={{ height: scrollSize }}>{children}</div>
+          <div style={{ height }}>{children}</div>
         </div>
       </PullToRefresh>
     );

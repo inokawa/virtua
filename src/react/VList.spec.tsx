@@ -1,6 +1,6 @@
 import { afterEach, it, expect, describe, jest } from "@jest/globals";
 import { render, cleanup, waitFor } from "@testing-library/react";
-import { CustomWindowComponentProps, VList, VListHandle } from "./VList";
+import { VList, VListHandle } from "./VList";
 import {
   Profiler,
   ReactElement,
@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { CustomWindowComponentProps } from "..";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -107,10 +108,10 @@ it("should pass attributes to element", async () => {
 
 it("should change components", async () => {
   const UlList = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
-    ({ children, attrs, scrollSize }, ref) => {
+    ({ children, attrs, height }, ref) => {
       return (
         <div ref={ref} {...attrs}>
-          <ul style={{ position: "relative", height: scrollSize, margin: 0 }}>
+          <ul style={{ position: "relative", height, margin: 0 }}>
             {children}
           </ul>
         </div>

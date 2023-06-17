@@ -4,8 +4,6 @@ export type {
   VListHandle,
   CustomItemComponent,
   CustomItemComponentProps,
-  CustomWindowComponent,
-  CustomWindowComponentProps,
   ScrollMode,
 } from "./react/VList";
 export { VGrid } from "./react/VGrid";
@@ -14,7 +12,9 @@ export type {
   VGridHandle,
   CustomCellComponent,
   CustomCellComponentProps,
-  CustomGridWindowComponent,
-  CustomGridWindowComponentProps,
 } from "./react/VGrid";
-export type { WindowComponentAttributes } from "./react/types";
+export type {
+  WindowComponentAttributes,
+  CustomWindowComponent,
+  CustomWindowComponentProps,
+} from "./react/DefaultWindow";
