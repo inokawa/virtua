@@ -23,6 +23,11 @@ import { useStatic } from "./useStatic";
 import { useRefWithUpdate } from "./useRefWithUpdate";
 import { Resizer, createResizer } from "../core/resizer";
 import { WindowComponentAttributes } from "..";
+import {
+  CustomWindowComponent,
+  CustomWindowComponentProps,
+  DefaultWindow,
+} from "./DefaultWindow";
 
 export type ScrollMode = "reverse" | "rtl";
 
@@ -84,44 +89,6 @@ const Item = memo(
   }
 );
 
-/**
- * Props of customized scrollable component for {@link VList}.
- */
-export interface CustomWindowComponentProps {
-  children: ReactNode;
-  scrollSize: number;
-  scrolling: boolean;
-  horizontal: boolean;
-  attrs: WindowComponentAttributes;
-}
-
-const DefaultWindow = forwardRef<any, CustomWindowComponentProps>(
-  (
-    { children, scrollSize, scrolling, horizontal, attrs },
-    ref
-  ): ReactElement => {
-    return (
-      <div ref={ref} {...attrs}>
-        <div
-          style={useMemo((): CSSProperties => {
-            return {
-              position: "relative",
-              visibility: "hidden",
-              width: horizontal ? scrollSize : "100%",
-              height: horizontal ? "100%" : scrollSize,
-              pointerEvents: scrolling ? "none" : "auto",
-            };
-          }, [scrollSize, scrolling])}
-        >
-          {children}
-        </div>
-      </div>
-    );
-  }
-);
-
-export type CustomWindowComponent = typeof DefaultWindow;
-
 const Window = ({
   _children: children,
   _ref: ref,
@@ -144,9 +111,9 @@ const Window = ({
   return (
     <Element
       ref={ref}
-      scrollSize={scrollSize}
+      width={horizontal ? scrollSize : undefined}
+      height={horizontal ? undefined : scrollSize}
       scrolling={scrolling}
-      horizontal={horizontal}
       attrs={useMemo(
         () => ({
           ...attrs,

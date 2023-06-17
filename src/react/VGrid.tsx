@@ -17,8 +17,13 @@ import { max, min } from "../core/utils";
 import { createScroller } from "../core/scroller";
 import { refKey } from "./utils";
 import { useStatic } from "./useStatic";
-import { WindowComponentAttributes } from "..";
+import {
+  CustomWindowComponent,
+  CustomWindowComponentProps,
+  WindowComponentAttributes,
+} from "..";
 import { createGridResizer, GridResizer } from "../core/resizer";
+import { DefaultWindow } from "./DefaultWindow";
 
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
@@ -123,44 +128,6 @@ const Cell = memo(
   }
 );
 
-/**
- * Props of customized scrollable component for {@link VGrid}.
- */
-export interface CustomGridWindowComponentProps {
-  children: ReactNode;
-  scrollWidth: number;
-  scrollHeight: number;
-  scrolling: boolean;
-  attrs: WindowComponentAttributes;
-}
-
-const DefaultWindow = forwardRef<any, CustomGridWindowComponentProps>(
-  (
-    { children, scrollWidth, scrollHeight, scrolling, attrs },
-    ref
-  ): ReactElement => {
-    return (
-      <div ref={ref} {...attrs}>
-        <div
-          style={useMemo((): CSSProperties => {
-            return {
-              position: "relative",
-              visibility: "hidden",
-              width: scrollWidth,
-              height: scrollHeight,
-              pointerEvents: scrolling ? "none" : "auto",
-            };
-          }, [scrollWidth, scrollHeight, scrolling])}
-        >
-          {children}
-        </div>
-      </div>
-    );
-  }
-);
-
-export type CustomGridWindowComponent = typeof DefaultWindow;
-
 const Window = ({
   _children: children,
   _ref: ref,
@@ -174,7 +141,7 @@ const Window = ({
   _ref: RefObject<HTMLDivElement>;
   _vStore: VirtualStore;
   _hStore: VirtualStore;
-  _element: CustomGridWindowComponent;
+  _element: CustomWindowComponent;
   _scrolling: boolean;
   _attrs: WindowComponentAttributes;
 }) => {
@@ -184,8 +151,8 @@ const Window = ({
   return (
     <Element
       ref={ref}
-      scrollWidth={width}
-      scrollHeight={height}
+      width={width}
+      height={height}
       scrolling={scrolling}
       attrs={useMemo(
         () => ({
@@ -300,10 +267,10 @@ export interface VGridProps extends WindowComponentAttributes {
    */
   rtl?: boolean;
   /**
-   * Customized element type for scrollable element. This element will get {@link CustomGridWindowComponentProps} as props.
+   * Customized element type for scrollable element. This element will get {@link CustomWindowComponentProps} as props.
    * @defaultValue {@link DefaultWindow}
    */
-  element?: CustomGridWindowComponent;
+  element?: CustomWindowComponent;
   /**
    * Customized element type for cell element. This element will get {@link CustomCellComponentProps} as props.
    * @defaultValue "div"
