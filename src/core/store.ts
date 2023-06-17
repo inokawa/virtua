@@ -177,12 +177,11 @@ export const createVirtualStore = (
               return false;
             }
 
-            const updatedJump: ItemJump[] = [];
+            jump = [];
             updated.forEach(([index, size]) => {
-              updatedJump.push([size - getItemSize(cache, index), index]);
+              jump.push([size - getItemSize(cache, index), index]);
               setItemSize(cache as Writeable<Cache>, index, size);
             });
-            jump = updatedJump;
             shouldSync = true;
             return true;
           }
