@@ -21,6 +21,10 @@ export interface CustomWindowComponentProps {
    */
   children: ReactNode;
   /**
+   * Attributes that should be passed to the scrollable element.
+   */
+  attrs: WindowComponentAttributes;
+  /**
    * Total height of items. It's undefined if component is not vertically scrollable.
    */
   height: number | undefined;
@@ -32,14 +36,10 @@ export interface CustomWindowComponentProps {
    * Currently component is scrolling or not.
    */
   scrolling: boolean;
-  /**
-   * Attributes that should be passed to the scrollable element.
-   */
-  attrs: WindowComponentAttributes;
 }
 
 export const DefaultWindow = forwardRef<any, CustomWindowComponentProps>(
-  ({ children, width, height, scrolling, attrs }, ref): ReactElement => {
+  ({ children, attrs, width, height, scrolling }, ref): ReactElement => {
     return (
       <div ref={ref} {...attrs}>
         <div
