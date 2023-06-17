@@ -8,6 +8,7 @@ import {
   ReactNode,
   RefObject,
   useState,
+  useImperativeHandle,
 } from "react";
 import { VirtualStore, createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
@@ -213,7 +214,38 @@ const Window = ({
 /**
  * Methods of {@link VGrid}.
  */
-export interface VGridHandle {}
+export interface VGridHandle {
+  /**
+   * Get current scrollTop or scrollLeft.
+   */
+  readonly scrollOffset: [x: number, y: number];
+  /**
+   * Get current scrollHeight or scrollWidth.
+   */
+  readonly scrollSize: [width: number, height: number];
+  /**
+   * Get current offsetHeight or offsetWidth.
+   */
+  readonly viewportSize: [width: number, height: number];
+  /**
+   * Scroll to the item specified by index.
+   * @param indexX horizontal index of item
+   * @param indexY vertical index of item
+   */
+  scrollToIndex(indexX: number, indexY: number): void;
+  /**
+   * Scroll to the given offset.
+   * @param offsetX offset from left
+   * @param offsetY offset from top
+   */
+  scrollTo(offsetX: number, offsetY: number): void;
+  /**
+   * Scroll by the given offset.
+   * @param offsetX horizontal offset from current position
+   * @param offsetY vertical offset from current position
+   */
+  scrollBy(offsetX: number, offsetY: number): void;
+}
 
 /**
  * Props of {@link VGrid}.
@@ -298,7 +330,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       cellElement: itemElement = "div",
       ...windowAttrs
     },
-    _ref // TODO implement
+    ref
   ): ReactElement => {
     const [verticalScrolling, setVerticalScrolling] = useState(false);
     const [horizontalScrolling, setHorizontalScrolling] = useState(false);
@@ -365,6 +397,39 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         hScroller._fixScrollJump(horizontalJump, startColIndex);
       }
     }, [horizontalJump]);
+
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          get scrollOffset(): [number, number] {
+            return [hStore._getScrollOffset(), vStore._getScrollOffset()];
+          },
+          get scrollSize(): [number, number] {
+            return [
+              hScroller._getActualScrollSize(),
+              vScroller._getActualScrollSize(),
+            ];
+          },
+          get viewportSize(): [number, number] {
+            return [hStore._getViewportSize(), vStore._getViewportSize()];
+          },
+          scrollToIndex(indexX, indexY) {
+            hScroller._scrollToIndex(indexX, colCount);
+            vScroller._scrollToIndex(indexY, rowCount);
+          },
+          scrollTo(offsetX, offsetY) {
+            hScroller._scrollTo(offsetX);
+            vScroller._scrollTo(offsetY);
+          },
+          scrollBy(offsetX, offsetY) {
+            hScroller._scrollTo(hStore._getScrollOffset() + offsetX);
+            vScroller._scrollTo(vStore._getScrollOffset() + offsetY);
+          },
+        };
+      },
+      [rowCount, colCount]
+    );
 
     const render = useMemo(() => {
       const cache = new Map<string, ReactNode>();

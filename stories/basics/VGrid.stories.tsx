@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
-import React from "react";
-import { VGrid } from "../../src";
+import React, { useRef, useState } from "react";
+import { VGrid, VGridHandle } from "../../src";
 
 export default {
   component: VGrid,
@@ -124,6 +124,109 @@ export const Rtl: StoryObj = {
           </div>
         )}
       </VGrid>
+    );
+  },
+};
+
+export const ScrollTo: StoryObj = {
+  render: () => {
+    const ROW_LENGTH = 1000;
+    const COL_LENGTH = 1000;
+    const [scrollIndex, setScrollIndex] = useState<[number, number]>([
+      567, 567,
+    ]);
+    const [scrollOffset, setScrollOffset] = useState<[number, number]>([
+      1000, 1000,
+    ]);
+    const ref = useRef<VGridHandle>(null);
+    return (
+      <div
+        style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+      >
+        <div>
+          <input
+            type="number"
+            value={scrollIndex[0]}
+            onChange={(e) => {
+              setScrollIndex((prev) => [Number(e.target.value), prev[1]]);
+            }}
+          />
+          <input
+            type="number"
+            value={scrollIndex[1]}
+            onChange={(e) => {
+              setScrollIndex((prev) => [prev[0], Number(e.target.value)]);
+            }}
+          />
+          <button
+            onClick={() => {
+              ref.current?.scrollToIndex(scrollIndex[0], scrollIndex[1]);
+            }}
+          >
+            scroll to index
+          </button>
+          <button
+            onClick={() => {
+              setScrollIndex([
+                Math.round(COL_LENGTH * Math.random()),
+                Math.round(ROW_LENGTH * Math.random()),
+              ]);
+            }}
+          >
+            randomize
+          </button>
+        </div>
+        <div>
+          <div>
+            <input
+              type="number"
+              value={scrollOffset[0]}
+              onChange={(e) => {
+                setScrollOffset((prev) => [Number(e.target.value), prev[1]]);
+              }}
+            />
+            <input
+              type="number"
+              value={scrollOffset[1]}
+              onChange={(e) => {
+                setScrollOffset((prev) => [prev[0], Number(e.target.value)]);
+              }}
+            />
+            <button
+              onClick={() => {
+                ref.current?.scrollTo(scrollOffset[0], scrollOffset[1]);
+              }}
+            >
+              scroll to offset
+            </button>
+            <button
+              onClick={() => {
+                ref.current?.scrollBy(scrollOffset[0], scrollOffset[1]);
+              }}
+            >
+              scroll by offset
+            </button>
+          </div>
+        </div>
+        <VGrid
+          ref={ref}
+          style={{ height: "100vh" }}
+          row={ROW_LENGTH}
+          col={COL_LENGTH}
+        >
+          {({ rowIndex, colIndex }) => (
+            <div
+              style={{
+                border: "solid 1px gray",
+                background: "white",
+                padding: 4,
+              }}
+            >
+              {rowIndex} / {colIndex}
+            </div>
+          )}
+        </VGrid>
+      </div>
     );
   },
 };
