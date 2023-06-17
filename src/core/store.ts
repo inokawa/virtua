@@ -197,7 +197,7 @@ export const createVirtualStore = (
           case ACTION_MANUAL_SCROLL: {
             const prevOffset = scrollOffset;
             const updated = (scrollOffset = payload) !== prevOffset;
-            // Ignore manual scroll because it would be called in useEffect/useLayoutEffect and cause the warn below.
+            // Ignore manual scroll because it may be called in useEffect/useLayoutEffect and cause the warn below.
             // Warning: flushSync was called from inside a lifecycle method. React cannot flush when React is already rendering. Consider moving this call to a scheduler task or micro task.
             if (updated && type === ACTION_SCROLL) {
               // Update synchronously if scrolled a lot
