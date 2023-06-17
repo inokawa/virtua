@@ -130,8 +130,7 @@ export const Rtl: StoryObj = {
 
 export const ScrollTo: StoryObj = {
   render: () => {
-    const ROW_LENGTH = 1000;
-    const COL_LENGTH = 1000;
+    const LENGTH = 1000;
     const [scrollIndex, setScrollIndex] = useState<[number, number]>([
       567, 567,
     ]);
@@ -144,20 +143,26 @@ export const ScrollTo: StoryObj = {
         style={{ height: "100vh", display: "flex", flexDirection: "column" }}
       >
         <div>
-          <input
-            type="number"
-            value={scrollIndex[0]}
-            onChange={(e) => {
-              setScrollIndex((prev) => [Number(e.target.value), prev[1]]);
-            }}
-          />
-          <input
-            type="number"
-            value={scrollIndex[1]}
-            onChange={(e) => {
-              setScrollIndex((prev) => [prev[0], Number(e.target.value)]);
-            }}
-          />
+          <label>
+            col
+            <input
+              type="number"
+              value={scrollIndex[0]}
+              onChange={(e) => {
+                setScrollIndex((prev) => [Number(e.target.value), prev[1]]);
+              }}
+            />
+          </label>
+          <label>
+            row
+            <input
+              type="number"
+              value={scrollIndex[1]}
+              onChange={(e) => {
+                setScrollIndex((prev) => [prev[0], Number(e.target.value)]);
+              }}
+            />
+          </label>
           <button
             onClick={() => {
               ref.current?.scrollToIndex(scrollIndex[0], scrollIndex[1]);
@@ -168,8 +173,8 @@ export const ScrollTo: StoryObj = {
           <button
             onClick={() => {
               setScrollIndex([
-                Math.round(COL_LENGTH * Math.random()),
-                Math.round(ROW_LENGTH * Math.random()),
+                Math.round(LENGTH * Math.random()),
+                Math.round(LENGTH * Math.random()),
               ]);
             }}
           >
@@ -178,20 +183,26 @@ export const ScrollTo: StoryObj = {
         </div>
         <div>
           <div>
-            <input
-              type="number"
-              value={scrollOffset[0]}
-              onChange={(e) => {
-                setScrollOffset((prev) => [Number(e.target.value), prev[1]]);
-              }}
-            />
-            <input
-              type="number"
-              value={scrollOffset[1]}
-              onChange={(e) => {
-                setScrollOffset((prev) => [prev[0], Number(e.target.value)]);
-              }}
-            />
+            <label>
+              x
+              <input
+                type="number"
+                value={scrollOffset[0]}
+                onChange={(e) => {
+                  setScrollOffset((prev) => [Number(e.target.value), prev[1]]);
+                }}
+              />
+            </label>
+            <label>
+              y
+              <input
+                type="number"
+                value={scrollOffset[1]}
+                onChange={(e) => {
+                  setScrollOffset((prev) => [prev[0], Number(e.target.value)]);
+                }}
+              />
+            </label>
             <button
               onClick={() => {
                 ref.current?.scrollTo(scrollOffset[0], scrollOffset[1]);
@@ -208,18 +219,15 @@ export const ScrollTo: StoryObj = {
             </button>
           </div>
         </div>
-        <VGrid
-          ref={ref}
-          style={{ height: "100vh" }}
-          row={ROW_LENGTH}
-          col={COL_LENGTH}
-        >
+        <VGrid ref={ref} style={{ height: "100vh" }} row={LENGTH} col={LENGTH}>
           {({ rowIndex, colIndex }) => (
             <div
               style={{
                 border: "solid 1px gray",
                 background: "white",
                 padding: 4,
+                width: 160,
+                height: 80,
               }}
             >
               {rowIndex} / {colIndex}
