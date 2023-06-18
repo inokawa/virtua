@@ -12,19 +12,18 @@
 - [VListProps](interfaces/VListProps.md)
 - [VListHandle](interfaces/VListHandle.md)
 - [CustomItemComponentProps](interfaces/CustomItemComponentProps.md)
-- [CustomWindowComponentProps](interfaces/CustomWindowComponentProps.md)
 - [VGridProps](interfaces/VGridProps.md)
 - [VGridHandle](interfaces/VGridHandle.md)
 - [CustomCellComponentProps](interfaces/CustomCellComponentProps.md)
-- [CustomGridWindowComponentProps](interfaces/CustomGridWindowComponentProps.md)
+- [CustomWindowComponentProps](interfaces/CustomWindowComponentProps.md)
 
 ### Type Aliases
 
 - [CustomItemComponent](API.md#customitemcomponent)
-- [CustomWindowComponent](API.md#customwindowcomponent)
+- [ScrollMode](API.md#scrollmode)
 - [CustomCellComponent](API.md#customcellcomponent)
-- [CustomGridWindowComponent](API.md#customgridwindowcomponent)
 - [WindowComponentAttributes](API.md#windowcomponentattributes)
+- [CustomWindowComponent](API.md#customwindowcomponent)
 
 ## Functions
 
@@ -78,17 +77,17 @@ node_modules/@types/react/index.d.ts:383
 
 #### Defined in
 
-[src/react/VList.tsx:184](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L184)
+[src/react/VList.tsx:151](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VList.tsx#L151)
 
 ___
 
-### CustomWindowComponent
+### ScrollMode
 
-Ƭ **CustomWindowComponent**: typeof `DefaultWindow`
+Ƭ **ScrollMode**: ``"reverse"`` \| ``"rtl"``
 
 #### Defined in
 
-[src/react/VList.tsx:122](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L122)
+[src/react/VList.tsx:32](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VList.tsx#L32)
 
 ___
 
@@ -98,17 +97,7 @@ ___
 
 #### Defined in
 
-[src/react/VGrid.tsx:32](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VGrid.tsx#L32)
-
-___
-
-### CustomGridWindowComponent
-
-Ƭ **CustomGridWindowComponent**: typeof `DefaultWindow`
-
-#### Defined in
-
-[src/react/VGrid.tsx:147](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VGrid.tsx#L147)
+[src/react/VGrid.tsx:38](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VGrid.tsx#L38)
 
 ___
 
@@ -118,4 +107,14 @@ ___
 
 #### Defined in
 
-[src/react/types.ts:1](https://github.com/inokawa/virtua/blob/c2090fa/src/react/types.ts#L1)
+[src/react/DefaultWindow.tsx:9](https://github.com/inokawa/virtua/blob/3512cbe/src/react/DefaultWindow.tsx#L9)
+
+___
+
+### CustomWindowComponent
+
+Ƭ **CustomWindowComponent**: typeof `DefaultWindow`
+
+#### Defined in
+
+[src/react/DefaultWindow.tsx:63](https://github.com/inokawa/virtua/blob/3512cbe/src/react/DefaultWindow.tsx#L63)

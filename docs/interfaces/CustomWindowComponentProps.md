@@ -1,16 +1,16 @@
 # Interface: CustomWindowComponentProps
 
-Props of customized scrollable component for [VList](../API.md#vlist).
+Props of customized scrollable component.
 
 ## Table of contents
 
 ### Properties
 
 - [children](CustomWindowComponentProps.md#children)
-- [scrollSize](CustomWindowComponentProps.md#scrollsize)
-- [scrolling](CustomWindowComponentProps.md#scrolling)
-- [horizontal](CustomWindowComponentProps.md#horizontal)
 - [attrs](CustomWindowComponentProps.md#attrs)
+- [height](CustomWindowComponentProps.md#height)
+- [width](CustomWindowComponentProps.md#width)
+- [scrolling](CustomWindowComponentProps.md#scrolling)
 
 ## Properties
 
@@ -18,39 +18,11 @@ Props of customized scrollable component for [VList](../API.md#vlist).
 
 • **children**: `ReactNode`
 
-#### Defined in
-
-[src/react/VList.tsx:90](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L90)
-
-___
-
-### scrollSize
-
-• **scrollSize**: `number`
+Renderable item elements.
 
 #### Defined in
 
-[src/react/VList.tsx:91](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L91)
-
-___
-
-### scrolling
-
-• **scrolling**: `boolean`
-
-#### Defined in
-
-[src/react/VList.tsx:92](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L92)
-
-___
-
-### horizontal
-
-• **horizontal**: `boolean`
-
-#### Defined in
-
-[src/react/VList.tsx:93](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L93)
+[src/react/DefaultWindow.tsx:22](https://github.com/inokawa/virtua/blob/3512cbe/src/react/DefaultWindow.tsx#L22)
 
 ___
 
@@ -58,6 +30,44 @@ ___
 
 • **attrs**: [`WindowComponentAttributes`](../API.md#windowcomponentattributes)
 
+Attributes that should be passed to the scrollable element.
+
 #### Defined in
 
-[src/react/VList.tsx:94](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L94)
+[src/react/DefaultWindow.tsx:26](https://github.com/inokawa/virtua/blob/3512cbe/src/react/DefaultWindow.tsx#L26)
+
+___
+
+### height
+
+• **height**: `undefined` \| `number`
+
+Total height of items. It's undefined if component is not vertically scrollable.
+
+#### Defined in
+
+[src/react/DefaultWindow.tsx:30](https://github.com/inokawa/virtua/blob/3512cbe/src/react/DefaultWindow.tsx#L30)
+
+___
+
+### width
+
+• **width**: `undefined` \| `number`
+
+Total width of items. It's undefined if component is not horizontally scrollable.
+
+#### Defined in
+
+[src/react/DefaultWindow.tsx:34](https://github.com/inokawa/virtua/blob/3512cbe/src/react/DefaultWindow.tsx#L34)
+
+___
+
+### scrolling
+
+• **scrolling**: `boolean`
+
+Currently component is scrolling or not.
+
+#### Defined in
+
+[src/react/DefaultWindow.tsx:38](https://github.com/inokawa/virtua/blob/3512cbe/src/react/DefaultWindow.tsx#L38)

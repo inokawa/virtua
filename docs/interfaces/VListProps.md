@@ -17,7 +17,7 @@ Props of [VList](../API.md#vlist).
 - [overscan](VListProps.md#overscan)
 - [initialItemCount](VListProps.md#initialitemcount)
 - [horizontal](VListProps.md#horizontal)
-- [rtl](VListProps.md#rtl)
+- [mode](VListProps.md#mode)
 - [element](VListProps.md#element)
 - [itemElement](VListProps.md#itemelement)
 - [onScroll](VListProps.md#onscroll)
@@ -87,7 +87,7 @@ Elements rendered by this component.
 
 #### Defined in
 
-[src/react/VList.tsx:232](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L232)
+[src/react/VList.tsx:199](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VList.tsx#L199)
 
 ___
 
@@ -103,7 +103,7 @@ Item size hint for unmeasured items. It's recommended to specify this prop if it
 
 #### Defined in
 
-[src/react/VList.tsx:237](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L237)
+[src/react/VList.tsx:204](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VList.tsx#L204)
 
 ___
 
@@ -119,7 +119,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/react/VList.tsx:242](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L242)
+[src/react/VList.tsx:209](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VList.tsx#L209)
 
 ___
 
@@ -131,7 +131,7 @@ If set, the specified amount of items will be mounted in the initial rendering r
 
 #### Defined in
 
-[src/react/VList.tsx:246](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L246)
+[src/react/VList.tsx:213](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VList.tsx#L213)
 
 ___
 
@@ -143,19 +143,22 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/VList.tsx:250](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L250)
+[src/react/VList.tsx:217](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VList.tsx#L217)
 
 ___
 
-### rtl
+### mode
 
-• `Optional` **rtl**: `boolean`
+• `Optional` **mode**: [`ScrollMode`](../API.md#scrollmode)
 
-You have to set true if you use this component under `direction: rtl` style.
+Scroll modes that should be set in certain situations.
+
+- `reverse`: This mode will Adjust some styles to be suitable for bottom-to-top scrolling.
+- `rtl`: You have to set this mode if you use this component under `direction: rtl` style.
 
 #### Defined in
 
-[src/react/VList.tsx:254](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L254)
+[src/react/VList.tsx:224](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VList.tsx#L224)
 
 ___
 
@@ -171,7 +174,7 @@ DefaultWindow
 
 #### Defined in
 
-[src/react/VList.tsx:259](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L259)
+[src/react/VList.tsx:229](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VList.tsx#L229)
 
 ___
 
@@ -187,7 +190,7 @@ Customized element type for item element. This element will get [CustomItemCompo
 
 #### Defined in
 
-[src/react/VList.tsx:264](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L264)
+[src/react/VList.tsx:234](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VList.tsx#L234)
 
 ___
 
@@ -213,7 +216,7 @@ Callback invoked whenever scroll offset changes.
 
 #### Defined in
 
-[src/react/VList.tsx:269](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L269)
+[src/react/VList.tsx:239](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VList.tsx#L239)
 
 ___
 
@@ -233,7 +236,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/react/VList.tsx:273](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L273)
+[src/react/VList.tsx:243](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VList.tsx#L243)
 
 ___
 
@@ -262,7 +265,7 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/react/VList.tsx:277](https://github.com/inokawa/virtua/blob/c2090fa/src/react/VList.tsx#L277)
+[src/react/VList.tsx:247](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VList.tsx#L247)
 
 ___
 
