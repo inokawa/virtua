@@ -110,6 +110,30 @@ export const App = () => {
 };
 ```
 
+### React Server Components (RSC) support
+
+This library is marked as a Client Component. You can render RSC as children of VList.
+
+```tsx
+// page.tsx in App Router of Next.js
+import { VList } from "virtua";
+
+export default async () => {
+  return (
+    <div>
+      <div>This is Server Component</div>
+      <VList style={{ height: 300 }}>
+        {Array.from({ length: 1000 }).map((_, i) => (
+          <div key={i} style={{ border: "solid 1px gray", height: 80 }}>
+            {i}
+          </div>
+        ))}
+      </VList>
+    </div>
+  );
+};
+```
+
 And see [examples](./stories) for more usages.
 
 ## Documentation
@@ -138,6 +162,7 @@ WIP
 | Infinite scroll                                    | ✅                                                       | ✅                                                                | 🟠 (needs [react-window-infinite-loader](https://github.com/bvaughn/react-window-infinite-loader)) | 🟠 (needs [InfiniteLoader](https://github.com/bvaughn/react-virtualized/blob/master/docs/InfiniteLoader.md))                                                           | ✅                                                                        | ✅                                                                    |
 | RTL                                                | ✅                                                       | ❌                                                                | ✅                                                                                                 | ❌                                                                                                                                                                     | ❌                                                                        | ❌                                                                    |
 | SSR support                                        | ✅                                                       | ✅                                                                | ✅                                                                                                 | ✅                                                                                                                                                                     | ✅                                                                        | ✅                                                                    |
+| React Server Components (RSC) support              | ✅                                                       | ?                                                                 | ?                                                                                                  | ?                                                                                                                                                                      | ✅ (hook)                                                                 | ✅ (hook)                                                             |
 | Display exceeding browser's max element size limit | ❌                                                       | ❌                                                                | ❌                                                                                                 | ✅                                                                                                                                                                     | ❌                                                                        | ❌                                                                    |
 
 - ✅ - Built-in supported
