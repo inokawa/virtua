@@ -73,7 +73,8 @@
     "wait-on": "7.0.1"
   },
   "peerDependencies": {
-    "react": ">=16.14.0"
+    "react": ">=16.14.0",
+    "react-dom": ">=16.14.0"
   },
   "repository": {
     "type": "git",
