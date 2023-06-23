@@ -4,11 +4,10 @@ import {
   ACTION_MANUAL_SCROLL,
   ScrollJump,
   VirtualStore,
-  SCROLL_MANUAL,
   SCROLL_STOP,
-  SCROLL_UP,
-  SCROLL_DOWN,
   calcTotalJump,
+  ACTION_SCROLL_DIRECTION_CHANGE,
+  SCROLL_MANUAL,
 } from "./store";
 import { debounce, throttle, max, min } from "./utils";
 
@@ -52,7 +51,7 @@ export const createScroller = (
       rootElement[scrollToKey] += offset;
     } else {
       rootElement[scrollToKey] = offset;
-      store._setScrollDirection(SCROLL_MANUAL);
+      store._update(ACTION_SCROLL_DIRECTION_CHANGE, SCROLL_MANUAL);
     }
   };
   const scrollManually = async (
@@ -102,30 +101,13 @@ export const createScroller = (
         if (isHorizontal && isRtl) {
           offset = normalizeRtlOffset(offset);
         }
-        const prevOffset = store._getScrollOffset();
-        if (prevOffset === offset) {
-          return;
-        }
-        const scrollDirection = store._getScrollDirection();
-        // Skip scroll direction detection just after resizing because it may result in the opposite direction.
-        // Scroll events are dispatched enough so it's ok to skip some of them.
-        const resized = store._getIsJustResized();
-        if (
-          (scrollDirection === SCROLL_STOP || !resized) &&
-          // Ignore until manual scrolling
-          scrollDirection !== SCROLL_MANUAL
-        ) {
-          store._setScrollDirection(
-            prevOffset > offset ? SCROLL_UP : SCROLL_DOWN
-          );
-        }
         store._update(ACTION_SCROLL, offset);
       };
 
       const onScrollStopped = debounce(() => {
         // Check scroll position once just after scrolling stopped
         syncViewportToScrollPosition();
-        store._setScrollDirection(SCROLL_STOP);
+        store._update(ACTION_SCROLL_DIRECTION_CHANGE, SCROLL_STOP);
       }, 150);
 
       const onScroll = () => {

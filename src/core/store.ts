@@ -11,7 +11,7 @@ import {
   hasUnmeasuredItemsInRange,
 } from "./cache";
 import type { Writeable } from "./types";
-import { abs, max } from "./utils";
+import { abs, exists, max } from "./utils";
 
 type ItemJump = [sizeDiff: number, index: number];
 export type ScrollJump = Readonly<[jumps: ItemJump[], isManual: boolean]>;
@@ -35,12 +35,14 @@ export const ACTION_ITEM_RESIZE = 1;
 export const ACTION_WINDOW_RESIZE = 2;
 export const ACTION_SCROLL = 3;
 export const ACTION_MANUAL_SCROLL = 4;
+export const ACTION_SCROLL_DIRECTION_CHANGE = 5;
 
 type Actions =
   | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
   | [type: typeof ACTION_WINDOW_RESIZE, size: number]
   | [type: typeof ACTION_SCROLL, offset: number]
-  | [type: typeof ACTION_MANUAL_SCROLL, offset: number];
+  | [type: typeof ACTION_MANUAL_SCROLL, offset: number]
+  | [type: typeof ACTION_SCROLL_DIRECTION_CHANGE, direction: ScrollDirection];
 
 type Subscriber = (sync?: boolean) => void;
 
@@ -56,13 +58,11 @@ export type VirtualStore = {
   _getScrollableDomSize(): number;
   _getJumpCount(): number;
   _flushJump(): ScrollJump | undefined;
-  _getIsJustResized(): boolean;
   _getItemIndexForScrollTo(offset: number): number;
   _waitForScrollDestinationItemsMeasured(): Promise<void>;
   _subscribe(cb: Subscriber): () => void;
   _update(...action: Actions): void;
   _getScrollDirection(): ScrollDirection;
-  _setScrollDirection(direction: ScrollDirection): void;
   _updateCacheLength(length: number): void;
 };
 
@@ -79,7 +79,7 @@ export const createVirtualStore = (
   let jumpCount = 0;
   let jump: ScrollJump | undefined;
   let cache = resetCache(itemCount, itemSize);
-  let scrollDirection: ScrollDirection = SCROLL_STOP;
+  let _scrollDirection: ScrollDirection = SCROLL_STOP;
   let _resized = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
   let _scrollToQueue: [() => void, () => void] | undefined;
@@ -87,6 +87,24 @@ export const createVirtualStore = (
   const subscribers = new Set<Subscriber>();
   const getScrollSize = (): number =>
     computeTotalSize(cache as Writeable<Cache>);
+  const flushIsJustResized = (): boolean => {
+    const prev = _resized;
+    _resized = false;
+    return prev;
+  };
+  const updateScrollDirection = (dir: ScrollDirection): boolean | undefined => {
+    const prev = _scrollDirection;
+    _scrollDirection = dir;
+    if (_scrollDirection === SCROLL_STOP) {
+      return false;
+    } else if (
+      prev === SCROLL_STOP &&
+      (_scrollDirection === SCROLL_DOWN || _scrollDirection === SCROLL_UP)
+    ) {
+      return true;
+    }
+    return;
+  };
 
   return {
     _getRange() {
@@ -147,11 +165,6 @@ export const createVirtualStore = (
       jump = undefined;
       return prevJump;
     },
-    _getIsJustResized(): boolean {
-      const prev = _resized;
-      _resized = false;
-      return prev;
-    },
     _getItemIndexForScrollTo(offset) {
       return findStartIndexWithOffset(cache, offset, 0, 0);
     },
@@ -183,6 +196,7 @@ export const createVirtualStore = (
     },
     _update(type, payload) {
       let shouldSync: boolean | undefined;
+      let shouldNotifyScrollStateChange: boolean | undefined;
       const mutated = ((): boolean => {
         switch (type) {
           case ACTION_ITEM_RESIZE: {
@@ -200,10 +214,10 @@ export const createVirtualStore = (
               setItemSize(cache as Writeable<Cache>, index, size);
             });
             if (
-              scrollDirection === SCROLL_MANUAL ||
-              scrollDirection === SCROLL_UP
+              _scrollDirection === SCROLL_MANUAL ||
+              _scrollDirection === SCROLL_UP
             ) {
-              jump = [updatedJump, scrollDirection === SCROLL_MANUAL];
+              jump = [updatedJump, _scrollDirection === SCROLL_MANUAL];
               jumpCount++;
             } else {
               // Do nothing
@@ -219,15 +233,37 @@ export const createVirtualStore = (
           }
           case ACTION_SCROLL:
           case ACTION_MANUAL_SCROLL: {
-            const prevOffset = scrollOffset;
-            const updated = (scrollOffset = payload) !== prevOffset;
-            // Ignore manual scroll because it may be called in useEffect/useLayoutEffect and cause the warn below.
-            // Warning: flushSync was called from inside a lifecycle method. React cannot flush when React is already rendering. Consider moving this call to a scheduler task or micro task.
-            if (updated && type === ACTION_SCROLL) {
-              // Update synchronously if scrolled a lot
-              shouldSync = abs(prevOffset - payload) > viewportSize;
+            // Skip if offset is not changed
+            if (scrollOffset === payload) {
+              return false;
             }
-            return updated;
+            if (type === ACTION_SCROLL) {
+              // Skip scroll direction detection just after resizing because it may result in the opposite direction.
+              // Scroll events are dispatched enough so it's ok to skip some of them.
+              const isJustResized = flushIsJustResized();
+              if (
+                (_scrollDirection === SCROLL_STOP || !isJustResized) &&
+                // Ignore until manual scrolling
+                _scrollDirection !== SCROLL_MANUAL
+              ) {
+                shouldNotifyScrollStateChange = updateScrollDirection(
+                  scrollOffset > payload ? SCROLL_UP : SCROLL_DOWN
+                );
+              }
+
+              // Ignore manual scroll because it may be called in useEffect/useLayoutEffect and cause the warn below.
+              // Warning: flushSync was called from inside a lifecycle method. React cannot flush when React is already rendering. Consider moving this call to a scheduler task or micro task.
+              //
+              // Update synchronously if scrolled a lot
+              shouldSync = abs(scrollOffset - payload) > viewportSize;
+            }
+
+            scrollOffset = payload;
+            return true;
+          }
+          case ACTION_SCROLL_DIRECTION_CHANGE: {
+            shouldNotifyScrollStateChange = updateScrollDirection(payload);
+            return false;
           }
         }
       })();
@@ -243,21 +279,12 @@ export const createVirtualStore = (
           _scrollToQueue[0]();
         }
       }
+      if (exists(shouldNotifyScrollStateChange)) {
+        onScrollStateChange(shouldNotifyScrollStateChange);
+      }
     },
     _getScrollDirection() {
-      return scrollDirection;
-    },
-    _setScrollDirection(dir) {
-      const prev = scrollDirection;
-      scrollDirection = dir;
-      if (scrollDirection === SCROLL_STOP) {
-        onScrollStateChange(false);
-      } else if (
-        prev === SCROLL_STOP &&
-        (scrollDirection === SCROLL_DOWN || scrollDirection === SCROLL_UP)
-      ) {
-        onScrollStateChange(true);
-      }
+      return _scrollDirection;
     },
     _updateCacheLength(length) {
       // It's ok to be updated in render because states should be calculated consistently regardless cache length
