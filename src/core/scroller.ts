@@ -22,8 +22,7 @@ export type Scroller = {
 export const createScroller = (
   store: VirtualStore,
   isHorizontal: boolean,
-  isRtl: boolean,
-  isJustResized: () => boolean
+  isRtl: boolean
 ): Scroller => {
   let rootElement: HTMLElement | undefined;
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
@@ -112,7 +111,7 @@ export const createScroller = (
         const scrollDirection = store._getScrollDirection();
         // Skip scroll direction detection just after resizing because it may result in the opposite direction.
         // Scroll events are dispatched enough so it's ok to skip some of them.
-        const resized = isJustResized();
+        const resized = store._getIsJustResized();
         if (
           (scrollDirection === SCROLL_STOP || !resized) &&
           // Ignore until manual scrolling

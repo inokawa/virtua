@@ -52,6 +52,7 @@ export type VirtualStore = {
   _getScrollSize(): number;
   _getScrollableDomSize(): number;
   _getJump(): ScrollJump;
+  _getIsJustResized(): boolean;
   _getItemIndexForScrollTo(offset: number): number;
   _waitForScrollDestinationItemsMeasured(): Promise<void>;
   _subscribe(cb: Subscriber): () => void;
@@ -74,6 +75,7 @@ export const createVirtualStore = (
   let jump: ItemJump[] = [];
   let cache = resetCache(itemCount, itemSize);
   let scrollDirection: ScrollDirection = SCROLL_STOP;
+  let _resized = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
   let _scrollToQueue: [() => void, () => void] | undefined;
 
@@ -135,6 +137,11 @@ export const createVirtualStore = (
     _getJump() {
       return jump;
     },
+    _getIsJustResized(): boolean {
+      const prev = _resized;
+      _resized = false;
+      return prev;
+    },
     _getItemIndexForScrollTo(offset) {
       return findStartIndexWithOffset(cache, offset, 0, 0);
     },
@@ -182,6 +189,7 @@ export const createVirtualStore = (
               jump.push([size - getItemSize(cache, index), index]);
               setItemSize(cache as Writeable<Cache>, index, size);
             });
+            _resized = true;
             shouldSync = true;
             return true;
           }

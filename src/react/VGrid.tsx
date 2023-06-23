@@ -321,13 +321,12 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           setHorizontalScrolling,
           dummy
         );
-        const resizer = createGridResizer(_vs, _hs);
         return [
           _vs,
           _hs,
-          resizer,
-          createScroller(_vs, false, _isRtl, resizer._isJustResized),
-          createScroller(_hs, true, _isRtl, () => resizer._isJustResized(true)),
+          createGridResizer(_vs, _hs),
+          createScroller(_vs, false, _isRtl),
+          createScroller(_hs, true, _isRtl),
           _isRtl,
         ];
       }
