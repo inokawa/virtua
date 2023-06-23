@@ -189,9 +189,7 @@ export const createVirtualStore = (
               jump.push([size - getItemSize(cache, index), index]);
               setItemSize(cache as Writeable<Cache>, index, size);
             });
-            _resized = true;
-            shouldSync = true;
-            return true;
+            return (_resized = shouldSync = true);
           }
           case ACTION_WINDOW_RESIZE: {
             if (viewportSize === payload) {
