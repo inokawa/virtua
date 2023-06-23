@@ -196,7 +196,7 @@ export const createVirtualStore = (
     },
     _update(type, payload) {
       let shouldSync: boolean | undefined;
-      let shouldNotifyScrollStateChange: boolean | undefined;
+      let updatedScrollState: boolean | undefined;
       const mutated = ((): boolean => {
         switch (type) {
           case ACTION_ITEM_RESIZE: {
@@ -237,6 +237,7 @@ export const createVirtualStore = (
             if (scrollOffset === payload) {
               return false;
             }
+
             if (type === ACTION_SCROLL) {
               // Skip scroll direction detection just after resizing because it may result in the opposite direction.
               // Scroll events are dispatched enough so it's ok to skip some of them.
@@ -246,7 +247,7 @@ export const createVirtualStore = (
                 // Ignore until manual scrolling
                 _scrollDirection !== SCROLL_MANUAL
               ) {
-                shouldNotifyScrollStateChange = updateScrollDirection(
+                updatedScrollState = updateScrollDirection(
                   scrollOffset > payload ? SCROLL_UP : SCROLL_DOWN
                 );
               }
@@ -262,7 +263,7 @@ export const createVirtualStore = (
             return true;
           }
           case ACTION_SCROLL_DIRECTION_CHANGE: {
-            shouldNotifyScrollStateChange = updateScrollDirection(payload);
+            updatedScrollState = updateScrollDirection(payload);
             return false;
           }
         }
@@ -279,8 +280,8 @@ export const createVirtualStore = (
           _scrollToQueue[0]();
         }
       }
-      if (exists(shouldNotifyScrollStateChange)) {
-        onScrollStateChange(shouldNotifyScrollStateChange);
+      if (exists(updatedScrollState)) {
+        onScrollStateChange(updatedScrollState);
       }
     },
     _getScrollDirection() {
