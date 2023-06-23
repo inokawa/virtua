@@ -337,8 +337,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
 
     const [startRowIndex, endRowIndex] = useStore(vStore, vStore._getRange);
     const [startColIndex, endColIndex] = useStore(hStore, hStore._getRange);
-    const verticalJump = useStore(vStore, vStore._getJump);
-    const horizontalJump = useStore(hStore, hStore._getJump);
+    const vJumpCount = useStore(vStore, vStore._getJumpCount);
+    const hJumpCount = useStore(hStore, hStore._getJumpCount);
     const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {
@@ -354,15 +354,17 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     }, []);
 
     useIsomorphicLayoutEffect(() => {
-      if (verticalJump.length) {
-        vScroller._fixScrollJump(verticalJump, startRowIndex);
-      }
-    }, [verticalJump]);
+      const jump = vStore._flushJump();
+      if (!jump) return;
+
+      vScroller._fixScrollJump(jump, startRowIndex);
+    }, [vJumpCount]);
     useIsomorphicLayoutEffect(() => {
-      if (horizontalJump.length) {
-        hScroller._fixScrollJump(horizontalJump, startColIndex);
-      }
-    }, [horizontalJump]);
+      const jump = hStore._flushJump();
+      if (!jump) return;
+
+      hScroller._fixScrollJump(jump, startColIndex);
+    }, [hJumpCount]);
 
     useImperativeHandle(
       ref,
