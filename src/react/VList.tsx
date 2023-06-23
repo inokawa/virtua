@@ -329,7 +329,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
     store._updateCacheLength(count);
 
     const [startIndex, endIndex] = useStore(store, store._getRange);
-    const jump = useStore(store, store._getJump);
+    const jumpCount = useStore(store, store._getJumpCount);
     const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {
@@ -343,10 +343,11 @@ export const VList = forwardRef<VListHandle, VListProps>(
     }, []);
 
     useIsomorphicLayoutEffect(() => {
-      if (!jump.length) return;
+      const jump = store._flushJump();
+      if (!jump) return;
 
       scroller._fixScrollJump(jump, startIndex);
-    }, [jump]);
+    }, [jumpCount]);
 
     useEffect(() => {
       if (!onRangeChangeProp) return;

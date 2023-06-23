@@ -17,9 +17,11 @@ export const getFirstItem = (
   return scrollable.evaluate((s) => {
     const rect = s.getBoundingClientRect();
     const el = document.elementFromPoint(rect.left + 1, rect.top + 1)!;
+    const elRect = el.getBoundingClientRect();
     return {
       text: el.textContent!,
-      top: el.getBoundingClientRect().top - rect.top,
+      top: elRect.top - rect.top,
+      left: elRect.left - rect.left,
     };
   });
 };

@@ -14,9 +14,12 @@ import type { Writeable } from "./types";
 import { abs, max } from "./utils";
 
 type ItemJump = [sizeDiff: number, index: number];
-export type ScrollJump = Readonly<ItemJump[]>;
+export type ScrollJump = Readonly<[jumps: ItemJump[], isManual: boolean]>;
 export type ItemResize = [index: number, size: number];
 type ItemsRange = [startIndex: number, endIndex: number];
+
+export const calcTotalJump = (jump: ItemJump[]): number =>
+  jump.reduce((acc, [j]) => acc + j, 0);
 
 export const SCROLL_STOP = 0;
 export const SCROLL_DOWN = 1;
@@ -51,7 +54,8 @@ export type VirtualStore = {
   _getViewportSize(): number;
   _getScrollSize(): number;
   _getScrollableDomSize(): number;
-  _getJump(): ScrollJump;
+  _getJumpCount(): number;
+  _flushJump(): ScrollJump | undefined;
   _getIsJustResized(): boolean;
   _getItemIndexForScrollTo(offset: number): number;
   _waitForScrollDestinationItemsMeasured(): Promise<void>;
@@ -72,7 +76,8 @@ export const createVirtualStore = (
 ): VirtualStore => {
   let viewportSize = itemSize * max(initialItemCount - 1, 0);
   let scrollOffset = 0;
-  let jump: ItemJump[] = [];
+  let jumpCount = 0;
+  let jump: ScrollJump | undefined;
   let cache = resetCache(itemCount, itemSize);
   let scrollDirection: ScrollDirection = SCROLL_STOP;
   let _resized = false;
@@ -134,8 +139,13 @@ export const createVirtualStore = (
     _getScrollableDomSize() {
       return max(getScrollSize(), viewportSize);
     },
-    _getJump() {
-      return jump;
+    _getJumpCount() {
+      return jumpCount;
+    },
+    _flushJump() {
+      const prevJump = jump;
+      jump = undefined;
+      return prevJump;
     },
     _getIsJustResized(): boolean {
       const prev = _resized;
@@ -184,11 +194,20 @@ export const createVirtualStore = (
               return false;
             }
 
-            jump = [];
+            const updatedJump: ItemJump[] = [];
             updated.forEach(([index, size]) => {
-              jump.push([size - getItemSize(cache, index), index]);
+              updatedJump.push([size - getItemSize(cache, index), index]);
               setItemSize(cache as Writeable<Cache>, index, size);
             });
+            if (
+              scrollDirection === SCROLL_MANUAL ||
+              scrollDirection === SCROLL_UP
+            ) {
+              jump = [updatedJump, scrollDirection === SCROLL_MANUAL];
+              jumpCount++;
+            } else {
+              // Do nothing
+            }
             return (_resized = shouldSync = true);
           }
           case ACTION_WINDOW_RESIZE: {

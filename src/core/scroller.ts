@@ -8,6 +8,7 @@ import {
   SCROLL_STOP,
   SCROLL_UP,
   SCROLL_DOWN,
+  calcTotalJump,
 } from "./store";
 import { debounce, throttle, max, min } from "./utils";
 
@@ -91,9 +92,6 @@ export const createScroller = (
       store._update(ACTION_MANUAL_SCROLL, offset);
     }
   };
-
-  const calcTotalJump = (jump: ScrollJump): number =>
-    jump.reduce((acc, [j]) => acc + j, 0);
 
   return {
     _initRoot(root) {
@@ -180,15 +178,9 @@ export const createScroller = (
 
       scrollManually(index, () => store._getItemOffset(index));
     },
-    _fixScrollJump: (jump, startIndex) => {
-      const scrollDirection = store._getScrollDirection();
+    _fixScrollJump: ([jump, isManual], startIndex) => {
       // Compensate scroll jump
-      if (scrollDirection === SCROLL_UP) {
-        const diff = calcTotalJump(jump);
-        if (diff) {
-          scrollTo(diff, true);
-        }
-      } else if (scrollDirection === SCROLL_MANUAL) {
+      if (isManual) {
         const offset = store._getScrollOffset();
         if (offset === 0) {
           // Do nothing to stick to the start
@@ -217,7 +209,10 @@ export const createScroller = (
           }
         }
       } else {
-        // NOP
+        const diff = calcTotalJump(jump);
+        if (diff) {
+          scrollTo(diff, true);
+        }
       }
     },
   };
