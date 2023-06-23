@@ -194,80 +194,80 @@ export const createVirtualStore = (
         subscribers.delete(cb);
       };
     },
-    _update(type, payload) {
+    _update(type, payload): void {
       let shouldSync: boolean | undefined;
       let updatedScrollState: boolean | undefined;
-      const mutated = ((): boolean => {
-        switch (type) {
-          case ACTION_ITEM_RESIZE: {
-            const updated = payload.filter(
-              ([index, size]) => cache._sizes[index] !== size
-            );
-            // Skip if all items are cached and not updated
-            if (!updated.length) {
-              return false;
-            }
+      let mutated = false;
 
-            const updatedJump: ItemJump[] = [];
-            updated.forEach(([index, size]) => {
-              updatedJump.push([size - getItemSize(cache, index), index]);
-              setItemSize(cache as Writeable<Cache>, index, size);
-            });
-            if (
-              _scrollDirection === SCROLL_MANUAL ||
-              _scrollDirection === SCROLL_UP
-            ) {
-              jump = [updatedJump, _scrollDirection === SCROLL_MANUAL];
-              jumpCount++;
-            } else {
-              // Do nothing
-            }
-            return (_resized = shouldSync = true);
+      switch (type) {
+        case ACTION_ITEM_RESIZE: {
+          const updated = payload.filter(
+            ([index, size]) => cache._sizes[index] !== size
+          );
+          // Skip if all items are cached and not updated
+          if (!updated.length) {
+            break;
           }
-          case ACTION_WINDOW_RESIZE: {
-            if (viewportSize === payload) {
-              return false;
-            }
-            viewportSize = payload;
-            return true;
-          }
-          case ACTION_SCROLL:
-          case ACTION_MANUAL_SCROLL: {
-            // Skip if offset is not changed
-            if (scrollOffset === payload) {
-              return false;
-            }
 
-            if (type === ACTION_SCROLL) {
-              // Skip scroll direction detection just after resizing because it may result in the opposite direction.
-              // Scroll events are dispatched enough so it's ok to skip some of them.
-              const isJustResized = flushIsJustResized();
-              if (
-                (_scrollDirection === SCROLL_STOP || !isJustResized) &&
-                // Ignore until manual scrolling
-                _scrollDirection !== SCROLL_MANUAL
-              ) {
-                updatedScrollState = updateScrollDirection(
-                  scrollOffset > payload ? SCROLL_UP : SCROLL_DOWN
-                );
-              }
-
-              // Ignore manual scroll because it may be called in useEffect/useLayoutEffect and cause the warn below.
-              // Warning: flushSync was called from inside a lifecycle method. React cannot flush when React is already rendering. Consider moving this call to a scheduler task or micro task.
-              //
-              // Update synchronously if scrolled a lot
-              shouldSync = abs(scrollOffset - payload) > viewportSize;
-            }
-
-            scrollOffset = payload;
-            return true;
+          const updatedJump: ItemJump[] = [];
+          updated.forEach(([index, size]) => {
+            updatedJump.push([size - getItemSize(cache, index), index]);
+            setItemSize(cache as Writeable<Cache>, index, size);
+          });
+          if (
+            _scrollDirection === SCROLL_MANUAL ||
+            _scrollDirection === SCROLL_UP
+          ) {
+            jump = [updatedJump, _scrollDirection === SCROLL_MANUAL];
+            jumpCount++;
+          } else {
+            // Do nothing
           }
-          case ACTION_SCROLL_DIRECTION_CHANGE: {
-            updatedScrollState = updateScrollDirection(payload);
-            return false;
-          }
+          _resized = shouldSync = mutated = true;
+          break;
         }
-      })();
+        case ACTION_WINDOW_RESIZE: {
+          mutated = viewportSize !== payload;
+          viewportSize = payload;
+          break;
+        }
+        case ACTION_SCROLL:
+        case ACTION_MANUAL_SCROLL: {
+          // Skip if offset is not changed
+          if (scrollOffset === payload) {
+            break;
+          }
+
+          if (type === ACTION_SCROLL) {
+            // Skip scroll direction detection just after resizing because it may result in the opposite direction.
+            // Scroll events are dispatched enough so it's ok to skip some of them.
+            const isJustResized = flushIsJustResized();
+            if (
+              (_scrollDirection === SCROLL_STOP || !isJustResized) &&
+              // Ignore until manual scrolling
+              _scrollDirection !== SCROLL_MANUAL
+            ) {
+              updatedScrollState = updateScrollDirection(
+                scrollOffset > payload ? SCROLL_UP : SCROLL_DOWN
+              );
+            }
+
+            // Ignore manual scroll because it may be called in useEffect/useLayoutEffect and cause the warn below.
+            // Warning: flushSync was called from inside a lifecycle method. React cannot flush when React is already rendering. Consider moving this call to a scheduler task or micro task.
+            //
+            // Update synchronously if scrolled a lot
+            shouldSync = abs(scrollOffset - payload) > viewportSize;
+          }
+
+          scrollOffset = payload;
+          mutated = true;
+          break;
+        }
+        case ACTION_SCROLL_DIRECTION_CHANGE: {
+          updatedScrollState = updateScrollDirection(payload);
+          break;
+        }
+      }
 
       if (mutated) {
         subscribers.forEach((cb) => {
