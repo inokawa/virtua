@@ -317,11 +317,10 @@ export const VList = forwardRef<VListHandle, VListProps>(
         }
       );
 
-      const _resizer = createResizer(_store, _isHorizontal);
       return [
         _store,
-        _resizer,
-        createScroller(_store, _isHorizontal, _isRtl, _resizer._isJustResized),
+        createResizer(_store, _isHorizontal),
+        createScroller(_store, _isHorizontal, _isRtl),
         _isHorizontal,
         _isRtl,
       ];

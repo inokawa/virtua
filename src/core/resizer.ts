@@ -7,7 +7,6 @@ import {
 import { exists, max, once } from "./utils";
 
 export const createResizer = (store: VirtualStore, isHorizontal: boolean) => {
-  let resized = false;
   let rootElement: HTMLElement | undefined;
   const sizeKey = isHorizontal ? "width" : "height";
   const mountedIndexes = new WeakMap<Element, number>();
@@ -30,7 +29,6 @@ export const createResizer = (store: VirtualStore, isHorizontal: boolean) => {
 
       if (resizes.length) {
         store._update(ACTION_ITEM_RESIZE, resizes);
-        resized = true;
       }
     });
   });
@@ -53,11 +51,6 @@ export const createResizer = (store: VirtualStore, isHorizontal: boolean) => {
         ro.unobserve(el);
       };
     },
-    _isJustResized(): boolean {
-      const prev = resized;
-      resized = false;
-      return prev;
-    },
   };
 };
 
@@ -67,8 +60,6 @@ export const createGridResizer = (
   vStore: VirtualStore,
   hStore: VirtualStore
 ) => {
-  let heightResized = false;
-  let widthResized = false;
   let rootElement: HTMLElement | undefined;
 
   const heightKey = "height";
@@ -145,7 +136,6 @@ export const createGridResizer = (
           }
         });
         vStore._update(ACTION_ITEM_RESIZE, heightResizes);
-        heightResized = true;
       }
       if (resizedCols.size) {
         const widthResizes: ItemResize[] = [];
@@ -162,7 +152,6 @@ export const createGridResizer = (
           }
         });
         hStore._update(ACTION_ITEM_RESIZE, widthResizes);
-        widthResized = true;
       }
     });
   });
@@ -186,15 +175,6 @@ export const createGridResizer = (
         mountedIndexes.delete(el);
         ro.unobserve(el);
       };
-    },
-    _isJustResized(horizontal?: boolean): boolean {
-      const prev = horizontal ? widthResized : heightResized;
-      if (horizontal) {
-        widthResized = false;
-      } else {
-        heightResized = false;
-      }
-      return prev;
     },
   };
 };
