@@ -122,7 +122,7 @@ export const Reverse: StoryObj = {
 export const Sticky: StoryObj = {
   render: () => {
     return (
-      <VList style={{ height: "100vh" }} itemSize={570}>
+      <VList style={{ height: "100vh" }}>
         {Array.from({ length: 100 }).map((_, i) => {
           return (
             <div

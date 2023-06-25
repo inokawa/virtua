@@ -9,6 +9,7 @@ import {
   UNCACHED,
   setItemSize,
   hasUnmeasuredItemsInRange,
+  estimateDefaultItemSize,
 } from "./cache";
 import type { Writeable } from "./types";
 import { abs, exists, max } from "./utils";
@@ -67,18 +68,20 @@ export type VirtualStore = {
 };
 
 export const createVirtualStore = (
-  itemCount: number,
-  itemSize: number,
+  elementsCount: number,
+  itemSize: number | undefined,
   initialItemCount: number = 0,
   isReverse: boolean,
   onScrollStateChange: (scrolling: boolean) => void,
   onScrollOffsetChange: (offset: number) => void
 ): VirtualStore => {
-  let viewportSize = itemSize * max(initialItemCount - 1, 0);
+  const shouldAutoEstimateItemSize = !itemSize;
+  const initialItemSize = itemSize || 40;
+  let viewportSize = initialItemSize * max(initialItemCount - 1, 0);
   let scrollOffset = 0;
   let jumpCount = 0;
   let jump: ScrollJump | undefined;
-  let cache = resetCache(itemCount, itemSize);
+  let cache = resetCache(elementsCount, initialItemSize);
   let _scrollDirection: ScrollDirection = SCROLL_STOP;
   let _resized = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
@@ -209,11 +212,26 @@ export const createVirtualStore = (
             break;
           }
 
+          let isNewItemMeasured = false;
+          // Calculate jump
           const updatedJump: ItemJump[] = [];
           updated.forEach(([index, size]) => {
             updatedJump.push([size - getItemSize(cache, index), index]);
-            setItemSize(cache as Writeable<Cache>, index, size);
+            if (setItemSize(cache as Writeable<Cache>, index, size)) {
+              isNewItemMeasured = true;
+            }
           });
+
+          if (
+            shouldAutoEstimateItemSize &&
+            isNewItemMeasured &&
+            // TODO support reverse scroll also
+            !scrollOffset
+          ) {
+            // Estimate initial item size from measured sizes
+            estimateDefaultItemSize(cache as Writeable<Cache>);
+          }
+
           if (
             _scrollDirection === SCROLL_MANUAL ||
             _scrollDirection === SCROLL_UP
@@ -290,7 +308,7 @@ export const createVirtualStore = (
     _updateCacheLength(length) {
       // It's ok to be updated in render because states should be calculated consistently regardless cache length
       if (cache._length === length) return;
-      cache = resetCache(length, itemSize, cache);
+      cache = resetCache(length, initialItemSize, cache);
     },
   };
 };

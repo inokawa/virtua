@@ -198,15 +198,17 @@ export interface VListProps extends WindowComponentAttributes {
    */
   children: ReactNode;
   /**
-   * Item size hint for unmeasured items. It's recommended to specify this prop if item sizes are fixed and known, or much larger than the defaultValue. It will help to reduce scroll jump when items are measured.
-   * @defaultValue 40
-   */
-  itemSize?: number;
-  /**
    * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
    */
   overscan?: number;
+  /**
+   * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
+   *
+   * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
+   * - If set, you can opt out estimation and use the value as initial item size.
+   */
+  initialItemSize?: number;
   /**
    * If set, the specified amount of items will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
    */
@@ -267,8 +269,8 @@ export const VList = forwardRef<VListHandle, VListProps>(
   (
     {
       children,
-      itemSize: itemSizeProp = 40,
       overscan = 4,
+      initialItemSize,
       initialItemCount,
       horizontal: horizontalProp,
       mode,
@@ -303,7 +305,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       const _isRtl = mode === "rtl";
       const _store = createVirtualStore(
         count,
-        itemSizeProp,
+        initialItemSize,
         initialItemCount,
         mode === "reverse",
         (isScrolling) => {

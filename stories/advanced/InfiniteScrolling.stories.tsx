@@ -115,7 +115,6 @@ export const InfiniteScrolling: StoryObj = {
         </div>
         <VList
           style={{ flex: 1 }}
-          itemSize={200}
           onRangeChange={async ({ start, end, count }) => {
             startTransition(() => {
               setRange([start, end]);

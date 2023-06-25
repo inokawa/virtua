@@ -8,6 +8,12 @@ export const exists = <T>(v: T): v is Exclude<T, null | undefined> => v != null;
 export const range = <T>(length: number, cb: (i: number) => T): T[] =>
   Array.from({ length }, (_, i) => cb(i));
 
+export const median = (arr: number[]): number => {
+  const s = [...arr].sort((a, b) => a - b);
+  const mid = (arr.length / 2) | 0;
+  return s.length % 2 === 0 ? (s[mid - 1]! + s[mid]!) / 2 : s[mid]!;
+};
+
 export const debounce = <T extends (...args: any[]) => void>(
   fn: T,
   ms: number
