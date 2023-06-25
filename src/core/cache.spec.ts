@@ -137,6 +137,38 @@ describe(setItemSize.name, () => {
       expect(cache._measuredOffsetIndex).toBe(4);
     });
   });
+
+  describe("should return measurement status", () => {
+    it("should return false if already measured", () => {
+      const filledSizes = range(10, () => 20);
+      const emptyOffsets = range(10, (i) => (i === 0 ? 0 : -1));
+      const cache: Writeable<Cache> = {
+        _length: filledSizes.length,
+        _sizes: filledSizes,
+        _measuredOffsetIndex: 0,
+        _offsets: emptyOffsets,
+        _defaultItemSize: 20,
+      };
+
+      const res = setItemSize(cache, 0, 123);
+      expect(res).toBe(false);
+    });
+
+    it("should return true if not measured", () => {
+      const filledSizes = range(10, () => -1);
+      const emptyOffsets = range(10, (i) => (i === 0 ? 0 : -1));
+      const cache: Writeable<Cache> = {
+        _length: filledSizes.length,
+        _sizes: filledSizes,
+        _measuredOffsetIndex: 0,
+        _offsets: emptyOffsets,
+        _defaultItemSize: 20,
+      };
+
+      const res = setItemSize(cache, 0, 123);
+      expect(res).toBe(true);
+    });
+  });
 });
 
 describe(computeTotalSize.name, () => {

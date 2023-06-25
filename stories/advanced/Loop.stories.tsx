@@ -45,7 +45,7 @@ export const Loop: StoryObj = {
         <VList
           ref={ref}
           style={{ flex: 1 }}
-          itemSize={200}
+          initialItemSize={200}
           onScroll={(offset) => {
             if (!ref.current) return;
 

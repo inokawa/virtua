@@ -1,5 +1,5 @@
 import type { DeepReadonly, Writeable } from "./types";
-import { exists, max, min, range } from "./utils";
+import { exists, max, median, min, range } from "./utils";
 
 export const UNCACHED = -1;
 
@@ -20,10 +20,12 @@ export const setItemSize = (
   cache: Writeable<Cache>,
   index: number,
   size: number
-) => {
+): boolean => {
+  const isInitialMeasurement = cache._sizes[index] === UNCACHED;
   cache._sizes[index] = size;
   // mark as dirty
   cache._measuredOffsetIndex = min(index, cache._measuredOffsetIndex);
+  return isInitialMeasurement;
 };
 
 const computeOffset = (
@@ -119,13 +121,25 @@ export const hasUnmeasuredItemsInRange = (
   return false;
 };
 
+export const estimateDefaultItemSize = (cache: Writeable<Cache>) => {
+  const measuredSizes = cache._sizes.filter((s) => s !== UNCACHED);
+  // This function will be called after measurement so measured size array must be longer than 0
+  const startItemSize = measuredSizes[0]!;
+
+  cache._defaultItemSize = measuredSizes.every((s) => s === startItemSize)
+    ? // Maybe a fixed size array
+      startItemSize
+    : // Maybe a variable size array
+      median(measuredSizes);
+};
+
 export const resetCache = (
   length: number,
   itemSize: number,
   cache?: Cache
 ): Cache => {
   return {
-    _defaultItemSize: itemSize,
+    _defaultItemSize: cache ? cache._defaultItemSize : itemSize,
     _length: length,
     _measuredOffsetIndex: cache
       ? min(cache._measuredOffsetIndex, length - 1)
