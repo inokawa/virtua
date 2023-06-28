@@ -181,11 +181,8 @@ export const createVirtualStore = (
       return new Promise((resolve, reject) => {
         _scrollToQueue = [
           () => {
-            // HACK: It should be resolved in the next microtask that is after React's render
-            Promise.resolve().then(() => {
-              resolve();
-              _scrollToQueue = undefined;
-            });
+            resolve();
+            _scrollToQueue = undefined;
           },
           reject,
         ];
