@@ -1,6 +1,8 @@
 import React, {
   Ref,
+  createContext,
   memo,
+  useContext,
   useEffect,
   useImperativeHandle,
   useMemo,
@@ -8,7 +10,10 @@ import React, {
 } from "react";
 import { ListHandle, TestComponent } from "./common";
 import AutoSizer from "react-virtualized/dist/es/AutoSizer";
-import { VariableSizeList as RWList } from "react-window";
+import {
+  ListChildComponentProps,
+  VariableSizeList as RWList,
+} from "react-window";
 
 const RWRow = ({
   index: i,
@@ -26,6 +31,20 @@ const RWRow = ({
     }
   }, []);
   return <Component ref={ref} index={i} />;
+};
+
+const Context = createContext<{
+  Component: TestComponent;
+  setHeight: (index: number, height: number) => void;
+}>(null!);
+
+const Item = ({ index: i, style }: ListChildComponentProps) => {
+  const { Component, setHeight } = useContext(Context);
+  return (
+    <div style={style} key={i}>
+      <RWRow index={i} setHeight={setHeight} Component={Component} />
+    </div>
+  );
 };
 
 export const ReactWindowList = memo(
@@ -55,23 +74,26 @@ export const ReactWindowList = memo(
     }));
 
     return (
-      <AutoSizer>
-        {({ width, height }) => (
-          <RWList
-            ref={ref}
-            width={width}
-            height={height}
-            itemCount={count}
-            itemSize={getHeight}
-          >
-            {({ index: i, style }) => (
-              <div style={style} key={i}>
-                <RWRow index={i} setHeight={setHeight} Component={Component} />
-              </div>
-            )}
-          </RWList>
+      <Context.Provider
+        value={useMemo(
+          () => ({ Component, setHeight }),
+          [Component, setHeight]
         )}
-      </AutoSizer>
+      >
+        <AutoSizer>
+          {({ width, height }) => (
+            <RWList
+              ref={ref}
+              width={width}
+              height={height}
+              itemCount={count}
+              itemSize={getHeight}
+            >
+              {Item}
+            </RWList>
+          )}
+        </AutoSizer>
+      </Context.Provider>
     );
   }
 );
