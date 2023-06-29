@@ -1,4 +1,4 @@
-import{j as e}from"./jsx-runtime-f8a6c6ea.js";import{I as T,D as U,H as l,S as y}from"./common-094fe0c6.js";import{R as r}from"./react-window-84088797.js";import"./index-5284b0bf.js";import"./AutoSizer-5485b04d.js";import"./possibleConstructorReturn-9a41764d.js";import"./assertThisInitialized-27d5fa6d.js";import"./getPrototypeOf-e4242ba0.js";import"./inheritsLoose-76ae461f.js";const f={component:r,decorators:[n=>e("div",{style:{height:"100vh"},children:e(n,{})})]},o={render:()=>e(r,{count:1e4,Component:T})},t={render:()=>e(r,{count:1e4,Component:U})},s={render:()=>e(r,{count:1e4,Component:l})},a={render:()=>e(r,{count:1e6,Component:y})};var c,m,i;o.parameters={...o.parameters,docs:{...(c=o.parameters)==null?void 0:c.docs,source:{originalSource:`{
+import{j as e}from"./jsx-runtime-f8a6c6ea.js";import{I as T,D as U,H as l,S as y}from"./common-094fe0c6.js";import{R as r}from"./react-window-e7b9246e.js";import"./index-5284b0bf.js";import"./AutoSizer-5485b04d.js";import"./possibleConstructorReturn-9a41764d.js";import"./assertThisInitialized-27d5fa6d.js";import"./getPrototypeOf-e4242ba0.js";import"./inheritsLoose-76ae461f.js";const f={component:r,decorators:[n=>e("div",{style:{height:"100vh"},children:e(n,{})})]},o={render:()=>e(r,{count:1e4,Component:T})},t={render:()=>e(r,{count:1e4,Component:U})},s={render:()=>e(r,{count:1e4,Component:l})},a={render:()=>e(r,{count:1e6,Component:y})};var c,m,i;o.parameters={...o.parameters,docs:{...(c=o.parameters)==null?void 0:c.docs,source:{originalSource:`{
   render: () => {
     const ROW_COUNT = 10000;
     return <ReactWindowList count={ROW_COUNT} Component={ItemWithRenderCount} />;
@@ -19,4 +19,4 @@ import{j as e}from"./jsx-runtime-f8a6c6ea.js";import{I as T,D as U,H as l,S as y
     return <ReactWindowList count={ROW_COUNT} Component={SimpleItem} />;
   }
 }`,...(N=(_=a.parameters)==null?void 0:_.docs)==null?void 0:N.source}}};const x=["RenderCount","DynamicHeight","HeavyComponent","OneMillion"];export{t as DynamicHeight,s as HeavyComponent,a as OneMillion,o as RenderCount,x as __namedExportsOrder,f as default};
-//# sourceMappingURL=react-window.stories-a4c7e1f1.js.map
+//# sourceMappingURL=react-window.stories-c05c0bb7.js.map
