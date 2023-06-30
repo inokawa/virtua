@@ -15,12 +15,17 @@ import type { Writeable } from "./types";
 import { abs, exists, max } from "./utils";
 
 type ItemJump = Readonly<[sizeDiff: number, index: number]>;
-export type ScrollJump = Readonly<[jumps: ItemJump[], isManual: boolean]>;
+export type ScrollJump = Readonly<number>;
 export type ItemResize = Readonly<[index: number, size: number]>;
 type ItemsRange = Readonly<[startIndex: number, endIndex: number]>;
 
-export const calcTotalJump = (jump: ItemJump[]): number =>
+const sumJumps = (jump: readonly ItemJump[]): number =>
   jump.reduce((acc, [j]) => acc + j, 0);
+const calculateJumps = (cache: Cache, items: ItemResize[]): ItemJump[] => {
+  return items.map(([index, size]) => {
+    return [size - getItemSize(cache, index), index];
+  });
+};
 
 export const SCROLL_STOP = 0;
 export const SCROLL_DOWN = 1;
@@ -209,35 +214,52 @@ export const createVirtualStore = (
             break;
           }
 
-          let isNewItemMeasured = false;
+          let diff = 0;
           // Calculate jump
-          const updatedJump: ItemJump[] = [];
+          if (_scrollDirection === SCROLL_UP) {
+            diff = sumJumps(calculateJumps(cache, updated));
+          } else if (_scrollDirection === SCROLL_MANUAL) {
+            const allJumps = calculateJumps(cache, updated);
+            const [startIndex] = _prevRange;
+
+            if (scrollOffset === 0) {
+              // Do nothing to stick to the start
+            } else if (getScrollSize() <= scrollOffset + viewportSize) {
+              // Keep end to stick to the end
+              diff = sumJumps(allJumps);
+            } else {
+              // Keep start at mid
+              diff = sumJumps(
+                allJumps.filter(([, index]) => index < startIndex)
+              );
+            }
+          } else {
+            // Do nothing
+          }
+
+          if (diff) {
+            jump = diff;
+            jumpCount++;
+          }
+
+          // Update item sizes
+          let isNewItemMeasured = false;
           updated.forEach(([index, size]) => {
-            updatedJump.push([size - getItemSize(cache, index), index]);
             if (setItemSize(cache as Writeable<Cache>, index, size)) {
               isNewItemMeasured = true;
             }
           });
 
+          // Estimate initial item size from measured sizes
           if (
             shouldAutoEstimateItemSize &&
             isNewItemMeasured &&
             // TODO support reverse scroll also
             !scrollOffset
           ) {
-            // Estimate initial item size from measured sizes
             estimateDefaultItemSize(cache as Writeable<Cache>);
           }
 
-          if (
-            _scrollDirection === SCROLL_MANUAL ||
-            _scrollDirection === SCROLL_UP
-          ) {
-            jump = [updatedJump, _scrollDirection === SCROLL_MANUAL];
-            jumpCount++;
-          } else {
-            // Do nothing
-          }
           _resized = shouldSync = mutated = true;
           break;
         }

@@ -348,7 +348,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       const jump = store._flushJump();
       if (!jump) return;
 
-      scroller._fixScrollJump(jump, startIndex);
+      scroller._fixScrollJump(jump);
     }, [jumpCount]);
 
     useEffect(() => {
