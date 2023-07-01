@@ -50,7 +50,6 @@ export const createScroller = (
       rootElement[scrollToKey] += offset;
     } else {
       rootElement[scrollToKey] = offset;
-      store._update(ACTION_SCROLL_DIRECTION_CHANGE, SCROLL_MANUAL);
     }
   };
   const scrollManually = async (
@@ -88,6 +87,7 @@ export const createScroller = (
 
     // Scroll with the updated value
     scrollTo(getOffset());
+    store._update(ACTION_SCROLL_DIRECTION_CHANGE, SCROLL_MANUAL);
   };
 
   return {
