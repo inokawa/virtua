@@ -12,7 +12,7 @@ import {
   estimateDefaultItemSize,
 } from "./cache";
 import type { Writeable } from "./types";
-import { abs, exists, max } from "./utils";
+import { abs, exists, max, min, timeout } from "./utils";
 
 type ItemJump = Readonly<[sizeDiff: number, index: number]>;
 export type ScrollJump = Readonly<number>;
@@ -139,8 +139,8 @@ export const createVirtualStore = (
     _hasUnmeasuredItemsInRange(startIndex) {
       return hasUnmeasuredItemsInRange(
         cache,
-        startIndex,
-        findEndIndex(cache, startIndex, viewportSize)
+        max(0, startIndex - 2),
+        min(cache._length - 1, startIndex + 2)
       );
     },
     _getItemOffset(index) {
@@ -184,13 +184,18 @@ export const createVirtualStore = (
       // The measurement will be done asynchronously and the timing is not predictable so we use promise.
       // For example, ResizeObserver may not fire when window is not visible.
       return new Promise((resolve, reject) => {
-        _scrollToQueue = [
-          () => {
-            resolve();
-            _scrollToQueue = undefined;
-          },
-          reject,
-        ];
+        let resolved: boolean | undefined = false;
+
+        const resolveQueue = () => {
+          if (resolved) return;
+          resolved = true;
+          resolve();
+          _scrollToQueue = undefined;
+        };
+        _scrollToQueue = [resolveQueue, reject];
+
+        // In some specific situation with VGrid, the promise never resolved so we cancel it if timed out. 
+        timeout(resolveQueue, 250);
       });
     },
     _subscribe(cb) {
