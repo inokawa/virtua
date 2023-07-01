@@ -106,7 +106,7 @@ export const findStartIndexWithOffset = (
   return findIndex(cache, prevStartIndex, offset - prevOffset);
 };
 
-export const findEndIndex = findIndex;
+export { findIndex as findEndIndex };
 
 export const hasUnmeasuredItemsInRange = (
   cache: Cache,
