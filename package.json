@@ -54,7 +54,7 @@
     "react-cool-virtual": "0.7.0",
     "react-dom": "18.2.0",
     "react-is": "18.2.0",
-    "react-merge-refs": "2.0.1",
+    "react-merge-refs": "2.0.2",
     "react-pull-to-refresh": "2.0.1",
     "react-select": "5.7.3",
     "react-virtualized": "9.22.5",
