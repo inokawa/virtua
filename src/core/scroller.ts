@@ -5,8 +5,7 @@ import {
   ScrollJump,
   VirtualStore,
   SCROLL_STOP,
-  ACTION_SCROLL_DIRECTION_CHANGE,
-  SCROLL_MANUAL,
+  ACTION_SCROLL_END,
 } from "./store";
 import { debounce, throttle, max, min } from "./utils";
 
@@ -87,7 +86,7 @@ export const createScroller = (
 
     // Scroll with the updated value
     scrollTo(getOffset());
-    store._update(ACTION_SCROLL_DIRECTION_CHANGE, SCROLL_MANUAL);
+    store._update(ACTION_SCROLL_END, true);
   };
 
   return {
@@ -105,7 +104,7 @@ export const createScroller = (
       const onScrollStopped = debounce(() => {
         // Check scroll position once just after scrolling stopped
         syncViewportToScrollPosition();
-        store._update(ACTION_SCROLL_DIRECTION_CHANGE, SCROLL_STOP);
+        store._update(ACTION_SCROLL_END, false);
       }, 150);
 
       const onScroll = () => {
