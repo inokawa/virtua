@@ -2,6 +2,7 @@ export const min = Math.min;
 export const max = Math.max;
 export const abs = Math.abs;
 export const now = Date.now;
+export const timeout = setTimeout;
 
 export const exists = <T>(v: T): v is Exclude<T, null | undefined> => v != null;
 
@@ -27,7 +28,7 @@ export const debounce = <T extends (...args: any[]) => void>(
   };
   const debouncedFn = () => {
     cancel();
-    id = setTimeout(() => {
+    id = timeout(() => {
       id = null;
       fn();
     }, ms);

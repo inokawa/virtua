@@ -68,27 +68,26 @@ export const createScroller = (
       return offset;
     };
 
-    if (store._hasUnmeasuredItemsInRange(index)) {
-      do {
-        // In order to scroll to the correct position, mount the items and measure their sizes before scrolling.
-        store._update(ACTION_MANUAL_SCROLL, getOffset());
-        try {
-          // Wait for the scroll destination items to be measured.
-          await store._waitForScrollDestinationItemsMeasured();
-        } catch (e) {
-          // canceled
-          return;
-        }
-      } while (store._hasUnmeasuredItemsInRange(index));
-
-      // Scroll with the updated value
-      scrollTo(getOffset());
-    } else {
-      const offset = getOffset();
-      scrollTo(offset);
+    while (true) {
       // Sync viewport to scroll destination
-      store._update(ACTION_MANUAL_SCROLL, offset);
+      // In order to scroll to the correct position, mount the items and measure their sizes before scrolling.
+      store._update(ACTION_MANUAL_SCROLL, getOffset());
+
+      if (!store._hasUnmeasuredItemsInRange(index)) {
+        break;
+      }
+
+      try {
+        // Wait for the scroll destination items to be measured.
+        await store._waitForScrollDestinationItemsMeasured();
+      } catch (e) {
+        // canceled
+        return;
+      }
     }
+
+    // Scroll with the updated value
+    scrollTo(getOffset());
   };
 
   return {
