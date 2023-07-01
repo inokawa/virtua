@@ -14,10 +14,10 @@ import {
 import type { Writeable } from "./types";
 import { abs, exists, max } from "./utils";
 
-type ItemJump = [sizeDiff: number, index: number];
+type ItemJump = Readonly<[sizeDiff: number, index: number]>;
 export type ScrollJump = Readonly<[jumps: ItemJump[], isManual: boolean]>;
-export type ItemResize = [index: number, size: number];
-type ItemsRange = [startIndex: number, endIndex: number];
+export type ItemResize = Readonly<[index: number, size: number]>;
+type ItemsRange = Readonly<[startIndex: number, endIndex: number]>;
 
 export const calcTotalJump = (jump: ItemJump[]): number =>
   jump.reduce((acc, [j]) => acc + j, 0);
