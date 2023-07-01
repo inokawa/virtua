@@ -313,7 +313,10 @@ export const createVirtualStore = (
 
         if (type === ACTION_SCROLL) {
           onScrollOffsetChange(scrollOffset);
-        } else if (_scrollToQueue && type === ACTION_ITEM_RESIZE) {
+        }
+      }
+      if (_scrollToQueue) {
+        if (type === ACTION_ITEM_RESIZE) {
           _scrollToQueue[0]();
         }
       }
