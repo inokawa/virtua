@@ -5,7 +5,6 @@ import {
   ScrollJump,
   VirtualStore,
   SCROLL_STOP,
-  calcTotalJump,
   ACTION_SCROLL_DIRECTION_CHANGE,
   SCROLL_MANUAL,
 } from "./store";
@@ -16,7 +15,7 @@ export type Scroller = {
   _getActualScrollSize: () => number;
   _scrollTo: (offset: number) => void;
   _scrollToIndex: (index: number, count: number) => void;
-  _fixScrollJump: (jump: ScrollJump, startIndex: number) => void;
+  _fixScrollJump: (jump: ScrollJump) => void;
 };
 
 export const createScroller = (
@@ -160,42 +159,8 @@ export const createScroller = (
 
       scrollManually(index, () => store._getItemOffset(index));
     },
-    _fixScrollJump: ([jump, isManual], startIndex) => {
-      // Compensate scroll jump
-      if (isManual) {
-        const offset = store._getScrollOffset();
-        if (offset === 0) {
-          // Do nothing to stick to the start
-        } else {
-          const allDiff = calcTotalJump(jump);
-          if (
-            store._getScrollSize() -
-              (offset + store._getViewportSize() + allDiff) <=
-            0
-          ) {
-            // Keep end to stick to the end
-            if (allDiff) {
-              scrollTo(offset + allDiff);
-            }
-          } else {
-            // Keep start at mid
-            const diff = jump.reduce((acc, [j, index]) => {
-              if (index < startIndex) {
-                acc += j;
-              }
-              return acc;
-            }, 0);
-            if (diff) {
-              scrollTo(diff, true);
-            }
-          }
-        }
-      } else {
-        const diff = calcTotalJump(jump);
-        if (diff) {
-          scrollTo(diff, true);
-        }
-      }
+    _fixScrollJump: (jump) => {
+      scrollTo(jump, true);
     },
   };
 };
