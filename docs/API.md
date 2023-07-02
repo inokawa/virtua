@@ -29,7 +29,7 @@
 
 ### VList
 
-▸ **VList**(`props`): ``null`` \| `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
+▸ **VList**(`props`): `ReactNode`
 
 Virtualized list component. See [VListProps](interfaces/VListProps.md) and [VListHandle](interfaces/VListHandle.md).
 
@@ -41,17 +41,17 @@ Virtualized list component. See [VListProps](interfaces/VListProps.md) and [VLis
 
 #### Returns
 
-``null`` \| `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
+`ReactNode`
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:383
+node_modules/@types/react/index.d.ts:386
 
 ___
 
 ### VGrid
 
-▸ **VGrid**(`props`): ``null`` \| `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
+▸ **VGrid**(`props`): `ReactNode`
 
 Virtualized grid component. See [VGridProps](interfaces/VGridProps.md) and [VGridHandle](interfaces/VGridHandle.md).
 
@@ -63,11 +63,11 @@ Virtualized grid component. See [VGridProps](interfaces/VGridProps.md) and [VGri
 
 #### Returns
 
-``null`` \| `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
+`ReactNode`
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:383
+node_modules/@types/react/index.d.ts:386
 
 ## Type Aliases
 
@@ -77,7 +77,7 @@ node_modules/@types/react/index.d.ts:383
 
 #### Defined in
 
-[src/react/VList.tsx:151](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VList.tsx#L151)
+[src/react/VList.tsx:151](https://github.com/inokawa/virtua/blob/57416e5/src/react/VList.tsx#L151)
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 #### Defined in
 
-[src/react/VList.tsx:32](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VList.tsx#L32)
+[src/react/VList.tsx:32](https://github.com/inokawa/virtua/blob/57416e5/src/react/VList.tsx#L32)
 
 ___
 
@@ -97,7 +97,7 @@ ___
 
 #### Defined in
 
-[src/react/VGrid.tsx:38](https://github.com/inokawa/virtua/blob/3512cbe/src/react/VGrid.tsx#L38)
+[src/react/VGrid.tsx:38](https://github.com/inokawa/virtua/blob/57416e5/src/react/VGrid.tsx#L38)
 
 ___
 
@@ -107,7 +107,7 @@ ___
 
 #### Defined in
 
-[src/react/DefaultWindow.tsx:9](https://github.com/inokawa/virtua/blob/3512cbe/src/react/DefaultWindow.tsx#L9)
+[src/react/DefaultWindow.tsx:9](https://github.com/inokawa/virtua/blob/57416e5/src/react/DefaultWindow.tsx#L9)
 
 ___
 
@@ -117,4 +117,4 @@ ___
 
 #### Defined in
 
-[src/react/DefaultWindow.tsx:63](https://github.com/inokawa/virtua/blob/3512cbe/src/react/DefaultWindow.tsx#L63)
+[src/react/DefaultWindow.tsx:63](https://github.com/inokawa/virtua/blob/57416e5/src/react/DefaultWindow.tsx#L63)
