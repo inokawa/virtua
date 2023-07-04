@@ -27,12 +27,12 @@ const calculateJumps = (cache: Cache, items: ItemResize[]): ItemJump[] => {
   });
 };
 
-export const SCROLL_STOP = 0;
+export const SCROLL_IDLE = 0;
 export const SCROLL_DOWN = 1;
 export const SCROLL_UP = 2;
 export const SCROLL_MANUAL = 3;
 type ScrollDirection =
-  | typeof SCROLL_STOP
+  | typeof SCROLL_IDLE
   | typeof SCROLL_DOWN
   | typeof SCROLL_UP
   | typeof SCROLL_MANUAL;
@@ -87,7 +87,7 @@ export const createVirtualStore = (
   let jumpCount = 0;
   let jump: ScrollJump | undefined;
   let cache = resetCache(elementsCount, initialItemSize);
-  let _scrollDirection: ScrollDirection = SCROLL_STOP;
+  let _scrollDirection: ScrollDirection = SCROLL_IDLE;
   let _resized = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
   let _scrollToQueue: [() => void, () => void] | undefined;
@@ -103,10 +103,10 @@ export const createVirtualStore = (
   const updateScrollDirection = (dir: ScrollDirection): boolean | undefined => {
     const prev = _scrollDirection;
     _scrollDirection = dir;
-    if (_scrollDirection === SCROLL_STOP) {
+    if (_scrollDirection === SCROLL_IDLE) {
       return false;
     } else if (
-      prev === SCROLL_STOP &&
+      prev === SCROLL_IDLE &&
       (_scrollDirection === SCROLL_DOWN || _scrollDirection === SCROLL_UP)
     ) {
       return true;
@@ -285,7 +285,7 @@ export const createVirtualStore = (
             // Scroll events are dispatched enough so it's ok to skip some of them.
             const isJustResized = flushIsJustResized();
             if (
-              (_scrollDirection === SCROLL_STOP || !isJustResized) &&
+              (_scrollDirection === SCROLL_IDLE || !isJustResized) &&
               // Ignore until manual scrolling
               _scrollDirection !== SCROLL_MANUAL
             ) {
@@ -307,7 +307,7 @@ export const createVirtualStore = (
         }
         case ACTION_SCROLL_END: {
           updatedScrollState = updateScrollDirection(
-            payload ? SCROLL_MANUAL : SCROLL_STOP
+            payload ? SCROLL_MANUAL : SCROLL_IDLE
           );
           break;
         }

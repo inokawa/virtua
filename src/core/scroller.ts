@@ -4,7 +4,7 @@ import {
   ACTION_MANUAL_SCROLL,
   ScrollJump,
   VirtualStore,
-  SCROLL_STOP,
+  SCROLL_IDLE,
   ACTION_SCROLL_END,
 } from "./store";
 import { debounce, throttle, max, min } from "./utils";
@@ -115,7 +115,7 @@ export const createScroller = (
       // Infer scroll state also from wheel events
       // Sometimes scroll events do not fire when frame dropped even if the visual have been already scrolled
       const onWheel = throttle((e: WheelEvent) => {
-        if (store._getScrollDirection() === SCROLL_STOP) {
+        if (store._getScrollDirection() === SCROLL_IDLE) {
           // Scroll start should be detected with scroll event
           return;
         }
