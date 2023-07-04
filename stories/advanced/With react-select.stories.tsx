@@ -1,19 +1,48 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { CustomWindowComponentProps, VList } from "../../src";
-import React, { createContext, forwardRef, useContext } from "react";
-import Select, { MenuListProps } from "react-select";
+import {
+  CustomItemComponentProps,
+  CustomWindowComponentProps,
+  VList,
+  VListHandle,
+} from "../../src";
+import React, {
+  CSSProperties,
+  Ref,
+  createContext,
+  forwardRef,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
+import Select, { MenuListProps, OptionProps, components } from "react-select";
 import { faker } from "@faker-js/faker";
 import { mergeRefs } from "react-merge-refs";
 
-const options = Array.from({ length: 1000 }, (_, i) => ({
-  value: String(i),
-  label: faker.music.songName(),
-}));
 export default {
   component: VList,
 } as Meta;
 
-const MenuListContext = createContext<Omit<MenuListProps, "children">>(null!);
+type OptionValue = {
+  value: string;
+  label: string;
+};
+
+const options = Array.from(
+  { length: 1000 },
+  (_, i): OptionValue => ({
+    value: String(i),
+    label: faker.music.songName(),
+  })
+);
+
+const MenuListContext = createContext<
+  Omit<MenuListProps<OptionValue>, "children">
+>(null!);
+const OptionContext = createContext<{
+  style: CSSProperties;
+  ref: Ref<HTMLDivElement>;
+}>(null!);
 
 const Window = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
   ({ children, attrs, height }, ref) => {
@@ -30,18 +59,68 @@ const Window = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
     );
   }
 );
+const Item = forwardRef<HTMLDivElement, CustomItemComponentProps>(
+  ({ style, children }, ref) => {
+    return (
+      <OptionContext.Provider value={{ style, ref }}>
+        {children}
+      </OptionContext.Provider>
+    );
+  }
+);
 
-const MenuList = ({ children, ...rest }: MenuListProps) => {
+const MenuList = ({ children, ...rest }: MenuListProps<OptionValue>) => {
+  const ref = useRef<VListHandle>(null);
+
+  // https://github.com/jacobworrel/react-windowed-select/blob/master/src/MenuList.tsx
+  const selectedIndex = useMemo(() => {
+    let focusedIndex = -1;
+    React.Children.forEach(children, (c, i) => {
+      if (
+        (c as React.ReactElement<OptionProps<OptionValue>>).props.isSelected
+      ) {
+        focusedIndex = i;
+      }
+    });
+    return focusedIndex;
+  }, [children]);
+  useEffect(() => {
+    if (selectedIndex === -1) return;
+    ref.current?.scrollToIndex(selectedIndex);
+  }, [selectedIndex]);
+
   return (
     <MenuListContext.Provider value={rest}>
-      <VList element={Window}>{children}</VList>
+      <VList ref={ref} element={Window} itemElement={Item}>
+        {children}
+      </VList>
     </MenuListContext.Provider>
+  );
+};
+const Option = ({
+  innerRef,
+  innerProps,
+  children,
+  ...rest
+}: OptionProps<OptionValue>) => {
+  const { style, ref } = useContext(OptionContext);
+  return (
+    <components.Option
+      {...rest}
+      innerRef={mergeRefs([ref, innerRef])}
+      innerProps={{
+        ...innerProps,
+        style: { ...style, height: 40 },
+      }}
+    >
+      {children}
+    </components.Option>
   );
 };
 
 export const Default: StoryObj = {
   name: "With react-select",
   render: () => {
-    return <Select options={options} components={{ MenuList }} />;
+    return <Select options={options} components={{ MenuList, Option }} />;
   },
 };
