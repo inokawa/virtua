@@ -145,8 +145,8 @@ const Window = ({
   _scrolling: boolean;
   _attrs: WindowComponentAttributes;
 }) => {
-  const height = useStore(vStore, vStore._getScrollSize);
-  const width = useStore(hStore, hStore._getScrollSize);
+  const height = useStore(vStore, vStore._getCorrectedScrollSize);
+  const width = useStore(hStore, hStore._getCorrectedScrollSize);
 
   return (
     <Element

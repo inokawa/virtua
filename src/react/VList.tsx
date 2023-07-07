@@ -106,7 +106,7 @@ const Window = ({
   _attrs: WindowComponentAttributes;
   _isHorizontal: boolean;
 }) => {
-  const scrollSize = useStore(store, store._getScrollSize);
+  const scrollSize = useStore(store, store._getCorrectedScrollSize);
 
   return (
     <Element
