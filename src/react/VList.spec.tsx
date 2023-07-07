@@ -522,29 +522,49 @@ describe("horizontal", () => {
   });
 });
 
-// describe("reverse", () => {
-//   it("should render if vertical", () => {
-//     const { asFragment } = render(
-//       <VList>
-//         {Array.from({ length: 100 }).map((_, i) => (
-//           <div key={i}>{i}</div>
-//         ))}
-//       </VList>
-//     );
-//     expect(asFragment()).toMatchSnapshot();
-//   });
+describe("reverse", () => {
+  // it("should render one item", () => {
+  //   const { asFragment } = render(
+  //     <VList mode="reverse">
+  //       <div>0</div>
+  //     </VList>
+  //   );
+  //   expect(asFragment()).toMatchSnapshot();
+  // });
+  it("should render many items", () => {
+    const { asFragment } = render(
+      <VList mode="reverse">
+        {Array.from({ length: 100 }).map((_, i) => (
+          <div key={i}>{i}</div>
+        ))}
+      </VList>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+});
 
-//   it("should render if horizontal", () => {
-//     const { asFragment } = render(
-//       <VList horizontal>
-//         {Array.from({ length: 100 }).map((_, i) => (
-//           <div key={i}>{i}</div>
-//         ))}
-//       </VList>
-//     );
-//     expect(asFragment()).toMatchSnapshot();
-//   });
-// });
+describe("rtl", () => {
+  // it("should not work vertical", () => {
+  //   const { asFragment } = render(
+  //     <VList mode="rtl">
+  //       {Array.from({ length: 100 }).map((_, i) => (
+  //         <div key={i}>{i}</div>
+  //       ))}
+  //     </VList>
+  //   );
+  //   expect(asFragment()).toMatchSnapshot();
+  // });
+  it("should work in horizontal", () => {
+    const { asFragment } = render(
+      <VList mode="rtl" horizontal>
+        {Array.from({ length: 100 }).map((_, i) => (
+          <div key={i}>{i}</div>
+        ))}
+      </VList>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+});
 
 describe("onScroll", () => {
   const LIST_ID = "test-id";
