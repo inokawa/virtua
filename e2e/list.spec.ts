@@ -64,6 +64,18 @@ test.describe("smoke", () => {
     await expect(await scrollable.innerText()).toContain("999");
   });
 
+  test("reverse", async ({ page }) => {
+    await page.goto(storyUrl("basics-vlist--reverse"));
+
+    const scrollable = await page.waitForSelector(scrollableSelector);
+    await scrollable.waitForElementState("stable");
+
+    // check if last is displayed
+    const last = await getLastItem(scrollable);
+    await expect(last.text).toEqual("999");
+    await expect(last.bottom).toEqual(0);
+  });
+
   test("padding", async ({ page }) => {
     const scrollToBottom = async (
       scrollable: ElementHandle<HTMLElement | SVGElement>
