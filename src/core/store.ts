@@ -61,7 +61,7 @@ export type VirtualStore = {
   _getScrollOffset(): number;
   _getViewportSize(): number;
   _getScrollSize(): number;
-  _getScrollableDomSize(): number;
+  _getCorrectedScrollSize(): number;
   _getJumpCount(): number;
   _flushJump(): ScrollJump | undefined;
   _getItemIndexForScrollTo(offset: number): number;
@@ -162,7 +162,7 @@ export const createVirtualStore = (
     _getScrollSize() {
       return getScrollSize();
     },
-    _getScrollableDomSize() {
+    _getCorrectedScrollSize() {
       return max(getScrollSize(), viewportSize);
     },
     _getJumpCount() {
