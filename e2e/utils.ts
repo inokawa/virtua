@@ -47,6 +47,7 @@ export const getFirstItemRtl = (
     return {
       text: el.textContent!,
       top: el.getBoundingClientRect().top - rect.top,
+      right: el.getBoundingClientRect().right - rect.right,
     };
   });
 };

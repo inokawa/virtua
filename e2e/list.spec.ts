@@ -21,7 +21,9 @@ test.describe("smoke", () => {
     await scrollable.waitForElementState("stable");
 
     // check if start is displayed
-    await expect((await getFirstItem(scrollable)).text).toEqual("0");
+    const first = await getFirstItem(scrollable);
+    await expect(first.text).toEqual("0");
+    await expect(first.top).toEqual(0);
 
     // scroll to the end
     await scrollToBottom(scrollable);
@@ -38,7 +40,9 @@ test.describe("smoke", () => {
     await scrollable.waitForElementState("stable");
 
     // check if start is displayed
-    await expect((await getFirstItem(scrollable)).text).toEqual("Column 0");
+    const first = await getFirstItem(scrollable);
+    await expect(first.text).toEqual("Column 0");
+    await expect(first.left).toEqual(0);
 
     // scroll to the end
     await scrollToRight(scrollable);
@@ -55,7 +59,9 @@ test.describe("smoke", () => {
     await scrollable.waitForElementState("stable");
 
     // check if start is displayed
-    await expect((await getFirstItemRtl(scrollable)).text).toEqual("Column 0");
+    const first = await getFirstItemRtl(scrollable);
+    await expect(first.text).toEqual("Column 0");
+    await expect(first.right).toEqual(0);
 
     // scroll to the end
     await scrollToLeft(scrollable);
