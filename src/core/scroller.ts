@@ -31,30 +31,25 @@ export const createScroller = (
     // This is because stored size may differ from the actual size, for example when a new item is added and not yet measured.
     return isHorizontal ? rootElement.scrollWidth : rootElement.scrollHeight;
   };
-  const normalizeRtlOffset = (offset: number, diff?: boolean): number => {
-    if (hasNegativeOffsetInRtl(rootElement!)) {
-      return -offset;
-    } else {
-      return diff
-        ? -offset
-        : store._getScrollSize() - store._getViewportSize() - offset;
-    }
-  };
-  const scrollTo = (offset: number, diff?: boolean) => {
-    if (!rootElement) return;
+  const normalizeOffset = (offset: number, diff?: boolean): number => {
     if (isHorizontal && isRtl) {
-      offset = normalizeRtlOffset(offset, diff);
+      if (hasNegativeOffsetInRtl(rootElement!)) {
+        return -offset;
+      } else {
+        return diff
+          ? -offset
+          : store._getScrollSize() - store._getViewportSize() - offset;
+      }
     }
-    if (diff) {
-      rootElement[scrollToKey] += offset;
-    } else {
-      rootElement[scrollToKey] = offset;
-    }
+    return offset;
   };
+
   const scrollManually = async (
     index: number,
     getCurrentOffset: () => number
   ) => {
+    if (!rootElement) return;
+
     const getOffset = (): number => {
       let offset = getCurrentOffset();
       const scrollSize = getActualScrollSize();
@@ -85,7 +80,7 @@ export const createScroller = (
     }
 
     // Scroll with the updated value
-    scrollTo(getOffset());
+    rootElement[scrollToKey] = normalizeOffset(getOffset());
     store._update(ACTION_SCROLL_END, true);
   };
 
@@ -94,11 +89,7 @@ export const createScroller = (
       rootElement = root;
 
       const syncViewportToScrollPosition = () => {
-        let offset = root[scrollToKey];
-        if (isHorizontal && isRtl) {
-          offset = normalizeRtlOffset(offset);
-        }
-        store._update(ACTION_SCROLL, offset);
+        store._update(ACTION_SCROLL, normalizeOffset(root[scrollToKey]));
       };
 
       const onScrollStopped = debounce(() => {
@@ -158,7 +149,8 @@ export const createScroller = (
       scrollManually(index, () => store._getItemOffset(index));
     },
     _fixScrollJump: (jump) => {
-      scrollTo(jump, true);
+      if (!rootElement) return;
+      rootElement[scrollToKey] += normalizeOffset(jump, true);
     },
   };
 };
