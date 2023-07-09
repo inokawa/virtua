@@ -3,7 +3,12 @@ export const parameters = {
   layout: "fullscreen",
   options: {
     storySort: {
-      order: ["basics", ["VList", "VGrid"], "advanced", "comparisons"],
+      order: [
+        "basics",
+        ["VList", "VGrid", "VWindow"],
+        "advanced",
+        "comparisons",
+      ],
     },
   },
 };

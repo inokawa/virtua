@@ -1,6 +1,5 @@
 import {
   Children,
-  memo,
   useRef,
   useMemo,
   CSSProperties,
@@ -21,73 +20,16 @@ import { createScroller } from "../core/scroller";
 import { isInvalidElement, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useRefWithUpdate } from "./useRefWithUpdate";
-import { Resizer, createResizer } from "../core/resizer";
+import { createResizer } from "../core/resizer";
 import { WindowComponentAttributes } from "..";
 import {
   CustomWindowComponent,
   CustomWindowComponentProps,
   DefaultWindow,
 } from "./DefaultWindow";
+import { ListItem } from "./ListItem";
 
 export type ScrollMode = "reverse" | "rtl";
-
-type ItemProps = {
-  _children: ReactNode;
-  _resizer: Resizer;
-  _store: VirtualStore;
-  _index: number;
-  _element: "div";
-  _isHorizontal: boolean;
-  _isRtl: boolean;
-};
-
-const Item = memo(
-  ({
-    _children: children,
-    _resizer: resizer,
-    _store: store,
-    _index: index,
-    _element: Element,
-    _isHorizontal: isHorizontal,
-    _isRtl: isRtl,
-  }: ItemProps): ReactElement => {
-    const ref = useRef<HTMLDivElement>(null);
-
-    const offset = useStore(store, () => store._getItemOffset(index), true);
-    const hide = useStore(store, () => store._isUnmeasuredItem(index), true);
-
-    // The index may be changed if elements are inserted to or removed from the start of props.children
-    useIsomorphicLayoutEffect(
-      () => resizer._observeItem(ref[refKey]!, index),
-      [index]
-    );
-
-    return (
-      <Element
-        ref={ref}
-        style={useMemo((): CSSProperties => {
-          const leftOrRightKey = isRtl ? "right" : "left";
-          const style: CSSProperties = {
-            margin: 0,
-            padding: 0,
-            position: "absolute",
-            [isHorizontal ? "height" : "width"]: "100%",
-            [isHorizontal ? "top" : leftOrRightKey]: 0,
-            [isHorizontal ? leftOrRightKey : "top"]: offset,
-            visibility: hide ? "hidden" : "visible",
-            // willChange: "transform",
-          };
-          if (isHorizontal) {
-            style.display = "flex";
-          }
-          return style;
-        }, [offset, hide])}
-      >
-        {children}
-      </Element>
-    );
-  }
-);
 
 const Window = ({
   _children: children,
@@ -119,6 +61,7 @@ const Window = ({
           ...attrs,
           style: {
             overflow: horizontal ? "auto hidden" : "hidden auto",
+            display: horizontal ? "inline-block" : "block",
             contain: "strict",
             // transform: "translate3d(0px, 0px, 0px)",
             // willChange: "scroll-position",
@@ -395,7 +338,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
         // This can be undefined when items are removed
         if (exists(e)) {
           res.push(
-            <Item
+            <ListItem
               key={(e as { key?: ReactElement["key"] })?.key || i}
               _resizer={resizer}
               _store={store}

@@ -13,6 +13,8 @@ export type {
   CustomCellComponent,
   CustomCellComponentProps,
 } from "./react/VGrid";
+export { VWindow } from "./react/VWindow";
+export type { VWindowProps } from "./react/VWindow";
 export type {
   WindowComponentAttributes,
   CustomWindowComponent,

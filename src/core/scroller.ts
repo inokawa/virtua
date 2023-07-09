@@ -154,3 +154,99 @@ export const createScroller = (
     },
   };
 };
+
+export type WindowScroller = {
+  _initRoot: (rootElement: HTMLElement) => () => void;
+  _fixScrollJump: (jump: ScrollJump) => void;
+};
+
+export const createWindowScroller = (
+  store: VirtualStore,
+  isHorizontal: boolean
+): WindowScroller => {
+  const scrollToKey = isHorizontal ? "scrollX" : "scrollY";
+  const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
+  const getOffsetToWindow = (node: HTMLElement, offset: number): number => {
+    const nodeOffset = offset + node[offsetKey];
+
+    const parent = node.offsetParent;
+    if (parent === document.body || !parent) {
+      return nodeOffset;
+    }
+
+    return getOffsetToWindow(parent as HTMLElement, nodeOffset);
+  };
+
+  let visible = false;
+
+  return {
+    _initRoot(rootElement) {
+      const syncViewportToScrollPosition = () => {
+        if (!visible) return;
+        store._update(
+          ACTION_SCROLL,
+          window[scrollToKey] - getOffsetToWindow(rootElement, 0)
+        );
+      };
+
+      const onScrollStopped = debounce(() => {
+        // Check scroll position once just after scrolling stopped
+        syncViewportToScrollPosition();
+        store._update(ACTION_SCROLL_END, false);
+      }, 150);
+
+      const onScroll = () => {
+        syncViewportToScrollPosition();
+        onScrollStopped();
+      };
+
+      // Infer scroll state also from wheel events
+      // Sometimes scroll events do not fire when frame dropped even if the visual have been already scrolled
+      const onWheel = throttle((e: WheelEvent) => {
+        if (store._getScrollDirection() === SCROLL_IDLE) {
+          // Scroll start should be detected with scroll event
+          return;
+        }
+        if (e.ctrlKey) {
+          // Probably a pinch-to-zoom gesture
+          return;
+        }
+        // Get delta before checking deltaMode for firefox behavior
+        // https://github.com/w3c/uievents/issues/181#issuecomment-392648065
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=1392460#c34
+        if (isHorizontal ? e.deltaX : e.deltaY) {
+          const offset = store._getScrollOffset();
+          if (
+            offset > 0 &&
+            offset < store._getScrollSize() - store._getViewportSize()
+          ) {
+            onScrollStopped();
+          }
+        }
+      }, 50);
+
+      const io = new IntersectionObserver(([entry]) => {
+        visible = entry!.isIntersecting;
+      });
+      io.observe(rootElement);
+
+      window.addEventListener("scroll", onScroll);
+      window.addEventListener("wheel", onWheel, { passive: true });
+
+      return () => {
+        io.disconnect();
+        window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("wheel", onWheel);
+        onScrollStopped._cancel();
+      };
+    },
+
+    _fixScrollJump: (jump) => {
+      if (isHorizontal) {
+        window.scrollBy(jump, 0);
+      } else {
+        window.scrollBy(0, jump);
+      }
+    },
+  };
+};

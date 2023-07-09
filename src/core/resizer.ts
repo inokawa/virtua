@@ -6,7 +6,15 @@ import {
 } from "./store";
 import { exists, max, once } from "./utils";
 
-export const createResizer = (store: VirtualStore, isHorizontal: boolean) => {
+export interface ListResizer {
+  _observeRoot(root: HTMLElement): () => void;
+  _observeItem(el: HTMLElement, i: number): () => void;
+}
+
+export const createResizer = (
+  store: VirtualStore,
+  isHorizontal: boolean
+): ListResizer => {
   let rootElement: HTMLElement | undefined;
   const sizeKey = isHorizontal ? "width" : "height";
   const mountedIndexes = new WeakMap<Element, number>();
@@ -54,7 +62,54 @@ export const createResizer = (store: VirtualStore, isHorizontal: boolean) => {
   };
 };
 
-export type Resizer = ReturnType<typeof createResizer>;
+export const createWindowResizer = (
+  store: VirtualStore,
+  isHorizontal: boolean
+): ListResizer => {
+  const sizeKey = isHorizontal ? "width" : "height";
+  const windowSizeKey = isHorizontal ? "innerWidth" : "innerHeight";
+  const mountedIndexes = new WeakMap<Element, number>();
+
+  // Initialize ResizeObserver lazily for SSR
+  const getResizeObserver = once(() => {
+    // https://www.w3.org/TR/resize-observer/#intro
+    return new ResizeObserver((entries) => {
+      const resizes: ItemResize[] = [];
+      for (const { target, contentRect } of entries) {
+        const index = mountedIndexes.get(target);
+        if (exists(index)) {
+          resizes.push([index, contentRect[sizeKey]]);
+        }
+      }
+
+      if (resizes.length) {
+        store._update(ACTION_ITEM_RESIZE, resizes);
+      }
+    });
+  });
+
+  return {
+    _observeRoot(root: HTMLElement) {
+      const cb = () => {
+        store._update(ACTION_WINDOW_RESIZE, window[windowSizeKey]);
+      };
+      window.addEventListener("resize", cb);
+      cb();
+      return () => {
+        window.removeEventListener("resize", cb);
+      };
+    },
+    _observeItem(el: HTMLElement, i: number) {
+      const ro = getResizeObserver();
+      mountedIndexes.set(el, i);
+      ro.observe(el);
+      return () => {
+        mountedIndexes.delete(el);
+        ro.unobserve(el);
+      };
+    },
+  };
+};
 
 export const createGridResizer = (
   vStore: VirtualStore,
