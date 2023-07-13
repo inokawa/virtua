@@ -24,6 +24,7 @@ jobs:
       - run: npm run lint
       - run: npm run test
       - run: npm run build
+      - run: npm run size
 
   e2e:
     timeout-minutes: 15

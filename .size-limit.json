@@ -1,0 +1,14 @@
+[
+  {
+    "name": "VList",
+    "path": "lib/index.mjs",
+    "import": "{ VList }",
+    "limit": "4 kB"
+  },
+  {
+    "name": "VGrid",
+    "path": "lib/index.mjs",
+    "import": "{ VGrid }",
+    "limit": "4 kB"
+  }
+]
