@@ -92,7 +92,7 @@ Elements rendered by this component.
 
 #### Defined in
 
-[src/react/VList.tsx:199](https://github.com/inokawa/virtua/blob/57416e5/src/react/VList.tsx#L199)
+[src/react/VList.tsx:199](https://github.com/inokawa/virtua/blob/bed6259/src/react/VList.tsx#L199)
 
 ___
 
@@ -108,7 +108,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/react/VList.tsx:204](https://github.com/inokawa/virtua/blob/57416e5/src/react/VList.tsx#L204)
+[src/react/VList.tsx:204](https://github.com/inokawa/virtua/blob/bed6259/src/react/VList.tsx#L204)
 
 ___
 
@@ -123,7 +123,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/react/VList.tsx:211](https://github.com/inokawa/virtua/blob/57416e5/src/react/VList.tsx#L211)
+[src/react/VList.tsx:211](https://github.com/inokawa/virtua/blob/bed6259/src/react/VList.tsx#L211)
 
 ___
 
@@ -135,7 +135,7 @@ If set, the specified amount of items will be mounted in the initial rendering r
 
 #### Defined in
 
-[src/react/VList.tsx:215](https://github.com/inokawa/virtua/blob/57416e5/src/react/VList.tsx#L215)
+[src/react/VList.tsx:215](https://github.com/inokawa/virtua/blob/bed6259/src/react/VList.tsx#L215)
 
 ___
 
@@ -147,7 +147,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/VList.tsx:219](https://github.com/inokawa/virtua/blob/57416e5/src/react/VList.tsx#L219)
+[src/react/VList.tsx:219](https://github.com/inokawa/virtua/blob/bed6259/src/react/VList.tsx#L219)
 
 ___
 
@@ -162,7 +162,7 @@ Scroll modes that should be set in certain situations.
 
 #### Defined in
 
-[src/react/VList.tsx:226](https://github.com/inokawa/virtua/blob/57416e5/src/react/VList.tsx#L226)
+[src/react/VList.tsx:226](https://github.com/inokawa/virtua/blob/bed6259/src/react/VList.tsx#L226)
 
 ___
 
@@ -178,7 +178,7 @@ DefaultWindow
 
 #### Defined in
 
-[src/react/VList.tsx:231](https://github.com/inokawa/virtua/blob/57416e5/src/react/VList.tsx#L231)
+[src/react/VList.tsx:231](https://github.com/inokawa/virtua/blob/bed6259/src/react/VList.tsx#L231)
 
 ___
 
@@ -194,7 +194,7 @@ Customized element type for item element. This element will get [CustomItemCompo
 
 #### Defined in
 
-[src/react/VList.tsx:236](https://github.com/inokawa/virtua/blob/57416e5/src/react/VList.tsx#L236)
+[src/react/VList.tsx:236](https://github.com/inokawa/virtua/blob/bed6259/src/react/VList.tsx#L236)
 
 ___
 
@@ -220,7 +220,7 @@ Callback invoked whenever scroll offset changes.
 
 #### Defined in
 
-[src/react/VList.tsx:241](https://github.com/inokawa/virtua/blob/57416e5/src/react/VList.tsx#L241)
+[src/react/VList.tsx:241](https://github.com/inokawa/virtua/blob/bed6259/src/react/VList.tsx#L241)
 
 ___
 
@@ -240,7 +240,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/react/VList.tsx:245](https://github.com/inokawa/virtua/blob/57416e5/src/react/VList.tsx#L245)
+[src/react/VList.tsx:245](https://github.com/inokawa/virtua/blob/bed6259/src/react/VList.tsx#L245)
 
 ___
 
@@ -269,7 +269,7 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/react/VList.tsx:249](https://github.com/inokawa/virtua/blob/57416e5/src/react/VList.tsx#L249)
+[src/react/VList.tsx:249](https://github.com/inokawa/virtua/blob/bed6259/src/react/VList.tsx#L249)
 
 ___
 
