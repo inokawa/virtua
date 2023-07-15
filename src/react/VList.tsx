@@ -304,16 +304,14 @@ export const VList = forwardRef<VListHandle, VListProps>(
           get viewportSize() {
             return store._getViewportSize();
           },
-          scrollToIndex(index) {
-            scroller._scrollToIndex(index, count);
-          },
+          scrollToIndex: scroller._scrollToIndex,
           scrollTo: scroller._scrollTo,
           scrollBy(offset) {
             scroller._scrollTo(store._getScrollOffset() + offset);
           },
         };
       },
-      [count]
+      []
     );
 
     const startIndexWithMargin = max(startIndex - overscan, 0);

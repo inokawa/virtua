@@ -44,7 +44,7 @@ export type Scroller = {
   _initRoot: (rootElement: HTMLElement) => () => void;
   _getActualScrollSize: () => number;
   _scrollTo: (offset: number) => void;
-  _scrollToIndex: (index: number, count: number) => void;
+  _scrollToIndex: (index: number) => void;
   _fixScrollJump: (jump: ScrollJump) => void;
 };
 
@@ -151,8 +151,8 @@ export const createScroller = (
 
       scrollManually(store._getItemIndexForScrollTo(offset), () => offset);
     },
-    _scrollToIndex(index, count) {
-      index = max(min(index, count - 1), 0);
+    _scrollToIndex(index) {
+      index = max(min(index, store._getItemLength() - 1), 0);
 
       scrollManually(index, () => store._getItemOffset(index));
     },

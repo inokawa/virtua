@@ -383,8 +383,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             return [hStore._getViewportSize(), vStore._getViewportSize()];
           },
           scrollToIndex(indexX, indexY) {
-            hScroller._scrollToIndex(indexX, colCount);
-            vScroller._scrollToIndex(indexY, rowCount);
+            hScroller._scrollToIndex(indexX);
+            vScroller._scrollToIndex(indexY);
           },
           scrollTo(offsetX, offsetY) {
             hScroller._scrollTo(offsetX);
@@ -396,7 +396,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           },
         };
       },
-      [rowCount, colCount]
+      []
     );
 
     const render = useMemo(() => {
