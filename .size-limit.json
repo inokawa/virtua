@@ -16,5 +16,11 @@
     "path": "lib/index.mjs",
     "import": "{ VGrid }",
     "limit": "4 kB"
+  },
+  {
+    "name": "WVList",
+    "path": "lib/index.mjs",
+    "import": "{ WVList }",
+    "limit": "4 kB"
   }
 ]
