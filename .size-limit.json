@@ -1,5 +1,11 @@
 [
   {
+    "name": "Total",
+    "path": "lib/index.mjs",
+    "import": "*",
+    "limit": "5 kB"
+  },
+  {
     "name": "VList",
     "path": "lib/index.mjs",
     "import": "{ VList }",
