@@ -1,5 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, {
+  forwardRef,
+  startTransition,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   VList,
   VListHandle,
@@ -219,6 +225,140 @@ export const ScrollTo: StoryObj = {
         </div>
         <VList ref={ref} style={{ flex: 1 }}>
           {createRows(LENGTH)}
+        </VList>
+      </div>
+    );
+  },
+};
+
+const Spinner = (props: { show: boolean }) => {
+  return (
+    <>
+      <div
+        style={{
+          height: 100,
+          display: props.show ? "flex" : "none",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "white",
+        }}
+      >
+        <span className="loader" />
+      </div>
+      <style>
+        {`
+      .loader {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        position: relative;
+        animation: rotate 1s linear infinite
+      }
+      .loader::before {
+        content: "";
+        box-sizing: border-box;
+        position: absolute;
+        inset: 0px;
+        border-radius: 50%;
+        border: 5px solid #ccc;
+        animation: prixClipFix 2s linear infinite ;
+      }
+  
+      @keyframes rotate {
+        100%   {transform: rotate(360deg)}
+      }
+  
+      @keyframes prixClipFix {
+          0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+          25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+          50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+          75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
+          100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
+      }`}
+      </style>
+    </>
+  );
+};
+
+export const InfiniteScrolling: StoryObj = {
+  render: () => {
+    const createRows = (num: number, offset: number = 0) => {
+      const heights = [20, 40, 80, 77];
+      return Array.from({ length: num }).map((_, i) => {
+        i += offset;
+        return (
+          <div
+            key={i}
+            style={{
+              height: heights[i % 4],
+              borderBottom: "solid 1px #ccc",
+              background: "#fff",
+            }}
+          >
+            {i}
+          </div>
+        );
+      });
+    };
+
+    const [fetching, setFetching] = useState(false);
+    const fetchItems = async () => {
+      setFetching(true);
+      await new Promise((r) => setTimeout(r, 1000));
+      setFetching(false);
+    };
+
+    const ITEM_BATCH_COUNT = 100;
+    const [items, setItems] = useState(() => createRows(ITEM_BATCH_COUNT));
+    const fetchedCountRef = useRef(-1);
+
+    return (
+      <VList
+        style={{ flex: 1 }}
+        onRangeChange={async ({ end, count }) => {
+          if (end + 50 > count && fetchedCountRef.current < count) {
+            fetchedCountRef.current = count;
+            await fetchItems();
+            setItems((prev) => [
+              ...prev,
+              ...createRows(ITEM_BATCH_COUNT, prev.length),
+            ]);
+          }
+        }}
+      >
+        {items}
+        {/* Now hide spinner without unmounting because onRangeChange is called twice due to item length change */}
+        <Spinner show={fetching} />
+      </VList>
+    );
+  },
+};
+
+export const RangeChange: StoryObj = {
+  render: () => {
+    const items = useState(() => createRows(1000))[0];
+    const [range, setRange] = useState([-1, -1]);
+    return (
+      <div
+        style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+      >
+        <div
+          style={{
+            background: "white",
+            borderBottom: "solid 1px #ccc",
+          }}
+        >
+          items: {items.length} index: ({range[0]}, {range[1]})
+        </div>
+        <VList
+          style={{ flex: 1 }}
+          onRangeChange={async ({ start, end }) => {
+            startTransition(() => {
+              setRange([start, end]);
+            });
+          }}
+        >
+          {items}
         </VList>
       </div>
     );
