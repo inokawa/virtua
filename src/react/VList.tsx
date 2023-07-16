@@ -220,7 +220,7 @@ export interface VListProps extends WindowComponentAttributes {
   /**
    * Scroll modes that should be set in certain situations.
    *
-   * - `reverse`: This mode will Adjust some styles to be suitable for bottom-to-top scrolling.
+   * - `reverse`: This mode will adjust some styles to be suitable for bottom-to-top scrolling.
    * - `rtl`: You have to set this mode if you use this component under `direction: rtl` style.
    */
   mode?: ScrollMode;
