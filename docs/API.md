@@ -6,24 +6,26 @@
 
 - [VList](API.md#vlist)
 - [VGrid](API.md#vgrid)
+- [WVList](API.md#wvlist)
 
 ### Interfaces
 
 - [VListProps](interfaces/VListProps.md)
 - [VListHandle](interfaces/VListHandle.md)
-- [CustomItemComponentProps](interfaces/CustomItemComponentProps.md)
 - [VGridProps](interfaces/VGridProps.md)
 - [VGridHandle](interfaces/VGridHandle.md)
 - [CustomCellComponentProps](interfaces/CustomCellComponentProps.md)
+- [WVListProps](interfaces/WVListProps.md)
 - [CustomWindowComponentProps](interfaces/CustomWindowComponentProps.md)
+- [CustomItemComponentProps](interfaces/CustomItemComponentProps.md)
 
 ### Type Aliases
 
-- [CustomItemComponent](API.md#customitemcomponent)
 - [ScrollMode](API.md#scrollmode)
 - [CustomCellComponent](API.md#customcellcomponent)
 - [WindowComponentAttributes](API.md#windowcomponentattributes)
 - [CustomWindowComponent](API.md#customwindowcomponent)
+- [CustomItemComponent](API.md#customitemcomponent)
 
 ## Functions
 
@@ -69,17 +71,29 @@ Virtualized grid component. See [VGridProps](interfaces/VGridProps.md) and [VGri
 
 node_modules/@types/react/index.d.ts:386
 
-## Type Aliases
+___
 
-### CustomItemComponent
+### WVList
 
-Ƭ **CustomItemComponent**: `React.ForwardRefExoticComponent`<`React.PropsWithoutRef`<[`CustomItemComponentProps`](interfaces/CustomItemComponentProps.md)\> & `React.RefAttributes`<`any`\>\>
+▸ **WVList**(`«destructured»`): `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
+
+Virtualized list component controlled by the window scrolling. See [WVListProps](interfaces/WVListProps.md).
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `«destructured»` | [`WVListProps`](interfaces/WVListProps.md) |
+
+#### Returns
+
+`ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
 
 #### Defined in
 
-[src/react/VList.tsx:151](https://github.com/inokawa/virtua/blob/bed6259/src/react/VList.tsx#L151)
+[src/react/WVList.tsx:153](https://github.com/inokawa/virtua/blob/579892c/src/react/WVList.tsx#L153)
 
-___
+## Type Aliases
 
 ### ScrollMode
 
@@ -87,7 +101,7 @@ ___
 
 #### Defined in
 
-[src/react/VList.tsx:32](https://github.com/inokawa/virtua/blob/bed6259/src/react/VList.tsx#L32)
+[src/react/VList.tsx:31](https://github.com/inokawa/virtua/blob/579892c/src/react/VList.tsx#L31)
 
 ___
 
@@ -97,7 +111,7 @@ ___
 
 #### Defined in
 
-[src/react/VGrid.tsx:38](https://github.com/inokawa/virtua/blob/bed6259/src/react/VGrid.tsx#L38)
+[src/react/VGrid.tsx:38](https://github.com/inokawa/virtua/blob/579892c/src/react/VGrid.tsx#L38)
 
 ___
 
@@ -107,7 +121,7 @@ ___
 
 #### Defined in
 
-[src/react/DefaultWindow.tsx:9](https://github.com/inokawa/virtua/blob/bed6259/src/react/DefaultWindow.tsx#L9)
+[src/react/DefaultWindow.tsx:9](https://github.com/inokawa/virtua/blob/579892c/src/react/DefaultWindow.tsx#L9)
 
 ___
 
@@ -117,4 +131,14 @@ ___
 
 #### Defined in
 
-[src/react/DefaultWindow.tsx:63](https://github.com/inokawa/virtua/blob/bed6259/src/react/DefaultWindow.tsx#L63)
+[src/react/DefaultWindow.tsx:63](https://github.com/inokawa/virtua/blob/579892c/src/react/DefaultWindow.tsx#L63)
+
+___
+
+### CustomItemComponent
+
+Ƭ **CustomItemComponent**: `React.ForwardRefExoticComponent`<`React.PropsWithoutRef`<[`CustomItemComponentProps`](interfaces/CustomItemComponentProps.md)\> & `React.RefAttributes`<`any`\>\>
+
+#### Defined in
+
+[src/react/ListItem.tsx:23](https://github.com/inokawa/virtua/blob/579892c/src/react/ListItem.tsx#L23)

@@ -1,86 +1,85 @@
-# Interface: VListProps
+# Interface: WVListProps
 
-Props of [VList](../API.md#vlist).
+Props of [WVList](../API.md#wvlist).
 
 ## Hierarchy
 
 - [`WindowComponentAttributes`](../API.md#windowcomponentattributes)
 
-  ↳ **`VListProps`**
+  ↳ **`WVListProps`**
 
 ## Table of contents
 
 ### Properties
 
-- [children](VListProps.md#children)
-- [overscan](VListProps.md#overscan)
-- [initialItemSize](VListProps.md#initialitemsize)
-- [initialItemCount](VListProps.md#initialitemcount)
-- [horizontal](VListProps.md#horizontal)
-- [mode](VListProps.md#mode)
-- [element](VListProps.md#element)
-- [itemElement](VListProps.md#itemelement)
-- [onScroll](VListProps.md#onscroll)
-- [onScrollStop](VListProps.md#onscrollstop)
-- [onRangeChange](VListProps.md#onrangechange)
-- [className](VListProps.md#classname)
-- [style](VListProps.md#style)
-- [id](VListProps.md#id)
-- [role](VListProps.md#role)
-- [tabIndex](VListProps.md#tabindex)
-- [aria-activedescendant](VListProps.md#aria-activedescendant)
-- [aria-atomic](VListProps.md#aria-atomic)
-- [aria-autocomplete](VListProps.md#aria-autocomplete)
-- [aria-braillelabel](VListProps.md#aria-braillelabel)
-- [aria-brailleroledescription](VListProps.md#aria-brailleroledescription)
-- [aria-busy](VListProps.md#aria-busy)
-- [aria-checked](VListProps.md#aria-checked)
-- [aria-colcount](VListProps.md#aria-colcount)
-- [aria-colindex](VListProps.md#aria-colindex)
-- [aria-colindextext](VListProps.md#aria-colindextext)
-- [aria-colspan](VListProps.md#aria-colspan)
-- [aria-controls](VListProps.md#aria-controls)
-- [aria-current](VListProps.md#aria-current)
-- [aria-describedby](VListProps.md#aria-describedby)
-- [aria-description](VListProps.md#aria-description)
-- [aria-details](VListProps.md#aria-details)
-- [aria-disabled](VListProps.md#aria-disabled)
-- [aria-dropeffect](VListProps.md#aria-dropeffect)
-- [aria-errormessage](VListProps.md#aria-errormessage)
-- [aria-expanded](VListProps.md#aria-expanded)
-- [aria-flowto](VListProps.md#aria-flowto)
-- [aria-grabbed](VListProps.md#aria-grabbed)
-- [aria-haspopup](VListProps.md#aria-haspopup)
-- [aria-hidden](VListProps.md#aria-hidden)
-- [aria-invalid](VListProps.md#aria-invalid)
-- [aria-keyshortcuts](VListProps.md#aria-keyshortcuts)
-- [aria-label](VListProps.md#aria-label)
-- [aria-labelledby](VListProps.md#aria-labelledby)
-- [aria-level](VListProps.md#aria-level)
-- [aria-live](VListProps.md#aria-live)
-- [aria-modal](VListProps.md#aria-modal)
-- [aria-multiline](VListProps.md#aria-multiline)
-- [aria-multiselectable](VListProps.md#aria-multiselectable)
-- [aria-orientation](VListProps.md#aria-orientation)
-- [aria-owns](VListProps.md#aria-owns)
-- [aria-placeholder](VListProps.md#aria-placeholder)
-- [aria-posinset](VListProps.md#aria-posinset)
-- [aria-pressed](VListProps.md#aria-pressed)
-- [aria-readonly](VListProps.md#aria-readonly)
-- [aria-relevant](VListProps.md#aria-relevant)
-- [aria-required](VListProps.md#aria-required)
-- [aria-roledescription](VListProps.md#aria-roledescription)
-- [aria-rowcount](VListProps.md#aria-rowcount)
-- [aria-rowindex](VListProps.md#aria-rowindex)
-- [aria-rowindextext](VListProps.md#aria-rowindextext)
-- [aria-rowspan](VListProps.md#aria-rowspan)
-- [aria-selected](VListProps.md#aria-selected)
-- [aria-setsize](VListProps.md#aria-setsize)
-- [aria-sort](VListProps.md#aria-sort)
-- [aria-valuemax](VListProps.md#aria-valuemax)
-- [aria-valuemin](VListProps.md#aria-valuemin)
-- [aria-valuenow](VListProps.md#aria-valuenow)
-- [aria-valuetext](VListProps.md#aria-valuetext)
+- [children](WVListProps.md#children)
+- [overscan](WVListProps.md#overscan)
+- [initialItemSize](WVListProps.md#initialitemsize)
+- [initialItemCount](WVListProps.md#initialitemcount)
+- [horizontal](WVListProps.md#horizontal)
+- [element](WVListProps.md#element)
+- [itemElement](WVListProps.md#itemelement)
+- [onScroll](WVListProps.md#onscroll)
+- [onScrollStop](WVListProps.md#onscrollstop)
+- [onRangeChange](WVListProps.md#onrangechange)
+- [className](WVListProps.md#classname)
+- [style](WVListProps.md#style)
+- [id](WVListProps.md#id)
+- [role](WVListProps.md#role)
+- [tabIndex](WVListProps.md#tabindex)
+- [aria-activedescendant](WVListProps.md#aria-activedescendant)
+- [aria-atomic](WVListProps.md#aria-atomic)
+- [aria-autocomplete](WVListProps.md#aria-autocomplete)
+- [aria-braillelabel](WVListProps.md#aria-braillelabel)
+- [aria-brailleroledescription](WVListProps.md#aria-brailleroledescription)
+- [aria-busy](WVListProps.md#aria-busy)
+- [aria-checked](WVListProps.md#aria-checked)
+- [aria-colcount](WVListProps.md#aria-colcount)
+- [aria-colindex](WVListProps.md#aria-colindex)
+- [aria-colindextext](WVListProps.md#aria-colindextext)
+- [aria-colspan](WVListProps.md#aria-colspan)
+- [aria-controls](WVListProps.md#aria-controls)
+- [aria-current](WVListProps.md#aria-current)
+- [aria-describedby](WVListProps.md#aria-describedby)
+- [aria-description](WVListProps.md#aria-description)
+- [aria-details](WVListProps.md#aria-details)
+- [aria-disabled](WVListProps.md#aria-disabled)
+- [aria-dropeffect](WVListProps.md#aria-dropeffect)
+- [aria-errormessage](WVListProps.md#aria-errormessage)
+- [aria-expanded](WVListProps.md#aria-expanded)
+- [aria-flowto](WVListProps.md#aria-flowto)
+- [aria-grabbed](WVListProps.md#aria-grabbed)
+- [aria-haspopup](WVListProps.md#aria-haspopup)
+- [aria-hidden](WVListProps.md#aria-hidden)
+- [aria-invalid](WVListProps.md#aria-invalid)
+- [aria-keyshortcuts](WVListProps.md#aria-keyshortcuts)
+- [aria-label](WVListProps.md#aria-label)
+- [aria-labelledby](WVListProps.md#aria-labelledby)
+- [aria-level](WVListProps.md#aria-level)
+- [aria-live](WVListProps.md#aria-live)
+- [aria-modal](WVListProps.md#aria-modal)
+- [aria-multiline](WVListProps.md#aria-multiline)
+- [aria-multiselectable](WVListProps.md#aria-multiselectable)
+- [aria-orientation](WVListProps.md#aria-orientation)
+- [aria-owns](WVListProps.md#aria-owns)
+- [aria-placeholder](WVListProps.md#aria-placeholder)
+- [aria-posinset](WVListProps.md#aria-posinset)
+- [aria-pressed](WVListProps.md#aria-pressed)
+- [aria-readonly](WVListProps.md#aria-readonly)
+- [aria-relevant](WVListProps.md#aria-relevant)
+- [aria-required](WVListProps.md#aria-required)
+- [aria-roledescription](WVListProps.md#aria-roledescription)
+- [aria-rowcount](WVListProps.md#aria-rowcount)
+- [aria-rowindex](WVListProps.md#aria-rowindex)
+- [aria-rowindextext](WVListProps.md#aria-rowindextext)
+- [aria-rowspan](WVListProps.md#aria-rowspan)
+- [aria-selected](WVListProps.md#aria-selected)
+- [aria-setsize](WVListProps.md#aria-setsize)
+- [aria-sort](WVListProps.md#aria-sort)
+- [aria-valuemax](WVListProps.md#aria-valuemax)
+- [aria-valuemin](WVListProps.md#aria-valuemin)
+- [aria-valuenow](WVListProps.md#aria-valuenow)
+- [aria-valuetext](WVListProps.md#aria-valuetext)
 
 ## Properties
 
@@ -92,7 +91,7 @@ Elements rendered by this component.
 
 #### Defined in
 
-[src/react/VList.tsx:129](https://github.com/inokawa/virtua/blob/579892c/src/react/VList.tsx#L129)
+[src/react/WVList.tsx:91](https://github.com/inokawa/virtua/blob/579892c/src/react/WVList.tsx#L91)
 
 ___
 
@@ -108,7 +107,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/react/VList.tsx:134](https://github.com/inokawa/virtua/blob/579892c/src/react/VList.tsx#L134)
+[src/react/WVList.tsx:96](https://github.com/inokawa/virtua/blob/579892c/src/react/WVList.tsx#L96)
 
 ___
 
@@ -123,7 +122,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/react/VList.tsx:141](https://github.com/inokawa/virtua/blob/579892c/src/react/VList.tsx#L141)
+[src/react/WVList.tsx:103](https://github.com/inokawa/virtua/blob/579892c/src/react/WVList.tsx#L103)
 
 ___
 
@@ -135,7 +134,7 @@ If set, the specified amount of items will be mounted in the initial rendering r
 
 #### Defined in
 
-[src/react/VList.tsx:145](https://github.com/inokawa/virtua/blob/579892c/src/react/VList.tsx#L145)
+[src/react/WVList.tsx:107](https://github.com/inokawa/virtua/blob/579892c/src/react/WVList.tsx#L107)
 
 ___
 
@@ -147,22 +146,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/VList.tsx:149](https://github.com/inokawa/virtua/blob/579892c/src/react/VList.tsx#L149)
-
-___
-
-### mode
-
-• `Optional` **mode**: [`ScrollMode`](../API.md#scrollmode)
-
-Scroll modes that should be set in certain situations.
-
-- `reverse`: This mode will adjust some styles to be suitable for bottom-to-top scrolling.
-- `rtl`: You have to set this mode if you use this component under `direction: rtl` style.
-
-#### Defined in
-
-[src/react/VList.tsx:156](https://github.com/inokawa/virtua/blob/579892c/src/react/VList.tsx#L156)
+[src/react/WVList.tsx:111](https://github.com/inokawa/virtua/blob/579892c/src/react/WVList.tsx#L111)
 
 ___
 
@@ -178,7 +162,7 @@ DefaultWindow
 
 #### Defined in
 
-[src/react/VList.tsx:161](https://github.com/inokawa/virtua/blob/579892c/src/react/VList.tsx#L161)
+[src/react/WVList.tsx:116](https://github.com/inokawa/virtua/blob/579892c/src/react/WVList.tsx#L116)
 
 ___
 
@@ -194,7 +178,7 @@ Customized element type for item element. This element will get [CustomItemCompo
 
 #### Defined in
 
-[src/react/VList.tsx:166](https://github.com/inokawa/virtua/blob/579892c/src/react/VList.tsx#L166)
+[src/react/WVList.tsx:121](https://github.com/inokawa/virtua/blob/579892c/src/react/WVList.tsx#L121)
 
 ___
 
@@ -220,7 +204,7 @@ Callback invoked whenever scroll offset changes.
 
 #### Defined in
 
-[src/react/VList.tsx:171](https://github.com/inokawa/virtua/blob/579892c/src/react/VList.tsx#L171)
+[src/react/WVList.tsx:126](https://github.com/inokawa/virtua/blob/579892c/src/react/WVList.tsx#L126)
 
 ___
 
@@ -240,7 +224,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/react/VList.tsx:175](https://github.com/inokawa/virtua/blob/579892c/src/react/VList.tsx#L175)
+[src/react/WVList.tsx:130](https://github.com/inokawa/virtua/blob/579892c/src/react/WVList.tsx#L130)
 
 ___
 
@@ -269,7 +253,7 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/react/VList.tsx:179](https://github.com/inokawa/virtua/blob/579892c/src/react/VList.tsx#L179)
+[src/react/WVList.tsx:134](https://github.com/inokawa/virtua/blob/579892c/src/react/WVList.tsx#L134)
 
 ___
 
