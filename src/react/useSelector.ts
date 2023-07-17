@@ -17,6 +17,8 @@ export const useSelector = <T>(
       setState(() => getter[refKey]());
     };
     return store._subscribe((sync) => {
+      // TODO batch flushSync to remove shouldGetLatest argument if possible
+      // https://github.com/facebook/react/issues/25191
       if (sync) {
         flushSync(update);
       } else {
