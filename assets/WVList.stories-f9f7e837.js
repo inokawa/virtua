@@ -25,10 +25,10 @@ import{a as n,j as z}from"./jsx-runtime-e162df28.js";import{r as i}from"./index-
 )`},description:`Customized element type for scrollable element. This element will get {@link CustomWindowComponentProps} as props.
 @defaultValue {@link DefaultWindow }`,name:"element",required:!1,type:{name:"ForwardRefExoticComponent<CustomWindowComponentProps & RefAttributes<any>>"}},itemElement:{defaultValue:{value:"div"},description:`Customized element type for item element. This element will get {@link CustomItemComponentProps } as props.
 @defaultValue "div"`,name:"itemElement",required:!1,type:{name:"CustomItemComponentOrElement"}},onScroll:{defaultValue:null,description:`Callback invoked whenever scroll offset changes.
-@param offset Current scrollTop or scrollLeft.`,name:"onScroll",required:!1,type:{name:"(offset: number) => void"}},onScrollStop:{defaultValue:null,description:"Callback invoked when scrolling stops.",name:"onScrollStop",required:!1,type:{name:"() => void"}},onRangeChange:{defaultValue:null,description:"Callback invoked when visible items range changes.",name:"onRangeChange",required:!1,type:{name:"(payload: { start: number; end: number; count: number; }) => void"}}}}}catch{}const W=r=>{const l=[20,40,80,77];return Array.from({length:r}).map((s,a)=>n("div",{style:{height:l[a%4],borderBottom:"solid 1px #ccc",background:"#fff"},children:a},a))},fe=r=>Array.from({length:r}).map((l,s)=>z("div",{style:{width:s%3===0?100:60,borderRight:"solid 1px #ccc",background:"#fff"},children:["Column ",s]},s)),xe={component:p},x={render:()=>n("div",{style:{padding:"200px 200px 800px 200px"},children:n(p,{style:{border:"solid 1px gray"},children:W(1e3)})})},b={render:()=>n("div",{style:{padding:200},children:n(p,{horizontal:!0,style:{height:400,border:"solid 1px gray"},children:fe(1e3)})})},C={render:()=>z("div",{style:{display:"flex",flexDirection:"row"},children:[n("div",{style:{flex:1,display:"flex",paddingTop:600},children:n(p,{style:{margin:10},children:W(1e3)})}),n("div",{style:{flex:3,paddingBottom:600},children:n(p,{style:{margin:10},children:W(1e3)})})]})},S={render:()=>{const r=(g,u=0)=>{const v=[20,40,80,77];return Array.from({length:g}).map((w,c)=>(c+=u,n("div",{style:{height:v[c%4],borderBottom:"solid 1px #ccc",background:"#fff"},children:c},c)))},[l,s]=i.useState(!1),a=async()=>{s(!0),await new Promise(g=>setTimeout(g,1e3)),s(!1)},y=100,[f,d]=i.useState(()=>r(y)),h=i.useRef(-1);return n("div",{style:{padding:"200px 200px 0px 200px"},children:z(p,{onRangeChange:async({end:g,count:u})=>{g+50>u&&h.current<u&&(h.current=u,await a(),d(v=>[...v,...r(y,v.length)]))},children:[f,n(te,{show:l})]})})}};var D,O,P;x.parameters={...x.parameters,docs:{...(D=x.parameters)==null?void 0:D.docs,source:{originalSource:`{
+@param offset Current scrollTop or scrollLeft.`,name:"onScroll",required:!1,type:{name:"(offset: number) => void"}},onScrollStop:{defaultValue:null,description:"Callback invoked when scrolling stops.",name:"onScrollStop",required:!1,type:{name:"() => void"}},onRangeChange:{defaultValue:null,description:"Callback invoked when visible items range changes.",name:"onRangeChange",required:!1,type:{name:"(payload: { start: number; end: number; count: number; }) => void"}}}}}catch{}const W=r=>{const l=[20,40,80,77];return Array.from({length:r}).map((s,a)=>n("div",{style:{height:l[a%4],borderBottom:"solid 1px #ccc",background:"#fff"},children:a},a))},fe=r=>Array.from({length:r}).map((l,s)=>z("div",{style:{width:s%3===0?100:60,borderRight:"solid 1px #ccc",background:"#fff"},children:["Column ",s]},s)),be={component:p},b={render:()=>n("div",{style:{padding:200},children:n(p,{style:{border:"solid 1px gray"},children:W(1e3)})})},C={render:()=>n("div",{style:{padding:200},children:n(p,{horizontal:!0,style:{height:400,border:"solid 1px gray"},children:fe(1e3)})})},x={render:()=>z("div",{style:{display:"flex",flexDirection:"row"},children:[n("div",{style:{flex:1,display:"flex",paddingTop:600},children:n(p,{style:{margin:10},children:W(1e3)})}),n("div",{style:{flex:3,paddingBottom:600},children:n(p,{style:{margin:10},children:W(1e3)})})]})},S={render:()=>{const r=(g,u=0)=>{const v=[20,40,80,77];return Array.from({length:g}).map((w,c)=>(c+=u,n("div",{style:{height:v[c%4],borderBottom:"solid 1px #ccc",background:"#fff"},children:c},c)))},[l,s]=i.useState(!1),a=async()=>{s(!0),await new Promise(g=>setTimeout(g,1e3)),s(!1)},y=100,[f,d]=i.useState(()=>r(y)),h=i.useRef(-1);return n("div",{style:{padding:"200px 200px 0px 200px"},children:z(p,{onRangeChange:async({end:g,count:u})=>{g+50>u&&h.current<u&&(h.current=u,await a(),d(v=>[...v,...r(y,v.length)]))},children:[f,n(te,{show:l})]})})}};var D,O,P;b.parameters={...b.parameters,docs:{...(D=b.parameters)==null?void 0:D.docs,source:{originalSource:`{
   render: () => {
     return <div style={{
-      padding: "200px 200px 800px 200px"
+      padding: 200
     }}>
         <WVList style={{
         border: "solid 1px gray"
@@ -37,7 +37,7 @@ import{a as n,j as z}from"./jsx-runtime-e162df28.js";import{r as i}from"./index-
         </WVList>
       </div>;
   }
-}`,...(P=(O=x.parameters)==null?void 0:O.docs)==null?void 0:P.source}}};var j,F,U;b.parameters={...b.parameters,docs:{...(j=b.parameters)==null?void 0:j.docs,source:{originalSource:`{
+}`,...(P=(O=b.parameters)==null?void 0:O.docs)==null?void 0:P.source}}};var j,F,U;C.parameters={...C.parameters,docs:{...(j=C.parameters)==null?void 0:j.docs,source:{originalSource:`{
   render: () => {
     return <div style={{
       padding: 200
@@ -50,7 +50,7 @@ import{a as n,j as z}from"./jsx-runtime-e162df28.js";import{r as i}from"./index-
         </WVList>
       </div>;
   }
-}`,...(U=(F=b.parameters)==null?void 0:F.docs)==null?void 0:U.source}}};var J,K,Y;C.parameters={...C.parameters,docs:{...(J=C.parameters)==null?void 0:J.docs,source:{originalSource:`{
+}`,...(U=(F=C.parameters)==null?void 0:F.docs)==null?void 0:U.source}}};var J,K,Y;x.parameters={...x.parameters,docs:{...(J=x.parameters)==null?void 0:J.docs,source:{originalSource:`{
   render: () => {
     return <div style={{
       display: "flex",
@@ -79,7 +79,7 @@ import{a as n,j as z}from"./jsx-runtime-e162df28.js";import{r as i}from"./index-
         </div>
       </div>;
   }
-}`,...(Y=(K=C.parameters)==null?void 0:K.docs)==null?void 0:Y.source}}};var G,Q,X;S.parameters={...S.parameters,docs:{...(G=S.parameters)==null?void 0:G.docs,source:{originalSource:`{
+}`,...(Y=(K=x.parameters)==null?void 0:K.docs)==null?void 0:Y.source}}};var G,Q,X;S.parameters={...S.parameters,docs:{...(G=S.parameters)==null?void 0:G.docs,source:{originalSource:`{
   render: () => {
     const createRows = (num: number, offset: number = 0) => {
       const heights = [20, 40, 80, 77];
@@ -124,5 +124,5 @@ import{a as n,j as z}from"./jsx-runtime-e162df28.js";import{r as i}from"./index-
         </WVList>
       </div>;
   }
-}`,...(X=(Q=S.parameters)==null?void 0:Q.docs)==null?void 0:X.source}}};const be=["Default","Horizontal","Complex","InfiniteScrolling"];export{C as Complex,x as Default,b as Horizontal,S as InfiniteScrolling,be as __namedExportsOrder,xe as default};
-//# sourceMappingURL=WVList.stories-5845f600.js.map
+}`,...(X=(Q=S.parameters)==null?void 0:Q.docs)==null?void 0:X.source}}};const Ce=["Default","Horizontal","Complex","InfiniteScrolling"];export{x as Complex,b as Default,C as Horizontal,S as InfiniteScrolling,Ce as __namedExportsOrder,be as default};
+//# sourceMappingURL=WVList.stories-f9f7e837.js.map
