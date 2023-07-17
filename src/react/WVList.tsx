@@ -147,7 +147,7 @@ export const WVList = ({
 
   const [startIndex, endIndex] = useSelector(store, store._getRange);
   const jumpCount = useSelector(store, store._getJumpCount);
-  const scrollSize = useSelector(store, store._getCorrectedScrollSize);
+  const scrollSize = useSelector(store, store._getCorrectedScrollSize, true);
   const rootRef = useRef<HTMLDivElement>(null);
 
   useIsomorphicLayoutEffect(() => {

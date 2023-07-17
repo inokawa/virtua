@@ -288,8 +288,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const [startColIndex, endColIndex] = useSelector(hStore, hStore._getRange);
     const vJumpCount = useSelector(vStore, vStore._getJumpCount);
     const hJumpCount = useSelector(hStore, hStore._getJumpCount);
-    const height = useSelector(vStore, vStore._getCorrectedScrollSize);
-    const width = useSelector(hStore, hStore._getCorrectedScrollSize);
+    const height = useSelector(vStore, vStore._getCorrectedScrollSize, true);
+    const width = useSelector(hStore, hStore._getCorrectedScrollSize, true);
     const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {
