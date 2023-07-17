@@ -60,6 +60,7 @@ export type VirtualStore = {
   _getItemSize(index: number): number;
   _getItemLength(): number;
   _getScrollOffset(): number;
+  _getScrollOffsetMax(): number;
   _getViewportSize(): number;
   _getScrollSize(): number;
   _getCorrectedScrollSize(): number;
@@ -96,6 +97,8 @@ export const createVirtualStore = (
   const subscribers = new Set<Subscriber>();
   const getScrollSize = (): number =>
     computeTotalSize(cache as Writeable<Cache>);
+  const getScrollOffsetMax = () => getScrollSize() - viewportSize;
+
   const flushIsJustResized = (): boolean => {
     const prev = _resized;
     _resized = false;
@@ -160,12 +163,11 @@ export const createVirtualStore = (
     _getScrollOffset() {
       return scrollOffset;
     },
+    _getScrollOffsetMax: getScrollOffsetMax,
     _getViewportSize() {
       return viewportSize;
     },
-    _getScrollSize() {
-      return getScrollSize();
-    },
+    _getScrollSize: getScrollSize,
     _getCorrectedScrollSize() {
       return max(getScrollSize(), viewportSize);
     },
@@ -233,7 +235,7 @@ export const createVirtualStore = (
 
             if (scrollOffset === 0) {
               // Do nothing to stick to the start
-            } else if (getScrollSize() <= scrollOffset + viewportSize) {
+            } else if (scrollOffset >= getScrollOffsetMax()) {
               // Keep end to stick to the end
               diff = sumJumps(allJumps);
             } else {
