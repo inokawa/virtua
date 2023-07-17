@@ -1,5 +1,4 @@
 import {
-  Children,
   useRef,
   useMemo,
   ReactElement,
@@ -7,14 +6,13 @@ import {
   useEffect,
   RefObject,
   useState,
-  ReactFragment,
 } from "react";
 import { VirtualStore, createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useStore } from "./useStore";
 import { exists, max, min } from "../core/utils";
 import { createWindowScroller } from "../core/scroller";
-import { isInvalidElement, refKey } from "./utils";
+import { flattenChildren, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useRefWithUpdate } from "./useRefWithUpdate";
 import { createWindowResizer } from "../core/resizer";
@@ -164,16 +162,7 @@ export const WVList = ({
   ...windowAttrs
 }: WVListProps): ReactElement => {
   // Memoize element array
-  const elements = useMemo(() => {
-    const arr: (ReactElement | ReactFragment | string | number)[] = [];
-    Children.forEach(children, (e) => {
-      if (isInvalidElement(e)) {
-        return;
-      }
-      arr.push(e);
-    });
-    return arr;
-  }, [children]);
+  const elements = useMemo(() => flattenChildren(children), [children]);
   const count = elements.length;
 
   const onScroll = useRefWithUpdate(onScrollProp);
