@@ -6,13 +6,12 @@ import {
   useImperativeHandle,
   ReactNode,
   useEffect,
-  RefObject,
   useState,
 } from "react";
-import { VirtualStore, createVirtualStore } from "../core/store";
+import { createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSelector } from "./useSelector";
-import { exists, max, min } from "../core/utils";
+import { exists, max, min, values } from "../core/utils";
 import { createScroller } from "../core/scroller";
 import { flattenChildren, refKey } from "./utils";
 import { useStatic } from "./useStatic";
@@ -22,63 +21,11 @@ import { WindowComponentAttributes } from "..";
 import {
   CustomWindowComponent,
   CustomWindowComponentProps,
-  DefaultWindow,
-} from "./DefaultWindow";
+  Window as DefaultWindow,
+} from "./Window";
 import { CustomItemComponent, ListItem } from "./ListItem";
 
 export type ScrollMode = "reverse" | "rtl";
-
-const Window = ({
-  _children: children,
-  _ref: ref,
-  _store: store,
-  _element: Element,
-  _scrolling: scrolling,
-  _attrs: attrs,
-  _isHorizontal: horizontal,
-}: {
-  _children: ReactNode;
-  _ref: RefObject<HTMLDivElement>;
-  _store: VirtualStore;
-  _element: CustomWindowComponent;
-  _scrolling: boolean;
-  _attrs: WindowComponentAttributes;
-  _isHorizontal: boolean;
-}) => {
-  const scrollSize = useSelector(store, store._getCorrectedScrollSize);
-
-  return (
-    <Element
-      ref={ref}
-      width={horizontal ? scrollSize : undefined}
-      height={horizontal ? undefined : scrollSize}
-      scrolling={scrolling}
-      attrs={useMemo(
-        () => ({
-          ...attrs,
-          style: {
-            overflow: horizontal ? "auto hidden" : "hidden auto",
-            display: horizontal ? "inline-block" : "block",
-            contain: "strict",
-            // transform: "translate3d(0px, 0px, 0px)",
-            // willChange: "scroll-position",
-            // backfaceVisibility: "hidden",
-            // https://github.com/bvaughn/react-window/issues/395
-            // willChange: "transform",
-            width: "100%",
-            height: "100%",
-            padding: 0,
-            margin: 0,
-            ...attrs.style,
-          },
-        }),
-        [attrs]
-      )}
-    >
-      {children}
-    </Element>
-  );
-};
 
 type CustomItemComponentOrElement =
   | keyof JSX.IntrinsicElements
@@ -154,7 +101,7 @@ export interface VListProps extends WindowComponentAttributes {
   mode?: ScrollMode;
   /**
    * Customized element type for scrollable element. This element will get {@link CustomWindowComponentProps} as props.
-   * @defaultValue {@link DefaultWindow}
+   * @defaultValue {@link Window}
    */
   element?: CustomWindowComponent;
   /**
@@ -202,7 +149,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       initialItemCount,
       horizontal: horizontalProp,
       mode,
-      element = DefaultWindow,
+      element: Window = DefaultWindow,
       itemElement = "div",
       onScroll: onScrollProp,
       onScrollStop: onScrollStopProp,
@@ -251,6 +198,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
 
     const [startIndex, endIndex] = useSelector(store, store._getRange);
     const jumpCount = useSelector(store, store._getJumpCount);
+    const scrollSize = useSelector(store, store._getCorrectedScrollSize);
     const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {
@@ -330,14 +278,34 @@ export const VList = forwardRef<VListHandle, VListProps>(
 
     return (
       <Window
-        _ref={rootRef}
-        _store={store}
-        _element={element}
-        _scrolling={scrolling}
-        _children={items}
-        _attrs={windowAttrs}
-        _isHorizontal={isHorizontal}
-      />
+        ref={rootRef}
+        width={isHorizontal ? scrollSize : undefined}
+        height={isHorizontal ? undefined : scrollSize}
+        scrolling={scrolling}
+        attrs={useMemo(
+          () => ({
+            ...windowAttrs,
+            style: {
+              overflow: isHorizontal ? "auto hidden" : "hidden auto",
+              display: isHorizontal ? "inline-block" : "block",
+              contain: "strict",
+              // transform: "translate3d(0px, 0px, 0px)",
+              // willChange: "scroll-position",
+              // backfaceVisibility: "hidden",
+              // https://github.com/bvaughn/react-window/issues/395
+              // willChange: "transform",
+              width: "100%",
+              height: "100%",
+              padding: 0,
+              margin: 0,
+              ...windowAttrs.style,
+            },
+          }),
+          values(windowAttrs)
+        )}
+      >
+        {items}
+      </Window>
     );
   }
 );

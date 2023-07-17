@@ -13,7 +13,7 @@ export type {
   WindowComponentAttributes,
   CustomWindowComponent,
   CustomWindowComponentProps,
-} from "./react/DefaultWindow";
+} from "./react/Window";
 export type {
   CustomItemComponent,
   CustomItemComponentProps,

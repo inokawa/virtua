@@ -4,13 +4,12 @@ import {
   ReactElement,
   ReactNode,
   useEffect,
-  RefObject,
   useState,
 } from "react";
-import { VirtualStore, createVirtualStore } from "../core/store";
+import { createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSelector } from "./useSelector";
-import { exists, max, min } from "../core/utils";
+import { exists, max, min, values } from "../core/utils";
 import { createWindowScroller } from "../core/scroller";
 import { flattenChildren, refKey } from "./utils";
 import { useStatic } from "./useStatic";
@@ -20,60 +19,9 @@ import { WindowComponentAttributes } from "..";
 import {
   CustomWindowComponent,
   CustomWindowComponentProps,
-  DefaultWindow,
-} from "./DefaultWindow";
+  Window as DefaultWindow,
+} from "./Window";
 import { CustomItemComponent, ListItem } from "./ListItem";
-
-const Window = ({
-  _children: children,
-  _ref: ref,
-  _store: store,
-  _element: Element,
-  _scrolling: scrolling,
-  _attrs: attrs,
-  _isHorizontal: horizontal,
-}: {
-  _children: ReactNode;
-  _ref: RefObject<HTMLDivElement>;
-  _store: VirtualStore;
-  _element: CustomWindowComponent;
-  _scrolling: boolean;
-  _attrs: WindowComponentAttributes;
-  _isHorizontal: boolean;
-}) => {
-  const scrollSize = useSelector(store, store._getCorrectedScrollSize);
-
-  return (
-    <Element
-      ref={ref}
-      width={horizontal ? scrollSize : undefined}
-      height={horizontal ? undefined : scrollSize}
-      scrolling={scrolling}
-      attrs={useMemo(
-        () => ({
-          ...attrs,
-          style: {
-            overflow: "visible",
-            display: horizontal ? "inline-block" : "block",
-            // transform: "translate3d(0px, 0px, 0px)",
-            // willChange: "scroll-position",
-            // backfaceVisibility: "hidden",
-            // https://github.com/bvaughn/react-window/issues/395
-            // willChange: "transform",
-            width: horizontal ? "auto" : "100%",
-            height: horizontal ? "100%" : "auto",
-            padding: 0,
-            margin: 0,
-            ...attrs.style,
-          },
-        }),
-        [attrs]
-      )}
-    >
-      {children}
-    </Element>
-  );
-};
 
 type CustomItemComponentOrElement =
   | keyof JSX.IntrinsicElements
@@ -109,7 +57,7 @@ export interface WVListProps extends WindowComponentAttributes {
   horizontal?: boolean;
   /**
    * Customized element type for scrollable element. This element will get {@link CustomWindowComponentProps} as props.
-   * @defaultValue {@link DefaultWindow}
+   * @defaultValue {@link Window}
    */
   element?: CustomWindowComponent;
   /**
@@ -154,7 +102,7 @@ export const WVList = ({
   initialItemSize,
   initialItemCount,
   horizontal: horizontalProp,
-  element = DefaultWindow,
+  element: Window = DefaultWindow,
   itemElement = "div",
   onScroll: onScrollProp,
   onScrollStop: onScrollStopProp,
@@ -199,6 +147,7 @@ export const WVList = ({
 
   const [startIndex, endIndex] = useSelector(store, store._getRange);
   const jumpCount = useSelector(store, store._getJumpCount);
+  const scrollSize = useSelector(store, store._getCorrectedScrollSize);
   const rootRef = useRef<HTMLDivElement>(null);
 
   useIsomorphicLayoutEffect(() => {
@@ -255,13 +204,32 @@ export const WVList = ({
 
   return (
     <Window
-      _ref={rootRef}
-      _store={store}
-      _element={element}
-      _scrolling={scrolling}
-      _children={items}
-      _attrs={windowAttrs}
-      _isHorizontal={isHorizontal}
-    />
+      ref={rootRef}
+      width={isHorizontal ? scrollSize : undefined}
+      height={isHorizontal ? undefined : scrollSize}
+      scrolling={scrolling}
+      attrs={useMemo(
+        () => ({
+          ...windowAttrs,
+          style: {
+            overflow: "visible",
+            display: isHorizontal ? "inline-block" : "block",
+            // transform: "translate3d(0px, 0px, 0px)",
+            // willChange: "scroll-position",
+            // backfaceVisibility: "hidden",
+            // https://github.com/bvaughn/react-window/issues/395
+            // willChange: "transform",
+            width: isHorizontal ? "auto" : "100%",
+            height: isHorizontal ? "100%" : "auto",
+            padding: 0,
+            margin: 0,
+            ...windowAttrs.style,
+          },
+        }),
+        values(windowAttrs)
+      )}
+    >
+      {items}
+    </Window>
   );
 };
