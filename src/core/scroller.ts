@@ -30,10 +30,7 @@ const createOnWheel = (
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1392460#c34
     if (isHorizontal ? e.deltaX : e.deltaY) {
       const offset = store._getScrollOffset();
-      if (
-        offset > 0 &&
-        offset < store._getScrollSize() - store._getViewportSize()
-      ) {
+      if (offset > 0 && offset < store._getScrollOffsetMax()) {
         onScrollStopped();
       }
     }
@@ -67,9 +64,7 @@ export const createScroller = (
       if (hasNegativeOffsetInRtl(rootElement!)) {
         return -offset;
       } else {
-        return diff
-          ? -offset
-          : store._getScrollSize() - store._getViewportSize() - offset;
+        return diff ? -offset : store._getScrollOffsetMax() - offset;
       }
     }
     return offset;
@@ -82,14 +77,11 @@ export const createScroller = (
     if (!rootElement) return;
 
     const getOffset = (): number => {
-      let offset = getCurrentOffset();
-      const scrollSize = getActualScrollSize();
-      const viewportSize = store._getViewportSize();
-      if (scrollSize - (offset + viewportSize) <= 0) {
-        // Adjust if the offset is over the end, to get correct startIndex.
-        offset = scrollSize - viewportSize;
-      }
-      return offset;
+      // Adjust if the offset is over the end, to get correct startIndex.
+      return min(
+        getCurrentOffset(),
+        getActualScrollSize() - store._getViewportSize()
+      );
     };
 
     while (true) {
