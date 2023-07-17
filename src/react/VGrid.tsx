@@ -12,7 +12,7 @@ import {
 } from "react";
 import { VirtualStore, createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { useStore } from "./useStore";
+import { useSelector } from "./useSelector";
 import { max, min } from "../core/utils";
 import { createScroller } from "../core/scroller";
 import { refKey } from "./utils";
@@ -46,8 +46,8 @@ type CustomCellComponentOrElement =
 type CellProps = {
   _children: ReactNode;
   _resizer: GridResizer;
-  _verticalStore: VirtualStore;
-  _horizontalStore: VirtualStore;
+  _vStore: VirtualStore;
+  _hStore: VirtualStore;
   _rowIndex: number;
   _colIndex: number;
   _element: "div";
@@ -58,8 +58,8 @@ const Cell = memo(
   ({
     _children: children,
     _resizer: resizer,
-    _verticalStore: verticalStore,
-    _horizontalStore: horizontalStore,
+    _vStore: vStore,
+    _hStore: hStore,
     _rowIndex: rowIndex,
     _colIndex: colIndex,
     _element: Element,
@@ -67,34 +67,34 @@ const Cell = memo(
   }: CellProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
-    const top = useStore(
-      verticalStore,
-      () => verticalStore._getItemOffset(rowIndex),
+    const top = useSelector(
+      vStore,
+      () => vStore._getItemOffset(rowIndex),
       true
     );
-    const left = useStore(
-      horizontalStore,
-      () => horizontalStore._getItemOffset(colIndex),
+    const left = useSelector(
+      hStore,
+      () => hStore._getItemOffset(colIndex),
       true
     );
-    const vHide = useStore(
-      verticalStore,
-      () => verticalStore._isUnmeasuredItem(rowIndex),
+    const vHide = useSelector(
+      vStore,
+      () => vStore._isUnmeasuredItem(rowIndex),
       true
     );
-    const hHide = useStore(
-      horizontalStore,
-      () => horizontalStore._isUnmeasuredItem(colIndex),
+    const hHide = useSelector(
+      hStore,
+      () => hStore._isUnmeasuredItem(colIndex),
       true
     );
-    const height = useStore(
-      verticalStore,
-      () => verticalStore._getItemSize(rowIndex),
+    const height = useSelector(
+      vStore,
+      () => vStore._getItemSize(rowIndex),
       true
     );
-    const width = useStore(
-      horizontalStore,
-      () => horizontalStore._getItemSize(colIndex),
+    const width = useSelector(
+      hStore,
+      () => hStore._getItemSize(colIndex),
       true
     );
 
@@ -145,8 +145,8 @@ const Window = ({
   _scrolling: boolean;
   _attrs: WindowComponentAttributes;
 }) => {
-  const height = useStore(vStore, vStore._getCorrectedScrollSize);
-  const width = useStore(hStore, hStore._getCorrectedScrollSize);
+  const height = useSelector(vStore, vStore._getCorrectedScrollSize);
+  const width = useSelector(hStore, hStore._getCorrectedScrollSize);
 
   return (
     <Element
@@ -335,10 +335,10 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     vStore._updateCacheLength(rowCount);
     hStore._updateCacheLength(colCount);
 
-    const [startRowIndex, endRowIndex] = useStore(vStore, vStore._getRange);
-    const [startColIndex, endColIndex] = useStore(hStore, hStore._getRange);
-    const vJumpCount = useStore(vStore, vStore._getJumpCount);
-    const hJumpCount = useStore(hStore, hStore._getJumpCount);
+    const [startRowIndex, endRowIndex] = useSelector(vStore, vStore._getRange);
+    const [startColIndex, endColIndex] = useSelector(hStore, hStore._getRange);
+    const vJumpCount = useSelector(vStore, vStore._getJumpCount);
+    const hJumpCount = useSelector(hStore, hStore._getJumpCount);
     const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {
@@ -425,8 +425,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             <Cell
               key={genKey(i, j)}
               _resizer={resizer}
-              _verticalStore={vStore}
-              _horizontalStore={hStore}
+              _vStore={vStore}
+              _hStore={hStore}
               _rowIndex={i}
               _colIndex={j}
               _element={itemElement as "div"}

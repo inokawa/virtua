@@ -11,7 +11,7 @@ import {
 } from "react";
 import { VirtualStore, createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { useStore } from "./useStore";
+import { useSelector } from "./useSelector";
 import { exists, max, min } from "../core/utils";
 import { createScroller } from "../core/scroller";
 import { flattenChildren, refKey } from "./utils";
@@ -45,7 +45,7 @@ const Window = ({
   _attrs: WindowComponentAttributes;
   _isHorizontal: boolean;
 }) => {
-  const scrollSize = useStore(store, store._getCorrectedScrollSize);
+  const scrollSize = useSelector(store, store._getCorrectedScrollSize);
 
   return (
     <Element
@@ -249,8 +249,8 @@ export const VList = forwardRef<VListHandle, VListProps>(
     // The elements length and cached items length are different just after element is added/removed.
     store._updateCacheLength(count);
 
-    const [startIndex, endIndex] = useStore(store, store._getRange);
-    const jumpCount = useStore(store, store._getJumpCount);
+    const [startIndex, endIndex] = useSelector(store, store._getRange);
+    const jumpCount = useSelector(store, store._getJumpCount);
     const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {

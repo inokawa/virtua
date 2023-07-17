@@ -4,7 +4,7 @@ import { useRefWithUpdate } from "./useRefWithUpdate";
 import { refKey } from "./utils";
 import { VirtualStore } from "../core/store";
 
-export const useStore = <T>(
+export const useSelector = <T>(
   store: VirtualStore,
   getSnapShot: () => T,
   shouldGetLatest?: boolean
