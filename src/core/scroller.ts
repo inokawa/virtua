@@ -39,7 +39,7 @@ const createOnWheel = (
 
 export type Scroller = {
   _initRoot: (rootElement: HTMLElement) => () => void;
-  _getActualScrollSize: () => number;
+  _getScrollSize: () => number;
   _scrollTo: (offset: number) => void;
   _scrollToIndex: (index: number) => void;
   _fixScrollJump: (jump: ScrollJump) => void;
@@ -53,12 +53,6 @@ export const createScroller = (
   let rootElement: HTMLElement | undefined;
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
 
-  const getActualScrollSize = (): number => {
-    if (!rootElement) return 0;
-    // Use element's scrollHeight/scrollWidth instead of stored scrollSize.
-    // This is because stored size may differ from the actual size, for example when a new item is added and not yet measured.
-    return isHorizontal ? rootElement.scrollWidth : rootElement.scrollHeight;
-  };
   const normalizeOffset = (offset: number, diff?: boolean): number => {
     if (isHorizontal && isRtl) {
       if (hasNegativeOffsetInRtl(rootElement!)) {
@@ -78,10 +72,7 @@ export const createScroller = (
 
     const getOffset = (): number => {
       // Adjust if the offset is over the end, to get correct startIndex.
-      return min(
-        getCurrentOffset(),
-        getActualScrollSize() - store._getViewportSize()
-      );
+      return min(getCurrentOffset(), store._getScrollOffsetMax());
     };
 
     while (true) {
@@ -137,7 +128,7 @@ export const createScroller = (
         onScrollStopped._cancel();
       };
     },
-    _getActualScrollSize: getActualScrollSize,
+    _getScrollSize: store._getScrollSize,
     _scrollTo(offset) {
       offset = max(offset, 0);
 

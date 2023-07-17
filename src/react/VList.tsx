@@ -236,7 +236,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
             return store._getScrollOffset();
           },
           get scrollSize() {
-            return scroller._getActualScrollSize();
+            return scroller._getScrollSize();
           },
           get viewportSize() {
             return store._getViewportSize();
