@@ -45,7 +45,7 @@ export default {
 export const Default: StoryObj = {
   render: () => {
     return (
-      <div style={{ padding: "200px 200px 800px 200px" }}>
+      <div style={{ padding: 200 }}>
         <WVList
           style={{
             border: "solid 1px gray",

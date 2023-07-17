@@ -91,3 +91,31 @@ export const scrollToLeft = async (
   });
   await scrollable.waitForElementState("stable");
 };
+
+export const windowScrollToBottom = async (
+  scrollable: ElementHandle<HTMLElement | SVGElement>
+) => {
+  await scrollable.evaluate((e) => {
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+  await scrollable.waitForElementState("stable");
+  // FIXME: scroll twice to reach definitely
+  await scrollable.evaluate((e) => {
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+  await scrollable.waitForElementState("stable");
+};
+
+export const windowScrollToRight = async (
+  scrollable: ElementHandle<HTMLElement | SVGElement>
+) => {
+  await scrollable.evaluate((e) => {
+    window.scrollTo(document.body.scrollWidth, 0);
+  });
+  await scrollable.waitForElementState("stable");
+  // FIXME: scroll twice to reach definitely
+  await scrollable.evaluate((e) => {
+    window.scrollTo(document.body.scrollWidth, 0);
+  });
+  await scrollable.waitForElementState("stable");
+};
