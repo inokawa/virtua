@@ -97,6 +97,7 @@ export const createWindowResizer = (
       cb();
       return () => {
         window.removeEventListener("resize", cb);
+        getResizeObserver().disconnect();
       };
     },
     _observeItem(el: HTMLElement, i: number) {
