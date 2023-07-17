@@ -42,7 +42,7 @@ export default {
   component: WVList,
 } as Meta;
 
-export const Vertical: StoryObj = {
+export const Default: StoryObj = {
   render: () => {
     return (
       <div style={{ padding: "200px 200px 800px 200px" }}>
