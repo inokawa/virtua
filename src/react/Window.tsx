@@ -38,7 +38,7 @@ export interface CustomWindowComponentProps {
   scrolling: boolean;
 }
 
-export const DefaultWindow = forwardRef<any, CustomWindowComponentProps>(
+export const Window = forwardRef<any, CustomWindowComponentProps>(
   ({ children, attrs, width, height, scrolling }, ref): ReactElement => {
     return (
       <div ref={ref} {...attrs}>
@@ -60,4 +60,4 @@ export const DefaultWindow = forwardRef<any, CustomWindowComponentProps>(
   }
 );
 
-export type CustomWindowComponent = typeof DefaultWindow;
+export type CustomWindowComponent = typeof Window;

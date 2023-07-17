@@ -6,14 +6,13 @@ import {
   ReactElement,
   forwardRef,
   ReactNode,
-  RefObject,
   useState,
   useImperativeHandle,
 } from "react";
 import { VirtualStore, createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSelector } from "./useSelector";
-import { max, min } from "../core/utils";
+import { max, min, values } from "../core/utils";
 import { createScroller } from "../core/scroller";
 import { refKey } from "./utils";
 import { useStatic } from "./useStatic";
@@ -23,7 +22,7 @@ import {
   WindowComponentAttributes,
 } from "..";
 import { createGridResizer, GridResizer } from "../core/resizer";
-import { DefaultWindow } from "./DefaultWindow";
+import { Window as DefaultWindow } from "./Window";
 
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
@@ -128,56 +127,6 @@ const Cell = memo(
   }
 );
 
-const Window = ({
-  _children: children,
-  _ref: ref,
-  _vStore: vStore,
-  _hStore: hStore,
-  _element: Element,
-  _scrolling: scrolling,
-  _attrs: attrs,
-}: {
-  _children: ReactNode;
-  _ref: RefObject<HTMLDivElement>;
-  _vStore: VirtualStore;
-  _hStore: VirtualStore;
-  _element: CustomWindowComponent;
-  _scrolling: boolean;
-  _attrs: WindowComponentAttributes;
-}) => {
-  const height = useSelector(vStore, vStore._getCorrectedScrollSize);
-  const width = useSelector(hStore, hStore._getCorrectedScrollSize);
-
-  return (
-    <Element
-      ref={ref}
-      width={width}
-      height={height}
-      scrolling={scrolling}
-      attrs={useMemo(
-        () => ({
-          ...attrs,
-          style: {
-            overflow: "auto",
-            contain: "strict",
-            // transform: "translate3d(0px, 0px, 0px)",
-            // willChange: "scroll-position",
-            // backfaceVisibility: "hidden",
-            width: "100%",
-            height: "100%",
-            padding: 0,
-            margin: 0,
-            ...attrs.style,
-          },
-        }),
-        [attrs]
-      )}
-    >
-      {children}
-    </Element>
-  );
-};
-
 /**
  * Methods of {@link VGrid}.
  */
@@ -268,7 +217,7 @@ export interface VGridProps extends WindowComponentAttributes {
   rtl?: boolean;
   /**
    * Customized element type for scrollable element. This element will get {@link CustomWindowComponentProps} as props.
-   * @defaultValue {@link DefaultWindow}
+   * @defaultValue {@link Window}
    */
   element?: CustomWindowComponent;
   /**
@@ -293,7 +242,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       initialRowCount,
       initialColCount,
       rtl: rtlProp,
-      element = DefaultWindow,
+      element: Window = DefaultWindow,
       cellElement: itemElement = "div",
       ...windowAttrs
     },
@@ -339,6 +288,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const [startColIndex, endColIndex] = useSelector(hStore, hStore._getRange);
     const vJumpCount = useSelector(vStore, vStore._getJumpCount);
     const hJumpCount = useSelector(hStore, hStore._getJumpCount);
+    const height = useSelector(vStore, vStore._getCorrectedScrollSize, true);
+    const width = useSelector(hStore, hStore._getCorrectedScrollSize, true);
     const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {
@@ -448,14 +399,31 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
 
     return (
       <Window
-        _ref={rootRef}
-        _vStore={vStore}
-        _hStore={hStore}
-        _element={element}
-        _scrolling={verticalScrolling || horizontalScrolling}
-        _children={items}
-        _attrs={windowAttrs}
-      />
+        ref={rootRef}
+        width={width}
+        height={height}
+        scrolling={verticalScrolling || horizontalScrolling}
+        attrs={useMemo(
+          () => ({
+            ...windowAttrs,
+            style: {
+              overflow: "auto",
+              contain: "strict",
+              // transform: "translate3d(0px, 0px, 0px)",
+              // willChange: "scroll-position",
+              // backfaceVisibility: "hidden",
+              width: "100%",
+              height: "100%",
+              padding: 0,
+              margin: 0,
+              ...windowAttrs.style,
+            },
+          }),
+          values(windowAttrs)
+        )}
+      >
+        {items}
+      </Window>
     );
   }
 );
