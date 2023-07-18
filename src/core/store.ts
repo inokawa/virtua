@@ -27,6 +27,8 @@ const calculateJumps = (cache: Cache, items: ItemResize[]): ItemJump[] => {
   });
 };
 
+const SUBPIXEL_THRESHOLD = 1.5;
+
 export const SCROLL_IDLE = 0;
 export const SCROLL_DOWN = 1;
 export const SCROLL_UP = 2;
@@ -237,7 +239,7 @@ export const createVirtualStore = (
               // Do nothing to stick to the start
             }
             // Check including subpixels because window.devicePixelRatio can have decimal value
-            else if (scrollOffset > getScrollOffsetMax() - 1) {
+            else if (scrollOffset > getScrollOffsetMax() - SUBPIXEL_THRESHOLD) {
               // Keep end to stick to the end
               diff = sumJumps(allJumps);
             } else {
