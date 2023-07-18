@@ -27,7 +27,7 @@ const calculateJumps = (cache: Cache, items: ItemResize[]): ItemJump[] => {
   });
 };
 
-const SUBPIXEL_THRESHOLD = 1.5;
+const SUBPIXEL_THRESHOLD = 1.5; // 0.5 * 3
 
 export const SCROLL_IDLE = 0;
 export const SCROLL_DOWN = 1;
