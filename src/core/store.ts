@@ -235,7 +235,9 @@ export const createVirtualStore = (
 
             if (scrollOffset === 0) {
               // Do nothing to stick to the start
-            } else if (scrollOffset >= getScrollOffsetMax()) {
+            }
+            // Check including subpixels because window.devicePixelRatio can have decimal value
+            else if (scrollOffset > getScrollOffsetMax() - 1) {
               // Keep end to stick to the end
               diff = sumJumps(allJumps);
             } else {
