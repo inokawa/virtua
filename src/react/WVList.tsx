@@ -66,11 +66,6 @@ export interface WVListProps extends WindowComponentAttributes {
    */
   itemElement?: CustomItemComponentOrElement;
   /**
-   * Callback invoked whenever scroll offset changes.
-   * @param offset Current scrollTop or scrollLeft.
-   */
-  onScroll?: (offset: number) => void;
-  /**
    * Callback invoked when scrolling stops.
    */
   onScrollStop?: () => void;
@@ -104,7 +99,6 @@ export const WVList = ({
   horizontal: horizontalProp,
   element: Window = DefaultWindow,
   itemElement = "div",
-  onScroll: onScrollProp,
   onScrollStop: onScrollStopProp,
   onRangeChange: onRangeChangeProp,
   ...windowAttrs
@@ -113,7 +107,6 @@ export const WVList = ({
   const elements = useMemo(() => flattenChildren(children), [children]);
   const count = elements.length;
 
-  const onScroll = useRefWithUpdate(onScrollProp);
   const onScrollStop = useRefWithUpdate(onScrollStopProp);
 
   const [scrolling, setScrolling] = useState(false);
@@ -130,8 +123,8 @@ export const WVList = ({
           onScrollStop[refKey] && onScrollStop[refKey]();
         }
       },
-      (offset) => {
-        onScroll[refKey] && onScroll[refKey](offset);
+      () => {
+        // TODO remove
       }
     );
 
