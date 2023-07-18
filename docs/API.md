@@ -91,7 +91,7 @@ Virtualized list component controlled by the window scrolling. See [WVListProps]
 
 #### Defined in
 
-[src/react/WVList.tsx:153](https://github.com/inokawa/virtua/blob/579892c/src/react/WVList.tsx#L153)
+[src/react/WVList.tsx:99](https://github.com/inokawa/virtua/blob/321db41/src/react/WVList.tsx#L99)
 
 ## Type Aliases
 
@@ -101,7 +101,7 @@ Virtualized list component controlled by the window scrolling. See [WVListProps]
 
 #### Defined in
 
-[src/react/VList.tsx:31](https://github.com/inokawa/virtua/blob/579892c/src/react/VList.tsx#L31)
+[src/react/VList.tsx:28](https://github.com/inokawa/virtua/blob/321db41/src/react/VList.tsx#L28)
 
 ___
 
@@ -111,7 +111,7 @@ ___
 
 #### Defined in
 
-[src/react/VGrid.tsx:38](https://github.com/inokawa/virtua/blob/579892c/src/react/VGrid.tsx#L38)
+[src/react/VGrid.tsx:37](https://github.com/inokawa/virtua/blob/321db41/src/react/VGrid.tsx#L37)
 
 ___
 
@@ -121,17 +121,17 @@ ___
 
 #### Defined in
 
-[src/react/DefaultWindow.tsx:9](https://github.com/inokawa/virtua/blob/579892c/src/react/DefaultWindow.tsx#L9)
+[src/react/Window.tsx:9](https://github.com/inokawa/virtua/blob/321db41/src/react/Window.tsx#L9)
 
 ___
 
 ### CustomWindowComponent
 
-Ƭ **CustomWindowComponent**: typeof `DefaultWindow`
+Ƭ **CustomWindowComponent**: typeof `Window`
 
 #### Defined in
 
-[src/react/DefaultWindow.tsx:63](https://github.com/inokawa/virtua/blob/579892c/src/react/DefaultWindow.tsx#L63)
+[src/react/Window.tsx:63](https://github.com/inokawa/virtua/blob/321db41/src/react/Window.tsx#L63)
 
 ___
 
@@ -141,4 +141,4 @@ ___
 
 #### Defined in
 
-[src/react/ListItem.tsx:23](https://github.com/inokawa/virtua/blob/579892c/src/react/ListItem.tsx#L23)
+[src/react/ListItem.tsx:23](https://github.com/inokawa/virtua/blob/321db41/src/react/ListItem.tsx#L23)
