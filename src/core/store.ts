@@ -311,7 +311,8 @@ export const createVirtualStore = (
             shouldSync = abs(scrollOffset - payload) > viewportSize;
           }
 
-          scrollOffset = payload;
+          // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
+          scrollOffset = max(0, min(getScrollOffsetMax(), payload));
           mutated = true;
           break;
         }
