@@ -19,7 +19,6 @@ Props of [WVList](../API.md#wvlist).
 - [horizontal](WVListProps.md#horizontal)
 - [element](WVListProps.md#element)
 - [itemElement](WVListProps.md#itemelement)
-- [onScroll](WVListProps.md#onscroll)
 - [onScrollStop](WVListProps.md#onscrollstop)
 - [onRangeChange](WVListProps.md#onrangechange)
 - [className](WVListProps.md#classname)
@@ -91,7 +90,7 @@ Elements rendered by this component.
 
 #### Defined in
 
-[src/react/WVList.tsx:37](https://github.com/inokawa/virtua/blob/321db41/src/react/WVList.tsx#L37)
+[src/react/WVList.tsx:37](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L37)
 
 ___
 
@@ -107,7 +106,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/react/WVList.tsx:42](https://github.com/inokawa/virtua/blob/321db41/src/react/WVList.tsx#L42)
+[src/react/WVList.tsx:42](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L42)
 
 ___
 
@@ -122,7 +121,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/react/WVList.tsx:49](https://github.com/inokawa/virtua/blob/321db41/src/react/WVList.tsx#L49)
+[src/react/WVList.tsx:49](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L49)
 
 ___
 
@@ -134,7 +133,7 @@ If set, the specified amount of items will be mounted in the initial rendering r
 
 #### Defined in
 
-[src/react/WVList.tsx:53](https://github.com/inokawa/virtua/blob/321db41/src/react/WVList.tsx#L53)
+[src/react/WVList.tsx:53](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L53)
 
 ___
 
@@ -146,7 +145,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/WVList.tsx:57](https://github.com/inokawa/virtua/blob/321db41/src/react/WVList.tsx#L57)
+[src/react/WVList.tsx:57](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L57)
 
 ___
 
@@ -162,7 +161,7 @@ Window
 
 #### Defined in
 
-[src/react/WVList.tsx:62](https://github.com/inokawa/virtua/blob/321db41/src/react/WVList.tsx#L62)
+[src/react/WVList.tsx:62](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L62)
 
 ___
 
@@ -178,33 +177,7 @@ Customized element type for item element. This element will get [CustomItemCompo
 
 #### Defined in
 
-[src/react/WVList.tsx:67](https://github.com/inokawa/virtua/blob/321db41/src/react/WVList.tsx#L67)
-
-___
-
-### onScroll
-
-• `Optional` **onScroll**: (`offset`: `number`) => `void`
-
-#### Type declaration
-
-▸ (`offset`): `void`
-
-Callback invoked whenever scroll offset changes.
-
-##### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `offset` | `number` | Current scrollTop or scrollLeft. |
-
-##### Returns
-
-`void`
-
-#### Defined in
-
-[src/react/WVList.tsx:72](https://github.com/inokawa/virtua/blob/321db41/src/react/WVList.tsx#L72)
+[src/react/WVList.tsx:67](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L67)
 
 ___
 
@@ -224,7 +197,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/react/WVList.tsx:76](https://github.com/inokawa/virtua/blob/321db41/src/react/WVList.tsx#L76)
+[src/react/WVList.tsx:71](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L71)
 
 ___
 
@@ -253,7 +226,7 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/react/WVList.tsx:80](https://github.com/inokawa/virtua/blob/321db41/src/react/WVList.tsx#L80)
+[src/react/WVList.tsx:75](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L75)
 
 ___
 
