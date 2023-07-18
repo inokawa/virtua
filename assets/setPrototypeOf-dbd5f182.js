@@ -1,0 +1,2 @@
+function s(){return s=Object.assign?Object.assign.bind():function(t){for(var n=1;n<arguments.length;n++){var r=arguments[n];for(var e in r)Object.prototype.hasOwnProperty.call(r,e)&&(t[e]=r[e])}return t},s.apply(this,arguments)}function a(t){if(t===void 0)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return t}function i(t,n){return i=Object.setPrototypeOf?Object.setPrototypeOf.bind():function(e,o){return e.__proto__=o,e},i(t,n)}export{i as _,a,s as b};
+//# sourceMappingURL=setPrototypeOf-dbd5f182.js.map
