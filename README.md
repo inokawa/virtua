@@ -143,16 +143,16 @@ This library is marked as a Client Component. You can render RSC as children of 
 
 ```tsx
 // page.tsx in App Router of Next.js
-import { VList } from "virtua";
 
 export default async () => {
+  const articles = await fetchArticles();
   return (
     <div>
       <div>This is Server Component</div>
       <VList style={{ height: 300 }}>
-        {Array.from({ length: 1000 }).map((_, i) => (
-          <div key={i} style={{ border: "solid 1px gray", height: 80 }}>
-            {i}
+        {articles.map((a) => (
+          <div key={a.id} style={{ border: "solid 1px gray", height: 80 }}>
+            {a.content}
           </div>
         ))}
       </VList>
