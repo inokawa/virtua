@@ -122,9 +122,6 @@ export const WVList = ({
         if (!isScrolling) {
           onScrollStop[refKey] && onScrollStop[refKey]();
         }
-      },
-      () => {
-        // TODO remove
       }
     );
 

@@ -82,7 +82,7 @@ export const createVirtualStore = (
   initialItemCount: number = 0,
   isReverse: boolean,
   onScrollStateChange: (scrolling: boolean) => void,
-  onScrollOffsetChange: (offset: number) => void
+  onScrollOffsetChange?: (offset: number) => void
 ): VirtualStore => {
   const shouldAutoEstimateItemSize = !itemSize;
   const initialItemSize = itemSize || 40;
@@ -330,7 +330,7 @@ export const createVirtualStore = (
         });
 
         if (type === ACTION_SCROLL) {
-          onScrollOffsetChange(scrollOffset);
+          onScrollOffsetChange && onScrollOffsetChange(scrollOffset);
         }
       }
       if (_scrollToQueue) {
