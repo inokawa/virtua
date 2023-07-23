@@ -6,7 +6,6 @@ import {
   useImperativeHandle,
   ReactNode,
   useEffect,
-  useState,
 } from "react";
 import { createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
@@ -165,7 +164,6 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const onScroll = useRefWithUpdate(onScrollProp);
     const onScrollStop = useRefWithUpdate(onScrollStopProp);
 
-    const [scrolling, setScrolling] = useState(false);
     const [store, resizer, scroller, isHorizontal, isRtl] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
       const _isRtl = mode === "rtl";
@@ -174,12 +172,6 @@ export const VList = forwardRef<VListHandle, VListProps>(
         initialItemSize,
         initialItemCount,
         mode === "reverse",
-        (isScrolling) => {
-          setScrolling(isScrolling);
-          if (!isScrolling) {
-            onScrollStop[refKey] && onScrollStop[refKey]();
-          }
-        },
         (offset) => {
           onScroll[refKey] && onScroll[refKey](offset);
         }
@@ -197,6 +189,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
     store._updateCacheLength(count);
 
     const [startIndex, endIndex] = useSelector(store, store._getRange);
+    const scrolling = useSelector(store, store._getIsScrolling);
     const jumpCount = useSelector(store, store._getJumpCount);
     const scrollSize = useSelector(store, store._getCorrectedScrollSize, true);
     const rootRef = useRef<HTMLDivElement>(null);
@@ -217,6 +210,12 @@ export const VList = forwardRef<VListHandle, VListProps>(
 
       scroller._fixScrollJump(jump);
     }, [jumpCount]);
+
+    useEffect(() => {
+      if (!scrolling) {
+        onScrollStop[refKey] && onScrollStop[refKey]();
+      }
+    }, [scrolling]);
 
     useEffect(() => {
       if (!onRangeChangeProp) return;

@@ -12,7 +12,7 @@ import {
   estimateDefaultItemSize,
 } from "./cache";
 import type { Writeable } from "./types";
-import { abs, exists, max, min } from "./utils";
+import { abs, max, min } from "./utils";
 
 type ItemJump = Readonly<[sizeDiff: number, index: number]>;
 export type ScrollJump = Readonly<number>;
@@ -54,9 +54,10 @@ type Actions =
 
 type Subscriber = (sync?: boolean) => void;
 
-export const UPDATE_SCROLL = 0b001;
-export const UPDATE_SIZE = 0b010;
-export const UPDATE_JUMP = 0b100;
+export const UPDATE_SCROLL = 0b0001;
+export const UPDATE_SIZE = 0b0010;
+export const UPDATE_JUMP = 0b0100;
+export const UPDATE_IS_SCROLLING = 0b1000;
 
 export type VirtualStore = {
   _getRange(): ItemsRange;
@@ -76,6 +77,7 @@ export type VirtualStore = {
   _subscribe(target: number, cb: Subscriber): () => void;
   _update(...action: Actions): void;
   _getScrollDirection(): ScrollDirection;
+  _getIsScrolling(): boolean;
   _updateCacheLength(length: number): void;
 };
 
@@ -84,7 +86,6 @@ export const createVirtualStore = (
   itemSize: number | undefined,
   initialItemCount: number = 0,
   isReverse: boolean,
-  onScrollStateChange: (scrolling: boolean) => void,
   onScrollOffsetChange?: (offset: number) => void
 ): VirtualStore => {
   const shouldAutoEstimateItemSize = !itemSize;
@@ -95,6 +96,7 @@ export const createVirtualStore = (
   let jump: ScrollJump | undefined;
   let cache = resetCache(elementsCount, initialItemSize);
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
+  let _isScrolling = false;
   let _resized = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
 
@@ -108,18 +110,19 @@ export const createVirtualStore = (
     _resized = false;
     return prev;
   };
-  const updateScrollDirection = (dir: ScrollDirection): boolean | undefined => {
+  const updateScrollDirection = (dir: ScrollDirection): boolean => {
     const prev = _scrollDirection;
     _scrollDirection = dir;
     if (_scrollDirection === SCROLL_IDLE) {
-      return false;
+      _isScrolling = false;
+      return true;
     } else if (
       prev === SCROLL_IDLE &&
       (_scrollDirection === SCROLL_DOWN || _scrollDirection === SCROLL_UP)
     ) {
-      return true;
+      return (_isScrolling = true);
     }
-    return;
+    return false;
   };
 
   return {
@@ -195,7 +198,6 @@ export const createVirtualStore = (
     },
     _update(type, payload): void {
       let shouldSync: boolean | undefined;
-      let updatedScrollState: boolean | undefined;
       let mutated = 0;
 
       switch (type) {
@@ -283,9 +285,13 @@ export const createVirtualStore = (
               // Ignore until manual scrolling
               _scrollDirection !== SCROLL_MANUAL
             ) {
-              updatedScrollState = updateScrollDirection(
-                scrollOffset > payload ? SCROLL_UP : SCROLL_DOWN
-              );
+              if (
+                updateScrollDirection(
+                  scrollOffset > payload ? SCROLL_UP : SCROLL_DOWN
+                )
+              ) {
+                mutated += UPDATE_IS_SCROLLING;
+              }
             }
 
             // Ignore manual scroll because it may be called in useEffect/useLayoutEffect and cause the warn below.
@@ -297,13 +303,13 @@ export const createVirtualStore = (
 
           // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
           scrollOffset = max(0, min(getScrollOffsetMax(), payload));
-          mutated = UPDATE_SCROLL;
+          mutated += UPDATE_SCROLL;
           break;
         }
         case ACTION_SCROLL_END: {
-          updatedScrollState = updateScrollDirection(
-            payload ? SCROLL_MANUAL : SCROLL_IDLE
-          );
+          if (updateScrollDirection(payload ? SCROLL_MANUAL : SCROLL_IDLE)) {
+            mutated = UPDATE_IS_SCROLLING;
+          }
           break;
         }
       }
@@ -321,12 +327,12 @@ export const createVirtualStore = (
           onScrollOffsetChange && onScrollOffsetChange(scrollOffset);
         }
       }
-      if (exists(updatedScrollState)) {
-        onScrollStateChange(updatedScrollState);
-      }
     },
     _getScrollDirection() {
       return _scrollDirection;
+    },
+    _getIsScrolling() {
+      return _isScrolling;
     },
     _updateCacheLength(length) {
       // It's ok to be updated in render because states should be calculated consistently regardless cache length

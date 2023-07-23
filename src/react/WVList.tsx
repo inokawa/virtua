@@ -1,11 +1,4 @@
-import {
-  useRef,
-  useMemo,
-  ReactElement,
-  ReactNode,
-  useEffect,
-  useState,
-} from "react";
+import { useRef, useMemo, ReactElement, ReactNode, useEffect } from "react";
 import { createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSelector } from "./useSelector";
@@ -109,20 +102,13 @@ export const WVList = ({
 
   const onScrollStop = useRefWithUpdate(onScrollStopProp);
 
-  const [scrolling, setScrolling] = useState(false);
   const [store, resizer, scroller, isHorizontal] = useStatic(() => {
     const _isHorizontal = !!horizontalProp;
     const _store = createVirtualStore(
       count,
       initialItemSize,
       initialItemCount,
-      false,
-      (isScrolling) => {
-        setScrolling(isScrolling);
-        if (!isScrolling) {
-          onScrollStop[refKey] && onScrollStop[refKey]();
-        }
-      }
+      false
     );
 
     return [
@@ -136,6 +122,7 @@ export const WVList = ({
   store._updateCacheLength(count);
 
   const [startIndex, endIndex] = useSelector(store, store._getRange);
+  const scrolling = useSelector(store, store._getIsScrolling);
   const jumpCount = useSelector(store, store._getJumpCount);
   const scrollSize = useSelector(store, store._getCorrectedScrollSize, true);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -156,6 +143,12 @@ export const WVList = ({
 
     scroller._fixScrollJump(jump);
   }, [jumpCount]);
+
+  useEffect(() => {
+    if (!scrolling) {
+      onScrollStop[refKey] && onScrollStop[refKey]();
+    }
+  }, [scrolling]);
 
   useEffect(() => {
     if (!onRangeChangeProp) return;
