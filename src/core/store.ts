@@ -54,6 +54,10 @@ type Actions =
 
 type Subscriber = (sync?: boolean) => void;
 
+export const UPDATE_SCROLL = 0b001;
+export const UPDATE_SIZE = 0b010;
+export const UPDATE_JUMP = 0b100;
+
 export type VirtualStore = {
   _getRange(): ItemsRange;
   _isUnmeasuredItem(index: number): boolean;
@@ -70,7 +74,7 @@ export type VirtualStore = {
   _flushJump(): ScrollJump | undefined;
   _getItemIndexForScrollTo(offset: number): number;
   _waitForScrollDestinationItemsMeasured(): Promise<void>;
-  _subscribe(cb: Subscriber): () => void;
+  _subscribe(target: number, cb: Subscriber): () => void;
   _update(...action: Actions): void;
   _getScrollDirection(): ScrollDirection;
   _updateCacheLength(length: number): void;
@@ -96,7 +100,7 @@ export const createVirtualStore = (
   let _prevRange: ItemsRange = [0, initialItemCount];
   let _scrollToQueue: [() => void, () => void] | undefined;
 
-  const subscribers = new Set<Subscriber>();
+  const subscribers = new Set<[number, Subscriber]>();
   const getScrollSize = (): number =>
     computeTotalSize(cache as Writeable<Cache>);
   const getScrollOffsetMax = () => getScrollSize() - viewportSize;
@@ -206,16 +210,17 @@ export const createVirtualStore = (
         timeout(resolveQueue, 250);
       });
     },
-    _subscribe(cb) {
-      subscribers.add(cb);
+    _subscribe(target, cb) {
+      const sub: [number, Subscriber] = [target, cb];
+      subscribers.add(sub);
       return () => {
-        subscribers.delete(cb);
+        subscribers.delete(sub);
       };
     },
     _update(type, payload): void {
       let shouldSync: boolean | undefined;
       let updatedScrollState: boolean | undefined;
-      let mutated = false;
+      let mutated = 0;
 
       switch (type) {
         case ACTION_ITEM_RESIZE: {
@@ -255,6 +260,7 @@ export const createVirtualStore = (
           if (diff) {
             jump = diff;
             jumpCount++;
+            mutated += UPDATE_JUMP;
           }
 
           // Update item sizes
@@ -274,12 +280,14 @@ export const createVirtualStore = (
           ) {
             estimateDefaultItemSize(cache as Writeable<Cache>);
           }
-
-          _resized = shouldSync = mutated = true;
+          mutated += UPDATE_SIZE;
+          _resized = shouldSync = true;
           break;
         }
         case ACTION_WINDOW_RESIZE: {
-          mutated = viewportSize !== payload;
+          if (viewportSize !== payload) {
+            mutated = UPDATE_SIZE;
+          }
           viewportSize = payload;
           break;
         }
@@ -313,7 +321,7 @@ export const createVirtualStore = (
 
           // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
           scrollOffset = max(0, min(getScrollOffsetMax(), payload));
-          mutated = true;
+          mutated = UPDATE_SCROLL;
           break;
         }
         case ACTION_SCROLL_END: {
@@ -325,7 +333,11 @@ export const createVirtualStore = (
       }
 
       if (mutated) {
-        subscribers.forEach((cb) => {
+        subscribers.forEach(([target, cb]) => {
+          // Early return to skip React's computation
+          if (!(mutated & target)) {
+            return;
+          }
           cb(shouldSync);
         });
 
