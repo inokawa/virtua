@@ -12,7 +12,7 @@ import {
   estimateDefaultItemSize,
 } from "./cache";
 import type { Writeable } from "./types";
-import { abs, exists, max, min, timeout } from "./utils";
+import { abs, exists, max, min } from "./utils";
 
 type ItemJump = Readonly<[sizeDiff: number, index: number]>;
 export type ScrollJump = Readonly<number>;
@@ -73,7 +73,6 @@ export type VirtualStore = {
   _getJumpCount(): number;
   _flushJump(): ScrollJump | undefined;
   _getItemIndexForScrollTo(offset: number): number;
-  _waitForScrollDestinationItemsMeasured(): Promise<void>;
   _subscribe(target: number, cb: Subscriber): () => void;
   _update(...action: Actions): void;
   _getScrollDirection(): ScrollDirection;
@@ -98,7 +97,6 @@ export const createVirtualStore = (
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
   let _resized = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
-  let _scrollToQueue: [() => void, () => void] | undefined;
 
   const subscribers = new Set<[number, Subscriber]>();
   const getScrollSize = (): number =>
@@ -187,28 +185,6 @@ export const createVirtualStore = (
     },
     _getItemIndexForScrollTo(offset) {
       return findStartIndexWithOffset(cache, offset, 0, 0);
-    },
-    _waitForScrollDestinationItemsMeasured() {
-      if (_scrollToQueue) {
-        // Cancel waiting scrollTo
-        _scrollToQueue[1]();
-      }
-      // The measurement will be done asynchronously and the timing is not predictable so we use promise.
-      // For example, ResizeObserver may not fire when window is not visible.
-      return new Promise((resolve, reject) => {
-        let resolved: boolean | undefined = false;
-
-        const resolveQueue = () => {
-          if (resolved) return;
-          resolved = true;
-          resolve();
-          _scrollToQueue = undefined;
-        };
-        _scrollToQueue = [resolveQueue, reject];
-
-        // In some specific situation with VGrid, the promise never resolved so we cancel it if timed out.
-        timeout(resolveQueue, 250);
-      });
     },
     _subscribe(target, cb) {
       const sub: [number, Subscriber] = [target, cb];
@@ -343,11 +319,6 @@ export const createVirtualStore = (
 
         if (type === ACTION_SCROLL) {
           onScrollOffsetChange && onScrollOffsetChange(scrollOffset);
-        }
-      }
-      if (_scrollToQueue) {
-        if (type === ACTION_ITEM_RESIZE) {
-          _scrollToQueue[0]();
         }
       }
       if (exists(updatedScrollState)) {

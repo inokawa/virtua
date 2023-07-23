@@ -6,8 +6,9 @@ import {
   VirtualStore,
   SCROLL_IDLE,
   ACTION_SCROLL_END,
+  UPDATE_SIZE,
 } from "./store";
-import { debounce, throttle, max, min } from "./utils";
+import { debounce, throttle, max, min, timeout } from "./utils";
 
 // Infer scroll state also from wheel events
 // Sometimes scroll events do not fire when frame dropped even if the visual have been already scrolled
@@ -51,6 +52,7 @@ export const createScroller = (
   isRtl: boolean
 ): Scroller => {
   let rootElement: HTMLElement | undefined;
+  let scrollToQueue: [() => void, () => void] | undefined;
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
 
   const getActualScrollSize = (): number => {
@@ -93,12 +95,37 @@ export const createScroller = (
         break;
       }
 
+      if (scrollToQueue) {
+        // Cancel waiting scrollTo
+        scrollToQueue[1]();
+      }
+
+      // Wait for the scroll destination items to be measured.
+      const unsubscribe = store._subscribe(UPDATE_SIZE, () => {
+        scrollToQueue && scrollToQueue[0]();
+      });
       try {
-        // Wait for the scroll destination items to be measured.
-        await store._waitForScrollDestinationItemsMeasured();
+        // The measurement will be done asynchronously and the timing is not predictable so we use promise.
+        // For example, ResizeObserver may not fire when window is not visible.
+        await new Promise<void>((resolve, reject) => {
+          let resolved = false;
+
+          const resolveQueue = () => {
+            if (resolved) return;
+            resolved = true;
+            resolve();
+            scrollToQueue = undefined;
+          };
+          scrollToQueue = [resolveQueue, reject];
+
+          // In some specific situation with VGrid, the promise never resolved so we cancel it if timed out.
+          timeout(resolveQueue, 250);
+        });
       } catch (e) {
         // canceled
         return;
+      } finally {
+        unsubscribe();
       }
     }
 
