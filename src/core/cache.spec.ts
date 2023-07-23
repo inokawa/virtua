@@ -10,7 +10,14 @@ import {
   hasUnmeasuredItemsInRange,
 } from "./cache";
 import type { Writeable } from "./types";
-import { range } from "./utils";
+
+const range = <T>(length: number, cb: (i: number) => T): T[] => {
+  const array: T[] = [];
+  for (let i = 0; i < length; i++) {
+    array.push(cb(i));
+  }
+  return array;
+};
 
 const sum = (cache: readonly number[]): number => {
   return cache.reduce((acc, c) => acc + c, 0);

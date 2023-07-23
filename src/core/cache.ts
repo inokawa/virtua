@@ -1,5 +1,5 @@
 import type { DeepReadonly, Writeable } from "./types";
-import { exists, max, median, min, range } from "./utils";
+import { exists, max, median, min } from "./utils";
 
 export const UNCACHED = -1;
 
@@ -138,29 +138,28 @@ export const resetCache = (
   itemSize: number,
   cache?: Cache
 ): Cache => {
+  const sizes: number[] = [];
+  const offsets: number[] = [];
+  for (let i = 0; i < length; i++) {
+    const size = cache && cache._sizes[i];
+    sizes.push(exists(size) ? size : UNCACHED);
+
+    if (i === 0) {
+      // first offset must be 0
+      offsets.push(0);
+    } else {
+      const offset = cache && cache._offsets[i];
+      offsets.push(exists(offset) ? offset : UNCACHED);
+    }
+  }
+
   return {
     _defaultItemSize: cache ? cache._defaultItemSize : itemSize,
     _length: length,
     _measuredOffsetIndex: cache
       ? min(cache._measuredOffsetIndex, length - 1)
       : 0,
-    _sizes: range(length, (i) => {
-      const size = cache && cache._sizes[i];
-      if (exists(size)) {
-        return size;
-      }
-      return UNCACHED;
-    }),
-    _offsets: range(length, (i) => {
-      if (i === 0) {
-        // first offset must be 0
-        return 0;
-      }
-      const offset = cache && cache._offsets[i];
-      if (exists(offset)) {
-        return offset;
-      }
-      return UNCACHED;
-    }),
+    _sizes: sizes,
+    _offsets: offsets,
   };
 };
