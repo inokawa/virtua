@@ -7,8 +7,13 @@ export const timeout = setTimeout;
 
 export const exists = <T>(v: T): v is Exclude<T, null | undefined> => v != null;
 
-export const range = <T>(length: number, cb: (i: number) => T): T[] =>
-  Array.from({ length }, (_, i) => cb(i));
+export const range = <T>(length: number, cb: (i: number) => T): T[] => {
+  const array: T[] = [];
+  for (let i = 0; i < length; i++) {
+    array.push(cb(i));
+  }
+  return array;
+};
 
 export const median = (arr: number[]): number => {
   const s = [...arr].sort((a, b) => a - b);
