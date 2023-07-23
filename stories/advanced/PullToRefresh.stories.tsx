@@ -42,7 +42,7 @@ export const Default: StoryObj = {
   render: () => {
     const refreshItems = () =>
       Array.from({ length: 1000 }, () => ({
-        id: faker.datatype.number(),
+        id: faker.number.int(),
       }));
 
     const [items, setItems] = useState(refreshItems);
