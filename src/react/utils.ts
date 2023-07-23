@@ -13,3 +13,5 @@ export const flattenChildren = (children: ReactNode) => {
   });
   return arr;
 };
+
+export type MayHaveKey = { key?: React.Key };

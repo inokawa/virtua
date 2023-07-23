@@ -13,7 +13,7 @@ import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSelector } from "./useSelector";
 import { exists, max, min, values } from "../core/utils";
 import { createScroller } from "../core/scroller";
-import { flattenChildren, refKey } from "./utils";
+import { MayHaveKey, flattenChildren, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useRefWithUpdate } from "./useRefWithUpdate";
 import { createResizer } from "../core/resizer";
@@ -261,7 +261,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
         if (exists(e)) {
           res.push(
             <ListItem
-              key={(e as { key?: ReactElement["key"] })?.key || i}
+              key={(e as MayHaveKey).key || i}
               _resizer={resizer}
               _store={store}
               _index={i}
