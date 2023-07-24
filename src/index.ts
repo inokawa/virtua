@@ -18,3 +18,4 @@ export type {
   CustomItemComponent,
   CustomItemComponentProps,
 } from "./react/ListItem";
+export type { VirtualizableElement } from "./react/utils";

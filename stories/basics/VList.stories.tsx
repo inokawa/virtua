@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, {
+  ReactElement,
   forwardRef,
   startTransition,
   useEffect,
@@ -236,7 +237,7 @@ export const InfiniteScrolling: StoryObj = {
   render: () => {
     const createRows = (num: number, offset: number = 0) => {
       const heights = [20, 40, 80, 77];
-      return Array.from({ length: num }).map((_, i) => {
+      return Array.from({ length: num }).map((_, i): ReactElement => {
         i += offset;
         return (
           <div
@@ -492,7 +493,9 @@ export const Ul: StoryObj = {
           itemElement={Li}
           overscan={20}
         >
-          {Array.from({ length: 1000 }).map((_, i) => i)}
+          {Array.from({ length: 1000 }).map((_, i) => (
+            <>{i}</>
+          ))}
         </VList>
       </div>
     );

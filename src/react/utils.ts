@@ -1,17 +1,29 @@
-import { Children, ReactElement, ReactFragment, ReactNode } from "react";
-import { exists } from "../core/utils";
+import { ReactElement } from "react";
 
 export const refKey = "current";
 
-export const flattenChildren = (children: ReactNode) => {
-  const arr: (ReactElement | ReactFragment | string | number)[] = [];
-  Children.forEach(children, (e) => {
-    if (!exists(e) || typeof e === "boolean") {
-      return;
-    }
-    arr.push(e);
+export type VirtualizableElement = ReactElement | VirtualizableElement[];
+
+const forEach = (e: VirtualizableElement, cb: (e: ReactElement) => void) => {
+  if (Array.isArray(e)) {
+    (e as VirtualizableElement[]).forEach((e) => {
+      forEach(e, cb);
+    });
+  } else {
+    cb(e as Exclude<VirtualizableElement, Array<any>>);
+  }
+};
+
+// HACK: wip
+export const flattenChildren = (
+  children: VirtualizableElement
+): ReactElement[] => {
+  const elements: ReactElement[] = [];
+
+  forEach(children, (e) => {
+    elements.push(e);
   });
-  return arr;
+  return elements;
 };
 
 export type MayHaveKey = { key?: React.Key };

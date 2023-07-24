@@ -4,7 +4,6 @@ import {
   ReactElement,
   forwardRef,
   useImperativeHandle,
-  ReactNode,
   useEffect,
   useState,
 } from "react";
@@ -13,7 +12,12 @@ import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSelector } from "./useSelector";
 import { exists, max, min, values } from "../core/utils";
 import { createScroller } from "../core/scroller";
-import { MayHaveKey, flattenChildren, refKey } from "./utils";
+import {
+  MayHaveKey,
+  VirtualizableElement,
+  flattenChildren,
+  refKey,
+} from "./utils";
 import { useStatic } from "./useStatic";
 import { useRefWithUpdate } from "./useRefWithUpdate";
 import { createResizer } from "../core/resizer";
@@ -71,7 +75,7 @@ export interface VListProps extends WindowComponentAttributes {
   /**
    * Elements rendered by this component.
    */
-  children: ReactNode;
+  children: VirtualizableElement;
   /**
    * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
