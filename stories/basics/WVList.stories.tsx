@@ -95,8 +95,32 @@ export const Complex: StoryObj = {
               margin: 10,
             }}
           >
-            {createRows(1000)}
+            {Array.from({ length: 1000 }).map((_, i) => {
+              return (
+                <div
+                  key={i}
+                  style={{
+                    height: 200,
+                    borderRadius: 8,
+                    margin: 16,
+                    background: "#fff",
+                  }}
+                >
+                  {i}
+                </div>
+              );
+            })}
           </WVList>
+        </div>
+        <div style={{ flex: 2, padding: 20, paddingTop: 300 }}>
+          <div
+            style={{
+              top: 0,
+              height: 400,
+              position: "sticky",
+              background: "white",
+            }}
+          ></div>
         </div>
       </div>
     );
