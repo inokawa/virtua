@@ -27,6 +27,7 @@ const calculateJumps = (cache: Cache, items: ItemResize[]): ItemJump[] => {
   });
 };
 
+// Scroll offset and sizes can have sub-pixel value if window.devicePixelRatio has decimal value
 const SUBPIXEL_THRESHOLD = 1.5; // 0.5 * 3
 
 export const SCROLL_IDLE = 0;
@@ -218,9 +219,10 @@ export const createVirtualStore = (
 
             if (scrollOffset === 0) {
               // Do nothing to stick to the start
-            }
-            // Check including subpixels because window.devicePixelRatio can have decimal value
-            else if (scrollOffset > getScrollOffsetMax() - SUBPIXEL_THRESHOLD) {
+            } else if (
+              scrollOffset >
+              getScrollOffsetMax() - SUBPIXEL_THRESHOLD
+            ) {
               // Keep end to stick to the end
               diff = sumJumps(allJumps);
             } else {
@@ -262,9 +264,9 @@ export const createVirtualStore = (
         }
         case ACTION_WINDOW_RESIZE: {
           if (viewportSize !== payload) {
+            viewportSize = payload;
             mutated = UPDATE_SIZE;
           }
-          viewportSize = payload;
           break;
         }
         case ACTION_SCROLL:
