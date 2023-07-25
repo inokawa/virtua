@@ -14,7 +14,7 @@ export default {
 } as Meta;
 
 const Skeleton = () => {
-  return <Facebook />;
+  return <Facebook style={{ height: "90%" }} />;
 };
 
 const Loaded = () => {

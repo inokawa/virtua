@@ -143,14 +143,12 @@ export const Default: StoryObj = {
       const now = new Date();
       const months = [now];
 
-      Array.from({ length: 1000 }).reduce<Date[]>((acc, _, i) => {
-        acc.unshift(getFirstDateOfPrevMonth(acc[0]));
-        return acc;
-      }, months);
-      Array.from({ length: 1000 }).reduce<Date[]>((acc, _) => {
-        acc.push(getFirstDateOfNextMonth(acc[acc.length - 1]));
-        return acc;
-      }, months);
+      Array.from({ length: 1000 }).forEach(() => {
+        months.unshift(getFirstDateOfPrevMonth(months[0]));
+      });
+      Array.from({ length: 1000 }).forEach(() => {
+        months.push(getFirstDateOfNextMonth(months[months.length - 1]));
+      });
 
       return [
         [now.getFullYear(), now.getMonth(), now.getDate()],
