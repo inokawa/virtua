@@ -3,6 +3,7 @@ import { flushSync } from "react-dom";
 import { useRefWithUpdate } from "./useRefWithUpdate";
 import { refKey } from "./utils";
 import {
+  UPDATE_IS_SCROLLING,
   UPDATE_JUMP,
   UPDATE_SCROLL,
   UPDATE_SIZE,
@@ -25,6 +26,8 @@ export const useSelector = <T>(
       target = UPDATE_SIZE;
     } else if (getSnapShot === store._getJumpCount) {
       target = UPDATE_JUMP;
+    } else if (getSnapShot === store._getIsScrolling) {
+      target = UPDATE_IS_SCROLLING;
     } else {
       // Others will be item subscribers
       target = UPDATE_SIZE;

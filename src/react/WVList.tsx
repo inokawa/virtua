@@ -4,7 +4,6 @@ import {
   ReactElement,
   ReactNode,
   useEffect,
-  useState,
   forwardRef,
   useImperativeHandle,
 } from "react";
@@ -130,7 +129,6 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
 
     const onScrollStop = useRefWithUpdate(onScrollStopProp);
 
-    const [scrolling, setScrolling] = useState(false);
     const [store, resizer, scroller, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
       const _store = createVirtualStore(
@@ -138,12 +136,6 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
         initialItemSize,
         initialItemCount,
         false,
-        (isScrolling) => {
-          setScrolling(isScrolling);
-          if (!isScrolling) {
-            onScrollStop[refKey] && onScrollStop[refKey]();
-          }
-        },
         cache
       );
 
@@ -158,6 +150,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
     store._updateCacheLength(count);
 
     const [startIndex, endIndex] = useSelector(store, store._getRange);
+    const scrolling = useSelector(store, store._getIsScrolling);
     const jumpCount = useSelector(store, store._getJumpCount);
     const scrollSize = useSelector(store, store._getCorrectedScrollSize, true);
     const rootRef = useRef<HTMLDivElement>(null);
@@ -178,6 +171,12 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
 
       scroller._fixScrollJump(jump);
     }, [jumpCount]);
+
+    useEffect(() => {
+      if (!scrolling) {
+        onScrollStop[refKey] && onScrollStop[refKey]();
+      }
+    }, [scrolling]);
 
     useEffect(() => {
       if (!onRangeChangeProp) return;
