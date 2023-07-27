@@ -11,7 +11,7 @@ import {
   hasUnmeasuredItemsInRange,
   estimateDefaultItemSize,
 } from "./cache";
-import type { Writeable } from "./types";
+import type { CacheSnapshot, Writeable } from "./types";
 import { abs, exists, max, min } from "./utils";
 
 type ItemJump = Readonly<[sizeDiff: number, index: number]>;
@@ -60,6 +60,7 @@ export const UPDATE_SIZE = 0b010;
 export const UPDATE_JUMP = 0b100;
 
 export type VirtualStore = {
+  _getCache(): CacheSnapshot;
   _getRange(): ItemsRange;
   _isUnmeasuredItem(index: number): boolean;
   _hasUnmeasuredItemsInRange(startIndex: number): boolean;
@@ -86,6 +87,7 @@ export const createVirtualStore = (
   initialItemCount: number = 0,
   isReverse: boolean,
   onScrollStateChange: (scrolling: boolean) => void,
+  cacheSnapshot?: CacheSnapshot,
   onScrollOffsetChange?: (offset: number) => void
 ): VirtualStore => {
   const shouldAutoEstimateItemSize = !itemSize;
@@ -94,7 +96,9 @@ export const createVirtualStore = (
   let scrollOffset = 0;
   let jumpCount = 0;
   let jump: ScrollJump = 0;
-  let cache = resetCache(elementsCount, initialItemSize);
+  let cache =
+    (cacheSnapshot as unknown as Cache | undefined) ??
+    resetCache(elementsCount, initialItemSize);
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
   let _resized = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
@@ -124,6 +128,9 @@ export const createVirtualStore = (
   };
 
   return {
+    _getCache() {
+      return JSON.parse(JSON.stringify(cache)) as unknown as CacheSnapshot;
+    },
     _getRange() {
       const [prevStartIndex, prevEndIndex] = _prevRange;
       const prevOffset = computeStartOffset(

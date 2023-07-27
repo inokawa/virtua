@@ -24,6 +24,7 @@ import {
   Window as DefaultWindow,
 } from "./Window";
 import { CustomItemComponent, ListItem } from "./ListItem";
+import { CacheSnapshot } from "../core/types";
 
 export type ScrollMode = "reverse" | "rtl";
 
@@ -35,6 +36,10 @@ type CustomItemComponentOrElement =
  * Methods of {@link VList}.
  */
 export interface VListHandle {
+  /**
+   * Get current {@link CacheSnapshot}.
+   */
+  readonly cache: CacheSnapshot;
   /**
    * Get current scrollTop or scrollLeft.
    */
@@ -100,6 +105,10 @@ export interface VListProps extends WindowComponentAttributes {
    */
   mode?: ScrollMode;
   /**
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VListHandle.cache}.
+   */
+  cache?: CacheSnapshot;
+  /**
    * Customized element type for scrollable element. This element will get {@link CustomWindowComponentProps} as props.
    * @defaultValue {@link Window}
    */
@@ -149,6 +158,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       initialItemCount,
       horizontal: horizontalProp,
       mode,
+      cache,
       element: Window = DefaultWindow,
       itemElement = "div",
       onScroll: onScrollProp,
@@ -180,6 +190,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
             onScrollStop[refKey] && onScrollStop[refKey]();
           }
         },
+        cache,
         (offset) => {
           onScroll[refKey] && onScroll[refKey](offset);
         }
@@ -232,6 +243,9 @@ export const VList = forwardRef<VListHandle, VListProps>(
       ref,
       () => {
         return {
+          get cache() {
+            return store._getCache();
+          },
           get scrollOffset() {
             return store._getScrollOffset();
           },
