@@ -169,13 +169,6 @@ And see [examples](./stories) for more usages.
 
 ## Comparison
 
-### Benchmarks
-
-WIP
-
-Basically by design, this library uses children instead of render prop like other virtual scrollers.
-It reduces rerender during scrolling with [caching element instances](https://github.com/facebook/react/issues/8669#issuecomment-270032204). However it may make component's mount slower if you display million items.
-
 ### Features
 
 |                                                    | [virtua](https://github.com/inokawa/virtua)              | [react-virtuoso](https://github.com/petyosi/react-virtuoso)       | [react-window](https://github.com/bvaughn/react-window)                                            | [react-virtualized](https://github.com/bvaughn/react-virtualized)                                                                                                      | [@tanstack/react-virtual](https://github.com/TanStack/virtual)            | [react-cool-virtual](https://github.com/wellyshen/react-cool-virtual) |
@@ -202,6 +195,13 @@ It reduces rerender during scrolling with [caching element instances](https://gi
 - ✅ - Built-in supported
 - 🟠 - Supported but partial, limited or requires some user custom code
 - ❌ - Not officially supported
+
+### Benchmarks
+
+WIP
+
+Basically by design, this library uses children instead of render prop like other virtual scrollers.
+It reduces rerender during scrolling with [caching element instances](https://github.com/facebook/react/issues/8669#issuecomment-270032204). However it may make component's mount slower if you display million items.
 
 ## Contribute
 
