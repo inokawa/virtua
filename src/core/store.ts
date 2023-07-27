@@ -33,27 +33,25 @@ const SUBPIXEL_THRESHOLD = 1.5; // 0.5 * 3
 export const SCROLL_IDLE = 0;
 export const SCROLL_DOWN = 1;
 export const SCROLL_UP = 2;
-export const SCROLL_MANUAL = 3;
 type ScrollDirection =
   | typeof SCROLL_IDLE
   | typeof SCROLL_DOWN
-  | typeof SCROLL_UP
-  | typeof SCROLL_MANUAL;
+  | typeof SCROLL_UP;
 
 export const ACTION_ITEM_RESIZE = 1;
 export const ACTION_WINDOW_RESIZE = 2;
 export const ACTION_SCROLL = 3;
-export const ACTION_MANUAL_SCROLL = 4;
+export const ACTION_BEFORE_MANUAL_SCROLL = 4;
 export const ACTION_SCROLL_END = 5;
-export const ACTION_MANUAL_SCROLL_END = 6;
+export const ACTION_MANUAL_SCROLL = 6;
 
 type Actions =
   | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
   | [type: typeof ACTION_WINDOW_RESIZE, size: number]
   | [type: typeof ACTION_SCROLL, offset: number]
-  | [type: typeof ACTION_MANUAL_SCROLL, offset: number]
+  | [type: typeof ACTION_BEFORE_MANUAL_SCROLL, offset: number]
   | [type: typeof ACTION_SCROLL_END, dummy?: void]
-  | [type: typeof ACTION_MANUAL_SCROLL_END, dummy?: void];
+  | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void];
 
 type Subscriber = (sync?: boolean) => void;
 
@@ -102,6 +100,7 @@ export const createVirtualStore = (
     (cacheSnapshot as unknown as Cache | undefined) ??
     resetCache(elementsCount, initialItemSize);
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
+  let _isManualScrolling = false;
   let _resized = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
 
@@ -120,10 +119,7 @@ export const createVirtualStore = (
     _scrollDirection = dir;
     if (_scrollDirection === SCROLL_IDLE) {
       return false;
-    } else if (
-      prev === SCROLL_IDLE &&
-      (_scrollDirection === SCROLL_DOWN || _scrollDirection === SCROLL_UP)
-    ) {
+    } else if (prev === SCROLL_IDLE) {
       return true;
     }
     return;
@@ -222,7 +218,7 @@ export const createVirtualStore = (
           // Calculate jump
           if (_scrollDirection === SCROLL_UP) {
             diff = sumJumps(calculateJumps(cache, updated));
-          } else if (_scrollDirection === SCROLL_MANUAL) {
+          } else if (_isManualScrolling) {
             const allJumps = calculateJumps(cache, updated);
             const [startIndex] = _prevRange;
 
@@ -279,7 +275,7 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_SCROLL:
-        case ACTION_MANUAL_SCROLL: {
+        case ACTION_BEFORE_MANUAL_SCROLL: {
           // Skip if offset is not changed
           if (scrollOffset === payload) {
             break;
@@ -292,7 +288,7 @@ export const createVirtualStore = (
             if (
               (_scrollDirection === SCROLL_IDLE || !isJustResized) &&
               // Ignore until manual scrolling
-              _scrollDirection !== SCROLL_MANUAL
+              !_isManualScrolling
             ) {
               updatedScrollState = updateScrollDirection(
                 scrollOffset > payload ? SCROLL_UP : SCROLL_DOWN
@@ -313,10 +309,11 @@ export const createVirtualStore = (
         }
         case ACTION_SCROLL_END: {
           updatedScrollState = updateScrollDirection(SCROLL_IDLE);
+          _isManualScrolling = false;
           break;
         }
-        case ACTION_MANUAL_SCROLL_END: {
-          updatedScrollState = updateScrollDirection(SCROLL_MANUAL);
+        case ACTION_MANUAL_SCROLL: {
+          _isManualScrolling = true;
           break;
         }
       }
