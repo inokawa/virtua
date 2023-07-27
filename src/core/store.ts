@@ -1,6 +1,6 @@
 import {
   findStartIndexWithOffset,
-  resetCache,
+  initCache,
   getItemSize,
   computeTotalSize,
   findEndIndex,
@@ -10,6 +10,7 @@ import {
   setItemSize,
   hasUnmeasuredItemsInRange,
   estimateDefaultItemSize,
+  updateCache,
 } from "./cache";
 import type { CacheSnapshot, Writeable } from "./types";
 import { abs, exists, max, min } from "./utils";
@@ -92,13 +93,13 @@ export const createVirtualStore = (
 ): VirtualStore => {
   const shouldAutoEstimateItemSize = !itemSize;
   const initialItemSize = itemSize || 40;
+  const cache =
+    (cacheSnapshot as unknown as Cache | undefined) ??
+    initCache(elementsCount, initialItemSize);
   let viewportSize = initialItemSize * max(initialItemCount - 1, 0);
   let scrollOffset = 0;
   let jumpCount = 0;
   let jump: ScrollJump = 0;
-  let cache =
-    (cacheSnapshot as unknown as Cache | undefined) ??
-    resetCache(elementsCount, initialItemSize);
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
   let _isManualScrolling = false;
   let _resized = false;
@@ -341,7 +342,7 @@ export const createVirtualStore = (
     _updateCacheLength(length) {
       // It's ok to be updated in render because states should be calculated consistently regardless cache length
       if (cache._length === length) return;
-      cache = resetCache(length, initialItemSize, cache);
+      updateCache(cache as Writeable<Cache>, length);
     },
   };
 };
