@@ -45,13 +45,15 @@ export const ACTION_WINDOW_RESIZE = 2;
 export const ACTION_SCROLL = 3;
 export const ACTION_MANUAL_SCROLL = 4;
 export const ACTION_SCROLL_END = 5;
+export const ACTION_MANUAL_SCROLL_END = 6;
 
 type Actions =
   | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
   | [type: typeof ACTION_WINDOW_RESIZE, size: number]
   | [type: typeof ACTION_SCROLL, offset: number]
   | [type: typeof ACTION_MANUAL_SCROLL, offset: number]
-  | [type: typeof ACTION_SCROLL_END, isManual: boolean];
+  | [type: typeof ACTION_SCROLL_END, dummy?: void]
+  | [type: typeof ACTION_MANUAL_SCROLL_END, dummy?: void];
 
 type Subscriber = (sync?: boolean) => void;
 
@@ -310,9 +312,11 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_SCROLL_END: {
-          updatedScrollState = updateScrollDirection(
-            payload ? SCROLL_MANUAL : SCROLL_IDLE
-          );
+          updatedScrollState = updateScrollDirection(SCROLL_IDLE);
+          break;
+        }
+        case ACTION_MANUAL_SCROLL_END: {
+          updatedScrollState = updateScrollDirection(SCROLL_MANUAL);
           break;
         }
       }

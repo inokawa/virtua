@@ -7,6 +7,7 @@ import {
   SCROLL_IDLE,
   ACTION_SCROLL_END,
   UPDATE_SIZE,
+  ACTION_MANUAL_SCROLL_END,
 } from "./store";
 import { debounce, throttle, max, min, timeout } from "./utils";
 
@@ -131,7 +132,7 @@ export const createScroller = (
 
     // Scroll with the updated value
     rootElement[scrollToKey] = normalizeOffset(getOffset());
-    store._update(ACTION_SCROLL_END, true);
+    store._update(ACTION_MANUAL_SCROLL_END);
   };
 
   return {
@@ -145,7 +146,7 @@ export const createScroller = (
       const onScrollStopped = debounce(() => {
         // Check scroll position once just after scrolling stopped
         syncViewportToScrollPosition();
-        store._update(ACTION_SCROLL_END, false);
+        store._update(ACTION_SCROLL_END);
       }, 150);
 
       const onScroll = () => {
@@ -220,7 +221,7 @@ export const createWindowScroller = (
       const onScrollStopped = debounce(() => {
         // Check scroll position once just after scrolling stopped
         syncViewportToScrollPosition();
-        store._update(ACTION_SCROLL_END, false);
+        store._update(ACTION_SCROLL_END);
       }, 150);
 
       const onScroll = () => {
