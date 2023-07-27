@@ -133,33 +133,42 @@ export const estimateDefaultItemSize = (cache: Writeable<Cache>) => {
       median(measuredSizes);
 };
 
-export const resetCache = (
-  length: number,
-  itemSize: number,
-  cache?: Cache
-): Cache => {
+export const initCache = (length: number, itemSize: number): Cache => {
   const sizes: number[] = [];
   const offsets: number[] = [];
   for (let i = 0; i < length; i++) {
-    const size = cache && cache._sizes[i];
+    sizes.push(UNCACHED);
+    // first offset must be 0
+    offsets.push(i === 0 ? 0 : UNCACHED);
+  }
+
+  return {
+    _defaultItemSize: itemSize,
+    _length: length,
+    _measuredOffsetIndex: 0,
+    _sizes: sizes,
+    _offsets: offsets,
+  };
+};
+
+export const updateCache = (cache: Writeable<Cache>, length: number) => {
+  const sizes: number[] = [];
+  const offsets: number[] = [];
+  for (let i = 0; i < length; i++) {
+    const size = cache._sizes[i];
     sizes.push(exists(size) ? size : UNCACHED);
 
     if (i === 0) {
       // first offset must be 0
       offsets.push(0);
     } else {
-      const offset = cache && cache._offsets[i];
+      const offset = cache._offsets[i];
       offsets.push(exists(offset) ? offset : UNCACHED);
     }
   }
 
-  return {
-    _defaultItemSize: cache ? cache._defaultItemSize : itemSize,
-    _length: length,
-    _measuredOffsetIndex: cache
-      ? min(cache._measuredOffsetIndex, length - 1)
-      : 0,
-    _sizes: sizes,
-    _offsets: offsets,
-  };
+  cache._length = length;
+  cache._measuredOffsetIndex = min(cache._measuredOffsetIndex, length - 1);
+  cache._sizes = sizes;
+  cache._offsets = offsets;
 };
