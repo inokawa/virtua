@@ -3,6 +3,7 @@ import React, {
   forwardRef,
   startTransition,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -11,6 +12,7 @@ import {
   VListHandle,
   CustomItemComponentProps,
   CustomWindowComponentProps,
+  CacheSnapshot,
 } from "../../src";
 import { Spinner } from "./components";
 
@@ -227,6 +229,72 @@ export const ScrollTo: StoryObj = {
         <VList ref={ref} style={{ flex: 1 }}>
           {createRows(LENGTH)}
         </VList>
+      </div>
+    );
+  },
+};
+
+const RestorableList = ({ id }: { id: string }) => {
+  const cacheKey = "list-cache-" + id;
+
+  const ref = useRef<VListHandle>(null);
+
+  const [offset, cache] = useMemo(() => {
+    const serialized = sessionStorage.getItem(cacheKey);
+    if (!serialized) return [];
+    return JSON.parse(serialized) as [number, CacheSnapshot];
+  }, []);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const handle = ref.current;
+
+    if (offset) {
+      handle.scrollTo(offset);
+    }
+
+    return () => {
+      sessionStorage.setItem(
+        cacheKey,
+        JSON.stringify([handle.scrollOffset, handle.cache])
+      );
+    };
+  }, []);
+
+  return (
+    <VList ref={ref} cache={cache} style={{ height: "100vh" }}>
+      {createRows(1000)}
+    </VList>
+  );
+};
+
+export const ScrollRestoration: StoryObj = {
+  render: () => {
+    const [show, setShow] = useState(true);
+    const [selectedId, setSelectedId] = useState("1");
+
+    return (
+      <div>
+        <button
+          onClick={() => {
+            setShow((prev) => !prev);
+          }}
+        >
+          {show ? "hide" : "show"}
+        </button>
+        {["1", "2", "3"].map((id) => (
+          <label key={id}>
+            <input
+              type="radio"
+              checked={selectedId === id}
+              onChange={() => {
+                setSelectedId(id);
+              }}
+            />
+            {id}
+          </label>
+        ))}
+        {show && <RestorableList key={selectedId} id={selectedId} />}
       </div>
     );
   },
