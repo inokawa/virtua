@@ -1,13 +1,13 @@
 import { hasNegativeOffsetInRtl } from "./dom";
 import {
   ACTION_SCROLL,
-  ACTION_MANUAL_SCROLL,
+  ACTION_BEFORE_MANUAL_SCROLL,
   ScrollJump,
   VirtualStore,
   SCROLL_IDLE,
   ACTION_SCROLL_END,
   UPDATE_SIZE,
-  ACTION_MANUAL_SCROLL_END,
+  ACTION_MANUAL_SCROLL,
 } from "./store";
 import { debounce, throttle, max, min, timeout } from "./utils";
 
@@ -90,7 +90,7 @@ export const createScroller = (
     while (true) {
       // Sync viewport to scroll destination
       // In order to scroll to the correct position, mount the items and measure their sizes before scrolling.
-      store._update(ACTION_MANUAL_SCROLL, getOffset());
+      store._update(ACTION_BEFORE_MANUAL_SCROLL, getOffset());
 
       if (!store._hasUnmeasuredItemsInRange(index)) {
         break;
@@ -132,7 +132,7 @@ export const createScroller = (
 
     // Scroll with the updated value
     rootElement[scrollToKey] = normalizeOffset(getOffset());
-    store._update(ACTION_MANUAL_SCROLL_END);
+    store._update(ACTION_MANUAL_SCROLL);
   };
 
   return {
