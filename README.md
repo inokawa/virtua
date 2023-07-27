@@ -174,7 +174,7 @@ And see [examples](./stories) for more usages.
 WIP
 
 Basically by design, this library uses children instead of render prop like other virtual scrollers.
-This can make component's mount slower if you display million items. However it makes it easier to [cache element instances](https://github.com/facebook/react/issues/8669#issuecomment-270032204) to optimize rerender until scrolling.
+It reduces rerender during scrolling with [caching element instances](https://github.com/facebook/react/issues/8669#issuecomment-270032204). However it may make component's mount slower if you display million items.
 
 ### Features
 
