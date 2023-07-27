@@ -17,6 +17,7 @@ Props of [WVList](../API.md#wvlist).
 - [initialItemSize](WVListProps.md#initialitemsize)
 - [initialItemCount](WVListProps.md#initialitemcount)
 - [horizontal](WVListProps.md#horizontal)
+- [cache](WVListProps.md#cache)
 - [element](WVListProps.md#element)
 - [itemElement](WVListProps.md#itemelement)
 - [onScrollStop](WVListProps.md#onscrollstop)
@@ -90,7 +91,7 @@ Elements rendered by this component.
 
 #### Defined in
 
-[src/react/WVList.tsx:37](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L37)
+[src/react/WVList.tsx:49](https://github.com/inokawa/virtua/blob/44078c6/src/react/WVList.tsx#L49)
 
 ___
 
@@ -106,7 +107,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/react/WVList.tsx:42](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L42)
+[src/react/WVList.tsx:54](https://github.com/inokawa/virtua/blob/44078c6/src/react/WVList.tsx#L54)
 
 ___
 
@@ -121,7 +122,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/react/WVList.tsx:49](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L49)
+[src/react/WVList.tsx:61](https://github.com/inokawa/virtua/blob/44078c6/src/react/WVList.tsx#L61)
 
 ___
 
@@ -133,7 +134,7 @@ If set, the specified amount of items will be mounted in the initial rendering r
 
 #### Defined in
 
-[src/react/WVList.tsx:53](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L53)
+[src/react/WVList.tsx:65](https://github.com/inokawa/virtua/blob/44078c6/src/react/WVList.tsx#L65)
 
 ___
 
@@ -145,7 +146,19 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/WVList.tsx:57](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L57)
+[src/react/WVList.tsx:69](https://github.com/inokawa/virtua/blob/44078c6/src/react/WVList.tsx#L69)
+
+___
+
+### cache
+
+• `Optional` **cache**: [`CacheSnapshot`](CacheSnapshot.md)
+
+You can restore cache by passing a [CacheSnapshot](CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [cache](WVListHandle.md#cache).
+
+#### Defined in
+
+[src/react/WVList.tsx:73](https://github.com/inokawa/virtua/blob/44078c6/src/react/WVList.tsx#L73)
 
 ___
 
@@ -161,7 +174,7 @@ Window
 
 #### Defined in
 
-[src/react/WVList.tsx:62](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L62)
+[src/react/WVList.tsx:78](https://github.com/inokawa/virtua/blob/44078c6/src/react/WVList.tsx#L78)
 
 ___
 
@@ -177,7 +190,7 @@ Customized element type for item element. This element will get [CustomItemCompo
 
 #### Defined in
 
-[src/react/WVList.tsx:67](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L67)
+[src/react/WVList.tsx:83](https://github.com/inokawa/virtua/blob/44078c6/src/react/WVList.tsx#L83)
 
 ___
 
@@ -197,7 +210,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/react/WVList.tsx:71](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L71)
+[src/react/WVList.tsx:87](https://github.com/inokawa/virtua/blob/44078c6/src/react/WVList.tsx#L87)
 
 ___
 
@@ -226,7 +239,7 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/react/WVList.tsx:75](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L75)
+[src/react/WVList.tsx:91](https://github.com/inokawa/virtua/blob/44078c6/src/react/WVList.tsx#L91)
 
 ___
 

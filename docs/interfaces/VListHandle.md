@@ -12,6 +12,7 @@ Methods of [VList](../API.md#vlist).
 
 ### Properties
 
+- [cache](VListHandle.md#cache)
 - [scrollOffset](VListHandle.md#scrolloffset)
 - [scrollSize](VListHandle.md#scrollsize)
 - [viewportSize](VListHandle.md#viewportsize)
@@ -36,7 +37,7 @@ Scroll to the item specified by index.
 
 #### Defined in
 
-[src/react/VList.tsx:54](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L54)
+[src/react/VList.tsx:59](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L59)
 
 ___
 
@@ -58,7 +59,7 @@ Scroll to the given offset.
 
 #### Defined in
 
-[src/react/VList.tsx:59](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L59)
+[src/react/VList.tsx:64](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L64)
 
 ___
 
@@ -80,9 +81,21 @@ Scroll by the given offset.
 
 #### Defined in
 
-[src/react/VList.tsx:64](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L64)
+[src/react/VList.tsx:69](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L69)
 
 ## Properties
+
+### cache
+
+• `Readonly` **cache**: [`CacheSnapshot`](CacheSnapshot.md)
+
+Get current [CacheSnapshot](CacheSnapshot.md).
+
+#### Defined in
+
+[src/react/VList.tsx:42](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L42)
+
+___
 
 ### scrollOffset
 
@@ -92,7 +105,7 @@ Get current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/react/VList.tsx:41](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L41)
+[src/react/VList.tsx:46](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L46)
 
 ___
 
@@ -104,7 +117,7 @@ Get current scrollHeight or scrollWidth.
 
 #### Defined in
 
-[src/react/VList.tsx:45](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L45)
+[src/react/VList.tsx:50](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L50)
 
 ___
 
@@ -116,4 +129,4 @@ Get current offsetHeight or offsetWidth.
 
 #### Defined in
 
-[src/react/VList.tsx:49](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L49)
+[src/react/VList.tsx:54](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L54)

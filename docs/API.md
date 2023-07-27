@@ -10,12 +10,14 @@
 
 ### Interfaces
 
+- [CacheSnapshot](interfaces/CacheSnapshot.md)
 - [VListProps](interfaces/VListProps.md)
 - [VListHandle](interfaces/VListHandle.md)
 - [VGridProps](interfaces/VGridProps.md)
 - [VGridHandle](interfaces/VGridHandle.md)
 - [CustomCellComponentProps](interfaces/CustomCellComponentProps.md)
 - [WVListProps](interfaces/WVListProps.md)
+- [WVListHandle](interfaces/WVListHandle.md)
 - [CustomWindowComponentProps](interfaces/CustomWindowComponentProps.md)
 - [CustomItemComponentProps](interfaces/CustomItemComponentProps.md)
 
@@ -75,7 +77,7 @@ ___
 
 ### WVList
 
-▸ **WVList**(`«destructured»`): `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
+▸ **WVList**(`props`): `ReactNode`
 
 Virtualized list component controlled by the window scrolling. See [WVListProps](interfaces/WVListProps.md).
 
@@ -83,15 +85,15 @@ Virtualized list component controlled by the window scrolling. See [WVListProps]
 
 | Name | Type |
 | :------ | :------ |
-| `«destructured»` | [`WVListProps`](interfaces/WVListProps.md) |
+| `props` | [`WVListProps`](interfaces/WVListProps.md) & `RefAttributes`<[`WVListHandle`](interfaces/WVListHandle.md)\> |
 
 #### Returns
 
-`ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
+`ReactNode`
 
 #### Defined in
 
-[src/react/WVList.tsx:94](https://github.com/inokawa/virtua/blob/98fb19f/src/react/WVList.tsx#L94)
+node_modules/@types/react/index.d.ts:386
 
 ## Type Aliases
 
@@ -101,7 +103,7 @@ Virtualized list component controlled by the window scrolling. See [WVListProps]
 
 #### Defined in
 
-[src/react/VList.tsx:28](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L28)
+[src/react/VList.tsx:29](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L29)
 
 ___
 
@@ -111,7 +113,7 @@ ___
 
 #### Defined in
 
-[src/react/VGrid.tsx:37](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VGrid.tsx#L37)
+[src/react/VGrid.tsx:37](https://github.com/inokawa/virtua/blob/44078c6/src/react/VGrid.tsx#L37)
 
 ___
 
@@ -121,7 +123,7 @@ ___
 
 #### Defined in
 
-[src/react/Window.tsx:9](https://github.com/inokawa/virtua/blob/98fb19f/src/react/Window.tsx#L9)
+[src/react/Window.tsx:9](https://github.com/inokawa/virtua/blob/44078c6/src/react/Window.tsx#L9)
 
 ___
 
@@ -131,7 +133,7 @@ ___
 
 #### Defined in
 
-[src/react/Window.tsx:63](https://github.com/inokawa/virtua/blob/98fb19f/src/react/Window.tsx#L63)
+[src/react/Window.tsx:63](https://github.com/inokawa/virtua/blob/44078c6/src/react/Window.tsx#L63)
 
 ___
 
@@ -141,4 +143,4 @@ ___
 
 #### Defined in
 
-[src/react/ListItem.tsx:23](https://github.com/inokawa/virtua/blob/98fb19f/src/react/ListItem.tsx#L23)
+[src/react/ListItem.tsx:23](https://github.com/inokawa/virtua/blob/44078c6/src/react/ListItem.tsx#L23)

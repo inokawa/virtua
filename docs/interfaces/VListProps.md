@@ -18,6 +18,7 @@ Props of [VList](../API.md#vlist).
 - [initialItemCount](VListProps.md#initialitemcount)
 - [horizontal](VListProps.md#horizontal)
 - [mode](VListProps.md#mode)
+- [cache](VListProps.md#cache)
 - [element](VListProps.md#element)
 - [itemElement](VListProps.md#itemelement)
 - [onScroll](VListProps.md#onscroll)
@@ -92,7 +93,7 @@ Elements rendered by this component.
 
 #### Defined in
 
-[src/react/VList.tsx:74](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L74)
+[src/react/VList.tsx:79](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L79)
 
 ___
 
@@ -108,7 +109,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/react/VList.tsx:79](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L79)
+[src/react/VList.tsx:84](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L84)
 
 ___
 
@@ -123,7 +124,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/react/VList.tsx:86](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L86)
+[src/react/VList.tsx:91](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L91)
 
 ___
 
@@ -135,7 +136,7 @@ If set, the specified amount of items will be mounted in the initial rendering r
 
 #### Defined in
 
-[src/react/VList.tsx:90](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L90)
+[src/react/VList.tsx:95](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L95)
 
 ___
 
@@ -147,7 +148,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/VList.tsx:94](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L94)
+[src/react/VList.tsx:99](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L99)
 
 ___
 
@@ -162,7 +163,19 @@ Scroll modes that should be set in certain situations.
 
 #### Defined in
 
-[src/react/VList.tsx:101](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L101)
+[src/react/VList.tsx:106](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L106)
+
+___
+
+### cache
+
+• `Optional` **cache**: [`CacheSnapshot`](CacheSnapshot.md)
+
+You can restore cache by passing a [CacheSnapshot](CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [cache](VListHandle.md#cache).
+
+#### Defined in
+
+[src/react/VList.tsx:110](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L110)
 
 ___
 
@@ -178,7 +191,7 @@ Window
 
 #### Defined in
 
-[src/react/VList.tsx:106](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L106)
+[src/react/VList.tsx:115](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L115)
 
 ___
 
@@ -194,7 +207,7 @@ Customized element type for item element. This element will get [CustomItemCompo
 
 #### Defined in
 
-[src/react/VList.tsx:111](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L111)
+[src/react/VList.tsx:120](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L120)
 
 ___
 
@@ -220,7 +233,7 @@ Callback invoked whenever scroll offset changes.
 
 #### Defined in
 
-[src/react/VList.tsx:116](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L116)
+[src/react/VList.tsx:125](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L125)
 
 ___
 
@@ -240,7 +253,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/react/VList.tsx:120](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L120)
+[src/react/VList.tsx:129](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L129)
 
 ___
 
@@ -269,7 +282,7 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/react/VList.tsx:124](https://github.com/inokawa/virtua/blob/98fb19f/src/react/VList.tsx#L124)
+[src/react/VList.tsx:133](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L133)
 
 ___
 
