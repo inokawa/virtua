@@ -358,14 +358,14 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       };
     }, [children]);
 
-    const startRowIndexWithMargin = max(startRowIndex - overscan, 0);
-    const endRowIndexWithMargin = min(endRowIndex + overscan, rowCount - 1);
-    const startColIndexWithMargin = max(startColIndex - overscan, 0);
-    const endColIndexWithMargin = min(endColIndex + overscan, colCount - 1);
+    const overscanedStartRowIndex = max(startRowIndex - overscan, 0);
+    const overscanedEndRowIndex = min(endRowIndex + overscan, rowCount - 1);
+    const overscanedStartColIndex = max(startColIndex - overscan, 0);
+    const overscanedEndColIndex = min(endColIndex + overscan, colCount - 1);
     const items = useMemo(() => {
       const res: ReactElement[] = [];
-      for (let i = startRowIndexWithMargin; i <= endRowIndexWithMargin; i++) {
-        for (let j = startColIndexWithMargin; j <= endColIndexWithMargin; j++) {
+      for (let i = overscanedStartRowIndex; i <= overscanedEndRowIndex; i++) {
+        for (let j = overscanedStartColIndex; j <= overscanedEndColIndex; j++) {
           res.push(
             <Cell
               key={genKey(i, j)}
@@ -385,10 +385,10 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       return res;
     }, [
       render,
-      startRowIndexWithMargin,
-      endRowIndexWithMargin,
-      startColIndexWithMargin,
-      endColIndexWithMargin,
+      overscanedStartRowIndex,
+      overscanedEndRowIndex,
+      overscanedStartColIndex,
+      overscanedEndColIndex,
     ]);
 
     return (

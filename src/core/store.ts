@@ -94,7 +94,7 @@ export const createVirtualStore = (
   const shouldAutoEstimateItemSize = !itemSize;
   const initialItemSize = itemSize || 40;
   const cache =
-    (cacheSnapshot as unknown as Cache | undefined) ??
+    (cacheSnapshot as unknown as Cache | undefined) ||
     initCache(elementsCount, initialItemSize);
   let viewportSize = initialItemSize * max(initialItemCount - 1, 0);
   let scrollOffset = 0;

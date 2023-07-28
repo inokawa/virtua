@@ -264,11 +264,11 @@ export const VList = forwardRef<VListHandle, VListProps>(
       []
     );
 
-    const startIndexWithMargin = max(startIndex - overscan, 0);
-    const endIndexWithMargin = min(endIndex + overscan, count - 1);
+    const overscanedStartIndex = max(startIndex - overscan, 0);
+    const overscanedEndIndex = min(endIndex + overscan, count - 1);
     const items = useMemo(() => {
       const res: ReactElement[] = [];
-      for (let i = startIndexWithMargin; i <= endIndexWithMargin; i++) {
+      for (let i = overscanedStartIndex; i <= overscanedEndIndex; i++) {
         const e = elements[i];
         // This can be undefined when items are removed
         if (exists(e)) {
@@ -287,7 +287,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
         }
       }
       return res;
-    }, [elements, startIndexWithMargin, endIndexWithMargin]);
+    }, [elements, overscanedStartIndex, overscanedEndIndex]);
 
     return (
       <Window
