@@ -1,5 +1,3 @@
-import { addons } from "@storybook/addons";
+import { addons } from "@storybook/manager-api";
 
-addons.setConfig({
-  showPanel: false,
-});
+addons.setConfig({ panelPosition: "right" });
