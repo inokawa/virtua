@@ -184,10 +184,6 @@ export const VList = forwardRef<VListHandle, VListProps>(
         mode === "reverse",
         cache
       );
-      _store._subscribe(UPDATE_SCROLL_WITH_EVENT, () => {
-        onScroll[refKey] && onScroll[refKey](store._getScrollOffset());
-      });
-
       return [
         _store,
         createResizer(_store, _isHorizontal),
@@ -209,9 +205,13 @@ export const VList = forwardRef<VListHandle, VListProps>(
       const root = rootRef[refKey]!;
       const unobserve = resizer._observeRoot(root);
       const cleanup = scroller._initRoot(root);
+      const cleanupOnScroll = store._subscribe(UPDATE_SCROLL_WITH_EVENT, () => {
+        onScroll[refKey] && onScroll[refKey](store._getScrollOffset());
+      });
       return () => {
         unobserve();
         cleanup();
+        cleanupOnScroll();
       };
     }, []);
 
