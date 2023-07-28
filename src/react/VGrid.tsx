@@ -6,7 +6,6 @@ import {
   ReactElement,
   forwardRef,
   ReactNode,
-  useState,
   useImperativeHandle,
 } from "react";
 import { VirtualStore, createVirtualStore } from "../core/store";
@@ -248,8 +247,6 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     },
     ref
   ): ReactElement => {
-    const [verticalScrolling, setVerticalScrolling] = useState(false);
-    const [horizontalScrolling, setHorizontalScrolling] = useState(false);
     const [vStore, hStore, resizer, vScroller, hScroller, isRtl] = useStatic(
       () => {
         const _isRtl = !!rtlProp;
@@ -257,15 +254,13 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           rowCount,
           cellHeight,
           initialRowCount,
-          false,
-          setVerticalScrolling
+          false
         );
         const _hs = createVirtualStore(
           colCount,
           cellWidth,
           initialColCount,
-          false,
-          setHorizontalScrolling
+          false
         );
         return [
           _vs,
@@ -283,6 +278,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
 
     const [startRowIndex, endRowIndex] = useSelector(vStore, vStore._getRange);
     const [startColIndex, endColIndex] = useSelector(hStore, hStore._getRange);
+    const verticalScrolling = useSelector(vStore, vStore._getIsScrolling);
+    const horizontalScrolling = useSelector(hStore, hStore._getIsScrolling);
     const vJumpCount = useSelector(vStore, vStore._getJumpCount);
     const hJumpCount = useSelector(hStore, hStore._getJumpCount);
     const height = useSelector(vStore, vStore._getCorrectedScrollSize, true);
