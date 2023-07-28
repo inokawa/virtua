@@ -8,7 +8,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { createVirtualStore } from "../core/store";
+import { UPDATE_SCROLL_WITH_EVENT, createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSelector } from "./useSelector";
 import { exists, max, min, values } from "../core/utils";
@@ -190,11 +190,11 @@ export const VList = forwardRef<VListHandle, VListProps>(
             onScrollStop[refKey] && onScrollStop[refKey]();
           }
         },
-        cache,
-        (offset) => {
-          onScroll[refKey] && onScroll[refKey](offset);
-        }
+        cache
       );
+      _store._subscribe(UPDATE_SCROLL_WITH_EVENT, () => {
+        onScroll[refKey] && onScroll[refKey](store._getScrollOffset());
+      });
 
       return [
         _store,

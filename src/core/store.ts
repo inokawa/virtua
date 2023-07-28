@@ -56,9 +56,10 @@ type Actions =
 
 type Subscriber = (sync?: boolean) => void;
 
-export const UPDATE_SCROLL = 0b001;
-export const UPDATE_SIZE = 0b010;
-export const UPDATE_JUMP = 0b100;
+export const UPDATE_SCROLL = 0b0001;
+export const UPDATE_SIZE = 0b0010;
+export const UPDATE_JUMP = 0b0100;
+export const UPDATE_SCROLL_WITH_EVENT = 0b1000;
 
 export type VirtualStore = {
   _getCache(): CacheSnapshot;
@@ -88,8 +89,7 @@ export const createVirtualStore = (
   initialItemCount: number = 0,
   isReverse: boolean,
   onScrollStateChange: (scrolling: boolean) => void,
-  cacheSnapshot?: CacheSnapshot,
-  onScrollOffsetChange?: (offset: number) => void
+  cacheSnapshot?: CacheSnapshot
 ): VirtualStore => {
   const shouldAutoEstimateItemSize = !itemSize;
   const initialItemSize = itemSize || 40;
@@ -301,11 +301,13 @@ export const createVirtualStore = (
             //
             // Update synchronously if scrolled a lot
             shouldSync = abs(scrollOffset - payload) > viewportSize;
+
+            mutated += UPDATE_SCROLL_WITH_EVENT;
           }
 
           // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
           scrollOffset = max(0, min(getScrollOffsetMax(), payload));
-          mutated = UPDATE_SCROLL;
+          mutated += UPDATE_SCROLL;
           break;
         }
         case ACTION_SCROLL_END: {
@@ -327,10 +329,6 @@ export const createVirtualStore = (
           }
           cb(shouldSync);
         });
-
-        if (type === ACTION_SCROLL) {
-          onScrollOffsetChange && onScrollOffsetChange(scrollOffset);
-        }
       }
       if (exists(updatedScrollState)) {
         onScrollStateChange(updatedScrollState);
