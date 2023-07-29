@@ -110,11 +110,6 @@ export const createVirtualStore = (
     computeTotalSize(cache as Writeable<Cache>);
   const getScrollOffsetMax = () => getScrollSize() - viewportSize;
 
-  const flushIsJustResized = (): boolean => {
-    const prev = _resized;
-    _resized = false;
-    return prev;
-  };
   const updateScrollDirection = (dir: ScrollDirection): boolean => {
     const prev = _scrollDirection;
     _scrollDirection = dir;
@@ -285,7 +280,8 @@ export const createVirtualStore = (
           if (type === ACTION_SCROLL) {
             // Skip scroll direction detection just after resizing because it may result in the opposite direction.
             // Scroll events are dispatched enough so it's ok to skip some of them.
-            const isJustResized = flushIsJustResized();
+            const isJustResized = _resized;
+            _resized = false;
             if (
               (_scrollDirection === SCROLL_IDLE || !isJustResized) &&
               // Ignore until manual scrolling
