@@ -139,7 +139,7 @@ export const App = () => {
 
 ### React Server Components (RSC) support
 
-This library is marked as a Client Component. You can render RSC as children of VList.
+This library is marked as a Client Component. You can render RSC as children of VList or WVList.
 
 ```tsx
 // page.tsx in App Router of Next.js

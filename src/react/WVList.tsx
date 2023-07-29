@@ -104,7 +104,7 @@ export interface WVListProps extends WindowComponentAttributes {
 }
 
 /**
- * Virtualized list component controlled by the window scrolling. See {@link WVListProps}.
+ * Virtualized list component controlled by the window scrolling. See {@link WVListProps} and {@link WVListHandle}.
  */
 export const WVList = forwardRef<WVListHandle, WVListProps>(
   (

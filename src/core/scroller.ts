@@ -118,7 +118,7 @@ export const createScroller = (
           };
           scrollToQueue = [resolveQueue, reject];
 
-          // In some specific situation with VGrid, the promise never resolved so we cancel it if timed out.
+          // In some specific situation with VGrid, the promise never resolved so we resolve it if timed out.
           timeout(resolveQueue, 250);
         });
       } catch (e) {

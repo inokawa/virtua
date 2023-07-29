@@ -10,7 +10,7 @@ declare const cacheSymbol: unique symbol;
 /**
  * Serializable cache snapshot.
  *
- * **This is not intended to be modified by users. And it is not guaranteed to work if you pass it to the different version ot this package.**
+ * **This is not intended to be modified by users. And it is not guaranteed to work if you pass it to the different version of this package.**
  */
 export interface CacheSnapshot {
   [cacheSymbol]: never;
