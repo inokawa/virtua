@@ -87,20 +87,16 @@ export interface WVListProps extends WindowComponentAttributes {
   /**
    * Callback invoked when visible items range changes.
    */
-  onRangeChange?: (payload: {
+  onRangeChange?: (
     /**
      * The start index of viewable items.
      */
-    start: number;
+    startIndex: number,
     /**
      * The end index of viewable items.
      */
-    end: number;
-    /**
-     * The total count of items.
-     */
-    count: number;
-  }) => void;
+    endIndex: number
+  ) => void;
 }
 
 /**
@@ -181,11 +177,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
     useEffect(() => {
       if (!onRangeChangeProp) return;
 
-      onRangeChangeProp({
-        start: startIndex,
-        end: endIndex,
-        count,
-      });
+      onRangeChangeProp(startIndex, endIndex);
     }, [startIndex, endIndex]);
 
     useImperativeHandle(

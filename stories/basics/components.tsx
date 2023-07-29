@@ -1,12 +1,12 @@
 import React from "react";
 
-export const Spinner = (props: { show: boolean }) => {
+export const Spinner = () => {
   return (
     <>
       <div
         style={{
           height: 100,
-          display: props.show ? "flex" : "none",
+          display: "flex",
           alignItems: "center",
           justifyContent: "center",
           background: "white",

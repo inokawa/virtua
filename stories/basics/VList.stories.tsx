@@ -331,11 +331,12 @@ export const InfiniteScrolling: StoryObj = {
     const ITEM_BATCH_COUNT = 100;
     const [items, setItems] = useState(() => createRows(ITEM_BATCH_COUNT));
     const fetchedCountRef = useRef(-1);
+    const count = items.length;
 
     return (
       <VList
         style={{ flex: 1 }}
-        onRangeChange={async ({ end, count }) => {
+        onRangeChange={async (_, end) => {
           if (end + 50 > count && fetchedCountRef.current < count) {
             fetchedCountRef.current = count;
             await fetchItems();
@@ -347,8 +348,7 @@ export const InfiniteScrolling: StoryObj = {
         }}
       >
         {items}
-        {/* Now hide spinner without unmounting because onRangeChange is called twice due to item length change */}
-        <Spinner show={fetching} />
+        {fetching && <Spinner />}
       </VList>
     );
   },
@@ -389,7 +389,7 @@ export const Callbacks: StoryObj = {
               setScrolling(false);
             });
           }}
-          onRangeChange={async ({ start, end }) => {
+          onRangeChange={async (start, end) => {
             startTransition(() => {
               setRange([start, end]);
             });
