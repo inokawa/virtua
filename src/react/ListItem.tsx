@@ -8,7 +8,7 @@ import {
 } from "react";
 import { VirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { useSelector } from "./useSelector";
+import { SELECT_ITEM, useSelector } from "./useSelector";
 import { ListResizer } from "../core/resizer";
 import { refKey } from "./utils";
 
@@ -46,8 +46,18 @@ export const ListItem = memo(
   }: ListItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
-    const offset = useSelector(store, () => store._getItemOffset(index), true);
-    const hide = useSelector(store, () => store._isUnmeasuredItem(index), true);
+    const offset = useSelector(
+      store,
+      () => store._getItemOffset(index),
+      SELECT_ITEM,
+      true
+    );
+    const hide = useSelector(
+      store,
+      () => store._isUnmeasuredItem(index),
+      SELECT_ITEM,
+      true
+    );
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(

@@ -10,7 +10,14 @@ import {
 } from "react";
 import { VirtualStore, createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { useSelector } from "./useSelector";
+import {
+  SELECT_IS_SCROLLING,
+  SELECT_ITEM,
+  SELECT_JUMP_COUNT,
+  SELECT_RANGE,
+  SELECT_SCROLL_SIZE,
+  useSelector,
+} from "./useSelector";
 import { max, min, values } from "../core/utils";
 import { createScroller } from "../core/scroller";
 import { refKey } from "./utils";
@@ -68,31 +75,37 @@ const Cell = memo(
     const top = useSelector(
       vStore,
       () => vStore._getItemOffset(rowIndex),
+      SELECT_ITEM,
       true
     );
     const left = useSelector(
       hStore,
       () => hStore._getItemOffset(colIndex),
+      SELECT_ITEM,
       true
     );
     const vHide = useSelector(
       vStore,
       () => vStore._isUnmeasuredItem(rowIndex),
+      SELECT_ITEM,
       true
     );
     const hHide = useSelector(
       hStore,
       () => hStore._isUnmeasuredItem(colIndex),
+      SELECT_ITEM,
       true
     );
     const height = useSelector(
       vStore,
       () => vStore._getItemSize(rowIndex),
+      SELECT_ITEM,
       true
     );
     const width = useSelector(
       hStore,
       () => hStore._getItemSize(colIndex),
+      SELECT_ITEM,
       true
     );
 
@@ -276,14 +289,48 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     vStore._updateCacheLength(rowCount);
     hStore._updateCacheLength(colCount);
 
-    const [startRowIndex, endRowIndex] = useSelector(vStore, vStore._getRange);
-    const [startColIndex, endColIndex] = useSelector(hStore, hStore._getRange);
-    const verticalScrolling = useSelector(vStore, vStore._getIsScrolling);
-    const horizontalScrolling = useSelector(hStore, hStore._getIsScrolling);
-    const vJumpCount = useSelector(vStore, vStore._getJumpCount);
-    const hJumpCount = useSelector(hStore, hStore._getJumpCount);
-    const height = useSelector(vStore, vStore._getCorrectedScrollSize, true);
-    const width = useSelector(hStore, hStore._getCorrectedScrollSize, true);
+    const [startRowIndex, endRowIndex] = useSelector(
+      vStore,
+      vStore._getRange,
+      SELECT_RANGE
+    );
+    const [startColIndex, endColIndex] = useSelector(
+      hStore,
+      hStore._getRange,
+      SELECT_RANGE
+    );
+    const verticalScrolling = useSelector(
+      vStore,
+      vStore._getIsScrolling,
+      SELECT_IS_SCROLLING
+    );
+    const horizontalScrolling = useSelector(
+      hStore,
+      hStore._getIsScrolling,
+      SELECT_IS_SCROLLING
+    );
+    const vJumpCount = useSelector(
+      vStore,
+      vStore._getJumpCount,
+      SELECT_JUMP_COUNT
+    );
+    const hJumpCount = useSelector(
+      hStore,
+      hStore._getJumpCount,
+      SELECT_JUMP_COUNT
+    );
+    const height = useSelector(
+      vStore,
+      vStore._getCorrectedScrollSize,
+      SELECT_SCROLL_SIZE,
+      true
+    );
+    const width = useSelector(
+      hStore,
+      hStore._getCorrectedScrollSize,
+      SELECT_SCROLL_SIZE,
+      true
+    );
     const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {

@@ -10,29 +10,22 @@ import {
   VirtualStore,
 } from "../core/store";
 
+export const SELECT_RANGE = UPDATE_SCROLL + UPDATE_SIZE;
+export const SELECT_SCROLL_SIZE = UPDATE_SIZE;
+export const SELECT_JUMP_COUNT = UPDATE_JUMP;
+export const SELECT_IS_SCROLLING = UPDATE_IS_SCROLLING;
+export const SELECT_ITEM = UPDATE_SIZE;
+
 export const useSelector = <T>(
   store: VirtualStore,
   getSnapShot: () => T,
+  target: number,
   shouldGetLatest?: boolean
 ): T => {
   const [state, setState] = useState(getSnapShot);
   const getter = useRefWithUpdate(getSnapShot);
 
   useLayoutEffect(() => {
-    let target: number;
-    if (getSnapShot === store._getRange) {
-      target = UPDATE_SCROLL + UPDATE_SIZE;
-    } else if (getSnapShot === store._getCorrectedScrollSize) {
-      target = UPDATE_SIZE;
-    } else if (getSnapShot === store._getJumpCount) {
-      target = UPDATE_JUMP;
-    } else if (getSnapShot === store._getIsScrolling) {
-      target = UPDATE_IS_SCROLLING;
-    } else {
-      // Others will be item subscribers
-      target = UPDATE_SIZE;
-    }
-
     const update = () => {
       setState(() => getter[refKey]());
     };

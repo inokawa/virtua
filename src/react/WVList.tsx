@@ -9,7 +9,13 @@ import {
 } from "react";
 import { createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { useSelector } from "./useSelector";
+import {
+  SELECT_IS_SCROLLING,
+  SELECT_JUMP_COUNT,
+  SELECT_RANGE,
+  SELECT_SCROLL_SIZE,
+  useSelector,
+} from "./useSelector";
 import { exists, max, min, values } from "../core/utils";
 import { createWindowScroller } from "../core/scroller";
 import { MayHaveKey, flattenChildren, refKey } from "./utils";
@@ -145,10 +151,27 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
     // The elements length and cached items length are different just after element is added/removed.
     store._updateCacheLength(count);
 
-    const [startIndex, endIndex] = useSelector(store, store._getRange);
-    const scrolling = useSelector(store, store._getIsScrolling);
-    const jumpCount = useSelector(store, store._getJumpCount);
-    const scrollSize = useSelector(store, store._getCorrectedScrollSize, true);
+    const [startIndex, endIndex] = useSelector(
+      store,
+      store._getRange,
+      SELECT_RANGE
+    );
+    const scrolling = useSelector(
+      store,
+      store._getIsScrolling,
+      SELECT_IS_SCROLLING
+    );
+    const jumpCount = useSelector(
+      store,
+      store._getJumpCount,
+      SELECT_JUMP_COUNT
+    );
+    const scrollSize = useSelector(
+      store,
+      store._getCorrectedScrollSize,
+      SELECT_SCROLL_SIZE,
+      true
+    );
     const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {
