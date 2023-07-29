@@ -354,9 +354,11 @@ export const InfiniteScrolling: StoryObj = {
   },
 };
 
-export const RangeChange: StoryObj = {
+export const Callbacks: StoryObj = {
   render: () => {
     const items = useState(() => createRows(1000))[0];
+    const [position, setPosition] = useState(0);
+    const [scrolling, setScrolling] = useState(false);
     const [range, setRange] = useState([-1, -1]);
     return (
       <div
@@ -368,10 +370,25 @@ export const RangeChange: StoryObj = {
             borderBottom: "solid 1px #ccc",
           }}
         >
-          items: {items.length} index: ({range[0]}, {range[1]})
+          <div>scrollTop: {position}</div>
+          <div>scrolling: {scrolling ? "true" : "false"}</div>
+          <div>
+            index: ({range[0]}, {range[1]})
+          </div>
         </div>
         <VList
           style={{ flex: 1 }}
+          onScroll={(offset) => {
+            startTransition(() => {
+              setPosition(offset);
+              setScrolling(true);
+            });
+          }}
+          onScrollStop={() => {
+            startTransition(() => {
+              setScrolling(false);
+            });
+          }}
           onRangeChange={async ({ start, end }) => {
             startTransition(() => {
               setRange([start, end]);
