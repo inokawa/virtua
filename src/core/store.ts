@@ -15,17 +15,14 @@ import {
 import type { CacheSnapshot, Writeable } from "./types";
 import { abs, max, min } from "./utils";
 
-type ItemJump = Readonly<[sizeDiff: number, index: number]>;
 export type ScrollJump = Readonly<number>;
 export type ItemResize = Readonly<[index: number, size: number]>;
 type ItemsRange = Readonly<[startIndex: number, endIndex: number]>;
 
-const sumJumps = (jump: readonly ItemJump[]): number =>
-  jump.reduce((acc, [j]) => acc + j, 0);
-const calculateJumps = (cache: Cache, items: ItemResize[]): ItemJump[] => {
-  return items.map(([index, size]) => {
-    return [size - getItemSize(cache, index), index];
-  });
+const calculateJump = (cache: Cache, items: readonly ItemResize[]): number => {
+  return items.reduce((acc, [index, size]) => {
+    return acc + (size - getItemSize(cache, index));
+  }, 0);
 };
 
 // Scroll offset and sizes can have sub-pixel value if window.devicePixelRatio has decimal value
@@ -213,9 +210,8 @@ export const createVirtualStore = (
           let diff = 0;
           // Calculate jump
           if (_scrollDirection === SCROLL_UP) {
-            diff = sumJumps(calculateJumps(cache, updated));
+            diff = calculateJump(cache, updated);
           } else if (_isManualScrolling) {
-            const allJumps = calculateJumps(cache, updated);
             const [startIndex] = _prevRange;
 
             if (scrollOffset === 0) {
@@ -225,11 +221,12 @@ export const createVirtualStore = (
               getScrollOffsetMax() - SUBPIXEL_THRESHOLD
             ) {
               // Keep end to stick to the end
-              diff = sumJumps(allJumps);
+              diff = calculateJump(cache, updated);
             } else {
               // Keep start at mid
-              diff = sumJumps(
-                allJumps.filter(([, index]) => index < startIndex)
+              diff = calculateJump(
+                cache,
+                updated.filter(([index]) => index < startIndex)
               );
             }
           } else {
