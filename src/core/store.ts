@@ -73,7 +73,7 @@ export type VirtualStore = {
   _getScrollSize(): number;
   _getCorrectedScrollSize(): number;
   _getJumpCount(): number;
-  _flushJump(): ScrollJump | undefined;
+  _flushJump(): ScrollJump;
   _getItemIndexForScrollTo(offset: number): number;
   _subscribe(target: number, cb: Subscriber): () => void;
   _update(...action: Actions): void;
