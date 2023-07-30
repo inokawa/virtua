@@ -2,7 +2,7 @@
 
 Serializable cache snapshot.
 
-**This is not intended to be modified by users. And it is not guaranteed to work if you pass it to the different version ot this package.**
+**This is not intended to be modified by users. And it is not guaranteed to work if you pass it to the different version of this package.**
 
 ## Table of contents
 
@@ -18,4 +18,4 @@ Serializable cache snapshot.
 
 #### Defined in
 
-[src/core/types.ts:16](https://github.com/inokawa/virtua/blob/44078c6/src/core/types.ts#L16)
+[src/core/types.ts:16](https://github.com/inokawa/virtua/blob/4d79b6b/src/core/types.ts#L16)

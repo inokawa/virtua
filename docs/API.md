@@ -49,7 +49,7 @@ Virtualized list component. See [VListProps](interfaces/VListProps.md) and [VLis
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:386
+node_modules/@types/react/index.d.ts:392
 
 ___
 
@@ -71,7 +71,7 @@ Virtualized grid component. See [VGridProps](interfaces/VGridProps.md) and [VGri
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:386
+node_modules/@types/react/index.d.ts:392
 
 ___
 
@@ -79,7 +79,7 @@ ___
 
 ▸ **WVList**(`props`): `ReactNode`
 
-Virtualized list component controlled by the window scrolling. See [WVListProps](interfaces/WVListProps.md).
+Virtualized list component controlled by the window scrolling. See [WVListProps](interfaces/WVListProps.md) and [WVListHandle](interfaces/WVListHandle.md).
 
 #### Parameters
 
@@ -93,7 +93,7 @@ Virtualized list component controlled by the window scrolling. See [WVListProps]
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:386
+node_modules/@types/react/index.d.ts:392
 
 ## Type Aliases
 
@@ -103,7 +103,7 @@ node_modules/@types/react/index.d.ts:386
 
 #### Defined in
 
-[src/react/VList.tsx:29](https://github.com/inokawa/virtua/blob/44078c6/src/react/VList.tsx#L29)
+[src/react/VList.tsx:34](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/VList.tsx#L34)
 
 ___
 
@@ -113,7 +113,7 @@ ___
 
 #### Defined in
 
-[src/react/VGrid.tsx:37](https://github.com/inokawa/virtua/blob/44078c6/src/react/VGrid.tsx#L37)
+[src/react/VGrid.tsx:43](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/VGrid.tsx#L43)
 
 ___
 
@@ -123,7 +123,7 @@ ___
 
 #### Defined in
 
-[src/react/Window.tsx:9](https://github.com/inokawa/virtua/blob/44078c6/src/react/Window.tsx#L9)
+[src/react/Window.tsx:9](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/Window.tsx#L9)
 
 ___
 
@@ -133,7 +133,7 @@ ___
 
 #### Defined in
 
-[src/react/Window.tsx:63](https://github.com/inokawa/virtua/blob/44078c6/src/react/Window.tsx#L63)
+[src/react/Window.tsx:63](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/Window.tsx#L63)
 
 ___
 
@@ -143,4 +143,4 @@ ___
 
 #### Defined in
 
-[src/react/ListItem.tsx:23](https://github.com/inokawa/virtua/blob/44078c6/src/react/ListItem.tsx#L23)
+[src/react/ListItem.tsx:23](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/ListItem.tsx#L23)
