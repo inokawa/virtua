@@ -6,7 +6,7 @@ import {
   useMemo,
 } from "react";
 
-export type WindowComponentAttributes = Pick<
+export type ViewportComponentAttributes = Pick<
   React.HTMLAttributes<HTMLElement>,
   "className" | "style" | "id" | "role" | "tabIndex"
 > &
@@ -15,7 +15,7 @@ export type WindowComponentAttributes = Pick<
 /**
  * Props of customized scrollable component.
  */
-export interface CustomWindowComponentProps {
+export interface CustomViewportComponentProps {
   /**
    * Renderable item elements.
    */
@@ -23,7 +23,7 @@ export interface CustomWindowComponentProps {
   /**
    * Attributes that should be passed to the scrollable element.
    */
-  attrs: WindowComponentAttributes;
+  attrs: ViewportComponentAttributes;
   /**
    * Total height of items. It's undefined if component is not vertically scrollable.
    */
@@ -38,7 +38,7 @@ export interface CustomWindowComponentProps {
   scrolling: boolean;
 }
 
-export const Window = forwardRef<any, CustomWindowComponentProps>(
+export const Viewport = forwardRef<any, CustomViewportComponentProps>(
   ({ children, attrs, width, height, scrolling }, ref): ReactElement => {
     return (
       <div ref={ref} {...attrs}>
@@ -60,4 +60,4 @@ export const Window = forwardRef<any, CustomWindowComponentProps>(
   }
 );
 
-export type CustomWindowComponent = typeof Window;
+export type CustomViewportComponent = typeof Viewport;

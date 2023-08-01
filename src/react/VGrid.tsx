@@ -20,15 +20,15 @@ import {
 } from "./useSelector";
 import { max, min, values } from "../core/utils";
 import { createScroller } from "../core/scroller";
-import { refKey } from "./utils";
+import { emptyComponents, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import {
-  CustomWindowComponent,
-  CustomWindowComponentProps,
-  WindowComponentAttributes,
+  CustomViewportComponent,
+  CustomViewportComponentProps,
+  ViewportComponentAttributes,
 } from "..";
 import { createGridResizer, GridResizer } from "../core/resizer";
-import { Window as DefaultWindow } from "./Window";
+import { Viewport as DefaultViewport } from "./Viewport";
 
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
@@ -178,7 +178,7 @@ export interface VGridHandle {
 /**
  * Props of {@link VGrid}.
  */
-export interface VGridProps extends WindowComponentAttributes {
+export interface VGridProps extends ViewportComponentAttributes {
   /**
    * A function to create elements rendered by this component.
    */
@@ -228,15 +228,20 @@ export interface VGridProps extends WindowComponentAttributes {
    */
   rtl?: boolean;
   /**
-   * Customized element type for scrollable element. This element will get {@link CustomWindowComponentProps} as props.
-   * @defaultValue {@link Window}
+   * Customized components for advanced usage.
    */
-  element?: CustomWindowComponent;
-  /**
-   * Customized element type for cell element. This element will get {@link CustomCellComponentProps} as props.
-   * @defaultValue "div"
-   */
-  cellElement?: CustomCellComponentOrElement;
+  components?: {
+    /**
+     * Component for scrollable element. This component will get {@link CustomViewportComponentProps} as props.
+     * @defaultValue {@link DefaultViewport}
+     */
+    Root?: CustomViewportComponent;
+    /**
+     * Component or element type for cell element. This component will get {@link CustomCellComponentProps} as props.
+     * @defaultValue "div"
+     */
+    Cell?: CustomCellComponentOrElement;
+  };
 }
 
 /**
@@ -254,9 +259,14 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       initialRowCount,
       initialColCount,
       rtl: rtlProp,
-      element: Window = DefaultWindow,
-      cellElement: itemElement = "div",
-      ...windowAttrs
+      components: {
+        Root: Viewport = DefaultViewport,
+        Cell: ItemElement = "div",
+      } = emptyComponents as {
+        Root?: CustomViewportComponent;
+        Cell?: CustomCellComponentOrElement;
+      },
+      ...viewportAttrs
     },
     ref
   ): ReactElement => {
@@ -421,7 +431,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
               _hStore={hStore}
               _rowIndex={i}
               _colIndex={j}
-              _element={itemElement as "div"}
+              _element={ItemElement as "div"}
               _children={render(i, j)}
               _isRtl={isRtl}
             />
@@ -439,14 +449,14 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     ]);
 
     return (
-      <Window
+      <Viewport
         ref={rootRef}
         width={width}
         height={height}
         scrolling={verticalScrolling || horizontalScrolling}
         attrs={useMemo(
           () => ({
-            ...windowAttrs,
+            ...viewportAttrs,
             style: {
               overflow: "auto",
               contain: "strict",
@@ -457,14 +467,14 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
               height: "100%",
               padding: 0,
               margin: 0,
-              ...windowAttrs.style,
+              ...viewportAttrs.style,
             },
           }),
-          values(windowAttrs)
+          values(viewportAttrs)
         )}
       >
         {items}
-      </Window>
+      </Viewport>
     );
   }
 );

@@ -18,16 +18,16 @@ import {
 } from "./useSelector";
 import { exists, max, min, values } from "../core/utils";
 import { createScroller } from "../core/scroller";
-import { MayHaveKey, flattenChildren, refKey } from "./utils";
+import { MayHaveKey, emptyComponents, flattenChildren, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useRefWithUpdate } from "./useRefWithUpdate";
 import { createResizer } from "../core/resizer";
-import { WindowComponentAttributes } from "..";
+import { ViewportComponentAttributes } from "..";
 import {
-  CustomWindowComponent,
-  CustomWindowComponentProps,
-  Window as DefaultWindow,
-} from "./Window";
+  CustomViewportComponent,
+  CustomViewportComponentProps,
+  Viewport as DefaultViewport,
+} from "./Viewport";
 import { CustomItemComponent, ListItem } from "./ListItem";
 import { CacheSnapshot } from "../core/types";
 
@@ -77,7 +77,7 @@ export interface VListHandle {
 /**
  * Props of {@link VList}.
  */
-export interface VListProps extends WindowComponentAttributes {
+export interface VListProps extends ViewportComponentAttributes {
   /**
    * Elements rendered by this component.
    */
@@ -114,15 +114,20 @@ export interface VListProps extends WindowComponentAttributes {
    */
   cache?: CacheSnapshot;
   /**
-   * Customized element type for scrollable element. This element will get {@link CustomWindowComponentProps} as props.
-   * @defaultValue {@link Window}
+   * Customized components for advanced usage.
    */
-  element?: CustomWindowComponent;
-  /**
-   * Customized element type for item element. This element will get {@link CustomItemComponentProps} as props.
-   * @defaultValue "div"
-   */
-  itemElement?: CustomItemComponentOrElement;
+  components?: {
+    /**
+     * Component for scrollable element. This component will get {@link CustomViewportComponentProps} as props.
+     * @defaultValue {@link DefaultViewport}
+     */
+    Root?: CustomViewportComponent;
+    /**
+     * Component or element type for item element. This component will get {@link CustomItemComponentProps} as props.
+     * @defaultValue "div"
+     */
+    Item?: CustomItemComponentOrElement;
+  };
   /**
    * Callback invoked whenever scroll offset changes.
    * @param offset Current scrollTop or scrollLeft.
@@ -160,12 +165,17 @@ export const VList = forwardRef<VListHandle, VListProps>(
       horizontal: horizontalProp,
       mode,
       cache,
-      element: Window = DefaultWindow,
-      itemElement = "div",
+      components: {
+        Root: Viewport = DefaultViewport,
+        Item: ItemElement = "div",
+      } = emptyComponents as {
+        Root?: CustomViewportComponent;
+        Item?: CustomItemComponentOrElement;
+      },
       onScroll: onScrollProp,
       onScrollStop: onScrollStopProp,
       onRangeChange: onRangeChangeProp,
-      ...windowAttrs
+      ...viewportAttrs
     },
     ref
   ): ReactElement => {
@@ -293,7 +303,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
               _resizer={resizer}
               _store={store}
               _index={i}
-              _element={itemElement as "div"}
+              _element={ItemElement as "div"}
               _children={e}
               _isHorizontal={isHorizontal}
               _isRtl={isRtl}
@@ -305,14 +315,14 @@ export const VList = forwardRef<VListHandle, VListProps>(
     }, [elements, overscanedStartIndex, overscanedEndIndex]);
 
     return (
-      <Window
+      <Viewport
         ref={rootRef}
         width={isHorizontal ? scrollSize : undefined}
         height={isHorizontal ? undefined : scrollSize}
         scrolling={scrolling}
         attrs={useMemo(
           () => ({
-            ...windowAttrs,
+            ...viewportAttrs,
             style: {
               overflow: isHorizontal ? "auto hidden" : "hidden auto",
               display: isHorizontal ? "inline-block" : "block",
@@ -326,14 +336,14 @@ export const VList = forwardRef<VListHandle, VListProps>(
               height: "100%",
               padding: 0,
               margin: 0,
-              ...windowAttrs.style,
+              ...viewportAttrs.style,
             },
           }),
-          values(windowAttrs)
+          values(viewportAttrs)
         )}
       >
         {items}
-      </Window>
+      </Viewport>
     );
   }
 );

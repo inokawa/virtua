@@ -2,7 +2,7 @@ import { afterEach, it, expect, describe, jest } from "@jest/globals";
 import { render, cleanup } from "@testing-library/react";
 import { WVList } from "./WVList";
 import { Profiler, ReactElement, forwardRef, useEffect, useState } from "react";
-import { CustomWindowComponentProps } from "..";
+import { CustomViewportComponentProps } from "..";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -77,7 +77,7 @@ it("should pass attributes to element", async () => {
 });
 
 it("should change components", async () => {
-  const UlList = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
+  const UlList = forwardRef<HTMLDivElement, CustomViewportComponentProps>(
     ({ children, attrs, height }, ref) => {
       return (
         <div ref={ref} {...attrs}>
@@ -89,7 +89,7 @@ it("should change components", async () => {
     }
   );
   const { asFragment } = render(
-    <WVList element={UlList} itemElement="li">
+    <WVList components={{ Root: UlList, Item: "li" }}>
       <div>0</div>
       <div>1</div>
       <div>2</div>

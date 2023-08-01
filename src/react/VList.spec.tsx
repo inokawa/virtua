@@ -9,7 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { CustomWindowComponentProps } from "..";
+import { CustomViewportComponentProps } from "..";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -107,7 +107,7 @@ it("should pass attributes to element", async () => {
 });
 
 it("should change components", async () => {
-  const UlList = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
+  const UlList = forwardRef<HTMLDivElement, CustomViewportComponentProps>(
     ({ children, attrs, height }, ref) => {
       return (
         <div ref={ref} {...attrs}>
@@ -119,7 +119,7 @@ it("should change components", async () => {
     }
   );
   const { asFragment } = render(
-    <VList element={UlList} itemElement="li">
+    <VList components={{ Root: UlList, Item: "li" }}>
       <div>0</div>
       <div>1</div>
       <div>2</div>

@@ -11,7 +11,7 @@ import {
   VList,
   VListHandle,
   CustomItemComponentProps,
-  CustomWindowComponentProps,
+  CustomViewportComponentProps,
   CacheSnapshot,
 } from "../../src";
 import { Spinner } from "./components";
@@ -533,7 +533,7 @@ export const IncreasingItems: StoryObj = {
   },
 };
 
-const UlList = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
+const UlList = forwardRef<HTMLDivElement, CustomViewportComponentProps>(
   ({ children, attrs, height }, ref) => {
     return (
       <div ref={ref} {...attrs}>
@@ -573,8 +573,7 @@ export const Ul: StoryObj = {
             flex: 1,
             background: "#fff",
           }}
-          element={UlList}
-          itemElement={Li}
+          components={{ Root: UlList, Item: Li }}
           overscan={20}
         >
           {Array.from({ length: 1000 }).map((_, i) => i)}
