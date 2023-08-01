@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { CustomWindowComponentProps, VList } from "../../src";
+import { CustomViewportComponentProps, VList } from "../../src";
 import React, {
   createContext,
   forwardRef,
@@ -20,7 +20,7 @@ const RefreshContext = createContext(async () => {});
 
 const listStyle = { width: 400, height: 600 };
 
-const Window = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
+const Viewport = forwardRef<HTMLDivElement, CustomViewportComponentProps>(
   ({ children, attrs, height }, ref) => {
     const onRefresh = useContext(RefreshContext);
 
@@ -56,7 +56,7 @@ export const Default: StoryObj = {
             setItems(refreshItems());
           }, [])}
         >
-          <VList style={listStyle} element={Window}>
+          <VList style={listStyle} components={{ Root: Viewport }}>
             {items.map((d) => {
               return (
                 <div

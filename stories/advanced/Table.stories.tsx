@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { VList, CustomWindowComponentProps } from "../../src";
+import { VList, CustomViewportComponentProps } from "../../src";
 
 export default {
   component: VList,
@@ -17,7 +17,7 @@ const COLUMN_WIDTHS = [100, 200, 300, 100, 200, 300, 100, 300, 400, 200];
 
 const TableList = forwardRef<
   HTMLTableSectionElement,
-  CustomWindowComponentProps
+  CustomViewportComponentProps
 >(({ children, height, attrs }, ref) => {
   const [headerHeight, setHeaderHeight] = useState<number>(0);
   const headerRef = useRef<HTMLTableSectionElement>(null);
@@ -89,8 +89,7 @@ export const Table: StoryObj = {
           background: "#fff",
           overflow: "auto",
         }}
-        element={TableList}
-        itemElement="tr"
+        components={{ Root: TableList, Item: "tr" }}
       >
         {Array.from({ length: 1000 }).map((_, i) => (
           <Fragment key={i}>

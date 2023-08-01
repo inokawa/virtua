@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import {
   CustomItemComponentProps,
-  CustomWindowComponentProps,
+  CustomViewportComponentProps,
   VList,
   VListHandle,
 } from "../../src";
@@ -44,7 +44,7 @@ const OptionContext = createContext<{
   ref: Ref<HTMLDivElement>;
 }>(null!);
 
-const Window = forwardRef<HTMLDivElement, CustomWindowComponentProps>(
+const Viewport = forwardRef<HTMLDivElement, CustomViewportComponentProps>(
   ({ children, attrs, height }, ref) => {
     const { maxHeight, innerProps, innerRef } = useContext(MenuListContext);
     return (
@@ -91,7 +91,7 @@ const MenuList = ({ children, ...rest }: MenuListProps<OptionValue>) => {
 
   return (
     <MenuListContext.Provider value={rest}>
-      <VList ref={ref} element={Window} itemElement={Item}>
+      <VList ref={ref} components={{ Root: Viewport, Item: Item }}>
         {children}
       </VList>
     </MenuListContext.Provider>

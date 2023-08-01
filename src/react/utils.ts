@@ -3,6 +3,8 @@ import { exists } from "../core/utils";
 
 export const refKey = "current";
 
+export const emptyComponents = {};
+
 export const flattenChildren = (children: ReactNode) => {
   const arr: (ReactElement | ReactFragment | string | number)[] = [];
   Children.forEach(children, (e) => {

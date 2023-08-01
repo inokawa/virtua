@@ -65,7 +65,7 @@ export const Default: StoryObj = {
           }}
         >
           <ZoomContext.Provider value={zoom}>
-            <VList style={{ height: "100vh" }} itemElement={ListItem}>
+            <VList style={{ height: "100vh" }} components={{ Item: ListItem }}>
               {Array.from({ length: 1000 }).map((_, i) => {
                 return (
                   <div
