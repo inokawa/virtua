@@ -169,8 +169,8 @@ export const VList = forwardRef<VListHandle, VListProps>(
         Root: Viewport = DefaultViewport,
         Item: ItemElement = "div",
       } = emptyComponents as {
-        Root?: CustomViewportComponent;
-        Item?: CustomItemComponentOrElement;
+        Root?: undefined;
+        Item?: undefined;
       },
       onScroll: onScrollProp,
       onScrollStop: onScrollStopProp,

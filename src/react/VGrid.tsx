@@ -263,8 +263,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         Root: Viewport = DefaultViewport,
         Cell: ItemElement = "div",
       } = emptyComponents as {
-        Root?: CustomViewportComponent;
-        Cell?: CustomCellComponentOrElement;
+        Root?: undefined;
+        Cell?: undefined;
       },
       ...viewportAttrs
     },

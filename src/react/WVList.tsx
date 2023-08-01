@@ -126,8 +126,8 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
         Root: Viewport = DefaultViewport,
         Item: ItemElement = "div",
       } = emptyComponents as {
-        Root?: CustomViewportComponent;
-        Item?: CustomItemComponentOrElement;
+        Root?: undefined;
+        Item?: undefined;
       },
       onScrollStop: onScrollStopProp,
       onRangeChange: onRangeChangeProp,
