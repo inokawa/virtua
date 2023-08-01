@@ -18,15 +18,15 @@
 - [CustomCellComponentProps](interfaces/CustomCellComponentProps.md)
 - [WVListProps](interfaces/WVListProps.md)
 - [WVListHandle](interfaces/WVListHandle.md)
-- [CustomWindowComponentProps](interfaces/CustomWindowComponentProps.md)
+- [CustomViewportComponentProps](interfaces/CustomViewportComponentProps.md)
 - [CustomItemComponentProps](interfaces/CustomItemComponentProps.md)
 
 ### Type Aliases
 
 - [ScrollMode](API.md#scrollmode)
 - [CustomCellComponent](API.md#customcellcomponent)
-- [WindowComponentAttributes](API.md#windowcomponentattributes)
-- [CustomWindowComponent](API.md#customwindowcomponent)
+- [ViewportComponentAttributes](API.md#viewportcomponentattributes)
+- [CustomViewportComponent](API.md#customviewportcomponent)
 - [CustomItemComponent](API.md#customitemcomponent)
 
 ## Functions
@@ -103,7 +103,7 @@ node_modules/@types/react/index.d.ts:392
 
 #### Defined in
 
-[src/react/VList.tsx:34](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/VList.tsx#L34)
+[src/react/VList.tsx:34](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VList.tsx#L34)
 
 ___
 
@@ -113,27 +113,27 @@ ___
 
 #### Defined in
 
-[src/react/VGrid.tsx:43](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/VGrid.tsx#L43)
+[src/react/VGrid.tsx:43](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VGrid.tsx#L43)
 
 ___
 
-### WindowComponentAttributes
+### ViewportComponentAttributes
 
-Ƭ **WindowComponentAttributes**: `Pick`<`React.HTMLAttributes`<`HTMLElement`\>, ``"className"`` \| ``"style"`` \| ``"id"`` \| ``"role"`` \| ``"tabIndex"``\> & `React.AriaAttributes`
+Ƭ **ViewportComponentAttributes**: `Pick`<`React.HTMLAttributes`<`HTMLElement`\>, ``"className"`` \| ``"style"`` \| ``"id"`` \| ``"role"`` \| ``"tabIndex"``\> & `React.AriaAttributes`
 
 #### Defined in
 
-[src/react/Window.tsx:9](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/Window.tsx#L9)
+[src/react/Viewport.tsx:9](https://github.com/inokawa/virtua/blob/e247ef1/src/react/Viewport.tsx#L9)
 
 ___
 
-### CustomWindowComponent
+### CustomViewportComponent
 
-Ƭ **CustomWindowComponent**: typeof `Window`
+Ƭ **CustomViewportComponent**: typeof `Viewport`
 
 #### Defined in
 
-[src/react/Window.tsx:63](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/Window.tsx#L63)
+[src/react/Viewport.tsx:63](https://github.com/inokawa/virtua/blob/e247ef1/src/react/Viewport.tsx#L63)
 
 ___
 
@@ -143,4 +143,4 @@ ___
 
 #### Defined in
 
-[src/react/ListItem.tsx:23](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/ListItem.tsx#L23)
+[src/react/ListItem.tsx:23](https://github.com/inokawa/virtua/blob/e247ef1/src/react/ListItem.tsx#L23)

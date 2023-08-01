@@ -4,7 +4,7 @@ Props of [VGrid](../API.md#vgrid).
 
 ## Hierarchy
 
-- [`WindowComponentAttributes`](../API.md#windowcomponentattributes)
+- [`ViewportComponentAttributes`](../API.md#viewportcomponentattributes)
 
   ↳ **`VGridProps`**
 
@@ -21,8 +21,7 @@ Props of [VGrid](../API.md#vgrid).
 - [initialRowCount](VGridProps.md#initialrowcount)
 - [initialColCount](VGridProps.md#initialcolcount)
 - [rtl](VGridProps.md#rtl)
-- [element](VGridProps.md#element)
-- [cellElement](VGridProps.md#cellelement)
+- [components](VGridProps.md#components)
 - [className](VGridProps.md#classname)
 - [style](VGridProps.md#style)
 - [id](VGridProps.md#id)
@@ -108,7 +107,7 @@ A function to create elements rendered by this component.
 
 #### Defined in
 
-[src/react/VGrid.tsx:185](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/VGrid.tsx#L185)
+[src/react/VGrid.tsx:185](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VGrid.tsx#L185)
 
 ___
 
@@ -120,7 +119,7 @@ Total row length of grid.
 
 #### Defined in
 
-[src/react/VGrid.tsx:198](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/VGrid.tsx#L198)
+[src/react/VGrid.tsx:198](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VGrid.tsx#L198)
 
 ___
 
@@ -132,7 +131,7 @@ Total column length of grid.
 
 #### Defined in
 
-[src/react/VGrid.tsx:202](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/VGrid.tsx#L202)
+[src/react/VGrid.tsx:202](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VGrid.tsx#L202)
 
 ___
 
@@ -148,7 +147,7 @@ Cell height hint for unmeasured items. It's recommended to specify this prop if 
 
 #### Defined in
 
-[src/react/VGrid.tsx:207](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/VGrid.tsx#L207)
+[src/react/VGrid.tsx:207](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VGrid.tsx#L207)
 
 ___
 
@@ -164,7 +163,7 @@ Cell width hint for unmeasured items. It's recommended to specify this prop if i
 
 #### Defined in
 
-[src/react/VGrid.tsx:212](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/VGrid.tsx#L212)
+[src/react/VGrid.tsx:212](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VGrid.tsx#L212)
 
 ___
 
@@ -180,7 +179,7 @@ Number of items to render above/below the visible bounds of the grid. You can in
 
 #### Defined in
 
-[src/react/VGrid.tsx:217](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/VGrid.tsx#L217)
+[src/react/VGrid.tsx:217](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VGrid.tsx#L217)
 
 ___
 
@@ -192,7 +191,7 @@ If set, the specified amount of rows will be mounted in the initial rendering re
 
 #### Defined in
 
-[src/react/VGrid.tsx:221](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/VGrid.tsx#L221)
+[src/react/VGrid.tsx:221](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VGrid.tsx#L221)
 
 ___
 
@@ -204,7 +203,7 @@ If set, the specified amount of cols will be mounted in the initial rendering re
 
 #### Defined in
 
-[src/react/VGrid.tsx:225](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/VGrid.tsx#L225)
+[src/react/VGrid.tsx:225](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VGrid.tsx#L225)
 
 ___
 
@@ -216,39 +215,26 @@ You have to set true if you use this component under `direction: rtl` style.
 
 #### Defined in
 
-[src/react/VGrid.tsx:229](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/VGrid.tsx#L229)
+[src/react/VGrid.tsx:229](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VGrid.tsx#L229)
 
 ___
 
-### element
+### components
 
-• `Optional` **element**: `ForwardRefExoticComponent`<[`CustomWindowComponentProps`](CustomWindowComponentProps.md) & `RefAttributes`<`any`\>\>
+• `Optional` **components**: `Object`
 
-Customized element type for scrollable element. This element will get [CustomWindowComponentProps](CustomWindowComponentProps.md) as props.
+Customized components for advanced usage.
 
-**`Default Value`**
+#### Type declaration
 
-Window
-
-#### Defined in
-
-[src/react/VGrid.tsx:234](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/VGrid.tsx#L234)
-
-___
-
-### cellElement
-
-• `Optional` **cellElement**: `CustomCellComponentOrElement`
-
-Customized element type for cell element. This element will get [CustomCellComponentProps](CustomCellComponentProps.md) as props.
-
-**`Default Value`**
-
-"div"
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `Root?` | `ForwardRefExoticComponent`<[`CustomViewportComponentProps`](CustomViewportComponentProps.md) & `RefAttributes`<`any`\>\> | Component for scrollable element. This component will get [CustomViewportComponentProps](CustomViewportComponentProps.md) as props. **`Default Value`** DefaultViewport |
+| `Cell?` | `CustomCellComponentOrElement` | Component or element type for cell element. This component will get [CustomCellComponentProps](CustomCellComponentProps.md) as props. **`Default Value`** "div" |
 
 #### Defined in
 
-[src/react/VGrid.tsx:239](https://github.com/inokawa/virtua/blob/4d79b6b/src/react/VGrid.tsx#L239)
+[src/react/VGrid.tsx:233](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VGrid.tsx#L233)
 
 ___
 
@@ -258,7 +244,7 @@ ___
 
 #### Inherited from
 
-WindowComponentAttributes.className
+ViewportComponentAttributes.className
 
 #### Defined in
 
@@ -272,7 +258,7 @@ ___
 
 #### Inherited from
 
-WindowComponentAttributes.style
+ViewportComponentAttributes.style
 
 #### Defined in
 
@@ -286,7 +272,7 @@ ___
 
 #### Inherited from
 
-WindowComponentAttributes.id
+ViewportComponentAttributes.id
 
 #### Defined in
 
@@ -300,7 +286,7 @@ ___
 
 #### Inherited from
 
-WindowComponentAttributes.role
+ViewportComponentAttributes.role
 
 #### Defined in
 
@@ -314,7 +300,7 @@ ___
 
 #### Inherited from
 
-WindowComponentAttributes.tabIndex
+ViewportComponentAttributes.tabIndex
 
 #### Defined in
 
@@ -330,7 +316,7 @@ Identifies the currently active element when DOM focus is on a composite widget,
 
 #### Inherited from
 
-WindowComponentAttributes.aria-activedescendant
+ViewportComponentAttributes.aria-activedescendant
 
 #### Defined in
 
@@ -346,7 +332,7 @@ Indicates whether assistive technologies will present all, or only parts of, the
 
 #### Inherited from
 
-WindowComponentAttributes.aria-atomic
+ViewportComponentAttributes.aria-atomic
 
 #### Defined in
 
@@ -363,7 +349,7 @@ presented if they are made.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-autocomplete
+ViewportComponentAttributes.aria-autocomplete
 
 #### Defined in
 
@@ -383,7 +369,7 @@ aria-label.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-braillelabel
+ViewportComponentAttributes.aria-braillelabel
 
 #### Defined in
 
@@ -403,7 +389,7 @@ aria-roledescription.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-brailleroledescription
+ViewportComponentAttributes.aria-brailleroledescription
 
 #### Defined in
 
@@ -417,7 +403,7 @@ ___
 
 #### Inherited from
 
-WindowComponentAttributes.aria-busy
+ViewportComponentAttributes.aria-busy
 
 #### Defined in
 
@@ -438,7 +424,7 @@ Indicates the current "checked" state of checkboxes, radio buttons, and other wi
 
 #### Inherited from
 
-WindowComponentAttributes.aria-checked
+ViewportComponentAttributes.aria-checked
 
 #### Defined in
 
@@ -458,7 +444,7 @@ aria-colindex.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-colcount
+ViewportComponentAttributes.aria-colcount
 
 #### Defined in
 
@@ -479,7 +465,7 @@ Defines an element's column index or position with respect to the total number o
 
 #### Inherited from
 
-WindowComponentAttributes.aria-colindex
+ViewportComponentAttributes.aria-colindex
 
 #### Defined in
 
@@ -499,7 +485,7 @@ aria-rowindextext.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-colindextext
+ViewportComponentAttributes.aria-colindextext
 
 #### Defined in
 
@@ -520,7 +506,7 @@ Defines the number of columns spanned by a cell or gridcell within a table, grid
 
 #### Inherited from
 
-WindowComponentAttributes.aria-colspan
+ViewportComponentAttributes.aria-colspan
 
 #### Defined in
 
@@ -540,7 +526,7 @@ aria-owns.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-controls
+ViewportComponentAttributes.aria-controls
 
 #### Defined in
 
@@ -556,7 +542,7 @@ Indicates the element that represents the current item within a container or set
 
 #### Inherited from
 
-WindowComponentAttributes.aria-current
+ViewportComponentAttributes.aria-current
 
 #### Defined in
 
@@ -576,7 +562,7 @@ aria-labelledby
 
 #### Inherited from
 
-WindowComponentAttributes.aria-describedby
+ViewportComponentAttributes.aria-describedby
 
 #### Defined in
 
@@ -596,7 +582,7 @@ related aria-describedby.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-description
+ViewportComponentAttributes.aria-description
 
 #### Defined in
 
@@ -616,7 +602,7 @@ aria-describedby.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-details
+ViewportComponentAttributes.aria-details
 
 #### Defined in
 
@@ -637,7 +623,7 @@ Indicates that the element is perceivable but disabled, so it is not editable or
 
 #### Inherited from
 
-WindowComponentAttributes.aria-disabled
+ViewportComponentAttributes.aria-disabled
 
 #### Defined in
 
@@ -657,7 +643,7 @@ in ARIA 1.1
 
 #### Inherited from
 
-WindowComponentAttributes.aria-dropeffect
+ViewportComponentAttributes.aria-dropeffect
 
 #### Defined in
 
@@ -678,7 +664,7 @@ Identifies the element that provides an error message for the object.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-errormessage
+ViewportComponentAttributes.aria-errormessage
 
 #### Defined in
 
@@ -694,7 +680,7 @@ Indicates whether the element, or another grouping element it controls, is curre
 
 #### Inherited from
 
-WindowComponentAttributes.aria-expanded
+ViewportComponentAttributes.aria-expanded
 
 #### Defined in
 
@@ -711,7 +697,7 @@ allows assistive technology to override the general default of reading in docume
 
 #### Inherited from
 
-WindowComponentAttributes.aria-flowto
+ViewportComponentAttributes.aria-flowto
 
 #### Defined in
 
@@ -731,7 +717,7 @@ in ARIA 1.1
 
 #### Inherited from
 
-WindowComponentAttributes.aria-grabbed
+ViewportComponentAttributes.aria-grabbed
 
 #### Defined in
 
@@ -747,7 +733,7 @@ Indicates the availability and type of interactive popup element, such as menu o
 
 #### Inherited from
 
-WindowComponentAttributes.aria-haspopup
+ViewportComponentAttributes.aria-haspopup
 
 #### Defined in
 
@@ -767,7 +753,7 @@ aria-disabled.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-hidden
+ViewportComponentAttributes.aria-hidden
 
 #### Defined in
 
@@ -787,7 +773,7 @@ aria-errormessage.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-invalid
+ViewportComponentAttributes.aria-invalid
 
 #### Defined in
 
@@ -803,7 +789,7 @@ Indicates keyboard shortcuts that an author has implemented to activate or give 
 
 #### Inherited from
 
-WindowComponentAttributes.aria-keyshortcuts
+ViewportComponentAttributes.aria-keyshortcuts
 
 #### Defined in
 
@@ -823,7 +809,7 @@ aria-labelledby.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-label
+ViewportComponentAttributes.aria-label
 
 #### Defined in
 
@@ -843,7 +829,7 @@ aria-describedby.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-labelledby
+ViewportComponentAttributes.aria-labelledby
 
 #### Defined in
 
@@ -859,7 +845,7 @@ Defines the hierarchical level of an element within a structure.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-level
+ViewportComponentAttributes.aria-level
 
 #### Defined in
 
@@ -875,7 +861,7 @@ Indicates that an element will be updated, and describes the types of updates th
 
 #### Inherited from
 
-WindowComponentAttributes.aria-live
+ViewportComponentAttributes.aria-live
 
 #### Defined in
 
@@ -891,7 +877,7 @@ Indicates whether an element is modal when displayed.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-modal
+ViewportComponentAttributes.aria-modal
 
 #### Defined in
 
@@ -907,7 +893,7 @@ Indicates whether a text box accepts multiple lines of input or only a single li
 
 #### Inherited from
 
-WindowComponentAttributes.aria-multiline
+ViewportComponentAttributes.aria-multiline
 
 #### Defined in
 
@@ -923,7 +909,7 @@ Indicates that the user may select more than one item from the current selectabl
 
 #### Inherited from
 
-WindowComponentAttributes.aria-multiselectable
+ViewportComponentAttributes.aria-multiselectable
 
 #### Defined in
 
@@ -939,7 +925,7 @@ Indicates whether the element's orientation is horizontal, vertical, or unknown/
 
 #### Inherited from
 
-WindowComponentAttributes.aria-orientation
+ViewportComponentAttributes.aria-orientation
 
 #### Defined in
 
@@ -960,7 +946,7 @@ aria-controls.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-owns
+ViewportComponentAttributes.aria-owns
 
 #### Defined in
 
@@ -977,7 +963,7 @@ A hint could be a sample value or a brief description of the expected format.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-placeholder
+ViewportComponentAttributes.aria-placeholder
 
 #### Defined in
 
@@ -997,7 +983,7 @@ aria-setsize.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-posinset
+ViewportComponentAttributes.aria-posinset
 
 #### Defined in
 
@@ -1018,7 +1004,7 @@ Indicates the current "pressed" state of toggle buttons.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-pressed
+ViewportComponentAttributes.aria-pressed
 
 #### Defined in
 
@@ -1038,7 +1024,7 @@ aria-disabled.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-readonly
+ViewportComponentAttributes.aria-readonly
 
 #### Defined in
 
@@ -1058,7 +1044,7 @@ aria-atomic.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-relevant
+ViewportComponentAttributes.aria-relevant
 
 #### Defined in
 
@@ -1074,7 +1060,7 @@ Indicates that user input is required on the element before a form may be submit
 
 #### Inherited from
 
-WindowComponentAttributes.aria-required
+ViewportComponentAttributes.aria-required
 
 #### Defined in
 
@@ -1090,7 +1076,7 @@ Defines a human-readable, author-localized description for the role of an elemen
 
 #### Inherited from
 
-WindowComponentAttributes.aria-roledescription
+ViewportComponentAttributes.aria-roledescription
 
 #### Defined in
 
@@ -1110,7 +1096,7 @@ aria-rowindex.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-rowcount
+ViewportComponentAttributes.aria-rowcount
 
 #### Defined in
 
@@ -1131,7 +1117,7 @@ Defines an element's row index or position with respect to the total number of r
 
 #### Inherited from
 
-WindowComponentAttributes.aria-rowindex
+ViewportComponentAttributes.aria-rowindex
 
 #### Defined in
 
@@ -1151,7 +1137,7 @@ aria-colindextext.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-rowindextext
+ViewportComponentAttributes.aria-rowindextext
 
 #### Defined in
 
@@ -1172,7 +1158,7 @@ Defines the number of rows spanned by a cell or gridcell within a table, grid, o
 
 #### Inherited from
 
-WindowComponentAttributes.aria-rowspan
+ViewportComponentAttributes.aria-rowspan
 
 #### Defined in
 
@@ -1193,7 +1179,7 @@ Indicates the current "selected" state of various widgets.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-selected
+ViewportComponentAttributes.aria-selected
 
 #### Defined in
 
@@ -1213,7 +1199,7 @@ aria-posinset.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-setsize
+ViewportComponentAttributes.aria-setsize
 
 #### Defined in
 
@@ -1229,7 +1215,7 @@ Indicates if items in a table or grid are sorted in ascending or descending orde
 
 #### Inherited from
 
-WindowComponentAttributes.aria-sort
+ViewportComponentAttributes.aria-sort
 
 #### Defined in
 
@@ -1245,7 +1231,7 @@ Defines the maximum allowed value for a range widget.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-valuemax
+ViewportComponentAttributes.aria-valuemax
 
 #### Defined in
 
@@ -1261,7 +1247,7 @@ Defines the minimum allowed value for a range widget.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-valuemin
+ViewportComponentAttributes.aria-valuemin
 
 #### Defined in
 
@@ -1281,7 +1267,7 @@ aria-valuetext.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-valuenow
+ViewportComponentAttributes.aria-valuenow
 
 #### Defined in
 
@@ -1297,7 +1283,7 @@ Defines the human readable text alternative of aria-valuenow for a range widget.
 
 #### Inherited from
 
-WindowComponentAttributes.aria-valuetext
+ViewportComponentAttributes.aria-valuetext
 
 #### Defined in
 
