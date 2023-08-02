@@ -295,6 +295,11 @@ describe("render count", () => {
 });
 
 describe("vertical", () => {
+  it("should render 0 children", async () => {
+    const { asFragment } = render(<VList>{[]}</VList>);
+    expect(asFragment()).toMatchSnapshot();
+  });
+
   it("should render 1 children", async () => {
     const { asFragment } = render(
       <VList>
