@@ -10,7 +10,7 @@ If you want to check the difference with the alternatives right away, [see compa
 
 This project is a challenge to rethink virtualization. The goals are...
 
-- **Zero configuration:** This library is designed to give the best performance without configuration. It also handles common hard things in the real world (dynamic size measurement, scroll position adjustment in bottom-up scrolling and imperative scrolling, etc).
+- **Zero-config virtualization:** This library is designed to give the best performance without configuration. It also handles common hard things in the real world (dynamic size measurement, scroll position adjustment in bottom-up scrolling and imperative scrolling, etc).
 - **Fast:** Scrolling without frame drop needs optimization in many aspects (reduce CPU usage, reduce GC, [reduce layout recalculation](https://gist.github.com/paulirish/5d52fb081b3570c81e3a), optimize with CSS, optimize for frameworks, etc). We are trying to combine the best of them.
 - **Small:** Its bundle size should be small as much as possible to be friendly with modern web development. Currently each components are ~3kB gzipped and the total is [~4kB gzipped](https://bundlephobia.com/package/virtua).
 - **Flexible:** Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, rtl direction, sticky, infinite scrolling, placeholder, scrollTo, scroll restoration, dnd, table, and more. See [live demo](#demo).
