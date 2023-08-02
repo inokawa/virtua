@@ -1,5 +1,5 @@
 import type { DeepReadonly, Writeable } from "./types";
-import { exists, max, median, min } from "./utils";
+import { max, median, min } from "./utils";
 
 export const UNCACHED = -1;
 
@@ -135,42 +135,38 @@ export const estimateDefaultItemSize = (cache: Writeable<Cache>) => {
       median(measuredSizes);
 };
 
-export const initCache = (length: number, itemSize: number): Cache => {
-  const sizes: number[] = [];
-  const offsets: number[] = [];
-  for (let i = 0; i < length; i++) {
-    sizes.push(UNCACHED);
+const appendCache = (cache: Writeable<Cache>, length: number) => {
+  for (let i = cache._length; i < length; i++) {
+    cache._sizes.push(UNCACHED);
     // first offset must be 0
-    offsets.push(i === 0 ? 0 : UNCACHED);
+    cache._offsets.push(i === 0 ? 0 : UNCACHED);
   }
+  cache._length = length;
+};
 
-  return {
+export const initCache = (length: number, itemSize: number): Cache => {
+  const cache: Cache = {
     _defaultItemSize: itemSize,
-    _length: length,
+    _length: 0,
     _measuredOffsetIndex: 0,
-    _sizes: sizes,
-    _offsets: offsets,
+    _sizes: [],
+    _offsets: [],
   };
+  appendCache(cache as Writeable<Cache>, length);
+  return cache;
 };
 
 export const updateCache = (cache: Writeable<Cache>, length: number) => {
-  const sizes: number[] = [];
-  const offsets: number[] = [];
-  for (let i = 0; i < length; i++) {
-    const size = cache._sizes[i];
-    sizes.push(exists(size) ? size : UNCACHED);
+  const diff = length - cache._length;
 
-    if (i === 0) {
-      // first offset must be 0
-      offsets.push(0);
-    } else {
-      const offset = cache._offsets[i];
-      offsets.push(exists(offset) ? offset : UNCACHED);
+  if (diff > 0) {
+    appendCache(cache as Writeable<Cache>, length);
+  } else {
+    for (let i = diff; i < 0; i++) {
+      cache._sizes.pop();
+      cache._offsets.pop();
     }
+    cache._length = length;
+    cache._measuredOffsetIndex = min(cache._measuredOffsetIndex, length - 1);
   }
-
-  cache._length = length;
-  cache._measuredOffsetIndex = min(cache._measuredOffsetIndex, length - 1);
-  cache._sizes = sizes;
-  cache._offsets = offsets;
 };
