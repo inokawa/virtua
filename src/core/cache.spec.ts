@@ -8,6 +8,8 @@ import {
   findEndIndex,
   Cache,
   hasUnmeasuredItemsInRange,
+  updateCache,
+  initCache,
 } from "./cache";
 import type { Writeable } from "./types";
 
@@ -796,5 +798,115 @@ describe(hasUnmeasuredItemsInRange.name, () => {
       _defaultItemSize: 30,
     };
     expect(hasUnmeasuredItemsInRange(cache, 1, 2)).toBe(true);
+  });
+});
+
+describe(initCache.name, () => {
+  it("should create cache", () => {
+    expect(initCache(10, 23)).toMatchInlineSnapshot(`
+      {
+        "_defaultItemSize": 23,
+        "_length": 10,
+        "_measuredOffsetIndex": 0,
+        "_offsets": [
+          0,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+        ],
+        "_sizes": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+        ],
+      }
+    `);
+  });
+});
+
+describe(updateCache.name, () => {
+  it("should increase cache length", () => {
+    const cache = initCache(10, 40);
+    updateCache(cache as Writeable<Cache>, 15);
+    expect(cache).toMatchInlineSnapshot(`
+      {
+        "_defaultItemSize": 40,
+        "_length": 15,
+        "_measuredOffsetIndex": 0,
+        "_offsets": [
+          0,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+        ],
+        "_sizes": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+        ],
+      }
+    `);
+  });
+
+  it("should decrease cache length", () => {
+    const cache = initCache(10, 40);
+    updateCache(cache as Writeable<Cache>, 5);
+    expect(cache).toMatchInlineSnapshot(`
+      {
+        "_defaultItemSize": 40,
+        "_length": 5,
+        "_measuredOffsetIndex": 0,
+        "_offsets": [
+          0,
+          -1,
+          -1,
+          -1,
+          -1,
+        ],
+        "_sizes": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+        ],
+      }
+    `);
   });
 });
