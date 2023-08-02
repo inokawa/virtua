@@ -30,6 +30,7 @@ import {
 } from "./Viewport";
 import { CustomItemComponent, ListItem } from "./ListItem";
 import { CacheSnapshot } from "../core/types";
+import { Cache } from "../core/cache";
 
 export type ScrollMode = "reverse" | "rtl";
 
@@ -193,8 +194,9 @@ export const VList = forwardRef<VListHandle, VListProps>(
         count,
         initialItemSize,
         initialItemCount,
+        cache as unknown as Cache | undefined,
         mode === "reverse",
-        cache
+        !initialItemSize
       );
       return [
         _store,

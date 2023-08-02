@@ -29,6 +29,7 @@ import {
   Viewport as DefaultViewport,
 } from "./Viewport";
 import { CustomItemComponent, ListItem } from "./ListItem";
+import { Cache } from "../core/cache";
 
 type CustomItemComponentOrElement =
   | keyof JSX.IntrinsicElements
@@ -147,8 +148,9 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
         count,
         initialItemSize,
         initialItemCount,
+        cache as unknown as Cache | undefined,
         false,
-        cache
+        !initialItemSize
       );
 
       return [

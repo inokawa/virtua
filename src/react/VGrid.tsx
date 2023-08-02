@@ -273,18 +273,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const [vStore, hStore, resizer, vScroller, hScroller, isRtl] = useStatic(
       () => {
         const _isRtl = !!rtlProp;
-        const _vs = createVirtualStore(
-          rowCount,
-          cellHeight,
-          initialRowCount,
-          false
-        );
-        const _hs = createVirtualStore(
-          colCount,
-          cellWidth,
-          initialColCount,
-          false
-        );
+        const _vs = createVirtualStore(rowCount, cellHeight, initialRowCount);
+        const _hs = createVirtualStore(colCount, cellWidth, initialColCount);
         return [
           _vs,
           _hs,
