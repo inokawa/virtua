@@ -68,7 +68,11 @@ export const computeStartOffset = (
   return computeOffset(cache, index);
 };
 
-const findIndex = (cache: Cache, i: number, distance: number): number => {
+export const findIndex = (
+  cache: Cache,
+  i: number,
+  distance: number
+): number => {
   let sum = 0;
   if (distance >= 0) {
     // search forward
@@ -105,8 +109,6 @@ export const findStartIndexWithOffset = (
 ): number => {
   return findIndex(cache, prevStartIndex, offset - prevOffset);
 };
-
-export { findIndex as findEndIndex };
 
 export const hasUnmeasuredItemsInRange = (
   cache: Cache,

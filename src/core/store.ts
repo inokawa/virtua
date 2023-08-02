@@ -3,7 +3,7 @@ import {
   initCache,
   getItemSize,
   computeTotalSize,
-  findEndIndex,
+  findIndex as findEndIndex,
   computeStartOffset,
   Cache,
   UNCACHED,

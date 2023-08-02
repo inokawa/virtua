@@ -5,7 +5,7 @@ import {
   computeTotalSize,
   computeStartOffset,
   findStartIndexWithOffset,
-  findEndIndex,
+  findIndex as findEndIndex,
   Cache,
   hasUnmeasuredItemsInRange,
   updateCache,
