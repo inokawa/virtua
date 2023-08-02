@@ -37,7 +37,7 @@ Scroll to the item specified by index.
 
 #### Defined in
 
-[src/react/VList.tsx:64](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VList.tsx#L64)
+[src/react/VList.tsx:65](https://github.com/inokawa/virtua/blob/974508db/src/react/VList.tsx#L65)
 
 ___
 
@@ -59,7 +59,7 @@ Scroll to the given offset.
 
 #### Defined in
 
-[src/react/VList.tsx:69](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VList.tsx#L69)
+[src/react/VList.tsx:70](https://github.com/inokawa/virtua/blob/974508db/src/react/VList.tsx#L70)
 
 ___
 
@@ -81,7 +81,7 @@ Scroll by the given offset.
 
 #### Defined in
 
-[src/react/VList.tsx:74](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VList.tsx#L74)
+[src/react/VList.tsx:75](https://github.com/inokawa/virtua/blob/974508db/src/react/VList.tsx#L75)
 
 ## Properties
 
@@ -93,7 +93,7 @@ Get current [CacheSnapshot](CacheSnapshot.md).
 
 #### Defined in
 
-[src/react/VList.tsx:47](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VList.tsx#L47)
+[src/react/VList.tsx:48](https://github.com/inokawa/virtua/blob/974508db/src/react/VList.tsx#L48)
 
 ___
 
@@ -105,7 +105,7 @@ Get current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/react/VList.tsx:51](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VList.tsx#L51)
+[src/react/VList.tsx:52](https://github.com/inokawa/virtua/blob/974508db/src/react/VList.tsx#L52)
 
 ___
 
@@ -117,7 +117,7 @@ Get current scrollHeight or scrollWidth.
 
 #### Defined in
 
-[src/react/VList.tsx:55](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VList.tsx#L55)
+[src/react/VList.tsx:56](https://github.com/inokawa/virtua/blob/974508db/src/react/VList.tsx#L56)
 
 ___
 
@@ -129,4 +129,4 @@ Get current offsetHeight or offsetWidth.
 
 #### Defined in
 
-[src/react/VList.tsx:59](https://github.com/inokawa/virtua/blob/e247ef1/src/react/VList.tsx#L59)
+[src/react/VList.tsx:60](https://github.com/inokawa/virtua/blob/974508db/src/react/VList.tsx#L60)

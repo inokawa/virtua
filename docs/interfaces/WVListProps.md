@@ -90,7 +90,7 @@ Elements rendered by this component.
 
 #### Defined in
 
-[src/react/WVList.tsx:54](https://github.com/inokawa/virtua/blob/e247ef1/src/react/WVList.tsx#L54)
+[src/react/WVList.tsx:55](https://github.com/inokawa/virtua/blob/974508db/src/react/WVList.tsx#L55)
 
 ___
 
@@ -106,7 +106,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/react/WVList.tsx:59](https://github.com/inokawa/virtua/blob/e247ef1/src/react/WVList.tsx#L59)
+[src/react/WVList.tsx:60](https://github.com/inokawa/virtua/blob/974508db/src/react/WVList.tsx#L60)
 
 ___
 
@@ -121,7 +121,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/react/WVList.tsx:66](https://github.com/inokawa/virtua/blob/e247ef1/src/react/WVList.tsx#L66)
+[src/react/WVList.tsx:67](https://github.com/inokawa/virtua/blob/974508db/src/react/WVList.tsx#L67)
 
 ___
 
@@ -133,7 +133,7 @@ If set, the specified amount of items will be mounted in the initial rendering r
 
 #### Defined in
 
-[src/react/WVList.tsx:70](https://github.com/inokawa/virtua/blob/e247ef1/src/react/WVList.tsx#L70)
+[src/react/WVList.tsx:71](https://github.com/inokawa/virtua/blob/974508db/src/react/WVList.tsx#L71)
 
 ___
 
@@ -145,7 +145,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/WVList.tsx:74](https://github.com/inokawa/virtua/blob/e247ef1/src/react/WVList.tsx#L74)
+[src/react/WVList.tsx:75](https://github.com/inokawa/virtua/blob/974508db/src/react/WVList.tsx#L75)
 
 ___
 
@@ -157,7 +157,7 @@ You can restore cache by passing a [CacheSnapshot](CacheSnapshot.md) on mount. T
 
 #### Defined in
 
-[src/react/WVList.tsx:78](https://github.com/inokawa/virtua/blob/e247ef1/src/react/WVList.tsx#L78)
+[src/react/WVList.tsx:79](https://github.com/inokawa/virtua/blob/974508db/src/react/WVList.tsx#L79)
 
 ___
 
@@ -176,7 +176,7 @@ Customized components for advanced usage.
 
 #### Defined in
 
-[src/react/WVList.tsx:82](https://github.com/inokawa/virtua/blob/e247ef1/src/react/WVList.tsx#L82)
+[src/react/WVList.tsx:83](https://github.com/inokawa/virtua/blob/974508db/src/react/WVList.tsx#L83)
 
 ___
 
@@ -196,7 +196,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/react/WVList.tsx:97](https://github.com/inokawa/virtua/blob/e247ef1/src/react/WVList.tsx#L97)
+[src/react/WVList.tsx:98](https://github.com/inokawa/virtua/blob/974508db/src/react/WVList.tsx#L98)
 
 ___
 
@@ -223,7 +223,7 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/react/WVList.tsx:101](https://github.com/inokawa/virtua/blob/e247ef1/src/react/WVList.tsx#L101)
+[src/react/WVList.tsx:102](https://github.com/inokawa/virtua/blob/974508db/src/react/WVList.tsx#L102)
 
 ___
 
