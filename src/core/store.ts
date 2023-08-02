@@ -299,7 +299,7 @@ export const createVirtualStore = (
           }
 
           // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
-          scrollOffset = max(0, min(getScrollOffsetMax(), payload));
+          scrollOffset = min(getScrollOffsetMax(), max(0, payload));
           mutated += UPDATE_SCROLL;
           break;
         }

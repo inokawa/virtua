@@ -98,7 +98,7 @@ export const findIndex = (
     }
   }
 
-  return min(max(i, 0), cache._length - 1);
+  return min(cache._length - 1, max(0, i));
 };
 
 export const findStartIndexWithOffset = (

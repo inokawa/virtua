@@ -171,7 +171,7 @@ export const createScroller = (
       scrollManually(store._getItemIndexForScrollTo(offset), () => offset);
     },
     _scrollToIndex(index) {
-      index = max(min(index, store._getItemLength() - 1), 0);
+      index = min(store._getItemLength() - 1, max(0, index));
 
       scrollManually(index, () => store._getItemOffset(index));
     },
