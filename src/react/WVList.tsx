@@ -20,7 +20,7 @@ import { exists, max, min, values } from "../core/utils";
 import { createWindowScroller } from "../core/scroller";
 import { MayHaveKey, emptyComponents, flattenChildren, refKey } from "./utils";
 import { useStatic } from "./useStatic";
-import { useRefWithUpdate } from "./useRefWithUpdate";
+import { useLatestRef } from "./useLatestRef";
 import { createWindowResizer } from "../core/resizer";
 import { CacheSnapshot, ViewportComponentAttributes } from "..";
 import {
@@ -140,7 +140,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
     const elements = useMemo(() => flattenChildren(children), [children]);
     const count = elements.length;
 
-    const onScrollStop = useRefWithUpdate(onScrollStopProp);
+    const onScrollStop = useLatestRef(onScrollStopProp);
 
     const [store, resizer, scroller, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;

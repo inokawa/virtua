@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 import { flushSync } from "react-dom";
-import { useRefWithUpdate } from "./useRefWithUpdate";
+import { useLatestRef } from "./useLatestRef";
 import { refKey } from "./utils";
 import {
   UPDATE_IS_SCROLLING,
@@ -23,7 +23,7 @@ export const useSelector = <T>(
   shouldGetLatest?: boolean
 ): T => {
   const [state, setState] = useState(getSnapShot);
-  const getter = useRefWithUpdate(getSnapShot);
+  const getter = useLatestRef(getSnapShot);
 
   useLayoutEffect(() => {
     const update = () => {

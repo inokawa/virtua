@@ -20,7 +20,7 @@ import { exists, max, min, values } from "../core/utils";
 import { createScroller } from "../core/scroller";
 import { MayHaveKey, emptyComponents, flattenChildren, refKey } from "./utils";
 import { useStatic } from "./useStatic";
-import { useRefWithUpdate } from "./useRefWithUpdate";
+import { useLatestRef } from "./useLatestRef";
 import { createResizer } from "../core/resizer";
 import { ViewportComponentAttributes } from "..";
 import {
@@ -184,8 +184,8 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const elements = useMemo(() => flattenChildren(children), [children]);
     const count = elements.length;
 
-    const onScroll = useRefWithUpdate(onScrollProp);
-    const onScrollStop = useRefWithUpdate(onScrollStopProp);
+    const onScroll = useLatestRef(onScrollProp);
+    const onScrollStop = useLatestRef(onScrollStopProp);
 
     const [store, resizer, scroller, isHorizontal, isRtl] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
