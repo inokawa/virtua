@@ -70,7 +70,6 @@ export type VirtualStore = {
   _getScrollOffset(): number;
   _getScrollOffsetMax(): number;
   _getViewportSize(): number;
-  _getScrollSize(): number;
   _getCorrectedScrollSize(): number;
   _getJumpCount(): number;
   _flushJump(): ScrollJump;
@@ -167,7 +166,6 @@ export const createVirtualStore = (
     _getViewportSize() {
       return viewportSize;
     },
-    _getScrollSize: getScrollSize,
     _getCorrectedScrollSize() {
       return max(getScrollSize(), viewportSize);
     },
