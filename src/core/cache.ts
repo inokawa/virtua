@@ -28,7 +28,7 @@ export const setItemSize = (
   return isInitialMeasurement;
 };
 
-const computeOffset = (
+export const computeOffset = (
   cache: Writeable<Cache>,
   index: number,
   isTotal?: boolean
@@ -59,13 +59,6 @@ const computeOffset = (
 
 export const computeTotalSize = (cache: Writeable<Cache>): number => {
   return computeOffset(cache, cache._length - 1, true);
-};
-
-export const computeStartOffset = (
-  cache: Writeable<Cache>,
-  index: number
-): number => {
-  return computeOffset(cache, index);
 };
 
 export const findIndex = (

@@ -4,7 +4,7 @@ import {
   getItemSize,
   computeTotalSize,
   findIndex as findEndIndex,
-  computeStartOffset,
+  computeOffset as computeStartOffset,
   Cache,
   UNCACHED,
   setItemSize,
