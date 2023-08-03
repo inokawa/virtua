@@ -39,12 +39,9 @@ export const computeOffset = (
 
   let i = cache._measuredOffsetIndex;
   let top = cache._offsets[i]!;
-  while (i <= index) {
-    cache._offsets[i] = top;
-    if (i === index) {
-      break;
-    }
-    top += getItemSize(cache, i++);
+  while (i < index) {
+    top += getItemSize(cache, i);
+    cache._offsets[++i] = top;
   }
   // mark as measured
   cache._measuredOffsetIndex = index;
