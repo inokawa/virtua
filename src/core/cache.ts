@@ -49,9 +49,11 @@ export const computeOffset = (
 };
 
 export const computeTotalSize = (cache: Writeable<Cache>): number => {
-  const offset = computeOffset(cache, cache._length - 1);
-  if (!offset) return offset;
-  return offset + getItemSize(cache, cache._length - 1);
+  if (!cache._length) return 0;
+  return (
+    computeOffset(cache, cache._length - 1) +
+    getItemSize(cache, cache._length - 1)
+  );
 };
 
 export const findIndex = (
