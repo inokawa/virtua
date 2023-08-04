@@ -30,27 +30,18 @@ export const setItemSize = (
 
 export const computeOffset = (
   cache: Writeable<Cache>,
-  index: number,
-  isTotal?: boolean
+  index: number
 ): number => {
   if (!cache._length) return 0;
   if (cache._measuredOffsetIndex >= index) {
-    if (isTotal) {
-      return cache._offsets[index]! + getItemSize(cache, index);
-    } else {
-      return cache._offsets[index]!;
-    }
+    return cache._offsets[index]!;
   }
 
   let i = cache._measuredOffsetIndex;
   let top = cache._offsets[i]!;
-  while (i <= index) {
-    cache._offsets[i] = top;
-    if (i === index && !isTotal) {
-      break;
-    }
+  while (i < index) {
     top += getItemSize(cache, i);
-    i++;
+    cache._offsets[++i] = top;
   }
   // mark as measured
   cache._measuredOffsetIndex = index;
@@ -58,7 +49,11 @@ export const computeOffset = (
 };
 
 export const computeTotalSize = (cache: Writeable<Cache>): number => {
-  return computeOffset(cache, cache._length - 1, true);
+  if (!cache._length) return 0;
+  return (
+    computeOffset(cache, cache._length - 1) +
+    getItemSize(cache, cache._length - 1)
+  );
 };
 
 export const findIndex = (
