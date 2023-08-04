@@ -103,12 +103,7 @@ export const hasUnmeasuredItemsInRange = (
   startIndex: number,
   endIndex: number
 ): boolean => {
-  for (let i = startIndex; i <= endIndex; i++) {
-    if (cache._sizes[i] === UNCACHED) {
-      return true;
-    }
-  }
-  return false;
+  return cache._sizes.slice(startIndex, endIndex + 1).includes(UNCACHED);
 };
 
 export const estimateDefaultItemSize = (cache: Writeable<Cache>) => {
