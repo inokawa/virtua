@@ -69,6 +69,7 @@ export type VirtualStore = {
   _getItemLength(): number;
   _getScrollOffset(): number;
   _getScrollOffsetMax(): number;
+  _getIsScrolling(): boolean;
   _getViewportSize(): number;
   _getCorrectedScrollSize(): number;
   _getJumpCount(): number;
@@ -76,7 +77,6 @@ export type VirtualStore = {
   _getItemIndexForScrollTo(offset: number): number;
   _subscribe(target: number, cb: Subscriber): () => void;
   _update(...action: Actions): void;
-  _getIsScrolling(): boolean;
   _updateCacheLength(length: number): void;
 };
 
@@ -163,6 +163,9 @@ export const createVirtualStore = (
       return scrollOffset;
     },
     _getScrollOffsetMax: getScrollOffsetMax,
+    _getIsScrolling() {
+      return _scrollDirection !== SCROLL_IDLE;
+    },
     _getViewportSize() {
       return viewportSize;
     },
@@ -323,9 +326,6 @@ export const createVirtualStore = (
           cb(shouldSync);
         });
       }
-    },
-    _getIsScrolling() {
-      return _scrollDirection !== SCROLL_IDLE;
     },
     _updateCacheLength(length) {
       // It's ok to be updated in render because states should be calculated consistently regardless cache length
