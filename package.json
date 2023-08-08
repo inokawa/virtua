@@ -5,6 +5,14 @@
   "main": "lib/index.js",
   "module": "lib/index.mjs",
   "types": "lib/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.mjs",
+      "default": "./lib/index.js"
+    }
+  },
   "files": [
     "lib"
   ],
