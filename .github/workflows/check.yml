@@ -25,6 +25,7 @@ jobs:
       - run: npm run test
       - run: npm run build
       - run: npm run size
+      # - run: npm run storybook:test
 
   e2e:
     timeout-minutes: 15
