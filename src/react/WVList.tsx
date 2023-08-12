@@ -232,22 +232,20 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
     const items = useMemo(() => {
       const res: ReactElement[] = [];
       for (let i = overscanedStartIndex; i <= overscanedEndIndex; i++) {
-        const e = elements[i];
-        // This can be undefined when items are removed
-        if (exists(e)) {
-          res.push(
-            <ListItem
-              key={(e as MayHaveKey).key || i}
-              _resizer={resizer}
-              _store={store}
-              _index={i}
-              _element={ItemElement as "div"}
-              _children={e}
-              _isHorizontal={isHorizontal}
-              _isRtl={false}
-            />
-          );
-        }
+        const e = elements[i]!;
+        const key = (e as MayHaveKey).key;
+        res.push(
+          <ListItem
+            key={exists(key) ? key : "_" + i}
+            _resizer={resizer}
+            _store={store}
+            _index={i}
+            _element={ItemElement as "div"}
+            _children={e}
+            _isHorizontal={isHorizontal}
+            _isRtl={false}
+          />
+        );
       }
       return res;
     }, [elements, overscanedStartIndex, overscanedEndIndex]);
