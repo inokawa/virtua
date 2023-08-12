@@ -383,8 +383,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             vScroller._scrollTo(offsetY);
           },
           scrollBy(offsetX, offsetY) {
-            hScroller._scrollTo(hStore._getScrollOffset() + offsetX);
-            vScroller._scrollTo(vStore._getScrollOffset() + offsetY);
+            hScroller._scrollBy(offsetX);
+            vScroller._scrollBy(offsetY);
           },
         };
       },

@@ -42,6 +42,7 @@ export type Scroller = {
   _initRoot: (rootElement: HTMLElement) => () => void;
   _getActualScrollSize: () => number;
   _scrollTo: (offset: number) => void;
+  _scrollBy: (offset: number) => void;
   _scrollToIndex: (index: number) => void;
   _fixScrollJump: (jump: ScrollJump) => void;
 };
@@ -134,6 +135,12 @@ export const createScroller = (
     store._update(ACTION_MANUAL_SCROLL);
   };
 
+  const scrollTo = (offset: number) => {
+    offset = max(offset, 0);
+
+    scrollManually(store._getItemIndexForScrollTo(offset), () => offset);
+  };
+
   return {
     _initRoot(root) {
       rootElement = root;
@@ -165,10 +172,9 @@ export const createScroller = (
       };
     },
     _getActualScrollSize: getActualScrollSize,
-    _scrollTo(offset) {
-      offset = max(offset, 0);
-
-      scrollManually(store._getItemIndexForScrollTo(offset), () => offset);
+    _scrollTo: scrollTo,
+    _scrollBy(offset) {
+      scrollTo(store._getScrollOffset() + offset);
     },
     _scrollToIndex(index) {
       index = min(store._getItemLength() - 1, max(0, index));

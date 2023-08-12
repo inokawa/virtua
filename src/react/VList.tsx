@@ -283,9 +283,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
           },
           scrollToIndex: scroller._scrollToIndex,
           scrollTo: scroller._scrollTo,
-          scrollBy(offset) {
-            scroller._scrollTo(store._getScrollOffset() + offset);
-          },
+          scrollBy: scroller._scrollBy,
         };
       },
       []
