@@ -63,7 +63,7 @@ export type VirtualStore = {
   _getCache(): CacheSnapshot;
   _getRange(): ItemsRange;
   _isUnmeasuredItem(index: number): boolean;
-  _hasUnmeasuredItemsInRange(startIndex: number): boolean;
+  _hasUnmeasuredItemsInTargetViewport(offset: number): boolean;
   _getItemOffset(index: number): number;
   _getItemSize(index: number): number;
   _getItemLength(): number;
@@ -74,7 +74,6 @@ export type VirtualStore = {
   _getCorrectedScrollSize(): number;
   _getJumpCount(): number;
   _flushJump(): ScrollJump;
-  _getItemIndexForScrollTo(offset: number): number;
   _subscribe(target: number, cb: Subscriber): () => void;
   _update(...action: Actions): void;
   _updateCacheLength(length: number): void;
@@ -134,11 +133,19 @@ export const createVirtualStore = (
     _isUnmeasuredItem(index) {
       return cache._sizes[index] === UNCACHED;
     },
-    _hasUnmeasuredItemsInRange(startIndex) {
+    _hasUnmeasuredItemsInTargetViewport(offset) {
+      const startIndex = findStartIndexWithOffset(
+        cache as Writeable<Cache>,
+        offset,
+        _prevRange[0] // TODO binary search may be better here
+      );
       return hasUnmeasuredItemsInRange(
         cache,
-        max(0, startIndex - 2),
-        min(cache._length - 1, startIndex + 2)
+        max(0, startIndex - 1),
+        min(
+          cache._length - 1,
+          findEndIndex(cache, startIndex, viewportSize) + 1
+        )
       );
     },
     _getItemOffset(index) {
@@ -174,9 +181,6 @@ export const createVirtualStore = (
       const prevJump = jump;
       jump = 0;
       return prevJump;
-    },
-    _getItemIndexForScrollTo(offset) {
-      return findStartIndexWithOffset(cache as Writeable<Cache>, offset, 0);
     },
     _subscribe(target, cb) {
       const sub: [number, Subscriber] = [target, cb];

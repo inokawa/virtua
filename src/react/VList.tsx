@@ -29,7 +29,7 @@ import {
   Viewport as DefaultViewport,
 } from "./Viewport";
 import { CustomItemComponent, ListItem } from "./ListItem";
-import { CacheSnapshot } from "../core/types";
+import { CacheSnapshot, ScrollToIndexAlign } from "../core/types";
 import { Cache } from "../core/cache";
 
 export type ScrollMode = "reverse" | "rtl";
@@ -61,8 +61,9 @@ export interface VListHandle {
   /**
    * Scroll to the item specified by index.
    * @param index index of item
+   * @param align alignment of item
    */
-  scrollToIndex(index: number): void;
+  scrollToIndex(index: number, align?: ScrollToIndexAlign): void;
   /**
    * Scroll to the given offset.
    * @param offset offset from start

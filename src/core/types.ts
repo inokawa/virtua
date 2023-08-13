@@ -15,3 +15,11 @@ declare const cacheSymbol: unique symbol;
 export interface CacheSnapshot {
   [cacheSymbol]: never;
 }
+
+/**
+ * Alignment of item when calling scrollToIndex method.
+ *
+ * - `start`(default): Align the item to the start of the list.
+ * - `end`: Align the item to the end of the list.
+ */
+export type ScrollToIndexAlign = "start" | "end";

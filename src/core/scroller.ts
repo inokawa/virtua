@@ -8,6 +8,7 @@ import {
   UPDATE_SIZE,
   ACTION_MANUAL_SCROLL,
 } from "./store";
+import { ScrollToIndexAlign } from "./types";
 import { debounce, throttle, max, min, timeout } from "./utils";
 
 // Infer scroll state also from wheel events
@@ -43,7 +44,7 @@ export type Scroller = {
   _getActualScrollSize: () => number;
   _scrollTo: (offset: number) => void;
   _scrollBy: (offset: number) => void;
-  _scrollToIndex: (index: number) => void;
+  _scrollToIndex: (index: number, align?: ScrollToIndexAlign) => void;
   _fixScrollJump: (jump: ScrollJump) => void;
 };
 
@@ -73,26 +74,21 @@ export const createScroller = (
     return offset;
   };
 
-  const scrollManually = async (
-    index: number,
-    getCurrentOffset: () => number
-  ) => {
+  const scrollManually = async (getOffset: () => number) => {
     if (!rootElement) return;
 
-    const getOffset = (): number => {
+    const getTargetOffset = (): number => {
       // Adjust if the offset is over the end, to get correct startIndex.
-      return min(
-        getCurrentOffset(),
-        getActualScrollSize() - store._getViewportSize()
-      );
+      return min(getOffset(), getActualScrollSize() - store._getViewportSize());
     };
 
     while (true) {
       // Sync viewport to scroll destination
       // In order to scroll to the correct position, mount the items and measure their sizes before scrolling.
-      store._update(ACTION_BEFORE_MANUAL_SCROLL, getOffset());
+      const targetOffset = getTargetOffset();
+      store._update(ACTION_BEFORE_MANUAL_SCROLL, targetOffset);
 
-      if (!store._hasUnmeasuredItemsInRange(index)) {
+      if (!store._hasUnmeasuredItemsInTargetViewport(targetOffset)) {
         break;
       }
 
@@ -131,14 +127,14 @@ export const createScroller = (
     }
 
     // Scroll with the updated value
-    rootElement[scrollToKey] = normalizeOffset(getOffset());
+    rootElement[scrollToKey] = normalizeOffset(getTargetOffset());
     store._update(ACTION_MANUAL_SCROLL);
   };
 
   const scrollTo = (offset: number) => {
     offset = max(offset, 0);
 
-    scrollManually(store._getItemIndexForScrollTo(offset), () => offset);
+    scrollManually(() => offset);
   };
 
   return {
@@ -176,10 +172,17 @@ export const createScroller = (
     _scrollBy(offset) {
       scrollTo(store._getScrollOffset() + offset);
     },
-    _scrollToIndex(index) {
+    _scrollToIndex(index, align) {
       index = min(store._getItemLength() - 1, max(0, index));
 
-      scrollManually(index, () => store._getItemOffset(index));
+      scrollManually(
+        align === "end"
+          ? () =>
+              store._getItemOffset(index) +
+              store._getItemSize(index) -
+              store._getViewportSize()
+          : () => store._getItemOffset(index)
+      );
     },
     _fixScrollJump: (jump) => {
       if (!rootElement) return;
