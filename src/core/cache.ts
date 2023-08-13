@@ -90,12 +90,15 @@ export const findIndex = (
 };
 
 export const findStartIndexWithOffset = (
-  cache: Cache,
+  cache: Writeable<Cache>,
   offset: number,
-  prevStartIndex: number,
-  prevOffset: number
+  initialIndex: number
 ): number => {
-  return findIndex(cache, prevStartIndex, offset - prevOffset);
+  return findIndex(
+    cache,
+    initialIndex,
+    offset - computeOffset(cache, initialIndex)
+  );
 };
 
 export const hasUnmeasuredItemsInRange = (
