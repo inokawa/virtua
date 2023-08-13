@@ -79,7 +79,10 @@ export const createScroller = (
 
     const getTargetOffset = (): number => {
       // Adjust if the offset is over the end, to get correct startIndex.
-      return min(getOffset(), getActualScrollSize() - store._getViewportSize());
+      return min(
+        getActualScrollSize() - store._getViewportSize(),
+        max(getOffset(), 0)
+      );
     };
 
     while (true) {
@@ -131,12 +134,6 @@ export const createScroller = (
     store._update(ACTION_MANUAL_SCROLL);
   };
 
-  const scrollTo = (offset: number) => {
-    offset = max(offset, 0);
-
-    scrollManually(() => offset);
-  };
-
   return {
     _initRoot(root) {
       rootElement = root;
@@ -168,9 +165,12 @@ export const createScroller = (
       };
     },
     _getActualScrollSize: getActualScrollSize,
-    _scrollTo: scrollTo,
+    _scrollTo(offset) {
+      scrollManually(() => offset);
+    },
     _scrollBy(offset) {
-      scrollTo(store._getScrollOffset() + offset);
+      offset += store._getScrollOffset();
+      scrollManually(() => offset);
     },
     _scrollToIndex(index, align) {
       index = min(store._getItemLength() - 1, max(0, index));
