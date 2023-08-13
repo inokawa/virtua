@@ -120,15 +120,10 @@ export const createVirtualStore = (
     },
     _getRange() {
       const [prevStartIndex, prevEndIndex] = _prevRange;
-      const prevOffset = computeStartOffset(
-        cache as Writeable<Cache>,
-        prevStartIndex
-      );
       const start = findStartIndexWithOffset(
-        cache,
+        cache as Writeable<Cache>,
         scrollOffset,
-        prevStartIndex,
-        prevOffset
+        prevStartIndex
       );
       const end = findEndIndex(cache, start, viewportSize);
       if (prevStartIndex === start && prevEndIndex === end) {
@@ -181,7 +176,7 @@ export const createVirtualStore = (
       return prevJump;
     },
     _getItemIndexForScrollTo(offset) {
-      return findStartIndexWithOffset(cache, offset, 0, 0);
+      return findStartIndexWithOffset(cache as Writeable<Cache>, offset, 0);
     },
     _subscribe(target, cb) {
       const sub: [number, Subscriber] = [target, cb];
