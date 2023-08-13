@@ -1,6 +1,6 @@
 import {
   ACTION_ITEM_RESIZE,
-  ACTION_WINDOW_RESIZE,
+  ACTION_VIEWPORT_RESIZE,
   ItemResize,
   VirtualStore,
 } from "./store";
@@ -26,7 +26,7 @@ export const createResizer = (
       const resizes: ItemResize[] = [];
       for (const { target, contentRect } of entries) {
         if (target === rootElement) {
-          store._update(ACTION_WINDOW_RESIZE, contentRect[sizeKey]);
+          store._update(ACTION_VIEWPORT_RESIZE, contentRect[sizeKey]);
         } else {
           const index = mountedIndexes.get(target);
           if (exists(index)) {
@@ -91,7 +91,7 @@ export const createWindowResizer = (
   return {
     _observeRoot() {
       const cb = () => {
-        store._update(ACTION_WINDOW_RESIZE, window[windowSizeKey]);
+        store._update(ACTION_VIEWPORT_RESIZE, window[windowSizeKey]);
       };
       window.addEventListener("resize", cb);
       cb();
@@ -140,8 +140,8 @@ export const createGridResizer = (
       const resizedCols = new Set<number>();
       for (const { target, contentRect } of entries) {
         if (target === rootElement) {
-          vStore._update(ACTION_WINDOW_RESIZE, contentRect[heightKey]);
-          hStore._update(ACTION_WINDOW_RESIZE, contentRect[widthKey]);
+          vStore._update(ACTION_VIEWPORT_RESIZE, contentRect[heightKey]);
+          hStore._update(ACTION_VIEWPORT_RESIZE, contentRect[widthKey]);
         } else {
           const cell = mountedIndexes.get(target);
           if (cell) {

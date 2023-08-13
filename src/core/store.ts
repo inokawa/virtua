@@ -37,7 +37,7 @@ type ScrollDirection =
   | typeof SCROLL_UP;
 
 export const ACTION_ITEM_RESIZE = 1;
-export const ACTION_WINDOW_RESIZE = 2;
+export const ACTION_VIEWPORT_RESIZE = 2;
 export const ACTION_SCROLL = 3;
 export const ACTION_BEFORE_MANUAL_SCROLL = 4;
 export const ACTION_SCROLL_END = 5;
@@ -45,7 +45,7 @@ export const ACTION_MANUAL_SCROLL = 6;
 
 type Actions =
   | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
-  | [type: typeof ACTION_WINDOW_RESIZE, size: number]
+  | [type: typeof ACTION_VIEWPORT_RESIZE, size: number]
   | [type: typeof ACTION_SCROLL, offset: number]
   | [type: typeof ACTION_BEFORE_MANUAL_SCROLL, offset: number]
   | [type: typeof ACTION_SCROLL_END, dummy?: void]
@@ -252,7 +252,7 @@ export const createVirtualStore = (
           _resized = shouldSync = true;
           break;
         }
-        case ACTION_WINDOW_RESIZE: {
+        case ACTION_VIEWPORT_RESIZE: {
           if (viewportSize !== payload) {
             viewportSize = payload;
             mutated = UPDATE_SIZE;
