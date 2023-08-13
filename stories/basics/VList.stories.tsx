@@ -13,6 +13,7 @@ import {
   CustomItemComponentProps,
   CustomViewportComponentProps,
   CacheSnapshot,
+  ScrollToIndexAlign,
 } from "../../src";
 import { Spinner } from "./components";
 
@@ -172,6 +173,8 @@ export const ScrollTo: StoryObj = {
   render: () => {
     const LENGTH = 1000;
     const [scrollIndex, setScrollIndex] = useState(567);
+    const [scrollIndexAlign, setScrollToIndexAlign] =
+      useState<ScrollToIndexAlign>("start");
     const [scrollOffset, setScrollOffset] = useState(1000);
     const ref = useRef<VListHandle>(null);
     return (
@@ -188,7 +191,7 @@ export const ScrollTo: StoryObj = {
           />
           <button
             onClick={() => {
-              ref.current?.scrollToIndex(scrollIndex);
+              ref.current?.scrollToIndex(scrollIndex, scrollIndexAlign);
             }}
           >
             scroll to index
@@ -200,6 +203,28 @@ export const ScrollTo: StoryObj = {
           >
             randomize
           </button>
+          <label style={{ marginLeft: 4 }}>
+            <input
+              type="radio"
+              style={{ marginLeft: 4 }}
+              checked={scrollIndexAlign === "start"}
+              onChange={() => {
+                setScrollToIndexAlign("start");
+              }}
+            />
+            start
+          </label>
+          <label style={{ marginLeft: 4 }}>
+            <input
+              type="radio"
+              style={{ marginLeft: 4 }}
+              checked={scrollIndexAlign === "end"}
+              onChange={() => {
+                setScrollToIndexAlign("end");
+              }}
+            />
+            end
+          </label>
         </div>
         <div>
           <div>

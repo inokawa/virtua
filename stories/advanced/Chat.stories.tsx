@@ -68,7 +68,7 @@ export const Default: StoryObj = {
 
     useEffect(() => {
       if (!ref.current) return;
-      ref.current.scrollToIndex(items.length - 1);
+      ref.current.scrollToIndex(items.length - 1, "end");
     }, [items.length]);
 
     useEffect(() => {

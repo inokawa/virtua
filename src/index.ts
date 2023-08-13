@@ -1,2 +1,2 @@
-export type { CacheSnapshot } from "./core/types";
+export type { CacheSnapshot, ScrollToIndexAlign } from "./core/types";
 export * from "./react";
