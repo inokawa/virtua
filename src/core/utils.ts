@@ -5,6 +5,12 @@ export const now = Date.now;
 export const values = Object.values;
 export const timeout = setTimeout;
 
+export const clamp = (
+  value: number,
+  minValue: number,
+  maxValue: number
+): number => min(maxValue, max(minValue, value));
+
 export const exists = <T>(v: T): v is Exclude<T, null | undefined> => v != null;
 
 export const median = (arr: number[]): number => {

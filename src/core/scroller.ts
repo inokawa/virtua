@@ -9,7 +9,7 @@ import {
   ACTION_MANUAL_SCROLL,
 } from "./store";
 import { ScrollToIndexAlign } from "./types";
-import { debounce, throttle, max, min, timeout } from "./utils";
+import { debounce, throttle, timeout, clamp } from "./utils";
 
 // Infer scroll state also from wheel events
 // Sometimes scroll events do not fire when frame dropped even if the visual have been already scrolled
@@ -79,9 +79,10 @@ export const createScroller = (
 
     const getTargetOffset = (): number => {
       // Adjust if the offset is over the end, to get correct startIndex.
-      return min(
-        getActualScrollSize() - store._getViewportSize(),
-        max(getOffset(), 0)
+      return clamp(
+        getOffset(),
+        0,
+        getActualScrollSize() - store._getViewportSize()
       );
     };
 
@@ -173,7 +174,7 @@ export const createScroller = (
       scrollManually(() => offset);
     },
     _scrollToIndex(index, align) {
-      index = min(store._getItemLength() - 1, max(0, index));
+      index = clamp(index, 0, store._getItemLength() - 1);
 
       scrollManually(
         align === "end"

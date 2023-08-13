@@ -13,7 +13,7 @@ import {
   updateCache,
 } from "./cache";
 import type { CacheSnapshot, Writeable } from "./types";
-import { abs, max, min } from "./utils";
+import { abs, clamp, max, min } from "./utils";
 
 export type ScrollJump = Readonly<number>;
 export type ItemResize = Readonly<[index: number, size: number]>;
@@ -299,7 +299,7 @@ export const createVirtualStore = (
           }
 
           // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
-          scrollOffset = min(getScrollOffsetMax(), max(0, payload));
+          scrollOffset = clamp(payload, 0, getScrollOffsetMax());
           mutated += UPDATE_SCROLL;
           break;
         }

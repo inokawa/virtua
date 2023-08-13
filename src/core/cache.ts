@@ -1,5 +1,5 @@
 import type { DeepReadonly, Writeable } from "./types";
-import { max, median, min } from "./utils";
+import { clamp, median, min } from "./utils";
 
 export const UNCACHED = -1;
 
@@ -86,7 +86,7 @@ export const findIndex = (
     }
   }
 
-  return min(cache._length - 1, max(0, i));
+  return clamp(i, 0, cache._length - 1);
 };
 
 export const findStartIndexWithOffset = (
