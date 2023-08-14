@@ -19,7 +19,7 @@ const forEach = (children: ReactNode, elements: ItemElement[]) => {
   }
 };
 
-// Relace React.Children.forEach with our tiny implementation.
+// Replace React.Children.forEach with our tiny implementation.
 // In our usage, just flatten children array keeping element instances and their keys, React.Children is redundant and slow.
 //
 // - React.Children.toArray is slow because it clones element instance.
