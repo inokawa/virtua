@@ -21,7 +21,7 @@ Methods of [VList](../API.md#vlist).
 
 ### scrollToIndex
 
-▸ **scrollToIndex**(`index`): `void`
+▸ **scrollToIndex**(`index`, `align?`): `void`
 
 Scroll to the item specified by index.
 
@@ -30,6 +30,7 @@ Scroll to the item specified by index.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `index` | `number` | index of item |
+| `align?` | [`ScrollToIndexAlign`](../API.md#scrolltoindexalign) | alignment of item |
 
 #### Returns
 
@@ -37,7 +38,7 @@ Scroll to the item specified by index.
 
 #### Defined in
 
-[src/react/VList.tsx:65](https://github.com/inokawa/virtua/blob/974508db/src/react/VList.tsx#L65)
+[src/react/VList.tsx:66](https://github.com/inokawa/virtua/blob/b0609094/src/react/VList.tsx#L66)
 
 ___
 
@@ -59,7 +60,7 @@ Scroll to the given offset.
 
 #### Defined in
 
-[src/react/VList.tsx:70](https://github.com/inokawa/virtua/blob/974508db/src/react/VList.tsx#L70)
+[src/react/VList.tsx:71](https://github.com/inokawa/virtua/blob/b0609094/src/react/VList.tsx#L71)
 
 ___
 
@@ -81,7 +82,7 @@ Scroll by the given offset.
 
 #### Defined in
 
-[src/react/VList.tsx:75](https://github.com/inokawa/virtua/blob/974508db/src/react/VList.tsx#L75)
+[src/react/VList.tsx:76](https://github.com/inokawa/virtua/blob/b0609094/src/react/VList.tsx#L76)
 
 ## Properties
 
@@ -93,7 +94,7 @@ Get current [CacheSnapshot](CacheSnapshot.md).
 
 #### Defined in
 
-[src/react/VList.tsx:48](https://github.com/inokawa/virtua/blob/974508db/src/react/VList.tsx#L48)
+[src/react/VList.tsx:48](https://github.com/inokawa/virtua/blob/b0609094/src/react/VList.tsx#L48)
 
 ___
 
@@ -105,7 +106,7 @@ Get current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/react/VList.tsx:52](https://github.com/inokawa/virtua/blob/974508db/src/react/VList.tsx#L52)
+[src/react/VList.tsx:52](https://github.com/inokawa/virtua/blob/b0609094/src/react/VList.tsx#L52)
 
 ___
 
@@ -117,7 +118,7 @@ Get current scrollHeight or scrollWidth.
 
 #### Defined in
 
-[src/react/VList.tsx:56](https://github.com/inokawa/virtua/blob/974508db/src/react/VList.tsx#L56)
+[src/react/VList.tsx:56](https://github.com/inokawa/virtua/blob/b0609094/src/react/VList.tsx#L56)
 
 ___
 
@@ -129,4 +130,4 @@ Get current offsetHeight or offsetWidth.
 
 #### Defined in
 
-[src/react/VList.tsx:60](https://github.com/inokawa/virtua/blob/974508db/src/react/VList.tsx#L60)
+[src/react/VList.tsx:60](https://github.com/inokawa/virtua/blob/b0609094/src/react/VList.tsx#L60)
