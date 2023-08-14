@@ -1,4 +1,4 @@
-import{j as e}from"./jsx-runtime-c3d7f245.js";import{I as T,D as U,H as l,S as y}from"./common-0e1f344c.js";import{R as o}from"./react-virtuoso-ea65407d.js";import"./index-c6dae603.js";import"./index-eb008d06.js";const v={component:o,decorators:[r=>e("div",{style:{height:"100vh"},children:e(r,{})})]},n={render:()=>e(o,{count:1e4,Component:T})},t={render:()=>e(o,{count:1e4,Component:U})},s={render:()=>e(o,{count:1e4,Component:l})},a={render:()=>e(o,{count:1e6,Component:y})};var c,m,i;n.parameters={...n.parameters,docs:{...(c=n.parameters)==null?void 0:c.docs,source:{originalSource:`{
+import{j as e}from"./jsx-runtime-c3d7f245.js";import{I as T,D as U,H as l,S as y}from"./common-0e1f344c.js";import{R as o}from"./react-virtuoso-e774d5ae.js";import"./index-c6dae603.js";import"./index-eb008d06.js";const v={component:o,decorators:[r=>e("div",{style:{height:"100vh"},children:e(r,{})})]},n={render:()=>e(o,{count:1e4,Component:T})},t={render:()=>e(o,{count:1e4,Component:U})},s={render:()=>e(o,{count:1e4,Component:l})},a={render:()=>e(o,{count:1e6,Component:y})};var c,m,i;n.parameters={...n.parameters,docs:{...(c=n.parameters)==null?void 0:c.docs,source:{originalSource:`{
   render: () => {
     const ROW_COUNT = 10000;
     return <ReactVirtuosoList count={ROW_COUNT} Component={ItemWithRenderCount} />;
@@ -19,4 +19,4 @@ import{j as e}from"./jsx-runtime-c3d7f245.js";import{I as T,D as U,H as l,S as y
     return <ReactVirtuosoList count={ROW_COUNT} Component={SimpleItem} />;
   }
 }`,...(N=(W=a.parameters)==null?void 0:W.docs)==null?void 0:N.source}}};const V=["RenderCount","DynamicHeight","HeavyComponent","OneMillion"];export{t as DynamicHeight,s as HeavyComponent,a as OneMillion,n as RenderCount,V as __namedExportsOrder,v as default};
-//# sourceMappingURL=react-virtuoso.stories-8f201540.js.map
+//# sourceMappingURL=react-virtuoso.stories-c98e25ea.js.map
