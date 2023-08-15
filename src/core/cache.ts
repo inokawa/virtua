@@ -153,6 +153,12 @@ export const updateCache = (cache: Writeable<Cache>, length: number) => {
       cache._offsets.pop();
     }
     cache._length = length;
-    cache._measuredOffsetIndex = min(cache._measuredOffsetIndex, length - 1);
+    // measuredOffsetIndex shouldn't be less than 0 because it makes scrollSize NaN and cause infinite rerender.
+    // https://github.com/inokawa/virtua/pull/160
+    cache._measuredOffsetIndex = clamp(
+      length - 1,
+      0,
+      cache._measuredOffsetIndex
+    );
   }
 };

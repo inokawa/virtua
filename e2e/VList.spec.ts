@@ -298,6 +298,7 @@ test.describe("check if scrollToIndex works", () => {
   test.describe("align start", () => {
     test("mid", async ({ page }) => {
       const scrollable = await page.waitForSelector(scrollableSelector);
+      await scrollable.waitForElementState("stable");
 
       // check if start is displayed
       await expect((await getFirstItem(scrollable)).text).toEqual("0");
@@ -328,6 +329,7 @@ test.describe("check if scrollToIndex works", () => {
 
     test("start", async ({ page }) => {
       const scrollable = await page.waitForSelector(scrollableSelector);
+      await scrollable.waitForElementState("stable");
 
       // check if start is displayed
       await expect((await getFirstItem(scrollable)).text).toEqual("0");
@@ -363,6 +365,7 @@ test.describe("check if scrollToIndex works", () => {
 
     test("end", async ({ page }) => {
       const scrollable = await page.waitForSelector(scrollableSelector);
+      await scrollable.waitForElementState("stable");
 
       // check if start is displayed
       await expect((await getFirstItem(scrollable)).text).toEqual("0");
@@ -398,6 +401,7 @@ test.describe("check if scrollToIndex works", () => {
 
     test("mid", async ({ page }) => {
       const scrollable = await page.waitForSelector(scrollableSelector);
+      await scrollable.waitForElementState("stable");
 
       // check if start is displayed
       await expect((await getFirstItem(scrollable)).text).toEqual("0");
@@ -428,6 +432,7 @@ test.describe("check if scrollToIndex works", () => {
 
     test("start", async ({ page }) => {
       const scrollable = await page.waitForSelector(scrollableSelector);
+      await scrollable.waitForElementState("stable");
 
       // check if start is displayed
       await expect((await getFirstItem(scrollable)).text).toEqual("0");
@@ -463,6 +468,7 @@ test.describe("check if scrollToIndex works", () => {
 
     test("end", async ({ page }) => {
       const scrollable = await page.waitForSelector(scrollableSelector);
+      await scrollable.waitForElementState("stable");
 
       // check if start is displayed
       await expect((await getFirstItem(scrollable)).text).toEqual("0");
@@ -499,6 +505,7 @@ test.describe("check if scrollTo works", () => {
 
   test("down and up", async ({ page }) => {
     const scrollable = await page.waitForSelector(scrollableSelector);
+    await scrollable.waitForElementState("stable");
 
     // check if start is displayed
     await expect((await getFirstItem(scrollable)).text).toEqual("0");
@@ -544,6 +551,7 @@ test.describe("check if scrollBy works", () => {
 
   test("down and up", async ({ page }) => {
     const scrollable = await page.waitForSelector(scrollableSelector);
+    await scrollable.waitForElementState("stable");
 
     // check if start is displayed
     await expect((await getFirstItem(scrollable)).text).toEqual("0");
