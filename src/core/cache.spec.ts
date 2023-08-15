@@ -827,4 +827,12 @@ describe(updateCache.name, () => {
       }
     `);
   });
+
+  it("should recover cache length from 0", () => {
+    const cache = initCache(10, 40);
+    const initialCache = JSON.parse(JSON.stringify(cache));
+    updateCache(cache as Writeable<Cache>, 0);
+    updateCache(cache as Writeable<Cache>, 10);
+    expect(cache).toEqual(initialCache);
+  });
 });
