@@ -495,14 +495,23 @@ export const IncreasingItems: StoryObj = {
     };
 
     const [prepend, setPrepend] = useState(false);
+    const [increase, setIncrease] = useState(true);
     const [rows, setRows] = useState(() => createRows(BATCH_LENGTH, 0));
     useEffect(() => {
       const timer = setInterval(() => {
-        setRows((prev) =>
-          prepend
-            ? [...createRows(BATCH_LENGTH, prev[0] - BATCH_LENGTH), ...prev]
-            : [...prev, ...createRows(BATCH_LENGTH, prev[prev.length - 1]! + 1)]
-        );
+        if (increase) {
+          setRows((prev) =>
+            prepend
+              ? [...createRows(BATCH_LENGTH, prev[0] - BATCH_LENGTH), ...prev]
+              : [...prev, ...createRows(BATCH_LENGTH, prev[prev.length - 1]! + 1)]
+          );
+        } else {
+          if (prepend) {
+            setRows((prev) => (prev.slice(BATCH_LENGTH)))
+          } else {
+            setRows((prev) => (prev.slice(0, -BATCH_LENGTH)))
+          }
+        }
       }, 500);
       return () => {
         clearInterval(timer);
@@ -537,6 +546,28 @@ export const IncreasingItems: StoryObj = {
               }}
             />
             prepend
+          </label>
+          <label style={{ marginRight: 4 }}>
+            <input
+              type="radio"
+              style={{ marginLeft: 4 }}
+              checked={increase}
+              onChange={() => {
+                setIncrease(true);
+              }}
+            />
+            increase
+          </label>
+          <label style={{ marginRight: 4 }}>
+            <input
+              type="radio"
+              style={{ marginLeft: 4 }}
+              checked={!increase}
+              onChange={() => {
+                setIncrease(false);
+              }}
+            />
+            decrease
           </label>
         </div>
         <VList style={{ flex: 1 }}>
