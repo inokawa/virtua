@@ -502,14 +502,20 @@ export const IncreasingItems: StoryObj = {
         if (increase) {
           setRows((prev) =>
             prepend
-              ? [...createRows(BATCH_LENGTH, prev[0] - BATCH_LENGTH), ...prev]
-              : [...prev, ...createRows(BATCH_LENGTH, prev[prev.length - 1]! + 1)]
+              ? [
+                  ...createRows(BATCH_LENGTH, (prev[0] ?? 0) - BATCH_LENGTH),
+                  ...prev,
+                ]
+              : [
+                  ...prev,
+                  ...createRows(BATCH_LENGTH, (prev[prev.length - 1] ?? 0) + 1),
+                ]
           );
         } else {
           if (prepend) {
-            setRows((prev) => (prev.slice(BATCH_LENGTH)))
+            setRows((prev) => prev.slice(BATCH_LENGTH));
           } else {
-            setRows((prev) => (prev.slice(0, -BATCH_LENGTH)))
+            setRows((prev) => prev.slice(0, -BATCH_LENGTH));
           }
         }
       }, 500);
