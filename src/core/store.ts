@@ -10,7 +10,7 @@ import {
   setItemSize,
   hasUnmeasuredItemsInRange,
   estimateDefaultItemSize,
-  updateCache,
+  updateCacheLength,
 } from "./cache";
 import type { CacheSnapshot, Writeable } from "./types";
 import { abs, clamp, max, min } from "./utils";
@@ -38,14 +38,19 @@ type ScrollDirection =
 
 export const ACTION_ITEM_RESIZE = 1;
 export const ACTION_VIEWPORT_RESIZE = 2;
-export const ACTION_SCROLL = 3;
-export const ACTION_BEFORE_MANUAL_SCROLL = 4;
-export const ACTION_SCROLL_END = 5;
-export const ACTION_MANUAL_SCROLL = 6;
+export const ACTION_ITEMS_LENGTH_CHANGE = 3;
+export const ACTION_SCROLL = 4;
+export const ACTION_BEFORE_MANUAL_SCROLL = 5;
+export const ACTION_SCROLL_END = 6;
+export const ACTION_MANUAL_SCROLL = 7;
 
 type Actions =
   | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
   | [type: typeof ACTION_VIEWPORT_RESIZE, size: number]
+  | [
+      type: typeof ACTION_ITEMS_LENGTH_CHANGE,
+      arg: [length: number, isShift?: boolean | undefined]
+    ]
   | [type: typeof ACTION_SCROLL, offset: number]
   | [type: typeof ACTION_BEFORE_MANUAL_SCROLL, offset: number]
   | [type: typeof ACTION_SCROLL_END, dummy?: void]
@@ -66,7 +71,7 @@ export type VirtualStore = {
   _hasUnmeasuredItemsInTargetViewport(offset: number): boolean;
   _getItemOffset(index: number): number;
   _getItemSize(index: number): number;
-  _getItemLength(): number;
+  _getItemsLength(): number;
   _getScrollOffset(): number;
   _getScrollOffsetMax(): number;
   _getIsScrolling(): boolean;
@@ -76,7 +81,6 @@ export type VirtualStore = {
   _flushJump(): ScrollJump;
   _subscribe(target: number, cb: Subscriber): () => void;
   _update(...action: Actions): void;
-  _updateCacheLength(length: number): void;
 };
 
 export const createVirtualStore = (
@@ -92,6 +96,7 @@ export const createVirtualStore = (
   let jumpCount = 0;
   let jump: ScrollJump = 0;
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
+  let _isShifting = false;
   let _isManualScrolling = false;
   let _resized = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
@@ -101,6 +106,10 @@ export const createVirtualStore = (
     computeTotalSize(cache as Writeable<Cache>);
   const getScrollOffsetMax = () => getScrollSize() - viewportSize;
 
+  const clampScrollOffset = (value: number): number => {
+    // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
+    return clamp(value, 0, getScrollOffsetMax());
+  };
   const updateScrollDirection = (dir: ScrollDirection): boolean => {
     const prev = _scrollDirection;
     _scrollDirection = dir;
@@ -158,7 +167,7 @@ export const createVirtualStore = (
     _getItemSize(index) {
       return getItemSize(cache, index);
     },
-    _getItemLength() {
+    _getItemsLength() {
       return cache._length;
     },
     _getScrollOffset() {
@@ -203,11 +212,11 @@ export const createVirtualStore = (
             break;
           }
 
-          let diff = 0;
           // Calculate jump
-          if (_scrollDirection === SCROLL_UP) {
-            diff = calculateJump(cache, updated);
-          } else if (_isManualScrolling) {
+          let diff = 0;
+          if (_isShifting || _isManualScrolling) {
+            // Should maintain visible position under specific situations
+
             if (scrollOffset === 0) {
               // Do nothing to stick to the start
             } else if (
@@ -224,10 +233,12 @@ export const createVirtualStore = (
                 updated.filter(([index]) => index < startIndex)
               );
             }
+          } else if (_scrollDirection === SCROLL_UP) {
+            // We can assume jumps occurred on the upper outside during reverse scrolling
+            diff = calculateJump(cache, updated);
           } else {
             // Do nothing
           }
-
           if (diff) {
             jump = diff;
             jumpCount++;
@@ -262,6 +273,28 @@ export const createVirtualStore = (
           }
           break;
         }
+        case ACTION_ITEMS_LENGTH_CHANGE: {
+          if (payload[1]) {
+            // Calc distance before updating cache
+            const distanceToEnd = getScrollOffsetMax() - scrollOffset;
+
+            const [shift, isRemove] = updateCacheLength(
+              cache as Writeable<Cache>,
+              payload[0],
+              true
+            );
+            const diff = isRemove ? -min(shift, distanceToEnd) : shift;
+            jump += diff;
+            scrollOffset = clampScrollOffset(scrollOffset + diff);
+            jumpCount++;
+
+            mutated = UPDATE_SCROLL + UPDATE_JUMP;
+            _isShifting = true;
+          } else {
+            updateCacheLength(cache as Writeable<Cache>, payload[0]);
+          }
+          break;
+        }
         case ACTION_SCROLL:
         case ACTION_BEFORE_MANUAL_SCROLL: {
           // Skip if offset is not changed
@@ -270,10 +303,12 @@ export const createVirtualStore = (
           }
 
           if (type === ACTION_SCROLL) {
-            // Skip scroll direction detection just after resizing because it may result in the opposite direction.
-            // Scroll events are dispatched enough so it's ok to skip some of them.
+            // Scrolling after resizing will be caused by jump compensation
             const isJustResized = _resized;
             _resized = false;
+
+            // Skip scroll direction detection just after resizing because it may result in the opposite direction.
+            // Scroll events are dispatched enough so it's ok to skip some of them.
             if (
               (_scrollDirection === SCROLL_IDLE || !isJustResized) &&
               // Ignore until manual scrolling
@@ -295,10 +330,13 @@ export const createVirtualStore = (
             shouldSync = abs(scrollOffset - payload) > viewportSize;
 
             mutated += UPDATE_SCROLL_WITH_EVENT;
+
+            if (!isJustResized) {
+              _isShifting = false;
+            }
           }
 
-          // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
-          scrollOffset = clamp(payload, 0, getScrollOffsetMax());
+          scrollOffset = clampScrollOffset(payload);
           mutated += UPDATE_SCROLL;
           break;
         }
@@ -306,7 +344,7 @@ export const createVirtualStore = (
           if (updateScrollDirection(SCROLL_IDLE)) {
             mutated = UPDATE_IS_SCROLLING;
           }
-          _isManualScrolling = false;
+          _isShifting = _isManualScrolling = false;
           break;
         }
         case ACTION_MANUAL_SCROLL: {
@@ -324,11 +362,6 @@ export const createVirtualStore = (
           cb(shouldSync);
         });
       }
-    },
-    _updateCacheLength(length) {
-      // It's ok to be updated in render because states should be calculated consistently regardless cache length
-      if (cache._length === length) return;
-      updateCache(cache as Writeable<Cache>, length);
     },
   };
 };

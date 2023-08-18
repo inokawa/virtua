@@ -379,6 +379,100 @@ export const InfiniteScrolling: StoryObj = {
   },
 };
 
+export const BiDirectionalInfiniteScrolling: StoryObj = {
+  render: () => {
+    const id = useRef(0);
+    const createRows = (num: number) => {
+      const heights = [20, 40, 80, 77];
+      return Array.from({ length: num }).map(() => {
+        const i = id.current++;
+        return (
+          <div
+            key={i}
+            style={{
+              height: heights[i % 4],
+              borderBottom: "solid 1px #ccc",
+              background: "#fff",
+            }}
+          >
+            {i}
+          </div>
+        );
+      });
+    };
+
+    const [shifting, setShifting] = useState(false);
+    const [startFetching, setStartFetching] = useState(false);
+    const [endFetching, setEndFetching] = useState(false);
+    const fetchItems = async (isStart?: boolean) => {
+      if (isStart) {
+        setShifting(true);
+        setStartFetching(true);
+      } else {
+        setShifting(false);
+        setEndFetching(true);
+      }
+      await new Promise((r) => setTimeout(r, 1000));
+      if (isStart) {
+        setStartFetching(false);
+      } else {
+        setEndFetching(false);
+      }
+    };
+
+    const ref = useRef<VListHandle>(null);
+    const ITEM_BATCH_COUNT = 100;
+    const [items, setItems] = useState(() => createRows(ITEM_BATCH_COUNT * 2));
+    const THRESHOLD = 50;
+    const count = items.length;
+    const startFetchedCountRef = useRef(-1);
+    const endFetchedCountRef = useRef(-1);
+
+    const ready = useRef(false);
+    useEffect(() => {
+      ref.current?.scrollToIndex(items.length / 2 + 1);
+      ready.current = true;
+    }, []);
+
+    return (
+      <VList
+        ref={ref}
+        style={{ flex: 1 }}
+        shift={shifting ? true : false}
+        onRangeChange={async (start, end) => {
+          if (!ready.current) return;
+          if (end + THRESHOLD > count && endFetchedCountRef.current < count) {
+            endFetchedCountRef.current = count;
+            await fetchItems();
+            setItems((prev) => [...prev, ...createRows(ITEM_BATCH_COUNT)]);
+          } else if (
+            start - THRESHOLD < 0 &&
+            startFetchedCountRef.current < count
+          ) {
+            startFetchedCountRef.current = count;
+            await fetchItems(true);
+            setItems((prev) => [
+              ...createRows(ITEM_BATCH_COUNT).reverse(),
+              ...prev,
+            ]);
+          }
+        }}
+      >
+        {/* // TODO support the case when spinner is at index 0
+        <Spinner
+          key="head"
+          style={startFetching ? undefined : { visibility: "hidden" }}
+        /> */}
+        {items}
+        <Spinner
+          key="foot"
+          style={endFetching ? undefined : { visibility: "hidden" }}
+        />
+      </VList>
+    );
+  },
+};
+
 export const Callbacks: StoryObj = {
   render: () => {
     const items = useState(() => createRows(1000))[0];
@@ -486,43 +580,44 @@ export const WithState: StoryObj = {
 
 export const IncreasingItems: StoryObj = {
   render: () => {
-    const BATCH_LENGTH = 4;
+    const id = useRef(0);
     const createRows = (num: number, offset: number) => {
       return Array.from({ length: num }).map((_, i) => {
         i += offset;
-        return i;
+        return { id: id.current++, index: i };
       });
     };
 
+    const [auto, setAuto] = useState(false);
+    const [amount, setAmount] = useState(4);
     const [prepend, setPrepend] = useState(false);
     const [increase, setIncrease] = useState(true);
-    const [rows, setRows] = useState(() => createRows(BATCH_LENGTH, 0));
-    useEffect(() => {
-      const timer = setInterval(() => {
-        if (increase) {
-          setRows((prev) =>
-            prepend
-              ? [
-                  ...createRows(BATCH_LENGTH, (prev[0] ?? 0) - BATCH_LENGTH),
-                  ...prev,
-                ]
-              : [
-                  ...prev,
-                  ...createRows(BATCH_LENGTH, (prev[prev.length - 1] ?? 0) + 1),
-                ]
-          );
+    const [rows, setRows] = useState(() => createRows(amount, 0));
+    const update = () => {
+      if (increase) {
+        setRows((prev) =>
+          prepend
+            ? [...createRows(amount, (prev[0]?.index ?? 0) - amount), ...prev]
+            : [
+                ...prev,
+                ...createRows(amount, (prev[prev.length - 1]?.index ?? 0) + 1),
+              ]
+        );
+      } else {
+        if (prepend) {
+          setRows((prev) => prev.slice(amount));
         } else {
-          if (prepend) {
-            setRows((prev) => prev.slice(BATCH_LENGTH));
-          } else {
-            setRows((prev) => prev.slice(0, -BATCH_LENGTH));
-          }
+          setRows((prev) => prev.slice(0, -amount));
         }
-      }, 500);
+      }
+    };
+    useEffect(() => {
+      if (!auto) return;
+      const timer = setInterval(update, 500);
       return () => {
         clearInterval(timer);
       };
-    });
+    }, [update, auto]);
 
     const heights = [20, 40, 80, 77];
 
@@ -575,18 +670,49 @@ export const IncreasingItems: StoryObj = {
             />
             decrease
           </label>
+          <input
+            style={{ marginLeft: 4 }}
+            value={amount}
+            type="number"
+            min={1}
+            max={10000}
+            step={1}
+            onChange={(e) => {
+              setAmount(Number(e.target.value));
+            }}
+          />
         </div>
-        <VList style={{ flex: 1 }}>
-          {rows.map((d, i) => (
+        <div>
+          <label style={{ marginRight: 16 }}>
+            <input
+              type="checkbox"
+              style={{ marginLeft: 4 }}
+              checked={auto}
+              onChange={() => {
+                setAuto((prev) => !prev);
+              }}
+            />
+            auto
+          </label>
+          <button
+            onClick={() => {
+              update();
+            }}
+          >
+            update
+          </button>
+        </div>
+        <VList style={{ flex: 1 }} shift={prepend ? true : false}>
+          {rows.map((d) => (
             <div
-              key={d}
+              key={d.id}
               style={{
-                height: heights[i % 4],
+                height: heights[Math.abs(d.index) % 4],
                 borderBottom: "solid 1px #ccc",
                 background: "#fff",
               }}
             >
-              {d}
+              {d.index}
             </div>
           ))}
         </VList>

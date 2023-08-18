@@ -8,7 +8,7 @@ import {
   findIndex as findEndIndex,
   Cache,
   hasUnmeasuredItemsInRange,
-  updateCache,
+  updateCacheLength,
   initCache,
 } from "./cache";
 import type { Writeable } from "./types";
@@ -755,10 +755,11 @@ describe(initCache.name, () => {
   });
 });
 
-describe(updateCache.name, () => {
+describe(updateCacheLength.name, () => {
   it("should increase cache length", () => {
     const cache = initCache(10, 40);
-    updateCache(cache as Writeable<Cache>, 15);
+    const res = updateCacheLength(cache as Writeable<Cache>, 15, undefined);
+    expect(res).toEqual([40 * 5, false]);
     expect(cache).toMatchInlineSnapshot(`
       {
         "_defaultItemSize": 40,
@@ -804,7 +805,9 @@ describe(updateCache.name, () => {
 
   it("should decrease cache length", () => {
     const cache = initCache(10, 40);
-    updateCache(cache as Writeable<Cache>, 5);
+    (cache as Writeable<Cache>)._sizes[9] = 123;
+    const res = updateCacheLength(cache as Writeable<Cache>, 5, undefined);
+    expect(res).toEqual([40 * 4 + 123, true]);
     expect(cache).toMatchInlineSnapshot(`
       {
         "_defaultItemSize": 40,
@@ -831,8 +834,83 @@ describe(updateCache.name, () => {
   it("should recover cache length from 0", () => {
     const cache = initCache(10, 40);
     const initialCache = JSON.parse(JSON.stringify(cache));
-    updateCache(cache as Writeable<Cache>, 0);
-    updateCache(cache as Writeable<Cache>, 10);
+    updateCacheLength(cache as Writeable<Cache>, 0);
+    updateCacheLength(cache as Writeable<Cache>, 10);
     expect(cache).toEqual(initialCache);
+  });
+
+  it("should increase cache length with shifting", () => {
+    const cache = initCache(10, 40);
+    const res = updateCacheLength(cache as Writeable<Cache>, 15, true);
+    expect(res).toEqual([40 * 5, false]);
+    expect(cache).toMatchInlineSnapshot(`
+      {
+        "_defaultItemSize": 40,
+        "_length": 15,
+        "_measuredOffsetIndex": 0,
+        "_offsets": [
+          0,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+        ],
+        "_sizes": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+        ],
+      }
+    `);
+  });
+
+  it("should decrease cache length with shifting", () => {
+    const cache = initCache(10, 40);
+    (cache as Writeable<Cache>)._sizes[0] = 123;
+    const res = updateCacheLength(cache as Writeable<Cache>, 5, true);
+    expect(res).toEqual([40 * 4 + 123, true]);
+    expect(cache).toMatchInlineSnapshot(`
+      {
+        "_defaultItemSize": 40,
+        "_length": 5,
+        "_measuredOffsetIndex": 0,
+        "_offsets": [
+          0,
+          -1,
+          -1,
+          -1,
+          -1,
+        ],
+        "_sizes": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+        ],
+      }
+    `);
   });
 });

@@ -121,9 +121,14 @@ export const estimateDefaultItemSize = (cache: Writeable<Cache>) => {
       median(measuredSizes);
 };
 
-const appendCache = (cache: Writeable<Cache>, length: number) => {
+const appendCache = (
+  cache: Writeable<Cache>,
+  length: number,
+  prepend?: boolean
+) => {
+  const key = prepend ? "unshift" : "push";
   for (let i = cache._length; i < length; i++) {
-    cache._sizes.push(UNCACHED);
+    cache._sizes[key](UNCACHED);
     // first offset must be 0
     cache._offsets.push(i === 0 ? 0 : UNCACHED);
   }
@@ -142,23 +147,37 @@ export const initCache = (length: number, itemSize: number): Cache => {
   return cache;
 };
 
-export const updateCache = (cache: Writeable<Cache>, length: number) => {
+export const updateCacheLength = (
+  cache: Writeable<Cache>,
+  length: number,
+  isShift?: boolean
+): [number, boolean] => {
   const diff = length - cache._length;
 
-  if (diff > 0) {
-    appendCache(cache as Writeable<Cache>, length);
-  } else {
-    for (let i = diff; i < 0; i++) {
-      cache._sizes.pop();
-      cache._offsets.pop();
-    }
-    cache._length = length;
-    // measuredOffsetIndex shouldn't be less than 0 because it makes scrollSize NaN and cause infinite rerender.
-    // https://github.com/inokawa/virtua/pull/160
-    cache._measuredOffsetIndex = clamp(
-      length - 1,
-      0,
-      cache._measuredOffsetIndex
+  const isRemove = diff < 0;
+  let shift: number;
+  if (isRemove) {
+    // Removed
+    shift = (
+      isShift ? cache._sizes.splice(0, -diff) : cache._sizes.splice(diff)
+    ).reduce(
+      (acc, removed) =>
+        acc + (removed === UNCACHED ? cache._defaultItemSize : removed),
+      0
     );
+    cache._offsets.splice(diff);
+  } else {
+    // Added
+    shift = cache._defaultItemSize * diff;
+    appendCache(cache, cache._length + diff, isShift);
   }
+
+  cache._measuredOffsetIndex = isShift
+    ? // Discard cache for now
+      0
+    : // measuredOffsetIndex shouldn't be less than 0 because it makes scrollSize NaN and cause infinite rerender.
+      // https://github.com/inokawa/virtua/pull/160
+      clamp(length - 1, 0, cache._measuredOffsetIndex);
+  cache._length = length;
+  return [shift, isRemove];
 };

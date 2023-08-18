@@ -1,10 +1,11 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 
-export const Spinner = () => {
+export const Spinner = ({ style }: { style?: CSSProperties }) => {
   return (
     <>
       <div
         style={{
+          ...style,
           height: 100,
           display: "flex",
           alignItems: "center",
