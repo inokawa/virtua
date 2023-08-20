@@ -208,8 +208,6 @@ export const createVirtualStore = (
           if (_scrollDirection === SCROLL_UP) {
             diff = calculateJump(cache, updated);
           } else if (_isManualScrolling) {
-            const [startIndex] = _prevRange;
-
             if (scrollOffset === 0) {
               // Do nothing to stick to the start
             } else if (
@@ -219,6 +217,7 @@ export const createVirtualStore = (
               // Keep end to stick to the end
               diff = calculateJump(cache, updated);
             } else {
+              const [startIndex] = _prevRange;
               // Keep start at mid
               diff = calculateJump(
                 cache,
