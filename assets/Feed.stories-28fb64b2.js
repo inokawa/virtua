@@ -1,4 +1,4 @@
-import{j as m,a as H}from"./jsx-runtime-c3d7f245.js";import{r as t}from"./index-c6dae603.js";import{S as w}from"./components-af8ae1f4.js";import{f as C}from"./index-4a193f06.js";import{V as _}from"./VList-ac1de703.js";import"./Viewport-023ab0bc.js";import"./index-eb008d06.js";import"./ListItem-3e862e96.js";const q={component:_},D={borderTop:"solid 1px #ccc",background:"#fff",padding:32,paddingTop:48,paddingBottom:48,whiteSpace:"pre-wrap"},L=({content:n})=>H("div",{style:D,children:[n," "]}),b=(n,i)=>Array.from({length:n}).map((r,o)=>i(o)),c={name:"Feed",render:()=>{const n=t.useRef(0),i=()=>Math.random()>.2?{type:"text",id:n.current++,value:C.lorem.paragraphs(Math.floor(Math.random()*10)+1)}:{type:"image",id:n.current++,src:C.image.url(),size:100*(Math.floor(Math.random()*4)+1)},r=e=>b(e,i),[o,l]=t.useState(!1),[k,h]=t.useState(!1),[x,g]=t.useState(!1),p=async e=>{e?(l(!0),h(!0)):(l(!1),g(!0)),await new Promise(f=>setTimeout(f,1e3)),e?h(!1):g(!1)},S=t.useRef(null),u=30,[a,y]=t.useState(()=>r(u*2)),O=t.useMemo(()=>a.map(e=>m(L,{content:e.type==="image"?m("img",{src:e.src,height:e.size}):e.value},e.id)),[a]),T=10,s=a.length,F=t.useRef(-1),I=t.useRef(-1),R=t.useRef(!1);return t.useEffect(()=>{var e;(e=S.current)==null||e.scrollToIndex(a.length/2+1),R.current=!0},[]),H(_,{ref:S,style:{flex:1},shift:!!o,onRangeChange:async(e,f)=>{R.current&&(f+T>s&&I.current<s?(I.current=s,await p(),y(d=>[...d,...r(u)])):e-T<0&&F.current<s&&(F.current=s,await p(!0),y(d=>[...r(u).reverse(),...d])))},children:[O,m(w,{style:x?void 0:{visibility:"hidden"}},"foot")]})}};var E,M,v;c.parameters={...c.parameters,docs:{...(E=c.parameters)==null?void 0:E.docs,source:{originalSource:`{
+import{j as m,a as M}from"./jsx-runtime-c3d7f245.js";import{r as t}from"./index-c6dae603.js";import{S as w}from"./components-af8ae1f4.js";import{f as T}from"./index-4a193f06.js";import{V as E}from"./VList-ac1de703.js";import"./Viewport-023ab0bc.js";import"./index-eb008d06.js";import"./ListItem-3e862e96.js";const q={component:E},D={borderTop:"solid 1px #ccc",background:"#fff",padding:32,paddingTop:48,paddingBottom:48,whiteSpace:"pre-wrap"},L=({content:n})=>M("div",{style:D,children:[n," "]}),b=(n,u)=>Array.from({length:n}).map((a,d)=>u(d)),i={name:"Feed",render:()=>{const n=t.useRef(0),u=()=>Math.random()>.2?{type:"text",id:n.current++,value:T.lorem.paragraphs(Math.floor(Math.random()*10)+1)}:{type:"image",id:n.current++,src:T.image.url(),size:100*(Math.floor(Math.random()*4)+1)},a=e=>b(e,u),[d,v]=t.useState(!1),[k,H]=t.useState(!1),[_,x]=t.useState(!1),h=async(e=!1)=>{v(e);const o=e?H:x;o(!0),await new Promise(r=>setTimeout(r,1e3)),o(!1)},l=t.useRef(null),f=30,[c,g]=t.useState(()=>a(f*2)),O=t.useMemo(()=>c.map(e=>m(L,{content:e.type==="image"?m("img",{src:e.src,height:e.size}):e.value},e.id)),[c]),p=10,s=c.length,y=t.useRef(-1),F=t.useRef(-1),S=t.useRef(!1);return t.useEffect(()=>{var e;(e=l.current)==null||e.scrollToIndex(c.length/2+1),S.current=!0},[]),M(E,{ref:l,style:{flex:1},shift:!!d,onRangeChange:async(e,o)=>{S.current&&(o+p>s&&F.current<s?(F.current=s,await h(),g(r=>[...r,...a(f)])):e-p<0&&y.current<s&&(y.current=s,await h(!0),g(r=>[...a(f).reverse(),...r])))},children:[O,m(w,{style:_?void 0:{visibility:"hidden"}},"foot")]})}};var I,R,C;i.parameters={...i.parameters,docs:{...(I=i.parameters)==null?void 0:I.docs,source:{originalSource:`{
   name: "Feed",
   render: () => {
     const id = useRef(0);
@@ -19,20 +19,12 @@ import{j as m,a as H}from"./jsx-runtime-c3d7f245.js";import{r as t}from"./index-
     const [shifting, setShifting] = useState(false);
     const [startFetching, setStartFetching] = useState(false);
     const [endFetching, setEndFetching] = useState(false);
-    const fetchItems = async (isStart?: boolean) => {
-      if (isStart) {
-        setShifting(true);
-        setStartFetching(true);
-      } else {
-        setShifting(false);
-        setEndFetching(true);
-      }
+    const fetchItems = async (isStart: boolean = false) => {
+      setShifting(isStart);
+      const setFetching = isStart ? setStartFetching : setEndFetching;
+      setFetching(true);
       await new Promise(r => setTimeout(r, 1000));
-      if (isStart) {
-        setStartFetching(false);
-      } else {
-        setEndFetching(false);
-      }
+      setFetching(false);
     };
     const ref = useRef<VListHandle>(null);
     const ITEM_BATCH_COUNT = 30;
@@ -72,5 +64,5 @@ import{j as m,a as H}from"./jsx-runtime-c3d7f245.js";import{r as t}from"./index-
       }} />
       </VList>;
   }
-}`,...(v=(M=c.parameters)==null?void 0:M.docs)==null?void 0:v.source}}};const G=["Default"];export{c as Default,G as __namedExportsOrder,q as default};
-//# sourceMappingURL=Feed.stories-b9c251f0.js.map
+}`,...(C=(R=i.parameters)==null?void 0:R.docs)==null?void 0:C.source}}};const G=["Default"];export{i as Default,G as __namedExportsOrder,q as default};
+//# sourceMappingURL=Feed.stories-28fb64b2.js.map
