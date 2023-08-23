@@ -404,20 +404,14 @@ export const BiDirectionalInfiniteScrolling: StoryObj = {
     const [shifting, setShifting] = useState(false);
     const [startFetching, setStartFetching] = useState(false);
     const [endFetching, setEndFetching] = useState(false);
-    const fetchItems = async (isStart?: boolean) => {
-      if (isStart) {
-        setShifting(true);
-        setStartFetching(true);
-      } else {
-        setShifting(false);
-        setEndFetching(true);
-      }
+    const fetchItems = async (isStart: boolean = false) => {
+      setShifting(isStart);
+
+      const setFetching = isStart ? setStartFetching : setEndFetching;
+
+      setFetching(true);
       await new Promise((r) => setTimeout(r, 1000));
-      if (isStart) {
-        setStartFetching(false);
-      } else {
-        setEndFetching(false);
-      }
+      setFetching(false);
     };
 
     const ref = useRef<VListHandle>(null);
