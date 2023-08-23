@@ -7,7 +7,7 @@ import {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { createVirtualStore } from "../core/store";
+import { ACTION_ITEMS_LENGTH_CHANGE, createVirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import {
   SELECT_IS_SCROLLING,
@@ -161,7 +161,9 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
       ];
     });
     // The elements length and cached items length are different just after element is added/removed.
-    store._updateCacheLength(count);
+    if (count !== store._getItemsLength()) {
+      store._update(ACTION_ITEMS_LENGTH_CHANGE, [count]);
+    }
 
     const [startIndex, endIndex] = useSelector(
       store,

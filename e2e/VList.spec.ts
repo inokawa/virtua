@@ -583,3 +583,75 @@ test.describe("check if scrollBy works", () => {
     await expect(await scrollable.evaluate((e) => e.scrollTop)).toEqual(1000);
   });
 });
+
+test.describe("check if item shift compensation works", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(storyUrl("basics-vlist--increasing-items"));
+  });
+
+  test("end", async ({ page }) => {
+    const scrollable = await page.waitForSelector(scrollableSelector);
+    await scrollable.waitForElementState("stable");
+
+    const updateButton = page.getByRole("button", { name: "update" });
+
+    // fill list and move to mid
+    for (let i = 0; i < 20; i++) {
+      await updateButton.click();
+    }
+    await scrollable.evaluate((e) => (e.scrollTop += 400));
+    await page.waitForTimeout(500);
+
+    const topItem = await getFirstItem(scrollable);
+    expect(topItem.text).not.toEqual("0");
+    expect(topItem.text.length).toBeLessThanOrEqual(2);
+
+    // add
+    await page.getByRole("radio", { name: "append" }).click();
+    await page.getByRole("radio", { name: "increase" }).click();
+    await updateButton.click();
+    await page.waitForTimeout(100);
+    // check if visible item is keeped
+    expect(topItem).toEqual(await getFirstItem(scrollable));
+
+    // remove
+    await page.getByRole("radio", { name: "decrease" }).click();
+    await updateButton.click();
+    await page.waitForTimeout(100);
+    // check if visible item is keeped
+    expect(topItem).toEqual(await getFirstItem(scrollable));
+  });
+
+  test("start", async ({ page }) => {
+    const scrollable = await page.waitForSelector(scrollableSelector);
+    await scrollable.waitForElementState("stable");
+
+    const updateButton = page.getByRole("button", { name: "update" });
+
+    // fill list and move to mid
+    for (let i = 0; i < 20; i++) {
+      await updateButton.click();
+    }
+    await scrollable.evaluate((e) => (e.scrollTop += 800));
+    await page.waitForTimeout(500);
+
+    const topItem = await getFirstItem(scrollable);
+    expect(topItem.text).not.toEqual("0");
+    expect(topItem.text.length).toBeLessThanOrEqual(2);
+
+    // add
+    await page.getByRole("radio", { name: "prepend" }).click();
+    await page.getByRole("radio", { name: "increase" }).click();
+    await updateButton.click();
+    await page.waitForTimeout(100);
+    // check if visible item is keeped
+    expect(topItem).toEqual(await getFirstItem(scrollable));
+
+    // remove
+    await page.getByRole("radio", { name: "decrease" }).click();
+    await updateButton.click();
+    await page.waitForTimeout(100);
+    // check if visible item is keeped
+    expect(topItem).toEqual(await getFirstItem(scrollable));
+  });
+});

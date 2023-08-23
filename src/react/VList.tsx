@@ -7,7 +7,11 @@ import {
   ReactNode,
   useEffect,
 } from "react";
-import { UPDATE_SCROLL_WITH_EVENT, createVirtualStore } from "../core/store";
+import {
+  UPDATE_SCROLL_WITH_EVENT,
+  ACTION_ITEMS_LENGTH_CHANGE,
+  createVirtualStore,
+} from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import {
   SELECT_IS_SCROLLING,
@@ -101,6 +105,10 @@ export interface VListProps extends ViewportComponentAttributes {
    */
   initialItemCount?: number;
   /**
+   * While true is set, scroll position will be maintained from the end not usual start when items are shifted/unshifted. It is useful for reverse infinite scrolling.
+   */
+  shift?: boolean;
+  /**
    * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
    */
   horizontal?: boolean;
@@ -164,6 +172,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       overscan = 4,
       initialItemSize,
       initialItemCount,
+      shift,
       horizontal: horizontalProp,
       mode,
       cache,
@@ -207,8 +216,11 @@ export const VList = forwardRef<VListHandle, VListProps>(
         _isRtl,
       ];
     });
+
     // The elements length and cached items length are different just after element is added/removed.
-    store._updateCacheLength(count);
+    if (count !== store._getItemsLength()) {
+      store._update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
+    }
 
     const [startIndex, endIndex] = useSelector(
       store,

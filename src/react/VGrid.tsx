@@ -8,7 +8,11 @@ import {
   ReactNode,
   useImperativeHandle,
 } from "react";
-import { VirtualStore, createVirtualStore } from "../core/store";
+import {
+  ACTION_ITEMS_LENGTH_CHANGE,
+  VirtualStore,
+  createVirtualStore,
+} from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import {
   SELECT_IS_SCROLLING,
@@ -286,8 +290,12 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       }
     );
     // The elements length and cached items length are different just after element is added/removed.
-    vStore._updateCacheLength(rowCount);
-    hStore._updateCacheLength(colCount);
+    if (rowCount !== vStore._getItemsLength()) {
+      vStore._update(ACTION_ITEMS_LENGTH_CHANGE, [rowCount]);
+    }
+    if (colCount !== hStore._getItemsLength()) {
+      hStore._update(ACTION_ITEMS_LENGTH_CHANGE, [colCount]);
+    }
 
     const [startRowIndex, endRowIndex] = useSelector(
       vStore,

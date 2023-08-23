@@ -174,7 +174,7 @@ export const createScroller = (
       scrollManually(() => offset);
     },
     _scrollToIndex(index, align) {
-      index = clamp(index, 0, store._getItemLength() - 1);
+      index = clamp(index, 0, store._getItemsLength() - 1);
 
       scrollManually(
         align === "end"
