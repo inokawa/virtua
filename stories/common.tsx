@@ -1,5 +1,11 @@
 import React, { CSSProperties } from "react";
 
+export const range = <T,>(n: number, cb: (i: number) => T) =>
+  Array.from({ length: n }).map((_, i) => cb(i));
+
+export const delay = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
 export const Spinner = ({ style }: { style?: CSSProperties }) => {
   return (
     <>

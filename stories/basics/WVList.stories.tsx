@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { useRef, useState } from "react";
 import { WVList } from "../../src";
-import { Spinner } from "./components";
+import { Spinner, delay } from "../common";
 
 const createRows = (num: number) => {
   const heights = [20, 40, 80, 77];
@@ -151,7 +151,7 @@ export const InfiniteScrolling: StoryObj = {
     const [fetching, setFetching] = useState(false);
     const fetchItems = async () => {
       setFetching(true);
-      await new Promise((r) => setTimeout(r, 1000));
+      await delay(1000);
       setFetching(false);
     };
 

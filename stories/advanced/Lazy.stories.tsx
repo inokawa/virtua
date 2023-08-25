@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { VList } from "../../src";
 import { Facebook } from "react-content-loader";
+import { delay } from "../common";
 
 export default {
   component: VList,
@@ -42,7 +43,7 @@ export const Default: StoryObj = {
         lazy(
           () =>
             new Promise<{ default: ComponentType }>(async (resolve) => {
-              await new Promise((res) => setTimeout(res, 1000));
+              await delay(1000);
               resolve({ default: Loaded });
             })
         )

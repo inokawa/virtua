@@ -9,12 +9,11 @@ import React, {
 } from "react";
 import { faker } from "@faker-js/faker";
 import PullToRefresh from "react-pull-to-refresh";
+import { delay } from "../common";
 
 export default {
   component: VList,
 } as Meta;
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const RefreshContext = createContext(async () => {});
 

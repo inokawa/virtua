@@ -8,7 +8,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Spinner } from "../basics/components";
+import { Spinner, delay, range } from "../common";
 import { faker } from "@faker-js/faker";
 
 export default {
@@ -42,9 +42,6 @@ const Item = ({ content }: { content: ReactNode }) => {
   return <div style={itemStyle}>{content} </div>;
 };
 
-const range = <T,>(n: number, cb: (i: number) => T) =>
-  Array.from({ length: n }).map((_, i) => cb(i));
-
 export const Default: StoryObj = {
   name: "Feed",
   render: () => {
@@ -75,7 +72,7 @@ export const Default: StoryObj = {
       const setFetching = isStart ? setStartFetching : setEndFetching;
 
       setFetching(true);
-      await new Promise((r) => setTimeout(r, 1000));
+      await delay(1000);
       setFetching(false);
     };
 

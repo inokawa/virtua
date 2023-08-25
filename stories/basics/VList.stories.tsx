@@ -15,7 +15,7 @@ import {
   CacheSnapshot,
   ScrollToIndexAlign,
 } from "../../src";
-import { Spinner } from "./components";
+import { Spinner, delay } from "../common";
 
 export default {
   component: VList,
@@ -349,7 +349,7 @@ export const InfiniteScrolling: StoryObj = {
     const [fetching, setFetching] = useState(false);
     const fetchItems = async () => {
       setFetching(true);
-      await new Promise((r) => setTimeout(r, 1000));
+      await delay(1000);
       setFetching(false);
     };
 
@@ -410,7 +410,7 @@ export const BiDirectionalInfiniteScrolling: StoryObj = {
       const setFetching = isStart ? setStartFetching : setEndFetching;
 
       setFetching(true);
-      await new Promise((r) => setTimeout(r, 1000));
+      await delay(1000);
       setFetching(false);
     };
 
