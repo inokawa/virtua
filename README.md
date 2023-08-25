@@ -2,7 +2,9 @@
 
 ![npm](https://img.shields.io/npm/v/virtua) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/virtua) ![npm](https://img.shields.io/npm/dw/virtua) [![check](https://github.com/inokawa/virtua/actions/workflows/check.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/check.yml) [![demo](https://github.com/inokawa/virtua/actions/workflows/demo.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/demo.yml)
 
-A zero-config, fast and small (~3kB) virtual list and grid component for [React](https://github.com/facebook/react).
+> A zero-config, fast and small (~3kB) virtual list and grid component for [React](https://github.com/facebook/react).
+
+![example](./example.gif)
 
 If you want to check the difference with the alternatives right away, [see comparison section](#comparison).
 
