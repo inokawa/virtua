@@ -1,4 +1,4 @@
-import{a as t,F as n,j as e}from"./jsx-runtime-c3d7f245.js";const r=({style:i})=>t(n,{children:[e("div",{style:{...i,height:100,display:"flex",alignItems:"center",justifyContent:"center",background:"white"},children:e("span",{className:"loader"})}),e("style",{children:`
+import{a as n,F as p,j as i}from"./jsx-runtime-c3d7f245.js";const d=(e,r)=>Array.from({length:e}).map((s,o)=>r(o)),a=e=>new Promise(r=>setTimeout(r,e)),t=({style:e})=>n(p,{children:[i("div",{style:{...e,height:100,display:"flex",alignItems:"center",justifyContent:"center",background:"white"},children:i("span",{className:"loader"})}),i("style",{children:`
       .loader {
         width: 48px;
         height: 48px;
@@ -26,5 +26,5 @@ import{a as t,F as n,j as e}from"./jsx-runtime-c3d7f245.js";const r=({style:i})=
           50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
           75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
           100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
-      }`})]});try{r.displayName="Spinner",r.__docgenInfo={description:"",displayName:"Spinner",props:{style:{defaultValue:null,description:"",name:"style",required:!1,type:{name:"CSSProperties"}}}}}catch{}export{r as S};
-//# sourceMappingURL=components-af8ae1f4.js.map
+      }`})]});try{a.displayName="delay",a.__docgenInfo={description:"",displayName:"delay",props:{}}}catch{}try{t.displayName="Spinner",t.__docgenInfo={description:"",displayName:"Spinner",props:{style:{defaultValue:null,description:"",name:"style",required:!1,type:{name:"CSSProperties"}}}}}catch{}export{t as S,a as d,d as r};
+//# sourceMappingURL=common-4271bb5e.js.map

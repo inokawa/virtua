@@ -1,4 +1,4 @@
-import{j as m,a as M}from"./jsx-runtime-c3d7f245.js";import{r as t}from"./index-c6dae603.js";import{S as w}from"./components-af8ae1f4.js";import{f as T}from"./index-4a193f06.js";import{V as E}from"./VList-ac1de703.js";import"./Viewport-023ab0bc.js";import"./index-eb008d06.js";import"./ListItem-3e862e96.js";const q={component:E},D={borderTop:"solid 1px #ccc",background:"#fff",padding:32,paddingTop:48,paddingBottom:48,whiteSpace:"pre-wrap"},L=({content:n})=>M("div",{style:D,children:[n," "]}),b=(n,u)=>Array.from({length:n}).map((a,d)=>u(d)),i={name:"Feed",render:()=>{const n=t.useRef(0),u=()=>Math.random()>.2?{type:"text",id:n.current++,value:T.lorem.paragraphs(Math.floor(Math.random()*10)+1)}:{type:"image",id:n.current++,src:T.image.url(),size:100*(Math.floor(Math.random()*4)+1)},a=e=>b(e,u),[d,v]=t.useState(!1),[k,H]=t.useState(!1),[_,x]=t.useState(!1),h=async(e=!1)=>{v(e);const o=e?H:x;o(!0),await new Promise(r=>setTimeout(r,1e3)),o(!1)},l=t.useRef(null),f=30,[c,g]=t.useState(()=>a(f*2)),O=t.useMemo(()=>c.map(e=>m(L,{content:e.type==="image"?m("img",{src:e.src,height:e.size}):e.value},e.id)),[c]),p=10,s=c.length,y=t.useRef(-1),F=t.useRef(-1),S=t.useRef(!1);return t.useEffect(()=>{var e;(e=l.current)==null||e.scrollToIndex(c.length/2+1),S.current=!0},[]),M(E,{ref:l,style:{flex:1},shift:!!d,onRangeChange:async(e,o)=>{S.current&&(o+p>s&&F.current<s?(F.current=s,await h(),g(r=>[...r,...a(f)])):e-p<0&&y.current<s&&(y.current=s,await h(!0),g(r=>[...a(f).reverse(),...r])))},children:[O,m(w,{style:_?void 0:{visibility:"hidden"}},"foot")]})}};var I,R,C;i.parameters={...i.parameters,docs:{...(I=i.parameters)==null?void 0:I.docs,source:{originalSource:`{
+import{j as d,a as T}from"./jsx-runtime-c3d7f245.js";import{r as t}from"./index-c6dae603.js";import{S as w,r as D,d as L}from"./common-4271bb5e.js";import{f as F}from"./index-4a193f06.js";import{V as C}from"./VList-ac1de703.js";import"./Viewport-023ab0bc.js";import"./index-eb008d06.js";import"./ListItem-3e862e96.js";const J={component:C},b={borderTop:"solid 1px #ccc",background:"#fff",padding:32,paddingTop:48,paddingBottom:48,whiteSpace:"pre-wrap"},k=({content:s})=>T("div",{style:b,children:[s," "]}),c={name:"Feed",render:()=>{const s=t.useRef(0),M=()=>Math.random()>.2?{type:"text",id:s.current++,value:F.lorem.paragraphs(Math.floor(Math.random()*10)+1)}:{type:"image",id:s.current++,src:F.image.url(),size:100*(Math.floor(Math.random()*4)+1)},o=e=>D(e,M),[E,v]=t.useState(!1),[B,H]=t.useState(!1),[x,_]=t.useState(!1),f=async(e=!1)=>{v(e);const a=e?H:_;a(!0),await L(1e3),a(!1)},m=t.useRef(null),i=30,[r,h]=t.useState(()=>o(i*2)),O=t.useMemo(()=>r.map(e=>d(k,{content:e.type==="image"?d("img",{src:e.src,height:e.size}):e.value},e.id)),[r]),l=10,n=r.length,g=t.useRef(-1),p=t.useRef(-1),y=t.useRef(!1);return t.useEffect(()=>{var e;(e=m.current)==null||e.scrollToIndex(r.length/2+1),y.current=!0},[]),T(C,{ref:m,style:{flex:1},shift:!!E,onRangeChange:async(e,a)=>{y.current&&(a+l>n&&p.current<n?(p.current=n,await f(),h(u=>[...u,...o(i)])):e-l<0&&g.current<n&&(g.current=n,await f(!0),h(u=>[...o(i).reverse(),...u])))},children:[O,d(w,{style:x?void 0:{visibility:"hidden"}},"foot")]})}};var S,I,R;c.parameters={...c.parameters,docs:{...(S=c.parameters)==null?void 0:S.docs,source:{originalSource:`{
   name: "Feed",
   render: () => {
     const id = useRef(0);
@@ -23,7 +23,7 @@ import{j as m,a as M}from"./jsx-runtime-c3d7f245.js";import{r as t}from"./index-
       setShifting(isStart);
       const setFetching = isStart ? setStartFetching : setEndFetching;
       setFetching(true);
-      await new Promise(r => setTimeout(r, 1000));
+      await delay(1000);
       setFetching(false);
     };
     const ref = useRef<VListHandle>(null);
@@ -64,5 +64,5 @@ import{j as m,a as M}from"./jsx-runtime-c3d7f245.js";import{r as t}from"./index-
       }} />
       </VList>;
   }
-}`,...(C=(R=i.parameters)==null?void 0:R.docs)==null?void 0:C.source}}};const G=["Default"];export{i as Default,G as __namedExportsOrder,q as default};
-//# sourceMappingURL=Feed.stories-28fb64b2.js.map
+}`,...(R=(I=c.parameters)==null?void 0:I.docs)==null?void 0:R.source}}};const K=["Default"];export{c as Default,K as __namedExportsOrder,J as default};
+//# sourceMappingURL=Feed.stories-4f220de1.js.map
