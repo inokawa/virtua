@@ -212,7 +212,7 @@ If you find a problem, feel free to create an [issue](https://github.com/inokawa
 
 ### Making a Pull Request
 
-1. Clone this repo.
+1. Fork this repo.
 2. Run `npm install`.
 3. Commit your fix.
 4. Make a PR and confirm all the CI checks passed.
