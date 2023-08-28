@@ -169,6 +169,13 @@ And see [examples](./stories) for more usages.
 
 - [API reference](./docs/API.md)
 
+### FAQs
+
+#### What is `ResizeObserver loop completed with undelivered notifications.` error?
+
+It may be dispatched by ResizeObserver in this lib [as described in spec](https://www.w3.org/TR/resize-observer/#deliver-resize-error). If it bothers you,
+[you can safely ignore it](https://github.com/DevExpress/testcafe/issues/4857#issuecomment-598775956).
+
 ## Comparison
 
 ### Features
