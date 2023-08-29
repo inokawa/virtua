@@ -171,6 +171,24 @@ And see [examples](./stories) for more usages.
 
 ### FAQs
 
+#### Is there any way to improve performance further?
+
+In complex usage, children element generation can be a performance bottle neck if you re-render frequently the parent of virtual scroller and the children are tons of items, because React element generation is not free and new React element instance breaks some of memoization inside virtual scroller. In that case use useMemo to reduce computation and keep the elements' instance the same.
+
+```tsx
+const elements = useMemo(
+  () => array.map((d) => <Component key={d.id} {...d} />),
+  [array]
+);
+const [position, setPosition] = useState(0);
+return (
+  <div>
+    <div>position: {position}</div>
+    <VList onScroll={(offset) => setPosition(offset)}>{elements}</VList>
+  </div>
+);
+```
+
 #### What is `ResizeObserver loop completed with undelivered notifications.` error?
 
 It may be dispatched by ResizeObserver in this lib [as described in spec](https://www.w3.org/TR/resize-observer/#deliver-resize-error). If it bothers you,
