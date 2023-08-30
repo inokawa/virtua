@@ -11,10 +11,11 @@ import {
   updateCacheLength,
   computeRange,
 } from "./cache";
+import { isIOSWebKit } from "./environment";
 import type { CacheSnapshot, Writeable } from "./types";
 import { abs, clamp, max, min } from "./utils";
 
-export type ScrollJump = Readonly<number>;
+export type ScrollJump = number;
 export type ItemResize = Readonly<[index: number, size: number]>;
 type ItemsRange = Readonly<[startIndex: number, endIndex: number]>;
 
@@ -100,11 +101,15 @@ export const createVirtualStore = (
   let scrollOffset = 0;
   let jumpCount = 0;
   let jump: ScrollJump = 0;
+  let pendingJump: ScrollJump = 0;
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
   let _isManualScrollPremeasuring = false;
   let _isManualScrolling = false;
-  let _resized = false;
+  let _maybeJumped = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
+
+  // In iOS WebKit browsers, updating scroll position will stop scrolling so it have to be deferred during scrolling.
+  const shouldDeferJump = isIOSWebKit();
 
   const subscribers = new Set<[number, Subscriber]>();
   const getScrollSize = (): number =>
@@ -114,6 +119,14 @@ export const createVirtualStore = (
   const clampScrollOffset = (value: number): number => {
     // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
     return clamp(value, 0, getScrollOffsetMax());
+  };
+  const applyJump = (j: ScrollJump) => {
+    if (shouldDeferJump && _scrollDirection !== SCROLL_IDLE) {
+      pendingJump += j;
+    } else {
+      jump += j;
+      jumpCount++;
+    }
   };
   const updateScrollDirection = (dir: ScrollDirection): boolean => {
     const prev = _scrollDirection;
@@ -129,7 +142,7 @@ export const createVirtualStore = (
     _getRange() {
       return (_prevRange = computeRange(
         cache as Writeable<Cache>,
-        scrollOffset,
+        scrollOffset + pendingJump,
         _prevRange[0],
         viewportSize
       ));
@@ -147,7 +160,8 @@ export const createVirtualStore = (
       return hasUnmeasuredItemsInRange(cache, startIndex, endIndex);
     },
     _getItemOffset(index) {
-      const offset = computeStartOffset(cache as Writeable<Cache>, index);
+      const offset =
+        computeStartOffset(cache as Writeable<Cache>, index) - pendingJump;
       if (isReverse) {
         return offset + max(0, viewportSize - getScrollSize());
       }
@@ -188,6 +202,7 @@ export const createVirtualStore = (
       };
     },
     _update(type, payload): void {
+      let shouldFlushPendingJump: boolean | undefined;
       let shouldSync: boolean | undefined;
       let mutated = 0;
 
@@ -224,8 +239,7 @@ export const createVirtualStore = (
             }
 
             if (diff) {
-              jump = diff;
-              jumpCount++;
+              applyJump(diff);
             }
           }
 
@@ -247,7 +261,7 @@ export const createVirtualStore = (
             estimateDefaultItemSize(cache as Writeable<Cache>);
           }
           mutated += UPDATE_SIZE_STATE;
-          _resized = shouldSync = true;
+          _maybeJumped = shouldSync = true;
           break;
         }
         case ACTION_VIEWPORT_RESIZE: {
@@ -268,9 +282,10 @@ export const createVirtualStore = (
               true
             );
             const diff = isRemove ? -min(shift, distanceToEnd) : shift;
-            jump += diff;
-            scrollOffset = clampScrollOffset(scrollOffset + diff);
-            jumpCount++;
+            applyJump(diff);
+            if (!shouldDeferJump) {
+              scrollOffset = clampScrollOffset(scrollOffset + diff);
+            }
 
             mutated = UPDATE_SCROLL_STATE;
           } else {
@@ -288,17 +303,28 @@ export const createVirtualStore = (
           if (type === ACTION_SCROLL) {
             const delta = payload - scrollOffset;
             // Scrolling after resizing will be caused by jump compensation
-            const isJustResized = _resized;
-            _resized = false;
+            const isJustJumped = _maybeJumped;
+            _maybeJumped = false;
 
             // Skip scroll direction detection just after resizing because it may result in the opposite direction.
             // Scroll events are dispatched enough so it's ok to skip some of them.
             if (
-              (_scrollDirection === SCROLL_IDLE || !isJustResized) &&
+              (_scrollDirection === SCROLL_IDLE || !isJustJumped) &&
               // Ignore until manual scrolling
               !_isManualScrolling
             ) {
               updateScrollDirection(delta < 0 ? SCROLL_UP : SCROLL_DOWN);
+            }
+
+            if (
+              pendingJump &&
+              ((_scrollDirection === SCROLL_UP &&
+                payload - max(pendingJump, 0) <= 0) ||
+                (_scrollDirection === SCROLL_DOWN &&
+                  payload - min(pendingJump, 0) >= getScrollOffsetMax()))
+            ) {
+              // Flush if almost reached to start or end
+              shouldFlushPendingJump = true;
             }
 
             // Ignore manual scroll because it may be called in useEffect/useLayoutEffect and cause the warn below.
@@ -318,6 +344,7 @@ export const createVirtualStore = (
         }
         case ACTION_SCROLL_END: {
           if (updateScrollDirection(SCROLL_IDLE)) {
+            shouldFlushPendingJump = true;
             mutated = UPDATE_SCROLL_STATE;
           }
           _isManualScrolling = _isManualScrollPremeasuring = false;
@@ -331,6 +358,13 @@ export const createVirtualStore = (
       }
 
       if (mutated) {
+        if (shouldFlushPendingJump && pendingJump) {
+          _maybeJumped = true;
+          jump += pendingJump;
+          pendingJump = 0;
+          jumpCount++;
+        }
+
         subscribers.forEach(([target, cb]) => {
           // Early return to skip React's computation
           if (!(mutated & target)) {

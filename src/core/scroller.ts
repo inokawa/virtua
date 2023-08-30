@@ -137,11 +137,19 @@ export const createScroller = (
     _initRoot(root) {
       rootElement = root;
 
+      let touching = false;
+
       const syncViewportToScrollPosition = () => {
         store._update(ACTION_SCROLL, normalizeOffset(root[scrollToKey]));
       };
 
       const onScrollStopped = debounce(() => {
+        if (touching) {
+          // Wait while touching
+          // TODO iOS WebKit fires touch events only once at the beginning of momentum scrolling...
+          onScrollStopped();
+          return;
+        }
         // Check scroll position once just after scrolling stopped
         syncViewportToScrollPosition();
         store._update(ACTION_SCROLL_END);
@@ -154,12 +162,23 @@ export const createScroller = (
 
       const onWheel = createOnWheel(store, isHorizontal, onScrollStopped);
 
+      const onTouchStart = () => {
+        touching = true;
+      };
+      const onTouchEnd = () => {
+        touching = false;
+      };
+
       root.addEventListener("scroll", onScroll);
       root.addEventListener("wheel", onWheel, { passive: true });
+      root.addEventListener("touchstart", onTouchStart, { passive: true });
+      root.addEventListener("touchend", onTouchEnd, { passive: true });
 
       return () => {
         root.removeEventListener("scroll", onScroll);
         root.removeEventListener("wheel", onWheel);
+        root.removeEventListener("touchstart", onTouchStart);
+        root.removeEventListener("touchend", onTouchEnd);
         onScrollStopped._cancel();
       };
     },
