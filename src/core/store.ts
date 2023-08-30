@@ -113,13 +113,12 @@ export const createVirtualStore = (
   const updateScrollDirection = (dir: ScrollDirection): boolean => {
     const prev = _scrollDirection;
     _scrollDirection = dir;
-    if (
+
+    // Return true if scrolling is just started or stopped
+    return (
       _scrollDirection !== prev &&
       (_scrollDirection === SCROLL_IDLE || prev === SCROLL_IDLE)
-    ) {
-      return true;
-    }
-    return false;
+    );
   };
 
   return {
