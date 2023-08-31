@@ -479,6 +479,59 @@ test.describe("check if scrollToIndex works", () => {
       // Check if unnecessary items are not rendered
       await expect(await component.innerText()).not.toContain("949");
     });
+
+    test("mid smooth", async ({ page }) => {
+      const component = await page.waitForSelector(scrollableSelector);
+      await component.waitForElementState("stable");
+
+      // check if start is displayed
+      await expect((await getFirstItem(component)).text).toEqual("0");
+
+      await page.getByRole("checkbox", { name: "smooth" }).click();
+
+      const button = (await page
+        .getByRole("button", { name: "scroll to index" })
+        .elementHandle())!;
+      const input = await page.evaluateHandle(
+        (el) => el!.previousSibling as HTMLInputElement,
+        button
+      );
+
+      await clearInput(input);
+      await input.type("700");
+      await button.click();
+
+      const called = await component.evaluate((c) => {
+        let timer: null | NodeJS.Timeout = null;
+        let called = 0;
+
+        return new Promise<number>((resolve) => {
+          const cb = () => {
+            called++;
+            if (timer !== null) {
+              clearTimeout(timer);
+            }
+            timer = setTimeout(() => {
+              c.removeEventListener("scroll", cb);
+              resolve(called);
+            }, 200);
+          };
+          c.addEventListener("scroll", cb);
+        });
+      });
+
+      // Check if this is smooth scrolling
+      await expect(called).toBeGreaterThanOrEqual(5);
+
+      // Check if scrolled precisely
+      const firstItem = await getFirstItem(component);
+      await expect(firstItem.text).toEqual("700");
+      await expect(firstItem.top).toBeLessThanOrEqual(1); // FIXME: may not be 0 in Safari
+
+      // Check if unnecessary items are not rendered
+      await expect(await component.innerText()).not.toContain("650");
+      await expect(await component.innerText()).not.toContain("750");
+    });
   });
 
   test.describe("align end", () => {
@@ -583,6 +636,59 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(await component.innerText()).not.toContain("949");
+    });
+
+    test("mid smooth", async ({ page }) => {
+      const component = await page.waitForSelector(scrollableSelector);
+      await component.waitForElementState("stable");
+
+      // check if start is displayed
+      await expect((await getFirstItem(component)).text).toEqual("0");
+
+      await page.getByRole("checkbox", { name: "smooth" }).click();
+
+      const button = (await page
+        .getByRole("button", { name: "scroll to index" })
+        .elementHandle())!;
+      const input = await page.evaluateHandle(
+        (el) => el!.previousSibling as HTMLInputElement,
+        button
+      );
+
+      await clearInput(input);
+      await input.type("700");
+      await button.click();
+
+      const called = await component.evaluate((c) => {
+        let timer: null | NodeJS.Timeout = null;
+        let called = 0;
+
+        return new Promise<number>((resolve) => {
+          const cb = () => {
+            called++;
+            if (timer !== null) {
+              clearTimeout(timer);
+            }
+            timer = setTimeout(() => {
+              c.removeEventListener("scroll", cb);
+              resolve(called);
+            }, 200);
+          };
+          c.addEventListener("scroll", cb);
+        });
+      });
+
+      // Check if this is smooth scrolling
+      await expect(called).toBeGreaterThanOrEqual(5);
+
+      // Check if scrolled precisely
+      const lastItem = await getLastItem(component);
+      await expect(lastItem.text).toEqual("700");
+      await expect(lastItem.bottom).toBeLessThanOrEqual(1); // FIXME: may not be 0 in Safari
+
+      // Check if unnecessary items are not rendered
+      await expect(await component.innerText()).not.toContain("650");
+      await expect(await component.innerText()).not.toContain("750");
     });
   });
 });

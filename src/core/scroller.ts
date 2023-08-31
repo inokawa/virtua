@@ -2,6 +2,7 @@ import {
   hasNegativeOffsetInRTL,
   isIOSWebKit,
   isRTLDocument,
+  isSmoothScrollSupported,
 } from "./environment";
 import {
   ACTION_SCROLL,
@@ -11,9 +12,10 @@ import {
   UPDATE_SIZE_STATE,
   ACTION_MANUAL_SCROLL,
   SCROLL_IDLE,
+  UPDATE_SCROLL_WITH_EVENT,
 } from "./store";
-import { ScrollToIndexAlign } from "./types";
-import { debounce, throttle, timeout, clamp } from "./utils";
+import { ScrollToIndexOpts } from "./types";
+import { debounce, throttle, timeout, clamp, abs } from "./utils";
 
 // Infer scroll state also from wheel events
 // Sometimes scroll events do not fire when frame dropped even if the visual have been already scrolled
@@ -60,7 +62,7 @@ export type Scroller = {
   _initRoot: (rootElement: HTMLElement) => () => void;
   _scrollTo: (offset: number) => void;
   _scrollBy: (offset: number) => void;
-  _scrollToIndex: (index: number, align?: ScrollToIndexAlign) => void;
+  _scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
   _fixScrollJump: (jump: ScrollJump) => void;
 };
 
@@ -71,6 +73,7 @@ export const createScroller = (
   let rootElement: HTMLElement | undefined;
   let cancelScroll: (() => void) | undefined;
   let stillMomentumScrolling = false;
+  let smoothScrolling = false;
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
 
   const normalizeOffset = (offset: number, diff?: boolean): number => {
@@ -80,7 +83,7 @@ export const createScroller = (
     return offset;
   };
 
-  const scrollManually = async (getOffset: () => number) => {
+  const scrollManually = async (getOffset: () => number, smooth?: boolean) => {
     if (!rootElement) return;
 
     if (cancelScroll) {
@@ -93,6 +96,50 @@ export const createScroller = (
       return clamp(getOffset(), 0, store._getScrollOffsetMax());
     };
 
+    if (smooth && isSmoothScrollSupported()) {
+      smoothScrolling = true;
+
+      while (true) {
+        const targetOffset = normalizeOffset(getTargetOffset());
+        if (abs(store._getScrollOffset() - targetOffset) < 1) {
+          break;
+        }
+        rootElement.scrollTo({
+          [isHorizontal ? "left" : "top"]: targetOffset,
+          behavior: "smooth",
+        });
+
+        let queue: [() => void, () => void] | undefined;
+
+        const detectStop = debounce(() => {
+          queue && queue[0]();
+          detectStop._cancel();
+        }, 100);
+
+        const unsubscribeScroll = store._subscribe(
+          UPDATE_SCROLL_WITH_EVENT,
+          detectStop
+        );
+
+        try {
+          await new Promise<void>((resolve, reject) => {
+            queue = [resolve, reject];
+          });
+        } catch (e) {
+          // canceled
+          return;
+        } finally {
+          unsubscribeScroll();
+          detectStop._cancel();
+        }
+      }
+
+      smoothScrolling = false;
+
+      return;
+    }
+
+    // TODO simplify
     while (true) {
       let queue: [() => void, () => void] | undefined;
       const unsubscribe = store._subscribe(UPDATE_SIZE_STATE, () => {
@@ -188,7 +235,7 @@ export const createScroller = (
       offset += store._getScrollOffset();
       scrollManually(() => offset);
     },
-    _scrollToIndex(index, align) {
+    _scrollToIndex(index, { align, smooth } = {}) {
       index = clamp(index, 0, store._getItemsLength() - 1);
 
       scrollManually(
@@ -201,11 +248,13 @@ export const createScroller = (
           ? () =>
               store._getItemOffset(index) +
               (store._getItemSize(index) - store._getViewportSize()) / 2
-          : () => store._getItemOffset(index)
+          : () => store._getItemOffset(index),
+        smooth
       );
     },
     _fixScrollJump: (jump) => {
       if (!rootElement) return;
+      if (smoothScrolling) return;
 
       // If we update scroll position while touching on iOS, the position will be reverted.
       // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.

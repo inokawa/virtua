@@ -68,7 +68,7 @@ export const Default: StoryObj = {
 
     useEffect(() => {
       if (!ref.current) return;
-      ref.current.scrollToIndex(items.length - 1, "end");
+      ref.current.scrollToIndex(items.length - 1, { align: "end" });
     }, [items.length]);
 
     useEffect(() => {

@@ -16,11 +16,21 @@ export interface CacheSnapshot {
   [cacheSymbol]: never;
 }
 
-/**
- * Alignment of item when calling scrollToIndex method.
- *
- * - `start`(default): Align the item to the start of the list.
- * - `center`: Align the item to the center of the list.
- * - `end`: Align the item to the end of the list.
- */
 export type ScrollToIndexAlign = "start" | "center" | "end";
+
+export interface ScrollToIndexOpts {
+  /**
+   * Alignment of item.
+   *
+   * - `start`(default): Align the item to the start of the list.
+   * - `center`: Align the item to the center of the list.
+   * - `end`: Align the item to the end of the list.
+   */
+  align?: ScrollToIndexAlign;
+  /**
+   * If true, scrolling animates smoothly with [`behavior: smooth` of scrollTo](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTo#behavior).
+   *
+   * **Using smooth scrolling over many items can kill performance benefit of virtual scroll. Do not overuse it.**
+   */
+  smooth?: boolean;
+}
