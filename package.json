@@ -37,7 +37,7 @@
     "@emotion/react": "11.10.8",
     "@emotion/styled": "11.10.8",
     "@faker-js/faker": "8.0.2",
-    "@mui/material": "5.14.2",
+    "@mui/material": "5.14.7",
     "@playwright/test": "^1.37.0",
     "@rollup/plugin-babel": "6.0.3",
     "@rollup/plugin-terser": "0.4.3",
