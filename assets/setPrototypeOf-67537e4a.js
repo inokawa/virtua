@@ -1,0 +1,2 @@
+function o(){return o=Object.assign?Object.assign.bind():function(r){for(var n=1;n<arguments.length;n++){var e=arguments[n];for(var t in e)Object.prototype.hasOwnProperty.call(e,t)&&(r[t]=e[t])}return r},o.apply(this,arguments)}function s(r,n){return s=Object.setPrototypeOf?Object.setPrototypeOf.bind():function(t,a){return t.__proto__=a,t},s(r,n)}export{o as _,s as a};
+//# sourceMappingURL=setPrototypeOf-67537e4a.js.map
