@@ -130,7 +130,8 @@ export const createVirtualStore = (
       const start = findStartIndexWithOffset(
         cache as Writeable<Cache>,
         scrollOffset,
-        prevStartIndex
+        // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
+        min(prevStartIndex, cache._length - 1)
       );
       const end = findEndIndex(cache, start, viewportSize);
       if (prevStartIndex === start && prevEndIndex === end) {
