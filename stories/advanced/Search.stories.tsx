@@ -44,7 +44,7 @@ export const Default: StoryObj = {
         { length: 1000 },
         (_, i): Data => ({
           id: String(i),
-          name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+          name: `${faker.person.firstName()} ${faker.person.lastName()}`,
           description: faker.lorem.paragraphs(1),
         })
       )
