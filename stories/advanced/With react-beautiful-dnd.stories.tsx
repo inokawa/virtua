@@ -115,58 +115,56 @@ export const Default: StoryObj = {
     );
 
     return (
-      <div style={{ width: "100%", height: "100%" }}>
-        <DragDropContext
-          onDragEnd={({ source, destination }) => {
-            if (!destination) {
-              return;
-            }
-            if (source.index === destination.index) {
-              return;
-            }
+      <DragDropContext
+        onDragEnd={({ source, destination }) => {
+          if (!destination) {
+            return;
+          }
+          if (source.index === destination.index) {
+            return;
+          }
 
-            const startIndex = source.index;
-            const endIndex = destination.index;
+          const startIndex = source.index;
+          const endIndex = destination.index;
 
-            setItems((items) => {
-              const result = Array.from(items);
-              const [removed] = result.splice(startIndex, 1);
-              result.splice(endIndex, 0, removed);
+          setItems((items) => {
+            const result = Array.from(items);
+            const [removed] = result.splice(startIndex, 1);
+            result.splice(endIndex, 0, removed);
 
-              return result;
-            });
-          }}
+            return result;
+          });
+        }}
+      >
+        <Droppable
+          droppableId="droppable"
+          mode="virtual"
+          renderClone={(provided, snapshot, rubric) => (
+            <Item
+              id={items[rubric.source.index]}
+              isDragging={snapshot.isDragging}
+              provided={provided}
+            />
+          )}
         >
-          <Droppable
-            droppableId="droppable"
-            mode="virtual"
-            renderClone={(provided, snapshot, rubric) => (
-              <Item
-                id={items[rubric.source.index]}
-                isDragging={snapshot.isDragging}
-                provided={provided}
-              />
-            )}
-          >
-            {(provided) => (
-              <ScrollerRefContext.Provider value={provided.innerRef}>
-                <VList
-                  style={{ width: 400, height: 600 }}
-                  components={{ Root: Viewport, Item: ItemWithMinHeight }}
-                >
-                  {items.map((id, i) => (
-                    <Draggable key={id} draggableId={id} index={i}>
-                      {(provided) => (
-                        <Item id={id} isDragging={false} provided={provided} />
-                      )}
-                    </Draggable>
-                  ))}
-                </VList>
-              </ScrollerRefContext.Provider>
-            )}
-          </Droppable>
-        </DragDropContext>
-      </div>
+          {(provided) => (
+            <ScrollerRefContext.Provider value={provided.innerRef}>
+              <VList
+                style={{ width: 400, height: 600 }}
+                components={{ Root: Viewport, Item: ItemWithMinHeight }}
+              >
+                {items.map((id, i) => (
+                  <Draggable key={id} draggableId={id} index={i}>
+                    {(provided) => (
+                      <Item id={id} isDragging={false} provided={provided} />
+                    )}
+                  </Draggable>
+                ))}
+              </VList>
+            </ScrollerRefContext.Provider>
+          )}
+        </Droppable>
+      </DragDropContext>
     );
   },
 };
