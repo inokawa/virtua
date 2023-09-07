@@ -186,6 +186,71 @@ test.describe("smoke", () => {
   });
 });
 
+test.describe("check if it works when children change", () => {
+  test("recovering from 0", async ({ page }) => {
+    await page.goto(storyUrl("basics-vlist--increasing-items"));
+    const scrollable = await page.waitForSelector(scrollableSelector);
+    await scrollable.waitForElementState("stable");
+
+    const updateButton = page.getByRole("button", { name: "update" });
+
+    // delete all
+    await page.getByRole("radio", { name: "decrease" }).click();
+    for (let i = 0; i < 10; i++) {
+      await updateButton.click();
+    }
+    const topItem = await getFirstItem(scrollable);
+    expect(topItem.text).not.toEqual("0");
+
+    // add
+    await page.getByRole("radio", { name: "increase" }).click();
+    await updateButton.click();
+    {
+      // check if an error didn't occur
+      expect(
+        (await page.innerText("body")).toLowerCase().includes("localhost")
+      ).toBeFalsy();
+    }
+  });
+
+  test("recovering when changed a lot after scrolling", async ({ page }) => {
+    await page.goto(storyUrl("basics-vlist--increasing-items"));
+    const scrollable = await page.waitForSelector(scrollableSelector);
+    await scrollable.waitForElementState("stable");
+
+    const input = page.getByRole("spinbutton");
+    const updateButton = page.getByRole("button", { name: "update" });
+
+    // add many
+    input.type("1000");
+    await updateButton.click();
+    await scrollable.waitForElementState("stable");
+
+    // scroll a lot
+    await scrollToBottom(scrollable);
+    await scrollable.waitForElementState("stable");
+    const topItem = await getFirstItem(scrollable);
+    expect(topItem.text).not.toEqual("0");
+
+    // delete many
+    await page.getByRole("radio", { name: "decrease" }).click();
+    await updateButton.click();
+    await scrollable.waitForElementState("stable");
+
+    // add many
+    await page.getByRole("radio", { name: "increase" }).click();
+    await updateButton.click();
+    await scrollable.waitForElementState("stable");
+
+    {
+      // check if an error didn't occur
+      expect(
+        (await page.innerText("body")).toLowerCase().includes("localhost")
+      ).toBeFalsy();
+    }
+  });
+});
+
 test.describe("check if scroll jump compensation works", () => {
   test("vertical start -> end", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--default"));
