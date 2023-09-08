@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { CustomViewportComponentProps, VList } from "../../src";
-import React, { forwardRef } from "react";
+import React, { ReactNode, forwardRef } from "react";
 import { faker } from "@faker-js/faker";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 import "./radix.css";
@@ -14,43 +14,53 @@ export default {
   component: VList,
 } as Meta;
 
-const VirtualizedViewport = forwardRef<
-  HTMLDivElement,
-  CustomViewportComponentProps
->(({ children, attrs, width, height, scrolling }, ref) => {
+const Root = forwardRef<HTMLDivElement, CustomViewportComponentProps>(
+  ({ children, attrs, width, height, scrolling }, ref) => {
+    return (
+      <ScrollArea.Viewport ref={ref} {...attrs} className="ScrollAreaViewport">
+        <div
+          style={{
+            position: "relative",
+            visibility: "hidden",
+            width: width ?? "100%",
+            height: height ?? "100%",
+            pointerEvents: scrolling ? "none" : "auto",
+          }}
+        >
+          {children}
+        </div>
+      </ScrollArea.Viewport>
+    );
+  }
+);
+
+const VirtualizedViewport = ({
+  children,
+  style,
+}: {
+  children: ReactNode;
+  style;
+}) => {
   return (
-    <ScrollArea.Viewport ref={ref} {...attrs} className="ScrollAreaViewport">
-      <div
-        style={{
-          position: "relative",
-          visibility: "hidden",
-          width: width ?? "100%",
-          height: height ?? "100%",
-          pointerEvents: scrolling ? "none" : "auto",
-        }}
-      >
-        {children}
-      </div>
-    </ScrollArea.Viewport>
+    <VList style={style} components={{ Root }}>
+      {children}
+    </VList>
   );
-});
+};
 
 export const Default: StoryObj = {
   name: "With radix-ui",
   render: () => {
     return (
       <ScrollArea.Root className="ScrollAreaRoot">
-        <VList
-          style={{ padding: "15px 20px", width: "auto" }}
-          components={{ Root: VirtualizedViewport }}
-        >
+        <VirtualizedViewport style={{ padding: "15px 20px", width: "auto" }}>
           <div className="Text">Tags</div>
           {TAGS.map((tag) => (
             <div className="Tag" key={tag.id}>
               {tag.label}
             </div>
           ))}
-        </VList>
+        </VirtualizedViewport>
         <ScrollArea.Scrollbar
           className="ScrollAreaScrollbar"
           orientation="vertical"
