@@ -1,4 +1,4 @@
-import { hasNegativeOffsetInRtl } from "./dom";
+import { hasNegativeOffsetInRtl } from "./environment";
 import {
   ACTION_SCROLL,
   ACTION_BEFORE_MANUAL_SCROLL,
