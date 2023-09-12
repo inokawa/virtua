@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useState } from "react";
 import { flushSync } from "react-dom";
 import { useLatestRef } from "./useLatestRef";
 import { refKey } from "./utils";
@@ -9,6 +9,7 @@ import {
   UPDATE_SIZE,
   VirtualStore,
 } from "../core/store";
+import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 
 export const SELECT_RANGE = UPDATE_SCROLL + UPDATE_SIZE;
 export const SELECT_SCROLL_SIZE = UPDATE_SIZE;
@@ -25,7 +26,7 @@ export const useSelector = <T>(
   const [state, setState] = useState(getSnapShot);
   const getter = useLatestRef(getSnapShot);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const update = () => {
       setState(() => getter[refKey]());
     };
