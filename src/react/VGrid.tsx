@@ -375,8 +375,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           },
           get scrollSize(): [number, number] {
             return [
-              hScroller._getActualScrollSize(),
-              vScroller._getActualScrollSize(),
+              hStore._getCorrectedScrollSize(),
+              vStore._getCorrectedScrollSize(),
             ];
           },
           get viewportSize(): [number, number] {
