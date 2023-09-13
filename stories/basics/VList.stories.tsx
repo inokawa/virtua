@@ -467,12 +467,37 @@ export const BiDirectionalInfiniteScrolling: StoryObj = {
   },
 };
 
-export const Callbacks: StoryObj = {
+export const Statuses: StoryObj = {
   render: () => {
+    const ref = useRef<VListHandle>(null);
     const items = useState(() => createRows(1000))[0];
     const [position, setPosition] = useState(0);
     const [scrolling, setScrolling] = useState(false);
     const [range, setRange] = useState([-1, -1]);
+
+    const [isAtTop, setIsAtTop] = useState(false);
+    const [isAtBottom, setIsAtBottom] = useState(false);
+
+    useEffect(() => {
+      if (!ref.current) return;
+      if (ref.current.scrollOffset === 0) {
+        setIsAtTop(true);
+      } else {
+        setIsAtTop(false);
+      }
+      if (
+        ref.current.scrollOffset -
+          ref.current.scrollSize +
+          ref.current.viewportSize >=
+        // FIXME: The sum may not be 0 because of sub-pixel value when browser's window.devicePixelRatio has decimal value
+        -1.5
+      ) {
+        setIsAtBottom(true);
+      } else {
+        setIsAtBottom(false);
+      }
+    }, [position]);
+
     return (
       <div
         style={{ height: "100vh", display: "flex", flexDirection: "column" }}
@@ -488,8 +513,11 @@ export const Callbacks: StoryObj = {
           <div>
             index: ({range[0]}, {range[1]})
           </div>
+          <div>at top: {isAtTop ? "true" : "false"}</div>
+          <div>at bottom: {isAtBottom ? "true" : "false"}</div>
         </div>
         <VList
+          ref={ref}
           style={{ flex: 1 }}
           onScroll={(offset) => {
             startTransition(() => {
