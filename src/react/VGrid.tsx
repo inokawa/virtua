@@ -10,18 +10,15 @@ import {
 } from "react";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
+  UPDATE_IS_SCROLLING,
+  UPDATE_JUMP,
+  UPDATE_SCROLL,
+  UPDATE_SIZE,
   VirtualStore,
   createVirtualStore,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import {
-  SELECT_IS_SCROLLING,
-  SELECT_ITEM,
-  SELECT_JUMP_COUNT,
-  SELECT_RANGE,
-  SELECT_SCROLL_SIZE,
-  useSelector,
-} from "./useSelector";
+import { useSelector } from "./useSelector";
 import { max, min, values } from "../core/utils";
 import { createScroller } from "../core/scroller";
 import { emptyComponents, refKey } from "./utils";
@@ -33,6 +30,7 @@ import {
 } from "..";
 import { createGridResizer, GridResizer } from "../core/resizer";
 import { Viewport as DefaultViewport } from "./Viewport";
+import { flushSync } from "react-dom";
 
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
@@ -79,37 +77,37 @@ const Cell = memo(
     const top = useSelector(
       vStore,
       () => vStore._getItemOffset(rowIndex),
-      SELECT_ITEM,
+      UPDATE_SIZE,
       true
     );
     const left = useSelector(
       hStore,
       () => hStore._getItemOffset(colIndex),
-      SELECT_ITEM,
+      UPDATE_SIZE,
       true
     );
     const vHide = useSelector(
       vStore,
       () => vStore._isUnmeasuredItem(rowIndex),
-      SELECT_ITEM,
+      UPDATE_SIZE,
       true
     );
     const hHide = useSelector(
       hStore,
       () => hStore._isUnmeasuredItem(colIndex),
-      SELECT_ITEM,
+      UPDATE_SIZE,
       true
     );
     const height = useSelector(
       vStore,
       () => vStore._getItemSize(rowIndex),
-      SELECT_ITEM,
+      UPDATE_SIZE,
       true
     );
     const width = useSelector(
       hStore,
       () => hStore._getItemSize(colIndex),
-      SELECT_ITEM,
+      UPDATE_SIZE,
       true
     );
 
@@ -277,8 +275,18 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const [vStore, hStore, resizer, vScroller, hScroller, isRtl] = useStatic(
       () => {
         const _isRtl = !!rtlProp;
-        const _vs = createVirtualStore(rowCount, cellHeight, initialRowCount);
-        const _hs = createVirtualStore(colCount, cellWidth, initialColCount);
+        const _vs = createVirtualStore(
+          flushSync,
+          rowCount,
+          cellHeight,
+          initialRowCount
+        );
+        const _hs = createVirtualStore(
+          flushSync,
+          colCount,
+          cellWidth,
+          initialColCount
+        );
         return [
           _vs,
           _hs,
@@ -300,43 +308,35 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const [startRowIndex, endRowIndex] = useSelector(
       vStore,
       vStore._getRange,
-      SELECT_RANGE
+      UPDATE_SCROLL + UPDATE_SIZE
     );
     const [startColIndex, endColIndex] = useSelector(
       hStore,
       hStore._getRange,
-      SELECT_RANGE
+      UPDATE_SCROLL + UPDATE_SIZE
     );
     const verticalScrolling = useSelector(
       vStore,
       vStore._getIsScrolling,
-      SELECT_IS_SCROLLING
+      UPDATE_IS_SCROLLING
     );
     const horizontalScrolling = useSelector(
       hStore,
       hStore._getIsScrolling,
-      SELECT_IS_SCROLLING
+      UPDATE_IS_SCROLLING
     );
-    const vJumpCount = useSelector(
-      vStore,
-      vStore._getJumpCount,
-      SELECT_JUMP_COUNT
-    );
-    const hJumpCount = useSelector(
-      hStore,
-      hStore._getJumpCount,
-      SELECT_JUMP_COUNT
-    );
+    const vJumpCount = useSelector(vStore, vStore._getJumpCount, UPDATE_JUMP);
+    const hJumpCount = useSelector(hStore, hStore._getJumpCount, UPDATE_JUMP);
     const height = useSelector(
       vStore,
       vStore._getCorrectedScrollSize,
-      SELECT_SCROLL_SIZE,
+      UPDATE_SIZE,
       true
     );
     const width = useSelector(
       hStore,
       hStore._getCorrectedScrollSize,
-      SELECT_SCROLL_SIZE,
+      UPDATE_SIZE,
       true
     );
     const rootRef = useRef<HTMLDivElement>(null);

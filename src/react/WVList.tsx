@@ -7,15 +7,16 @@ import {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { ACTION_ITEMS_LENGTH_CHANGE, createVirtualStore } from "../core/store";
-import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import {
-  SELECT_IS_SCROLLING,
-  SELECT_JUMP_COUNT,
-  SELECT_RANGE,
-  SELECT_SCROLL_SIZE,
-  useSelector,
-} from "./useSelector";
+  ACTION_ITEMS_LENGTH_CHANGE,
+  UPDATE_IS_SCROLLING,
+  UPDATE_JUMP,
+  UPDATE_SCROLL,
+  UPDATE_SIZE,
+  createVirtualStore,
+} from "../core/store";
+import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
+import { useSelector } from "./useSelector";
 import { exists, max, min, values } from "../core/utils";
 import { createWindowScroller } from "../core/scroller";
 import { MayHaveKey, emptyComponents, flattenChildren, refKey } from "./utils";
@@ -30,6 +31,7 @@ import {
 } from "./Viewport";
 import { CustomItemComponent, ListItem } from "./ListItem";
 import { Cache } from "../core/cache";
+import { flushSync } from "react-dom";
 
 type CustomItemComponentOrElement =
   | keyof JSX.IntrinsicElements
@@ -145,6 +147,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
     const [store, resizer, scroller, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
       const _store = createVirtualStore(
+        flushSync,
         count,
         initialItemSize,
         initialItemCount,
@@ -168,22 +171,18 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
     const [startIndex, endIndex] = useSelector(
       store,
       store._getRange,
-      SELECT_RANGE
+      UPDATE_SCROLL + UPDATE_SIZE
     );
     const scrolling = useSelector(
       store,
       store._getIsScrolling,
-      SELECT_IS_SCROLLING
+      UPDATE_IS_SCROLLING
     );
-    const jumpCount = useSelector(
-      store,
-      store._getJumpCount,
-      SELECT_JUMP_COUNT
-    );
+    const jumpCount = useSelector(store, store._getJumpCount, UPDATE_JUMP);
     const scrollSize = useSelector(
       store,
       store._getCorrectedScrollSize,
-      SELECT_SCROLL_SIZE,
+      UPDATE_SIZE,
       true
     );
     const rootRef = useRef<HTMLDivElement>(null);

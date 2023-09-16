@@ -56,7 +56,7 @@ type Actions =
   | [type: typeof ACTION_SCROLL_END, dummy?: void]
   | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void];
 
-type Subscriber = (sync?: boolean) => void;
+type Subscriber = () => void;
 
 export const UPDATE_SCROLL = 0b00001;
 export const UPDATE_SIZE = 0b00010;
@@ -84,6 +84,7 @@ export type VirtualStore = {
 };
 
 export const createVirtualStore = (
+  flushSync: (cb: () => void) => void,
   elementsCount: number,
   itemSize: number = 40,
   initialItemCount: number = 0,
@@ -216,6 +217,7 @@ export const createVirtualStore = (
           let diff = 0;
           if (_isShifting || _isManualScrolling) {
             // Should maintain visible position under specific situations
+            const [startIndex] = _prevRange;
 
             if (scrollOffset === 0) {
               // Do nothing to stick to the start
@@ -224,9 +226,11 @@ export const createVirtualStore = (
               getScrollOffsetMax() - SUBPIXEL_THRESHOLD
             ) {
               // Keep end to stick to the end
-              diff = calculateJump(cache, updated);
+              diff = calculateJump(
+                cache,
+                updated.filter(([index]) => index >= startIndex)
+              );
             } else {
-              const [startIndex] = _prevRange;
               // Keep start at mid
               diff = calculateJump(
                 cache,
@@ -354,13 +358,22 @@ export const createVirtualStore = (
       }
 
       if (mutated) {
-        subscribers.forEach(([target, cb]) => {
-          // Early return to skip React's computation
-          if (!(mutated & target)) {
-            return;
-          }
-          cb(shouldSync);
-        });
+        const update = () => {
+          subscribers.forEach(([target, cb]) => {
+            // Early return to skip React's computation
+            if (!(mutated & target)) {
+              return;
+            }
+            cb();
+          });
+        };
+        if (shouldSync) {
+          // https://github.com/facebook/react/issues/25191
+          // https://github.com/facebook/react/blob/a5fc797db14c6e05d4d5c4dbb22a0dd70d41f5d5/packages/react-reconciler/src/ReactFiberWorkLoop.js#L1443-L1447
+          flushSync(update);
+        } else {
+          update();
+        }
       }
     },
   };
