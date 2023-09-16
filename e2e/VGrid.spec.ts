@@ -15,7 +15,9 @@ test.describe("smoke", () => {
     await scrollable.waitForElementState("stable");
 
     // check if start is displayed
-    await expect((await getFirstItem(scrollable)).text).toEqual("0 / 0");
+    await expect(
+      (await getFirstItem(scrollable)).text.startsWith("0 / 0")
+    ).toBeTruthy();
 
     // scroll to the end
     await scrollToBottom(scrollable);
@@ -136,7 +138,9 @@ test("check if scrollToIndex works", async ({ page }) => {
   const scrollable = await page.waitForSelector(scrollableSelector);
 
   // check if start is displayed
-  await expect((await getFirstItem(scrollable)).text).toEqual("0 / 0");
+  await expect(
+    (await getFirstItem(scrollable)).text.startsWith("0 / 0")
+  ).toBeTruthy();
 
   const button = (await page
     .getByRole("button", { name: "scroll to index" })

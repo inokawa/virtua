@@ -11,15 +11,13 @@ import {
   UPDATE_SCROLL_WITH_EVENT,
   ACTION_ITEMS_LENGTH_CHANGE,
   createVirtualStore,
+  UPDATE_SIZE,
+  UPDATE_JUMP,
+  UPDATE_IS_SCROLLING,
+  UPDATE_SCROLL,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import {
-  SELECT_IS_SCROLLING,
-  SELECT_JUMP_COUNT,
-  SELECT_RANGE,
-  SELECT_SCROLL_SIZE,
-  useSelector,
-} from "./useSelector";
+import { useSelector } from "./useSelector";
 import { exists, max, min, values } from "../core/utils";
 import { createScroller } from "../core/scroller";
 import { MayHaveKey, emptyComponents, flattenChildren, refKey } from "./utils";
@@ -35,6 +33,7 @@ import {
 import { CustomItemComponent, ListItem } from "./ListItem";
 import { CacheSnapshot, ScrollToIndexAlign } from "../core/types";
 import { Cache } from "../core/cache";
+import { flushSync } from "react-dom";
 
 export type ScrollMode = "reverse" | "rtl";
 
@@ -201,6 +200,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       const _isHorizontal = !!horizontalProp;
       const _isRtl = mode === "rtl";
       const _store = createVirtualStore(
+        flushSync,
         count,
         initialItemSize,
         initialItemCount,
@@ -225,22 +225,18 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const [startIndex, endIndex] = useSelector(
       store,
       store._getRange,
-      SELECT_RANGE
+      UPDATE_SCROLL + UPDATE_SIZE
     );
     const scrolling = useSelector(
       store,
       store._getIsScrolling,
-      SELECT_IS_SCROLLING
+      UPDATE_IS_SCROLLING
     );
-    const jumpCount = useSelector(
-      store,
-      store._getJumpCount,
-      SELECT_JUMP_COUNT
-    );
+    const jumpCount = useSelector(store, store._getJumpCount, UPDATE_JUMP);
     const scrollSize = useSelector(
       store,
       store._getCorrectedScrollSize,
-      SELECT_SCROLL_SIZE,
+      UPDATE_SIZE,
       true
     );
     const rootRef = useRef<HTMLDivElement>(null);

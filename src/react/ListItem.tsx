@@ -6,9 +6,9 @@ import {
   ReactElement,
   ReactNode,
 } from "react";
-import { VirtualStore } from "../core/store";
+import { UPDATE_SIZE, VirtualStore } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { SELECT_ITEM, useSelector } from "./useSelector";
+import { useSelector } from "./useSelector";
 import { ListResizer } from "../core/resizer";
 import { refKey } from "./utils";
 
@@ -49,13 +49,13 @@ export const ListItem = memo(
     const offset = useSelector(
       store,
       () => store._getItemOffset(index),
-      SELECT_ITEM,
+      UPDATE_SIZE,
       true
     );
     const hide = useSelector(
       store,
       () => store._isUnmeasuredItem(index),
-      SELECT_ITEM,
+      UPDATE_SIZE,
       true
     );
 
