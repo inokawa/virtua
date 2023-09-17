@@ -107,7 +107,7 @@ export const Default: StoryObj = {
         }}
       >
         <VList ref={ref} style={{ flex: 1 }} mode="reverse">
-          {items.map((d, i) => (
+          {items.map((d) => (
             <Item key={d.id} {...d} />
           ))}
         </VList>
