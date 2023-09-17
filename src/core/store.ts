@@ -19,9 +19,17 @@ export type ScrollJump = Readonly<number>;
 export type ItemResize = Readonly<[index: number, size: number]>;
 type ItemsRange = Readonly<[startIndex: number, endIndex: number]>;
 
-const calculateJump = (cache: Cache, items: readonly ItemResize[]): number => {
+const calculateJump = (
+  cache: Cache,
+  items: readonly ItemResize[],
+  keepEnd?: boolean
+): number => {
   return items.reduce((acc, [index, size]) => {
-    return acc + (size - getItemSize(cache, index));
+    const diff = size - getItemSize(cache, index);
+    if (!keepEnd || diff > 0) {
+      acc += diff;
+    }
+    return acc;
   }, 0);
 };
 
@@ -226,10 +234,7 @@ export const createVirtualStore = (
               getScrollOffsetMax() - SUBPIXEL_THRESHOLD
             ) {
               // Keep end to stick to the end
-              diff = calculateJump(
-                cache,
-                updated.filter(([index]) => index >= startIndex)
-              );
+              diff = calculateJump(cache, updated, true);
             } else {
               // Keep start at mid
               diff = calculateJump(
