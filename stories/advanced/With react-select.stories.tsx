@@ -72,22 +72,20 @@ const Item = forwardRef<HTMLDivElement, CustomItemComponentProps>(
 const MenuList = ({ children, ...rest }: MenuListProps<OptionValue>) => {
   const ref = useRef<VListHandle>(null);
 
-  // https://github.com/jacobworrel/react-windowed-select/blob/master/src/MenuList.tsx
-  const selectedIndex = useMemo(() => {
-    let focusedIndex = -1;
-    React.Children.forEach(children, (c, i) => {
-      if (
-        (c as React.ReactElement<OptionProps<OptionValue>>).props.isSelected
-      ) {
-        focusedIndex = i;
-      }
-    });
-    return focusedIndex;
-  }, [children]);
-  useEffect(() => {
-    if (selectedIndex === -1) return;
-    ref.current?.scrollToIndex(selectedIndex);
-  }, [selectedIndex]);
+  // // https://github.com/jacobworrel/react-windowed-select/blob/master/src/MenuList.tsx
+  // const selectedIndex = useMemo(() => {
+  //   let focusedIndex = -1;
+  //   React.Children.forEach(children, (c, i) => {
+  //     if ((c as React.ReactElement<OptionProps<OptionValue>>).props.isFocused) {
+  //       focusedIndex = i;
+  //     }
+  //   });
+  //   return focusedIndex;
+  // }, [children]);
+  // useEffect(() => {
+  //   if (selectedIndex === -1) return;
+  //   ref.current?.scrollToIndex(selectedIndex);
+  // }, [selectedIndex]);
 
   return (
     <MenuListContext.Provider value={rest}>
