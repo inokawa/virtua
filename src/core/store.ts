@@ -307,6 +307,7 @@ export const createVirtualStore = (
           }
 
           if (type === ACTION_SCROLL) {
+            const delta = payload - scrollOffset;
             // Scrolling after resizing will be caused by jump compensation
             const isJustResized = _resized;
             _resized = false;
@@ -318,11 +319,7 @@ export const createVirtualStore = (
               // Ignore until manual scrolling
               !_isManualScrolling
             ) {
-              if (
-                updateScrollDirection(
-                  scrollOffset > payload ? SCROLL_UP : SCROLL_DOWN
-                )
-              ) {
+              if (updateScrollDirection(delta < 0 ? SCROLL_UP : SCROLL_DOWN)) {
                 mutated += UPDATE_IS_SCROLLING;
               }
             }
@@ -331,7 +328,7 @@ export const createVirtualStore = (
             // Warning: flushSync was called from inside a lifecycle method. React cannot flush when React is already rendering. Consider moving this call to a scheduler task or micro task.
             //
             // Update synchronously if scrolled a lot
-            shouldSync = abs(scrollOffset - payload) > viewportSize;
+            shouldSync = abs(delta) > viewportSize;
 
             mutated += UPDATE_SCROLL_WITH_EVENT;
 
