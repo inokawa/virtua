@@ -17,7 +17,7 @@ Props of customized item component for [VList](../API.md#vlist).
 
 #### Defined in
 
-[src/react/ListItem.tsx:19](https://github.com/inokawa/virtua/blob/ad81df01/src/react/ListItem.tsx#L19)
+[src/react/ListItem.tsx:19](https://github.com/inokawa/virtua/blob/57f3621f/src/react/ListItem.tsx#L19)
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 #### Defined in
 
-[src/react/ListItem.tsx:20](https://github.com/inokawa/virtua/blob/ad81df01/src/react/ListItem.tsx#L20)
+[src/react/ListItem.tsx:20](https://github.com/inokawa/virtua/blob/57f3621f/src/react/ListItem.tsx#L20)
