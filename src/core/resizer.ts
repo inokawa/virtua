@@ -26,8 +26,7 @@ export const createResizer = (
     // https://www.w3.org/TR/resize-observer/#intro
     return new ResizeObserver((entries) => {
       const resizes: ItemResize[] = [];
-      for (const e of entries) {
-        const { target, contentRect } = e;
+      for (const { target, contentRect } of entries) {
         if (target === rootElement) {
           store._update(
             ACTION_VIEWPORT_RESIZE,

@@ -1,5 +1,5 @@
 import { ReactElement, ReactFragment, ReactNode } from "react";
-import { exists } from "../core/utils";
+import { exists, isArray } from "../core/utils";
 
 export const refKey = "current";
 
@@ -8,7 +8,7 @@ export const emptyComponents = {};
 type ItemElement = ReactElement | ReactFragment | string | number;
 
 const forEach = (children: ReactNode, elements: ItemElement[]) => {
-  if (Array.isArray(children)) {
+  if (isArray(children)) {
     for (const c of children) {
       forEach(c, elements);
     }

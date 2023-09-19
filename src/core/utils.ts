@@ -3,6 +3,7 @@ export const max = Math.max;
 export const abs = Math.abs;
 export const now = Date.now;
 export const values = Object.values;
+export const isArray = Array.isArray;
 export const timeout = setTimeout;
 
 export const clamp = (
