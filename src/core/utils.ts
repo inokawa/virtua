@@ -67,3 +67,14 @@ export const once = <F extends (...args: any[]) => any>(fn: F): F => {
     return cache;
   }) as F;
 };
+
+// wrap for SSR
+export const computeStyle = (e: HTMLElement) => getComputedStyle(e);
+
+export const getStyleNumber = (v: string): number => {
+  if (v) {
+    return parseFloat(v);
+  } else {
+    return 0;
+  }
+};

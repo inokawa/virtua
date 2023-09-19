@@ -3,7 +3,7 @@
     "name": "Total",
     "path": "lib/index.mjs",
     "import": "*",
-    "limit": "5.10 kB"
+    "limit": "5.20 kB"
   },
   {
     "name": "VList",

@@ -4,7 +4,9 @@ import {
   ItemResize,
   VirtualStore,
 } from "./store";
-import { exists, max, once } from "./utils";
+import { exists, computeStyle, getStyleNumber, max, once } from "./utils";
+
+const rootObserveOpts: ResizeObserverOptions = { box: "border-box" };
 
 export interface ListResizer {
   _observeRoot(root: HTMLElement): () => void;
@@ -24,9 +26,21 @@ export const createResizer = (
     // https://www.w3.org/TR/resize-observer/#intro
     return new ResizeObserver((entries) => {
       const resizes: ItemResize[] = [];
-      for (const { target, contentRect } of entries) {
+      for (const e of entries) {
+        const { target, contentRect } = e;
         if (target === rootElement) {
-          store._update(ACTION_VIEWPORT_RESIZE, contentRect[sizeKey]);
+          store._update(
+            ACTION_VIEWPORT_RESIZE,
+            contentRect[sizeKey] +
+              contentRect[isHorizontal ? "left" : "top"] +
+              // contentRect doesn't have paddingRight/paddingBottom so get them from computed style
+              // https://www.w3.org/TR/resize-observer/#css-definitions
+              getStyleNumber(
+                computeStyle(rootElement)[
+                  isHorizontal ? "paddingRight" : "paddingBottom"
+                ]
+              )
+          );
         } else {
           const index = mountedIndexes.get(target);
           if (exists(index)) {
@@ -45,7 +59,7 @@ export const createResizer = (
     _observeRoot(root: HTMLElement) {
       rootElement = root;
       const ro = getResizeObserver();
-      ro.observe(root);
+      ro.observe(root, rootObserveOpts);
       return () => {
         ro.disconnect();
       };
@@ -140,8 +154,23 @@ export const createGridResizer = (
       const resizedCols = new Set<number>();
       for (const { target, contentRect } of entries) {
         if (target === rootElement) {
-          vStore._update(ACTION_VIEWPORT_RESIZE, contentRect[heightKey]);
-          hStore._update(ACTION_VIEWPORT_RESIZE, contentRect[widthKey]);
+          // contentRect doesn't have paddingRight/paddingBottom so get them from computed style
+          // https://www.w3.org/TR/resize-observer/#css-definitions
+          // TODO subtract scroll bar width/height
+          // https://github.com/w3c/csswg-drafts/issues/3536
+          const style = computeStyle(rootElement);
+          vStore._update(
+            ACTION_VIEWPORT_RESIZE,
+            contentRect[heightKey] +
+              contentRect.top +
+              getStyleNumber(style.paddingBottom)
+          );
+          hStore._update(
+            ACTION_VIEWPORT_RESIZE,
+            contentRect[widthKey] +
+              contentRect.left +
+              getStyleNumber(style.paddingRight)
+          );
         } else {
           const cell = mountedIndexes.get(target);
           if (cell) {
@@ -216,7 +245,7 @@ export const createGridResizer = (
     _observeRoot(root: HTMLElement) {
       rootElement = root;
       const ro = getResizeObserver();
-      ro.observe(root);
+      ro.observe(root, rootObserveOpts);
       return () => {
         ro.disconnect();
       };
