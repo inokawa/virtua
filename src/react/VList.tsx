@@ -13,14 +13,22 @@ import {
   createVirtualStore,
   UPDATE_SIZE,
   UPDATE_JUMP,
-  UPDATE_IS_SCROLLING,
+  UPDATE_SCROLL_DIRECTION,
   UPDATE_SCROLL,
+  SCROLL_IDLE,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSelector } from "./useSelector";
-import { exists, max, min, values } from "../core/utils";
+import { exists, values } from "../core/utils";
 import { createScroller } from "../core/scroller";
-import { MayHaveKey, emptyComponents, flattenChildren, refKey } from "./utils";
+import {
+  MayHaveKey,
+  clampEndIndex,
+  clampStartIndex,
+  emptyComponents,
+  flattenChildren,
+  refKey,
+} from "./utils";
 import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
 import { createResizer } from "../core/resizer";
@@ -227,10 +235,10 @@ export const VList = forwardRef<VListHandle, VListProps>(
       store._getRange,
       UPDATE_SCROLL + UPDATE_SIZE
     );
-    const scrolling = useSelector(
+    const scrollDirection = useSelector(
       store,
-      store._getIsScrolling,
-      UPDATE_IS_SCROLLING
+      store._getScrollDirection,
+      UPDATE_SCROLL_DIRECTION
     );
     const jumpCount = useSelector(store, store._getJumpCount, UPDATE_JUMP);
     const scrollSize = useSelector(
@@ -240,6 +248,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       true
     );
     const rootRef = useRef<HTMLDivElement>(null);
+    const scrolling = scrollDirection !== SCROLL_IDLE;
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
@@ -298,8 +307,17 @@ export const VList = forwardRef<VListHandle, VListProps>(
       []
     );
 
-    const overscanedStartIndex = max(startIndex - overscan, 0);
-    const overscanedEndIndex = min(endIndex + overscan, count - 1);
+    const overscanedStartIndex = clampStartIndex(
+      startIndex,
+      overscan,
+      scrollDirection
+    );
+    const overscanedEndIndex = clampEndIndex(
+      endIndex,
+      overscan,
+      scrollDirection,
+      count
+    );
     const items = useMemo(() => {
       const res: ReactElement[] = [];
       for (let i = overscanedStartIndex; i <= overscanedEndIndex; i++) {
