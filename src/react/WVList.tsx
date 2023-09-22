@@ -261,7 +261,6 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
           () => ({
             ...viewportAttrs,
             style: {
-              overflow: "visible",
               display: isHorizontal ? "inline-block" : "block",
               // transform: "translate3d(0px, 0px, 0px)",
               // willChange: "scroll-position",
