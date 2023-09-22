@@ -463,8 +463,6 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
               // backfaceVisibility: "hidden",
               width: "100%",
               height: "100%",
-              padding: 0,
-              margin: 0,
               ...viewportAttrs.style,
             },
           }),
