@@ -747,7 +747,16 @@ const UlList = forwardRef<HTMLDivElement, CustomViewportComponentProps>(
   ({ children, attrs, height }, ref) => {
     return (
       <div ref={ref} {...attrs}>
-        <ul style={{ position: "relative", height, margin: 0 }}>{children}</ul>
+        <ul
+          style={{
+            position: "relative",
+            height,
+            margin: 0,
+            overflow: "hidden",
+          }}
+        >
+          {children}
+        </ul>
       </div>
     );
   }
