@@ -26,10 +26,6 @@ const TableList = forwardRef<
     setHeaderHeight(headerRef.current.getBoundingClientRect().height);
   }, []);
 
-  const baseThStyle: CSSProperties = {
-    color: "white",
-    background: "darkgray",
-  };
   return (
     <div {...attrs} ref={ref}>
       <table
@@ -51,16 +47,18 @@ const TableList = forwardRef<
           }}
         >
           <tr style={{ width: "100%" }}>
-            <th style={{ ...baseThStyle, minWidth: COLUMN_WIDTHS[0] }}>0</th>
-            <th style={{ ...baseThStyle, minWidth: COLUMN_WIDTHS[1] }}>1</th>
-            <th style={{ ...baseThStyle, minWidth: COLUMN_WIDTHS[2] }}>2</th>
-            <th style={{ ...baseThStyle, minWidth: COLUMN_WIDTHS[3] }}>3</th>
-            <th style={{ ...baseThStyle, minWidth: COLUMN_WIDTHS[4] }}>4</th>
-            <th style={{ ...baseThStyle, minWidth: COLUMN_WIDTHS[5] }}>5</th>
-            <th style={{ ...baseThStyle, minWidth: COLUMN_WIDTHS[6] }}>6</th>
-            <th style={{ ...baseThStyle, minWidth: COLUMN_WIDTHS[7] }}>7</th>
-            <th style={{ ...baseThStyle, minWidth: COLUMN_WIDTHS[8] }}>8</th>
-            <th style={{ ...baseThStyle, minWidth: COLUMN_WIDTHS[9] }}>9</th>
+            {COLUMN_WIDTHS.map((width, i) => (
+              <th
+                key={i}
+                style={{
+                  color: "white",
+                  background: "darkgray",
+                  minWidth: width,
+                }}
+              >
+                {i}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody
@@ -93,13 +91,8 @@ export const Table: StoryObj = {
       >
         {Array.from({ length: 1000 }).map((_, i) => (
           <Fragment key={i}>
-            {Array.from({ length: 10 }).map((_, j) => (
-              <td
-                key={j}
-                style={{
-                  minWidth: COLUMN_WIDTHS[j],
-                }}
-              >
+            {COLUMN_WIDTHS.map((width, j) => (
+              <td key={j} style={{ minWidth: width }}>
                 {i}, {j}
               </td>
             ))}
