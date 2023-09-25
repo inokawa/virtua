@@ -100,6 +100,7 @@ test.describe("smoke", () => {
       (s) => getComputedStyle(s.childNodes[0] as HTMLElement).height
     );
 
+    expect(initialTotalHeight).toBeTruthy();
     expect(initialTotalHeight).toEqual(changedTotalHeight);
   });
 
