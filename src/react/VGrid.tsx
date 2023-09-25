@@ -10,24 +10,18 @@ import {
 } from "react";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
-  UPDATE_SCROLL_DIRECTION,
+  UPDATE_IS_SCROLLING,
   UPDATE_JUMP,
   UPDATE_SCROLL,
   UPDATE_SIZE,
   VirtualStore,
   createVirtualStore,
-  SCROLL_IDLE,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSelector } from "./useSelector";
-import { values } from "../core/utils";
+import { max, min, values } from "../core/utils";
 import { createScroller } from "../core/scroller";
-import {
-  clampEndIndex,
-  clampStartIndex,
-  emptyComponents,
-  refKey,
-} from "./utils";
+import { emptyComponents, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import {
   CustomViewportComponent,
@@ -321,15 +315,15 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       hStore._getRange,
       UPDATE_SCROLL + UPDATE_SIZE
     );
-    const vScrollDirection = useSelector(
+    const verticalScrolling = useSelector(
       vStore,
-      vStore._getScrollDirection,
-      UPDATE_SCROLL_DIRECTION
+      vStore._getIsScrolling,
+      UPDATE_IS_SCROLLING
     );
-    const hScrollDirection = useSelector(
+    const horizontalScrolling = useSelector(
       hStore,
-      hStore._getScrollDirection,
-      UPDATE_SCROLL_DIRECTION
+      hStore._getIsScrolling,
+      UPDATE_IS_SCROLLING
     );
     const vJumpCount = useSelector(vStore, vStore._getJumpCount, UPDATE_JUMP);
     const hJumpCount = useSelector(hStore, hStore._getJumpCount, UPDATE_JUMP);
@@ -346,8 +340,6 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       true
     );
     const rootRef = useRef<HTMLDivElement>(null);
-    const vScrolling = vScrollDirection !== SCROLL_IDLE;
-    const hScrolling = hScrollDirection !== SCROLL_IDLE;
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
@@ -421,29 +413,10 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       };
     }, [children]);
 
-    const overscanedStartRowIndex = clampStartIndex(
-      startRowIndex,
-      overscan,
-      vScrollDirection
-    );
-    const overscanedEndRowIndex = clampEndIndex(
-      endRowIndex,
-      overscan,
-      vScrollDirection,
-      rowCount
-    );
-    const overscanedStartColIndex = clampStartIndex(
-      startColIndex,
-      overscan,
-      hScrollDirection
-    );
-    const overscanedEndColIndex = clampEndIndex(
-      endColIndex,
-      overscan,
-      hScrollDirection,
-      colCount
-    );
-
+    const overscanedStartRowIndex = max(startRowIndex - overscan, 0);
+    const overscanedEndRowIndex = min(endRowIndex + overscan, rowCount - 1);
+    const overscanedStartColIndex = max(startColIndex - overscan, 0);
+    const overscanedEndColIndex = min(endColIndex + overscan, colCount - 1);
     const items = useMemo(() => {
       const res: ReactElement[] = [];
       for (let i = overscanedStartRowIndex; i <= overscanedEndRowIndex; i++) {
@@ -478,7 +451,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         ref={rootRef}
         width={width}
         height={height}
-        scrolling={vScrolling || hScrolling}
+        scrolling={verticalScrolling || horizontalScrolling}
         attrs={useMemo(
           () => ({
             ...viewportAttrs,
@@ -490,6 +463,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
               // backfaceVisibility: "hidden",
               width: "100%",
               height: "100%",
+              padding: 0,
+              margin: 0,
               ...viewportAttrs.style,
             },
           }),
