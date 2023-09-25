@@ -6,6 +6,13 @@ const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
 const VIEWPORT_HEIGHT = ITEM_HEIGHT * 10;
 
+// https://github.com/jsdom/jsdom/issues/1261#issuecomment-362928131
+Object.defineProperty(HTMLElement.prototype, "offsetParent", {
+  get() {
+    return this.parentNode;
+  },
+});
+
 global.ResizeObserver = class {
   observers = new Set<Element>();
   callback: ResizeObserverCallback;
