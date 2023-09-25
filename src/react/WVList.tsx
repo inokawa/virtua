@@ -270,6 +270,8 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
               // willChange: "transform",
               width: isHorizontal ? "auto" : "100%",
               height: isHorizontal ? "100%" : "auto",
+              padding: 0,
+              margin: 0,
               ...viewportAttrs.style,
             },
           }),
