@@ -9,17 +9,25 @@ import {
 } from "react";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
-  UPDATE_IS_SCROLLING,
+  UPDATE_SCROLL_DIRECTION,
   UPDATE_JUMP,
   UPDATE_SCROLL,
   UPDATE_SIZE,
   createVirtualStore,
+  SCROLL_IDLE,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSelector } from "./useSelector";
-import { exists, max, min, values } from "../core/utils";
+import { exists, values } from "../core/utils";
 import { createWindowScroller } from "../core/scroller";
-import { MayHaveKey, emptyComponents, flattenChildren, refKey } from "./utils";
+import {
+  MayHaveKey,
+  clampEndIndex,
+  clampStartIndex,
+  emptyComponents,
+  flattenChildren,
+  refKey,
+} from "./utils";
 import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
 import { createWindowResizer } from "../core/resizer";
@@ -173,10 +181,10 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
       store._getRange,
       UPDATE_SCROLL + UPDATE_SIZE
     );
-    const scrolling = useSelector(
+    const scrollDirection = useSelector(
       store,
-      store._getIsScrolling,
-      UPDATE_IS_SCROLLING
+      store._getScrollDirection,
+      UPDATE_SCROLL_DIRECTION
     );
     const jumpCount = useSelector(store, store._getJumpCount, UPDATE_JUMP);
     const scrollSize = useSelector(
@@ -186,6 +194,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
       true
     );
     const rootRef = useRef<HTMLDivElement>(null);
+    const scrolling = scrollDirection !== SCROLL_IDLE;
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
@@ -228,8 +237,17 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
       []
     );
 
-    const overscanedStartIndex = max(startIndex - overscan, 0);
-    const overscanedEndIndex = min(endIndex + overscan, count - 1);
+    const overscanedStartIndex = clampStartIndex(
+      startIndex,
+      overscan,
+      scrollDirection
+    );
+    const overscanedEndIndex = clampEndIndex(
+      endIndex,
+      overscan,
+      scrollDirection,
+      count
+    );
     const items = useMemo(() => {
       const res: ReactElement[] = [];
       for (let i = overscanedStartIndex; i <= overscanedEndIndex; i++) {
@@ -270,8 +288,6 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
               // willChange: "transform",
               width: isHorizontal ? "auto" : "100%",
               height: isHorizontal ? "100%" : "auto",
-              padding: 0,
-              margin: 0,
               ...viewportAttrs.style,
             },
           }),

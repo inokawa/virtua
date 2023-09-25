@@ -39,7 +39,7 @@ const SUBPIXEL_THRESHOLD = 1.5; // 0.5 * 3
 export const SCROLL_IDLE = 0;
 export const SCROLL_DOWN = 1;
 export const SCROLL_UP = 2;
-type ScrollDirection =
+export type ScrollDirection =
   | typeof SCROLL_IDLE
   | typeof SCROLL_DOWN
   | typeof SCROLL_UP;
@@ -69,7 +69,7 @@ type Subscriber = () => void;
 export const UPDATE_SCROLL = 0b00001;
 export const UPDATE_SIZE = 0b00010;
 export const UPDATE_JUMP = 0b00100;
-export const UPDATE_IS_SCROLLING = 0b01000;
+export const UPDATE_SCROLL_DIRECTION = 0b01000;
 export const UPDATE_SCROLL_WITH_EVENT = 0b10000;
 
 export type VirtualStore = {
@@ -82,7 +82,7 @@ export type VirtualStore = {
   _getItemsLength(): number;
   _getScrollOffset(): number;
   _getScrollOffsetMax(): number;
-  _getIsScrolling(): boolean;
+  _getScrollDirection(): ScrollDirection;
   _getViewportSize(): number;
   _getCorrectedScrollSize(): number;
   _getJumpCount(): number;
@@ -122,12 +122,8 @@ export const createVirtualStore = (
   const updateScrollDirection = (dir: ScrollDirection): boolean => {
     const prev = _scrollDirection;
     _scrollDirection = dir;
-
     // Return true if scrolling is just started or stopped
-    return (
-      _scrollDirection !== prev &&
-      (_scrollDirection === SCROLL_IDLE || prev === SCROLL_IDLE)
-    );
+    return _scrollDirection !== prev;
   };
 
   return {
@@ -183,8 +179,8 @@ export const createVirtualStore = (
       return scrollOffset;
     },
     _getScrollOffsetMax: getScrollOffsetMax,
-    _getIsScrolling() {
-      return _scrollDirection !== SCROLL_IDLE;
+    _getScrollDirection() {
+      return _scrollDirection;
     },
     _getViewportSize() {
       return viewportSize;
@@ -325,7 +321,7 @@ export const createVirtualStore = (
               !_isManualScrolling
             ) {
               if (updateScrollDirection(delta < 0 ? SCROLL_UP : SCROLL_DOWN)) {
-                mutated += UPDATE_IS_SCROLLING;
+                mutated += UPDATE_SCROLL_DIRECTION;
               }
             }
 
@@ -348,7 +344,7 @@ export const createVirtualStore = (
         }
         case ACTION_SCROLL_END: {
           if (updateScrollDirection(SCROLL_IDLE)) {
-            mutated = UPDATE_IS_SCROLLING;
+            mutated = UPDATE_SCROLL_DIRECTION;
           }
           _isShifting = _isManualScrolling = false;
           break;
