@@ -27,6 +27,9 @@ export const createResizer = (
     return new ResizeObserver((entries) => {
       const resizes: ItemResize[] = [];
       for (const { target, contentRect } of entries) {
+        // Skip zero-sized rects that may be observed under `display: none` style
+        if (!(target as HTMLElement).offsetParent) continue;
+
         if (target === rootElement) {
           store._update(
             ACTION_VIEWPORT_RESIZE,
@@ -89,6 +92,9 @@ export const createWindowResizer = (
     return new ResizeObserver((entries) => {
       const resizes: ItemResize[] = [];
       for (const { target, contentRect } of entries) {
+        // Skip zero-sized rects that may be observed under `display: none` style
+        if (!(target as HTMLElement).offsetParent) continue;
+
         const index = mountedIndexes.get(target);
         if (exists(index)) {
           resizes.push([index, contentRect[sizeKey]]);
@@ -152,6 +158,9 @@ export const createGridResizer = (
       const resizedRows = new Set<number>();
       const resizedCols = new Set<number>();
       for (const { target, contentRect } of entries) {
+        // Skip zero-sized rects that may be observed under `display: none` style
+        if (!(target as HTMLElement).offsetParent) continue;
+
         if (target === rootElement) {
           // contentRect doesn't have paddingRight/paddingBottom so get them from computed style
           // https://www.w3.org/TR/resize-observer/#css-definitions
