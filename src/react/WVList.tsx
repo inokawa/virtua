@@ -9,25 +9,17 @@ import {
 } from "react";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
-  UPDATE_SCROLL_DIRECTION,
+  UPDATE_IS_SCROLLING,
   UPDATE_JUMP,
   UPDATE_SCROLL,
   UPDATE_SIZE,
   createVirtualStore,
-  SCROLL_IDLE,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSelector } from "./useSelector";
-import { exists, values } from "../core/utils";
+import { exists, max, min, values } from "../core/utils";
 import { createWindowScroller } from "../core/scroller";
-import {
-  MayHaveKey,
-  clampEndIndex,
-  clampStartIndex,
-  emptyComponents,
-  flattenChildren,
-  refKey,
-} from "./utils";
+import { MayHaveKey, emptyComponents, flattenChildren, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
 import { createWindowResizer } from "../core/resizer";
@@ -181,10 +173,10 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
       store._getRange,
       UPDATE_SCROLL + UPDATE_SIZE
     );
-    const scrollDirection = useSelector(
+    const scrolling = useSelector(
       store,
-      store._getScrollDirection,
-      UPDATE_SCROLL_DIRECTION
+      store._getIsScrolling,
+      UPDATE_IS_SCROLLING
     );
     const jumpCount = useSelector(store, store._getJumpCount, UPDATE_JUMP);
     const scrollSize = useSelector(
@@ -194,7 +186,6 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
       true
     );
     const rootRef = useRef<HTMLDivElement>(null);
-    const scrolling = scrollDirection !== SCROLL_IDLE;
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
@@ -237,17 +228,8 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
       []
     );
 
-    const overscanedStartIndex = clampStartIndex(
-      startIndex,
-      overscan,
-      scrollDirection
-    );
-    const overscanedEndIndex = clampEndIndex(
-      endIndex,
-      overscan,
-      scrollDirection,
-      count
-    );
+    const overscanedStartIndex = max(startIndex - overscan, 0);
+    const overscanedEndIndex = min(endIndex + overscan, count - 1);
     const items = useMemo(() => {
       const res: ReactElement[] = [];
       for (let i = overscanedStartIndex; i <= overscanedEndIndex; i++) {
