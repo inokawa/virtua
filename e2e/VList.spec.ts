@@ -82,6 +82,27 @@ test.describe("smoke", () => {
     await expect(last.bottom).toEqual(0);
   });
 
+  test("display: none", async ({ page }) => {
+    await page.goto(storyUrl("basics-vlist--default"));
+
+    const scrollable = await page.waitForSelector(scrollableSelector);
+    await scrollable.waitForElementState("stable");
+
+    const initialTotalHeight = await scrollable.evaluate(
+      (s) => getComputedStyle(s.childNodes[0] as HTMLElement).height
+    );
+
+    await scrollable.evaluate((s) => (s.style.display = "none"));
+
+    await scrollable.waitForElementState("stable");
+
+    const changedTotalHeight = await scrollable.evaluate(
+      (s) => getComputedStyle(s.childNodes[0] as HTMLElement).height
+    );
+
+    expect(initialTotalHeight).toEqual(changedTotalHeight);
+  });
+
   test("padding", async ({ page }) => {
     const scrollToBottom = async (
       scrollable: ElementHandle<HTMLElement | SVGElement>

@@ -1,19 +1,18 @@
 import { test, expect, ElementHandle } from "@playwright/test";
 import {
   storyUrl,
-  scrollableSelector,
-  itemsSelector,
   getFirstItem,
-  getLastItem,
   windowScrollToBottom,
   windowScrollToRight,
 } from "./utils";
+
+const wvListSelector = '*[style*="border"]';
 
 test.describe("smoke", () => {
   test("vertically scrollable", async ({ page }) => {
     await page.goto(storyUrl("basics-wvlist--default"));
 
-    const scrollable = await page.waitForSelector(scrollableSelector);
+    const scrollable = await page.waitForSelector(wvListSelector);
     await scrollable.waitForElementState("stable");
 
     // check if start is displayed
@@ -33,8 +32,8 @@ test.describe("smoke", () => {
   test("horizontally scrollable", async ({ page }) => {
     await page.goto(storyUrl("basics-wvlist--horizontal"));
 
-    await page.waitForSelector(scrollableSelector);
-    const scrollable = (await page.$$(scrollableSelector))[0]!;
+    await page.waitForSelector(wvListSelector);
+    const scrollable = (await page.$$(wvListSelector))[0]!;
     await scrollable.waitForElementState("stable");
 
     // check if start is displayed
@@ -49,6 +48,27 @@ test.describe("smoke", () => {
     const text = await scrollable.innerText();
     await expect(text).toContain("999");
     await expect(text).not.toContain("949");
+  });
+
+  test("display: none", async ({ page }) => {
+    await page.goto(storyUrl("basics-wvlist--default"));
+
+    const scrollable = await page.waitForSelector(wvListSelector);
+    await scrollable.waitForElementState("stable");
+
+    const initialTotalHeight = await scrollable.evaluate(
+      (s) => getComputedStyle(s.childNodes[0] as HTMLElement).height
+    );
+
+    await scrollable.evaluate((s) => (s.style.display = "none"));
+
+    await scrollable.waitForElementState("stable");
+
+    const changedTotalHeight = await scrollable.evaluate(
+      (s) => getComputedStyle(s.childNodes[0] as HTMLElement).height
+    );
+
+    expect(initialTotalHeight).toEqual(changedTotalHeight);
   });
 });
 
