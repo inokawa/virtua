@@ -132,7 +132,7 @@ export const Reverse: StoryObj = {
 export const Sticky: StoryObj = {
   render: () => {
     return (
-      <VList style={{ height: "100vh" }}>
+      <VList style={{ height: "100vh" }} overscan={1}>
         {Array.from({ length: 100 }).map((_, i) => {
           return (
             <div
