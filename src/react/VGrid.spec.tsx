@@ -26,27 +26,6 @@ global.ResizeObserver = class {
   observe(e: HTMLElement) {
     this.observers.add(e);
 
-    if (this.first) {
-      // HACK: first observing should be root
-      const entry: Pick<ResizeObserverEntry, "contentRect" | "target"> = {
-        contentRect: {
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          width: ITEM_WIDTH,
-          height: VIEWPORT_HEIGHT,
-          x: 0,
-          y: 0,
-          toJSON() {},
-        },
-        target: e,
-      };
-      this.callback([entry] as any, this);
-      this.first = false;
-      return;
-    }
-
     const entry: Pick<ResizeObserverEntry, "contentRect" | "target"> = {
       contentRect: {
         top: 0,
@@ -54,7 +33,7 @@ global.ResizeObserver = class {
         left: 0,
         right: 0,
         width: ITEM_WIDTH,
-        height: ITEM_HEIGHT,
+        height: this.first ? VIEWPORT_HEIGHT : ITEM_HEIGHT,
         x: 0,
         y: 0,
         toJSON() {},
@@ -62,28 +41,10 @@ global.ResizeObserver = class {
       target: e,
     };
     this.callback([entry] as any, this);
+    // HACK: first observing should be root
+    this.first = false;
   }
   unobserve(_target: Element) {}
-};
-global.IntersectionObserver = class {
-  observers = new Set<Element>();
-  callback: IntersectionObserverCallback;
-  constructor(callback: IntersectionObserverCallback) {
-    this.callback = callback;
-  }
-  disconnect() {
-    this.observers.clear();
-  }
-  observe(e: HTMLElement) {
-    this.observers.add(e);
-  }
-  unobserve() {}
-  takeRecords() {
-    return [];
-  }
-  root = null;
-  rootMargin = "";
-  thresholds = [];
 };
 
 afterEach(cleanup);
@@ -435,179 +396,3 @@ describe("grid", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 });
-
-// describe("reverse", () => {
-//   it("should render if vertical", () => {
-//     const { asFragment } = render(
-//       <VList>
-//         {Array.from({ length: 100 }).map((_, i) => (
-//           <div key={i}>{i}</div>
-//         ))}
-//       </VList>
-//     );
-//     expect(asFragment()).toMatchSnapshot();
-//   });
-
-//   it("should render if horizontal", () => {
-//     const { asFragment } = render(
-//       <VList horizontal>
-//         {Array.from({ length: 100 }).map((_, i) => (
-//           <div key={i}>{i}</div>
-//         ))}
-//       </VList>
-//     );
-//     expect(asFragment()).toMatchSnapshot();
-//   });
-// });
-
-// describe("onScroll", () => {
-//   const LIST_ID = "test-id";
-
-//   it("should call callbacks on scroll in vertical", async () => {
-//     const onScroll = jest.fn();
-//     const onScrollStop = jest.fn();
-//     const dests = [123, 200, 357];
-//     const Mounter = () => {
-//       useEffect(() => {
-//         const el = document.getElementById(LIST_ID)!;
-//         dests.forEach((dest) => {
-//           el.scrollTop = dest;
-//           el.dispatchEvent(new Event("scroll"));
-//         });
-//       }, []);
-//       return (
-//         <VList id={LIST_ID} onScroll={onScroll} onScrollStop={onScrollStop}>
-//           {Array.from({ length: 1000 }).map((_, i) => (
-//             <div key={i}>{i}</div>
-//           ))}
-//         </VList>
-//       );
-//     };
-//     render(<Mounter />);
-//     await waitFor(() => {
-//       expect(onScrollStop).toHaveBeenCalled();
-//     });
-//     expect(onScroll).toHaveBeenCalledTimes(dests.length);
-//     dests.forEach((d, i) => {
-//       expect(onScroll).toHaveBeenNthCalledWith(i + 1, d);
-//     });
-//     expect(onScrollStop).toHaveBeenCalledTimes(1);
-//   });
-
-//   it("should call callbacks on scroll in horizontal", async () => {
-//     const onScroll = jest.fn();
-//     const onScrollStop = jest.fn();
-//     const dests = [123, 200, 357];
-//     const Mounter = () => {
-//       useEffect(() => {
-//         const el = document.getElementById(LIST_ID)!;
-//         dests.forEach((dest) => {
-//           el.scrollLeft = dest;
-//           el.dispatchEvent(new Event("scroll"));
-//         });
-//       }, []);
-//       return (
-//         <VList
-//           id={LIST_ID}
-//           horizontal
-//           onScroll={onScroll}
-//           onScrollStop={onScrollStop}
-//         >
-//           {Array.from({ length: 1000 }).map((_, i) => (
-//             <div key={i}>{i}</div>
-//           ))}
-//         </VList>
-//       );
-//     };
-//     render(<Mounter />);
-//     await waitFor(() => {
-//       expect(onScrollStop).toHaveBeenCalled();
-//     });
-//     expect(onScroll).toHaveBeenCalledTimes(dests.length);
-//     dests.forEach((d, i) => {
-//       expect(onScroll).toHaveBeenNthCalledWith(i + 1, d);
-//     });
-//     expect(onScrollStop).toHaveBeenCalledTimes(1);
-//   });
-
-//   it("should call callbacks on imperative scroll in vertical", async () => {
-//     const onScroll = jest.fn();
-//     const onScrollStop = jest.fn();
-//     const dests = [123, 200, 357];
-//     const Mounter = () => {
-//       const ref = useRef<VListHandle>(null);
-//       useEffect(() => {
-//         const el = document.getElementById(LIST_ID)!;
-//         dests.forEach((dest) => {
-//           setTimeout(() => {
-//             ref.current?.scrollTo(dest);
-//             el.scrollTop = dest;
-//             el.dispatchEvent(new Event("scroll"));
-//           });
-//         });
-//       }, []);
-//       return (
-//         <VList
-//           ref={ref}
-//           id={LIST_ID}
-//           onScroll={onScroll}
-//           onScrollStop={onScrollStop}
-//         >
-//           {Array.from({ length: 1000 }).map((_, i) => (
-//             <div key={i}>{i}</div>
-//           ))}
-//         </VList>
-//       );
-//     };
-//     render(<Mounter />);
-//     await waitFor(() => {
-//       expect(onScrollStop).toHaveBeenCalled();
-//     });
-//     expect(onScroll).toHaveBeenCalledTimes(dests.length);
-//     dests.forEach((d, i) => {
-//       expect(onScroll).toHaveBeenNthCalledWith(i + 1, d);
-//     });
-//     expect(onScrollStop).toHaveBeenCalledTimes(1);
-//   });
-
-//   it("should call callbacks on imperative scroll in horizontal", async () => {
-//     const onScroll = jest.fn();
-//     const onScrollStop = jest.fn();
-//     const dests = [123, 200, 357];
-//     const Mounter = () => {
-//       const ref = useRef<VListHandle>(null);
-//       useEffect(() => {
-//         const el = document.getElementById(LIST_ID)!;
-//         dests.forEach((dest) => {
-//           setTimeout(() => {
-//             ref.current?.scrollTo(dest);
-//             el.scrollLeft = dest;
-//             el.dispatchEvent(new Event("scroll"));
-//           });
-//         });
-//       }, []);
-//       return (
-//         <VList
-//           ref={ref}
-//           id={LIST_ID}
-//           horizontal
-//           onScroll={onScroll}
-//           onScrollStop={onScrollStop}
-//         >
-//           {Array.from({ length: 1000 }).map((_, i) => (
-//             <div key={i}>{i}</div>
-//           ))}
-//         </VList>
-//       );
-//     };
-//     render(<Mounter />);
-//     await waitFor(() => {
-//       expect(onScrollStop).toHaveBeenCalled();
-//     });
-//     expect(onScroll).toHaveBeenCalledTimes(dests.length);
-//     dests.forEach((d, i) => {
-//       expect(onScroll).toHaveBeenNthCalledWith(i + 1, d);
-//     });
-//     expect(onScrollStop).toHaveBeenCalledTimes(1);
-//   });
-// });
