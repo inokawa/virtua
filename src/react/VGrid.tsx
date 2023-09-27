@@ -16,7 +16,7 @@ import {
   SCROLL_IDLE,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { values } from "../core/utils";
+import { arrayFrom, indexes, values } from "../core/utils";
 import { createScroller } from "../core/scroller";
 import {
   clampEndIndex,
@@ -65,6 +65,8 @@ type CellProps = {
   _width: number;
   _hide: boolean;
   _element: "div";
+  _fixedCol?: boolean;
+  _fixedRow?: boolean;
 };
 
 const Cell = memo(
@@ -79,6 +81,8 @@ const Cell = memo(
     _width: width,
     _hide: hide,
     _element: Element,
+    _fixedCol,
+    _fixedRow,
   }: CellProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -96,15 +100,34 @@ const Cell = memo(
             display: "grid",
             margin: 0,
             padding: 0,
-            position: "absolute",
-            top: top,
-            [isRTLDocument() ? "right" : "left"]: left,
-            visibility: hide ? "hidden" : "visible",
-            minHeight: height,
-            minWidth: width,
+            gridColumn: `${colIndex + 1} / ${colIndex + 1}`,
+            gridRow: `${rowIndex + 1} / ${rowIndex + 1}`,
+            visibility: "visible",
+            // textOverflow: "ellipsis",
+            // minHeight: height,
+            // minWidth: width,
           };
+          if (_fixedCol) {
+            style.position = "sticky";
+            style[isRTLDocument() ? "right" : "left"] = left;
+            style.zIndex = 1;
+          }
+          if (_fixedRow) {
+            style.position = "sticky";
+            style.top = top;
+            style.zIndex = ((style.zIndex as number) || 0) + 1;
+          }
           return style;
-        }, [top, left, width, height, hide])}
+        }, [
+          top,
+          left,
+          // width,
+          // height,
+          colIndex,
+          rowIndex,
+          _fixedCol,
+          _fixedRow,
+        ])}
       >
         {children}
       </Element>
@@ -174,6 +197,14 @@ export interface VGridProps extends ViewportComponentAttributes {
    */
   col: number;
   /**
+   *
+   */
+  fixedRows?: number;
+  /**
+   *
+   */
+  fixedCols?: number;
+  /**
    * Cell height hint for unmeasured items. It's recommended to specify this prop if item sizes are fixed and known, or much larger than the defaultValue. It will help to reduce scroll jump when items are measured.
    * @defaultValue 40
    */
@@ -222,9 +253,11 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       children,
       row: rowCount,
       col: colCount,
+      fixedCols = 0,
+      fixedRows = 0,
       cellHeight = 40,
       cellWidth = 100,
-      overscan = 2,
+      overscan = 4,
       initialRowCount,
       initialColCount,
       components: {
@@ -349,12 +382,10 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const render = useMemo(() => {
       const cache = new Map<string, ReactNode>();
       return (rowIndex: number, colIndex: number) => {
-        let e: ReactNode | undefined = cache.get(genKey(rowIndex, colIndex));
+        const key = genKey(rowIndex, colIndex);
+        let e: ReactNode | undefined = cache.get(key);
         if (!e) {
-          cache.set(
-            genKey(rowIndex, colIndex),
-            (e = children({ rowIndex, colIndex }))
-          );
+          cache.set(key, (e = children({ rowIndex, colIndex })));
         }
         return e;
       };
@@ -383,53 +414,33 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       colCount
     );
 
-    const items: ReactElement[] = [];
-    for (
-      let rowIndex = overscanedStartRowIndex;
-      rowIndex <= overscanedEndRowIndex;
-      rowIndex++
-    ) {
-      for (
-        let colIndex = overscanedStartColIndex;
-        colIndex <= overscanedEndColIndex;
-        colIndex++
-      ) {
-        items.push(
-          <Cell
-            key={genKey(rowIndex, colIndex)}
-            _resizer={resizer}
-            _rowIndex={rowIndex}
-            _colIndex={colIndex}
-            _top={vStore._getItemOffset(rowIndex)}
-            _left={hStore._getItemOffset(colIndex)}
-            _height={vStore._getItemSize(rowIndex)}
-            _width={hStore._getItemSize(colIndex)}
-            _hide={
-              vStore._isUnmeasuredItem(rowIndex) ||
-              hStore._isUnmeasuredItem(colIndex)
-            }
-            _element={ItemElement as "div"}
-            _children={render(rowIndex, colIndex)}
-          />
-        );
+    let gridTemplateColumns = "";
+    for (let i = 0; i < colCount; i++) {
+      if (i !== 0) {
+        gridTemplateColumns += " ";
       }
+      gridTemplateColumns += `min(${hStore._getItemSize(i)}px)`;
+    }
+    let gridTemplateRows = "";
+    for (let i = 0; i < rowCount; i++) {
+      if (i !== 0) {
+        gridTemplateRows += " ";
+      }
+      // gridTemplateRows += `min(${vStore._getItemSize(i)}px)`;
     }
 
     return (
-      <Viewport
+      <div
         ref={rootRef}
-        width={width}
-        height={height}
-        scrolling={vScrolling || hScrolling}
-        attrs={useMemo(
+        // width={width}
+        // height={height}
+        // scrolling={vScrolling || hScrolling}
+        {...useMemo(
           () => ({
             ...viewportAttrs,
             style: {
               overflow: "auto",
               contain: "strict",
-              // transform: "translate3d(0px, 0px, 0px)",
-              // willChange: "scroll-position",
-              // backfaceVisibility: "hidden",
               width: "100%",
               height: "100%",
               ...viewportAttrs.style,
@@ -438,8 +449,76 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           values(viewportAttrs)
         )}
       >
-        {items}
-      </Viewport>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: `repeat(${colCount}, 1fr)`,
+            // gridTemplateColumns,
+            // gridTemplateRows,
+            // gridTemplateRows: "auto",
+            // gridTemplateRows: "fit-content",
+            // TODO fallback with observerd size.
+            gridTemplateRows: `repeat(${rowCount}, min-content)`,
+            // gridTemplateRows: "min-content",
+            // gridAutoColumns: "max-content",
+            // gridAutoRows: "max-content",
+            // gridAutoRows:  `minmax(100px, auto)`,
+            width,
+            height,
+            visibility: "hidden",
+            pointerEvents: vScrolling || hScrolling ? "none" : "auto",
+          }}
+        >
+          {useMemo(() => {
+            const elements: ReactElement[] = [];
+
+            const fixedRowsSet = new Set(indexes(0, fixedRows - 1));
+            const fixedColsSet = new Set(indexes(0, fixedCols - 1));
+
+            const renderableRows = arrayFrom(
+              new Set([
+                ...arrayFrom(fixedRowsSet),
+                ...indexes(overscanedStartRowIndex, overscanedEndRowIndex),
+              ])
+            );
+            const renderableCols = arrayFrom(
+              new Set([
+                ...arrayFrom(fixedColsSet),
+                ...indexes(overscanedStartColIndex, overscanedEndColIndex),
+              ])
+            );
+
+            for (const rowIndex of renderableRows) {
+              for (const colIndex of renderableCols) {
+                elements.push(
+                  <Cell
+                    key={genKey(rowIndex, colIndex)}
+                    _resizer={resizer}
+                    _vStore={vStore}
+                    _hStore={hStore}
+                    _rowIndex={rowIndex}
+                    _colIndex={colIndex}
+                    _element={ItemElement as "div"}
+                    _children={render(rowIndex, colIndex)}
+                    _fixedCol={fixedColsSet.has(colIndex)}
+                    _fixedRow={fixedRowsSet.has(rowIndex)}
+                  />
+                );
+              }
+            }
+
+            return elements;
+          }, [
+            render,
+            overscanedStartRowIndex,
+            overscanedEndRowIndex,
+            overscanedStartColIndex,
+            overscanedEndColIndex,
+            fixedCols,
+            fixedRows,
+          ])}
+        </div>
+      </div>
     );
   }
 );

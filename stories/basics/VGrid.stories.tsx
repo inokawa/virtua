@@ -64,9 +64,43 @@ export const DynamicHeight: StoryObj = {
             <div>
               {rowIndex} / {colIndex}
             </div>
-            {Array.from({ length: (rowIndex % 8) + 1 }, () => (
-              <div>Hello world!</div>
+            {Array.from({ length: (rowIndex % 8) + 1 }, (_, i) => (
+              <div key={i}>Hello world!</div>
             ))}
+          </div>
+        )}
+      </VGrid>
+    );
+  },
+};
+
+export const Stiky: StoryObj = {
+  render: () => {
+    const fixedCols = 2;
+    const fixedRows = 1;
+    return (
+      <VGrid
+        style={{ height: "100vh" }}
+        row={1000}
+        col={500}
+        fixedCols={fixedCols}
+        fixedRows={fixedRows}
+      >
+        {({ rowIndex, colIndex }) => (
+          <div
+            style={{
+              border: "solid 1px gray",
+              background:
+                rowIndex < fixedRows
+                  ? "darkgray"
+                  : colIndex < fixedCols
+                  ? "lightgray"
+                  : "white",
+              color: rowIndex < fixedRows ? "white" : undefined,
+              padding: 4,
+            }}
+          >
+            {rowIndex} / {colIndex}
           </div>
         )}
       </VGrid>
