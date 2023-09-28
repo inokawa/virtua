@@ -7,7 +7,6 @@ import {
   ACTION_SCROLL_END,
   UPDATE_SIZE,
   ACTION_MANUAL_SCROLL,
-  SCROLL_IDLE,
 } from "./store";
 import { ScrollToIndexAlign } from "./types";
 import { debounce, throttle, timeout, clamp } from "./utils";
@@ -20,7 +19,7 @@ const createOnWheel = (
   onScrollStopped: () => void
 ) => {
   return throttle((e: WheelEvent) => {
-    if (store._getScrollDirection() === SCROLL_IDLE) {
+    if (!store._getIsScrolling()) {
       // Scroll start should be detected with scroll event
       return;
     }
