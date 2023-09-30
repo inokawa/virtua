@@ -40,7 +40,7 @@
     "@mui/material": "5.14.11",
     "@playwright/test": "^1.37.0",
     "@radix-ui/colors": "2.1.0",
-    "@radix-ui/react-scroll-area": "1.0.4",
+    "@radix-ui/react-scroll-area": "1.0.5",
     "@rollup/plugin-babel": "6.0.3",
     "@rollup/plugin-terser": "0.4.3",
     "@rollup/plugin-typescript": "11.1.3",
