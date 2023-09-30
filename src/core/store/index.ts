@@ -1,6 +1,6 @@
 import {
   findStartIndexWithOffset,
-  initCache,
+  initializeCache,
   getItemSize,
   computeTotalSize,
   findIndex as findEndIndex,
@@ -11,9 +11,10 @@ import {
   hasUnmeasuredItemsInRange,
   estimateDefaultItemSize,
   updateCacheLength,
+  InstanceCache,
 } from "./cache";
-import type { CacheSnapshot, Writeable } from "./types";
-import { abs, clamp, max, min } from "./utils";
+import type { CacheSnapshot, Writeable } from "../types";
+import { abs, clamp, max, min } from "../utils";
 
 export type ScrollJump = Readonly<number>;
 export type ItemResize = Readonly<[index: number, size: number]>;
@@ -96,7 +97,7 @@ export const createVirtualStore = (
   elementsCount: number,
   itemSize: number = 40,
   initialItemCount: number = 0,
-  cache: Cache = initCache(elementsCount, itemSize),
+  cacheSnapshot?: CacheSnapshot,
   isReverse?: boolean,
   shouldAutoEstimateItemSize?: boolean
 ): VirtualStore => {
@@ -110,9 +111,18 @@ export const createVirtualStore = (
   let _resized = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
 
+  const cache: Cache = (cacheSnapshot as unknown as Cache) || {
+    _defaultItemSize: itemSize,
+    _length: 0,
+    _sizes: [],
+  };
+  const inst: InstanceCache = {
+    _measuredOffsetIndex: 0,
+    _offsets: [],
+  };
+
   const subscribers = new Set<[number, Subscriber]>();
-  const getScrollSize = (): number =>
-    computeTotalSize(cache as Writeable<Cache>);
+  const getScrollSize = (): number => computeTotalSize(cache, inst);
   const getScrollOffsetMax = () => getScrollSize() - viewportSize;
 
   const clampScrollOffset = (value: number): number => {
@@ -126,6 +136,8 @@ export const createVirtualStore = (
     return _scrollDirection !== prev;
   };
 
+  initializeCache(cache as Writeable<Cache>, inst, elementsCount);
+
   return {
     _getCache() {
       return JSON.parse(JSON.stringify(cache)) as unknown as CacheSnapshot;
@@ -133,7 +145,8 @@ export const createVirtualStore = (
     _getRange() {
       const [prevStartIndex, prevEndIndex] = _prevRange;
       const start = findStartIndexWithOffset(
-        cache as Writeable<Cache>,
+        cache,
+        inst,
         scrollOffset,
         // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
         min(prevStartIndex, cache._length - 1)
@@ -149,7 +162,8 @@ export const createVirtualStore = (
     },
     _hasUnmeasuredItemsInTargetViewport(offset) {
       const startIndex = findStartIndexWithOffset(
-        cache as Writeable<Cache>,
+        cache,
+        inst,
         offset,
         _prevRange[0] // TODO binary search may be better here
       );
@@ -163,7 +177,7 @@ export const createVirtualStore = (
       );
     },
     _getItemOffset(index) {
-      const offset = computeStartOffset(cache as Writeable<Cache>, index);
+      const offset = computeStartOffset(cache, inst, index);
       if (isReverse) {
         return offset + max(0, viewportSize - getScrollSize());
       }
@@ -253,7 +267,7 @@ export const createVirtualStore = (
           // Update item sizes
           let isNewItemMeasured = false;
           updated.forEach(([index, size]) => {
-            if (setItemSize(cache as Writeable<Cache>, index, size)) {
+            if (setItemSize(cache as Writeable<Cache>, inst, index, size)) {
               isNewItemMeasured = true;
             }
           });
@@ -285,6 +299,7 @@ export const createVirtualStore = (
 
             const [shift, isRemove] = updateCacheLength(
               cache as Writeable<Cache>,
+              inst,
               payload[0],
               true
             );
@@ -296,7 +311,7 @@ export const createVirtualStore = (
             mutated = UPDATE_SCROLL + UPDATE_JUMP;
             _isShifting = true;
           } else {
-            updateCacheLength(cache as Writeable<Cache>, payload[0]);
+            updateCacheLength(cache as Writeable<Cache>, inst, payload[0]);
           }
           break;
         }

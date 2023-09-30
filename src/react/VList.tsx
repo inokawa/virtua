@@ -40,7 +40,6 @@ import {
 } from "./Viewport";
 import { CustomItemComponent, ListItem } from "./ListItem";
 import { CacheSnapshot, ScrollToIndexAlign } from "../core/types";
-import { Cache } from "../core/cache";
 import { flushSync } from "react-dom";
 
 export type ScrollMode = "reverse" | "rtl";
@@ -212,7 +211,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
         count,
         initialItemSize,
         initialItemCount,
-        cache as unknown as Cache | undefined,
+        cache,
         mode === "reverse",
         !initialItemSize
       );

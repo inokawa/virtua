@@ -1,5 +1,5 @@
-import type { DeepReadonly, Writeable } from "./types";
-import { clamp, median, min } from "./utils";
+import type { DeepReadonly, Writeable } from "../types";
+import { clamp, median, min } from "../utils";
 
 export const UNCACHED = -1;
 
@@ -7,9 +7,12 @@ export type Cache = DeepReadonly<{
   _defaultItemSize: number;
   _length: number;
   _sizes: number[];
+}>;
+
+export type InstanceCache = {
   _measuredOffsetIndex: number;
   _offsets: number[];
-}>;
+};
 
 export const getItemSize = (cache: Cache, index: number): number => {
   const size = cache._sizes[index]!;
@@ -18,40 +21,42 @@ export const getItemSize = (cache: Cache, index: number): number => {
 
 export const setItemSize = (
   cache: Writeable<Cache>,
+  inst: InstanceCache,
   index: number,
   size: number
 ): boolean => {
   const isInitialMeasurement = cache._sizes[index] === UNCACHED;
   cache._sizes[index] = size;
   // mark as dirty
-  cache._measuredOffsetIndex = min(index, cache._measuredOffsetIndex);
+  inst._measuredOffsetIndex = min(index, inst._measuredOffsetIndex);
   return isInitialMeasurement;
 };
 
 export const computeOffset = (
-  cache: Writeable<Cache>,
+  cache: Cache,
+  inst: InstanceCache,
   index: number
 ): number => {
   if (!cache._length) return 0;
-  if (cache._measuredOffsetIndex >= index) {
-    return cache._offsets[index]!;
+  if (inst._measuredOffsetIndex >= index) {
+    return inst._offsets[index]!;
   }
 
-  let i = cache._measuredOffsetIndex;
-  let top = cache._offsets[i]!;
+  let i = inst._measuredOffsetIndex;
+  let top = inst._offsets[i]!;
   while (i < index) {
     top += getItemSize(cache, i);
-    cache._offsets[++i] = top;
+    inst._offsets[++i] = top;
   }
   // mark as measured
-  cache._measuredOffsetIndex = index;
+  inst._measuredOffsetIndex = index;
   return top;
 };
 
-export const computeTotalSize = (cache: Writeable<Cache>): number => {
+export const computeTotalSize = (cache: Cache, inst: InstanceCache): number => {
   if (!cache._length) return 0;
   return (
-    computeOffset(cache, cache._length - 1) +
+    computeOffset(cache, inst, cache._length - 1) +
     getItemSize(cache, cache._length - 1)
   );
 };
@@ -90,14 +95,15 @@ export const findIndex = (
 };
 
 export const findStartIndexWithOffset = (
-  cache: Writeable<Cache>,
+  cache: Cache,
+  inst: InstanceCache,
   offset: number,
   initialIndex: number
 ): number => {
   return findIndex(
     cache,
     initialIndex,
-    offset - computeOffset(cache, initialIndex)
+    offset - computeOffset(cache, inst, initialIndex)
   );
 };
 
@@ -121,8 +127,9 @@ export const estimateDefaultItemSize = (cache: Writeable<Cache>) => {
       median(measuredSizes);
 };
 
-const appendCache = (
+export const initializeCache = (
   cache: Writeable<Cache>,
+  inst: InstanceCache,
   length: number,
   prepend?: boolean
 ) => {
@@ -130,25 +137,14 @@ const appendCache = (
   for (let i = cache._length; i < length; i++) {
     cache._sizes[key](UNCACHED);
     // first offset must be 0
-    cache._offsets.push(i === 0 ? 0 : UNCACHED);
+    inst._offsets.push(i === 0 ? 0 : UNCACHED);
   }
   cache._length = length;
 };
 
-export const initCache = (length: number, itemSize: number): Cache => {
-  const cache: Cache = {
-    _defaultItemSize: itemSize,
-    _length: 0,
-    _measuredOffsetIndex: 0,
-    _sizes: [],
-    _offsets: [],
-  };
-  appendCache(cache as Writeable<Cache>, length);
-  return cache;
-};
-
 export const updateCacheLength = (
   cache: Writeable<Cache>,
+  inst: InstanceCache,
   length: number,
   isShift?: boolean
 ): [number, boolean] => {
@@ -165,19 +161,19 @@ export const updateCacheLength = (
         acc + (removed === UNCACHED ? cache._defaultItemSize : removed),
       0
     );
-    cache._offsets.splice(diff);
+    inst._offsets.splice(diff);
   } else {
     // Added
     shift = cache._defaultItemSize * diff;
-    appendCache(cache, cache._length + diff, isShift);
+    initializeCache(cache, inst, cache._length + diff, isShift);
   }
 
-  cache._measuredOffsetIndex = isShift
+  inst._measuredOffsetIndex = isShift
     ? // Discard cache for now
       0
     : // measuredOffsetIndex shouldn't be less than 0 because it makes scrollSize NaN and cause infinite rerender.
       // https://github.com/inokawa/virtua/pull/160
-      clamp(length - 1, 0, cache._measuredOffsetIndex);
+      clamp(length - 1, 0, inst._measuredOffsetIndex);
   cache._length = length;
   return [shift, isRemove];
 };
