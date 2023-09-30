@@ -38,7 +38,6 @@ import {
   Viewport as DefaultViewport,
 } from "./Viewport";
 import { CustomItemComponent, ListItem } from "./ListItem";
-import { Cache } from "../core/cache";
 import { flushSync } from "react-dom";
 
 type CustomItemComponentOrElement =
@@ -159,7 +158,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
         count,
         initialItemSize,
         initialItemCount,
-        cache as unknown as Cache | undefined,
+        cache,
         false,
         !initialItemSize
       );

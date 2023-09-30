@@ -1,7 +1,9 @@
-import type { DeepReadonly, Writeable } from "./types";
-import { clamp, max, median, min } from "./utils";
+import type { CacheSnapshot, DeepReadonly, Writeable } from "../types";
+import { clamp, fill, max, median, min } from "../utils";
 
 export const UNCACHED = -1;
+
+const INITIAL_MEASUREMENT_INDEX = -1;
 
 export type Cache = DeepReadonly<{
   _defaultItemSize: number;
@@ -37,7 +39,12 @@ export const computeOffset = (
     return cache._offsets[index]!;
   }
 
-  let i = cache._computedOffsetIndex;
+  if (cache._computedOffsetIndex === INITIAL_MEASUREMENT_INDEX) {
+    // first offset must be 0
+    cache._offsets[0] = 0;
+  }
+
+  let i = max(cache._computedOffsetIndex, 0);
   let top = cache._offsets[i]!;
   while (i < index) {
     top += getItemSize(cache, i);
@@ -138,29 +145,33 @@ export const estimateDefaultItemSize = (cache: Writeable<Cache>) => {
       median(measuredSizes);
 };
 
-const appendCache = (
-  cache: Writeable<Cache>,
+export const initCache = (
   length: number,
-  prepend?: boolean
-) => {
-  const key = prepend ? "unshift" : "push";
-  for (let i = cache._length; i < length; i++) {
-    cache._sizes[key](UNCACHED);
-    // first offset must be 0
-    cache._offsets.push(i === 0 ? 0 : UNCACHED);
-  }
-  cache._length = length;
-};
+  itemSize: number,
+  snapshot?: CacheSnapshot
+): Cache => {
+  const cache: Writeable<Cache> = snapshot
+    ? {
+        _defaultItemSize: snapshot.defaultSize,
+        _length: snapshot.sizes.length,
+        _computedOffsetIndex: INITIAL_MEASUREMENT_INDEX,
+        _sizes: snapshot.sizes,
+        _offsets: fill(snapshot.sizes.length, UNCACHED),
+      }
+    : {
+        _defaultItemSize: itemSize,
+        _length: length,
+        _computedOffsetIndex: INITIAL_MEASUREMENT_INDEX,
+        _sizes: fill(length, UNCACHED),
+        _offsets: fill(length, UNCACHED),
+      };
 
-export const initCache = (length: number, itemSize: number): Cache => {
-  const cache: Cache = {
-    _defaultItemSize: itemSize,
-    _length: 0,
-    _computedOffsetIndex: 0,
-    _sizes: [],
-    _offsets: [],
-  };
-  appendCache(cache as Writeable<Cache>, length);
+  const firstUncachedIndex = cache._sizes.indexOf(UNCACHED);
+  // recover offsets
+  computeOffset(
+    cache,
+    max(firstUncachedIndex === -1 ? cache._length - 1 : firstUncachedIndex, 0)
+  );
   return cache;
 };
 
@@ -186,7 +197,10 @@ export const updateCacheLength = (
   } else {
     // Added
     shift = cache._defaultItemSize * diff;
-    appendCache(cache, cache._length + diff, isShift);
+    cache._sizes[isShift ? "unshift" : "push"](...fill(diff, UNCACHED));
+    cache._offsets.push(...fill(diff, UNCACHED));
+    // first offset must be 0
+    cache._offsets[0] = 0;
   }
 
   cache._computedOffsetIndex = isShift

@@ -11,7 +11,7 @@ import {
   updateCacheLength,
   initCache,
 } from "./cache";
-import type { Writeable } from "./types";
+import type { Writeable } from "../types";
 
 const range = <T>(length: number, cb: (i: number) => T): T[] => {
   const array: T[] = [];
@@ -744,6 +744,83 @@ describe(initCache.name, () => {
           -1,
           -1,
           -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+        ],
+      }
+    `);
+  });
+
+  it("should init with snapshot", () => {
+    expect(
+      initCache(10, 23, { defaultSize: 456, sizes: [100, 200, 300, -1, -1] })
+    ).toMatchInlineSnapshot(`
+      {
+        "_computedOffsetIndex": 3,
+        "_defaultItemSize": 456,
+        "_length": 5,
+        "_offsets": [
+          0,
+          100,
+          300,
+          600,
+          -1,
+        ],
+        "_sizes": [
+          100,
+          200,
+          300,
+          -1,
+          -1,
+        ],
+      }
+    `);
+  });
+
+  it("should init with filled snapshot", () => {
+    expect(
+      initCache(10, 23, { defaultSize: 456, sizes: [100, 200, 300, 400, 500] })
+    ).toMatchInlineSnapshot(`
+      {
+        "_computedOffsetIndex": 4,
+        "_defaultItemSize": 456,
+        "_length": 5,
+        "_offsets": [
+          0,
+          100,
+          300,
+          600,
+          1000,
+        ],
+        "_sizes": [
+          100,
+          200,
+          300,
+          400,
+          500,
+        ],
+      }
+    `);
+  });
+
+  it("should init with empty snapshot", () => {
+    expect(initCache(10, 23, { defaultSize: 456, sizes: [-1, -1, -1, -1, -1] }))
+      .toMatchInlineSnapshot(`
+      {
+        "_computedOffsetIndex": 0,
+        "_defaultItemSize": 456,
+        "_length": 5,
+        "_offsets": [
+          0,
+          -1,
+          -1,
+          -1,
+          -1,
+        ],
+        "_sizes": [
           -1,
           -1,
           -1,

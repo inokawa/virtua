@@ -14,6 +14,14 @@ export const clamp = (
 
 export const exists = <T>(v: T): v is Exclude<T, null | undefined> => v != null;
 
+export const fill = <T>(length: number, value: T): T[] => {
+  const array: T[] = [];
+  for (let i = 0; i < length; i++) {
+    array.push(value);
+  }
+  return array;
+};
+
 export const median = (arr: number[]): number => {
   const s = [...arr].sort((a, b) => a - b);
   const mid = (arr.length / 2) | 0;

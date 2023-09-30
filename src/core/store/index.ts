@@ -11,8 +11,8 @@ import {
   updateCacheLength,
   computeRange,
 } from "./cache";
-import type { CacheSnapshot, Writeable } from "./types";
-import { abs, clamp, max, min } from "./utils";
+import type { CacheSnapshot, Writeable } from "../types";
+import { abs, clamp, max, min } from "../utils";
 
 export type ScrollJump = Readonly<number>;
 export type ItemResize = Readonly<[index: number, size: number]>;
@@ -95,7 +95,7 @@ export const createVirtualStore = (
   elementsCount: number,
   itemSize: number = 40,
   initialItemCount: number = 0,
-  cache: Cache = initCache(elementsCount, itemSize),
+  cacheSnapshot?: CacheSnapshot,
   isReverse?: boolean,
   shouldAutoEstimateItemSize?: boolean
 ): VirtualStore => {
@@ -109,6 +109,7 @@ export const createVirtualStore = (
   let _resized = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
 
+  const cache = initCache(elementsCount, itemSize, cacheSnapshot);
   const subscribers = new Set<[number, Subscriber]>();
   const getScrollSize = (): number =>
     computeTotalSize(cache as Writeable<Cache>);
@@ -127,7 +128,10 @@ export const createVirtualStore = (
 
   return {
     _getCache() {
-      return JSON.parse(JSON.stringify(cache)) as unknown as CacheSnapshot;
+      return {
+        defaultSize: cache._defaultItemSize,
+        sizes: [...cache._sizes],
+      };
     },
     _getRange() {
       const [prevStartIndex, prevEndIndex] = _prevRange;
