@@ -152,11 +152,7 @@ export const createVirtualStore = (
         _prevRange[0], // TODO binary search may be better here
         viewportSize
       );
-      return hasUnmeasuredItemsInRange(
-        cache,
-        max(0, startIndex - 1),
-        min(cache._length - 1, endIndex + 1)
-      );
+      return hasUnmeasuredItemsInRange(cache, startIndex, endIndex);
     },
     _getItemOffset(index) {
       const offset = computeStartOffset(cache as Writeable<Cache>, index);
