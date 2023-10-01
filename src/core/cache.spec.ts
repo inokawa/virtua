@@ -4,12 +4,12 @@ import {
   setItemSize,
   computeTotalSize,
   computeOffset as computeStartOffset,
-  findStartIndexWithOffset,
-  findIndex as findEndIndex,
+  findIndex,
   Cache,
   hasUnmeasuredItemsInRange,
   updateCacheLength,
   initCache,
+  computeRange,
 } from "./cache";
 import type { Writeable } from "./types";
 
@@ -23,6 +23,19 @@ const range = <T>(length: number, cb: (i: number) => T): T[] => {
 
 const sum = (cache: readonly number[]): number => {
   return cache.reduce((acc, c) => acc + c, 0);
+};
+
+const initFilledCache = (sizes: number[]): Writeable<Cache> => {
+  return {
+    _length: sizes.length,
+    _sizes: sizes,
+    _computedOffsetIndex: sizes.length - 1,
+    _offsets: sizes.reduce((acc, s, i) => {
+      acc.push(i === 0 ? 0 : acc[i - 1]! + s);
+      return acc;
+    }, [] as number[]),
+    _defaultItemSize: 30,
+  };
 };
 
 describe(getItemSize.name, () => {
@@ -367,316 +380,193 @@ describe(computeStartOffset.name, () => {
   });
 });
 
-describe("findEndIndex", () => {
-  const filledSizes = range(10, () => 20);
-  const cache: Cache = {
-    _length: filledSizes.length,
-    _sizes: filledSizes,
-    _computedOffsetIndex: 0,
-    _offsets: [0],
-    _defaultItemSize: 30,
-  };
-
-  describe("change offset", () => {
-    it("should get if offset is at start", () => {
-      expect(findEndIndex(cache, 0, 100)).toBe(5);
-    });
-
-    it("should get if offset is at start + 1", () => {
-      expect(findEndIndex(cache, 1, 100)).toBe(6);
-    });
-
-    it("should get last if offset is at end", () => {
-      const last = filledSizes.length - 1;
-      expect(findEndIndex(cache, last, 100)).toBe(last);
-    });
-
-    it("should get if offset is at end - 1", () => {
-      const last = filledSizes.length - 1;
-      expect(findEndIndex(cache, last - 1, 100)).toBe(last);
-    });
+describe(computeRange.name, () => {
+  const INITIAL_INDEX = 0;
+  it("should get if offset is at start", () => {
+    expect(
+      computeRange(initFilledCache(range(10, () => 20)), 0, INITIAL_INDEX, 100)
+    ).toEqual([0, 5]);
   });
 
-  it("should get argument index if viewport is 0 and index is at start", () => {
-    expect(findEndIndex(cache, 0, 0)).toBe(0);
+  it("should get if offset is at start + 1", () => {
+    expect(
+      computeRange(initFilledCache(range(10, () => 20)), 20, INITIAL_INDEX, 100)
+    ).toEqual([1, 6]);
   });
 
-  it("should get argument index if viewport is 0 and index is at start + 1", () => {
-    expect(findEndIndex(cache, 1, 0)).toBe(1);
+  it("should get last if offset is at end", () => {
+    const cache = initFilledCache(range(10, () => 20));
+    const last = cache._length - 1;
+    expect(computeRange(cache, sum(cache._sizes), INITIAL_INDEX, 100)).toEqual([
+      last,
+      last,
+    ]);
   });
 
-  it("should get same if viewport fits cache", () => {
-    expect(findEndIndex(cache, 1, 100)).toBe(6);
+  it("should get last if offset is at end - 1", () => {
+    const cache = initFilledCache(range(10, () => 20));
+    const last = cache._length - 1;
+    expect(
+      computeRange(cache, sum(cache._sizes) - 20, INITIAL_INDEX, 100)
+    ).toEqual([last, last]);
   });
 
-  it("should get same if viewport is 1/2 item height larger than cache", () => {
-    expect(findEndIndex(cache, 1, 110)).toBe(6);
-  });
-
-  it("should get same if viewport is 1/2 - 1px item height larger than cache", () => {
-    expect(findEndIndex(cache, 1, 109)).toBe(6);
-  });
-
-  it("should get next if viewport is 1/2 + 1px item height larger than cache", () => {
-    expect(findEndIndex(cache, 1, 111)).toBe(7);
-  });
-
-  it("should get same if viewport is bit larger than cache", () => {
-    expect(findEndIndex(cache, 1, 101)).toBe(6);
-  });
-
-  it("should get same if viewport is a little bit larger than cache", () => {
-    expect(findEndIndex(cache, 1, 100.01)).toBe(6);
-  });
-
-  it("should get same if viewport is bit smaller than cache", () => {
-    expect(findEndIndex(cache, 1, 99)).toBe(6);
-  });
-
-  it("should get same if viewport is a little bit smaller than cache", () => {
-    expect(findEndIndex(cache, 1, 99.99)).toBe(6);
-  });
-
-  it("should resolve default height", () => {
-    const emptySizes = range(10, () => -1);
-    const emptyCache: Cache = {
-      _length: emptySizes.length,
-      _sizes: emptySizes,
-      _computedOffsetIndex: 0,
-      _offsets: [0],
-      _defaultItemSize: 25,
-    };
-    expect(findEndIndex(emptyCache, 0, 100)).toBe(4);
+  it("should get last - 1 if offset is at end - 1 and more", () => {
+    const cache = initFilledCache(range(10, () => 20));
+    const last = cache._length - 1;
+    expect(
+      computeRange(cache, sum(cache._sizes) - 20 - 1, INITIAL_INDEX, 100)
+    ).toEqual([last - 1, last]);
   });
 });
 
-describe("findStartIndex", () => {
-  const initFilledCache = (sizes: number[]): Writeable<Cache> => {
-    return {
-      _length: sizes.length,
-      _sizes: sizes,
-      _computedOffsetIndex: sizes.length - 1,
-      _offsets: sizes.reduce((acc, s, i) => {
-        acc.push(i === 0 ? 0 : acc[i - 1]! + s);
-        return acc;
-      }, [] as number[]),
-      _defaultItemSize: 30,
-    };
-  };
+describe(findIndex.name, () => {
+  const CACHE_LENGTH = 10;
 
-  it("should resolve default height", () => {
-    const initEmptyCache = (): Writeable<Cache> => {
-      const emptySizes = range(10, () => -1);
-      return {
-        _length: emptySizes.length,
-        _sizes: emptySizes,
-        _computedOffsetIndex: 0,
-        _offsets: [0],
-        _defaultItemSize: 25,
+  describe.each([
+    [0], // start
+    [Math.floor(CACHE_LENGTH / 2)], // mid
+    [CACHE_LENGTH - 1], // end
+  ])("start from %i", (initialIndex) => {
+    it("should resolve default height", () => {
+      const initEmptyCache = (): Writeable<Cache> => {
+        const emptySizes = range(10, () => -1);
+        return {
+          _length: emptySizes.length,
+          _sizes: emptySizes,
+          _computedOffsetIndex: 0,
+          _offsets: [0],
+          _defaultItemSize: 25,
+        };
       };
-    };
 
-    expect(findStartIndexWithOffset(initEmptyCache(), 100, 0)).toBe(4);
-  });
+      expect(findIndex(initEmptyCache(), 100, initialIndex)).toBe(4);
+    });
 
-  describe("start from start", () => {
     it("should get start if offset is at start", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 0, 0)).toBe(0);
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, 0, initialIndex)).toBe(0);
     });
 
     it("should get start if offset is at start + 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 1, 0)).toBe(0);
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, 1, initialIndex)).toBe(0);
+    });
+
+    it("should get start if offset is at start + 0.01px", () => {
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, 0.01, initialIndex)).toBe(0);
+    });
+
+    it("should get start if offset is at start - 1px", () => {
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, -1, initialIndex)).toBe(0);
+    });
+
+    it("should get start if offset is at start - 0.01px", () => {
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, -0.01, initialIndex)).toBe(0);
     });
 
     it("should get end if offset is at end", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, sum(cache._sizes), 0)).toBe(
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, sum(cache._sizes), initialIndex)).toBe(
+        cache._length - 1
+      );
+    });
+
+    it("should get end if offset is at end + 1px", () => {
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, sum(cache._sizes) + 1, initialIndex)).toBe(
+        cache._length - 1
+      );
+    });
+
+    it("should get end if offset is at end + 0.01px", () => {
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, sum(cache._sizes) + 0.01, initialIndex)).toBe(
         cache._length - 1
       );
     });
 
     it("should get end if offset is at end - 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, sum(cache._sizes) - 1, 0)).toBe(
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, sum(cache._sizes) - 1, initialIndex)).toBe(
+        cache._length - 1
+      );
+    });
+
+    it("should get end if offset is at end - 0.01px", () => {
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, sum(cache._sizes) - 0.01, initialIndex)).toBe(
         cache._length - 1
       );
     });
 
     it("should get 1 if offset fits index 1", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 20, 0)).toBe(1);
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, 20, initialIndex)).toBe(1);
     });
 
     it("should get 1 if offset fits index 1 + 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 21, 0)).toBe(1);
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, 21, initialIndex)).toBe(1);
     });
 
-    it("should get 1 if offset fits index 1 - 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 19, 0)).toBe(1);
+    it("should get 1 if offset fits index 1 + 0.01px", () => {
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, 20.01, initialIndex)).toBe(1);
     });
 
-    it("should get 1 if offset fits index 1.5", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 30, 0)).toBe(1);
+    it("should get 0 if offset fits index 1 - 1px", () => {
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, 19, initialIndex)).toBe(0);
     });
 
-    it("should get 2 if offset fits index 1.5 + 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 31, 0)).toBe(2);
-    });
-
-    it("should get 2 if offset fits index 1.5 + 0.01px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 30.01, 0)).toBe(2);
-    });
-
-    it("should get 1 if offset fits index 1.5 - 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 29, 0)).toBe(1);
-    });
-
-    it("should get 1 if offset fits index 1.5 - 0.01px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 29.99, 0)).toBe(1);
-    });
-
-    it("should get 2 if offset fits index 2", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 40, 0)).toBe(2);
-    });
-
-    it("should get 2 if offset fits index 2 + 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 41, 0)).toBe(2);
-    });
-
-    it("should get 2 if offset fits index 2 - 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 39, 0)).toBe(2);
-    });
-  });
-
-  describe("start from end", () => {
-    it("should get start if offset is at start", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 0, cache._length)).toBe(0);
-    });
-
-    it("should get start if offset is at start + 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 1, cache._length)).toBe(0);
-    });
-
-    it("should get end if offset is at end", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(
-        findStartIndexWithOffset(cache, sum(cache._sizes), cache._length)
-      ).toBe(cache._length - 1);
-    });
-
-    it("should get end if offset is at end - 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(
-        findStartIndexWithOffset(cache, sum(cache._sizes) - 1, cache._length)
-      ).toBe(cache._length - 1);
-    });
-
-    it("should get 1 if offset fits index 1", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 20, cache._length)).toBe(1);
-    });
-
-    it("should get 1 if offset fits index 1 + 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 21, cache._length)).toBe(1);
-    });
-
-    it("should get 1 if offset fits index 1 - 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 19, cache._length)).toBe(1);
+    it("should get 0 if offset fits index 1 - 0.01px", () => {
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, 19.99, initialIndex)).toBe(0);
     });
 
     it("should get 1 if offset fits index 1.5", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 30, cache._length)).toBe(1);
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, 30, initialIndex)).toBe(1);
     });
 
-    it("should get 2 if offset fits index 1.5 + 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 31, cache._length)).toBe(2);
+    it("should get 1 if offset fits index 1.5 + 1px", () => {
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, 31, initialIndex)).toBe(1);
     });
 
-    it("should get 2 if offset fits index 1.5 + 0.01px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 30.01, cache._length)).toBe(2);
+    it("should get 1 if offset fits index 1.5 + 0.01px", () => {
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, 30.01, initialIndex)).toBe(1);
     });
 
     it("should get 1 if offset fits index 1.5 - 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 29, cache._length)).toBe(1);
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, 29, initialIndex)).toBe(1);
     });
 
     it("should get 1 if offset fits index 1.5 - 0.01px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 29.99, cache._length)).toBe(1);
-    });
-
-    it("should get 2 if offset fits index 2", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 40, cache._length)).toBe(2);
-    });
-
-    it("should get 2 if offset fits index 2 + 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 41, cache._length)).toBe(2);
-    });
-
-    it("should get 2 if offset fits index 2 - 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 39, cache._length)).toBe(2);
-    });
-  });
-
-  describe("start from middle", () => {
-    const offset = (cache: Cache, i: number) => sum(cache._sizes.slice(0, i));
-
-    it("should get start if offset is at start", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, 0, 4)).toBe(0);
-    });
-
-    it("should get end if offset is at end", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, sum(cache._sizes), 4)).toBe(
-        cache._sizes.length - 1
-      );
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, 29.99, initialIndex)).toBe(1);
     });
 
     it("should get prevStartIndex if offset fits prevStartIndex", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, offset(cache, 4), 4)).toBe(4);
-    });
-
-    it("should get prevStartIndex if offset fits prevStartIndex + 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, offset(cache, 4) + 1, 4)).toBe(4);
-    });
-
-    it("should get prevStartIndex if offset fits prevStartIndex - 1px", () => {
-      const cache = initFilledCache(range(10, () => 20));
-      expect(findStartIndexWithOffset(cache, offset(cache, 4) - 1, 4)).toBe(4);
+      const offset = (cache: Cache, i: number) => sum(cache._sizes.slice(0, i));
+      const cache = initFilledCache(range(CACHE_LENGTH, () => 20));
+      expect(findIndex(cache, offset(cache, initialIndex), initialIndex)).toBe(
+        initialIndex
+      );
     });
   });
 
   describe("both", () => {
     it("should get same in forward and backward search", () => {
       const cache = initFilledCache(range(10, (i) => (i % 2 === 0 ? 21 : 41)));
-      expect(findStartIndexWithOffset(cache, 1, 0)).toBe(0);
-      expect(findStartIndexWithOffset(cache, 1, 1)).toBe(0);
+      expect(findIndex(cache, 1, 0)).toBe(0);
+      expect(findIndex(cache, 1, 1)).toBe(0);
     });
   });
 });

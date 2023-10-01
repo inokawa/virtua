@@ -57,63 +57,40 @@ export const computeTotalSize = (cache: Writeable<Cache>): number => {
 };
 
 export const findIndex = (
-  cache: Cache,
-  i: number,
-  distance: number
+  cache: Writeable<Cache>,
+  offset: number,
+  i: number
 ): number => {
-  let sum = 0;
-  if (distance >= 0) {
-    // search forward
-    while (i < cache._length - 1) {
-      const h = getItemSize(cache, i++);
-      if ((sum += h) >= distance) {
-        if (sum - h / 2 >= distance) {
-          i--;
-        }
+  let sum = computeOffset(cache, i);
+  while (i >= 0 && i < cache._length) {
+    if (sum <= offset) {
+      const next = getItemSize(cache, i);
+      if (sum + next > offset) {
         break;
+      } else {
+        sum += next;
+        i++;
       }
-    }
-  } else {
-    // search backward
-    while (i > 0) {
-      const h = getItemSize(cache, --i);
-      if ((sum -= h) <= distance) {
-        if (sum + h / 2 < distance) {
-          i++;
-        }
-        break;
-      }
+    } else {
+      sum -= getItemSize(cache, --i);
     }
   }
-
   return clamp(i, 0, cache._length - 1);
 };
 
-export const findStartIndexWithOffset = (
-  cache: Writeable<Cache>,
-  offset: number,
-  initialIndex: number
-): number => {
-  return findIndex(
-    cache,
-    initialIndex,
-    offset - computeOffset(cache, initialIndex)
-  );
-};
-
 export const computeRange = (
-  cache: Cache,
+  cache: Writeable<Cache>,
   scrollOffset: number,
   prevStartIndex: number,
   viewportSize: number
 ): [number, number] => {
-  const start = findStartIndexWithOffset(
-    cache as Writeable<Cache>,
+  const start = findIndex(
+    cache,
     scrollOffset,
     // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
     min(prevStartIndex, cache._length - 1)
   );
-  return [start, findIndex(cache, start, viewportSize)];
+  return [start, findIndex(cache, scrollOffset + viewportSize, start)];
 };
 
 export const hasUnmeasuredItemsInRange = (
