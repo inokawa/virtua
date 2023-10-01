@@ -1,9 +1,7 @@
 import {
-  findStartIndexWithOffset,
   initCache,
   getItemSize,
   computeTotalSize,
-  findIndex as findEndIndex,
   computeOffset as computeStartOffset,
   Cache,
   UNCACHED,
@@ -11,6 +9,7 @@ import {
   hasUnmeasuredItemsInRange,
   estimateDefaultItemSize,
   updateCacheLength,
+  computeRange,
 } from "./cache";
 import type { CacheSnapshot, Writeable } from "./types";
 import { abs, clamp, max, min } from "./utils";
@@ -132,13 +131,12 @@ export const createVirtualStore = (
     },
     _getRange() {
       const [prevStartIndex, prevEndIndex] = _prevRange;
-      const start = findStartIndexWithOffset(
-        cache as Writeable<Cache>,
+      const [start, end] = computeRange(
+        cache,
         scrollOffset,
-        // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
-        min(prevStartIndex, cache._length - 1)
+        prevStartIndex,
+        viewportSize
       );
-      const end = findEndIndex(cache, start, viewportSize);
       if (prevStartIndex === start && prevEndIndex === end) {
         return _prevRange;
       }
@@ -148,18 +146,16 @@ export const createVirtualStore = (
       return cache._sizes[index] === UNCACHED;
     },
     _hasUnmeasuredItemsInTargetViewport(offset) {
-      const startIndex = findStartIndexWithOffset(
-        cache as Writeable<Cache>,
+      const [startIndex, endIndex] = computeRange(
+        cache,
         offset,
-        _prevRange[0] // TODO binary search may be better here
+        _prevRange[0], // TODO binary search may be better here
+        viewportSize
       );
       return hasUnmeasuredItemsInRange(
         cache,
         max(0, startIndex - 1),
-        min(
-          cache._length - 1,
-          findEndIndex(cache, startIndex, viewportSize) + 1
-        )
+        min(cache._length - 1, endIndex + 1)
       );
     },
     _getItemOffset(index) {

@@ -101,6 +101,21 @@ export const findStartIndexWithOffset = (
   );
 };
 
+export const computeRange = (
+  cache: Cache,
+  scrollOffset: number,
+  prevStartIndex: number,
+  viewportSize: number
+): [number, number] => {
+  const start = findStartIndexWithOffset(
+    cache as Writeable<Cache>,
+    scrollOffset,
+    // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
+    min(prevStartIndex, cache._length - 1)
+  );
+  return [start, findIndex(cache, start, viewportSize)];
+};
+
 export const hasUnmeasuredItemsInRange = (
   cache: Cache,
   startIndex: number,
