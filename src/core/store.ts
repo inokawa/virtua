@@ -132,7 +132,7 @@ export const createVirtualStore = (
     _getRange() {
       const [prevStartIndex, prevEndIndex] = _prevRange;
       const [start, end] = computeRange(
-        cache,
+        cache as Writeable<Cache>,
         scrollOffset,
         prevStartIndex,
         viewportSize
@@ -147,7 +147,7 @@ export const createVirtualStore = (
     },
     _hasUnmeasuredItemsInTargetViewport(offset) {
       const [startIndex, endIndex] = computeRange(
-        cache,
+        cache as Writeable<Cache>,
         offset,
         _prevRange[0], // TODO binary search may be better here
         viewportSize
