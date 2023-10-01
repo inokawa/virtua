@@ -7,7 +7,7 @@ export type Cache = DeepReadonly<{
   _defaultItemSize: number;
   _length: number;
   _sizes: number[];
-  _measuredOffsetIndex: number;
+  _computedOffsetIndex: number;
   _offsets: number[];
 }>;
 
@@ -24,7 +24,7 @@ export const setItemSize = (
   const isInitialMeasurement = cache._sizes[index] === UNCACHED;
   cache._sizes[index] = size;
   // mark as dirty
-  cache._measuredOffsetIndex = min(index, cache._measuredOffsetIndex);
+  cache._computedOffsetIndex = min(index, cache._computedOffsetIndex);
   return isInitialMeasurement;
 };
 
@@ -33,18 +33,18 @@ export const computeOffset = (
   index: number
 ): number => {
   if (!cache._length) return 0;
-  if (cache._measuredOffsetIndex >= index) {
+  if (cache._computedOffsetIndex >= index) {
     return cache._offsets[index]!;
   }
 
-  let i = cache._measuredOffsetIndex;
+  let i = cache._computedOffsetIndex;
   let top = cache._offsets[i]!;
   while (i < index) {
     top += getItemSize(cache, i);
     cache._offsets[++i] = top;
   }
   // mark as measured
-  cache._measuredOffsetIndex = index;
+  cache._computedOffsetIndex = index;
   return top;
 };
 
@@ -156,7 +156,7 @@ export const initCache = (length: number, itemSize: number): Cache => {
   const cache: Cache = {
     _defaultItemSize: itemSize,
     _length: 0,
-    _measuredOffsetIndex: 0,
+    _computedOffsetIndex: 0,
     _sizes: [],
     _offsets: [],
   };
@@ -189,12 +189,12 @@ export const updateCacheLength = (
     appendCache(cache, cache._length + diff, isShift);
   }
 
-  cache._measuredOffsetIndex = isShift
+  cache._computedOffsetIndex = isShift
     ? // Discard cache for now
       0
     : // measuredOffsetIndex shouldn't be less than 0 because it makes scrollSize NaN and cause infinite rerender.
       // https://github.com/inokawa/virtua/pull/160
-      clamp(length - 1, 0, cache._measuredOffsetIndex);
+      clamp(length - 1, 0, cache._computedOffsetIndex);
   cache._length = length;
   return [shift, isRemove];
 };

@@ -30,7 +30,7 @@ describe(getItemSize.name, () => {
   const cache: Cache = {
     _length: sizes.length,
     _sizes: sizes,
-    _measuredOffsetIndex: 0,
+    _computedOffsetIndex: 0,
     _offsets: [0],
     _defaultItemSize: 20,
   };
@@ -51,7 +51,7 @@ describe(setItemSize.name, () => {
       const cache: Writeable<Cache> = {
         _length: filledSizes.length,
         _sizes: filledSizes,
-        _measuredOffsetIndex: 0,
+        _computedOffsetIndex: 0,
         _offsets: emptyOffsets,
         _defaultItemSize: 20,
       };
@@ -59,7 +59,7 @@ describe(setItemSize.name, () => {
       setItemSize(cache, 0, 123);
       expect(cache._sizes).toEqual([123, 20, 20, 20, 20, 20, 20, 20, 20, 20]);
       expect(cache._offsets).toEqual([0, -1, -1, -1, -1, -1, -1, -1, -1, -1]);
-      expect(cache._measuredOffsetIndex).toBe(0);
+      expect(cache._computedOffsetIndex).toBe(0);
     });
 
     it("should set at middle", () => {
@@ -68,7 +68,7 @@ describe(setItemSize.name, () => {
       const cache: Writeable<Cache> = {
         _length: filledSizes.length,
         _sizes: filledSizes,
-        _measuredOffsetIndex: 0,
+        _computedOffsetIndex: 0,
         _offsets: emptyOffsets,
         _defaultItemSize: 20,
       };
@@ -76,7 +76,7 @@ describe(setItemSize.name, () => {
       setItemSize(cache, 4, 123);
       expect(cache._sizes).toEqual([20, 20, 20, 20, 123, 20, 20, 20, 20, 20]);
       expect(cache._offsets).toEqual([0, -1, -1, -1, -1, -1, -1, -1, -1, -1]);
-      expect(cache._measuredOffsetIndex).toBe(0);
+      expect(cache._computedOffsetIndex).toBe(0);
     });
 
     it("should set at last", () => {
@@ -85,7 +85,7 @@ describe(setItemSize.name, () => {
       const cache: Writeable<Cache> = {
         _length: filledSizes.length,
         _sizes: filledSizes,
-        _measuredOffsetIndex: 0,
+        _computedOffsetIndex: 0,
         _offsets: emptyOffsets,
         _defaultItemSize: 20,
       };
@@ -93,7 +93,7 @@ describe(setItemSize.name, () => {
       setItemSize(cache, emptyOffsets.length - 1, 123);
       expect(cache._sizes).toEqual([20, 20, 20, 20, 20, 20, 20, 20, 20, 123]);
       expect(cache._offsets).toEqual([0, -1, -1, -1, -1, -1, -1, -1, -1, -1]);
-      expect(cache._measuredOffsetIndex).toBe(0);
+      expect(cache._computedOffsetIndex).toBe(0);
     });
   });
 
@@ -103,7 +103,7 @@ describe(setItemSize.name, () => {
       const cache: Writeable<Cache> = {
         _length: filledSizes.length,
         _sizes: filledSizes,
-        _measuredOffsetIndex: 4,
+        _computedOffsetIndex: 4,
         _offsets: [0, 10, 20, 30, 40, -1, -1, -1, -1, -1],
         _defaultItemSize: 20,
       };
@@ -111,7 +111,7 @@ describe(setItemSize.name, () => {
       setItemSize(cache, 1, 123);
       expect(cache._sizes).toEqual([20, 123, 20, 20, 20, 20, 20, 20, 20, 20]);
       expect(cache._offsets).toEqual([0, 10, 20, 30, 40, -1, -1, -1, -1, -1]);
-      expect(cache._measuredOffsetIndex).toBe(1);
+      expect(cache._computedOffsetIndex).toBe(1);
     });
 
     it("should not update measuredOffsetIndex if size is changed at measuredOffsetIndex", () => {
@@ -119,7 +119,7 @@ describe(setItemSize.name, () => {
       const cache: Writeable<Cache> = {
         _length: filledSizes.length,
         _sizes: filledSizes,
-        _measuredOffsetIndex: 4,
+        _computedOffsetIndex: 4,
         _offsets: [0, 10, 20, 30, 40, -1, -1, -1, -1, -1],
         _defaultItemSize: 20,
       };
@@ -127,7 +127,7 @@ describe(setItemSize.name, () => {
       setItemSize(cache, 4, 123);
       expect(cache._sizes).toEqual([20, 20, 20, 20, 123, 20, 20, 20, 20, 20]);
       expect(cache._offsets).toEqual([0, 10, 20, 30, 40, -1, -1, -1, -1, -1]);
-      expect(cache._measuredOffsetIndex).toBe(4);
+      expect(cache._computedOffsetIndex).toBe(4);
     });
 
     it("should not update measuredOffsetIndex if size is changed after measuredOffsetIndex", () => {
@@ -135,7 +135,7 @@ describe(setItemSize.name, () => {
       const cache: Writeable<Cache> = {
         _length: filledSizes.length,
         _sizes: filledSizes,
-        _measuredOffsetIndex: 4,
+        _computedOffsetIndex: 4,
         _offsets: [0, 10, 20, 30, 40, -1, -1, -1, -1, -1],
         _defaultItemSize: 20,
       };
@@ -143,7 +143,7 @@ describe(setItemSize.name, () => {
       setItemSize(cache, 5, 123);
       expect(cache._sizes).toEqual([20, 20, 20, 20, 20, 123, 20, 20, 20, 20]);
       expect(cache._offsets).toEqual([0, 10, 20, 30, 40, -1, -1, -1, -1, -1]);
-      expect(cache._measuredOffsetIndex).toBe(4);
+      expect(cache._computedOffsetIndex).toBe(4);
     });
   });
 
@@ -154,7 +154,7 @@ describe(setItemSize.name, () => {
       const cache: Writeable<Cache> = {
         _length: filledSizes.length,
         _sizes: filledSizes,
-        _measuredOffsetIndex: 0,
+        _computedOffsetIndex: 0,
         _offsets: emptyOffsets,
         _defaultItemSize: 20,
       };
@@ -169,7 +169,7 @@ describe(setItemSize.name, () => {
       const cache: Writeable<Cache> = {
         _length: filledSizes.length,
         _sizes: filledSizes,
-        _measuredOffsetIndex: 0,
+        _computedOffsetIndex: 0,
         _offsets: emptyOffsets,
         _defaultItemSize: 20,
       };
@@ -187,7 +187,7 @@ describe(computeTotalSize.name, () => {
     const cache: Writeable<Cache> = {
       _length: filledSizes.length,
       _sizes: filledSizes,
-      _measuredOffsetIndex: 0,
+      _computedOffsetIndex: 0,
       _offsets: emptyOffsets,
       _defaultItemSize: 30,
     };
@@ -203,7 +203,7 @@ describe(computeTotalSize.name, () => {
     const cache: Writeable<Cache> = {
       _length: emptySizes.length,
       _sizes: emptySizes,
-      _measuredOffsetIndex: 0,
+      _computedOffsetIndex: 0,
       _offsets: emptyOffsets,
       _defaultItemSize: 30,
     };
@@ -219,7 +219,7 @@ describe(computeTotalSize.name, () => {
     const cache: Writeable<Cache> = {
       _length: filledSizes.length,
       _sizes: filledSizes,
-      _measuredOffsetIndex: 0,
+      _computedOffsetIndex: 0,
       _offsets: emptyOffsets,
       _defaultItemSize: 30,
     };
@@ -234,7 +234,7 @@ describe(computeTotalSize.name, () => {
       const cache: Writeable<Cache> = {
         _length: filledSizes.length,
         _sizes: filledSizes,
-        _measuredOffsetIndex: 2,
+        _computedOffsetIndex: 2,
         _offsets: offsets,
         _defaultItemSize: 30,
       };
@@ -250,7 +250,7 @@ describe(computeTotalSize.name, () => {
       const cache: Writeable<Cache> = {
         _length: filledSizes.length,
         _sizes: filledSizes,
-        _measuredOffsetIndex: 9,
+        _computedOffsetIndex: 9,
         _offsets: offsets,
         _defaultItemSize: 30,
       };
@@ -267,7 +267,7 @@ describe(computeStartOffset.name, () => {
     const cache: Writeable<Cache> = {
       _length: filledSizes.length,
       _sizes: filledSizes,
-      _measuredOffsetIndex: 0,
+      _computedOffsetIndex: 0,
       _offsets: emptyOffsets,
       _defaultItemSize: 30,
     };
@@ -281,7 +281,7 @@ describe(computeStartOffset.name, () => {
     const cache: Writeable<Cache> = {
       _length: filledSizes.length,
       _sizes: filledSizes,
-      _measuredOffsetIndex: 0,
+      _computedOffsetIndex: 0,
       _offsets: emptyOffsets,
       _defaultItemSize: 30,
     };
@@ -295,7 +295,7 @@ describe(computeStartOffset.name, () => {
     const cache: Writeable<Cache> = {
       _length: filledSizes.length,
       _sizes: filledSizes,
-      _measuredOffsetIndex: 0,
+      _computedOffsetIndex: 0,
       _offsets: emptyOffsets,
       _defaultItemSize: 30,
     };
@@ -314,7 +314,7 @@ describe(computeStartOffset.name, () => {
     const cache: Writeable<Cache> = {
       _length: emptySizes.length,
       _sizes: emptySizes,
-      _measuredOffsetIndex: 0,
+      _computedOffsetIndex: 0,
       _offsets: emptyOffsets,
       _defaultItemSize: 30,
     };
@@ -329,7 +329,7 @@ describe(computeStartOffset.name, () => {
       const cache: Writeable<Cache> = {
         _length: filledSizes.length,
         _sizes: filledSizes,
-        _measuredOffsetIndex: 3,
+        _computedOffsetIndex: 3,
         _offsets: offsets,
         _defaultItemSize: 30,
       };
@@ -343,7 +343,7 @@ describe(computeStartOffset.name, () => {
       const cache: Writeable<Cache> = {
         _length: filledSizes.length,
         _sizes: filledSizes,
-        _measuredOffsetIndex: 3,
+        _computedOffsetIndex: 3,
         _offsets: offsets,
         _defaultItemSize: 30,
       };
@@ -357,7 +357,7 @@ describe(computeStartOffset.name, () => {
       const cache: Writeable<Cache> = {
         _length: filledSizes.length,
         _sizes: filledSizes,
-        _measuredOffsetIndex: 3,
+        _computedOffsetIndex: 3,
         _offsets: offsets,
         _defaultItemSize: 30,
       };
@@ -372,7 +372,7 @@ describe("findEndIndex", () => {
   const cache: Cache = {
     _length: filledSizes.length,
     _sizes: filledSizes,
-    _measuredOffsetIndex: 0,
+    _computedOffsetIndex: 0,
     _offsets: [0],
     _defaultItemSize: 30,
   };
@@ -442,7 +442,7 @@ describe("findEndIndex", () => {
     const emptyCache: Cache = {
       _length: emptySizes.length,
       _sizes: emptySizes,
-      _measuredOffsetIndex: 0,
+      _computedOffsetIndex: 0,
       _offsets: [0],
       _defaultItemSize: 25,
     };
@@ -455,7 +455,7 @@ describe("findStartIndex", () => {
     return {
       _length: sizes.length,
       _sizes: sizes,
-      _measuredOffsetIndex: sizes.length - 1,
+      _computedOffsetIndex: sizes.length - 1,
       _offsets: sizes.reduce((acc, s, i) => {
         acc.push(i === 0 ? 0 : acc[i - 1]! + s);
         return acc;
@@ -470,7 +470,7 @@ describe("findStartIndex", () => {
       return {
         _length: emptySizes.length,
         _sizes: emptySizes,
-        _measuredOffsetIndex: 0,
+        _computedOffsetIndex: 0,
         _offsets: [0],
         _defaultItemSize: 25,
       };
@@ -687,7 +687,7 @@ describe(hasUnmeasuredItemsInRange.name, () => {
     const cache: Cache = {
       _length: sizes.length,
       _sizes: sizes,
-      _measuredOffsetIndex: 0,
+      _computedOffsetIndex: 0,
       _offsets: [0],
       _defaultItemSize: 30,
     };
@@ -699,7 +699,7 @@ describe(hasUnmeasuredItemsInRange.name, () => {
     const cache: Cache = {
       _length: sizes.length,
       _sizes: sizes,
-      _measuredOffsetIndex: 0,
+      _computedOffsetIndex: 0,
       _offsets: [0],
       _defaultItemSize: 30,
     };
@@ -711,7 +711,7 @@ describe(hasUnmeasuredItemsInRange.name, () => {
     const cache: Cache = {
       _length: sizes.length,
       _sizes: sizes,
-      _measuredOffsetIndex: 0,
+      _computedOffsetIndex: 0,
       _offsets: [0],
       _defaultItemSize: 30,
     };
@@ -723,9 +723,9 @@ describe(initCache.name, () => {
   it("should create cache", () => {
     expect(initCache(10, 23)).toMatchInlineSnapshot(`
       {
+        "_computedOffsetIndex": 0,
         "_defaultItemSize": 23,
         "_length": 10,
-        "_measuredOffsetIndex": 0,
         "_offsets": [
           0,
           -1,
@@ -762,9 +762,9 @@ describe(updateCacheLength.name, () => {
     expect(res).toEqual([40 * 5, false]);
     expect(cache).toMatchInlineSnapshot(`
       {
+        "_computedOffsetIndex": 0,
         "_defaultItemSize": 40,
         "_length": 15,
-        "_measuredOffsetIndex": 0,
         "_offsets": [
           0,
           -1,
@@ -810,9 +810,9 @@ describe(updateCacheLength.name, () => {
     expect(res).toEqual([40 * 4 + 123, true]);
     expect(cache).toMatchInlineSnapshot(`
       {
+        "_computedOffsetIndex": 0,
         "_defaultItemSize": 40,
         "_length": 5,
-        "_measuredOffsetIndex": 0,
         "_offsets": [
           0,
           -1,
@@ -845,9 +845,9 @@ describe(updateCacheLength.name, () => {
     expect(res).toEqual([40 * 5, false]);
     expect(cache).toMatchInlineSnapshot(`
       {
+        "_computedOffsetIndex": 0,
         "_defaultItemSize": 40,
         "_length": 15,
-        "_measuredOffsetIndex": 0,
         "_offsets": [
           0,
           -1,
@@ -893,9 +893,9 @@ describe(updateCacheLength.name, () => {
     expect(res).toEqual([40 * 4 + 123, true]);
     expect(cache).toMatchInlineSnapshot(`
       {
+        "_computedOffsetIndex": 0,
         "_defaultItemSize": 40,
         "_length": 5,
-        "_measuredOffsetIndex": 0,
         "_offsets": [
           0,
           -1,
