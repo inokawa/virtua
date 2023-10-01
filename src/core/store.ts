@@ -89,7 +89,7 @@ export const overscanStartIndex = (
   scrollDirection: ScrollDirection
 ): number => {
   return max(
-    startIndex - (scrollDirection === SCROLL_DOWN ? 1 : max(1, overscan)),
+    startIndex - (scrollDirection === SCROLL_DOWN ? 1 : max(0, overscan)),
     0
   );
 };
@@ -104,7 +104,7 @@ export const overscanEndIndex = (
   count: number
 ): number => {
   return min(
-    endIndex + (scrollDirection === SCROLL_UP ? 1 : max(1, overscan)),
+    endIndex + (scrollDirection === SCROLL_UP ? 1 : max(0, overscan)),
     count - 1
   );
 };
@@ -189,6 +189,9 @@ export const createVirtualStore = (
   const getMaxScrollOffset = (): number =>
     // total size can become smaller than viewport size
     max(0, getScrollableSize() - viewportSize);
+  const getItemOffset = (index: number): number => {
+    return computeStartOffset(cache, index) - pendingJump;
+  };
 
   const applyJump = (j: number) => {
     if (j) {
@@ -239,9 +242,7 @@ export const createVirtualStore = (
         )
         .includes(UNCACHED);
     },
-    _getItemOffset(index) {
-      return computeStartOffset(cache, index) - pendingJump;
-    },
+    _getItemOffset: getItemOffset,
     _getItemSize(index) {
       return getItemSize(cache, index);
     },
@@ -314,10 +315,9 @@ export const createVirtualStore = (
             }
           } else {
             // Keep start at mid
-            const [startIndex] = _prevRange;
             diff = calculateJump(
               cache,
-              updated.filter(([index]) => index < startIndex)
+              updated.filter(([index]) => getItemOffset(index) < scrollOffset)
             );
           }
           applyJump(diff);
