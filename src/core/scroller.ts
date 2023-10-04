@@ -197,6 +197,7 @@ export const createWindowScroller = (
     _initRoot(rootElement) {
       let visible = false;
 
+      // TODO calc offset only when it changes (maybe impossible)
       const getOffsetToWindow = (node: HTMLElement, offset: number): number => {
         const nodeOffset = offset + node[offsetKey];
 
