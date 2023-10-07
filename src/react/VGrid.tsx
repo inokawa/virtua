@@ -37,6 +37,7 @@ import {
 import { createGridResizer, GridResizer } from "../core/resizer";
 import { Viewport as DefaultViewport } from "./Viewport";
 import { flushSync } from "react-dom";
+import { isRtlDocument } from "../core/environment";
 
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
@@ -64,7 +65,6 @@ type CellProps = {
   _rowIndex: number;
   _colIndex: number;
   _element: "div";
-  _isRtl: boolean;
 };
 
 const Cell = memo(
@@ -76,7 +76,6 @@ const Cell = memo(
     _rowIndex: rowIndex,
     _colIndex: colIndex,
     _element: Element,
-    _isRtl: isRtl,
   }: CellProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -133,7 +132,7 @@ const Cell = memo(
             padding: 0,
             position: "absolute",
             top: top,
-            [isRtl ? "right" : "left"]: left,
+            [isRtlDocument() ? "right" : "left"]: left,
             visibility: vHide || hHide ? "hidden" : "visible",
             minHeight: height,
             minWidth: width,
@@ -232,10 +231,6 @@ export interface VGridProps extends ViewportComponentAttributes {
    */
   initialColCount?: number;
   /**
-   * You have to set true if you use this component under `direction: rtl` style.
-   */
-  rtl?: boolean;
-  /**
    * Customized components for advanced usage.
    */
   components?: {
@@ -266,7 +261,6 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       overscan = 2,
       initialRowCount,
       initialColCount,
-      rtl: rtlProp,
       components: {
         Root: Viewport = DefaultViewport,
         Cell: ItemElement = "div",
@@ -278,31 +272,27 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     },
     ref
   ): ReactElement => {
-    const [vStore, hStore, resizer, vScroller, hScroller, isRtl] = useStatic(
-      () => {
-        const _isRtl = !!rtlProp;
-        const _vs = createVirtualStore(
-          flushSync,
-          rowCount,
-          cellHeight,
-          initialRowCount
-        );
-        const _hs = createVirtualStore(
-          flushSync,
-          colCount,
-          cellWidth,
-          initialColCount
-        );
-        return [
-          _vs,
-          _hs,
-          createGridResizer(_vs, _hs),
-          createScroller(_vs, false, _isRtl),
-          createScroller(_hs, true, _isRtl),
-          _isRtl,
-        ];
-      }
-    );
+    const [vStore, hStore, resizer, vScroller, hScroller] = useStatic(() => {
+      const _vs = createVirtualStore(
+        flushSync,
+        rowCount,
+        cellHeight,
+        initialRowCount
+      );
+      const _hs = createVirtualStore(
+        flushSync,
+        colCount,
+        cellWidth,
+        initialColCount
+      );
+      return [
+        _vs,
+        _hs,
+        createGridResizer(_vs, _hs),
+        createScroller(_vs, false),
+        createScroller(_hs, true),
+      ];
+    });
     // The elements length and cached items length are different just after element is added/removed.
     if (rowCount !== vStore._getItemsLength()) {
       vStore._update(ACTION_ITEMS_LENGTH_CHANGE, [rowCount]);
@@ -458,7 +448,6 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
               _colIndex={j}
               _element={ItemElement as "div"}
               _children={render(i, j)}
-              _isRtl={isRtl}
             />
           );
         }

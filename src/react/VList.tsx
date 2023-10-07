@@ -43,8 +43,6 @@ import { CacheSnapshot, ScrollToIndexAlign } from "../core/types";
 import { Cache } from "../core/cache";
 import { flushSync } from "react-dom";
 
-export type ScrollMode = "reverse" | "rtl";
-
 type CustomItemComponentOrElement =
   | keyof JSX.IntrinsicElements
   | CustomItemComponent;
@@ -120,12 +118,9 @@ export interface VListProps extends ViewportComponentAttributes {
    */
   horizontal?: boolean;
   /**
-   * Scroll modes that should be set in certain situations.
-   *
-   * - `reverse`: This mode will adjust some styles to be suitable for bottom-to-top scrolling.
-   * - `rtl`: You have to set this mode if you use this component under `direction: rtl` style.
+   * If true, some styles will be adjusted to be suitable for bottom-to-top scrolling.
    */
-  mode?: ScrollMode;
+  reverse?: boolean;
   /**
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VListHandle.cache}.
    */
@@ -181,7 +176,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       initialItemCount,
       shift,
       horizontal: horizontalProp,
-      mode,
+      reverse: reverseProp,
       cache,
       components: {
         Root: Viewport = DefaultViewport,
@@ -204,24 +199,22 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const onScroll = useLatestRef(onScrollProp);
     const onScrollStop = useLatestRef(onScrollStopProp);
 
-    const [store, resizer, scroller, isHorizontal, isRtl] = useStatic(() => {
+    const [store, resizer, scroller, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
-      const _isRtl = mode === "rtl";
       const _store = createVirtualStore(
         flushSync,
         count,
         initialItemSize,
         initialItemCount,
         cache as unknown as Cache | undefined,
-        mode === "reverse",
+        !!reverseProp,
         !initialItemSize
       );
       return [
         _store,
         createResizer(_store, _isHorizontal),
-        createScroller(_store, _isHorizontal, _isRtl),
+        createScroller(_store, _isHorizontal),
         _isHorizontal,
-        _isRtl,
       ];
     });
 
@@ -332,7 +325,6 @@ export const VList = forwardRef<VListHandle, VListProps>(
             _element={ItemElement as "div"}
             _children={e}
             _isHorizontal={isHorizontal}
-            _isRtl={isRtl}
           />
         );
       }

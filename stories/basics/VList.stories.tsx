@@ -65,19 +65,10 @@ const createColumns = (num: number) => {
 export const Horizontal: StoryObj = {
   render: () => {
     return (
-      <div>
-        <div style={{ padding: 10, direction: "ltr" }}>
-          <div>ltr</div>
-          <VList style={{ width: "100%", height: 200 }} horizontal>
-            {createColumns(1000)}
-          </VList>
-        </div>
-        <div style={{ padding: 10, direction: "rtl" }}>
-          <div>rtl</div>
-          <VList style={{ width: "100%", height: 200 }} horizontal mode="rtl">
-            {createColumns(1000)}
-          </VList>
-        </div>
+      <div style={{ padding: 10 }}>
+        <VList style={{ width: "100%", height: 200 }} horizontal>
+          {createColumns(1000)}
+        </VList>
       </div>
     );
   },
@@ -122,7 +113,7 @@ export const Reverse: StoryObj = {
       ref.current?.scrollToIndex(999);
     }, []);
     return (
-      <VList ref={ref} style={{ height: "100vh" }} mode="reverse">
+      <VList ref={ref} style={{ height: "100vh" }} reverse>
         {createRows(1000)}
       </VList>
     );
