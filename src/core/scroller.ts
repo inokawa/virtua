@@ -40,6 +40,19 @@ const createOnWheel = (
   }, 50);
 };
 
+const normalizeRtlOffset = (
+  rootElement: HTMLElement,
+  store: VirtualStore,
+  offset: number,
+  diff?: boolean
+): number => {
+  if (hasNegativeOffsetInRtl(rootElement)) {
+    return -offset;
+  } else {
+    return diff ? -offset : store._getScrollOffsetMax() - offset;
+  }
+};
+
 export type Scroller = {
   _initRoot: (rootElement: HTMLElement) => () => void;
   _scrollTo: (offset: number) => void;
@@ -58,11 +71,7 @@ export const createScroller = (
 
   const normalizeOffset = (offset: number, diff?: boolean): number => {
     if (isHorizontal && isRtlDocument()) {
-      if (hasNegativeOffsetInRtl(rootElement!)) {
-        return -offset;
-      } else {
-        return diff ? -offset : store._getScrollOffsetMax() - offset;
-      }
+      return normalizeRtlOffset(rootElement!, store, offset, diff);
     }
     return offset;
   };
@@ -189,16 +198,29 @@ export const createWindowScroller = (
   store: VirtualStore,
   isHorizontal: boolean
 ): WindowScroller => {
+  let rootElement: HTMLElement | undefined;
   const scrollToKey = isHorizontal ? "scrollX" : "scrollY";
   const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
 
+  const normalizeOffset = (offset: number, diff?: boolean): number => {
+    if (isHorizontal && isRtlDocument()) {
+      return normalizeRtlOffset(rootElement!, store, offset, diff);
+    }
+    return offset;
+  };
+
   return {
-    _initRoot(rootElement) {
+    _initRoot(root) {
+      rootElement = root;
       let visible = false;
 
       // TODO calc offset only when it changes (maybe impossible)
       const getOffsetToWindow = (node: HTMLElement, offset: number): number => {
-        const nodeOffset = offset + node[offsetKey];
+        const nodeOffset =
+          offset +
+          (isHorizontal && isRtlDocument()
+            ? window.innerWidth - node[offsetKey] - node.offsetWidth
+            : node[offsetKey]);
 
         const parent = node.offsetParent;
         if (node === document.body || !parent) {
@@ -212,7 +234,7 @@ export const createWindowScroller = (
         if (!visible) return;
         store._update(
           ACTION_SCROLL,
-          window[scrollToKey] - getOffsetToWindow(rootElement, 0)
+          normalizeOffset(window[scrollToKey]) - getOffsetToWindow(root, 0)
         );
       };
 
@@ -232,7 +254,7 @@ export const createWindowScroller = (
       const io = new IntersectionObserver(([entry]) => {
         visible = entry!.isIntersecting;
       });
-      io.observe(rootElement);
+      io.observe(root);
 
       window.addEventListener("scroll", onScroll);
       window.addEventListener("wheel", onWheel, { passive: true });
@@ -246,7 +268,10 @@ export const createWindowScroller = (
     },
     _fixScrollJump: (jump) => {
       // TODO support case two window scrollers exist in the same view
-      window.scrollBy(isHorizontal ? jump : 0, isHorizontal ? 0 : jump);
+      window.scrollBy(
+        isHorizontal ? normalizeOffset(jump, true) : 0,
+        isHorizontal ? 0 : jump
+      );
     },
   };
 };
