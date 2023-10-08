@@ -120,6 +120,47 @@ export const Reverse: StoryObj = {
   },
 };
 
+export const Responsive: StoryObj = {
+  render: () => {
+    const itemClass = "item";
+    return (
+      <>
+        <VList style={{ height: "100vh" }}>
+          {Array.from({ length: 1000 }).map((_, i) => {
+            return (
+              <div
+                key={i}
+                className={itemClass}
+                style={{
+                  borderBottom: "solid 1px #ccc",
+                  background: "#fff",
+                }}
+              >
+                {i}
+              </div>
+            );
+          })}
+        </VList>
+        <style>{`
+          .${itemClass} {
+            height: 40px;
+
+            @media (max-width: 1024px) {
+              height: 80px;
+            }
+            @media (max-width: 700px) {
+              height: 160px;
+            }
+            @media (max-width: 400px) {
+              height: 320px;
+            }
+          }
+        `}</style>
+      </>
+    );
+  },
+};
+
 export const Sticky: StoryObj = {
   render: () => {
     return (
