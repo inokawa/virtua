@@ -23,6 +23,7 @@
     "test": "jest --silent",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "storybook": "storybook dev -p 6006",
+    "storybook:rtl": "STORYBOOK_RTL=1 npm run storybook",
     "storybook:build": "storybook build",
     "storybook:test": "concurrently -k -s first -n \"SB,TEST\" -c \"magenta,blue\" \"npm run storybook -- --quiet --no-open\" \"wait-on tcp:6006 && test-storybook\"",
     "e2e": "npx playwright test",

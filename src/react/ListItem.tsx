@@ -11,6 +11,7 @@ import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSelector } from "./useSelector";
 import { ListResizer } from "../core/resizer";
 import { refKey } from "./utils";
+import { isRtlDocument } from "../core/environment";
 
 /**
  * Props of customized item component for {@link VList}.
@@ -31,7 +32,6 @@ type ListItemProps = {
   _index: number;
   _element: "div";
   _isHorizontal: boolean;
-  _isRtl: boolean;
 };
 
 export const ListItem = memo(
@@ -42,7 +42,6 @@ export const ListItem = memo(
     _index: index,
     _element: Element,
     _isHorizontal: isHorizontal,
-    _isRtl: isRtl,
   }: ListItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -69,7 +68,7 @@ export const ListItem = memo(
       <Element
         ref={ref}
         style={useMemo((): CSSProperties => {
-          const leftOrRightKey = isRtl ? "right" : "left";
+          const leftOrRightKey = isRtlDocument() ? "right" : "left";
           const style: CSSProperties = {
             margin: 0,
             padding: 0,

@@ -1,4 +1,6 @@
-import { once } from "./utils";
+import { computeStyle, once } from "./utils";
+
+export const isBrowser = typeof window !== "undefined";
 
 // The scroll position may be negative value in rtl direction.
 //
@@ -7,7 +9,7 @@ import { once } from "./utils";
 // 0     100   false   probably Chrome earlier than v85
 // https://github.com/othree/jquery.rtl-scroll-type
 export const hasNegativeOffsetInRtl = /*#__PURE__*/ once(
-  (scrollable: HTMLElement) => {
+  (scrollable: HTMLElement): boolean => {
     const key = "scrollLeft";
     const prev = scrollable[key];
     scrollable[key] = 1;
@@ -17,3 +19,8 @@ export const hasNegativeOffsetInRtl = /*#__PURE__*/ once(
     return isNegative;
   }
 );
+
+export const isRtlDocument = /*#__PURE__*/ once((): boolean => {
+  // TODO support SSR in rtl
+  return isBrowser ? computeStyle(document.body).direction === "rtl" : false;
+});

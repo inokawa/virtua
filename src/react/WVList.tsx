@@ -262,7 +262,6 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
             _element={ItemElement as "div"}
             _children={e}
             _isHorizontal={isHorizontal}
-            _isRtl={false}
           />
         );
       }

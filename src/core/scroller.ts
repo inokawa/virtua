@@ -1,4 +1,4 @@
-import { hasNegativeOffsetInRtl } from "./environment";
+import { hasNegativeOffsetInRtl, isRtlDocument } from "./environment";
 import {
   ACTION_SCROLL,
   ACTION_BEFORE_MANUAL_SCROLL,
@@ -50,15 +50,14 @@ export type Scroller = {
 
 export const createScroller = (
   store: VirtualStore,
-  isHorizontal: boolean,
-  isRtl: boolean
+  isHorizontal: boolean
 ): Scroller => {
   let rootElement: HTMLElement | undefined;
   let scrollToQueue: [() => void, () => void] | undefined;
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
 
   const normalizeOffset = (offset: number, diff?: boolean): number => {
-    if (isHorizontal && isRtl) {
+    if (isHorizontal && isRtlDocument()) {
       if (hasNegativeOffsetInRtl(rootElement!)) {
         return -offset;
       } else {

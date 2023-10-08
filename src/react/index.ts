@@ -1,5 +1,5 @@
 export { VList } from "./VList";
-export type { VListProps, VListHandle, ScrollMode } from "./VList";
+export type { VListProps, VListHandle } from "./VList";
 export { VGrid } from "./VGrid";
 export type {
   VGridProps,

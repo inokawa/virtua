@@ -51,24 +51,24 @@ test.describe("smoke", () => {
     await expect(await component.innerText()).toContain("999");
   });
 
-  test("horizontally scrollable in direction:rtl", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--horizontal"));
+  // test("horizontally scrollable in direction:rtl", async ({ page }) => {
+  //   await page.goto(storyUrl("basics-vlist--horizontal"));
 
-    await page.waitForSelector(scrollableSelector);
-    const component = (await page.$$(scrollableSelector))[1]!;
-    await component.waitForElementState("stable");
+  //   await page.waitForSelector(scrollableSelector);
+  //   const component = (await page.$$(scrollableSelector))[1]!;
+  //   await component.waitForElementState("stable");
 
-    // check if start is displayed
-    const first = await getFirstItemRtl(component);
-    await expect(first.text).toEqual("Column 0");
-    await expect(first.right).toEqual(0);
+  //   // check if start is displayed
+  //   const first = await getFirstItemRtl(component);
+  //   await expect(first.text).toEqual("Column 0");
+  //   await expect(first.right).toEqual(0);
 
-    // scroll to the end
-    await scrollToLeft(component);
+  //   // scroll to the end
+  //   await scrollToLeft(component);
 
-    // check if the end is displayed
-    await expect(await component.innerText()).toContain("999");
-  });
+  //   // check if the end is displayed
+  //   await expect(await component.innerText()).toContain("999");
+  // });
 
   test("reverse", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--reverse"));

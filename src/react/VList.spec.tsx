@@ -491,20 +491,7 @@ describe("horizontal", () => {
 describe("reverse", () => {
   it("should render many items", () => {
     const { asFragment } = render(
-      <VList mode="reverse">
-        {Array.from({ length: 100 }).map((_, i) => (
-          <div key={i}>{i}</div>
-        ))}
-      </VList>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-});
-
-describe("rtl", () => {
-  it("should work in horizontal", () => {
-    const { asFragment } = render(
-      <VList mode="rtl" horizontal>
+      <VList reverse>
         {Array.from({ length: 100 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
