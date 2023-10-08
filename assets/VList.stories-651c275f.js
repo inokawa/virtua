@@ -1,10 +1,24 @@
-import{j as e,a}from"./jsx-runtime-c3d7f245.js";import{r as n}from"./index-c6dae603.js";import{S as Ce,d as ke}from"./common-4271bb5e.js";import{V as g}from"./VList-992cf266.js";import"./Viewport-cc3bc829.js";import"./ListItem-2642fce6.js";import"./index-eb008d06.js";const Ne={component:g},k=r=>{const t=[20,40,80,77];return Array.from({length:r}).map((s,o)=>e("div",{style:{height:t[o%4],borderBottom:"solid 1px #ccc",background:"#fff"},children:o},o))},T={render:()=>e(g,{style:{height:"100vh"},children:k(1e3)})},Te=r=>Array.from({length:r}).map((t,s)=>a("div",{style:{width:s%3===0?100:60,borderRight:"solid 1px #ccc",background:"#fff"},children:["Column ",s]},s)),w={render:()=>e("div",{style:{padding:10},children:e(g,{style:{width:"100%",height:200},horizontal:!0,children:Te(1e3)})})},L={render:()=>e(g,{style:{width:400,height:400,padding:"80px 20px",background:"lightgray"},children:Array.from({length:1e3}).map((r,t)=>e("div",{style:{height:100,borderRadius:8,margin:10,padding:10,background:"white"},children:t},t))})},A={render:()=>{const r=n.useRef(null);return n.useEffect(()=>{var t;(t=r.current)==null||t.scrollToIndex(999)},[]),e(g,{ref:r,style:{height:"100vh"},reverse:!0,children:k(1e3)})}},_={render:()=>e(g,{style:{height:"100vh"},overscan:1,children:Array.from({length:100}).map((r,t)=>e("div",{style:{borderBottom:"solid 1px #ccc"},children:Array.from({length:10}).map((s,o)=>{const i=o===0;return e("div",{style:{height:60,background:"#fff",...i&&{top:0,height:30,position:"sticky",borderBottom:"solid 1px #ccc"}},children:i?t:`${t} - ${o}`},o)})},t))})},B={render:()=>{const[t,s]=n.useState(567),[o,i]=n.useState("start"),[d,h]=n.useState(1e3),f=n.useRef(null);return a("div",{style:{height:"100vh",display:"flex",flexDirection:"column"},children:[a("div",{children:[e("input",{type:"number",value:t,onChange:l=>{s(Number(l.target.value))}}),e("button",{onClick:()=>{var l;(l=f.current)==null||l.scrollToIndex(t,o)},children:"scroll to index"}),e("button",{onClick:()=>{s(Math.round(1e3*Math.random()))},children:"randomize"}),a("label",{style:{marginLeft:4},children:[e("input",{type:"radio",style:{marginLeft:4},checked:o==="start",onChange:()=>{i("start")}}),"start"]}),a("label",{style:{marginLeft:4},children:[e("input",{type:"radio",style:{marginLeft:4},checked:o==="end",onChange:()=>{i("end")}}),"end"]})]}),e("div",{children:a("div",{children:[e("input",{type:"number",value:d,onChange:l=>{h(Number(l.target.value))}}),e("button",{onClick:()=>{var l;(l=f.current)==null||l.scrollTo(d)},children:"scroll to offset"}),e("button",{onClick:()=>{var l;(l=f.current)==null||l.scrollBy(d)},children:"scroll by offset"})]})}),e(g,{ref:f,style:{flex:1},children:k(1e3)})]})}},we=({id:r})=>{const t="list-cache-"+r,s=n.useRef(null),[o,i]=n.useMemo(()=>{const d=sessionStorage.getItem(t);return d?JSON.parse(d):[]},[]);return n.useEffect(()=>{if(!s.current)return;const d=s.current;return o&&d.scrollTo(o),()=>{sessionStorage.setItem(t,JSON.stringify([d.scrollOffset,d.cache]))}},[]),e(g,{ref:s,cache:i,style:{height:"100vh"},children:k(1e3)})},E={render:()=>{const[r,t]=n.useState(!0),[s,o]=n.useState("1");return a("div",{children:[e("button",{onClick:()=>{t(i=>!i)},children:r?"hide":"show"}),["1","2","3"].map(i=>a("label",{children:[e("input",{type:"radio",checked:s===i,onChange:()=>{o(i)}}),i]},i)),r&&e(we,{id:s},s)]})}},O={render:()=>{const r=(p,m=0)=>{const u=[20,40,80,77];return Array.from({length:p}).map((y,v)=>(v+=m,e("div",{style:{height:u[v%4],borderBottom:"solid 1px #ccc",background:"#fff"},children:v},v)))},[t,s]=n.useState(!1),o=async()=>{s(!0),await ke(1e3),s(!1)},i=100,[d,h]=n.useState(()=>r(i)),f=n.useRef(-1),l=d.length;return a(g,{style:{flex:1},onRangeChange:async(p,m)=>{m+50>l&&f.current<l&&(f.current=l,await o(),h(u=>[...u,...r(i,u.length)]))},children:[d,t&&e(Ce,{})]})}},V={render:()=>{const r=n.useRef(0),t=b=>{const I=[20,40,80,77];return Array.from({length:b}).map(()=>{const x=r.current++;return e("div",{style:{height:I[x%4],borderBottom:"solid 1px #ccc",background:"#fff"},children:x},x)})},[s,o]=n.useState(!1),[i,d]=n.useState(!1),[h,f]=n.useState(!1),l=async(b=!1)=>{o(b);const I=b?d:f;I(!0),await ke(1e3),I(!1)},p=n.useRef(null),m=100,[u,y]=n.useState(()=>t(m*2)),v=50,c=u.length,S=n.useRef(-1),R=n.useRef(-1),C=n.useRef(!1);return n.useEffect(()=>{var b;(b=p.current)==null||b.scrollToIndex(u.length/2+1),C.current=!0},[]),a(g,{ref:p,style:{flex:1},shift:!!s,onRangeChange:async(b,I)=>{C.current&&(I+v>c&&R.current<c?(R.current=c,await l(),y(x=>[...x,...t(m)])):b-v<0&&S.current<c&&(S.current=c,await l(!0),y(x=>[...t(m).reverse(),...x])))},children:[u,e(Ce,{style:h?void 0:{visibility:"hidden"}},"foot")]})}},F={render:()=>{const r=n.useRef(null),t=n.useState(()=>k(1e3))[0],[s,o]=n.useState(0),[i,d]=n.useState(!1),[h,f]=n.useState([-1,-1]),[l,p]=n.useState(!1),[m,u]=n.useState(!1);return n.useEffect(()=>{r.current&&(r.current.scrollOffset===0?p(!0):p(!1),r.current.scrollOffset-r.current.scrollSize+r.current.viewportSize>=-1.5?u(!0):u(!1))},[s]),a("div",{style:{height:"100vh",display:"flex",flexDirection:"column"},children:[a("div",{style:{background:"white",borderBottom:"solid 1px #ccc"},children:[a("div",{children:["scrollTop: ",s]}),a("div",{children:["scrolling: ",i?"true":"false"]}),a("div",{children:["index: (",h[0],", ",h[1],")"]}),a("div",{children:["at top: ",l?"true":"false"]}),a("div",{children:["at bottom: ",m?"true":"false"]})]}),e(g,{ref:r,style:{flex:1},onScroll:y=>{n.startTransition(()=>{o(y),d(!0)})},onScrollStop:()=>{n.startTransition(()=>{d(!1)})},onRangeChange:async(y,v)=>{n.startTransition(()=>{f([y,v])})},children:t})]})}},H={render:()=>{const[r,t]=n.useState({0:!0,3:!0,6:!0,9:!0,12:!0});return e(g,{style:{height:"100vh"},children:Array.from({length:1e3}).map((s,o)=>{const i=!!r[o];return a("div",{style:{borderBottom:"solid 1px #ccc",background:i?"lightpink":"#fff",display:"flex",flexDirection:"row",transition:"0.5s ease"},children:[e("div",{children:e("button",{style:{height:"100%"},onClick:()=>{t(d=>({...d,[o]:!d[o]}))},children:i?"close":"open"})}),e("div",{style:{display:"flex",justifyContent:"center",alignItems:"center",flex:1,height:i?200:40,transition:"0.5s ease"},children:o})]},o)})})}},N={render:()=>{const r=n.useRef(0),t=(c,S)=>Array.from({length:c}).map((R,C)=>(C+=S,{id:r.current++,index:C})),[s,o]=n.useState(!1),[i,d]=n.useState(4),[h,f]=n.useState(!1),[l,p]=n.useState(!0),[m,u]=n.useState(()=>t(i,0)),y=()=>{u(l?c=>{var S,R;return h?[...t(i,(((S=c[0])==null?void 0:S.index)??0)-i),...c]:[...c,...t(i,(((R=c[c.length-1])==null?void 0:R.index)??0)+1)]}:h?c=>c.slice(i):c=>c.slice(0,-i))};n.useEffect(()=>{if(!s)return;const c=setInterval(y,500);return()=>{clearInterval(c)}},[y,s]);const v=[20,40,80,77];return a("div",{style:{height:"100vh",display:"flex",flexDirection:"column"},children:[a("div",{children:[a("label",{style:{marginRight:4},children:[e("input",{type:"radio",style:{marginLeft:4},checked:!h,onChange:()=>{f(!1)}}),"append"]}),a("label",{style:{marginRight:4},children:[e("input",{type:"radio",style:{marginLeft:4},checked:h,onChange:()=>{f(!0)}}),"prepend"]}),a("label",{style:{marginRight:4},children:[e("input",{type:"radio",style:{marginLeft:4},checked:l,onChange:()=>{p(!0)}}),"increase"]}),a("label",{style:{marginRight:4},children:[e("input",{type:"radio",style:{marginLeft:4},checked:!l,onChange:()=>{p(!1)}}),"decrease"]}),e("input",{style:{marginLeft:4},value:i,type:"number",min:1,max:1e4,step:1,onChange:c=>{d(Number(c.target.value))}})]}),a("div",{children:[a("label",{style:{marginRight:16},children:[e("input",{type:"checkbox",style:{marginLeft:4},checked:s,onChange:()=>{o(c=>!c)}}),"auto"]}),e("button",{onClick:()=>{y()},children:"update"})]}),e(g,{style:{flex:1},shift:!!h,children:m.map(c=>e("div",{style:{height:v[Math.abs(c.index)%4],borderBottom:"solid 1px #ccc",background:"#fff"},children:c.index},c.id))})]})}},Le=n.forwardRef(({children:r,attrs:t,height:s},o)=>e("div",{ref:o,...t,children:e("ul",{style:{position:"relative",height:s,margin:0,overflow:"hidden"},children:r})})),Ae=n.forwardRef(({children:r,style:t},s)=>e("li",{ref:s,style:{...t,marginLeft:30},children:r})),D={render:()=>a("div",{style:{width:400,height:400,border:"solid 1px darkgray",borderRadius:8,background:"lightgray",display:"flex",flexDirection:"column",overflow:"hidden"},children:[e("div",{style:{padding:4},children:"header"}),e(g,{style:{flex:1,background:"#fff"},components:{Root:Le,Item:Ae},overscan:20,children:Array.from({length:1e3}).map((r,t)=>t)})]})};var M,U,z;T.parameters={...T.parameters,docs:{...(M=T.parameters)==null?void 0:M.docs,source:{originalSource:`{
+import{j as e,a,F as _e}from"./jsx-runtime-c3d7f245.js";import{r as n}from"./index-c6dae603.js";import{S as Le,d as Ae}from"./common-4271bb5e.js";import{V as h}from"./VList-992cf266.js";import"./Viewport-cc3bc829.js";import"./ListItem-2642fce6.js";import"./index-eb008d06.js";const Ge={component:h},k=r=>{const t=[20,40,80,77];return Array.from({length:r}).map((s,o)=>e("div",{style:{height:t[o%4],borderBottom:"solid 1px #ccc",background:"#fff"},children:o},o))},w={render:()=>e(h,{style:{height:"100vh"},children:k(1e3)})},Be=r=>Array.from({length:r}).map((t,s)=>a("div",{style:{width:s%3===0?100:60,borderRight:"solid 1px #ccc",background:"#fff"},children:["Column ",s]},s)),T={render:()=>e("div",{style:{padding:10},children:e(h,{style:{width:"100%",height:200},horizontal:!0,children:Be(1e3)})})},L={render:()=>e(h,{style:{width:400,height:400,padding:"80px 20px",background:"lightgray"},children:Array.from({length:1e3}).map((r,t)=>e("div",{style:{height:100,borderRadius:8,margin:10,padding:10,background:"white"},children:t},t))})},A={render:()=>{const r=n.useRef(null);return n.useEffect(()=>{var t;(t=r.current)==null||t.scrollToIndex(999)},[]),e(h,{ref:r,style:{height:"100vh"},reverse:!0,children:k(1e3)})}},_={render:()=>e(h,{style:{height:"100vh"},overscan:1,children:Array.from({length:100}).map((r,t)=>e("div",{style:{borderBottom:"solid 1px #ccc"},children:Array.from({length:10}).map((s,o)=>{const i=o===0;return e("div",{style:{height:60,background:"#fff",...i&&{top:0,height:30,position:"sticky",borderBottom:"solid 1px #ccc"}},children:i?t:`${t} - ${o}`},o)})},t))})},B={render:()=>{const r="item";return a(_e,{children:[e(h,{style:{height:"100vh"},children:Array.from({length:1e3}).map((t,s)=>e("div",{className:r,style:{borderBottom:"solid 1px #ccc",background:"#fff"},children:s},s))}),e("style",{children:`
+          .${r} {
+            height: 40px;
+
+            @media (max-width: 1024px) {
+              height: 80px;
+            }
+            @media (max-width: 700px) {
+              height: 160px;
+            }
+            @media (max-width: 400px) {
+              height: 320px;
+            }
+          }
+        `})]})}},E={render:()=>{const[t,s]=n.useState(567),[o,i]=n.useState("start"),[d,f]=n.useState(1e3),g=n.useRef(null);return a("div",{style:{height:"100vh",display:"flex",flexDirection:"column"},children:[a("div",{children:[e("input",{type:"number",value:t,onChange:l=>{s(Number(l.target.value))}}),e("button",{onClick:()=>{var l;(l=g.current)==null||l.scrollToIndex(t,o)},children:"scroll to index"}),e("button",{onClick:()=>{s(Math.round(1e3*Math.random()))},children:"randomize"}),a("label",{style:{marginLeft:4},children:[e("input",{type:"radio",style:{marginLeft:4},checked:o==="start",onChange:()=>{i("start")}}),"start"]}),a("label",{style:{marginLeft:4},children:[e("input",{type:"radio",style:{marginLeft:4},checked:o==="end",onChange:()=>{i("end")}}),"end"]})]}),e("div",{children:a("div",{children:[e("input",{type:"number",value:d,onChange:l=>{f(Number(l.target.value))}}),e("button",{onClick:()=>{var l;(l=g.current)==null||l.scrollTo(d)},children:"scroll to offset"}),e("button",{onClick:()=>{var l;(l=g.current)==null||l.scrollBy(d)},children:"scroll by offset"})]})}),e(h,{ref:g,style:{flex:1},children:k(1e3)})]})}},Ee=({id:r})=>{const t="list-cache-"+r,s=n.useRef(null),[o,i]=n.useMemo(()=>{const d=sessionStorage.getItem(t);return d?JSON.parse(d):[]},[]);return n.useEffect(()=>{if(!s.current)return;const d=s.current;return o&&d.scrollTo(o),()=>{sessionStorage.setItem(t,JSON.stringify([d.scrollOffset,d.cache]))}},[]),e(h,{ref:s,cache:i,style:{height:"100vh"},children:k(1e3)})},V={render:()=>{const[r,t]=n.useState(!0),[s,o]=n.useState("1");return a("div",{children:[e("button",{onClick:()=>{t(i=>!i)},children:r?"hide":"show"}),["1","2","3"].map(i=>a("label",{children:[e("input",{type:"radio",checked:s===i,onChange:()=>{o(i)}}),i]},i)),r&&e(Ee,{id:s},s)]})}},F={render:()=>{const r=(p,m=0)=>{const u=[20,40,80,77];return Array.from({length:p}).map((y,v)=>(v+=m,e("div",{style:{height:u[v%4],borderBottom:"solid 1px #ccc",background:"#fff"},children:v},v)))},[t,s]=n.useState(!1),o=async()=>{s(!0),await Ae(1e3),s(!1)},i=100,[d,f]=n.useState(()=>r(i)),g=n.useRef(-1),l=d.length;return a(h,{style:{flex:1},onRangeChange:async(p,m)=>{m+50>l&&g.current<l&&(g.current=l,await o(),f(u=>[...u,...r(i,u.length)]))},children:[d,t&&e(Le,{})]})}},O={render:()=>{const r=n.useRef(0),t=b=>{const I=[20,40,80,77];return Array.from({length:b}).map(()=>{const S=r.current++;return e("div",{style:{height:I[S%4],borderBottom:"solid 1px #ccc",background:"#fff"},children:S},S)})},[s,o]=n.useState(!1),[i,d]=n.useState(!1),[f,g]=n.useState(!1),l=async(b=!1)=>{o(b);const I=b?d:g;I(!0),await Ae(1e3),I(!1)},p=n.useRef(null),m=100,[u,y]=n.useState(()=>t(m*2)),v=50,c=u.length,x=n.useRef(-1),R=n.useRef(-1),C=n.useRef(!1);return n.useEffect(()=>{var b;(b=p.current)==null||b.scrollToIndex(u.length/2+1),C.current=!0},[]),a(h,{ref:p,style:{flex:1},shift:!!s,onRangeChange:async(b,I)=>{C.current&&(I+v>c&&R.current<c?(R.current=c,await l(),y(S=>[...S,...t(m)])):b-v<0&&x.current<c&&(x.current=c,await l(!0),y(S=>[...t(m).reverse(),...S])))},children:[u,e(Le,{style:f?void 0:{visibility:"hidden"}},"foot")]})}},H={render:()=>{const r=n.useRef(null),t=n.useState(()=>k(1e3))[0],[s,o]=n.useState(0),[i,d]=n.useState(!1),[f,g]=n.useState([-1,-1]),[l,p]=n.useState(!1),[m,u]=n.useState(!1);return n.useEffect(()=>{r.current&&(r.current.scrollOffset===0?p(!0):p(!1),r.current.scrollOffset-r.current.scrollSize+r.current.viewportSize>=-1.5?u(!0):u(!1))},[s]),a("div",{style:{height:"100vh",display:"flex",flexDirection:"column"},children:[a("div",{style:{background:"white",borderBottom:"solid 1px #ccc"},children:[a("div",{children:["scrollTop: ",s]}),a("div",{children:["scrolling: ",i?"true":"false"]}),a("div",{children:["index: (",f[0],", ",f[1],")"]}),a("div",{children:["at top: ",l?"true":"false"]}),a("div",{children:["at bottom: ",m?"true":"false"]})]}),e(h,{ref:r,style:{flex:1},onScroll:y=>{n.startTransition(()=>{o(y),d(!0)})},onScrollStop:()=>{n.startTransition(()=>{d(!1)})},onRangeChange:async(y,v)=>{n.startTransition(()=>{g([y,v])})},children:t})]})}},N={render:()=>{const[r,t]=n.useState({0:!0,3:!0,6:!0,9:!0,12:!0});return e(h,{style:{height:"100vh"},children:Array.from({length:1e3}).map((s,o)=>{const i=!!r[o];return a("div",{style:{borderBottom:"solid 1px #ccc",background:i?"lightpink":"#fff",display:"flex",flexDirection:"row",transition:"0.5s ease"},children:[e("div",{children:e("button",{style:{height:"100%"},onClick:()=>{t(d=>({...d,[o]:!d[o]}))},children:i?"close":"open"})}),e("div",{style:{display:"flex",justifyContent:"center",alignItems:"center",flex:1,height:i?200:40,transition:"0.5s ease"},children:o})]},o)})})}},D={render:()=>{const r=n.useRef(0),t=(c,x)=>Array.from({length:c}).map((R,C)=>(C+=x,{id:r.current++,index:C})),[s,o]=n.useState(!1),[i,d]=n.useState(4),[f,g]=n.useState(!1),[l,p]=n.useState(!0),[m,u]=n.useState(()=>t(i,0)),y=()=>{u(l?c=>{var x,R;return f?[...t(i,(((x=c[0])==null?void 0:x.index)??0)-i),...c]:[...c,...t(i,(((R=c[c.length-1])==null?void 0:R.index)??0)+1)]}:f?c=>c.slice(i):c=>c.slice(0,-i))};n.useEffect(()=>{if(!s)return;const c=setInterval(y,500);return()=>{clearInterval(c)}},[y,s]);const v=[20,40,80,77];return a("div",{style:{height:"100vh",display:"flex",flexDirection:"column"},children:[a("div",{children:[a("label",{style:{marginRight:4},children:[e("input",{type:"radio",style:{marginLeft:4},checked:!f,onChange:()=>{g(!1)}}),"append"]}),a("label",{style:{marginRight:4},children:[e("input",{type:"radio",style:{marginLeft:4},checked:f,onChange:()=>{g(!0)}}),"prepend"]}),a("label",{style:{marginRight:4},children:[e("input",{type:"radio",style:{marginLeft:4},checked:l,onChange:()=>{p(!0)}}),"increase"]}),a("label",{style:{marginRight:4},children:[e("input",{type:"radio",style:{marginLeft:4},checked:!l,onChange:()=>{p(!1)}}),"decrease"]}),e("input",{style:{marginLeft:4},value:i,type:"number",min:1,max:1e4,step:1,onChange:c=>{d(Number(c.target.value))}})]}),a("div",{children:[a("label",{style:{marginRight:16},children:[e("input",{type:"checkbox",style:{marginLeft:4},checked:s,onChange:()=>{o(c=>!c)}}),"auto"]}),e("button",{onClick:()=>{y()},children:"update"})]}),e(h,{style:{flex:1},shift:!!f,children:m.map(c=>e("div",{style:{height:v[Math.abs(c.index)%4],borderBottom:"solid 1px #ccc",background:"#fff"},children:c.index},c.id))})]})}},Ve=n.forwardRef(({children:r,attrs:t,height:s},o)=>e("div",{ref:o,...t,children:e("ul",{style:{position:"relative",height:s,margin:0,overflow:"hidden"},children:r})})),Fe=n.forwardRef(({children:r,style:t},s)=>e("li",{ref:s,style:{...t,marginLeft:30},children:r})),M={render:()=>a("div",{style:{width:400,height:400,border:"solid 1px darkgray",borderRadius:8,background:"lightgray",display:"flex",flexDirection:"column",overflow:"hidden"},children:[e("div",{style:{padding:4},children:"header"}),e(h,{style:{flex:1,background:"#fff"},components:{Root:Ve,Item:Fe},overscan:20,children:Array.from({length:1e3}).map((r,t)=>t)})]})};var U,z,G;w.parameters={...w.parameters,docs:{...(U=w.parameters)==null?void 0:U.docs,source:{originalSource:`{
   render: () => {
     return <VList style={{
       height: "100vh"
     }}>{createRows(1000)}</VList>;
   }
-}`,...(z=(U=T.parameters)==null?void 0:U.docs)==null?void 0:z.source}}};var G,P,j;w.parameters={...w.parameters,docs:{...(G=w.parameters)==null?void 0:G.docs,source:{originalSource:`{
+}`,...(G=(z=w.parameters)==null?void 0:z.docs)==null?void 0:G.source}}};var P,j,$;T.parameters={...T.parameters,docs:{...(P=T.parameters)==null?void 0:P.docs,source:{originalSource:`{
   render: () => {
     return <div style={{
       padding: 10
@@ -17,7 +31,7 @@ import{j as e,a}from"./jsx-runtime-c3d7f245.js";import{r as n}from"./index-c6dae
         </VList>
       </div>;
   }
-}`,...(j=(P=w.parameters)==null?void 0:P.docs)==null?void 0:j.source}}};var $,J,W;L.parameters={...L.parameters,docs:{...($=L.parameters)==null?void 0:$.docs,source:{originalSource:`{
+}`,...($=(j=T.parameters)==null?void 0:j.docs)==null?void 0:$.source}}};var J,W,K;L.parameters={...L.parameters,docs:{...(J=L.parameters)==null?void 0:J.docs,source:{originalSource:`{
   render: () => {
     return <VList style={{
       width: 400,
@@ -40,7 +54,7 @@ import{j as e,a}from"./jsx-runtime-c3d7f245.js";import{r as n}from"./index-c6dae
       })}
       </VList>;
   }
-}`,...(W=(J=L.parameters)==null?void 0:J.docs)==null?void 0:W.source}}};var K,X,q;A.parameters={...A.parameters,docs:{...(K=A.parameters)==null?void 0:K.docs,source:{originalSource:`{
+}`,...(K=(W=L.parameters)==null?void 0:W.docs)==null?void 0:K.source}}};var X,q,Q;A.parameters={...A.parameters,docs:{...(X=A.parameters)==null?void 0:X.docs,source:{originalSource:`{
   render: () => {
     const ref = useRef<VListHandle>(null);
     useEffect(() => {
@@ -52,7 +66,7 @@ import{j as e,a}from"./jsx-runtime-c3d7f245.js";import{r as n}from"./index-c6dae
         {createRows(1000)}
       </VList>;
   }
-}`,...(q=(X=A.parameters)==null?void 0:X.docs)==null?void 0:q.source}}};var Q,Y,Z;_.parameters={..._.parameters,docs:{...(Q=_.parameters)==null?void 0:Q.docs,source:{originalSource:`{
+}`,...(Q=(q=A.parameters)==null?void 0:q.docs)==null?void 0:Q.source}}};var Y,Z,ee;_.parameters={..._.parameters,docs:{...(Y=_.parameters)==null?void 0:Y.docs,source:{originalSource:`{
   render: () => {
     return <VList style={{
       height: "100vh"
@@ -84,7 +98,42 @@ import{j as e,a}from"./jsx-runtime-c3d7f245.js";import{r as n}from"./index-c6dae
       })}
       </VList>;
   }
-}`,...(Z=(Y=_.parameters)==null?void 0:Y.docs)==null?void 0:Z.source}}};var ee,ne,te;B.parameters={...B.parameters,docs:{...(ee=B.parameters)==null?void 0:ee.docs,source:{originalSource:`{
+}`,...(ee=(Z=_.parameters)==null?void 0:Z.docs)==null?void 0:ee.source}}};var ne,te,re;B.parameters={...B.parameters,docs:{...(ne=B.parameters)==null?void 0:ne.docs,source:{originalSource:`{
+  render: () => {
+    const itemClass = "item";
+    return <>
+        <VList style={{
+        height: "100vh"
+      }}>
+          {Array.from({
+          length: 1000
+        }).map((_, i) => {
+          return <div key={i} className={itemClass} style={{
+            borderBottom: "solid 1px #ccc",
+            background: "#fff"
+          }}>
+                {i}
+              </div>;
+        })}
+        </VList>
+        <style>{\`
+          .\${itemClass} {
+            height: 40px;
+
+            @media (max-width: 1024px) {
+              height: 80px;
+            }
+            @media (max-width: 700px) {
+              height: 160px;
+            }
+            @media (max-width: 400px) {
+              height: 320px;
+            }
+          }
+        \`}</style>
+      </>;
+  }
+}`,...(re=(te=B.parameters)==null?void 0:te.docs)==null?void 0:re.source}}};var se,oe,ie;E.parameters={...E.parameters,docs:{...(se=E.parameters)==null?void 0:se.docs,source:{originalSource:`{
   render: () => {
     const LENGTH = 1000;
     const [scrollIndex, setScrollIndex] = useState(567);
@@ -155,7 +204,7 @@ import{j as e,a}from"./jsx-runtime-c3d7f245.js";import{r as n}from"./index-c6dae
         </VList>
       </div>;
   }
-}`,...(te=(ne=B.parameters)==null?void 0:ne.docs)==null?void 0:te.source}}};var re,se,oe;E.parameters={...E.parameters,docs:{...(re=E.parameters)==null?void 0:re.docs,source:{originalSource:`{
+}`,...(ie=(oe=E.parameters)==null?void 0:oe.docs)==null?void 0:ie.source}}};var ae,ce,le;V.parameters={...V.parameters,docs:{...(ae=V.parameters)==null?void 0:ae.docs,source:{originalSource:`{
   render: () => {
     const [show, setShow] = useState(true);
     const [selectedId, setSelectedId] = useState("1");
@@ -174,7 +223,7 @@ import{j as e,a}from"./jsx-runtime-c3d7f245.js";import{r as n}from"./index-c6dae
         {show && <RestorableList key={selectedId} id={selectedId} />}
       </div>;
   }
-}`,...(oe=(se=E.parameters)==null?void 0:se.docs)==null?void 0:oe.source}}};var ie,ce,ae;O.parameters={...O.parameters,docs:{...(ie=O.parameters)==null?void 0:ie.docs,source:{originalSource:`{
+}`,...(le=(ce=V.parameters)==null?void 0:ce.docs)==null?void 0:le.source}}};var de,ue,he;F.parameters={...F.parameters,docs:{...(de=F.parameters)==null?void 0:de.docs,source:{originalSource:`{
   render: () => {
     const createRows = (num: number, offset: number = 0) => {
       const heights = [20, 40, 80, 77];
@@ -214,7 +263,7 @@ import{j as e,a}from"./jsx-runtime-c3d7f245.js";import{r as n}from"./index-c6dae
         {fetching && <Spinner />}
       </VList>;
   }
-}`,...(ae=(ce=O.parameters)==null?void 0:ce.docs)==null?void 0:ae.source}}};var le,de,ue;V.parameters={...V.parameters,docs:{...(le=V.parameters)==null?void 0:le.docs,source:{originalSource:`{
+}`,...(he=(ue=F.parameters)==null?void 0:ue.docs)==null?void 0:he.source}}};var fe,ge,pe;O.parameters={...O.parameters,docs:{...(fe=O.parameters)==null?void 0:fe.docs,source:{originalSource:`{
   render: () => {
     const id = useRef(0);
     const createRows = (num: number) => {
@@ -279,7 +328,7 @@ import{j as e,a}from"./jsx-runtime-c3d7f245.js";import{r as n}from"./index-c6dae
       }} />
       </VList>;
   }
-}`,...(ue=(de=V.parameters)==null?void 0:de.docs)==null?void 0:ue.source}}};var he,fe,ge;F.parameters={...F.parameters,docs:{...(he=F.parameters)==null?void 0:he.docs,source:{originalSource:`{
+}`,...(pe=(ge=O.parameters)==null?void 0:ge.docs)==null?void 0:pe.source}}};var me,ye,ve;H.parameters={...H.parameters,docs:{...(me=H.parameters)==null?void 0:me.docs,source:{originalSource:`{
   render: () => {
     const ref = useRef<VListHandle>(null);
     const items = useState(() => createRows(1000))[0];
@@ -340,7 +389,7 @@ import{j as e,a}from"./jsx-runtime-c3d7f245.js";import{r as n}from"./index-c6dae
         </VList>
       </div>;
   }
-}`,...(ge=(fe=F.parameters)==null?void 0:fe.docs)==null?void 0:ge.source}}};var pe,me,ye;H.parameters={...H.parameters,docs:{...(pe=H.parameters)==null?void 0:pe.docs,source:{originalSource:`{
+}`,...(ve=(ye=H.parameters)==null?void 0:ye.docs)==null?void 0:ve.source}}};var be,xe,Se;N.parameters={...N.parameters,docs:{...(be=N.parameters)==null?void 0:be.docs,source:{originalSource:`{
   render: () => {
     const [actives, setActives] = useState<{
       [key: number]: boolean;
@@ -391,7 +440,7 @@ import{j as e,a}from"./jsx-runtime-c3d7f245.js";import{r as n}from"./index-c6dae
       })}
       </VList>;
   }
-}`,...(ye=(me=H.parameters)==null?void 0:me.docs)==null?void 0:ye.source}}};var ve,be,Se;N.parameters={...N.parameters,docs:{...(ve=N.parameters)==null?void 0:ve.docs,source:{originalSource:`{
+}`,...(Se=(xe=N.parameters)==null?void 0:xe.docs)==null?void 0:Se.source}}};var Re,Ie,Ce;D.parameters={...D.parameters,docs:{...(Re=D.parameters)==null?void 0:Re.docs,source:{originalSource:`{
   render: () => {
     const id = useRef(0);
     const createRows = (num: number, offset: number) => {
@@ -511,7 +560,7 @@ import{j as e,a}from"./jsx-runtime-c3d7f245.js";import{r as n}from"./index-c6dae
         </VList>
       </div>;
   }
-}`,...(Se=(be=N.parameters)==null?void 0:be.docs)==null?void 0:Se.source}}};var xe,Re,Ie;D.parameters={...D.parameters,docs:{...(xe=D.parameters)==null?void 0:xe.docs,source:{originalSource:`{
+}`,...(Ce=(Ie=D.parameters)==null?void 0:Ie.docs)==null?void 0:Ce.source}}};var ke,we,Te;M.parameters={...M.parameters,docs:{...(ke=M.parameters)==null?void 0:ke.docs,source:{originalSource:`{
   render: () => {
     return <div style={{
       width: 400,
@@ -539,5 +588,5 @@ import{j as e,a}from"./jsx-runtime-c3d7f245.js";import{r as n}from"./index-c6dae
         </VList>
       </div>;
   }
-}`,...(Ie=(Re=D.parameters)==null?void 0:Re.docs)==null?void 0:Ie.source}}};const De=["Default","Horizontal","PaddingAndMargin","Reverse","Sticky","ScrollTo","ScrollRestoration","InfiniteScrolling","BiDirectionalInfiniteScrolling","Statuses","WithState","IncreasingItems","Ul"];export{V as BiDirectionalInfiniteScrolling,T as Default,w as Horizontal,N as IncreasingItems,O as InfiniteScrolling,L as PaddingAndMargin,A as Reverse,E as ScrollRestoration,B as ScrollTo,F as Statuses,_ as Sticky,D as Ul,H as WithState,De as __namedExportsOrder,Ne as default};
-//# sourceMappingURL=VList.stories-814ad5e4.js.map
+}`,...(Te=(we=M.parameters)==null?void 0:we.docs)==null?void 0:Te.source}}};const Pe=["Default","Horizontal","PaddingAndMargin","Reverse","Sticky","Responsive","ScrollTo","ScrollRestoration","InfiniteScrolling","BiDirectionalInfiniteScrolling","Statuses","WithState","IncreasingItems","Ul"];export{O as BiDirectionalInfiniteScrolling,w as Default,T as Horizontal,D as IncreasingItems,F as InfiniteScrolling,L as PaddingAndMargin,B as Responsive,A as Reverse,V as ScrollRestoration,E as ScrollTo,H as Statuses,_ as Sticky,M as Ul,N as WithState,Pe as __namedExportsOrder,Ge as default};
+//# sourceMappingURL=VList.stories-651c275f.js.map
