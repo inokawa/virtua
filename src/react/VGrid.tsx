@@ -37,7 +37,7 @@ import {
 import { createGridResizer, GridResizer } from "../core/resizer";
 import { Viewport as DefaultViewport } from "./Viewport";
 import { flushSync } from "react-dom";
-import { isRtlDocument } from "../core/environment";
+import { isRTLDocument } from "../core/environment";
 
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
@@ -132,7 +132,7 @@ const Cell = memo(
             padding: 0,
             position: "absolute",
             top: top,
-            [isRtlDocument() ? "right" : "left"]: left,
+            [isRTLDocument() ? "right" : "left"]: left,
             visibility: vHide || hHide ? "hidden" : "visible",
             minHeight: height,
             minWidth: width,

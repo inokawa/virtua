@@ -8,7 +8,7 @@ export const isBrowser = typeof window !== "undefined";
 // -100  0     true    spec compliant
 // 0     100   false   probably Chrome earlier than v85
 // https://github.com/othree/jquery.rtl-scroll-type
-export const hasNegativeOffsetInRtl = /*#__PURE__*/ once(
+export const hasNegativeOffsetInRTL = /*#__PURE__*/ once(
   (scrollable: HTMLElement): boolean => {
     const key = "scrollLeft";
     const prev = scrollable[key];
@@ -20,7 +20,7 @@ export const hasNegativeOffsetInRtl = /*#__PURE__*/ once(
   }
 );
 
-export const isRtlDocument = /*#__PURE__*/ once((): boolean => {
+export const isRTLDocument = /*#__PURE__*/ once((): boolean => {
   // TODO support SSR in rtl
   return isBrowser ? computeStyle(document.body).direction === "rtl" : false;
 });

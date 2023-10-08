@@ -6,7 +6,7 @@ jest.mock("../core/environment", () => {
   const originalModule = jest.requireActual("../core/environment");
   return {
     ...(originalModule as any),
-    isRtlDocument: () => true,
+    isRTLDocument: () => true,
   };
 });
 

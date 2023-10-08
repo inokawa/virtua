@@ -1,4 +1,4 @@
-import { hasNegativeOffsetInRtl, isRtlDocument } from "./environment";
+import { hasNegativeOffsetInRTL, isRTLDocument } from "./environment";
 import {
   ACTION_SCROLL,
   ACTION_BEFORE_MANUAL_SCROLL,
@@ -40,13 +40,13 @@ const createOnWheel = (
   }, 50);
 };
 
-const normalizeRtlOffset = (
+const normalizeRTLOffset = (
   rootElement: HTMLElement,
   store: VirtualStore,
   offset: number,
   diff?: boolean
 ): number => {
-  if (hasNegativeOffsetInRtl(rootElement)) {
+  if (hasNegativeOffsetInRTL(rootElement)) {
     return -offset;
   } else {
     return diff ? -offset : store._getScrollOffsetMax() - offset;
@@ -70,8 +70,8 @@ export const createScroller = (
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
 
   const normalizeOffset = (offset: number, diff?: boolean): number => {
-    if (isHorizontal && isRtlDocument()) {
-      return normalizeRtlOffset(rootElement!, store, offset, diff);
+    if (isHorizontal && isRTLDocument()) {
+      return normalizeRTLOffset(rootElement!, store, offset, diff);
     }
     return offset;
   };
@@ -203,8 +203,8 @@ export const createWindowScroller = (
   const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
 
   const normalizeOffset = (offset: number, diff?: boolean): number => {
-    if (isHorizontal && isRtlDocument()) {
-      return normalizeRtlOffset(rootElement!, store, offset, diff);
+    if (isHorizontal && isRTLDocument()) {
+      return normalizeRTLOffset(rootElement!, store, offset, diff);
     }
     return offset;
   };
@@ -218,7 +218,7 @@ export const createWindowScroller = (
       const getOffsetToWindow = (node: HTMLElement, offset: number): number => {
         const nodeOffset =
           offset +
-          (isHorizontal && isRtlDocument()
+          (isHorizontal && isRTLDocument()
             ? window.innerWidth - node[offsetKey] - node.offsetWidth
             : node[offsetKey]);
 

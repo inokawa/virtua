@@ -11,7 +11,7 @@ import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { useSelector } from "./useSelector";
 import { ListResizer } from "../core/resizer";
 import { refKey } from "./utils";
-import { isRtlDocument } from "../core/environment";
+import { isRTLDocument } from "../core/environment";
 
 /**
  * Props of customized item component for {@link VList}.
@@ -68,7 +68,7 @@ export const ListItem = memo(
       <Element
         ref={ref}
         style={useMemo((): CSSProperties => {
-          const leftOrRightKey = isRtlDocument() ? "right" : "left";
+          const leftOrRightKey = isRTLDocument() ? "right" : "left";
           const style: CSSProperties = {
             margin: 0,
             padding: 0,
