@@ -24,7 +24,6 @@
 ### Type Aliases
 
 - [ScrollToIndexAlign](API.md#scrolltoindexalign)
-- [ScrollMode](API.md#scrollmode)
 - [CustomCellComponent](API.md#customcellcomponent)
 - [ViewportComponentAttributes](API.md#viewportcomponentattributes)
 - [CustomViewportComponent](API.md#customviewportcomponent)
@@ -109,17 +108,7 @@ Alignment of item when calling scrollToIndex method.
 
 #### Defined in
 
-[src/core/types.ts:25](https://github.com/inokawa/virtua/blob/c2ef64d1/src/core/types.ts#L25)
-
-___
-
-### ScrollMode
-
-Ƭ **ScrollMode**: ``"reverse"`` \| ``"rtl"``
-
-#### Defined in
-
-[src/react/VList.tsx:46](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/VList.tsx#L46)
+[src/core/types.ts:25](https://github.com/inokawa/virtua/blob/257e20bb/src/core/types.ts#L25)
 
 ___
 
@@ -129,7 +118,7 @@ ___
 
 #### Defined in
 
-[src/react/VGrid.tsx:51](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/VGrid.tsx#L51)
+[src/react/VGrid.tsx:52](https://github.com/inokawa/virtua/blob/257e20bb/src/react/VGrid.tsx#L52)
 
 ___
 
@@ -139,7 +128,7 @@ ___
 
 #### Defined in
 
-[src/react/Viewport.tsx:9](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/Viewport.tsx#L9)
+[src/react/Viewport.tsx:9](https://github.com/inokawa/virtua/blob/257e20bb/src/react/Viewport.tsx#L9)
 
 ___
 
@@ -149,7 +138,7 @@ ___
 
 #### Defined in
 
-[src/react/Viewport.tsx:63](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/Viewport.tsx#L63)
+[src/react/Viewport.tsx:63](https://github.com/inokawa/virtua/blob/257e20bb/src/react/Viewport.tsx#L63)
 
 ___
 
@@ -159,4 +148,4 @@ ___
 
 #### Defined in
 
-[src/react/ListItem.tsx:23](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/ListItem.tsx#L23)
+[src/react/ListItem.tsx:24](https://github.com/inokawa/virtua/blob/257e20bb/src/react/ListItem.tsx#L24)

@@ -18,7 +18,7 @@ Props of [VList](../API.md#vlist).
 - [initialItemCount](VListProps.md#initialitemcount)
 - [shift](VListProps.md#shift)
 - [horizontal](VListProps.md#horizontal)
-- [mode](VListProps.md#mode)
+- [reverse](VListProps.md#reverse)
 - [cache](VListProps.md#cache)
 - [components](VListProps.md#components)
 - [onScroll](VListProps.md#onscroll)
@@ -93,7 +93,7 @@ Elements rendered by this component.
 
 #### Defined in
 
-[src/react/VList.tsx:97](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/VList.tsx#L97)
+[src/react/VList.tsx:95](https://github.com/inokawa/virtua/blob/257e20bb/src/react/VList.tsx#L95)
 
 ___
 
@@ -109,7 +109,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/react/VList.tsx:102](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/VList.tsx#L102)
+[src/react/VList.tsx:100](https://github.com/inokawa/virtua/blob/257e20bb/src/react/VList.tsx#L100)
 
 ___
 
@@ -124,7 +124,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/react/VList.tsx:109](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/VList.tsx#L109)
+[src/react/VList.tsx:107](https://github.com/inokawa/virtua/blob/257e20bb/src/react/VList.tsx#L107)
 
 ___
 
@@ -136,7 +136,7 @@ If set, the specified amount of items will be mounted in the initial rendering r
 
 #### Defined in
 
-[src/react/VList.tsx:113](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/VList.tsx#L113)
+[src/react/VList.tsx:111](https://github.com/inokawa/virtua/blob/257e20bb/src/react/VList.tsx#L111)
 
 ___
 
@@ -148,7 +148,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/react/VList.tsx:117](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/VList.tsx#L117)
+[src/react/VList.tsx:115](https://github.com/inokawa/virtua/blob/257e20bb/src/react/VList.tsx#L115)
 
 ___
 
@@ -160,22 +160,19 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/VList.tsx:121](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/VList.tsx#L121)
+[src/react/VList.tsx:119](https://github.com/inokawa/virtua/blob/257e20bb/src/react/VList.tsx#L119)
 
 ___
 
-### mode
+### reverse
 
-• `Optional` **mode**: [`ScrollMode`](../API.md#scrollmode)
+• `Optional` **reverse**: `boolean`
 
-Scroll modes that should be set in certain situations.
-
-- `reverse`: This mode will adjust some styles to be suitable for bottom-to-top scrolling.
-- `rtl`: You have to set this mode if you use this component under `direction: rtl` style.
+If true, some styles will be adjusted to be suitable for bottom-to-top scrolling.
 
 #### Defined in
 
-[src/react/VList.tsx:128](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/VList.tsx#L128)
+[src/react/VList.tsx:123](https://github.com/inokawa/virtua/blob/257e20bb/src/react/VList.tsx#L123)
 
 ___
 
@@ -187,7 +184,7 @@ You can restore cache by passing a [CacheSnapshot](CacheSnapshot.md) on mount. T
 
 #### Defined in
 
-[src/react/VList.tsx:132](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/VList.tsx#L132)
+[src/react/VList.tsx:127](https://github.com/inokawa/virtua/blob/257e20bb/src/react/VList.tsx#L127)
 
 ___
 
@@ -206,7 +203,7 @@ Customized components for advanced usage.
 
 #### Defined in
 
-[src/react/VList.tsx:136](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/VList.tsx#L136)
+[src/react/VList.tsx:131](https://github.com/inokawa/virtua/blob/257e20bb/src/react/VList.tsx#L131)
 
 ___
 
@@ -232,7 +229,7 @@ Callback invoked whenever scroll offset changes.
 
 #### Defined in
 
-[src/react/VList.tsx:152](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/VList.tsx#L152)
+[src/react/VList.tsx:147](https://github.com/inokawa/virtua/blob/257e20bb/src/react/VList.tsx#L147)
 
 ___
 
@@ -252,7 +249,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/react/VList.tsx:156](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/VList.tsx#L156)
+[src/react/VList.tsx:151](https://github.com/inokawa/virtua/blob/257e20bb/src/react/VList.tsx#L151)
 
 ___
 
@@ -279,7 +276,7 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/react/VList.tsx:160](https://github.com/inokawa/virtua/blob/c2ef64d1/src/react/VList.tsx#L160)
+[src/react/VList.tsx:155](https://github.com/inokawa/virtua/blob/257e20bb/src/react/VList.tsx#L155)
 
 ___
 
