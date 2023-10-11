@@ -33,7 +33,6 @@ type ImageData = {
   type: "image";
   id: number;
   src: string;
-  size: number;
 };
 
 type Data = TextData | ImageData;
@@ -58,7 +57,6 @@ export const Default: StoryObj = {
             type: "image",
             id: id.current++,
             src: faker.image.url(),
-            size: 100 * (Math.floor(Math.random() * 4) + 1),
           };
     };
     const createItems = (num: number) => range(num, createItem);
@@ -84,9 +82,7 @@ export const Default: StoryObj = {
         items.map((d) => (
           <Item
             key={d.id}
-            content={
-              d.type === "image" ? <img src={d.src} height={d.size} /> : d.value
-            }
+            content={d.type === "image" ? <img src={d.src} /> : d.value}
           />
         )),
       [items]
