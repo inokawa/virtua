@@ -104,7 +104,7 @@ export const createVirtualStore = (
   let jumpCount = 0;
   let jump: ScrollJump = 0;
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
-  let _isShifting = false;
+  let _isManualScrollPremeasuring = false;
   let _isManualScrolling = false;
   let _resized = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
@@ -211,8 +211,8 @@ export const createVirtualStore = (
 
           // Calculate jump
           let diff = 0;
-          if (_isShifting || _isManualScrolling) {
-            // Should maintain visible position under specific situations
+          if (!_isManualScrollPremeasuring) {
+            // Should maintain visible position to minimize junks in appearance
             const [startIndex] = _prevRange;
 
             if (scrollOffset === 0) {
@@ -230,12 +230,8 @@ export const createVirtualStore = (
                 updated.filter(([index]) => index < startIndex)
               );
             }
-          } else if (_scrollDirection === SCROLL_UP) {
-            // We can assume jumps occurred on the upper outside during reverse scrolling
-            diff = calculateJump(cache, updated);
-          } else {
-            // Do nothing
           }
+
           if (diff) {
             jump = diff;
             jumpCount++;
@@ -286,7 +282,6 @@ export const createVirtualStore = (
             jumpCount++;
 
             mutated = UPDATE_SCROLL + UPDATE_JUMP;
-            _isShifting = true;
           } else {
             updateCacheLength(cache as Writeable<Cache>, payload[0]);
           }
@@ -324,10 +319,8 @@ export const createVirtualStore = (
             shouldSync = abs(delta) > viewportSize;
 
             mutated += UPDATE_SCROLL_WITH_EVENT;
-
-            if (!isJustResized) {
-              _isShifting = false;
-            }
+          } else {
+            _isManualScrollPremeasuring = true;
           }
 
           scrollOffset = clampScrollOffset(payload);
@@ -338,10 +331,11 @@ export const createVirtualStore = (
           if (updateScrollDirection(SCROLL_IDLE)) {
             mutated = UPDATE_SCROLL_DIRECTION;
           }
-          _isShifting = _isManualScrolling = false;
+          _isManualScrolling = _isManualScrollPremeasuring = false;
           break;
         }
         case ACTION_MANUAL_SCROLL: {
+          _isManualScrollPremeasuring = false;
           _isManualScrolling = true;
           break;
         }
