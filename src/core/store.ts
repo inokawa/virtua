@@ -209,11 +209,10 @@ export const createVirtualStore = (
             break;
           }
 
-          // Calculate jump
-          let diff = 0;
           if (!_isManualScrollPremeasuring) {
+            // Calculate jump
             // Should maintain visible position to minimize junks in appearance
-            const [startIndex] = _prevRange;
+            let diff = 0;
 
             if (scrollOffset === 0) {
               // Do nothing to stick to the start
@@ -224,18 +223,19 @@ export const createVirtualStore = (
               // Keep end to stick to the end
               diff = calculateJump(cache, updated, true);
             } else {
+              const [startIndex] = _prevRange;
               // Keep start at mid
               diff = calculateJump(
                 cache,
                 updated.filter(([index]) => index < startIndex)
               );
             }
-          }
 
-          if (diff) {
-            jump = diff;
-            jumpCount++;
-            mutated += UPDATE_JUMP;
+            if (diff) {
+              jump = diff;
+              jumpCount++;
+              mutated += UPDATE_JUMP;
+            }
           }
 
           // Update item sizes
