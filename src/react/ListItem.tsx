@@ -68,14 +68,14 @@ export const ListItem = memo(
       <Element
         ref={ref}
         style={useMemo((): CSSProperties => {
-          const leftOrRightKey = isRTLDocument() ? "right" : "left";
           const style: CSSProperties = {
             margin: 0,
             padding: 0,
             position: "absolute",
             [isHorizontal ? "height" : "width"]: "100%",
-            [isHorizontal ? "top" : leftOrRightKey]: 0,
-            [isHorizontal ? leftOrRightKey : "top"]: offset,
+            [isHorizontal ? "top" : "left"]: 0,
+            [isHorizontal ? (isRTLDocument() ? "right" : "left") : "top"]:
+              offset,
             visibility: hide ? "hidden" : "visible",
             // willChange: "transform",
           };
