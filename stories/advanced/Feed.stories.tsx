@@ -82,7 +82,13 @@ export const Default: StoryObj = {
         items.map((d) => (
           <Item
             key={d.id}
-            content={d.type === "image" ? <img src={d.src} /> : d.value}
+            content={
+              d.type === "image" ? (
+                <img src={d.src} style={{ maxWidth: "100%" }} />
+              ) : (
+                d.value
+              )
+            }
           />
         )),
       [items]
