@@ -9,15 +9,12 @@ import {
 } from "react";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
-  UPDATE_SCROLL_DIRECTION,
-  UPDATE_JUMP,
-  UPDATE_SCROLL,
-  UPDATE_SIZE,
+  UPDATE_SCROLL_STATE,
+  UPDATE_SIZE_STATE,
   createVirtualStore,
   SCROLL_IDLE,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { useSelector } from "./useSelector";
 import { exists, values } from "../core/utils";
 import { createWindowScroller } from "../core/scroller";
 import {
@@ -40,6 +37,7 @@ import {
 import { CustomItemComponent, ListItem } from "./ListItem";
 import { Cache } from "../core/cache";
 import { flushSync } from "react-dom";
+import { useRerender } from "./useRerender";
 
 type CustomItemComponentOrElement =
   | keyof JSX.IntrinsicElements
@@ -155,7 +153,6 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
     const [store, resizer, scroller, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
       const _store = createVirtualStore(
-        flushSync,
         count,
         initialItemSize,
         initialItemCount,
@@ -176,33 +173,34 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
       store._update(ACTION_ITEMS_LENGTH_CHANGE, [count]);
     }
 
-    const [startIndex, endIndex] = useSelector(
-      store,
-      store._getRange,
-      UPDATE_SCROLL + UPDATE_SIZE
-    );
-    const scrollDirection = useSelector(
-      store,
-      store._getScrollDirection,
-      UPDATE_SCROLL_DIRECTION
-    );
-    const jumpCount = useSelector(store, store._getJumpCount, UPDATE_JUMP);
-    const scrollSize = useSelector(
-      store,
-      store._getCorrectedScrollSize,
-      UPDATE_SIZE,
-      true
-    );
+    const rerender = useRerender();
+
+    const [startIndex, endIndex] = store._getRange();
+    const scrollDirection = store._getScrollDirection();
+    const jumpCount = store._getJumpCount();
+    const scrollSize = store._getCorrectedScrollSize();
+
     const rootRef = useRef<HTMLDivElement>(null);
     const scrolling = scrollDirection !== SCROLL_IDLE;
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
-      const unobserve = resizer._observeRoot(root);
-      const cleanup = scroller._initRoot(root);
+      const cleanupResizer = resizer._observeRoot(root);
+      const cleanupScroller = scroller._initRoot(root);
+      const unsubscribeStore = store._subscribe(
+        UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
+        (sync) => {
+          if (sync) {
+            flushSync(rerender);
+          } else {
+            rerender();
+          }
+        }
+      );
       return () => {
-        unobserve();
-        cleanup();
+        cleanupResizer();
+        cleanupScroller();
+        unsubscribeStore;
       };
     }, []);
 
@@ -248,25 +246,24 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
       scrollDirection,
       count
     );
-    const items = useMemo(() => {
-      const res: ReactElement[] = [];
-      for (let i = overscanedStartIndex; i <= overscanedEndIndex; i++) {
-        const e = elements[i]!;
-        const key = (e as MayHaveKey).key;
-        res.push(
-          <ListItem
-            key={exists(key) ? key : "_" + i}
-            _resizer={resizer}
-            _store={store}
-            _index={i}
-            _element={ItemElement as "div"}
-            _children={e}
-            _isHorizontal={isHorizontal}
-          />
-        );
-      }
-      return res;
-    }, [elements, overscanedStartIndex, overscanedEndIndex]);
+
+    const items: ReactElement[] = [];
+    for (let i = overscanedStartIndex; i <= overscanedEndIndex; i++) {
+      const e = elements[i]!;
+      const key = (e as MayHaveKey).key;
+      items.push(
+        <ListItem
+          key={exists(key) ? key : "_" + i}
+          _resizer={resizer}
+          _index={i}
+          _offset={store._getItemOffset(i)}
+          _hide={store._isUnmeasuredItem(i)}
+          _element={ItemElement as "div"}
+          _children={e}
+          _isHorizontal={isHorizontal}
+        />
+      );
+    }
 
     return (
       <Viewport

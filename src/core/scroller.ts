@@ -5,7 +5,7 @@ import {
   ScrollJump,
   VirtualStore,
   ACTION_SCROLL_END,
-  UPDATE_SIZE,
+  UPDATE_SIZE_STATE,
   ACTION_MANUAL_SCROLL,
   SCROLL_IDLE,
 } from "./store";
@@ -100,7 +100,7 @@ export const createScroller = (
       }
 
       // Wait for the scroll destination items to be measured.
-      const unsubscribe = store._subscribe(UPDATE_SIZE, () => {
+      const unsubscribe = store._subscribe(UPDATE_SIZE_STATE, () => {
         scrollToQueue && scrollToQueue[0]();
       });
       try {

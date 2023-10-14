@@ -104,7 +104,7 @@ describe("render count", () => {
       </Profiler>
     );
 
-    expect(rootFn).toBeCalledTimes(2);
+    expect(rootFn).toBeCalledTimes(1);
     itemFns.forEach((itemFn) => {
       expect(itemFn).toHaveBeenCalledTimes(1);
     });
@@ -130,7 +130,7 @@ describe("render count", () => {
       </Profiler>
     );
 
-    expect(rootFn).toBeCalledTimes(3);
+    expect(rootFn).toBeCalledTimes(1);
     itemFns.forEach((itemFn) => {
       expect(itemFn.mock.calls.length).toBeLessThanOrEqual(1);
     });
@@ -185,7 +185,7 @@ describe("render count", () => {
       </Mounter>
     );
 
-    expect(rootFn).toBeCalledTimes(2);
+    expect(rootFn).toBeCalledTimes(1);
     itemFns.forEach((itemFn, i) => {
       expect(itemFn).toBeCalledTimes(i === itemFns.length - 1 ? 0 : 1);
     });
@@ -240,7 +240,7 @@ describe("render count", () => {
       </Mounter>
     );
 
-    expect(rootFn).toBeCalledTimes(3);
+    expect(rootFn).toBeCalledTimes(2);
     itemFns.forEach((itemFn) => {
       expect(itemFn.mock.calls.length).toBeLessThanOrEqual(2); // TODO: should be 1
     });

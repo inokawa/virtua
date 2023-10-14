@@ -6,118 +6,69 @@ exports[`rtl should work 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="position: relative; visibility: hidden; width: 10000px; height: 4040px; pointer-events: auto;"
+      style="position: relative; visibility: hidden; width: 10000px; height: 4000px; pointer-events: auto;"
     >
       <div
-        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 0px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
+        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 0px; right: 0px; visibility: hidden; min-height: 40px; min-width: 100px;"
       >
         <div>
           0 / 0
         </div>
       </div>
       <div
-        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 0px; right: 100px; visibility: visible; min-height: 50px; min-width: 100px;"
+        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 0px; right: 100px; visibility: hidden; min-height: 40px; min-width: 100px;"
       >
         <div>
           0 / 1
         </div>
       </div>
       <div
-        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 0px; right: 200px; visibility: visible; min-height: 50px; min-width: 100px;"
+        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 0px; right: 200px; visibility: hidden; min-height: 40px; min-width: 100px;"
       >
         <div>
           0 / 2
         </div>
       </div>
       <div
-        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 0px; right: 300px; visibility: visible; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          0 / 3
-        </div>
-      </div>
-      <div
-        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 50px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
+        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 40px; right: 0px; visibility: hidden; min-height: 40px; min-width: 100px;"
       >
         <div>
           1 / 0
         </div>
       </div>
       <div
-        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 50px; right: 100px; visibility: visible; min-height: 50px; min-width: 100px;"
+        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 40px; right: 100px; visibility: hidden; min-height: 40px; min-width: 100px;"
       >
         <div>
           1 / 1
         </div>
       </div>
       <div
-        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 50px; right: 200px; visibility: visible; min-height: 50px; min-width: 100px;"
+        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 40px; right: 200px; visibility: hidden; min-height: 40px; min-width: 100px;"
       >
         <div>
           1 / 2
         </div>
       </div>
       <div
-        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 50px; right: 300px; visibility: hidden; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 3
-        </div>
-      </div>
-      <div
-        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 100px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
+        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 80px; right: 0px; visibility: hidden; min-height: 40px; min-width: 100px;"
       >
         <div>
           2 / 0
         </div>
       </div>
       <div
-        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 100px; right: 100px; visibility: visible; min-height: 50px; min-width: 100px;"
+        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 80px; right: 100px; visibility: hidden; min-height: 40px; min-width: 100px;"
       >
         <div>
           2 / 1
         </div>
       </div>
       <div
-        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 100px; right: 200px; visibility: visible; min-height: 50px; min-width: 100px;"
+        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 80px; right: 200px; visibility: hidden; min-height: 40px; min-width: 100px;"
       >
         <div>
           2 / 2
-        </div>
-      </div>
-      <div
-        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 100px; right: 300px; visibility: hidden; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 3
-        </div>
-      </div>
-      <div
-        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 150px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 0
-        </div>
-      </div>
-      <div
-        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 150px; right: 100px; visibility: hidden; min-height: 40px; min-width: 100px;"
-      >
-        <div>
-          3 / 1
-        </div>
-      </div>
-      <div
-        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 150px; right: 200px; visibility: hidden; min-height: 40px; min-width: 100px;"
-      >
-        <div>
-          3 / 2
-        </div>
-      </div>
-      <div
-        style="display: grid; margin: 0px; padding: 0px; position: absolute; top: 150px; right: 300px; visibility: hidden; min-height: 40px; min-width: 100px;"
-      >
-        <div>
-          3 / 3
         </div>
       </div>
     </div>
