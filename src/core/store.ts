@@ -63,13 +63,11 @@ type Actions =
   | [type: typeof ACTION_SCROLL_END, dummy?: void]
   | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void];
 
-type Subscriber = () => void;
+type Subscriber = (sync?: boolean) => void;
 
-export const UPDATE_SCROLL = 0b00001;
-export const UPDATE_SIZE = 0b00010;
-export const UPDATE_JUMP = 0b00100;
-export const UPDATE_SCROLL_DIRECTION = 0b01000;
-export const UPDATE_SCROLL_WITH_EVENT = 0b10000;
+export const UPDATE_SCROLL_STATE = 0b0001;
+export const UPDATE_SIZE_STATE = 0b0010;
+export const UPDATE_SCROLL_WITH_EVENT = 0b0100;
 
 export type VirtualStore = {
   _getCache(): CacheSnapshot;
@@ -91,7 +89,6 @@ export type VirtualStore = {
 };
 
 export const createVirtualStore = (
-  flushSync: (cb: () => void) => void,
   elementsCount: number,
   itemSize: number = 40,
   initialItemCount: number = 0,
@@ -130,17 +127,12 @@ export const createVirtualStore = (
       return JSON.parse(JSON.stringify(cache)) as unknown as CacheSnapshot;
     },
     _getRange() {
-      const [prevStartIndex, prevEndIndex] = _prevRange;
-      const [start, end] = computeRange(
+      return (_prevRange = computeRange(
         cache as Writeable<Cache>,
         scrollOffset,
-        prevStartIndex,
+        _prevRange[0],
         viewportSize
-      );
-      if (prevStartIndex === start && prevEndIndex === end) {
-        return _prevRange;
-      }
-      return (_prevRange = [start, end]);
+      ));
     },
     _isUnmeasuredItem(index) {
       return cache._sizes[index] === UNCACHED;
@@ -234,7 +226,6 @@ export const createVirtualStore = (
             if (diff) {
               jump = diff;
               jumpCount++;
-              mutated += UPDATE_JUMP;
             }
           }
 
@@ -255,14 +246,14 @@ export const createVirtualStore = (
           ) {
             estimateDefaultItemSize(cache as Writeable<Cache>);
           }
-          mutated += UPDATE_SIZE;
+          mutated += UPDATE_SIZE_STATE;
           _resized = shouldSync = true;
           break;
         }
         case ACTION_VIEWPORT_RESIZE: {
           if (viewportSize !== payload) {
             viewportSize = payload;
-            mutated = UPDATE_SIZE;
+            mutated = UPDATE_SIZE_STATE;
           }
           break;
         }
@@ -281,7 +272,7 @@ export const createVirtualStore = (
             scrollOffset = clampScrollOffset(scrollOffset + diff);
             jumpCount++;
 
-            mutated = UPDATE_SCROLL + UPDATE_JUMP;
+            mutated = UPDATE_SCROLL_STATE;
           } else {
             updateCacheLength(cache as Writeable<Cache>, payload[0]);
           }
@@ -307,9 +298,7 @@ export const createVirtualStore = (
               // Ignore until manual scrolling
               !_isManualScrolling
             ) {
-              if (updateScrollDirection(delta < 0 ? SCROLL_UP : SCROLL_DOWN)) {
-                mutated += UPDATE_SCROLL_DIRECTION;
-              }
+              updateScrollDirection(delta < 0 ? SCROLL_UP : SCROLL_DOWN);
             }
 
             // Ignore manual scroll because it may be called in useEffect/useLayoutEffect and cause the warn below.
@@ -324,12 +313,12 @@ export const createVirtualStore = (
           }
 
           scrollOffset = clampScrollOffset(payload);
-          mutated += UPDATE_SCROLL;
+          mutated += UPDATE_SCROLL_STATE;
           break;
         }
         case ACTION_SCROLL_END: {
           if (updateScrollDirection(SCROLL_IDLE)) {
-            mutated = UPDATE_SCROLL_DIRECTION;
+            mutated = UPDATE_SCROLL_STATE;
           }
           _isManualScrolling = _isManualScrollPremeasuring = false;
           break;
@@ -342,22 +331,15 @@ export const createVirtualStore = (
       }
 
       if (mutated) {
-        const update = () => {
-          subscribers.forEach(([target, cb]) => {
-            // Early return to skip React's computation
-            if (!(mutated & target)) {
-              return;
-            }
-            cb();
-          });
-        };
-        if (shouldSync) {
+        subscribers.forEach(([target, cb]) => {
+          // Early return to skip React's computation
+          if (!(mutated & target)) {
+            return;
+          }
           // https://github.com/facebook/react/issues/25191
           // https://github.com/facebook/react/blob/a5fc797db14c6e05d4d5c4dbb22a0dd70d41f5d5/packages/react-reconciler/src/ReactFiberWorkLoop.js#L1443-L1447
-          flushSync(update);
-        } else {
-          update();
-        }
+          cb(shouldSync);
+        });
       }
     },
   };

@@ -10,16 +10,12 @@ import {
 } from "react";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
-  UPDATE_SCROLL_DIRECTION,
-  UPDATE_JUMP,
-  UPDATE_SCROLL,
-  UPDATE_SIZE,
-  VirtualStore,
+  UPDATE_SCROLL_STATE,
+  UPDATE_SIZE_STATE,
   createVirtualStore,
   SCROLL_IDLE,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { useSelector } from "./useSelector";
 import { values } from "../core/utils";
 import { createScroller } from "../core/scroller";
 import {
@@ -38,6 +34,7 @@ import { createGridResizer, GridResizer } from "../core/resizer";
 import { Viewport as DefaultViewport } from "./Viewport";
 import { flushSync } from "react-dom";
 import { isRTLDocument } from "../core/environment";
+import { useRerender } from "./useRerender";
 
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
@@ -60,10 +57,13 @@ type CustomCellComponentOrElement =
 type CellProps = {
   _children: ReactNode;
   _resizer: GridResizer;
-  _vStore: VirtualStore;
-  _hStore: VirtualStore;
   _rowIndex: number;
   _colIndex: number;
+  _top: number;
+  _left: number;
+  _height: number;
+  _width: number;
+  _hide: boolean;
   _element: "div";
 };
 
@@ -71,50 +71,16 @@ const Cell = memo(
   ({
     _children: children,
     _resizer: resizer,
-    _vStore: vStore,
-    _hStore: hStore,
     _rowIndex: rowIndex,
     _colIndex: colIndex,
+    _top: top,
+    _left: left,
+    _height: height,
+    _width: width,
+    _hide: hide,
     _element: Element,
   }: CellProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
-
-    const top = useSelector(
-      vStore,
-      () => vStore._getItemOffset(rowIndex),
-      UPDATE_SIZE,
-      true
-    );
-    const left = useSelector(
-      hStore,
-      () => hStore._getItemOffset(colIndex),
-      UPDATE_SIZE,
-      true
-    );
-    const vHide = useSelector(
-      vStore,
-      () => vStore._isUnmeasuredItem(rowIndex),
-      UPDATE_SIZE,
-      true
-    );
-    const hHide = useSelector(
-      hStore,
-      () => hStore._isUnmeasuredItem(colIndex),
-      UPDATE_SIZE,
-      true
-    );
-    const height = useSelector(
-      vStore,
-      () => vStore._getItemSize(rowIndex),
-      UPDATE_SIZE,
-      true
-    );
-    const width = useSelector(
-      hStore,
-      () => hStore._getItemSize(colIndex),
-      UPDATE_SIZE,
-      true
-    );
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(
@@ -133,12 +99,12 @@ const Cell = memo(
             position: "absolute",
             top: top,
             [isRTLDocument() ? "right" : "left"]: left,
-            visibility: vHide || hHide ? "hidden" : "visible",
+            visibility: hide ? "hidden" : "visible",
             minHeight: height,
             minWidth: width,
           };
           return style;
-        }, [top, left, width, height, vHide, hHide])}
+        }, [top, left, width, height, hide])}
       >
         {children}
       </Element>
@@ -273,18 +239,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     ref
   ): ReactElement => {
     const [vStore, hStore, resizer, vScroller, hScroller] = useStatic(() => {
-      const _vs = createVirtualStore(
-        flushSync,
-        rowCount,
-        cellHeight,
-        initialRowCount
-      );
-      const _hs = createVirtualStore(
-        flushSync,
-        colCount,
-        cellWidth,
-        initialColCount
-      );
+      const _vs = createVirtualStore(rowCount, cellHeight, initialRowCount);
+      const _hs = createVirtualStore(colCount, cellWidth, initialColCount);
       return [
         _vs,
         _hs,
@@ -301,53 +257,46 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       hStore._update(ACTION_ITEMS_LENGTH_CHANGE, [colCount]);
     }
 
-    const [startRowIndex, endRowIndex] = useSelector(
-      vStore,
-      vStore._getRange,
-      UPDATE_SCROLL + UPDATE_SIZE
-    );
-    const [startColIndex, endColIndex] = useSelector(
-      hStore,
-      hStore._getRange,
-      UPDATE_SCROLL + UPDATE_SIZE
-    );
-    const vScrollDirection = useSelector(
-      vStore,
-      vStore._getScrollDirection,
-      UPDATE_SCROLL_DIRECTION
-    );
-    const hScrollDirection = useSelector(
-      hStore,
-      hStore._getScrollDirection,
-      UPDATE_SCROLL_DIRECTION
-    );
-    const vJumpCount = useSelector(vStore, vStore._getJumpCount, UPDATE_JUMP);
-    const hJumpCount = useSelector(hStore, hStore._getJumpCount, UPDATE_JUMP);
-    const height = useSelector(
-      vStore,
-      vStore._getCorrectedScrollSize,
-      UPDATE_SIZE,
-      true
-    );
-    const width = useSelector(
-      hStore,
-      hStore._getCorrectedScrollSize,
-      UPDATE_SIZE,
-      true
-    );
+    const rerender = useRerender();
+
+    const [startRowIndex, endRowIndex] = vStore._getRange();
+    const [startColIndex, endColIndex] = hStore._getRange();
+    const vScrollDirection = vStore._getScrollDirection();
+    const hScrollDirection = hStore._getScrollDirection();
+    const vJumpCount = vStore._getJumpCount();
+    const hJumpCount = hStore._getJumpCount();
+    const height = vStore._getCorrectedScrollSize();
+    const width = hStore._getCorrectedScrollSize();
     const rootRef = useRef<HTMLDivElement>(null);
     const vScrolling = vScrollDirection !== SCROLL_IDLE;
     const hScrolling = hScrollDirection !== SCROLL_IDLE;
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
-      const unobserve = resizer._observeRoot(root);
-      const vCleanup = vScroller._initRoot(root);
-      const hCleanup = hScroller._initRoot(root);
+      const cleanUpResizer = resizer._observeRoot(root);
+      const cleanupVScroller = vScroller._initRoot(root);
+      const cleanupHScroller = hScroller._initRoot(root);
+      const onRerender = (sync?: boolean) => {
+        if (sync) {
+          flushSync(rerender);
+        } else {
+          rerender();
+        }
+      };
+      const unsubscribeVStore = vStore._subscribe(
+        UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
+        onRerender
+      );
+      const unsubscribeHStore = hStore._subscribe(
+        UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
+        onRerender
+      );
       return () => {
-        unobserve();
-        vCleanup();
-        hCleanup();
+        cleanUpResizer();
+        cleanupVScroller();
+        cleanupHScroller();
+        unsubscribeVStore();
+        unsubscribeHStore();
       };
     }, []);
 
@@ -434,33 +383,37 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       colCount
     );
 
-    const items = useMemo(() => {
-      const res: ReactElement[] = [];
-      for (let i = overscanedStartRowIndex; i <= overscanedEndRowIndex; i++) {
-        for (let j = overscanedStartColIndex; j <= overscanedEndColIndex; j++) {
-          res.push(
-            <Cell
-              key={genKey(i, j)}
-              _resizer={resizer}
-              _vStore={vStore}
-              _hStore={hStore}
-              _rowIndex={i}
-              _colIndex={j}
-              _element={ItemElement as "div"}
-              _children={render(i, j)}
-            />
-          );
-        }
+    const items: ReactElement[] = [];
+    for (
+      let rowIndex = overscanedStartRowIndex;
+      rowIndex <= overscanedEndRowIndex;
+      rowIndex++
+    ) {
+      for (
+        let colIndex = overscanedStartColIndex;
+        colIndex <= overscanedEndColIndex;
+        colIndex++
+      ) {
+        items.push(
+          <Cell
+            key={genKey(rowIndex, colIndex)}
+            _resizer={resizer}
+            _rowIndex={rowIndex}
+            _colIndex={colIndex}
+            _top={vStore._getItemOffset(rowIndex)}
+            _left={hStore._getItemOffset(colIndex)}
+            _height={vStore._getItemSize(rowIndex)}
+            _width={hStore._getItemSize(colIndex)}
+            _hide={
+              vStore._isUnmeasuredItem(rowIndex) ||
+              hStore._isUnmeasuredItem(colIndex)
+            }
+            _element={ItemElement as "div"}
+            _children={render(rowIndex, colIndex)}
+          />
+        );
       }
-
-      return res;
-    }, [
-      render,
-      overscanedStartRowIndex,
-      overscanedEndRowIndex,
-      overscanedStartColIndex,
-      overscanedEndColIndex,
-    ]);
+    }
 
     return (
       <Viewport
