@@ -105,6 +105,7 @@
     "grid",
     "table",
     "flex",
+    "scroll",
     "scroller",
     "scrolling",
     "virtual",
