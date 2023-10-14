@@ -15,17 +15,9 @@ Object.defineProperty(HTMLElement.prototype, "offsetParent", {
 });
 
 global.ResizeObserver = class {
-  observers = new Set<Element>();
-  callback: ResizeObserverCallback;
-  constructor(callback: ResizeObserverCallback) {
-    this.callback = callback;
-  }
-  disconnect() {
-    this.observers.clear();
-  }
+  constructor(private callback: ResizeObserverCallback) {}
+  disconnect() {}
   observe(e: HTMLElement) {
-    this.observers.add(e);
-
     const entry: Pick<ResizeObserverEntry, "contentRect" | "target"> = {
       contentRect: {
         top: 0,
@@ -45,17 +37,9 @@ global.ResizeObserver = class {
   unobserve(_target: Element) {}
 };
 global.IntersectionObserver = class {
-  observers = new Set<Element>();
-  callback: IntersectionObserverCallback;
-  constructor(callback: IntersectionObserverCallback) {
-    this.callback = callback;
-  }
-  disconnect() {
-    this.observers.clear();
-  }
-  observe(e: HTMLElement) {
-    this.observers.add(e);
-  }
+  constructor(_callback: IntersectionObserverCallback) {}
+  disconnect() {}
+  observe(_e: HTMLElement) {}
   unobserve() {}
   takeRecords() {
     return [];

@@ -14,18 +14,10 @@ Object.defineProperty(HTMLElement.prototype, "offsetParent", {
 });
 
 global.ResizeObserver = class {
-  observers = new Set<Element>();
-  callback: ResizeObserverCallback;
   first = false;
-  constructor(callback: ResizeObserverCallback) {
-    this.callback = callback;
-  }
-  disconnect() {
-    this.observers.clear();
-  }
+  constructor(private callback: ResizeObserverCallback) {}
+  disconnect() {}
   observe(e: HTMLElement) {
-    this.observers.add(e);
-
     const entry: Pick<ResizeObserverEntry, "contentRect" | "target"> = {
       contentRect: {
         top: 0,
