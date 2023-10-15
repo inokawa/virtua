@@ -29,11 +29,11 @@ import {
 import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
 import { createResizer } from "../core/resizer";
-import { ViewportComponentAttributes } from "..";
 import {
   CustomViewportComponent,
   CustomViewportComponentProps,
   Viewport as DefaultViewport,
+  ViewportComponentAttributes,
 } from "./Viewport";
 import { CustomItemComponent, ListItem } from "./ListItem";
 import { CacheSnapshot, ScrollToIndexAlign } from "../core/types";

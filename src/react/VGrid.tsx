@@ -25,13 +25,13 @@ import {
   refKey,
 } from "./utils";
 import { useStatic } from "./useStatic";
+import { createGridResizer, GridResizer } from "../core/resizer";
 import {
+  Viewport as DefaultViewport,
   CustomViewportComponent,
   CustomViewportComponentProps,
   ViewportComponentAttributes,
-} from "..";
-import { createGridResizer, GridResizer } from "../core/resizer";
-import { Viewport as DefaultViewport } from "./Viewport";
+} from "./Viewport";
 import { flushSync } from "react-dom";
 import { isRTLDocument } from "../core/environment";
 import { useRerender } from "./useRerender";

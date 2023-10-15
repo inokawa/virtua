@@ -28,11 +28,12 @@ import {
 import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
 import { createWindowResizer } from "../core/resizer";
-import { CacheSnapshot, ViewportComponentAttributes } from "..";
+import { CacheSnapshot } from "../core/types";
 import {
   CustomViewportComponent,
   CustomViewportComponentProps,
   Viewport as DefaultViewport,
+  ViewportComponentAttributes,
 } from "./Viewport";
 import { CustomItemComponent, ListItem } from "./ListItem";
 import { Cache } from "../core/cache";

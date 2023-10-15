@@ -2,7 +2,7 @@ import { afterEach, it, expect, describe, jest } from "@jest/globals";
 import { render, cleanup } from "@testing-library/react";
 import { WVList } from "./WVList";
 import { Profiler, ReactElement, forwardRef, useEffect, useState } from "react";
-import { CustomViewportComponentProps } from "..";
+import { CustomViewportComponentProps } from "./Viewport";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
