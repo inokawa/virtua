@@ -316,16 +316,17 @@ export const createVirtualStore = (
               updateScrollDirection(delta < 0 ? SCROLL_UP : SCROLL_DOWN);
             }
 
-            if (
-              pendingJump &&
-              ((_scrollDirection === SCROLL_UP &&
-                payload - max(pendingJump, 0) <= 0) ||
-                (_scrollDirection === SCROLL_DOWN &&
-                  payload - min(pendingJump, 0) >= getScrollOffsetMax()))
-            ) {
-              // Flush if almost reached to start or end
-              shouldFlushPendingJump = true;
-            }
+            // TODO This will cause glitch in reverse infinite scrolling. Disable this until better solution is found.
+            // if (
+            //   pendingJump &&
+            //   ((_scrollDirection === SCROLL_UP &&
+            //     payload - max(pendingJump, 0) <= 0) ||
+            //     (_scrollDirection === SCROLL_DOWN &&
+            //       payload - min(pendingJump, 0) >= getScrollOffsetMax()))
+            // ) {
+            //   // Flush if almost reached to start or end
+            //   shouldFlushPendingJump = true;
+            // }
 
             // Ignore manual scroll because it may be called in useEffect/useLayoutEffect and cause the warn below.
             // Warning: flushSync was called from inside a lifecycle method. React cannot flush when React is already rendering. Consider moving this call to a scheduler task or micro task.
