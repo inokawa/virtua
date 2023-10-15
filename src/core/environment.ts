@@ -24,3 +24,8 @@ export const isRTLDocument = /*#__PURE__*/ once((): boolean => {
   // TODO support SSR in rtl
   return isBrowser ? computeStyle(document.body).direction === "rtl" : false;
 });
+
+// Currently, all browsers on iOS/iPadOS are WebKit, including WebView.
+export const isIOSWebKit = /*#__PURE__*/ once((): boolean => {
+  return isBrowser ? /iP(hone|od|ad)/.test(navigator.userAgent) : false;
+});
