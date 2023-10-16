@@ -1,4 +1,8 @@
-import { hasNegativeOffsetInRTL, isRTLDocument } from "./environment";
+import {
+  hasNegativeOffsetInRTL,
+  isIOSWebKit,
+  isRTLDocument,
+} from "./environment";
 import {
   ACTION_SCROLL,
   ACTION_BEFORE_MANUAL_SCROLL,
@@ -67,6 +71,7 @@ export const createScroller = (
 ): Scroller => {
   let rootElement: HTMLElement | undefined;
   let scrollToQueue: [() => void, () => void] | undefined;
+  let stillMomentumScrolling = false;
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
 
   const normalizeOffset = (offset: number, diff?: boolean): number => {
@@ -138,6 +143,7 @@ export const createScroller = (
       rootElement = root;
 
       let touching = false;
+      let justTouchEnded = false;
 
       const syncViewportToScrollPosition = () => {
         store._update(ACTION_SCROLL, normalizeOffset(root[scrollToKey]));
@@ -146,16 +152,22 @@ export const createScroller = (
       const onScrollStopped = debounce(() => {
         if (touching) {
           // Wait while touching
-          // TODO iOS WebKit fires touch events only once at the beginning of momentum scrolling...
           onScrollStopped();
           return;
         }
+
+        justTouchEnded = false;
+
         // Check scroll position once just after scrolling stopped
         syncViewportToScrollPosition();
         store._update(ACTION_SCROLL_END);
       }, 150);
 
       const onScroll = () => {
+        if (justTouchEnded) {
+          stillMomentumScrolling = true;
+        }
+
         syncViewportToScrollPosition();
         onScrollStopped();
       };
@@ -164,9 +176,13 @@ export const createScroller = (
 
       const onTouchStart = () => {
         touching = true;
+        justTouchEnded = stillMomentumScrolling = false;
       };
       const onTouchEnd = () => {
         touching = false;
+        if (isIOSWebKit()) {
+          justTouchEnded = true;
+        }
       };
 
       root.addEventListener("scroll", onScroll);
@@ -203,6 +219,20 @@ export const createScroller = (
     },
     _fixScrollJump: (jump) => {
       if (!rootElement) return;
+
+      // If we update scroll position while touching on iOS, the position will be reverted.
+      // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
+      // That means we have no reliable way to confirm still touched or not if user touches more than once during momentum scrolling...
+      // This is a hack for the suspectable situations, inspired by https://github.com/prud/ios-overflow-scroll-to-top
+      if (stillMomentumScrolling) {
+        const prev = rootElement.style.overflow;
+        rootElement.style.overflow = "hidden";
+        stillMomentumScrolling = false;
+        timeout(() => {
+          rootElement!.style.overflow = prev;
+        });
+      }
+
       rootElement[scrollToKey] += normalizeOffset(jump, true);
     },
   };
