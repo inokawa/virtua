@@ -106,7 +106,7 @@ A function to create elements rendered by this component.
 
 #### Defined in
 
-[src/react/VGrid.tsx:192](https://github.com/inokawa/virtua/blob/d7672fae/src/react/VGrid.tsx#L192)
+[src/react/VGrid.tsx:158](https://github.com/inokawa/virtua/blob/e5e58101/src/react/VGrid.tsx#L158)
 
 ___
 
@@ -118,7 +118,7 @@ Total row length of grid.
 
 #### Defined in
 
-[src/react/VGrid.tsx:205](https://github.com/inokawa/virtua/blob/d7672fae/src/react/VGrid.tsx#L205)
+[src/react/VGrid.tsx:171](https://github.com/inokawa/virtua/blob/e5e58101/src/react/VGrid.tsx#L171)
 
 ___
 
@@ -130,7 +130,7 @@ Total column length of grid.
 
 #### Defined in
 
-[src/react/VGrid.tsx:209](https://github.com/inokawa/virtua/blob/d7672fae/src/react/VGrid.tsx#L209)
+[src/react/VGrid.tsx:175](https://github.com/inokawa/virtua/blob/e5e58101/src/react/VGrid.tsx#L175)
 
 ___
 
@@ -146,7 +146,7 @@ Cell height hint for unmeasured items. It's recommended to specify this prop if 
 
 #### Defined in
 
-[src/react/VGrid.tsx:214](https://github.com/inokawa/virtua/blob/d7672fae/src/react/VGrid.tsx#L214)
+[src/react/VGrid.tsx:180](https://github.com/inokawa/virtua/blob/e5e58101/src/react/VGrid.tsx#L180)
 
 ___
 
@@ -162,7 +162,7 @@ Cell width hint for unmeasured items. It's recommended to specify this prop if i
 
 #### Defined in
 
-[src/react/VGrid.tsx:219](https://github.com/inokawa/virtua/blob/d7672fae/src/react/VGrid.tsx#L219)
+[src/react/VGrid.tsx:185](https://github.com/inokawa/virtua/blob/e5e58101/src/react/VGrid.tsx#L185)
 
 ___
 
@@ -178,7 +178,7 @@ Number of items to render above/below the visible bounds of the grid. You can in
 
 #### Defined in
 
-[src/react/VGrid.tsx:224](https://github.com/inokawa/virtua/blob/d7672fae/src/react/VGrid.tsx#L224)
+[src/react/VGrid.tsx:190](https://github.com/inokawa/virtua/blob/e5e58101/src/react/VGrid.tsx#L190)
 
 ___
 
@@ -190,7 +190,7 @@ If set, the specified amount of rows will be mounted in the initial rendering re
 
 #### Defined in
 
-[src/react/VGrid.tsx:228](https://github.com/inokawa/virtua/blob/d7672fae/src/react/VGrid.tsx#L228)
+[src/react/VGrid.tsx:194](https://github.com/inokawa/virtua/blob/e5e58101/src/react/VGrid.tsx#L194)
 
 ___
 
@@ -202,7 +202,7 @@ If set, the specified amount of cols will be mounted in the initial rendering re
 
 #### Defined in
 
-[src/react/VGrid.tsx:232](https://github.com/inokawa/virtua/blob/d7672fae/src/react/VGrid.tsx#L232)
+[src/react/VGrid.tsx:198](https://github.com/inokawa/virtua/blob/e5e58101/src/react/VGrid.tsx#L198)
 
 ___
 
@@ -221,7 +221,7 @@ Customized components for advanced usage.
 
 #### Defined in
 
-[src/react/VGrid.tsx:236](https://github.com/inokawa/virtua/blob/d7672fae/src/react/VGrid.tsx#L236)
+[src/react/VGrid.tsx:202](https://github.com/inokawa/virtua/blob/e5e58101/src/react/VGrid.tsx#L202)
 
 ___
 
@@ -400,7 +400,7 @@ ___
 
 ### aria-checked
 
-• `Optional` **aria-checked**: `boolean` \| ``"mixed"`` \| ``"false"`` \| ``"true"``
+• `Optional` **aria-checked**: `boolean` \| ``"true"`` \| ``"false"`` \| ``"mixed"``
 
 Indicates the current "checked" state of checkboxes, radio buttons, and other widgets.
 
@@ -523,7 +523,7 @@ ___
 
 ### aria-current
 
-• `Optional` **aria-current**: `boolean` \| ``"time"`` \| ``"page"`` \| ``"false"`` \| ``"true"`` \| ``"step"`` \| ``"location"`` \| ``"date"``
+• `Optional` **aria-current**: `boolean` \| ``"time"`` \| ``"date"`` \| ``"true"`` \| ``"false"`` \| ``"page"`` \| ``"step"`` \| ``"location"``
 
 Indicates the element that represents the current item within a container or set of related elements.
 
@@ -714,7 +714,7 @@ ___
 
 ### aria-haspopup
 
-• `Optional` **aria-haspopup**: `boolean` \| ``"dialog"`` \| ``"menu"`` \| ``"grid"`` \| ``"listbox"`` \| ``"tree"`` \| ``"false"`` \| ``"true"``
+• `Optional` **aria-haspopup**: `boolean` \| ``"dialog"`` \| ``"menu"`` \| ``"grid"`` \| ``"listbox"`` \| ``"tree"`` \| ``"true"`` \| ``"false"``
 
 Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by an element.
 
@@ -750,7 +750,7 @@ ___
 
 ### aria-invalid
 
-• `Optional` **aria-invalid**: `boolean` \| ``"false"`` \| ``"true"`` \| ``"grammar"`` \| ``"spelling"``
+• `Optional` **aria-invalid**: `boolean` \| ``"true"`` \| ``"false"`` \| ``"grammar"`` \| ``"spelling"``
 
 Indicates the entered value does not conform to the format expected by the application.
 
@@ -980,7 +980,7 @@ ___
 
 ### aria-pressed
 
-• `Optional` **aria-pressed**: `boolean` \| ``"mixed"`` \| ``"false"`` \| ``"true"``
+• `Optional` **aria-pressed**: `boolean` \| ``"true"`` \| ``"false"`` \| ``"mixed"``
 
 Indicates the current "pressed" state of toggle buttons.
 
