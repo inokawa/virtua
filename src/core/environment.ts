@@ -27,5 +27,5 @@ export const isRTLDocument = /*#__PURE__*/ once((): boolean => {
 
 // Currently, all browsers on iOS/iPadOS are WebKit, including WebView.
 export const isIOSWebKit = /*#__PURE__*/ once((): boolean => {
-  return isBrowser ? /iP(hone|od|ad)/.test(navigator.userAgent) : false;
+  return /iP(hone|od|ad)/.test(navigator.userAgent);
 });

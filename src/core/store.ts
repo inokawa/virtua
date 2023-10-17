@@ -108,9 +108,6 @@ export const createVirtualStore = (
   let _maybeJumped = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
 
-  // In iOS WebKit browsers, updating scroll position will stop scrolling so it have to be deferred during scrolling.
-  const shouldDeferJump = isIOSWebKit();
-
   const subscribers = new Set<[number, Subscriber]>();
   const getScrollSize = (): number =>
     computeTotalSize(cache as Writeable<Cache>);
@@ -121,7 +118,8 @@ export const createVirtualStore = (
     return clamp(value, 0, getScrollOffsetMax());
   };
   const applyJump = (j: ScrollJump) => {
-    if (shouldDeferJump && _scrollDirection !== SCROLL_IDLE) {
+    // In iOS WebKit browsers, updating scroll position will stop scrolling so it have to be deferred during scrolling.
+    if (isIOSWebKit() && _scrollDirection !== SCROLL_IDLE) {
       pendingJump += j;
     } else {
       jump += j;
@@ -283,7 +281,7 @@ export const createVirtualStore = (
             );
             const diff = isRemove ? -min(shift, distanceToEnd) : shift;
             applyJump(diff);
-            if (!shouldDeferJump) {
+            if (!isIOSWebKit()) {
               scrollOffset = clampScrollOffset(scrollOffset + diff);
             }
 
