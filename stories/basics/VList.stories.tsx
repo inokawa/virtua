@@ -250,6 +250,17 @@ export const ScrollTo: StoryObj = {
             <input
               type="radio"
               style={{ marginLeft: 4 }}
+              checked={scrollIndexAlign === "center"}
+              onChange={() => {
+                setScrollToIndexAlign("center");
+              }}
+            />
+            center
+          </label>
+          <label style={{ marginLeft: 4 }}>
+            <input
+              type="radio"
+              style={{ marginLeft: 4 }}
               checked={scrollIndexAlign === "end"}
               onChange={() => {
                 setScrollToIndexAlign("end");
