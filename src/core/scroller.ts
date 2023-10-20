@@ -214,6 +214,10 @@ export const createScroller = (
               store._getItemOffset(index) +
               store._getItemSize(index) -
               store._getViewportSize()
+          : align === "center"
+          ? () =>
+              store._getItemOffset(index) +
+              (store._getItemSize(index) - store._getViewportSize()) / 2
           : () => store._getItemOffset(index)
       );
     },

@@ -20,6 +20,7 @@ export interface CacheSnapshot {
  * Alignment of item when calling scrollToIndex method.
  *
  * - `start`(default): Align the item to the start of the list.
+ * - `center`: Align the item to the center of the list.
  * - `end`: Align the item to the end of the list.
  */
-export type ScrollToIndexAlign = "start" | "end";
+export type ScrollToIndexAlign = "start" | "center" | "end";
