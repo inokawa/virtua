@@ -344,11 +344,6 @@ export const VList = forwardRef<VListHandle, VListProps>(
               overflow: "auto",
               display: isHorizontal ? "inline-block" : "block",
               contain: "strict",
-              // transform: "translate3d(0px, 0px, 0px)",
-              // willChange: "scroll-position",
-              // backfaceVisibility: "hidden",
-              // https://github.com/bvaughn/react-window/issues/395
-              // willChange: "transform",
               width: "100%",
               height: "100%",
               ...viewportAttrs.style,

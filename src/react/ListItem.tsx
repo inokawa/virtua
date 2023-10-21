@@ -64,7 +64,6 @@ export const ListItem = memo(
             [isHorizontal ? (isRTLDocument() ? "right" : "left") : "top"]:
               offset,
             visibility: hide ? "hidden" : "visible",
-            // willChange: "transform",
           };
           if (isHorizontal) {
             style.display = "flex";

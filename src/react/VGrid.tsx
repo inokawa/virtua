@@ -427,9 +427,6 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             style: {
               overflow: "auto",
               contain: "strict",
-              // transform: "translate3d(0px, 0px, 0px)",
-              // willChange: "scroll-position",
-              // backfaceVisibility: "hidden",
               width: "100%",
               height: "100%",
               ...viewportAttrs.style,

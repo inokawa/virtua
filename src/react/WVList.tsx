@@ -277,11 +277,6 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
             ...viewportAttrs,
             style: {
               display: isHorizontal ? "inline-block" : "block",
-              // transform: "translate3d(0px, 0px, 0px)",
-              // willChange: "scroll-position",
-              // backfaceVisibility: "hidden",
-              // https://github.com/bvaughn/react-window/issues/395
-              // willChange: "transform",
               width: isHorizontal ? "auto" : "100%",
               height: isHorizontal ? "100%" : "auto",
               ...viewportAttrs.style,
