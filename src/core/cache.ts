@@ -1,5 +1,5 @@
 import type { DeepReadonly, Writeable } from "./types";
-import { clamp, max, median, min } from "./utils";
+import { clamp, median, min } from "./utils";
 
 export const UNCACHED = -1;
 
@@ -93,15 +93,15 @@ export const computeRange = (
   return [start, findIndex(cache, scrollOffset + viewportSize, start)];
 };
 
-export const hasUnmeasuredItemsInRange = (
-  cache: Cache,
-  startIndex: number,
-  endIndex: number
-): boolean => {
-  return cache._sizes
-    .slice(max(0, startIndex - 1), min(cache._length - 1, endIndex + 1) + 1)
-    .includes(UNCACHED);
-};
+// export const hasUnmeasuredItemsInRange = (
+//   cache: Cache,
+//   startIndex: number,
+//   endIndex: number
+// ): boolean => {
+//   return cache._sizes
+//     .slice(max(0, startIndex - 1), min(cache._length - 1, endIndex + 1) + 1)
+//     .includes(UNCACHED);
+// };
 
 export const estimateDefaultItemSize = (cache: Writeable<Cache>) => {
   const measuredSizes = cache._sizes.filter((s) => s !== UNCACHED);
