@@ -439,6 +439,8 @@ test.describe("check if scrollToIndex works", () => {
       await input.type("0");
       await button.click();
 
+      await component.waitForElementState("stable");
+
       // Check if scrolled precisely
       const firstItem = await getFirstItem(component);
       await expect(firstItem.text).toEqual("0");
@@ -541,6 +543,8 @@ test.describe("check if scrollToIndex works", () => {
       await clearInput(input);
       await input.type("0");
       await button.click();
+
+      await component.waitForElementState("stable");
 
       // Check if scrolled precisely
       const firstItem = await getFirstItem(component);
