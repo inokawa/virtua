@@ -8,7 +8,6 @@ import {
   ItemWithRenderCount,
   ListHandle,
 } from "./components/common";
-import { ReactCoolVirtualList } from "./components/react-cool-virtual";
 import { ReactVirtualList } from "./components/react-virtual";
 import { ReactVirtuosoList } from "./components/react-virtuoso";
 import { ReactVirtualizedList } from "./components/react-virtualized";
@@ -47,8 +46,7 @@ type LibraryName =
   | "react-virtualized"
   | "react-window"
   | "react-virtuoso"
-  | "react-virtual"
-  | "react-cool-virtual";
+  | "react-virtual";
 
 const getList = (name: LibraryName) => {
   switch (name) {
@@ -60,8 +58,6 @@ const getList = (name: LibraryName) => {
       return ReactVirtuosoList;
     case "react-virtual":
       return ReactVirtualList;
-    case "react-cool-virtual":
-      return ReactCoolVirtualList;
   }
 };
 
@@ -90,7 +86,6 @@ const Frame = ({
             <option value="react-window">react-window</option>
             <option value="react-virtuoso">react-virtuoso</option>
             <option value="react-virtual">react-virtual</option>
-            <option value="react-cool-virtual">react-cool-virtual</option>
           </select>
         </div>
       </div>
