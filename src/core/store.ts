@@ -6,7 +6,6 @@ import {
   Cache,
   UNCACHED,
   setItemSize,
-  hasUnmeasuredItemsInRange,
   estimateDefaultItemSize,
   updateCacheLength,
   computeRange,
@@ -48,9 +47,8 @@ export const ACTION_ITEM_RESIZE = 1;
 export const ACTION_VIEWPORT_RESIZE = 2;
 export const ACTION_ITEMS_LENGTH_CHANGE = 3;
 export const ACTION_SCROLL = 4;
-export const ACTION_BEFORE_MANUAL_SCROLL = 5;
-export const ACTION_SCROLL_END = 6;
-export const ACTION_MANUAL_SCROLL = 7;
+export const ACTION_SCROLL_END = 5;
+export const ACTION_MANUAL_SCROLL = 6;
 
 type Actions =
   | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
@@ -60,7 +58,6 @@ type Actions =
       arg: [length: number, isShift?: boolean | undefined]
     ]
   | [type: typeof ACTION_SCROLL, offset: number]
-  | [type: typeof ACTION_BEFORE_MANUAL_SCROLL, offset: number]
   | [type: typeof ACTION_SCROLL_END, dummy?: void]
   | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void];
 
@@ -74,7 +71,6 @@ export type VirtualStore = {
   _getCache(): CacheSnapshot;
   _getRange(): ItemsRange;
   _isUnmeasuredItem(index: number): boolean;
-  _hasUnmeasuredItemsInTargetViewport(offset: number): boolean;
   _getItemOffset(index: number): number;
   _getItemSize(index: number): number;
   _getItemsLength(): number;
@@ -103,7 +99,6 @@ export const createVirtualStore = (
   let jump: ScrollJump = 0;
   let pendingJump: ScrollJump = 0;
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
-  let _isManualScrollPremeasuring = false;
   let _isManualScrolling = false;
   let _maybeJumped = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
@@ -147,15 +142,6 @@ export const createVirtualStore = (
     },
     _isUnmeasuredItem(index) {
       return cache._sizes[index] === UNCACHED;
-    },
-    _hasUnmeasuredItemsInTargetViewport(offset) {
-      const [startIndex, endIndex] = computeRange(
-        cache as Writeable<Cache>,
-        offset,
-        _prevRange[0], // TODO binary search may be better here
-        viewportSize
-      );
-      return hasUnmeasuredItemsInRange(cache, startIndex, endIndex);
     },
     _getItemOffset(index) {
       const offset =
@@ -214,31 +200,26 @@ export const createVirtualStore = (
             break;
           }
 
-          if (!_isManualScrollPremeasuring) {
-            // Calculate jump
-            // Should maintain visible position to minimize junks in appearance
-            let diff = 0;
+          // Calculate jump
+          // Should maintain visible position to minimize junks in appearance
+          let diff = 0;
 
-            if (scrollOffset === 0) {
-              // Do nothing to stick to the start
-            } else if (
-              scrollOffset >
-              getScrollOffsetMax() - SUBPIXEL_THRESHOLD
-            ) {
-              // Keep end to stick to the end
-              diff = calculateJump(cache, updated, true);
-            } else {
-              const [startIndex] = _prevRange;
-              // Keep start at mid
-              diff = calculateJump(
-                cache,
-                updated.filter(([index]) => index < startIndex)
-              );
-            }
+          if (scrollOffset === 0) {
+            // Do nothing to stick to the start
+          } else if (scrollOffset > getScrollOffsetMax() - SUBPIXEL_THRESHOLD) {
+            // Keep end to stick to the end
+            diff = calculateJump(cache, updated, true);
+          } else {
+            const [startIndex] = _prevRange;
+            // Keep start at mid
+            diff = calculateJump(
+              cache,
+              updated.filter(([index]) => index < startIndex)
+            );
+          }
 
-            if (diff) {
-              applyJump(diff);
-            }
+          if (diff) {
+            applyJump(diff);
           }
 
           // Update item sizes
@@ -291,51 +272,46 @@ export const createVirtualStore = (
           }
           break;
         }
-        case ACTION_SCROLL:
-        case ACTION_BEFORE_MANUAL_SCROLL: {
+        case ACTION_SCROLL: {
           // Skip if offset is not changed
           if (scrollOffset === payload) {
             break;
           }
 
-          if (type === ACTION_SCROLL) {
-            const delta = payload - scrollOffset;
-            // Scrolling after resizing will be caused by jump compensation
-            const isJustJumped = _maybeJumped;
-            _maybeJumped = false;
+          const delta = payload - scrollOffset;
+          // Scrolling after resizing will be caused by jump compensation
+          const isJustJumped = _maybeJumped;
+          _maybeJumped = false;
 
-            // Skip scroll direction detection just after resizing because it may result in the opposite direction.
-            // Scroll events are dispatched enough so it's ok to skip some of them.
-            if (
-              (_scrollDirection === SCROLL_IDLE || !isJustJumped) &&
-              // Ignore until manual scrolling
-              !_isManualScrolling
-            ) {
-              updateScrollDirection(delta < 0 ? SCROLL_UP : SCROLL_DOWN);
-            }
-
-            // TODO This will cause glitch in reverse infinite scrolling. Disable this until better solution is found.
-            // if (
-            //   pendingJump &&
-            //   ((_scrollDirection === SCROLL_UP &&
-            //     payload - max(pendingJump, 0) <= 0) ||
-            //     (_scrollDirection === SCROLL_DOWN &&
-            //       payload - min(pendingJump, 0) >= getScrollOffsetMax()))
-            // ) {
-            //   // Flush if almost reached to start or end
-            //   shouldFlushPendingJump = true;
-            // }
-
-            // Ignore manual scroll because it may be called in useEffect/useLayoutEffect and cause the warn below.
-            // Warning: flushSync was called from inside a lifecycle method. React cannot flush when React is already rendering. Consider moving this call to a scheduler task or micro task.
-            //
-            // Update synchronously if scrolled a lot
-            shouldSync = abs(delta) > viewportSize;
-
-            mutated += UPDATE_SCROLL_WITH_EVENT;
-          } else {
-            _isManualScrollPremeasuring = true;
+          // Skip scroll direction detection just after resizing because it may result in the opposite direction.
+          // Scroll events are dispatched enough so it's ok to skip some of them.
+          if (
+            (_scrollDirection === SCROLL_IDLE || !isJustJumped) &&
+            // Ignore until manual scrolling
+            !_isManualScrolling
+          ) {
+            updateScrollDirection(delta < 0 ? SCROLL_UP : SCROLL_DOWN);
           }
+
+          // TODO This will cause glitch in reverse infinite scrolling. Disable this until better solution is found.
+          // if (
+          //   pendingJump &&
+          //   ((_scrollDirection === SCROLL_UP &&
+          //     payload - max(pendingJump, 0) <= 0) ||
+          //     (_scrollDirection === SCROLL_DOWN &&
+          //       payload - min(pendingJump, 0) >= getScrollOffsetMax()))
+          // ) {
+          //   // Flush if almost reached to start or end
+          //   shouldFlushPendingJump = true;
+          // }
+
+          // Ignore manual scroll because it may be called in useEffect/useLayoutEffect and cause the warn below.
+          // Warning: flushSync was called from inside a lifecycle method. React cannot flush when React is already rendering. Consider moving this call to a scheduler task or micro task.
+          //
+          // Update synchronously if scrolled a lot
+          shouldSync = abs(delta) > viewportSize;
+
+          mutated += UPDATE_SCROLL_WITH_EVENT;
 
           scrollOffset = clampScrollOffset(payload);
           mutated += UPDATE_SCROLL_STATE;
@@ -346,11 +322,10 @@ export const createVirtualStore = (
             shouldFlushPendingJump = true;
             mutated = UPDATE_SCROLL_STATE;
           }
-          _isManualScrolling = _isManualScrollPremeasuring = false;
+          _isManualScrolling = false;
           break;
         }
         case ACTION_MANUAL_SCROLL: {
-          _isManualScrollPremeasuring = false;
           _isManualScrolling = true;
           break;
         }

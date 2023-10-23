@@ -5,7 +5,6 @@ import {
 } from "./environment";
 import {
   ACTION_SCROLL,
-  ACTION_BEFORE_MANUAL_SCROLL,
   ScrollJump,
   VirtualStore,
   ACTION_SCROLL_END,
@@ -70,7 +69,7 @@ export const createScroller = (
   isHorizontal: boolean
 ): Scroller => {
   let rootElement: HTMLElement | undefined;
-  let scrollToQueue: [() => void, () => void] | undefined;
+  let cancelScroll: (() => void) | undefined;
   let stillMomentumScrolling = false;
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
 
@@ -84,58 +83,42 @@ export const createScroller = (
   const scrollManually = async (getOffset: () => number) => {
     if (!rootElement) return;
 
+    if (cancelScroll) {
+      // Cancel waiting scrollTo
+      cancelScroll();
+    }
+
     const getTargetOffset = (): number => {
       // Adjust if the offset is over the end, to get correct startIndex.
       return clamp(getOffset(), 0, store._getScrollOffsetMax());
     };
 
     while (true) {
-      // Sync viewport to scroll destination
-      // In order to scroll to the correct position, mount the items and measure their sizes before scrolling.
-      const targetOffset = getTargetOffset();
-      store._update(ACTION_BEFORE_MANUAL_SCROLL, targetOffset);
-
-      if (!store._hasUnmeasuredItemsInTargetViewport(targetOffset)) {
-        break;
-      }
-
-      if (scrollToQueue) {
-        // Cancel waiting scrollTo
-        scrollToQueue[1]();
-      }
-
-      // Wait for the scroll destination items to be measured.
+      let queue: [() => void, () => void] | undefined;
       const unsubscribe = store._subscribe(UPDATE_SIZE_STATE, () => {
-        scrollToQueue && scrollToQueue[0]();
+        queue && queue[0]();
       });
+
       try {
+        rootElement[scrollToKey] = normalizeOffset(getTargetOffset());
+        store._update(ACTION_MANUAL_SCROLL);
+
+        // Wait for the scroll destination items to be measured.
         // The measurement will be done asynchronously and the timing is not predictable so we use promise.
         // For example, ResizeObserver may not fire when window is not visible.
         await new Promise<void>((resolve, reject) => {
-          let resolved = false;
+          queue = [resolve, reject];
 
-          const resolveQueue = () => {
-            if (resolved) return;
-            resolved = true;
-            resolve();
-            scrollToQueue = undefined;
-          };
-          scrollToQueue = [resolveQueue, reject];
-
-          // In some specific situation with VGrid, the promise never resolved so we resolve it if timed out.
-          timeout(resolveQueue, 250);
+          // Reject when items around scroll destination completely measured
+          timeout((cancelScroll = reject), 250);
         });
       } catch (e) {
-        // canceled
+        // canceled or finished
         return;
       } finally {
         unsubscribe();
       }
     }
-
-    // Scroll with the updated value
-    rootElement[scrollToKey] = normalizeOffset(getTargetOffset());
-    store._update(ACTION_MANUAL_SCROLL);
   };
 
   return {
