@@ -207,6 +207,7 @@ export const ScrollTo: StoryObj = {
     const [scrollIndex, setScrollIndex] = useState(567);
     const [scrollIndexAlign, setScrollToIndexAlign] =
       useState<ScrollToIndexAlign>("start");
+    const [smooth, setSmooth] = useState(false);
     const [scrollOffset, setScrollOffset] = useState(1000);
     const ref = useRef<VListHandle>(null);
     return (
@@ -223,7 +224,10 @@ export const ScrollTo: StoryObj = {
           />
           <button
             onClick={() => {
-              ref.current?.scrollToIndex(scrollIndex, scrollIndexAlign);
+              ref.current?.scrollToIndex(scrollIndex, {
+                align: scrollIndexAlign,
+                smooth: smooth,
+              });
             }}
           >
             scroll to index
@@ -267,6 +271,18 @@ export const ScrollTo: StoryObj = {
               }}
             />
             end
+          </label>
+
+          <label style={{ marginLeft: 4 }}>
+            <input
+              type="checkbox"
+              style={{ marginLeft: 4 }}
+              checked={smooth}
+              onChange={() => {
+                setSmooth((prev) => !prev);
+              }}
+            />
+            smooth
           </label>
         </div>
         <div>

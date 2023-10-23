@@ -36,7 +36,7 @@ import {
   ViewportComponentAttributes,
 } from "./Viewport";
 import { CustomItemComponent, ListItem } from "./ListItem";
-import { CacheSnapshot, ScrollToIndexAlign } from "../core/types";
+import { CacheSnapshot, ScrollToIndexOpts } from "../core/types";
 import { Cache } from "../core/cache";
 import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
@@ -68,9 +68,9 @@ export interface VListHandle {
   /**
    * Scroll to the item specified by index.
    * @param index index of item
-   * @param align alignment of item
+   * @param opts options
    */
-  scrollToIndex(index: number, align?: ScrollToIndexAlign): void;
+  scrollToIndex(index: number, opts?: ScrollToIndexOpts): void;
   /**
    * Scroll to the given offset.
    * @param offset offset from start

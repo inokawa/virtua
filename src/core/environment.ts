@@ -2,6 +2,8 @@ import { computeStyle, once } from "./utils";
 
 export const isBrowser = typeof window !== "undefined";
 
+const getDocumentRoot = () => document.documentElement;
+
 // The scroll position may be negative value in rtl direction.
 //
 // left  right result
@@ -22,10 +24,16 @@ export const hasNegativeOffsetInRTL = /*#__PURE__*/ once(
 
 export const isRTLDocument = /*#__PURE__*/ once((): boolean => {
   // TODO support SSR in rtl
-  return isBrowser ? computeStyle(document.body).direction === "rtl" : false;
+  return isBrowser
+    ? computeStyle(getDocumentRoot()).direction === "rtl"
+    : false;
 });
 
 // Currently, all browsers on iOS/iPadOS are WebKit, including WebView.
 export const isIOSWebKit = /*#__PURE__*/ once((): boolean => {
   return /iP(hone|od|ad)/.test(navigator.userAgent);
+});
+
+export const isSmoothScrollSupported = /*#__PURE__*/ once((): boolean => {
+  return "scrollBehavior" in getDocumentRoot().style;
 });
