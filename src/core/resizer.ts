@@ -31,18 +31,17 @@ export const createResizer = (
         if (!(target as HTMLElement).offsetParent) continue;
 
         if (target === rootElement) {
-          store._update(
-            ACTION_VIEWPORT_RESIZE,
-            contentRect[sizeKey] +
-              contentRect[isHorizontal ? "left" : "top"] +
-              // contentRect doesn't have paddingRight/paddingBottom so get them from computed style
-              // https://www.w3.org/TR/resize-observer/#css-definitions
-              getStyleNumber(
-                computeStyle(rootElement)[
-                  isHorizontal ? "paddingRight" : "paddingBottom"
-                ]
-              )
-          );
+          store._update(ACTION_VIEWPORT_RESIZE, [
+            contentRect[sizeKey],
+            contentRect[isHorizontal ? "left" : "top"],
+            // contentRect doesn't have paddingRight/paddingBottom so get them from computed style
+            // https://www.w3.org/TR/resize-observer/#css-definitions
+            getStyleNumber(
+              computeStyle(rootElement)[
+                isHorizontal ? "paddingRight" : "paddingBottom"
+              ]
+            ),
+          ]);
         } else {
           const index = mountedIndexes.get(target);
           if (exists(index)) {
@@ -110,7 +109,7 @@ export const createWindowResizer = (
   return {
     _observeRoot() {
       const cb = () => {
-        store._update(ACTION_VIEWPORT_RESIZE, window[windowSizeKey]);
+        store._update(ACTION_VIEWPORT_RESIZE, [window[windowSizeKey], 0, 0]);
       };
       window.addEventListener("resize", cb);
       cb();
@@ -167,18 +166,16 @@ export const createGridResizer = (
           // TODO subtract scroll bar width/height
           // https://github.com/w3c/csswg-drafts/issues/3536
           const style = computeStyle(rootElement);
-          vStore._update(
-            ACTION_VIEWPORT_RESIZE,
-            contentRect[heightKey] +
-              contentRect.top +
-              getStyleNumber(style.paddingBottom)
-          );
-          hStore._update(
-            ACTION_VIEWPORT_RESIZE,
-            contentRect[widthKey] +
-              contentRect.left +
-              getStyleNumber(style.paddingRight)
-          );
+          vStore._update(ACTION_VIEWPORT_RESIZE, [
+            contentRect[heightKey],
+            contentRect.top,
+            getStyleNumber(style.paddingBottom),
+          ]);
+          hStore._update(ACTION_VIEWPORT_RESIZE, [
+            contentRect[widthKey],
+            contentRect.left,
+            getStyleNumber(style.paddingRight),
+          ]);
         } else {
           const cell = mountedIndexes.get(target);
           if (cell) {

@@ -241,14 +241,17 @@ export const createScroller = (
       scrollManually(
         align === "end"
           ? () =>
+              store._getViewportPaddingStart() +
               store._getItemOffset(index) +
               store._getItemSize(index) -
               store._getViewportSize()
           : align === "center"
           ? () =>
+              store._getViewportPaddingStart() +
               store._getItemOffset(index) +
               (store._getItemSize(index) - store._getViewportSize()) / 2
-          : () => store._getItemOffset(index),
+          : () =>
+              store._getViewportPaddingStart() + store._getItemOffset(index),
         smooth
       );
     },
