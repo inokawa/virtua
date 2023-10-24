@@ -11,6 +11,7 @@
 ### Interfaces
 
 - [CacheSnapshot](interfaces/CacheSnapshot.md)
+- [ScrollToIndexOpts](interfaces/ScrollToIndexOpts.md)
 - [VListProps](interfaces/VListProps.md)
 - [VListHandle](interfaces/VListHandle.md)
 - [VGridProps](interfaces/VGridProps.md)
@@ -49,7 +50,7 @@ Virtualized list component. See [VListProps](interfaces/VListProps.md) and [VLis
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:428
+node_modules/@types/react/index.d.ts:395
 
 ___
 
@@ -71,7 +72,7 @@ Virtualized grid component. See [VGridProps](interfaces/VGridProps.md) and [VGri
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:428
+node_modules/@types/react/index.d.ts:395
 
 ___
 
@@ -93,22 +94,17 @@ Virtualized list component controlled by the window scrolling. See [WVListProps]
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:428
+node_modules/@types/react/index.d.ts:395
 
 ## Type Aliases
 
 ### ScrollToIndexAlign
 
-Ƭ **ScrollToIndexAlign**: ``"start"`` \| ``"end"``
-
-Alignment of item when calling scrollToIndex method.
-
-- `start`(default): Align the item to the start of the list.
-- `end`: Align the item to the end of the list.
+Ƭ **ScrollToIndexAlign**: ``"start"`` \| ``"center"`` \| ``"end"``
 
 #### Defined in
 
-[src/core/types.ts:25](https://github.com/inokawa/virtua/blob/e5e58101/src/core/types.ts#L25)
+[src/core/types.ts:19](https://github.com/inokawa/virtua/blob/de2ef090/src/core/types.ts#L19)
 
 ___
 
@@ -118,7 +114,7 @@ ___
 
 #### Defined in
 
-[src/react/VGrid.tsx:49](https://github.com/inokawa/virtua/blob/e5e58101/src/react/VGrid.tsx#L49)
+[src/react/VGrid.tsx:49](https://github.com/inokawa/virtua/blob/de2ef090/src/react/VGrid.tsx#L49)
 
 ___
 
@@ -128,7 +124,7 @@ ___
 
 #### Defined in
 
-[src/react/Viewport.tsx:9](https://github.com/inokawa/virtua/blob/e5e58101/src/react/Viewport.tsx#L9)
+[src/react/Viewport.tsx:9](https://github.com/inokawa/virtua/blob/de2ef090/src/react/Viewport.tsx#L9)
 
 ___
 
@@ -138,7 +134,7 @@ ___
 
 #### Defined in
 
-[src/react/Viewport.tsx:63](https://github.com/inokawa/virtua/blob/e5e58101/src/react/Viewport.tsx#L63)
+[src/react/Viewport.tsx:63](https://github.com/inokawa/virtua/blob/de2ef090/src/react/Viewport.tsx#L63)
 
 ___
 
@@ -148,4 +144,4 @@ ___
 
 #### Defined in
 
-[src/react/ListItem.tsx:22](https://github.com/inokawa/virtua/blob/e5e58101/src/react/ListItem.tsx#L22)
+[src/react/ListItem.tsx:22](https://github.com/inokawa/virtua/blob/de2ef090/src/react/ListItem.tsx#L22)
