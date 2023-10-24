@@ -15,6 +15,7 @@ import type { CacheSnapshot, Writeable } from "./types";
 import { abs, clamp, max, min } from "./utils";
 
 export type ScrollJump = number;
+type ViewportResize = [size: number, paddingStart: number, paddingEnd: number];
 export type ItemResize = Readonly<[index: number, size: number]>;
 type ItemsRange = Readonly<[startIndex: number, endIndex: number]>;
 
@@ -52,7 +53,7 @@ export const ACTION_MANUAL_SCROLL = 6;
 
 type Actions =
   | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
-  | [type: typeof ACTION_VIEWPORT_RESIZE, size: number]
+  | [type: typeof ACTION_VIEWPORT_RESIZE, size: ViewportResize]
   | [
       type: typeof ACTION_ITEMS_LENGTH_CHANGE,
       arg: [length: number, isShift?: boolean | undefined]
@@ -78,6 +79,7 @@ export type VirtualStore = {
   _getScrollOffsetMax(): number;
   _getScrollDirection(): ScrollDirection;
   _getViewportSize(): number;
+  _getViewportPaddingStart(): number;
   _getCorrectedScrollSize(): number;
   _getJumpCount(): number;
   _flushJump(): ScrollJump;
@@ -94,6 +96,8 @@ export const createVirtualStore = (
   shouldAutoEstimateItemSize?: boolean
 ): VirtualStore => {
   let viewportSize = itemSize * max(initialItemCount - 1, 0);
+  let paddingStart = 0;
+  let paddingEnd = 0;
   let scrollOffset = 0;
   let jumpCount = 0;
   let jump: ScrollJump = 0;
@@ -106,7 +110,7 @@ export const createVirtualStore = (
   const subscribers = new Set<[number, Subscriber]>();
   const getScrollSize = (): number =>
     computeTotalSize(cache as Writeable<Cache>);
-  const getScrollOffsetMax = () => getScrollSize() - viewportSize;
+  const getScrollOffsetMax = () => getScrollSize() - viewportSize + paddingEnd;
 
   const clampScrollOffset = (value: number): number => {
     // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
@@ -166,6 +170,9 @@ export const createVirtualStore = (
     },
     _getViewportSize() {
       return viewportSize;
+    },
+    _getViewportPaddingStart() {
+      return paddingStart;
     },
     _getCorrectedScrollSize() {
       return max(getScrollSize(), viewportSize);
@@ -244,8 +251,11 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_VIEWPORT_RESIZE: {
-          if (viewportSize !== payload) {
-            viewportSize = payload;
+          const total = payload[0] + payload[1] + payload[2];
+          if (viewportSize !== total) {
+            viewportSize = total;
+            paddingStart = payload[1];
+            paddingEnd = payload[2];
             mutated = UPDATE_SIZE_STATE;
           }
           break;
