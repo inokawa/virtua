@@ -12,7 +12,7 @@ import {
 } from "./cache";
 import { isIOSWebKit } from "./environment";
 import type { CacheSnapshot, Writeable } from "./types";
-import { abs, clamp, max, min } from "./utils";
+import { abs, clamp, exists, max, min } from "./utils";
 
 export type ScrollJump = number;
 type ViewportResize = [size: number, paddingStart: number, paddingEnd: number];
@@ -50,6 +50,7 @@ export const ACTION_ITEMS_LENGTH_CHANGE = 3;
 export const ACTION_SCROLL = 4;
 export const ACTION_SCROLL_END = 5;
 export const ACTION_MANUAL_SCROLL = 6;
+export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 7;
 
 type Actions =
   | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
@@ -60,7 +61,8 @@ type Actions =
     ]
   | [type: typeof ACTION_SCROLL, offset: number]
   | [type: typeof ACTION_SCROLL_END, dummy?: void]
-  | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void];
+  | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
+  | [type: typeof ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, offset: number];
 
 type Subscriber = (sync?: boolean) => void;
 
@@ -104,6 +106,7 @@ export const createVirtualStore = (
   let pendingJump: ScrollJump = 0;
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
   let _isManualScrolling = false;
+  let _smoothScrollTarget: number | null = null;
   let _maybeJumped = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
 
@@ -137,6 +140,18 @@ export const createVirtualStore = (
       return JSON.parse(JSON.stringify(cache)) as unknown as CacheSnapshot;
     },
     _getRange() {
+      if (exists(_smoothScrollTarget)) {
+        const [targetStartIndex, targetEndIndex] = computeRange(
+          cache as Writeable<Cache>,
+          _smoothScrollTarget,
+          _prevRange[0],
+          viewportSize
+        );
+        return [
+          min(_prevRange[0], targetStartIndex),
+          max(_prevRange[1], targetEndIndex),
+        ];
+      }
       return (_prevRange = computeRange(
         cache as Writeable<Cache>,
         scrollOffset + pendingJump,
@@ -333,10 +348,16 @@ export const createVirtualStore = (
             mutated = UPDATE_SCROLL_STATE;
           }
           _isManualScrolling = false;
+          _smoothScrollTarget = null;
           break;
         }
         case ACTION_MANUAL_SCROLL: {
           _isManualScrolling = true;
+          break;
+        }
+        case ACTION_BEFORE_MANUAL_SMOOTH_SCROLL: {
+          _smoothScrollTarget = payload;
+          mutated = UPDATE_SCROLL_STATE;
           break;
         }
       }

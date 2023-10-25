@@ -16,7 +16,7 @@ export const getFirstItem = (
 ) => {
   return scrollable.evaluate((s) => {
     const rect = s.getBoundingClientRect();
-    const el = document.elementFromPoint(rect.left + 1, rect.top + 1)!;
+    const el = document.elementFromPoint(rect.left + 2, rect.top + 2)!;
     const elRect = el.getBoundingClientRect();
     return {
       text: el.textContent!,
@@ -31,7 +31,7 @@ export const getLastItem = (
 ) => {
   return scrollable.evaluate((s) => {
     const rect = s.getBoundingClientRect();
-    const el = document.elementFromPoint(rect.left + 1, rect.bottom - 1)!;
+    const el = document.elementFromPoint(rect.left + 2, rect.bottom - 2)!;
     return {
       text: el.textContent!,
       bottom: el.getBoundingClientRect().bottom - rect.bottom,
@@ -43,7 +43,7 @@ export const getFirstItemRtl = (
 ) => {
   return scrollable.evaluate((s) => {
     const rect = s.getBoundingClientRect();
-    const el = document.elementFromPoint(rect.right - 1, rect.top + 1)!;
+    const el = document.elementFromPoint(rect.right - 2, rect.top + 2)!;
     return {
       text: el.textContent!,
       top: el.getBoundingClientRect().top - rect.top,
