@@ -480,7 +480,7 @@ test.describe("check if scrollToIndex works", () => {
       await expect(await component.innerText()).not.toContain("949");
     });
 
-    test("mid smooth", async ({ page }) => {
+    test("mid smooth", async ({ page, browserName }) => {
       const component = await page.waitForSelector(scrollableSelector);
       await component.waitForElementState("stable");
 
@@ -497,11 +497,7 @@ test.describe("check if scrollToIndex works", () => {
         button
       );
 
-      await clearInput(input);
-      await input.fill("700");
-      await button.click();
-
-      const called = await component.evaluate((c) => {
+      const scrollListener = component.evaluate((c) => {
         let timer: null | NodeJS.Timeout = null;
         let called = 0;
 
@@ -514,14 +510,24 @@ test.describe("check if scrollToIndex works", () => {
             timer = setTimeout(() => {
               c.removeEventListener("scroll", cb);
               resolve(called);
-            }, 200);
+            }, 2000);
           };
           c.addEventListener("scroll", cb);
         });
       });
 
+      await clearInput(input);
+      await input.fill("700");
+      await button.click();
+
+      await page.waitForTimeout(500);
+
+      const called = await scrollListener;
+
       // Check if this is smooth scrolling
-      await expect(called).toBeGreaterThanOrEqual(5);
+      await expect(called).toBeGreaterThanOrEqual(
+        browserName === "webkit" ? 4 : 10
+      );
 
       // Check if scrolled precisely
       const firstItem = await getFirstItem(component);
@@ -638,7 +644,7 @@ test.describe("check if scrollToIndex works", () => {
       await expect(await component.innerText()).not.toContain("949");
     });
 
-    test("mid smooth", async ({ page }) => {
+    test("mid smooth", async ({ page, browserName }) => {
       const component = await page.waitForSelector(scrollableSelector);
       await component.waitForElementState("stable");
 
@@ -655,11 +661,7 @@ test.describe("check if scrollToIndex works", () => {
         button
       );
 
-      await clearInput(input);
-      await input.fill("700");
-      await button.click();
-
-      const called = await component.evaluate((c) => {
+      const scrollListener = component.evaluate((c) => {
         let timer: null | NodeJS.Timeout = null;
         let called = 0;
 
@@ -672,14 +674,24 @@ test.describe("check if scrollToIndex works", () => {
             timer = setTimeout(() => {
               c.removeEventListener("scroll", cb);
               resolve(called);
-            }, 200);
+            }, 2000);
           };
           c.addEventListener("scroll", cb);
         });
       });
 
+      await clearInput(input);
+      await input.fill("700");
+      await button.click();
+
+      await page.waitForTimeout(500);
+
+      const called = await scrollListener;
+
       // Check if this is smooth scrolling
-      await expect(called).toBeGreaterThanOrEqual(5);
+      await expect(called).toBeGreaterThanOrEqual(
+        browserName === "webkit" ? 4 : 10
+      );
 
       // Check if scrolled precisely
       const lastItem = await getLastItem(component);

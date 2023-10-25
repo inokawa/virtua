@@ -12,10 +12,10 @@ import {
   UPDATE_SIZE_STATE,
   ACTION_MANUAL_SCROLL,
   SCROLL_IDLE,
-  UPDATE_SCROLL_WITH_EVENT,
+  ACTION_BEFORE_MANUAL_SMOOTH_SCROLL,
 } from "./store";
 import { ScrollToIndexOpts } from "./types";
-import { debounce, throttle, timeout, clamp, abs } from "./utils";
+import { debounce, throttle, timeout, clamp } from "./utils";
 
 // Infer scroll state also from wheel events
 // Sometimes scroll events do not fire when frame dropped even if the visual have been already scrolled
@@ -73,7 +73,6 @@ export const createScroller = (
   let rootElement: HTMLElement | undefined;
   let cancelScroll: (() => void) | undefined;
   let stillMomentumScrolling = false;
-  let smoothScrolling = false;
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
 
   const normalizeOffset = (offset: number, diff?: boolean): number => {
@@ -97,44 +96,40 @@ export const createScroller = (
     };
 
     if (smooth && isSmoothScrollSupported()) {
-      smoothScrolling = true;
+      let queue: [() => void, () => void] | undefined;
 
-      while (true) {
-        const targetOffset = normalizeOffset(getTargetOffset());
-        if (abs(store._getScrollOffset() - targetOffset) < 1) {
-          break;
-        }
-        rootElement.scrollTo({
-          [isHorizontal ? "left" : "top"]: targetOffset,
-          behavior: "smooth",
+      const measure = () => {
+        store._update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
+      };
+      measure();
+
+      const detectStop = debounce(() => {
+        queue && queue[0]();
+        detectStop._cancel();
+      }, 100);
+      const unsubscribe = store._subscribe(UPDATE_SIZE_STATE, () => {
+        measure();
+        detectStop();
+      });
+
+      try {
+        await new Promise<void>((resolve, reject) => {
+          queue = [resolve, (cancelScroll = reject)];
+          // maybe already measured
+          detectStop();
         });
-
-        let queue: [() => void, () => void] | undefined;
-
-        const detectStop = debounce(() => {
-          queue && queue[0]();
-          detectStop._cancel();
-        }, 100);
-
-        const unsubscribeScroll = store._subscribe(
-          UPDATE_SCROLL_WITH_EVENT,
-          detectStop
-        );
-
-        try {
-          await new Promise<void>((resolve, reject) => {
-            queue = [resolve, reject];
-          });
-        } catch (e) {
-          // canceled
-          return;
-        } finally {
-          unsubscribeScroll();
-          detectStop._cancel();
-        }
+      } catch (e) {
+        // canceled
+        return;
+      } finally {
+        unsubscribe();
+        detectStop._cancel();
       }
 
-      smoothScrolling = false;
+      rootElement.scrollTo({
+        [isHorizontal ? "left" : "top"]: normalizeOffset(getTargetOffset()),
+        behavior: "smooth",
+      });
 
       return;
     }
@@ -154,10 +149,10 @@ export const createScroller = (
         // The measurement will be done asynchronously and the timing is not predictable so we use promise.
         // For example, ResizeObserver may not fire when window is not visible.
         await new Promise<void>((resolve, reject) => {
-          queue = [resolve, reject];
+          queue = [resolve, (cancelScroll = reject)];
 
           // Reject when items around scroll destination completely measured
-          timeout((cancelScroll = reject), 250);
+          timeout(reject, 150);
         });
       } catch (e) {
         // canceled or finished
@@ -257,7 +252,6 @@ export const createScroller = (
     },
     _fixScrollJump: (jump) => {
       if (!rootElement) return;
-      if (smoothScrolling) return;
 
       // If we update scroll position while touching on iOS, the position will be reverted.
       // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
