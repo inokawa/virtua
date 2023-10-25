@@ -106,7 +106,7 @@ export const createScroller = (
       const detectStop = debounce(() => {
         queue && queue[0]();
         detectStop._cancel();
-      }, 100);
+      }, 50);
       const unsubscribe = store._subscribe(UPDATE_SIZE_STATE, () => {
         measure();
         detectStop();
