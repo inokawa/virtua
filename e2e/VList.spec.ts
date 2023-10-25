@@ -242,7 +242,7 @@ test.describe("check if it works when children change", () => {
     const updateButton = page.getByRole("button", { name: "update" });
 
     // add many
-    input.type("1000");
+    input.fill("1000");
     await updateButton.click();
     await component.waitForElementState("stable");
 
@@ -397,7 +397,7 @@ test.describe("check if scrollToIndex works", () => {
       );
 
       await clearInput(input);
-      await input.type("700");
+      await input.fill("700");
       await button.click();
 
       await component.waitForElementState("stable");
@@ -428,7 +428,7 @@ test.describe("check if scrollToIndex works", () => {
       );
 
       await clearInput(input);
-      await input.type("500");
+      await input.fill("500");
       await button.click();
 
       await component.waitForElementState("stable");
@@ -436,7 +436,7 @@ test.describe("check if scrollToIndex works", () => {
       await expect(await component.innerText()).toContain("500");
 
       await clearInput(input);
-      await input.type("0");
+      await input.fill("0");
       await button.click();
 
       await component.waitForElementState("stable");
@@ -466,7 +466,7 @@ test.describe("check if scrollToIndex works", () => {
       );
 
       await clearInput(input);
-      await input.type("999");
+      await input.fill("999");
       await button.click();
 
       await component.waitForElementState("stable");
@@ -498,7 +498,7 @@ test.describe("check if scrollToIndex works", () => {
       );
 
       await clearInput(input);
-      await input.type("700");
+      await input.fill("700");
       await button.click();
 
       const called = await component.evaluate((c) => {
@@ -555,7 +555,7 @@ test.describe("check if scrollToIndex works", () => {
       );
 
       await clearInput(input);
-      await input.type("700");
+      await input.fill("700");
       await button.click();
 
       await component.waitForElementState("stable");
@@ -586,7 +586,7 @@ test.describe("check if scrollToIndex works", () => {
       );
 
       await clearInput(input);
-      await input.type("500");
+      await input.fill("500");
       await button.click();
 
       await component.waitForElementState("stable");
@@ -594,7 +594,7 @@ test.describe("check if scrollToIndex works", () => {
       await expect(await component.innerText()).toContain("500");
 
       await clearInput(input);
-      await input.type("0");
+      await input.fill("0");
       await button.click();
 
       await component.waitForElementState("stable");
@@ -624,7 +624,7 @@ test.describe("check if scrollToIndex works", () => {
       );
 
       await clearInput(input);
-      await input.type("999");
+      await input.fill("999");
       await button.click();
 
       await component.waitForElementState("stable");
@@ -656,7 +656,7 @@ test.describe("check if scrollToIndex works", () => {
       );
 
       await clearInput(input);
-      await input.type("700");
+      await input.fill("700");
       await button.click();
 
       const called = await component.evaluate((c) => {
@@ -715,7 +715,7 @@ test.describe("check if scrollTo works", () => {
 
     // scroll down
     await clearInput(input);
-    await input.type("5000");
+    await input.fill("5000");
     await button.click();
 
     await component.waitForElementState("stable");
@@ -727,7 +727,7 @@ test.describe("check if scrollTo works", () => {
 
     // scroll up
     await clearInput(input);
-    await input.type("1000");
+    await input.fill("1000");
     await button.click();
 
     await component.waitForElementState("stable");
@@ -761,7 +761,7 @@ test.describe("check if scrollBy works", () => {
 
     // scroll down
     await clearInput(input);
-    await input.type("1234");
+    await input.fill("1234");
     await button.click();
 
     await component.waitForElementState("stable");
@@ -770,7 +770,7 @@ test.describe("check if scrollBy works", () => {
 
     // scroll up
     await clearInput(input);
-    await input.type("-234");
+    await input.fill("-234");
     await button.click();
 
     await component.waitForElementState("stable");
