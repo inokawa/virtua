@@ -95,70 +95,62 @@ export const createScroller = (
       return clamp(getOffset(), 0, store._getScrollOffsetMax());
     };
 
+    const waitForMeasurement = (): [Promise<void>, () => void] => {
+      // Wait for the scroll destination items to be measured.
+      // The measurement will be done asynchronously and the timing is not predictable so we use promise.
+      // For example, ResizeObserver may not fire when window is not visible.
+      let queue: (() => void) | undefined;
+      return [
+        new Promise<void>((resolve, reject) => {
+          queue = resolve;
+          // Reject when items around scroll destination completely measured
+          timeout((cancelScroll = reject), 150);
+        }),
+        store._subscribe(UPDATE_SIZE_STATE, () => {
+          queue && queue();
+        }),
+      ];
+    };
+
     if (smooth && isSmoothScrollSupported()) {
-      let queue: [() => void, () => void] | undefined;
-
-      const measure = () => {
+      while (true) {
         store._update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
-      };
-      measure();
 
-      const detectStop = debounce(() => {
-        queue && queue[0]();
-        detectStop._cancel();
-      }, 100);
-      const unsubscribe = store._subscribe(UPDATE_SIZE_STATE, () => {
-        measure();
-        detectStop();
-      });
+        if (!store._hasUnmeasuredItemsInSmoothScrollRange()) {
+          break;
+        }
 
-      try {
-        await new Promise<void>((resolve, reject) => {
-          queue = [resolve, (cancelScroll = reject)];
-          // maybe already measured
-          detectStop();
-        });
-      } catch (e) {
-        // canceled
-        return;
-      } finally {
-        unsubscribe();
-        detectStop._cancel();
+        const [promise, unsubscribe] = waitForMeasurement();
+
+        try {
+          await promise;
+        } catch (e) {
+          // canceled
+          return;
+        } finally {
+          unsubscribe();
+        }
       }
 
       rootElement.scrollTo({
         [isHorizontal ? "left" : "top"]: normalizeOffset(getTargetOffset()),
         behavior: "smooth",
       });
+    } else {
+      while (true) {
+        const [promise, unsubscribe] = waitForMeasurement();
 
-      return;
-    }
+        try {
+          rootElement[scrollToKey] = normalizeOffset(getTargetOffset());
+          store._update(ACTION_MANUAL_SCROLL);
 
-    // TODO simplify
-    while (true) {
-      let queue: [() => void, () => void] | undefined;
-      const unsubscribe = store._subscribe(UPDATE_SIZE_STATE, () => {
-        queue && queue[0]();
-      });
-
-      try {
-        rootElement[scrollToKey] = normalizeOffset(getTargetOffset());
-        store._update(ACTION_MANUAL_SCROLL);
-
-        // Wait for the scroll destination items to be measured.
-        // The measurement will be done asynchronously and the timing is not predictable so we use promise.
-        // For example, ResizeObserver may not fire when window is not visible.
-        await new Promise<void>((resolve, reject) => {
-          queue = [resolve, (cancelScroll = reject)];
-
-          // Reject when items around scroll destination completely measured
-          timeout(reject, 150);
-        });
-      } catch (e) {
-        // canceled or finished
-        return;
-      } finally {
-        unsubscribe();
+          await promise;
+        } catch (e) {
+          // canceled or finished
+          return;
+        } finally {
+          unsubscribe();
+        }
       }
     }
   };

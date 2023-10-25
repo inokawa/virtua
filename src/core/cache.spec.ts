@@ -6,7 +6,6 @@ import {
   computeOffset as computeStartOffset,
   findIndex,
   Cache,
-  // hasUnmeasuredItemsInRange,
   updateCacheLength,
   initCache,
   computeRange,
@@ -570,44 +569,6 @@ describe(findIndex.name, () => {
     });
   });
 });
-
-// describe(hasUnmeasuredItemsInRange.name, () => {
-//   it("should return false if all measured", () => {
-//     const sizes = [10, 10, 10, 10];
-//     const cache: Cache = {
-//       _length: sizes.length,
-//       _sizes: sizes,
-//       _computedOffsetIndex: 0,
-//       _offsets: [0],
-//       _defaultItemSize: 30,
-//     };
-//     expect(hasUnmeasuredItemsInRange(cache, 0, sizes.length - 1)).toBe(false);
-//   });
-
-//   it("should return true if start is not measured", () => {
-//     const sizes = [10, -1, 10, 10];
-//     const cache: Cache = {
-//       _length: sizes.length,
-//       _sizes: sizes,
-//       _computedOffsetIndex: 0,
-//       _offsets: [0],
-//       _defaultItemSize: 30,
-//     };
-//     expect(hasUnmeasuredItemsInRange(cache, 1, 2)).toBe(true);
-//   });
-
-//   it("should return true if end is not measured", () => {
-//     const sizes = [10, 10, -1, 10];
-//     const cache: Cache = {
-//       _length: sizes.length,
-//       _sizes: sizes,
-//       _computedOffsetIndex: 0,
-//       _offsets: [0],
-//       _defaultItemSize: 30,
-//     };
-//     expect(hasUnmeasuredItemsInRange(cache, 1, 2)).toBe(true);
-//   });
-// });
 
 describe(initCache.name, () => {
   it("should create cache", () => {

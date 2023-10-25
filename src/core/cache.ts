@@ -93,16 +93,6 @@ export const computeRange = (
   return [start, findIndex(cache, scrollOffset + viewportSize, start)];
 };
 
-// export const hasUnmeasuredItemsInRange = (
-//   cache: Cache,
-//   startIndex: number,
-//   endIndex: number
-// ): boolean => {
-//   return cache._sizes
-//     .slice(max(0, startIndex - 1), min(cache._length - 1, endIndex + 1) + 1)
-//     .includes(UNCACHED);
-// };
-
 export const estimateDefaultItemSize = (cache: Writeable<Cache>) => {
   const measuredSizes = cache._sizes.filter((s) => s !== UNCACHED);
   // This function will be called after measurement so measured size array must be longer than 0
