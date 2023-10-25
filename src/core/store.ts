@@ -12,7 +12,7 @@ import {
 } from "./cache";
 import { isIOSWebKit } from "./environment";
 import type { CacheSnapshot, Writeable } from "./types";
-import { abs, clamp, exists, max, min } from "./utils";
+import { abs, clamp, max, min } from "./utils";
 
 export type ScrollJump = number;
 type ViewportResize = [size: number, paddingStart: number, paddingEnd: number];
@@ -74,6 +74,7 @@ export type VirtualStore = {
   _getCache(): CacheSnapshot;
   _getRange(): ItemsRange;
   _isUnmeasuredItem(index: number): boolean;
+  _hasUnmeasuredItemsInSmoothScrollRange(): boolean;
   _getItemOffset(index: number): number;
   _getItemSize(index: number): number;
   _getItemsLength(): number;
@@ -106,7 +107,7 @@ export const createVirtualStore = (
   let pendingJump: ScrollJump = 0;
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
   let _isManualScrolling = false;
-  let _smoothScrollTarget: number | null = null;
+  let _smoothScrollRange: ItemsRange | null = null;
   let _maybeJumped = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
 
@@ -140,16 +141,10 @@ export const createVirtualStore = (
       return JSON.parse(JSON.stringify(cache)) as unknown as CacheSnapshot;
     },
     _getRange() {
-      if (exists(_smoothScrollTarget)) {
-        const [targetStartIndex, targetEndIndex] = computeRange(
-          cache as Writeable<Cache>,
-          _smoothScrollTarget,
-          _prevRange[0],
-          viewportSize
-        );
+      if (_smoothScrollRange) {
         return [
-          min(_prevRange[0], targetStartIndex),
-          max(_prevRange[1], targetEndIndex),
+          min(_prevRange[0], _smoothScrollRange[0]),
+          max(_prevRange[1], _smoothScrollRange[1]),
         ];
       }
       return (_prevRange = computeRange(
@@ -161,6 +156,15 @@ export const createVirtualStore = (
     },
     _isUnmeasuredItem(index) {
       return cache._sizes[index] === UNCACHED;
+    },
+    _hasUnmeasuredItemsInSmoothScrollRange() {
+      if (!_smoothScrollRange) return false;
+      return cache._sizes
+        .slice(
+          max(0, _smoothScrollRange[0] - 1),
+          min(cache._length - 1, _smoothScrollRange[1] + 1) + 1
+        )
+        .includes(UNCACHED);
     },
     _getItemOffset(index) {
       const offset =
@@ -348,7 +352,7 @@ export const createVirtualStore = (
             mutated = UPDATE_SCROLL_STATE;
           }
           _isManualScrolling = false;
-          _smoothScrollTarget = null;
+          _smoothScrollRange = null;
           break;
         }
         case ACTION_MANUAL_SCROLL: {
@@ -356,7 +360,12 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_BEFORE_MANUAL_SMOOTH_SCROLL: {
-          _smoothScrollTarget = payload;
+          _smoothScrollRange = computeRange(
+            cache as Writeable<Cache>,
+            payload,
+            _prevRange[0],
+            viewportSize
+          );
           mutated = UPDATE_SCROLL_STATE;
           break;
         }
