@@ -88,30 +88,6 @@ export const App = () => {
 };
 ```
 
-### Vertical and horizontal scroll
-
-```tsx
-import { VGrid } from "virtua";
-
-export const App = () => {
-  return (
-    <VGrid style={{ height: 800 }} row={1000} col={500}>
-      {({ rowIndex, colIndex }) => (
-        <div
-          style={{
-            width: ((colIndex % 3) + 1) * 100,
-            border: "solid 1px gray",
-            background: "white",
-          }}
-        >
-          {rowIndex} / {colIndex}
-        </div>
-      )}
-    </VGrid>
-  );
-};
-```
-
 ### Window scroll
 
 ```tsx
@@ -135,6 +111,30 @@ export const App = () => {
         ))}
       </WVList>
     </div>
+  );
+};
+```
+
+### Vertical and horizontal scroll
+
+```tsx
+import { experimental_VGrid as VGrid } from "virtua";
+
+export const App = () => {
+  return (
+    <VGrid style={{ height: 800 }} row={1000} col={500}>
+      {({ rowIndex, colIndex }) => (
+        <div
+          style={{
+            width: ((colIndex % 3) + 1) * 100,
+            border: "solid 1px gray",
+            background: "white",
+          }}
+        >
+          {rowIndex} / {colIndex}
+        </div>
+      )}
+    </VGrid>
   );
 };
 ```
@@ -207,7 +207,7 @@ It may be dispatched by ResizeObserver in this lib [as described in spec](https:
 | Bundle size                                        | [5.0kB gzipped](https://bundlephobia.com/package/virtua) | [16.9kB gzipped](https://bundlephobia.com/package/react-virtuoso)                                | [6.4kB gzipped](https://bundlephobia.com/package/react-window)                                     | [27.3kB gzipped](https://bundlephobia.com/package/react-virtualized)                                                                                                   | [2.3kB gzipped](https://bundlephobia.com/package/@tanstack/react-virtual) | [3.7kB gzipped](https://bundlephobia.com/package/react-tiny-virtual-list)       | [3.1kB gzipped](https://bundlephobia.com/package/react-cool-virtual)  |
 | Vertical scroll                                    | ✅                                                       | ✅                                                                                               | ✅                                                                                                 | ✅                                                                                                                                                                     | 🟠 (needs customization)                                                  | ✅                                                                              | 🟠 (needs customization)                                              |
 | Horizontal scroll                                  | ✅                                                       | ❌                                                                                               | ✅ ([may be dropped in v2](https://github.com/bvaughn/react-window/issues/302))                    | ✅                                                                                                                                                                     | 🟠 (needs customization)                                                  | ✅                                                                              | 🟠 (needs customization)                                              |
-| Grid (Virtualization for two dimension)            | ✅ (VGrid)                                               | ❌                                                                                               | ✅ (FixedSizeGrid / VariableSizeGrid)                                                              | ✅ ([Grid](https://github.com/bvaughn/react-virtualized/blob/master/docs/Grid.md))                                                                                     | 🟠 (needs customization)                                                  | ❌                                                                              | 🟠 (needs customization)                                              |
+| Grid (Virtualization for two dimension)            | 🟠 (experimental_VGrid)                                  | ❌                                                                                               | ✅ (FixedSizeGrid / VariableSizeGrid)                                                              | ✅ ([Grid](https://github.com/bvaughn/react-virtualized/blob/master/docs/Grid.md))                                                                                     | 🟠 (needs customization)                                                  | ❌                                                                              | 🟠 (needs customization)                                              |
 | Table                                              | 🟠 (needs customization)                                 | ✅ (TableVirtuoso)                                                                               | 🟠 (needs customization)                                                                           | ✅ ([Table](https://github.com/bvaughn/react-virtualized/blob/master/docs/Table.md))                                                                                   | 🟠 (needs customization)                                                  | ❌                                                                              | 🟠 (needs customization)                                              |
 | Window scroller                                    | ✅ (WVList)                                              | ✅                                                                                               | ❌                                                                                                 | ✅ ([WindowScroller](https://github.com/bvaughn/react-virtualized/blob/master/docs/WindowScroller.md))                                                                 | ✅                                                                        | ❌                                                                              | ❌                                                                    |
 | Dynamic list size                                  | ✅                                                       | ✅                                                                                               | 🟠 (needs [AutoSizer](https://github.com/bvaughn/react-virtualized/blob/master/docs/AutoSizer.md)) | 🟠 (needs [AutoSizer](https://github.com/bvaughn/react-virtualized/blob/master/docs/AutoSizer.md))                                                                     | ✅                                                                        | ❌                                                                              | ✅                                                                    |

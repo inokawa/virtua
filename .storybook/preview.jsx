@@ -10,7 +10,7 @@ export const parameters = {
     storySort: {
       order: [
         "basics",
-        ["VList", "VGrid", "WVList"],
+        ["VList", "WVList", "VGrid"],
         "advanced",
         "comparisons",
       ],
