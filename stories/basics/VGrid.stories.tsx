@@ -102,32 +102,6 @@ export const DynamicWidth: StoryObj = {
   },
 };
 
-export const Rtl: StoryObj = {
-  render: () => {
-    return (
-      <VGrid
-        style={{ height: "100vh", direction: "rtl" }}
-        row={1000}
-        col={500}
-        rtl
-      >
-        {({ rowIndex, colIndex }) => (
-          <div
-            style={{
-              border: "solid 1px gray",
-              background: "white",
-              padding: 4,
-              width: 100,
-            }}
-          >
-            {rowIndex} / {colIndex}
-          </div>
-        )}
-      </VGrid>
-    );
-  },
-};
-
 export const ScrollTo: StoryObj = {
   render: () => {
     const LENGTH = 1000;
