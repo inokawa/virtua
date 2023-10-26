@@ -162,10 +162,6 @@ export const createScroller = (
       let touching = false;
       let justTouchEnded = false;
 
-      const syncViewportToScrollPosition = () => {
-        store._update(ACTION_SCROLL, normalizeOffset(root[scrollToKey]));
-      };
-
       const onScrollStopped = debounce(() => {
         if (touching) {
           // Wait while touching
@@ -175,8 +171,6 @@ export const createScroller = (
 
         justTouchEnded = false;
 
-        // Check scroll position once just after scrolling stopped
-        syncViewportToScrollPosition();
         store._update(ACTION_SCROLL_END);
       }, 150);
 
@@ -185,7 +179,7 @@ export const createScroller = (
           stillMomentumScrolling = true;
         }
 
-        syncViewportToScrollPosition();
+        store._update(ACTION_SCROLL, normalizeOffset(root[scrollToKey]));
         onScrollStopped();
       };
 
@@ -304,22 +298,17 @@ export const createWindowScroller = (
         return getOffsetToWindow(parent as HTMLElement, nodeOffset);
       };
 
-      const syncViewportToScrollPosition = () => {
-        if (!visible) return;
-        store._update(
-          ACTION_SCROLL,
-          normalizeOffset(window[scrollToKey]) - getOffsetToWindow(root, 0)
-        );
-      };
-
       const onScrollStopped = debounce(() => {
-        // Check scroll position once just after scrolling stopped
-        syncViewportToScrollPosition();
         store._update(ACTION_SCROLL_END);
       }, 150);
 
       const onScroll = () => {
-        syncViewportToScrollPosition();
+        if (!visible) return;
+
+        store._update(
+          ACTION_SCROLL,
+          normalizeOffset(window[scrollToKey]) - getOffsetToWindow(root, 0)
+        );
         onScrollStopped();
       };
 
