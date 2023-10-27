@@ -327,7 +327,7 @@ export const Keyboard: StoryObj = {
         <div
           key={i}
           style={{
-            height: 80,
+            height: 60,
             borderBottom: "solid 1px #ccc",
             background: selectedIndex === i ? "skyblue" : "white",
             cursor: "pointer",
@@ -344,7 +344,7 @@ export const Keyboard: StoryObj = {
     return (
       <VList
         ref={ref}
-        style={{ height: 600, width: 400, margin: 10 }}
+        style={{ height: 400, width: 400, margin: 10 }}
         tabIndex={0}
         onKeyDown={(e) => {
           if (!ref.current) return;
