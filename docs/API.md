@@ -100,11 +100,11 @@ node_modules/@types/react/index.d.ts:395
 
 ### ScrollToIndexAlign
 
-Ƭ **ScrollToIndexAlign**: ``"start"`` \| ``"center"`` \| ``"end"``
+Ƭ **ScrollToIndexAlign**: ``"start"`` \| ``"center"`` \| ``"end"`` \| ``"nearest"``
 
 #### Defined in
 
-[src/core/types.ts:19](https://github.com/inokawa/virtua/blob/87b45b35/src/core/types.ts#L19)
+[src/core/types.ts:19](https://github.com/inokawa/virtua/blob/23d719c8/src/core/types.ts#L19)
 
 ___
 
@@ -114,17 +114,17 @@ ___
 
 #### Defined in
 
-[src/react/VGrid.tsx:49](https://github.com/inokawa/virtua/blob/87b45b35/src/react/VGrid.tsx#L49)
+[src/react/VGrid.tsx:49](https://github.com/inokawa/virtua/blob/23d719c8/src/react/VGrid.tsx#L49)
 
 ___
 
 ### ViewportComponentAttributes
 
-Ƭ **ViewportComponentAttributes**: `Pick`<`React.HTMLAttributes`<`HTMLElement`\>, ``"className"`` \| ``"style"`` \| ``"id"`` \| ``"role"`` \| ``"tabIndex"``\> & `React.AriaAttributes`
+Ƭ **ViewportComponentAttributes**: `Pick`<`React.HTMLAttributes`<`HTMLElement`\>, ``"className"`` \| ``"style"`` \| ``"id"`` \| ``"role"`` \| ``"tabIndex"`` \| ``"onKeyDown"``\> & `React.AriaAttributes`
 
 #### Defined in
 
-[src/react/Viewport.tsx:9](https://github.com/inokawa/virtua/blob/87b45b35/src/react/Viewport.tsx#L9)
+[src/react/Viewport.tsx:9](https://github.com/inokawa/virtua/blob/23d719c8/src/react/Viewport.tsx#L9)
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 #### Defined in
 
-[src/react/Viewport.tsx:63](https://github.com/inokawa/virtua/blob/87b45b35/src/react/Viewport.tsx#L63)
+[src/react/Viewport.tsx:63](https://github.com/inokawa/virtua/blob/23d719c8/src/react/Viewport.tsx#L63)
 
 ___
 
@@ -144,4 +144,4 @@ ___
 
 #### Defined in
 
-[src/react/ListItem.tsx:22](https://github.com/inokawa/virtua/blob/87b45b35/src/react/ListItem.tsx#L22)
+[src/react/ListItem.tsx:22](https://github.com/inokawa/virtua/blob/23d719c8/src/react/ListItem.tsx#L22)

@@ -29,6 +29,7 @@ Props of [VList](../API.md#vlist).
 - [id](VListProps.md#id)
 - [role](VListProps.md#role)
 - [tabIndex](VListProps.md#tabindex)
+- [onKeyDown](VListProps.md#onkeydown)
 - [aria-activedescendant](VListProps.md#aria-activedescendant)
 - [aria-atomic](VListProps.md#aria-atomic)
 - [aria-autocomplete](VListProps.md#aria-autocomplete)
@@ -93,7 +94,7 @@ Elements rendered by this component.
 
 #### Defined in
 
-[src/react/VList.tsx:93](https://github.com/inokawa/virtua/blob/87b45b35/src/react/VList.tsx#L93)
+[src/react/VList.tsx:93](https://github.com/inokawa/virtua/blob/23d719c8/src/react/VList.tsx#L93)
 
 ___
 
@@ -109,7 +110,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/react/VList.tsx:98](https://github.com/inokawa/virtua/blob/87b45b35/src/react/VList.tsx#L98)
+[src/react/VList.tsx:98](https://github.com/inokawa/virtua/blob/23d719c8/src/react/VList.tsx#L98)
 
 ___
 
@@ -124,7 +125,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/react/VList.tsx:105](https://github.com/inokawa/virtua/blob/87b45b35/src/react/VList.tsx#L105)
+[src/react/VList.tsx:105](https://github.com/inokawa/virtua/blob/23d719c8/src/react/VList.tsx#L105)
 
 ___
 
@@ -136,7 +137,7 @@ If set, the specified amount of items will be mounted in the initial rendering r
 
 #### Defined in
 
-[src/react/VList.tsx:109](https://github.com/inokawa/virtua/blob/87b45b35/src/react/VList.tsx#L109)
+[src/react/VList.tsx:109](https://github.com/inokawa/virtua/blob/23d719c8/src/react/VList.tsx#L109)
 
 ___
 
@@ -148,7 +149,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/react/VList.tsx:113](https://github.com/inokawa/virtua/blob/87b45b35/src/react/VList.tsx#L113)
+[src/react/VList.tsx:113](https://github.com/inokawa/virtua/blob/23d719c8/src/react/VList.tsx#L113)
 
 ___
 
@@ -160,7 +161,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/VList.tsx:117](https://github.com/inokawa/virtua/blob/87b45b35/src/react/VList.tsx#L117)
+[src/react/VList.tsx:117](https://github.com/inokawa/virtua/blob/23d719c8/src/react/VList.tsx#L117)
 
 ___
 
@@ -172,7 +173,7 @@ If true, some styles will be adjusted to be suitable for bottom-to-top scrolling
 
 #### Defined in
 
-[src/react/VList.tsx:121](https://github.com/inokawa/virtua/blob/87b45b35/src/react/VList.tsx#L121)
+[src/react/VList.tsx:121](https://github.com/inokawa/virtua/blob/23d719c8/src/react/VList.tsx#L121)
 
 ___
 
@@ -184,7 +185,7 @@ You can restore cache by passing a [CacheSnapshot](CacheSnapshot.md) on mount. T
 
 #### Defined in
 
-[src/react/VList.tsx:125](https://github.com/inokawa/virtua/blob/87b45b35/src/react/VList.tsx#L125)
+[src/react/VList.tsx:125](https://github.com/inokawa/virtua/blob/23d719c8/src/react/VList.tsx#L125)
 
 ___
 
@@ -203,7 +204,7 @@ Customized components for advanced usage.
 
 #### Defined in
 
-[src/react/VList.tsx:129](https://github.com/inokawa/virtua/blob/87b45b35/src/react/VList.tsx#L129)
+[src/react/VList.tsx:129](https://github.com/inokawa/virtua/blob/23d719c8/src/react/VList.tsx#L129)
 
 ___
 
@@ -229,7 +230,7 @@ Callback invoked whenever scroll offset changes.
 
 #### Defined in
 
-[src/react/VList.tsx:145](https://github.com/inokawa/virtua/blob/87b45b35/src/react/VList.tsx#L145)
+[src/react/VList.tsx:145](https://github.com/inokawa/virtua/blob/23d719c8/src/react/VList.tsx#L145)
 
 ___
 
@@ -249,7 +250,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/react/VList.tsx:149](https://github.com/inokawa/virtua/blob/87b45b35/src/react/VList.tsx#L149)
+[src/react/VList.tsx:149](https://github.com/inokawa/virtua/blob/23d719c8/src/react/VList.tsx#L149)
 
 ___
 
@@ -276,7 +277,7 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/react/VList.tsx:153](https://github.com/inokawa/virtua/blob/87b45b35/src/react/VList.tsx#L153)
+[src/react/VList.tsx:153](https://github.com/inokawa/virtua/blob/23d719c8/src/react/VList.tsx#L153)
 
 ___
 
@@ -347,6 +348,20 @@ ViewportComponentAttributes.tabIndex
 #### Defined in
 
 node_modules/@types/react/index.d.ts:1967
+
+___
+
+### onKeyDown
+
+• `Optional` **onKeyDown**: `KeyboardEventHandler`<`HTMLElement`\>
+
+#### Inherited from
+
+ViewportComponentAttributes.onKeyDown
+
+#### Defined in
+
+node_modules/@types/react/index.d.ts:1484
 
 ___
 

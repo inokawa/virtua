@@ -18,10 +18,11 @@ Alignment of item.
 - `start`(default): Align the item to the start of the list.
 - `center`: Align the item to the center of the list.
 - `end`: Align the item to the end of the list.
+- `nearest`: If the item is already completely visible, don't scroll. Otherwise scroll until it becomes visible. That is similar behavior to [`nearest` option of scrollIntoView](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView).
 
 #### Defined in
 
-[src/core/types.ts:29](https://github.com/inokawa/virtua/blob/87b45b35/src/core/types.ts#L29)
+[src/core/types.ts:30](https://github.com/inokawa/virtua/blob/23d719c8/src/core/types.ts#L30)
 
 ___
 
@@ -35,4 +36,4 @@ If true, scrolling animates smoothly with [`behavior: smooth` of scrollTo](https
 
 #### Defined in
 
-[src/core/types.ts:35](https://github.com/inokawa/virtua/blob/87b45b35/src/core/types.ts#L35)
+[src/core/types.ts:36](https://github.com/inokawa/virtua/blob/23d719c8/src/core/types.ts#L36)
