@@ -16,7 +16,7 @@ export interface CacheSnapshot {
   [cacheSymbol]: never;
 }
 
-export type ScrollToIndexAlign = "start" | "center" | "end";
+export type ScrollToIndexAlign = "start" | "center" | "end" | "nearest";
 
 export interface ScrollToIndexOpts {
   /**
@@ -25,6 +25,7 @@ export interface ScrollToIndexOpts {
    * - `start`(default): Align the item to the start of the list.
    * - `center`: Align the item to the center of the list.
    * - `end`: Align the item to the end of the list.
+   * - `nearest`: If the item is already completely visible, don't scroll. Otherwise scroll until it becomes visible. That is similar behavior to [`nearest` option of scrollIntoView](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView).
    */
   align?: ScrollToIndexAlign;
   /**

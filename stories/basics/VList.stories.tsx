@@ -318,6 +318,59 @@ export const ScrollTo: StoryObj = {
   },
 };
 
+export const Keyboard: StoryObj = {
+  render: () => {
+    const ref = useRef<VListHandle>(null);
+    const [selectedIndex, setSelectedIndex] = useState(-1);
+    const items = Array.from({ length: 1000 }).map((_, i) => {
+      return (
+        <div
+          key={i}
+          style={{
+            height: 80,
+            borderBottom: "solid 1px #ccc",
+            background: selectedIndex === i ? "skyblue" : "white",
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            setSelectedIndex(i);
+          }}
+        >
+          {i}
+        </div>
+      );
+    });
+
+    return (
+      <VList
+        ref={ref}
+        style={{ height: 600, width: 400, margin: 10 }}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (!ref.current) return;
+
+          switch (e.code) {
+            case "ArrowUp":
+              e.preventDefault();
+              const prevIndex = Math.max(selectedIndex - 1, 0);
+              setSelectedIndex(prevIndex);
+              ref.current.scrollToIndex(prevIndex, { align: "nearest" });
+              break;
+            case "ArrowDown":
+              e.preventDefault();
+              const nextIndex = Math.min(selectedIndex + 1, items.length - 1);
+              setSelectedIndex(nextIndex);
+              ref.current.scrollToIndex(nextIndex, { align: "nearest" });
+              break;
+          }
+        }}
+      >
+        {items}
+      </VList>
+    );
+  },
+};
+
 const RestorableList = ({ id }: { id: string }) => {
   const cacheKey = "list-cache-" + id;
 

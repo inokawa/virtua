@@ -219,22 +219,42 @@ export const createScroller = (
     _scrollToIndex(index, { align, smooth } = {}) {
       index = clamp(index, 0, store._getItemsLength() - 1);
 
-      scrollManually(
-        align === "end"
-          ? () =>
-              store._getViewportPaddingStart() +
-              store._getItemOffset(index) +
-              store._getItemSize(index) -
-              store._getViewportSize()
-          : align === "center"
-          ? () =>
-              store._getViewportPaddingStart() +
-              store._getItemOffset(index) +
-              (store._getItemSize(index) - store._getViewportSize()) / 2
-          : () =>
-              store._getViewportPaddingStart() + store._getItemOffset(index),
-        smooth
-      );
+      if (align === "nearest") {
+        // TODO consider padding
+        const itemOffset = store._getItemOffset(index);
+        const scrollOffset = store._getScrollOffset();
+
+        if (itemOffset < scrollOffset) {
+          align = "start";
+        } else if (
+          itemOffset + store._getItemSize(index) >
+          scrollOffset + store._getViewportSize()
+        ) {
+          align = "end";
+        } else {
+          // already completely visible
+          return;
+        }
+      }
+
+      scrollManually(() => {
+        if (align === "end") {
+          return (
+            store._getViewportPaddingStart() +
+            store._getItemOffset(index) +
+            store._getItemSize(index) -
+            store._getViewportSize()
+          );
+        } else if (align === "center") {
+          return (
+            store._getViewportPaddingStart() +
+            store._getItemOffset(index) +
+            (store._getItemSize(index) - store._getViewportSize()) / 2
+          );
+        } else {
+          return store._getViewportPaddingStart() + store._getItemOffset(index);
+        }
+      }, smooth);
     },
     _fixScrollJump: (jump) => {
       if (!rootElement) return;

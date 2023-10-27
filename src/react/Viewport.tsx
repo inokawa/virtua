@@ -8,7 +8,7 @@ import {
 
 export type ViewportComponentAttributes = Pick<
   React.HTMLAttributes<HTMLElement>,
-  "className" | "style" | "id" | "role" | "tabIndex"
+  "className" | "style" | "id" | "role" | "tabIndex" | "onKeyDown"
 > &
   React.AriaAttributes;
 
