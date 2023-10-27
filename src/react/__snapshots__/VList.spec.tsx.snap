@@ -3,7 +3,7 @@
 exports[`horizontal should render 1 children 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-x: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 40px; height: 100%; pointer-events: auto;"
@@ -23,7 +23,7 @@ exports[`horizontal should render 1 children 1`] = `
 exports[`horizontal should render 5 children 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-x: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 200px; height: 100%; pointer-events: auto;"
@@ -71,7 +71,7 @@ exports[`horizontal should render 5 children 1`] = `
 exports[`horizontal should render 100 children 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-x: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 4000px; height: 100%; pointer-events: auto;"
@@ -119,7 +119,7 @@ exports[`horizontal should render 100 children 1`] = `
 exports[`horizontal should render 1000 children 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-x: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 40000px; height: 100%; pointer-events: auto;"
@@ -167,7 +167,7 @@ exports[`horizontal should render 1000 children 1`] = `
 exports[`horizontal should render 10000 children 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-x: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 400000px; height: 100%; pointer-events: auto;"
@@ -215,7 +215,7 @@ exports[`horizontal should render 10000 children 1`] = `
 exports[`horizontal should render component 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-x: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 120px; height: 100%; pointer-events: auto;"
@@ -249,7 +249,7 @@ exports[`horizontal should render component 1`] = `
 exports[`horizontal should render fragments 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-x: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 80px; height: 100%; pointer-events: auto;"
@@ -282,7 +282,7 @@ exports[`horizontal should render fragments 1`] = `
 exports[`horizontal should render non elements 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-x: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 80px; height: 100%; pointer-events: auto;"
@@ -305,7 +305,7 @@ exports[`horizontal should render non elements 1`] = `
 exports[`horizontal should render with given width / height 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: inline-block; contain: strict; width: 100px; height: 800px;"
+    style="overflow-x: auto; display: inline-block; contain: strict; width: 100px; height: 800px;"
   >
     <div
       style="position: relative; visibility: hidden; width: 200px; height: 100%; pointer-events: auto;"
@@ -353,7 +353,7 @@ exports[`horizontal should render with given width / height 1`] = `
 exports[`reverse should render many items 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-y: auto; display: block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 100%; height: 4000px; pointer-events: auto;"
@@ -401,7 +401,7 @@ exports[`reverse should render many items 1`] = `
 exports[`should change components 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-y: auto; display: block; contain: strict; width: 100%; height: 100%;"
   >
     <ul
       style="position: relative; height: 200px; margin: 0px;"
@@ -453,7 +453,7 @@ exports[`should pass attributes to element 1`] = `
     class="class"
     id="id"
     role="list"
-    style="overflow: auto; display: block; contain: strict; width: 100%; height: 100%; background: red;"
+    style="overflow-y: auto; display: block; contain: strict; width: 100%; height: 100%; background: red;"
     tabindex="0"
   >
     <div
@@ -474,7 +474,7 @@ exports[`should pass attributes to element 1`] = `
 exports[`vertical should render 0 children 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-y: auto; display: block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 100%; height: 0px; pointer-events: auto;"
@@ -486,7 +486,7 @@ exports[`vertical should render 0 children 1`] = `
 exports[`vertical should render 1 children 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-y: auto; display: block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 100%; height: 40px; pointer-events: auto;"
@@ -506,7 +506,7 @@ exports[`vertical should render 1 children 1`] = `
 exports[`vertical should render 5 children 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-y: auto; display: block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 100%; height: 200px; pointer-events: auto;"
@@ -554,7 +554,7 @@ exports[`vertical should render 5 children 1`] = `
 exports[`vertical should render 100 children 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-y: auto; display: block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 100%; height: 4000px; pointer-events: auto;"
@@ -602,7 +602,7 @@ exports[`vertical should render 100 children 1`] = `
 exports[`vertical should render 1000 children 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-y: auto; display: block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 100%; height: 40000px; pointer-events: auto;"
@@ -650,7 +650,7 @@ exports[`vertical should render 1000 children 1`] = `
 exports[`vertical should render 10000 children 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-y: auto; display: block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 100%; height: 400000px; pointer-events: auto;"
@@ -698,7 +698,7 @@ exports[`vertical should render 10000 children 1`] = `
 exports[`vertical should render component 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-y: auto; display: block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 100%; height: 120px; pointer-events: auto;"
@@ -732,7 +732,7 @@ exports[`vertical should render component 1`] = `
 exports[`vertical should render fragments 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-y: auto; display: block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 100%; height: 80px; pointer-events: auto;"
@@ -765,7 +765,7 @@ exports[`vertical should render fragments 1`] = `
 exports[`vertical should render non elements 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: block; contain: strict; width: 100%; height: 100%;"
+    style="overflow-y: auto; display: block; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 100%; height: 80px; pointer-events: auto;"
@@ -788,7 +788,7 @@ exports[`vertical should render non elements 1`] = `
 exports[`vertical should render with given width / height 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; display: block; contain: strict; width: 100px; height: 800px;"
+    style="overflow-y: auto; display: block; contain: strict; width: 100px; height: 800px;"
   >
     <div
       style="position: relative; visibility: hidden; width: 100%; height: 200px; pointer-events: auto;"
