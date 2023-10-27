@@ -220,7 +220,6 @@ export const createScroller = (
       index = clamp(index, 0, store._getItemsLength() - 1);
 
       if (align === "nearest") {
-        // TODO consider padding
         const itemOffset = store._getItemOffset(index);
         const scrollOffset = store._getScrollOffset();
 
