@@ -244,11 +244,13 @@ export const createScroller = (
       // That means we have no reliable way to confirm still touched or not if user touches more than once during momentum scrolling...
       // This is a hack for the suspectable situations, inspired by https://github.com/prud/ios-overflow-scroll-to-top
       if (stillMomentumScrolling) {
-        const prev = rootElement.style.overflow;
-        rootElement.style.overflow = "hidden";
         stillMomentumScrolling = false;
+
+        const style = rootElement.style;
+        const prev = style.overflow;
+        style.overflow = "hidden";
         timeout(() => {
-          rootElement!.style.overflow = prev;
+          style.overflow = prev;
         });
       }
 
