@@ -114,7 +114,8 @@ export const createVirtualStore = (
   const subscribers = new Set<[number, Subscriber]>();
   const getScrollSize = (): number =>
     computeTotalSize(cache as Writeable<Cache>);
-  const getScrollOffsetMax = () => getScrollSize() - viewportSize + paddingEnd;
+  const getScrollOffsetMax = () =>
+    getScrollSize() - viewportSize + paddingStart + paddingEnd;
 
   const clampScrollOffset = (value: number): number => {
     // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
