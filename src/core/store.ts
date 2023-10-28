@@ -303,12 +303,13 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_SCROLL: {
+          const nextOffset = clampScrollOffset(payload);
           // Skip if offset is not changed
-          if (scrollOffset === payload) {
+          if (nextOffset === scrollOffset) {
             break;
           }
 
-          const delta = payload - scrollOffset;
+          const delta = nextOffset - scrollOffset;
           // Scrolling after resizing will be caused by jump compensation
           const isJustJumped = _maybeJumped;
           _maybeJumped = false;
@@ -327,9 +328,9 @@ export const createVirtualStore = (
           // if (
           //   pendingJump &&
           //   ((_scrollDirection === SCROLL_UP &&
-          //     payload - max(pendingJump, 0) <= 0) ||
+          //     nextOffset - max(pendingJump, 0) <= 0) ||
           //     (_scrollDirection === SCROLL_DOWN &&
-          //       payload - min(pendingJump, 0) >= getScrollOffsetMax()))
+          //       nextOffset - min(pendingJump, 0) >= getScrollOffsetMax()))
           // ) {
           //   // Flush if almost reached to start or end
           //   shouldFlushPendingJump = true;
@@ -343,7 +344,7 @@ export const createVirtualStore = (
 
           mutated += UPDATE_SCROLL_WITH_EVENT;
 
-          scrollOffset = clampScrollOffset(payload);
+          scrollOffset = nextOffset;
           mutated += UPDATE_SCROLL_STATE;
           break;
         }
