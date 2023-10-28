@@ -301,7 +301,6 @@ export const createWindowScroller = (
   return {
     _initRoot(root) {
       rootElement = root;
-      let visible = false;
 
       // TODO calc offset only when it changes (maybe impossible)
       const getOffsetToWindow = (node: HTMLElement, offset: number): number => {
@@ -324,8 +323,6 @@ export const createWindowScroller = (
       }, 150);
 
       const onScroll = () => {
-        if (!visible) return;
-
         store._update(
           ACTION_SCROLL,
           normalizeOffset(window[scrollToKey]) - getOffsetToWindow(root, 0)
@@ -335,16 +332,10 @@ export const createWindowScroller = (
 
       const onWheel = createOnWheel(store, isHorizontal, onScrollStopped);
 
-      const io = new IntersectionObserver(([entry]) => {
-        visible = entry!.isIntersecting;
-      });
-      io.observe(root);
-
       window.addEventListener("scroll", onScroll);
       window.addEventListener("wheel", onWheel, { passive: true });
 
       return () => {
-        io.disconnect();
         window.removeEventListener("scroll", onScroll);
         window.removeEventListener("wheel", onWheel);
         onScrollStopped._cancel();
