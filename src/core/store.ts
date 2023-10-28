@@ -304,7 +304,7 @@ export const createVirtualStore = (
         }
         case ACTION_SCROLL: {
           // Skip if offset is not changed
-          if (scrollOffset === payload) {
+          if (payload === scrollOffset) {
             break;
           }
 
