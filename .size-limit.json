@@ -6,15 +6,15 @@
     "limit": "5.5 kB"
   },
   {
-    "name": "VList",
+    "name": "VGrid",
     "path": "lib/index.mjs",
-    "import": "{ VList }",
+    "import": "{ experimental_VGrid }",
     "limit": "4 kB"
   },
   {
-    "name": "VGrid",
+    "name": "VList",
     "path": "lib/index.mjs",
-    "import": "{ VGrid }",
+    "import": "{ VList }",
     "limit": "4 kB"
   },
   {
