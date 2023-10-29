@@ -12,10 +12,10 @@ If you want to check the difference with the alternatives right away, [see compa
 
 This project is a challenge to rethink virtualization. The goals are...
 
-- **Zero-config virtualization:** This library is designed to give the best performance without configuration. It also handles common hard things in the real world (dynamic size measurement, scroll position adjustment while reverse scrolling and imperative scrolling, etc).
-- **Fast:** Scrolling without frame drop needs optimization in many aspects (reduce CPU usage, reduce GC, [reduce layout recalculation](https://gist.github.com/paulirish/5d52fb081b3570c81e3a), optimize with CSS, optimize for frameworks, etc). We are trying to combine the best of them.
+- **Zero-config virtualization:** This library is designed to give the best performance without configuration. It also handles common hard things in the real world (dynamic size measurement, scroll position adjustment while reverse scrolling and imperative scrolling, iOS support, etc).
+- **Fast:** Natural virtual scrolling needs optimization in many aspects (eliminate frame drops by reducing CPU usage and GC and [layout recalculation](https://gist.github.com/paulirish/5d52fb081b3570c81e3a), reduce visual jumps on repaint, optimize with CSS, optimize for frameworks, etc). We are trying to combine the best of them.
 - **Small:** Its bundle size should be small as much as possible to be friendly with modern web development. Currently each components are ~3kB gzipped and the total is [~5kB gzipped](https://bundlephobia.com/package/virtua).
-- **Flexible:** Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, RTL, mobile, sticky, infinite scrolling, placeholder, scrollTo, scroll restoration, DnD, table, and more. See [live demo](#demo).
+- **Flexible:** Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, RTL, mobile, infinite scrolling, scroll restoration, DnD, keyboard navigation, sticky, placeholder and more. See [live demo](#demo).
 - **Framework agnostic (WIP):** Currently only for [React](https://react.dev/) but we could support [Vue](https://vuejs.org/), [Svelte](https://svelte.dev/), [Solid](https://www.solidjs.com/), [Angular](https://angular.io/), [Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components) and more in the future.
 
 ## Demo
@@ -173,12 +173,14 @@ And see [examples](./stories) for more usages.
 
 #### Is there any way to improve performance further?
 
-In complex usage, children element generation can be a performance bottle neck if you re-render frequently the parent of virtual scroller and the children are tons of items, because React element generation is not free and new React element instance breaks some of memoization inside virtual scroller. In that case use useMemo to reduce computation and keep the elements' instance the same.
+As a trade-off to be compatible with React's built-in elements like `div`, virtua doesn't have optimization possible by using [render prop](https://legacy.reactjs.org/docs/render-props.html) which some of other virtualization libraries for React have. That also means common optimization techniques for non-virtualized list ([`memo`](https://react.dev/reference/react/memo), [`useMemo`](https://react.dev/reference/react/useMemo), [`context`](https://react.dev/learn/passing-data-deeply-with-context), etc) also work for this lib!
+
+In complex usage, children element generation can be a performance bottle neck if you re-render frequently the parent of virtual scroller and the children are tons of items. That's because React element generation is fast enough but not free and new React element instance breaks some of memoization inside virtual scroller. In that case use `useMemo` to reduce computation and keep the elements' instance the same.
 
 ```tsx
 const elements = useMemo(
-  () => array.map((d) => <Component key={d.id} {...d} />),
-  [array]
+  () => tooLongArray.map((d) => <Component key={d.id} {...d} />),
+  [tooLongArray]
 );
 const [position, setPosition] = useState(0);
 return (
@@ -188,6 +190,8 @@ return (
   </div>
 );
 ```
+
+And if you want to pass the state to the items, using `context` instead of props may be better because it doesn't break the useMemo.
 
 #### What is `ResizeObserver loop completed with undelivered notifications.` error?
 
