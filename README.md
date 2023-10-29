@@ -173,7 +173,7 @@ And see [examples](./stories) for more usages.
 
 #### Is there any way to improve performance further?
 
-As a trade-off to be compatible with React's built-in elements like `div`, virtua doesn't have optimization possible by using [render prop](https://legacy.reactjs.org/docs/render-props.html) which some of other virtualization libraries for React have. That also means common optimization techniques for non-virtualized list ([`memo`](https://react.dev/reference/react/memo), [`useMemo`](https://react.dev/reference/react/useMemo), [`context`](https://react.dev/learn/passing-data-deeply-with-context), etc) also work for this lib!
+As a trade-off to be compatible with React's built-in elements like `div`, virtua doesn't have optimization possible by using [render prop](https://legacy.reactjs.org/docs/render-props.html) which some of other virtualization libraries for React have. That also means common optimization techniques for non-virtualized list ([`memo`](https://react.dev/reference/react/memo), [`useMemo`](https://react.dev/reference/react/useMemo), [`context`](https://react.dev/learn/passing-data-deeply-with-context), etc) work for this lib!
 
 In complex usage, children element generation can be a performance bottle neck if you re-render frequently the parent of virtual scroller and the children are tons of items. That's because React element generation is fast enough but not free and new React element instance breaks some of memoization inside virtual scroller. In that case use `useMemo` to reduce computation and keep the elements' instance the same.
 
