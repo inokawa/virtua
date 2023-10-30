@@ -201,7 +201,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
       return () => {
         cleanupResizer();
         cleanupScroller();
-        unsubscribeStore;
+        unsubscribeStore();
       };
     }, []);
 
