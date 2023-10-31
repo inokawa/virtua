@@ -110,7 +110,6 @@ export const createVirtualStore = (
   let _smoothScrollRange: ItemsRange | null = null;
   let _maybeJumped = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
-  let _initialRendered = true;
 
   const subscribers = new Set<[number, Subscriber]>();
   const getScrollSize = (): number =>
@@ -224,13 +223,9 @@ export const createVirtualStore = (
             ([index, size]) => cache._sizes[index] !== size
           );
           // Skip if all items are cached and not updated
-          if (
-            !updated.length &&
-            !_initialRendered
-            ) {
+          if (!updated.length) {
             break;
           }
-          _initialRendered = false;
 
           // Calculate jump
           // Should maintain visible position to minimize junks in appearance

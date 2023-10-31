@@ -273,9 +273,6 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
-      const cleanUpResizer = resizer._observeRoot(root);
-      const cleanupVScroller = vScroller._initRoot(root);
-      const cleanupHScroller = hScroller._initRoot(root);
       const onRerender = (sync?: boolean) => {
         if (sync) {
           flushSync(rerender);
@@ -283,6 +280,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           rerender();
         }
       };
+      // store must be subscribed first because others may dispatch update on init depending on implementation
       const unsubscribeVStore = vStore._subscribe(
         UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
         onRerender
@@ -291,12 +289,15 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
         onRerender
       );
+      const cleanUpResizer = resizer._observeRoot(root);
+      const cleanupVScroller = vScroller._initRoot(root);
+      const cleanupHScroller = hScroller._initRoot(root);
       return () => {
+        unsubscribeVStore();
+        unsubscribeHStore();
         cleanUpResizer();
         cleanupVScroller();
         cleanupHScroller();
-        unsubscribeVStore();
-        unsubscribeHStore();
       };
     }, []);
 

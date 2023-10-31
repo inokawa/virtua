@@ -186,8 +186,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
-      const cleanupResizer = resizer._observeRoot(root);
-      const cleanupScroller = scroller._initRoot(root);
+      // store must be subscribed first because others may dispatch update on init depending on implementation
       const unsubscribeStore = store._subscribe(
         UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
         (sync) => {
@@ -198,10 +197,12 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
           }
         }
       );
+      const cleanupResizer = resizer._observeRoot(root);
+      const cleanupScroller = scroller._initRoot(root);
       return () => {
+        unsubscribeStore();
         cleanupResizer();
         cleanupScroller();
-        unsubscribeStore();
       };
     }, []);
 
