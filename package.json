@@ -53,7 +53,7 @@
     "@tanstack/react-virtual": "3.0.0-alpha.0",
     "@testing-library/react": "14.0.0",
     "@types/react": "18.2.33",
-    "@types/react-beautiful-dnd": "13.1.4",
+    "@types/react-beautiful-dnd": "13.1.6",
     "@types/react-virtualized": "9.21.26",
     "@types/react-window": "1.8.7",
     "@typescript-eslint/parser": "6.9.0",
