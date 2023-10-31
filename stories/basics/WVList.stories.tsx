@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
-import React, { useRef, useState } from "react";
-import { WVList } from "../../src";
+import React, { useRef, useState, useEffect, useMemo } from "react";
+import { WVList, type WVListHandle, type CacheSnapshot } from "../../src";
 import { Spinner, delay } from "../common";
 
 const createRows = (num: number) => {
@@ -177,6 +177,75 @@ export const InfiniteScrolling: StoryObj = {
           {items}
           {fetching && <Spinner />}
         </WVList>
+      </div>
+    );
+  },
+};
+
+const RestorableList = ({ id }: { id: string }) => {
+  const cacheKey = "window-list-cache-" + id;
+
+  const ref = useRef<WVListHandle>(null);
+
+  const [offset, cache] = useMemo(() => {
+    const serialized = sessionStorage.getItem(cacheKey);
+    if (!serialized) return [];
+    return JSON.parse(serialized) as [number, CacheSnapshot];
+  }, []);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const handle = ref.current;
+
+    window.scrollTo(0, offset ?? 0);
+
+    return () => {
+      sessionStorage.setItem(
+        cacheKey,
+        JSON.stringify([window.scrollY, handle.cache])
+      );
+    };
+  }, []);
+
+  return (
+    <WVList
+      ref={ref}
+      cache={cache}
+    >
+      {createRows(1000)}
+    </WVList>
+  );
+};
+
+export const ScrollRestoration: StoryObj = {
+  render: () => {
+    const [show, setShow] = useState(true);
+    const [selectedId, setSelectedId] = useState("1");
+
+    return (
+      <div style={{ position: 'relative' }}>
+        <div style={{ position: 'fixed', top: 0, left: 0, zIndex: 10 }}>
+          <button
+            onClick={() => {
+              setShow((prev) => !prev);
+            }}
+          >
+            {show ? "hide" : "show"}
+          </button>
+          {["1", "2", "3"].map((id) => (
+            <label key={id}>
+              <input
+                type="radio"
+                checked={selectedId === id}
+                onChange={() => {
+                  setSelectedId(id);
+                }}
+              />
+              {id}
+            </label>
+          ))}
+        </div>
+        {show && <RestorableList key={selectedId} id={selectedId} />}
       </div>
     );
   },
