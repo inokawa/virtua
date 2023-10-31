@@ -199,19 +199,22 @@ const RestorableList = ({ id }: { id: string }) => {
 
     window.scrollTo(0, offset ?? 0);
 
+    let scrollY = 0;
+    const onScroll = () => {
+      scrollY = window.scrollY;
+    };
+    window.addEventListener("scroll", onScroll);
+    onScroll();
+
     return () => {
-      sessionStorage.setItem(
-        cacheKey,
-        JSON.stringify([window.scrollY, handle.cache])
-      );
+      window.removeEventListener("scroll", onScroll);
+      // Use stored window.scrollY because it may return 0 in useEffect cleanup
+      sessionStorage.setItem(cacheKey, JSON.stringify([scrollY, handle.cache]));
     };
   }, []);
 
   return (
-    <WVList
-      ref={ref}
-      cache={cache}
-    >
+    <WVList ref={ref} cache={cache}>
       {createRows(1000)}
     </WVList>
   );
@@ -223,8 +226,8 @@ export const ScrollRestoration: StoryObj = {
     const [selectedId, setSelectedId] = useState("1");
 
     return (
-      <div style={{ position: 'relative' }}>
-        <div style={{ position: 'fixed', top: 0, left: 0, zIndex: 10 }}>
+      <div style={{ position: "relative" }}>
+        <div style={{ position: "fixed", top: 0, left: 0, zIndex: 10 }}>
           <button
             onClick={() => {
               setShow((prev) => !prev);

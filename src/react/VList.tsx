@@ -232,8 +232,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
-      const cleanupResizer = resizer._observeRoot(root);
-      const cleanupScroller = scroller._initRoot(root);
+      // store must be subscribed first because others may dispatch update on init depending on implementation
       const unsubscribeStore = store._subscribe(
         UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
         (sync) => {
@@ -250,11 +249,13 @@ export const VList = forwardRef<VListHandle, VListProps>(
           onScroll[refKey] && onScroll[refKey](store._getScrollOffset());
         }
       );
+      const cleanupResizer = resizer._observeRoot(root);
+      const cleanupScroller = scroller._initRoot(root);
       return () => {
-        cleanupResizer();
-        cleanupScroller();
         unsubscribeStore();
         unsubscribeOnScroll();
+        cleanupResizer();
+        cleanupScroller();
       };
     }, []);
 

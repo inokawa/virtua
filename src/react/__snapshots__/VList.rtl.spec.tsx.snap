@@ -6,41 +6,48 @@ exports[`rtl should not work in vertical 1`] = `
     style="overflow-y: auto; display: block; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="position: relative; visibility: hidden; width: 100%; height: 4000px; pointer-events: auto;"
+      style="position: relative; visibility: hidden; width: 100%; height: 5000px; pointer-events: auto;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
       >
         <div>
           4
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
+      >
+        <div>
+          5
         </div>
       </div>
     </div>
@@ -54,41 +61,48 @@ exports[`rtl should work in horizontal 1`] = `
     style="overflow-x: auto; display: inline-block; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="position: relative; visibility: hidden; width: 4000px; height: 100%; pointer-events: auto;"
+      style="position: relative; visibility: hidden; width: 10000px; height: 100%; pointer-events: auto;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; right: 0px; visibility: hidden; display: flex;"
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; right: 0px; visibility: visible; display: flex;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; right: 40px; visibility: hidden; display: flex;"
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; right: 100px; visibility: visible; display: flex;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; right: 80px; visibility: hidden; display: flex;"
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; right: 200px; visibility: visible; display: flex;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; right: 120px; visibility: hidden; display: flex;"
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; right: 300px; visibility: visible; display: flex;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; right: 160px; visibility: hidden; display: flex;"
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; right: 400px; visibility: visible; display: flex;"
       >
         <div>
           4
+        </div>
+      </div>
+      <div
+        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; right: 500px; visibility: visible; display: flex;"
+      >
+        <div>
+          5
         </div>
       </div>
     </div>
