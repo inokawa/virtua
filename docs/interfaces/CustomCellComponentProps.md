@@ -1,6 +1,6 @@
 # Interface: CustomCellComponentProps
 
-Props of customized cell component for [VGrid](../API.md#vgrid).
+Props of customized cell component for [experimental_VGrid](../API.md#experimental_vgrid).
 
 ## Table of contents
 
@@ -17,7 +17,7 @@ Props of customized cell component for [VGrid](../API.md#vgrid).
 
 #### Defined in
 
-[src/react/VGrid.tsx:45](https://github.com/inokawa/virtua/blob/187dff7d/src/react/VGrid.tsx#L45)
+[src/react/VGrid.tsx:45](https://github.com/inokawa/virtua/blob/3cb05164/src/react/VGrid.tsx#L45)
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 #### Defined in
 
-[src/react/VGrid.tsx:46](https://github.com/inokawa/virtua/blob/187dff7d/src/react/VGrid.tsx#L46)
+[src/react/VGrid.tsx:46](https://github.com/inokawa/virtua/blob/3cb05164/src/react/VGrid.tsx#L46)

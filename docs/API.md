@@ -5,8 +5,8 @@
 ### Functions
 
 - [VList](API.md#vlist)
-- [VGrid](API.md#vgrid)
 - [WVList](API.md#wvlist)
+- [experimental\_VGrid](API.md#experimental_vgrid)
 
 ### Interfaces
 
@@ -14,11 +14,11 @@
 - [ScrollToIndexOpts](interfaces/ScrollToIndexOpts.md)
 - [VListProps](interfaces/VListProps.md)
 - [VListHandle](interfaces/VListHandle.md)
+- [WVListProps](interfaces/WVListProps.md)
+- [WVListHandle](interfaces/WVListHandle.md)
 - [VGridProps](interfaces/VGridProps.md)
 - [VGridHandle](interfaces/VGridHandle.md)
 - [CustomCellComponentProps](interfaces/CustomCellComponentProps.md)
-- [WVListProps](interfaces/WVListProps.md)
-- [WVListHandle](interfaces/WVListHandle.md)
 - [CustomViewportComponentProps](interfaces/CustomViewportComponentProps.md)
 - [CustomItemComponentProps](interfaces/CustomItemComponentProps.md)
 
@@ -54,28 +54,6 @@ node_modules/@types/react/index.d.ts:395
 
 ___
 
-### VGrid
-
-▸ **VGrid**(`props`): `ReactNode`
-
-Virtualized grid component. See [VGridProps](interfaces/VGridProps.md) and [VGridHandle](interfaces/VGridHandle.md).
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `props` | [`VGridProps`](interfaces/VGridProps.md) & `RefAttributes`<[`VGridHandle`](interfaces/VGridHandle.md)\> |
-
-#### Returns
-
-`ReactNode`
-
-#### Defined in
-
-node_modules/@types/react/index.d.ts:395
-
-___
-
 ### WVList
 
 ▸ **WVList**(`props`): `ReactNode`
@@ -96,6 +74,28 @@ Virtualized list component controlled by the window scrolling. See [WVListProps]
 
 node_modules/@types/react/index.d.ts:395
 
+___
+
+### experimental\_VGrid
+
+▸ **experimental_VGrid**(`props`): `ReactNode`
+
+Virtualized grid component. See [VGridProps](interfaces/VGridProps.md) and [VGridHandle](interfaces/VGridHandle.md).
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `props` | [`VGridProps`](interfaces/VGridProps.md) & `RefAttributes`<[`VGridHandle`](interfaces/VGridHandle.md)\> |
+
+#### Returns
+
+`ReactNode`
+
+#### Defined in
+
+node_modules/@types/react/index.d.ts:395
+
 ## Type Aliases
 
 ### ScrollToIndexAlign
@@ -104,7 +104,7 @@ node_modules/@types/react/index.d.ts:395
 
 #### Defined in
 
-[src/core/types.ts:19](https://github.com/inokawa/virtua/blob/187dff7d/src/core/types.ts#L19)
+[src/core/types.ts:19](https://github.com/inokawa/virtua/blob/3cb05164/src/core/types.ts#L19)
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 #### Defined in
 
-[src/react/VGrid.tsx:49](https://github.com/inokawa/virtua/blob/187dff7d/src/react/VGrid.tsx#L49)
+[src/react/VGrid.tsx:49](https://github.com/inokawa/virtua/blob/3cb05164/src/react/VGrid.tsx#L49)
 
 ___
 
@@ -124,7 +124,7 @@ ___
 
 #### Defined in
 
-[src/react/Viewport.tsx:9](https://github.com/inokawa/virtua/blob/187dff7d/src/react/Viewport.tsx#L9)
+[src/react/Viewport.tsx:9](https://github.com/inokawa/virtua/blob/3cb05164/src/react/Viewport.tsx#L9)
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 #### Defined in
 
-[src/react/Viewport.tsx:63](https://github.com/inokawa/virtua/blob/187dff7d/src/react/Viewport.tsx#L63)
+[src/react/Viewport.tsx:63](https://github.com/inokawa/virtua/blob/3cb05164/src/react/Viewport.tsx#L63)
 
 ___
 
@@ -144,4 +144,4 @@ ___
 
 #### Defined in
 
-[src/react/ListItem.tsx:22](https://github.com/inokawa/virtua/blob/187dff7d/src/react/ListItem.tsx#L22)
+[src/react/ListItem.tsx:22](https://github.com/inokawa/virtua/blob/3cb05164/src/react/ListItem.tsx#L22)
