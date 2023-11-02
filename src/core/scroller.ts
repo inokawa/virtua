@@ -74,6 +74,7 @@ export const createScroller = (
   let cancelScroll: (() => void) | undefined;
   let stillMomentumScrolling = false;
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
+  const overflowKey = isHorizontal ? "overflowX" : "overflowY";
 
   const normalizeOffset = (offset: number, diff?: boolean): number => {
     if (isHorizontal && isRTLDocument()) {
@@ -266,10 +267,10 @@ export const createScroller = (
         stillMomentumScrolling = false;
 
         const style = rootElement.style;
-        const prev = style.overflow;
-        style.overflow = "hidden";
+        const prev = style[overflowKey];
+        style[overflowKey] = "hidden";
         timeout(() => {
-          style.overflow = prev;
+          style[overflowKey] = prev;
         });
       }
 
