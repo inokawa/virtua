@@ -335,9 +335,6 @@ export const createVirtualStore = (
           //   shouldFlushPendingJump = true;
           // }
 
-          // Ignore manual scroll because it may be called in useEffect/useLayoutEffect and cause the warn below.
-          // Warning: flushSync was called from inside a lifecycle method. React cannot flush when React is already rendering. Consider moving this call to a scheduler task or micro task.
-          //
           // Update synchronously if scrolled a lot
           shouldSync = abs(delta) > viewportSize;
 
