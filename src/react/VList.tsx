@@ -250,7 +250,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
         }
       );
       const cleanupResizer = resizer._observeRoot(root);
-      const cleanupScroller = scroller._initRoot(root);
+      const cleanupScroller = scroller._observe(root);
       return () => {
         unsubscribeStore();
         unsubscribeOnScroll();

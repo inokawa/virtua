@@ -198,7 +198,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
         }
       );
       const cleanupResizer = resizer._observeRoot(root);
-      const cleanupScroller = scroller._initRoot(root);
+      const cleanupScroller = scroller._observe(root);
       return () => {
         unsubscribeStore();
         cleanupResizer();

@@ -59,7 +59,7 @@ const normalizeRTLOffset = (
 };
 
 export type Scroller = {
-  _initRoot: (rootElement: HTMLElement) => () => void;
+  _observe: (rootElement: HTMLElement) => () => void;
   _scrollTo: (offset: number) => void;
   _scrollBy: (offset: number) => void;
   _scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
@@ -157,7 +157,7 @@ export const createScroller = (
   };
 
   return {
-    _initRoot(root) {
+    _observe(root) {
       rootElement = root;
 
       let touching = false;
@@ -280,7 +280,7 @@ export const createScroller = (
 };
 
 export type WindowScroller = {
-  _initRoot: (rootElement: HTMLElement) => () => void;
+  _observe: (rootElement: HTMLElement) => () => void;
   _fixScrollJump: (jump: ScrollJump) => void;
 };
 
@@ -300,7 +300,7 @@ export const createWindowScroller = (
   };
 
   return {
-    _initRoot(root) {
+    _observe(root) {
       rootElement = root;
 
       // TODO calc offset only when it changes (maybe impossible)

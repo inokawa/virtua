@@ -290,8 +290,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         onRerender
       );
       const cleanUpResizer = resizer._observeRoot(root);
-      const cleanupVScroller = vScroller._initRoot(root);
-      const cleanupHScroller = hScroller._initRoot(root);
+      const cleanupVScroller = vScroller._observe(root);
+      const cleanupHScroller = hScroller._observe(root);
       return () => {
         unsubscribeVStore();
         unsubscribeHStore();
