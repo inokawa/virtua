@@ -79,48 +79,56 @@ export const Horizontal: StoryObj = {
 export const Complex: StoryObj = {
   render: () => {
     return (
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <div style={{ flex: 1, display: "flex", paddingTop: 600 }}>
-          <WVList
-            style={{
-              margin: 10,
-            }}
-          >
-            {createRows(1000)}
-          </WVList>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ background: "white", height: 60, marginBottom: 40 }}>
+          header
         </div>
-        <div style={{ flex: 3, paddingBottom: 600 }}>
-          <WVList
-            style={{
-              margin: 10,
-            }}
-          >
-            {Array.from({ length: 1000 }).map((_, i) => {
-              return (
-                <div
-                  key={i}
-                  style={{
-                    height: 200,
-                    borderRadius: 8,
-                    margin: 16,
-                    background: "#fff",
-                  }}
-                >
-                  {i}
-                </div>
-              );
-            })}
-          </WVList>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <div style={{ flex: 1, display: "flex", paddingTop: 600 }}>
+            <WVList
+              style={{
+                margin: 10,
+              }}
+            >
+              {createRows(1000)}
+            </WVList>
+          </div>
+          <div style={{ flex: 3 }}>
+            <WVList
+              style={{
+                margin: 10,
+              }}
+            >
+              {Array.from({ length: 1000 }).map((_, i) => {
+                return (
+                  <div
+                    key={i}
+                    style={{
+                      height: 200,
+                      borderRadius: 8,
+                      margin: 16,
+                      background: "#fff",
+                    }}
+                  >
+                    {i}
+                  </div>
+                );
+              })}
+            </WVList>
+          </div>
+          <div style={{ flex: 2, padding: 20, paddingTop: 300 }}>
+            <div
+              style={{
+                top: 0,
+                height: 400,
+                position: "sticky",
+                background: "white",
+              }}
+            ></div>
+          </div>
         </div>
-        <div style={{ flex: 2, padding: 20, paddingTop: 300 }}>
-          <div
-            style={{
-              top: 0,
-              height: 400,
-              position: "sticky",
-              background: "white",
-            }}
-          ></div>
+        <div style={{ background: "white", height: 60, marginTop: 40 }}>
+          footer
         </div>
       </div>
     );
