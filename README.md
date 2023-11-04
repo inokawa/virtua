@@ -193,6 +193,8 @@ return (
 
 And if you want to pass the state to the items, using `context` instead of props may be better because it doesn't break the useMemo.
 
+Decreasing `overscan` prop may also improve perf in case that components are large and heavy.
+
 #### What is `ResizeObserver loop completed with undelivered notifications.` error?
 
 It may be dispatched by ResizeObserver in this lib [as described in spec](https://www.w3.org/TR/resize-observer/#deliver-resize-error). If it bothers you,
