@@ -225,7 +225,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const [startIndex, endIndex] = store._getRange();
     const scrollDirection = store._getScrollDirection();
     const jumpCount = store._getJumpCount();
-    const scrollSize = store._getCorrectedScrollSize();
+    const scrollSize = store._getTotalSize();
 
     const rootRef = useRef<HTMLDivElement>(null);
     const scrolling = scrollDirection !== SCROLL_IDLE;
@@ -289,7 +289,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
             return store._getScrollOffset();
           },
           get scrollSize() {
-            return store._getCorrectedScrollSize();
+            return store._getTotalSize();
           },
           get viewportSize() {
             return store._getViewportSize();
