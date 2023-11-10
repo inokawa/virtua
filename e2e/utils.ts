@@ -4,7 +4,6 @@ export const storyUrl = (id: string) =>
   `http://localhost:6006/iframe.html?id=${id}&viewMode=story`;
 
 export const scrollableSelector = '*[style*="overflow"]';
-export const itemsSelector = '*[style*="top"]';
 
 export const approxymate = (v: number): number => Math.round(v / 100) * 100;
 
@@ -38,19 +37,20 @@ export const getLastItem = (
     };
   });
 };
-export const getFirstItemRtl = (
-  scrollable: ElementHandle<HTMLElement | SVGElement>
-) => {
-  return scrollable.evaluate((s) => {
-    const rect = s.getBoundingClientRect();
-    const el = document.elementFromPoint(rect.right - 2, rect.top + 2)!;
-    return {
-      text: el.textContent!,
-      top: el.getBoundingClientRect().top - rect.top,
-      right: el.getBoundingClientRect().right - rect.right,
-    };
-  });
-};
+
+// export const getFirstItemRtl = (
+//   scrollable: ElementHandle<HTMLElement | SVGElement>
+// ) => {
+//   return scrollable.evaluate((s) => {
+//     const rect = s.getBoundingClientRect();
+//     const el = document.elementFromPoint(rect.right - 2, rect.top + 2)!;
+//     return {
+//       text: el.textContent!,
+//       top: el.getBoundingClientRect().top - rect.top,
+//       right: el.getBoundingClientRect().right - rect.right,
+//     };
+//   });
+// };
 
 export const getScrollTop = (
   scrollable: ElementHandle<HTMLElement | SVGElement>
@@ -85,45 +85,77 @@ export const scrollBy = (
   }, offset);
 };
 
-export const scrollToBottom = async (
+export const scrollToBottom = (
   scrollable: ElementHandle<HTMLElement | SVGElement>
-) => {
-  await scrollable.evaluate((e) => {
-    e.scrollTop = e.scrollHeight;
+): Promise<void> => {
+  return scrollable.evaluate((e) => {
+    return new Promise<void>((resolve) => {
+      let timer: ReturnType<typeof setTimeout> | null = null;
+
+      const onScroll = () => {
+        e.scrollTop = e.scrollHeight;
+
+        if (timer !== null) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+          if (e.scrollTop + (e as HTMLElement).offsetHeight >= e.scrollHeight) {
+            e.removeEventListener("scroll", onScroll);
+            resolve();
+          } else {
+            onScroll();
+          }
+        }, 50);
+      };
+      e.addEventListener("scroll", onScroll);
+
+      onScroll();
+    });
   });
-  await scrollable.waitForElementState("stable");
-  // FIXME: scroll twice to reach definitely
-  await scrollable.evaluate((e) => {
-    e.scrollTop = e.scrollHeight;
-  });
-  await scrollable.waitForElementState("stable");
 };
+
 export const scrollToRight = async (
   scrollable: ElementHandle<HTMLElement | SVGElement>
-) => {
-  await scrollable.evaluate((e) => {
-    e.scrollLeft = e.scrollWidth;
+): Promise<void> => {
+  return scrollable.evaluate((e) => {
+    return new Promise<void>((resolve) => {
+      let timer: ReturnType<typeof setTimeout> | null = null;
+
+      const onScroll = () => {
+        e.scrollLeft = e.scrollWidth;
+
+        if (timer !== null) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+          if (e.scrollLeft + (e as HTMLElement).offsetWidth >= e.scrollWidth) {
+            e.removeEventListener("scroll", onScroll);
+            resolve();
+          } else {
+            onScroll();
+          }
+        }, 50);
+      };
+      e.addEventListener("scroll", onScroll);
+
+      onScroll();
+    });
   });
-  await scrollable.waitForElementState("stable");
-  // FIXME: scroll twice to reach definitely
-  await scrollable.evaluate((e) => {
-    e.scrollLeft = e.scrollWidth;
-  });
-  await scrollable.waitForElementState("stable");
 };
-export const scrollToLeft = async (
-  scrollable: ElementHandle<HTMLElement | SVGElement>
-) => {
-  await scrollable.evaluate((e) => {
-    e.scrollLeft = -e.scrollWidth;
-  });
-  await scrollable.waitForElementState("stable");
-  // FIXME: scroll twice to reach definitely
-  await scrollable.evaluate((e) => {
-    e.scrollLeft = -e.scrollWidth;
-  });
-  await scrollable.waitForElementState("stable");
-};
+
+// export const scrollToLeft = async (
+//   scrollable: ElementHandle<HTMLElement | SVGElement>
+// ) => {
+//   await scrollable.evaluate((e) => {
+//     e.scrollLeft = -e.scrollWidth;
+//   });
+//   await scrollable.waitForElementState("stable");
+//   // FIXME: scroll twice to reach definitely
+//   await scrollable.evaluate((e) => {
+//     e.scrollLeft = -e.scrollWidth;
+//   });
+//   await scrollable.waitForElementState("stable");
+// };
 
 export const windowScrollToBottom = async (
   scrollable: ElementHandle<HTMLElement | SVGElement>

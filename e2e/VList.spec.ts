@@ -1,13 +1,10 @@
-import { test, expect, ElementHandle } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import {
   storyUrl,
   scrollableSelector,
-  itemsSelector,
   getFirstItem,
   getLastItem,
-  getFirstItemRtl,
   scrollToBottom,
-  scrollToLeft,
   scrollToRight,
   clearInput,
   approxymate,
@@ -110,47 +107,6 @@ test.describe("smoke", () => {
   });
 
   test("padding", async ({ page }) => {
-    const scrollToBottom = async (
-      scrollable: ElementHandle<HTMLElement | SVGElement>
-    ) => {
-      // scroll repeatedly to reach definitely
-      await scrollable.evaluate(async (e) => {
-        await new Promise<void>((res) => {
-          const scroll = () => {
-            if (
-              e.scrollTop + (e as HTMLElement).offsetHeight >=
-              e.scrollHeight
-            ) {
-              e.removeEventListener("scroll", scroll);
-              res();
-            }
-            e.scrollTop = e.scrollHeight;
-          };
-          e.addEventListener("scroll", scroll);
-          e.scrollTop = e.scrollHeight;
-        });
-      });
-
-      await scrollable.waitForElementState("stable");
-      // wait for item measureing
-      // const items =
-      await Promise.all(
-        (
-          await scrollable.$$(itemsSelector)
-        ).map(async (i) => {
-          try {
-            await i.waitForElementState("stable");
-          } catch (e) {
-            // NOP
-          }
-        })
-      );
-
-      await scrollable.evaluate((e) => {
-        e.scrollTop = e.scrollHeight;
-      });
-    };
-
     await page.goto(storyUrl("basics-vlist--padding-and-margin"));
 
     const component = await page.waitForSelector(scrollableSelector);
@@ -162,6 +118,8 @@ test.describe("smoke", () => {
     });
     await expect(topPadding).toBeGreaterThan(10);
     await expect(bottomPadding).toBeGreaterThan(10);
+
+    const itemsSelector = '*[style*="top"]';
 
     // check if start is displayed
     const topItem = (await component.$$(itemsSelector))[0];
@@ -495,7 +453,7 @@ test.describe("check if scrollToIndex works", () => {
       );
 
       const scrollListener = component.evaluate((c) => {
-        let timer: null | NodeJS.Timeout = null;
+        let timer: null | ReturnType<typeof setTimeout> = null;
         let called = 0;
 
         return new Promise<number>((resolve) => {
@@ -660,7 +618,7 @@ test.describe("check if scrollToIndex works", () => {
       );
 
       const scrollListener = component.evaluate((c) => {
-        let timer: null | NodeJS.Timeout = null;
+        let timer: ReturnType<typeof setTimeout> | null = null;
         let called = 0;
 
         return new Promise<number>((resolve) => {

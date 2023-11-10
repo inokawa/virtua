@@ -73,7 +73,7 @@ export const Default: StoryObj = {
 
     useEffect(() => {
       let canceled = false;
-      let timer: NodeJS.Timeout | null = null;
+      let timer: ReturnType<typeof setTimeout> | null = null;
       const setTimer = () => {
         timer = setTimeout(() => {
           if (canceled) return;

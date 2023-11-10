@@ -24,7 +24,7 @@ export const debounce = <T extends (...args: any[]) => void>(
   fn: T,
   ms: number
 ) => {
-  let id: NodeJS.Timeout | undefined | null;
+  let id: ReturnType<typeof setTimeout> | undefined | null;
 
   const cancel = () => {
     if (exists(id)) {
