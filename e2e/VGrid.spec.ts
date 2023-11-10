@@ -40,11 +40,11 @@ test.describe("smoke", () => {
 //     // check if offset from start is always keeped
 //     await component.click();
 //     const min = 200;
-//     const initial = await component.evaluate((e) => e.scrollTop);
+//     const initial = await getScrollTop(component);
 //     let prev = initial;
 //     for (let i = 0; i < 500; i++) {
 //       await page.keyboard.press("ArrowDown", { delay: 10 });
-//       const offset = await component.evaluate((e) => e.scrollTop);
+//       const offset = await getScrollTop(component);
 //       await expect(offset).toBeGreaterThanOrEqual(prev);
 //       prev = offset;
 //     }
@@ -65,15 +65,11 @@ test.describe("smoke", () => {
 //     // check if offset from end is always keeped
 //     await component.click();
 //     const min = 200;
-//     const initial = await component.evaluate(
-//       (e) => e.scrollHeight - e.scrollTop
-//     );
+//     const initial = await getScrollBottom(component);
 //     let prev = initial;
 //     for (let i = 0; i < 500; i++) {
 //       await page.keyboard.press("ArrowUp", { delay: 10 });
-//       const offset = await component.evaluate(
-//         (e) => e.scrollHeight - e.scrollTop
-//       );
+//       const offset = await getScrollBottom(component);
 //       await expect(offset).toBeGreaterThanOrEqual(prev);
 //       prev = offset;
 //     }
@@ -91,11 +87,11 @@ test.describe("smoke", () => {
 //     // check if offset from start is always keeped
 //     await component.click();
 //     const min = 200;
-//     const initial = await component.evaluate((e) => e.scrollLeft);
+//     const initial = await getScrollLeft(component);
 //     let prev = initial;
 //     for (let i = 0; i < 500; i++) {
 //       await page.keyboard.press("ArrowRight", { delay: 10 });
-//       const offset = await component.evaluate((e) => e.scrollLeft);
+//       const offset = await getScrollLeft(component);
 //       await expect(offset).toBeGreaterThanOrEqual(prev);
 //       prev = offset;
 //     }
@@ -116,15 +112,11 @@ test.describe("smoke", () => {
 //     // check if offset from end is always keeped
 //     await component.click();
 //     const min = 200;
-//     const initial = await component.evaluate(
-//       (e) => e.scrollWidth - e.scrollLeft
-//     );
+//     const initial = await getScrollRight(component);
 //     let prev = initial;
 //     for (let i = 0; i < 500; i++) {
 //       await page.keyboard.press("ArrowLeft", { delay: 10 });
-//       const offset = await component.evaluate(
-//         (e) => e.scrollWidth - e.scrollLeft
-//       );
+//       const offset = await getScrollRight(component);
 //       await expect(offset).toBeGreaterThanOrEqual(prev);
 //       prev = offset;
 //     }

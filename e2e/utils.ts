@@ -52,6 +52,39 @@ export const getFirstItemRtl = (
   });
 };
 
+export const getScrollTop = (
+  scrollable: ElementHandle<HTMLElement | SVGElement>
+) => {
+  return scrollable.evaluate((e) => e.scrollTop);
+};
+
+export const getScrollBottom = (
+  scrollable: ElementHandle<HTMLElement | SVGElement>
+) => {
+  return scrollable.evaluate((e) => e.scrollHeight - e.scrollTop);
+};
+
+export const getScrollLeft = (
+  scrollable: ElementHandle<HTMLElement | SVGElement>
+) => {
+  return scrollable.evaluate((e) => e.scrollLeft);
+};
+
+export const getScrollRight = (
+  scrollable: ElementHandle<HTMLElement | SVGElement>
+) => {
+  return scrollable.evaluate((e) => e.scrollWidth - e.scrollLeft);
+};
+
+export const scrollBy = (
+  scrollable: ElementHandle<HTMLElement | SVGElement>,
+  offset: number
+) => {
+  return scrollable.evaluate((e, offset) => {
+    e.scrollTop += offset;
+  }, offset);
+};
+
 export const scrollToBottom = async (
   scrollable: ElementHandle<HTMLElement | SVGElement>
 ) => {

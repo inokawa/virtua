@@ -11,6 +11,11 @@ import {
   scrollToRight,
   clearInput,
   approxymate,
+  scrollBy,
+  getScrollTop,
+  getScrollLeft,
+  getScrollBottom,
+  getScrollRight,
 } from "./utils";
 
 test.describe("smoke", () => {
@@ -198,7 +203,7 @@ test.describe("smoke", () => {
     await component.click();
     for (let i = 0; i < 3; i++) {
       await page.keyboard.press("PageDown", { delay: 500 });
-      await expect(await component.evaluate((e) => e.scrollTop)).not.toEqual(0);
+      await expect(await getScrollTop(component)).not.toEqual(0);
       const text = (await getFirstItem(component)).text;
       await expect(text).not.toContain("-");
       await expect(Number(text)).not.toBeNaN();
@@ -283,11 +288,11 @@ test.describe("check if scroll jump compensation works", () => {
     // check if offset from start is always keeped
     await component.click();
     const min = 200;
-    const initial = await component.evaluate((e) => e.scrollTop);
+    const initial = await getScrollTop(component);
     let prev = initial;
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowDown", { delay: 10 });
-      const offset = await component.evaluate((e) => e.scrollTop);
+      const offset = await getScrollTop(component);
       await expect(offset).toBeGreaterThanOrEqual(prev);
       prev = offset;
     }
@@ -308,15 +313,11 @@ test.describe("check if scroll jump compensation works", () => {
     // check if offset from end is always keeped
     await component.click();
     const min = 200;
-    const initial = await component.evaluate(
-      (e) => e.scrollHeight - e.scrollTop
-    );
+    const initial = await getScrollBottom(component);
     let prev = initial;
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowUp", { delay: 10 });
-      const offset = await component.evaluate(
-        (e) => e.scrollHeight - e.scrollTop
-      );
+      const offset = await getScrollBottom(component);
       await expect(offset).toBeGreaterThanOrEqual(prev);
       prev = offset;
     }
@@ -334,11 +335,11 @@ test.describe("check if scroll jump compensation works", () => {
     // check if offset from start is always keeped
     await component.click();
     const min = 200;
-    const initial = await component.evaluate((e) => e.scrollLeft);
+    const initial = await getScrollLeft(component);
     let prev = initial;
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowRight", { delay: 10 });
-      const offset = await component.evaluate((e) => e.scrollLeft);
+      const offset = await getScrollLeft(component);
       await expect(offset).toBeGreaterThanOrEqual(prev);
       prev = offset;
     }
@@ -359,15 +360,11 @@ test.describe("check if scroll jump compensation works", () => {
     // check if offset from end is always keeped
     await component.click();
     const min = 200;
-    const initial = await component.evaluate(
-      (e) => e.scrollWidth - e.scrollLeft
-    );
+    const initial = await getScrollRight(component);
     let prev = initial;
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowLeft", { delay: 10 });
-      const offset = await component.evaluate(
-        (e) => e.scrollWidth - e.scrollLeft
-      );
+      const offset = await getScrollRight(component);
       await expect(offset).toBeGreaterThanOrEqual(prev);
       prev = offset;
     }
@@ -736,7 +733,7 @@ test.describe("check if scrollTo works", () => {
 
     await expect(
       // scrollTo may not scroll to exact position with dynamic sized items
-      approxymate(await component.evaluate((e) => e.scrollTop))
+      approxymate(await getScrollTop(component))
     ).toEqual(5000);
 
     // scroll up
@@ -748,7 +745,7 @@ test.describe("check if scrollTo works", () => {
 
     await expect(
       // scrollTo may not scroll to exact position with dynamic sized items
-      approxymate(await component.evaluate((e) => e.scrollTop))
+      approxymate(await getScrollTop(component))
     ).toEqual(1000);
   });
 });
@@ -780,7 +777,7 @@ test.describe("check if scrollBy works", () => {
 
     await component.waitForElementState("stable");
 
-    await expect(await component.evaluate((e) => e.scrollTop)).toEqual(1234);
+    await expect(await getScrollTop(component)).toEqual(1234);
 
     // scroll up
     await clearInput(input);
@@ -789,7 +786,7 @@ test.describe("check if scrollBy works", () => {
 
     await component.waitForElementState("stable");
 
-    await expect(await component.evaluate((e) => e.scrollTop)).toEqual(1000);
+    await expect(await getScrollTop(component)).toEqual(1000);
   });
 });
 
@@ -808,7 +805,7 @@ test.describe("check if item shift compensation works", () => {
     for (let i = 0; i < 20; i++) {
       await updateButton.click();
     }
-    await component.evaluate((e) => (e.scrollTop += 400));
+    await scrollBy(component, 400);
     await page.waitForTimeout(500);
 
     const topItem = await getFirstItem(component);
@@ -841,7 +838,7 @@ test.describe("check if item shift compensation works", () => {
     for (let i = 0; i < 20; i++) {
       await updateButton.click();
     }
-    await component.evaluate((e) => (e.scrollTop += 800));
+    await scrollBy(component, 800);
     await page.waitForTimeout(500);
 
     const topItem = await getFirstItem(component);
