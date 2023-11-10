@@ -265,8 +265,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const hScrollDirection = hStore._getScrollDirection();
     const vJumpCount = vStore._getJumpCount();
     const hJumpCount = hStore._getJumpCount();
-    const height = vStore._getCorrectedScrollSize();
-    const width = hStore._getCorrectedScrollSize();
+    const height = vStore._getTotalSize();
+    const width = hStore._getTotalSize();
     const rootRef = useRef<HTMLDivElement>(null);
     const vScrolling = vScrollDirection !== SCROLL_IDLE;
     const hScrolling = hScrollDirection !== SCROLL_IDLE;
@@ -322,10 +322,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             return [hStore._getScrollOffset(), vStore._getScrollOffset()];
           },
           get scrollSize(): [number, number] {
-            return [
-              hStore._getCorrectedScrollSize(),
-              vStore._getCorrectedScrollSize(),
-            ];
+            return [hStore._getTotalSize(), vStore._getTotalSize()];
           },
           get viewportSize(): [number, number] {
             return [hStore._getViewportSize(), vStore._getViewportSize()];
