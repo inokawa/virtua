@@ -266,7 +266,7 @@ export const createVirtualStore = (
           ) {
             estimateDefaultItemSize(cache as Writeable<Cache>);
           }
-          mutated += UPDATE_SIZE_STATE;
+          mutated = UPDATE_SIZE_STATE;
           _maybeJumped = shouldSync = true;
           break;
         }
@@ -338,10 +338,8 @@ export const createVirtualStore = (
           // Update synchronously if scrolled a lot
           shouldSync = abs(delta) > viewportSize;
 
-          mutated += UPDATE_SCROLL_WITH_EVENT;
-
           scrollOffset = clampScrollOffset(payload);
-          mutated += UPDATE_SCROLL_STATE;
+          mutated = UPDATE_SCROLL_STATE + UPDATE_SCROLL_WITH_EVENT;
           break;
         }
         case ACTION_SCROLL_END: {
