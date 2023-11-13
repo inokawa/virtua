@@ -89,8 +89,14 @@ export interface VListHandle {
 export interface VListProps extends ViewportComponentAttributes {
   /**
    * Elements rendered by this component.
+   *
+   * You can also pass a function and set {@link VListProps.count} to create elements lazily.
    */
-  children: ReactNode;
+  children: ReactNode | ((index: number) => ReactElement);
+  /**
+   * If you set a function to {@link VListProps.children}, you have to set total number of items to this prop.
+   */
+  count?: number;
   /**
    * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
@@ -169,6 +175,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
   (
     {
       children,
+      count: renderCountProp,
       overscan = 4,
       initialItemSize,
       initialItemCount,
@@ -190,9 +197,17 @@ export const VList = forwardRef<VListHandle, VListProps>(
     },
     ref
   ): ReactElement => {
-    // Memoize element array
-    const elements = useMemo(() => flattenChildren(children), [children]);
-    const count = elements.length;
+    const [getElement, count] = useMemo((): [
+      (i: number) => ReactNode,
+      number
+    ] => {
+      if (typeof children === "function") {
+        return [children, renderCountProp || 0];
+      }
+      // Memoize element array
+      const _elements = flattenChildren(children);
+      return [(i) => _elements[i], _elements.length];
+    }, [children, renderCountProp]);
 
     const onScroll = useLatestRef(onScrollProp);
     const onScrollStop = useLatestRef(onScrollStopProp);
@@ -316,7 +331,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
 
     const items: ReactElement[] = [];
     for (let i = overscanedStartIndex; i <= overscanedEndIndex; i++) {
-      const e = elements[i]!;
+      const e = getElement(i);
       const key = (e as MayHaveKey).key;
       items.push(
         <ListItem
