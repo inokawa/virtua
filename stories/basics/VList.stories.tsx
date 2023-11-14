@@ -318,6 +318,60 @@ export const ScrollTo: StoryObj = {
   },
 };
 
+export const RenderProp: StoryObj = {
+  render: () => {
+    const id = useRef(0);
+    const heights = [20, 40, 80, 77];
+    const createItem = () => {
+      const i = id.current++;
+      return {
+        id: i,
+        height: heights[i % 4],
+      };
+    };
+
+    const [items, setItems] = useState(() => {
+      return Array.from({ length: 1000 }).map(() => createItem());
+    });
+
+    return (
+      <div
+        style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+      >
+        <div>
+          <button
+            onClick={() => {
+              setItems((prev) => [
+                ...prev,
+                ...Array.from({ length: 500 }).map(() => createItem()),
+              ]);
+            }}
+          >
+            append more
+          </button>
+        </div>
+        <VList style={{ flex: 1 }} count={items.length}>
+          {(i) => {
+            const item = items[i];
+            return (
+              <div
+                key={item.id}
+                style={{
+                  height: item.height,
+                  borderBottom: "solid 1px #ccc",
+                  background: "#fff",
+                }}
+              >
+                {i}
+              </div>
+            );
+          }}
+        </VList>
+      </div>
+    );
+  },
+};
+
 export const Keyboard: StoryObj = {
   render: () => {
     const ref = useRef<VListHandle>(null);

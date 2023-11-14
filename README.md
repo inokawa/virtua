@@ -173,9 +173,9 @@ And see [examples](./stories) for more usages.
 
 #### Is there any way to improve performance further?
 
-As a trade-off to be compatible with React's built-in elements like `div`, virtua doesn't have optimization possible by using [render prop](https://legacy.reactjs.org/docs/render-props.html) which some of other virtualization libraries for React have. That also means common optimization techniques for non-virtualized list ([`memo`](https://react.dev/reference/react/memo), [`useMemo`](https://react.dev/reference/react/useMemo), [`context`](https://react.dev/learn/passing-data-deeply-with-context), etc) work for this lib!
+In complex usage, especially if you re-render frequently the parent of virtual scroller or the children are tons of items, children element creation can be a performance bottle neck. That's because creating React elements is fast enough but not free and new React element instances break some of memoization inside virtual scroller.
 
-In complex usage, children element generation can be a performance bottle neck if you re-render frequently the parent of virtual scroller and the children are tons of items. That's because React element generation is fast enough but not free and new React element instance breaks some of memoization inside virtual scroller. In that case use `useMemo` to reduce computation and keep the elements' instance the same.
+One solution is memoization with [`useMemo`](https://react.dev/reference/react/useMemo). You can use it to reduce computation and keep the elements' instance the same. And if you want to pass state from parent to the items, using [`context`](https://react.dev/learn/passing-data-deeply-with-context) instead of props may be better because it doesn't break the memoization.
 
 ```tsx
 const elements = useMemo(
@@ -191,7 +191,18 @@ return (
 );
 ```
 
-And if you want to pass the state to the items, using `context` instead of props may be better because it doesn't break the useMemo.
+The other solution is using [`render prop`](https://legacy.reactjs.org/docs/render-props.html) as children to create elements lazily. It will effectively reduce cost on start up when you render many items (>1000). An important point is that newly created elements from `render prop` will disable [optimization possible with cached element instances](https://github.com/facebook/react/issues/8669#issuecomment-270032204). We recommend using [`memo`](https://react.dev/reference/react/memo) to reduce calling render function of your item components during scrolling.
+
+```tsx
+const Component = memo(HeavyItem);
+
+<VList count={items.length}>
+  {(i) => {
+    const item = items[i];
+    return <Component key={item.id} data={item} />;
+  }}
+</VList>;
+```
 
 Decreasing `overscan` prop may also improve perf in case that components are large and heavy.
 
@@ -232,9 +243,6 @@ It may be dispatched by ResizeObserver in this lib [as described in spec](https:
 ### Benchmarks
 
 WIP
-
-Basically by design, this library uses children instead of render prop like other virtual scrollers.
-It reduces rerender during scrolling with [caching element instances](https://github.com/facebook/react/issues/8669#issuecomment-270032204). However it may make component's mount slower if you display million items.
 
 ## Contribute
 
