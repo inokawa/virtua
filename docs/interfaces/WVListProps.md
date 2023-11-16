@@ -13,6 +13,7 @@ Props of [WVList](../API.md#wvlist).
 ### Properties
 
 - [children](WVListProps.md#children)
+- [count](WVListProps.md#count)
 - [overscan](WVListProps.md#overscan)
 - [initialItemSize](WVListProps.md#initialitemsize)
 - [initialItemCount](WVListProps.md#initialitemcount)
@@ -85,13 +86,27 @@ Props of [WVList](../API.md#wvlist).
 
 ### children
 
-• **children**: `ReactNode`
+• **children**: `ReactNode` \| (`index`: `number`) => `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
 
 Elements rendered by this component.
 
+You can also pass a function and set [count](WVListProps.md#count) to create elements lazily.
+
 #### Defined in
 
-[src/react/WVList.tsx:64](https://github.com/inokawa/virtua/blob/55469f25/src/react/WVList.tsx#L64)
+[src/react/WVList.tsx:66](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L66)
+
+___
+
+### count
+
+• `Optional` **count**: `number`
+
+If you set a function to [children](WVListProps.md#children), you have to set total number of items to this prop.
+
+#### Defined in
+
+[src/react/WVList.tsx:70](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L70)
 
 ___
 
@@ -99,7 +114,7 @@ ___
 
 • `Optional` **overscan**: `number`
 
-Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
+Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
 **`Default Value`**
 
@@ -107,7 +122,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/react/WVList.tsx:69](https://github.com/inokawa/virtua/blob/55469f25/src/react/WVList.tsx#L69)
+[src/react/WVList.tsx:75](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L75)
 
 ___
 
@@ -122,7 +137,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/react/WVList.tsx:76](https://github.com/inokawa/virtua/blob/55469f25/src/react/WVList.tsx#L76)
+[src/react/WVList.tsx:82](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L82)
 
 ___
 
@@ -134,7 +149,7 @@ If set, the specified amount of items will be mounted in the initial rendering r
 
 #### Defined in
 
-[src/react/WVList.tsx:80](https://github.com/inokawa/virtua/blob/55469f25/src/react/WVList.tsx#L80)
+[src/react/WVList.tsx:86](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L86)
 
 ___
 
@@ -146,7 +161,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/WVList.tsx:84](https://github.com/inokawa/virtua/blob/55469f25/src/react/WVList.tsx#L84)
+[src/react/WVList.tsx:90](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L90)
 
 ___
 
@@ -158,7 +173,7 @@ You can restore cache by passing a [CacheSnapshot](CacheSnapshot.md) on mount. T
 
 #### Defined in
 
-[src/react/WVList.tsx:88](https://github.com/inokawa/virtua/blob/55469f25/src/react/WVList.tsx#L88)
+[src/react/WVList.tsx:94](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L94)
 
 ___
 
@@ -177,7 +192,7 @@ Customized components for advanced usage.
 
 #### Defined in
 
-[src/react/WVList.tsx:92](https://github.com/inokawa/virtua/blob/55469f25/src/react/WVList.tsx#L92)
+[src/react/WVList.tsx:98](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L98)
 
 ___
 
@@ -197,7 +212,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/react/WVList.tsx:107](https://github.com/inokawa/virtua/blob/55469f25/src/react/WVList.tsx#L107)
+[src/react/WVList.tsx:113](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L113)
 
 ___
 
@@ -224,7 +239,7 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/react/WVList.tsx:111](https://github.com/inokawa/virtua/blob/55469f25/src/react/WVList.tsx#L111)
+[src/react/WVList.tsx:117](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L117)
 
 ___
 
