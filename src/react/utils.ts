@@ -6,7 +6,7 @@ export const refKey = "current";
 
 export const emptyComponents = {};
 
-type ItemElement = ReactElement | ReactFragment | string | number;
+export type ItemElement = ReactElement | ReactFragment | string | number;
 
 const forEach = (children: ReactNode, elements: ItemElement[]) => {
   if (isArray(children)) {

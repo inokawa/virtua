@@ -23,7 +23,6 @@ import {
   clampEndIndex,
   clampStartIndex,
   emptyComponents,
-  flattenChildren,
   refKey,
 } from "./utils";
 import { useStatic } from "./useStatic";
@@ -40,6 +39,7 @@ import { CacheSnapshot, ScrollToIndexOpts } from "../core/types";
 import { Cache } from "../core/cache";
 import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
+import { useChildren } from "./useChildren";
 
 type CustomItemComponentOrElement =
   | keyof JSX.IntrinsicElements
@@ -197,17 +197,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
     },
     ref
   ): ReactElement => {
-    const [getElement, count] = useMemo((): [
-      (i: number) => ReactNode,
-      number
-    ] => {
-      if (typeof children === "function") {
-        return [children, renderCountProp || 0];
-      }
-      // Memoize element array
-      const _elements = flattenChildren(children);
-      return [(i) => _elements[i], _elements.length];
-    }, [children, renderCountProp]);
+    const [getElement, count] = useChildren(children, renderCountProp);
 
     const onScroll = useLatestRef(onScrollProp);
     const onScrollStop = useLatestRef(onScrollStopProp);

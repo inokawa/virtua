@@ -91,6 +91,22 @@ it("should change components", async () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
+it("should render with render prop", async () => {
+  const items = Array.from({ length: 1000 }).map((_, i) => ({
+    id: i,
+    label: "This is " + i,
+  }));
+  const { asFragment } = render(
+    <WVList count={items.length}>
+      {(i) => {
+        const item = items[i]!;
+        return <div key={item.id}>{item.label}</div>;
+      }}
+    </WVList>
+  );
+  expect(asFragment()).toMatchSnapshot();
+});
+
 describe("render count", () => {
   it("should render on mount", () => {
     const rootFn = jest.fn();

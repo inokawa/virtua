@@ -22,7 +22,6 @@ import {
   clampEndIndex,
   clampStartIndex,
   emptyComponents,
-  flattenChildren,
   refKey,
 } from "./utils";
 import { useStatic } from "./useStatic";
@@ -39,6 +38,7 @@ import { CustomItemComponent, ListItem } from "./ListItem";
 import { Cache } from "../core/cache";
 import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
+import { useChildren } from "./useChildren";
 
 type CustomItemComponentOrElement =
   | keyof JSX.IntrinsicElements
@@ -60,8 +60,14 @@ export interface WVListHandle {
 export interface WVListProps extends ViewportComponentAttributes {
   /**
    * Elements rendered by this component.
+   *
+   * You can also pass a function and set {@link WVListProps.count} to create elements lazily.
    */
-  children: ReactNode;
+  children: ReactNode | ((index: number) => ReactElement);
+  /**
+   * If you set a function to {@link WVListProps.children}, you have to set total number of items to this prop.
+   */
+  count?: number;
   /**
    * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
@@ -127,6 +133,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
   (
     {
       children,
+      count: renderCountProp,
       overscan = 4,
       initialItemSize,
       initialItemCount,
@@ -145,9 +152,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
     },
     ref
   ): ReactElement => {
-    // Memoize element array
-    const elements = useMemo(() => flattenChildren(children), [children]);
-    const count = elements.length;
+    const [getElement, count] = useChildren(children, renderCountProp);
 
     const onScrollStop = useLatestRef(onScrollStopProp);
 
@@ -251,7 +256,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
 
     const items: ReactElement[] = [];
     for (let i = overscanedStartIndex; i <= overscanedEndIndex; i++) {
-      const e = elements[i]!;
+      const e = getElement(i);
       const key = (e as MayHaveKey).key;
       items.push(
         <ListItem
