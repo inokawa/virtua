@@ -184,7 +184,7 @@ export interface VGridProps extends ViewportComponentAttributes {
    */
   cellWidth?: number;
   /**
-   * Number of items to render above/below the visible bounds of the grid. You can increase to avoid showing blank items in fast scrolling.
+   * Number of items to render above/below the visible bounds of the grid. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 2
    */
   overscan?: number;

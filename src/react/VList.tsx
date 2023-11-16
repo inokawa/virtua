@@ -98,7 +98,7 @@ export interface VListProps extends ViewportComponentAttributes {
    */
   count?: number;
   /**
-   * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
+   * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
    */
   overscan?: number;
