@@ -206,6 +206,8 @@ const Component = memo(HeavyItem);
 
 Decreasing `overscan` prop may also improve perf in case that components are large and heavy.
 
+Virtua try to suppress glitch caused by resize as much as possible, but it will also require additional work. If your item contains something resized often, such as lazy loaded image, we recommend to set height or min-height to it if possible.
+
 #### What is `ResizeObserver loop completed with undelivered notifications.` error?
 
 It may be dispatched by ResizeObserver in this lib [as described in spec](https://www.w3.org/TR/resize-observer/#deliver-resize-error). If it bothers you,
