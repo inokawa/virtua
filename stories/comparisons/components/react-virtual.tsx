@@ -1,5 +1,5 @@
 import React, { Ref, memo, useImperativeHandle, useRef } from "react";
-import { useVirtual } from "@tanstack/react-virtual";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { ListHandle, TestComponent } from "./common";
 
 export const ReactVirtualList = memo(
@@ -13,12 +13,13 @@ export const ReactVirtualList = memo(
     handle?: Ref<ListHandle>;
   }) => {
     const parentRef = useRef<HTMLDivElement>(null);
-    const rowVirtualizer = useVirtual({
-      size: count,
-      parentRef,
+    const virtualizer = useVirtualizer({
+      count,
+      getScrollElement: () => parentRef.current,
+      estimateSize: (i) => 50,
     });
     useImperativeHandle(handle, () => ({
-      scrollToIndex: rowVirtualizer.scrollToIndex,
+      scrollToIndex: virtualizer.scrollToIndex,
     }));
 
     return (
@@ -28,15 +29,16 @@ export const ReactVirtualList = memo(
       >
         <div
           style={{
-            height: `${rowVirtualizer.totalSize}px`,
+            height: `${virtualizer.getTotalSize()}px`,
             width: "100%",
             position: "relative",
           }}
         >
-          {rowVirtualizer.virtualItems.map((item) => (
+          {virtualizer.getVirtualItems().map((item) => (
             <div
               key={item.key}
-              ref={item.measureRef}
+              data-index={item.index}
+              ref={virtualizer.measureElement}
               style={{
                 position: "absolute",
                 top: 0,
