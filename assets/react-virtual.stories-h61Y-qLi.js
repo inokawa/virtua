@@ -1,4 +1,4 @@
-import{j as e}from"./jsx-runtime-KhpQ_ow-.js";import{I as N,D as T,H as U,S as y}from"./common-opS2vWa9.js";import{R as n}from"./react-virtual-HT-qF5cN.js";import"./index-G6kSzgdV.js";import"./index-xBZDQ2qw.js";const v={component:n,decorators:[r=>e("div",{style:{height:"100vh"},children:e(r,{})})]},t={render:()=>e(n,{count:1e4,Component:N})},o={render:()=>e(n,{count:1e4,Component:T})},s={render:()=>e(n,{count:1e4,Component:U})},a={render:()=>e(n,{count:1e6,Component:y})};var c,m,i;t.parameters={...t.parameters,docs:{...(c=t.parameters)==null?void 0:c.docs,source:{originalSource:`{
+import{j as e}from"./jsx-runtime-KhpQ_ow-.js";import{I as N,D as T,H as U,S as y}from"./common-opS2vWa9.js";import{R as n}from"./react-virtual-InpcyWg-.js";import"./index-G6kSzgdV.js";import"./index-xBZDQ2qw.js";const v={component:n,decorators:[r=>e("div",{style:{height:"100vh"},children:e(r,{})})]},t={render:()=>e(n,{count:1e4,Component:N})},o={render:()=>e(n,{count:1e4,Component:T})},s={render:()=>e(n,{count:1e4,Component:U})},a={render:()=>e(n,{count:1e6,Component:y})};var c,m,i;t.parameters={...t.parameters,docs:{...(c=t.parameters)==null?void 0:c.docs,source:{originalSource:`{
   render: () => {
     const ROW_COUNT = 10000;
     return <ReactVirtualList count={ROW_COUNT} Component={ItemWithRenderCount} />;
@@ -19,4 +19,4 @@ import{j as e}from"./jsx-runtime-KhpQ_ow-.js";import{I as N,D as T,H as U,S as y
     return <ReactVirtualList count={ROW_COUNT} Component={SimpleItem} />;
   }
 }`,...(W=(_=a.parameters)==null?void 0:_.docs)==null?void 0:W.source}}};const V=["RenderCount","DynamicHeight","HeavyComponent","OneMillion"];export{o as DynamicHeight,s as HeavyComponent,a as OneMillion,t as RenderCount,V as __namedExportsOrder,v as default};
-//# sourceMappingURL=react-virtual.stories-oQI-LqsP.js.map
+//# sourceMappingURL=react-virtual.stories-h61Y-qLi.js.map
