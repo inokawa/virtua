@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, ElementHandle } from "@playwright/test";
 import {
   storyUrl,
   scrollableSelector,
@@ -335,6 +335,29 @@ test.describe("check if scrollToIndex works", () => {
     await page.goto(storyUrl("basics-vlist--scroll-to"));
   });
 
+  const listenScrollCount = (
+    component: ElementHandle<SVGElement | HTMLElement>
+  ): Promise<number> => {
+    return component.evaluate((c) => {
+      let timer: null | ReturnType<typeof setTimeout> = null;
+      let called = 0;
+
+      return new Promise<number>((resolve) => {
+        const cb = () => {
+          called++;
+          if (timer !== null) {
+            clearTimeout(timer);
+          }
+          timer = setTimeout(() => {
+            c.removeEventListener("scroll", cb);
+            resolve(called);
+          }, 2000);
+        };
+        c.addEventListener("scroll", cb);
+      });
+    });
+  };
+
   test.describe("align start", () => {
     test("mid", async ({ page }) => {
       const component = await page.waitForSelector(scrollableSelector);
@@ -452,24 +475,7 @@ test.describe("check if scrollToIndex works", () => {
         button
       );
 
-      const scrollListener = component.evaluate((c) => {
-        let timer: null | ReturnType<typeof setTimeout> = null;
-        let called = 0;
-
-        return new Promise<number>((resolve) => {
-          const cb = () => {
-            called++;
-            if (timer !== null) {
-              clearTimeout(timer);
-            }
-            timer = setTimeout(() => {
-              c.removeEventListener("scroll", cb);
-              resolve(called);
-            }, 2000);
-          };
-          c.addEventListener("scroll", cb);
-        });
-      });
+      const scrollListener = listenScrollCount(component);
 
       await clearInput(input);
       await input.fill("700");
@@ -617,24 +623,7 @@ test.describe("check if scrollToIndex works", () => {
         button
       );
 
-      const scrollListener = component.evaluate((c) => {
-        let timer: ReturnType<typeof setTimeout> | null = null;
-        let called = 0;
-
-        return new Promise<number>((resolve) => {
-          const cb = () => {
-            called++;
-            if (timer !== null) {
-              clearTimeout(timer);
-            }
-            timer = setTimeout(() => {
-              c.removeEventListener("scroll", cb);
-              resolve(called);
-            }, 2000);
-          };
-          c.addEventListener("scroll", cb);
-        });
-      });
+      const scrollListener = listenScrollCount(component);
 
       await clearInput(input);
       await input.fill("700");
