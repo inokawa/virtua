@@ -16,6 +16,7 @@ import { isRTLDocument } from "../core/environment";
  */
 export interface CustomItemComponentProps {
   style: CSSProperties;
+  index: number;
   children: ReactNode;
 }
 
@@ -29,7 +30,7 @@ type ListItemProps = {
   _index: number;
   _offset: number;
   _hide: boolean;
-  _element: "div";
+  _element: "div" | CustomItemComponent;
   _isHorizontal: boolean;
 };
 
@@ -51,28 +52,34 @@ export const ListItem = memo(
       [index]
     );
 
-    return (
-      <Element
-        ref={ref}
-        style={useMemo((): CSSProperties => {
-          const style: CSSProperties = {
-            margin: 0,
-            padding: 0,
-            position: "absolute",
-            [isHorizontal ? "height" : "width"]: "100%",
-            [isHorizontal ? "top" : "left"]: 0,
-            [isHorizontal ? (isRTLDocument() ? "right" : "left") : "top"]:
-              offset,
-            visibility: hide ? "hidden" : "visible",
-          };
-          if (isHorizontal) {
-            style.display = "flex";
-          }
-          return style;
-        }, [offset, hide])}
-      >
-        {children}
-      </Element>
-    );
+    const style = useMemo((): CSSProperties => {
+      const style: CSSProperties = {
+        margin: 0,
+        padding: 0,
+        position: "absolute",
+        [isHorizontal ? "height" : "width"]: "100%",
+        [isHorizontal ? "top" : "left"]: 0,
+        [isHorizontal ? (isRTLDocument() ? "right" : "left") : "top"]: offset,
+        visibility: hide ? "hidden" : "visible",
+      };
+      if (isHorizontal) {
+        style.display = "flex";
+      }
+      return style;
+    }, [offset, hide]);
+
+    if (typeof Element === "string") {
+      return (
+        <Element ref={ref} style={style}>
+          {children}
+        </Element>
+      );
+    } else {
+      return (
+        <Element ref={ref} style={style} index={index}>
+          {children}
+        </Element>
+      );
+    }
   }
 );
