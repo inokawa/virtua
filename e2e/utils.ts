@@ -26,16 +26,20 @@ export const getFirstItem = (
 };
 
 export const getLastItem = (
-  scrollable: ElementHandle<HTMLElement | SVGElement>
+  scrollable: ElementHandle<HTMLElement | SVGElement>,
+  offset: { x?: number; y?: number } = {}
 ) => {
-  return scrollable.evaluate((s) => {
+  return scrollable.evaluate((s, { x: offsetX = 2, y: offsetY = 2 }) => {
     const rect = s.getBoundingClientRect();
-    const el = document.elementFromPoint(rect.left + 2, rect.bottom - 2)!;
+    const el = document.elementFromPoint(
+      rect.left + offsetX,
+      rect.bottom - offsetY
+    )!;
     return {
       text: el.textContent!,
       bottom: el.getBoundingClientRect().bottom - rect.bottom,
     };
-  });
+  }, offset);
 };
 
 // export const getFirstItemRtl = (
@@ -183,4 +187,115 @@ export const windowScrollToRight = async (
     window.scrollTo(document.body.scrollWidth, 0);
   });
   await scrollable.waitForElementState("stable");
+};
+
+export const scrollWithTouch = (
+  scrollable: ElementHandle<HTMLElement | SVGElement>,
+  target: {
+    fromX: number;
+    toX: number;
+    fromY: number;
+    toY: number;
+    momentumScroll?: boolean;
+  }
+): Promise<void> => {
+  return scrollable.evaluate(
+    async (
+      e,
+      { fromX, toX, fromY, toY, momentumScroll: isMomentumScrolling = false }
+    ) => {
+      const diffY = fromY - toY;
+      const diffX = fromX - toX;
+
+      let count = 1;
+      const MAX_COUNT = 60;
+
+      const createTouchEvent = (
+        name: "touchstart" | "touchmove" | "touchend"
+      ): TouchEvent => {
+        // const touchObj = new Touch({
+        //   identifier: Date.now(),
+        //   target: e,
+        //   clientX: fromX,
+        //   clientY: fromY,
+        //   radiusX: 2.5,
+        //   radiusY: 2.5,
+        //   rotationAngle: 10,
+        //   force: 0.5,
+        // });
+        return new TouchEvent(name, {
+          bubbles: true,
+          cancelable: true,
+          // touches: [touchObj],
+          // targetTouches: [],
+          // changedTouches: [],
+        });
+      };
+
+      const touchStart = () => {
+        e.dispatchEvent(createTouchEvent("touchstart"));
+      };
+      const touchEnd = () => {
+        e.dispatchEvent(createTouchEvent("touchend"));
+      };
+      const touchMove = () => {
+        setTimeout(() => {
+          e.dispatchEvent(createTouchEvent("touchmove"));
+          if (count > MAX_COUNT) {
+            // NOP
+          } else {
+            if (diffY) {
+              e.scrollTop += diffY / MAX_COUNT;
+            }
+            if (diffX) {
+              e.scrollLeft += diffX / MAX_COUNT;
+            }
+          }
+
+          count++;
+        }, 500 / MAX_COUNT);
+      };
+
+      e.addEventListener(
+        "touchstart",
+        () => {
+          touchMove();
+        },
+        { once: true, passive: true }
+      );
+
+      let resolve: () => void;
+      let isScrollStarted = false;
+      let isScrollEnded = false;
+      const onScroll = () => {
+        if (isScrollEnded) return;
+
+        if (isMomentumScrolling && !isScrollStarted) {
+          touchEnd();
+        }
+        isScrollStarted = true;
+
+        if (count >= MAX_COUNT) {
+          isScrollEnded = true;
+          e.removeEventListener("scroll", onScroll);
+
+          if (isMomentumScrolling) {
+            resolve();
+          } else {
+            setTimeout(() => {
+              touchEnd();
+              resolve();
+            }, 500);
+          }
+        } else {
+          touchMove();
+        }
+      };
+      e.addEventListener("scroll", onScroll, { passive: true });
+
+      touchStart();
+      return new Promise<void>((r) => (resolve = r));
+    },
+    target
+  );
 };
