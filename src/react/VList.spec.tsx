@@ -3,6 +3,7 @@ import { render, cleanup } from "@testing-library/react";
 import { VList } from "./VList";
 import { Profiler, ReactElement, forwardRef, useEffect, useState } from "react";
 import { CustomViewportComponentProps } from "./Viewport";
+import { CustomItemComponentProps } from "./ListItem";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -73,6 +74,28 @@ it("should change components", async () => {
   );
   const { asFragment } = render(
     <VList components={{ Root: UlList, Item: "li" }}>
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+    </VList>
+  );
+  expect(asFragment()).toMatchSnapshot();
+});
+
+it("should pass index to items", async () => {
+  const Item = forwardRef<HTMLDivElement, CustomItemComponentProps>(
+    ({ children, index, style }, ref) => {
+      return (
+        <div ref={ref} style={style} data-index={index}>
+          {children}
+        </div>
+      );
+    }
+  );
+  const { asFragment } = render(
+    <VList components={{ Item }}>
       <div>0</div>
       <div>1</div>
       <div>2</div>
