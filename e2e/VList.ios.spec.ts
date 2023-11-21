@@ -6,6 +6,7 @@ import {
   scrollWithTouch,
   getScrollTop,
   getFirstItem,
+  expectNearlyZero,
 } from "./utils";
 
 test.describe("check if scroll jump compensation in emulated iOS WebKit works", () => {
@@ -18,7 +19,7 @@ test.describe("check if scroll jump compensation in emulated iOS WebKit works", 
     // check if first is displayed
     const last = await getFirstItem(component);
     await expect(last.text).toEqual("0");
-    await expect(last.top).toBeLessThanOrEqual(0);
+    await expect(last.top).toEqual(0);
 
     await component.tap();
 
@@ -107,9 +108,9 @@ test.describe("check if scroll jump compensation in emulated iOS WebKit works", 
       expect(nextTop).toBeLessThan(top);
       expect(nextTop).not.toBe(nextTopBeforeFlush);
       expect(nextLastItem.text).toEqual(nextLastItemBeforeFlush.text);
-      expect(
-        Math.abs(nextLastItem.bottom - nextLastItemBeforeFlush.bottom) // FIXME: may not be 0 in Safari
-      ).toBeLessThanOrEqual(1);
+      expectNearlyZero(
+        Math.abs(nextLastItem.bottom - nextLastItemBeforeFlush.bottom)
+      );
 
       top = nextTop;
     }
@@ -127,7 +128,7 @@ test.describe("check if scroll jump compensation in emulated iOS WebKit works", 
     // check if last is displayed
     const last = await getLastItem(component, opts);
     await expect(last.text).toEqual("999");
-    await expect(last.bottom).toBeLessThanOrEqual(1); // FIXME: may not be 0 in Safari
+    expectNearlyZero(last.bottom);
 
     await component.tap();
 
@@ -162,9 +163,9 @@ test.describe("check if scroll jump compensation in emulated iOS WebKit works", 
       expect(nextTop).toBeLessThan(top);
       expect(nextTop).not.toBe(nextTopBeforeFlush);
       expect(nextLastItem.text).toEqual(nextLastItemBeforeFlush.text);
-      expect(
-        Math.abs(nextLastItem.bottom - nextLastItemBeforeFlush.bottom) // FIXME: may not be 0 in Safari
-      ).toBeLessThanOrEqual(1);
+      expectNearlyZero(
+        Math.abs(nextLastItem.bottom - nextLastItemBeforeFlush.bottom)
+      );
 
       top = nextTop;
     }

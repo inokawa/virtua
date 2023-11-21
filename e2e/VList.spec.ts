@@ -13,6 +13,7 @@ import {
   getScrollLeft,
   getScrollBottom,
   getScrollRight,
+  expectNearlyZero,
 } from "./utils";
 
 test.describe("smoke", () => {
@@ -328,6 +329,102 @@ test.describe("check if scroll jump compensation works", () => {
     }
     await expect(prev).toBeGreaterThan(initial + min);
   });
+
+  test("stick to bottom", async ({ page }) => {
+    await page.goto(storyUrl("advanced-chat--default"));
+    const component = await page.waitForSelector(scrollableSelector);
+    await component.waitForElementState("stable");
+    // check if end is displayed
+    const initialItem = await getLastItem(component);
+    expectNearlyZero(initialItem.bottom);
+
+    await page.evaluate(() => {
+      // stop all timer
+      for (let i = 1; i < 65536; i++) {
+        clearTimeout(i);
+      }
+    });
+
+    const button = (await page
+      .getByRole("button", { name: "submit" })
+      .elementHandle())!;
+    const textarea = (await page.getByRole("textbox").elementHandle())!;
+
+    // append small item
+    await button.click();
+    await component.waitForElementState("stable");
+    const smallItem = await getLastItem(component);
+    await expect(smallItem.text).not.toEqual(initialItem.text);
+    expectNearlyZero(smallItem.bottom);
+
+    // append large item
+    await clearInput(textarea);
+    await textarea.fill(
+      "Hello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\n"
+    );
+    await button.click();
+    await component.waitForElementState("stable");
+    const largeItem = await getLastItem(component);
+    await expect(largeItem.text).not.toEqual(smallItem.text);
+    expectNearlyZero(largeItem.bottom);
+    await expect(largeItem.height).toBeGreaterThan(smallItem.height * 10);
+  });
+
+  test("dynamic image", async ({ page, browserName }) => {
+    // TODO firefox is bit unstable
+    if (browserName === "firefox") {
+      return;
+    }
+
+    await page.goto(storyUrl("advanced-feed--default"));
+    const component = await page.waitForSelector(scrollableSelector);
+    await component.waitForElementState("stable");
+
+    // check if start is displayed
+    expectNearlyZero((await getFirstItem(component)).top);
+
+    // check if stable after image load
+    await page.waitForTimeout(3000);
+    expectNearlyZero((await getFirstItem(component)).top);
+
+    // scroll to top
+    await component.evaluate((e) => (e.scrollTop = 0));
+
+    // wait for prepending
+    await component.evaluate((e) => {
+      let timer: null | ReturnType<typeof setTimeout> = null;
+
+      return new Promise<void>((resolve, reject) => {
+        let prepended = false;
+
+        if (e.scrollTop !== 0) {
+          reject();
+          return;
+        }
+        const cb = () => {
+          if (e.scrollTop > 1000) {
+            prepended = true;
+          } else {
+            if (!prepended) {
+              return;
+            }
+          }
+
+          if (timer !== null) {
+            clearTimeout(timer);
+          }
+          timer = setTimeout(() => {
+            e.removeEventListener("scroll", cb);
+            resolve();
+          }, 2000);
+        };
+        e.addEventListener("scroll", cb);
+      });
+    });
+
+    // check if stable after prepending
+    expectNearlyZero((await getFirstItem(component)).top);
+  });
 });
 
 test.describe("check if scrollToIndex works", () => {
@@ -452,7 +549,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if scrolled precisely
       const lastItem = await getLastItem(component);
       await expect(lastItem.text).toEqual("999");
-      await expect(lastItem.bottom).toBeLessThanOrEqual(1); // FIXME: may not be 0 in Safari
+      expectNearlyZero(lastItem.bottom);
 
       // Check if unnecessary items are not rendered
       await expect(await component.innerText()).not.toContain("949");
@@ -494,7 +591,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if scrolled precisely
       const firstItem = await getFirstItem(component);
       await expect(firstItem.text).toEqual("700");
-      await expect(firstItem.top).toBeLessThanOrEqual(1); // FIXME: may not be 0 in Safari
+      expectNearlyZero(firstItem.top);
 
       // Check if unnecessary items are not rendered
       await expect(await component.innerText()).not.toContain("650");
@@ -531,7 +628,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if scrolled precisely
       const lastItem = await getLastItem(component);
       await expect(lastItem.text).toEqual("700");
-      await expect(lastItem.bottom).toBeLessThanOrEqual(1); // FIXME: may not be 0 in Safari
+      expectNearlyZero(lastItem.bottom);
 
       // Check if unnecessary items are not rendered
       await expect(await component.innerText()).not.toContain("650");
@@ -600,7 +697,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if scrolled precisely
       const lastItem = await getLastItem(component);
       await expect(lastItem.text).toEqual("999");
-      await expect(lastItem.bottom).toBeLessThanOrEqual(1); // FIXME: may not be 0 in Safari
+      expectNearlyZero(lastItem.bottom);
 
       // Check if unnecessary items are not rendered
       await expect(await component.innerText()).not.toContain("949");
@@ -642,7 +739,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if scrolled precisely
       const lastItem = await getLastItem(component);
       await expect(lastItem.text).toEqual("700");
-      await expect(lastItem.bottom).toBeLessThanOrEqual(1); // FIXME: may not be 0 in Safari
+      expectNearlyZero(lastItem.bottom);
 
       // Check if unnecessary items are not rendered
       await expect(await component.innerText()).not.toContain("650");

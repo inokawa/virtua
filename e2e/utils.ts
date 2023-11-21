@@ -1,14 +1,20 @@
-import { ElementHandle } from "@playwright/test";
+import { ElementHandle, expect } from "@playwright/test";
 
 export const storyUrl = (id: string) =>
   `http://localhost:6006/iframe.html?id=${id}&viewMode=story`;
 
 export const scrollableSelector = '*[style*="overflow"]';
 
+export const expectNearlyZero = (value: number) => {
+  // sometimes it may not be 0 because of sub pixel value
+  expect(value).toBeGreaterThanOrEqual(0);
+  expect(value).toBeLessThan(1);
+};
+
 export const approxymate = (v: number): number => Math.round(v / 100) * 100;
 
-export const clearInput = (input: ElementHandle<HTMLInputElement>) =>
-  input.evaluate((element) => (element.value = ""));
+export const clearInput = (input: ElementHandle<HTMLElement | SVGElement>) =>
+  input.evaluate((element) => ((element as HTMLInputElement).value = ""));
 
 export const getFirstItem = (
   scrollable: ElementHandle<HTMLElement | SVGElement>
@@ -35,9 +41,11 @@ export const getLastItem = (
       rect.left + offsetX,
       rect.bottom - offsetY
     )!;
+    const elRect = el.getBoundingClientRect();
     return {
       text: el.textContent!,
-      bottom: el.getBoundingClientRect().bottom - rect.bottom,
+      bottom: elRect.bottom - rect.bottom,
+      height: elRect.height,
     };
   }, offset);
 };
