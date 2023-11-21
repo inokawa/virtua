@@ -86,15 +86,15 @@ Props of [WVList](../API.md#wvlist).
 
 ### children
 
-• **children**: `ReactNode` \| (`index`: `number`) => `ReactElement`<`any`, `string` \| `JSXElementConstructor`<`any`\>\>
+• **children**: `ReactNode` \| (`index`: `number`) => `ReactElement`\<`any`, `string` \| `JSXElementConstructor`\<`any`\>\>
 
 Elements rendered by this component.
 
-You can also pass a function and set [count](WVListProps.md#count) to create elements lazily.
+You can also pass a function and set [WVListProps.count](WVListProps.md#count) to create elements lazily.
 
 #### Defined in
 
-[src/react/WVList.tsx:66](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L66)
+[src/react/WVList.tsx:66](https://github.com/inokawa/virtua/blob/339e4555/src/react/WVList.tsx#L66)
 
 ___
 
@@ -102,11 +102,11 @@ ___
 
 • `Optional` **count**: `number`
 
-If you set a function to [children](WVListProps.md#children), you have to set total number of items to this prop.
+If you set a function to [WVListProps.children](WVListProps.md#children), you have to set total number of items to this prop.
 
 #### Defined in
 
-[src/react/WVList.tsx:70](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L70)
+[src/react/WVList.tsx:70](https://github.com/inokawa/virtua/blob/339e4555/src/react/WVList.tsx#L70)
 
 ___
 
@@ -118,11 +118,13 @@ Number of items to render above/below the visible bounds of the list. Lower valu
 
 **`Default Value`**
 
+```ts
 4
+```
 
 #### Defined in
 
-[src/react/WVList.tsx:75](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L75)
+[src/react/WVList.tsx:75](https://github.com/inokawa/virtua/blob/339e4555/src/react/WVList.tsx#L75)
 
 ___
 
@@ -137,7 +139,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/react/WVList.tsx:82](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L82)
+[src/react/WVList.tsx:82](https://github.com/inokawa/virtua/blob/339e4555/src/react/WVList.tsx#L82)
 
 ___
 
@@ -149,7 +151,7 @@ If set, the specified amount of items will be mounted in the initial rendering r
 
 #### Defined in
 
-[src/react/WVList.tsx:86](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L86)
+[src/react/WVList.tsx:86](https://github.com/inokawa/virtua/blob/339e4555/src/react/WVList.tsx#L86)
 
 ___
 
@@ -161,7 +163,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/WVList.tsx:90](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L90)
+[src/react/WVList.tsx:90](https://github.com/inokawa/virtua/blob/339e4555/src/react/WVList.tsx#L90)
 
 ___
 
@@ -169,11 +171,11 @@ ___
 
 • `Optional` **cache**: [`CacheSnapshot`](CacheSnapshot.md)
 
-You can restore cache by passing a [CacheSnapshot](CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [cache](WVListHandle.md#cache).
+You can restore cache by passing a [CacheSnapshot](CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [WVListHandle.cache](WVListHandle.md#cache).
 
 #### Defined in
 
-[src/react/WVList.tsx:94](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L94)
+[src/react/WVList.tsx:94](https://github.com/inokawa/virtua/blob/339e4555/src/react/WVList.tsx#L94)
 
 ___
 
@@ -187,12 +189,12 @@ Customized components for advanced usage.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `Root?` | `ForwardRefExoticComponent`<[`CustomViewportComponentProps`](CustomViewportComponentProps.md) & `RefAttributes`<`any`\>\> | Component for scrollable element. This component will get [CustomViewportComponentProps](CustomViewportComponentProps.md) as props. **`Default Value`** DefaultViewport |
-| `Item?` | `CustomItemComponentOrElement` | Component or element type for item element. This component will get [CustomItemComponentProps](CustomItemComponentProps.md) as props. **`Default Value`** "div" |
+| `Root?` | `ForwardRefExoticComponent`\<[`CustomViewportComponentProps`](CustomViewportComponentProps.md) & `RefAttributes`\<`any`\>\> | Component for scrollable element. This component will get [CustomViewportComponentProps](CustomViewportComponentProps.md) as props. **`Default Value`** ```ts {@link DefaultViewport} ``` |
+| `Item?` | `CustomItemComponentOrElement` | Component or element type for item element. This component will get [CustomItemComponentProps](CustomItemComponentProps.md) as props. **`Default Value`** ```ts "div" ``` |
 
 #### Defined in
 
-[src/react/WVList.tsx:98](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L98)
+[src/react/WVList.tsx:98](https://github.com/inokawa/virtua/blob/339e4555/src/react/WVList.tsx#L98)
 
 ___
 
@@ -212,7 +214,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/react/WVList.tsx:113](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L113)
+[src/react/WVList.tsx:113](https://github.com/inokawa/virtua/blob/339e4555/src/react/WVList.tsx#L113)
 
 ___
 
@@ -239,7 +241,7 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/react/WVList.tsx:117](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/WVList.tsx#L117)
+[src/react/WVList.tsx:117](https://github.com/inokawa/virtua/blob/339e4555/src/react/WVList.tsx#L117)
 
 ___
 
@@ -315,7 +317,7 @@ ___
 
 ### onKeyDown
 
-• `Optional` **onKeyDown**: `KeyboardEventHandler`<`HTMLElement`\>
+• `Optional` **onKeyDown**: `KeyboardEventHandler`\<`HTMLElement`\>
 
 #### Inherited from
 

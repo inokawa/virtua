@@ -1,6 +1,6 @@
 # Interface: VGridProps
 
-Props of [experimental_VGrid](../API.md#experimental_vgrid).
+Props of [VGrid](../API.md#experimental_vgrid).
 
 ## Hierarchy
 
@@ -85,7 +85,7 @@ Props of [experimental_VGrid](../API.md#experimental_vgrid).
 
 ### children
 
-• **children**: (`arg`: { `rowIndex`: `number` ; `colIndex`: `number`  }) => `ReactNode`
+• **children**: (`arg`: \{ `rowIndex`: `number` ; `colIndex`: `number`  }) => `ReactNode`
 
 #### Type declaration
 
@@ -107,7 +107,7 @@ A function to create elements rendered by this component.
 
 #### Defined in
 
-[src/react/VGrid.tsx:158](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/VGrid.tsx#L158)
+[src/react/VGrid.tsx:158](https://github.com/inokawa/virtua/blob/339e4555/src/react/VGrid.tsx#L158)
 
 ___
 
@@ -119,7 +119,7 @@ Total row length of grid.
 
 #### Defined in
 
-[src/react/VGrid.tsx:171](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/VGrid.tsx#L171)
+[src/react/VGrid.tsx:171](https://github.com/inokawa/virtua/blob/339e4555/src/react/VGrid.tsx#L171)
 
 ___
 
@@ -131,7 +131,7 @@ Total column length of grid.
 
 #### Defined in
 
-[src/react/VGrid.tsx:175](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/VGrid.tsx#L175)
+[src/react/VGrid.tsx:175](https://github.com/inokawa/virtua/blob/339e4555/src/react/VGrid.tsx#L175)
 
 ___
 
@@ -143,11 +143,13 @@ Cell height hint for unmeasured items. It's recommended to specify this prop if 
 
 **`Default Value`**
 
+```ts
 40
+```
 
 #### Defined in
 
-[src/react/VGrid.tsx:180](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/VGrid.tsx#L180)
+[src/react/VGrid.tsx:180](https://github.com/inokawa/virtua/blob/339e4555/src/react/VGrid.tsx#L180)
 
 ___
 
@@ -159,11 +161,13 @@ Cell width hint for unmeasured items. It's recommended to specify this prop if i
 
 **`Default Value`**
 
+```ts
 100
+```
 
 #### Defined in
 
-[src/react/VGrid.tsx:185](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/VGrid.tsx#L185)
+[src/react/VGrid.tsx:185](https://github.com/inokawa/virtua/blob/339e4555/src/react/VGrid.tsx#L185)
 
 ___
 
@@ -175,11 +179,13 @@ Number of items to render above/below the visible bounds of the grid. Lower valu
 
 **`Default Value`**
 
+```ts
 2
+```
 
 #### Defined in
 
-[src/react/VGrid.tsx:190](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/VGrid.tsx#L190)
+[src/react/VGrid.tsx:190](https://github.com/inokawa/virtua/blob/339e4555/src/react/VGrid.tsx#L190)
 
 ___
 
@@ -191,7 +197,7 @@ If set, the specified amount of rows will be mounted in the initial rendering re
 
 #### Defined in
 
-[src/react/VGrid.tsx:194](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/VGrid.tsx#L194)
+[src/react/VGrid.tsx:194](https://github.com/inokawa/virtua/blob/339e4555/src/react/VGrid.tsx#L194)
 
 ___
 
@@ -203,7 +209,7 @@ If set, the specified amount of cols will be mounted in the initial rendering re
 
 #### Defined in
 
-[src/react/VGrid.tsx:198](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/VGrid.tsx#L198)
+[src/react/VGrid.tsx:198](https://github.com/inokawa/virtua/blob/339e4555/src/react/VGrid.tsx#L198)
 
 ___
 
@@ -217,12 +223,12 @@ Customized components for advanced usage.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `Root?` | `ForwardRefExoticComponent`<[`CustomViewportComponentProps`](CustomViewportComponentProps.md) & `RefAttributes`<`any`\>\> | Component for scrollable element. This component will get [CustomViewportComponentProps](CustomViewportComponentProps.md) as props. **`Default Value`** DefaultViewport |
-| `Cell?` | `CustomCellComponentOrElement` | Component or element type for cell element. This component will get [CustomCellComponentProps](CustomCellComponentProps.md) as props. **`Default Value`** "div" |
+| `Root?` | `ForwardRefExoticComponent`\<[`CustomViewportComponentProps`](CustomViewportComponentProps.md) & `RefAttributes`\<`any`\>\> | Component for scrollable element. This component will get [CustomViewportComponentProps](CustomViewportComponentProps.md) as props. **`Default Value`** ```ts {@link DefaultViewport} ``` |
+| `Cell?` | `CustomCellComponentOrElement` | Component or element type for cell element. This component will get [CustomCellComponentProps](CustomCellComponentProps.md) as props. **`Default Value`** ```ts "div" ``` |
 
 #### Defined in
 
-[src/react/VGrid.tsx:202](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/VGrid.tsx#L202)
+[src/react/VGrid.tsx:202](https://github.com/inokawa/virtua/blob/339e4555/src/react/VGrid.tsx#L202)
 
 ___
 
@@ -298,7 +304,7 @@ ___
 
 ### onKeyDown
 
-• `Optional` **onKeyDown**: `KeyboardEventHandler`<`HTMLElement`\>
+• `Optional` **onKeyDown**: `KeyboardEventHandler`\<`HTMLElement`\>
 
 #### Inherited from
 

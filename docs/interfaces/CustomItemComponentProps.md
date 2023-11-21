@@ -7,6 +7,7 @@ Props of customized item component for [VList](../API.md#vlist).
 ### Properties
 
 - [style](CustomItemComponentProps.md#style)
+- [index](CustomItemComponentProps.md#index)
 - [children](CustomItemComponentProps.md#children)
 
 ## Properties
@@ -17,7 +18,17 @@ Props of customized item component for [VList](../API.md#vlist).
 
 #### Defined in
 
-[src/react/ListItem.tsx:18](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/ListItem.tsx#L18)
+[src/react/ListItem.tsx:18](https://github.com/inokawa/virtua/blob/339e4555/src/react/ListItem.tsx#L18)
+
+___
+
+### index
+
+• **index**: `number`
+
+#### Defined in
+
+[src/react/ListItem.tsx:19](https://github.com/inokawa/virtua/blob/339e4555/src/react/ListItem.tsx#L19)
 
 ___
 
@@ -27,4 +38,4 @@ ___
 
 #### Defined in
 
-[src/react/ListItem.tsx:19](https://github.com/inokawa/virtua/blob/b9733c0b/src/react/ListItem.tsx#L19)
+[src/react/ListItem.tsx:20](https://github.com/inokawa/virtua/blob/339e4555/src/react/ListItem.tsx#L20)
