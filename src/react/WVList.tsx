@@ -189,7 +189,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
     const [startIndex, endIndex] = store._getRange();
     const scrollDirection = store._getScrollDirection();
     const jumpCount = store._getJumpCount();
-    const scrollSize = store._getTotalSize();
+    const scrollSize = store._getScrollSize();
 
     const rootRef = useRef<HTMLDivElement>(null);
     const scrolling = scrollDirection !== SCROLL_IDLE;
