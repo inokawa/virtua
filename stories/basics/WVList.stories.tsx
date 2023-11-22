@@ -261,3 +261,149 @@ export const ScrollRestoration: StoryObj = {
     );
   },
 };
+
+export const IncreasingItems: StoryObj = {
+  render: () => {
+    const id = useRef(0);
+    const createRows = (num: number, offset: number) => {
+      return Array.from({ length: num }).map((_, i) => {
+        i += offset;
+        return { id: id.current++, index: i };
+      });
+    };
+
+    const [auto, setAuto] = useState(false);
+    const [amount, setAmount] = useState(4);
+    const [prepend, setPrepend] = useState(false);
+    const [increase, setIncrease] = useState(true);
+    const [rows, setRows] = useState(() => createRows(amount, 0));
+    const update = () => {
+      if (increase) {
+        setRows((prev) =>
+          prepend
+            ? [...createRows(amount, (prev[0]?.index ?? 0) - amount), ...prev]
+            : [
+              ...prev,
+              ...createRows(amount, (prev[prev.length - 1]?.index ?? 0) + 1),
+            ]
+        );
+      } else {
+        if (prepend) {
+          setRows((prev) => prev.slice(amount));
+        } else {
+          setRows((prev) => prev.slice(0, -amount));
+        }
+      }
+    };
+    useEffect(() => {
+      if (!auto) return;
+      const timer = setInterval(update, 500);
+      return () => {
+        clearInterval(timer);
+      };
+    }, [update, auto]);
+
+    const heights = [20, 40, 80, 77];
+
+    return (
+      <div
+        style={{ display: "flex", flexDirection: "column" }}
+      >
+        <div style={{ position: "sticky", top: 0, zIndex: 1, background: "whitesmoke" }}>
+          <div>
+            <label style={{ marginRight: 4 }}>
+              <input
+                type="radio"
+                style={{ marginLeft: 4 }}
+                checked={!prepend}
+                onChange={() => {
+                  setPrepend(false);
+                }}
+              />
+              append
+            </label>
+            <label style={{ marginRight: 4 }}>
+              <input
+                type="radio"
+                style={{ marginLeft: 4 }}
+                checked={prepend}
+                onChange={() => {
+                  setPrepend(true);
+                }}
+              />
+              prepend
+            </label>
+            <label style={{ marginRight: 4 }}>
+              <input
+                type="radio"
+                style={{ marginLeft: 4 }}
+                checked={increase}
+                onChange={() => {
+                  setIncrease(true);
+                }}
+              />
+              increase
+            </label>
+            <label style={{ marginRight: 4 }}>
+              <input
+                type="radio"
+                style={{ marginLeft: 4 }}
+                checked={!increase}
+                onChange={() => {
+                  setIncrease(false);
+                }}
+              />
+              decrease
+            </label>
+            <input
+              style={{ marginLeft: 4 }}
+              value={amount}
+              type="number"
+              min={1}
+              max={10000}
+              step={1}
+              onChange={(e) => {
+                setAmount(Number(e.target.value));
+              }}
+            />
+          </div>
+
+          <div>
+            <label style={{ marginRight: 16 }}>
+              <input
+                type="checkbox"
+                style={{ marginLeft: 4 }}
+                checked={auto}
+                onChange={() => {
+                  setAuto((prev) => !prev);
+                }}
+              />
+              auto
+            </label>
+            <button
+              onClick={() => {
+                update();
+              }}
+            >
+              update
+            </button>
+          </div>
+        </div>
+        <WVList style={{ flex: 1, paddingTop: 30 }} shift={prepend}>
+          {rows.map((d) => (
+            <div
+              key={d.id}
+              style={{
+                height: heights[Math.abs(d.index) % 4],
+                borderBottom: "solid 1px #ccc",
+                background: "#fff",
+              }}
+            >
+              {d.index}
+            </div>
+          ))}
+        </WVList>
+      </div>
+    );
+  },
+};

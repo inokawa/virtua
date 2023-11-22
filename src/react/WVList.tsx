@@ -85,6 +85,10 @@ export interface WVListProps extends ViewportComponentAttributes {
    */
   initialItemCount?: number;
   /**
+   * While true is set, scroll position will be maintained from the end not usual start when items are shifted/unshifted. It is useful for reverse infinite scrolling.
+   */
+  shift?: boolean;
+  /**
    * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
    */
   horizontal?: boolean;
@@ -137,6 +141,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
       overscan = 4,
       initialItemSize,
       initialItemCount,
+      shift,
       horizontal: horizontalProp,
       cache,
       components: {
@@ -176,7 +181,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
     });
     // The elements length and cached items length are different just after element is added/removed.
     if (count !== store._getItemsLength()) {
-      store._update(ACTION_ITEMS_LENGTH_CHANGE, [count]);
+      store._update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
     }
 
     const rerender = useRerender();
