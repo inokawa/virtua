@@ -283,9 +283,9 @@ export const IncreasingItems: StoryObj = {
           prepend
             ? [...createRows(amount, (prev[0]?.index ?? 0) - amount), ...prev]
             : [
-              ...prev,
-              ...createRows(amount, (prev[prev.length - 1]?.index ?? 0) + 1),
-            ]
+                ...prev,
+                ...createRows(amount, (prev[prev.length - 1]?.index ?? 0) + 1),
+              ]
         );
       } else {
         if (prepend) {
@@ -306,10 +306,15 @@ export const IncreasingItems: StoryObj = {
     const heights = [20, 40, 80, 77];
 
     return (
-      <div
-        style={{ display: "flex", flexDirection: "column" }}
-      >
-        <div style={{ position: "sticky", top: 0, zIndex: 1, background: "whitesmoke" }}>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <div
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+            background: "whitesmoke",
+          }}
+        >
           <div>
             <label style={{ marginRight: 4 }}>
               <input
