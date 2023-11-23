@@ -84,6 +84,7 @@ export type VirtualStore = {
   _getViewportSize(): number;
   _getViewportPaddingStart(): number;
   _getTotalSize(): number;
+  _getScrollSize(): number;
   _getJumpCount(): number;
   _flushJump(): ScrollJump;
   _subscribe(target: number, cb: Subscriber): () => void;
@@ -197,6 +198,7 @@ export const createVirtualStore = (
     _getTotalSize() {
       return max(getScrollSize(), viewportSize - paddingStart - paddingEnd);
     },
+    _getScrollSize: getScrollSize,
     _getJumpCount() {
       return jumpCount;
     },
