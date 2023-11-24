@@ -118,10 +118,6 @@ export const createVirtualStore = (
   const getScrollOffsetMax = () =>
     getScrollSize() - viewportSize + paddingStart + paddingEnd;
 
-  const clampScrollOffset = (value: number): number => {
-    // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
-    return clamp(value, 0, getScrollOffsetMax());
-  };
   const applyJump = (j: ScrollJump) => {
     // In iOS WebKit browsers, updating scroll position will stop scrolling so it have to be deferred during scrolling.
     if (isIOSWebKit() && _scrollDirection !== SCROLL_IDLE) {
@@ -336,7 +332,9 @@ export const createVirtualStore = (
           // Update synchronously if scrolled a lot
           shouldSync = abs(delta) > viewportSize;
 
-          scrollOffset = clampScrollOffset(payload);
+          // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
+          scrollOffset = clamp(payload, 0, getScrollOffsetMax());
+
           mutated = UPDATE_SCROLL_STATE + UPDATE_SCROLL_WITH_EVENT;
           break;
         }
