@@ -5,10 +5,10 @@ export const storyUrl = (id: string) =>
 
 export const scrollableSelector = '*[style*="overflow"]';
 
-export const expectNearlyZero = (value: number) => {
+export const expectNearlyZero = (value: number, max: number = 1) => {
   // sometimes it may not be 0 because of sub pixel value
   expect(value).toBeGreaterThanOrEqual(0);
-  expect(value).toBeLessThan(1);
+  expect(value).toBeLessThan(max);
 };
 
 export const approxymate = (v: number): number => Math.round(v / 100) * 100;

@@ -151,7 +151,7 @@ export const createVirtualStore = (
       }
       return (_prevRange = computeRange(
         cache as Writeable<Cache>,
-        scrollOffset + pendingJump,
+        scrollOffset + pendingJump + jump,
         _prevRange[0],
         viewportSize
       ));
@@ -292,11 +292,7 @@ export const createVirtualStore = (
               payload[0],
               true
             );
-            const diff = isRemove ? -min(shift, distanceToEnd) : shift;
-            applyJump(diff);
-            if (!isIOSWebKit()) {
-              scrollOffset = clampScrollOffset(scrollOffset + diff);
-            }
+            applyJump(isRemove ? -min(shift, distanceToEnd) : shift);
 
             mutated = UPDATE_SCROLL_STATE;
           } else {

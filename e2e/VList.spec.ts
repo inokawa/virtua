@@ -371,21 +371,19 @@ test.describe("check if scroll jump compensation works", () => {
   });
 
   test("dynamic image", async ({ page, browserName }) => {
-    // TODO firefox is bit unstable
-    if (browserName === "firefox") {
-      return;
-    }
-
     await page.goto(storyUrl("advanced-feed--default"));
     const component = await page.waitForSelector(scrollableSelector);
     await component.waitForElementState("stable");
 
+    // TODO firefox is bit unstable
+    const nearlyZeroMax = browserName === "firefox" ? 2 : undefined;
+
     // check if start is displayed
-    expectNearlyZero((await getFirstItem(component)).top);
+    expectNearlyZero((await getFirstItem(component)).top, nearlyZeroMax);
 
     // check if stable after image load
     await page.waitForTimeout(3000);
-    expectNearlyZero((await getFirstItem(component)).top);
+    expectNearlyZero((await getFirstItem(component)).top, nearlyZeroMax);
 
     // scroll to top
     await component.evaluate((e) => (e.scrollTop = 0));
@@ -423,7 +421,7 @@ test.describe("check if scroll jump compensation works", () => {
     });
 
     // check if stable after prepending
-    expectNearlyZero((await getFirstItem(component)).top);
+    expectNearlyZero((await getFirstItem(component)).top, nearlyZeroMax);
   });
 });
 
