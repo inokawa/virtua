@@ -424,6 +424,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             ...viewportAttrs,
             style: {
               overflow: "auto",
+              overflowAnchor: "none",
               contain: "strict",
               width: "100%",
               height: "100%",

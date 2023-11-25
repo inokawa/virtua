@@ -347,8 +347,9 @@ export const VList = forwardRef<VListHandle, VListProps>(
           () => ({
             ...viewportAttrs,
             style: {
-              [isHorizontal ? "overflowX" : "overflowY"]: "auto",
               display: isHorizontal ? "inline-block" : "block",
+              [isHorizontal ? "overflowX" : "overflowY"]: "auto",
+              overflowAnchor: "none",
               contain: "strict",
               width: "100%",
               height: "100%",
