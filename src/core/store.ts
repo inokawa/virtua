@@ -127,10 +127,10 @@ export const createVirtualStore = (
   let jumpCount = 0;
   let jump = 0;
   let pendingJump = 0;
+  let flushedJump = 0;
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
   let _isManualScrolling = false;
   let _smoothScrollRange: ItemsRange | null = null;
-  let _maybeJumped = false;
   let _prevRange: ItemsRange = [0, initialItemCount];
 
   const subscribers = new Set<[number, Subscriber]>();
@@ -220,9 +220,9 @@ export const createVirtualStore = (
       return jumpCount;
     },
     _flushJump() {
-      const prevJump = jump;
+      flushedJump = jump;
       jump = 0;
-      return prevJump;
+      return flushedJump;
     },
     _subscribe(target, cb) {
       const sub: [number, Subscriber] = [target, cb];
@@ -286,7 +286,7 @@ export const createVirtualStore = (
             estimateDefaultItemSize(cache as Writeable<Cache>);
           }
           mutated = UPDATE_SIZE_STATE;
-          _maybeJumped = shouldSync = true;
+          shouldSync = true;
           break;
         }
         case ACTION_VIEWPORT_RESIZE: {
@@ -326,14 +326,17 @@ export const createVirtualStore = (
           }
 
           const delta = nextScrollOffset - scrollOffset;
-          // Scrolling after resizing will be caused by jump compensation
-          const isJustJumped = _maybeJumped;
-          _maybeJumped = false;
+          const distance = abs(delta);
 
-          // Skip scroll direction detection just after resizing because it may result in the opposite direction.
+          // Scroll event after jump compensation is not reliable because it may result in the opposite direction.
+          // The delta of artificial scroll may not be equal with the jump because it may be batched with other scrolls.
+          // And at least in latest Chrome/Firefox/Safari in 2023, setting value to scrollTop/scrollLeft can lose subpixel because its integer (sometimes float probably depending on dpr).
+          const isJustJumped = flushedJump && distance < abs(flushedJump) + 1;
+          flushedJump = 0;
+
           // Scroll events are dispatched enough so it's ok to skip some of them.
           if (
-            (_scrollDirection === SCROLL_IDLE || !isJustJumped) &&
+            !isJustJumped &&
             // Ignore until manual scrolling
             !_isManualScrolling
           ) {
@@ -353,7 +356,7 @@ export const createVirtualStore = (
           // }
 
           // Update synchronously if scrolled a lot
-          shouldSync = abs(delta) > viewportSize;
+          shouldSync = distance > viewportSize;
 
           scrollOffset = nextScrollOffset;
           mutated = UPDATE_SCROLL_STATE + UPDATE_SCROLL_WITH_EVENT;
@@ -386,7 +389,6 @@ export const createVirtualStore = (
 
       if (mutated) {
         if (shouldFlushPendingJump && pendingJump) {
-          _maybeJumped = true;
           jump += pendingJump;
           pendingJump = 0;
           jumpCount++;
