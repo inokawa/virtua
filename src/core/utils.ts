@@ -4,6 +4,7 @@ export const abs = Math.abs;
 export const now = Date.now;
 export const values = Object.values;
 export const isArray = Array.isArray;
+export const arrayFrom = Array.from;
 export const timeout = setTimeout;
 
 export const clamp = (
@@ -13,6 +14,14 @@ export const clamp = (
 ): number => min(maxValue, max(minValue, value));
 
 export const exists = <T>(v: T): v is Exclude<T, null | undefined> => v != null;
+
+export const indexes = (start: number, end: number): number[] => {
+  const array: number[] = [];
+  for (let i = start; i <= end; i++) {
+    array.push(i);
+  }
+  return array;
+};
 
 export const median = (arr: number[]): number => {
   const s = [...arr].sort((a, b) => a - b);
