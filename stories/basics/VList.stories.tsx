@@ -3,6 +3,7 @@ import React, {
   forwardRef,
   startTransition,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -433,10 +434,14 @@ const RestorableList = ({ id }: { id: string }) => {
   const [offset, cache] = useMemo(() => {
     const serialized = sessionStorage.getItem(cacheKey);
     if (!serialized) return [];
-    return JSON.parse(serialized) as [number, CacheSnapshot];
+    try {
+      return JSON.parse(serialized) as [number, CacheSnapshot];
+    } catch (e) {
+      return [];
+    }
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!ref.current) return;
     const handle = ref.current;
 

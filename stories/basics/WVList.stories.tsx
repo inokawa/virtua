@@ -1,5 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
-import React, { useRef, useState, useEffect, useMemo } from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useMemo,
+  useLayoutEffect,
+} from "react";
 import { WVList, type WVListHandle, type CacheSnapshot } from "../../src";
 import { Spinner, delay } from "../common";
 
@@ -198,10 +204,14 @@ const RestorableList = ({ id }: { id: string }) => {
   const [offset, cache] = useMemo(() => {
     const serialized = sessionStorage.getItem(cacheKey);
     if (!serialized) return [];
-    return JSON.parse(serialized) as [number, CacheSnapshot];
+    try {
+      return JSON.parse(serialized) as [number, CacheSnapshot];
+    } catch (e) {
+      return [];
+    }
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!ref.current) return;
     const handle = ref.current;
 
