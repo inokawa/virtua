@@ -1,6 +1,9 @@
 import { ReactElement, ReactNode, useMemo } from "react";
 import { ItemElement, flattenChildren } from "./utils";
 
+/**
+ * @internal
+ */
 export const useChildren = (
   children: ReactNode | ((i: number) => ReactElement),
   count: number | undefined

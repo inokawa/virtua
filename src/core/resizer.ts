@@ -8,11 +8,17 @@ import { exists, computeStyle, getStyleNumber, max, once } from "./utils";
 
 const rootObserveOpts: ResizeObserverOptions = { box: "border-box" };
 
+/**
+ * @internal
+ */
 export interface ListResizer {
   _observeRoot(root: HTMLElement): () => void;
   _observeItem(el: HTMLElement, i: number): () => void;
 }
 
+/**
+ * @internal
+ */
 export const createResizer = (
   store: VirtualStore,
   isHorizontal: boolean
@@ -77,6 +83,9 @@ export const createResizer = (
   };
 };
 
+/**
+ * @internal
+ */
 export const createWindowResizer = (
   store: VirtualStore,
   isHorizontal: boolean
@@ -130,6 +139,9 @@ export const createWindowResizer = (
   };
 };
 
+/**
+ * @internal
+ */
 export const createGridResizer = (
   vStore: VirtualStore,
   hStore: VirtualStore
@@ -269,4 +281,7 @@ export const createGridResizer = (
   };
 };
 
+/**
+ * @internal
+ */
 export type GridResizer = ReturnType<typeof createGridResizer>;

@@ -1,8 +1,12 @@
 import type { DeepReadonly, Writeable } from "./types";
 import { clamp, median, min } from "./utils";
 
+/** @internal */
 export const UNCACHED = -1;
 
+/**
+ * @internal
+ */
 export type Cache = DeepReadonly<{
   _defaultItemSize: number;
   _length: number;
@@ -11,11 +15,17 @@ export type Cache = DeepReadonly<{
   _offsets: number[];
 }>;
 
+/**
+ * @internal
+ */
 export const getItemSize = (cache: Cache, index: number): number => {
   const size = cache._sizes[index]!;
   return size === UNCACHED ? cache._defaultItemSize : size;
 };
 
+/**
+ * @internal
+ */
 export const setItemSize = (
   cache: Writeable<Cache>,
   index: number,
@@ -28,6 +38,9 @@ export const setItemSize = (
   return isInitialMeasurement;
 };
 
+/**
+ * @internal
+ */
 export const computeOffset = (
   cache: Writeable<Cache>,
   index: number
@@ -48,6 +61,9 @@ export const computeOffset = (
   return top;
 };
 
+/**
+ * @internal
+ */
 export const computeTotalSize = (cache: Writeable<Cache>): number => {
   if (!cache._length) return 0;
   return (
@@ -56,6 +72,9 @@ export const computeTotalSize = (cache: Writeable<Cache>): number => {
   );
 };
 
+/**
+ * @internal
+ */
 export const findIndex = (
   cache: Writeable<Cache>,
   offset: number,
@@ -78,6 +97,9 @@ export const findIndex = (
   return clamp(i, 0, cache._length - 1);
 };
 
+/**
+ * @internal
+ */
 export const computeRange = (
   cache: Writeable<Cache>,
   scrollOffset: number,
@@ -93,6 +115,9 @@ export const computeRange = (
   return [start, findIndex(cache, scrollOffset + viewportSize, start)];
 };
 
+/**
+ * @internal
+ */
 export const estimateDefaultItemSize = (cache: Writeable<Cache>) => {
   const measuredSizes = cache._sizes.filter((s) => s !== UNCACHED);
   // This function will be called after measurement so measured size array must be longer than 0
@@ -119,6 +144,9 @@ const appendCache = (
   cache._length = length;
 };
 
+/**
+ * @internal
+ */
 export const initCache = (length: number, itemSize: number): Cache => {
   const cache: Cache = {
     _defaultItemSize: itemSize,
@@ -131,6 +159,9 @@ export const initCache = (length: number, itemSize: number): Cache => {
   return cache;
 };
 
+/**
+ * @internal
+ */
 export const updateCacheLength = (
   cache: Writeable<Cache>,
   length: number,
