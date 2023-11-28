@@ -97,7 +97,7 @@ export type VirtualStore = {
   _getItemSize(index: number): number;
   _getItemsLength(): number;
   _getScrollOffset(): number;
-  _getScrollOffsetMax(): number;
+  _getMaxScrollOffset(): number;
   _getScrollDirection(): ScrollDirection;
   _getViewportSize(): number;
   _getViewportPaddingStart(): number;
@@ -136,7 +136,7 @@ export const createVirtualStore = (
   const subscribers = new Set<[number, Subscriber]>();
   const getScrollSize = (): number =>
     computeTotalSize(cache as Writeable<Cache>);
-  const getScrollOffsetMax = () =>
+  const getMaxScrollOffset = () =>
     getScrollSize() - viewportSize + paddingStart + paddingEnd;
 
   const applyJump = (j: number) => {
@@ -202,7 +202,7 @@ export const createVirtualStore = (
     _getScrollOffset() {
       return scrollOffset;
     },
-    _getScrollOffsetMax: getScrollOffsetMax,
+    _getMaxScrollOffset: getMaxScrollOffset,
     _getScrollDirection() {
       return _scrollDirection;
     },
@@ -252,7 +252,7 @@ export const createVirtualStore = (
 
           if (scrollOffset === 0) {
             // Do nothing to stick to the start
-          } else if (scrollOffset > getScrollOffsetMax() - SUBPIXEL_THRESHOLD) {
+          } else if (scrollOffset > getMaxScrollOffset() - SUBPIXEL_THRESHOLD) {
             // Keep end to stick to the end
             diff = calculateJump(cache, updated, true);
           } else {
@@ -302,7 +302,7 @@ export const createVirtualStore = (
         case ACTION_ITEMS_LENGTH_CHANGE: {
           if (payload[1]) {
             // Calc distance before updating cache
-            const distanceToEnd = getScrollOffsetMax() - scrollOffset;
+            const distanceToEnd = getMaxScrollOffset() - scrollOffset;
 
             const [shift, isRemove] = updateCacheLength(
               cache as Writeable<Cache>,
@@ -354,7 +354,7 @@ export const createVirtualStore = (
           shouldSync = abs(delta) > viewportSize;
 
           // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
-          scrollOffset = clamp(payload, 0, getScrollOffsetMax());
+          scrollOffset = clamp(payload, 0, getMaxScrollOffset());
 
           mutated = UPDATE_SCROLL_STATE + UPDATE_SCROLL_WITH_EVENT;
           break;

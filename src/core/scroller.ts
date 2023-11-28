@@ -37,7 +37,7 @@ const createOnWheel = (
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1392460#c34
     if (isHorizontal ? e.deltaX : e.deltaY) {
       const offset = store._getScrollOffset();
-      if (offset > 0 && offset < store._getScrollOffsetMax()) {
+      if (offset > 0 && offset < store._getMaxScrollOffset()) {
         onScrollStopped();
       }
     }
@@ -53,7 +53,7 @@ const normalizeRTLOffset = (
   if (hasNegativeOffsetInRTL(rootElement)) {
     return -offset;
   } else {
-    return diff ? -offset : store._getScrollOffsetMax() - offset;
+    return diff ? -offset : store._getMaxScrollOffset() - offset;
   }
 };
 
@@ -98,7 +98,7 @@ export const createScroller = (
 
     const getTargetOffset = (): number => {
       // Adjust if the offset is over the end, to get correct startIndex.
-      return clamp(getOffset(), 0, store._getScrollOffsetMax());
+      return clamp(getOffset(), 0, store._getMaxScrollOffset());
     };
 
     const waitForMeasurement = (): [Promise<void>, () => void] => {
