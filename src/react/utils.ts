@@ -29,16 +29,17 @@ const forEach = (children: ReactNode, elements: ItemElement[]) => {
   }
 };
 
-// Replace React.Children.forEach with our tiny implementation.
-// In our usage, just flatten children array keeping element instances and their keys, React.Children is redundant and slow.
-//
-// - React.Children.toArray is slow because it clones element instance.
-// - React.Children.map is slow because it clones element instance.
-// - React.Children.forEach is slow because it escapes and modifies keys even if they are unused.
-//
-// And React.Children seems to be in maintenance mode so it's unlikely it would be improved and ported to older versions.
-// https://github.com/reactjs/rfcs/pull/61#issuecomment-584402735
 /**
+ * Replace React.Children.forEach with our tiny implementation.
+ * In our usage, just flatten children array keeping element instances and their keys, React.Children is redundant and slow.
+ *
+ * - React.Children.toArray is slow because it clones element instance.
+ * - React.Children.map is slow because it clones element instance.
+ * - React.Children.forEach is slow because it escapes and modifies keys even if they are unused.
+ *
+ * And React.Children seems to be in maintenance mode so it's unlikely it would be improved and ported to older versions.
+ * https://github.com/reactjs/rfcs/pull/61#issuecomment-584402735
+ *
  * @internal
  */
 export const flattenChildren = (children: ReactNode): ItemElement[] => {

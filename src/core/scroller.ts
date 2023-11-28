@@ -6,7 +6,6 @@ import {
 } from "./environment";
 import {
   ACTION_SCROLL,
-  ScrollJump,
   VirtualStore,
   ACTION_SCROLL_END,
   UPDATE_SIZE_STATE,
@@ -66,7 +65,7 @@ export type Scroller = {
   _scrollTo: (offset: number) => void;
   _scrollBy: (offset: number) => void;
   _scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
-  _fixScrollJump: (jump: ScrollJump) => void;
+  _fixScrollJump: (jump: number) => void;
 };
 
 /**
@@ -290,7 +289,7 @@ export const createScroller = (
  */
 export type WindowScroller = {
   _observe: (rootElement: HTMLElement) => () => void;
-  _fixScrollJump: (jump: ScrollJump) => void;
+  _fixScrollJump: (jump: number) => void;
 };
 
 /**

@@ -14,8 +14,6 @@ import { isIOSWebKit } from "./environment";
 import type { CacheSnapshot, Writeable } from "./types";
 import { abs, clamp, max, min } from "./utils";
 
-/** @internal */
-export type ScrollJump = number;
 type ViewportResize = [size: number, paddingStart: number, paddingEnd: number];
 
 /** @internal */
@@ -106,7 +104,7 @@ export type VirtualStore = {
   _getTotalSize(): number;
   _getScrollSize(): number;
   _getJumpCount(): number;
-  _flushJump(): ScrollJump;
+  _flushJump(): number;
   _subscribe(target: number, cb: Subscriber): () => void;
   _update(...action: Actions): void;
 };
@@ -127,8 +125,8 @@ export const createVirtualStore = (
   let paddingEnd = 0;
   let scrollOffset = 0;
   let jumpCount = 0;
-  let jump: ScrollJump = 0;
-  let pendingJump: ScrollJump = 0;
+  let jump = 0;
+  let pendingJump = 0;
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
   let _isManualScrolling = false;
   let _smoothScrollRange: ItemsRange | null = null;
@@ -141,7 +139,7 @@ export const createVirtualStore = (
   const getScrollOffsetMax = () =>
     getScrollSize() - viewportSize + paddingStart + paddingEnd;
 
-  const applyJump = (j: ScrollJump) => {
+  const applyJump = (j: number) => {
     // In iOS WebKit browsers, updating scroll position will stop scrolling so it have to be deferred during scrolling.
     if (isIOSWebKit() && _scrollDirection !== SCROLL_IDLE) {
       pendingJump += j;
