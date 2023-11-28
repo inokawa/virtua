@@ -58,6 +58,9 @@ const normalizeRTLOffset = (
   }
 };
 
+/**
+ * @internal
+ */
 export type Scroller = {
   _observe: (rootElement: HTMLElement) => () => void;
   _scrollTo: (offset: number) => void;
@@ -66,6 +69,9 @@ export type Scroller = {
   _fixScrollJump: (jump: ScrollJump) => void;
 };
 
+/**
+ * @internal
+ */
 export const createScroller = (
   store: VirtualStore,
   isHorizontal: boolean
@@ -279,11 +285,17 @@ export const createScroller = (
   };
 };
 
+/**
+ * @internal
+ */
 export type WindowScroller = {
   _observe: (rootElement: HTMLElement) => () => void;
   _fixScrollJump: (jump: ScrollJump) => void;
 };
 
+/**
+ * @internal
+ */
 export const createWindowScroller = (
   store: VirtualStore,
   isHorizontal: boolean

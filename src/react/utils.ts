@@ -2,10 +2,19 @@ import { ReactElement, ReactFragment, ReactNode } from "react";
 import { exists, max, min, isArray } from "../core/utils";
 import { SCROLL_DOWN, SCROLL_UP, ScrollDirection } from "../core/store";
 
+/**
+ * @internal
+ */
 export const refKey = "current";
 
+/**
+ * @internal
+ */
 export const emptyComponents = {};
 
+/**
+ * @internal
+ */
 export type ItemElement = ReactElement | ReactFragment | string | number;
 
 const forEach = (children: ReactNode, elements: ItemElement[]) => {
@@ -29,14 +38,23 @@ const forEach = (children: ReactNode, elements: ItemElement[]) => {
 //
 // And React.Children seems to be in maintenance mode so it's unlikely it would be improved and ported to older versions.
 // https://github.com/reactjs/rfcs/pull/61#issuecomment-584402735
+/**
+ * @internal
+ */
 export const flattenChildren = (children: ReactNode): ItemElement[] => {
   const elements: ItemElement[] = [];
   forEach(children, elements);
   return elements;
 };
 
+/**
+ * @internal
+ */
 export type MayHaveKey = { key?: React.Key };
 
+/**
+ * @internal
+ */
 export const clampStartIndex = (
   startIndex: number,
   overscan: number,
@@ -48,6 +66,9 @@ export const clampStartIndex = (
   );
 };
 
+/**
+ * @internal
+ */
 export const clampEndIndex = (
   endIndex: number,
   overscan: number,

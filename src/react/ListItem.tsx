@@ -34,6 +34,9 @@ type ListItemProps = {
   _isHorizontal: boolean;
 };
 
+/**
+ * @internal
+ */
 export const ListItem = memo(
   ({
     _children: children,
