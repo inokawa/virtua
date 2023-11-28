@@ -318,12 +318,14 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_SCROLL: {
+          // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
+          const nextScrollOffset = clamp(payload, 0, getMaxScrollOffset());
           // Skip if offset is not changed
-          if (payload === scrollOffset) {
+          if (nextScrollOffset === scrollOffset) {
             break;
           }
 
-          const delta = payload - scrollOffset;
+          const delta = nextScrollOffset - scrollOffset;
           // Scrolling after resizing will be caused by jump compensation
           const isJustJumped = _maybeJumped;
           _maybeJumped = false;
@@ -353,9 +355,7 @@ export const createVirtualStore = (
           // Update synchronously if scrolled a lot
           shouldSync = abs(delta) > viewportSize;
 
-          // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
-          scrollOffset = clamp(payload, 0, getMaxScrollOffset());
-
+          scrollOffset = nextScrollOffset;
           mutated = UPDATE_SCROLL_STATE + UPDATE_SCROLL_WITH_EVENT;
           break;
         }
