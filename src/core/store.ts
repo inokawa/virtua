@@ -166,6 +166,10 @@ export const createVirtualStore = (
           max(_prevRange[1], _smoothScrollRange[1]),
         ];
       }
+      // Return previous range for consistent render until next scroll event comes in.
+      if (flushedJump) {
+        return _prevRange;
+      }
       return (_prevRange = computeRange(
         cache as Writeable<Cache>,
         scrollOffset + pendingJump + jump,
@@ -286,6 +290,10 @@ export const createVirtualStore = (
             estimateDefaultItemSize(cache as Writeable<Cache>);
           }
           mutated = UPDATE_SIZE_STATE;
+
+          // Synchronous update is necessary in current design to minimize visible glitch in concurrent rendering.
+          // However in React, synchronous update with flushSync after asynchronous update will overtake the asynchronous one.
+          // If items resize happens just after scroll, race condition can occur depending on implementation.
           shouldSync = true;
           break;
         }
