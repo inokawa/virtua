@@ -226,6 +226,11 @@ export const createVirtualStore = (
       return jumpCount;
     },
     _flushJump() {
+      if (getViewportSizeWithoutSpacer() > getTotalSize()) {
+        // In this case applying jump will not cause scroll.
+        // Current logic expects scroll event occurs after applying jump so discard it.
+        return (jump = 0);
+      }
       flushedJump = jump;
       jump = 0;
       return flushedJump;
