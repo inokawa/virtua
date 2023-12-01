@@ -330,6 +330,63 @@ test.describe("check if scroll jump compensation works", () => {
     await expect(prev).toBeGreaterThan(initial + min);
   });
 
+  test("prepending when total height is lower than viewport height", async ({
+    page,
+  }) => {
+    await page.goto(storyUrl("basics-vlist--increasing-items"));
+    const component = await page.waitForSelector(scrollableSelector);
+    await component.waitForElementState("stable");
+
+    await page.getByRole("radio", { name: "prepend" }).click();
+    const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
+    const increaseRadio = await page.getByRole("radio", { name: "increase" });
+    const valueInput = page.getByRole("spinbutton");
+    const updateButton = page.getByRole("button", { name: "update" });
+
+    const initialLength = await component.evaluate(
+      (e) => e.childNodes[0].childNodes.length
+    );
+    expect(initialLength).toBeGreaterThan(1);
+
+    let i = 0;
+    while (true) {
+      i++;
+      await valueInput.clear();
+      await valueInput.fill(String(i));
+
+      // preprend
+      await increaseRadio.click();
+      await updateButton.click();
+      await component.waitForElementState("stable");
+
+      const [childrenCount, isScrollBarVisible, firstItemTop] =
+        await component.evaluate((e) => {
+          return [
+            e.childNodes[0].childNodes.length,
+            e.scrollHeight > (e as HTMLElement).offsetHeight,
+            (
+              e.childNodes[0].childNodes[0] as HTMLElement
+            ).getBoundingClientRect().top - e.getBoundingClientRect().top,
+          ];
+        });
+
+      if (isScrollBarVisible) {
+        break;
+      } else {
+        // Check is top is always visible and on top
+        expect(firstItemTop).toBe(0);
+        // Check if all items are visible
+        expect(childrenCount).toBe(i + initialLength);
+      }
+
+      // remove
+      await decreaseRadio.click();
+      await updateButton.click();
+    }
+
+    expect(i).toBeGreaterThanOrEqual(8);
+  });
+
   test("stick to bottom", async ({ page }) => {
     await page.goto(storyUrl("advanced-chat--default"));
     const component = await page.waitForSelector(scrollableSelector);
