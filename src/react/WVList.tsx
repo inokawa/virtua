@@ -189,6 +189,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
     const [startIndex, endIndex] = store._getRange();
     const scrollDirection = store._getScrollDirection();
     const jumpCount = store._getJumpCount();
+    // https://github.com/inokawa/virtua/issues/252
     const scrollSize = store._getTotalSize();
 
     const rootRef = useRef<HTMLDivElement>(null);
