@@ -348,7 +348,7 @@ test.describe("check if scroll jump compensation works", () => {
     const button = (await page
       .getByRole("button", { name: "submit" })
       .elementHandle())!;
-    const textarea = (await page.getByRole("textbox").elementHandle())!;
+    const textarea = (await page.getByRole("textbox"))!;
 
     // append small item
     await button.click();
@@ -358,7 +358,7 @@ test.describe("check if scroll jump compensation works", () => {
     expectNearlyZero(smallItem.bottom);
 
     // append large item
-    await clearInput(textarea);
+    await textarea.clear();
     await textarea.fill(
       "Hello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\n"
     );
