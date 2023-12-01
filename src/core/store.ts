@@ -100,9 +100,9 @@ export type VirtualStore = {
   _getMaxScrollOffset(): number;
   _getScrollDirection(): ScrollDirection;
   _getViewportSize(): number;
-  _getViewportPaddingStart(): number;
-  _getTotalSize(): number;
+  _getStartSpacerSize(): number;
   _getScrollSize(): number;
+  _getTotalSize(): number;
   _getJumpCount(): number;
   _flushJump(): number;
   _subscribe(target: number, cb: Subscriber): () => void;
@@ -121,8 +121,8 @@ export const createVirtualStore = (
   shouldAutoEstimateItemSize?: boolean
 ): VirtualStore => {
   let viewportSize = itemSize * max(initialItemCount - 1, 0);
-  let paddingStart = 0;
-  let paddingEnd = 0;
+  let startSpacerSize = 0;
+  let endSpacerSize = 0;
   let scrollOffset = 0;
   let jumpCount = 0;
   let jump = 0;
@@ -134,10 +134,10 @@ export const createVirtualStore = (
   let _prevRange: ItemsRange = [0, initialItemCount];
 
   const subscribers = new Set<[number, Subscriber]>();
-  const getScrollSize = (): number =>
+  const getTotalSize = (): number =>
     computeTotalSize(cache as Writeable<Cache>);
   const getMaxScrollOffset = () =>
-    getScrollSize() - viewportSize + paddingStart + paddingEnd;
+    getTotalSize() - viewportSize + startSpacerSize + endSpacerSize;
 
   const applyJump = (j: number) => {
     // In iOS WebKit browsers, updating scroll position will stop scrolling so it have to be deferred during scrolling.
@@ -193,7 +193,7 @@ export const createVirtualStore = (
       const offset =
         computeStartOffset(cache as Writeable<Cache>, index) - pendingJump;
       if (isReverse) {
-        return offset + max(0, viewportSize - getScrollSize());
+        return offset + max(0, viewportSize - getTotalSize());
       }
       return offset;
     },
@@ -213,13 +213,16 @@ export const createVirtualStore = (
     _getViewportSize() {
       return viewportSize;
     },
-    _getViewportPaddingStart() {
-      return paddingStart;
+    _getStartSpacerSize() {
+      return startSpacerSize;
     },
-    _getTotalSize() {
-      return max(getScrollSize(), viewportSize - paddingStart - paddingEnd);
+    _getScrollSize() {
+      return max(
+        getTotalSize(),
+        viewportSize - startSpacerSize - endSpacerSize
+      );
     },
-    _getScrollSize: getScrollSize,
+    _getTotalSize: getTotalSize,
     _getJumpCount() {
       return jumpCount;
     },
@@ -301,8 +304,8 @@ export const createVirtualStore = (
           const total = payload[0] + payload[1] + payload[2];
           if (viewportSize !== total) {
             viewportSize = total;
-            paddingStart = payload[1];
-            paddingEnd = payload[2];
+            startSpacerSize = payload[1];
+            endSpacerSize = payload[2];
             mutated = UPDATE_SIZE_STATE;
           }
           break;

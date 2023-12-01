@@ -243,22 +243,17 @@ export const createScroller = (
       }
 
       scrollManually(() => {
-        if (align === "end") {
-          return (
-            store._getViewportPaddingStart() +
-            store._getItemOffset(index) +
-            store._getItemSize(index) -
-            store._getViewportSize()
-          );
-        } else if (align === "center") {
-          return (
-            store._getViewportPaddingStart() +
-            store._getItemOffset(index) +
-            (store._getItemSize(index) - store._getViewportSize()) / 2
-          );
-        } else {
-          return store._getViewportPaddingStart() + store._getItemOffset(index);
-        }
+        return (
+          store._getStartSpacerSize() +
+          (align === "end"
+            ? store._getItemOffset(index) +
+              store._getItemSize(index) -
+              store._getViewportSize()
+            : align === "center"
+            ? store._getItemOffset(index) +
+              (store._getItemSize(index) - store._getViewportSize()) / 2
+            : store._getItemOffset(index))
+        );
       }, smooth);
     },
     _fixScrollJump: (jump) => {
