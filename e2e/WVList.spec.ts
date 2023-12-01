@@ -6,7 +6,7 @@ import {
   windowScrollToRight,
 } from "./utils";
 
-const wvListSelector = '*[style*="border"]';
+const wvListSelector = '*[style*="height: auto"],*[style*="width: auto"]';
 
 test.describe("smoke", () => {
   test("vertically scrollable", async ({ page }) => {
@@ -70,6 +70,17 @@ test.describe("smoke", () => {
 
     expect(initialTotalHeight).toBeTruthy();
     expect(initialTotalHeight).toEqual(changedTotalHeight);
+  });
+
+  test("should not have minimum size", async ({ page }) => {
+    await page.goto(storyUrl("basics-wvlist--increasing-items"));
+
+    const component = await page.waitForSelector(wvListSelector);
+    await component.waitForElementState("stable");
+
+    expect(await component.evaluate((s) => document.body.scrollHeight)).toBe(
+      await component.evaluate((s) => document.body.offsetHeight)
+    );
   });
 });
 
