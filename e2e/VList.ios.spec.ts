@@ -7,6 +7,7 @@ import {
   getScrollTop,
   getFirstItem,
   expectNearlyZero,
+  scrollBy,
 } from "./utils";
 
 test.describe("check if scroll jump compensation in emulated iOS WebKit works", () => {
@@ -171,7 +172,77 @@ test.describe("check if scroll jump compensation in emulated iOS WebKit works", 
     }
   });
 
-  // TODO shift/unshift
-
   // TODO display none
 });
+
+// test.describe("check if item shift compensation works", () => {
+//   test.beforeEach(async ({ page }) => {
+//     await page.goto(storyUrl("basics-vlist--increasing-items"));
+//   });
+
+//   test("end", async ({ page }) => {
+//     const component = await page.waitForSelector(scrollableSelector);
+//     await component.waitForElementState("stable");
+
+//     const updateButton = page.getByRole("button", { name: "update" });
+
+//     // fill list and move to mid
+//     for (let i = 0; i < 20; i++) {
+//       await updateButton.click();
+//     }
+//     await scrollBy(component, 400);
+//     await page.waitForTimeout(500);
+
+//     const topItem = await getFirstItem(component);
+//     expect(topItem.text).not.toEqual("0");
+//     expect(topItem.text.length).toBeLessThanOrEqual(2);
+
+//     // add
+//     await page.getByRole("radio", { name: "append" }).click();
+//     await page.getByRole("radio", { name: "increase" }).click();
+//     await updateButton.click();
+//     await page.waitForTimeout(100);
+//     // check if visible item is keeped
+//     expect(topItem).toEqual(await getFirstItem(component));
+
+//     // remove
+//     await page.getByRole("radio", { name: "decrease" }).click();
+//     await updateButton.click();
+//     await page.waitForTimeout(100);
+//     // check if visible item is keeped
+//     expect(topItem).toEqual(await getFirstItem(component));
+//   });
+
+//   test("start", async ({ page }) => {
+//     const component = await page.waitForSelector(scrollableSelector);
+//     await component.waitForElementState("stable");
+
+//     const updateButton = page.getByRole("button", { name: "update" });
+
+//     // fill list and move to mid
+//     for (let i = 0; i < 20; i++) {
+//       await updateButton.click();
+//     }
+//     await scrollBy(component, 800);
+//     await page.waitForTimeout(500);
+
+//     const topItem = await getFirstItem(component);
+//     expect(topItem.text).not.toEqual("0");
+//     expect(topItem.text.length).toBeLessThanOrEqual(2);
+
+//     // add
+//     await page.getByRole("radio", { name: "prepend" }).click();
+//     await page.getByRole("radio", { name: "increase" }).click();
+//     await updateButton.click();
+//     await page.waitForTimeout(100);
+//     // check if visible item is keeped
+//     expect(topItem).toEqual(await getFirstItem(component));
+
+//     // remove
+//     await page.getByRole("radio", { name: "decrease" }).click();
+//     await updateButton.click();
+//     await page.waitForTimeout(100);
+//     // check if visible item is keeped
+//     expect(topItem).toEqual(await getFirstItem(component));
+//   });
+// });
