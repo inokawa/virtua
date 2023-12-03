@@ -127,7 +127,7 @@ export const createVirtualStore = (
   let jumpCount = 0;
   let jump = 0;
   let pendingJump = 0;
-  let flushedJump = 0;
+  let _flushedJump = 0;
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
   let _isManualScrolling = false;
   let _smoothScrollRange: ItemsRange | null = null;
@@ -169,7 +169,7 @@ export const createVirtualStore = (
         ];
       }
       // Return previous range for consistent render until next scroll event comes in.
-      if (flushedJump) {
+      if (_flushedJump) {
         return _prevRange;
       }
       return (_prevRange = computeRange(
@@ -231,9 +231,9 @@ export const createVirtualStore = (
         // Current logic expects scroll event occurs after applying jump so discard it.
         return (jump = 0);
       }
-      flushedJump = jump;
+      _flushedJump = jump;
       jump = 0;
-      return flushedJump;
+      return _flushedJump;
     },
     _subscribe(target, cb) {
       const sub: [number, Subscriber] = [target, cb];
@@ -335,6 +335,8 @@ export const createVirtualStore = (
         case ACTION_SCROLL: {
           // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
           const nextScrollOffset = clamp(payload, 0, getMaxScrollOffset());
+          const flushedJump = _flushedJump;
+          _flushedJump = 0;
           // Skip if offset is not changed
           if (nextScrollOffset === scrollOffset) {
             break;
@@ -347,7 +349,6 @@ export const createVirtualStore = (
           // The delta of artificial scroll may not be equal with the jump because it may be batched with other scrolls.
           // And at least in latest Chrome/Firefox/Safari in 2023, setting value to scrollTop/scrollLeft can lose subpixel because its integer (sometimes float probably depending on dpr).
           const isJustJumped = flushedJump && distance < abs(flushedJump) + 1;
-          flushedJump = 0;
 
           // Scroll events are dispatched enough so it's ok to skip some of them.
           if (
