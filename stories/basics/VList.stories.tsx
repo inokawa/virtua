@@ -623,11 +623,10 @@ export const BiDirectionalInfiniteScrolling: StoryObj = {
           }
         }}
       >
-        {/* // TODO support the case when spinner is at index 0
         <Spinner
           key="head"
           style={startFetching ? undefined : { visibility: "hidden" }}
-        /> */}
+        />
         {items}
         <Spinner
           key="foot"

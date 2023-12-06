@@ -129,6 +129,7 @@ export const createVirtualStore = (
   let pendingJump = 0;
   let _flushedJump = 0;
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
+  let _prepended = false;
   let _isManualScrolling = false;
   let _smoothScrollRange: ItemsRange | null = null;
   let _prevRange: ItemsRange = [0, initialItemCount];
@@ -252,6 +253,9 @@ export const createVirtualStore = (
           const updated = payload.filter(
             ([index, size]) => cache._sizes[index] !== size
           );
+          const isJustPrepended = _prepended;
+          _prepended = false;
+
           // Skip if all items are cached and not updated
           if (!updated.length) {
             break;
@@ -267,12 +271,18 @@ export const createVirtualStore = (
             // Keep end to stick to the end
             diff = calculateJump(cache, updated, true);
           } else {
-            const [startIndex] = _prevRange;
-            // Keep start at mid
-            diff = calculateJump(
-              cache,
-              updated.filter(([index]) => index < startIndex)
-            );
+            if (isJustPrepended) {
+              // Keep distance from end immediately after prepending
+              // We can assume jumps occurred on the upper outside
+              diff = calculateJump(cache, updated);
+            } else {
+              // Keep start at mid
+              const [startIndex] = _prevRange;
+              diff = calculateJump(
+                cache,
+                updated.filter(([index]) => index < startIndex)
+              );
+            }
           }
 
           if (diff) {
@@ -326,6 +336,7 @@ export const createVirtualStore = (
             );
             applyJump(isRemove ? -min(shift, distanceToEnd) : shift);
 
+            _prepended = !isRemove;
             mutated = UPDATE_SCROLL_STATE;
           } else {
             updateCacheLength(cache as Writeable<Cache>, payload[0]);
