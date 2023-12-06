@@ -62,16 +62,10 @@ export const Default: StoryObj = {
     const createItems = (num: number) => range(num, createItem);
 
     const [shifting, setShifting] = useState(false);
-    const [startFetching, setStartFetching] = useState(false);
-    const [endFetching, setEndFetching] = useState(false);
     const fetchItems = async (isStart: boolean = false) => {
       setShifting(isStart);
 
-      const setFetching = isStart ? setStartFetching : setEndFetching;
-
-      setFetching(true);
       await delay(1000);
-      setFetching(false);
     };
 
     const ref = useRef<VListHandle>(null);
@@ -128,16 +122,7 @@ export const Default: StoryObj = {
           }
         }}
       >
-        {/* // TODO support the case when spinner is at index 0
-        <Spinner
-          key="head"
-          style={startFetching ? undefined : { visibility: "hidden" }}
-        /> */}
         {elements}
-        <Spinner
-          key="foot"
-          style={endFetching ? undefined : { visibility: "hidden" }}
-        />
       </VList>
     );
   },
