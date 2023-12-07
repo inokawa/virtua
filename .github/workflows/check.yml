@@ -25,7 +25,6 @@ jobs:
       - run: npm run test
       - run: npm run build
       - run: npm run size
-      - run: npm run storybook:test
 
   e2e:
     timeout-minutes: 15
@@ -40,6 +39,8 @@ jobs:
       - run: npm ci
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+      - name: Smoke test stories
+        run: npm run storybook:test
       - name: Run Playwright tests
         run: npm run e2e
       # - uses: actions/upload-artifact@v3
