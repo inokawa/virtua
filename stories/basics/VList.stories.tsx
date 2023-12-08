@@ -513,11 +513,10 @@ const SkeletonItem = () => {
 export const Skeleton: StoryObj = {
   render: () => {
     const idRef = useRef(0);
-    const createRows = (num: number, offset: number = 0) => {
+    const createRows = (num: number) => {
       const heights = [20, 40, 80, 77];
       return Array.from({ length: num }).map((_, i) => {
         const id = idRef.current++;
-        i += offset;
         return (
           <div
             key={id}
