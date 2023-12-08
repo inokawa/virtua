@@ -496,6 +496,79 @@ export const ScrollRestoration: StoryObj = {
   },
 };
 
+const SkeletonItem = () => {
+  return (
+    <div
+      style={{
+        padding: 8,
+        background: "#fff",
+        borderBottom: "solid 1px #ccc",
+      }}
+    >
+      <div style={{ height: 60, background: "#eee" }} />
+    </div>
+  );
+};
+
+export const Skeleton: StoryObj = {
+  render: () => {
+    const idRef = useRef(0);
+    const createRows = (num: number, offset: number = 0) => {
+      const heights = [20, 40, 80, 77];
+      return Array.from({ length: num }).map((_, i) => {
+        const id = idRef.current++;
+        i += offset;
+        return (
+          <div
+            key={id}
+            style={{
+              height: heights[i % 4],
+              borderBottom: "solid 1px #ccc",
+              background: "#fff",
+            }}
+          >
+            {id}
+          </div>
+        );
+      });
+    };
+
+    const [fetching, setFetching] = useState(false);
+    const fetchItems = async () => {
+      setFetching(true);
+      await delay(3000);
+      setItems((prev) => [...prev, ...createRows(ITEM_BATCH_COUNT)]);
+      setFetching(false);
+    };
+
+    const ITEM_BATCH_COUNT = 100;
+    const [items, setItems] = useState(() => createRows(ITEM_BATCH_COUNT));
+
+    return (
+      <div
+        style={{ display: "flex", flexDirection: "column", height: "100vh" }}
+      >
+        <div>
+          <button
+            onClick={() => {
+              fetchItems();
+            }}
+          >
+            load more
+          </button>
+        </div>
+        <VList style={{ flex: 1 }}>
+          {items}
+          {fetching &&
+            Array.from({ length: ITEM_BATCH_COUNT }).map((_, i) => (
+              <SkeletonItem key={`skeleton_${i}`} />
+            ))}
+        </VList>
+      </div>
+    );
+  },
+};
+
 export const InfiniteScrolling: StoryObj = {
   render: () => {
     const createRows = (num: number, offset: number = 0) => {
