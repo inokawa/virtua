@@ -5,6 +5,7 @@ import {
   DynamicItem,
   SimpleItem,
   ItemWithRenderCount,
+  DynamicImageItem,
 } from "../components/common";
 import { ReactWindowList } from "../components/react-window";
 
@@ -39,6 +40,13 @@ export const HeavyComponent: StoryObj = {
   render: () => {
     const ROW_COUNT = 10000;
     return <ReactWindowList count={ROW_COUNT} Component={HeavyItem} />;
+  },
+};
+
+export const DynamicImage: StoryObj = {
+  render: () => {
+    const ROW_COUNT = 10000;
+    return <ReactWindowList count={ROW_COUNT} Component={DynamicImageItem} />;
   },
 };
 

@@ -8,7 +8,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Spinner, delay, range } from "../common";
+import { delay, range } from "../common";
 import { faker } from "@faker-js/faker";
 
 export default {

@@ -1,4 +1,5 @@
 import React, { forwardRef, useEffect, useRef } from "react";
+import { faker } from "@faker-js/faker";
 
 export type ListHandle = { scrollToIndex: (index: number) => void };
 
@@ -85,3 +86,25 @@ export const ItemWithRenderCount = forwardRef<
     </div>
   );
 });
+
+export const DynamicImageItem = forwardRef<HTMLDivElement, { index: number }>(
+  ({ index: i }, ref) => {
+    faker.seed(i);
+
+    return (
+      <div
+        ref={ref}
+        style={{
+          borderBottom: "solid 1px #ccc",
+          background: "#fff",
+          padding: 20,
+        }}
+      >
+        <div>{i}</div>
+        <div style={{ width: "100%" }}>
+          <img src={faker.image.url()} style={{ width: "100%" }} />
+        </div>
+      </div>
+    );
+  }
+);

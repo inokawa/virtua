@@ -7,6 +7,7 @@ import {
   TestComponent,
   ItemWithRenderCount,
   ListHandle,
+  DynamicImageItem,
 } from "./components/common";
 import { ReactVirtualList } from "./components/react-virtual";
 import { ReactVirtuosoList } from "./components/react-virtuoso";
@@ -170,6 +171,13 @@ export const HeavyComponent: StoryObj = {
   render: () => {
     const ROW_COUNT = 10000;
     return <Frame count={ROW_COUNT} ItemComponent={HeavyItem} />;
+  },
+};
+
+export const DynamicImage: StoryObj = {
+  render: () => {
+    const ROW_COUNT = 10000;
+    return <Frame count={ROW_COUNT} ItemComponent={DynamicImageItem} />;
   },
 };
 

@@ -5,6 +5,7 @@ import {
   DynamicItem,
   SimpleItem,
   ItemWithRenderCount,
+  DynamicImageItem,
 } from "../components/common";
 import { VirtuaList } from "../components/virtua";
 
@@ -37,6 +38,13 @@ export const HeavyComponent: StoryObj = {
   render: () => {
     const ROW_COUNT = 10000;
     return <VirtuaList count={ROW_COUNT} Component={HeavyItem} />;
+  },
+};
+
+export const DynamicImage: StoryObj = {
+  render: () => {
+    const ROW_COUNT = 10000;
+    return <VirtuaList count={ROW_COUNT} Component={DynamicImageItem} />;
   },
 };
 
