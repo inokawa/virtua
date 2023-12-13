@@ -16,17 +16,20 @@ if (import.meta.env.STORYBOOK_E2E) {
   document.head.appendChild(style);
 }
 
-export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
-  layout: "fullscreen",
-  options: {
-    storySort: {
-      order: [
-        "basics",
-        ["VList", "WVList", "VGrid"],
-        "advanced",
-        "comparisons",
-      ],
+/** @type { import('@storybook/react').Preview } */
+export default {
+  parameters: {
+    actions: { argTypesRegex: "^on[A-Z].*" },
+    layout: "fullscreen",
+    options: {
+      storySort: {
+        order: [
+          "basics",
+          ["VList", "WVList", "VGrid"],
+          "advanced",
+          "comparisons",
+        ],
+      },
     },
   },
 };

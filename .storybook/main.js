@@ -1,3 +1,4 @@
+/** @type { import('@storybook/react-vite').StorybookConfig } */
 export default {
   stories: [
     "../stories/**/*.stories.mdx",
