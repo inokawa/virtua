@@ -87,6 +87,144 @@ it("should pass attributes to element", async () => {
 //   expect(asFragment()).toMatchSnapshot();
 // });
 
+describe("grid", () => {
+  it("should render 1 children", async () => {
+    const { asFragment } = render(
+      <VGrid row={1} col={1}>
+        {({ rowIndex, colIndex }) => (
+          <div>
+            {rowIndex} / {colIndex}
+          </div>
+        )}
+      </VGrid>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render 4x4 children", () => {
+    const { asFragment } = render(
+      <VGrid row={4} col={4}>
+        {({ rowIndex, colIndex }) => (
+          <div>
+            {rowIndex} / {colIndex}
+          </div>
+        )}
+      </VGrid>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render 100x100 children", () => {
+    const { asFragment } = render(
+      <VGrid row={100} col={100}>
+        {({ rowIndex, colIndex }) => (
+          <div>
+            {rowIndex} / {colIndex}
+          </div>
+        )}
+      </VGrid>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render 1000x1000 children", () => {
+    const { asFragment } = render(
+      <VGrid row={1000} col={1000}>
+        {({ rowIndex, colIndex }) => (
+          <div>
+            {rowIndex} / {colIndex}
+          </div>
+        )}
+      </VGrid>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render 10000x10000 children", () => {
+    const { asFragment } = render(
+      <VGrid row={10000} col={10000}>
+        {({ rowIndex, colIndex }) => (
+          <div>
+            {rowIndex} / {colIndex}
+          </div>
+        )}
+      </VGrid>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render non elements", () => {
+    const { asFragment } = render(
+      <VGrid row={6} col={1}>
+        {({ rowIndex }) =>
+          rowIndex === 0
+            ? "string"
+            : rowIndex === 1
+            ? true
+            : rowIndex === 2
+            ? false
+            : rowIndex === 3
+            ? null
+            : rowIndex === 4
+            ? undefined
+            : 123
+        }
+      </VGrid>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render fragments", () => {
+    const { asFragment } = render(
+      <VGrid row={2} col={1}>
+        {({ rowIndex }) =>
+          rowIndex === 0 ? (
+            <>
+              <div>fragment</div>
+              <div>fragment</div>
+              <div>fragment</div>
+            </>
+          ) : (
+            <>
+              <div>fragment</div>
+            </>
+          )
+        }
+      </VGrid>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render component", () => {
+    const Comp = ({ children }: { children: React.ReactNode }) => (
+      <div>{children}</div>
+    );
+    const { asFragment } = render(
+      <VGrid row={100} col={100}>
+        {({ rowIndex, colIndex }) => (
+          <Comp>
+            {rowIndex} / {colIndex}
+          </Comp>
+        )}
+      </VGrid>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render with given width / height", () => {
+    const { asFragment } = render(
+      <VGrid row={4} col={4} style={{ width: 100, height: 100 }}>
+        {({ rowIndex, colIndex }) => (
+          <div>
+            {rowIndex} / {colIndex}
+          </div>
+        )}
+      </VGrid>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+});
+
 // describe("render count", () => {
 //   it("should render on mount", () => {
 //     const rootFn = jest.fn();
@@ -250,141 +388,3 @@ it("should pass attributes to element", async () => {
 //     });
 //   });
 // });
-
-describe("grid", () => {
-  it("should render 1 children", async () => {
-    const { asFragment } = render(
-      <VGrid row={1} col={1}>
-        {({ rowIndex, colIndex }) => (
-          <div>
-            {rowIndex} / {colIndex}
-          </div>
-        )}
-      </VGrid>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 4x4 children", () => {
-    const { asFragment } = render(
-      <VGrid row={4} col={4}>
-        {({ rowIndex, colIndex }) => (
-          <div>
-            {rowIndex} / {colIndex}
-          </div>
-        )}
-      </VGrid>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 100x100 children", () => {
-    const { asFragment } = render(
-      <VGrid row={100} col={100}>
-        {({ rowIndex, colIndex }) => (
-          <div>
-            {rowIndex} / {colIndex}
-          </div>
-        )}
-      </VGrid>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 1000x1000 children", () => {
-    const { asFragment } = render(
-      <VGrid row={1000} col={1000}>
-        {({ rowIndex, colIndex }) => (
-          <div>
-            {rowIndex} / {colIndex}
-          </div>
-        )}
-      </VGrid>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 10000x10000 children", () => {
-    const { asFragment } = render(
-      <VGrid row={10000} col={10000}>
-        {({ rowIndex, colIndex }) => (
-          <div>
-            {rowIndex} / {colIndex}
-          </div>
-        )}
-      </VGrid>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render non elements", () => {
-    const { asFragment } = render(
-      <VGrid row={6} col={1}>
-        {({ rowIndex }) =>
-          rowIndex === 0
-            ? "string"
-            : rowIndex === 1
-            ? true
-            : rowIndex === 2
-            ? false
-            : rowIndex === 3
-            ? null
-            : rowIndex === 4
-            ? undefined
-            : 123
-        }
-      </VGrid>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render fragments", () => {
-    const { asFragment } = render(
-      <VGrid row={2} col={1}>
-        {({ rowIndex }) =>
-          rowIndex === 0 ? (
-            <>
-              <div>fragment</div>
-              <div>fragment</div>
-              <div>fragment</div>
-            </>
-          ) : (
-            <>
-              <div>fragment</div>
-            </>
-          )
-        }
-      </VGrid>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render component", () => {
-    const Comp = ({ children }: { children: React.ReactNode }) => (
-      <div>{children}</div>
-    );
-    const { asFragment } = render(
-      <VGrid row={100} col={100}>
-        {({ rowIndex, colIndex }) => (
-          <Comp>
-            {rowIndex} / {colIndex}
-          </Comp>
-        )}
-      </VGrid>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render with given width / height", () => {
-    const { asFragment } = render(
-      <VGrid row={4} col={4} style={{ width: 100, height: 100 }}>
-        {({ rowIndex, colIndex }) => (
-          <div>
-            {rowIndex} / {colIndex}
-          </div>
-        )}
-      </VGrid>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-});
