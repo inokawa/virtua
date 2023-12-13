@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { CustomViewportComponentProps, VList } from "../../src";
+import { CustomViewportComponentProps, VList } from "../../../src";
 import React, { ReactNode, forwardRef } from "react";
 import { faker } from "@faker-js/faker";
 import * as ScrollArea from "@radix-ui/react-scroll-area";

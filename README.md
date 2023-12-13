@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/virtua) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/virtua) ![npm](https://img.shields.io/npm/dw/virtua) [![check](https://github.com/inokawa/virtua/actions/workflows/check.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/check.yml) [![demo](https://github.com/inokawa/virtua/actions/workflows/demo.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/demo.yml)
 
-> A zero-config, fast and small (~3kB) virtual list (and grid) component for [React](https://github.com/facebook/react).
+> A zero-config, fast and small (~3kB) virtual list (and grid) component for [React](https://github.com/facebook/react) and [Vue](https://vuejs.org/).
 
 ![example](./example.gif)
 
@@ -16,7 +16,7 @@ This project is a challenge to rethink virtualization. The goals are...
 - **Fast:** Natural virtual scrolling needs optimization in many aspects (eliminate frame drops by reducing CPU usage and GC and [layout recalculation](https://gist.github.com/paulirish/5d52fb081b3570c81e3a), reduce visual jumps on repaint, optimize with CSS, optimize for frameworks, etc). We are trying to combine the best of them.
 - **Small:** Its bundle size should be small as much as possible to be friendly with modern web development. Currently each components are ~3kB gzipped. The total is [~5kB gzipped](https://bundlephobia.com/package/virtua) and tree-shakeable.
 - **Flexible:** Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, RTL, mobile, infinite scrolling, scroll restoration, DnD, keyboard navigation, sticky, placeholder and more. See [live demo](#demo).
-- **Framework agnostic (WIP):** Currently only for [React](https://react.dev/) but we could support [Vue](https://vuejs.org/), [Svelte](https://svelte.dev/), [Solid](https://www.solidjs.com/), [Angular](https://angular.io/), [Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components) and more in the future.
+- **Framework agnostic:** Currently [React](https://react.dev/) and [Vue](https://vuejs.org/) are supported. We could support [Svelte](https://svelte.dev/), [Solid](https://www.solidjs.com/), [Angular](https://angular.io/), [Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components) and more in the future.
 
 ## Demo
 
@@ -28,17 +28,17 @@ https://inokawa.github.io/virtua/
 npm install virtua
 ```
 
-### Requirements
+If you use this lib in [legacy browsers which does not have ResizeObserver](https://caniuse.com/?search=resizeobserver), you should use [polyfill](https://github.com/juggle/resize-observer#switching-between-native-and-polyfilled-versions).
 
-- react >= 16.14
+## Getting started
+
+### React
+
+`react >= 16.14` is required.
 
 If you use ESM and webpack 5, use react >= 18 to avoid [Can't resolve `react/jsx-runtime` error](https://github.com/facebook/react/issues/20235).
 
-If you use this lib in [legacy browsers which does not have ResizeObserver](https://caniuse.com/?search=resizeobserver), you should use [polyfill](https://github.com/juggle/resize-observer#switching-between-native-and-polyfilled-versions).
-
-## Usage
-
-### Vertical scroll
+#### Vertical scroll
 
 ```tsx
 import { VList } from "virtua";
@@ -63,7 +63,7 @@ export const App = () => {
 };
 ```
 
-### Horizontal scroll
+#### Horizontal scroll
 
 ```tsx
 import { VList } from "virtua";
@@ -88,7 +88,7 @@ export const App = () => {
 };
 ```
 
-### Window scroll
+#### Window scroll
 
 ```tsx
 import { WVList } from "virtua";
@@ -115,7 +115,7 @@ export const App = () => {
 };
 ```
 
-### Vertical and horizontal scroll
+#### Vertical and horizontal scroll
 
 ```tsx
 import { experimental_VGrid as VGrid } from "virtua";
@@ -139,7 +139,7 @@ export const App = () => {
 };
 ```
 
-### React Server Components (RSC) support
+#### React Server Components (RSC) support
 
 This library is marked as a Client Component. You can render RSC as children of VList or WVList.
 
@@ -163,11 +163,43 @@ export default async () => {
 };
 ```
 
-And see [examples](./stories) for more usages.
+### Vue
+
+`vue >= 3.2` is required.
+
+```vue
+<script setup>
+import { VList } from "virtua/vue";
+
+const heights = [20, 40, 180, 77];
+const data = Array.from({ length: 1000 }).map((_, i) => ({
+  id: i,
+  height: heights[i % 4] + "px",
+}));
+</script>
+
+<template>
+  <VList :data="data">
+    <template #default="item">
+      <div
+        :key="item.id"
+        :style="{
+          height: item.height,
+          background: 'white',
+          borderBottom: 'solid 1px #ccc',
+        }"
+      >
+        {{ item.id }}
+      </div>
+    </template>
+  </VList>
+</template>
+```
 
 ## Documentation
 
 - [API reference](./docs/API.md)
+- [Examples](./stories) for more usages
 
 ### FAQs
 

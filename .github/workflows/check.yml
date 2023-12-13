@@ -26,7 +26,7 @@ jobs:
       - run: npm run build
       - run: npm run size
 
-  e2e:
+  e2e-react:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
@@ -49,3 +49,19 @@ jobs:
       #     name: playwright-report
       #     path: playwright-report/
       #     retention-days: 30
+
+  e2e-vue:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
+          cache: "npm"
+
+      - run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Smoke test stories
+        run: STORYBOOK_VUE=1 npm run storybook:test

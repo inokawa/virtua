@@ -3,7 +3,7 @@ import {
   CustomItemComponentProps,
   CustomViewportComponentProps,
   VList,
-} from "../../src";
+} from "../../../src";
 import React, {
   CSSProperties,
   createContext,

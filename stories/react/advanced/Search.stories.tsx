@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { VList, VListHandle } from "../../src";
+import { VList, VListHandle } from "../../../src";
 import React, { CSSProperties, useMemo, useRef, useState } from "react";
 import { faker } from "@faker-js/faker";
 

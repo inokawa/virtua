@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import React, { useRef, useState } from "react";
-import { experimental_VGrid as VGrid, VGridHandle } from "../../src";
+import { experimental_VGrid as VGrid, VGridHandle } from "../../../src";
 
 export default {
   component: VGrid,

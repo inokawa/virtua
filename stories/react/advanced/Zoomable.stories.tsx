@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { CustomItemComponentProps, VList } from "../../src";
+import { CustomItemComponentProps, VList } from "../../../src";
 import React, {
   createContext,
   forwardRef,
