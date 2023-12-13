@@ -12,18 +12,15 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_SCROLL_STATE,
   UPDATE_SIZE_STATE,
+  clampEndIndex,
+  clampStartIndex,
   createVirtualStore,
   SCROLL_IDLE,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { values } from "../core/utils";
 import { createScroller } from "../core/scroller";
-import {
-  clampEndIndex,
-  clampStartIndex,
-  emptyComponents,
-  refKey,
-} from "./utils";
+import { emptyComponents, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { createGridResizer, GridResizer } from "../core/resizer";
 import {

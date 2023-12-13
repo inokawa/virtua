@@ -1,6 +1,5 @@
 import { ReactElement, ReactFragment, ReactNode } from "react";
-import { exists, max, min, isArray } from "../core/utils";
-import { SCROLL_DOWN, SCROLL_UP, ScrollDirection } from "../core/store";
+import { exists, isArray } from "../core/utils";
 
 /**
  * @internal
@@ -52,32 +51,3 @@ export const flattenChildren = (children: ReactNode): ItemElement[] => {
  * @internal
  */
 export type MayHaveKey = { key?: React.Key };
-
-/**
- * @internal
- */
-export const clampStartIndex = (
-  startIndex: number,
-  overscan: number,
-  scrollDirection: ScrollDirection
-): number => {
-  return max(
-    startIndex - (scrollDirection === SCROLL_DOWN ? 1 : max(1, overscan)),
-    0
-  );
-};
-
-/**
- * @internal
- */
-export const clampEndIndex = (
-  endIndex: number,
-  overscan: number,
-  scrollDirection: ScrollDirection,
-  count: number
-): number => {
-  return min(
-    endIndex + (scrollDirection === SCROLL_UP ? 1 : max(1, overscan)),
-    count - 1
-  );
-};

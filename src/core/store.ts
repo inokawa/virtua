@@ -20,6 +20,35 @@ type ViewportResize = [size: number, paddingStart: number, paddingEnd: number];
 export type ItemResize = Readonly<[index: number, size: number]>;
 type ItemsRange = Readonly<[startIndex: number, endIndex: number]>;
 
+/**
+ * @internal
+ */
+export const clampStartIndex = (
+  startIndex: number,
+  overscan: number,
+  scrollDirection: ScrollDirection
+): number => {
+  return max(
+    startIndex - (scrollDirection === SCROLL_DOWN ? 1 : max(1, overscan)),
+    0
+  );
+};
+
+/**
+ * @internal
+ */
+export const clampEndIndex = (
+  endIndex: number,
+  overscan: number,
+  scrollDirection: ScrollDirection,
+  count: number
+): number => {
+  return min(
+    endIndex + (scrollDirection === SCROLL_UP ? 1 : max(1, overscan)),
+    count - 1
+  );
+};
+
 const calculateJump = (
   cache: Cache,
   items: readonly ItemResize[],

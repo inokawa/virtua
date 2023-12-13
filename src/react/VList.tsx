@@ -10,6 +10,8 @@ import {
 import {
   UPDATE_SCROLL_WITH_EVENT,
   ACTION_ITEMS_LENGTH_CHANGE,
+  clampEndIndex,
+  clampStartIndex,
   createVirtualStore,
   UPDATE_SIZE_STATE,
   UPDATE_SCROLL_STATE,
@@ -18,13 +20,7 @@ import {
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { exists, values } from "../core/utils";
 import { createScroller } from "../core/scroller";
-import {
-  MayHaveKey,
-  clampEndIndex,
-  clampStartIndex,
-  emptyComponents,
-  refKey,
-} from "./utils";
+import { MayHaveKey, emptyComponents, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
 import { createResizer } from "../core/resizer";

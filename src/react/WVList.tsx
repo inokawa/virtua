@@ -11,19 +11,15 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_SCROLL_STATE,
   UPDATE_SIZE_STATE,
+  clampEndIndex,
+  clampStartIndex,
   createVirtualStore,
   SCROLL_IDLE,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { exists, values } from "../core/utils";
 import { createWindowScroller } from "../core/scroller";
-import {
-  MayHaveKey,
-  clampEndIndex,
-  clampStartIndex,
-  emptyComponents,
-  refKey,
-} from "./utils";
+import { MayHaveKey, emptyComponents, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
 import { createWindowResizer } from "../core/resizer";
