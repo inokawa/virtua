@@ -104,7 +104,7 @@ export interface VListProps extends ViewportComponentAttributes {
    * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
    * - If set, you can opt out estimation and use the value as initial item size.
    */
-  initialItemSize?: number;
+  estimatedSize?: number;
   /**
    * If set, the specified amount of items will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
    */
@@ -173,7 +173,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       children,
       count: renderCountProp,
       overscan = 4,
-      initialItemSize,
+      estimatedSize,
       initialItemCount,
       shift,
       horizontal: horizontalProp,
@@ -202,10 +202,10 @@ export const VList = forwardRef<VListHandle, VListProps>(
       const _isHorizontal = !!horizontalProp;
       const _store = createVirtualStore(
         count,
-        initialItemSize,
+        estimatedSize,
         initialItemCount,
         cache as unknown as Cache | undefined,
-        !initialItemSize
+        !estimatedSize
       );
       return [
         _store,
