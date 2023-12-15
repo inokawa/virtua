@@ -373,7 +373,7 @@ test.describe("check if scroll jump compensation works", () => {
       if (isScrollBarVisible) {
         break;
       } else {
-        // Check is top is always visible and on top
+        // Check if top is always visible and on top
         expect(firstItemTop).toBe(0);
         // Check if all items are visible
         expect(childrenCount).toBe(i + initialLength);
@@ -433,7 +433,7 @@ test.describe("check if scroll jump compensation works", () => {
       if (isScrollBarVisible) {
         break;
       } else {
-        // Check is bottom is always visible and on bottom
+        // Check if bottom is always visible and on bottom
         expectNearlyZero(firstItemBottom, 0.1, -0.1);
         // Check if all items are visible
         expect(childrenCount).toBe(i + initialLength);
