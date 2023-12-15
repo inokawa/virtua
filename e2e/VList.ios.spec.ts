@@ -198,7 +198,6 @@ test.describe("check if scroll jump compensation in emulated iOS WebKit works", 
 //     expect(topItem.text.length).toBeLessThanOrEqual(2);
 
 //     // add
-//     await page.getByRole("radio", { name: "append" }).click();
 //     await page.getByRole("radio", { name: "increase" }).click();
 //     await updateButton.click();
 //     await page.waitForTimeout(100);
@@ -231,7 +230,7 @@ test.describe("check if scroll jump compensation in emulated iOS WebKit works", 
 //     expect(topItem.text.length).toBeLessThanOrEqual(2);
 
 //     // add
-//     await page.getByRole("radio", { name: "prepend" }).click();
+//     await page.getByRole("checkbox", { name: "prepend" }).click();
 //     await page.getByRole("radio", { name: "increase" }).click();
 //     await updateButton.click();
 //     await page.waitForTimeout(100);

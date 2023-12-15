@@ -893,22 +893,11 @@ export const IncreasingItems: StoryObj = {
         <div>
           <label style={{ marginRight: 4 }}>
             <input
-              type="radio"
-              style={{ marginLeft: 4 }}
-              checked={!prepend}
-              onChange={() => {
-                setPrepend(false);
-              }}
-            />
-            append
-          </label>
-          <label style={{ marginRight: 4 }}>
-            <input
-              type="radio"
+              type="checkbox"
               style={{ marginLeft: 4 }}
               checked={prepend}
               onChange={() => {
-                setPrepend(true);
+                setPrepend((prev) => !prev);
               }}
             />
             prepend
@@ -980,11 +969,7 @@ export const IncreasingItems: StoryObj = {
             update
           </button>
         </div>
-        <VList
-          style={{ flex: 1 }}
-          shift={prepend ? true : false}
-          reverse={reverse}
-        >
+        <VList style={{ flex: 1 }} shift={prepend} reverse={reverse}>
           {rows.map((d) => (
             <div
               key={d.id}

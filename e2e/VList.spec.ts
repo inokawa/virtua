@@ -337,7 +337,7 @@ test.describe("check if scroll jump compensation works", () => {
     const component = await page.waitForSelector(scrollableSelector);
     await component.waitForElementState("stable");
 
-    await page.getByRole("radio", { name: "prepend" }).click();
+    await page.getByRole("checkbox", { name: "prepend" }).click();
     const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
     const increaseRadio = await page.getByRole("radio", { name: "increase" });
     const valueInput = page.getByRole("spinbutton");
@@ -396,7 +396,7 @@ test.describe("check if scroll jump compensation works", () => {
 
     await page.getByRole("checkbox", { name: "reverse" }).click();
 
-    await page.getByRole("radio", { name: "prepend" }).click();
+    await page.getByRole("checkbox", { name: "prepend" }).click();
     const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
     const increaseRadio = await page.getByRole("radio", { name: "increase" });
     const valueInput = page.getByRole("spinbutton");
@@ -972,7 +972,6 @@ test.describe("check if item shift compensation works", () => {
     expect(topItem.text.length).toBeLessThanOrEqual(2);
 
     // add
-    await page.getByRole("radio", { name: "append" }).click();
     await page.getByRole("radio", { name: "increase" }).click();
     await updateButton.click();
     await page.waitForTimeout(100);
@@ -1005,7 +1004,7 @@ test.describe("check if item shift compensation works", () => {
     expect(topItem.text.length).toBeLessThanOrEqual(2);
 
     // add
-    await page.getByRole("radio", { name: "prepend" }).click();
+    await page.getByRole("checkbox", { name: "prepend" }).click();
     await page.getByRole("radio", { name: "increase" }).click();
     await updateButton.click();
     await page.waitForTimeout(100);
