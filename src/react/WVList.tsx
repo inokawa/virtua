@@ -81,7 +81,7 @@ export interface WVListProps extends ViewportComponentAttributes {
    */
   initialItemCount?: number;
   /**
-   * While true is set, scroll position will be maintained from the end not usual start when items are shifted/unshifted. It is useful for reverse infinite scrolling.
+   * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
   shift?: boolean;
   /**
@@ -164,7 +164,6 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
         initialItemSize,
         initialItemCount,
         cache as unknown as Cache | undefined,
-        false,
         !initialItemSize
       );
 
