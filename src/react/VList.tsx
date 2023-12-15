@@ -18,7 +18,7 @@ import {
   SCROLL_IDLE,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { exists, values } from "../core/utils";
+import { exists, max, values } from "../core/utils";
 import { createScroller } from "../core/scroller";
 import { MayHaveKey, emptyComponents, refKey } from "./utils";
 import { useStatic } from "./useStatic";
@@ -110,7 +110,7 @@ export interface VListProps extends ViewportComponentAttributes {
    */
   initialItemCount?: number;
   /**
-   * While true is set, scroll position will be maintained from the end not usual start when items are shifted/unshifted. It is useful for reverse infinite scrolling.
+   * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
   shift?: boolean;
   /**
@@ -118,7 +118,7 @@ export interface VListProps extends ViewportComponentAttributes {
    */
   horizontal?: boolean;
   /**
-   * If true, some styles will be adjusted to be suitable for bottom-to-top scrolling.
+   * If true, items are aligned to the end of the list when total size of items are smaller than viewport size. It's useful for chat like app.
    */
   reverse?: boolean;
   /**
@@ -177,7 +177,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       initialItemCount,
       shift,
       horizontal: horizontalProp,
-      reverse: reverseProp,
+      reverse,
       cache,
       components: {
         Root: Viewport = DefaultViewport,
@@ -205,7 +205,6 @@ export const VList = forwardRef<VListHandle, VListProps>(
         initialItemSize,
         initialItemCount,
         cache as unknown as Cache | undefined,
-        !!reverseProp,
         !initialItemSize
       );
       return [
@@ -319,12 +318,16 @@ export const VList = forwardRef<VListHandle, VListProps>(
     for (let i = overscanedStartIndex; i <= overscanedEndIndex; i++) {
       const e = getElement(i);
       const key = (e as MayHaveKey).key;
+      let offset = store._getItemOffset(i);
+      if (reverse) {
+        offset += max(0, store._getViewportSize() - store._getTotalSize());
+      }
       items.push(
         <ListItem
           key={exists(key) ? key : "_" + i}
           _resizer={resizer}
           _index={i}
-          _offset={store._getItemOffset(i)}
+          _offset={offset}
           _hide={store._isUnmeasuredItem(i)}
           _element={ItemElement as "div"}
           _children={e}

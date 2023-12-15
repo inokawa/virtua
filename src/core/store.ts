@@ -146,7 +146,6 @@ export const createVirtualStore = (
   itemSize: number = 40,
   initialItemCount: number = 0,
   cache: Cache = initCache(elementsCount, itemSize),
-  isReverse?: boolean,
   shouldAutoEstimateItemSize?: boolean
 ): VirtualStore => {
   let viewportSize = itemSize * max(initialItemCount - 1, 0);
@@ -222,12 +221,7 @@ export const createVirtualStore = (
         .includes(UNCACHED);
     },
     _getItemOffset(index) {
-      const offset =
-        computeStartOffset(cache as Writeable<Cache>, index) - pendingJump;
-      if (isReverse) {
-        return offset + max(0, viewportSize - getTotalSize());
-      }
-      return offset;
+      return computeStartOffset(cache as Writeable<Cache>, index) - pendingJump;
     },
     _getItemSize(index) {
       return getItemSize(cache, index);
