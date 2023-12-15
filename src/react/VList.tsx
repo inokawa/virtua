@@ -8,7 +8,7 @@ import {
   useEffect,
 } from "react";
 import {
-  UPDATE_SCROLL_WITH_EVENT,
+  UPDATE_SCROLL_EVENT,
   ACTION_ITEMS_LENGTH_CHANGE,
   clampEndIndex,
   clampStartIndex,
@@ -16,6 +16,7 @@ import {
   UPDATE_SIZE_STATE,
   UPDATE_SCROLL_STATE,
   SCROLL_IDLE,
+  UPDATE_SCROLL_STOP_EVENT,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { exists, max, values } from "../core/utils";
@@ -228,7 +229,6 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const scrollSize = store._getScrollSize();
 
     const rootRef = useRef<HTMLDivElement>(null);
-    const scrolling = scrollDirection !== SCROLL_IDLE;
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
@@ -243,10 +243,13 @@ export const VList = forwardRef<VListHandle, VListProps>(
           }
         }
       );
-      const unsubscribeOnScroll = store._subscribe(
-        UPDATE_SCROLL_WITH_EVENT,
+      const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
+        onScroll[refKey] && onScroll[refKey](store._getScrollOffset());
+      });
+      const unsubscribeOnScrollStop = store._subscribe(
+        UPDATE_SCROLL_STOP_EVENT,
         () => {
-          onScroll[refKey] && onScroll[refKey](store._getScrollOffset());
+          onScrollStop[refKey] && onScrollStop[refKey]();
         }
       );
       const cleanupResizer = resizer._observeRoot(root);
@@ -254,6 +257,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       return () => {
         unsubscribeStore();
         unsubscribeOnScroll();
+        unsubscribeOnScrollStop();
         cleanupResizer();
         cleanupScroller();
       };
@@ -265,12 +269,6 @@ export const VList = forwardRef<VListHandle, VListProps>(
 
       scroller._fixScrollJump(jump);
     }, [jumpCount]);
-
-    useEffect(() => {
-      if (!scrolling) {
-        onScrollStop[refKey] && onScrollStop[refKey]();
-      }
-    }, [scrolling]);
 
     useEffect(() => {
       if (!onRangeChangeProp) return;
@@ -341,7 +339,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
         ref={rootRef}
         width={isHorizontal ? scrollSize : undefined}
         height={isHorizontal ? undefined : scrollSize}
-        scrolling={scrolling}
+        scrolling={scrollDirection !== SCROLL_IDLE}
         attrs={useMemo(
           () => ({
             ...viewportAttrs,

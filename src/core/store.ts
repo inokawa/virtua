@@ -112,7 +112,9 @@ export const UPDATE_SCROLL_STATE = 0b0001;
 /** @internal */
 export const UPDATE_SIZE_STATE = 0b0010;
 /** @internal */
-export const UPDATE_SCROLL_WITH_EVENT = 0b0100;
+export const UPDATE_SCROLL_EVENT = 0b0100;
+/** @internal */
+export const UPDATE_SCROLL_STOP_EVENT = 0b1000;
 
 /**
  * @internal
@@ -178,12 +180,6 @@ export const createVirtualStore = (
       jump += j;
       jumpCount++;
     }
-  };
-  const updateScrollDirection = (dir: ScrollDirection): boolean => {
-    const prev = _scrollDirection;
-    _scrollDirection = dir;
-    // Return true if scrolling is just started or stopped
-    return _scrollDirection !== prev;
   };
 
   return {
@@ -390,7 +386,7 @@ export const createVirtualStore = (
             // Ignore until manual scrolling
             !_isManualScrolling
           ) {
-            updateScrollDirection(delta < 0 ? SCROLL_UP : SCROLL_DOWN);
+            _scrollDirection = delta < 0 ? SCROLL_UP : SCROLL_DOWN;
           }
 
           // TODO This will cause glitch in reverse infinite scrolling. Disable this until better solution is found.
@@ -409,14 +405,16 @@ export const createVirtualStore = (
           shouldSync = distance > viewportSize;
 
           scrollOffset = nextScrollOffset;
-          mutated = UPDATE_SCROLL_STATE + UPDATE_SCROLL_WITH_EVENT;
+          mutated = UPDATE_SCROLL_STATE + UPDATE_SCROLL_EVENT;
           break;
         }
         case ACTION_SCROLL_END: {
-          if (updateScrollDirection(SCROLL_IDLE)) {
+          mutated = UPDATE_SCROLL_STOP_EVENT;
+          if (_scrollDirection !== SCROLL_IDLE) {
             shouldFlushPendingJump = true;
-            mutated = UPDATE_SCROLL_STATE;
+            mutated += UPDATE_SCROLL_STATE;
           }
+          _scrollDirection = SCROLL_IDLE;
           _isManualScrolling = false;
           _smoothScrollRange = null;
           break;
