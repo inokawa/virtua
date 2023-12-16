@@ -265,8 +265,6 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const height = vStore._getScrollSize();
     const width = hStore._getScrollSize();
     const rootRef = useRef<HTMLDivElement>(null);
-    const vScrolling = vScrollDirection !== SCROLL_IDLE;
-    const hScrolling = hScrollDirection !== SCROLL_IDLE;
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
@@ -415,7 +413,9 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         ref={rootRef}
         width={width}
         height={height}
-        scrolling={vScrolling || hScrolling}
+        scrolling={
+          vScrollDirection !== SCROLL_IDLE || hScrollDirection !== SCROLL_IDLE
+        }
         attrs={useMemo(
           () => ({
             ...viewportAttrs,

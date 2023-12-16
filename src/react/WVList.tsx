@@ -15,6 +15,7 @@ import {
   clampStartIndex,
   createVirtualStore,
   SCROLL_IDLE,
+  UPDATE_SCROLL_STOP_EVENT,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { exists, values } from "../core/utils";
@@ -188,7 +189,6 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
     const scrollSize = store._getTotalSize();
 
     const rootRef = useRef<HTMLDivElement>(null);
-    const scrolling = scrollDirection !== SCROLL_IDLE;
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
@@ -203,10 +203,17 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
           }
         }
       );
+      const unsubscribeOnScrollStop = store._subscribe(
+        UPDATE_SCROLL_STOP_EVENT,
+        () => {
+          onScrollStop[refKey] && onScrollStop[refKey]();
+        }
+      );
       const cleanupResizer = resizer._observeRoot(root);
       const cleanupScroller = scroller._observe(root);
       return () => {
         unsubscribeStore();
+        unsubscribeOnScrollStop();
         cleanupResizer();
         cleanupScroller();
       };
@@ -218,12 +225,6 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
 
       scroller._fixScrollJump(jump);
     }, [jumpCount]);
-
-    useEffect(() => {
-      if (!scrolling) {
-        onScrollStop[refKey] && onScrollStop[refKey]();
-      }
-    }, [scrolling]);
 
     useEffect(() => {
       if (!onRangeChangeProp) return;
@@ -278,7 +279,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
         ref={rootRef}
         width={isHorizontal ? scrollSize : undefined}
         height={isHorizontal ? undefined : scrollSize}
-        scrolling={scrolling}
+        scrolling={scrollDirection !== SCROLL_IDLE}
         attrs={useMemo(
           () => ({
             ...viewportAttrs,
