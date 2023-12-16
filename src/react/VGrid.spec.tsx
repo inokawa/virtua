@@ -41,7 +41,7 @@ global.ResizeObserver = class {
 
 afterEach(cleanup);
 
-it("should pass attributes to element", async () => {
+it("should pass attributes to element", () => {
   const { asFragment } = render(
     <VGrid
       id="id"
@@ -63,7 +63,7 @@ it("should pass attributes to element", async () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
-// it("should change components", async () => {
+// it("should change components", () => {
 //   const UlList = forwardRef<HTMLDivElement, CustomViewportComponentProps>(
 //     ({ children, attrs, scrollSize }, ref) => {
 //       return (
@@ -88,7 +88,7 @@ it("should pass attributes to element", async () => {
 // });
 
 describe("grid", () => {
-  it("should render 1 children", async () => {
+  it("should render 1 children", () => {
     const { asFragment } = render(
       <VGrid row={1} col={1}>
         {({ rowIndex, colIndex }) => (

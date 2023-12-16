@@ -52,7 +52,7 @@ global.IntersectionObserver = class {
 
 afterEach(cleanup);
 
-it("should pass attributes to element", async () => {
+it("should pass attributes to element", () => {
   const { asFragment } = render(
     <WVList
       id="id"
@@ -68,7 +68,7 @@ it("should pass attributes to element", async () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
-it("should change components", async () => {
+it("should change components", () => {
   const UlList = forwardRef<HTMLDivElement, CustomViewportComponentProps>(
     ({ children, attrs, height }, ref) => {
       return (
@@ -92,7 +92,7 @@ it("should change components", async () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
-it("should pass index to items", async () => {
+it("should pass index to items", () => {
   const Item = forwardRef<HTMLDivElement, CustomItemComponentProps>(
     ({ children, index, style }, ref) => {
       return (
@@ -114,7 +114,7 @@ it("should pass index to items", async () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
-it("should render with render prop", async () => {
+it("should render with render prop", () => {
   const items = Array.from({ length: 1000 }).map((_, i) => ({
     id: i,
     label: "This is " + i,
@@ -131,7 +131,7 @@ it("should render with render prop", async () => {
 });
 
 describe("vertical", () => {
-  it("should render 1 children", async () => {
+  it("should render 1 children", () => {
     const { asFragment } = render(
       <WVList>
         <div>0</div>
@@ -245,7 +245,7 @@ describe("vertical", () => {
 });
 
 describe("horizontal", () => {
-  it("should render 1 children", async () => {
+  it("should render 1 children", () => {
     const { asFragment } = render(
       <WVList horizontal>
         <div>0</div>
