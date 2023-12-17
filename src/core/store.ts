@@ -107,6 +107,8 @@ type Actions =
 
 type Subscriber = (sync?: boolean) => void;
 
+type StateVersion = readonly [];
+
 /** @internal */
 export const UPDATE_SCROLL_STATE = 0b0001;
 /** @internal */
@@ -120,6 +122,7 @@ export const UPDATE_SCROLL_STOP_EVENT = 0b1000;
  * @internal
  */
 export type VirtualStore = {
+  _getStateVersion(): StateVersion;
   _getCache(): CacheSnapshot;
   _getRange(): ItemsRange;
   _isUnmeasuredItem(index: number): boolean;
@@ -150,6 +153,7 @@ export const createVirtualStore = (
   cache: Cache = initCache(elementsCount, itemSize),
   shouldAutoEstimateItemSize?: boolean
 ): VirtualStore => {
+  let stateVersion: StateVersion = [];
   let viewportSize = itemSize * max(initialItemCount - 1, 0);
   let startSpacerSize = 0;
   let endSpacerSize = 0;
@@ -183,6 +187,9 @@ export const createVirtualStore = (
   };
 
   return {
+    _getStateVersion() {
+      return stateVersion;
+    },
     _getCache() {
       return JSON.parse(JSON.stringify(cache)) as unknown as CacheSnapshot;
     },
@@ -436,6 +443,8 @@ export const createVirtualStore = (
       }
 
       if (mutated) {
+        stateVersion = [];
+
         if (shouldFlushPendingJump && pendingJump) {
           jump += pendingJump;
           pendingJump = 0;

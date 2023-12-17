@@ -180,7 +180,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
       store._update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
     }
 
-    const rerender = useRerender();
+    const rerender = useRerender(store);
 
     const [startIndex, endIndex] = store._getRange();
     const scrollDirection = store._getScrollDirection();

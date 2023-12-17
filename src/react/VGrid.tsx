@@ -254,7 +254,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       hStore._update(ACTION_ITEMS_LENGTH_CHANGE, [colCount]);
     }
 
-    const rerender = useRerender();
+    const vRerender = useRerender(vStore);
+    const hRerender = useRerender(hStore);
 
     const [startRowIndex, endRowIndex] = vStore._getRange();
     const [startColIndex, endColIndex] = hStore._getRange();
@@ -268,21 +269,26 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
-      const onRerender = (sync?: boolean) => {
-        if (sync) {
-          flushSync(rerender);
-        } else {
-          rerender();
-        }
-      };
       // store must be subscribed first because others may dispatch update on init depending on implementation
       const unsubscribeVStore = vStore._subscribe(
         UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
-        onRerender
+        (sync) => {
+          if (sync) {
+            flushSync(vRerender);
+          } else {
+            vRerender();
+          }
+        }
       );
       const unsubscribeHStore = hStore._subscribe(
         UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
-        onRerender
+        (sync) => {
+          if (sync) {
+            flushSync(hRerender);
+          } else {
+            hRerender();
+          }
+        }
       );
       const cleanUpResizer = resizer._observeRoot(root);
       const cleanupVScroller = vScroller._observe(root);
