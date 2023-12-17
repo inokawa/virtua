@@ -1,10 +1,13 @@
 import { useReducer } from "react";
-
-const update = () => [];
+import { VirtualStore } from "../core/store";
 
 /**
  * @internal
  */
-export const useRerender = (): (() => void) => {
-  return useReducer(update, undefined, update)[1];
+export const useRerender = (store: VirtualStore): (() => void) => {
+  return useReducer(
+    store._getStateVersion,
+    undefined,
+    store._getStateVersion
+  )[1];
 };
