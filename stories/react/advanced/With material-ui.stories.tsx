@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { VList } from "../../src";
+import { VList } from "../../../src";
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import ListItem from "@mui/material/ListItem";

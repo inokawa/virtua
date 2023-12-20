@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { VList } from "../../src";
+import { VList } from "../../../src";
 import React, { CSSProperties, forwardRef, useCallback, useState } from "react";
 import {
   DndContext,

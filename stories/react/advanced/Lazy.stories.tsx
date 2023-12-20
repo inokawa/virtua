@@ -6,7 +6,7 @@ import React, {
   Suspense,
   useState,
 } from "react";
-import { VList } from "../../src";
+import { VList } from "../../../src";
 import { Facebook } from "react-content-loader";
 import { delay } from "../common";
 

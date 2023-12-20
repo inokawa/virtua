@@ -15,7 +15,7 @@ import {
   CustomViewportComponentProps,
   CacheSnapshot,
   ScrollToIndexAlign,
-} from "../../src";
+} from "../../../src";
 import { Spinner, delay } from "../common";
 
 export default {

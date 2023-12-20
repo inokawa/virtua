@@ -24,6 +24,12 @@
     "limit": "4 kB"
   },
   {
+    "name": "VList vue",
+    "path": "lib/vue/index.mjs",
+    "import": "{ VList }",
+    "limit": "4 kB"
+  },
+  {
     "name": "react-virtuoso Virtuoso",
     "path": "node_modules/react-virtuoso/dist/index.mjs",
     "import": "{ Virtuoso }"

@@ -1,12 +1,13 @@
 /** @type { import('@storybook/react-vite').StorybookConfig } */
 export default {
-  stories: [
-    "../stories/**/*.stories.mdx",
-    "../stories/**/*.stories.@(js|jsx|ts|tsx)",
-  ],
+  stories: process.env.STORYBOOK_VUE
+    ? ["../stories/vue/**/*.stories.@(js|jsx|ts|tsx)"]
+    : ["../stories/react/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: ["@storybook/addon-storysource"],
   framework: {
-    name: "@storybook/react-vite",
+    name: process.env.STORYBOOK_VUE
+      ? "@storybook/vue3-vite"
+      : "@storybook/react-vite",
     options: {},
   },
 };

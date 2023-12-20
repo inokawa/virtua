@@ -4,7 +4,7 @@ import {
   CustomViewportComponentProps,
   VList,
   VListHandle,
-} from "../../src";
+} from "../../../src";
 import React, {
   CSSProperties,
   Ref,

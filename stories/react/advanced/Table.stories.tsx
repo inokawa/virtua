@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { VList, CustomViewportComponentProps } from "../../src";
+import { VList, CustomViewportComponentProps } from "../../../src";
 
 export default {
   component: VList,

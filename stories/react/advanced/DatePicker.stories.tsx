@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { VList, VListHandle } from "../../src";
+import { VList, VListHandle } from "../../../src";
 import React, {
   ReactElement,
   ReactNode,

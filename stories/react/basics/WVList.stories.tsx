@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useLayoutEffect,
 } from "react";
-import { WVList, type WVListHandle, type CacheSnapshot } from "../../src";
+import { WVList, type WVListHandle, type CacheSnapshot } from "../../../src";
 import { Spinner, delay } from "../common";
 
 const createRows = (num: number) => {
