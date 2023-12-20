@@ -22,7 +22,7 @@ Alignment of item.
 
 #### Defined in
 
-[src/core/types.ts:36](https://github.com/inokawa/virtua/blob/3fe9f9f5/src/core/types.ts#L36)
+[src/core/types.ts:36](https://github.com/inokawa/virtua/blob/81a26ff0/src/core/types.ts#L36)
 
 ___
 
@@ -36,4 +36,4 @@ If true, scrolling animates smoothly with [`behavior: smooth` of scrollTo](https
 
 #### Defined in
 
-[src/core/types.ts:42](https://github.com/inokawa/virtua/blob/3fe9f9f5/src/core/types.ts#L42)
+[src/core/types.ts:42](https://github.com/inokawa/virtua/blob/81a26ff0/src/core/types.ts#L42)
