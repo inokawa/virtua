@@ -10,7 +10,6 @@ import {
   initCache,
   computeRange,
 } from "./cache";
-import type { Writeable } from "./types";
 
 const range = <T>(length: number, cb: (i: number) => T): T[] => {
   const array: T[] = [];
@@ -24,7 +23,7 @@ const sum = (cache: readonly number[]): number => {
   return cache.reduce((acc, c) => acc + c, 0);
 };
 
-const initFilledCache = (sizes: number[]): Writeable<Cache> => {
+const initFilledCache = (sizes: number[]): Cache => {
   return {
     _length: sizes.length,
     _sizes: sizes,
@@ -60,7 +59,7 @@ describe(setItemSize.name, () => {
     it("should set at first", () => {
       const filledSizes = range(10, () => 20);
       const emptyOffsets = range(10, (i) => (i === 0 ? 0 : -1));
-      const cache: Writeable<Cache> = {
+      const cache: Cache = {
         _length: filledSizes.length,
         _sizes: filledSizes,
         _computedOffsetIndex: 0,
@@ -77,7 +76,7 @@ describe(setItemSize.name, () => {
     it("should set at middle", () => {
       const filledSizes = range(10, () => 20);
       const emptyOffsets = range(10, (i) => (i === 0 ? 0 : -1));
-      const cache: Writeable<Cache> = {
+      const cache: Cache = {
         _length: filledSizes.length,
         _sizes: filledSizes,
         _computedOffsetIndex: 0,
@@ -94,7 +93,7 @@ describe(setItemSize.name, () => {
     it("should set at last", () => {
       const filledSizes = range(10, () => 20);
       const emptyOffsets = range(10, (i) => (i === 0 ? 0 : -1));
-      const cache: Writeable<Cache> = {
+      const cache: Cache = {
         _length: filledSizes.length,
         _sizes: filledSizes,
         _computedOffsetIndex: 0,
@@ -112,7 +111,7 @@ describe(setItemSize.name, () => {
   describe("with offsets measured", () => {
     it("should update measuredOffsetIndex if size is changed before measuredOffsetIndex", () => {
       const filledSizes = range(10, () => 20);
-      const cache: Writeable<Cache> = {
+      const cache: Cache = {
         _length: filledSizes.length,
         _sizes: filledSizes,
         _computedOffsetIndex: 4,
@@ -128,7 +127,7 @@ describe(setItemSize.name, () => {
 
     it("should not update measuredOffsetIndex if size is changed at measuredOffsetIndex", () => {
       const filledSizes = range(10, () => 20);
-      const cache: Writeable<Cache> = {
+      const cache: Cache = {
         _length: filledSizes.length,
         _sizes: filledSizes,
         _computedOffsetIndex: 4,
@@ -144,7 +143,7 @@ describe(setItemSize.name, () => {
 
     it("should not update measuredOffsetIndex if size is changed after measuredOffsetIndex", () => {
       const filledSizes = range(10, () => 20);
-      const cache: Writeable<Cache> = {
+      const cache: Cache = {
         _length: filledSizes.length,
         _sizes: filledSizes,
         _computedOffsetIndex: 4,
@@ -163,7 +162,7 @@ describe(setItemSize.name, () => {
     it("should return false if already measured", () => {
       const filledSizes = range(10, () => 20);
       const emptyOffsets = range(10, (i) => (i === 0 ? 0 : -1));
-      const cache: Writeable<Cache> = {
+      const cache: Cache = {
         _length: filledSizes.length,
         _sizes: filledSizes,
         _computedOffsetIndex: 0,
@@ -178,7 +177,7 @@ describe(setItemSize.name, () => {
     it("should return true if not measured", () => {
       const filledSizes = range(10, () => -1);
       const emptyOffsets = range(10, (i) => (i === 0 ? 0 : -1));
-      const cache: Writeable<Cache> = {
+      const cache: Cache = {
         _length: filledSizes.length,
         _sizes: filledSizes,
         _computedOffsetIndex: 0,
@@ -196,7 +195,7 @@ describe(computeTotalSize.name, () => {
   it("should succeed if sizes is filled", () => {
     const filledSizes = range(10, () => 20);
     const emptyOffsets = range(10, (i) => (i === 0 ? 0 : -1));
-    const cache: Writeable<Cache> = {
+    const cache: Cache = {
       _length: filledSizes.length,
       _sizes: filledSizes,
       _computedOffsetIndex: 0,
@@ -212,7 +211,7 @@ describe(computeTotalSize.name, () => {
   it("should succeed if sizes is not filled", () => {
     const emptySizes = range(10, () => -1);
     const emptyOffsets = range(10, (i) => (i === 0 ? 0 : -1));
-    const cache: Writeable<Cache> = {
+    const cache: Cache = {
       _length: emptySizes.length,
       _sizes: emptySizes,
       _computedOffsetIndex: 0,
@@ -228,7 +227,7 @@ describe(computeTotalSize.name, () => {
   it("should return 0 if cache length is 0", () => {
     const filledSizes: number[] = [];
     const emptyOffsets: number[] = [];
-    const cache: Writeable<Cache> = {
+    const cache: Cache = {
       _length: filledSizes.length,
       _sizes: filledSizes,
       _computedOffsetIndex: 0,
@@ -243,7 +242,7 @@ describe(computeTotalSize.name, () => {
     it("should start from cached offset if measuredOffsetIndex is at cached", () => {
       const filledSizes = range(10, () => 20);
       const offsets = [0, 11, 22, 33, -1, -1, -1, -1, -1, -1];
-      const cache: Writeable<Cache> = {
+      const cache: Cache = {
         _length: filledSizes.length,
         _sizes: filledSizes,
         _computedOffsetIndex: 2,
@@ -259,7 +258,7 @@ describe(computeTotalSize.name, () => {
     it("should return cached offset + 1 item size if measuredOffsetIndex is at end", () => {
       const filledSizes = range(10, () => 20);
       const offsets = [0, 11, 22, 33, 44, 55, 66, 77, 88, 99];
-      const cache: Writeable<Cache> = {
+      const cache: Cache = {
         _length: filledSizes.length,
         _sizes: filledSizes,
         _computedOffsetIndex: 9,
@@ -276,7 +275,7 @@ describe(computeStartOffset.name, () => {
   it("should get 0 if index is at start", () => {
     const filledSizes = range(10, () => 20);
     const emptyOffsets = range(10, (i) => (i === 0 ? 0 : -1));
-    const cache: Writeable<Cache> = {
+    const cache: Cache = {
       _length: filledSizes.length,
       _sizes: filledSizes,
       _computedOffsetIndex: 0,
@@ -290,7 +289,7 @@ describe(computeStartOffset.name, () => {
   it("should get 1 item if index is at start", () => {
     const filledSizes = range(10, () => 20);
     const emptyOffsets = range(10, (i) => (i === 0 ? 0 : -1));
-    const cache: Writeable<Cache> = {
+    const cache: Cache = {
       _length: filledSizes.length,
       _sizes: filledSizes,
       _computedOffsetIndex: 0,
@@ -304,7 +303,7 @@ describe(computeStartOffset.name, () => {
   it("should get total - 1 item if index is at last", () => {
     const filledSizes = range(10, () => 20);
     const emptyOffsets = range(10, (i) => (i === 0 ? 0 : -1));
-    const cache: Writeable<Cache> = {
+    const cache: Cache = {
       _length: filledSizes.length,
       _sizes: filledSizes,
       _computedOffsetIndex: 0,
@@ -323,7 +322,7 @@ describe(computeStartOffset.name, () => {
   it("should resolve default height", () => {
     const emptySizes = range(10, () => -1);
     const emptyOffsets = range(10, (i) => (i === 0 ? 0 : -1));
-    const cache: Writeable<Cache> = {
+    const cache: Cache = {
       _length: emptySizes.length,
       _sizes: emptySizes,
       _computedOffsetIndex: 0,
@@ -338,7 +337,7 @@ describe(computeStartOffset.name, () => {
     it("should return cached offset if index is before measuredOffsetIndex", () => {
       const filledSizes = range(10, () => 20);
       const offsets = [0, 11, 22, 33, -1, -1, -1, -1, -1, -1];
-      const cache: Writeable<Cache> = {
+      const cache: Cache = {
         _length: filledSizes.length,
         _sizes: filledSizes,
         _computedOffsetIndex: 3,
@@ -352,7 +351,7 @@ describe(computeStartOffset.name, () => {
     it("should return cached offset if index is the same as measuredOffsetIndex", () => {
       const filledSizes = range(10, () => 20);
       const offsets = [0, 11, 22, 33, -1, -1, -1, -1, -1, -1];
-      const cache: Writeable<Cache> = {
+      const cache: Cache = {
         _length: filledSizes.length,
         _sizes: filledSizes,
         _computedOffsetIndex: 3,
@@ -366,7 +365,7 @@ describe(computeStartOffset.name, () => {
     it("should start from cached offset if index is after measuredOffsetIndex", () => {
       const filledSizes = range(10, () => 20);
       const offsets = [0, 11, 22, 33, -1, -1, -1, -1, -1, -1];
-      const cache: Writeable<Cache> = {
+      const cache: Cache = {
         _length: filledSizes.length,
         _sizes: filledSizes,
         _computedOffsetIndex: 3,
@@ -428,7 +427,7 @@ describe(findIndex.name, () => {
     [CACHE_LENGTH - 1], // end
   ])("start from %i", (initialIndex) => {
     it("should resolve default height", () => {
-      const initEmptyCache = (): Writeable<Cache> => {
+      const initEmptyCache = (): Cache => {
         const emptySizes = range(10, () => -1);
         return {
           _length: emptySizes.length,
@@ -609,7 +608,7 @@ describe(initCache.name, () => {
 describe(updateCacheLength.name, () => {
   it("should increase cache length", () => {
     const cache = initCache(10, 40);
-    const res = updateCacheLength(cache as Writeable<Cache>, 15, undefined);
+    const res = updateCacheLength(cache, 15, undefined);
     expect(res).toEqual([40 * 5, false]);
     expect(cache).toMatchInlineSnapshot(`
       {
@@ -656,8 +655,8 @@ describe(updateCacheLength.name, () => {
 
   it("should decrease cache length", () => {
     const cache = initCache(10, 40);
-    (cache as Writeable<Cache>)._sizes[9] = 123;
-    const res = updateCacheLength(cache as Writeable<Cache>, 5, undefined);
+    cache._sizes[9] = 123;
+    const res = updateCacheLength(cache, 5, undefined);
     expect(res).toEqual([40 * 4 + 123, true]);
     expect(cache).toMatchInlineSnapshot(`
       {
@@ -685,14 +684,14 @@ describe(updateCacheLength.name, () => {
   it("should recover cache length from 0", () => {
     const cache = initCache(10, 40);
     const initialCache = JSON.parse(JSON.stringify(cache));
-    updateCacheLength(cache as Writeable<Cache>, 0);
-    updateCacheLength(cache as Writeable<Cache>, 10);
+    updateCacheLength(cache, 0);
+    updateCacheLength(cache, 10);
     expect(cache).toEqual(initialCache);
   });
 
   it("should increase cache length with shifting", () => {
     const cache = initCache(10, 40);
-    const res = updateCacheLength(cache as Writeable<Cache>, 15, true);
+    const res = updateCacheLength(cache, 15, true);
     expect(res).toEqual([40 * 5, false]);
     expect(cache).toMatchInlineSnapshot(`
       {
@@ -739,8 +738,8 @@ describe(updateCacheLength.name, () => {
 
   it("should decrease cache length with shifting", () => {
     const cache = initCache(10, 40);
-    (cache as Writeable<Cache>)._sizes[0] = 123;
-    const res = updateCacheLength(cache as Writeable<Cache>, 5, true);
+    cache._sizes[0] = 123;
+    const res = updateCacheLength(cache, 5, true);
     expect(res).toEqual([40 * 4 + 123, true]);
     expect(cache).toMatchInlineSnapshot(`
       {

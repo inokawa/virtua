@@ -11,7 +11,7 @@ import {
   computeRange,
 } from "./cache";
 import { isIOSWebKit } from "./environment";
-import type { CacheSnapshot, Writeable } from "./types";
+import type { CacheSnapshot } from "./types";
 import { abs, clamp, max, min } from "./utils";
 
 type ViewportResize = [size: number, paddingStart: number, paddingEnd: number];
@@ -169,8 +169,7 @@ export const createVirtualStore = (
   let _prevRange: ItemsRange = [0, initialItemCount];
 
   const subscribers = new Set<[number, Subscriber]>();
-  const getTotalSize = (): number =>
-    computeTotalSize(cache as Writeable<Cache>);
+  const getTotalSize = (): number => computeTotalSize(cache);
   const getViewportSizeWithoutSpacer = () =>
     viewportSize - startSpacerSize - endSpacerSize;
   const getMaxScrollOffset = () =>
@@ -205,7 +204,7 @@ export const createVirtualStore = (
         return _prevRange;
       }
       return (_prevRange = computeRange(
-        cache as Writeable<Cache>,
+        cache,
         scrollOffset + pendingJump + jump,
         _prevRange[0],
         viewportSize
@@ -224,7 +223,7 @@ export const createVirtualStore = (
         .includes(UNCACHED);
     },
     _getItemOffset(index) {
-      return computeStartOffset(cache as Writeable<Cache>, index) - pendingJump;
+      return computeStartOffset(cache, index) - pendingJump;
     },
     _getItemSize(index) {
       return getItemSize(cache, index);
@@ -318,7 +317,7 @@ export const createVirtualStore = (
           // Update item sizes
           let isNewItemMeasured = false;
           updated.forEach(([index, size]) => {
-            if (setItemSize(cache as Writeable<Cache>, index, size)) {
+            if (setItemSize(cache, index, size)) {
               isNewItemMeasured = true;
             }
           });
@@ -330,7 +329,7 @@ export const createVirtualStore = (
             // TODO support reverse scroll also
             !scrollOffset
           ) {
-            estimateDefaultItemSize(cache as Writeable<Cache>);
+            estimateDefaultItemSize(cache);
           }
           mutated = UPDATE_SIZE_STATE;
 
@@ -356,7 +355,7 @@ export const createVirtualStore = (
             const distanceToEnd = getMaxScrollOffset() - scrollOffset;
 
             const [shift, isRemove] = updateCacheLength(
-              cache as Writeable<Cache>,
+              cache,
               payload[0],
               true
             );
@@ -365,7 +364,7 @@ export const createVirtualStore = (
             _prepended = !isRemove;
             mutated = UPDATE_SCROLL_STATE;
           } else {
-            updateCacheLength(cache as Writeable<Cache>, payload[0]);
+            updateCacheLength(cache, payload[0]);
           }
           break;
         }
@@ -432,7 +431,7 @@ export const createVirtualStore = (
         }
         case ACTION_BEFORE_MANUAL_SMOOTH_SCROLL: {
           _smoothScrollRange = computeRange(
-            cache as Writeable<Cache>,
+            cache,
             payload,
             _prevRange[0],
             viewportSize

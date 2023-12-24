@@ -1,5 +1,8 @@
-import type { DeepReadonly, Writeable } from "./types";
 import { clamp, median, min } from "./utils";
+
+type Writeable<T> = {
+  -readonly [key in keyof T]: Writeable<T[key]>;
+};
 
 /** @internal */
 export const UNCACHED = -1;
@@ -7,13 +10,15 @@ export const UNCACHED = -1;
 /**
  * @internal
  */
-export type Cache = DeepReadonly<{
-  _defaultItemSize: number;
-  _length: number;
-  _sizes: number[];
-  _computedOffsetIndex: number;
-  _offsets: number[];
-}>;
+export type Cache = {
+  readonly _length: number;
+  // sizes
+  readonly _sizes: number[];
+  readonly _defaultItemSize: number;
+  // offsets
+  readonly _computedOffsetIndex: number;
+  readonly _offsets: number[];
+};
 
 /**
  * @internal
@@ -64,7 +69,7 @@ export const computeOffset = (
 /**
  * @internal
  */
-export const computeTotalSize = (cache: Writeable<Cache>): number => {
+export const computeTotalSize = (cache: Cache): number => {
   if (!cache._length) return 0;
   return (
     computeOffset(cache, cache._length - 1) +
@@ -75,11 +80,7 @@ export const computeTotalSize = (cache: Writeable<Cache>): number => {
 /**
  * @internal
  */
-export const findIndex = (
-  cache: Writeable<Cache>,
-  offset: number,
-  i: number
-): number => {
+export const findIndex = (cache: Cache, offset: number, i: number): number => {
   let sum = computeOffset(cache, i);
   while (i >= 0 && i < cache._length) {
     if (sum <= offset) {
@@ -101,7 +102,7 @@ export const findIndex = (
  * @internal
  */
 export const computeRange = (
-  cache: Writeable<Cache>,
+  cache: Cache,
   scrollOffset: number,
   prevStartIndex: number,
   viewportSize: number
@@ -155,7 +156,7 @@ export const initCache = (length: number, itemSize: number): Cache => {
     _sizes: [],
     _offsets: [],
   };
-  appendCache(cache as Writeable<Cache>, length);
+  appendCache(cache, length);
   return cache;
 };
 
