@@ -1,3 +1,6 @@
+/**
+ * @module react
+ */
 export type {
   CacheSnapshot,
   ScrollToIndexAlign,

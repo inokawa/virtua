@@ -1,87 +1,91 @@
-# Interface: WVListProps
+# Interface: VListProps
 
-Props of [WVList](../API.md#wvlist).
+[react](../modules/react.md).VListProps
+
+Props of [VList](../modules/react.md#vlist).
 
 ## Hierarchy
 
-- [`ViewportComponentAttributes`](../API.md#viewportcomponentattributes)
+- [`ViewportComponentAttributes`](../modules/react.md#viewportcomponentattributes)
 
-  ↳ **`WVListProps`**
+  ↳ **`VListProps`**
 
 ## Table of contents
 
 ### Properties
 
-- [children](WVListProps.md#children)
-- [count](WVListProps.md#count)
-- [overscan](WVListProps.md#overscan)
-- [initialItemSize](WVListProps.md#initialitemsize)
-- [initialItemCount](WVListProps.md#initialitemcount)
-- [shift](WVListProps.md#shift)
-- [horizontal](WVListProps.md#horizontal)
-- [cache](WVListProps.md#cache)
-- [components](WVListProps.md#components)
-- [onScrollStop](WVListProps.md#onscrollstop)
-- [onRangeChange](WVListProps.md#onrangechange)
-- [className](WVListProps.md#classname)
-- [style](WVListProps.md#style)
-- [id](WVListProps.md#id)
-- [role](WVListProps.md#role)
-- [tabIndex](WVListProps.md#tabindex)
-- [onKeyDown](WVListProps.md#onkeydown)
-- [aria-activedescendant](WVListProps.md#aria-activedescendant)
-- [aria-atomic](WVListProps.md#aria-atomic)
-- [aria-autocomplete](WVListProps.md#aria-autocomplete)
-- [aria-braillelabel](WVListProps.md#aria-braillelabel)
-- [aria-brailleroledescription](WVListProps.md#aria-brailleroledescription)
-- [aria-busy](WVListProps.md#aria-busy)
-- [aria-checked](WVListProps.md#aria-checked)
-- [aria-colcount](WVListProps.md#aria-colcount)
-- [aria-colindex](WVListProps.md#aria-colindex)
-- [aria-colindextext](WVListProps.md#aria-colindextext)
-- [aria-colspan](WVListProps.md#aria-colspan)
-- [aria-controls](WVListProps.md#aria-controls)
-- [aria-current](WVListProps.md#aria-current)
-- [aria-describedby](WVListProps.md#aria-describedby)
-- [aria-description](WVListProps.md#aria-description)
-- [aria-details](WVListProps.md#aria-details)
-- [aria-disabled](WVListProps.md#aria-disabled)
-- [aria-dropeffect](WVListProps.md#aria-dropeffect)
-- [aria-errormessage](WVListProps.md#aria-errormessage)
-- [aria-expanded](WVListProps.md#aria-expanded)
-- [aria-flowto](WVListProps.md#aria-flowto)
-- [aria-grabbed](WVListProps.md#aria-grabbed)
-- [aria-haspopup](WVListProps.md#aria-haspopup)
-- [aria-hidden](WVListProps.md#aria-hidden)
-- [aria-invalid](WVListProps.md#aria-invalid)
-- [aria-keyshortcuts](WVListProps.md#aria-keyshortcuts)
-- [aria-label](WVListProps.md#aria-label)
-- [aria-labelledby](WVListProps.md#aria-labelledby)
-- [aria-level](WVListProps.md#aria-level)
-- [aria-live](WVListProps.md#aria-live)
-- [aria-modal](WVListProps.md#aria-modal)
-- [aria-multiline](WVListProps.md#aria-multiline)
-- [aria-multiselectable](WVListProps.md#aria-multiselectable)
-- [aria-orientation](WVListProps.md#aria-orientation)
-- [aria-owns](WVListProps.md#aria-owns)
-- [aria-placeholder](WVListProps.md#aria-placeholder)
-- [aria-posinset](WVListProps.md#aria-posinset)
-- [aria-pressed](WVListProps.md#aria-pressed)
-- [aria-readonly](WVListProps.md#aria-readonly)
-- [aria-relevant](WVListProps.md#aria-relevant)
-- [aria-required](WVListProps.md#aria-required)
-- [aria-roledescription](WVListProps.md#aria-roledescription)
-- [aria-rowcount](WVListProps.md#aria-rowcount)
-- [aria-rowindex](WVListProps.md#aria-rowindex)
-- [aria-rowindextext](WVListProps.md#aria-rowindextext)
-- [aria-rowspan](WVListProps.md#aria-rowspan)
-- [aria-selected](WVListProps.md#aria-selected)
-- [aria-setsize](WVListProps.md#aria-setsize)
-- [aria-sort](WVListProps.md#aria-sort)
-- [aria-valuemax](WVListProps.md#aria-valuemax)
-- [aria-valuemin](WVListProps.md#aria-valuemin)
-- [aria-valuenow](WVListProps.md#aria-valuenow)
-- [aria-valuetext](WVListProps.md#aria-valuetext)
+- [children](react.VListProps.md#children)
+- [count](react.VListProps.md#count)
+- [overscan](react.VListProps.md#overscan)
+- [initialItemSize](react.VListProps.md#initialitemsize)
+- [initialItemCount](react.VListProps.md#initialitemcount)
+- [shift](react.VListProps.md#shift)
+- [horizontal](react.VListProps.md#horizontal)
+- [reverse](react.VListProps.md#reverse)
+- [cache](react.VListProps.md#cache)
+- [components](react.VListProps.md#components)
+- [onScroll](react.VListProps.md#onscroll)
+- [onScrollStop](react.VListProps.md#onscrollstop)
+- [onRangeChange](react.VListProps.md#onrangechange)
+- [className](react.VListProps.md#classname)
+- [style](react.VListProps.md#style)
+- [id](react.VListProps.md#id)
+- [role](react.VListProps.md#role)
+- [tabIndex](react.VListProps.md#tabindex)
+- [onKeyDown](react.VListProps.md#onkeydown)
+- [aria-activedescendant](react.VListProps.md#aria-activedescendant)
+- [aria-atomic](react.VListProps.md#aria-atomic)
+- [aria-autocomplete](react.VListProps.md#aria-autocomplete)
+- [aria-braillelabel](react.VListProps.md#aria-braillelabel)
+- [aria-brailleroledescription](react.VListProps.md#aria-brailleroledescription)
+- [aria-busy](react.VListProps.md#aria-busy)
+- [aria-checked](react.VListProps.md#aria-checked)
+- [aria-colcount](react.VListProps.md#aria-colcount)
+- [aria-colindex](react.VListProps.md#aria-colindex)
+- [aria-colindextext](react.VListProps.md#aria-colindextext)
+- [aria-colspan](react.VListProps.md#aria-colspan)
+- [aria-controls](react.VListProps.md#aria-controls)
+- [aria-current](react.VListProps.md#aria-current)
+- [aria-describedby](react.VListProps.md#aria-describedby)
+- [aria-description](react.VListProps.md#aria-description)
+- [aria-details](react.VListProps.md#aria-details)
+- [aria-disabled](react.VListProps.md#aria-disabled)
+- [aria-dropeffect](react.VListProps.md#aria-dropeffect)
+- [aria-errormessage](react.VListProps.md#aria-errormessage)
+- [aria-expanded](react.VListProps.md#aria-expanded)
+- [aria-flowto](react.VListProps.md#aria-flowto)
+- [aria-grabbed](react.VListProps.md#aria-grabbed)
+- [aria-haspopup](react.VListProps.md#aria-haspopup)
+- [aria-hidden](react.VListProps.md#aria-hidden)
+- [aria-invalid](react.VListProps.md#aria-invalid)
+- [aria-keyshortcuts](react.VListProps.md#aria-keyshortcuts)
+- [aria-label](react.VListProps.md#aria-label)
+- [aria-labelledby](react.VListProps.md#aria-labelledby)
+- [aria-level](react.VListProps.md#aria-level)
+- [aria-live](react.VListProps.md#aria-live)
+- [aria-modal](react.VListProps.md#aria-modal)
+- [aria-multiline](react.VListProps.md#aria-multiline)
+- [aria-multiselectable](react.VListProps.md#aria-multiselectable)
+- [aria-orientation](react.VListProps.md#aria-orientation)
+- [aria-owns](react.VListProps.md#aria-owns)
+- [aria-placeholder](react.VListProps.md#aria-placeholder)
+- [aria-posinset](react.VListProps.md#aria-posinset)
+- [aria-pressed](react.VListProps.md#aria-pressed)
+- [aria-readonly](react.VListProps.md#aria-readonly)
+- [aria-relevant](react.VListProps.md#aria-relevant)
+- [aria-required](react.VListProps.md#aria-required)
+- [aria-roledescription](react.VListProps.md#aria-roledescription)
+- [aria-rowcount](react.VListProps.md#aria-rowcount)
+- [aria-rowindex](react.VListProps.md#aria-rowindex)
+- [aria-rowindextext](react.VListProps.md#aria-rowindextext)
+- [aria-rowspan](react.VListProps.md#aria-rowspan)
+- [aria-selected](react.VListProps.md#aria-selected)
+- [aria-setsize](react.VListProps.md#aria-setsize)
+- [aria-sort](react.VListProps.md#aria-sort)
+- [aria-valuemax](react.VListProps.md#aria-valuemax)
+- [aria-valuemin](react.VListProps.md#aria-valuemin)
+- [aria-valuenow](react.VListProps.md#aria-valuenow)
+- [aria-valuetext](react.VListProps.md#aria-valuetext)
 
 ## Properties
 
@@ -91,11 +95,11 @@ Props of [WVList](../API.md#wvlist).
 
 Elements rendered by this component.
 
-You can also pass a function and set [WVListProps.count](WVListProps.md#count) to create elements lazily.
+You can also pass a function and set [VListProps.count](react.VListProps.md#count) to create elements lazily.
 
 #### Defined in
 
-[src/react/WVList.tsx:63](https://github.com/inokawa/virtua/blob/81a26ff0/src/react/WVList.tsx#L63)
+[src/react/VList.tsx:92](https://github.com/inokawa/virtua/blob/401edf3d/src/react/VList.tsx#L92)
 
 ___
 
@@ -103,11 +107,11 @@ ___
 
 • `Optional` **count**: `number`
 
-If you set a function to [WVListProps.children](WVListProps.md#children), you have to set total number of items to this prop.
+If you set a function to [VListProps.children](react.VListProps.md#children), you have to set total number of items to this prop.
 
 #### Defined in
 
-[src/react/WVList.tsx:67](https://github.com/inokawa/virtua/blob/81a26ff0/src/react/WVList.tsx#L67)
+[src/react/VList.tsx:96](https://github.com/inokawa/virtua/blob/401edf3d/src/react/VList.tsx#L96)
 
 ___
 
@@ -125,7 +129,7 @@ Number of items to render above/below the visible bounds of the list. Lower valu
 
 #### Defined in
 
-[src/react/WVList.tsx:72](https://github.com/inokawa/virtua/blob/81a26ff0/src/react/WVList.tsx#L72)
+[src/react/VList.tsx:101](https://github.com/inokawa/virtua/blob/401edf3d/src/react/VList.tsx#L101)
 
 ___
 
@@ -140,7 +144,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/react/WVList.tsx:79](https://github.com/inokawa/virtua/blob/81a26ff0/src/react/WVList.tsx#L79)
+[src/react/VList.tsx:108](https://github.com/inokawa/virtua/blob/401edf3d/src/react/VList.tsx#L108)
 
 ___
 
@@ -152,7 +156,7 @@ If set, the specified amount of items will be mounted in the initial rendering r
 
 #### Defined in
 
-[src/react/WVList.tsx:83](https://github.com/inokawa/virtua/blob/81a26ff0/src/react/WVList.tsx#L83)
+[src/react/VList.tsx:112](https://github.com/inokawa/virtua/blob/401edf3d/src/react/VList.tsx#L112)
 
 ___
 
@@ -164,7 +168,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/react/WVList.tsx:87](https://github.com/inokawa/virtua/blob/81a26ff0/src/react/WVList.tsx#L87)
+[src/react/VList.tsx:116](https://github.com/inokawa/virtua/blob/401edf3d/src/react/VList.tsx#L116)
 
 ___
 
@@ -176,19 +180,31 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/WVList.tsx:91](https://github.com/inokawa/virtua/blob/81a26ff0/src/react/WVList.tsx#L91)
+[src/react/VList.tsx:120](https://github.com/inokawa/virtua/blob/401edf3d/src/react/VList.tsx#L120)
+
+___
+
+### reverse
+
+• `Optional` **reverse**: `boolean`
+
+If true, items are aligned to the end of the list when total size of items are smaller than viewport size. It's useful for chat like app.
+
+#### Defined in
+
+[src/react/VList.tsx:124](https://github.com/inokawa/virtua/blob/401edf3d/src/react/VList.tsx#L124)
 
 ___
 
 ### cache
 
-• `Optional` **cache**: [`CacheSnapshot`](CacheSnapshot.md)
+• `Optional` **cache**: [`CacheSnapshot`](react.CacheSnapshot.md)
 
-You can restore cache by passing a [CacheSnapshot](CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [WVListHandle.cache](WVListHandle.md#cache).
+You can restore cache by passing a [CacheSnapshot](react.CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VListHandle.cache](react.VListHandle.md#cache).
 
 #### Defined in
 
-[src/react/WVList.tsx:95](https://github.com/inokawa/virtua/blob/81a26ff0/src/react/WVList.tsx#L95)
+[src/react/VList.tsx:128](https://github.com/inokawa/virtua/blob/401edf3d/src/react/VList.tsx#L128)
 
 ___
 
@@ -202,12 +218,38 @@ Customized components for advanced usage.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `Root?` | `ForwardRefExoticComponent`\<[`CustomViewportComponentProps`](CustomViewportComponentProps.md) & `RefAttributes`\<`any`\>\> | Component for scrollable element. This component will get [CustomViewportComponentProps](CustomViewportComponentProps.md) as props. **`Default Value`** ```ts {@link DefaultViewport} ``` |
-| `Item?` | `CustomItemComponentOrElement` | Component or element type for item element. This component will get [CustomItemComponentProps](CustomItemComponentProps.md) as props. **`Default Value`** ```ts "div" ``` |
+| `Root?` | `ForwardRefExoticComponent`\<[`CustomViewportComponentProps`](react.CustomViewportComponentProps.md) & `RefAttributes`\<`any`\>\> | Component for scrollable element. This component will get [CustomViewportComponentProps](react.CustomViewportComponentProps.md) as props. **`Default Value`** ```ts {@link DefaultViewport} ``` |
+| `Item?` | `CustomItemComponentOrElement` | Component or element type for item element. This component will get [CustomItemComponentProps](react.CustomItemComponentProps.md) as props. **`Default Value`** ```ts "div" ``` |
 
 #### Defined in
 
-[src/react/WVList.tsx:99](https://github.com/inokawa/virtua/blob/81a26ff0/src/react/WVList.tsx#L99)
+[src/react/VList.tsx:132](https://github.com/inokawa/virtua/blob/401edf3d/src/react/VList.tsx#L132)
+
+___
+
+### onScroll
+
+• `Optional` **onScroll**: (`offset`: `number`) => `void`
+
+#### Type declaration
+
+▸ (`offset`): `void`
+
+Callback invoked whenever scroll offset changes.
+
+##### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `offset` | `number` | Current scrollTop or scrollLeft. |
+
+##### Returns
+
+`void`
+
+#### Defined in
+
+[src/react/VList.tsx:148](https://github.com/inokawa/virtua/blob/401edf3d/src/react/VList.tsx#L148)
 
 ___
 
@@ -227,7 +269,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/react/WVList.tsx:114](https://github.com/inokawa/virtua/blob/81a26ff0/src/react/WVList.tsx#L114)
+[src/react/VList.tsx:152](https://github.com/inokawa/virtua/blob/401edf3d/src/react/VList.tsx#L152)
 
 ___
 
@@ -254,7 +296,7 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/react/WVList.tsx:118](https://github.com/inokawa/virtua/blob/81a26ff0/src/react/WVList.tsx#L118)
+[src/react/VList.tsx:156](https://github.com/inokawa/virtua/blob/401edf3d/src/react/VList.tsx#L156)
 
 ___
 

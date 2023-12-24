@@ -1,8 +1,8 @@
 {
-  "entryPoints": ["./src/index.ts"],
+  "entryPoints": ["./src/index.ts", "./src/vue/index.ts"],
   "out": "docs",
   "name": "API",
-  "plugin": ["typedoc-plugin-markdown"],
+  "plugin": ["typedoc-plugin-vue", "typedoc-plugin-markdown"],
   "readme": "none",
   "sort": ["kind"],
   "groupOrder": ["Function", "Interface", "TypeAlias"],
