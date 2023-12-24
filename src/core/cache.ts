@@ -20,6 +20,14 @@ export type Cache = {
   readonly _offsets: number[];
 };
 
+const fill = (array: number[], length: number, prepend?: boolean): number[] => {
+  const key = prepend ? "unshift" : "push";
+  for (let i = 0; i < length; i++) {
+    array[key](UNCACHED);
+  }
+  return array;
+};
+
 /**
  * @internal
  */
@@ -55,6 +63,12 @@ export const computeOffset = (
     return cache._offsets[index]!;
   }
 
+  if (cache._computedOffsetIndex < 0) {
+    // first offset must be 0 to avoid returning NaN, which can cause infinite rerender.
+    // https://github.com/inokawa/virtua/pull/160
+    cache._offsets[0] = 0;
+    cache._computedOffsetIndex = 0;
+  }
   let i = cache._computedOffsetIndex;
   let top = cache._offsets[i]!;
   while (i < index) {
@@ -131,33 +145,17 @@ export const estimateDefaultItemSize = (cache: Writeable<Cache>) => {
       median(measuredSizes);
 };
 
-const appendCache = (
-  cache: Writeable<Cache>,
-  length: number,
-  prepend?: boolean
-) => {
-  const key = prepend ? "unshift" : "push";
-  for (let i = cache._length; i < length; i++) {
-    cache._sizes[key](UNCACHED);
-    // first offset must be 0
-    cache._offsets.push(i === 0 ? 0 : UNCACHED);
-  }
-  cache._length = length;
-};
-
 /**
  * @internal
  */
 export const initCache = (length: number, itemSize: number): Cache => {
-  const cache: Cache = {
+  return {
     _defaultItemSize: itemSize,
-    _length: 0,
-    _computedOffsetIndex: 0,
-    _sizes: [],
-    _offsets: [],
+    _length: length,
+    _computedOffsetIndex: -1,
+    _sizes: fill([], length),
+    _offsets: fill([], length),
   };
-  appendCache(cache, length);
-  return cache;
 };
 
 /**
@@ -175,7 +173,8 @@ export const updateCacheLength = (
   if (isAdd) {
     // Added
     shift = cache._defaultItemSize * diff;
-    appendCache(cache, cache._length + diff, isShift);
+    fill(cache._sizes, diff, isShift);
+    fill(cache._offsets, diff);
   } else {
     // Removed
     shift = (
@@ -190,10 +189,8 @@ export const updateCacheLength = (
 
   cache._computedOffsetIndex = isShift
     ? // Discard cache for now
-      0
-    : // measuredOffsetIndex shouldn't be less than 0 because it makes scrollSize NaN and cause infinite rerender.
-      // https://github.com/inokawa/virtua/pull/160
-      clamp(length - 1, 0, cache._computedOffsetIndex);
+      -1
+    : min(length - 1, cache._computedOffsetIndex);
   cache._length = length;
   return [shift, isAdd];
 };

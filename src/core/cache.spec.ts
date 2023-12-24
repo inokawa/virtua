@@ -10,7 +10,6 @@ import {
   initCache,
   computeRange,
 } from "./cache";
-import { max } from "./utils";
 
 const range = <T>(length: number, cb: (i: number) => T): T[] => {
   const array: T[] = [];
@@ -47,8 +46,8 @@ const initCacheWithEmptyOffsets = (
   return {
     _length: sizes.length,
     _sizes: [...sizes],
-    _computedOffsetIndex: 0,
-    _offsets: range(sizes.length, (i) => (i === 0 ? 0 : -1)),
+    _computedOffsetIndex: -1,
+    _offsets: range(sizes.length, () => -1),
     _defaultItemSize: defaultSize,
   };
 };
@@ -64,7 +63,7 @@ const initCacheWithOffsets = (
   return {
     _length: sizes.length,
     _sizes: [...sizes],
-    _computedOffsetIndex: max(0, offsets.findIndex((o) => o === -1) - 1),
+    _computedOffsetIndex: offsets.findIndex((o) => o === -1) - 1,
     _offsets: [...offsets],
     _defaultItemSize: defaultSize,
   };
@@ -279,6 +278,14 @@ describe(computeOffset.name, () => {
 
     expect(computeOffset(cache, 2)).toBe(60);
     expect(cache._offsets).toEqual([0, 30, 60, -1, -1, -1, -1, -1, -1, -1]);
+  });
+
+  it("should return 0 if cache length is 0", () => {
+    const cache = initCacheWithEmptyOffsets([], 30);
+
+    expect(computeOffset(cache, 0)).toBe(0);
+    expect(computeOffset(cache, 10)).toBe(0);
+    expect(cache._offsets).toEqual([]);
   });
 
   describe("with cached offsets", () => {
@@ -599,11 +606,11 @@ describe(initCache.name, () => {
   it("should create cache", () => {
     expect(initCache(10, 23)).toMatchInlineSnapshot(`
       {
-        "_computedOffsetIndex": 0,
+        "_computedOffsetIndex": -1,
         "_defaultItemSize": 23,
         "_length": 10,
         "_offsets": [
-          0,
+          -1,
           -1,
           -1,
           -1,
@@ -638,11 +645,11 @@ describe(updateCacheLength.name, () => {
     expect(res).toEqual([40 * 5, true]);
     expect(cache).toMatchInlineSnapshot(`
       {
-        "_computedOffsetIndex": 0,
+        "_computedOffsetIndex": -1,
         "_defaultItemSize": 40,
         "_length": 15,
         "_offsets": [
-          0,
+          -1,
           -1,
           -1,
           -1,
@@ -686,11 +693,11 @@ describe(updateCacheLength.name, () => {
     expect(res).toEqual([40 * 4 + 123, false]);
     expect(cache).toMatchInlineSnapshot(`
       {
-        "_computedOffsetIndex": 0,
+        "_computedOffsetIndex": -1,
         "_defaultItemSize": 40,
         "_length": 5,
         "_offsets": [
-          0,
+          -1,
           -1,
           -1,
           -1,
@@ -721,11 +728,11 @@ describe(updateCacheLength.name, () => {
     expect(res).toEqual([40 * 5, true]);
     expect(cache).toMatchInlineSnapshot(`
       {
-        "_computedOffsetIndex": 0,
+        "_computedOffsetIndex": -1,
         "_defaultItemSize": 40,
         "_length": 15,
         "_offsets": [
-          0,
+          -1,
           -1,
           -1,
           -1,
@@ -769,11 +776,11 @@ describe(updateCacheLength.name, () => {
     expect(res).toEqual([40 * 4 + 123, false]);
     expect(cache).toMatchInlineSnapshot(`
       {
-        "_computedOffsetIndex": 0,
+        "_computedOffsetIndex": -1,
         "_defaultItemSize": 40,
         "_length": 5,
         "_offsets": [
-          0,
+          -1,
           -1,
           -1,
           -1,
