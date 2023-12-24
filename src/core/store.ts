@@ -354,14 +354,10 @@ export const createVirtualStore = (
             // Calc distance before updating cache
             const distanceToEnd = getMaxScrollOffset() - scrollOffset;
 
-            const [shift, isRemove] = updateCacheLength(
-              cache,
-              payload[0],
-              true
-            );
-            applyJump(isRemove ? -min(shift, distanceToEnd) : shift);
+            const [shift, isAdd] = updateCacheLength(cache, payload[0], true);
+            applyJump(isAdd ? shift : -min(shift, distanceToEnd));
 
-            _prepended = !isRemove;
+            _prepended = isAdd;
             mutated = UPDATE_SCROLL_STATE;
           } else {
             updateCacheLength(cache, payload[0]);

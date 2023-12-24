@@ -170,9 +170,13 @@ export const updateCacheLength = (
 ): [number, boolean] => {
   const diff = length - cache._length;
 
-  const isRemove = diff < 0;
+  const isAdd = diff > 0;
   let shift: number;
-  if (isRemove) {
+  if (isAdd) {
+    // Added
+    shift = cache._defaultItemSize * diff;
+    appendCache(cache, cache._length + diff, isShift);
+  } else {
     // Removed
     shift = (
       isShift ? cache._sizes.splice(0, -diff) : cache._sizes.splice(diff)
@@ -182,10 +186,6 @@ export const updateCacheLength = (
       0
     );
     cache._offsets.splice(diff);
-  } else {
-    // Added
-    shift = cache._defaultItemSize * diff;
-    appendCache(cache, cache._length + diff, isShift);
   }
 
   cache._computedOffsetIndex = isShift
@@ -195,5 +195,5 @@ export const updateCacheLength = (
       // https://github.com/inokawa/virtua/pull/160
       clamp(length - 1, 0, cache._computedOffsetIndex);
   cache._length = length;
-  return [shift, isRemove];
+  return [shift, isAdd];
 };

@@ -609,7 +609,7 @@ describe(updateCacheLength.name, () => {
   it("should increase cache length", () => {
     const cache = initCache(10, 40);
     const res = updateCacheLength(cache, 15, undefined);
-    expect(res).toEqual([40 * 5, false]);
+    expect(res).toEqual([40 * 5, true]);
     expect(cache).toMatchInlineSnapshot(`
       {
         "_computedOffsetIndex": 0,
@@ -657,7 +657,7 @@ describe(updateCacheLength.name, () => {
     const cache = initCache(10, 40);
     cache._sizes[9] = 123;
     const res = updateCacheLength(cache, 5, undefined);
-    expect(res).toEqual([40 * 4 + 123, true]);
+    expect(res).toEqual([40 * 4 + 123, false]);
     expect(cache).toMatchInlineSnapshot(`
       {
         "_computedOffsetIndex": 0,
@@ -692,7 +692,7 @@ describe(updateCacheLength.name, () => {
   it("should increase cache length with shifting", () => {
     const cache = initCache(10, 40);
     const res = updateCacheLength(cache, 15, true);
-    expect(res).toEqual([40 * 5, false]);
+    expect(res).toEqual([40 * 5, true]);
     expect(cache).toMatchInlineSnapshot(`
       {
         "_computedOffsetIndex": 0,
@@ -740,7 +740,7 @@ describe(updateCacheLength.name, () => {
     const cache = initCache(10, 40);
     cache._sizes[0] = 123;
     const res = updateCacheLength(cache, 5, true);
-    expect(res).toEqual([40 * 4 + 123, true]);
+    expect(res).toEqual([40 * 4 + 123, false]);
     expect(cache).toMatchInlineSnapshot(`
       {
         "_computedOffsetIndex": 0,
