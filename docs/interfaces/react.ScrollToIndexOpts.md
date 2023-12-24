@@ -1,17 +1,19 @@
 # Interface: ScrollToIndexOpts
 
+[react](../modules/react.md).ScrollToIndexOpts
+
 ## Table of contents
 
 ### Properties
 
-- [align](ScrollToIndexOpts.md#align)
-- [smooth](ScrollToIndexOpts.md#smooth)
+- [align](react.ScrollToIndexOpts.md#align)
+- [smooth](react.ScrollToIndexOpts.md#smooth)
 
 ## Properties
 
 ### align
 
-• `Optional` **align**: [`ScrollToIndexAlign`](../API.md#scrolltoindexalign)
+• `Optional` **align**: [`ScrollToIndexAlign`](../modules/react.md#scrolltoindexalign)
 
 Alignment of item.
 
@@ -22,7 +24,7 @@ Alignment of item.
 
 #### Defined in
 
-[src/core/types.ts:36](https://github.com/inokawa/virtua/blob/81a26ff0/src/core/types.ts#L36)
+[src/core/types.ts:22](https://github.com/inokawa/virtua/blob/401edf3d/src/core/types.ts#L22)
 
 ___
 
@@ -36,4 +38,4 @@ If true, scrolling animates smoothly with [`behavior: smooth` of scrollTo](https
 
 #### Defined in
 
-[src/core/types.ts:42](https://github.com/inokawa/virtua/blob/81a26ff0/src/core/types.ts#L42)
+[src/core/types.ts:28](https://github.com/inokawa/virtua/blob/401edf3d/src/core/types.ts#L28)

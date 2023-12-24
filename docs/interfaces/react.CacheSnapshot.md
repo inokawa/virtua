@@ -1,5 +1,7 @@
 # Interface: CacheSnapshot
 
+[react](../modules/react.md).CacheSnapshot
+
 Serializable cache snapshot.
 
 **This is not intended to be modified by users. And it is not guaranteed to work if you pass it to the different version of this package.**
@@ -8,7 +10,7 @@ Serializable cache snapshot.
 
 ### Properties
 
-- [[cacheSymbol]](CacheSnapshot.md#[cachesymbol])
+- [[cacheSymbol]](react.CacheSnapshot.md#[cachesymbol])
 
 ## Properties
 
@@ -18,4 +20,4 @@ Serializable cache snapshot.
 
 #### Defined in
 
-[src/core/types.ts:22](https://github.com/inokawa/virtua/blob/81a26ff0/src/core/types.ts#L22)
+[src/core/types.ts:8](https://github.com/inokawa/virtua/blob/401edf3d/src/core/types.ts#L8)
