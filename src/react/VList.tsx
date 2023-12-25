@@ -19,9 +19,9 @@ import {
   UPDATE_SCROLL_STOP_EVENT,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { exists, max, values } from "../core/utils";
+import { max, values } from "../core/utils";
 import { createScroller } from "../core/scroller";
-import { MayHaveKey, emptyComponents, refKey } from "./utils";
+import { emptyComponents, getKey, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
 import { createResizer } from "../core/resizer";
@@ -315,14 +315,13 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const items: ReactElement[] = [];
     for (let i = overscanedStartIndex; i <= overscanedEndIndex; i++) {
       const e = getElement(i);
-      const key = (e as MayHaveKey).key;
       let offset = store._getItemOffset(i);
       if (reverse) {
         offset += max(0, store._getViewportSize() - store._getTotalSize());
       }
       items.push(
         <ListItem
-          key={exists(key) ? key : "_" + i}
+          key={getKey(e, i)}
           _resizer={resizer}
           _index={i}
           _offset={offset}

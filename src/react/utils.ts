@@ -47,7 +47,12 @@ export const flattenChildren = (children: ReactNode): ItemElement[] => {
   return elements;
 };
 
+type MayHaveKey = { key?: React.Key };
+
 /**
  * @internal
  */
-export type MayHaveKey = { key?: React.Key };
+export const getKey = (e: ItemElement, i: number): React.Key => {
+  const key = (e as MayHaveKey).key;
+  return exists(key) ? key : "_" + i;
+};
