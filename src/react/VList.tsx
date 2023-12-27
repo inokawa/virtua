@@ -322,7 +322,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       items.push(
         <ListItem
           key={getKey(e, i)}
-          _resizer={resizer}
+          _resizer={resizer._observeItem}
           _index={i}
           _offset={offset}
           _hide={store._isUnmeasuredItem(i)}

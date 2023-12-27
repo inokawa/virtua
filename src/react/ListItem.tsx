@@ -7,7 +7,7 @@ import {
   ReactNode,
 } from "react";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { ListResizer } from "../core/resizer";
+import { ItemResizeObserver } from "../core/resizer";
 import { refKey } from "./utils";
 import { isRTLDocument } from "../core/environment";
 
@@ -26,7 +26,7 @@ export type CustomItemComponent = React.ForwardRefExoticComponent<
 
 type ListItemProps = {
   _children: ReactNode;
-  _resizer: ListResizer;
+  _resizer: ItemResizeObserver;
   _index: number;
   _offset: number;
   _hide: boolean;
@@ -50,10 +50,7 @@ export const ListItem = memo(
     const ref = useRef<HTMLDivElement>(null);
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
-    useIsomorphicLayoutEffect(
-      () => resizer._observeItem(ref[refKey]!, index),
-      [index]
-    );
+    useIsomorphicLayoutEffect(() => resizer(ref[refKey]!, index), [index]);
 
     const style = useMemo((): CSSProperties => {
       const style: CSSProperties = {

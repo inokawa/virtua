@@ -209,7 +209,7 @@ export const VList = /*#__PURE__*/ defineComponent({
         items.push(
           h(ListItem, {
             key: exists(key) ? key : "_" + i,
-            _resizer: resizer,
+            _resizer: resizer._observeItem,
             _index: i,
             _offset: store._getItemOffset(i),
             _hide: store._isUnmeasuredItem(i),
