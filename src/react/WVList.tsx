@@ -209,7 +209,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
           onScrollStop[refKey] && onScrollStop[refKey]();
         }
       );
-      const cleanupResizer = resizer._observeRoot(root);
+      const cleanupResizer = resizer._observeRoot();
       const cleanupScroller = scroller._observe(root);
       return () => {
         unsubscribeStore();
@@ -262,7 +262,7 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
       items.push(
         <ListItem
           key={getKey(e, i)}
-          _resizer={resizer}
+          _resizer={resizer._observeItem}
           _index={i}
           _offset={store._getItemOffset(i)}
           _hide={store._isUnmeasuredItem(i)}

@@ -1,5 +1,5 @@
 import { ref, h, defineComponent, watch } from "vue";
-import { ListResizer } from "../core/resizer";
+import { ItemResizeObserver } from "../core/resizer";
 import { isRTLDocument } from "../core/environment";
 
 /**
@@ -22,7 +22,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
     watch(
       () => elementRef.value && props._index,
       (_, __, onCleanup) => {
-        const cleanupObserver = (props._resizer as ListResizer)._observeItem(
+        const cleanupObserver = (props._resizer as ItemResizeObserver)(
           elementRef.value!,
           props._index
         );

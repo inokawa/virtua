@@ -11,9 +11,11 @@ const rootObserveOpts: ResizeObserverOptions = { box: "border-box" };
 /**
  * @internal
  */
-export interface ListResizer {
+export type ItemResizeObserver = (el: HTMLElement, i: number) => () => void;
+
+interface ListResizer {
   _observeRoot(root: HTMLElement): () => void;
-  _observeItem(el: HTMLElement, i: number): () => void;
+  _observeItem: ItemResizeObserver;
 }
 
 /**
@@ -71,7 +73,7 @@ export const createResizer = (
         ro.disconnect();
       };
     },
-    _observeItem(el: HTMLElement, i: number) {
+    _observeItem: (el: HTMLElement, i: number) => {
       const ro = getResizeObserver();
       mountedIndexes.set(el, i);
       ro.observe(el);
@@ -83,13 +85,18 @@ export const createResizer = (
   };
 };
 
+interface WindowListResizer {
+  _observeRoot(): () => void;
+  _observeItem: ItemResizeObserver;
+}
+
 /**
  * @internal
  */
 export const createWindowResizer = (
   store: VirtualStore,
   isHorizontal: boolean
-): ListResizer => {
+): WindowListResizer => {
   const sizeKey = isHorizontal ? "width" : "height";
   const windowSizeKey = isHorizontal ? "innerWidth" : "innerHeight";
   const mountedIndexes = new WeakMap<Element, number>();
@@ -127,7 +134,7 @@ export const createWindowResizer = (
         getResizeObserver().disconnect();
       };
     },
-    _observeItem(el: HTMLElement, i: number) {
+    _observeItem: (el: HTMLElement, i: number) => {
       const ro = getResizeObserver();
       mountedIndexes.set(el, i);
       ro.observe(el);
