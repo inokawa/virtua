@@ -3,6 +3,7 @@ import { VList, VListHandle } from "../../../src";
 import React, {
   CSSProperties,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -64,10 +65,19 @@ export const Default: StoryObj = {
 
     const ref = useRef<VListHandle>(null);
 
+    const isPrepend = useRef(false);
+    const shouldStickToBottom = useRef(true);
+
     const [value, setValue] = useState("Hello world!");
+
+    useLayoutEffect(() => {
+      isPrepend.current = false;
+    });
 
     useEffect(() => {
       if (!ref.current) return;
+      if (!shouldStickToBottom.current) return;
+
       ref.current.scrollToIndex(items.length - 1, { align: "end" });
     }, [items.length]);
 
@@ -93,6 +103,7 @@ export const Default: StoryObj = {
     const disabled = !value.length;
     const submit = () => {
       if (disabled) return;
+      shouldStickToBottom.current = true;
       setItems((p) => [...p, createItem({ value, me: true })]);
       setValue("");
     };
@@ -106,7 +117,27 @@ export const Default: StoryObj = {
           flexDirection: "column",
         }}
       >
-        <VList ref={ref} style={{ flex: 1 }} reverse>
+        <VList
+          ref={ref}
+          style={{ flex: 1 }}
+          reverse
+          shift={isPrepend.current}
+          onScroll={(offset) => {
+            if (!ref.current) return;
+            shouldStickToBottom.current =
+              offset - ref.current.scrollSize + ref.current.viewportSize >=
+              // FIXME: The sum may not be 0 because of sub-pixel value when browser's window.devicePixelRatio has decimal value
+              -1.5;
+
+            if (offset < 100) {
+              isPrepend.current = true;
+              setItems((p) => [
+                ...Array.from({ length: 100 }, () => createItem()),
+                ...p,
+              ]);
+            }
+          }}
+        >
           {items.map((d) => (
             <Item key={d.id} {...d} />
           ))}
