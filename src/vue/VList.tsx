@@ -93,7 +93,7 @@ export const VList = /*#__PURE__*/ defineComponent({
     const isHorizontal = props.horizontal;
     const rootRef = ref<HTMLDivElement>();
     const store = createVirtualStore(
-      props.data!.length,
+      props.data.length,
       props.initialItemSize ?? 40,
       undefined,
       undefined,
@@ -137,7 +137,7 @@ export const VList = /*#__PURE__*/ defineComponent({
     });
 
     watch(
-      () => props.data!.length,
+      () => props.data.length,
       (count) => {
         store._update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
       }
@@ -184,7 +184,7 @@ export const VList = /*#__PURE__*/ defineComponent({
     return () => {
       rerender.value;
 
-      const count = props.data!.length;
+      const count = props.data.length;
 
       const [startIndex, endIndex] = store._getRange();
       const scrollDirection = store._getScrollDirection();
@@ -204,7 +204,7 @@ export const VList = /*#__PURE__*/ defineComponent({
 
       const items: VNode[] = [];
       for (let i = overscanedStartIndex; i <= overscanedEndIndex; i++) {
-        const e = slots.default(props.data![i]!)[0]!;
+        const e = slots.default(props.data![i]!)[0]! as VNode
         const key = e.key;
         items.push(
           <ListItem

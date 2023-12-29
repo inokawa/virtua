@@ -1,5 +1,5 @@
 /** @jsxImportSource vue */
-import { ref, defineComponent, watch } from "vue";
+import { ref, defineComponent, watch, StyleValue, PropType, VNode } from "vue";
 import { ItemResizeObserver } from "../core/resizer";
 import { isRTLDocument } from "../core/environment";
 
@@ -8,8 +8,8 @@ import { isRTLDocument } from "../core/environment";
  */
 export const ListItem = /*#__PURE__*/ defineComponent({
   props: {
-    _children: { type: Object, required: true },
-    _resizer: { type: Object, required: true },
+    _children: { type: Object as PropType<VNode>, required: true },
+    _resizer: { type: Object as PropType<ItemResizeObserver>, required: true },
     _index: { type: Number, required: true },
     _offset: { type: Number, required: true },
     _hide: { type: Boolean },
@@ -23,10 +23,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
     watch(
       () => elementRef.value && props._index,
       (_, __, onCleanup) => {
-        const cleanupObserver = (props._resizer as ItemResizeObserver)(
-          elementRef.value!,
-          props._index
-        );
+        const cleanupObserver = props._resizer(elementRef.value!, props._index);
         onCleanup(cleanupObserver);
       },
       {
@@ -43,7 +40,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
         _isHorizontal: isHorizontal,
       } = props as Omit<typeof props, "_element"> & { _element: "div" };
 
-      const style: Record<string, number | string> = {
+      const style: StyleValue = {
         margin: 0,
         padding: 0,
         position: "absolute",
@@ -54,7 +51,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
         visibility: hide ? "hidden" : "visible",
       };
       if (isHorizontal) {
-        style["display"] = "flex";
+        style.display = "flex";
       }
 
       return (
