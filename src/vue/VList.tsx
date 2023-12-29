@@ -1,6 +1,6 @@
+/** @jsxImportSource vue */
 import {
   ref,
-  h,
   onMounted,
   defineComponent,
   onUnmounted,
@@ -207,45 +207,43 @@ export const VList = /*#__PURE__*/ defineComponent({
         const e = slots.default(props.data![i]!)[0]!;
         const key = e.key;
         items.push(
-          h(ListItem, {
-            key: exists(key) ? key : "_" + i,
-            _resizer: resizer._observeItem,
-            _index: i,
-            _offset: store._getItemOffset(i),
-            _hide: store._isUnmeasuredItem(i),
-            _element: "div",
-            _children: e,
-            _isHorizontal: isHorizontal,
-          })
+          <ListItem
+            key={exists(key) ? key : "_" + i}
+            _resizer={resizer._observeItem}
+            _index={i}
+            _offset={store._getItemOffset(i)}
+            _hide={store._isUnmeasuredItem(i)}
+            _element="div"
+            _children={e}
+            _isHorizontal={isHorizontal}
+          />
         );
       }
 
-      return h(
-        "div",
-        {
-          ref: rootRef,
-          style: {
+      return (
+        <div
+          ref={rootRef}
+          style={{
             display: isHorizontal ? "inline-block" : "block",
             [isHorizontal ? "overflowX" : "overflowY"]: "auto",
             overflowAnchor: "none",
             contain: "strict",
             width: "100%",
             height: "100%",
-          },
-        },
-        h(
-          "div",
-          {
-            style: {
+          }}
+        >
+          <div
+            style={{
               position: "relative",
               visibility: "hidden",
               width: isHorizontal ? scrollSize + "px" : "100%",
               height: isHorizontal ? "100%" : scrollSize + "px",
               pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : "auto",
-            },
-          },
-          items
-        )
+            }}
+          >
+            {items}
+          </div>
+        </div>
       );
     };
   },
