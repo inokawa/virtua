@@ -1,4 +1,5 @@
-import { ref, h, defineComponent, watch } from "vue";
+/** @jsxImportSource vue */
+import { ref, defineComponent, watch } from "vue";
 import { ItemResizeObserver } from "../core/resizer";
 import { isRTLDocument } from "../core/environment";
 
@@ -38,9 +39,9 @@ export const ListItem = /*#__PURE__*/ defineComponent({
         _children: children,
         _offset: offset,
         _hide: hide,
-        _element: element,
+        _element: Element,
         _isHorizontal: isHorizontal,
-      } = props;
+      } = props as Omit<typeof props, "_element"> & { _element: "div" };
 
       const style: Record<string, number | string> = {
         margin: 0,
@@ -56,13 +57,10 @@ export const ListItem = /*#__PURE__*/ defineComponent({
         style["display"] = "flex";
       }
 
-      return h(
-        element,
-        {
-          ref: elementRef,
-          style: style,
-        },
-        children
+      return (
+        <Element ref={elementRef} style={style}>
+          {children}
+        </Element>
       );
     };
   },
