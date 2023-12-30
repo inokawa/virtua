@@ -4,6 +4,8 @@ import {
   getFirstItem,
   windowScrollToBottom,
   windowScrollToRight,
+  getFirstItemRtl,
+  windowScrollToLeft,
 } from "./utils";
 
 const wvListSelector = '*[style*="height: auto"],*[style*="width: auto"]';
@@ -187,3 +189,56 @@ test.describe("smoke", () => {
 //     await expect(prev).toBeGreaterThan(initial + min);
 //   });
 // });
+
+test.describe("RTL", () => {
+  test("vertically scrollable", async ({ page }) => {
+    await page.goto(storyUrl("basics-wvlist--default"), {
+      waitUntil: "domcontentloaded",
+    });
+    await page.evaluate(() => {
+      document.documentElement.dir = "rtl";
+    });
+
+    const component = await page.waitForSelector(wvListSelector);
+    await component.waitForElementState("stable");
+
+    // check if start is displayed
+    const first = await getFirstItem(component);
+    await expect(first.text).toEqual("0");
+    await expect(await component.innerText()).not.toContain("50");
+
+    // scroll to the end
+    await windowScrollToBottom(component);
+
+    // check if the end is displayed
+    const text = await component.innerText();
+    await expect(text).toContain("999");
+    await expect(text).not.toContain("949");
+  });
+
+  test("horizontally scrollable", async ({ page }) => {
+    await page.goto(storyUrl("basics-wvlist--horizontal"), {
+      waitUntil: "domcontentloaded",
+    });
+    await page.evaluate(() => {
+      document.documentElement.dir = "rtl";
+    });
+
+    await page.waitForSelector(wvListSelector);
+    const component = (await page.$$(wvListSelector))[0]!;
+    await component.waitForElementState("stable");
+
+    // check if start is displayed
+    const first = await getFirstItemRtl(component);
+    await expect(first.text).toEqual("Column 0");
+    await expect(await component.innerText()).not.toContain("Column 50");
+
+    // scroll to the end
+    await windowScrollToLeft(component);
+
+    // check if the end is displayed
+    const text = await component.innerText();
+    await expect(text).toContain("999");
+    await expect(text).not.toContain("949");
+  });
+});

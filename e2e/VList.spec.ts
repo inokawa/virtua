@@ -15,6 +15,8 @@ import {
   getScrollRight,
   expectNearlyZero,
   scrollWithTouch,
+  getFirstItemRtl,
+  scrollToLeft,
 } from "./utils";
 
 test.describe("smoke", () => {
@@ -54,25 +56,6 @@ test.describe("smoke", () => {
     // check if the end is displayed
     await expect(await component.innerText()).toContain("999");
   });
-
-  // test("horizontally scrollable in direction:rtl", async ({ page }) => {
-  //   await page.goto(storyUrl("basics-vlist--horizontal"));
-
-  //   await page.waitForSelector(scrollableSelector);
-  //   const component = (await page.$$(scrollableSelector))[1]!;
-  //   await component.waitForElementState("stable");
-
-  //   // check if start is displayed
-  //   const first = await getFirstItemRtl(component);
-  //   await expect(first.text).toEqual("Column 0");
-  //   await expect(first.right).toEqual(0);
-
-  //   // scroll to the end
-  //   await scrollToLeft(component);
-
-  //   // check if the end is displayed
-  //   await expect(await component.innerText()).toContain("999");
-  // });
 
   test("reverse", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--reverse"));
@@ -1018,6 +1001,55 @@ test.describe("check if item shift compensation works", () => {
     await page.waitForTimeout(100);
     // check if visible item is keeped
     expect(topItem).toEqual(await getFirstItem(component));
+  });
+});
+
+test.describe("RTL", () => {
+  test("vertically scrollable", async ({ page }) => {
+    await page.goto(storyUrl("basics-vlist--default"), {
+      waitUntil: "domcontentloaded",
+    });
+    await page.evaluate(() => {
+      document.documentElement.dir = "rtl";
+    });
+
+    const component = await page.waitForSelector(scrollableSelector);
+    await component.waitForElementState("stable");
+
+    // check if start is displayed
+    const first = await getFirstItem(component);
+    await expect(first.text).toEqual("0");
+    await expect(first.top).toEqual(0);
+
+    // scroll to the end
+    await scrollToBottom(component);
+
+    // check if the end is displayed
+    await expect(await component.innerText()).toContain("999");
+  });
+
+  test("horizontally scrollable", async ({ page }) => {
+    await page.goto(storyUrl("basics-vlist--horizontal"), {
+      waitUntil: "domcontentloaded",
+    });
+    await page.evaluate(() => {
+      document.documentElement.dir = "rtl";
+    });
+
+    await page.waitForSelector(scrollableSelector);
+    const component = (await page.$$(scrollableSelector))[0]!;
+    await component.waitForElementState("stable");
+
+    // check if start is displayed
+    const first = await getFirstItemRtl(component);
+    await expect(first.text).toEqual("Column 0");
+    await expect(first.right).toEqual(0);
+
+    // scroll to the end
+    await scrollToLeft(component);
+
+    // check if the end is displayed
+    await expect(await component.innerText()).toContain("999");
   });
 });
 

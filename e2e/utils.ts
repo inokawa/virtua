@@ -50,19 +50,19 @@ export const getLastItem = (
   }, offset);
 };
 
-// export const getFirstItemRtl = (
-//   scrollable: ElementHandle<HTMLElement | SVGElement>
-// ) => {
-//   return scrollable.evaluate((s) => {
-//     const rect = s.getBoundingClientRect();
-//     const el = document.elementFromPoint(rect.right - 2, rect.top + 2)!;
-//     return {
-//       text: el.textContent!,
-//       top: el.getBoundingClientRect().top - rect.top,
-//       right: el.getBoundingClientRect().right - rect.right,
-//     };
-//   });
-// };
+export const getFirstItemRtl = (
+  scrollable: ElementHandle<HTMLElement | SVGElement>
+) => {
+  return scrollable.evaluate((s) => {
+    const rect = s.getBoundingClientRect();
+    const el = document.elementFromPoint(rect.right - 2, rect.top + 2)!;
+    return {
+      text: el.textContent!,
+      top: el.getBoundingClientRect().top - rect.top,
+      right: el.getBoundingClientRect().right - rect.right,
+    };
+  });
+};
 
 export const getScrollTop = (
   scrollable: ElementHandle<HTMLElement | SVGElement>
@@ -155,19 +155,34 @@ export const scrollToRight = async (
   });
 };
 
-// export const scrollToLeft = async (
-//   scrollable: ElementHandle<HTMLElement | SVGElement>
-// ) => {
-//   await scrollable.evaluate((e) => {
-//     e.scrollLeft = -e.scrollWidth;
-//   });
-//   await scrollable.waitForElementState("stable");
-//   // FIXME: scroll twice to reach definitely
-//   await scrollable.evaluate((e) => {
-//     e.scrollLeft = -e.scrollWidth;
-//   });
-//   await scrollable.waitForElementState("stable");
-// };
+export const scrollToLeft = async (
+  scrollable: ElementHandle<HTMLElement | SVGElement>
+) => {
+  return scrollable.evaluate((e) => {
+    return new Promise<void>((resolve) => {
+      let timer: ReturnType<typeof setTimeout> | null = null;
+
+      const onScroll = () => {
+        e.scrollLeft = -e.scrollWidth;
+
+        if (timer !== null) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+          if (e.scrollLeft - (e as HTMLElement).offsetWidth <= -e.scrollWidth) {
+            e.removeEventListener("scroll", onScroll);
+            resolve();
+          } else {
+            onScroll();
+          }
+        }, 50);
+      };
+      e.addEventListener("scroll", onScroll);
+
+      onScroll();
+    });
+  });
+};
 
 export const windowScrollToBottom = async (
   scrollable: ElementHandle<HTMLElement | SVGElement>
@@ -193,6 +208,20 @@ export const windowScrollToRight = async (
   // FIXME: scroll twice to reach definitely
   await scrollable.evaluate((e) => {
     window.scrollTo(document.body.scrollWidth, 0);
+  });
+  await scrollable.waitForElementState("stable");
+};
+
+export const windowScrollToLeft = async (
+  scrollable: ElementHandle<HTMLElement | SVGElement>
+) => {
+  await scrollable.evaluate((e) => {
+    window.scrollTo(-document.body.scrollWidth, 0);
+  });
+  await scrollable.waitForElementState("stable");
+  // FIXME: scroll twice to reach definitely
+  await scrollable.evaluate((e) => {
+    window.scrollTo(-document.body.scrollWidth, 0);
   });
   await scrollable.waitForElementState("stable");
 };
