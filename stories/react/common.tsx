@@ -6,13 +6,19 @@ export const range = <T,>(n: number, cb: (i: number) => T) =>
 export const delay = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-export const Spinner = ({ style }: { style?: CSSProperties }) => {
+export const Spinner = ({
+  style,
+  height = 100,
+}: {
+  style?: CSSProperties;
+  height?: number;
+}) => {
   return (
     <>
       <div
         style={{
           ...style,
-          height: 100,
+          height: height,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",

@@ -1,11 +1,10 @@
 import {
-  useRef,
-  useMemo,
   ReactElement,
   ReactNode,
   useEffect,
   forwardRef,
   useImperativeHandle,
+  useRef,
 } from "react";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
@@ -15,36 +14,26 @@ import {
   overscanStartIndex,
   createVirtualStore,
   SCROLL_IDLE,
-  UPDATE_SCROLL_STOP_EVENT,
+  UPDATE_SCROLL_END_EVENT,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { values } from "../core/utils";
 import { createWindowScroller } from "../core/scroller";
-import { emptyComponents, getKey, refKey } from "./utils";
+import { getKey, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
 import { createWindowResizer } from "../core/resizer";
 import { CacheSnapshot } from "../core/types";
-import {
-  CustomViewportComponent,
-  CustomViewportComponentProps,
-  Viewport as DefaultViewport,
-  ViewportComponentAttributes,
-} from "./Viewport";
+import { CustomContainerComponent } from "./types";
 import { CustomItemComponent, ListItem } from "./ListItem";
 import { Cache } from "../core/cache";
 import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
 import { useChildren } from "./useChildren";
 
-type CustomItemComponentOrElement =
-  | keyof JSX.IntrinsicElements
-  | CustomItemComponent;
-
 /**
- * Methods of {@link WVList}.
+ * Methods of {@link WindowVirtualizer}.
  */
-export interface WVListHandle {
+export interface WindowVirtualizerHandle {
   /**
    * Get current {@link CacheSnapshot}.
    */
@@ -52,17 +41,17 @@ export interface WVListHandle {
 }
 
 /**
- * Props of {@link WVList}.
+ * Props of {@link WindowVirtualizer}.
  */
-export interface WVListProps extends ViewportComponentAttributes {
+export interface WindowVirtualizerProps {
   /**
    * Elements rendered by this component.
    *
-   * You can also pass a function and set {@link WVListProps.count} to create elements lazily.
+   * You can also pass a function and set {@link WindowVirtualizerProps.count} to create elements lazily.
    */
   children: ReactNode | ((index: number) => ReactElement);
   /**
-   * If you set a function to {@link WVListProps.children}, you have to set total number of items to this prop.
+   * If you set a function to {@link WindowVirtualizerProps.children}, you have to set total number of items to this prop.
    */
   count?: number;
   /**
@@ -76,7 +65,7 @@ export interface WVListProps extends ViewportComponentAttributes {
    * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
    * - If set, you can opt out estimation and use the value as initial item size.
    */
-  initialItemSize?: number;
+  itemSize?: number;
   /**
    * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
@@ -86,7 +75,7 @@ export interface WVListProps extends ViewportComponentAttributes {
    */
   horizontal?: boolean;
   /**
-   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WVListHandle.cache}.
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.cache}.
    */
   cache?: CacheSnapshot;
   /**
@@ -94,24 +83,19 @@ export interface WVListProps extends ViewportComponentAttributes {
    */
   ssrCount?: number;
   /**
-   * Customized components for advanced usage.
+   * Component or element type for container element.
+   * @defaultValue "div"
    */
-  components?: {
-    /**
-     * Component for scrollable element. This component will get {@link CustomViewportComponentProps} as props.
-     * @defaultValue {@link DefaultViewport}
-     */
-    Root?: CustomViewportComponent;
-    /**
-     * Component or element type for item element. This component will get {@link CustomItemComponentProps} as props.
-     * @defaultValue "div"
-     */
-    Item?: CustomItemComponentOrElement;
-  };
+  as?: keyof JSX.IntrinsicElements | CustomContainerComponent;
+  /**
+   * Component or element type for item element. This component will get {@link CustomItemComponentProps} as props.
+   * @defaultValue "div"
+   */
+  item?: keyof JSX.IntrinsicElements | CustomItemComponent;
   /**
    * Callback invoked when scrolling stops.
    */
-  onScrollStop?: () => void;
+  onScrollEnd?: () => void;
   /**
    * Callback invoked when visible items range changes.
    */
@@ -128,35 +112,36 @@ export interface WVListProps extends ViewportComponentAttributes {
 }
 
 /**
- * Virtualized list component controlled by the window scrolling. See {@link WVListProps} and {@link WVListHandle}.
+ * {@link Virtualizer} controlled by the window scrolling. See {@link WindowVirtualizerProps} and {@link WindowVirtualizer}.
  */
-export const WVList = forwardRef<WVListHandle, WVListProps>(
+export const WindowVirtualizer = forwardRef<
+  WindowVirtualizerHandle,
+  WindowVirtualizerProps
+>(
   (
     {
       children,
       count: renderCountProp,
       overscan = 4,
-      initialItemSize,
+      itemSize,
       shift,
       horizontal: horizontalProp,
       cache,
       ssrCount,
-      components: {
-        Root: Viewport = DefaultViewport,
-        Item: ItemElement = "div",
-      } = emptyComponents as {
-        Root?: undefined;
-        Item?: undefined;
-      },
-      onScrollStop: onScrollStopProp,
+      as: Element = "div",
+      item: ItemElement = "div",
+      onScrollEnd: onScrollEndProp,
       onRangeChange: onRangeChangeProp,
-      ...viewportAttrs
     },
     ref
   ): ReactElement => {
+    Element = Element as "div";
+
     const [getElement, count] = useChildren(children, renderCountProp);
 
-    const onScrollStop = useLatestRef(onScrollStopProp);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const onScrollEnd = useLatestRef(onScrollEndProp);
 
     const isSSR = useRef(!!ssrCount);
 
@@ -164,10 +149,10 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
       const _isHorizontal = !!horizontalProp;
       const _store = createVirtualStore(
         count,
-        initialItemSize,
+        itemSize,
         ssrCount,
         cache as unknown as Cache | undefined,
-        !initialItemSize
+        !itemSize
       );
 
       return [
@@ -187,15 +172,13 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
     const [startIndex, endIndex] = store._getRange();
     const scrollDirection = store._getScrollDirection();
     const jumpCount = store._getJumpCount();
-    // https://github.com/inokawa/virtua/issues/252
-    const scrollSize = store._getTotalSize();
+    const totalSize = store._getTotalSize();
 
-    const rootRef = useRef<HTMLDivElement>(null);
+    const items: ReactElement[] = [];
 
     useIsomorphicLayoutEffect(() => {
       isSSR[refKey] = false;
 
-      const root = rootRef[refKey]!;
       // store must be subscribed first because others may dispatch update on init depending on implementation
       const unsubscribeStore = store._subscribe(
         UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
@@ -207,21 +190,20 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
           }
         }
       );
-      const unsubscribeOnScrollStop = store._subscribe(
-        UPDATE_SCROLL_STOP_EVENT,
+      const unsubscribeOnScrollEnd = store._subscribe(
+        UPDATE_SCROLL_END_EVENT,
         () => {
-          onScrollStop[refKey] && onScrollStop[refKey]();
+          onScrollEnd[refKey] && onScrollEnd[refKey]();
         }
       );
 
-      const cleanupResizer = resizer._observeRoot();
-      const cleanupScroller = scroller._observe(root);
-
+      resizer._observeRoot();
+      scroller._observe(containerRef[refKey]!);
       return () => {
         unsubscribeStore();
-        unsubscribeOnScrollStop();
-        cleanupResizer();
-        cleanupScroller();
+        unsubscribeOnScrollEnd();
+        resizer._dispose();
+        scroller._dispose();
       };
     }, []);
 
@@ -250,20 +232,12 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
       []
     );
 
-    const overscanedStartIndex = overscanStartIndex(
-      startIndex,
-      overscan,
-      scrollDirection
-    );
-    const overscanedEndIndex = overscanEndIndex(
-      endIndex,
-      overscan,
-      scrollDirection,
-      count
-    );
-
-    const items: ReactElement[] = [];
-    for (let i = overscanedStartIndex; i <= overscanedEndIndex; i++) {
+    for (
+      let i = overscanStartIndex(startIndex, overscan, scrollDirection),
+        j = overscanEndIndex(endIndex, overscan, scrollDirection, count);
+      i <= j;
+      i++
+    ) {
       const e = getElement(i);
       items.push(
         <ListItem
@@ -281,26 +255,19 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
     }
 
     return (
-      <Viewport
-        ref={rootRef}
-        width={isHorizontal ? scrollSize : undefined}
-        height={isHorizontal ? undefined : scrollSize}
-        scrolling={scrollDirection !== SCROLL_IDLE}
-        attrs={useMemo(
-          () => ({
-            ...viewportAttrs,
-            style: {
-              display: isHorizontal ? "inline-block" : "block",
-              width: isHorizontal ? "auto" : "100%",
-              height: isHorizontal ? "100%" : "auto",
-              ...viewportAttrs.style,
-            },
-          }),
-          values(viewportAttrs)
-        )}
+      <Element
+        ref={containerRef}
+        style={{
+          contain: "content",
+          position: "relative",
+          visibility: "hidden",
+          width: isHorizontal ? totalSize : "100%",
+          height: isHorizontal ? "100%" : totalSize,
+          pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : "auto",
+        }}
       >
         {items}
-      </Viewport>
+      </Element>
     );
   }
 );

@@ -88,15 +88,18 @@ export const App = () => {
 };
 ```
 
-#### Window scroll
+#### Customization
+
+`VList` is a recommended solution which works like a drop-in replacement of simple list built with scrollable `div` (or removed [virtual-scroller element](https://github.com/WICG/virtual-scroller)). For more complicated styling or markup, use `Virtualizer`.
 
 ```tsx
-import { WVList } from "virtua";
+import { Virtualizer } from "virtua";
 
 export const App = () => {
   return (
-    <div style={{ padding: 200 }}>
-      <WVList>
+    <div style={{ overflowY: "auto", height: 800 }}>
+      <div style={{ height: 40 }}>header</div>
+      <Virtualizer startMargin={40}>
         {Array.from({ length: 1000 }).map((_, i) => (
           <div
             key={i}
@@ -109,7 +112,34 @@ export const App = () => {
             {i}
           </div>
         ))}
-      </WVList>
+      </Virtualizer>
+    </div>
+  );
+};
+```
+
+#### Window scroll
+
+```tsx
+import { WindowVirtualizer } from "virtua";
+
+export const App = () => {
+  return (
+    <div style={{ padding: 200 }}>
+      <WindowVirtualizer>
+        {Array.from({ length: 1000 }).map((_, i) => (
+          <div
+            key={i}
+            style={{
+              height: Math.floor(Math.random() * 10) * 10 + 10,
+              borderBottom: "solid 1px gray",
+              background: "white",
+            }}
+          >
+            {i}
+          </div>
+        ))}
+      </WindowVirtualizer>
     </div>
   );
 };
@@ -141,7 +171,7 @@ export const App = () => {
 
 #### React Server Components (RSC) support
 
-This library is marked as a Client Component. You can render RSC as children of VList or WVList.
+This library is marked as a Client Component. You can render RSC as children of `VList`, `Virtualizer` or `WindowVirtualizer`.
 
 ```tsx
 // page.tsx in App Router of Next.js
@@ -257,7 +287,7 @@ It may be dispatched by ResizeObserver in this lib [as described in spec](https:
 | Horizontal scroll in RTL direction                 | ✅                                                                                                               | ❌                                                                                                                               | ✅ ([may be dropped in v2](https://github.com/bvaughn/react-window/issues/302))                                              | ❌                                                                                                                                                                     | ❌                                                                                                                                                 | ❌                                                                                                                                                 | ❌                                                                                                                                       |
 | Grid (Virtualization for two dimension)            | 🟠 (experimental_VGrid)                                                                                          | ❌                                                                                                                               | ✅ (FixedSizeGrid / VariableSizeGrid)                                                                                        | ✅ ([Grid](https://github.com/bvaughn/react-virtualized/blob/master/docs/Grid.md))                                                                                     | 🟠 (needs customization)                                                                                                                           | ❌                                                                                                                                                 | 🟠 (needs customization)                                                                                                                 |
 | Table                                              | 🟠 (needs customization)                                                                                         | ✅ (TableVirtuoso)                                                                                                               | 🟠 (needs customization)                                                                                                     | ✅ ([Table](https://github.com/bvaughn/react-virtualized/blob/master/docs/Table.md))                                                                                   | 🟠 (needs customization)                                                                                                                           | ❌                                                                                                                                                 | 🟠 (needs customization)                                                                                                                 |
-| Window scroller                                    | ✅ (WVList)                                                                                                      | ✅                                                                                                                               | ❌                                                                                                                           | ✅ ([WindowScroller](https://github.com/bvaughn/react-virtualized/blob/master/docs/WindowScroller.md))                                                                 | ✅                                                                                                                                                 | ❌                                                                                                                                                 | ❌                                                                                                                                       |
+| Window scroller                                    | ✅ (WindowVirtualizer)                                                                                           | ✅                                                                                                                               | ❌                                                                                                                           | ✅ ([WindowScroller](https://github.com/bvaughn/react-virtualized/blob/master/docs/WindowScroller.md))                                                                 | ✅                                                                                                                                                 | ❌                                                                                                                                                 | ❌                                                                                                                                       |
 | Dynamic list size                                  | ✅                                                                                                               | ✅                                                                                                                               | 🟠 (needs [AutoSizer](https://github.com/bvaughn/react-virtualized/blob/master/docs/AutoSizer.md))                           | 🟠 (needs [AutoSizer](https://github.com/bvaughn/react-virtualized/blob/master/docs/AutoSizer.md))                                                                     | ✅                                                                                                                                                 | ❌                                                                                                                                                 | ✅                                                                                                                                       |
 | Dynamic item size                                  | ✅                                                                                                               | ✅                                                                                                                               | 🟠 (needs additional codes and has wrong destination when scrolling to item imperatively)                                    | 🟠 (needs [CellMeasurer](https://github.com/bvaughn/react-virtualized/blob/master/docs/CellMeasurer.md) and has wrong destination when scrolling to item imperatively) | 🟠 (has wrong destination when scrolling to item imperatively)                                                                                     | ❌                                                                                                                                                 | 🟠 (has wrong destination when scrolling to item imperatively)                                                                           |
 | Reverse scroll                                     | ✅                                                                                                               | ✅                                                                                                                               | ❌                                                                                                                           | ❌                                                                                                                                                                     | ❌                                                                                                                                                 | ❌                                                                                                                                                 | ❌                                                                                                                                       |

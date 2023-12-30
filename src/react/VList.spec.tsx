@@ -2,7 +2,6 @@ import { afterEach, it, expect, describe, jest } from "@jest/globals";
 import { render, cleanup } from "@testing-library/react";
 import { VList } from "./VList";
 import { Profiler, ReactElement, forwardRef, useEffect, useState } from "react";
-import { CustomViewportComponentProps } from "./Viewport";
 import { CustomItemComponentProps } from "./ListItem";
 
 const ITEM_HEIGHT = 50;
@@ -60,30 +59,6 @@ it("should pass attributes to element", () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
-it("should change components", () => {
-  const UlList = forwardRef<HTMLDivElement, CustomViewportComponentProps>(
-    ({ children, attrs, height }, ref) => {
-      return (
-        <div ref={ref} {...attrs}>
-          <ul style={{ position: "relative", height, margin: 0 }}>
-            {children}
-          </ul>
-        </div>
-      );
-    }
-  );
-  const { asFragment } = render(
-    <VList components={{ Root: UlList, Item: "li" }}>
-      <div>0</div>
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-    </VList>
-  );
-  expect(asFragment()).toMatchSnapshot();
-});
-
 it("should pass index to items", () => {
   const Item = forwardRef<HTMLDivElement, CustomItemComponentProps>(
     ({ children, index, style }, ref) => {
@@ -95,7 +70,7 @@ it("should pass index to items", () => {
     }
   );
   const { asFragment } = render(
-    <VList components={{ Item }}>
+    <VList item={Item}>
       <div>0</div>
       <div>1</div>
       <div>2</div>

@@ -16,22 +16,69 @@ import {
   overscanStartIndex,
   createVirtualStore,
   SCROLL_IDLE,
+  getScrollSize,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { values } from "../core/utils";
 import { createScroller } from "../core/scroller";
-import { emptyComponents, refKey } from "./utils";
+import { refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { createGridResizer, GridResizer } from "../core/resizer";
-import {
-  Viewport as DefaultViewport,
-  CustomViewportComponent,
-  CustomViewportComponentProps,
-  ViewportComponentAttributes,
-} from "./Viewport";
+import { ViewportComponentAttributes } from "./types";
 import { flushSync } from "react-dom";
 import { isRTLDocument } from "../core/environment";
 import { useRerender } from "./useRerender";
+
+/**
+ * Props of customized scrollable component.
+ */
+interface CustomViewportComponentProps {
+  /**
+   * Renderable item elements.
+   */
+  children: ReactNode;
+  /**
+   * Attributes that should be passed to the scrollable element.
+   */
+  attrs: ViewportComponentAttributes;
+  /**
+   * Total height of items. It's undefined if component is not vertically scrollable.
+   */
+  height: number | undefined;
+  /**
+   * Total width of items. It's undefined if component is not horizontally scrollable.
+   */
+  width: number | undefined;
+  /**
+   * Currently component is scrolling or not.
+   */
+  scrolling: boolean;
+}
+
+const DefaultViewport = forwardRef<any, CustomViewportComponentProps>(
+  ({ children, attrs, width, height, scrolling }, ref): ReactElement => {
+    return (
+      <div ref={ref} {...attrs}>
+        <div
+          style={useMemo((): CSSProperties => {
+            return {
+              contain: "content",
+              position: "relative",
+              visibility: "hidden",
+              width: width ?? "100%",
+              height: height ?? "100%",
+              pointerEvents: scrolling ? "none" : "auto",
+            };
+          }, [width, height, scrolling])}
+        >
+          {children}
+        </div>
+      </div>
+    );
+  }
+);
+
+export type CustomViewportComponent = typeof DefaultViewport;
 
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
@@ -46,10 +93,6 @@ export interface CustomCellComponentProps {
 export type CustomCellComponent = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<CustomCellComponentProps> & React.RefAttributes<any>
 >;
-
-type CustomCellComponentOrElement =
-  | keyof JSX.IntrinsicElements
-  | CustomCellComponent;
 
 type CellProps = {
   _children: ReactNode;
@@ -206,7 +249,7 @@ export interface VGridProps extends ViewportComponentAttributes {
      * Component or element type for cell element. This component will get {@link CustomCellComponentProps} as props.
      * @defaultValue "div"
      */
-    Cell?: CustomCellComponentOrElement;
+    Cell?: keyof JSX.IntrinsicElements | CustomCellComponent;
   };
 }
 
@@ -227,7 +270,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       components: {
         Root: Viewport = DefaultViewport,
         Cell: ItemElement = "div",
-      } = emptyComponents as {
+      } = {} as {
         Root?: undefined;
         Cell?: undefined;
       },
@@ -263,8 +306,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const hScrollDirection = hStore._getScrollDirection();
     const vJumpCount = vStore._getJumpCount();
     const hJumpCount = hStore._getJumpCount();
-    const height = vStore._getScrollSize();
-    const width = hStore._getScrollSize();
+    const height = getScrollSize(vStore);
+    const width = getScrollSize(hStore);
     const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {
@@ -290,15 +333,15 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           }
         }
       );
-      const cleanUpResizer = resizer._observeRoot(root);
-      const cleanupVScroller = vScroller._observe(root);
-      const cleanupHScroller = hScroller._observe(root);
+      resizer._observeRoot(root);
+      vScroller._observe(root);
+      hScroller._observe(root);
       return () => {
         unsubscribeVStore();
         unsubscribeHStore();
-        cleanUpResizer();
-        cleanupVScroller();
-        cleanupHScroller();
+        resizer._dispose();
+        vScroller._dispose();
+        hScroller._dispose();
       };
     }, []);
 
@@ -323,7 +366,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             return [hStore._getScrollOffset(), vStore._getScrollOffset()];
           },
           get scrollSize(): [number, number] {
-            return [hStore._getScrollSize(), vStore._getScrollSize()];
+            return [getScrollSize(hStore), getScrollSize(vStore)];
           },
           get viewportSize(): [number, number] {
             return [hStore._getViewportSize(), vStore._getViewportSize()];

@@ -12,9 +12,15 @@
     "limit": "4 kB"
   },
   {
-    "name": "WVList",
+    "name": "Virtualizer",
     "path": "lib/index.mjs",
-    "import": "{ WVList }",
+    "import": "{ Virtualizer }",
+    "limit": "4 kB"
+  },
+  {
+    "name": "WindowVirtualizer",
+    "path": "lib/index.mjs",
+    "import": "{ WindowVirtualizer }",
     "limit": "4 kB"
   },
   {

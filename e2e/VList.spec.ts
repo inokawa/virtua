@@ -91,48 +91,6 @@ test.describe("smoke", () => {
     expect(initialTotalHeight).toEqual(changedTotalHeight);
   });
 
-  test("padding", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--padding-and-margin"));
-
-    const component = await page.waitForSelector(scrollableSelector);
-    await component.waitForElementState("stable");
-
-    const [topPadding, bottomPadding] = await component.evaluate((e) => {
-      const s = getComputedStyle(e);
-      return [parseInt(s.paddingTop), parseInt(s.paddingBottom)];
-    });
-    await expect(topPadding).toBeGreaterThan(10);
-    await expect(bottomPadding).toBeGreaterThan(10);
-
-    const itemsSelector = '*[style*="top"]';
-
-    // check if start is displayed
-    const topItem = (await component.$$(itemsSelector))[0];
-    await expect(await topItem.textContent()).toEqual("0");
-    await expect(
-      await (async () => {
-        const rootRect = (await component.boundingBox())!;
-        const itemRect = (await topItem.boundingBox())!;
-        return itemRect.y - rootRect.y;
-      })()
-    ).toEqual(topPadding);
-
-    // scroll to the end
-    await scrollToBottom(component);
-
-    // check if the end is displayed
-    const items = await component.$$(itemsSelector);
-    const bottomItem = items[items.length - 1];
-    await expect(await bottomItem.textContent()).toEqual("999");
-    await expect(
-      await (async () => {
-        const rootRect = (await component.boundingBox())!;
-        const itemRect = (await bottomItem.boundingBox())!;
-        return rootRect.y + rootRect.height - (itemRect.y + itemRect.height);
-      })()
-    ).toEqual(bottomPadding);
-  });
-
   test("sticky", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--sticky"));
 

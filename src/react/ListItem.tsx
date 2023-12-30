@@ -12,7 +12,7 @@ import { refKey } from "./utils";
 import { isRTLDocument } from "../core/environment";
 
 /**
- * Props of customized item component for {@link VList}.
+ * Props of customized item component for {@link Virtualizer} or {@link WindowVirtualizer}.
  */
 export interface CustomItemComponentProps {
   style: CSSProperties;

@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { CustomViewportComponentProps, VList } from "../../../src";
-import React, { ReactNode, forwardRef } from "react";
+import { Virtualizer } from "../../../src";
+import React, { useRef } from "react";
 import { faker } from "@faker-js/faker";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 import "./radix.css";
@@ -11,57 +11,29 @@ const TAGS = Array.from({ length: 1000 }).map((_, i) => ({
 }));
 
 export default {
-  component: VList,
+  component: Virtualizer,
 } as Meta;
-
-const Root = forwardRef<HTMLDivElement, CustomViewportComponentProps>(
-  ({ children, attrs, width, height, scrolling }, ref) => {
-    return (
-      <ScrollArea.Viewport ref={ref} {...attrs} className="ScrollAreaViewport">
-        <div
-          style={{
-            contain: "content",
-            position: "relative",
-            visibility: "hidden",
-            width: width ?? "100%",
-            height: height ?? "100%",
-            pointerEvents: scrolling ? "none" : "auto",
-          }}
-        >
-          {children}
-        </div>
-      </ScrollArea.Viewport>
-    );
-  }
-);
-
-const VirtualizedViewport = ({
-  children,
-  style,
-}: {
-  children: ReactNode;
-  style;
-}) => {
-  return (
-    <VList style={style} components={{ Root }}>
-      {children}
-    </VList>
-  );
-};
 
 export const Default: StoryObj = {
   name: "With radix-ui",
   render: () => {
+    const ref = useRef<HTMLDivElement>(null);
     return (
       <ScrollArea.Root className="ScrollAreaRoot">
-        <VirtualizedViewport style={{ padding: "15px 20px", width: "auto" }}>
-          <div className="Text">Tags</div>
-          {TAGS.map((tag) => (
-            <div className="Tag" key={tag.id}>
-              {tag.label}
-            </div>
-          ))}
-        </VirtualizedViewport>
+        <ScrollArea.Viewport
+          ref={ref}
+          style={{ padding: "15px 20px", width: "auto" }}
+          className="ScrollAreaViewport"
+        >
+          <Virtualizer scrollRef={ref}>
+            <div className="Text">Tags</div>
+            {TAGS.map((tag) => (
+              <div className="Tag" key={tag.id}>
+                {tag.label}
+              </div>
+            ))}
+          </Virtualizer>
+        </ScrollArea.Viewport>
         <ScrollArea.Scrollbar
           className="ScrollAreaScrollbar"
           orientation="vertical"

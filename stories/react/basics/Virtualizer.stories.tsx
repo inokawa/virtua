@@ -1,0 +1,380 @@
+import { Meta, StoryObj } from "@storybook/react";
+import React, {
+  Fragment,
+  forwardRef,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import {
+  CustomContainerComponentProps,
+  CustomItemComponentProps,
+  Virtualizer,
+  VirtualizerHandle,
+} from "../../../src";
+import { Spinner, delay } from "../common";
+
+export default {
+  component: Virtualizer,
+} as Meta;
+
+const createRows = (num: number) => {
+  const heights = [20, 40, 80, 77];
+  return Array.from({ length: num }).map((_, i) => {
+    return (
+      <div
+        key={i}
+        style={{
+          height: heights[i % 4],
+          borderBottom: "solid 1px #ccc",
+          background: "#fff",
+        }}
+      >
+        {i}
+      </div>
+    );
+  });
+};
+
+export const HeaderAndFooter: StoryObj = {
+  render: () => {
+    const headerHeight = 400;
+    const footerHeight = 600;
+    return (
+      <div
+        style={{
+          width: 400,
+          height: "100vh",
+          overflowY: "auto",
+          // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+          overflowAnchor: "none",
+        }}
+      >
+        <div style={{ backgroundColor: "burlywood", height: headerHeight }}>
+          header
+        </div>
+        <Virtualizer startMargin={headerHeight} endMargin={footerHeight}>
+          {createRows(1000)}
+        </Virtualizer>
+        <div style={{ backgroundColor: "steelblue", height: footerHeight }}>
+          footer
+        </div>
+      </div>
+    );
+  },
+};
+
+export const StickyHeaderAndFooter: StoryObj = {
+  render: () => {
+    const headerHeight = 40;
+    const footerHeight = 60;
+    return (
+      <div
+        style={{
+          width: 400,
+          height: "100vh",
+          overflowY: "auto",
+          // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+          overflowAnchor: "none",
+        }}
+      >
+        <div
+          style={{
+            position: "sticky",
+            backgroundColor: "burlywood",
+            height: headerHeight,
+            top: 0,
+            zIndex: 1,
+          }}
+        >
+          header
+        </div>
+        <Virtualizer startMargin={headerHeight} endMargin={footerHeight}>
+          {createRows(1000)}
+        </Virtualizer>
+        <div
+          style={{
+            position: "sticky",
+            backgroundColor: "steelblue",
+            height: footerHeight,
+            bottom: 0,
+          }}
+        >
+          footer
+        </div>
+      </div>
+    );
+  },
+};
+
+export const Nested: StoryObj = {
+  render: () => {
+    const ref = useRef<HTMLDivElement>(null);
+    const outerPadding = 40;
+    const innerPadding = 60;
+    return (
+      <div
+        ref={ref}
+        style={{
+          width: 500,
+          height: "100vh",
+          overflowY: "auto",
+          // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+          overflowAnchor: "none",
+        }}
+      >
+        <div style={{ backgroundColor: "burlywood", padding: outerPadding }}>
+          <div style={{ backgroundColor: "steelblue", padding: innerPadding }}>
+            <Virtualizer
+              scrollRef={ref}
+              startMargin={outerPadding + innerPadding}
+              endMargin={outerPadding + innerPadding}
+            >
+              {createRows(1000)}
+            </Virtualizer>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const BiDirectionalInfiniteScrolling: StoryObj = {
+  render: () => {
+    const id = useRef(0);
+    const createRows = (num: number) => {
+      const heights = [20, 40, 80, 77];
+      return Array.from({ length: num }).map(() => {
+        const i = id.current++;
+        return (
+          <div
+            key={i}
+            style={{
+              height: heights[i % 4],
+              borderBottom: "solid 1px #ccc",
+              background: "#fff",
+            }}
+          >
+            {i}
+          </div>
+        );
+      });
+    };
+
+    const [shifting, setShifting] = useState(false);
+    const [startFetching, setStartFetching] = useState(false);
+    const [endFetching, setEndFetching] = useState(false);
+    const fetchItems = async (isStart: boolean = false) => {
+      setShifting(isStart);
+
+      const setFetching = isStart ? setStartFetching : setEndFetching;
+
+      setFetching(true);
+      await delay(1000);
+      setFetching(false);
+    };
+
+    const ref = useRef<VirtualizerHandle>(null);
+    const ITEM_BATCH_COUNT = 100;
+    const [items, setItems] = useState(() => createRows(ITEM_BATCH_COUNT * 2));
+    const THRESHOLD = 50;
+    const count = items.length;
+    const startFetchedCountRef = useRef(-1);
+    const endFetchedCountRef = useRef(-1);
+
+    const ready = useRef(false);
+    useEffect(() => {
+      ref.current?.scrollToIndex(items.length / 2 + 1);
+      ready.current = true;
+    }, []);
+
+    const spinnerHeight = 100;
+
+    return (
+      <div
+        style={{
+          height: "100vh",
+          overflowY: "auto",
+          // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+          overflowAnchor: "none",
+        }}
+      >
+        <Spinner
+          height={spinnerHeight}
+          style={startFetching ? undefined : { visibility: "hidden" }}
+        />
+        <Virtualizer
+          ref={ref}
+          shift={shifting ? true : false}
+          startMargin={spinnerHeight}
+          endMargin={spinnerHeight}
+          onRangeChange={async (start, end) => {
+            if (!ready.current) return;
+            if (end + THRESHOLD > count && endFetchedCountRef.current < count) {
+              endFetchedCountRef.current = count;
+              await fetchItems();
+              setItems((prev) => [...prev, ...createRows(ITEM_BATCH_COUNT)]);
+            } else if (
+              start - THRESHOLD < 0 &&
+              startFetchedCountRef.current < count
+            ) {
+              startFetchedCountRef.current = count;
+              await fetchItems(true);
+              setItems((prev) => [
+                ...createRows(ITEM_BATCH_COUNT).reverse(),
+                ...prev,
+              ]);
+            }
+          }}
+        >
+          {items}
+        </Virtualizer>
+        <Spinner
+          height={spinnerHeight}
+          style={endFetching ? undefined : { visibility: "hidden" }}
+        />
+      </div>
+    );
+  },
+};
+
+const Ul = forwardRef<HTMLUListElement, CustomContainerComponentProps>(
+  ({ children, style }, ref) => {
+    return (
+      <ul ref={ref} style={{ ...style, margin: 0, overflow: "hidden" }}>
+        {children}
+      </ul>
+    );
+  }
+);
+
+const Li = forwardRef<HTMLLIElement, CustomItemComponentProps>(
+  ({ children, style }, ref) => {
+    return (
+      <li ref={ref} style={{ ...style, marginLeft: 30 }}>
+        {children}
+      </li>
+    );
+  }
+);
+
+export const UlElement: StoryObj = {
+  render: () => {
+    return (
+      <div
+        style={{
+          width: 400,
+          height: 400,
+          border: "solid 1px darkgray",
+          borderRadius: 8,
+          background: "lightgray",
+          display: "flex",
+          flexDirection: "column",
+          overflow: "hidden",
+        }}
+      >
+        <div style={{ padding: 4 }}>header</div>
+        <div
+          style={{
+            overflowY: "auto",
+            flex: 1,
+            background: "#fff",
+          }}
+        >
+          <Virtualizer as={Ul} item={Li} overscan={10}>
+            {Array.from({ length: 1000 }).map((_, i) => i)}
+          </Virtualizer>
+        </div>
+      </div>
+    );
+  },
+};
+
+const COLUMN_WIDTHS = [100, 200, 300, 100, 200, 300, 100, 300, 400, 200];
+
+const TABLE_HEADER_HEIGHT = 30;
+
+const Table = forwardRef<HTMLTableElement, CustomContainerComponentProps>(
+  ({ children, style }, ref) => {
+    return (
+      <table
+        ref={ref}
+        style={{
+          height: style?.height,
+          tableLayout: "fixed",
+          borderCollapse: "collapse",
+          whiteSpace: "nowrap",
+        }}
+        border={1}
+      >
+        <thead
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+            height: TABLE_HEADER_HEIGHT,
+            minHeight: TABLE_HEADER_HEIGHT,
+            maxHeight: TABLE_HEADER_HEIGHT,
+          }}
+        >
+          <tr>
+            {COLUMN_WIDTHS.map((width, i) => (
+              <th
+                key={i}
+                style={{
+                  color: "white",
+                  background: "darkgray",
+                  minWidth: width,
+                }}
+              >
+                {i}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody
+          style={{
+            ...style,
+            position: "absolute",
+            top: TABLE_HEADER_HEIGHT,
+            left: 0,
+          }}
+        >
+          {children}
+        </tbody>
+      </table>
+    );
+  }
+);
+
+export const TableElement: StoryObj = {
+  render: () => {
+    return (
+      <div
+        style={{
+          contain: "strict",
+          width: "100%",
+          height: "75%",
+          overflow: "auto",
+        }}
+      >
+        <Virtualizer
+          count={1000}
+          as={Table}
+          item="tr"
+          startMargin={TABLE_HEADER_HEIGHT}
+        >
+          {(i) => (
+            <Fragment key={i}>
+              {COLUMN_WIDTHS.map((width, j) => (
+                <td key={j} style={{ minWidth: width, background: "#fff" }}>
+                  {i}, {j}
+                </td>
+              ))}
+            </Fragment>
+          )}
+        </Virtualizer>
+      </div>
+    );
+  },
+};

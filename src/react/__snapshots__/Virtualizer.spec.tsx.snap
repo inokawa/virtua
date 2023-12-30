@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should change components 1`] = `
+<DocumentFragment>
+  <div
+    style="overflow-y: auto;"
+  >
+    <ul
+      style="contain: content; position: relative; visibility: hidden; width: 100%; height: 250px; min-height: 250px; pointer-events: auto;"
+    >
+      <li
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+      >
+        <div>
+          0
+        </div>
+      </li>
+      <li
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+      >
+        <div>
+          1
+        </div>
+      </li>
+      <li
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+      >
+        <div>
+          2
+        </div>
+      </li>
+      <li
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+      >
+        <div>
+          3
+        </div>
+      </li>
+      <li
+        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+      >
+        <div>
+          4
+        </div>
+      </li>
+    </ul>
+  </div>
+</DocumentFragment>
+`;

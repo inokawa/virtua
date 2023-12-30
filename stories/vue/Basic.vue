@@ -31,7 +31,7 @@ const onAppend = () => {
     </div>
     <div><button @click="onAppend">append</button></div>
     <VList ref="handle" :data="data" :onScroll="(offset) => { scrollOffset = offset; scrolling = true }"
-      :onScrollStop="() => { scrolling = false }">
+      :onScrollEnd="() => { scrolling = false }">
       <template #default="item">
         <div :key="item.index" :style="{ height: item.height, background: 'white', borderBottom: 'solid 1px #ccc' }">
           {{ item.index }}

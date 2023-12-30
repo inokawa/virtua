@@ -1,8 +1,7 @@
 import { afterEach, it, expect, describe, jest } from "@jest/globals";
 import { render, cleanup } from "@testing-library/react";
-import { WVList } from "./WVList";
+import { WindowVirtualizer } from "./WindowVirtualizer";
 import { Profiler, ReactElement, forwardRef, useEffect, useState } from "react";
-import { CustomViewportComponentProps } from "./Viewport";
 import { CustomItemComponentProps } from "./ListItem";
 
 const ITEM_HEIGHT = 50;
@@ -52,46 +51,6 @@ global.IntersectionObserver = class {
 
 afterEach(cleanup);
 
-it("should pass attributes to element", () => {
-  const { asFragment } = render(
-    <WVList
-      id="id"
-      className="class"
-      tabIndex={0}
-      role="list"
-      aria-label="test"
-      style={{ background: "red" }}
-    >
-      <div>0</div>
-    </WVList>
-  );
-  expect(asFragment()).toMatchSnapshot();
-});
-
-it("should change components", () => {
-  const UlList = forwardRef<HTMLDivElement, CustomViewportComponentProps>(
-    ({ children, attrs, height }, ref) => {
-      return (
-        <div ref={ref} {...attrs}>
-          <ul style={{ position: "relative", height, margin: 0 }}>
-            {children}
-          </ul>
-        </div>
-      );
-    }
-  );
-  const { asFragment } = render(
-    <WVList components={{ Root: UlList, Item: "li" }}>
-      <div>0</div>
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-    </WVList>
-  );
-  expect(asFragment()).toMatchSnapshot();
-});
-
 it("should pass index to items", () => {
   const Item = forwardRef<HTMLDivElement, CustomItemComponentProps>(
     ({ children, index, style }, ref) => {
@@ -103,13 +62,13 @@ it("should pass index to items", () => {
     }
   );
   const { asFragment } = render(
-    <WVList components={{ Item }}>
+    <WindowVirtualizer item={Item}>
       <div>0</div>
       <div>1</div>
       <div>2</div>
       <div>3</div>
       <div>4</div>
-    </WVList>
+    </WindowVirtualizer>
   );
   expect(asFragment()).toMatchSnapshot();
 });
@@ -120,12 +79,12 @@ it("should render with render prop", () => {
     label: "This is " + i,
   }));
   const { asFragment } = render(
-    <WVList count={items.length}>
+    <WindowVirtualizer count={items.length}>
       {(i) => {
         const item = items[i]!;
         return <div key={item.id}>{item.label}</div>;
       }}
-    </WVList>
+    </WindowVirtualizer>
   );
   expect(asFragment()).toMatchSnapshot();
 });
@@ -133,76 +92,76 @@ it("should render with render prop", () => {
 describe("vertical", () => {
   it("should render 1 children", () => {
     const { asFragment } = render(
-      <WVList>
+      <WindowVirtualizer>
         <div>0</div>
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("should render 5 children", () => {
     const { asFragment } = render(
-      <WVList>
+      <WindowVirtualizer>
         <div>0</div>
         <div>1</div>
         <div>2</div>
         <div>3</div>
         <div>4</div>
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("should render 100 children", () => {
     const { asFragment } = render(
-      <WVList>
+      <WindowVirtualizer>
         {Array.from({ length: 100 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("should render 1000 children", () => {
     const { asFragment } = render(
-      <WVList>
+      <WindowVirtualizer>
         {Array.from({ length: 1000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("should render 10000 children", () => {
     const { asFragment } = render(
-      <WVList>
+      <WindowVirtualizer>
         {Array.from({ length: 10000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("should render non elements", () => {
     const { asFragment } = render(
-      <WVList>
+      <WindowVirtualizer>
         string
         {true}
         {false}
         {null}
         {undefined}
         {123}
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("should render fragments", () => {
     const { asFragment } = render(
-      <WVList>
+      <WindowVirtualizer>
         <>
           <div>fragment</div>
           <div>fragment</div>
@@ -211,7 +170,7 @@ describe("vertical", () => {
         <>
           <div>fragment</div>
         </>
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -221,24 +180,26 @@ describe("vertical", () => {
       <div>{children}</div>
     );
     const { asFragment } = render(
-      <WVList>
+      <WindowVirtualizer>
         <Comp>component</Comp>
         <Comp>component</Comp>
         <Comp>component</Comp>
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("should render with given width / height", () => {
     const { asFragment } = render(
-      <WVList style={{ width: 100, height: 800 }}>
-        <div>0</div>
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
-        <div>4</div>
-      </WVList>
+      <div style={{ width: 100, height: 800 }}>
+        <WindowVirtualizer>
+          <div>0</div>
+          <div>1</div>
+          <div>2</div>
+          <div>3</div>
+          <div>4</div>
+        </WindowVirtualizer>
+      </div>
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -247,76 +208,76 @@ describe("vertical", () => {
 describe("horizontal", () => {
   it("should render 1 children", () => {
     const { asFragment } = render(
-      <WVList horizontal>
+      <WindowVirtualizer horizontal>
         <div>0</div>
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("should render 5 children", () => {
     const { asFragment } = render(
-      <WVList horizontal>
+      <WindowVirtualizer horizontal>
         <div>0</div>
         <div>1</div>
         <div>2</div>
         <div>3</div>
         <div>4</div>
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("should render 100 children", () => {
     const { asFragment } = render(
-      <WVList horizontal>
+      <WindowVirtualizer horizontal>
         {Array.from({ length: 100 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("should render 1000 children", () => {
     const { asFragment } = render(
-      <WVList horizontal>
+      <WindowVirtualizer horizontal>
         {Array.from({ length: 1000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("should render 10000 children", () => {
     const { asFragment } = render(
-      <WVList horizontal>
+      <WindowVirtualizer horizontal>
         {Array.from({ length: 10000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("should render non elements", () => {
     const { asFragment } = render(
-      <WVList horizontal>
+      <WindowVirtualizer horizontal>
         string
         {true}
         {false}
         {null}
         {undefined}
         {123}
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("should render fragments", () => {
     const { asFragment } = render(
-      <WVList horizontal>
+      <WindowVirtualizer horizontal>
         <>
           <div>fragment</div>
           <div>fragment</div>
@@ -325,7 +286,7 @@ describe("horizontal", () => {
         <>
           <div>fragment</div>
         </>
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -335,24 +296,26 @@ describe("horizontal", () => {
       <div>{children}</div>
     );
     const { asFragment } = render(
-      <WVList horizontal>
+      <WindowVirtualizer horizontal>
         <Comp>component</Comp>
         <Comp>component</Comp>
         <Comp>component</Comp>
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("should render with given width / height", () => {
     const { asFragment } = render(
-      <WVList horizontal style={{ width: 100, height: 800 }}>
-        <div>0</div>
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
-        <div>4</div>
-      </WVList>
+      <div style={{ width: 100, height: 800 }}>
+        <WindowVirtualizer horizontal>
+          <div>0</div>
+          <div>1</div>
+          <div>2</div>
+          <div>3</div>
+          <div>4</div>
+        </WindowVirtualizer>
+      </div>
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -366,7 +329,7 @@ describe("render count", () => {
 
     render(
       <Profiler id="root" onRender={rootFn}>
-        <WVList>
+        <WindowVirtualizer>
           {Array.from({ length: itemCount }, (_, i) => {
             const key = `item-${i}`;
             return (
@@ -375,7 +338,7 @@ describe("render count", () => {
               </Profiler>
             );
           })}
-        </WVList>
+        </WindowVirtualizer>
       </Profiler>
     );
 
@@ -392,7 +355,7 @@ describe("render count", () => {
 
     render(
       <Profiler id="root" onRender={rootFn}>
-        <WVList>
+        <WindowVirtualizer>
           {Array.from({ length: itemCount }, (_, i) => {
             const key = `item-${i}`;
             return (
@@ -401,7 +364,7 @@ describe("render count", () => {
               </Profiler>
             );
           })}
-        </WVList>
+        </WindowVirtualizer>
       </Profiler>
     );
 
@@ -445,7 +408,7 @@ describe("render count", () => {
       <Mounter count={itemCount}>
         {(count) => (
           <Profiler id="root" onRender={wrap(rootFn)}>
-            <WVList>
+            <WindowVirtualizer>
               {Array.from({ length: count }, (_, i) => {
                 const key = `item-${i}`;
                 return (
@@ -454,7 +417,7 @@ describe("render count", () => {
                   </Profiler>
                 );
               })}
-            </WVList>
+            </WindowVirtualizer>
           </Profiler>
         )}
       </Mounter>
@@ -500,7 +463,7 @@ describe("render count", () => {
       <Mounter count={itemCount}>
         {(count) => (
           <Profiler id="root" onRender={wrap(rootFn)}>
-            <WVList>
+            <WindowVirtualizer>
               {Array.from({ length: count }, (_, i) => {
                 const key = `item-${i}`;
                 return (
@@ -509,7 +472,7 @@ describe("render count", () => {
                   </Profiler>
                 );
               })}
-            </WVList>
+            </WindowVirtualizer>
           </Profiler>
         )}
       </Mounter>

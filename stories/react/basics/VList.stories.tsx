@@ -11,8 +11,6 @@ import React, {
 import {
   VList,
   VListHandle,
-  CustomItemComponentProps,
-  CustomViewportComponentProps,
   CacheSnapshot,
   ScrollToIndexAlign,
 } from "../../../src";
@@ -82,7 +80,6 @@ export const PaddingAndMargin: StoryObj = {
         style={{
           width: 400,
           height: 400,
-          padding: "80px 20px",
           background: "lightgray",
         }}
       >
@@ -93,8 +90,8 @@ export const PaddingAndMargin: StoryObj = {
               style={{
                 height: 100,
                 borderRadius: 8,
-                margin: 10,
-                padding: 10,
+                margin: 20,
+                padding: 20,
                 background: "white",
               }}
             >
@@ -622,93 +619,6 @@ export const InfiniteScrolling: StoryObj = {
   },
 };
 
-export const BiDirectionalInfiniteScrolling: StoryObj = {
-  render: () => {
-    const id = useRef(0);
-    const createRows = (num: number) => {
-      const heights = [20, 40, 80, 77];
-      return Array.from({ length: num }).map(() => {
-        const i = id.current++;
-        return (
-          <div
-            key={i}
-            style={{
-              height: heights[i % 4],
-              borderBottom: "solid 1px #ccc",
-              background: "#fff",
-            }}
-          >
-            {i}
-          </div>
-        );
-      });
-    };
-
-    const [shifting, setShifting] = useState(false);
-    const [startFetching, setStartFetching] = useState(false);
-    const [endFetching, setEndFetching] = useState(false);
-    const fetchItems = async (isStart: boolean = false) => {
-      setShifting(isStart);
-
-      const setFetching = isStart ? setStartFetching : setEndFetching;
-
-      setFetching(true);
-      await delay(1000);
-      setFetching(false);
-    };
-
-    const ref = useRef<VListHandle>(null);
-    const ITEM_BATCH_COUNT = 100;
-    const [items, setItems] = useState(() => createRows(ITEM_BATCH_COUNT * 2));
-    const THRESHOLD = 50;
-    const count = items.length;
-    const startFetchedCountRef = useRef(-1);
-    const endFetchedCountRef = useRef(-1);
-
-    const ready = useRef(false);
-    useEffect(() => {
-      ref.current?.scrollToIndex(items.length / 2 + 1);
-      ready.current = true;
-    }, []);
-
-    return (
-      <VList
-        ref={ref}
-        style={{ flex: 1 }}
-        shift={shifting ? true : false}
-        onRangeChange={async (start, end) => {
-          if (!ready.current) return;
-          if (end + THRESHOLD > count && endFetchedCountRef.current < count) {
-            endFetchedCountRef.current = count;
-            await fetchItems();
-            setItems((prev) => [...prev, ...createRows(ITEM_BATCH_COUNT)]);
-          } else if (
-            start - THRESHOLD < 0 &&
-            startFetchedCountRef.current < count
-          ) {
-            startFetchedCountRef.current = count;
-            await fetchItems(true);
-            setItems((prev) => [
-              ...createRows(ITEM_BATCH_COUNT).reverse(),
-              ...prev,
-            ]);
-          }
-        }}
-      >
-        <Spinner
-          key="head"
-          style={startFetching ? undefined : { visibility: "hidden" }}
-        />
-        {items}
-        <Spinner
-          key="foot"
-          style={endFetching ? undefined : { visibility: "hidden" }}
-        />
-      </VList>
-    );
-  },
-};
-
 export const Statuses: StoryObj = {
   render: () => {
     const ref = useRef<VListHandle>(null);
@@ -767,7 +677,7 @@ export const Statuses: StoryObj = {
               setScrolling(true);
             });
           }}
-          onScrollStop={() => {
+          onScrollEnd={() => {
             startTransition(() => {
               setScrolling(false);
             });
@@ -982,65 +892,6 @@ export const IncreasingItems: StoryObj = {
               {d.index}
             </div>
           ))}
-        </VList>
-      </div>
-    );
-  },
-};
-
-const UlList = forwardRef<HTMLDivElement, CustomViewportComponentProps>(
-  ({ children, attrs, height }, ref) => {
-    return (
-      <div ref={ref} {...attrs}>
-        <ul
-          style={{
-            position: "relative",
-            height,
-            margin: 0,
-            overflow: "hidden",
-          }}
-        >
-          {children}
-        </ul>
-      </div>
-    );
-  }
-);
-const Li = forwardRef<HTMLLIElement, CustomItemComponentProps>(
-  ({ children, style }, ref) => {
-    return (
-      <li ref={ref} style={{ ...style, marginLeft: 30 }}>
-        {children}
-      </li>
-    );
-  }
-);
-
-export const Ul: StoryObj = {
-  render: () => {
-    return (
-      <div
-        style={{
-          width: 400,
-          height: 400,
-          border: "solid 1px darkgray",
-          borderRadius: 8,
-          background: "lightgray",
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-        }}
-      >
-        <div style={{ padding: 4 }}>header</div>
-        <VList
-          style={{
-            flex: 1,
-            background: "#fff",
-          }}
-          components={{ Root: UlList, Item: Li }}
-          overscan={20}
-        >
-          {Array.from({ length: 1000 }).map((_, i) => i)}
         </VList>
       </div>
     );
