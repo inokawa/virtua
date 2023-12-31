@@ -63,7 +63,7 @@
     "@testing-library/react": "14.1.2",
     "@testing-library/vue": "8.0.1",
     "@types/react": "18.2.46",
-    "@types/react-beautiful-dnd": "13.1.7",
+    "@types/react-beautiful-dnd": "13.1.8",
     "@types/react-virtualized": "9.21.29",
     "@types/react-window": "1.8.8",
     "@typescript-eslint/parser": "6.16.0",
