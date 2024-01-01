@@ -85,7 +85,7 @@
     "react-virtuoso": "4.6.2",
     "react-window": "1.8.10",
     "rimraf": "5.0.5",
-    "rollup": "4.9.1",
+    "rollup": "4.9.2",
     "rollup-plugin-banner2": "1.2.2",
     "size-limit": "^11.0.1",
     "storybook": "^7.6.6",
