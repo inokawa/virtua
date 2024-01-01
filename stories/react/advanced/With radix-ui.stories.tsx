@@ -20,6 +20,7 @@ const Root = forwardRef<HTMLDivElement, CustomViewportComponentProps>(
       <ScrollArea.Viewport ref={ref} {...attrs} className="ScrollAreaViewport">
         <div
           style={{
+            contain: "content",
             position: "relative",
             visibility: "hidden",
             width: width ?? "100%",

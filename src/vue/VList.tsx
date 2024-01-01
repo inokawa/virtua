@@ -204,7 +204,7 @@ export const VList = /*#__PURE__*/ defineComponent({
 
       const items: VNode[] = [];
       for (let i = overscanedStartIndex; i <= overscanedEndIndex; i++) {
-        const e = slots.default(props.data![i]!)[0]! as VNode
+        const e = slots.default(props.data![i]!)[0]! as VNode;
         const key = e.key;
         items.push(
           <ListItem
@@ -234,6 +234,7 @@ export const VList = /*#__PURE__*/ defineComponent({
         >
           <div
             style={{
+              contain: "content",
               position: "relative",
               visibility: "hidden",
               width: isHorizontal ? scrollSize + "px" : "100%",
