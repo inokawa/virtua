@@ -20,4 +20,4 @@ Get current [CacheSnapshot](react.CacheSnapshot.md).
 
 #### Defined in
 
-[src/react/WVList.tsx:51](https://github.com/inokawa/virtua/blob/401edf3d/src/react/WVList.tsx#L51)
+[src/react/WVList.tsx:51](https://github.com/inokawa/virtua/blob/735e8bf3/src/react/WVList.tsx#L51)

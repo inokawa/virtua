@@ -64,7 +64,7 @@
 
 #### Defined in
 
-node_modules/@vue/runtime-core/dist/runtime-core.d.ts:128
+node_modules/@vue/runtime-core/dist/runtime-core.d.ts:131
 
 ___
 
@@ -87,7 +87,7 @@ Scroll to the item specified by index.
 
 #### Defined in
 
-[src/vue/VList.ts:49](https://github.com/inokawa/virtua/blob/401edf3d/src/vue/VList.ts#L49)
+[src/vue/VList.tsx:49](https://github.com/inokawa/virtua/blob/735e8bf3/src/vue/VList.tsx#L49)
 
 ___
 
@@ -109,7 +109,7 @@ Scroll to the given offset.
 
 #### Defined in
 
-[src/vue/VList.ts:54](https://github.com/inokawa/virtua/blob/401edf3d/src/vue/VList.ts#L54)
+[src/vue/VList.tsx:54](https://github.com/inokawa/virtua/blob/735e8bf3/src/vue/VList.tsx#L54)
 
 ___
 
@@ -131,7 +131,7 @@ Scroll by the given offset.
 
 #### Defined in
 
-[src/vue/VList.ts:59](https://github.com/inokawa/virtua/blob/401edf3d/src/vue/VList.ts#L59)
+[src/vue/VList.tsx:59](https://github.com/inokawa/virtua/blob/735e8bf3/src/vue/VList.tsx#L59)
 
 ## Properties
 
@@ -141,7 +141,7 @@ Scroll by the given offset.
 
 #### Defined in
 
-node_modules/@vue/runtime-core/dist/runtime-core.d.ts:115
+node_modules/@vue/runtime-core/dist/runtime-core.d.ts:118
 
 ___
 
@@ -151,7 +151,7 @@ ___
 
 #### Defined in
 
-node_modules/@vue/runtime-core/dist/runtime-core.d.ts:116
+node_modules/@vue/runtime-core/dist/runtime-core.d.ts:119
 
 ___
 
@@ -161,7 +161,7 @@ ___
 
 #### Defined in
 
-node_modules/@vue/runtime-core/dist/runtime-core.d.ts:117
+node_modules/@vue/runtime-core/dist/runtime-core.d.ts:120
 
 ___
 
@@ -171,7 +171,7 @@ ___
 
 #### Defined in
 
-node_modules/@vue/runtime-core/dist/runtime-core.d.ts:118
+node_modules/@vue/runtime-core/dist/runtime-core.d.ts:121
 
 ___
 
@@ -181,7 +181,7 @@ ___
 
 #### Defined in
 
-node_modules/@vue/runtime-core/dist/runtime-core.d.ts:119
+node_modules/@vue/runtime-core/dist/runtime-core.d.ts:122
 
 ___
 
@@ -191,7 +191,7 @@ ___
 
 #### Defined in
 
-node_modules/@vue/runtime-core/dist/runtime-core.d.ts:120
+node_modules/@vue/runtime-core/dist/runtime-core.d.ts:123
 
 ___
 
@@ -201,7 +201,7 @@ ___
 
 #### Defined in
 
-node_modules/@vue/runtime-core/dist/runtime-core.d.ts:121
+node_modules/@vue/runtime-core/dist/runtime-core.d.ts:124
 
 ___
 
@@ -211,7 +211,7 @@ ___
 
 #### Defined in
 
-node_modules/@vue/runtime-core/dist/runtime-core.d.ts:122
+node_modules/@vue/runtime-core/dist/runtime-core.d.ts:125
 
 ___
 
@@ -221,7 +221,7 @@ ___
 
 #### Defined in
 
-node_modules/@vue/runtime-core/dist/runtime-core.d.ts:123
+node_modules/@vue/runtime-core/dist/runtime-core.d.ts:126
 
 ___
 
@@ -231,7 +231,7 @@ ___
 
 #### Defined in
 
-node_modules/@vue/runtime-core/dist/runtime-core.d.ts:124
+node_modules/@vue/runtime-core/dist/runtime-core.d.ts:127
 
 ___
 
@@ -241,7 +241,7 @@ ___
 
 #### Defined in
 
-node_modules/@vue/runtime-core/dist/runtime-core.d.ts:125
+node_modules/@vue/runtime-core/dist/runtime-core.d.ts:128
 
 ___
 
@@ -259,7 +259,7 @@ ___
 
 #### Defined in
 
-node_modules/@vue/runtime-core/dist/runtime-core.d.ts:126
+node_modules/@vue/runtime-core/dist/runtime-core.d.ts:129
 
 ___
 
@@ -291,7 +291,7 @@ ___
 
 #### Defined in
 
-node_modules/@vue/runtime-core/dist/runtime-core.d.ts:127
+node_modules/@vue/runtime-core/dist/runtime-core.d.ts:130
 
 ___
 
@@ -303,7 +303,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/vue/VList.ts:82](https://github.com/inokawa/virtua/blob/401edf3d/src/vue/VList.ts#L82)
+[src/vue/VList.tsx:82](https://github.com/inokawa/virtua/blob/735e8bf3/src/vue/VList.tsx#L82)
 
 ___
 
@@ -321,7 +321,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/vue/VList.ts:66](https://github.com/inokawa/virtua/blob/401edf3d/src/vue/VList.ts#L66)
+[src/vue/VList.tsx:66](https://github.com/inokawa/virtua/blob/735e8bf3/src/vue/VList.tsx#L66)
 
 ___
 
@@ -339,7 +339,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/vue/VList.ts:71](https://github.com/inokawa/virtua/blob/401edf3d/src/vue/VList.ts#L71)
+[src/vue/VList.tsx:71](https://github.com/inokawa/virtua/blob/735e8bf3/src/vue/VList.tsx#L71)
 
 ___
 
@@ -354,7 +354,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/vue/VList.ts:78](https://github.com/inokawa/virtua/blob/401edf3d/src/vue/VList.ts#L78)
+[src/vue/VList.tsx:78](https://github.com/inokawa/virtua/blob/735e8bf3/src/vue/VList.tsx#L78)
 
 ___
 
@@ -366,7 +366,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/vue/VList.ts:86](https://github.com/inokawa/virtua/blob/401edf3d/src/vue/VList.ts#L86)
+[src/vue/VList.tsx:86](https://github.com/inokawa/virtua/blob/735e8bf3/src/vue/VList.tsx#L86)
 
 ___
 
@@ -390,7 +390,7 @@ Get current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/vue/VList.ts:35](https://github.com/inokawa/virtua/blob/401edf3d/src/vue/VList.ts#L35)
+[src/vue/VList.tsx:35](https://github.com/inokawa/virtua/blob/735e8bf3/src/vue/VList.tsx#L35)
 
 ___
 
@@ -402,7 +402,7 @@ Get current scrollHeight or scrollWidth.
 
 #### Defined in
 
-[src/vue/VList.ts:39](https://github.com/inokawa/virtua/blob/401edf3d/src/vue/VList.ts#L39)
+[src/vue/VList.tsx:39](https://github.com/inokawa/virtua/blob/735e8bf3/src/vue/VList.tsx#L39)
 
 ___
 
@@ -414,4 +414,4 @@ Get current offsetHeight or offsetWidth.
 
 #### Defined in
 
-[src/vue/VList.ts:43](https://github.com/inokawa/virtua/blob/401edf3d/src/vue/VList.ts#L43)
+[src/vue/VList.tsx:43](https://github.com/inokawa/virtua/blob/735e8bf3/src/vue/VList.tsx#L43)
