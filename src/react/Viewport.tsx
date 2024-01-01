@@ -45,6 +45,7 @@ export const Viewport = forwardRef<any, CustomViewportComponentProps>(
         <div
           style={useMemo((): CSSProperties => {
             return {
+              contain: "content",
               position: "relative",
               visibility: "hidden",
               width: width ?? "100%",
