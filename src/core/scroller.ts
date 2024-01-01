@@ -45,12 +45,12 @@ const createOnWheel = (
 };
 
 const normalizeRTLOffset = (
-  rootElement: HTMLElement,
+  scrollable: HTMLElement,
   store: VirtualStore,
   offset: number,
   diff?: boolean
 ): number => {
-  if (hasNegativeOffsetInRTL(rootElement)) {
+  if (hasNegativeOffsetInRTL(scrollable)) {
     return -offset;
   } else {
     return diff ? -offset : store._getMaxScrollOffset() - offset;
@@ -61,7 +61,7 @@ const normalizeRTLOffset = (
  * @internal
  */
 export type Scroller = {
-  _observe: (rootElement: HTMLElement) => () => void;
+  _observe: (viewportElement: HTMLElement) => () => void;
   _scrollTo: (offset: number) => void;
   _scrollBy: (offset: number) => void;
   _scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
@@ -75,7 +75,7 @@ export const createScroller = (
   store: VirtualStore,
   isHorizontal: boolean
 ): Scroller => {
-  let rootElement: HTMLElement | undefined;
+  let viewportElement: HTMLElement | undefined;
   let cancelScroll: (() => void) | undefined;
   let stillMomentumScrolling = false;
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
@@ -83,13 +83,13 @@ export const createScroller = (
 
   const normalizeOffset = (offset: number, diff?: boolean): number => {
     if (isHorizontal && isRTLDocument()) {
-      return normalizeRTLOffset(rootElement!, store, offset, diff);
+      return normalizeRTLOffset(viewportElement!, store, offset, diff);
     }
     return offset;
   };
 
   const scrollManually = async (getOffset: () => number, smooth?: boolean) => {
-    if (!rootElement) return;
+    if (!viewportElement) return;
 
     if (cancelScroll) {
       // Cancel waiting scrollTo
@@ -138,7 +138,7 @@ export const createScroller = (
         }
       }
 
-      rootElement.scrollTo({
+      viewportElement.scrollTo({
         [isHorizontal ? "left" : "top"]: normalizeOffset(getTargetOffset()),
         behavior: "smooth",
       });
@@ -147,7 +147,7 @@ export const createScroller = (
         const [promise, unsubscribe] = waitForMeasurement();
 
         try {
-          rootElement[scrollToKey] = normalizeOffset(getTargetOffset());
+          viewportElement[scrollToKey] = normalizeOffset(getTargetOffset());
           store._update(ACTION_MANUAL_SCROLL);
 
           await promise;
@@ -162,8 +162,8 @@ export const createScroller = (
   };
 
   return {
-    _observe(root) {
-      rootElement = root;
+    _observe(viewport) {
+      viewportElement = viewport;
 
       let touching = false;
       let justTouchEnded = false;
@@ -185,7 +185,7 @@ export const createScroller = (
           stillMomentumScrolling = true;
         }
 
-        store._update(ACTION_SCROLL, normalizeOffset(root[scrollToKey]));
+        store._update(ACTION_SCROLL, normalizeOffset(viewport[scrollToKey]));
         onScrollStopped();
       };
 
@@ -202,16 +202,16 @@ export const createScroller = (
         }
       };
 
-      root.addEventListener("scroll", onScroll);
-      root.addEventListener("wheel", onWheel, { passive: true });
-      root.addEventListener("touchstart", onTouchStart, { passive: true });
-      root.addEventListener("touchend", onTouchEnd, { passive: true });
+      viewport.addEventListener("scroll", onScroll);
+      viewport.addEventListener("wheel", onWheel, { passive: true });
+      viewport.addEventListener("touchstart", onTouchStart, { passive: true });
+      viewport.addEventListener("touchend", onTouchEnd, { passive: true });
 
       return () => {
-        root.removeEventListener("scroll", onScroll);
-        root.removeEventListener("wheel", onWheel);
-        root.removeEventListener("touchstart", onTouchStart);
-        root.removeEventListener("touchend", onTouchEnd);
+        viewport.removeEventListener("scroll", onScroll);
+        viewport.removeEventListener("wheel", onWheel);
+        viewport.removeEventListener("touchstart", onTouchStart);
+        viewport.removeEventListener("touchend", onTouchEnd);
         onScrollStopped._cancel();
       };
     },
@@ -257,7 +257,7 @@ export const createScroller = (
       }, smooth);
     },
     _fixScrollJump: (jump) => {
-      if (!rootElement) return;
+      if (!viewportElement) return;
 
       // If we update scroll position while touching on iOS, the position will be reverted.
       // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
@@ -266,7 +266,7 @@ export const createScroller = (
       if (stillMomentumScrolling) {
         stillMomentumScrolling = false;
 
-        const style = rootElement.style;
+        const style = viewportElement.style;
         const prev = style[overflowKey];
         style[overflowKey] = "hidden";
         timeout(() => {
@@ -274,7 +274,7 @@ export const createScroller = (
         });
       }
 
-      rootElement[scrollToKey] += normalizeOffset(jump, true);
+      viewportElement[scrollToKey] += normalizeOffset(jump, true);
     },
   };
 };
@@ -283,7 +283,7 @@ export const createScroller = (
  * @internal
  */
 export type WindowScroller = {
-  _observe: (rootElement: HTMLElement) => () => void;
+  _observe: (containerElement: HTMLElement) => () => void;
   _fixScrollJump: (jump: number) => void;
 };
 
@@ -294,20 +294,20 @@ export const createWindowScroller = (
   store: VirtualStore,
   isHorizontal: boolean
 ): WindowScroller => {
-  let rootElement: HTMLElement | undefined;
+  let containerElement: HTMLElement | undefined;
   const scrollToKey = isHorizontal ? "scrollX" : "scrollY";
   const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
 
   const normalizeOffset = (offset: number, diff?: boolean): number => {
     if (isHorizontal && isRTLDocument()) {
-      return normalizeRTLOffset(rootElement!, store, offset, diff);
+      return normalizeRTLOffset(containerElement!, store, offset, diff);
     }
     return offset;
   };
 
   return {
-    _observe(root) {
-      rootElement = root;
+    _observe(container) {
+      containerElement = container;
 
       // TODO calc offset only when it changes (maybe impossible)
       const getOffsetToWindow = (node: HTMLElement, offset: number): number => {
@@ -332,7 +332,7 @@ export const createWindowScroller = (
       const onScroll = () => {
         store._update(
           ACTION_SCROLL,
-          normalizeOffset(window[scrollToKey]) - getOffsetToWindow(root, 0)
+          normalizeOffset(window[scrollToKey]) - getOffsetToWindow(container, 0)
         );
         onScrollStopped();
       };

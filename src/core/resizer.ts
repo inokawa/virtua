@@ -14,7 +14,7 @@ const rootObserveOpts: ResizeObserverOptions = { box: "border-box" };
 export type ItemResizeObserver = (el: HTMLElement, i: number) => () => void;
 
 interface ListResizer {
-  _observeRoot(root: HTMLElement): () => void;
+  _observeRoot(viewportElement: HTMLElement): () => void;
   _observeItem: ItemResizeObserver;
 }
 
@@ -25,7 +25,7 @@ export const createResizer = (
   store: VirtualStore,
   isHorizontal: boolean
 ): ListResizer => {
-  let rootElement: HTMLElement | undefined;
+  let viewportElement: HTMLElement | undefined;
   const sizeKey = isHorizontal ? "width" : "height";
   const mountedIndexes = new WeakMap<Element, number>();
 
@@ -38,14 +38,14 @@ export const createResizer = (
         // Skip zero-sized rects that may be observed under `display: none` style
         if (!(target as HTMLElement).offsetParent) continue;
 
-        if (target === rootElement) {
+        if (target === viewportElement) {
           store._update(ACTION_VIEWPORT_RESIZE, [
             contentRect[sizeKey],
             contentRect[isHorizontal ? "left" : "top"],
             // contentRect doesn't have paddingRight/paddingBottom so get them from computed style
             // https://www.w3.org/TR/resize-observer/#css-definitions
             getStyleNumber(
-              computeStyle(rootElement)[
+              computeStyle(viewportElement)[
                 isHorizontal ? "paddingRight" : "paddingBottom"
               ]
             ),
@@ -65,10 +65,10 @@ export const createResizer = (
   });
 
   return {
-    _observeRoot(root: HTMLElement) {
-      rootElement = root;
+    _observeRoot(viewport: HTMLElement) {
+      viewportElement = viewport;
       const ro = getResizeObserver();
-      ro.observe(root, rootObserveOpts);
+      ro.observe(viewport, rootObserveOpts);
       return () => {
         ro.disconnect();
       };
@@ -153,7 +153,7 @@ export const createGridResizer = (
   vStore: VirtualStore,
   hStore: VirtualStore
 ) => {
-  let rootElement: HTMLElement | undefined;
+  let viewportElement: HTMLElement | undefined;
 
   const heightKey = "height";
   const widthKey = "width";
@@ -179,12 +179,12 @@ export const createGridResizer = (
         // Skip zero-sized rects that may be observed under `display: none` style
         if (!(target as HTMLElement).offsetParent) continue;
 
-        if (target === rootElement) {
+        if (target === viewportElement) {
           // contentRect doesn't have paddingRight/paddingBottom so get them from computed style
           // https://www.w3.org/TR/resize-observer/#css-definitions
           // TODO subtract scroll bar width/height
           // https://github.com/w3c/csswg-drafts/issues/3536
-          const style = computeStyle(rootElement);
+          const style = computeStyle(viewportElement);
           vStore._update(ACTION_VIEWPORT_RESIZE, [
             contentRect[heightKey],
             contentRect.top,
@@ -266,10 +266,10 @@ export const createGridResizer = (
   });
 
   return {
-    _observeRoot(root: HTMLElement) {
-      rootElement = root;
+    _observeRoot(viewport: HTMLElement) {
+      viewportElement = viewport;
       const ro = getResizeObserver();
-      ro.observe(root, rootObserveOpts);
+      ro.observe(viewport, rootObserveOpts);
       return () => {
         ro.disconnect();
       };
