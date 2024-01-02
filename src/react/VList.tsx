@@ -107,10 +107,6 @@ export interface VListProps extends ViewportComponentAttributes {
    */
   initialItemSize?: number;
   /**
-   * If set, the specified amount of items will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
-   */
-  initialItemCount?: number;
-  /**
    * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
   shift?: boolean;
@@ -126,6 +122,10 @@ export interface VListProps extends ViewportComponentAttributes {
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VListHandle.cache}.
    */
   cache?: CacheSnapshot;
+  /**
+   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
+   */
+  ssrCount?: number;
   /**
    * Customized components for advanced usage.
    */
@@ -175,11 +175,11 @@ export const VList = forwardRef<VListHandle, VListProps>(
       count: renderCountProp,
       overscan = 4,
       initialItemSize,
-      initialItemCount,
       shift,
       horizontal: horizontalProp,
       reverse,
       cache,
+      ssrCount,
       components: {
         Root: Viewport = DefaultViewport,
         Item: ItemElement = "div",
@@ -199,12 +199,14 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const onScroll = useLatestRef(onScrollProp);
     const onScrollStop = useLatestRef(onScrollStopProp);
 
+    const isSSR = useRef(!!ssrCount);
+
     const [store, resizer, scroller, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
       const _store = createVirtualStore(
         count,
         initialItemSize,
-        initialItemCount,
+        ssrCount,
         cache as unknown as Cache | undefined,
         !initialItemSize
       );
@@ -231,6 +233,8 @@ export const VList = forwardRef<VListHandle, VListProps>(
     const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {
+      isSSR[refKey] = false;
+
       const root = rootRef[refKey]!;
       // store must be subscribed first because others may dispatch update on init depending on implementation
       const unsubscribeStore = store._subscribe(
@@ -254,6 +258,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       );
       const cleanupResizer = resizer._observeRoot(root);
       const cleanupScroller = scroller._observe(root);
+
       return () => {
         unsubscribeStore();
         unsubscribeOnScroll();
@@ -329,6 +334,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
           _element={ItemElement as "div"}
           _children={e}
           _isHorizontal={isHorizontal}
+          _isSSR={isSSR[refKey]}
         />
       );
     }

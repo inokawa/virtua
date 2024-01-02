@@ -1062,6 +1062,54 @@ test.describe("RTL", () => {
   });
 });
 
+test("SSR and hydration", async ({ page }) => {
+  await page.goto(storyUrl("advanced-ssr--default"));
+
+  const component = await page.waitForSelector(scrollableSelector);
+  await component.waitForElementState("stable");
+
+  const first = await getFirstItem(component);
+  const last = await getLastItem(component);
+
+  // check if SSR suceeded
+  const itemsSelector = '*[style*="top"]';
+  const items = await component.$$(itemsSelector);
+  const initialLength = items.length;
+  await expect(initialLength).toBeGreaterThanOrEqual(30);
+  await expect(await items[0].textContent()).toEqual("0");
+  await expect(await items[items.length - 1].textContent()).toEqual(
+    String(items.length - 1)
+  );
+  // check if items have styles for SSR
+  await expect(await items[0].evaluate((e) => e.style.position)).not.toBe(
+    "absolute"
+  );
+
+  // should not change state with scroll before hydration
+  await component.evaluate((e) => e.scrollTo({ top: 1000 }));
+  await expect(initialLength).toBe((await component.$$(itemsSelector)).length);
+  await page.waitForTimeout(500);
+  await component.evaluate((e) => e.scrollTo({ top: 0 }));
+
+  // hydrate
+  await page.getByRole("button", { name: "hydrate" }).click();
+
+  // check if hydration suceeded but state is not changed
+  const hydratedItems = await component.$$(itemsSelector);
+  expect(hydratedItems.length).toBe(initialLength);
+  await expect((await getFirstItem(component)).top).toBe(first.top);
+  await expect((await getLastItem(component)).bottom).toBe(last.bottom);
+  // check if items do not have styles for SSR
+  await expect(await items[0].evaluate((e) => e.style.position)).toBe(
+    "absolute"
+  );
+
+  // should change state with scroll after hydration
+  await component.evaluate((e) => e.scrollTo({ top: 1000 }));
+  await page.waitForTimeout(500);
+  expect((await component.$$(itemsSelector)).length).not.toBe(initialLength);
+});
+
 test.describe("emulated iOS WebKit", () => {
   test.describe("check if scroll jump compensation works", () => {
     test("scroll with touch", async ({ page }) => {

@@ -13,7 +13,7 @@ describe("SSR", () => {
     const COUNT = 10;
     const OVERSCAN = 4;
     const html = renderToString(
-      <WVList id={LIST_ID} initialItemCount={COUNT} overscan={OVERSCAN}>
+      <WVList id={LIST_ID} ssrCount={COUNT} overscan={OVERSCAN}>
         {Array.from({ length: 1000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
@@ -31,7 +31,7 @@ describe("SSR", () => {
     const COUNT = 10;
     const OVERSCAN = 4;
     const html = renderToStaticMarkup(
-      <WVList id={LIST_ID} initialItemCount={COUNT} overscan={OVERSCAN}>
+      <WVList id={LIST_ID} ssrCount={COUNT} overscan={OVERSCAN}>
         {Array.from({ length: 1000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
@@ -51,7 +51,7 @@ describe("SSR", () => {
     const html = renderToString(
       <WVList
         id={LIST_ID}
-        initialItemCount={COUNT}
+        ssrCount={COUNT}
         overscan={OVERSCAN}
         horizontal
       >
@@ -74,7 +74,7 @@ describe("SSR", () => {
     const html = renderToStaticMarkup(
       <WVList
         id={LIST_ID}
-        initialItemCount={COUNT}
+        ssrCount={COUNT}
         overscan={OVERSCAN}
         horizontal
       >

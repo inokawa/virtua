@@ -126,7 +126,7 @@ export type VirtualStore = {
   _getCache(): CacheSnapshot;
   _getRange(): ItemsRange;
   _isUnmeasuredItem(index: number): boolean;
-  _hasUnmeasuredItemsInSmoothScrollRange(): boolean;
+  _hasUnmeasuredItemsInFrozenRange(): boolean;
   _getItemOffset(index: number): number;
   _getItemSize(index: number): number;
   _getItemsLength(): number;
@@ -149,12 +149,13 @@ export type VirtualStore = {
 export const createVirtualStore = (
   elementsCount: number,
   itemSize: number = 40,
-  initialItemCount: number = 0,
+  ssrCount: number = 0,
   cache: Cache = initCache(elementsCount, itemSize),
   shouldAutoEstimateItemSize?: boolean
 ): VirtualStore => {
+  let isSSR = !!ssrCount;
   let stateVersion: StateVersion = [];
-  let viewportSize = itemSize * max(initialItemCount - 1, 0);
+  let viewportSize = 0;
   let startSpacerSize = 0;
   let endSpacerSize = 0;
   let scrollOffset = 0;
@@ -165,8 +166,10 @@ export const createVirtualStore = (
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
   let _prepended = false;
   let _isManualScrolling = false;
-  let _smoothScrollRange: ItemsRange | null = null;
-  let _prevRange: ItemsRange = [0, initialItemCount];
+  let _frozenRange: ItemsRange | null = isSSR
+    ? [0, max(ssrCount - 1, 0)]
+    : null;
+  let _prevRange: ItemsRange = [0, 0];
 
   const subscribers = new Set<[number, Subscriber]>();
   const getTotalSize = (): number => computeTotalSize(cache);
@@ -193,10 +196,10 @@ export const createVirtualStore = (
       return JSON.parse(JSON.stringify(cache)) as unknown as CacheSnapshot;
     },
     _getRange() {
-      if (_smoothScrollRange) {
+      if (_frozenRange) {
         return [
-          min(_prevRange[0], _smoothScrollRange[0]),
-          max(_prevRange[1], _smoothScrollRange[1]),
+          min(_prevRange[0], _frozenRange[0]),
+          max(_prevRange[1], _frozenRange[1]),
         ];
       }
       // Return previous range for consistent render until next scroll event comes in.
@@ -213,12 +216,12 @@ export const createVirtualStore = (
     _isUnmeasuredItem(index) {
       return cache._sizes[index] === UNCACHED;
     },
-    _hasUnmeasuredItemsInSmoothScrollRange() {
-      if (!_smoothScrollRange) return false;
+    _hasUnmeasuredItemsInFrozenRange() {
+      if (!_frozenRange) return false;
       return cache._sizes
         .slice(
-          max(0, _smoothScrollRange[0] - 1),
-          min(cache._length - 1, _smoothScrollRange[1] + 1) + 1
+          max(0, _frozenRange[0] - 1),
+          min(cache._length - 1, _frozenRange[1] + 1) + 1
         )
         .includes(UNCACHED);
     },
@@ -403,6 +406,11 @@ export const createVirtualStore = (
           //   shouldFlushPendingJump = true;
           // }
 
+          if (isSSR) {
+            _frozenRange = null;
+            isSSR = false;
+          }
+
           // Update synchronously if scrolled a lot
           shouldSync = distance > viewportSize;
 
@@ -418,7 +426,7 @@ export const createVirtualStore = (
           }
           _scrollDirection = SCROLL_IDLE;
           _isManualScrolling = false;
-          _smoothScrollRange = null;
+          _frozenRange = null;
           break;
         }
         case ACTION_MANUAL_SCROLL: {
@@ -426,7 +434,7 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_BEFORE_MANUAL_SMOOTH_SCROLL: {
-          _smoothScrollRange = computeRange(
+          _frozenRange = computeRange(
             cache,
             payload,
             _prevRange[0],
