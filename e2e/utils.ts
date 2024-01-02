@@ -5,7 +5,10 @@ export const storyUrl = (id: string) =>
 
 export const scrollableSelector = '*[style*="overflow"]';
 
-export const expectNearlyZero = (value: number, max: number = 1, min = 0) => {
+export const expectInRange = (
+  value: number,
+  { max, min }: { min: number; max: number }
+) => {
   // sometimes it may not be 0 because of sub pixel value
   expect(value).toBeGreaterThanOrEqual(min);
   expect(value).toBeLessThan(max);

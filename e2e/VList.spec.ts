@@ -13,7 +13,7 @@ import {
   getScrollLeft,
   getScrollBottom,
   getScrollRight,
-  expectNearlyZero,
+  expectInRange,
   scrollWithTouch,
   getFirstItemRtl,
   scrollToLeft,
@@ -418,7 +418,7 @@ test.describe("check if scroll jump compensation works", () => {
         break;
       } else {
         // Check if bottom is always visible and on bottom
-        expectNearlyZero(firstItemBottom, 0.1, -0.1);
+        expectInRange(firstItemBottom, { min: -0.1, max: 0.1 });
         // Check if all items are visible
         expect(childrenCount).toBe(i + initialLength);
       }
@@ -437,7 +437,7 @@ test.describe("check if scroll jump compensation works", () => {
     await component.waitForElementState("stable");
     // check if end is displayed
     const initialItem = await getLastItem(component);
-    expectNearlyZero(initialItem.bottom);
+    expectInRange(initialItem.bottom, { min: 0, max: 1 });
 
     await page.evaluate(() => {
       // stop all timer
@@ -456,7 +456,7 @@ test.describe("check if scroll jump compensation works", () => {
     await component.waitForElementState("stable");
     const smallItem = await getLastItem(component);
     await expect(smallItem.text).not.toEqual(initialItem.text);
-    expectNearlyZero(smallItem.bottom);
+    expectInRange(smallItem.bottom, { min: 0, max: 1 });
 
     // append large item
     await textarea.clear();
@@ -467,7 +467,7 @@ test.describe("check if scroll jump compensation works", () => {
     await component.waitForElementState("stable");
     const largeItem = await getLastItem(component);
     await expect(largeItem.text).not.toEqual(smallItem.text);
-    expectNearlyZero(largeItem.bottom);
+    expectInRange(largeItem.bottom, { min: 0, max: 1 });
     await expect(largeItem.height).toBeGreaterThan(smallItem.height * 10);
   });
 
@@ -477,14 +477,20 @@ test.describe("check if scroll jump compensation works", () => {
     await component.waitForElementState("stable");
 
     // TODO firefox is bit unstable
-    const nearlyZeroMax = browserName === "firefox" ? 2 : undefined;
+    const nearlyZeroMax = browserName === "firefox" ? 2 : 1;
 
     // check if start is displayed
-    expectNearlyZero((await getFirstItem(component)).top, nearlyZeroMax);
+    expectInRange((await getFirstItem(component)).top, {
+      min: 0,
+      max: nearlyZeroMax,
+    });
 
     // check if stable after image load
     await page.waitForTimeout(3000);
-    expectNearlyZero((await getFirstItem(component)).top, nearlyZeroMax);
+    expectInRange((await getFirstItem(component)).top, {
+      min: 0,
+      max: nearlyZeroMax,
+    });
 
     // scroll to top
     await component.evaluate((e) => (e.scrollTop = 0));
@@ -522,7 +528,10 @@ test.describe("check if scroll jump compensation works", () => {
     });
 
     // check if stable after prepending
-    expectNearlyZero((await getFirstItem(component)).top, nearlyZeroMax);
+    expectInRange((await getFirstItem(component)).top, {
+      min: 0,
+      max: nearlyZeroMax,
+    });
   });
 });
 
@@ -648,7 +657,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if scrolled precisely
       const lastItem = await getLastItem(component);
       await expect(lastItem.text).toEqual("999");
-      expectNearlyZero(lastItem.bottom);
+      expectInRange(lastItem.bottom, { min: 0, max: 1 });
 
       // Check if unnecessary items are not rendered
       await expect(await component.innerText()).not.toContain("949");
@@ -690,7 +699,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if scrolled precisely
       const firstItem = await getFirstItem(component);
       await expect(firstItem.text).toEqual("700");
-      expectNearlyZero(firstItem.top);
+      expectInRange(firstItem.top, { min: 0, max: 1 });
 
       // Check if unnecessary items are not rendered
       await expect(await component.innerText()).not.toContain("650");
@@ -727,7 +736,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if scrolled precisely
       const lastItem = await getLastItem(component);
       await expect(lastItem.text).toEqual("700");
-      expectNearlyZero(lastItem.bottom);
+      expectInRange(lastItem.bottom, { min: 0, max: 1 });
 
       // Check if unnecessary items are not rendered
       await expect(await component.innerText()).not.toContain("650");
@@ -796,7 +805,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if scrolled precisely
       const lastItem = await getLastItem(component);
       await expect(lastItem.text).toEqual("999");
-      expectNearlyZero(lastItem.bottom);
+      expectInRange(lastItem.bottom, { min: 0, max: 1 });
 
       // Check if unnecessary items are not rendered
       await expect(await component.innerText()).not.toContain("949");
@@ -838,7 +847,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if scrolled precisely
       const lastItem = await getLastItem(component);
       await expect(lastItem.text).toEqual("700");
-      expectNearlyZero(lastItem.bottom);
+      expectInRange(lastItem.bottom, { min: 0, max: 1 });
 
       // Check if unnecessary items are not rendered
       await expect(await component.innerText()).not.toContain("650");
@@ -1152,8 +1161,9 @@ test.describe("emulated iOS WebKit", () => {
         expect(nextTop).toBeLessThan(top);
         expect(nextTop).not.toBe(nextTopBeforeFlush);
         expect(nextLastItem.text).toEqual(nextLastItemBeforeFlush.text);
-        expectNearlyZero(
-          Math.abs(nextLastItem.bottom - nextLastItemBeforeFlush.bottom)
+        expectInRange(
+          Math.abs(nextLastItem.bottom - nextLastItemBeforeFlush.bottom),
+          { min: 0, max: 1 }
         );
 
         top = nextTop;
@@ -1172,7 +1182,7 @@ test.describe("emulated iOS WebKit", () => {
       // check if last is displayed
       const last = await getLastItem(component, opts);
       await expect(last.text).toEqual("999");
-      expectNearlyZero(last.bottom);
+      expectInRange(last.bottom, { min: 0, max: 1 });
 
       await component.tap();
 
@@ -1206,8 +1216,9 @@ test.describe("emulated iOS WebKit", () => {
         expect(nextTop).toBeLessThan(top);
         expect(nextTop).not.toBe(nextTopBeforeFlush);
         expect(nextLastItem.text).toEqual(nextLastItemBeforeFlush.text);
-        expectNearlyZero(
-          Math.abs(nextLastItem.bottom - nextLastItemBeforeFlush.bottom)
+        expectInRange(
+          Math.abs(nextLastItem.bottom - nextLastItemBeforeFlush.bottom),
+          { min: 0, max: 1 }
         );
 
         top = nextTop;
