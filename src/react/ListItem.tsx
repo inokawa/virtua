@@ -32,6 +32,7 @@ type ListItemProps = {
   _hide: boolean;
   _element: "div" | CustomItemComponent;
   _isHorizontal: boolean;
+  _isSSR: boolean | undefined;
 };
 
 /**
@@ -46,6 +47,7 @@ export const ListItem = memo(
     _hide: hide,
     _element: Element,
     _isHorizontal: isHorizontal,
+    _isSSR: isSSR,
   }: ListItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -56,17 +58,17 @@ export const ListItem = memo(
       const style: CSSProperties = {
         margin: 0,
         padding: 0,
-        position: "absolute",
+        position: hide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
         [isHorizontal ? "top" : "left"]: 0,
         [isHorizontal ? (isRTLDocument() ? "right" : "left") : "top"]: offset,
-        visibility: hide ? "hidden" : "visible",
+        visibility: !hide || isSSR ? "visible" : "hidden",
       };
       if (isHorizontal) {
         style.display = "flex";
       }
       return style;
-    }, [offset, hide]);
+    }, [offset, hide, isSSR]);
 
     if (typeof Element === "string") {
       return (

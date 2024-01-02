@@ -122,7 +122,7 @@ export const createScroller = (
       while (true) {
         store._update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
 
-        if (!store._hasUnmeasuredItemsInSmoothScrollRange()) {
+        if (!store._hasUnmeasuredItemsInFrozenRange()) {
           break;
         }
 
