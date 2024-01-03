@@ -3,6 +3,9 @@ export type ItemResize = Readonly<[index: number, size: number]>;
 /** @internal */
 export type ItemsRange = Readonly<[startIndex: number, endIndex: number]>;
 
+/** @internal */
+export type InternalCacheSnapshot = [sizes: number[], defaultSize: number];
+
 declare const cacheSymbol: unique symbol;
 /**
  * Serializable cache snapshot.

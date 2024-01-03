@@ -10,6 +10,7 @@ import {
   initCache,
   computeRange,
   estimateDefaultItemSize,
+  takeCacheSnapshot,
 } from "./cache";
 
 const range = <T>(length: number, cb: (i: number) => T): T[] => {
@@ -779,6 +780,75 @@ describe(initCache.name, () => {
         ],
       }
     `);
+  });
+
+  it("should create cache from snapshot", () => {
+    expect(initCache(10, 23, [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 123]))
+      .toMatchInlineSnapshot(`
+      {
+        "_computedOffsetIndex": -1,
+        "_defaultItemSize": 123,
+        "_length": 10,
+        "_offsets": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+        ],
+        "_sizes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+        ],
+      }
+    `);
+  });
+});
+
+describe(takeCacheSnapshot.name, () => {
+  it("smoke", () => {
+    const cache = initCacheWithComputedOffsets(
+      range(10, (i) => (i + 1) * 10),
+      40
+    );
+    const snapshot = takeCacheSnapshot(cache);
+    expect(snapshot).toMatchInlineSnapshot(`
+      [
+        [
+          10,
+          20,
+          30,
+          40,
+          50,
+          60,
+          70,
+          80,
+          90,
+          100,
+        ],
+        40,
+      ]
+    `);
+
+    // Check if modifying snapshot doesn't affect cache
+    const clonedSnapshot = structuredClone(snapshot);
+    snapshot[0][0] = 999;
+    snapshot[1] = 123;
+    expect(snapshot).not.toEqual(clonedSnapshot);
+    expect(takeCacheSnapshot(cache)).toEqual(clonedSnapshot);
   });
 });
 
