@@ -14,6 +14,57 @@ import { isIOSWebKit } from "./environment";
 import type { CacheSnapshot } from "./types";
 import { abs, clamp, max, min } from "./utils";
 
+// Scroll offset and sizes can have sub-pixel value if window.devicePixelRatio has decimal value
+const SUBPIXEL_THRESHOLD = 1.5; // 0.5 * 3
+
+/** @internal */
+export const SCROLL_IDLE = 0;
+/** @internal */
+export const SCROLL_DOWN = 1;
+/** @internal */
+export const SCROLL_UP = 2;
+/** @internal */
+export type ScrollDirection =
+  | typeof SCROLL_IDLE
+  | typeof SCROLL_DOWN
+  | typeof SCROLL_UP;
+
+/** @internal */
+export const ACTION_ITEM_RESIZE = 1;
+/** @internal */
+export const ACTION_VIEWPORT_RESIZE = 2;
+/** @internal */
+export const ACTION_ITEMS_LENGTH_CHANGE = 3;
+/** @internal */
+export const ACTION_SCROLL = 4;
+/** @internal */
+export const ACTION_SCROLL_END = 5;
+/** @internal */
+export const ACTION_MANUAL_SCROLL = 6;
+/** @internal */
+export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 7;
+
+type Actions =
+  | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
+  | [type: typeof ACTION_VIEWPORT_RESIZE, size: ViewportResize]
+  | [
+      type: typeof ACTION_ITEMS_LENGTH_CHANGE,
+      arg: [length: number, isShift?: boolean | undefined]
+    ]
+  | [type: typeof ACTION_SCROLL, offset: number]
+  | [type: typeof ACTION_SCROLL_END, dummy?: void]
+  | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
+  | [type: typeof ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, offset: number];
+
+/** @internal */
+export const UPDATE_SCROLL_STATE = 0b0001;
+/** @internal */
+export const UPDATE_SIZE_STATE = 0b0010;
+/** @internal */
+export const UPDATE_SCROLL_EVENT = 0b0100;
+/** @internal */
+export const UPDATE_SCROLL_STOP_EVENT = 0b1000;
+
 type ViewportResize = [size: number, paddingStart: number, paddingEnd: number];
 
 /** @internal */
@@ -63,60 +114,9 @@ const calculateJump = (
   }, 0);
 };
 
-// Scroll offset and sizes can have sub-pixel value if window.devicePixelRatio has decimal value
-const SUBPIXEL_THRESHOLD = 1.5; // 0.5 * 3
-
-/** @internal */
-export const SCROLL_IDLE = 0;
-/** @internal */
-export const SCROLL_DOWN = 1;
-/** @internal */
-export const SCROLL_UP = 2;
-/** @internal */
-export type ScrollDirection =
-  | typeof SCROLL_IDLE
-  | typeof SCROLL_DOWN
-  | typeof SCROLL_UP;
-
-/** @internal */
-export const ACTION_ITEM_RESIZE = 1;
-/** @internal */
-export const ACTION_VIEWPORT_RESIZE = 2;
-/** @internal */
-export const ACTION_ITEMS_LENGTH_CHANGE = 3;
-/** @internal */
-export const ACTION_SCROLL = 4;
-/** @internal */
-export const ACTION_SCROLL_END = 5;
-/** @internal */
-export const ACTION_MANUAL_SCROLL = 6;
-/** @internal */
-export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 7;
-
-type Actions =
-  | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
-  | [type: typeof ACTION_VIEWPORT_RESIZE, size: ViewportResize]
-  | [
-      type: typeof ACTION_ITEMS_LENGTH_CHANGE,
-      arg: [length: number, isShift?: boolean | undefined]
-    ]
-  | [type: typeof ACTION_SCROLL, offset: number]
-  | [type: typeof ACTION_SCROLL_END, dummy?: void]
-  | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
-  | [type: typeof ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, offset: number];
-
 type Subscriber = (sync?: boolean) => void;
 
 type StateVersion = readonly [];
-
-/** @internal */
-export const UPDATE_SCROLL_STATE = 0b0001;
-/** @internal */
-export const UPDATE_SIZE_STATE = 0b0010;
-/** @internal */
-export const UPDATE_SCROLL_EVENT = 0b0100;
-/** @internal */
-export const UPDATE_SCROLL_STOP_EVENT = 0b1000;
 
 /**
  * @internal
