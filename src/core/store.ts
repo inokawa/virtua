@@ -183,7 +183,8 @@ export const createVirtualStore = (
   const getViewportSizeWithoutSpacer = () =>
     viewportSize - startSpacerSize - endSpacerSize;
   const getMaxScrollOffset = () =>
-    getTotalSize() - getViewportSizeWithoutSpacer();
+    // total size can become smaller than viewport size
+    max(0, getTotalSize() - getViewportSizeWithoutSpacer());
 
   const applyJump = (j: number) => {
     // In iOS WebKit browsers, updating scroll position will stop scrolling so it have to be deferred during scrolling.
