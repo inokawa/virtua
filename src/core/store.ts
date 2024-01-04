@@ -29,6 +29,14 @@ export type ScrollDirection =
   | typeof SCROLL_DOWN
   | typeof SCROLL_UP;
 
+const SCROLL_BY_NATIVE = 0;
+const SCROLL_BY_MANUAL_SCROLL = 1;
+const SCROLL_BY_PREPENDING = 2;
+type ScrollMode =
+  | typeof SCROLL_BY_NATIVE
+  | typeof SCROLL_BY_MANUAL_SCROLL
+  | typeof SCROLL_BY_PREPENDING;
+
 /** @internal */
 export const ACTION_ITEM_RESIZE = 1;
 /** @internal */
@@ -164,8 +172,7 @@ export const createVirtualStore = (
   let pendingJump = 0;
   let _flushedJump = 0;
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
-  let _prepended = false;
-  let _isManualScrolling = false;
+  let _scrollMode: ScrollMode = SCROLL_BY_NATIVE;
   let _frozenRange: ItemsRange | null = isSSR
     ? [0, max(ssrCount - 1, 0)]
     : null;
@@ -281,8 +288,6 @@ export const createVirtualStore = (
           const updated = payload.filter(
             ([index, size]) => cache._sizes[index] !== size
           );
-          const isJustPrepended = _prepended;
-          _prepended = false;
 
           // Skip if all items are cached and not updated
           if (!updated.length) {
@@ -299,7 +304,7 @@ export const createVirtualStore = (
             // Keep end to stick to the end
             diff = calculateJump(cache, updated, true);
           } else {
-            if (isJustPrepended) {
+            if (_scrollMode === SCROLL_BY_PREPENDING) {
               // Keep distance from end immediately after prepending
               // We can assume jumps occurred on the upper outside
               diff = calculateJump(cache, updated);
@@ -360,7 +365,9 @@ export const createVirtualStore = (
             const [shift, isAdd] = updateCacheLength(cache, payload[0], true);
             applyJump(isAdd ? shift : -min(shift, distanceToEnd));
 
-            _prepended = isAdd;
+            if (isAdd) {
+              _scrollMode = SCROLL_BY_PREPENDING;
+            }
             mutated = UPDATE_SCROLL_STATE;
           } else {
             updateCacheLength(cache, payload[0]);
@@ -389,7 +396,7 @@ export const createVirtualStore = (
           if (
             !isJustJumped &&
             // Ignore until manual scrolling
-            !_isManualScrolling
+            _scrollMode === SCROLL_BY_NATIVE
           ) {
             _scrollDirection = delta < 0 ? SCROLL_UP : SCROLL_DOWN;
           }
@@ -425,12 +432,12 @@ export const createVirtualStore = (
             mutated += UPDATE_SCROLL_STATE;
           }
           _scrollDirection = SCROLL_IDLE;
-          _isManualScrolling = false;
+          _scrollMode = SCROLL_BY_NATIVE;
           _frozenRange = null;
           break;
         }
         case ACTION_MANUAL_SCROLL: {
-          _isManualScrolling = true;
+          _scrollMode = SCROLL_BY_MANUAL_SCROLL;
           break;
         }
         case ACTION_BEFORE_MANUAL_SMOOTH_SCROLL: {
