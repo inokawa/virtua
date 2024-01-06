@@ -12,8 +12,8 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_SCROLL_STATE,
   UPDATE_SIZE_STATE,
-  clampEndIndex,
-  clampStartIndex,
+  overscanEndIndex,
+  overscanStartIndex,
   createVirtualStore,
   SCROLL_IDLE,
 } from "../core/store";
@@ -359,23 +359,23 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       };
     }, [children]);
 
-    const overscanedStartRowIndex = clampStartIndex(
+    const overscanedStartRowIndex = overscanStartIndex(
       startRowIndex,
       overscan,
       vScrollDirection
     );
-    const overscanedEndRowIndex = clampEndIndex(
+    const overscanedEndRowIndex = overscanEndIndex(
       endRowIndex,
       overscan,
       vScrollDirection,
       rowCount
     );
-    const overscanedStartColIndex = clampStartIndex(
+    const overscanedStartColIndex = overscanStartIndex(
       startColIndex,
       overscan,
       hScrollDirection
     );
-    const overscanedEndColIndex = clampEndIndex(
+    const overscanedEndColIndex = overscanEndIndex(
       endColIndex,
       overscan,
       hScrollDirection,

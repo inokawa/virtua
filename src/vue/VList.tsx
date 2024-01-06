@@ -17,8 +17,8 @@ import {
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_STOP_EVENT,
   UPDATE_SIZE_STATE,
-  clampEndIndex,
-  clampStartIndex,
+  overscanEndIndex,
+  overscanStartIndex,
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
 } from "../core/store";
@@ -190,12 +190,12 @@ export const VList = /*#__PURE__*/ defineComponent({
       const scrollDirection = store._getScrollDirection();
       const scrollSize = store._getScrollSize();
 
-      const overscanedStartIndex = clampStartIndex(
+      const overscanedStartIndex = overscanStartIndex(
         startIndex,
         props.overscan,
         scrollDirection
       );
-      const overscanedEndIndex = clampEndIndex(
+      const overscanedEndIndex = overscanEndIndex(
         endIndex,
         props.overscan,
         scrollDirection,

@@ -11,8 +11,8 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_SCROLL_STATE,
   UPDATE_SIZE_STATE,
-  clampEndIndex,
-  clampStartIndex,
+  overscanEndIndex,
+  overscanStartIndex,
   createVirtualStore,
   SCROLL_IDLE,
   UPDATE_SCROLL_STOP_EVENT,
@@ -250,12 +250,12 @@ export const WVList = forwardRef<WVListHandle, WVListProps>(
       []
     );
 
-    const overscanedStartIndex = clampStartIndex(
+    const overscanedStartIndex = overscanStartIndex(
       startIndex,
       overscan,
       scrollDirection
     );
-    const overscanedEndIndex = clampEndIndex(
+    const overscanedEndIndex = overscanEndIndex(
       endIndex,
       overscan,
       scrollDirection,

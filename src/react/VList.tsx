@@ -10,8 +10,8 @@ import {
 import {
   UPDATE_SCROLL_EVENT,
   ACTION_ITEMS_LENGTH_CHANGE,
-  clampEndIndex,
-  clampStartIndex,
+  overscanEndIndex,
+  overscanStartIndex,
   createVirtualStore,
   UPDATE_SIZE_STATE,
   UPDATE_SCROLL_STATE,
@@ -305,12 +305,12 @@ export const VList = forwardRef<VListHandle, VListProps>(
       []
     );
 
-    const overscanedStartIndex = clampStartIndex(
+    const overscanedStartIndex = overscanStartIndex(
       startIndex,
       overscan,
       scrollDirection
     );
-    const overscanedEndIndex = clampEndIndex(
+    const overscanedEndIndex = overscanEndIndex(
       endIndex,
       overscan,
       scrollDirection,

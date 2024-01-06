@@ -82,7 +82,7 @@ type ItemsRange = Readonly<[startIndex: number, endIndex: number]>;
 /**
  * @internal
  */
-export const clampStartIndex = (
+export const overscanStartIndex = (
   startIndex: number,
   overscan: number,
   scrollDirection: ScrollDirection
@@ -96,7 +96,7 @@ export const clampStartIndex = (
 /**
  * @internal
  */
-export const clampEndIndex = (
+export const overscanEndIndex = (
   endIndex: number,
   overscan: number,
   scrollDirection: ScrollDirection,
