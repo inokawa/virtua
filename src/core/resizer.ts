@@ -4,9 +4,7 @@ import {
   ItemResize,
   VirtualStore,
 } from "./store";
-import { exists, computeStyle, getStyleNumber, max, once } from "./utils";
-
-const rootObserveOpts: ResizeObserverOptions = { box: "border-box" };
+import { exists, max, once } from "./utils";
 
 /**
  * @internal
@@ -14,8 +12,9 @@ const rootObserveOpts: ResizeObserverOptions = { box: "border-box" };
 export type ItemResizeObserver = (el: HTMLElement, i: number) => () => void;
 
 interface ListResizer {
-  _observeRoot(viewportElement: HTMLElement): () => void;
+  _observeRoot(viewportElement: HTMLElement): void;
   _observeItem: ItemResizeObserver;
+  _dispose(): void;
 }
 
 /**
@@ -39,17 +38,7 @@ export const createResizer = (
         if (!(target as HTMLElement).offsetParent) continue;
 
         if (target === viewportElement) {
-          store._update(ACTION_VIEWPORT_RESIZE, [
-            contentRect[sizeKey],
-            contentRect[isHorizontal ? "left" : "top"],
-            // contentRect doesn't have paddingRight/paddingBottom so get them from computed style
-            // https://www.w3.org/TR/resize-observer/#css-definitions
-            getStyleNumber(
-              computeStyle(viewportElement)[
-                isHorizontal ? "paddingRight" : "paddingBottom"
-              ]
-            ),
-          ]);
+          store._update(ACTION_VIEWPORT_RESIZE, contentRect[sizeKey]);
         } else {
           const index = mountedIndexes.get(target);
           if (exists(index)) {
@@ -66,12 +55,7 @@ export const createResizer = (
 
   return {
     _observeRoot(viewport: HTMLElement) {
-      viewportElement = viewport;
-      const ro = getResizeObserver();
-      ro.observe(viewport, rootObserveOpts);
-      return () => {
-        ro.disconnect();
-      };
+      getResizeObserver().observe((viewportElement = viewport));
     },
     _observeItem: (el: HTMLElement, i: number) => {
       const ro = getResizeObserver();
@@ -82,12 +66,16 @@ export const createResizer = (
         ro.unobserve(el);
       };
     },
+    _dispose() {
+      getResizeObserver().disconnect();
+    },
   };
 };
 
 interface WindowListResizer {
-  _observeRoot(): () => void;
+  _observeRoot(): void;
   _observeItem: ItemResizeObserver;
+  _dispose(): void;
 }
 
 /**
@@ -121,18 +109,14 @@ export const createWindowResizer = (
       }
     });
   });
+  const onWindowResize = () => {
+    store._update(ACTION_VIEWPORT_RESIZE, window[windowSizeKey]);
+  };
 
   return {
     _observeRoot() {
-      const cb = () => {
-        store._update(ACTION_VIEWPORT_RESIZE, [window[windowSizeKey], 0, 0]);
-      };
-      window.addEventListener("resize", cb);
-      cb();
-      return () => {
-        window.removeEventListener("resize", cb);
-        getResizeObserver().disconnect();
-      };
+      window.addEventListener("resize", onWindowResize);
+      onWindowResize();
     },
     _observeItem: (el: HTMLElement, i: number) => {
       const ro = getResizeObserver();
@@ -142,6 +126,10 @@ export const createWindowResizer = (
         mountedIndexes.delete(el);
         ro.unobserve(el);
       };
+    },
+    _dispose() {
+      window.removeEventListener("resize", onWindowResize);
+      getResizeObserver().disconnect();
     },
   };
 };
@@ -180,21 +168,8 @@ export const createGridResizer = (
         if (!(target as HTMLElement).offsetParent) continue;
 
         if (target === viewportElement) {
-          // contentRect doesn't have paddingRight/paddingBottom so get them from computed style
-          // https://www.w3.org/TR/resize-observer/#css-definitions
-          // TODO subtract scroll bar width/height
-          // https://github.com/w3c/csswg-drafts/issues/3536
-          const style = computeStyle(viewportElement);
-          vStore._update(ACTION_VIEWPORT_RESIZE, [
-            contentRect[heightKey],
-            contentRect.top,
-            getStyleNumber(style.paddingBottom),
-          ]);
-          hStore._update(ACTION_VIEWPORT_RESIZE, [
-            contentRect[widthKey],
-            contentRect.left,
-            getStyleNumber(style.paddingRight),
-          ]);
+          vStore._update(ACTION_VIEWPORT_RESIZE, contentRect[heightKey]);
+          hStore._update(ACTION_VIEWPORT_RESIZE, contentRect[widthKey]);
         } else {
           const cell = mountedIndexes.get(target);
           if (cell) {
@@ -267,12 +242,7 @@ export const createGridResizer = (
 
   return {
     _observeRoot(viewport: HTMLElement) {
-      viewportElement = viewport;
-      const ro = getResizeObserver();
-      ro.observe(viewport, rootObserveOpts);
-      return () => {
-        ro.disconnect();
-      };
+      getResizeObserver().observe((viewportElement = viewport));
     },
     _observeItem(el: HTMLElement, rowIndex: number, colIndex: number) {
       const ro = getResizeObserver();
@@ -284,6 +254,9 @@ export const createGridResizer = (
         mountedIndexes.delete(el);
         ro.unobserve(el);
       };
+    },
+    _dispose() {
+      getResizeObserver().disconnect();
     },
   };
 };

@@ -54,7 +54,7 @@ export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 7;
 
 type Actions =
   | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
-  | [type: typeof ACTION_VIEWPORT_RESIZE, size: ViewportResize]
+  | [type: typeof ACTION_VIEWPORT_RESIZE, size: number]
   | [
       type: typeof ACTION_ITEMS_LENGTH_CHANGE,
       arg: [length: number, isShift?: boolean | undefined]
@@ -71,13 +71,30 @@ export const UPDATE_SIZE_STATE = 0b0010;
 /** @internal */
 export const UPDATE_SCROLL_EVENT = 0b0100;
 /** @internal */
-export const UPDATE_SCROLL_STOP_EVENT = 0b1000;
-
-type ViewportResize = [size: number, paddingStart: number, paddingEnd: number];
+export const UPDATE_SCROLL_END_EVENT = 0b1000;
 
 /** @internal */
 export type ItemResize = Readonly<[index: number, size: number]>;
 type ItemsRange = Readonly<[startIndex: number, endIndex: number]>;
+
+/**
+ *  @internal
+ */
+export const getScrollSize = (store: VirtualStore): number => {
+  return max(store._getTotalSize(), store._getViewportSize());
+};
+
+/**
+ * @internal
+ */
+export const getMinContainerSize = (store: VirtualStore): number => {
+  return max(
+    store._getTotalSize(),
+    store._getViewportSize() -
+      store._getStartSpacerSize() -
+      store._getEndSpacerSize()
+  );
+};
 
 /**
  * @internal
@@ -143,7 +160,7 @@ export type VirtualStore = {
   _getScrollDirection(): ScrollDirection;
   _getViewportSize(): number;
   _getStartSpacerSize(): number;
-  _getScrollSize(): number;
+  _getEndSpacerSize(): number;
   _getTotalSize(): number;
   _getJumpCount(): number;
   _flushJump(): number;
@@ -159,13 +176,13 @@ export const createVirtualStore = (
   itemSize: number = 40,
   ssrCount: number = 0,
   cache: Cache = initCache(elementsCount, itemSize),
-  shouldAutoEstimateItemSize?: boolean
+  shouldAutoEstimateItemSize?: boolean | undefined,
+  startSpacerSize: number = 0,
+  endSpacerSize: number = 0
 ): VirtualStore => {
   let isSSR = !!ssrCount;
   let stateVersion: StateVersion = [];
   let viewportSize = 0;
-  let startSpacerSize = 0;
-  let endSpacerSize = 0;
   let scrollOffset = 0;
   let jumpCount = 0;
   let jump = 0;
@@ -180,11 +197,12 @@ export const createVirtualStore = (
 
   const subscribers = new Set<[number, Subscriber]>();
   const getTotalSize = (): number => computeTotalSize(cache);
-  const getViewportSizeWithoutSpacer = () =>
-    viewportSize - startSpacerSize - endSpacerSize;
-  const getMaxScrollOffset = () =>
+  const getScrollableSize = (): number =>
+    getTotalSize() + startSpacerSize + endSpacerSize;
+  const getRelativeScrollOffset = (): number => scrollOffset - startSpacerSize;
+  const getMaxScrollOffset = (): number =>
     // total size can become smaller than viewport size
-    max(0, getTotalSize() - getViewportSizeWithoutSpacer());
+    max(0, getScrollableSize() - viewportSize);
 
   const applyJump = (j: number) => {
     // In iOS WebKit browsers, updating scroll position will stop scrolling so it have to be deferred during scrolling.
@@ -216,7 +234,7 @@ export const createVirtualStore = (
       }
       return (_prevRange = computeRange(
         cache,
-        scrollOffset + pendingJump + jump,
+        getRelativeScrollOffset() + pendingJump + jump,
         _prevRange[0],
         viewportSize
       ));
@@ -255,15 +273,15 @@ export const createVirtualStore = (
     _getStartSpacerSize() {
       return startSpacerSize;
     },
-    _getScrollSize() {
-      return max(getTotalSize(), getViewportSizeWithoutSpacer());
+    _getEndSpacerSize() {
+      return endSpacerSize;
     },
     _getTotalSize: getTotalSize,
     _getJumpCount() {
       return jumpCount;
     },
     _flushJump() {
-      if (getViewportSizeWithoutSpacer() > getTotalSize()) {
+      if (viewportSize > getScrollableSize()) {
         // In this case applying jump will not cause scroll.
         // Current logic expects scroll event occurs after applying jump so discard it.
         return (jump = 0);
@@ -349,11 +367,8 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_VIEWPORT_RESIZE: {
-          const total = payload[0] + payload[1] + payload[2];
-          if (viewportSize !== total) {
-            viewportSize = total;
-            startSpacerSize = payload[1];
-            endSpacerSize = payload[2];
+          if (viewportSize !== payload) {
+            viewportSize = payload;
             mutated = UPDATE_SIZE_STATE;
           }
           break;
@@ -427,7 +442,7 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_SCROLL_END: {
-          mutated = UPDATE_SCROLL_STOP_EVENT;
+          mutated = UPDATE_SCROLL_END_EVENT;
           if (_scrollDirection !== SCROLL_IDLE) {
             shouldFlushPendingJump = true;
             mutated += UPDATE_SCROLL_STATE;

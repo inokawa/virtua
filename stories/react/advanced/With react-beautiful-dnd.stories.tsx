@@ -1,18 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
-import {
-  CustomItemComponentProps,
-  CustomViewportComponentProps,
-  VList,
-} from "../../../src";
-import React, {
-  CSSProperties,
-  createContext,
-  forwardRef,
-  useContext,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from "react";
+import { CustomItemComponentProps, Virtualizer } from "../../../src";
+import React, { ReactNode, forwardRef, useLayoutEffect, useState } from "react";
 import {
   DragDropContext,
   Droppable,
@@ -20,10 +8,9 @@ import {
   DraggableProvided,
   DroppableProvided,
 } from "react-beautiful-dnd";
-import { mergeRefs } from "react-merge-refs";
 
 export default {
-  component: VList,
+  component: Virtualizer,
 } as Meta;
 
 const ITEM_HEIGHT = 50;
@@ -54,8 +41,6 @@ const Item = ({
   );
 };
 
-const ScrollerRefContext = createContext<DroppableProvided["innerRef"]>(null!);
-
 const ItemWithMinHeight = forwardRef<HTMLDivElement, CustomItemComponentProps>(
   ({ children, style }, ref) => {
     return (
@@ -66,47 +51,40 @@ const ItemWithMinHeight = forwardRef<HTMLDivElement, CustomItemComponentProps>(
   }
 );
 
-const Viewport = forwardRef<HTMLDivElement, CustomViewportComponentProps>(
-  ({ children, attrs, width, height, scrolling }, ref) => {
-    useLayoutEffect(() => {
-      // Ignore ResizeObserver errors because ResizeObserver used in virtua can cause error on window
-      // (https://github.com/inokawa/virtua#what-is-resizeobserver-loop-completed-with-undelivered-notifications-error)
-      // and react-beautiful-dnd aborts dragging when it detects any errors on window.
-      // (https://github.com/atlassian/react-beautiful-dnd/blob/master/docs/guides/setup-problem-detection-and-error-recovery.md#error-is-caught-by-window-error-listener)
-      //
-      // Set event listener here in this example because useLayoutEffect/componentDidMount will be called from children to parent usually.
-      const onError = (e: ErrorEvent) => {
-        if (e.message.includes("ResizeObserver")) {
-          e.stopImmediatePropagation();
-        }
-      };
-      window.addEventListener("error", onError);
-      return () => {
-        window.removeEventListener("error", onError);
-      };
-    }, []);
+const VirtualList = ({
+  children,
+  innerRef: droppableRef,
+}: {
+  children: ReactNode;
+  innerRef: DroppableProvided["innerRef"];
+}) => {
+  useLayoutEffect(() => {
+    // Ignore ResizeObserver errors because ResizeObserver used in virtua can cause error on window
+    // (https://github.com/inokawa/virtua#what-is-resizeobserver-loop-completed-with-undelivered-notifications-error)
+    // and react-beautiful-dnd aborts dragging when it detects any errors on window.
+    // (https://github.com/atlassian/react-beautiful-dnd/blob/master/docs/guides/setup-problem-detection-and-error-recovery.md#error-is-caught-by-window-error-listener)
+    //
+    // Set event listener here in this example because useLayoutEffect/componentDidMount will be called from children to parent usually.
+    const onError = (e: ErrorEvent) => {
+      if (e.message.includes("ResizeObserver")) {
+        e.stopImmediatePropagation();
+      }
+    };
+    window.addEventListener("error", onError);
+    return () => {
+      window.removeEventListener("error", onError);
+    };
+  }, []);
 
-    const droppableRef = useContext(ScrollerRefContext);
-    return (
-      <div ref={mergeRefs([ref, droppableRef])} {...attrs}>
-        <div
-          style={useMemo((): CSSProperties => {
-            return {
-              contain: "content",
-              position: "relative",
-              visibility: "hidden",
-              width: width ?? "100%",
-              height: height ?? "100%",
-              pointerEvents: scrolling ? "none" : "auto",
-            };
-          }, [width, height, scrolling])}
-        >
-          {children}
-        </div>
-      </div>
-    );
-  }
-);
+  return (
+    <div
+      ref={droppableRef}
+      style={{ overflowY: "auto", width: 400, height: 600 }}
+    >
+      <Virtualizer item={ItemWithMinHeight}>{children}</Virtualizer>
+    </div>
+  );
+};
 
 export const Default: StoryObj = {
   name: "With react-beautiful-dnd",
@@ -149,20 +127,15 @@ export const Default: StoryObj = {
           )}
         >
           {(provided) => (
-            <ScrollerRefContext.Provider value={provided.innerRef}>
-              <VList
-                style={{ width: 400, height: 600 }}
-                components={{ Root: Viewport, Item: ItemWithMinHeight }}
-              >
-                {items.map((id, i) => (
-                  <Draggable key={id} draggableId={id} index={i}>
-                    {(provided) => (
-                      <Item id={id} isDragging={false} provided={provided} />
-                    )}
-                  </Draggable>
-                ))}
-              </VList>
-            </ScrollerRefContext.Provider>
+            <VirtualList innerRef={provided.innerRef}>
+              {items.map((id, i) => (
+                <Draggable key={id} draggableId={id} index={i}>
+                  {(provided) => (
+                    <Item id={id} isDragging={false} provided={provided} />
+                  )}
+                </Draggable>
+              ))}
+            </VirtualList>
           )}
         </Droppable>
       </DragDropContext>

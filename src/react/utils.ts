@@ -9,11 +9,6 @@ export const refKey = "current";
 /**
  * @internal
  */
-export const emptyComponents = {};
-
-/**
- * @internal
- */
 export type ItemElement = ReactElement | ReactFragment | string | number;
 
 const forEach = (children: ReactNode, elements: ItemElement[]) => {

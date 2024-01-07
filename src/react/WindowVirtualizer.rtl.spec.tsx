@@ -1,6 +1,6 @@
 import { afterEach, it, expect, describe, jest } from "@jest/globals";
 import { render, cleanup } from "@testing-library/react";
-import { WVList } from "./WVList";
+import { WindowVirtualizer } from "./WindowVirtualizer";
 
 jest.mock("../core/environment", () => {
   const originalModule = jest.requireActual("../core/environment");
@@ -60,22 +60,22 @@ afterEach(cleanup);
 describe("rtl", () => {
   it("should not work in vertical", () => {
     const { asFragment } = render(
-      <WVList>
+      <WindowVirtualizer>
         {Array.from({ length: 100 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });
 
   it("should work in horizontal", () => {
     const { asFragment } = render(
-      <WVList horizontal>
+      <WindowVirtualizer horizontal>
         {Array.from({ length: 100 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </WVList>
+      </WindowVirtualizer>
     );
     expect(asFragment()).toMatchSnapshot();
   });

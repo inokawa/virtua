@@ -15,12 +15,14 @@ import {
   SCROLL_IDLE,
   UPDATE_SCROLL_STATE,
   UPDATE_SCROLL_EVENT,
-  UPDATE_SCROLL_STOP_EVENT,
+  UPDATE_SCROLL_END_EVENT,
   UPDATE_SIZE_STATE,
   overscanEndIndex,
   overscanStartIndex,
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
+  getScrollSize,
+  getMinContainerSize,
 } from "../core/store";
 import { createResizer } from "../core/resizer";
 import { createScroller } from "../core/scroller";
@@ -75,7 +77,7 @@ const props = {
    * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
    * - If set, you can opt out estimation and use the value as initial item size.
    */
-  initialItemSize: Number,
+  itemSize: Number,
   /**
    * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
@@ -88,16 +90,16 @@ const props = {
 
 export const VList = /*#__PURE__*/ defineComponent({
   props: props,
-  emits: ["scroll", "scrollStop", "rangeChange"],
+  emits: ["scroll", "scrollEnd", "rangeChange"],
   setup(props, { emit, expose, slots }) {
     const isHorizontal = props.horizontal;
     const rootRef = ref<HTMLDivElement>();
     const store = createVirtualStore(
       props.data.length,
-      props.initialItemSize ?? 40,
+      props.itemSize ?? 40,
       undefined,
       undefined,
-      !props.initialItemSize
+      !props.itemSize
     );
     const resizer = createResizer(store, isHorizontal);
     const scroller = createScroller(store, isHorizontal);
@@ -113,27 +115,25 @@ export const VList = /*#__PURE__*/ defineComponent({
     const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
       emit("scroll", store._getScrollOffset());
     });
-    const unsubscribeOnScrollStop = store._subscribe(
-      UPDATE_SCROLL_STOP_EVENT,
+    const unsubscribeOnScrollEnd = store._subscribe(
+      UPDATE_SCROLL_END_EVENT,
       () => {
-        emit("scrollStop");
+        emit("scrollEnd");
       }
     );
 
-    let cleanupResizer: (() => void) | undefined;
-    let cleanupScroller: (() => void) | undefined;
     onMounted(() => {
       const root = rootRef.value;
       if (!root) return;
-      cleanupResizer = resizer._observeRoot(root);
-      cleanupScroller = scroller._observe(root);
+      resizer._observeRoot(root);
+      scroller._observe(root);
     });
     onUnmounted(() => {
       unsubscribeStore();
       unsubscribeOnScroll();
-      unsubscribeOnScrollStop();
-      if (cleanupResizer) cleanupResizer();
-      if (cleanupScroller) cleanupScroller();
+      unsubscribeOnScrollEnd();
+      resizer._dispose();
+      scroller._dispose();
     });
 
     watch(
@@ -171,7 +171,7 @@ export const VList = /*#__PURE__*/ defineComponent({
         return store._getScrollOffset();
       },
       get scrollSize() {
-        return store._getScrollSize();
+        return getScrollSize(store);
       },
       get viewportSize() {
         return store._getViewportSize();
@@ -188,22 +188,23 @@ export const VList = /*#__PURE__*/ defineComponent({
 
       const [startIndex, endIndex] = store._getRange();
       const scrollDirection = store._getScrollDirection();
-      const scrollSize = store._getScrollSize();
+      const totalSize = store._getTotalSize();
 
-      const overscanedStartIndex = overscanStartIndex(
-        startIndex,
-        props.overscan,
-        scrollDirection
-      );
-      const overscanedEndIndex = overscanEndIndex(
-        endIndex,
-        props.overscan,
-        scrollDirection,
-        count
-      );
+      // https://github.com/inokawa/virtua/issues/252#issuecomment-1822861368
+      const minSize = getMinContainerSize(store);
 
       const items: VNode[] = [];
-      for (let i = overscanedStartIndex; i <= overscanedEndIndex; i++) {
+      for (
+        let i = overscanStartIndex(startIndex, props.overscan, scrollDirection),
+          j = overscanEndIndex(
+            endIndex,
+            props.overscan,
+            scrollDirection,
+            count
+          );
+        i <= j;
+        i++
+      ) {
         const e = slots.default(props.data![i]!)[0]! as VNode;
         const key = e.key;
         items.push(
@@ -237,8 +238,9 @@ export const VList = /*#__PURE__*/ defineComponent({
               contain: "content",
               position: "relative",
               visibility: "hidden",
-              width: isHorizontal ? scrollSize + "px" : "100%",
-              height: isHorizontal ? "100%" : scrollSize + "px",
+              width: isHorizontal ? totalSize + "px" : "100%",
+              height: isHorizontal ? "100%" : totalSize + "px",
+              [isHorizontal ? "minWidth" : "minHeight"]: minSize,
               pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : "auto",
             }}
           >
@@ -265,7 +267,7 @@ export const VList = /*#__PURE__*/ defineComponent({
     /**
      * Callback invoked when scrolling stops.
      */
-    scrollStop: () => void;
+    scrollEnd: () => void;
     /**
      * Callback invoked when visible items range changes.
      */

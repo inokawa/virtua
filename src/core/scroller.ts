@@ -21,7 +21,7 @@ import { debounce, throttle, timeout, clamp } from "./utils";
 const createOnWheel = (
   store: VirtualStore,
   isHorizontal: boolean,
-  onScrollStopped: () => void
+  onScrollEnd: () => void
 ) => {
   return throttle((e: WheelEvent) => {
     if (store._getScrollDirection() === SCROLL_IDLE) {
@@ -38,7 +38,7 @@ const createOnWheel = (
     if (isHorizontal ? e.deltaX : e.deltaY) {
       const offset = store._getScrollOffset();
       if (offset > 0 && offset < store._getMaxScrollOffset()) {
-        onScrollStopped();
+        onScrollEnd();
       }
     }
   }, 50);
@@ -61,7 +61,8 @@ const normalizeRTLOffset = (
  * @internal
  */
 export type Scroller = {
-  _observe: (viewportElement: HTMLElement) => () => void;
+  _observe: (viewportElement: HTMLElement) => void;
+  _dispose(): void;
   _scrollTo: (offset: number) => void;
   _scrollBy: (offset: number) => void;
   _scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
@@ -76,6 +77,7 @@ export const createScroller = (
   isHorizontal: boolean
 ): Scroller => {
   let viewportElement: HTMLElement | undefined;
+  let cleanup: (() => void) | undefined;
   let cancelScroll: (() => void) | undefined;
   let stillMomentumScrolling = false;
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
@@ -168,10 +170,10 @@ export const createScroller = (
       let touching = false;
       let justTouchEnded = false;
 
-      const onScrollStopped = debounce(() => {
+      const onScrollEnd = debounce(() => {
         if (touching) {
           // Wait while touching
-          onScrollStopped();
+          onScrollEnd();
           return;
         }
 
@@ -186,10 +188,10 @@ export const createScroller = (
         }
 
         store._update(ACTION_SCROLL, normalizeOffset(viewport[scrollToKey]));
-        onScrollStopped();
+        onScrollEnd();
       };
 
-      const onWheel = createOnWheel(store, isHorizontal, onScrollStopped);
+      const onWheel = createOnWheel(store, isHorizontal, onScrollEnd);
 
       const onTouchStart = () => {
         touching = true;
@@ -207,13 +209,16 @@ export const createScroller = (
       viewport.addEventListener("touchstart", onTouchStart, { passive: true });
       viewport.addEventListener("touchend", onTouchEnd, { passive: true });
 
-      return () => {
+      cleanup = () => {
         viewport.removeEventListener("scroll", onScroll);
         viewport.removeEventListener("wheel", onWheel);
         viewport.removeEventListener("touchstart", onTouchStart);
         viewport.removeEventListener("touchend", onTouchEnd);
-        onScrollStopped._cancel();
+        onScrollEnd._cancel();
       };
+    },
+    _dispose() {
+      cleanup && cleanup();
     },
     _scrollTo(offset) {
       scrollManually(() => offset);
@@ -283,7 +288,8 @@ export const createScroller = (
  * @internal
  */
 export type WindowScroller = {
-  _observe: (containerElement: HTMLElement) => () => void;
+  _observe(containerElement: HTMLElement): void;
+  _dispose(): void;
   _fixScrollJump: (jump: number) => void;
 };
 
@@ -295,6 +301,7 @@ export const createWindowScroller = (
   isHorizontal: boolean
 ): WindowScroller => {
   let containerElement: HTMLElement | undefined;
+  let cleanup: (() => void) | undefined;
   const scrollToKey = isHorizontal ? "scrollX" : "scrollY";
   const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
 
@@ -325,7 +332,7 @@ export const createWindowScroller = (
         return getOffsetToWindow(parent as HTMLElement, nodeOffset);
       };
 
-      const onScrollStopped = debounce(() => {
+      const onScrollEnd = debounce(() => {
         store._update(ACTION_SCROLL_END);
       }, 150);
 
@@ -334,19 +341,22 @@ export const createWindowScroller = (
           ACTION_SCROLL,
           normalizeOffset(window[scrollToKey]) - getOffsetToWindow(container, 0)
         );
-        onScrollStopped();
+        onScrollEnd();
       };
 
-      const onWheel = createOnWheel(store, isHorizontal, onScrollStopped);
+      const onWheel = createOnWheel(store, isHorizontal, onScrollEnd);
 
       window.addEventListener("scroll", onScroll);
       window.addEventListener("wheel", onWheel, { passive: true });
 
-      return () => {
+      cleanup = () => {
         window.removeEventListener("scroll", onScroll);
         window.removeEventListener("wheel", onWheel);
-        onScrollStopped._cancel();
+        onScrollEnd._cancel();
       };
+    },
+    _dispose() {
+      cleanup && cleanup();
     },
     _fixScrollJump: (jump) => {
       // TODO support case two window scrollers exist in the same view

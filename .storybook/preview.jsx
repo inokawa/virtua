@@ -25,7 +25,7 @@ export default {
       storySort: {
         order: [
           "basics",
-          ["VList", "WVList", "VGrid"],
+          ["VList", "Virtualizer", "WindowVirtualizer", "VGrid"],
           "advanced",
           "comparisons",
         ],

@@ -6,7 +6,11 @@ import React, {
   useMemo,
   useLayoutEffect,
 } from "react";
-import { WVList, type WVListHandle, type CacheSnapshot } from "../../../src";
+import {
+  WindowVirtualizer,
+  type WindowVirtualizerHandle,
+  type CacheSnapshot,
+} from "../../../src";
 import { Spinner, delay } from "../common";
 
 const createRows = (num: number) => {
@@ -45,20 +49,16 @@ const createColumns = (num: number) => {
 };
 
 export default {
-  component: WVList,
+  component: WindowVirtualizer,
 } as Meta;
 
 export const Default: StoryObj = {
   render: () => {
     return (
-      <div style={{ padding: 200 }}>
-        <WVList
-          style={{
-            border: "solid 1px gray",
-          }}
-        >
-          {createRows(1000)}
-        </WVList>
+      <div style={{ padding: "200px 100px" }}>
+        <div style={{ border: "solid 1px gray" }}>
+          <WindowVirtualizer>{createRows(1000)}</WindowVirtualizer>
+        </div>
       </div>
     );
   },
@@ -67,16 +67,18 @@ export const Default: StoryObj = {
 export const Horizontal: StoryObj = {
   render: () => {
     return (
-      <div style={{ padding: 200 }}>
-        <WVList
-          horizontal
+      <div style={{ padding: "100px 200px" }}>
+        <div
           style={{
-            height: 400,
+            display: "inline-block",
             border: "solid 1px gray",
+            height: 400,
           }}
         >
-          {createColumns(1000)}
-        </WVList>
+          <WindowVirtualizer horizontal>
+            {createColumns(1000)}
+          </WindowVirtualizer>
+        </div>
       </div>
     );
   },
@@ -90,21 +92,13 @@ export const Complex: StoryObj = {
           header
         </div>
         <div style={{ display: "flex", flexDirection: "row" }}>
-          <div style={{ flex: 1, display: "flex", paddingTop: 600 }}>
-            <WVList
-              style={{
-                margin: 10,
-              }}
-            >
-              {createRows(1000)}
-            </WVList>
+          <div
+            style={{ flex: 1, display: "flex", paddingTop: 600, margin: 10 }}
+          >
+            <WindowVirtualizer>{createRows(1000)}</WindowVirtualizer>
           </div>
-          <div style={{ flex: 3 }}>
-            <WVList
-              style={{
-                margin: 10,
-              }}
-            >
+          <div style={{ flex: 3, margin: 10 }}>
+            <WindowVirtualizer>
               {Array.from({ length: 1000 }).map((_, i) => {
                 return (
                   <div
@@ -120,7 +114,7 @@ export const Complex: StoryObj = {
                   </div>
                 );
               })}
-            </WVList>
+            </WindowVirtualizer>
           </div>
           <div style={{ flex: 2, padding: 20, paddingTop: 300 }}>
             <div
@@ -175,8 +169,8 @@ export const InfiniteScrolling: StoryObj = {
     const count = items.length;
 
     return (
-      <div style={{ padding: "200px 200px 0px 200px" }}>
-        <WVList
+      <div style={{ padding: "200px 100px 0px 100px" }}>
+        <WindowVirtualizer
           onRangeChange={async (_, end) => {
             if (end + 50 > count && fetchedCountRef.current < count) {
               fetchedCountRef.current = count;
@@ -190,7 +184,7 @@ export const InfiniteScrolling: StoryObj = {
         >
           {items}
           {fetching && <Spinner />}
-        </WVList>
+        </WindowVirtualizer>
       </div>
     );
   },
@@ -199,7 +193,7 @@ export const InfiniteScrolling: StoryObj = {
 const RestorableList = ({ id }: { id: string }) => {
   const cacheKey = "window-list-cache-" + id;
 
-  const ref = useRef<WVListHandle>(null);
+  const ref = useRef<WindowVirtualizerHandle>(null);
 
   const [offset, cache] = useMemo(() => {
     const serialized = sessionStorage.getItem(cacheKey);
@@ -232,9 +226,9 @@ const RestorableList = ({ id }: { id: string }) => {
   }, []);
 
   return (
-    <WVList ref={ref} cache={cache}>
+    <WindowVirtualizer ref={ref} cache={cache}>
       {createRows(1000)}
-    </WVList>
+    </WindowVirtualizer>
   );
 };
 
@@ -319,10 +313,11 @@ export const IncreasingItems: StoryObj = {
       <div style={{ display: "flex", flexDirection: "column" }}>
         <div
           style={{
-            position: "sticky",
+            position: "fixed",
+            width: "100%",
             top: 0,
             zIndex: 1,
-            background: "whitesmoke",
+            backdropFilter: "blur(1px)",
           }}
         >
           <div>
@@ -404,20 +399,22 @@ export const IncreasingItems: StoryObj = {
             </button>
           </div>
         </div>
-        <WVList style={{ flex: 1, paddingTop: 30 }} shift={prepend}>
-          {rows.map((d) => (
-            <div
-              key={d.id}
-              style={{
-                height: heights[Math.abs(d.index) % 4],
-                borderBottom: "solid 1px #ccc",
-                background: "#fff",
-              }}
-            >
-              {d.index}
-            </div>
-          ))}
-        </WVList>
+        <div style={{ flex: 1 }}>
+          <WindowVirtualizer shift={prepend}>
+            {rows.map((d) => (
+              <div
+                key={d.id}
+                style={{
+                  height: heights[Math.abs(d.index) % 4],
+                  borderBottom: "solid 1px #ccc",
+                  background: "#fff",
+                }}
+              >
+                {d.index}
+              </div>
+            ))}
+          </WindowVirtualizer>
+        </div>
       </div>
     );
   },
