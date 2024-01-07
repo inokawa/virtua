@@ -109,7 +109,7 @@ A function to create elements rendered by this component.
 
 #### Defined in
 
-[src/react/VGrid.tsx:155](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VGrid.tsx#L155)
+[src/react/VGrid.tsx:198](https://github.com/inokawa/virtua/blob/facd0683/src/react/VGrid.tsx#L198)
 
 ___
 
@@ -121,7 +121,7 @@ Total row length of grid.
 
 #### Defined in
 
-[src/react/VGrid.tsx:168](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VGrid.tsx#L168)
+[src/react/VGrid.tsx:211](https://github.com/inokawa/virtua/blob/facd0683/src/react/VGrid.tsx#L211)
 
 ___
 
@@ -133,7 +133,7 @@ Total column length of grid.
 
 #### Defined in
 
-[src/react/VGrid.tsx:172](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VGrid.tsx#L172)
+[src/react/VGrid.tsx:215](https://github.com/inokawa/virtua/blob/facd0683/src/react/VGrid.tsx#L215)
 
 ___
 
@@ -151,7 +151,7 @@ Cell height hint for unmeasured items. It's recommended to specify this prop if 
 
 #### Defined in
 
-[src/react/VGrid.tsx:177](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VGrid.tsx#L177)
+[src/react/VGrid.tsx:220](https://github.com/inokawa/virtua/blob/facd0683/src/react/VGrid.tsx#L220)
 
 ___
 
@@ -169,7 +169,7 @@ Cell width hint for unmeasured items. It's recommended to specify this prop if i
 
 #### Defined in
 
-[src/react/VGrid.tsx:182](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VGrid.tsx#L182)
+[src/react/VGrid.tsx:225](https://github.com/inokawa/virtua/blob/facd0683/src/react/VGrid.tsx#L225)
 
 ___
 
@@ -187,7 +187,7 @@ Number of items to render above/below the visible bounds of the grid. Lower valu
 
 #### Defined in
 
-[src/react/VGrid.tsx:187](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VGrid.tsx#L187)
+[src/react/VGrid.tsx:230](https://github.com/inokawa/virtua/blob/facd0683/src/react/VGrid.tsx#L230)
 
 ___
 
@@ -199,7 +199,7 @@ If set, the specified amount of rows will be mounted in the initial rendering re
 
 #### Defined in
 
-[src/react/VGrid.tsx:191](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VGrid.tsx#L191)
+[src/react/VGrid.tsx:234](https://github.com/inokawa/virtua/blob/facd0683/src/react/VGrid.tsx#L234)
 
 ___
 
@@ -211,7 +211,7 @@ If set, the specified amount of cols will be mounted in the initial rendering re
 
 #### Defined in
 
-[src/react/VGrid.tsx:195](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VGrid.tsx#L195)
+[src/react/VGrid.tsx:238](https://github.com/inokawa/virtua/blob/facd0683/src/react/VGrid.tsx#L238)
 
 ___
 
@@ -225,12 +225,12 @@ Customized components for advanced usage.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `Root?` | `ForwardRefExoticComponent`\<[`CustomViewportComponentProps`](react.CustomViewportComponentProps.md) & `RefAttributes`\<`any`\>\> | Component for scrollable element. This component will get [CustomViewportComponentProps](react.CustomViewportComponentProps.md) as props. **`Default Value`** ```ts {@link DefaultViewport} ``` |
-| `Cell?` | `CustomCellComponentOrElement` | Component or element type for cell element. This component will get [CustomCellComponentProps](react.CustomCellComponentProps.md) as props. **`Default Value`** ```ts "div" ``` |
+| `Root?` | `ForwardRefExoticComponent`\<`CustomViewportComponentProps` & `RefAttributes`\<`any`\>\> | Component for scrollable element. This component will get CustomViewportComponentProps as props. **`Default Value`** ```ts {@link DefaultViewport} ``` |
+| `Cell?` | keyof `IntrinsicElements` \| [`CustomCellComponent`](../modules/react.md#customcellcomponent) | Component or element type for cell element. This component will get [CustomCellComponentProps](react.CustomCellComponentProps.md) as props. **`Default Value`** ```ts "div" ``` |
 
 #### Defined in
 
-[src/react/VGrid.tsx:199](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VGrid.tsx#L199)
+[src/react/VGrid.tsx:242](https://github.com/inokawa/virtua/blob/facd0683/src/react/VGrid.tsx#L242)
 
 ___
 
@@ -352,7 +352,7 @@ ___
 
 ### aria-autocomplete
 
-• `Optional` **aria-autocomplete**: ``"list"`` \| ``"none"`` \| ``"inline"`` \| ``"both"``
+• `Optional` **aria-autocomplete**: ``"inline"`` \| ``"none"`` \| ``"both"`` \| ``"list"``
 
 Indicates whether inputting text could trigger display of one or more predictions of the user's intended value for an input and specifies how predictions would be
 presented if they are made.
@@ -643,7 +643,7 @@ ___
 
 ### aria-dropeffect
 
-• `Optional` **aria-dropeffect**: ``"copy"`` \| ``"link"`` \| ``"none"`` \| ``"move"`` \| ``"execute"`` \| ``"popup"``
+• `Optional` **aria-dropeffect**: ``"copy"`` \| ``"none"`` \| ``"link"`` \| ``"move"`` \| ``"execute"`` \| ``"popup"``
 
 Indicates what functions can be performed when a dragged object is released on the drop target.
 
@@ -737,7 +737,7 @@ ___
 
 ### aria-haspopup
 
-• `Optional` **aria-haspopup**: `boolean` \| ``"dialog"`` \| ``"grid"`` \| ``"listbox"`` \| ``"menu"`` \| ``"tree"`` \| ``"false"`` \| ``"true"``
+• `Optional` **aria-haspopup**: `boolean` \| ``"grid"`` \| ``"dialog"`` \| ``"menu"`` \| ``"listbox"`` \| ``"false"`` \| ``"true"`` \| ``"tree"``
 
 Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by an element.
 
@@ -1044,7 +1044,7 @@ ___
 
 ### aria-relevant
 
-• `Optional` **aria-relevant**: ``"all"`` \| ``"text"`` \| ``"additions"`` \| ``"additions removals"`` \| ``"additions text"`` \| ``"removals"`` \| ``"removals additions"`` \| ``"removals text"`` \| ``"text additions"`` \| ``"text removals"``
+• `Optional` **aria-relevant**: ``"text"`` \| ``"all"`` \| ``"additions"`` \| ``"additions removals"`` \| ``"additions text"`` \| ``"removals"`` \| ``"removals additions"`` \| ``"removals text"`` \| ``"text additions"`` \| ``"text removals"``
 
 Indicates what notifications the user agent will trigger when the accessibility tree within a live region is modified.
 

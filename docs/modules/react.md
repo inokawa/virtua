@@ -5,7 +5,8 @@
 ### Functions
 
 - [VList](react.md#vlist)
-- [WVList](react.md#wvlist)
+- [Virtualizer](react.md#virtualizer)
+- [WindowVirtualizer](react.md#windowvirtualizer)
 - [experimental\_VGrid](react.md#experimental_vgrid)
 
 ### Interfaces
@@ -14,21 +15,23 @@
 - [ScrollToIndexOpts](../interfaces/react.ScrollToIndexOpts.md)
 - [VListProps](../interfaces/react.VListProps.md)
 - [VListHandle](../interfaces/react.VListHandle.md)
-- [WVListProps](../interfaces/react.WVListProps.md)
-- [WVListHandle](../interfaces/react.WVListHandle.md)
+- [VirtualizerProps](../interfaces/react.VirtualizerProps.md)
+- [VirtualizerHandle](../interfaces/react.VirtualizerHandle.md)
+- [WindowVirtualizerProps](../interfaces/react.WindowVirtualizerProps.md)
+- [WindowVirtualizerHandle](../interfaces/react.WindowVirtualizerHandle.md)
 - [VGridProps](../interfaces/react.VGridProps.md)
 - [VGridHandle](../interfaces/react.VGridHandle.md)
 - [CustomCellComponentProps](../interfaces/react.CustomCellComponentProps.md)
-- [CustomViewportComponentProps](../interfaces/react.CustomViewportComponentProps.md)
 - [CustomItemComponentProps](../interfaces/react.CustomItemComponentProps.md)
+- [CustomContainerComponentProps](../interfaces/react.CustomContainerComponentProps.md)
 
 ### Type Aliases
 
 - [ScrollToIndexAlign](react.md#scrolltoindexalign)
 - [CustomCellComponent](react.md#customcellcomponent)
-- [ViewportComponentAttributes](react.md#viewportcomponentattributes)
-- [CustomViewportComponent](react.md#customviewportcomponent)
 - [CustomItemComponent](react.md#customitemcomponent)
+- [ViewportComponentAttributes](react.md#viewportcomponentattributes)
+- [CustomContainerComponent](react.md#customcontainercomponent)
 
 ## Functions
 
@@ -54,17 +57,39 @@ node_modules/@types/react/index.d.ts:393
 
 ___
 
-### WVList
+### Virtualizer
 
-▸ **WVList**(`props`): `ReactNode`
+▸ **Virtualizer**(`props`): `ReactNode`
 
-Virtualized list component controlled by the window scrolling. See [WVListProps](../interfaces/react.WVListProps.md) and [WVListHandle](../interfaces/react.WVListHandle.md).
+Customizable list virtualizer for advanced usage. See [VirtualizerProps](../interfaces/react.VirtualizerProps.md) and [VirtualizerHandle](../interfaces/react.VirtualizerHandle.md).
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `props` | [`WVListProps`](../interfaces/react.WVListProps.md) & `RefAttributes`\<[`WVListHandle`](../interfaces/react.WVListHandle.md)\> |
+| `props` | [`VirtualizerProps`](../interfaces/react.VirtualizerProps.md) & `RefAttributes`\<[`VirtualizerHandle`](../interfaces/react.VirtualizerHandle.md)\> |
+
+#### Returns
+
+`ReactNode`
+
+#### Defined in
+
+node_modules/@types/react/index.d.ts:393
+
+___
+
+### WindowVirtualizer
+
+▸ **WindowVirtualizer**(`props`): `ReactNode`
+
+[Virtualizer](react.md#virtualizer) controlled by the window scrolling. See [WindowVirtualizerProps](../interfaces/react.WindowVirtualizerProps.md) and [WindowVirtualizer](react.md#windowvirtualizer).
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `props` | [`WindowVirtualizerProps`](../interfaces/react.WindowVirtualizerProps.md) & `RefAttributes`\<[`WindowVirtualizerHandle`](../interfaces/react.WindowVirtualizerHandle.md)\> |
 
 #### Returns
 
@@ -104,7 +129,7 @@ node_modules/@types/react/index.d.ts:393
 
 #### Defined in
 
-[src/core/types.ts:11](https://github.com/inokawa/virtua/blob/de57a89c/src/core/types.ts#L11)
+[src/core/types.ts:11](https://github.com/inokawa/virtua/blob/facd0683/src/core/types.ts#L11)
 
 ___
 
@@ -114,27 +139,7 @@ ___
 
 #### Defined in
 
-[src/react/VGrid.tsx:46](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VGrid.tsx#L46)
-
-___
-
-### ViewportComponentAttributes
-
-Ƭ **ViewportComponentAttributes**: `Pick`\<`React.HTMLAttributes`\<`HTMLElement`\>, ``"className"`` \| ``"style"`` \| ``"id"`` \| ``"role"`` \| ``"tabIndex"`` \| ``"onKeyDown"``\> & `React.AriaAttributes`
-
-#### Defined in
-
-[src/react/Viewport.tsx:9](https://github.com/inokawa/virtua/blob/de57a89c/src/react/Viewport.tsx#L9)
-
-___
-
-### CustomViewportComponent
-
-Ƭ **CustomViewportComponent**: typeof `Viewport`
-
-#### Defined in
-
-[src/react/Viewport.tsx:64](https://github.com/inokawa/virtua/blob/de57a89c/src/react/Viewport.tsx#L64)
+[src/react/VGrid.tsx:93](https://github.com/inokawa/virtua/blob/facd0683/src/react/VGrid.tsx#L93)
 
 ___
 
@@ -144,4 +149,24 @@ ___
 
 #### Defined in
 
-[src/react/ListItem.tsx:23](https://github.com/inokawa/virtua/blob/de57a89c/src/react/ListItem.tsx#L23)
+[src/react/ListItem.tsx:23](https://github.com/inokawa/virtua/blob/facd0683/src/react/ListItem.tsx#L23)
+
+___
+
+### ViewportComponentAttributes
+
+Ƭ **ViewportComponentAttributes**: `Pick`\<`React.HTMLAttributes`\<`HTMLElement`\>, ``"className"`` \| ``"style"`` \| ``"id"`` \| ``"role"`` \| ``"tabIndex"`` \| ``"onKeyDown"``\> & `React.AriaAttributes`
+
+#### Defined in
+
+[src/react/types.ts:3](https://github.com/inokawa/virtua/blob/facd0683/src/react/types.ts#L3)
+
+___
+
+### CustomContainerComponent
+
+Ƭ **CustomContainerComponent**: `React.ForwardRefExoticComponent`\<`React.PropsWithoutRef`\<[`CustomContainerComponentProps`](../interfaces/react.CustomContainerComponentProps.md)\> & `React.RefAttributes`\<`any`\>\>
+
+#### Defined in
+
+[src/react/types.ts:14](https://github.com/inokawa/virtua/blob/facd0683/src/react/types.ts#L14)

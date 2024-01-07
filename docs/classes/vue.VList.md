@@ -26,13 +26,13 @@
 - [$options](vue.VList.md#$options)
 - [$forceUpdate](vue.VList.md#$forceupdate)
 - [$nextTick](vue.VList.md#$nexttick)
-- [shift](vue.VList.md#shift)
 - [onScroll](vue.VList.md#onscroll)
+- [shift](vue.VList.md#shift)
 - [data](vue.VList.md#data)
 - [overscan](vue.VList.md#overscan)
-- [initialItemSize](vue.VList.md#initialitemsize)
+- [itemSize](vue.VList.md#itemsize)
 - [horizontal](vue.VList.md#horizontal)
-- [onScrollStop](vue.VList.md#onscrollstop)
+- [onScrollEnd](vue.VList.md#onscrollend)
 - [onRangeChange](vue.VList.md#onrangechange)
 - [scrollOffset](vue.VList.md#scrolloffset)
 - [scrollSize](vue.VList.md#scrollsize)
@@ -87,7 +87,7 @@ Scroll to the item specified by index.
 
 #### Defined in
 
-[src/vue/VList.tsx:49](https://github.com/inokawa/virtua/blob/de57a89c/src/vue/VList.tsx#L49)
+[src/vue/VList.tsx:51](https://github.com/inokawa/virtua/blob/facd0683/src/vue/VList.tsx#L51)
 
 ___
 
@@ -109,7 +109,7 @@ Scroll to the given offset.
 
 #### Defined in
 
-[src/vue/VList.tsx:54](https://github.com/inokawa/virtua/blob/de57a89c/src/vue/VList.tsx#L54)
+[src/vue/VList.tsx:56](https://github.com/inokawa/virtua/blob/facd0683/src/vue/VList.tsx#L56)
 
 ___
 
@@ -131,7 +131,7 @@ Scroll by the given offset.
 
 #### Defined in
 
-[src/vue/VList.tsx:59](https://github.com/inokawa/virtua/blob/de57a89c/src/vue/VList.tsx#L59)
+[src/vue/VList.tsx:61](https://github.com/inokawa/virtua/blob/facd0683/src/vue/VList.tsx#L61)
 
 ## Properties
 
@@ -157,7 +157,7 @@ ___
 
 ### $props
 
-• **$props**: `Partial`\<\{ `shift`: `boolean` = Boolean; `overscan`: `number` ; `horizontal`: `boolean` = Boolean }\> & `Omit`\<\{ `shift`: `boolean` = Boolean; `data`: `unknown`[] ; `overscan`: `number` ; `horizontal`: `boolean` = Boolean; `initialItemSize?`: `number` = Number; `onScroll`: `undefined` \| (...`args`: [offset: number]) => `any` ; `onScrollStop`: `undefined` \| (...`args`: []) => `any` ; `onRangeChange`: `undefined` \| (...`args`: [startIndex: number, endIndex: number]) => `any`  } & `VNodeProps` & `AllowedComponentProps` & `ComponentCustomProps` & `Readonly`\<`ExtractPropTypes`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `initialItemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean }\>\> & \{ `onScroll`: `undefined` \| (...`args`: [offset: number]) => `any` ; `onScrollStop`: `undefined` \| (...`args`: []) => `any` ; `onRangeChange`: `undefined` \| (...`args`: [startIndex: number, endIndex: number]) => `any`  }, `DefaultKeys`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `initialItemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean }\>\>
+• **$props**: `Partial`\<\{ `shift`: `boolean` = Boolean; `overscan`: `number` ; `horizontal`: `boolean` = Boolean }\> & `Omit`\<\{ `shift`: `boolean` = Boolean; `data`: `unknown`[] ; `overscan`: `number` ; `horizontal`: `boolean` = Boolean; `itemSize?`: `number` = Number; `onScroll`: `undefined` \| (...`args`: [offset: number]) => `any` ; `onScrollEnd`: `undefined` \| (...`args`: []) => `any` ; `onRangeChange`: `undefined` \| (...`args`: [startIndex: number, endIndex: number]) => `any`  } & `VNodeProps` & `AllowedComponentProps` & `ComponentCustomProps` & `Readonly`\<`ExtractPropTypes`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean }\>\> & \{ `onScroll`: `undefined` \| (...`args`: [offset: number]) => `any` ; `onScrollEnd`: `undefined` \| (...`args`: []) => `any` ; `onRangeChange`: `undefined` \| (...`args`: [startIndex: number, endIndex: number]) => `any`  }, `DefaultKeys`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean }\>\>
 
 #### Defined in
 
@@ -217,7 +217,7 @@ ___
 
 ### $emit
 
-• **$emit**: (`event`: ``"scroll"``, ...`args`: [offset: number]) => `void` & (`event`: ``"scrollStop"``, ...`args`: []) => `void` & (`event`: ``"rangeChange"``, ...`args`: [startIndex: number, endIndex: number]) => `void`
+• **$emit**: (`event`: ``"scroll"``, ...`args`: [offset: number]) => `void` & (`event`: ``"scrollEnd"``, ...`args`: []) => `void` & (`event`: ``"rangeChange"``, ...`args`: [startIndex: number, endIndex: number]) => `void`
 
 #### Defined in
 
@@ -237,7 +237,7 @@ ___
 
 ### $options
 
-• **$options**: `ComponentOptionsBase`\<`ResolveProps`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `initialItemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean }, \{ `scroll`: (`offset`: `number`) => `void` ; `scrollStop`: () => `void` ; `rangeChange`: (`startIndex`: `number`, `endIndex`: `number`) => `void`  }\>, `VListHandle`, {}, {}, {}, `ComponentOptionsMixin`, `ComponentOptionsMixin`, \{ `scroll`: (`offset`: `number`) => `void` ; `scrollStop`: () => `void` ; `rangeChange`: (`startIndex`: `number`, `endIndex`: `number`) => `void`  }, `string`, \{ `shift`: `boolean` = Boolean; `overscan`: `number` ; `horizontal`: `boolean` = Boolean }, {}, `string`, `SlotsType`\<\{ `default`: `any`  }\>\> & `MergedComponentOptionsOverride`
+• **$options**: `ComponentOptionsBase`\<`ResolveProps`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean }, \{ `scroll`: (`offset`: `number`) => `void` ; `scrollEnd`: () => `void` ; `rangeChange`: (`startIndex`: `number`, `endIndex`: `number`) => `void`  }\>, `VListHandle`, {}, {}, {}, `ComponentOptionsMixin`, `ComponentOptionsMixin`, \{ `scroll`: (`offset`: `number`) => `void` ; `scrollEnd`: () => `void` ; `rangeChange`: (`startIndex`: `number`, `endIndex`: `number`) => `void`  }, `string`, \{ `shift`: `boolean` = Boolean; `overscan`: `number` ; `horizontal`: `boolean` = Boolean }, {}, `string`, `SlotsType`\<\{ `default`: `any`  }\>\> & `MergedComponentOptionsOverride`
 
 #### Defined in
 
@@ -295,6 +295,12 @@ node_modules/@vue/runtime-core/dist/runtime-core.d.ts:130
 
 ___
 
+### onScroll
+
+• **onScroll**: `undefined` \| (...`args`: [offset: number]) => `any`
+
+___
+
 ### shift
 
 • `Readonly` **shift**: `boolean` = `Boolean`
@@ -303,13 +309,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/vue/VList.tsx:82](https://github.com/inokawa/virtua/blob/de57a89c/src/vue/VList.tsx#L82)
-
-___
-
-### onScroll
-
-• **onScroll**: `undefined` \| (...`args`: [offset: number]) => `any`
+[src/vue/VList.tsx:84](https://github.com/inokawa/virtua/blob/facd0683/src/vue/VList.tsx#L84)
 
 ___
 
@@ -321,7 +321,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/vue/VList.tsx:66](https://github.com/inokawa/virtua/blob/de57a89c/src/vue/VList.tsx#L66)
+[src/vue/VList.tsx:68](https://github.com/inokawa/virtua/blob/facd0683/src/vue/VList.tsx#L68)
 
 ___
 
@@ -339,13 +339,13 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/vue/VList.tsx:71](https://github.com/inokawa/virtua/blob/de57a89c/src/vue/VList.tsx#L71)
+[src/vue/VList.tsx:73](https://github.com/inokawa/virtua/blob/facd0683/src/vue/VList.tsx#L73)
 
 ___
 
-### initialItemSize
+### itemSize
 
-• `Optional` `Readonly` **initialItemSize**: `number` = `Number`
+• `Optional` `Readonly` **itemSize**: `number` = `Number`
 
 Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -354,7 +354,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/vue/VList.tsx:78](https://github.com/inokawa/virtua/blob/de57a89c/src/vue/VList.tsx#L78)
+[src/vue/VList.tsx:80](https://github.com/inokawa/virtua/blob/facd0683/src/vue/VList.tsx#L80)
 
 ___
 
@@ -366,13 +366,13 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/vue/VList.tsx:86](https://github.com/inokawa/virtua/blob/de57a89c/src/vue/VList.tsx#L86)
+[src/vue/VList.tsx:88](https://github.com/inokawa/virtua/blob/facd0683/src/vue/VList.tsx#L88)
 
 ___
 
-### onScrollStop
+### onScrollEnd
 
-• **onScrollStop**: `undefined` \| (...`args`: []) => `any`
+• **onScrollEnd**: `undefined` \| (...`args`: []) => `any`
 
 ___
 
@@ -390,7 +390,7 @@ Get current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/vue/VList.tsx:35](https://github.com/inokawa/virtua/blob/de57a89c/src/vue/VList.tsx#L35)
+[src/vue/VList.tsx:37](https://github.com/inokawa/virtua/blob/facd0683/src/vue/VList.tsx#L37)
 
 ___
 
@@ -402,7 +402,7 @@ Get current scrollHeight or scrollWidth.
 
 #### Defined in
 
-[src/vue/VList.tsx:39](https://github.com/inokawa/virtua/blob/de57a89c/src/vue/VList.tsx#L39)
+[src/vue/VList.tsx:41](https://github.com/inokawa/virtua/blob/facd0683/src/vue/VList.tsx#L41)
 
 ___
 
@@ -414,4 +414,4 @@ Get current offsetHeight or offsetWidth.
 
 #### Defined in
 
-[src/vue/VList.tsx:43](https://github.com/inokawa/virtua/blob/de57a89c/src/vue/VList.tsx#L43)
+[src/vue/VList.tsx:45](https://github.com/inokawa/virtua/blob/facd0683/src/vue/VList.tsx#L45)

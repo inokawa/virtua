@@ -1,29 +1,29 @@
-# Interface: VListHandle
+# Interface: VirtualizerHandle
 
-[react](../modules/react.md).VListHandle
+[react](../modules/react.md).VirtualizerHandle
 
-Methods of [VList](../modules/react.md#vlist).
+Methods of [Virtualizer](../modules/react.md#virtualizer).
 
 ## Hierarchy
 
-- [`VirtualizerHandle`](react.VirtualizerHandle.md)
+- **`VirtualizerHandle`**
 
-  ↳ **`VListHandle`**
+  ↳ [`VListHandle`](react.VListHandle.md)
 
 ## Table of contents
 
 ### Methods
 
-- [scrollToIndex](react.VListHandle.md#scrolltoindex)
-- [scrollTo](react.VListHandle.md#scrollto)
-- [scrollBy](react.VListHandle.md#scrollby)
+- [scrollToIndex](react.VirtualizerHandle.md#scrolltoindex)
+- [scrollTo](react.VirtualizerHandle.md#scrollto)
+- [scrollBy](react.VirtualizerHandle.md#scrollby)
 
 ### Properties
 
-- [cache](react.VListHandle.md#cache)
-- [scrollOffset](react.VListHandle.md#scrolloffset)
-- [scrollSize](react.VListHandle.md#scrollsize)
-- [viewportSize](react.VListHandle.md#viewportsize)
+- [cache](react.VirtualizerHandle.md#cache)
+- [scrollOffset](react.VirtualizerHandle.md#scrolloffset)
+- [scrollSize](react.VirtualizerHandle.md#scrollsize)
+- [viewportSize](react.VirtualizerHandle.md#viewportsize)
 
 ## Methods
 
@@ -43,10 +43,6 @@ Scroll to the item specified by index.
 #### Returns
 
 `void`
-
-#### Inherited from
-
-[VirtualizerHandle](react.VirtualizerHandle.md).[scrollToIndex](react.VirtualizerHandle.md#scrolltoindex)
 
 #### Defined in
 
@@ -70,10 +66,6 @@ Scroll to the given offset.
 
 `void`
 
-#### Inherited from
-
-[VirtualizerHandle](react.VirtualizerHandle.md).[scrollTo](react.VirtualizerHandle.md#scrollto)
-
 #### Defined in
 
 [src/react/Virtualizer.tsx:68](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L68)
@@ -96,10 +88,6 @@ Scroll by the given offset.
 
 `void`
 
-#### Inherited from
-
-[VirtualizerHandle](react.VirtualizerHandle.md).[scrollBy](react.VirtualizerHandle.md#scrollby)
-
 #### Defined in
 
 [src/react/Virtualizer.tsx:73](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L73)
@@ -111,10 +99,6 @@ Scroll by the given offset.
 • `Readonly` **cache**: [`CacheSnapshot`](react.CacheSnapshot.md)
 
 Get current [CacheSnapshot](react.CacheSnapshot.md).
-
-#### Inherited from
-
-[VirtualizerHandle](react.VirtualizerHandle.md).[cache](react.VirtualizerHandle.md#cache)
 
 #### Defined in
 
@@ -128,10 +112,6 @@ ___
 
 Get current scrollTop or scrollLeft.
 
-#### Inherited from
-
-[VirtualizerHandle](react.VirtualizerHandle.md).[scrollOffset](react.VirtualizerHandle.md#scrolloffset)
-
 #### Defined in
 
 [src/react/Virtualizer.tsx:49](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L49)
@@ -144,10 +124,6 @@ ___
 
 Get current scrollHeight or scrollWidth.
 
-#### Inherited from
-
-[VirtualizerHandle](react.VirtualizerHandle.md).[scrollSize](react.VirtualizerHandle.md#scrollsize)
-
 #### Defined in
 
 [src/react/Virtualizer.tsx:53](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L53)
@@ -159,10 +135,6 @@ ___
 • `Readonly` **viewportSize**: `number`
 
 Get current offsetHeight or offsetWidth.
-
-#### Inherited from
-
-[VirtualizerHandle](react.VirtualizerHandle.md).[viewportSize](react.VirtualizerHandle.md#viewportsize)
 
 #### Defined in
 

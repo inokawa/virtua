@@ -6,6 +6,8 @@ Props of [VList](../modules/react.md#vlist).
 
 ## Hierarchy
 
+- `Pick`\<[`VirtualizerProps`](react.VirtualizerProps.md), ``"children"`` \| ``"count"`` \| ``"overscan"`` \| ``"itemSize"`` \| ``"shift"`` \| ``"horizontal"`` \| ``"reverse"`` \| ``"cache"`` \| ``"ssrCount"`` \| ``"item"`` \| ``"onScroll"`` \| ``"onScrollEnd"`` \| ``"onRangeChange"``\>
+
 - [`ViewportComponentAttributes`](../modules/react.md#viewportcomponentattributes)
 
   ↳ **`VListProps`**
@@ -15,17 +17,17 @@ Props of [VList](../modules/react.md#vlist).
 ### Properties
 
 - [children](react.VListProps.md#children)
+- [onScroll](react.VListProps.md#onscroll)
+- [reverse](react.VListProps.md#reverse)
+- [shift](react.VListProps.md#shift)
 - [count](react.VListProps.md#count)
 - [overscan](react.VListProps.md#overscan)
-- [initialItemSize](react.VListProps.md#initialitemsize)
-- [shift](react.VListProps.md#shift)
+- [itemSize](react.VListProps.md#itemsize)
 - [horizontal](react.VListProps.md#horizontal)
-- [reverse](react.VListProps.md#reverse)
 - [cache](react.VListProps.md#cache)
 - [ssrCount](react.VListProps.md#ssrcount)
-- [components](react.VListProps.md#components)
-- [onScroll](react.VListProps.md#onscroll)
-- [onScrollStop](react.VListProps.md#onscrollstop)
+- [item](react.VListProps.md#item)
+- [onScrollEnd](react.VListProps.md#onscrollend)
 - [onRangeChange](react.VListProps.md#onrangechange)
 - [className](react.VListProps.md#classname)
 - [style](react.VListProps.md#style)
@@ -95,135 +97,15 @@ Props of [VList](../modules/react.md#vlist).
 
 Elements rendered by this component.
 
-You can also pass a function and set [VListProps.count](react.VListProps.md#count) to create elements lazily.
+You can also pass a function and set [VirtualizerProps.count](react.VirtualizerProps.md#count) to create elements lazily.
+
+#### Inherited from
+
+Pick.children
 
 #### Defined in
 
-[src/react/VList.tsx:92](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VList.tsx#L92)
-
-___
-
-### count
-
-• `Optional` **count**: `number`
-
-If you set a function to [VListProps.children](react.VListProps.md#children), you have to set total number of items to this prop.
-
-#### Defined in
-
-[src/react/VList.tsx:96](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VList.tsx#L96)
-
-___
-
-### overscan
-
-• `Optional` **overscan**: `number`
-
-Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
-
-**`Default Value`**
-
-```ts
-4
-```
-
-#### Defined in
-
-[src/react/VList.tsx:101](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VList.tsx#L101)
-
-___
-
-### initialItemSize
-
-• `Optional` **initialItemSize**: `number`
-
-Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
-
-- If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
-- If set, you can opt out estimation and use the value as initial item size.
-
-#### Defined in
-
-[src/react/VList.tsx:108](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VList.tsx#L108)
-
-___
-
-### shift
-
-• `Optional` **shift**: `boolean`
-
-While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
-
-#### Defined in
-
-[src/react/VList.tsx:112](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VList.tsx#L112)
-
-___
-
-### horizontal
-
-• `Optional` **horizontal**: `boolean`
-
-If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
-
-#### Defined in
-
-[src/react/VList.tsx:116](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VList.tsx#L116)
-
-___
-
-### reverse
-
-• `Optional` **reverse**: `boolean`
-
-If true, items are aligned to the end of the list when total size of items are smaller than viewport size. It's useful for chat like app.
-
-#### Defined in
-
-[src/react/VList.tsx:120](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VList.tsx#L120)
-
-___
-
-### cache
-
-• `Optional` **cache**: [`CacheSnapshot`](react.CacheSnapshot.md)
-
-You can restore cache by passing a [CacheSnapshot](react.CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VListHandle.cache](react.VListHandle.md#cache).
-
-#### Defined in
-
-[src/react/VList.tsx:124](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VList.tsx#L124)
-
-___
-
-### ssrCount
-
-• `Optional` **ssrCount**: `number`
-
-A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
-
-#### Defined in
-
-[src/react/VList.tsx:128](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VList.tsx#L128)
-
-___
-
-### components
-
-• `Optional` **components**: `Object`
-
-Customized components for advanced usage.
-
-#### Type declaration
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `Root?` | `ForwardRefExoticComponent`\<[`CustomViewportComponentProps`](react.CustomViewportComponentProps.md) & `RefAttributes`\<`any`\>\> | Component for scrollable element. This component will get [CustomViewportComponentProps](react.CustomViewportComponentProps.md) as props. **`Default Value`** ```ts {@link DefaultViewport} ``` |
-| `Item?` | `CustomItemComponentOrElement` | Component or element type for item element. This component will get [CustomItemComponentProps](react.CustomItemComponentProps.md) as props. **`Default Value`** ```ts "div" ``` |
-
-#### Defined in
-
-[src/react/VList.tsx:132](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VList.tsx#L132)
+[src/react/Virtualizer.tsx:85](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L85)
 
 ___
 
@@ -247,15 +129,178 @@ Callback invoked whenever scroll offset changes.
 
 `void`
 
+#### Inherited from
+
+Pick.onScroll
+
 #### Defined in
 
-[src/react/VList.tsx:148](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VList.tsx#L148)
+[src/react/Virtualizer.tsx:148](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L148)
 
 ___
 
-### onScrollStop
+### reverse
 
-• `Optional` **onScrollStop**: () => `void`
+• `Optional` **reverse**: `boolean`
+
+If true, items are aligned to the end of the list when total size of items are smaller than viewport size. It's useful for chat like app.
+
+#### Inherited from
+
+Pick.reverse
+
+#### Defined in
+
+[src/react/Virtualizer.tsx:113](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L113)
+
+___
+
+### shift
+
+• `Optional` **shift**: `boolean`
+
+While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
+
+#### Inherited from
+
+Pick.shift
+
+#### Defined in
+
+[src/react/Virtualizer.tsx:105](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L105)
+
+___
+
+### count
+
+• `Optional` **count**: `number`
+
+If you set a function to [VirtualizerProps.children](react.VirtualizerProps.md#children), you have to set total number of items to this prop.
+
+#### Inherited from
+
+Pick.count
+
+#### Defined in
+
+[src/react/Virtualizer.tsx:89](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L89)
+
+___
+
+### overscan
+
+• `Optional` **overscan**: `number`
+
+Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
+
+**`Default Value`**
+
+```ts
+4
+```
+
+#### Inherited from
+
+Pick.overscan
+
+#### Defined in
+
+[src/react/Virtualizer.tsx:94](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L94)
+
+___
+
+### itemSize
+
+• `Optional` **itemSize**: `number`
+
+Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
+
+- If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
+- If set, you can opt out estimation and use the value as initial item size.
+
+#### Inherited from
+
+Pick.itemSize
+
+#### Defined in
+
+[src/react/Virtualizer.tsx:101](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L101)
+
+___
+
+### horizontal
+
+• `Optional` **horizontal**: `boolean`
+
+If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
+
+#### Inherited from
+
+Pick.horizontal
+
+#### Defined in
+
+[src/react/Virtualizer.tsx:109](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L109)
+
+___
+
+### cache
+
+• `Optional` **cache**: [`CacheSnapshot`](react.CacheSnapshot.md)
+
+You can restore cache by passing a [CacheSnapshot](react.CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VirtualizerHandle.cache](react.VListHandle.md#cache).
+
+#### Inherited from
+
+Pick.cache
+
+#### Defined in
+
+[src/react/Virtualizer.tsx:117](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L117)
+
+___
+
+### ssrCount
+
+• `Optional` **ssrCount**: `number`
+
+A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
+
+#### Inherited from
+
+Pick.ssrCount
+
+#### Defined in
+
+[src/react/Virtualizer.tsx:129](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L129)
+
+___
+
+### item
+
+• `Optional` **item**: [`CustomItemComponent`](../modules/react.md#customitemcomponent) \| keyof `IntrinsicElements`
+
+Component or element type for item element. This component will get [CustomItemComponentProps](react.CustomItemComponentProps.md) as props.
+
+**`Default Value`**
+
+```ts
+"div"
+```
+
+#### Inherited from
+
+Pick.item
+
+#### Defined in
+
+[src/react/Virtualizer.tsx:139](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L139)
+
+___
+
+### onScrollEnd
+
+• `Optional` **onScrollEnd**: () => `void`
 
 #### Type declaration
 
@@ -267,9 +312,13 @@ Callback invoked when scrolling stops.
 
 `void`
 
+#### Inherited from
+
+Pick.onScrollEnd
+
 #### Defined in
 
-[src/react/VList.tsx:152](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VList.tsx#L152)
+[src/react/Virtualizer.tsx:152](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L152)
 
 ___
 
@@ -294,9 +343,13 @@ Callback invoked when visible items range changes.
 
 `void`
 
+#### Inherited from
+
+Pick.onRangeChange
+
 #### Defined in
 
-[src/react/VList.tsx:156](https://github.com/inokawa/virtua/blob/de57a89c/src/react/VList.tsx#L156)
+[src/react/Virtualizer.tsx:156](https://github.com/inokawa/virtua/blob/facd0683/src/react/Virtualizer.tsx#L156)
 
 ___
 
@@ -418,7 +471,7 @@ ___
 
 ### aria-autocomplete
 
-• `Optional` **aria-autocomplete**: ``"list"`` \| ``"none"`` \| ``"inline"`` \| ``"both"``
+• `Optional` **aria-autocomplete**: ``"inline"`` \| ``"none"`` \| ``"both"`` \| ``"list"``
 
 Indicates whether inputting text could trigger display of one or more predictions of the user's intended value for an input and specifies how predictions would be
 presented if they are made.
@@ -709,7 +762,7 @@ ___
 
 ### aria-dropeffect
 
-• `Optional` **aria-dropeffect**: ``"copy"`` \| ``"link"`` \| ``"none"`` \| ``"move"`` \| ``"execute"`` \| ``"popup"``
+• `Optional` **aria-dropeffect**: ``"copy"`` \| ``"none"`` \| ``"link"`` \| ``"move"`` \| ``"execute"`` \| ``"popup"``
 
 Indicates what functions can be performed when a dragged object is released on the drop target.
 
@@ -803,7 +856,7 @@ ___
 
 ### aria-haspopup
 
-• `Optional` **aria-haspopup**: `boolean` \| ``"dialog"`` \| ``"grid"`` \| ``"listbox"`` \| ``"menu"`` \| ``"tree"`` \| ``"false"`` \| ``"true"``
+• `Optional` **aria-haspopup**: `boolean` \| ``"grid"`` \| ``"dialog"`` \| ``"menu"`` \| ``"listbox"`` \| ``"false"`` \| ``"true"`` \| ``"tree"``
 
 Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by an element.
 
@@ -1110,7 +1163,7 @@ ___
 
 ### aria-relevant
 
-• `Optional` **aria-relevant**: ``"all"`` \| ``"text"`` \| ``"additions"`` \| ``"additions removals"`` \| ``"additions text"`` \| ``"removals"`` \| ``"removals additions"`` \| ``"removals text"`` \| ``"text additions"`` \| ``"text removals"``
+• `Optional` **aria-relevant**: ``"text"`` \| ``"all"`` \| ``"additions"`` \| ``"additions removals"`` \| ``"additions text"`` \| ``"removals"`` \| ``"removals additions"`` \| ``"removals text"`` \| ``"text additions"`` \| ``"text removals"``
 
 Indicates what notifications the user agent will trigger when the accessibility tree within a live region is modified.
 
