@@ -470,7 +470,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             ...viewportAttrs,
             style: {
               overflow: "auto",
-              overflowAnchor: "none",
+              overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
+              flex: "none", // flex style on parent can break layout
               contain: "strict",
               width: "100%",
               height: "100%",
