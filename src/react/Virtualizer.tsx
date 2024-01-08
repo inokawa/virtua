@@ -348,7 +348,8 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         ref={containerRef}
         style={{
           contain: "content",
-          overflowAnchor: "none",
+          overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
+          flex: "none", // flex style on parent can break layout
           position: "relative",
           visibility: "hidden",
           width: isHorizontal ? totalSize : "100%",

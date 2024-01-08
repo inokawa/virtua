@@ -3,7 +3,7 @@
 exports[`grid should render 1 children 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; contain: strict; width: 100%; height: 100%;"
+    style="overflow: auto; flex: 0 0 auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="contain: content; position: relative; visibility: hidden; width: 100px; height: 50px; pointer-events: auto;"
@@ -23,7 +23,7 @@ exports[`grid should render 1 children 1`] = `
 exports[`grid should render 4x4 children 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; contain: strict; width: 100%; height: 100%;"
+    style="overflow: auto; flex: 0 0 auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="contain: content; position: relative; visibility: hidden; width: 400px; height: 200px; pointer-events: auto;"
@@ -148,7 +148,7 @@ exports[`grid should render 4x4 children 1`] = `
 exports[`grid should render 100x100 children 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; contain: strict; width: 100%; height: 100%;"
+    style="overflow: auto; flex: 0 0 auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="contain: content; position: relative; visibility: hidden; width: 10000px; height: 4040px; pointer-events: auto;"
@@ -273,7 +273,7 @@ exports[`grid should render 100x100 children 1`] = `
 exports[`grid should render 1000x1000 children 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; contain: strict; width: 100%; height: 100%;"
+    style="overflow: auto; flex: 0 0 auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="contain: content; position: relative; visibility: hidden; width: 100000px; height: 40040px; pointer-events: auto;"
@@ -398,7 +398,7 @@ exports[`grid should render 1000x1000 children 1`] = `
 exports[`grid should render 10000x10000 children 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; contain: strict; width: 100%; height: 100%;"
+    style="overflow: auto; flex: 0 0 auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="contain: content; position: relative; visibility: hidden; width: 1000000px; height: 400040px; pointer-events: auto;"
@@ -523,7 +523,7 @@ exports[`grid should render 10000x10000 children 1`] = `
 exports[`grid should render component 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; contain: strict; width: 100%; height: 100%;"
+    style="overflow: auto; flex: 0 0 auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="contain: content; position: relative; visibility: hidden; width: 10000px; height: 4040px; pointer-events: auto;"
@@ -648,7 +648,7 @@ exports[`grid should render component 1`] = `
 exports[`grid should render fragments 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; contain: strict; width: 100%; height: 100%;"
+    style="overflow: auto; flex: 0 0 auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="contain: content; position: relative; visibility: hidden; width: 100px; height: 100px; pointer-events: auto;"
@@ -681,7 +681,7 @@ exports[`grid should render fragments 1`] = `
 exports[`grid should render non elements 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; contain: strict; width: 100%; height: 100%;"
+    style="overflow: auto; flex: 0 0 auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="contain: content; position: relative; visibility: hidden; width: 100px; height: 280px; pointer-events: auto;"
@@ -708,7 +708,7 @@ exports[`grid should render non elements 1`] = `
 exports[`grid should render with given width / height 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; contain: strict; width: 100px; height: 100px;"
+    style="overflow: auto; flex: 0 0 auto; contain: strict; width: 100px; height: 100px;"
   >
     <div
       style="contain: content; position: relative; visibility: hidden; width: 400px; height: 200px; pointer-events: auto;"
@@ -837,7 +837,7 @@ exports[`should pass attributes to element 1`] = `
     class="class"
     id="id"
     role="list"
-    style="overflow: auto; contain: strict; width: 100%; height: 100%; background: red;"
+    style="overflow: auto; flex: 0 0 auto; contain: strict; width: 100%; height: 100%; background: red;"
     tabindex="0"
   >
     <div
