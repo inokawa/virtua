@@ -43,7 +43,7 @@ export const HeaderAndFooter: StoryObj = {
     return (
       <div
         style={{
-          width: 400,
+          width: "100%",
           height: "100vh",
           overflowY: "auto",
           // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
@@ -71,7 +71,7 @@ export const StickyHeaderAndFooter: StoryObj = {
     return (
       <div
         style={{
-          width: 400,
+          width: "100%",
           height: "100vh",
           overflowY: "auto",
           // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
@@ -116,7 +116,7 @@ export const Nested: StoryObj = {
       <div
         ref={ref}
         style={{
-          width: 500,
+          width: "100%",
           height: "100vh",
           overflowY: "auto",
           // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
@@ -301,6 +301,7 @@ const Table = forwardRef<HTMLTableElement, CustomContainerComponentProps>(
         ref={ref}
         style={{
           height: style?.height,
+          position: "relative",
           tableLayout: "fixed",
           borderCollapse: "collapse",
           whiteSpace: "nowrap",
@@ -335,6 +336,7 @@ const Table = forwardRef<HTMLTableElement, CustomContainerComponentProps>(
         <tbody
           style={{
             ...style,
+            contain: undefined,
             position: "absolute",
             top: TABLE_HEADER_HEIGHT,
             left: 0,
@@ -352,7 +354,6 @@ export const TableElement: StoryObj = {
     return (
       <div
         style={{
-          contain: "strict",
           width: "100%",
           height: "75%",
           overflow: "auto",
