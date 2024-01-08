@@ -9,7 +9,7 @@ import {
 } from "./utils";
 
 const getWindowVirtualizer = async (page: Page) => {
-  const selector = '*[style*="contain: content"]';
+  const selector = '*[style*="pointer-events: auto"]';
   const component = await page.waitForSelector(selector, { state: "attached" });
   await component.evaluate((e) => (e.style.visibility = "visible"));
   await page.waitForSelector(selector);

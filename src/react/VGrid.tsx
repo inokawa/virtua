@@ -62,7 +62,7 @@ const DefaultViewport = forwardRef<any, CustomViewportComponentProps>(
         <div
           style={useMemo((): CSSProperties => {
             return {
-              contain: "content",
+              // contain: "content",
               position: "relative",
               visibility: "hidden",
               width: width ?? "100%",
