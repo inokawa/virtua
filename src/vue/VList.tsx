@@ -236,6 +236,8 @@ export const VList = /*#__PURE__*/ defineComponent({
           <div
             style={{
               contain: "content",
+              overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
+              flex: "none", // flex style on parent can break layout
               position: "relative",
               visibility: "hidden",
               width: isHorizontal ? totalSize + "px" : "100%",
