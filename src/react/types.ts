@@ -15,3 +15,16 @@ export type CustomContainerComponent = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<CustomContainerComponentProps> &
     React.RefAttributes<any>
 >;
+
+/**
+ * Props of customized item component for {@link Virtualizer} or {@link WindowVirtualizer}.
+ */
+export interface CustomItemComponentProps {
+  style: CSSProperties;
+  index: number;
+  children: ReactNode;
+}
+
+export type CustomItemComponent = React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<CustomItemComponentProps> & React.RefAttributes<any>
+>;

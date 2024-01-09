@@ -2,7 +2,7 @@ import { afterEach, it, expect, describe, jest } from "@jest/globals";
 import { render, cleanup } from "@testing-library/react";
 import { WindowVirtualizer } from "./WindowVirtualizer";
 import { Profiler, ReactElement, forwardRef, useEffect, useState } from "react";
-import { CustomItemComponentProps } from "./ListItem";
+import { CustomItemComponentProps } from "./types";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;

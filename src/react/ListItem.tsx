@@ -10,19 +10,7 @@ import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { ItemResizeObserver } from "../core/resizer";
 import { refKey } from "./utils";
 import { isRTLDocument } from "../core/environment";
-
-/**
- * Props of customized item component for {@link Virtualizer} or {@link WindowVirtualizer}.
- */
-export interface CustomItemComponentProps {
-  style: CSSProperties;
-  index: number;
-  children: ReactNode;
-}
-
-export type CustomItemComponent = React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<CustomItemComponentProps> & React.RefAttributes<any>
->;
+import { CustomItemComponent } from "./types";
 
 type ListItemProps = {
   _children: ReactNode;

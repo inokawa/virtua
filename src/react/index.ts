@@ -15,4 +15,3 @@ export type {
   CustomCellComponentProps,
 } from "./VGrid";
 export type * from "./types";
-export type { CustomItemComponent, CustomItemComponentProps } from "./ListItem";

@@ -26,13 +26,13 @@ import { getKey, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
 import { createResizer } from "../core/resizer";
-import { CustomItemComponent, ListItem } from "./ListItem";
+import { ListItem } from "./ListItem";
 import { CacheSnapshot, ScrollToIndexOpts } from "../core/types";
 import { Cache } from "../core/cache";
 import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
 import { useChildren } from "./useChildren";
-import { CustomContainerComponent } from "./types";
+import { CustomContainerComponent, CustomItemComponent } from "./types";
 import { max } from "../core/utils";
 
 /**
