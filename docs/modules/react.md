@@ -22,16 +22,16 @@
 - [VGridProps](../interfaces/react.VGridProps.md)
 - [VGridHandle](../interfaces/react.VGridHandle.md)
 - [CustomCellComponentProps](../interfaces/react.CustomCellComponentProps.md)
-- [CustomItemComponentProps](../interfaces/react.CustomItemComponentProps.md)
 - [CustomContainerComponentProps](../interfaces/react.CustomContainerComponentProps.md)
+- [CustomItemComponentProps](../interfaces/react.CustomItemComponentProps.md)
 
 ### Type Aliases
 
 - [ScrollToIndexAlign](react.md#scrolltoindexalign)
 - [CustomCellComponent](react.md#customcellcomponent)
-- [CustomItemComponent](react.md#customitemcomponent)
 - [ViewportComponentAttributes](react.md#viewportcomponentattributes)
 - [CustomContainerComponent](react.md#customcontainercomponent)
+- [CustomItemComponent](react.md#customitemcomponent)
 
 ## Functions
 
@@ -129,7 +129,7 @@ node_modules/@types/react/index.d.ts:393
 
 #### Defined in
 
-[src/core/types.ts:11](https://github.com/inokawa/virtua/blob/d32b6594/src/core/types.ts#L11)
+[src/core/types.ts:11](https://github.com/inokawa/virtua/blob/efa0f07c/src/core/types.ts#L11)
 
 ___
 
@@ -139,17 +139,7 @@ ___
 
 #### Defined in
 
-[src/react/VGrid.tsx:93](https://github.com/inokawa/virtua/blob/d32b6594/src/react/VGrid.tsx#L93)
-
-___
-
-### CustomItemComponent
-
-Ƭ **CustomItemComponent**: `React.ForwardRefExoticComponent`\<`React.PropsWithoutRef`\<[`CustomItemComponentProps`](../interfaces/react.CustomItemComponentProps.md)\> & `React.RefAttributes`\<`any`\>\>
-
-#### Defined in
-
-[src/react/ListItem.tsx:23](https://github.com/inokawa/virtua/blob/d32b6594/src/react/ListItem.tsx#L23)
+[src/react/VGrid.tsx:93](https://github.com/inokawa/virtua/blob/efa0f07c/src/react/VGrid.tsx#L93)
 
 ___
 
@@ -159,7 +149,7 @@ ___
 
 #### Defined in
 
-[src/react/types.ts:3](https://github.com/inokawa/virtua/blob/d32b6594/src/react/types.ts#L3)
+[src/react/types.ts:3](https://github.com/inokawa/virtua/blob/efa0f07c/src/react/types.ts#L3)
 
 ___
 
@@ -169,4 +159,14 @@ ___
 
 #### Defined in
 
-[src/react/types.ts:14](https://github.com/inokawa/virtua/blob/d32b6594/src/react/types.ts#L14)
+[src/react/types.ts:14](https://github.com/inokawa/virtua/blob/efa0f07c/src/react/types.ts#L14)
+
+___
+
+### CustomItemComponent
+
+Ƭ **CustomItemComponent**: `React.ForwardRefExoticComponent`\<`React.PropsWithoutRef`\<[`CustomItemComponentProps`](../interfaces/react.CustomItemComponentProps.md)\> & `React.RefAttributes`\<`any`\>\>
+
+#### Defined in
+
+[src/react/types.ts:28](https://github.com/inokawa/virtua/blob/efa0f07c/src/react/types.ts#L28)
