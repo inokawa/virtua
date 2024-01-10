@@ -14,35 +14,7 @@ import {
   ACTION_BEFORE_MANUAL_SMOOTH_SCROLL,
 } from "./store";
 import { ScrollToIndexOpts } from "./types";
-import { debounce, throttle, timeout, clamp } from "./utils";
-
-// Infer scroll state also from wheel events
-// Sometimes scroll events do not fire when frame dropped even if the visual have been already scrolled
-const createOnWheel = (
-  store: VirtualStore,
-  isHorizontal: boolean,
-  onScrollEnd: () => void
-) => {
-  return throttle((e: WheelEvent) => {
-    if (store._getScrollDirection() === SCROLL_IDLE) {
-      // Scroll start should be detected with scroll event
-      return;
-    }
-    if (e.ctrlKey) {
-      // Probably a pinch-to-zoom gesture
-      return;
-    }
-    // Get delta before checking deltaMode for firefox behavior
-    // https://github.com/w3c/uievents/issues/181#issuecomment-392648065
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=1392460#c34
-    if (isHorizontal ? e.deltaX : e.deltaY) {
-      const offset = store._getScrollOffset();
-      if (offset > 0 && offset < store._getMaxScrollOffset()) {
-        onScrollEnd();
-      }
-    }
-  }, 50);
-};
+import { debounce, timeout, clamp } from "./utils";
 
 const normalizeRTLOffset = (
   scrollable: HTMLElement,
@@ -56,6 +28,104 @@ const normalizeRTLOffset = (
     return diff ? -offset : store._getMaxScrollOffset() - offset;
   }
 };
+
+const createScrollObserver = (
+  store: VirtualStore,
+  viewport: HTMLElement | Window,
+  isHorizontal: boolean,
+  getScrollOffset: () => number,
+  updateScrollOffset: (value: number, isMomentumScrolling: boolean) => void
+) => {
+  let touching = false;
+  let justTouchEnded = false;
+  let stillMomentumScrolling = false;
+
+  const onScrollEnd = debounce(() => {
+    if (touching) {
+      // Wait while touching
+      onScrollEnd();
+      return;
+    }
+
+    justTouchEnded = false;
+
+    store._update(ACTION_SCROLL_END);
+  }, 150);
+
+  const onScroll = () => {
+    if (justTouchEnded) {
+      stillMomentumScrolling = true;
+    }
+
+    store._update(ACTION_SCROLL, getScrollOffset());
+    onScrollEnd();
+  };
+
+  // Infer scroll state also from wheel events
+  // Sometimes scroll events do not fire when frame dropped even if the visual have been already scrolled
+  const onWheel = (() => {
+    const now = Date.now;
+    const ms = 50;
+    let time = now() - ms;
+
+    return (e: WheelEvent) => {
+      const n = now();
+      if (time + ms < n) {
+        time = n;
+
+        if (
+          // Scroll start should be detected with scroll event
+          store._getScrollDirection() === SCROLL_IDLE ||
+          // Probably a pinch-to-zoom gesture
+          e.ctrlKey
+        ) {
+          return;
+        }
+        // Get delta before checking deltaMode for firefox behavior
+        // https://github.com/w3c/uievents/issues/181#issuecomment-392648065
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=1392460#c34
+        if (isHorizontal ? e.deltaX : e.deltaY) {
+          const offset = store._getScrollOffset();
+          if (offset > 0 && offset < store._getMaxScrollOffset()) {
+            onScrollEnd();
+          }
+        }
+      }
+    };
+  })() as (e: Event) => void; // FIXME type error. why only here?
+
+  const onTouchStart = () => {
+    touching = true;
+    justTouchEnded = stillMomentumScrolling = false;
+  };
+  const onTouchEnd = () => {
+    touching = false;
+    if (isIOSWebKit()) {
+      justTouchEnded = true;
+    }
+  };
+
+  viewport.addEventListener("scroll", onScroll);
+  viewport.addEventListener("wheel", onWheel, { passive: true });
+  viewport.addEventListener("touchstart", onTouchStart, { passive: true });
+  viewport.addEventListener("touchend", onTouchEnd, { passive: true });
+
+  return {
+    _dispose: () => {
+      viewport.removeEventListener("scroll", onScroll);
+      viewport.removeEventListener("wheel", onWheel);
+      viewport.removeEventListener("touchstart", onTouchStart);
+      viewport.removeEventListener("touchend", onTouchEnd);
+      onScrollEnd._cancel();
+    },
+    _fixScrollJump: (jump: number) => {
+      updateScrollOffset(jump, stillMomentumScrolling);
+      stillMomentumScrolling = false;
+    },
+  };
+};
+
+type ScrollObserver = ReturnType<typeof createScrollObserver>;
 
 /**
  * @internal
@@ -77,9 +147,8 @@ export const createScroller = (
   isHorizontal: boolean
 ): Scroller => {
   let viewportElement: HTMLElement | undefined;
-  let cleanup: (() => void) | undefined;
+  let scrollObserver: ScrollObserver | undefined;
   let cancelScroll: (() => void) | undefined;
-  let stillMomentumScrolling = false;
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const overflowKey = isHorizontal ? "overflowX" : "overflowY";
 
@@ -167,58 +236,31 @@ export const createScroller = (
     _observe(viewport) {
       viewportElement = viewport;
 
-      let touching = false;
-      let justTouchEnded = false;
+      scrollObserver = createScrollObserver(
+        store,
+        viewport,
+        isHorizontal,
+        () => normalizeOffset(viewport[scrollToKey]),
+        (jump, isMomentumScrolling) => {
+          // If we update scroll position while touching on iOS, the position will be reverted.
+          // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
+          // That means we have no reliable way to confirm still touched or not if user touches more than once during momentum scrolling...
+          // This is a hack for the suspectable situations, inspired by https://github.com/prud/ios-overflow-scroll-to-top
+          if (isMomentumScrolling) {
+            const style = viewport.style;
+            const prev = style[overflowKey];
+            style[overflowKey] = "hidden";
+            timeout(() => {
+              style[overflowKey] = prev;
+            });
+          }
 
-      const onScrollEnd = debounce(() => {
-        if (touching) {
-          // Wait while touching
-          onScrollEnd();
-          return;
+          viewport[scrollToKey] += normalizeOffset(jump, true);
         }
-
-        justTouchEnded = false;
-
-        store._update(ACTION_SCROLL_END);
-      }, 150);
-
-      const onScroll = () => {
-        if (justTouchEnded) {
-          stillMomentumScrolling = true;
-        }
-
-        store._update(ACTION_SCROLL, normalizeOffset(viewport[scrollToKey]));
-        onScrollEnd();
-      };
-
-      const onWheel = createOnWheel(store, isHorizontal, onScrollEnd);
-
-      const onTouchStart = () => {
-        touching = true;
-        justTouchEnded = stillMomentumScrolling = false;
-      };
-      const onTouchEnd = () => {
-        touching = false;
-        if (isIOSWebKit()) {
-          justTouchEnded = true;
-        }
-      };
-
-      viewport.addEventListener("scroll", onScroll);
-      viewport.addEventListener("wheel", onWheel, { passive: true });
-      viewport.addEventListener("touchstart", onTouchStart, { passive: true });
-      viewport.addEventListener("touchend", onTouchEnd, { passive: true });
-
-      cleanup = () => {
-        viewport.removeEventListener("scroll", onScroll);
-        viewport.removeEventListener("wheel", onWheel);
-        viewport.removeEventListener("touchstart", onTouchStart);
-        viewport.removeEventListener("touchend", onTouchEnd);
-        onScrollEnd._cancel();
-      };
+      );
     },
     _dispose() {
-      cleanup && cleanup();
+      scrollObserver && scrollObserver._dispose();
     },
     _scrollTo(offset) {
       scrollManually(() => offset);
@@ -262,24 +304,8 @@ export const createScroller = (
       }, smooth);
     },
     _fixScrollJump: (jump) => {
-      if (!viewportElement) return;
-
-      // If we update scroll position while touching on iOS, the position will be reverted.
-      // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
-      // That means we have no reliable way to confirm still touched or not if user touches more than once during momentum scrolling...
-      // This is a hack for the suspectable situations, inspired by https://github.com/prud/ios-overflow-scroll-to-top
-      if (stillMomentumScrolling) {
-        stillMomentumScrolling = false;
-
-        const style = viewportElement.style;
-        const prev = style[overflowKey];
-        style[overflowKey] = "hidden";
-        timeout(() => {
-          style[overflowKey] = prev;
-        });
-      }
-
-      viewportElement[scrollToKey] += normalizeOffset(jump, true);
+      if (!scrollObserver) return;
+      scrollObserver._fixScrollJump(jump);
     },
   };
 };
@@ -300,21 +326,19 @@ export const createWindowScroller = (
   store: VirtualStore,
   isHorizontal: boolean
 ): WindowScroller => {
-  let containerElement: HTMLElement | undefined;
-  let cleanup: (() => void) | undefined;
-  const scrollToKey = isHorizontal ? "scrollX" : "scrollY";
-  const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
-
-  const normalizeOffset = (offset: number, diff?: boolean): number => {
-    if (isHorizontal && isRTLDocument()) {
-      return normalizeRTLOffset(containerElement!, store, offset, diff);
-    }
-    return offset;
-  };
+  let scrollObserver: ScrollObserver | undefined;
 
   return {
     _observe(container) {
-      containerElement = container;
+      const scrollToKey = isHorizontal ? "scrollX" : "scrollY";
+      const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
+
+      const normalizeOffset = (offset: number, diff?: boolean): number => {
+        if (isHorizontal && isRTLDocument()) {
+          return normalizeRTLOffset(container, store, offset, diff);
+        }
+        return offset;
+      };
 
       // TODO calc offset only when it changes (maybe impossible)
       const getOffsetToWindow = (node: HTMLElement, offset: number): number => {
@@ -332,38 +356,28 @@ export const createWindowScroller = (
         return getOffsetToWindow(parent as HTMLElement, nodeOffset);
       };
 
-      const onScrollEnd = debounce(() => {
-        store._update(ACTION_SCROLL_END);
-      }, 150);
-
-      const onScroll = () => {
-        store._update(
-          ACTION_SCROLL,
-          normalizeOffset(window[scrollToKey]) - getOffsetToWindow(container, 0)
-        );
-        onScrollEnd();
-      };
-
-      const onWheel = createOnWheel(store, isHorizontal, onScrollEnd);
-
-      window.addEventListener("scroll", onScroll);
-      window.addEventListener("wheel", onWheel, { passive: true });
-
-      cleanup = () => {
-        window.removeEventListener("scroll", onScroll);
-        window.removeEventListener("wheel", onWheel);
-        onScrollEnd._cancel();
-      };
+      scrollObserver = createScrollObserver(
+        store,
+        window,
+        isHorizontal,
+        () =>
+          normalizeOffset(window[scrollToKey]) -
+          getOffsetToWindow(container, 0),
+        (jump) => {
+          // TODO support case two window scrollers exist in the same view
+          window.scrollBy(
+            isHorizontal ? normalizeOffset(jump, true) : 0,
+            isHorizontal ? 0 : jump
+          );
+        }
+      );
     },
     _dispose() {
-      cleanup && cleanup();
+      scrollObserver && scrollObserver._dispose();
     },
     _fixScrollJump: (jump) => {
-      // TODO support case two window scrollers exist in the same view
-      window.scrollBy(
-        isHorizontal ? normalizeOffset(jump, true) : 0,
-        isHorizontal ? 0 : jump
-      );
+      if (!scrollObserver) return;
+      scrollObserver._fixScrollJump(jump);
     },
   };
 };
