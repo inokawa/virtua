@@ -5,8 +5,6 @@ export const max = Math.max;
 /** @internal */
 export const abs = Math.abs;
 /** @internal */
-export const now = Date.now;
-/** @internal */
 export const values = Object.values;
 /** @internal */
 export const isArray = Array.isArray;
@@ -39,10 +37,7 @@ export const median = (arr: number[]): number => {
 /**
  * @internal
  */
-export const debounce = <T extends (...args: any[]) => void>(
-  fn: T,
-  ms: number
-) => {
+export const debounce = <T extends () => void>(fn: T, ms: number) => {
   let id: ReturnType<typeof setTimeout> | undefined | null;
 
   const cancel = () => {
@@ -59,23 +54,6 @@ export const debounce = <T extends (...args: any[]) => void>(
   };
   debouncedFn._cancel = cancel;
   return debouncedFn;
-};
-
-/**
- * @internal
- */
-export const throttle = <T extends (...args: any[]) => void>(
-  fn: T,
-  ms: number
-) => {
-  let time = now() - ms;
-  return (...args: Parameters<T>) => {
-    const n = now();
-    if (time + ms < n) {
-      time = n;
-      fn(...args);
-    }
-  };
 };
 
 /**
