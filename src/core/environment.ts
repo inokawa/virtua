@@ -5,7 +5,7 @@ import { computeStyle, once } from "./utils";
  */
 export const isBrowser = typeof window !== "undefined";
 
-const getDocumentRoot = () => document.documentElement;
+const getDocumentElement = () => document.documentElement;
 
 /**
  * The scroll position may be negative value in rtl direction.
@@ -35,7 +35,7 @@ export const hasNegativeOffsetInRTL = /*#__PURE__*/ once(
 export const isRTLDocument = /*#__PURE__*/ once((): boolean => {
   // TODO support SSR in rtl
   return isBrowser
-    ? computeStyle(getDocumentRoot()).direction === "rtl"
+    ? computeStyle(getDocumentElement()).direction === "rtl"
     : false;
 });
 
@@ -51,5 +51,5 @@ export const isIOSWebKit = /*#__PURE__*/ once((): boolean => {
  * @internal
  */
 export const isSmoothScrollSupported = /*#__PURE__*/ once((): boolean => {
-  return "scrollBehavior" in getDocumentRoot().style;
+  return "scrollBehavior" in getDocumentElement().style;
 });
