@@ -25,7 +25,6 @@ import { createWindowResizer } from "../core/resizer";
 import { CacheSnapshot } from "../core/types";
 import { CustomContainerComponent, CustomItemComponent } from "./types";
 import { ListItem } from "./ListItem";
-import { Cache } from "../core/cache";
 import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
 import { useChildren } from "./useChildren";
@@ -151,7 +150,7 @@ export const WindowVirtualizer = forwardRef<
         count,
         itemSize,
         ssrCount,
-        cache as unknown as Cache | undefined,
+        cache,
         !itemSize
       );
 
