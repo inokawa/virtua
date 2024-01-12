@@ -28,7 +28,6 @@ import { useLatestRef } from "./useLatestRef";
 import { createResizer } from "../core/resizer";
 import { ListItem } from "./ListItem";
 import { CacheSnapshot, ScrollToIndexOpts } from "../core/types";
-import { Cache } from "../core/cache";
 import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
 import { useChildren } from "./useChildren";
@@ -208,7 +207,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         count,
         itemSize,
         ssrCount,
-        cache as unknown as Cache | undefined,
+        cache,
         !itemSize,
         startMargin,
         endMargin

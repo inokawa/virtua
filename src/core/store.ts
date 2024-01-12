@@ -175,7 +175,7 @@ export const createVirtualStore = (
   elementsCount: number,
   itemSize: number = 40,
   ssrCount: number = 0,
-  cache: Cache = initCache(elementsCount, itemSize),
+  cacheSnapshot?: CacheSnapshot | undefined,
   shouldAutoEstimateItemSize?: boolean | undefined,
   startSpacerSize: number = 0,
   endSpacerSize: number = 0
@@ -195,6 +195,8 @@ export const createVirtualStore = (
     : null;
   let _prevRange: ItemsRange = [0, 0];
 
+  const cache =
+    (cacheSnapshot as Cache | undefined) || initCache(elementsCount, itemSize);
   const subscribers = new Set<[number, Subscriber]>();
   const getTotalSize = (): number => computeTotalSize(cache);
   const getScrollableSize = (): number =>
