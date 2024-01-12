@@ -33,7 +33,7 @@ You can also pass a function and set [WindowVirtualizerProps.count](react.Window
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:52](https://github.com/inokawa/virtua/blob/efa0f07c/src/react/WindowVirtualizer.tsx#L52)
+[src/react/WindowVirtualizer.tsx:51](https://github.com/inokawa/virtua/blob/82e14a05/src/react/WindowVirtualizer.tsx#L51)
 
 ___
 
@@ -45,7 +45,7 @@ If you set a function to [WindowVirtualizerProps.children](react.WindowVirtualiz
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:56](https://github.com/inokawa/virtua/blob/efa0f07c/src/react/WindowVirtualizer.tsx#L56)
+[src/react/WindowVirtualizer.tsx:55](https://github.com/inokawa/virtua/blob/82e14a05/src/react/WindowVirtualizer.tsx#L55)
 
 ___
 
@@ -63,7 +63,7 @@ Number of items to render above/below the visible bounds of the list. Lower valu
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:61](https://github.com/inokawa/virtua/blob/efa0f07c/src/react/WindowVirtualizer.tsx#L61)
+[src/react/WindowVirtualizer.tsx:60](https://github.com/inokawa/virtua/blob/82e14a05/src/react/WindowVirtualizer.tsx#L60)
 
 ___
 
@@ -78,7 +78,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:68](https://github.com/inokawa/virtua/blob/efa0f07c/src/react/WindowVirtualizer.tsx#L68)
+[src/react/WindowVirtualizer.tsx:67](https://github.com/inokawa/virtua/blob/82e14a05/src/react/WindowVirtualizer.tsx#L67)
 
 ___
 
@@ -90,7 +90,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:72](https://github.com/inokawa/virtua/blob/efa0f07c/src/react/WindowVirtualizer.tsx#L72)
+[src/react/WindowVirtualizer.tsx:71](https://github.com/inokawa/virtua/blob/82e14a05/src/react/WindowVirtualizer.tsx#L71)
 
 ___
 
@@ -102,7 +102,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:76](https://github.com/inokawa/virtua/blob/efa0f07c/src/react/WindowVirtualizer.tsx#L76)
+[src/react/WindowVirtualizer.tsx:75](https://github.com/inokawa/virtua/blob/82e14a05/src/react/WindowVirtualizer.tsx#L75)
 
 ___
 
@@ -114,7 +114,7 @@ You can restore cache by passing a [CacheSnapshot](react.CacheSnapshot.md) on mo
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:80](https://github.com/inokawa/virtua/blob/efa0f07c/src/react/WindowVirtualizer.tsx#L80)
+[src/react/WindowVirtualizer.tsx:79](https://github.com/inokawa/virtua/blob/82e14a05/src/react/WindowVirtualizer.tsx#L79)
 
 ___
 
@@ -126,7 +126,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:84](https://github.com/inokawa/virtua/blob/efa0f07c/src/react/WindowVirtualizer.tsx#L84)
+[src/react/WindowVirtualizer.tsx:83](https://github.com/inokawa/virtua/blob/82e14a05/src/react/WindowVirtualizer.tsx#L83)
 
 ___
 
@@ -144,7 +144,7 @@ Component or element type for container element.
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:89](https://github.com/inokawa/virtua/blob/efa0f07c/src/react/WindowVirtualizer.tsx#L89)
+[src/react/WindowVirtualizer.tsx:88](https://github.com/inokawa/virtua/blob/82e14a05/src/react/WindowVirtualizer.tsx#L88)
 
 ___
 
@@ -162,7 +162,7 @@ Component or element type for item element. This component will get [CustomItemC
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:94](https://github.com/inokawa/virtua/blob/efa0f07c/src/react/WindowVirtualizer.tsx#L94)
+[src/react/WindowVirtualizer.tsx:93](https://github.com/inokawa/virtua/blob/82e14a05/src/react/WindowVirtualizer.tsx#L93)
 
 ___
 
@@ -182,7 +182,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:98](https://github.com/inokawa/virtua/blob/efa0f07c/src/react/WindowVirtualizer.tsx#L98)
+[src/react/WindowVirtualizer.tsx:97](https://github.com/inokawa/virtua/blob/82e14a05/src/react/WindowVirtualizer.tsx#L97)
 
 ___
 
@@ -209,4 +209,4 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:102](https://github.com/inokawa/virtua/blob/efa0f07c/src/react/WindowVirtualizer.tsx#L102)
+[src/react/WindowVirtualizer.tsx:101](https://github.com/inokawa/virtua/blob/82e14a05/src/react/WindowVirtualizer.tsx#L101)
