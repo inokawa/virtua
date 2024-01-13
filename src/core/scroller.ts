@@ -159,7 +159,10 @@ export const createScroller = (
     return offset;
   };
 
-  const scrollManually = async (getOffset: () => number, smooth?: boolean) => {
+  const scheduleImperativeScroll = async (
+    getOffset: () => number,
+    smooth?: boolean
+  ) => {
     if (!viewportElement) return;
 
     if (cancelScroll) {
@@ -263,11 +266,11 @@ export const createScroller = (
       scrollObserver && scrollObserver._dispose();
     },
     _scrollTo(offset) {
-      scrollManually(() => offset);
+      scheduleImperativeScroll(() => offset);
     },
     _scrollBy(offset) {
       offset += store._getScrollOffset();
-      scrollManually(() => offset);
+      scheduleImperativeScroll(() => offset);
     },
     _scrollToIndex(index, { align, smooth } = {}) {
       index = clamp(index, 0, store._getItemsLength() - 1);
@@ -289,7 +292,7 @@ export const createScroller = (
         }
       }
 
-      scrollManually(() => {
+      scheduleImperativeScroll(() => {
         return (
           store._getStartSpacerSize() +
           (align === "end"
@@ -319,6 +322,33 @@ export type WindowScroller = {
   _fixScrollJump: (jump: number) => void;
 };
 
+const calcOffsetToViewport = (
+  node: HTMLElement,
+  viewport: HTMLElement,
+  isHorizontal: boolean,
+  offset: number = 0
+): number => {
+  // TODO calc offset only when it changes (maybe impossible)
+  const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
+  const offsetSum =
+    offset +
+    (isHorizontal && isRTLDocument()
+      ? window.innerWidth - node[offsetKey] - node.offsetWidth
+      : node[offsetKey]);
+
+  const parent = node.offsetParent;
+  if (node === viewport || !parent) {
+    return offsetSum;
+  }
+
+  return calcOffsetToViewport(
+    parent as HTMLElement,
+    viewport,
+    isHorizontal,
+    offsetSum
+  );
+};
+
 /**
  * @internal
  */
@@ -331,7 +361,6 @@ export const createWindowScroller = (
   return {
     _observe(container) {
       const scrollToKey = isHorizontal ? "scrollX" : "scrollY";
-      const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
 
       const normalizeOffset = (offset: number, diff?: boolean): number => {
         if (isHorizontal && isRTLDocument()) {
@@ -340,29 +369,13 @@ export const createWindowScroller = (
         return offset;
       };
 
-      // TODO calc offset only when it changes (maybe impossible)
-      const getOffsetToWindow = (node: HTMLElement, offset: number): number => {
-        const nodeOffset =
-          offset +
-          (isHorizontal && isRTLDocument()
-            ? window.innerWidth - node[offsetKey] - node.offsetWidth
-            : node[offsetKey]);
-
-        const parent = node.offsetParent;
-        if (node === document.body || !parent) {
-          return nodeOffset;
-        }
-
-        return getOffsetToWindow(parent as HTMLElement, nodeOffset);
-      };
-
       scrollObserver = createScrollObserver(
         store,
         window,
         isHorizontal,
         () =>
           normalizeOffset(window[scrollToKey]) -
-          getOffsetToWindow(container, 0),
+          calcOffsetToViewport(container, document.body, isHorizontal),
         (jump) => {
           // TODO support case two window scrollers exist in the same view
           window.scrollBy(
