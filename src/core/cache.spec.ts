@@ -329,7 +329,7 @@ describe(computeOffset.name, () => {
 
 describe(computeRange.name, () => {
   const INITIAL_INDEX = 0;
-  it("should get if offset is at start", () => {
+  it("should get start if offset is at start", () => {
     expect(
       computeRange(
         initCacheWithComputedOffsets(
@@ -343,7 +343,7 @@ describe(computeRange.name, () => {
     ).toEqual([0, 5]);
   });
 
-  it("should get if offset is at start + 1", () => {
+  it("should get start + 1 if offset is at start + 1", () => {
     expect(
       computeRange(
         initCacheWithComputedOffsets(
@@ -389,6 +389,31 @@ describe(computeRange.name, () => {
     expect(
       computeRange(cache, sum(cache._sizes) - 20 - 1, INITIAL_INDEX, 100)
     ).toEqual([last - 1, last]);
+  });
+
+  it("should get start if offset is before start", () => {
+    expect(
+      computeRange(
+        initCacheWithComputedOffsets(
+          range(10, () => 20),
+          30
+        ),
+        -1000,
+        INITIAL_INDEX,
+        100
+      )
+    ).toEqual([0, 0]);
+  });
+
+  it("should get last if offset is after end", () => {
+    const cache = initCacheWithComputedOffsets(
+      range(10, () => 20),
+      30
+    );
+    const last = cache._length - 1;
+    expect(
+      computeRange(cache, sum(cache._sizes) + 1000, INITIAL_INDEX, 100)
+    ).toEqual([last, last]);
   });
 });
 
