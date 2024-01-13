@@ -301,7 +301,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       () => {
         return {
           get cache() {
-            return store._getCache();
+            return store._getCacheSnapshot();
           },
           get scrollOffset() {
             return store._getScrollOffset();

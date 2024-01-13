@@ -224,7 +224,7 @@ export const WindowVirtualizer = forwardRef<
       () => {
         return {
           get cache() {
-            return store._getCache();
+            return store._getCacheSnapshot();
           },
         };
       },

@@ -148,7 +148,7 @@ type StateVersion = readonly [];
  */
 export type VirtualStore = {
   _getStateVersion(): StateVersion;
-  _getCache(): CacheSnapshot;
+  _getCacheSnapshot(): CacheSnapshot;
   _getRange(): ItemsRange;
   _isUnmeasuredItem(index: number): boolean;
   _hasUnmeasuredItemsInFrozenRange(): boolean;
@@ -220,7 +220,7 @@ export const createVirtualStore = (
     _getStateVersion() {
       return stateVersion;
     },
-    _getCache() {
+    _getCacheSnapshot() {
       return JSON.parse(JSON.stringify(cache)) as unknown as CacheSnapshot;
     },
     _getRange() {
