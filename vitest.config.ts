@@ -5,5 +5,7 @@ export default defineConfig({
     root: "src",
     environment: "jsdom",
     clearMocks: true,
+    // https://github.com/testing-library/vue-testing-library/issues/296
+    globals: true,
   },
 });
