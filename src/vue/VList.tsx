@@ -242,7 +242,7 @@ export const VList = /*#__PURE__*/ defineComponent({
               visibility: "hidden",
               width: isHorizontal ? totalSize + "px" : "100%",
               height: isHorizontal ? "100%" : totalSize + "px",
-              [isHorizontal ? "minWidth" : "minHeight"]: minSize,
+              [isHorizontal ? "minWidth" : "minHeight"]: minSize + "px",
               pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : "auto",
             }}
           >
