@@ -25,7 +25,7 @@
   "scripts": {
     "build": "rollup -c",
     "tsc": "tsc -p . --noEmit",
-    "test": "jest --silent",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --silent",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "storybook": "storybook dev -p 6006",
     "storybook:rtl": "STORYBOOK_RTL=1 npm run storybook",

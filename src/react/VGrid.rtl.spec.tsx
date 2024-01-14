@@ -1,13 +1,11 @@
-import { afterEach, it, expect, describe, jest } from "@jest/globals";
+import { afterEach, it, expect, describe } from "@jest/globals";
 import { render, cleanup } from "@testing-library/react";
 import { VGrid } from "./VGrid";
 
-jest.mock("../core/environment", () => {
-  const originalModule = jest.requireActual("../core/environment");
-  return {
-    ...(originalModule as any),
-    isRTLDocument: () => true,
-  };
+Object.defineProperty(CSSStyleDeclaration.prototype, "direction", {
+  get() {
+    return "rtl";
+  },
 });
 
 const ITEM_HEIGHT = 50;
