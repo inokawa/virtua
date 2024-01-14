@@ -1,4 +1,4 @@
-import { afterEach, it, expect, describe } from "@jest/globals";
+import { afterEach, it, expect, describe } from "vitest";
 import { render, cleanup } from "@testing-library/react";
 import { VGrid } from "./VGrid";
 
@@ -227,9 +227,9 @@ describe("grid", () => {
 
 // describe("render count", () => {
 //   it("should render on mount", () => {
-//     const rootFn = jest.fn();
+//     const rootFn = vitest.fn();
 //     const itemCount = 4;
-//     const itemFns = Array.from({ length: itemCount }, (_) => jest.fn());
+//     const itemFns = Array.from({ length: itemCount }, (_) => vitest.fn());
 
 //     render(
 //       <Profiler id="root" onRender={rootFn}>
@@ -253,9 +253,9 @@ describe("grid", () => {
 //   });
 
 //   it("should render on mount many items", () => {
-//     const rootFn = jest.fn();
+//     const rootFn = vitest.fn();
 //     const itemCount = 100;
-//     const itemFns = Array.from({ length: itemCount }, (_) => jest.fn());
+//     const itemFns = Array.from({ length: itemCount }, (_) => vitest.fn());
 
 //     render(
 //       <Profiler id="root" onRender={rootFn}>
@@ -286,10 +286,10 @@ describe("grid", () => {
 //         f(...args);
 //       };
 //     };
-//     const rootFn = jest.fn();
+//     const rootFn = vitest.fn();
 
 //     const itemCount = 4;
-//     const itemFns = Array.from({ length: itemCount }, (_) => jest.fn());
+//     const itemFns = Array.from({ length: itemCount }, (_) => vitest.fn());
 
 //     const Mounter = ({
 //       children,
@@ -341,10 +341,10 @@ describe("grid", () => {
 //         f(...args);
 //       };
 //     };
-//     const rootFn = jest.fn();
+//     const rootFn = vitest.fn();
 
 //     const itemCount = 100;
-//     const itemFns = Array.from({ length: itemCount }, (_) => jest.fn());
+//     const itemFns = Array.from({ length: itemCount }, (_) => vitest.fn());
 
 //     const Mounter = ({
 //       children,

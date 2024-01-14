@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`rtl should not work in vertical 1`] = `
+exports[`rtl > should not work in vertical 1`] = `
 <DocumentFragment>
   <div
     style="flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 5000px; pointer-events: auto;"
@@ -149,7 +149,7 @@ exports[`rtl should not work in vertical 1`] = `
 </DocumentFragment>
 `;
 
-exports[`rtl should work in horizontal 1`] = `
+exports[`rtl > should work in horizontal 1`] = `
 <DocumentFragment>
   <div
     style="flex: 0 0 auto; position: relative; visibility: hidden; width: 10000px; height: 100%; pointer-events: auto;"

@@ -1,9 +1,4 @@
-/**
- *  https://github.com/vuejs/vue-jest/issues/479#issuecomment-1163421581
- *
- *  @jest-environment-options {"customExportConditions": ["node", "node-addons"]}
- */
-import { it, expect, describe } from "@jest/globals";
+import { it, expect, describe } from "vitest";
 import { defineComponent, h } from "vue";
 import { render } from "@testing-library/vue";
 import { VList } from "./VList";

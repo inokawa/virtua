@@ -1,4 +1,4 @@
-import { afterEach, it, expect, describe } from "@jest/globals";
+import { afterEach, it, expect, describe } from "vitest";
 import { render, cleanup } from "@testing-library/react";
 import { WindowVirtualizer } from "./WindowVirtualizer";
 
