@@ -1,4 +1,4 @@
-import { afterEach, it, expect, describe, jest } from "@jest/globals";
+import { afterEach, it, expect, describe, vitest } from "vitest";
 import { render, cleanup } from "@testing-library/react";
 import { VList } from "./VList";
 import { Profiler, ReactElement, forwardRef, useEffect, useState } from "react";
@@ -345,9 +345,9 @@ describe("reverse", () => {
 
 describe("render count", () => {
   it("should render on mount", () => {
-    const rootFn = jest.fn();
+    const rootFn = vitest.fn();
     const itemCount = 4;
-    const itemFns = Array.from({ length: itemCount }, (_) => jest.fn());
+    const itemFns = Array.from({ length: itemCount }, (_) => vitest.fn());
 
     render(
       <Profiler id="root" onRender={rootFn}>
@@ -371,9 +371,9 @@ describe("render count", () => {
   });
 
   it("should render on mount many items", () => {
-    const rootFn = jest.fn();
+    const rootFn = vitest.fn();
     const itemCount = 100;
-    const itemFns = Array.from({ length: itemCount }, (_) => jest.fn());
+    const itemFns = Array.from({ length: itemCount }, (_) => vitest.fn());
 
     render(
       <Profiler id="root" onRender={rootFn}>
@@ -404,10 +404,10 @@ describe("render count", () => {
         f(...args);
       };
     };
-    const rootFn = jest.fn();
+    const rootFn = vitest.fn();
 
     const itemCount = 4;
-    const itemFns = Array.from({ length: itemCount }, (_) => jest.fn());
+    const itemFns = Array.from({ length: itemCount }, (_) => vitest.fn());
 
     const Mounter = ({
       children,
@@ -459,10 +459,10 @@ describe("render count", () => {
         f(...args);
       };
     };
-    const rootFn = jest.fn();
+    const rootFn = vitest.fn();
 
     const itemCount = 100;
-    const itemFns = Array.from({ length: itemCount }, (_) => jest.fn());
+    const itemFns = Array.from({ length: itemCount }, (_) => vitest.fn());
 
     const Mounter = ({
       children,

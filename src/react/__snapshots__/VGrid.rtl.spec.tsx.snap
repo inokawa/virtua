@@ -1,9 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`rtl should work 1`] = `
+exports[`rtl > should work 1`] = `
 <DocumentFragment>
   <div
-    style="overflow: auto; flex: 0 0 auto; contain: strict; width: 100%; height: 100%;"
+    style="overflow: auto; overflow-anchor: none; flex: 0 0 auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="position: relative; visibility: hidden; width: 10000px; height: 4040px; pointer-events: auto;"
