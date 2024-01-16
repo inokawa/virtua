@@ -1,5 +1,4 @@
 import {
-  hasNegativeOffsetInRTL,
   isIOSWebKit,
   isRTLDocument,
   isSmoothScrollSupported,
@@ -16,16 +15,18 @@ import {
 import { ScrollToIndexOpts } from "./types";
 import { debounce, timeout, clamp } from "./utils";
 
-const normalizeRTLOffset = (
-  scrollable: HTMLElement,
-  store: VirtualStore,
-  offset: number,
-  diff?: boolean
-): number => {
-  if (hasNegativeOffsetInRTL(scrollable)) {
+/**
+ * scrollLeft is negative value in rtl direction.
+ *
+ * left  right
+ * -100  0      spec compliant
+ * https://github.com/othree/jquery.rtl-scroll-type
+ */
+const normalizeOffset = (offset: number, isHorizontal: boolean): number => {
+  if (isHorizontal && isRTLDocument()) {
     return -offset;
   } else {
-    return diff ? -offset : store._getMaxScrollOffset() - offset;
+    return offset;
   }
 };
 
@@ -154,15 +155,10 @@ export const createScroller = (
   const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const overflowKey = isHorizontal ? "overflowX" : "overflowY";
 
-  const normalizeOffset = (offset: number, diff?: boolean): number => {
-    if (isHorizontal && isRTLDocument()) {
-      return normalizeRTLOffset(viewportElement!, store, offset, diff);
-    }
-    return offset;
-  };
-
+  // The given offset will be clamped by browser
+  // https://drafts.csswg.org/cssom-view/#dom-element-scrolltop
   const scheduleImperativeScroll = async (
-    getOffset: () => number,
+    getTargetOffset: () => number,
     smooth?: boolean
   ) => {
     if (!viewportElement) return;
@@ -171,11 +167,6 @@ export const createScroller = (
       // Cancel waiting scrollTo
       cancelScroll();
     }
-
-    const getTargetOffset = (): number => {
-      // Adjust if the offset is over the end, to get correct startIndex.
-      return clamp(getOffset(), 0, store._getMaxScrollOffset());
-    };
 
     const waitForMeasurement = (): [Promise<void>, () => void] => {
       // Wait for the scroll destination items to be measured.
@@ -215,7 +206,10 @@ export const createScroller = (
       }
 
       viewportElement.scrollTo({
-        [isHorizontal ? "left" : "top"]: normalizeOffset(getTargetOffset()),
+        [isHorizontal ? "left" : "top"]: normalizeOffset(
+          getTargetOffset(),
+          isHorizontal
+        ),
         behavior: "smooth",
       });
     } else {
@@ -223,7 +217,10 @@ export const createScroller = (
         const [promise, unsubscribe] = waitForMeasurement();
 
         try {
-          viewportElement[scrollToKey] = normalizeOffset(getTargetOffset());
+          viewportElement[scrollToKey] = normalizeOffset(
+            getTargetOffset(),
+            isHorizontal
+          );
           store._update(ACTION_MANUAL_SCROLL);
 
           await promise;
@@ -245,7 +242,7 @@ export const createScroller = (
         store,
         viewport,
         isHorizontal,
-        () => normalizeOffset(viewport[scrollToKey]),
+        () => normalizeOffset(viewport[scrollToKey], isHorizontal),
         (jump, isMomentumScrolling) => {
           // If we update scroll position while touching on iOS, the position will be reverted.
           // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
@@ -260,7 +257,7 @@ export const createScroller = (
             });
           }
 
-          viewport[scrollToKey] += normalizeOffset(jump, true);
+          viewport[scrollToKey] += normalizeOffset(jump, isHorizontal);
         }
       );
     },
@@ -364,24 +361,19 @@ export const createWindowScroller = (
     _observe(container) {
       const scrollToKey = isHorizontal ? "scrollX" : "scrollY";
 
-      const normalizeOffset = (offset: number, diff?: boolean): number => {
-        if (isHorizontal && isRTLDocument()) {
-          return normalizeRTLOffset(container, store, offset, diff);
-        }
-        return offset;
-      };
+      const documentBody = document.body;
 
       scrollObserver = createScrollObserver(
         store,
         window,
         isHorizontal,
         () =>
-          normalizeOffset(window[scrollToKey]) -
-          calcOffsetToViewport(container, document.body, isHorizontal),
+          normalizeOffset(window[scrollToKey], isHorizontal) -
+          calcOffsetToViewport(container, documentBody, isHorizontal),
         (jump) => {
           // TODO support case two window scrollers exist in the same view
           window.scrollBy(
-            isHorizontal ? normalizeOffset(jump, true) : 0,
+            isHorizontal ? normalizeOffset(jump, isHorizontal) : 0,
             isHorizontal ? 0 : jump
           );
         }

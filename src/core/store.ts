@@ -156,7 +156,6 @@ export type VirtualStore = {
   _getItemSize(index: number): number;
   _getItemsLength(): number;
   _getScrollOffset(): number;
-  _getMaxScrollOffset(): number;
   _getScrollDirection(): ScrollDirection;
   _getViewportSize(): number;
   _getStartSpacerSize(): number;
@@ -265,7 +264,6 @@ export const createVirtualStore = (
     _getScrollOffset() {
       return scrollOffset;
     },
-    _getMaxScrollOffset: getMaxScrollOffset,
     _getScrollDirection() {
       return _scrollDirection;
     },
