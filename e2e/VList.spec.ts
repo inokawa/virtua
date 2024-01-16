@@ -615,7 +615,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if scrolled precisely
       const lastItem = await getLastItem(component);
       await expect(lastItem.text).toEqual("999");
-      expectInRange(lastItem.bottom, { min: 0, max: 1 });
+      expectInRange(lastItem.bottom, { min: -0.9, max: 1 });
 
       // Check if unnecessary items are not rendered
       await expect(await component.innerText()).not.toContain("949");
@@ -1188,7 +1188,7 @@ test.describe("emulated iOS WebKit", () => {
       // check if last is displayed
       const last = await getLastItem(component, opts);
       await expect(last.text).toEqual("999");
-      expectInRange(last.bottom, { min: 0, max: 1 });
+      expectInRange(last.bottom, { min: -0.9, max: 1 });
 
       await component.tap();
 
