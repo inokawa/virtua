@@ -36,13 +36,19 @@ const createScrollObserver = (
   getScrollOffset: () => number,
   updateScrollOffset: (value: number, isMomentumScrolling: boolean) => void
 ) => {
+  const now = Date.now;
+
+  let lastScrollTime = 0;
+  let wheeling = false;
   let touching = false;
   let justTouchEnded = false;
   let stillMomentumScrolling = false;
 
   const onScrollEnd = debounce(() => {
-    if (touching) {
-      // Wait while touching
+    if (wheeling || touching) {
+      wheeling = false;
+
+      // Wait while wheeling or touching
       onScrollEnd();
       return;
     }
@@ -53,6 +59,8 @@ const createScrollObserver = (
   }, 150);
 
   const onScroll = () => {
+    lastScrollTime = now();
+
     if (justTouchEnded) {
       stillMomentumScrolling = true;
     }
@@ -63,36 +71,30 @@ const createScrollObserver = (
 
   // Infer scroll state also from wheel events
   // Sometimes scroll events do not fire when frame dropped even if the visual have been already scrolled
-  const onWheel = (() => {
-    const now = Date.now;
-    const ms = 50;
-    let time = now() - ms;
+  const onWheel = ((e: WheelEvent) => {
+    if (
+      wheeling ||
+      // Scroll start should be detected with scroll event
+      store._getScrollDirection() === SCROLL_IDLE ||
+      // Probably a pinch-to-zoom gesture
+      e.ctrlKey
+    ) {
+      return;
+    }
 
-    return (e: WheelEvent) => {
-      const n = now();
-      if (time + ms < n) {
-        time = n;
-
-        if (
-          // Scroll start should be detected with scroll event
-          store._getScrollDirection() === SCROLL_IDLE ||
-          // Probably a pinch-to-zoom gesture
-          e.ctrlKey
-        ) {
-          return;
-        }
-        // Get delta before checking deltaMode for firefox behavior
-        // https://github.com/w3c/uievents/issues/181#issuecomment-392648065
-        // https://bugzilla.mozilla.org/show_bug.cgi?id=1392460#c34
-        if (isHorizontal ? e.deltaX : e.deltaY) {
-          const offset = store._getScrollOffset();
-          if (offset > 0 && offset < store._getMaxScrollOffset()) {
-            onScrollEnd();
-          }
-        }
-      }
-    };
-  })() as (e: Event) => void; // FIXME type error. why only here?
+    const timeDelta = now() - lastScrollTime;
+    if (
+      // Check if wheel event occurs some time after scrolling
+      150 > timeDelta &&
+      50 < timeDelta &&
+      // Get delta before checking deltaMode for firefox behavior
+      // https://github.com/w3c/uievents/issues/181#issuecomment-392648065
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=1392460#c34
+      (isHorizontal ? e.deltaX : e.deltaY)
+    ) {
+      wheeling = true;
+    }
+  }) as (e: Event) => void; // FIXME type error. why only here?
 
   const onTouchStart = () => {
     touching = true;
