@@ -1,4 +1,4 @@
-import { computeStyle, once } from "./utils";
+import { once } from "./utils";
 
 /**
  * @internal
@@ -24,7 +24,7 @@ export const getCurrentWindow = (doc: Document) => doc.defaultView!;
 export const isRTLDocument = /*#__PURE__*/ once((): boolean => {
   // TODO support SSR in rtl
   return isBrowser
-    ? computeStyle(getDocumentElement()).direction === "rtl"
+    ? getComputedStyle(getDocumentElement()).direction === "rtl"
     : false;
 });
 

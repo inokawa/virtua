@@ -73,12 +73,6 @@ export const once = <F extends (...args: any[]) => any>(fn: F): F => {
 };
 
 /**
- * wrap for SSR
- * @internal
- */
-export const computeStyle = (e: HTMLElement) => getComputedStyle(e);
-
-/**
  * @internal
  */
 export const getStyleNumber = (v: string): number => {
