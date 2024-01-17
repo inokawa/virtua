@@ -196,8 +196,9 @@ export const WindowVirtualizer = forwardRef<
         }
       );
 
-      resizer._observeRoot();
-      scroller._observe(containerRef[refKey]!);
+      const el = containerRef[refKey]!;
+      resizer._observeRoot(el);
+      scroller._observe(el);
       return () => {
         unsubscribeStore();
         unsubscribeOnScrollEnd();

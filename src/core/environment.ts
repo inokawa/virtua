@@ -10,6 +10,17 @@ const getDocumentElement = () => document.documentElement;
 /**
  * @internal
  */
+export const getCurrentDocument = (node: HTMLElement): Document =>
+  node.ownerDocument;
+
+/**
+ * @internal
+ */
+export const getCurrentWindow = (doc: Document) => doc.defaultView!;
+
+/**
+ * @internal
+ */
 export const isRTLDocument = /*#__PURE__*/ once((): boolean => {
   // TODO support SSR in rtl
   return isBrowser

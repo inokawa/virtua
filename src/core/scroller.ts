@@ -1,4 +1,6 @@
 import {
+  getCurrentDocument,
+  getCurrentWindow,
   isIOSWebKit,
   isRTLDocument,
   isSmoothScrollSupported,
@@ -321,33 +323,6 @@ export type WindowScroller = {
   _fixScrollJump: (jump: number) => void;
 };
 
-const calcOffsetToViewport = (
-  node: HTMLElement,
-  viewport: HTMLElement,
-  isHorizontal: boolean,
-  offset: number = 0
-): number => {
-  // TODO calc offset only when it changes (maybe impossible)
-  const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
-  const offsetSum =
-    offset +
-    (isHorizontal && isRTLDocument()
-      ? window.innerWidth - node[offsetKey] - node.offsetWidth
-      : node[offsetKey]);
-
-  const parent = node.offsetParent;
-  if (node === viewport || !parent) {
-    return offsetSum;
-  }
-
-  return calcOffsetToViewport(
-    parent as HTMLElement,
-    viewport,
-    isHorizontal,
-    offsetSum
-  );
-};
-
 /**
  * @internal
  */
@@ -361,7 +336,36 @@ export const createWindowScroller = (
     _observe(container) {
       const scrollToKey = isHorizontal ? "scrollX" : "scrollY";
 
+      const document = getCurrentDocument(container);
+      const window = getCurrentWindow(document);
       const documentBody = document.body;
+
+      const calcOffsetToViewport = (
+        node: HTMLElement,
+        viewport: HTMLElement,
+        isHorizontal: boolean,
+        offset: number = 0
+      ): number => {
+        // TODO calc offset only when it changes (maybe impossible)
+        const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
+        const offsetSum =
+          offset +
+          (isHorizontal && isRTLDocument()
+            ? window.innerWidth - node[offsetKey] - node.offsetWidth
+            : node[offsetKey]);
+
+        const parent = node.offsetParent;
+        if (node === viewport || !parent) {
+          return offsetSum;
+        }
+
+        return calcOffsetToViewport(
+          parent as HTMLElement,
+          viewport,
+          isHorizontal,
+          offsetSum
+        );
+      };
 
       scrollObserver = createScrollObserver(
         store,

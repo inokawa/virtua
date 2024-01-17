@@ -1,10 +1,32 @@
+import { getCurrentDocument, getCurrentWindow } from "./environment";
 import {
   ACTION_ITEM_RESIZE,
   ACTION_VIEWPORT_RESIZE,
   ItemResize,
   VirtualStore,
 } from "./store";
-import { exists, max, once } from "./utils";
+import { exists, max } from "./utils";
+
+const createResizeObserver = (cb: (entries: ResizeObserverEntry[]) => void) => {
+  let ro: ResizeObserver | undefined;
+
+  return {
+    _observe(e: HTMLElement) {
+      // Initialize ResizeObserver lazily for SSR
+      // https://www.w3.org/TR/resize-observer/#intro
+      (
+        ro ||
+        (ro = new (getCurrentWindow(getCurrentDocument(e)).ResizeObserver)(cb))
+      ).observe(e);
+    },
+    _unobserve(e: HTMLElement) {
+      ro!.unobserve(e);
+    },
+    _dispose() {
+      ro && ro.disconnect();
+    },
+  };
+};
 
 /**
  * @internal
@@ -28,52 +50,45 @@ export const createResizer = (
   const sizeKey = isHorizontal ? "width" : "height";
   const mountedIndexes = new WeakMap<Element, number>();
 
-  // Initialize ResizeObserver lazily for SSR
-  const getResizeObserver = once(() => {
-    // https://www.w3.org/TR/resize-observer/#intro
-    return new ResizeObserver((entries) => {
-      const resizes: ItemResize[] = [];
-      for (const { target, contentRect } of entries) {
-        // Skip zero-sized rects that may be observed under `display: none` style
-        if (!(target as HTMLElement).offsetParent) continue;
+  const resizeObserver = createResizeObserver((entries) => {
+    const resizes: ItemResize[] = [];
+    for (const { target, contentRect } of entries) {
+      // Skip zero-sized rects that may be observed under `display: none` style
+      if (!(target as HTMLElement).offsetParent) continue;
 
-        if (target === viewportElement) {
-          store._update(ACTION_VIEWPORT_RESIZE, contentRect[sizeKey]);
-        } else {
-          const index = mountedIndexes.get(target);
-          if (exists(index)) {
-            resizes.push([index, contentRect[sizeKey]]);
-          }
+      if (target === viewportElement) {
+        store._update(ACTION_VIEWPORT_RESIZE, contentRect[sizeKey]);
+      } else {
+        const index = mountedIndexes.get(target);
+        if (exists(index)) {
+          resizes.push([index, contentRect[sizeKey]]);
         }
       }
+    }
 
-      if (resizes.length) {
-        store._update(ACTION_ITEM_RESIZE, resizes);
-      }
-    });
+    if (resizes.length) {
+      store._update(ACTION_ITEM_RESIZE, resizes);
+    }
   });
 
   return {
     _observeRoot(viewport: HTMLElement) {
-      getResizeObserver().observe((viewportElement = viewport));
+      resizeObserver._observe((viewportElement = viewport));
     },
     _observeItem: (el: HTMLElement, i: number) => {
-      const ro = getResizeObserver();
       mountedIndexes.set(el, i);
-      ro.observe(el);
+      resizeObserver._observe(el);
       return () => {
         mountedIndexes.delete(el);
-        ro.unobserve(el);
+        resizeObserver._unobserve(el);
       };
     },
-    _dispose() {
-      getResizeObserver().disconnect();
-    },
+    _dispose: resizeObserver._dispose,
   };
 };
 
 interface WindowListResizer {
-  _observeRoot(): void;
+  _observeRoot(container: HTMLElement): void;
   _observeItem: ItemResizeObserver;
   _dispose(): void;
 }
@@ -89,47 +104,49 @@ export const createWindowResizer = (
   const windowSizeKey = isHorizontal ? "innerWidth" : "innerHeight";
   const mountedIndexes = new WeakMap<Element, number>();
 
-  // Initialize ResizeObserver lazily for SSR
-  const getResizeObserver = once(() => {
-    // https://www.w3.org/TR/resize-observer/#intro
-    return new ResizeObserver((entries) => {
-      const resizes: ItemResize[] = [];
-      for (const { target, contentRect } of entries) {
-        // Skip zero-sized rects that may be observed under `display: none` style
-        if (!(target as HTMLElement).offsetParent) continue;
+  const resizeObserver = createResizeObserver((entries) => {
+    const resizes: ItemResize[] = [];
+    for (const { target, contentRect } of entries) {
+      // Skip zero-sized rects that may be observed under `display: none` style
+      if (!(target as HTMLElement).offsetParent) continue;
 
-        const index = mountedIndexes.get(target);
-        if (exists(index)) {
-          resizes.push([index, contentRect[sizeKey]]);
-        }
+      const index = mountedIndexes.get(target);
+      if (exists(index)) {
+        resizes.push([index, contentRect[sizeKey]]);
       }
+    }
 
-      if (resizes.length) {
-        store._update(ACTION_ITEM_RESIZE, resizes);
-      }
-    });
+    if (resizes.length) {
+      store._update(ACTION_ITEM_RESIZE, resizes);
+    }
   });
-  const onWindowResize = () => {
-    store._update(ACTION_VIEWPORT_RESIZE, window[windowSizeKey]);
-  };
+
+  let cleanupOnWindowResize: (() => void) | undefined;
 
   return {
-    _observeRoot() {
+    _observeRoot(container) {
+      const window = getCurrentWindow(getCurrentDocument(container));
+      const onWindowResize = () => {
+        store._update(ACTION_VIEWPORT_RESIZE, window[windowSizeKey]);
+      };
       window.addEventListener("resize", onWindowResize);
       onWindowResize();
+
+      cleanupOnWindowResize = () => {
+        window.removeEventListener("resize", onWindowResize);
+      };
     },
     _observeItem: (el: HTMLElement, i: number) => {
-      const ro = getResizeObserver();
       mountedIndexes.set(el, i);
-      ro.observe(el);
+      resizeObserver._observe(el);
       return () => {
         mountedIndexes.delete(el);
-        ro.unobserve(el);
+        resizeObserver._unobserve(el);
       };
     },
     _dispose() {
-      window.removeEventListener("resize", onWindowResize);
-      getResizeObserver().disconnect();
+      cleanupOnWindowResize && cleanupOnWindowResize();
+      resizeObserver._dispose();
     },
   };
 };
@@ -157,107 +174,100 @@ export const createGridResizer = (
   const getKey = (rowIndex: number, colIndex: number): string =>
     `${rowIndex}-${colIndex}`;
 
-  // Initialize ResizeObserver lazily for SSR
-  const getResizeObserver = once(() => {
-    // https://www.w3.org/TR/resize-observer/#intro
-    return new ResizeObserver((entries) => {
-      const resizedRows = new Set<number>();
-      const resizedCols = new Set<number>();
-      for (const { target, contentRect } of entries) {
-        // Skip zero-sized rects that may be observed under `display: none` style
-        if (!(target as HTMLElement).offsetParent) continue;
+  const resizeObserver = createResizeObserver((entries) => {
+    const resizedRows = new Set<number>();
+    const resizedCols = new Set<number>();
+    for (const { target, contentRect } of entries) {
+      // Skip zero-sized rects that may be observed under `display: none` style
+      if (!(target as HTMLElement).offsetParent) continue;
 
-        if (target === viewportElement) {
-          vStore._update(ACTION_VIEWPORT_RESIZE, contentRect[heightKey]);
-          hStore._update(ACTION_VIEWPORT_RESIZE, contentRect[widthKey]);
-        } else {
-          const cell = mountedIndexes.get(target);
-          if (cell) {
-            const [rowIndex, colIndex] = cell;
-            const key = getKey(rowIndex, colIndex);
-            const prevSize = sizeCache.get(key);
-            const size: CellSize = [
-              contentRect[heightKey],
-              contentRect[widthKey],
-            ];
-            let rowResized: boolean | undefined;
-            let colResized: boolean | undefined;
-            if (!prevSize) {
-              rowResized = colResized = true;
-            } else {
-              if (prevSize[0] !== size[0]) {
-                rowResized = true;
-              }
-              if (prevSize[1] !== size[1]) {
-                colResized = true;
-              }
+      if (target === viewportElement) {
+        vStore._update(ACTION_VIEWPORT_RESIZE, contentRect[heightKey]);
+        hStore._update(ACTION_VIEWPORT_RESIZE, contentRect[widthKey]);
+      } else {
+        const cell = mountedIndexes.get(target);
+        if (cell) {
+          const [rowIndex, colIndex] = cell;
+          const key = getKey(rowIndex, colIndex);
+          const prevSize = sizeCache.get(key);
+          const size: CellSize = [
+            contentRect[heightKey],
+            contentRect[widthKey],
+          ];
+          let rowResized: boolean | undefined;
+          let colResized: boolean | undefined;
+          if (!prevSize) {
+            rowResized = colResized = true;
+          } else {
+            if (prevSize[0] !== size[0]) {
+              rowResized = true;
             }
-            if (rowResized) {
-              resizedRows.add(rowIndex);
+            if (prevSize[1] !== size[1]) {
+              colResized = true;
             }
-            if (colResized) {
-              resizedCols.add(colIndex);
-            }
-            if (rowResized || colResized) {
-              sizeCache.set(key, size);
-            }
+          }
+          if (rowResized) {
+            resizedRows.add(rowIndex);
+          }
+          if (colResized) {
+            resizedCols.add(colIndex);
+          }
+          if (rowResized || colResized) {
+            sizeCache.set(key, size);
           }
         }
       }
+    }
 
-      if (resizedRows.size) {
-        const heightResizes: ItemResize[] = [];
-        resizedRows.forEach((rowIndex) => {
-          let maxHeight = 0;
-          maybeCachedColIndexes.forEach((colIndex) => {
-            const size = sizeCache.get(getKey(rowIndex, colIndex));
-            if (size) {
-              maxHeight = max(maxHeight, size[0]);
-            }
-          });
-          if (maxHeight) {
-            heightResizes.push([rowIndex, maxHeight]);
+    if (resizedRows.size) {
+      const heightResizes: ItemResize[] = [];
+      resizedRows.forEach((rowIndex) => {
+        let maxHeight = 0;
+        maybeCachedColIndexes.forEach((colIndex) => {
+          const size = sizeCache.get(getKey(rowIndex, colIndex));
+          if (size) {
+            maxHeight = max(maxHeight, size[0]);
           }
         });
-        vStore._update(ACTION_ITEM_RESIZE, heightResizes);
-      }
-      if (resizedCols.size) {
-        const widthResizes: ItemResize[] = [];
-        resizedCols.forEach((colIndex) => {
-          let maxWidth = 0;
-          maybeCachedRowIndexes.forEach((rowIndex) => {
-            const size = sizeCache.get(getKey(rowIndex, colIndex));
-            if (size) {
-              maxWidth = max(maxWidth, size[1]);
-            }
-          });
-          if (maxWidth) {
-            widthResizes.push([colIndex, maxWidth]);
+        if (maxHeight) {
+          heightResizes.push([rowIndex, maxHeight]);
+        }
+      });
+      vStore._update(ACTION_ITEM_RESIZE, heightResizes);
+    }
+    if (resizedCols.size) {
+      const widthResizes: ItemResize[] = [];
+      resizedCols.forEach((colIndex) => {
+        let maxWidth = 0;
+        maybeCachedRowIndexes.forEach((rowIndex) => {
+          const size = sizeCache.get(getKey(rowIndex, colIndex));
+          if (size) {
+            maxWidth = max(maxWidth, size[1]);
           }
         });
-        hStore._update(ACTION_ITEM_RESIZE, widthResizes);
-      }
-    });
+        if (maxWidth) {
+          widthResizes.push([colIndex, maxWidth]);
+        }
+      });
+      hStore._update(ACTION_ITEM_RESIZE, widthResizes);
+    }
   });
 
   return {
     _observeRoot(viewport: HTMLElement) {
-      getResizeObserver().observe((viewportElement = viewport));
+      resizeObserver._observe((viewportElement = viewport));
     },
     _observeItem(el: HTMLElement, rowIndex: number, colIndex: number) {
-      const ro = getResizeObserver();
       mountedIndexes.set(el, [rowIndex, colIndex]);
       maybeCachedRowIndexes.add(rowIndex);
       maybeCachedColIndexes.add(colIndex);
-      ro.observe(el);
+      resizeObserver._observe(el);
       return () => {
         mountedIndexes.delete(el);
-        ro.unobserve(el);
+        resizeObserver._unobserve(el);
       };
     },
-    _dispose() {
-      getResizeObserver().disconnect();
-    },
+    _dispose: resizeObserver._dispose,
   };
 };
 
