@@ -21,7 +21,8 @@ import { debounce, timeout, clamp } from "./utils";
  * scrollLeft is negative value in rtl direction.
  *
  * left  right
- * -100  0      spec compliant
+ * 0     100    spec compliant (ltr)
+ * -100  0      spec compliant (rtl)
  * https://github.com/othree/jquery.rtl-scroll-type
  */
 const normalizeOffset = (offset: number, isHorizontal: boolean): number => {
