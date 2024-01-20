@@ -7,7 +7,7 @@ import {
 } from "./store";
 import { exists, max } from "./utils";
 
-const createResizeObserver = (cb: (entries: ResizeObserverEntry[]) => void) => {
+const createResizeObserver = (cb: ResizeObserverCallback) => {
   let ro: ResizeObserver | undefined;
 
   return {
