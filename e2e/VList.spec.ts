@@ -272,123 +272,6 @@ test.describe("check if scroll jump compensation works", () => {
     await expect(prev).toBeGreaterThan(initial + min);
   });
 
-  test("prepending when total height is lower than viewport height", async ({
-    page,
-  }) => {
-    await page.goto(storyUrl("basics-vlist--increasing-items"));
-    const component = await page.waitForSelector(scrollableSelector);
-    await component.waitForElementState("stable");
-
-    await page.getByRole("checkbox", { name: "prepend" }).click();
-    const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
-    const increaseRadio = await page.getByRole("radio", { name: "increase" });
-    const valueInput = page.getByRole("spinbutton");
-    const updateButton = page.getByRole("button", { name: "update" });
-
-    const initialLength = await component.evaluate(
-      (e) => e.childNodes[0].childNodes.length
-    );
-    expect(initialLength).toBeGreaterThan(1);
-
-    let i = 0;
-    while (true) {
-      i++;
-      await valueInput.clear();
-      await valueInput.fill(String(i));
-
-      // preprend
-      await increaseRadio.click();
-      await updateButton.click();
-      await component.waitForElementState("stable");
-
-      const [childrenCount, isScrollBarVisible, firstItemTop] =
-        await component.evaluate((e) => {
-          const children = e.childNodes[0].childNodes;
-          return [
-            children.length,
-            e.scrollHeight > (e as HTMLElement).offsetHeight,
-            (children[0] as HTMLElement).getBoundingClientRect().top -
-              e.getBoundingClientRect().top,
-          ];
-        });
-
-      if (isScrollBarVisible) {
-        break;
-      } else {
-        // Check if top is always visible and on top
-        expect(firstItemTop).toBe(0);
-        // Check if all items are visible
-        expect(childrenCount).toBe(i + initialLength);
-      }
-
-      // remove
-      await decreaseRadio.click();
-      await updateButton.click();
-    }
-
-    expect(i).toBeGreaterThanOrEqual(8);
-  });
-
-  test("prepending when total height is lower than viewport height and reverse:true", async ({
-    page,
-  }) => {
-    await page.goto(storyUrl("basics-vlist--increasing-items"));
-    const component = await page.waitForSelector(scrollableSelector);
-    await component.waitForElementState("stable");
-
-    await page.getByRole("checkbox", { name: "reverse" }).click();
-
-    await page.getByRole("checkbox", { name: "prepend" }).click();
-    const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
-    const increaseRadio = await page.getByRole("radio", { name: "increase" });
-    const valueInput = page.getByRole("spinbutton");
-    const updateButton = page.getByRole("button", { name: "update" });
-
-    const initialLength = await component.evaluate(
-      (e) => e.childNodes[0].childNodes.length
-    );
-    expect(initialLength).toBeGreaterThan(1);
-
-    let i = 0;
-    while (true) {
-      i++;
-      await valueInput.clear();
-      await valueInput.fill(String(i));
-
-      // preprend
-      await increaseRadio.click();
-      await updateButton.click();
-      await component.waitForElementState("stable");
-
-      const [childrenCount, isScrollBarVisible, firstItemBottom] =
-        await component.evaluate((e) => {
-          const children = e.childNodes[0].childNodes;
-          return [
-            children.length,
-            e.scrollHeight > (e as HTMLElement).offsetHeight,
-            (
-              children[children.length - 1] as HTMLElement
-            ).getBoundingClientRect().bottom - e.getBoundingClientRect().bottom,
-          ];
-        });
-
-      if (isScrollBarVisible) {
-        break;
-      } else {
-        // Check if bottom is always visible and on bottom
-        expectInRange(firstItemBottom, { min: -0.1, max: 0.1 });
-        // Check if all items are visible
-        expect(childrenCount).toBe(i + initialLength);
-      }
-
-      // remove
-      await decreaseRadio.click();
-      await updateButton.click();
-    }
-
-    expect(i).toBeGreaterThanOrEqual(8);
-  });
-
   test("stick to bottom", async ({ page }) => {
     await page.goto(storyUrl("advanced-chat--default"));
     const component = await page.waitForSelector(scrollableSelector);
@@ -905,7 +788,7 @@ test.describe("check if item shift compensation works", () => {
     await page.goto(storyUrl("basics-vlist--increasing-items"));
   });
 
-  test("end", async ({ page }) => {
+  test("keep end at mid when add to/remove from end", async ({ page }) => {
     const component = await page.waitForSelector(scrollableSelector);
     await component.waitForElementState("stable");
 
@@ -937,7 +820,7 @@ test.describe("check if item shift compensation works", () => {
     expect(topItem).toEqual(await getFirstItem(component));
   });
 
-  test("start", async ({ page }) => {
+  test("keep start at mid when add to/remove from start", async ({ page }) => {
     const component = await page.waitForSelector(scrollableSelector);
     await component.waitForElementState("stable");
 
@@ -968,6 +851,123 @@ test.describe("check if item shift compensation works", () => {
     await page.waitForTimeout(100);
     // check if visible item is keeped
     expect(topItem).toEqual(await getFirstItem(component));
+  });
+
+  test("prepending when total height is lower than viewport height", async ({
+    page,
+  }) => {
+    await page.goto(storyUrl("basics-vlist--increasing-items"));
+    const component = await page.waitForSelector(scrollableSelector);
+    await component.waitForElementState("stable");
+
+    await page.getByRole("checkbox", { name: "prepend" }).click();
+    const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
+    const increaseRadio = await page.getByRole("radio", { name: "increase" });
+    const valueInput = page.getByRole("spinbutton");
+    const updateButton = page.getByRole("button", { name: "update" });
+
+    const initialLength = await component.evaluate(
+      (e) => e.childNodes[0].childNodes.length
+    );
+    expect(initialLength).toBeGreaterThan(1);
+
+    let i = 0;
+    while (true) {
+      i++;
+      await valueInput.clear();
+      await valueInput.fill(String(i));
+
+      // preprend
+      await increaseRadio.click();
+      await updateButton.click();
+      await component.waitForElementState("stable");
+
+      const [childrenCount, isScrollBarVisible, firstItemTop] =
+        await component.evaluate((e) => {
+          const children = e.childNodes[0].childNodes;
+          return [
+            children.length,
+            e.scrollHeight > (e as HTMLElement).offsetHeight,
+            (children[0] as HTMLElement).getBoundingClientRect().top -
+              e.getBoundingClientRect().top,
+          ];
+        });
+
+      // Check if top is always visible and on top
+      expect(firstItemTop).toBe(0);
+      // Check if all items are visible
+      expect(childrenCount).toBe(i + initialLength);
+
+      if (isScrollBarVisible) {
+        break;
+      }
+
+      // remove
+      await decreaseRadio.click();
+      await updateButton.click();
+    }
+
+    expect(i).toBeGreaterThanOrEqual(8);
+  });
+
+  test("prepending when total height is lower than viewport height and reverse:true", async ({
+    page,
+  }) => {
+    await page.goto(storyUrl("basics-vlist--increasing-items"));
+    const component = await page.waitForSelector(scrollableSelector);
+    await component.waitForElementState("stable");
+
+    await page.getByRole("checkbox", { name: "reverse" }).click();
+
+    await page.getByRole("checkbox", { name: "prepend" }).click();
+    const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
+    const increaseRadio = await page.getByRole("radio", { name: "increase" });
+    const valueInput = page.getByRole("spinbutton");
+    const updateButton = page.getByRole("button", { name: "update" });
+
+    const initialLength = await component.evaluate(
+      (e) => e.childNodes[0].childNodes.length
+    );
+    expect(initialLength).toBeGreaterThan(1);
+
+    let i = 0;
+    while (true) {
+      i++;
+      await valueInput.clear();
+      await valueInput.fill(String(i));
+
+      // preprend
+      await increaseRadio.click();
+      await updateButton.click();
+      await component.waitForElementState("stable");
+
+      const [childrenCount, isScrollBarVisible, firstItemBottom] =
+        await component.evaluate((e) => {
+          const children = e.childNodes[0].childNodes;
+          return [
+            children.length,
+            e.scrollHeight > (e as HTMLElement).offsetHeight,
+            (
+              children[children.length - 1] as HTMLElement
+            ).getBoundingClientRect().bottom - e.getBoundingClientRect().bottom,
+          ];
+        });
+
+      // Check if bottom is always visible and on bottom
+      expectInRange(firstItemBottom, { min: -0.1, max: 0.1 });
+      // Check if all items are visible
+      expect(childrenCount).toBe(i + initialLength);
+
+      if (isScrollBarVisible) {
+        break;
+      }
+
+      // remove
+      await decreaseRadio.click();
+      await updateButton.click();
+    }
+
+    expect(i).toBeGreaterThanOrEqual(8);
   });
 });
 
