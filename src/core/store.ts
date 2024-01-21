@@ -14,6 +14,9 @@ import { isIOSWebKit } from "./environment";
 import type { CacheSnapshot } from "./types";
 import { abs, clamp, max, min } from "./utils";
 
+// Scroll offset and sizes can have sub-pixel value if window.devicePixelRatio has decimal value
+const SUBPIXEL_THRESHOLD = 1.5; // 0.5 * 3
+
 /** @internal */
 export const SCROLL_IDLE = 0;
 /** @internal */
@@ -122,9 +125,17 @@ export const overscanEndIndex = (
   );
 };
 
-const calculateJump = (cache: Cache, items: readonly ItemResize[]): number => {
+const calculateJump = (
+  cache: Cache,
+  items: readonly ItemResize[],
+  keepEnd?: boolean
+): number => {
   return items.reduce((acc, [index, size]) => {
-    return acc + size - getItemSize(cache, index);
+    const diff = size - getItemSize(cache, index);
+    if (!keepEnd || diff > 0) {
+      acc += diff;
+    }
+    return acc;
   }, 0);
 };
 
@@ -304,18 +315,26 @@ export const createVirtualStore = (
 
           // Calculate jump
           // Should maintain visible position to minimize junks in appearance
-          let diff: number;
-          if (_scrollMode === SCROLL_BY_PREPENDING) {
-            // Keep distance from end immediately after prepending
-            // We can assume jumps occurred on the upper outside
-            diff = calculateJump(cache, updated);
+          let diff = 0;
+
+          if (scrollOffset === 0) {
+            // Do nothing to stick to the start
+          } else if (scrollOffset > getMaxScrollOffset() - SUBPIXEL_THRESHOLD) {
+            // Keep end to stick to the end
+            diff = calculateJump(cache, updated, true);
           } else {
-            // Keep start at mid
-            const [startIndex] = _prevRange;
-            diff = calculateJump(
-              cache,
-              updated.filter(([index]) => index < startIndex)
-            );
+            if (_scrollMode === SCROLL_BY_PREPENDING) {
+              // Keep distance from end immediately after prepending
+              // We can assume jumps occurred on the upper outside
+              diff = calculateJump(cache, updated);
+            } else {
+              // Keep start at mid
+              const [startIndex] = _prevRange;
+              diff = calculateJump(
+                cache,
+                updated.filter(([index]) => index < startIndex)
+              );
+            }
           }
 
           if (diff) {
