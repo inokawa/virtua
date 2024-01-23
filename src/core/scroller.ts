@@ -33,12 +33,39 @@ const normalizeOffset = (offset: number, isHorizontal: boolean): number => {
   }
 };
 
+const calcOffsetToViewport = (
+  node: HTMLElement,
+  viewport: HTMLElement,
+  isHorizontal: boolean,
+  offset: number = 0
+): number => {
+  // TODO calc offset only when it changes (maybe impossible)
+  const offsetSum =
+    offset +
+    (isHorizontal && isRTLDocument()
+      ? viewport.offsetWidth - node.offsetLeft - node.offsetWidth
+      : node[isHorizontal ? "offsetLeft" : "offsetTop"]);
+
+  const parent = node.offsetParent;
+  if (node === viewport || !parent) {
+    return offsetSum;
+  }
+
+  return calcOffsetToViewport(
+    parent as HTMLElement,
+    viewport,
+    isHorizontal,
+    offsetSum
+  );
+};
+
 const createScrollObserver = (
   store: VirtualStore,
   viewport: HTMLElement | Window,
   isHorizontal: boolean,
   getScrollOffset: () => number,
-  updateScrollOffset: (value: number, isMomentumScrolling: boolean) => void
+  updateScrollOffset: (value: number, isMomentumScrolling: boolean) => void,
+  calcStartOffset: (() => number) | undefined
 ) => {
   const now = Date.now;
 
@@ -69,7 +96,12 @@ const createScrollObserver = (
       stillMomentumScrolling = true;
     }
 
-    store._update(ACTION_SCROLL, getScrollOffset());
+    let offset = getScrollOffset();
+    if (calcStartOffset) {
+      offset -= calcStartOffset();
+    }
+
+    store._update(ACTION_SCROLL, offset);
     onScrollEnd();
   };
 
@@ -140,7 +172,10 @@ type ScrollObserver = ReturnType<typeof createScrollObserver>;
  * @internal
  */
 export type Scroller = {
-  _observe: (viewportElement: HTMLElement) => void;
+  _observe: (
+    viewportElement: HTMLElement,
+    containerElement: HTMLElement
+  ) => void;
   _dispose(): void;
   _scrollTo: (offset: number) => void;
   _scrollBy: (offset: number) => void;
@@ -153,7 +188,8 @@ export type Scroller = {
  */
 export const createScroller = (
   store: VirtualStore,
-  isHorizontal: boolean
+  isHorizontal: boolean,
+  unbound?: boolean
 ): Scroller => {
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
@@ -245,7 +281,7 @@ export const createScroller = (
   };
 
   return {
-    _observe(viewport) {
+    _observe(viewport, container) {
       viewportElement = viewport;
 
       scrollObserver = createScrollObserver(
@@ -268,7 +304,10 @@ export const createScroller = (
           }
 
           viewport[scrollOffsetKey] += normalizeOffset(jump, isHorizontal);
-        }
+        },
+        unbound
+          ? () => calcOffsetToViewport(container, viewport, isHorizontal)
+          : undefined
       );
     },
     _dispose() {
@@ -352,47 +391,19 @@ export const createWindowScroller = (
       const window = getCurrentWindow(document);
       const documentBody = document.body;
 
-      const calcOffsetToViewport = (
-        node: HTMLElement,
-        viewport: HTMLElement,
-        isHorizontal: boolean,
-        offset: number = 0
-      ): number => {
-        // TODO calc offset only when it changes (maybe impossible)
-        const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
-        const offsetSum =
-          offset +
-          (isHorizontal && isRTLDocument()
-            ? window.innerWidth - node[offsetKey] - node.offsetWidth
-            : node[offsetKey]);
-
-        const parent = node.offsetParent;
-        if (node === viewport || !parent) {
-          return offsetSum;
-        }
-
-        return calcOffsetToViewport(
-          parent as HTMLElement,
-          viewport,
-          isHorizontal,
-          offsetSum
-        );
-      };
-
       scrollObserver = createScrollObserver(
         store,
         window,
         isHorizontal,
-        () =>
-          normalizeOffset(window[scrollOffsetKey], isHorizontal) -
-          calcOffsetToViewport(container, documentBody, isHorizontal),
+        () => normalizeOffset(window[scrollOffsetKey], isHorizontal),
         (jump) => {
           // TODO support case two window scrollers exist in the same view
           window.scrollBy(
             isHorizontal ? normalizeOffset(jump, isHorizontal) : 0,
             isHorizontal ? 0 : jump
           );
-        }
+        },
+        () => calcOffsetToViewport(container, documentBody, isHorizontal)
       );
     },
     _dispose() {

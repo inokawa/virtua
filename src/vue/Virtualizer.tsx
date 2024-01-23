@@ -123,10 +123,11 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     );
 
     onMounted(() => {
-      const scrollable = containerRef.value!.parentElement;
+      const container = containerRef.value!;
+      const scrollable = container!.parentElement;
       if (!scrollable) return;
       resizer._observeRoot(scrollable);
-      scroller._observe(scrollable);
+      scroller._observe(scrollable, container);
     });
     onUnmounted(() => {
       unsubscribeStore();

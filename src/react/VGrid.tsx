@@ -27,6 +27,7 @@ import { ViewportComponentAttributes } from "./types";
 import { flushSync } from "react-dom";
 import { isRTLDocument } from "../core/environment";
 import { useRerender } from "./useRerender";
+
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
 /**
@@ -241,9 +242,11 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const height = getScrollSize(vStore);
     const width = getScrollSize(hStore);
     const rootRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
+      const container = containerRef[refKey]!;
       // store must be subscribed first because others may dispatch update on init depending on implementation
       const unsubscribeVStore = vStore._subscribe(
         UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
@@ -266,8 +269,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         }
       );
       resizer._observeRoot(root);
-      vScroller._observe(root);
-      hScroller._observe(root);
+      vScroller._observe(root, container);
+      hScroller._observe(root, container);
       return () => {
         unsubscribeVStore();
         unsubscribeHStore();
