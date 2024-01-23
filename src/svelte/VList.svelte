@@ -123,8 +123,9 @@
   );
 
   onMount(() => {
+    const container = containerRef!;
     const root = containerRef.parentElement!;
-    virtualizer[ON_MOUNT](root);
+    virtualizer[ON_MOUNT](root, container);
   });
   onDestroy(() => {
     virtualizer[ON_UN_MOUNT]();

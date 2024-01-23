@@ -5,8 +5,6 @@ const sizes = [20, 40, 180, 77];
 const createItem = (i: number) => ({ index: i, size: sizes[i % 4] + 'px' })
 
 const data = Array.from({ length: 1000 }).map((_, i) => createItem(i));
-
-const headerHeight = 400;
 </script>
 
 <template>
@@ -17,10 +15,10 @@ const headerHeight = 400;
     // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
     overflowAnchor: 'none'
   }">
-    <div :style="{ backgroundColor: 'burlywood', height: headerHeight + 'px' }">
+    <div :style="{ backgroundColor: 'burlywood', height: '400px' }">
       header
     </div>
-    <Virtualizer :data="data" #default="item" :startMargin="headerHeight">
+    <Virtualizer :data="data" #default="item" :startOffset="'static'">
       <div :key="item.index" :style="{ height: item.size, background: 'white', borderBottom: 'solid 1px #ccc' }">
         {{ item.index }}
       </div>

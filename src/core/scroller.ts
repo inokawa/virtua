@@ -15,7 +15,7 @@ import {
   ACTION_BEFORE_MANUAL_SMOOTH_SCROLL,
   ACTION_START_OFFSET_CHANGE,
 } from "./store";
-import { type ScrollToIndexOpts } from "./types";
+import { type ScrollToIndexOpts, StartOffsetType } from "./types";
 import { debounce, timeout, clamp, microtask } from "./utils";
 
 /**
@@ -32,6 +32,32 @@ const normalizeOffset = (offset: number, isHorizontal: boolean): number => {
   } else {
     return offset;
   }
+};
+
+const calcOffsetToViewport = (
+  node: HTMLElement,
+  viewport: HTMLElement,
+  isHorizontal: boolean,
+  offset: number = 0
+): number => {
+  // TODO calc offset only when it changes (maybe impossible)
+  const offsetSum =
+    offset +
+    (isHorizontal && isRTLDocument()
+      ? viewport.offsetWidth - node.offsetLeft - node.offsetWidth
+      : node[isHorizontal ? "offsetLeft" : "offsetTop"]);
+
+  const parent = node.offsetParent;
+  if (node === viewport || !parent) {
+    return offsetSum;
+  }
+
+  return calcOffsetToViewport(
+    parent as HTMLElement,
+    viewport,
+    isHorizontal,
+    offsetSum
+  );
 };
 
 const createScrollObserver = (
@@ -121,6 +147,10 @@ const createScrollObserver = (
     }
   };
 
+  if (getStartOffset) {
+    store._update(ACTION_START_OFFSET_CHANGE, getStartOffset());
+  }
+
   viewport.addEventListener("scroll", onScroll);
   viewport.addEventListener("wheel", onWheel, { passive: true });
   viewport.addEventListener("touchstart", onTouchStart, { passive: true });
@@ -159,7 +189,10 @@ type ScrollObserver = ReturnType<typeof createScrollObserver>;
  * @internal
  */
 export type Scroller = {
-  _observe: (viewportElement: HTMLElement) => void;
+  _observe: (
+    viewportElement: HTMLElement,
+    containerElement: HTMLElement
+  ) => void;
   _dispose(): void;
   _scrollTo: (offset: number) => void;
   _scrollBy: (offset: number) => void;
@@ -172,7 +205,8 @@ export type Scroller = {
  */
 export const createScroller = (
   store: VirtualStore,
-  isHorizontal: boolean
+  isHorizontal: boolean,
+  startOffset?: StartOffsetType
 ): Scroller => {
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
@@ -264,8 +298,23 @@ export const createScroller = (
   };
 
   return {
-    _observe(viewport) {
+    _observe(viewport, container) {
       viewportElement = viewport;
+
+      let getStartOffset: (() => number) | undefined;
+      if (startOffset === "dynamic") {
+        getStartOffset = () =>
+          calcOffsetToViewport(container, viewport, isHorizontal);
+      } else if (startOffset === "static") {
+        const staticStartOffset = calcOffsetToViewport(
+          container,
+          viewport,
+          isHorizontal
+        );
+        getStartOffset = () => staticStartOffset;
+      } else if (typeof startOffset === "number") {
+        getStartOffset = () => startOffset;
+      }
 
       scrollObserver = createScrollObserver(
         store,
@@ -293,7 +342,8 @@ export const createScroller = (
           } else {
             viewport[scrollOffsetKey] += jump;
           }
-        }
+        },
+        getStartOffset
       );
     },
     _dispose() {
@@ -371,33 +421,6 @@ export const createWindowScroller = (
       const window = getCurrentWindow(document);
       const documentBody = document.body;
 
-      const calcOffsetToViewport = (
-        node: HTMLElement,
-        viewport: HTMLElement,
-        isHorizontal: boolean,
-        offset: number = 0
-      ): number => {
-        // TODO calc offset only when it changes (maybe impossible)
-        const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
-        const offsetSum =
-          offset +
-          (isHorizontal && isRTLDocument()
-            ? window.innerWidth - node[offsetKey] - node.offsetWidth
-            : node[offsetKey]);
-
-        const parent = node.offsetParent;
-        if (node === viewport || !parent) {
-          return offsetSum;
-        }
-
-        return calcOffsetToViewport(
-          parent as HTMLElement,
-          viewport,
-          isHorizontal,
-          offsetSum
-        );
-      };
-
       scrollObserver = createScrollObserver(
         store,
         window,
@@ -429,7 +452,10 @@ export const createWindowScroller = (
  * @internal
  */
 export type GridScroller = {
-  _observe: (viewportElement: HTMLElement) => void;
+  _observe: (
+    viewportElement: HTMLElement,
+    containerElement: HTMLElement
+  ) => void;
   _dispose(): void;
   _scrollTo: (offsetX: number, offsetY: number) => void;
   _scrollBy: (offsetX: number, offsetY: number) => void;
@@ -447,9 +473,9 @@ export const createGridScroller = (
   const vScroller = createScroller(vStore, false);
   const hScroller = createScroller(hStore, true);
   return {
-    _observe(viewportElement) {
-      vScroller._observe(viewportElement);
-      hScroller._observe(viewportElement);
+    _observe(viewportElement, containerElement) {
+      vScroller._observe(viewportElement, containerElement);
+      hScroller._observe(viewportElement, containerElement);
     },
     _dispose() {
       vScroller._dispose();
