@@ -9,7 +9,10 @@ import { isRTLDocument } from "../core/environment";
 export const ListItem = /*#__PURE__*/ defineComponent({
   props: {
     _children: { type: Object as PropType<VNode>, required: true },
-    _resizer: { type: Function as PropType<ItemResizeObserver>, required: true },
+    _resizer: {
+      type: Function as PropType<ItemResizeObserver>,
+      required: true,
+    },
     _index: { type: Number, required: true },
     _offset: { type: Number, required: true },
     _hide: { type: Boolean },
