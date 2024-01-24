@@ -29,7 +29,11 @@
         "parser": "@typescript-eslint/parser",
         "sourceType": "module"
       },
-      "extends": ["plugin:vue/vue3-recommended"]
+      "extends": ["plugin:vue/vue3-recommended"],
+      "rules": {
+        "vue/no-setup-props-reactivity-loss": "warn",
+        "vue/no-ref-object-reactivity-loss": "error"
+      }
     }
   ]
 }
