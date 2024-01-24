@@ -12,15 +12,24 @@
       "jsx": true
     }
   },
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
-  },
   "overrides": [
     {
       "files": ["src/react/**/*.{jsx,tsx}"],
-      "extends": ["plugin:react-hooks/recommended"]
+      "extends": ["plugin:react-hooks/recommended"],
+      "settings": {
+        "react": {
+          "version": "detect"
+        }
+      }
+    },
+    {
+      "files": ["src/vue/**/*.{jsx,tsx}"],
+      "parser": "vue-eslint-parser",
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+        "sourceType": "module"
+      },
+      "extends": ["plugin:vue/vue3-recommended"]
     }
   ]
 }
