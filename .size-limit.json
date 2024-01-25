@@ -30,9 +30,21 @@
     "limit": "4 kB"
   },
   {
-    "name": "VList vue",
+    "name": "vue VList",
     "path": "lib/vue/index.mjs",
     "import": "{ VList }",
+    "limit": "4 kB"
+  },
+  {
+    "name": "vue Virtualizer",
+    "path": "lib/vue/index.mjs",
+    "import": "{ Virtualizer }",
+    "limit": "4 kB"
+  },
+  {
+    "name": "vue WindowVirtualizer",
+    "path": "lib/vue/index.mjs",
+    "import": "{ WindowVirtualizer }",
     "limit": "4 kB"
   },
   {
