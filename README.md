@@ -197,24 +197,26 @@ export default async () => {
 
 `vue >= 3.2` is required.
 
+#### Vertical scroll
+
 ```vue
 <script setup>
 import { VList } from "virtua/vue";
 
-const heights = [20, 40, 180, 77];
+const sizes = [20, 40, 180, 77];
 const data = Array.from({ length: 1000 }).map((_, i) => ({
   id: i,
-  height: heights[i % 4] + "px",
+  size: sizes[i % 4] + "px",
 }));
 </script>
 
 <template>
-  <VList :data="data">
+  <VList :data="data" :style="{ height: '800px' }">
     <template #default="item">
       <div
         :key="item.id"
         :style="{
-          height: item.height,
+          height: item.size,
           background: 'white',
           borderBottom: 'solid 1px #ccc',
         }"
@@ -223,6 +225,70 @@ const data = Array.from({ length: 1000 }).map((_, i) => ({
       </div>
     </template>
   </VList>
+</template>
+```
+
+#### Horizontal scroll
+
+```vue
+<script setup>
+import { VList } from "virtua/vue";
+
+const sizes = [40, 180, 77];
+const data = Array.from({ length: 1000 }).map((_, i) => ({
+  id: i,
+  size: sizes[i % 3] + "px",
+}));
+</script>
+
+<template>
+  <VList :data="data" horizontal :style="{ height: '400px' }">
+    <template #default="item">
+      <div
+        :key="item.id"
+        :style="{
+          width: item.size,
+          background: 'white',
+          borderBottom: 'solid 1px #ccc',
+        }"
+      >
+        {{ item.id }}
+      </div>
+    </template>
+  </VList>
+</template>
+```
+
+#### Window scroll
+
+```vue
+<script setup>
+import { WindowVirtualizer } from "virtua/vue";
+
+const sizes = [20, 40, 180, 77];
+const data = Array.from({ length: 1000 }).map((_, i) => ({
+  id: i,
+  size: sizes[i % 4] + "px",
+}));
+</script>
+
+<template>
+  <div :style="{ padding: '200px' }">
+    <WindowVirtualizer :data="data">
+      <template #default="item">
+        <div
+          :key="item.index"
+          :style="{
+            height: item.size,
+            background: 'white',
+            borderBottom: 'solid 1px #ccc',
+          }"
+        >
+          {{ item.index }}
+        </div>
+      </template>
+    </WindowVirtualizer>
+  </div>
 </template>
 ```
 
