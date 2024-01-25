@@ -19,7 +19,7 @@ jobs:
           cache: "npm"
 
       - run: npm ci
-      - run: npm run storybook:build
+      - run: npm run storybook:deploy
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

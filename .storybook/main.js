@@ -24,4 +24,12 @@ export default process.env.STORYBOOK_VUE
         name: "@storybook/react-vite",
         options: {},
       },
+      ...(process.env.STORYBOOK_DEPLOY && {
+        refs: {
+          vue: {
+            title: "Vue",
+            url: "/virtua/vue",
+          },
+        },
+      }),
     };
