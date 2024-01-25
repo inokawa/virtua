@@ -1,42 +1,42 @@
-# Class: VList
+# Class: Virtualizer
 
-[vue](../modules/vue.md).VList
+[vue](../modules/vue.md).Virtualizer
 
 ## Table of contents
 
 ### Methods
 
-- [$watch](vue.VList.md#$watch)
-- [scrollToIndex](vue.VList.md#scrolltoindex)
-- [scrollTo](vue.VList.md#scrollto)
-- [scrollBy](vue.VList.md#scrollby)
+- [$watch](vue.Virtualizer.md#$watch)
+- [scrollToIndex](vue.Virtualizer.md#scrolltoindex)
+- [scrollTo](vue.Virtualizer.md#scrollto)
+- [scrollBy](vue.Virtualizer.md#scrollby)
 
 ### Properties
 
-- [$](vue.VList.md#$)
-- [$data](vue.VList.md#$data)
-- [$props](vue.VList.md#$props)
-- [$attrs](vue.VList.md#$attrs)
-- [$refs](vue.VList.md#$refs)
-- [$slots](vue.VList.md#$slots)
-- [$root](vue.VList.md#$root)
-- [$parent](vue.VList.md#$parent)
-- [$emit](vue.VList.md#$emit)
-- [$el](vue.VList.md#$el)
-- [$options](vue.VList.md#$options)
-- [$forceUpdate](vue.VList.md#$forceupdate)
-- [$nextTick](vue.VList.md#$nexttick)
-- [onScroll](vue.VList.md#onscroll)
-- [shift](vue.VList.md#shift)
-- [data](vue.VList.md#data)
-- [overscan](vue.VList.md#overscan)
-- [itemSize](vue.VList.md#itemsize)
-- [horizontal](vue.VList.md#horizontal)
-- [onScrollEnd](vue.VList.md#onscrollend)
-- [onRangeChange](vue.VList.md#onrangechange)
-- [scrollOffset](vue.VList.md#scrolloffset)
-- [scrollSize](vue.VList.md#scrollsize)
-- [viewportSize](vue.VList.md#viewportsize)
+- [$](vue.Virtualizer.md#$)
+- [$data](vue.Virtualizer.md#$data)
+- [$props](vue.Virtualizer.md#$props)
+- [$attrs](vue.Virtualizer.md#$attrs)
+- [$refs](vue.Virtualizer.md#$refs)
+- [$slots](vue.Virtualizer.md#$slots)
+- [$root](vue.Virtualizer.md#$root)
+- [$parent](vue.Virtualizer.md#$parent)
+- [$emit](vue.Virtualizer.md#$emit)
+- [$el](vue.Virtualizer.md#$el)
+- [$options](vue.Virtualizer.md#$options)
+- [$forceUpdate](vue.Virtualizer.md#$forceupdate)
+- [$nextTick](vue.Virtualizer.md#$nexttick)
+- [onScroll](vue.Virtualizer.md#onscroll)
+- [shift](vue.Virtualizer.md#shift)
+- [data](vue.Virtualizer.md#data)
+- [overscan](vue.Virtualizer.md#overscan)
+- [itemSize](vue.Virtualizer.md#itemsize)
+- [horizontal](vue.Virtualizer.md#horizontal)
+- [onScrollEnd](vue.Virtualizer.md#onscrollend)
+- [onRangeChange](vue.Virtualizer.md#onrangechange)
+- [scrollOffset](vue.Virtualizer.md#scrolloffset)
+- [scrollSize](vue.Virtualizer.md#scrollsize)
+- [viewportSize](vue.Virtualizer.md#viewportsize)
 
 ## Methods
 
@@ -237,7 +237,7 @@ ___
 
 ### $options
 
-• **$options**: `ComponentOptionsBase`\<`ResolveProps`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean }, \{ `scroll`: (`offset`: `number`) => `void` ; `scrollEnd`: () => `void` ; `rangeChange`: (`startIndex`: `number`, `endIndex`: `number`) => `void`  }\>, `VListHandle`, {}, {}, {}, `ComponentOptionsMixin`, `ComponentOptionsMixin`, \{ `scroll`: (`offset`: `number`) => `void` ; `scrollEnd`: () => `void` ; `rangeChange`: (`startIndex`: `number`, `endIndex`: `number`) => `void`  }, `string`, \{ `shift`: `boolean` = Boolean; `overscan`: `number` ; `horizontal`: `boolean` = Boolean }, {}, `string`, `SlotsType`\<\{ `default`: `any`  }\>\> & `MergedComponentOptionsOverride`
+• **$options**: `ComponentOptionsBase`\<`ResolveProps`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean }, \{ `scroll`: (`offset`: `number`) => `void` ; `scrollEnd`: () => `void` ; `rangeChange`: (`startIndex`: `number`, `endIndex`: `number`) => `void`  }\>, `VirtualizerHandle`, {}, {}, {}, `ComponentOptionsMixin`, `ComponentOptionsMixin`, \{ `scroll`: (`offset`: `number`) => `void` ; `scrollEnd`: () => `void` ; `rangeChange`: (`startIndex`: `number`, `endIndex`: `number`) => `void`  }, `string`, \{ `shift`: `boolean` = Boolean; `overscan`: `number` ; `horizontal`: `boolean` = Boolean }, {}, `string`, `SlotsType`\<\{ `default`: `any`  }\>\> & `MergedComponentOptionsOverride`
 
 #### Defined in
 
@@ -309,7 +309,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/vue/VList.tsx:34](https://github.com/inokawa/virtua/blob/f6cec99e/src/vue/VList.tsx#L34)
+[src/vue/Virtualizer.tsx:84](https://github.com/inokawa/virtua/blob/f6cec99e/src/vue/Virtualizer.tsx#L84)
 
 ___
 
@@ -321,7 +321,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/vue/VList.tsx:18](https://github.com/inokawa/virtua/blob/f6cec99e/src/vue/VList.tsx#L18)
+[src/vue/Virtualizer.tsx:68](https://github.com/inokawa/virtua/blob/f6cec99e/src/vue/Virtualizer.tsx#L68)
 
 ___
 
@@ -339,7 +339,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/vue/VList.tsx:23](https://github.com/inokawa/virtua/blob/f6cec99e/src/vue/VList.tsx#L23)
+[src/vue/Virtualizer.tsx:73](https://github.com/inokawa/virtua/blob/f6cec99e/src/vue/Virtualizer.tsx#L73)
 
 ___
 
@@ -354,7 +354,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/vue/VList.tsx:30](https://github.com/inokawa/virtua/blob/f6cec99e/src/vue/VList.tsx#L30)
+[src/vue/Virtualizer.tsx:80](https://github.com/inokawa/virtua/blob/f6cec99e/src/vue/Virtualizer.tsx#L80)
 
 ___
 
@@ -366,7 +366,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/vue/VList.tsx:38](https://github.com/inokawa/virtua/blob/f6cec99e/src/vue/VList.tsx#L38)
+[src/vue/Virtualizer.tsx:88](https://github.com/inokawa/virtua/blob/f6cec99e/src/vue/Virtualizer.tsx#L88)
 
 ___
 
