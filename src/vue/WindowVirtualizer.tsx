@@ -85,10 +85,10 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     );
 
     onMounted(() => {
-      const scrollable = containerRef.value!.parentElement;
-      if (!scrollable) return;
-      resizer._observeRoot(scrollable);
-      scroller._observe(scrollable);
+      const el = containerRef.value;
+      if (!el) return;
+      resizer._observeRoot(el);
+      scroller._observe(el);
     });
     onUnmounted(() => {
       unsubscribeStore();
