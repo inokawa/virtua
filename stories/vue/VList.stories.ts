@@ -1,14 +1,30 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
 import { VList } from "../../src/vue";
-import BasicComponent from "./Basic.vue";
+import DefaultComponent from "./Default.vue";
+import HorizontalComponent from "./Horizontal.vue";
+import ControllsComponent from "./Controlls.vue";
 
 export default {
   component: VList,
 } satisfies Meta;
 
-export const Basic: StoryObj = {
+export const Default: StoryObj = {
   render: () => ({
-    components: { Basic: BasicComponent },
-    template: "<Basic />",
+    components: { Component: DefaultComponent },
+    template: "<Component />",
+  }),
+};
+
+export const Horizontal: StoryObj = {
+  render: () => ({
+    components: { Component: HorizontalComponent },
+    template: "<Component />",
+  }),
+};
+
+export const Controlls: StoryObj = {
+  render: () => ({
+    components: { Component: ControllsComponent },
+    template: "<Component />",
   }),
 };

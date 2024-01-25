@@ -40,18 +40,6 @@ global.ResizeObserver = class {
   }
   unobserve(_target: Element) {}
 };
-global.IntersectionObserver = class {
-  constructor(_callback: IntersectionObserverCallback) {}
-  disconnect() {}
-  observe(_e: HTMLElement) {}
-  unobserve() {}
-  takeRecords() {
-    return [];
-  }
-  root = null;
-  rootMargin = "";
-  thresholds = [];
-};
 
 afterEach(cleanup);
 
