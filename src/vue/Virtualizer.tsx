@@ -10,6 +10,7 @@ import {
   SlotsType,
   ComponentOptionsWithObjectProps,
   ComponentObjectPropsOptions,
+  withMemo,
 } from "vue";
 import {
   SCROLL_IDLE,
@@ -181,7 +182,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       scrollBy: scroller._scrollBy,
     } satisfies VirtualizerHandle);
 
-    return () => {
+    return (_: unknown, cache: any[]) => {
       rerender.value;
 
       const count = props.data.length;
@@ -205,19 +206,31 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
         i <= j;
         i++
       ) {
-        const e = slots.default(props.data![i]!)[0]! as VNode;
-        const key = e.key;
+        const data = props.data![i]!;
+        const offset = store._getItemOffset(i);
+        const hide = store._isUnmeasuredItem(i);
         items.push(
-          <ListItem
-            key={exists(key) ? key : "_" + i}
-            _resizer={resizer._observeItem}
-            _index={i}
-            _offset={store._getItemOffset(i)}
-            _hide={store._isUnmeasuredItem(i)}
-            _element="div"
-            _children={e}
-            _isHorizontal={isHorizontal}
-          />
+          withMemo(
+            [data, offset, hide],
+            () => {
+              const e = slots.default(data)[0]! as VNode;
+              const key = e.key;
+              return (
+                <ListItem
+                  key={exists(key) ? key : "_" + i}
+                  _resizer={resizer._observeItem}
+                  _index={i}
+                  _offset={offset}
+                  _hide={hide}
+                  _element="div"
+                  _children={e}
+                  _isHorizontal={isHorizontal}
+                />
+              );
+            },
+            cache,
+            i
+          )
         );
       }
 
