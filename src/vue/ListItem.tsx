@@ -26,8 +26,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
     watch(
       () => elementRef.value && props._index,
       (_, __, onCleanup) => {
-        const cleanupObserver = props._resizer(elementRef.value!, props._index);
-        onCleanup(cleanupObserver);
+        onCleanup(props._resizer(elementRef.value!, props._index));
       },
       {
         flush: "post",
