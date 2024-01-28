@@ -1,5 +1,9 @@
 {
-  "entryPoints": ["./src/index.ts", "./src/vue/index.ts"],
+  "entryPoints": [
+    "./src/index.ts",
+    "./src/vue/index.ts",
+    "./src/solid/index.ts"
+  ],
   "out": "docs",
   "name": "API",
   "plugin": ["typedoc-plugin-vue", "typedoc-plugin-markdown"],

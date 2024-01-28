@@ -48,6 +48,12 @@
     "limit": "4 kB"
   },
   {
+    "name": "solid VList",
+    "path": "lib/solid/index.mjs",
+    "import": "{ VList }",
+    "limit": "4 kB"
+  },
+  {
     "name": "react-virtuoso Virtuoso",
     "path": "node_modules/react-virtuoso/dist/index.mjs",
     "import": "{ Virtuoso }"

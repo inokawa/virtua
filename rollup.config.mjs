@@ -1,6 +1,6 @@
 import typescript from "@rollup/plugin-typescript";
 import terser from "@rollup/plugin-terser";
-import { getBabelOutputPlugin } from "@rollup/plugin-babel";
+import { babel, getBabelOutputPlugin } from "@rollup/plugin-babel";
 import banner from "rollup-plugin-banner2";
 import pkg from "./package.json" assert { type: "json" };
 
@@ -75,6 +75,42 @@ export default [
         outDir: ".",
         // declaration: true,
         exclude: ["**/*.{spec,stories}.*"],
+      }),
+      terserPlugin,
+    ],
+    external,
+  },
+  // solid
+  {
+    input: "src/solid/index.ts",
+    output: [
+      {
+        file: pkg.exports["./solid"].default,
+        format: "cjs",
+        sourcemap: true,
+      },
+      {
+        file: pkg.exports["./solid"].import,
+        format: "es",
+        sourcemap: true,
+      },
+    ],
+    plugins: [
+      typescript({
+        tsconfig: "./tsconfig.json",
+        outDir: ".",
+        // declaration: true,
+        exclude: ["**/*.{spec,stories}.*"],
+        jsx: "preserve",
+      }),
+      babel({
+        babelrc: false,
+        configFile: false,
+        filter: /\.(jsx|tsx)$/,
+        extensions: [".jsx", ".tsx"],
+        babelHelpers: "bundled",
+        presets: ["babel-preset-solid"],
+        parserOpts: { sourceType: "module", plugins: ["jsx", "typescript"] },
       }),
       terserPlugin,
     ],
