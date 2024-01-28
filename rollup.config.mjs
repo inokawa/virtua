@@ -11,7 +11,7 @@ const external = (id) =>
   ].some((d) => id.startsWith(d));
 
 const terserPlugin = terser({
-  ecma: 2015,
+  ecma: 2018,
   module: true,
   compress: { passes: 5, unsafe: true, keep_fargs: false },
   mangle: { properties: { regex: "^_" } },
