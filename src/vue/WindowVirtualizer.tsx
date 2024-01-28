@@ -10,6 +10,7 @@ import {
   SlotsType,
   ComponentOptionsWithObjectProps,
   ComponentObjectPropsOptions,
+  computed,
 } from "vue";
 import {
   SCROLL_IDLE,
@@ -24,7 +25,8 @@ import {
 import { createWindowResizer } from "../core/resizer";
 import { createWindowScroller } from "../core/scroller";
 import { ListItem } from "./ListItem";
-import { getKey } from "./utils";
+import { getKey, isSameRange } from "./utils";
+import { ItemsRange } from "../core/types";
 
 const props = {
   /**
@@ -70,6 +72,21 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     const scroller = createWindowScroller(store, isHorizontal);
 
     const rerender = ref(store._getStateVersion());
+
+    const range = computed<ItemsRange>((prev) => {
+      rerender.value;
+      const next = store._getRange();
+      if (prev && isSameRange(prev, next)) {
+        return prev;
+      }
+      return next;
+    });
+    const direction = computed(
+      () => rerender.value && store._getScrollDirection()
+    );
+    const size = computed(() => rerender.value && store._getTotalSize());
+    const jumpCount = computed(() => rerender.value && store._getJumpCount());
+
     const unsubscribeStore = store._subscribe(
       UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
       () => {
@@ -105,33 +122,27 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     );
 
     watch(
-      [rerender, store._getJumpCount],
-      ([, count], [, prevCount]) => {
-        if (count === prevCount) return;
-
+      jumpCount,
+      () => {
         scroller._fixScrollJump();
       },
       { flush: "post" }
     );
 
     watch(
-      [rerender, store._getRange],
-      ([, [start, end]], [, [prevStart, prevEnd]]) => {
-        if (prevStart === start && prevEnd === end) return;
-
+      range,
+      ([start, end]) => {
         emit("rangeChange", start, end);
       },
       { flush: "post" }
     );
 
     return () => {
-      rerender.value;
-
       const count = props.data.length;
 
-      const [startIndex, endIndex] = store._getRange();
-      const scrollDirection = store._getScrollDirection();
-      const totalSize = store._getTotalSize();
+      const [startIndex, endIndex] = range.value;
+      const scrollDirection = direction.value;
+      const totalSize = size.value;
 
       const items: VNode[] = [];
       for (
@@ -149,10 +160,10 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
         items.push(
           <ListItem
             key={getKey(e, i)}
+            _rerender={rerender}
+            _store={store}
             _resizer={resizer._observeItem}
             _index={i}
-            _offset={store._getItemOffset(i)}
-            _hide={store._isUnmeasuredItem(i)}
             _children={e}
             _isHorizontal={isHorizontal}
           />

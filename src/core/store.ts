@@ -125,7 +125,8 @@ const calculateJump = (
 
 type Subscriber = (sync?: boolean) => void;
 
-type StateVersion = readonly [];
+/** @internal */
+export type StateVersion = readonly [];
 
 /**
  * @internal

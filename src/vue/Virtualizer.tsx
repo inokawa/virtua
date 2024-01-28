@@ -10,6 +10,7 @@ import {
   SlotsType,
   ComponentOptionsWithObjectProps,
   ComponentObjectPropsOptions,
+  computed,
 } from "vue";
 import {
   SCROLL_IDLE,
@@ -25,9 +26,9 @@ import {
 } from "../core/store";
 import { createResizer } from "../core/resizer";
 import { createScroller } from "../core/scroller";
-import { ScrollToIndexOpts } from "../core/types";
+import { ItemsRange, ScrollToIndexOpts } from "../core/types";
 import { ListItem } from "./ListItem";
-import { getKey } from "./utils";
+import { getKey, isSameRange } from "./utils";
 
 export interface VirtualizerHandle {
   /**
@@ -104,6 +105,21 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     const scroller = createScroller(store, isHorizontal);
 
     const rerender = ref(store._getStateVersion());
+    const range = computed<ItemsRange>((prev) => {
+      rerender.value;
+      const next = store._getRange();
+      if (prev && isSameRange(prev, next)) {
+        return prev;
+      }
+      return next;
+    });
+    const direction = computed(
+      () => rerender.value && store._getScrollDirection()
+    );
+    const size = computed(() => rerender.value && store._getTotalSize());
+    // https://github.com/inokawa/virtua/issues/252#issuecomment-1822861368
+    const jumpCount = computed(() => rerender.value && store._getJumpCount());
+
     const unsubscribeStore = store._subscribe(
       UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
       () => {
@@ -143,20 +159,16 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     );
 
     watch(
-      [rerender, store._getJumpCount],
-      ([, count], [, prevCount]) => {
-        if (count === prevCount) return;
-
+      jumpCount,
+      () => {
         scroller._fixScrollJump();
       },
       { flush: "post" }
     );
 
     watch(
-      [rerender, store._getRange],
-      ([, [start, end]], [, [prevStart, prevEnd]]) => {
-        if (prevStart === start && prevEnd === end) return;
-
+      range,
+      ([start, end]) => {
         emit("rangeChange", start, end);
       },
       { flush: "post" }
@@ -178,13 +190,11 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     } satisfies VirtualizerHandle);
 
     return () => {
-      rerender.value;
-
       const count = props.data.length;
 
-      const [startIndex, endIndex] = store._getRange();
-      const scrollDirection = store._getScrollDirection();
-      const totalSize = store._getTotalSize();
+      const [startIndex, endIndex] = range.value;
+      const scrollDirection = direction.value;
+      const totalSize = size.value;
 
       const items: VNode[] = [];
       for (
@@ -202,10 +212,10 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
         items.push(
           <ListItem
             key={getKey(e, i)}
+            _rerender={rerender}
+            _store={store}
             _resizer={resizer._observeItem}
             _index={i}
-            _offset={store._getItemOffset(i)}
-            _hide={store._isUnmeasuredItem(i)}
             _children={e}
             _isHorizontal={isHorizontal}
           />
