@@ -16,7 +16,7 @@ export const Default: StoryObj = {
 
     return (
       <VList data={data} style={{ height: "100vh" }}>
-        {(d) => (
+        {(d, i) => (
           <div
             style={{
               height: d + "px",
@@ -24,7 +24,7 @@ export const Default: StoryObj = {
               background: "#fff",
             }}
           >
-            {d}
+            {i}
           </div>
         )}
       </VList>
@@ -44,7 +44,7 @@ export const Horizontal: StoryObj = {
           style={{ width: "100%", height: "200px" }}
           horizontal
         >
-          {(d) => (
+          {(d, i) => (
             <div
               style={{
                 width: d + "px",
@@ -52,7 +52,7 @@ export const Horizontal: StoryObj = {
                 background: "#fff",
               }}
             >
-              {d}
+              {i}
             </div>
           )}
         </VList>

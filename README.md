@@ -239,7 +239,7 @@ export const App = () => {
 
   return (
     <VList data={data} style={{ height: "800px" }}>
-      {(d) => (
+      {(d, i) => (
         <div
           style={{
             height: d + "px",
@@ -247,7 +247,7 @@ export const App = () => {
             background: "#fff",
           }}
         >
-          {d}
+          {i}
         </div>
       )}
     </VList>
