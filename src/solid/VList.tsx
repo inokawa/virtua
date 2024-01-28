@@ -176,13 +176,20 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
     }
   );
 
+  const isSameRange = (
+    prev: readonly [number, number],
+    next: readonly [number, number]
+  ): boolean => {
+    return prev[0] === next[0] && prev[1] === next[1];
+  };
+
   const range = createMemo<
     ReturnType<typeof store._getRange>,
     ReturnType<typeof store._getRange>
   >((prev) => {
     rerender();
     const next = store._getRange();
-    if (prev && prev[0] === next[0] && prev[1] === next[1]) {
+    if (prev && isSameRange(prev, next)) {
       return prev;
     }
     return next;
@@ -196,10 +203,10 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
 
   const jumpCount = createMemo(() => rerender() && store._getJumpCount());
 
-  const overscanedRange = createMemo<[number, number]>(() => {
+  const overscanedRange = createMemo<readonly [number, number]>((prev) => {
     const overscan = props.overscan ?? 4;
     const [startIndex, endIndex] = range();
-    return [
+    const next: readonly [number, number] = [
       overscanStartIndex(startIndex, overscan, scrollDirection()),
       overscanEndIndex(
         endIndex,
@@ -208,6 +215,10 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
         props.data.length
       ),
     ];
+    if (prev && isSameRange(prev, next)) {
+      return prev;
+    }
+    return next;
   });
 
   onMount(() => {
