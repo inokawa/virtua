@@ -1,175 +1,154 @@
-# Interface: VGridProps
+# Interface: VListProps\<T\>
 
-[react](../modules/react.md).VGridProps
+[solid](../modules/solid.md).VListProps
 
-Props of [VGrid](../modules/react.md#experimental_vgrid).
+Props of [VList](../modules/solid.md#vlist).
+
+## Type parameters
+
+| Name |
+| :------ |
+| `T` |
 
 ## Hierarchy
 
-- [`ViewportComponentAttributes`](../modules/react.md#viewportcomponentattributes)
+- `ViewportComponentAttributes`
 
-  ↳ **`VGridProps`**
+  ↳ **`VListProps`**
 
 ## Table of contents
 
 ### Properties
 
-- [children](react.VGridProps.md#children)
-- [row](react.VGridProps.md#row)
-- [col](react.VGridProps.md#col)
-- [cellHeight](react.VGridProps.md#cellheight)
-- [cellWidth](react.VGridProps.md#cellwidth)
-- [overscan](react.VGridProps.md#overscan)
-- [initialRowCount](react.VGridProps.md#initialrowcount)
-- [initialColCount](react.VGridProps.md#initialcolcount)
-- [components](react.VGridProps.md#components)
-- [className](react.VGridProps.md#classname)
-- [style](react.VGridProps.md#style)
-- [id](react.VGridProps.md#id)
-- [role](react.VGridProps.md#role)
-- [tabIndex](react.VGridProps.md#tabindex)
-- [onKeyDown](react.VGridProps.md#onkeydown)
-- [aria-activedescendant](react.VGridProps.md#aria-activedescendant)
-- [aria-atomic](react.VGridProps.md#aria-atomic)
-- [aria-autocomplete](react.VGridProps.md#aria-autocomplete)
-- [aria-braillelabel](react.VGridProps.md#aria-braillelabel)
-- [aria-brailleroledescription](react.VGridProps.md#aria-brailleroledescription)
-- [aria-busy](react.VGridProps.md#aria-busy)
-- [aria-checked](react.VGridProps.md#aria-checked)
-- [aria-colcount](react.VGridProps.md#aria-colcount)
-- [aria-colindex](react.VGridProps.md#aria-colindex)
-- [aria-colindextext](react.VGridProps.md#aria-colindextext)
-- [aria-colspan](react.VGridProps.md#aria-colspan)
-- [aria-controls](react.VGridProps.md#aria-controls)
-- [aria-current](react.VGridProps.md#aria-current)
-- [aria-describedby](react.VGridProps.md#aria-describedby)
-- [aria-description](react.VGridProps.md#aria-description)
-- [aria-details](react.VGridProps.md#aria-details)
-- [aria-disabled](react.VGridProps.md#aria-disabled)
-- [aria-dropeffect](react.VGridProps.md#aria-dropeffect)
-- [aria-errormessage](react.VGridProps.md#aria-errormessage)
-- [aria-expanded](react.VGridProps.md#aria-expanded)
-- [aria-flowto](react.VGridProps.md#aria-flowto)
-- [aria-grabbed](react.VGridProps.md#aria-grabbed)
-- [aria-haspopup](react.VGridProps.md#aria-haspopup)
-- [aria-hidden](react.VGridProps.md#aria-hidden)
-- [aria-invalid](react.VGridProps.md#aria-invalid)
-- [aria-keyshortcuts](react.VGridProps.md#aria-keyshortcuts)
-- [aria-label](react.VGridProps.md#aria-label)
-- [aria-labelledby](react.VGridProps.md#aria-labelledby)
-- [aria-level](react.VGridProps.md#aria-level)
-- [aria-live](react.VGridProps.md#aria-live)
-- [aria-modal](react.VGridProps.md#aria-modal)
-- [aria-multiline](react.VGridProps.md#aria-multiline)
-- [aria-multiselectable](react.VGridProps.md#aria-multiselectable)
-- [aria-orientation](react.VGridProps.md#aria-orientation)
-- [aria-owns](react.VGridProps.md#aria-owns)
-- [aria-placeholder](react.VGridProps.md#aria-placeholder)
-- [aria-posinset](react.VGridProps.md#aria-posinset)
-- [aria-pressed](react.VGridProps.md#aria-pressed)
-- [aria-readonly](react.VGridProps.md#aria-readonly)
-- [aria-relevant](react.VGridProps.md#aria-relevant)
-- [aria-required](react.VGridProps.md#aria-required)
-- [aria-roledescription](react.VGridProps.md#aria-roledescription)
-- [aria-rowcount](react.VGridProps.md#aria-rowcount)
-- [aria-rowindex](react.VGridProps.md#aria-rowindex)
-- [aria-rowindextext](react.VGridProps.md#aria-rowindextext)
-- [aria-rowspan](react.VGridProps.md#aria-rowspan)
-- [aria-selected](react.VGridProps.md#aria-selected)
-- [aria-setsize](react.VGridProps.md#aria-setsize)
-- [aria-sort](react.VGridProps.md#aria-sort)
-- [aria-valuemax](react.VGridProps.md#aria-valuemax)
-- [aria-valuemin](react.VGridProps.md#aria-valuemin)
-- [aria-valuenow](react.VGridProps.md#aria-valuenow)
-- [aria-valuetext](react.VGridProps.md#aria-valuetext)
+- [ref](solid.VListProps.md#ref)
+- [data](solid.VListProps.md#data)
+- [children](solid.VListProps.md#children)
+- [overscan](solid.VListProps.md#overscan)
+- [itemSize](solid.VListProps.md#itemsize)
+- [shift](solid.VListProps.md#shift)
+- [horizontal](solid.VListProps.md#horizontal)
+- [onScroll](solid.VListProps.md#onscroll)
+- [onScrollEnd](solid.VListProps.md#onscrollend)
+- [onRangeChange](solid.VListProps.md#onrangechange)
+- [id](solid.VListProps.md#id)
+- [role](solid.VListProps.md#role)
+- [tabIndex](solid.VListProps.md#tabindex)
+- [onKeyDown](solid.VListProps.md#onkeydown)
+- [class](solid.VListProps.md#class)
+- [aria-activedescendant](solid.VListProps.md#aria-activedescendant)
+- [aria-atomic](solid.VListProps.md#aria-atomic)
+- [aria-autocomplete](solid.VListProps.md#aria-autocomplete)
+- [aria-busy](solid.VListProps.md#aria-busy)
+- [aria-checked](solid.VListProps.md#aria-checked)
+- [aria-colcount](solid.VListProps.md#aria-colcount)
+- [aria-colindex](solid.VListProps.md#aria-colindex)
+- [aria-colspan](solid.VListProps.md#aria-colspan)
+- [aria-controls](solid.VListProps.md#aria-controls)
+- [aria-current](solid.VListProps.md#aria-current)
+- [aria-describedby](solid.VListProps.md#aria-describedby)
+- [aria-details](solid.VListProps.md#aria-details)
+- [aria-disabled](solid.VListProps.md#aria-disabled)
+- [aria-dropeffect](solid.VListProps.md#aria-dropeffect)
+- [aria-errormessage](solid.VListProps.md#aria-errormessage)
+- [aria-expanded](solid.VListProps.md#aria-expanded)
+- [aria-flowto](solid.VListProps.md#aria-flowto)
+- [aria-grabbed](solid.VListProps.md#aria-grabbed)
+- [aria-haspopup](solid.VListProps.md#aria-haspopup)
+- [aria-hidden](solid.VListProps.md#aria-hidden)
+- [aria-invalid](solid.VListProps.md#aria-invalid)
+- [aria-keyshortcuts](solid.VListProps.md#aria-keyshortcuts)
+- [aria-label](solid.VListProps.md#aria-label)
+- [aria-labelledby](solid.VListProps.md#aria-labelledby)
+- [aria-level](solid.VListProps.md#aria-level)
+- [aria-live](solid.VListProps.md#aria-live)
+- [aria-modal](solid.VListProps.md#aria-modal)
+- [aria-multiline](solid.VListProps.md#aria-multiline)
+- [aria-multiselectable](solid.VListProps.md#aria-multiselectable)
+- [aria-orientation](solid.VListProps.md#aria-orientation)
+- [aria-owns](solid.VListProps.md#aria-owns)
+- [aria-placeholder](solid.VListProps.md#aria-placeholder)
+- [aria-posinset](solid.VListProps.md#aria-posinset)
+- [aria-pressed](solid.VListProps.md#aria-pressed)
+- [aria-readonly](solid.VListProps.md#aria-readonly)
+- [aria-relevant](solid.VListProps.md#aria-relevant)
+- [aria-required](solid.VListProps.md#aria-required)
+- [aria-roledescription](solid.VListProps.md#aria-roledescription)
+- [aria-rowcount](solid.VListProps.md#aria-rowcount)
+- [aria-rowindex](solid.VListProps.md#aria-rowindex)
+- [aria-rowspan](solid.VListProps.md#aria-rowspan)
+- [aria-selected](solid.VListProps.md#aria-selected)
+- [aria-setsize](solid.VListProps.md#aria-setsize)
+- [aria-sort](solid.VListProps.md#aria-sort)
+- [aria-valuemax](solid.VListProps.md#aria-valuemax)
+- [aria-valuemin](solid.VListProps.md#aria-valuemin)
+- [aria-valuenow](solid.VListProps.md#aria-valuenow)
+- [aria-valuetext](solid.VListProps.md#aria-valuetext)
+- [style](solid.VListProps.md#style)
 
 ## Properties
 
-### children
+### ref
 
-• **children**: (`arg`: \{ `rowIndex`: `number` ; `colIndex`: `number`  }) => `ReactNode`
+• `Optional` **ref**: (`handle?`: [`VListHandle`](solid.VListHandle.md)) => `void`
 
 #### Type declaration
 
-▸ (`arg`): `ReactNode`
+▸ (`handle?`): `void`
 
-A function to create elements rendered by this component.
+Get reference to [VListHandle](solid.VListHandle.md).
 
 ##### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `arg` | `Object` | - |
-| `arg.rowIndex` | `number` | row index of cell |
-| `arg.colIndex` | `number` | column index of cell |
+| Name | Type |
+| :------ | :------ |
+| `handle?` | [`VListHandle`](solid.VListHandle.md) |
 
 ##### Returns
 
-`ReactNode`
+`void`
 
 #### Defined in
 
-[src/react/VGrid.tsx:198](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L198)
+[src/solid/VList.tsx:76](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L76)
 
 ___
 
-### row
+### data
 
-• **row**: `number`
+• **data**: `T`[]
 
-Total row length of grid.
+The data items rendered by this component.
 
 #### Defined in
 
-[src/react/VGrid.tsx:211](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L211)
+[src/solid/VList.tsx:80](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L80)
 
 ___
 
-### col
+### children
 
-• **col**: `number`
+• **children**: (`data`: `T`, `index`: `number`) => `Element`
 
-Total column length of grid.
+#### Type declaration
 
-#### Defined in
+▸ (`data`, `index`): `Element`
 
-[src/react/VGrid.tsx:215](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L215)
+The elements renderer function.
 
-___
+##### Parameters
 
-### cellHeight
+| Name | Type |
+| :------ | :------ |
+| `data` | `T` |
+| `index` | `number` |
 
-• `Optional` **cellHeight**: `number`
+##### Returns
 
-Cell height hint for unmeasured items. It's recommended to specify this prop if item sizes are fixed and known, or much larger than the defaultValue. It will help to reduce scroll jump when items are measured.
-
-**`Default Value`**
-
-```ts
-40
-```
+`Element`
 
 #### Defined in
 
-[src/react/VGrid.tsx:220](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L220)
-
-___
-
-### cellWidth
-
-• `Optional` **cellWidth**: `number`
-
-Cell width hint for unmeasured items. It's recommended to specify this prop if item sizes are fixed and known, or much larger than the defaultValue. It will help to reduce scroll jump when items are measured.
-
-**`Default Value`**
-
-```ts
-100
-```
-
-#### Defined in
-
-[src/react/VGrid.tsx:225](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L225)
+[src/solid/VList.tsx:84](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L84)
 
 ___
 
@@ -177,88 +156,129 @@ ___
 
 • `Optional` **overscan**: `number`
 
-Number of items to render above/below the visible bounds of the grid. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
+Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
 **`Default Value`**
 
 ```ts
-2
+4
 ```
 
 #### Defined in
 
-[src/react/VGrid.tsx:230](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L230)
+[src/solid/VList.tsx:89](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L89)
 
 ___
 
-### initialRowCount
+### itemSize
 
-• `Optional` **initialRowCount**: `number`
+• `Optional` **itemSize**: `number`
 
-If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
+Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
+
+- If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
+- If set, you can opt out estimation and use the value as initial item size.
 
 #### Defined in
 
-[src/react/VGrid.tsx:234](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L234)
+[src/solid/VList.tsx:96](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L96)
 
 ___
 
-### initialColCount
+### shift
 
-• `Optional` **initialColCount**: `number`
+• `Optional` **shift**: `boolean`
 
-If set, the specified amount of cols will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
+While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
 
 #### Defined in
 
-[src/react/VGrid.tsx:238](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L238)
+[src/solid/VList.tsx:100](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L100)
 
 ___
 
-### components
+### horizontal
 
-• `Optional` **components**: `Object`
+• `Optional` **horizontal**: `boolean`
 
-Customized components for advanced usage.
+If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
+
+#### Defined in
+
+[src/solid/VList.tsx:104](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L104)
+
+___
+
+### onScroll
+
+• `Optional` **onScroll**: (`offset`: `number`) => `void`
 
 #### Type declaration
 
+▸ (`offset`): `void`
+
+Callback invoked whenever scroll offset changes.
+
+##### Parameters
+
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `Root?` | `ForwardRefExoticComponent`\<`CustomViewportComponentProps` & `RefAttributes`\<`any`\>\> | Component for scrollable element. This component will get CustomViewportComponentProps as props. **`Default Value`** ```ts {@link DefaultViewport} ``` |
-| `Cell?` | keyof `IntrinsicElements` \| [`CustomCellComponent`](../modules/react.md#customcellcomponent) | Component or element type for cell element. This component will get [CustomCellComponentProps](react.CustomCellComponentProps.md) as props. **`Default Value`** ```ts "div" ``` |
+| `offset` | `number` | Current scrollTop or scrollLeft. |
+
+##### Returns
+
+`void`
 
 #### Defined in
 
-[src/react/VGrid.tsx:242](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L242)
+[src/solid/VList.tsx:109](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L109)
 
 ___
 
-### className
+### onScrollEnd
 
-• `Optional` **className**: `string`
+• `Optional` **onScrollEnd**: () => `void`
 
-#### Inherited from
+#### Type declaration
 
-ViewportComponentAttributes.className
+▸ (): `void`
+
+Callback invoked when scrolling stops.
+
+##### Returns
+
+`void`
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1970
+[src/solid/VList.tsx:113](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L113)
 
 ___
 
-### style
+### onRangeChange
 
-• `Optional` **style**: `CSSProperties`
+• `Optional` **onRangeChange**: (`startIndex`: `number`, `endIndex`: `number`) => `void`
 
-#### Inherited from
+#### Type declaration
 
-ViewportComponentAttributes.style
+▸ (`startIndex`, `endIndex`): `void`
+
+Callback invoked when visible items range changes.
+
+##### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `startIndex` | `number` | The start index of viewable items. |
+| `endIndex` | `number` | The end index of viewable items. |
+
+##### Returns
+
+`void`
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1981
+[src/solid/VList.tsx:117](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L117)
 
 ___
 
@@ -272,13 +292,13 @@ ViewportComponentAttributes.id
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1976
+node_modules/solid-js/types/jsx.d.ts:724
 
 ___
 
 ### role
 
-• `Optional` **role**: `AriaRole`
+• `Optional` **role**: ``"grid"`` \| ``"table"`` \| ``"none"`` \| ``"search"`` \| ``"link"`` \| ``"article"`` \| ``"button"`` \| ``"dialog"`` \| ``"figure"`` \| ``"form"`` \| ``"img"`` \| ``"main"`` \| ``"menu"`` \| ``"menuitem"`` \| ``"meter"`` \| ``"option"`` \| ``"switch"`` \| ``"checkbox"`` \| ``"listbox"`` \| ``"radio"`` \| ``"region"`` \| ``"cell"`` \| ``"row"`` \| ``"listitem"`` \| ``"menubar"`` \| ``"progressbar"`` \| ``"separator"`` \| ``"tab"`` \| ``"tabpanel"`` \| ``"toolbar"`` \| ``"tooltip"`` \| ``"treeitem"`` \| ``"scrollbar"`` \| ``"alert"`` \| ``"alertdialog"`` \| ``"application"`` \| ``"banner"`` \| ``"columnheader"`` \| ``"combobox"`` \| ``"complementary"`` \| ``"contentinfo"`` \| ``"definition"`` \| ``"directory"`` \| ``"document"`` \| ``"feed"`` \| ``"gridcell"`` \| ``"group"`` \| ``"heading"`` \| ``"list"`` \| ``"log"`` \| ``"marquee"`` \| ``"math"`` \| ``"menuitemcheckbox"`` \| ``"menuitemradio"`` \| ``"navigation"`` \| ``"note"`` \| ``"presentation"`` \| ``"radiogroup"`` \| ``"rowgroup"`` \| ``"rowheader"`` \| ``"searchbox"`` \| ``"slider"`` \| ``"spinbutton"`` \| ``"status"`` \| ``"tablist"`` \| ``"term"`` \| ``"textbox"`` \| ``"timer"`` \| ``"tree"`` \| ``"treegrid"``
 
 #### Inherited from
 
@@ -286,13 +306,15 @@ ViewportComponentAttributes.role
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1990
+node_modules/solid-js/types/jsx.d.ts:634
+
+node_modules/solid-js/types/jsx.d.ts:634
 
 ___
 
 ### tabIndex
 
-• `Optional` **tabIndex**: `number`
+• `Optional` **tabIndex**: `string` \| `number`
 
 #### Inherited from
 
@@ -300,13 +322,13 @@ ViewportComponentAttributes.tabIndex
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1982
+node_modules/solid-js/types/jsx.d.ts:754
 
 ___
 
 ### onKeyDown
 
-• `Optional` **onKeyDown**: `KeyboardEventHandler`\<`HTMLElement`\>
+• `Optional` **onKeyDown**: `EventHandlerUnion`\<`HTMLElement`, `KeyboardEvent`\>
 
 #### Inherited from
 
@@ -314,7 +336,21 @@ ViewportComponentAttributes.onKeyDown
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1500
+node_modules/solid-js/types/jsx.d.ts:246
+
+___
+
+### class
+
+• `Optional` **class**: `string`
+
+#### Inherited from
+
+ViewportComponentAttributes.class
+
+#### Defined in
+
+node_modules/solid-js/types/jsx.d.ts:718
 
 ___
 
@@ -330,13 +366,13 @@ ViewportComponentAttributes.aria-activedescendant
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1666
+node_modules/solid-js/types/jsx.d.ts:441
 
 ___
 
 ### aria-atomic
 
-• `Optional` **aria-atomic**: `Booleanish`
+• `Optional` **aria-atomic**: `boolean` \| ``"false"`` \| ``"true"``
 
 Indicates whether assistive technologies will present all, or only parts of, the changed region based on the change notifications defined by the aria-relevant attribute.
 
@@ -346,7 +382,7 @@ ViewportComponentAttributes.aria-atomic
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1668
+node_modules/solid-js/types/jsx.d.ts:443
 
 ___
 
@@ -363,53 +399,15 @@ ViewportComponentAttributes.aria-autocomplete
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1673
-
-___
-
-### aria-braillelabel
-
-• `Optional` **aria-braillelabel**: `string`
-
-Defines a string value that labels the current element, which is intended to be converted into Braille.
-
-**`See`**
-
-aria-label.
-
-#### Inherited from
-
-ViewportComponentAttributes.aria-braillelabel
-
-#### Defined in
-
-node_modules/@types/react/index.d.ts:1679
-
-___
-
-### aria-brailleroledescription
-
-• `Optional` **aria-brailleroledescription**: `string`
-
-Defines a human-readable, author-localized abbreviated description for the role of an element, which is intended to be converted into Braille.
-
-**`See`**
-
-aria-roledescription.
-
-#### Inherited from
-
-ViewportComponentAttributes.aria-brailleroledescription
-
-#### Defined in
-
-node_modules/@types/react/index.d.ts:1684
+node_modules/solid-js/types/jsx.d.ts:448
 
 ___
 
 ### aria-busy
 
-• `Optional` **aria-busy**: `Booleanish`
+• `Optional` **aria-busy**: `boolean` \| ``"false"`` \| ``"true"``
+
+Indicates an element is being modified and that assistive technologies MAY want to wait until the modifications are complete before exposing them to the user.
 
 #### Inherited from
 
@@ -417,7 +415,7 @@ ViewportComponentAttributes.aria-busy
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1685
+node_modules/solid-js/types/jsx.d.ts:450
 
 ___
 
@@ -438,13 +436,13 @@ ViewportComponentAttributes.aria-checked
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1690
+node_modules/solid-js/types/jsx.d.ts:455
 
 ___
 
 ### aria-colcount
 
-• `Optional` **aria-colcount**: `number`
+• `Optional` **aria-colcount**: `string` \| `number`
 
 Defines the total number of columns in a table, grid, or treegrid.
 
@@ -458,13 +456,13 @@ ViewportComponentAttributes.aria-colcount
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1695
+node_modules/solid-js/types/jsx.d.ts:460
 
 ___
 
 ### aria-colindex
 
-• `Optional` **aria-colindex**: `number`
+• `Optional` **aria-colindex**: `string` \| `number`
 
 Defines an element's column index or position with respect to the total number of columns within a table, grid, or treegrid.
 
@@ -479,33 +477,13 @@ ViewportComponentAttributes.aria-colindex
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1700
-
-___
-
-### aria-colindextext
-
-• `Optional` **aria-colindextext**: `string`
-
-Defines a human readable text alternative of aria-colindex.
-
-**`See`**
-
-aria-rowindextext.
-
-#### Inherited from
-
-ViewportComponentAttributes.aria-colindextext
-
-#### Defined in
-
-node_modules/@types/react/index.d.ts:1705
+node_modules/solid-js/types/jsx.d.ts:465
 
 ___
 
 ### aria-colspan
 
-• `Optional` **aria-colspan**: `number`
+• `Optional` **aria-colspan**: `string` \| `number`
 
 Defines the number of columns spanned by a cell or gridcell within a table, grid, or treegrid.
 
@@ -520,7 +498,7 @@ ViewportComponentAttributes.aria-colspan
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1710
+node_modules/solid-js/types/jsx.d.ts:470
 
 ___
 
@@ -540,7 +518,7 @@ ViewportComponentAttributes.aria-controls
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1715
+node_modules/solid-js/types/jsx.d.ts:475
 
 ___
 
@@ -556,7 +534,7 @@ ViewportComponentAttributes.aria-current
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1717
+node_modules/solid-js/types/jsx.d.ts:477
 
 ___
 
@@ -576,27 +554,7 @@ ViewportComponentAttributes.aria-describedby
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1722
-
-___
-
-### aria-description
-
-• `Optional` **aria-description**: `string`
-
-Defines a string value that describes or annotates the current element.
-
-**`See`**
-
-related aria-describedby.
-
-#### Inherited from
-
-ViewportComponentAttributes.aria-description
-
-#### Defined in
-
-node_modules/@types/react/index.d.ts:1727
+node_modules/solid-js/types/jsx.d.ts:482
 
 ___
 
@@ -616,13 +574,13 @@ ViewportComponentAttributes.aria-details
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1732
+node_modules/solid-js/types/jsx.d.ts:487
 
 ___
 
 ### aria-disabled
 
-• `Optional` **aria-disabled**: `Booleanish`
+• `Optional` **aria-disabled**: `boolean` \| ``"false"`` \| ``"true"``
 
 Indicates that the element is perceivable but disabled, so it is not editable or otherwise operable.
 
@@ -637,7 +595,7 @@ ViewportComponentAttributes.aria-disabled
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1737
+node_modules/solid-js/types/jsx.d.ts:492
 
 ___
 
@@ -657,7 +615,7 @@ ViewportComponentAttributes.aria-dropeffect
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1742
+node_modules/solid-js/types/jsx.d.ts:497
 
 ___
 
@@ -678,13 +636,13 @@ ViewportComponentAttributes.aria-errormessage
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1747
+node_modules/solid-js/types/jsx.d.ts:502
 
 ___
 
 ### aria-expanded
 
-• `Optional` **aria-expanded**: `Booleanish`
+• `Optional` **aria-expanded**: `boolean` \| ``"false"`` \| ``"true"``
 
 Indicates whether the element, or another grouping element it controls, is currently expanded or collapsed.
 
@@ -694,7 +652,7 @@ ViewportComponentAttributes.aria-expanded
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1749
+node_modules/solid-js/types/jsx.d.ts:504
 
 ___
 
@@ -711,13 +669,13 @@ ViewportComponentAttributes.aria-flowto
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1754
+node_modules/solid-js/types/jsx.d.ts:509
 
 ___
 
 ### aria-grabbed
 
-• `Optional` **aria-grabbed**: `Booleanish`
+• `Optional` **aria-grabbed**: `boolean` \| ``"false"`` \| ``"true"``
 
 Indicates an element's "grabbed" state in a drag-and-drop operation.
 
@@ -731,7 +689,7 @@ ViewportComponentAttributes.aria-grabbed
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1759
+node_modules/solid-js/types/jsx.d.ts:514
 
 ___
 
@@ -747,13 +705,13 @@ ViewportComponentAttributes.aria-haspopup
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1761
+node_modules/solid-js/types/jsx.d.ts:516
 
 ___
 
 ### aria-hidden
 
-• `Optional` **aria-hidden**: `Booleanish`
+• `Optional` **aria-hidden**: `boolean` \| ``"false"`` \| ``"true"``
 
 Indicates whether the element is exposed to an accessibility API.
 
@@ -767,7 +725,7 @@ ViewportComponentAttributes.aria-hidden
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1766
+node_modules/solid-js/types/jsx.d.ts:521
 
 ___
 
@@ -787,7 +745,7 @@ ViewportComponentAttributes.aria-invalid
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1771
+node_modules/solid-js/types/jsx.d.ts:526
 
 ___
 
@@ -803,7 +761,7 @@ ViewportComponentAttributes.aria-keyshortcuts
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1773
+node_modules/solid-js/types/jsx.d.ts:528
 
 ___
 
@@ -823,7 +781,7 @@ ViewportComponentAttributes.aria-label
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1778
+node_modules/solid-js/types/jsx.d.ts:533
 
 ___
 
@@ -843,13 +801,13 @@ ViewportComponentAttributes.aria-labelledby
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1783
+node_modules/solid-js/types/jsx.d.ts:538
 
 ___
 
 ### aria-level
 
-• `Optional` **aria-level**: `number`
+• `Optional` **aria-level**: `string` \| `number`
 
 Defines the hierarchical level of an element within a structure.
 
@@ -859,7 +817,7 @@ ViewportComponentAttributes.aria-level
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1785
+node_modules/solid-js/types/jsx.d.ts:540
 
 ___
 
@@ -875,13 +833,13 @@ ViewportComponentAttributes.aria-live
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1787
+node_modules/solid-js/types/jsx.d.ts:542
 
 ___
 
 ### aria-modal
 
-• `Optional` **aria-modal**: `Booleanish`
+• `Optional` **aria-modal**: `boolean` \| ``"false"`` \| ``"true"``
 
 Indicates whether an element is modal when displayed.
 
@@ -891,13 +849,13 @@ ViewportComponentAttributes.aria-modal
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1789
+node_modules/solid-js/types/jsx.d.ts:544
 
 ___
 
 ### aria-multiline
 
-• `Optional` **aria-multiline**: `Booleanish`
+• `Optional` **aria-multiline**: `boolean` \| ``"false"`` \| ``"true"``
 
 Indicates whether a text box accepts multiple lines of input or only a single line.
 
@@ -907,13 +865,13 @@ ViewportComponentAttributes.aria-multiline
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1791
+node_modules/solid-js/types/jsx.d.ts:546
 
 ___
 
 ### aria-multiselectable
 
-• `Optional` **aria-multiselectable**: `Booleanish`
+• `Optional` **aria-multiselectable**: `boolean` \| ``"false"`` \| ``"true"``
 
 Indicates that the user may select more than one item from the current selectable descendants.
 
@@ -923,7 +881,7 @@ ViewportComponentAttributes.aria-multiselectable
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1793
+node_modules/solid-js/types/jsx.d.ts:548
 
 ___
 
@@ -939,7 +897,7 @@ ViewportComponentAttributes.aria-orientation
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1795
+node_modules/solid-js/types/jsx.d.ts:550
 
 ___
 
@@ -960,7 +918,7 @@ ViewportComponentAttributes.aria-owns
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1801
+node_modules/solid-js/types/jsx.d.ts:556
 
 ___
 
@@ -977,13 +935,13 @@ ViewportComponentAttributes.aria-placeholder
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1806
+node_modules/solid-js/types/jsx.d.ts:561
 
 ___
 
 ### aria-posinset
 
-• `Optional` **aria-posinset**: `number`
+• `Optional` **aria-posinset**: `string` \| `number`
 
 Defines an element's number or position in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.
 
@@ -997,7 +955,7 @@ ViewportComponentAttributes.aria-posinset
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1811
+node_modules/solid-js/types/jsx.d.ts:566
 
 ___
 
@@ -1018,13 +976,13 @@ ViewportComponentAttributes.aria-pressed
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1816
+node_modules/solid-js/types/jsx.d.ts:571
 
 ___
 
 ### aria-readonly
 
-• `Optional` **aria-readonly**: `Booleanish`
+• `Optional` **aria-readonly**: `boolean` \| ``"false"`` \| ``"true"``
 
 Indicates that the element is not editable, but is otherwise operable.
 
@@ -1038,7 +996,7 @@ ViewportComponentAttributes.aria-readonly
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1821
+node_modules/solid-js/types/jsx.d.ts:576
 
 ___
 
@@ -1058,13 +1016,13 @@ ViewportComponentAttributes.aria-relevant
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1826
+node_modules/solid-js/types/jsx.d.ts:581
 
 ___
 
 ### aria-required
 
-• `Optional` **aria-required**: `Booleanish`
+• `Optional` **aria-required**: `boolean` \| ``"false"`` \| ``"true"``
 
 Indicates that user input is required on the element before a form may be submitted.
 
@@ -1074,7 +1032,7 @@ ViewportComponentAttributes.aria-required
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1839
+node_modules/solid-js/types/jsx.d.ts:593
 
 ___
 
@@ -1090,13 +1048,13 @@ ViewportComponentAttributes.aria-roledescription
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1841
+node_modules/solid-js/types/jsx.d.ts:595
 
 ___
 
 ### aria-rowcount
 
-• `Optional` **aria-rowcount**: `number`
+• `Optional` **aria-rowcount**: `string` \| `number`
 
 Defines the total number of rows in a table, grid, or treegrid.
 
@@ -1110,13 +1068,13 @@ ViewportComponentAttributes.aria-rowcount
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1846
+node_modules/solid-js/types/jsx.d.ts:600
 
 ___
 
 ### aria-rowindex
 
-• `Optional` **aria-rowindex**: `number`
+• `Optional` **aria-rowindex**: `string` \| `number`
 
 Defines an element's row index or position with respect to the total number of rows within a table, grid, or treegrid.
 
@@ -1131,33 +1089,13 @@ ViewportComponentAttributes.aria-rowindex
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1851
-
-___
-
-### aria-rowindextext
-
-• `Optional` **aria-rowindextext**: `string`
-
-Defines a human readable text alternative of aria-rowindex.
-
-**`See`**
-
-aria-colindextext.
-
-#### Inherited from
-
-ViewportComponentAttributes.aria-rowindextext
-
-#### Defined in
-
-node_modules/@types/react/index.d.ts:1856
+node_modules/solid-js/types/jsx.d.ts:605
 
 ___
 
 ### aria-rowspan
 
-• `Optional` **aria-rowspan**: `number`
+• `Optional` **aria-rowspan**: `string` \| `number`
 
 Defines the number of rows spanned by a cell or gridcell within a table, grid, or treegrid.
 
@@ -1172,13 +1110,13 @@ ViewportComponentAttributes.aria-rowspan
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1861
+node_modules/solid-js/types/jsx.d.ts:610
 
 ___
 
 ### aria-selected
 
-• `Optional` **aria-selected**: `Booleanish`
+• `Optional` **aria-selected**: `boolean` \| ``"false"`` \| ``"true"``
 
 Indicates the current "selected" state of various widgets.
 
@@ -1193,13 +1131,13 @@ ViewportComponentAttributes.aria-selected
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1866
+node_modules/solid-js/types/jsx.d.ts:615
 
 ___
 
 ### aria-setsize
 
-• `Optional` **aria-setsize**: `number`
+• `Optional` **aria-setsize**: `string` \| `number`
 
 Defines the number of items in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.
 
@@ -1213,7 +1151,7 @@ ViewportComponentAttributes.aria-setsize
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1871
+node_modules/solid-js/types/jsx.d.ts:620
 
 ___
 
@@ -1229,13 +1167,13 @@ ViewportComponentAttributes.aria-sort
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1873
+node_modules/solid-js/types/jsx.d.ts:622
 
 ___
 
 ### aria-valuemax
 
-• `Optional` **aria-valuemax**: `number`
+• `Optional` **aria-valuemax**: `string` \| `number`
 
 Defines the maximum allowed value for a range widget.
 
@@ -1245,13 +1183,13 @@ ViewportComponentAttributes.aria-valuemax
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1875
+node_modules/solid-js/types/jsx.d.ts:624
 
 ___
 
 ### aria-valuemin
 
-• `Optional` **aria-valuemin**: `number`
+• `Optional` **aria-valuemin**: `string` \| `number`
 
 Defines the minimum allowed value for a range widget.
 
@@ -1261,13 +1199,13 @@ ViewportComponentAttributes.aria-valuemin
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1877
+node_modules/solid-js/types/jsx.d.ts:626
 
 ___
 
 ### aria-valuenow
 
-• `Optional` **aria-valuenow**: `number`
+• `Optional` **aria-valuenow**: `string` \| `number`
 
 Defines the current value for a range widget.
 
@@ -1281,7 +1219,7 @@ ViewportComponentAttributes.aria-valuenow
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1882
+node_modules/solid-js/types/jsx.d.ts:631
 
 ___
 
@@ -1297,4 +1235,18 @@ ViewportComponentAttributes.aria-valuetext
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1884
+node_modules/solid-js/types/jsx.d.ts:633
+
+___
+
+### style
+
+• `Optional` **style**: `CSSProperties`
+
+#### Inherited from
+
+ViewportComponentAttributes.style
+
+#### Defined in
+
+[src/solid/types.ts:7](https://github.com/inokawa/virtua/blob/76146876/src/solid/types.ts#L7)
