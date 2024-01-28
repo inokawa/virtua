@@ -12,10 +12,10 @@ const scrollTarget = ref(567)
 
 const handle = ref<InstanceType<typeof VList>>()
 
-const onScroll = () => {
+const scroll = () => {
   handle.value?.scrollToIndex(scrollTarget.value)
 }
-const onAppend = () => {
+const append = () => {
   data.value = [...data.value, ...Array.from({ length: 100 }).map((_, i) => createItem(i + data.value.length))]
 }
 </script>
@@ -27,9 +27,9 @@ const onAppend = () => {
     <div>
       <input type="number" :value="scrollTarget"
         @input="e => { scrollTarget = Number((e.target as HTMLInputElement).value) }">
-      <button @click="onScroll">scrollToIndex</button>
+      <button @click="scroll">scrollToIndex</button>
     </div>
-    <div><button @click="onAppend">append</button></div>
+    <div><button @click="append">append</button></div>
     <VList ref="handle" :data="data" :onScroll="(offset) => { scrollOffset = offset; scrolling = true }"
       :onScrollEnd="() => { scrolling = false }">
       <template #default="item">
