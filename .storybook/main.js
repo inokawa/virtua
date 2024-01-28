@@ -17,6 +17,15 @@ export default process.env.STORYBOOK_VUE
         });
       },
     }
+  : process.env.STORYBOOK_SOLID
+  ? {
+      stories: ["../stories/solid/**/*.stories.@(js|jsx|ts|tsx)"],
+      addons: ["@storybook/addon-storysource"],
+      framework: {
+        name: "storybook-solidjs-vite",
+        options: {},
+      },
+    }
   : {
       stories: ["../stories/react/**/*.stories.@(js|jsx|ts|tsx)"],
       addons: ["@storybook/addon-storysource"],
@@ -29,6 +38,10 @@ export default process.env.STORYBOOK_VUE
           vue: {
             title: "Vue",
             url: "/virtua/vue",
+          },
+          solid: {
+            title: "Solid",
+            url: "/virtua/solid",
           },
         },
       }),

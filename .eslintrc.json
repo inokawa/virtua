@@ -34,6 +34,11 @@
         "vue/no-setup-props-reactivity-loss": "warn",
         "vue/no-ref-object-reactivity-loss": "error"
       }
+    },
+    {
+      "files": ["src/solid/**/*.{jsx,tsx}"],
+      "plugins": ["solid"],
+      "extends": ["plugin:solid/typescript"]
     }
   ]
 }

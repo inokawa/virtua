@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/virtua) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/virtua) ![npm](https://img.shields.io/npm/dw/virtua) [![check](https://github.com/inokawa/virtua/actions/workflows/check.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/check.yml) [![demo](https://github.com/inokawa/virtua/actions/workflows/demo.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/demo.yml)
 
-> A zero-config, fast and small (~3kB) virtual list (and grid) component for [React](https://github.com/facebook/react) and [Vue](https://vuejs.org/).
+> A zero-config, fast and small (~3kB) virtual list (and grid) component for [React](https://github.com/facebook/react), [Vue](https://vuejs.org/) and [Solid](https://www.solidjs.com/).
 
 ![example](./example.gif)
 
@@ -16,7 +16,7 @@ This project is a challenge to rethink virtualization. The goals are...
 - **Fast:** Natural virtual scrolling needs optimization in many aspects (eliminate frame drops by reducing CPU usage and GC and [layout recalculation](https://gist.github.com/paulirish/5d52fb081b3570c81e3a), reduce visual jumps on repaint, optimize with CSS, optimize for frameworks, etc). We are trying to combine the best of them.
 - **Small:** Its bundle size should be small as much as possible to be friendly with modern web development. Currently each components are ~3kB gzipped. The total is [~5kB gzipped](https://bundlephobia.com/package/virtua) and tree-shakeable.
 - **Flexible:** Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, RTL, mobile, infinite scrolling, scroll restoration, DnD, keyboard navigation, sticky, placeholder and more. See [live demo](#demo).
-- **Framework agnostic:** Currently [React](https://react.dev/) and [Vue](https://vuejs.org/) are supported. We could support [Svelte](https://svelte.dev/), [Solid](https://www.solidjs.com/), [Angular](https://angular.io/), [Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components) and more in the future.
+- **Framework agnostic:** [React](https://react.dev/), [Vue](https://vuejs.org/) and [Solid](https://www.solidjs.com/) are supported. We could support other frameworks in the future.
 
 ## Demo
 
@@ -197,8 +197,6 @@ export default async () => {
 
 `vue >= 3.2` is required.
 
-#### Vertical scroll
-
 ```vue
 <script setup>
 import { VList } from "virtua/vue";
@@ -228,74 +226,39 @@ const data = Array.from({ length: 1000 }).map((_, i) => ({
 </template>
 ```
 
-#### Horizontal scroll
+### Solid
 
-```vue
-<script setup>
-import { VList } from "virtua/vue";
+`solid-js >= 1.0` is required.
 
-const sizes = [40, 180, 77];
-const data = Array.from({ length: 1000 }).map((_, i) => ({
-  id: i,
-  size: sizes[i % 3] + "px",
-}));
-</script>
+```tsx
+import { VList } from "virtua/solid";
 
-<template>
-  <VList :data="data" horizontal :style="{ height: '400px' }">
-    <template #default="item">
-      <div
-        :key="item.id"
-        :style="{
-          width: item.size,
-          background: 'white',
-          borderBottom: 'solid 1px #ccc',
-        }"
-      >
-        {{ item.id }}
-      </div>
-    </template>
-  </VList>
-</template>
-```
+export const App = () => {
+  const sizes = [20, 40, 80, 77];
+  const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]);
 
-#### Window scroll
-
-```vue
-<script setup>
-import { WindowVirtualizer } from "virtua/vue";
-
-const sizes = [20, 40, 180, 77];
-const data = Array.from({ length: 1000 }).map((_, i) => ({
-  id: i,
-  size: sizes[i % 4] + "px",
-}));
-</script>
-
-<template>
-  <div :style="{ padding: '200px' }">
-    <WindowVirtualizer :data="data">
-      <template #default="item">
+  return (
+    <VList data={data} style={{ height: "800px" }}>
+      {(d) => (
         <div
-          :key="item.index"
-          :style="{
-            height: item.size,
-            background: 'white',
-            borderBottom: 'solid 1px #ccc',
-          }"
+          style={{
+            height: d + "px",
+            "border-bottom": "solid 1px #ccc",
+            background: "#fff",
+          }}
         >
-          {{ item.index }}
+          {d}
         </div>
-      </template>
-    </WindowVirtualizer>
-  </div>
-</template>
+      )}
+    </VList>
+  );
+};
 ```
 
 ## Documentation
 
 - [API reference](./docs/API.md)
-- [Examples](./stories) for more usages
+- [Storybook examples](./stories) for more usages
 
 ### FAQs
 
