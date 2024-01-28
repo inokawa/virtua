@@ -10,6 +10,7 @@ import {
   JSX,
   Signal,
 } from "solid-js";
+import { ItemsRange } from "../core/store";
 
 interface RenderedNode<T> {
   _data: Signal<T>;
@@ -25,7 +26,7 @@ interface RenderedNode<T> {
  */
 export const RangedFor = <T,>(props: {
   _each: T[];
-  _range: readonly [number, number];
+  _range: ItemsRange;
   _render: (data: T, index: number) => JSX.Element;
 }): JSX.Element => {
   let prev = new Map<number, RenderedNode<T>>();

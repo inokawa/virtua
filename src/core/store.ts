@@ -75,7 +75,8 @@ export const UPDATE_SCROLL_END_EVENT = 0b1000;
 
 /** @internal */
 export type ItemResize = Readonly<[index: number, size: number]>;
-type ItemsRange = Readonly<[startIndex: number, endIndex: number]>;
+/** @internal */
+export type ItemsRange = Readonly<[startIndex: number, endIndex: number]>;
 
 /**
  *  @internal

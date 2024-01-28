@@ -23,6 +23,7 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
   getMinContainerSize,
+  ItemsRange,
 } from "../core/store";
 import { createResizer } from "../core/resizer";
 import { createScroller } from "../core/scroller";
@@ -176,17 +177,11 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
     }
   );
 
-  const isSameRange = (
-    prev: readonly [number, number],
-    next: readonly [number, number]
-  ): boolean => {
+  const isSameRange = (prev: ItemsRange, next: ItemsRange): boolean => {
     return prev[0] === next[0] && prev[1] === next[1];
   };
 
-  const range = createMemo<
-    ReturnType<typeof store._getRange>,
-    ReturnType<typeof store._getRange>
-  >((prev) => {
+  const range = createMemo<ItemsRange>((prev) => {
     rerender();
     const next = store._getRange();
     if (prev && isSameRange(prev, next)) {
@@ -203,10 +198,10 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
 
   const jumpCount = createMemo(() => rerender() && store._getJumpCount());
 
-  const overscanedRange = createMemo<readonly [number, number]>((prev) => {
+  const overscanedRange = createMemo<ItemsRange>((prev) => {
     const overscan = props.overscan ?? 4;
     const [startIndex, endIndex] = range();
-    const next: readonly [number, number] = [
+    const next: ItemsRange = [
       overscanStartIndex(startIndex, overscan, scrollDirection()),
       overscanEndIndex(
         endIndex,
