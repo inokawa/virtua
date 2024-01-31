@@ -58,7 +58,7 @@
     "@radix-ui/react-scroll-area": "1.0.5",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-terser": "0.4.4",
-    "@rollup/plugin-typescript": "11.1.5",
+    "@rollup/plugin-typescript": "11.1.6",
     "@size-limit/preset-small-lib": "^11.0.2",
     "@storybook/addon-storysource": "7.6.10",
     "@storybook/react": "7.6.10",
