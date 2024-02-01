@@ -68,7 +68,7 @@
     "@storybook/vue3": "7.6.12",
     "@storybook/vue3-vite": "^7.6.10",
     "@tanstack/react-virtual": "3.0.2",
-    "@testing-library/react": "14.1.2",
+    "@testing-library/react": "14.2.0",
     "@testing-library/vue": "8.0.1",
     "@types/jsdom": "21.1.6",
     "@types/react": "18.2.48",
