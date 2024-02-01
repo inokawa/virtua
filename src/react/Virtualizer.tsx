@@ -32,7 +32,7 @@ import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
 import { useChildren } from "./useChildren";
 import { CustomContainerComponent, CustomItemComponent } from "./types";
-import { max } from "../core/utils";
+import { max, microtask } from "../core/utils";
 
 /**
  * Methods of {@link Virtualizer}.
@@ -267,9 +267,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       };
       if (scrollRef) {
         // parent's ref doesn't exist when useLayoutEffect is called
-        Promise.resolve().then(() =>
-          assignScrollableElement(scrollRef[refKey]!)
-        );
+        microtask(() => assignScrollableElement(scrollRef[refKey]!));
       } else {
         assignScrollableElement(containerRef[refKey]!.parentElement!);
       }

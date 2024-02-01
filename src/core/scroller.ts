@@ -15,7 +15,7 @@ import {
   ACTION_BEFORE_MANUAL_SMOOTH_SCROLL,
 } from "./store";
 import { ScrollToIndexOpts } from "./types";
-import { debounce, timeout, clamp } from "./utils";
+import { debounce, timeout, clamp, microtask } from "./utils";
 
 /**
  * scrollLeft is negative value in rtl direction.
@@ -164,7 +164,11 @@ export const createScroller = (
     getTargetOffset: () => number,
     smooth?: boolean
   ) => {
-    if (!viewportElement) return;
+    if (!viewportElement) {
+      // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
+      microtask(() => scheduleImperativeScroll(getTargetOffset, smooth));
+      return;
+    }
 
     if (cancelScroll) {
       // Cancel waiting scrollTo
