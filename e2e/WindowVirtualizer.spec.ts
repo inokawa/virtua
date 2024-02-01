@@ -6,21 +6,14 @@ import {
   windowScrollToRight,
   getFirstItemRtl,
   windowScrollToLeft,
+  getVirtualizer,
 } from "./utils";
-
-const getWindowVirtualizer = async (page: Page) => {
-  const selector = '*[style*="pointer-events: auto"]';
-  const component = await page.waitForSelector(selector, { state: "attached" });
-  await component.evaluate((e) => (e.style.visibility = "visible"));
-  await page.waitForSelector(selector);
-  return component;
-};
 
 test.describe("smoke", () => {
   test("vertically scrollable", async ({ page }) => {
     await page.goto(storyUrl("basics-windowvirtualizer--default"));
 
-    const component = await getWindowVirtualizer(page);
+    const component = await getVirtualizer(page);
     await component.waitForElementState("stable");
 
     // check if start is displayed
@@ -40,7 +33,7 @@ test.describe("smoke", () => {
   test("horizontally scrollable", async ({ page }) => {
     await page.goto(storyUrl("basics-windowvirtualizer--horizontal"));
 
-    const component = await getWindowVirtualizer(page);
+    const component = await getVirtualizer(page);
     await component.waitForElementState("stable");
 
     // check if start is displayed
@@ -60,7 +53,7 @@ test.describe("smoke", () => {
   test("display: none", async ({ page }) => {
     await page.goto(storyUrl("basics-windowvirtualizer--default"));
 
-    const component = await getWindowVirtualizer(page);
+    const component = await getVirtualizer(page);
     await component.waitForElementState("stable");
 
     const initialTotalHeight = await component.evaluate(
@@ -82,7 +75,7 @@ test.describe("smoke", () => {
   test("should not have minimum size", async ({ page }) => {
     await page.goto(storyUrl("basics-windowvirtualizer--increasing-items"));
 
-    const component = await getWindowVirtualizer(page);
+    const component = await getVirtualizer(page);
     await component.waitForElementState("stable");
 
     expect(await component.evaluate((s) => document.body.scrollHeight)).toBe(
@@ -94,7 +87,7 @@ test.describe("smoke", () => {
 // test.describe("check if scroll jump compensation works", () => {
 //   test("vertical start -> end", async ({ page }) => {
 //     await page.goto(storyUrl("basics-windowvirtualizer--default"));
-//     const component = await getWindowVirtualizer(page);
+//     const component = await getVirtualizer(page);
 //     await component.waitForElementState("stable");
 
 //     // check if start is displayed
@@ -116,7 +109,7 @@ test.describe("smoke", () => {
 
 //   test("vertical end -> start", async ({ page }) => {
 //     await page.goto(storyUrl("basics-windowvirtualizer--default"));
-//     const component = await getWindowVirtualizer(page);
+//     const component = await getVirtualizer(page);
 //     await component.waitForElementState("stable");
 
 //     // check if start is displayed
@@ -145,7 +138,7 @@ test.describe("smoke", () => {
 
 //   test("horizontal start -> end", async ({ page }) => {
 //     await page.goto(storyUrl("basics-windowvirtualizer--horizontal"));
-//     const component = await getWindowVirtualizer(page);
+//     const component = await getVirtualizer(page);
 //     await component.waitForElementState("stable");
 
 //     // check if start is displayed
@@ -167,7 +160,7 @@ test.describe("smoke", () => {
 
 //   test("horizontal end -> start", async ({ page }) => {
 //     await page.goto(storyUrl("basics-windowvirtualizer--horizontal"));
-//     const component = await getWindowVirtualizer(page);
+//     const component = await getVirtualizer(page);
 //     await component.waitForElementState("stable");
 
 //     // check if start is displayed
@@ -204,7 +197,7 @@ test.describe("RTL", () => {
       document.documentElement.dir = "rtl";
     });
 
-    const component = await getWindowVirtualizer(page);
+    const component = await getVirtualizer(page);
     await component.waitForElementState("stable");
 
     // check if start is displayed
@@ -229,7 +222,7 @@ test.describe("RTL", () => {
       document.documentElement.dir = "rtl";
     });
 
-    const component = await getWindowVirtualizer(page);
+    const component = await getVirtualizer(page);
     await component.waitForElementState("stable");
 
     // check if start is displayed

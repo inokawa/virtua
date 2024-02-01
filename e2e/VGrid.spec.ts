@@ -1,17 +1,17 @@
 import { test, expect } from "@playwright/test";
 import {
   storyUrl,
-  scrollableSelector,
   getFirstItem,
   scrollToBottom,
   scrollToRight,
+  getScrollable,
 } from "./utils";
 
 test.describe("smoke", () => {
   test("vertically and horizontally scrollable", async ({ page }) => {
     await page.goto(storyUrl("basics-vgrid--default"));
 
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     // check if start is displayed
@@ -31,7 +31,7 @@ test.describe("smoke", () => {
 // test.describe("check if scroll jump compensation works", () => {
 //   test("vertical start -> end", async ({ page }) => {
 //     await page.goto(storyUrl("basics-vgrid--dynamic-height"));
-//     const component = await page.waitForSelector(scrollableSelector);
+//     const component = await getScrollable(page);
 //     await component.waitForElementState("stable");
 
 //     // check if start is displayed
@@ -53,7 +53,7 @@ test.describe("smoke", () => {
 
 //   test("vertical end -> start", async ({ page }) => {
 //     await page.goto(storyUrl("basics-vgrid--dynamic-height"));
-//     const component = await page.waitForSelector(scrollableSelector);
+//     const component = await getScrollable(page);
 //     await component.waitForElementState("stable");
 
 //     // check if start is displayed
@@ -78,7 +78,7 @@ test.describe("smoke", () => {
 
 //   test("horizontal start -> end", async ({ page }) => {
 //     await page.goto(storyUrl("basics-vgrid--dynamic-width"));
-//     const component = await page.waitForSelector(scrollableSelector);
+//     const component = await getScrollable(page);
 //     await component.waitForElementState("stable");
 
 //     // check if start is displayed
@@ -100,7 +100,7 @@ test.describe("smoke", () => {
 
 //   test("horizontal end -> start", async ({ page }) => {
 //     await page.goto(storyUrl("basics-vgrid--dynamic-width"));
-//     const component = await page.waitForSelector(scrollableSelector);
+//     const component = await getScrollable(page);
 //     await component.waitForElementState("stable");
 
 //     // check if start is displayed
@@ -127,7 +127,7 @@ test.describe("smoke", () => {
 test("check if scrollToIndex works", async ({ page }) => {
   await page.goto(storyUrl("basics-vgrid--scroll-to"));
 
-  const component = await page.waitForSelector(scrollableSelector);
+  const component = await getScrollable(page);
 
   // check if start is displayed
   await expect(

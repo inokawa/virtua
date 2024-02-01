@@ -1,9 +1,19 @@
-import { ElementHandle, expect } from "@playwright/test";
+import { ElementHandle, Page, expect } from "@playwright/test";
 
 export const storyUrl = (id: string) =>
   `http://localhost:6006/iframe.html?id=${id}&viewMode=story`;
 
-export const scrollableSelector = '*[style*="overflow"]';
+export const getScrollable = async (page: Page) => {
+  return page.waitForSelector('*[style*="overflow"]');
+};
+
+export const getVirtualizer = async (page: Page) => {
+  const selector = '*[style*="pointer-events: auto"]';
+  const component = await page.waitForSelector(selector, { state: "attached" });
+  await component.evaluate((e) => (e.style.visibility = "visible"));
+  await page.waitForSelector(selector);
+  return component;
+};
 
 export const expectInRange = (
   value: number,

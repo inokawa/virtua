@@ -1,7 +1,6 @@
 import { test, expect, ElementHandle } from "@playwright/test";
 import {
   storyUrl,
-  scrollableSelector,
   getFirstItem,
   getLastItem,
   scrollToBottom,
@@ -17,13 +16,15 @@ import {
   scrollWithTouch,
   getFirstItemRtl,
   scrollToLeft,
+  getVirtualizer,
+  getScrollable,
 } from "./utils";
 
 test.describe("smoke", () => {
   test("vertically scrollable", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--default"));
 
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     // check if start is displayed
@@ -41,8 +42,7 @@ test.describe("smoke", () => {
   test("horizontally scrollable", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--horizontal"));
 
-    await page.waitForSelector(scrollableSelector);
-    const component = (await page.$$(scrollableSelector))[0]!;
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     // check if start is displayed
@@ -60,7 +60,7 @@ test.describe("smoke", () => {
   test("reverse", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--reverse"));
 
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     // check if last is displayed
@@ -72,7 +72,7 @@ test.describe("smoke", () => {
   test("display: none", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--default"));
 
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     const initialTotalHeight = await component.evaluate(
@@ -94,7 +94,7 @@ test.describe("smoke", () => {
   test("sticky", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--sticky"));
 
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     // check if start is displayed
@@ -115,7 +115,7 @@ test.describe("smoke", () => {
 test.describe("check if it works when children change", () => {
   test("recovering from 0", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--increasing-items"));
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     const updateButton = page.getByRole("button", { name: "update" });
@@ -141,7 +141,7 @@ test.describe("check if it works when children change", () => {
 
   test("recovering when changed a lot after scrolling", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--increasing-items"));
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     const input = page.getByRole("spinbutton");
@@ -180,7 +180,7 @@ test.describe("check if it works when children change", () => {
 test.describe("check if scroll jump compensation works", () => {
   test("vertical start -> end", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--default"));
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     // check if start is displayed
@@ -202,7 +202,7 @@ test.describe("check if scroll jump compensation works", () => {
 
   test("vertical end -> start", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--default"));
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     // check if start is displayed
@@ -227,7 +227,7 @@ test.describe("check if scroll jump compensation works", () => {
 
   test("horizontal start -> end", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--horizontal"));
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     // check if start is displayed
@@ -249,7 +249,7 @@ test.describe("check if scroll jump compensation works", () => {
 
   test("horizontal end -> start", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--horizontal"));
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     // check if start is displayed
@@ -274,7 +274,7 @@ test.describe("check if scroll jump compensation works", () => {
 
   test("stick to bottom", async ({ page }) => {
     await page.goto(storyUrl("advanced-chat--default"));
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
     // check if end is displayed
     const initialItem = await getLastItem(component);
@@ -314,7 +314,7 @@ test.describe("check if scroll jump compensation works", () => {
 
   test("dynamic image", async ({ page, browserName }) => {
     await page.goto(storyUrl("advanced-feed--default"));
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     // TODO firefox is bit unstable
@@ -406,7 +406,7 @@ test.describe("check if scrollToIndex works", () => {
 
   test.describe("align start", () => {
     test("mid", async ({ page }) => {
-      const component = await page.waitForSelector(scrollableSelector);
+      const component = await getScrollable(page);
       await component.waitForElementState("stable");
 
       // check if start is displayed
@@ -437,7 +437,7 @@ test.describe("check if scrollToIndex works", () => {
     });
 
     test("start", async ({ page }) => {
-      const component = await page.waitForSelector(scrollableSelector);
+      const component = await getScrollable(page);
       await component.waitForElementState("stable");
 
       // check if start is displayed
@@ -475,7 +475,7 @@ test.describe("check if scrollToIndex works", () => {
     });
 
     test("end", async ({ page }) => {
-      const component = await page.waitForSelector(scrollableSelector);
+      const component = await getScrollable(page);
       await component.waitForElementState("stable");
 
       // check if start is displayed
@@ -505,7 +505,7 @@ test.describe("check if scrollToIndex works", () => {
     });
 
     test("mid smooth", async ({ page, browserName }) => {
-      const component = await page.waitForSelector(scrollableSelector);
+      const component = await getScrollable(page);
       await component.waitForElementState("stable");
 
       // check if start is displayed
@@ -554,7 +554,7 @@ test.describe("check if scrollToIndex works", () => {
     });
 
     test("mid", async ({ page }) => {
-      const component = await page.waitForSelector(scrollableSelector);
+      const component = await getScrollable(page);
       await component.waitForElementState("stable");
 
       // check if start is displayed
@@ -585,7 +585,7 @@ test.describe("check if scrollToIndex works", () => {
     });
 
     test("start", async ({ page }) => {
-      const component = await page.waitForSelector(scrollableSelector);
+      const component = await getScrollable(page);
       await component.waitForElementState("stable");
 
       // check if start is displayed
@@ -623,7 +623,7 @@ test.describe("check if scrollToIndex works", () => {
     });
 
     test("end", async ({ page }) => {
-      const component = await page.waitForSelector(scrollableSelector);
+      const component = await getScrollable(page);
       await component.waitForElementState("stable");
 
       // check if start is displayed
@@ -653,7 +653,7 @@ test.describe("check if scrollToIndex works", () => {
     });
 
     test("mid smooth", async ({ page, browserName }) => {
-      const component = await page.waitForSelector(scrollableSelector);
+      const component = await getScrollable(page);
       await component.waitForElementState("stable");
 
       // check if start is displayed
@@ -703,7 +703,7 @@ test.describe("check if scrollTo works", () => {
   });
 
   test("down and up", async ({ page }) => {
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     // check if start is displayed
@@ -749,7 +749,7 @@ test.describe("check if scrollBy works", () => {
   });
 
   test("down and up", async ({ page }) => {
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     // check if start is displayed
@@ -789,7 +789,7 @@ test.describe("check if item shift compensation works", () => {
   });
 
   test("keep end at mid when add to/remove from end", async ({ page }) => {
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     const updateButton = page.getByRole("button", { name: "update" });
@@ -821,7 +821,7 @@ test.describe("check if item shift compensation works", () => {
   });
 
   test("keep start at mid when add to/remove from start", async ({ page }) => {
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     const updateButton = page.getByRole("button", { name: "update" });
@@ -858,7 +858,7 @@ test.describe("check if item shift compensation works", () => {
     browserName,
   }) => {
     await page.goto(storyUrl("basics-vlist--increasing-items"));
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     await page.getByRole("checkbox", { name: "prepend" }).click();
@@ -867,9 +867,8 @@ test.describe("check if item shift compensation works", () => {
     const valueInput = page.getByRole("spinbutton");
     const updateButton = page.getByRole("button", { name: "update" });
 
-    const initialLength = await component.evaluate(
-      (e) => e.childNodes[0].childNodes.length
-    );
+    const container = await getVirtualizer(page);
+    const initialLength = await container.evaluate((e) => e.childNodes.length);
     expect(initialLength).toBeGreaterThan(1);
 
     let i = 0;
@@ -883,16 +882,24 @@ test.describe("check if item shift compensation works", () => {
       await updateButton.click();
       await component.waitForElementState("stable");
 
-      const [childrenCount, isScrollBarVisible, firstItemTop] =
-        await component.evaluate((e) => {
-          const children = e.childNodes[0].childNodes;
+      const [childrenCount, firstItemRectTop] = await container.evaluate(
+        (e) => {
+          const children = e.childNodes;
           return [
             children.length,
-            e.scrollHeight > (e as HTMLElement).offsetHeight,
-            (children[0] as HTMLElement).getBoundingClientRect().top -
-              e.getBoundingClientRect().top,
+            (children[0] as HTMLElement).getBoundingClientRect().top,
           ];
-        });
+        }
+      );
+      const [isScrollBarVisible, scrollableRectTop] = await component.evaluate(
+        (e) => {
+          return [
+            e.scrollHeight > (e as HTMLElement).offsetHeight,
+            e.getBoundingClientRect().top,
+          ];
+        }
+      );
+      const firstItemTop = firstItemRectTop - scrollableRectTop;
 
       // Check if all items are visible
       expect(childrenCount).toBe(i + initialLength);
@@ -922,7 +929,7 @@ test.describe("check if item shift compensation works", () => {
     browserName,
   }) => {
     await page.goto(storyUrl("basics-vlist--increasing-items"));
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     await page.getByRole("checkbox", { name: "reverse" }).click();
@@ -933,9 +940,8 @@ test.describe("check if item shift compensation works", () => {
     const valueInput = page.getByRole("spinbutton");
     const updateButton = page.getByRole("button", { name: "update" });
 
-    const initialLength = await component.evaluate(
-      (e) => e.childNodes[0].childNodes.length
-    );
+    const container = await getVirtualizer(page);
+    const initialLength = await container.evaluate((e) => e.childNodes.length);
     expect(initialLength).toBeGreaterThan(1);
 
     let i = 0;
@@ -949,17 +955,25 @@ test.describe("check if item shift compensation works", () => {
       await updateButton.click();
       await component.waitForElementState("stable");
 
-      const [childrenCount, isScrollBarVisible, firstItemBottom] =
-        await component.evaluate((e) => {
-          const children = e.childNodes[0].childNodes;
+      const [childrenCount, firstItemRectBottom] = await container.evaluate(
+        (e) => {
+          const children = e.childNodes;
           return [
             children.length,
-            e.scrollHeight > (e as HTMLElement).offsetHeight,
             (
               children[children.length - 1] as HTMLElement
-            ).getBoundingClientRect().bottom - e.getBoundingClientRect().bottom,
+            ).getBoundingClientRect().bottom,
+          ];
+        }
+      );
+      const [isScrollBarVisible, scrollableRectBottom] =
+        await component.evaluate((e) => {
+          return [
+            e.scrollHeight > (e as HTMLElement).offsetHeight,
+            e.getBoundingClientRect().bottom,
           ];
         });
+      const firstItemBottom = firstItemRectBottom - scrollableRectBottom;
 
       // Check if all items are visible
       expect(childrenCount).toBe(i + initialLength);
@@ -994,7 +1008,7 @@ test.describe("RTL", () => {
       document.documentElement.dir = "rtl";
     });
 
-    const component = await page.waitForSelector(scrollableSelector);
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     // check if start is displayed
@@ -1017,8 +1031,7 @@ test.describe("RTL", () => {
       document.documentElement.dir = "rtl";
     });
 
-    await page.waitForSelector(scrollableSelector);
-    const component = (await page.$$(scrollableSelector))[0]!;
+    const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
     // check if start is displayed
@@ -1037,7 +1050,7 @@ test.describe("RTL", () => {
 test("SSR and hydration", async ({ page }) => {
   await page.goto(storyUrl("advanced-ssr--default"));
 
-  const component = await page.waitForSelector(scrollableSelector);
+  const component = await getScrollable(page);
   await component.waitForElementState("stable");
 
   const first = await getFirstItem(component);
@@ -1087,7 +1100,7 @@ test.describe("emulated iOS WebKit", () => {
     test("scroll with touch", async ({ page }) => {
       await page.goto(storyUrl("basics-vlist--default"));
 
-      const component = await page.waitForSelector(scrollableSelector);
+      const component = await getScrollable(page);
       await component.waitForElementState("stable");
 
       // check if first is displayed
@@ -1139,7 +1152,7 @@ test.describe("emulated iOS WebKit", () => {
     test("reverse scroll with touch", async ({ page }) => {
       await page.goto(storyUrl("basics-vlist--reverse"));
 
-      const component = await page.waitForSelector(scrollableSelector);
+      const component = await getScrollable(page);
       await component.waitForElementState("stable");
 
       // FIXME this offset is needed only in ci for unknown reason
@@ -1193,7 +1206,7 @@ test.describe("emulated iOS WebKit", () => {
     test("reverse scroll with momentum scroll", async ({ page }) => {
       await page.goto(storyUrl("basics-vlist--reverse"));
 
-      const component = await page.waitForSelector(scrollableSelector);
+      const component = await getScrollable(page);
       await component.waitForElementState("stable");
 
       // FIXME this offset is needed only in ci for unknown reason
@@ -1254,7 +1267,7 @@ test.describe("emulated iOS WebKit", () => {
   //   });
 
   //   test("end", async ({ page }) => {
-  //     const component = await page.waitForSelector(scrollableSelector);
+  //     const component = await getScrollable(page);
   //     await component.waitForElementState("stable");
 
   //     const updateButton = page.getByRole("button", { name: "update" });
@@ -1286,7 +1299,7 @@ test.describe("emulated iOS WebKit", () => {
   //   });
 
   //   test("start", async ({ page }) => {
-  //     const component = await page.waitForSelector(scrollableSelector);
+  //     const component = await getScrollable(page);
   //     await component.waitForElementState("stable");
 
   //     const updateButton = page.getByRole("button", { name: "update" });

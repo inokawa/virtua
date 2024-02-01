@@ -1,15 +1,15 @@
 import { test, expect } from "@playwright/test";
 import {
   storyUrl,
-  scrollableSelector,
   scrollToBottom,
   expectInRange,
+  getScrollable,
 } from "./utils";
 
 test("header and footer", async ({ page }) => {
   await page.goto(storyUrl("basics-virtualizer--header-and-footer"));
 
-  const scrollable = await page.waitForSelector(scrollableSelector);
+  const scrollable = await getScrollable(page);
   await scrollable.waitForElementState("stable");
   const container = await scrollable.evaluateHandle(
     (e) => e.firstElementChild!.nextElementSibling!
@@ -58,7 +58,7 @@ test("header and footer", async ({ page }) => {
 test("sticky header and footer", async ({ page }) => {
   await page.goto(storyUrl("basics-virtualizer--sticky-header-and-footer"));
 
-  const scrollable = await page.waitForSelector(scrollableSelector);
+  const scrollable = await getScrollable(page);
   await scrollable.waitForElementState("stable");
   const container = await scrollable.evaluateHandle(
     (e) => e.firstElementChild!.nextElementSibling!
