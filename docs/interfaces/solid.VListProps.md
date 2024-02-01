@@ -91,6 +91,8 @@ Props of [VList](../modules/solid.md#vlist).
 
 • `Optional` **ref**: (`handle?`: [`VListHandle`](solid.VListHandle.md)) => `void`
 
+Get reference to [VListHandle](solid.VListHandle.md).
+
 #### Type declaration
 
 ▸ (`handle?`): `void`
@@ -109,7 +111,7 @@ Get reference to [VListHandle](solid.VListHandle.md).
 
 #### Defined in
 
-[src/solid/VList.tsx:76](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L76)
+[src/solid/VList.tsx:77](https://github.com/inokawa/virtua/blob/a71f6cac/src/solid/VList.tsx#L77)
 
 ___
 
@@ -121,13 +123,15 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/solid/VList.tsx:80](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L80)
+[src/solid/VList.tsx:81](https://github.com/inokawa/virtua/blob/a71f6cac/src/solid/VList.tsx#L81)
 
 ___
 
 ### children
 
 • **children**: (`data`: `T`, `index`: `number`) => `Element`
+
+The elements renderer function.
 
 #### Type declaration
 
@@ -148,7 +152,7 @@ The elements renderer function.
 
 #### Defined in
 
-[src/solid/VList.tsx:84](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L84)
+[src/solid/VList.tsx:85](https://github.com/inokawa/virtua/blob/a71f6cac/src/solid/VList.tsx#L85)
 
 ___
 
@@ -166,7 +170,7 @@ Number of items to render above/below the visible bounds of the list. Lower valu
 
 #### Defined in
 
-[src/solid/VList.tsx:89](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L89)
+[src/solid/VList.tsx:90](https://github.com/inokawa/virtua/blob/a71f6cac/src/solid/VList.tsx#L90)
 
 ___
 
@@ -181,7 +185,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/solid/VList.tsx:96](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L96)
+[src/solid/VList.tsx:97](https://github.com/inokawa/virtua/blob/a71f6cac/src/solid/VList.tsx#L97)
 
 ___
 
@@ -193,7 +197,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/solid/VList.tsx:100](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L100)
+[src/solid/VList.tsx:101](https://github.com/inokawa/virtua/blob/a71f6cac/src/solid/VList.tsx#L101)
 
 ___
 
@@ -205,13 +209,19 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/solid/VList.tsx:104](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L104)
+[src/solid/VList.tsx:105](https://github.com/inokawa/virtua/blob/a71f6cac/src/solid/VList.tsx#L105)
 
 ___
 
 ### onScroll
 
 • `Optional` **onScroll**: (`offset`: `number`) => `void`
+
+Callback invoked whenever scroll offset changes.
+
+**`Param`**
+
+Current scrollTop or scrollLeft.
 
 #### Type declaration
 
@@ -231,13 +241,15 @@ Callback invoked whenever scroll offset changes.
 
 #### Defined in
 
-[src/solid/VList.tsx:109](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L109)
+[src/solid/VList.tsx:110](https://github.com/inokawa/virtua/blob/a71f6cac/src/solid/VList.tsx#L110)
 
 ___
 
 ### onScrollEnd
 
 • `Optional` **onScrollEnd**: () => `void`
+
+Callback invoked when scrolling stops.
 
 #### Type declaration
 
@@ -251,13 +263,15 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/solid/VList.tsx:113](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L113)
+[src/solid/VList.tsx:114](https://github.com/inokawa/virtua/blob/a71f6cac/src/solid/VList.tsx#L114)
 
 ___
 
 ### onRangeChange
 
 • `Optional` **onRangeChange**: (`startIndex`: `number`, `endIndex`: `number`) => `void`
+
+Callback invoked when visible items range changes.
 
 #### Type declaration
 
@@ -278,7 +292,7 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/solid/VList.tsx:117](https://github.com/inokawa/virtua/blob/76146876/src/solid/VList.tsx#L117)
+[src/solid/VList.tsx:118](https://github.com/inokawa/virtua/blob/a71f6cac/src/solid/VList.tsx#L118)
 
 ___
 
@@ -1249,4 +1263,4 @@ ViewportComponentAttributes.style
 
 #### Defined in
 
-[src/solid/types.ts:7](https://github.com/inokawa/virtua/blob/76146876/src/solid/types.ts#L7)
+[src/solid/types.ts:7](https://github.com/inokawa/virtua/blob/a71f6cac/src/solid/types.ts#L7)

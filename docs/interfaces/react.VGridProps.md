@@ -89,6 +89,8 @@ Props of [VGrid](../modules/react.md#experimental_vgrid).
 
 • **children**: (`arg`: \{ `rowIndex`: `number` ; `colIndex`: `number`  }) => `ReactNode`
 
+A function to create elements rendered by this component.
+
 #### Type declaration
 
 ▸ (`arg`): `ReactNode`
@@ -109,7 +111,7 @@ A function to create elements rendered by this component.
 
 #### Defined in
 
-[src/react/VGrid.tsx:198](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L198)
+[src/react/VGrid.tsx:198](https://github.com/inokawa/virtua/blob/a71f6cac/src/react/VGrid.tsx#L198)
 
 ___
 
@@ -121,7 +123,7 @@ Total row length of grid.
 
 #### Defined in
 
-[src/react/VGrid.tsx:211](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L211)
+[src/react/VGrid.tsx:211](https://github.com/inokawa/virtua/blob/a71f6cac/src/react/VGrid.tsx#L211)
 
 ___
 
@@ -133,7 +135,7 @@ Total column length of grid.
 
 #### Defined in
 
-[src/react/VGrid.tsx:215](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L215)
+[src/react/VGrid.tsx:215](https://github.com/inokawa/virtua/blob/a71f6cac/src/react/VGrid.tsx#L215)
 
 ___
 
@@ -151,7 +153,7 @@ Cell height hint for unmeasured items. It's recommended to specify this prop if 
 
 #### Defined in
 
-[src/react/VGrid.tsx:220](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L220)
+[src/react/VGrid.tsx:220](https://github.com/inokawa/virtua/blob/a71f6cac/src/react/VGrid.tsx#L220)
 
 ___
 
@@ -169,7 +171,7 @@ Cell width hint for unmeasured items. It's recommended to specify this prop if i
 
 #### Defined in
 
-[src/react/VGrid.tsx:225](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L225)
+[src/react/VGrid.tsx:225](https://github.com/inokawa/virtua/blob/a71f6cac/src/react/VGrid.tsx#L225)
 
 ___
 
@@ -187,7 +189,7 @@ Number of items to render above/below the visible bounds of the grid. Lower valu
 
 #### Defined in
 
-[src/react/VGrid.tsx:230](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L230)
+[src/react/VGrid.tsx:230](https://github.com/inokawa/virtua/blob/a71f6cac/src/react/VGrid.tsx#L230)
 
 ___
 
@@ -199,7 +201,7 @@ If set, the specified amount of rows will be mounted in the initial rendering re
 
 #### Defined in
 
-[src/react/VGrid.tsx:234](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L234)
+[src/react/VGrid.tsx:234](https://github.com/inokawa/virtua/blob/a71f6cac/src/react/VGrid.tsx#L234)
 
 ___
 
@@ -211,7 +213,7 @@ If set, the specified amount of cols will be mounted in the initial rendering re
 
 #### Defined in
 
-[src/react/VGrid.tsx:238](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L238)
+[src/react/VGrid.tsx:238](https://github.com/inokawa/virtua/blob/a71f6cac/src/react/VGrid.tsx#L238)
 
 ___
 
@@ -226,11 +228,11 @@ Customized components for advanced usage.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `Root?` | `ForwardRefExoticComponent`\<`CustomViewportComponentProps` & `RefAttributes`\<`any`\>\> | Component for scrollable element. This component will get CustomViewportComponentProps as props. **`Default Value`** ```ts {@link DefaultViewport} ``` |
-| `Cell?` | keyof `IntrinsicElements` \| [`CustomCellComponent`](../modules/react.md#customcellcomponent) | Component or element type for cell element. This component will get [CustomCellComponentProps](react.CustomCellComponentProps.md) as props. **`Default Value`** ```ts "div" ``` |
+| `Cell?` | keyof IntrinsicElements \| [`CustomCellComponent`](../modules/react.md#customcellcomponent) | Component or element type for cell element. This component will get [CustomCellComponentProps](react.CustomCellComponentProps.md) as props. **`Default Value`** ```ts "div" ``` |
 
 #### Defined in
 
-[src/react/VGrid.tsx:242](https://github.com/inokawa/virtua/blob/76146876/src/react/VGrid.tsx#L242)
+[src/react/VGrid.tsx:242](https://github.com/inokawa/virtua/blob/a71f6cac/src/react/VGrid.tsx#L242)
 
 ___
 
@@ -244,7 +246,7 @@ ViewportComponentAttributes.className
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1970
+node_modules/@types/react/index.d.ts:1971
 
 ___
 
@@ -258,7 +260,7 @@ ViewportComponentAttributes.style
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1981
+node_modules/@types/react/index.d.ts:1982
 
 ___
 
@@ -272,7 +274,7 @@ ViewportComponentAttributes.id
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1976
+node_modules/@types/react/index.d.ts:1977
 
 ___
 
@@ -286,7 +288,7 @@ ViewportComponentAttributes.role
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1990
+node_modules/@types/react/index.d.ts:1991
 
 ___
 
@@ -300,7 +302,7 @@ ViewportComponentAttributes.tabIndex
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1982
+node_modules/@types/react/index.d.ts:1983
 
 ___
 
@@ -314,7 +316,7 @@ ViewportComponentAttributes.onKeyDown
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1500
+node_modules/@types/react/index.d.ts:1501
 
 ___
 
@@ -330,7 +332,7 @@ ViewportComponentAttributes.aria-activedescendant
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1666
+node_modules/@types/react/index.d.ts:1667
 
 ___
 
@@ -346,7 +348,7 @@ ViewportComponentAttributes.aria-atomic
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1668
+node_modules/@types/react/index.d.ts:1669
 
 ___
 
@@ -363,7 +365,7 @@ ViewportComponentAttributes.aria-autocomplete
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1673
+node_modules/@types/react/index.d.ts:1674
 
 ___
 
@@ -383,7 +385,7 @@ ViewportComponentAttributes.aria-braillelabel
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1679
+node_modules/@types/react/index.d.ts:1680
 
 ___
 
@@ -403,7 +405,7 @@ ViewportComponentAttributes.aria-brailleroledescription
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1684
+node_modules/@types/react/index.d.ts:1685
 
 ___
 
@@ -417,7 +419,7 @@ ViewportComponentAttributes.aria-busy
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1685
+node_modules/@types/react/index.d.ts:1686
 
 ___
 
@@ -438,7 +440,7 @@ ViewportComponentAttributes.aria-checked
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1690
+node_modules/@types/react/index.d.ts:1691
 
 ___
 
@@ -458,7 +460,7 @@ ViewportComponentAttributes.aria-colcount
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1695
+node_modules/@types/react/index.d.ts:1696
 
 ___
 
@@ -479,7 +481,7 @@ ViewportComponentAttributes.aria-colindex
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1700
+node_modules/@types/react/index.d.ts:1701
 
 ___
 
@@ -499,7 +501,7 @@ ViewportComponentAttributes.aria-colindextext
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1705
+node_modules/@types/react/index.d.ts:1706
 
 ___
 
@@ -520,7 +522,7 @@ ViewportComponentAttributes.aria-colspan
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1710
+node_modules/@types/react/index.d.ts:1711
 
 ___
 
@@ -540,7 +542,7 @@ ViewportComponentAttributes.aria-controls
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1715
+node_modules/@types/react/index.d.ts:1716
 
 ___
 
@@ -556,7 +558,7 @@ ViewportComponentAttributes.aria-current
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1717
+node_modules/@types/react/index.d.ts:1718
 
 ___
 
@@ -576,7 +578,7 @@ ViewportComponentAttributes.aria-describedby
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1722
+node_modules/@types/react/index.d.ts:1723
 
 ___
 
@@ -596,7 +598,7 @@ ViewportComponentAttributes.aria-description
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1727
+node_modules/@types/react/index.d.ts:1728
 
 ___
 
@@ -616,7 +618,7 @@ ViewportComponentAttributes.aria-details
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1732
+node_modules/@types/react/index.d.ts:1733
 
 ___
 
@@ -637,7 +639,7 @@ ViewportComponentAttributes.aria-disabled
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1737
+node_modules/@types/react/index.d.ts:1738
 
 ___
 
@@ -657,7 +659,7 @@ ViewportComponentAttributes.aria-dropeffect
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1742
+node_modules/@types/react/index.d.ts:1743
 
 ___
 
@@ -678,7 +680,7 @@ ViewportComponentAttributes.aria-errormessage
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1747
+node_modules/@types/react/index.d.ts:1748
 
 ___
 
@@ -694,7 +696,7 @@ ViewportComponentAttributes.aria-expanded
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1749
+node_modules/@types/react/index.d.ts:1750
 
 ___
 
@@ -711,7 +713,7 @@ ViewportComponentAttributes.aria-flowto
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1754
+node_modules/@types/react/index.d.ts:1755
 
 ___
 
@@ -731,7 +733,7 @@ ViewportComponentAttributes.aria-grabbed
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1759
+node_modules/@types/react/index.d.ts:1760
 
 ___
 
@@ -747,7 +749,7 @@ ViewportComponentAttributes.aria-haspopup
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1761
+node_modules/@types/react/index.d.ts:1762
 
 ___
 
@@ -767,7 +769,7 @@ ViewportComponentAttributes.aria-hidden
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1766
+node_modules/@types/react/index.d.ts:1767
 
 ___
 
@@ -787,7 +789,7 @@ ViewportComponentAttributes.aria-invalid
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1771
+node_modules/@types/react/index.d.ts:1772
 
 ___
 
@@ -803,7 +805,7 @@ ViewportComponentAttributes.aria-keyshortcuts
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1773
+node_modules/@types/react/index.d.ts:1774
 
 ___
 
@@ -823,7 +825,7 @@ ViewportComponentAttributes.aria-label
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1778
+node_modules/@types/react/index.d.ts:1779
 
 ___
 
@@ -843,7 +845,7 @@ ViewportComponentAttributes.aria-labelledby
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1783
+node_modules/@types/react/index.d.ts:1784
 
 ___
 
@@ -859,7 +861,7 @@ ViewportComponentAttributes.aria-level
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1785
+node_modules/@types/react/index.d.ts:1786
 
 ___
 
@@ -875,7 +877,7 @@ ViewportComponentAttributes.aria-live
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1787
+node_modules/@types/react/index.d.ts:1788
 
 ___
 
@@ -891,7 +893,7 @@ ViewportComponentAttributes.aria-modal
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1789
+node_modules/@types/react/index.d.ts:1790
 
 ___
 
@@ -907,7 +909,7 @@ ViewportComponentAttributes.aria-multiline
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1791
+node_modules/@types/react/index.d.ts:1792
 
 ___
 
@@ -923,7 +925,7 @@ ViewportComponentAttributes.aria-multiselectable
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1793
+node_modules/@types/react/index.d.ts:1794
 
 ___
 
@@ -939,7 +941,7 @@ ViewportComponentAttributes.aria-orientation
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1795
+node_modules/@types/react/index.d.ts:1796
 
 ___
 
@@ -960,7 +962,7 @@ ViewportComponentAttributes.aria-owns
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1801
+node_modules/@types/react/index.d.ts:1802
 
 ___
 
@@ -977,7 +979,7 @@ ViewportComponentAttributes.aria-placeholder
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1806
+node_modules/@types/react/index.d.ts:1807
 
 ___
 
@@ -997,7 +999,7 @@ ViewportComponentAttributes.aria-posinset
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1811
+node_modules/@types/react/index.d.ts:1812
 
 ___
 
@@ -1018,7 +1020,7 @@ ViewportComponentAttributes.aria-pressed
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1816
+node_modules/@types/react/index.d.ts:1817
 
 ___
 
@@ -1038,7 +1040,7 @@ ViewportComponentAttributes.aria-readonly
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1821
+node_modules/@types/react/index.d.ts:1822
 
 ___
 
@@ -1058,7 +1060,7 @@ ViewportComponentAttributes.aria-relevant
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1826
+node_modules/@types/react/index.d.ts:1827
 
 ___
 
@@ -1074,7 +1076,7 @@ ViewportComponentAttributes.aria-required
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1839
+node_modules/@types/react/index.d.ts:1840
 
 ___
 
@@ -1090,7 +1092,7 @@ ViewportComponentAttributes.aria-roledescription
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1841
+node_modules/@types/react/index.d.ts:1842
 
 ___
 
@@ -1110,7 +1112,7 @@ ViewportComponentAttributes.aria-rowcount
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1846
+node_modules/@types/react/index.d.ts:1847
 
 ___
 
@@ -1131,7 +1133,7 @@ ViewportComponentAttributes.aria-rowindex
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1851
+node_modules/@types/react/index.d.ts:1852
 
 ___
 
@@ -1151,7 +1153,7 @@ ViewportComponentAttributes.aria-rowindextext
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1856
+node_modules/@types/react/index.d.ts:1857
 
 ___
 
@@ -1172,7 +1174,7 @@ ViewportComponentAttributes.aria-rowspan
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1861
+node_modules/@types/react/index.d.ts:1862
 
 ___
 
@@ -1193,7 +1195,7 @@ ViewportComponentAttributes.aria-selected
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1866
+node_modules/@types/react/index.d.ts:1867
 
 ___
 
@@ -1213,7 +1215,7 @@ ViewportComponentAttributes.aria-setsize
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1871
+node_modules/@types/react/index.d.ts:1872
 
 ___
 
@@ -1229,7 +1231,7 @@ ViewportComponentAttributes.aria-sort
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1873
+node_modules/@types/react/index.d.ts:1874
 
 ___
 
@@ -1245,7 +1247,7 @@ ViewportComponentAttributes.aria-valuemax
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1875
+node_modules/@types/react/index.d.ts:1876
 
 ___
 
@@ -1261,7 +1263,7 @@ ViewportComponentAttributes.aria-valuemin
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1877
+node_modules/@types/react/index.d.ts:1878
 
 ___
 
@@ -1281,7 +1283,7 @@ ViewportComponentAttributes.aria-valuenow
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1882
+node_modules/@types/react/index.d.ts:1883
 
 ___
 
@@ -1297,4 +1299,4 @@ ViewportComponentAttributes.aria-valuetext
 
 #### Defined in
 
-node_modules/@types/react/index.d.ts:1884
+node_modules/@types/react/index.d.ts:1885
