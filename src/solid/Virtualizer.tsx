@@ -22,7 +22,6 @@ import {
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
-  getMinContainerSize,
   ItemsRange,
 } from "../core/store";
 import { createResizer } from "../core/resizer";
@@ -187,8 +186,6 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     () => rerender() && store._getScrollDirection()
   );
   const totalSize = createMemo(() => rerender() && store._getTotalSize());
-  // https://github.com/inokawa/virtua/issues/252#issuecomment-1822861368
-  const minSize = createMemo(() => rerender() && getMinContainerSize(store));
 
   const jumpCount = createMemo(() => rerender() && store._getJumpCount());
 
@@ -273,12 +270,11 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
       style={{
         // contain: "content",
         "overflow-anchor": "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
-        flex: "none", // flex style on parent can break layout
+        flex: "none", // flex style can break layout
         position: "relative",
         visibility: "hidden",
         width: horizontal ? totalSize() + "px" : "100%",
         height: horizontal ? "100%" : totalSize() + "px",
-        [horizontal ? "min-width" : "min-height"]: minSize() + "px",
         "pointer-events": scrollDirection() !== SCROLL_IDLE ? "none" : "auto",
       }}
     >

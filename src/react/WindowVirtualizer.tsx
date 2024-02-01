@@ -256,7 +256,7 @@ export const WindowVirtualizer = forwardRef<
         ref={containerRef}
         style={{
           // contain: "content",
-          flex: "none", // flex style on parent can break layout
+          flex: "none", // flex style can break layout
           position: "relative",
           visibility: "hidden",
           width: isHorizontal ? totalSize : "100%",

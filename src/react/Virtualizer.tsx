@@ -18,7 +18,6 @@ import {
   SCROLL_IDLE,
   UPDATE_SCROLL_END_EVENT,
   getScrollSize,
-  getMinContainerSize,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { createScroller } from "../core/scroller";
@@ -32,7 +31,7 @@ import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
 import { useChildren } from "./useChildren";
 import { CustomContainerComponent, CustomItemComponent } from "./types";
-import { max, microtask } from "../core/utils";
+import { microtask } from "../core/utils";
 
 /**
  * Methods of {@link Virtualizer}.
@@ -107,10 +106,6 @@ export interface VirtualizerProps {
    */
   horizontal?: boolean;
   /**
-   * If true, items are aligned to the end of the list when total size of items are smaller than viewport size. It's useful for chat like app.
-   */
-  reverse?: boolean;
-  /**
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.cache}.
    */
   cache?: CacheSnapshot;
@@ -176,7 +171,6 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       itemSize,
       shift,
       horizontal: horizontalProp,
-      reverse,
       cache,
       startMargin,
       endMargin,
@@ -231,10 +225,6 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     const scrollDirection = store._getScrollDirection();
     const jumpCount = store._getJumpCount();
     const totalSize = store._getTotalSize();
-
-    // https://github.com/inokawa/virtua/issues/252#issuecomment-1822861368
-    const minSize = getMinContainerSize(store);
-    const reverseOffset = reverse ? max(0, minSize - totalSize) : 0;
 
     const items: ReactElement[] = [];
 
@@ -327,7 +317,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
           key={getKey(e, i)}
           _resizer={resizer._observeItem}
           _index={i}
-          _offset={store._getItemOffset(i) + reverseOffset}
+          _offset={store._getItemOffset(i)}
           _hide={store._isUnmeasuredItem(i)}
           _element={ItemElement as "div"}
           _children={e}
@@ -343,12 +333,11 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         style={{
           // contain: "content",
           overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
-          flex: "none", // flex style on parent can break layout
+          flex: "none", // flex style can break layout
           position: "relative",
           visibility: "hidden",
           width: isHorizontal ? totalSize : "100%",
           height: isHorizontal ? "100%" : totalSize,
-          [isHorizontal ? "minWidth" : "minHeight"]: minSize,
           pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : "auto",
         }}
       >

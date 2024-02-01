@@ -22,7 +22,6 @@ import {
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
-  getMinContainerSize,
 } from "../core/store";
 import { createResizer } from "../core/resizer";
 import { createScroller } from "../core/scroller";
@@ -187,9 +186,6 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       const scrollDirection = store._getScrollDirection();
       const totalSize = store._getTotalSize();
 
-      // https://github.com/inokawa/virtua/issues/252#issuecomment-1822861368
-      const minSize = getMinContainerSize(store);
-
       const items: VNode[] = [];
       for (
         let i = overscanStartIndex(startIndex, props.overscan, scrollDirection),
@@ -224,12 +220,11 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
           style={{
             // contain: "content",
             overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
-            flex: "none", // flex style on parent can break layout
+            flex: "none", // flex style can break layout
             position: "relative",
             visibility: "hidden",
             width: isHorizontal ? totalSize + "px" : "100%",
             height: isHorizontal ? "100%" : totalSize + "px",
-            [isHorizontal ? "minWidth" : "minHeight"]: minSize + "px",
             pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : "auto",
           }}
         >

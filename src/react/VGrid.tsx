@@ -398,7 +398,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         <div
           style={{
             overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
-            flex: "none", // flex style on parent can break layout
+            flex: "none", // flex style can break layout
             position: "relative",
             visibility: "hidden",
             width: width,
