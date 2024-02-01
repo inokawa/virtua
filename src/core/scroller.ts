@@ -272,7 +272,10 @@ export const createScroller = (
       scrollObserver && scrollObserver._dispose();
     },
     _scrollTo(offset) {
-      scheduleImperativeScroll(() => offset);
+      if (viewportElement) {
+        // https://github.com/inokawa/virtua/issues/357
+        viewportElement[scrollToKey] = normalizeOffset(offset, isHorizontal);
+      }
     },
     _scrollBy(offset) {
       offset += store._getScrollOffset();
