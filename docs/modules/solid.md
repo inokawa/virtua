@@ -37,4 +37,4 @@ Virtualized list component. See [VListProps](../interfaces/solid.VListProps.md) 
 
 #### Defined in
 
-[src/solid/VList.tsx:133](https://github.com/inokawa/virtua/blob/a71f6cac/src/solid/VList.tsx#L133)
+[src/solid/VList.tsx:133](https://github.com/inokawa/virtua/blob/86625a37/src/solid/VList.tsx#L133)
