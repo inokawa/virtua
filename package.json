@@ -52,7 +52,7 @@
     "@emotion/styled": "11.10.8",
     "@faker-js/faker": "8.4.0",
     "@formkit/auto-animate": "0.8.1",
-    "@mui/material": "5.14.19",
+    "@mui/material": "5.15.7",
     "@playwright/test": "^1.41.1",
     "@radix-ui/colors": "3.0.0",
     "@radix-ui/react-scroll-area": "1.0.5",
