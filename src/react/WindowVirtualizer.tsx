@@ -208,10 +208,7 @@ export const WindowVirtualizer = forwardRef<
     }, []);
 
     useIsomorphicLayoutEffect(() => {
-      const jump = store._flushJump();
-      if (!jump) return;
-
-      scroller._fixScrollJump(jump);
+      scroller._fixScrollJump();
     }, [jumpCount]);
 
     useEffect(() => {
