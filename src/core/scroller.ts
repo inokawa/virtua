@@ -124,7 +124,9 @@ const createScrollObserver = (
       viewport.removeEventListener("touchend", onTouchEnd);
       onScrollEnd._cancel();
     },
-    _fixScrollJump: (jump: number) => {
+    _fixScrollJump: () => {
+      const jump = store._flushJump();
+      if (!jump) return;
       updateScrollOffset(jump, stillMomentumScrolling);
       stillMomentumScrolling = false;
     },
@@ -142,7 +144,7 @@ export type Scroller = {
   _scrollTo: (offset: number) => void;
   _scrollBy: (offset: number) => void;
   _scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
-  _fixScrollJump: (jump: number) => void;
+  _fixScrollJump: () => void;
 };
 
 /**
@@ -315,9 +317,8 @@ export const createScroller = (
         );
       }, smooth);
     },
-    _fixScrollJump: (jump) => {
-      if (!scrollObserver) return;
-      scrollObserver._fixScrollJump(jump);
+    _fixScrollJump: () => {
+      scrollObserver && scrollObserver._fixScrollJump();
     },
   };
 };
@@ -328,7 +329,7 @@ export const createScroller = (
 export type WindowScroller = {
   _observe(containerElement: HTMLElement): void;
   _dispose(): void;
-  _fixScrollJump: (jump: number) => void;
+  _fixScrollJump: () => void;
 };
 
 /**
@@ -394,9 +395,8 @@ export const createWindowScroller = (
     _dispose() {
       scrollObserver && scrollObserver._dispose();
     },
-    _fixScrollJump: (jump) => {
-      if (!scrollObserver) return;
-      scrollObserver._fixScrollJump(jump);
+    _fixScrollJump: () => {
+      scrollObserver && scrollObserver._fixScrollJump();
     },
   };
 };

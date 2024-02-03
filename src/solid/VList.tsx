@@ -263,10 +263,7 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
 
   createEffect(
     on(jumpCount, () => {
-      const jump = store._flushJump();
-      if (jump) {
-        scroller._fixScrollJump(jump);
-      }
+      scroller._fixScrollJump();
     })
   );
 

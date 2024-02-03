@@ -346,16 +346,10 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     }, []);
 
     useIsomorphicLayoutEffect(() => {
-      const jump = vStore._flushJump();
-      if (!jump) return;
-
-      vScroller._fixScrollJump(jump);
+      vScroller._fixScrollJump();
     }, [vJumpCount]);
     useIsomorphicLayoutEffect(() => {
-      const jump = hStore._flushJump();
-      if (!jump) return;
-
-      hScroller._fixScrollJump(jump);
+      hScroller._fixScrollJump();
     }, [hJumpCount]);
 
     useImperativeHandle(

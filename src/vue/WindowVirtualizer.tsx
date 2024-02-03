@@ -109,10 +109,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       ([, count], [, prevCount]) => {
         if (count === prevCount) return;
 
-        const jump = store._flushJump();
-        if (!jump) return;
-
-        scroller._fixScrollJump(jump);
+        scroller._fixScrollJump();
       },
       { flush: "post" }
     );
