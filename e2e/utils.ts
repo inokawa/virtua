@@ -29,6 +29,15 @@ export const approxymate = (v: number): number => Math.round(v / 100) * 100;
 export const clearInput = (input: ElementHandle<HTMLElement | SVGElement>) =>
   input.evaluate((element) => ((element as HTMLInputElement).value = ""));
 
+export const clearTimer = async (page: Page) => {
+  await page.evaluate(() => {
+    // stop all timer
+    for (let i = 1; i < 65536; i++) {
+      clearTimeout(i);
+    }
+  });
+};
+
 export const getFirstItem = (
   scrollable: ElementHandle<HTMLElement | SVGElement>
 ) => {

@@ -163,7 +163,7 @@ export type VirtualStore = {
   _getEndSpacerSize(): number;
   _getTotalSize(): number;
   _getJumpCount(): number;
-  _flushJump(): number;
+  _flushJump(): [number, boolean];
   _subscribe(target: number, cb: Subscriber): () => void;
   _update(...action: Actions): void;
 };
@@ -187,6 +187,7 @@ export const createVirtualStore = (
   let jumpCount = 0;
   let jump = 0;
   let pendingJump = 0;
+  let isJumpByPrepend = false;
   let _flushedJump = 0;
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
   let _scrollMode: ScrollMode = SCROLL_BY_NATIVE;
@@ -282,14 +283,17 @@ export const createVirtualStore = (
       return jumpCount;
     },
     _flushJump() {
+      const flushedJump = jump;
+      const flushedIsJumpByPrepend = isJumpByPrepend;
+      jump = 0;
+      isJumpByPrepend = false;
       if (viewportSize > getScrollableSize()) {
         // In this case applying jump will not cause scroll.
         // Current logic expects scroll event occurs after applying jump so discard it.
-        return (jump = 0);
+        return [0, false];
+      } else {
+        return [(_flushedJump = flushedJump), flushedIsJumpByPrepend];
       }
-      _flushedJump = jump;
-      jump = 0;
-      return _flushedJump;
     },
     _subscribe(target, cb) {
       const sub: [number, Subscriber] = [target, cb];
@@ -384,6 +388,7 @@ export const createVirtualStore = (
 
             if (isAdd) {
               _scrollMode = SCROLL_BY_PREPENDING;
+              isJumpByPrepend = true;
             }
             mutated = UPDATE_SCROLL_STATE;
           } else {

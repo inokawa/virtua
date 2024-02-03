@@ -125,10 +125,11 @@ const createScrollObserver = (
       onScrollEnd._cancel();
     },
     _fixScrollJump: () => {
-      const jump = store._flushJump();
+      const [jump, prepend] = store._flushJump();
       if (!jump) return;
       updateScrollOffset(jump, stillMomentumScrolling);
       stillMomentumScrolling = false;
+      return prepend;
     },
   };
 };
@@ -274,10 +275,7 @@ export const createScroller = (
       scrollObserver && scrollObserver._dispose();
     },
     _scrollTo(offset) {
-      if (viewportElement) {
-        // https://github.com/inokawa/virtua/issues/357
-        viewportElement[scrollToKey] = normalizeOffset(offset, isHorizontal);
-      }
+      scheduleImperativeScroll(() => offset);
     },
     _scrollBy(offset) {
       offset += store._getScrollOffset();
@@ -318,7 +316,12 @@ export const createScroller = (
       }, smooth);
     },
     _fixScrollJump: () => {
-      scrollObserver && scrollObserver._fixScrollJump();
+      if (scrollObserver) {
+        if (scrollObserver._fixScrollJump()) {
+          // https://github.com/inokawa/virtua/issues/357
+          cancelScroll && cancelScroll();
+        }
+      }
     },
   };
 };
