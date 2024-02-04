@@ -158,7 +158,7 @@ export const createScroller = (
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let cancelScroll: (() => void) | undefined;
-  const scrollToKey = isHorizontal ? "scrollLeft" : "scrollTop";
+  const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const overflowKey = isHorizontal ? "overflowX" : "overflowY";
 
   // The given offset will be clamped by browser
@@ -227,7 +227,7 @@ export const createScroller = (
         const [promise, unsubscribe] = waitForMeasurement();
 
         try {
-          viewportElement[scrollToKey] = normalizeOffset(
+          viewportElement[scrollOffsetKey] = normalizeOffset(
             getTargetOffset(),
             isHorizontal
           );
@@ -252,7 +252,7 @@ export const createScroller = (
         store,
         viewport,
         isHorizontal,
-        () => normalizeOffset(viewport[scrollToKey], isHorizontal),
+        () => normalizeOffset(viewport[scrollOffsetKey], isHorizontal),
         (jump, isMomentumScrolling) => {
           // If we update scroll position while touching on iOS, the position will be reverted.
           // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
@@ -267,7 +267,7 @@ export const createScroller = (
             });
           }
 
-          viewport[scrollToKey] += normalizeOffset(jump, isHorizontal);
+          viewport[scrollOffsetKey] += normalizeOffset(jump, isHorizontal);
         }
       );
     },
@@ -346,7 +346,7 @@ export const createWindowScroller = (
 
   return {
     _observe(container) {
-      const scrollToKey = isHorizontal ? "scrollX" : "scrollY";
+      const scrollOffsetKey = isHorizontal ? "scrollX" : "scrollY";
 
       const document = getCurrentDocument(container);
       const window = getCurrentWindow(document);
@@ -384,7 +384,7 @@ export const createWindowScroller = (
         window,
         isHorizontal,
         () =>
-          normalizeOffset(window[scrollToKey], isHorizontal) -
+          normalizeOffset(window[scrollOffsetKey], isHorizontal) -
           calcOffsetToViewport(container, documentBody, isHorizontal),
         (jump) => {
           // TODO support case two window scrollers exist in the same view
