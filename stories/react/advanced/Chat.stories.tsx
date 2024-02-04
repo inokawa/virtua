@@ -167,6 +167,14 @@ export const Default: StoryObj = {
           <button type="submit" disabled={disabled}>
             submit
           </button>
+          <button
+            type="button"
+            onClick={() => {
+              ref.current?.scrollTo(0);
+            }}
+          >
+            jump to top
+          </button>
         </form>
       </div>
     );

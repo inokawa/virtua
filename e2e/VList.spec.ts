@@ -18,7 +18,31 @@ import {
   scrollToLeft,
   getVirtualizer,
   getScrollable,
+  clearTimer,
 } from "./utils";
+
+const listenScrollCount = (
+  component: ElementHandle<SVGElement | HTMLElement>
+): Promise<number> => {
+  return component.evaluate((c) => {
+    let timer: null | ReturnType<typeof setTimeout> = null;
+    let called = 0;
+
+    return new Promise<number>((resolve) => {
+      const cb = () => {
+        called++;
+        if (timer !== null) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+          c.removeEventListener("scroll", cb);
+          resolve(called);
+        }, 2000);
+      };
+      c.addEventListener("scroll", cb);
+    });
+  });
+};
 
 test.describe("smoke", () => {
   test("vertically scrollable", async ({ page }) => {
@@ -280,12 +304,7 @@ test.describe("check if scroll jump compensation works", () => {
     const initialItem = await getLastItem(component);
     expectInRange(initialItem.bottom, { min: 0, max: 1 });
 
-    await page.evaluate(() => {
-      // stop all timer
-      for (let i = 1; i < 65536; i++) {
-        clearTimeout(i);
-      }
-    });
+    await clearTimer(page);
 
     const button = (await page
       .getByRole("button", { name: "submit" })
@@ -380,29 +399,6 @@ test.describe("check if scrollToIndex works", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--scroll-to"));
   });
-
-  const listenScrollCount = (
-    component: ElementHandle<SVGElement | HTMLElement>
-  ): Promise<number> => {
-    return component.evaluate((c) => {
-      let timer: null | ReturnType<typeof setTimeout> = null;
-      let called = 0;
-
-      return new Promise<number>((resolve) => {
-        const cb = () => {
-          called++;
-          if (timer !== null) {
-            clearTimeout(timer);
-          }
-          timer = setTimeout(() => {
-            c.removeEventListener("scroll", cb);
-            resolve(called);
-          }, 2000);
-        };
-        c.addEventListener("scroll", cb);
-      });
-    });
-  };
 
   test.describe("align start", () => {
     test("mid", async ({ page }) => {
@@ -996,6 +992,30 @@ test.describe("check if item shift compensation works", () => {
     }
 
     expect(i).toBeGreaterThanOrEqual(8);
+  });
+
+  test("check if prepending cancels imperative scroll", async ({ page }) => {
+    await page.goto(storyUrl("advanced-chat--default"));
+    const component = await getScrollable(page);
+    await component.waitForElementState("stable");
+    // check if end is displayed
+    const initialItem = await getLastItem(component);
+    expectInRange(initialItem.bottom, { min: 0, max: 1 });
+
+    await clearTimer(page);
+
+    const scrollListener = listenScrollCount(component);
+
+    const button = (await page
+      .getByRole("button", { name: "jump to top" })
+      .elementHandle())!;
+
+    // scroll to top
+    await button.click();
+
+    // check if imperative scrolling doesn't cause infinite loop
+    const scrollCount = await scrollListener;
+    expect(scrollCount).toBeLessThanOrEqual(3);
   });
 });
 
