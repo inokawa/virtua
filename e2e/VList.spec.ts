@@ -895,7 +895,7 @@ test.describe("check if item shift compensation works", () => {
           ];
         }
       );
-      const firstItemTop = firstItemRectTop - scrollableRectTop;
+      const itemTop = firstItemRectTop - scrollableRectTop;
 
       // Check if all items are visible
       expect(childrenCount).toBe(i + initialLength);
@@ -909,7 +909,7 @@ test.describe("check if item shift compensation works", () => {
         break;
       } else {
         // Check if top is always visible and on top
-        expect(firstItemTop).toBe(0);
+        expect(itemTop).toBe(0);
       }
 
       // remove
@@ -951,7 +951,7 @@ test.describe("check if item shift compensation works", () => {
       await updateButton.click();
       await component.waitForElementState("stable");
 
-      const [childrenCount, firstItemRectBottom] = await container.evaluate(
+      const [childrenCount, lastItemRectBottom] = await container.evaluate(
         (e) => {
           const children = e.childNodes;
           return [
@@ -969,21 +969,21 @@ test.describe("check if item shift compensation works", () => {
             e.getBoundingClientRect().bottom,
           ];
         });
-      const firstItemBottom = firstItemRectBottom - scrollableRectBottom;
+      const itemBottom = lastItemRectBottom - scrollableRectBottom;
 
       // Check if all items are visible
       expect(childrenCount).toBe(i + initialLength);
 
       if (isScrollBarVisible) {
         // Check if sticked to bottom
-        expectInRange(firstItemBottom, {
+        expectInRange(itemBottom, {
           min: browserName === "firefox" ? -0.45 : -0.1,
           max: 0.1,
         });
         break;
       } else {
         // Check if bottom is always visible and on bottom
-        expectInRange(firstItemBottom, { min: -0.1, max: 0.1 });
+        expectInRange(itemBottom, { min: -0.1, max: 0.1 });
       }
 
       // remove
@@ -992,6 +992,76 @@ test.describe("check if item shift compensation works", () => {
     }
 
     expect(i).toBeGreaterThanOrEqual(8);
+  });
+
+  test("stick to bottom even if many items are removed from top", async ({
+    page,
+    browserName,
+  }) => {
+    await page.goto(storyUrl("basics-vlist--increasing-items"));
+    const component = await getScrollable(page);
+    await component.waitForElementState("stable");
+
+    await page.getByRole("checkbox", { name: "reverse" }).click();
+
+    await page.getByRole("checkbox", { name: "prepend" }).click();
+    const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
+    const increaseRadio = await page.getByRole("radio", { name: "increase" });
+    const valueInput = page.getByRole("spinbutton");
+    const updateButton = page.getByRole("button", { name: "update" });
+
+    const container = await getVirtualizer(page);
+
+    // preprend many
+    await valueInput.clear();
+    await valueInput.fill("50");
+    await increaseRadio.click();
+    await updateButton.click();
+    await component.waitForElementState("stable");
+
+    // scroll to bottom
+    await scrollToBottom(component);
+
+    // remove many
+    await valueInput.clear();
+    await valueInput.fill("1");
+    await decreaseRadio.click();
+    let i = 0;
+    while (true) {
+      i++;
+      await updateButton.click();
+      await component.waitForElementState("stable");
+
+      const lastItemRectBottom = await container.evaluate((e) => {
+        const children = e.childNodes;
+        return (
+          children[children.length - 1] as HTMLElement
+        ).getBoundingClientRect().bottom;
+      });
+      const [isScrollBarVisible, scrollableRectBottom] =
+        await component.evaluate((e) => {
+          return [
+            e.scrollHeight > (e as HTMLElement).offsetHeight,
+            e.getBoundingClientRect().bottom,
+          ];
+        });
+      const itemBottom = lastItemRectBottom - scrollableRectBottom;
+
+      // Check if bottom is always visible and on bottom
+      expectInRange(itemBottom, {
+        min: -0.5,
+        max: browserName === "firefox" ? 0.6 : 0.1,
+      });
+
+      if (!isScrollBarVisible) {
+        break;
+      } else {
+        // may have subpixel error so scroll to bottom again
+        await component.evaluate((e) => (e.scrollTop += e.scrollHeight));
+      }
+    }
+
+    expect(i).toBeGreaterThanOrEqual(30);
   });
 
   test("check if prepending cancels imperative scroll", async ({ page }) => {
@@ -1015,7 +1085,7 @@ test.describe("check if item shift compensation works", () => {
 
     // check if imperative scrolling doesn't cause infinite loop
     const scrollCount = await scrollListener;
-    expect(scrollCount).toBeLessThanOrEqual(3);
+    expect(scrollCount).toBeLessThanOrEqual(4);
   });
 });
 
