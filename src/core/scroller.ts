@@ -38,7 +38,11 @@ const createScrollObserver = (
   viewport: HTMLElement | Window,
   isHorizontal: boolean,
   getScrollOffset: () => number,
-  updateScrollOffset: (value: number, isMomentumScrolling: boolean) => void
+  updateScrollOffset: (
+    value: number,
+    shift: boolean,
+    isMomentumScrolling: boolean
+  ) => void
 ) => {
   const now = Date.now;
 
@@ -125,11 +129,14 @@ const createScrollObserver = (
       onScrollEnd._cancel();
     },
     _fixScrollJump: () => {
-      const [jump, prepend] = store._flushJump();
+      const [jump, shift] = store._flushJump();
       if (!jump) return;
-      updateScrollOffset(jump, stillMomentumScrolling);
+      updateScrollOffset(
+        normalizeOffset(jump, isHorizontal),
+        shift,
+        stillMomentumScrolling
+      );
       stillMomentumScrolling = false;
-      return prepend;
     },
   };
 };
@@ -253,7 +260,7 @@ export const createScroller = (
         viewport,
         isHorizontal,
         () => normalizeOffset(viewport[scrollOffsetKey], isHorizontal),
-        (jump, isMomentumScrolling) => {
+        (jump, shift, isMomentumScrolling) => {
           // If we update scroll position while touching on iOS, the position will be reverted.
           // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
           // That means we have no reliable way to confirm still touched or not if user touches more than once during momentum scrolling...
@@ -267,7 +274,13 @@ export const createScroller = (
             });
           }
 
-          viewport[scrollOffsetKey] += normalizeOffset(jump, isHorizontal);
+          if (shift) {
+            viewport[scrollOffsetKey] = store._getScrollOffset() + jump;
+            // https://github.com/inokawa/virtua/issues/357
+            cancelScroll && cancelScroll();
+          } else {
+            viewport[scrollOffsetKey] += jump;
+          }
         }
       );
     },
@@ -316,12 +329,7 @@ export const createScroller = (
       }, smooth);
     },
     _fixScrollJump: () => {
-      if (scrollObserver) {
-        if (scrollObserver._fixScrollJump()) {
-          // https://github.com/inokawa/virtua/issues/357
-          cancelScroll && cancelScroll();
-        }
-      }
+      scrollObserver && scrollObserver._fixScrollJump();
     },
   };
 };
@@ -346,6 +354,8 @@ export const createWindowScroller = (
 
   return {
     _observe(container) {
+      let prevStartOffset = 0;
+
       const scrollOffsetKey = isHorizontal ? "scrollX" : "scrollY";
 
       const document = getCurrentDocument(container);
@@ -385,13 +395,21 @@ export const createWindowScroller = (
         isHorizontal,
         () =>
           normalizeOffset(window[scrollOffsetKey], isHorizontal) -
-          calcOffsetToViewport(container, documentBody, isHorizontal),
-        (jump) => {
+          (prevStartOffset = calcOffsetToViewport(
+            container,
+            documentBody,
+            isHorizontal
+          )),
+        (jump, shift) => {
           // TODO support case two window scrollers exist in the same view
-          window.scrollBy(
-            isHorizontal ? normalizeOffset(jump, isHorizontal) : 0,
-            isHorizontal ? 0 : jump
-          );
+          if (shift) {
+            window.scroll({
+              [isHorizontal ? "left" : "top"]:
+                store._getScrollOffset() + prevStartOffset + jump,
+            });
+          } else {
+            window.scrollBy(isHorizontal ? jump : 0, isHorizontal ? 0 : jump);
+          }
         }
       );
     },
