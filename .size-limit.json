@@ -54,6 +54,18 @@
     "limit": "4 kB"
   },
   {
+    "name": "solid Virtualizer",
+    "path": "lib/solid/index.mjs",
+    "import": "{ Virtualizer }",
+    "limit": "4 kB"
+  },
+  {
+    "name": "solid WindowVirtualizer",
+    "path": "lib/solid/index.mjs",
+    "import": "{ WindowVirtualizer }",
+    "limit": "4 kB"
+  },
+  {
     "name": "react-virtuoso Virtuoso",
     "path": "node_modules/react-virtuoso/dist/index.mjs",
     "import": "{ Virtuoso }"
