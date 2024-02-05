@@ -259,6 +259,135 @@ test.describe("check if item shift compensation works", () => {
     // check if visible item is keeped
     expect(topItem).toEqual(await getWindowFirstItem(page, opts));
   });
+
+  test("prepending when total height is lower than viewport height", async ({
+    page,
+    browserName,
+  }) => {
+    const component = await getVirtualizer(page);
+    await component.waitForElementState("stable");
+
+    await page.getByRole("checkbox", { name: "prepend" }).click();
+    const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
+    const increaseRadio = await page.getByRole("radio", { name: "increase" });
+    const valueInput = page.getByRole("spinbutton");
+    const updateButton = page.getByRole("button", { name: "update" });
+
+    const container = await getVirtualizer(page);
+    const initialLength = await container.evaluate((e) => e.childNodes.length);
+    expect(initialLength).toBeGreaterThan(1);
+
+    let i = 0;
+    while (true) {
+      i++;
+      await valueInput.clear();
+      await valueInput.fill(String(i));
+
+      // preprend
+      await increaseRadio.click();
+      await updateButton.click();
+      await component.waitForElementState("stable");
+
+      const [childrenCount, firstItemRectTop] = await container.evaluate(
+        (e) => {
+          const children = e.childNodes;
+          return [
+            children.length,
+            (children[0] as HTMLElement).getBoundingClientRect().top,
+          ];
+        }
+      );
+      const isScrollBarVisible = await page.evaluate(() => {
+        return document.body.scrollHeight > window.innerHeight;
+      });
+
+      // Check if all items are visible
+      expect(childrenCount).toBe(i + initialLength);
+
+      if (isScrollBarVisible) {
+        // Check if sticked to bottom
+        expectInRange((await getWindowLastItem(page)).bottom, {
+          min: browserName === "firefox" ? -0.45 : -0.1,
+          max: 0.1,
+        });
+        break;
+      } else {
+        // Check if top is always visible and on top
+        expect(firstItemRectTop).toBe(0);
+      }
+
+      // remove
+      await decreaseRadio.click();
+      await updateButton.click();
+    }
+
+    expect(i).toBeGreaterThanOrEqual(8);
+  });
+
+  test("stick to bottom even if many items are removed from top", async ({
+    page,
+    browserName,
+  }) => {
+    const component = await getVirtualizer(page);
+    await component.waitForElementState("stable");
+
+    await page.getByRole("checkbox", { name: "prepend" }).click();
+    const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
+    const increaseRadio = await page.getByRole("radio", { name: "increase" });
+    const valueInput = page.getByRole("spinbutton");
+    const updateButton = page.getByRole("button", { name: "update" });
+
+    const container = await getVirtualizer(page);
+
+    // preprend many
+    await valueInput.clear();
+    await valueInput.fill("50");
+    await increaseRadio.click();
+    await updateButton.click();
+    await component.waitForElementState("stable");
+
+    // scroll to bottom
+    await windowScrollToBottom(component);
+
+    // remove many
+    await valueInput.clear();
+    await valueInput.fill("1");
+    await decreaseRadio.click();
+    let i = 0;
+    while (true) {
+      i++;
+      await updateButton.click();
+      await component.waitForElementState("stable");
+
+      const lastItemRectBottom = await container.evaluate((e) => {
+        const children = e.childNodes;
+        return (
+          children[children.length - 1] as HTMLElement
+        ).getBoundingClientRect().bottom;
+      });
+      const [isScrollBarVisible, windowBottom] = await page.evaluate(() => {
+        return [
+          document.body.scrollHeight > window.innerHeight,
+          window.innerHeight,
+        ];
+      });
+      const itemBottom = lastItemRectBottom - windowBottom;
+
+      if (!isScrollBarVisible) {
+        break;
+      } else {
+        // Check if bottom is always visible and on bottom
+        expectInRange(itemBottom, {
+          min: -0.5,
+          max: browserName === "firefox" ? 0.6 : 0.1,
+        });
+        // may have subpixel error so scroll to bottom again
+        await component.evaluate((e) => window.scrollBy(0, e.scrollHeight));
+      }
+    }
+
+    expect(i).toBeGreaterThanOrEqual(30);
+  });
 });
 
 test.describe("RTL", () => {
