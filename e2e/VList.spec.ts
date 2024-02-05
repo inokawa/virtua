@@ -853,7 +853,6 @@ test.describe("check if item shift compensation works", () => {
     page,
     browserName,
   }) => {
-    await page.goto(storyUrl("basics-vlist--increasing-items"));
     const component = await getScrollable(page);
     await component.waitForElementState("stable");
 
@@ -924,7 +923,6 @@ test.describe("check if item shift compensation works", () => {
     page,
     browserName,
   }) => {
-    await page.goto(storyUrl("basics-vlist--increasing-items"));
     const component = await getScrollable(page);
     await component.waitForElementState("stable");
 

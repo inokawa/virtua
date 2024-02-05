@@ -110,6 +110,22 @@ export const getScrollRight = (
   return scrollable.evaluate((e) => e.scrollWidth - e.scrollLeft);
 };
 
+export const getWindowScrollTop = (page: Page) => {
+  return page.evaluate(() => window.scrollY);
+};
+
+export const getWindowScrollBottom = (page: Page) => {
+  return page.evaluate(() => document.body.scrollHeight - window.scrollY);
+};
+
+export const getWindowScrollLeft = (page: Page) => {
+  return page.evaluate(() => window.scrollX);
+};
+
+export const getWindowScrollRight = (page: Page) => {
+  return page.evaluate(() => document.body.scrollWidth - window.scrollX);
+};
+
 export const scrollBy = (
   scrollable: ElementHandle<HTMLElement | SVGElement>,
   offset: number

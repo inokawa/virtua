@@ -1,4 +1,4 @@
-import { test, expect, Page } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import {
   storyUrl,
   getFirstItem,
@@ -7,6 +7,10 @@ import {
   getFirstItemRtl,
   windowScrollToLeft,
   getVirtualizer,
+  getWindowScrollTop,
+  getWindowScrollLeft,
+  getWindowScrollBottom,
+  getWindowScrollRight,
 } from "./utils";
 
 test.describe("smoke", () => {
@@ -84,109 +88,101 @@ test.describe("smoke", () => {
   });
 });
 
-// test.describe("check if scroll jump compensation works", () => {
-//   test("vertical start -> end", async ({ page }) => {
-//     await page.goto(storyUrl("basics-windowvirtualizer--default"));
-//     const component = await getVirtualizer(page);
-//     await component.waitForElementState("stable");
+test.describe("check if scroll jump compensation works", () => {
+  test("vertical start -> end", async ({ page }) => {
+    await page.goto(storyUrl("basics-windowvirtualizer--default"));
+    const component = await getVirtualizer(page);
+    await component.waitForElementState("stable");
 
-//     // check if start is displayed
-//     await expect((await getFirstItem(component)).text).toEqual("0");
+    // check if start is displayed
+    await expect((await getFirstItem(component)).text).toEqual("0");
 
-//     // check if offset from start is always keeped
-//     await component.click();
-//     const min = 200;
-//     const initial = await component.evaluate((e) => window.scrollY);
-//     let prev = initial;
-//     for (let i = 0; i < 500; i++) {
-//       await page.keyboard.press("ArrowDown", { delay: 10 });
-//       const offset = await component.evaluate((e) => window.scrollY);
-//       await expect(offset).toBeGreaterThanOrEqual(prev);
-//       prev = offset;
-//     }
-//     await expect(prev).toBeGreaterThan(initial + min);
-//   });
+    // check if offset from start is always keeped
+    await component.click();
+    const min = 200;
+    const initial = await getWindowScrollTop(page);
+    let prev = initial;
+    for (let i = 0; i < 500; i++) {
+      await page.keyboard.press("ArrowDown", { delay: 10 });
+      const offset = await getWindowScrollTop(page);
+      await expect(offset).toBeGreaterThanOrEqual(prev);
+      prev = offset;
+    }
+    await expect(prev).toBeGreaterThan(initial + min);
+  });
 
-//   test("vertical end -> start", async ({ page }) => {
-//     await page.goto(storyUrl("basics-windowvirtualizer--default"));
-//     const component = await getVirtualizer(page);
-//     await component.waitForElementState("stable");
+  test("vertical end -> start", async ({ page }) => {
+    await page.goto(storyUrl("basics-windowvirtualizer--default"));
+    const component = await getVirtualizer(page);
+    await component.waitForElementState("stable");
 
-//     // check if start is displayed
-//     await expect((await getFirstItem(component)).text).toEqual("0");
+    // check if start is displayed
+    await expect((await getFirstItem(component)).text).toEqual("0");
 
-//     // scroll to the end
-//     await windowScrollToBottom(component);
+    // scroll to the end
+    await windowScrollToBottom(component);
 
-//     // check if offset from end is always keeped
-//     await component.click();
-//     const min = 200;
-//     const initial = await component.evaluate(
-//       (e) => document.body.scrollHeight - window.scrollY
-//     );
-//     let prev = initial;
-//     for (let i = 0; i < 500; i++) {
-//       await page.keyboard.press("ArrowUp", { delay: 10 });
-//       const offset = await component.evaluate(
-//         (e) => document.body.scrollHeight - window.scrollY
-//       );
-//       await expect(offset).toBeGreaterThanOrEqual(prev);
-//       prev = offset;
-//     }
-//     await expect(prev).toBeGreaterThan(initial + min);
-//   });
+    // check if offset from end is always keeped
+    await component.click();
+    const min = 200;
+    const initial = await getWindowScrollBottom(page);
+    let prev = initial;
+    for (let i = 0; i < 500; i++) {
+      await page.keyboard.press("ArrowUp", { delay: 10 });
+      const offset = await getWindowScrollBottom(page);
+      await expect(offset).toBeGreaterThanOrEqual(prev);
+      prev = offset;
+    }
+    await expect(prev).toBeGreaterThan(initial + min);
+  });
 
-//   test("horizontal start -> end", async ({ page }) => {
-//     await page.goto(storyUrl("basics-windowvirtualizer--horizontal"));
-//     const component = await getVirtualizer(page);
-//     await component.waitForElementState("stable");
+  test("horizontal start -> end", async ({ page }) => {
+    await page.goto(storyUrl("basics-windowvirtualizer--horizontal"));
+    const component = await getVirtualizer(page);
+    await component.waitForElementState("stable");
 
-//     // check if start is displayed
-//     await expect((await getFirstItem(component)).text).toEqual("Column 0");
+    // check if start is displayed
+    await expect((await getFirstItem(component)).text).toEqual("Column 0");
 
-//     // check if offset from start is always keeped
-//     await component.click();
-//     const min = 200;
-//     const initial = await component.evaluate((e) => window.scrollX);
-//     let prev = initial;
-//     for (let i = 0; i < 500; i++) {
-//       await page.keyboard.press("ArrowRight", { delay: 10 });
-//       const offset = await component.evaluate((e) => window.scrollX);
-//       await expect(offset).toBeGreaterThanOrEqual(prev);
-//       prev = offset;
-//     }
-//     await expect(prev).toBeGreaterThan(initial + min);
-//   });
+    // check if offset from start is always keeped
+    await component.click();
+    const min = 200;
+    const initial = await getWindowScrollLeft(page);
+    let prev = initial;
+    for (let i = 0; i < 500; i++) {
+      await page.keyboard.press("ArrowRight", { delay: 10 });
+      const offset = await getWindowScrollLeft(page);
+      await expect(offset).toBeGreaterThanOrEqual(prev);
+      prev = offset;
+    }
+    await expect(prev).toBeGreaterThan(initial + min);
+  });
 
-//   test("horizontal end -> start", async ({ page }) => {
-//     await page.goto(storyUrl("basics-windowvirtualizer--horizontal"));
-//     const component = await getVirtualizer(page);
-//     await component.waitForElementState("stable");
+  test("horizontal end -> start", async ({ page }) => {
+    await page.goto(storyUrl("basics-windowvirtualizer--horizontal"));
+    const component = await getVirtualizer(page);
+    await component.waitForElementState("stable");
 
-//     // check if start is displayed
-//     await expect((await getFirstItem(component)).text).toEqual("Column 0");
+    // check if start is displayed
+    await expect((await getFirstItem(component)).text).toEqual("Column 0");
 
-//     // scroll to the end
-//     await windowScrollToRight(component);
+    // scroll to the end
+    await windowScrollToRight(component);
 
-//     // check if offset from end is always keeped
-//     await component.click();
-//     const min = 200;
-//     const initial = await component.evaluate(
-//       (e) => document.body.scrollWidth - window.scrollX
-//     );
-//     let prev = initial;
-//     for (let i = 0; i < 500; i++) {
-//       await page.keyboard.press("ArrowLeft", { delay: 10 });
-//       const offset = await component.evaluate(
-//         (e) => document.body.scrollWidth - window.scrollX
-//       );
-//       await expect(offset).toBeGreaterThanOrEqual(prev);
-//       prev = offset;
-//     }
-//     await expect(prev).toBeGreaterThan(initial + min);
-//   });
-// });
+    // check if offset from end is always keeped
+    await component.click();
+    const min = 200;
+    const initial = await getWindowScrollRight(page);
+    let prev = initial;
+    for (let i = 0; i < 500; i++) {
+      await page.keyboard.press("ArrowLeft", { delay: 10 });
+      const offset = await getWindowScrollRight(page);
+      await expect(offset).toBeGreaterThanOrEqual(prev);
+      prev = offset;
+    }
+    await expect(prev).toBeGreaterThan(initial + min);
+  });
+});
 
 test.describe("RTL", () => {
   test("vertically scrollable", async ({ page }) => {
