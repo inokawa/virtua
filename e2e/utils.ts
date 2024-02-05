@@ -86,6 +86,40 @@ export const getFirstItemRtl = (
   });
 };
 
+export const getWindowFirstItem = (
+  page: Page,
+  offset: { x?: number; y?: number } = {}
+) => {
+  return page.evaluate(({ x: offsetX = 2, y: offsetY = 2 }) => {
+    const top = 0;
+    const left = 0;
+    const el = document.elementFromPoint(left + offsetX, top + offsetY)!;
+    const elRect = el.getBoundingClientRect();
+    return {
+      text: el.textContent!,
+      top: elRect.top - top,
+      left: elRect.left - left,
+    };
+  }, offset);
+};
+
+export const getWindowLastItem = (
+  page: Page,
+  offset: { x?: number; y?: number } = {}
+) => {
+  return page.evaluate(({ x: offsetX = 2, y: offsetY = 2 }) => {
+    const bottom = 0 + window.innerHeight;
+    const left = 0;
+    const el = document.elementFromPoint(left + offsetX, bottom - offsetY)!;
+    const elRect = el.getBoundingClientRect();
+    return {
+      text: el.textContent!,
+      bottom: elRect.bottom - bottom,
+      height: elRect.height,
+    };
+  }, offset);
+};
+
 export const getScrollTop = (
   scrollable: ElementHandle<HTMLElement | SVGElement>
 ) => {
@@ -132,6 +166,12 @@ export const scrollBy = (
 ) => {
   return scrollable.evaluate((e, offset) => {
     e.scrollTop += offset;
+  }, offset);
+};
+
+export const windowScrollBy = (page: Page, offset: number) => {
+  return page.evaluate((offset) => {
+    window.scrollBy(0, offset);
   }, offset);
 };
 

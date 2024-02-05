@@ -11,6 +11,10 @@ import {
   getWindowScrollLeft,
   getWindowScrollBottom,
   getWindowScrollRight,
+  expectInRange,
+  windowScrollBy,
+  getWindowFirstItem,
+  getWindowLastItem,
 } from "./utils";
 
 test.describe("smoke", () => {
@@ -181,6 +185,79 @@ test.describe("check if scroll jump compensation works", () => {
       prev = offset;
     }
     await expect(prev).toBeGreaterThan(initial + min);
+  });
+});
+
+test.describe("check if item shift compensation works", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(storyUrl("basics-windowvirtualizer--increasing-items"));
+  });
+
+  test("keep end at mid when add to/remove from end", async ({ page }) => {
+    const component = await getVirtualizer(page);
+    await component.waitForElementState("stable");
+
+    const updateButton = page.getByRole("button", { name: "update" });
+
+    // fill list and move to mid
+    for (let i = 0; i < 20; i++) {
+      await updateButton.click();
+    }
+    await windowScrollBy(page, 400);
+    await page.waitForTimeout(500);
+
+    const opts = { y: 100 };
+    const topItem = await getWindowFirstItem(page, opts);
+    expect(topItem.text).not.toEqual("0");
+    expect(topItem.text.length).toBeLessThanOrEqual(2);
+
+    // add
+    await page.getByRole("radio", { name: "increase" }).click();
+    await updateButton.click();
+    await page.waitForTimeout(100);
+    // check if visible item is keeped
+    expect(topItem).toEqual(await getWindowFirstItem(page, opts));
+
+    // remove
+    await page.getByRole("radio", { name: "decrease" }).click();
+    await updateButton.click();
+    await page.waitForTimeout(100);
+    // check if visible item is keeped
+    expect(topItem).toEqual(await getWindowFirstItem(page, opts));
+  });
+
+  test("keep start at mid when add to/remove from start", async ({ page }) => {
+    const component = await getVirtualizer(page);
+    await component.waitForElementState("stable");
+
+    const updateButton = page.getByRole("button", { name: "update" });
+
+    // fill list and move to mid
+    for (let i = 0; i < 20; i++) {
+      await updateButton.click();
+    }
+    await windowScrollBy(page, 800);
+    await page.waitForTimeout(500);
+
+    const opts = { y: 100 };
+    const topItem = await getWindowFirstItem(page, opts);
+    expect(topItem.text).not.toEqual("0");
+    expect(topItem.text.length).toBeLessThanOrEqual(2);
+
+    // add
+    await page.getByRole("checkbox", { name: "prepend" }).click();
+    await page.getByRole("radio", { name: "increase" }).click();
+    await updateButton.click();
+    await page.waitForTimeout(100);
+    // check if visible item is keeped
+    expect(topItem).toEqual(await getWindowFirstItem(page, opts));
+
+    // remove
+    await page.getByRole("radio", { name: "decrease" }).click();
+    await updateButton.click();
+    await page.waitForTimeout(100);
+    // check if visible item is keeped
+    expect(topItem).toEqual(await getWindowFirstItem(page, opts));
   });
 });
 
