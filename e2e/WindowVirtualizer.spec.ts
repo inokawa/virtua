@@ -30,7 +30,7 @@ test.describe("smoke", () => {
     await expect(await component.innerText()).not.toContain("50");
 
     // scroll to the end
-    await windowScrollToBottom(component);
+    await windowScrollToBottom(page);
 
     // check if the end is displayed
     const text = await component.innerText();
@@ -50,7 +50,7 @@ test.describe("smoke", () => {
     await expect(await component.innerText()).not.toContain("Column 50");
 
     // scroll to the end
-    await windowScrollToRight(component);
+    await windowScrollToRight(page);
 
     // check if the end is displayed
     const text = await component.innerText();
@@ -124,7 +124,7 @@ test.describe("check if scroll jump compensation works", () => {
     await expect((await getFirstItem(component)).text).toEqual("0");
 
     // scroll to the end
-    await windowScrollToBottom(component);
+    await windowScrollToBottom(page);
 
     // check if offset from end is always keeped
     await component.click();
@@ -171,7 +171,7 @@ test.describe("check if scroll jump compensation works", () => {
     await expect((await getFirstItem(component)).text).toEqual("Column 0");
 
     // scroll to the end
-    await windowScrollToRight(component);
+    await windowScrollToRight(page);
 
     // check if offset from end is always keeped
     await component.click();
@@ -347,7 +347,7 @@ test.describe("check if item shift compensation works", () => {
     await component.waitForElementState("stable");
 
     // scroll to bottom
-    await windowScrollToBottom(component);
+    await windowScrollToBottom(page);
 
     // remove many
     await valueInput.clear();
@@ -408,7 +408,7 @@ test.describe("RTL", () => {
     await expect(await component.innerText()).not.toContain("50");
 
     // scroll to the end
-    await windowScrollToBottom(component);
+    await windowScrollToBottom(page);
 
     // check if the end is displayed
     const text = await component.innerText();
@@ -433,7 +433,7 @@ test.describe("RTL", () => {
     await expect(await component.innerText()).not.toContain("Column 50");
 
     // scroll to the end
-    await windowScrollToLeft(component);
+    await windowScrollToLeft(page);
 
     // check if the end is displayed
     const text = await component.innerText();
