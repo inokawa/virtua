@@ -1,28 +1,28 @@
-# Interface: VListHandle
+# Interface: VirtualizerHandle
 
-[solid](../modules/solid.md).VListHandle
+[solid](../modules/solid.md).VirtualizerHandle
 
-Methods of [VList](../modules/solid.md#vlist).
+Methods of [Virtualizer](../modules/solid.md#virtualizer).
 
 ## Hierarchy
 
-- [`VirtualizerHandle`](solid.VirtualizerHandle.md)
+- **`VirtualizerHandle`**
 
-  ↳ **`VListHandle`**
+  ↳ [`VListHandle`](solid.VListHandle.md)
 
 ## Table of contents
 
 ### Methods
 
-- [scrollToIndex](solid.VListHandle.md#scrolltoindex)
-- [scrollTo](solid.VListHandle.md#scrollto)
-- [scrollBy](solid.VListHandle.md#scrollby)
+- [scrollToIndex](solid.VirtualizerHandle.md#scrolltoindex)
+- [scrollTo](solid.VirtualizerHandle.md#scrollto)
+- [scrollBy](solid.VirtualizerHandle.md#scrollby)
 
 ### Properties
 
-- [scrollOffset](solid.VListHandle.md#scrolloffset)
-- [scrollSize](solid.VListHandle.md#scrollsize)
-- [viewportSize](solid.VListHandle.md#viewportsize)
+- [scrollOffset](solid.VirtualizerHandle.md#scrolloffset)
+- [scrollSize](solid.VirtualizerHandle.md#scrollsize)
+- [viewportSize](solid.VirtualizerHandle.md#viewportsize)
 
 ## Methods
 
@@ -42,10 +42,6 @@ Scroll to the item specified by index.
 #### Returns
 
 `void`
-
-#### Inherited from
-
-[VirtualizerHandle](solid.VirtualizerHandle.md).[scrollToIndex](solid.VirtualizerHandle.md#scrolltoindex)
 
 #### Defined in
 
@@ -69,10 +65,6 @@ Scroll to the given offset.
 
 `void`
 
-#### Inherited from
-
-[VirtualizerHandle](solid.VirtualizerHandle.md).[scrollTo](solid.VirtualizerHandle.md#scrollto)
-
 #### Defined in
 
 [src/solid/Virtualizer.tsx:62](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L62)
@@ -95,10 +87,6 @@ Scroll by the given offset.
 
 `void`
 
-#### Inherited from
-
-[VirtualizerHandle](solid.VirtualizerHandle.md).[scrollBy](solid.VirtualizerHandle.md#scrollby)
-
 #### Defined in
 
 [src/solid/Virtualizer.tsx:67](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L67)
@@ -110,10 +98,6 @@ Scroll by the given offset.
 • `Readonly` **scrollOffset**: `number`
 
 Get current scrollTop or scrollLeft.
-
-#### Inherited from
-
-[VirtualizerHandle](solid.VirtualizerHandle.md).[scrollOffset](solid.VirtualizerHandle.md#scrolloffset)
 
 #### Defined in
 
@@ -127,10 +111,6 @@ ___
 
 Get current scrollHeight or scrollWidth.
 
-#### Inherited from
-
-[VirtualizerHandle](solid.VirtualizerHandle.md).[scrollSize](solid.VirtualizerHandle.md#scrollsize)
-
 #### Defined in
 
 [src/solid/Virtualizer.tsx:47](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L47)
@@ -142,10 +122,6 @@ ___
 • `Readonly` **viewportSize**: `number`
 
 Get current offsetHeight or offsetWidth.
-
-#### Inherited from
-
-[VirtualizerHandle](solid.VirtualizerHandle.md).[viewportSize](solid.VirtualizerHandle.md#viewportsize)
 
 #### Defined in
 

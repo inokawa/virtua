@@ -12,6 +12,8 @@ Props of [VList](../modules/solid.md#vlist).
 
 ## Hierarchy
 
+- `Pick`\<[`VirtualizerProps`](solid.VirtualizerProps.md)\<`T`\>, ``"ref"`` \| ``"data"`` \| ``"children"`` \| ``"overscan"`` \| ``"itemSize"`` \| ``"shift"`` \| ``"horizontal"`` \| ``"onScroll"`` \| ``"onScrollEnd"`` \| ``"onRangeChange"``\>
+
 - `ViewportComponentAttributes`
 
   ↳ **`VListProps`**
@@ -20,14 +22,14 @@ Props of [VList](../modules/solid.md#vlist).
 
 ### Properties
 
-- [ref](solid.VListProps.md#ref)
-- [data](solid.VListProps.md#data)
 - [children](solid.VListProps.md#children)
+- [onScroll](solid.VListProps.md#onscroll)
+- [ref](solid.VListProps.md#ref)
+- [shift](solid.VListProps.md#shift)
+- [data](solid.VListProps.md#data)
 - [overscan](solid.VListProps.md#overscan)
 - [itemSize](solid.VListProps.md#itemsize)
-- [shift](solid.VListProps.md#shift)
 - [horizontal](solid.VListProps.md#horizontal)
-- [onScroll](solid.VListProps.md#onscroll)
 - [onScrollEnd](solid.VListProps.md#onscrollend)
 - [onRangeChange](solid.VListProps.md#onrangechange)
 - [id](solid.VListProps.md#id)
@@ -87,46 +89,6 @@ Props of [VList](../modules/solid.md#vlist).
 
 ## Properties
 
-### ref
-
-• `Optional` **ref**: (`handle?`: [`VListHandle`](solid.VListHandle.md)) => `void`
-
-Get reference to [VListHandle](solid.VListHandle.md).
-
-#### Type declaration
-
-▸ (`handle?`): `void`
-
-Get reference to [VListHandle](solid.VListHandle.md).
-
-##### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `handle?` | [`VListHandle`](solid.VListHandle.md) |
-
-##### Returns
-
-`void`
-
-#### Defined in
-
-[src/solid/VList.tsx:77](https://github.com/inokawa/virtua/blob/fd7ae5dc/src/solid/VList.tsx#L77)
-
-___
-
-### data
-
-• **data**: `T`[]
-
-The data items rendered by this component.
-
-#### Defined in
-
-[src/solid/VList.tsx:81](https://github.com/inokawa/virtua/blob/fd7ae5dc/src/solid/VList.tsx#L81)
-
-___
-
 ### children
 
 • **children**: (`data`: `T`, `index`: `number`) => `Element`
@@ -150,66 +112,13 @@ The elements renderer function.
 
 `Element`
 
-#### Defined in
+#### Inherited from
 
-[src/solid/VList.tsx:85](https://github.com/inokawa/virtua/blob/fd7ae5dc/src/solid/VList.tsx#L85)
-
-___
-
-### overscan
-
-• `Optional` **overscan**: `number`
-
-Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
-
-**`Default Value`**
-
-```ts
-4
-```
+Pick.children
 
 #### Defined in
 
-[src/solid/VList.tsx:90](https://github.com/inokawa/virtua/blob/fd7ae5dc/src/solid/VList.tsx#L90)
-
-___
-
-### itemSize
-
-• `Optional` **itemSize**: `number`
-
-Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
-
-- If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
-- If set, you can opt out estimation and use the value as initial item size.
-
-#### Defined in
-
-[src/solid/VList.tsx:97](https://github.com/inokawa/virtua/blob/fd7ae5dc/src/solid/VList.tsx#L97)
-
-___
-
-### shift
-
-• `Optional` **shift**: `boolean`
-
-While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
-
-#### Defined in
-
-[src/solid/VList.tsx:101](https://github.com/inokawa/virtua/blob/fd7ae5dc/src/solid/VList.tsx#L101)
-
-___
-
-### horizontal
-
-• `Optional` **horizontal**: `boolean`
-
-If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
-
-#### Defined in
-
-[src/solid/VList.tsx:105](https://github.com/inokawa/virtua/blob/fd7ae5dc/src/solid/VList.tsx#L105)
+[src/solid/Virtualizer.tsx:85](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L85)
 
 ___
 
@@ -239,9 +148,134 @@ Callback invoked whenever scroll offset changes.
 
 `void`
 
+#### Inherited from
+
+Pick.onScroll
+
 #### Defined in
 
-[src/solid/VList.tsx:110](https://github.com/inokawa/virtua/blob/fd7ae5dc/src/solid/VList.tsx#L110)
+[src/solid/Virtualizer.tsx:110](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L110)
+
+___
+
+### ref
+
+• `Optional` **ref**: (`handle?`: [`VirtualizerHandle`](solid.VirtualizerHandle.md)) => `void`
+
+Get reference to [VirtualizerHandle](solid.VirtualizerHandle.md).
+
+#### Type declaration
+
+▸ (`handle?`): `void`
+
+Get reference to [VirtualizerHandle](solid.VirtualizerHandle.md).
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `handle?` | [`VirtualizerHandle`](solid.VirtualizerHandle.md) |
+
+##### Returns
+
+`void`
+
+#### Inherited from
+
+Pick.ref
+
+#### Defined in
+
+[src/solid/Virtualizer.tsx:77](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L77)
+
+___
+
+### shift
+
+• `Optional` **shift**: `boolean`
+
+While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
+
+#### Inherited from
+
+Pick.shift
+
+#### Defined in
+
+[src/solid/Virtualizer.tsx:101](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L101)
+
+___
+
+### data
+
+• **data**: `T`[]
+
+The data items rendered by this component.
+
+#### Inherited from
+
+Pick.data
+
+#### Defined in
+
+[src/solid/Virtualizer.tsx:81](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L81)
+
+___
+
+### overscan
+
+• `Optional` **overscan**: `number`
+
+Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
+
+**`Default Value`**
+
+```ts
+4
+```
+
+#### Inherited from
+
+Pick.overscan
+
+#### Defined in
+
+[src/solid/Virtualizer.tsx:90](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L90)
+
+___
+
+### itemSize
+
+• `Optional` **itemSize**: `number`
+
+Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
+
+- If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
+- If set, you can opt out estimation and use the value as initial item size.
+
+#### Inherited from
+
+Pick.itemSize
+
+#### Defined in
+
+[src/solid/Virtualizer.tsx:97](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L97)
+
+___
+
+### horizontal
+
+• `Optional` **horizontal**: `boolean`
+
+If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
+
+#### Inherited from
+
+Pick.horizontal
+
+#### Defined in
+
+[src/solid/Virtualizer.tsx:105](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L105)
 
 ___
 
@@ -261,9 +295,13 @@ Callback invoked when scrolling stops.
 
 `void`
 
+#### Inherited from
+
+Pick.onScrollEnd
+
 #### Defined in
 
-[src/solid/VList.tsx:114](https://github.com/inokawa/virtua/blob/fd7ae5dc/src/solid/VList.tsx#L114)
+[src/solid/Virtualizer.tsx:114](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L114)
 
 ___
 
@@ -290,9 +328,13 @@ Callback invoked when visible items range changes.
 
 `void`
 
+#### Inherited from
+
+Pick.onRangeChange
+
 #### Defined in
 
-[src/solid/VList.tsx:118](https://github.com/inokawa/virtua/blob/fd7ae5dc/src/solid/VList.tsx#L118)
+[src/solid/Virtualizer.tsx:118](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L118)
 
 ___
 
@@ -1263,4 +1305,4 @@ ViewportComponentAttributes.style
 
 #### Defined in
 
-[src/solid/types.ts:7](https://github.com/inokawa/virtua/blob/fd7ae5dc/src/solid/types.ts#L7)
+[src/solid/types.ts:7](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/types.ts#L7)
