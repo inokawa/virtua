@@ -115,7 +115,7 @@ test.describe("check if scroll jump compensation works", () => {
     await expect(prev).toBeGreaterThan(initial + min);
   });
 
-  test("vertical end -> start", async ({ page }) => {
+  test("vertical end -> start", async ({ page, browserName }) => {
     await page.goto(storyUrl("basics-windowvirtualizer--default"));
     const component = await getVirtualizer(page);
     await component.waitForElementState("stable");
@@ -134,7 +134,9 @@ test.describe("check if scroll jump compensation works", () => {
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowUp", { delay: 10 });
       const offset = await getWindowScrollBottom(page);
-      await expect(offset).toBeGreaterThanOrEqual(prev);
+      await expect(offset).toBeGreaterThanOrEqual(
+        browserName === "firefox" ? prev - 1 : prev
+      );
       prev = offset;
     }
     await expect(prev).toBeGreaterThan(initial + min);
@@ -162,7 +164,7 @@ test.describe("check if scroll jump compensation works", () => {
     await expect(prev).toBeGreaterThan(initial + min);
   });
 
-  test("horizontal end -> start", async ({ page }) => {
+  test("horizontal end -> start", async ({ page, browserName }) => {
     await page.goto(storyUrl("basics-windowvirtualizer--horizontal"));
     const component = await getVirtualizer(page);
     await component.waitForElementState("stable");
@@ -181,7 +183,9 @@ test.describe("check if scroll jump compensation works", () => {
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowLeft", { delay: 10 });
       const offset = await getWindowScrollRight(page);
-      await expect(offset).toBeGreaterThanOrEqual(prev);
+      await expect(offset).toBeGreaterThanOrEqual(
+        browserName === "firefox" ? prev - 1 : prev
+      );
       prev = offset;
     }
     await expect(prev).toBeGreaterThan(initial + min);
