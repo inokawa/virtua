@@ -19,7 +19,6 @@ import {
   getScrollSize,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { values } from "../core/utils";
 import { createScroller } from "../core/scroller";
 import { refKey } from "./utils";
 import { useStatic } from "./useStatic";
@@ -28,58 +27,6 @@ import { ViewportComponentAttributes } from "./types";
 import { flushSync } from "react-dom";
 import { isRTLDocument } from "../core/environment";
 import { useRerender } from "./useRerender";
-
-/**
- * Props of customized scrollable component.
- */
-interface CustomViewportComponentProps {
-  /**
-   * Renderable item elements.
-   */
-  children: ReactNode;
-  /**
-   * Attributes that should be passed to the scrollable element.
-   */
-  attrs: ViewportComponentAttributes;
-  /**
-   * Total height of items. It's undefined if component is not vertically scrollable.
-   */
-  height: number | undefined;
-  /**
-   * Total width of items. It's undefined if component is not horizontally scrollable.
-   */
-  width: number | undefined;
-  /**
-   * Currently component is scrolling or not.
-   */
-  scrolling: boolean;
-}
-
-const DefaultViewport = forwardRef<any, CustomViewportComponentProps>(
-  ({ children, attrs, width, height, scrolling }, ref): ReactElement => {
-    return (
-      <div ref={ref} {...attrs}>
-        <div
-          style={useMemo((): CSSProperties => {
-            return {
-              // contain: "content",
-              position: "relative",
-              visibility: "hidden",
-              width: width ?? "100%",
-              height: height ?? "100%",
-              pointerEvents: scrolling ? "none" : "auto",
-            };
-          }, [width, height, scrolling])}
-        >
-          {children}
-        </div>
-      </div>
-    );
-  }
-);
-
-export type CustomViewportComponent = typeof DefaultViewport;
-
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
 /**
@@ -237,20 +184,10 @@ export interface VGridProps extends ViewportComponentAttributes {
    */
   initialColCount?: number;
   /**
-   * Customized components for advanced usage.
+   * Component or element type for cell element. This component will get {@link CustomCellComponentProps} as props.
+   * @defaultValue "div"
    */
-  components?: {
-    /**
-     * Component for scrollable element. This component will get {@link CustomViewportComponentProps} as props.
-     * @defaultValue {@link DefaultViewport}
-     */
-    Root?: CustomViewportComponent;
-    /**
-     * Component or element type for cell element. This component will get {@link CustomCellComponentProps} as props.
-     * @defaultValue "div"
-     */
-    Cell?: keyof JSX.IntrinsicElements | CustomCellComponent;
-  };
+  item?: keyof JSX.IntrinsicElements | CustomCellComponent;
 }
 
 /**
@@ -267,14 +204,9 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       overscan = 2,
       initialRowCount,
       initialColCount,
-      components: {
-        Root: Viewport = DefaultViewport,
-        Cell: ItemElement = "div",
-      } = {} as {
-        Root?: undefined;
-        Cell?: undefined;
-      },
-      ...viewportAttrs
+      item: ItemElement = "div",
+      style,
+      ...attrs
     },
     ref
   ): ReactElement => {
@@ -452,31 +384,35 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     }
 
     return (
-      <Viewport
+      <div
         ref={rootRef}
-        width={width}
-        height={height}
-        scrolling={
-          vScrollDirection !== SCROLL_IDLE || hScrollDirection !== SCROLL_IDLE
-        }
-        attrs={useMemo(
-          () => ({
-            ...viewportAttrs,
-            style: {
-              overflow: "auto",
-              overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
-              flex: "none", // flex style on parent can break layout
-              contain: "strict",
-              width: "100%",
-              height: "100%",
-              ...viewportAttrs.style,
-            },
-          }),
-          values(viewportAttrs)
-        )}
+        {...attrs}
+        style={{
+          overflow: "auto",
+          overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
+          flex: "none", // flex style on parent can break layout
+          contain: "strict",
+          width: "100%",
+          height: "100%",
+          ...style,
+        }}
       >
-        {items}
-      </Viewport>
+        <div
+          style={{
+            position: "relative",
+            visibility: "hidden",
+            width: width,
+            height: height,
+            pointerEvents:
+              vScrollDirection !== SCROLL_IDLE ||
+              hScrollDirection !== SCROLL_IDLE
+                ? "none"
+                : "auto",
+          }}
+        >
+          {items}
+        </div>
+      </div>
     );
   }
 );
