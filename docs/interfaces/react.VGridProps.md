@@ -22,7 +22,7 @@ Props of [VGrid](../modules/react.md#experimental_vgrid).
 - [overscan](react.VGridProps.md#overscan)
 - [initialRowCount](react.VGridProps.md#initialrowcount)
 - [initialColCount](react.VGridProps.md#initialcolcount)
-- [components](react.VGridProps.md#components)
+- [item](react.VGridProps.md#item)
 - [className](react.VGridProps.md#classname)
 - [style](react.VGridProps.md#style)
 - [id](react.VGridProps.md#id)
@@ -111,7 +111,7 @@ A function to create elements rendered by this component.
 
 #### Defined in
 
-[src/react/VGrid.tsx:198](https://github.com/inokawa/virtua/blob/56ef0f3f/src/react/VGrid.tsx#L198)
+[src/react/VGrid.tsx:145](https://github.com/inokawa/virtua/blob/6233dda9/src/react/VGrid.tsx#L145)
 
 ___
 
@@ -123,7 +123,7 @@ Total row length of grid.
 
 #### Defined in
 
-[src/react/VGrid.tsx:211](https://github.com/inokawa/virtua/blob/56ef0f3f/src/react/VGrid.tsx#L211)
+[src/react/VGrid.tsx:158](https://github.com/inokawa/virtua/blob/6233dda9/src/react/VGrid.tsx#L158)
 
 ___
 
@@ -135,7 +135,7 @@ Total column length of grid.
 
 #### Defined in
 
-[src/react/VGrid.tsx:215](https://github.com/inokawa/virtua/blob/56ef0f3f/src/react/VGrid.tsx#L215)
+[src/react/VGrid.tsx:162](https://github.com/inokawa/virtua/blob/6233dda9/src/react/VGrid.tsx#L162)
 
 ___
 
@@ -153,7 +153,7 @@ Cell height hint for unmeasured items. It's recommended to specify this prop if 
 
 #### Defined in
 
-[src/react/VGrid.tsx:220](https://github.com/inokawa/virtua/blob/56ef0f3f/src/react/VGrid.tsx#L220)
+[src/react/VGrid.tsx:167](https://github.com/inokawa/virtua/blob/6233dda9/src/react/VGrid.tsx#L167)
 
 ___
 
@@ -171,7 +171,7 @@ Cell width hint for unmeasured items. It's recommended to specify this prop if i
 
 #### Defined in
 
-[src/react/VGrid.tsx:225](https://github.com/inokawa/virtua/blob/56ef0f3f/src/react/VGrid.tsx#L225)
+[src/react/VGrid.tsx:172](https://github.com/inokawa/virtua/blob/6233dda9/src/react/VGrid.tsx#L172)
 
 ___
 
@@ -189,7 +189,7 @@ Number of items to render above/below the visible bounds of the grid. Lower valu
 
 #### Defined in
 
-[src/react/VGrid.tsx:230](https://github.com/inokawa/virtua/blob/56ef0f3f/src/react/VGrid.tsx#L230)
+[src/react/VGrid.tsx:177](https://github.com/inokawa/virtua/blob/6233dda9/src/react/VGrid.tsx#L177)
 
 ___
 
@@ -201,7 +201,7 @@ If set, the specified amount of rows will be mounted in the initial rendering re
 
 #### Defined in
 
-[src/react/VGrid.tsx:234](https://github.com/inokawa/virtua/blob/56ef0f3f/src/react/VGrid.tsx#L234)
+[src/react/VGrid.tsx:181](https://github.com/inokawa/virtua/blob/6233dda9/src/react/VGrid.tsx#L181)
 
 ___
 
@@ -213,26 +213,25 @@ If set, the specified amount of cols will be mounted in the initial rendering re
 
 #### Defined in
 
-[src/react/VGrid.tsx:238](https://github.com/inokawa/virtua/blob/56ef0f3f/src/react/VGrid.tsx#L238)
+[src/react/VGrid.tsx:185](https://github.com/inokawa/virtua/blob/6233dda9/src/react/VGrid.tsx#L185)
 
 ___
 
-### components
+### item
 
-• `Optional` **components**: `Object`
+• `Optional` **item**: keyof IntrinsicElements \| [`CustomCellComponent`](../modules/react.md#customcellcomponent)
 
-Customized components for advanced usage.
+Component or element type for cell element. This component will get [CustomCellComponentProps](react.CustomCellComponentProps.md) as props.
 
-#### Type declaration
+**`Default Value`**
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `Root?` | `ForwardRefExoticComponent`\<`CustomViewportComponentProps` & `RefAttributes`\<`any`\>\> | Component for scrollable element. This component will get CustomViewportComponentProps as props. **`Default Value`** ```ts {@link DefaultViewport} ``` |
-| `Cell?` | keyof IntrinsicElements \| [`CustomCellComponent`](../modules/react.md#customcellcomponent) | Component or element type for cell element. This component will get [CustomCellComponentProps](react.CustomCellComponentProps.md) as props. **`Default Value`** ```ts "div" ``` |
+```ts
+"div"
+```
 
 #### Defined in
 
-[src/react/VGrid.tsx:242](https://github.com/inokawa/virtua/blob/56ef0f3f/src/react/VGrid.tsx#L242)
+[src/react/VGrid.tsx:190](https://github.com/inokawa/virtua/blob/6233dda9/src/react/VGrid.tsx#L190)
 
 ___
 
@@ -548,7 +547,7 @@ ___
 
 ### aria-current
 
-• `Optional` **aria-current**: `boolean` \| ``"time"`` \| ``"page"`` \| ``"false"`` \| ``"true"`` \| ``"step"`` \| ``"location"`` \| ``"date"``
+• `Optional` **aria-current**: `boolean` \| ``"time"`` \| ``"page"`` \| ``"false"`` \| ``"true"`` \| ``"location"`` \| ``"step"`` \| ``"date"``
 
 Indicates the element that represents the current item within a container or set of related elements.
 

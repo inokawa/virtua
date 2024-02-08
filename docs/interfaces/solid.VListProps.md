@@ -118,7 +118,7 @@ Pick.children
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:85](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L85)
+[src/solid/Virtualizer.tsx:85](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L85)
 
 ___
 
@@ -154,7 +154,7 @@ Pick.onScroll
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:110](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L110)
+[src/solid/Virtualizer.tsx:110](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L110)
 
 ___
 
@@ -186,7 +186,7 @@ Pick.ref
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:77](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L77)
+[src/solid/Virtualizer.tsx:77](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L77)
 
 ___
 
@@ -202,7 +202,7 @@ Pick.shift
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:101](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L101)
+[src/solid/Virtualizer.tsx:101](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L101)
 
 ___
 
@@ -218,7 +218,7 @@ Pick.data
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:81](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L81)
+[src/solid/Virtualizer.tsx:81](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L81)
 
 ___
 
@@ -240,7 +240,7 @@ Pick.overscan
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:90](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L90)
+[src/solid/Virtualizer.tsx:90](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L90)
 
 ___
 
@@ -259,7 +259,7 @@ Pick.itemSize
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:97](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L97)
+[src/solid/Virtualizer.tsx:97](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L97)
 
 ___
 
@@ -275,7 +275,7 @@ Pick.horizontal
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:105](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L105)
+[src/solid/Virtualizer.tsx:105](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L105)
 
 ___
 
@@ -301,7 +301,7 @@ Pick.onScrollEnd
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:114](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L114)
+[src/solid/Virtualizer.tsx:114](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L114)
 
 ___
 
@@ -334,7 +334,7 @@ Pick.onRangeChange
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:118](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/Virtualizer.tsx#L118)
+[src/solid/Virtualizer.tsx:118](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L118)
 
 ___
 
@@ -580,7 +580,7 @@ ___
 
 ### aria-current
 
-• `Optional` **aria-current**: `boolean` \| ``"time"`` \| ``"page"`` \| ``"false"`` \| ``"true"`` \| ``"step"`` \| ``"location"`` \| ``"date"``
+• `Optional` **aria-current**: `boolean` \| ``"time"`` \| ``"page"`` \| ``"false"`` \| ``"true"`` \| ``"location"`` \| ``"step"`` \| ``"date"``
 
 Indicates the element that represents the current item within a container or set of related elements.
 
@@ -1305,4 +1305,4 @@ ViewportComponentAttributes.style
 
 #### Defined in
 
-[src/solid/types.ts:7](https://github.com/inokawa/virtua/blob/56ef0f3f/src/solid/types.ts#L7)
+[src/solid/types.ts:7](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/types.ts#L7)
