@@ -88,18 +88,6 @@ export const getScrollSize = (store: VirtualStore): number => {
 /**
  * @internal
  */
-export const getMinContainerSize = (store: VirtualStore): number => {
-  return max(
-    store._getTotalSize(),
-    store._getViewportSize() -
-      store._getStartSpacerSize() -
-      store._getEndSpacerSize()
-  );
-};
-
-/**
- * @internal
- */
 export const overscanStartIndex = (
   startIndex: number,
   overscan: number,
@@ -160,7 +148,6 @@ export type VirtualStore = {
   _getScrollDirection(): ScrollDirection;
   _getViewportSize(): number;
   _getStartSpacerSize(): number;
-  _getEndSpacerSize(): number;
   _getTotalSize(): number;
   _getJumpCount(): number;
   _flushJump(): [number, boolean];
@@ -274,9 +261,6 @@ export const createVirtualStore = (
     },
     _getStartSpacerSize() {
       return startSpacerSize;
-    },
-    _getEndSpacerSize() {
-      return endSpacerSize;
     },
     _getTotalSize: getTotalSize,
     _getJumpCount() {

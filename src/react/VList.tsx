@@ -1,4 +1,4 @@
-import { ReactElement, forwardRef } from "react";
+import { ReactElement, forwardRef, useRef } from "react";
 import { ViewportComponentAttributes } from "./types";
 import {
   Virtualizer,
@@ -23,7 +23,6 @@ export interface VListProps
       | "itemSize"
       | "shift"
       | "horizontal"
-      | "reverse"
       | "cache"
       | "ssrCount"
       | "item"
@@ -31,7 +30,12 @@ export interface VListProps
       | "onScrollEnd"
       | "onRangeChange"
     >,
-    ViewportComponentAttributes {}
+    ViewportComponentAttributes {
+  /**
+   * If true, items are aligned to the end of the list when total size of items are smaller than viewport size. It's useful for chat like app.
+   */
+  reverse?: boolean;
+}
 
 /**
  * Virtualized list component. See {@link VListProps} and {@link VListHandle}.
@@ -57,8 +61,48 @@ export const VList = forwardRef<VListHandle, VListProps>(
     },
     ref
   ): ReactElement => {
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const shouldReverse = reverse && !horizontal;
+
+    let element = (
+      <Virtualizer
+        ref={ref}
+        scrollRef={shouldReverse ? scrollRef : undefined}
+        count={count}
+        overscan={overscan}
+        itemSize={itemSize}
+        shift={shift}
+        horizontal={horizontal}
+        cache={cache}
+        ssrCount={ssrCount}
+        item={item}
+        onScroll={onScroll}
+        onScrollEnd={onScrollEnd}
+        onRangeChange={onRangeChange}
+      >
+        {children}
+      </Virtualizer>
+    );
+
+    if (shouldReverse) {
+      element = (
+        <div
+          style={{
+            visibility: "hidden",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            minHeight: "100%",
+          }}
+        >
+          {element}
+        </div>
+      );
+    }
+
     return (
       <div
+        ref={scrollRef}
         {...attrs}
         style={{
           display: horizontal ? "inline-block" : "block",
@@ -69,23 +113,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
           ...style,
         }}
       >
-        <Virtualizer
-          ref={ref}
-          count={count}
-          overscan={overscan}
-          itemSize={itemSize}
-          shift={shift}
-          horizontal={horizontal}
-          reverse={reverse}
-          cache={cache}
-          ssrCount={ssrCount}
-          item={item}
-          onScroll={onScroll}
-          onScrollEnd={onScrollEnd}
-          onRangeChange={onRangeChange}
-        >
-          {children}
-        </Virtualizer>
+        {element}
       </div>
     );
   }

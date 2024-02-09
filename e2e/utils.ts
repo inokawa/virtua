@@ -4,7 +4,9 @@ export const storyUrl = (id: string) =>
   `http://localhost:6006/iframe.html?id=${id}&viewMode=story`;
 
 export const getScrollable = async (page: Page) => {
-  return page.waitForSelector('*[style*="overflow"]');
+  return page.waitForSelector(
+    '*[style*="overflow-y: auto"],*[style*="overflow-y:auto"],*[style*="overflow-x: auto"],*[style*="overflow-x:auto"],*[style*="overflow: auto"],*[style*="overflow:auto"]'
+  );
 };
 
 export const getVirtualizer = async (page: Page) => {

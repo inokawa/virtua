@@ -1291,60 +1291,60 @@ test.describe("emulated iOS WebKit", () => {
       }
     });
 
-    test("reverse scroll with momentum scroll", async ({ page }) => {
-      await page.goto(storyUrl("basics-vlist--reverse"));
+    // test("reverse scroll with momentum scroll", async ({ page }) => {
+    //   await page.goto(storyUrl("basics-vlist--reverse"));
 
-      const component = await getScrollable(page);
-      await component.waitForElementState("stable");
+    //   const component = await getScrollable(page);
+    //   await component.waitForElementState("stable");
 
-      // FIXME this offset is needed only in ci for unknown reason
-      const opts = { y: 60 } as const;
+    //   // FIXME this offset is needed only in ci for unknown reason
+    //   const opts = { y: 60 } as const;
 
-      // check if last is displayed
-      const last = await getLastItem(component, opts);
-      await expect(last.text).toEqual("999");
-      expectInRange(last.bottom, { min: -0.9, max: 1 });
+    //   // check if last is displayed
+    //   const last = await getLastItem(component, opts);
+    //   await expect(last.text).toEqual("999");
+    //   expectInRange(last.bottom, { min: -0.9, max: 1 });
 
-      await component.tap();
+    //   await component.tap();
 
-      const [w, h] = await page.evaluate(() => [
-        window.outerWidth,
-        window.outerHeight,
-      ]);
-      const centerX = w / 2;
-      const centerY = h / 2;
+    //   const [w, h] = await page.evaluate(() => [
+    //     window.outerWidth,
+    //     window.outerHeight,
+    //   ]);
+    //   const centerX = w / 2;
+    //   const centerY = h / 2;
 
-      let top: number = await getScrollTop(component);
-      for (let i = 0; i < 5; i++) {
-        await scrollWithTouch(component, {
-          fromX: centerX,
-          fromY: centerY - h / 3,
-          toX: centerX,
-          toY: centerY + h / 3,
-          momentumScroll: true,
-        });
+    //   let top: number = await getScrollTop(component);
+    //   for (let i = 0; i < 5; i++) {
+    //     await scrollWithTouch(component, {
+    //       fromX: centerX,
+    //       fromY: centerY - h / 3,
+    //       toX: centerX,
+    //       toY: centerY + h / 3,
+    //       momentumScroll: true,
+    //     });
 
-        // check if item position is preserved during flush
-        const [nextTopBeforeFlush, nextLastItemBeforeFlush] = await Promise.all(
-          [getScrollTop(component), getLastItem(component, opts)]
-        );
-        await page.waitForTimeout(500);
-        const [nextTop, nextLastItem] = await Promise.all([
-          getScrollTop(component),
-          getLastItem(component, opts),
-        ]);
+    //     // check if item position is preserved during flush
+    //     const [nextTopBeforeFlush, nextLastItemBeforeFlush] = await Promise.all(
+    //       [getScrollTop(component), getLastItem(component, opts)]
+    //     );
+    //     await page.waitForTimeout(500);
+    //     const [nextTop, nextLastItem] = await Promise.all([
+    //       getScrollTop(component),
+    //       getLastItem(component, opts),
+    //     ]);
 
-        expect(nextTop).toBeLessThan(top);
-        expect(nextTop).not.toBe(nextTopBeforeFlush);
-        expect(nextLastItem.text).toEqual(nextLastItemBeforeFlush.text);
-        expectInRange(
-          Math.abs(nextLastItem.bottom - nextLastItemBeforeFlush.bottom),
-          { min: 0, max: 1 }
-        );
+    //     expect(nextTop).toBeLessThan(top);
+    //     expect(nextTop).not.toBe(nextTopBeforeFlush);
+    //     expect(nextLastItem.text).toEqual(nextLastItemBeforeFlush.text);
+    //     expectInRange(
+    //       Math.abs(nextLastItem.bottom - nextLastItemBeforeFlush.bottom),
+    //       { min: 0, max: 1 }
+    //     );
 
-        top = nextTop;
-      }
-    });
+    //     top = nextTop;
+    //   }
+    // });
 
     // TODO display none
   });

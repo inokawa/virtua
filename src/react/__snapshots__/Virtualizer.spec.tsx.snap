@@ -6,7 +6,7 @@ exports[`should change components 1`] = `
     style="overflow-y: auto;"
   >
     <ul
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 250px; min-height: 250px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 250px; pointer-events: auto;"
     >
       <li
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
