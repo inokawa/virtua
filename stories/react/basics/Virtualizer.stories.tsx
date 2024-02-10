@@ -38,8 +38,6 @@ const createRows = (num: number) => {
 
 export const HeaderAndFooter: StoryObj = {
   render: () => {
-    const headerHeight = 400;
-    const footerHeight = 600;
     return (
       <div
         style={{
@@ -50,14 +48,55 @@ export const HeaderAndFooter: StoryObj = {
           overflowAnchor: "none",
         }}
       >
-        <div style={{ backgroundColor: "burlywood", height: headerHeight }}>
-          header
-        </div>
-        <Virtualizer startMargin={headerHeight} endMargin={footerHeight}>
-          {createRows(1000)}
-        </Virtualizer>
-        <div style={{ backgroundColor: "steelblue", height: footerHeight }}>
-          footer
+        <div style={{ backgroundColor: "burlywood", height: 400 }}>header</div>
+        <Virtualizer unbound>{createRows(1000)}</Virtualizer>
+        <div style={{ backgroundColor: "steelblue", height: 600 }}>footer</div>
+      </div>
+    );
+  },
+};
+
+const createColumns = (num: number) => {
+  return Array.from({ length: num }).map((_, i) => {
+    return (
+      <div
+        key={i}
+        style={{
+          width: i % 3 === 0 ? 100 : 60,
+          borderRight: "solid 1px #ccc",
+          background: "#fff",
+        }}
+      >
+        Column {i}
+      </div>
+    );
+  });
+};
+
+export const HeaderAndFooterHorizontal: StoryObj = {
+  render: () => {
+    const ref = useRef<HTMLDivElement>(null);
+    return (
+      <div
+        ref={ref}
+        style={{
+          width: "100%",
+          height: "400px",
+          overflowX: "auto",
+          // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+          overflowAnchor: "none",
+        }}
+      >
+        <div style={{ display: "flex", height: "100%" }}>
+          <div style={{ backgroundColor: "burlywood", minWidth: 400 }}>
+            header
+          </div>
+          <Virtualizer horizontal unbound scrollRef={ref}>
+            {createColumns(1000)}
+          </Virtualizer>
+          <div style={{ backgroundColor: "steelblue", minWidth: 600 }}>
+            footer
+          </div>
         </div>
       </div>
     );
@@ -66,8 +105,6 @@ export const HeaderAndFooter: StoryObj = {
 
 export const StickyHeaderAndFooter: StoryObj = {
   render: () => {
-    const headerHeight = 40;
-    const footerHeight = 60;
     return (
       <div
         style={{
@@ -82,21 +119,19 @@ export const StickyHeaderAndFooter: StoryObj = {
           style={{
             position: "sticky",
             backgroundColor: "burlywood",
-            height: headerHeight,
+            height: 40,
             top: 0,
             zIndex: 1,
           }}
         >
           header
         </div>
-        <Virtualizer startMargin={headerHeight} endMargin={footerHeight}>
-          {createRows(1000)}
-        </Virtualizer>
+        <Virtualizer unbound>{createRows(1000)}</Virtualizer>
         <div
           style={{
             position: "sticky",
             backgroundColor: "steelblue",
-            height: footerHeight,
+            height: 60,
             bottom: 0,
           }}
         >
@@ -107,11 +142,10 @@ export const StickyHeaderAndFooter: StoryObj = {
   },
 };
 
-export const Nested: StoryObj = {
+export const Padding: StoryObj = {
   render: () => {
     const ref = useRef<HTMLDivElement>(null);
-    const outerPadding = 40;
-    const innerPadding = 60;
+
     return (
       <div
         ref={ref}
@@ -123,13 +157,39 @@ export const Nested: StoryObj = {
           overflowAnchor: "none",
         }}
       >
-        <div style={{ backgroundColor: "burlywood", padding: outerPadding }}>
-          <div style={{ backgroundColor: "steelblue", padding: innerPadding }}>
-            <Virtualizer
-              scrollRef={ref}
-              startMargin={outerPadding + innerPadding}
-              endMargin={outerPadding + innerPadding}
-            >
+        <div
+          style={{
+            paddingTop: 400,
+            paddingBottom: 400,
+          }}
+        >
+          <Virtualizer scrollRef={ref} unbound>
+            {createRows(1000)}
+          </Virtualizer>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const Nested: StoryObj = {
+  render: () => {
+    const ref = useRef<HTMLDivElement>(null);
+
+    return (
+      <div
+        ref={ref}
+        style={{
+          width: "100%",
+          height: "100vh",
+          overflowY: "auto",
+          // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+          overflowAnchor: "none",
+        }}
+      >
+        <div style={{ backgroundColor: "burlywood", padding: 40 }}>
+          <div style={{ backgroundColor: "steelblue", padding: 60 }}>
+            <Virtualizer scrollRef={ref} unbound>
               {createRows(1000)}
             </Virtualizer>
           </div>
@@ -188,8 +248,6 @@ export const BiDirectionalInfiniteScrolling: StoryObj = {
       ready.current = true;
     }, []);
 
-    const spinnerHeight = 100;
-
     return (
       <div
         style={{
@@ -199,15 +257,11 @@ export const BiDirectionalInfiniteScrolling: StoryObj = {
           overflowAnchor: "none",
         }}
       >
-        <Spinner
-          height={spinnerHeight}
-          style={startFetching ? undefined : { visibility: "hidden" }}
-        />
+        <Spinner style={startFetching ? undefined : { visibility: "hidden" }} />
         <Virtualizer
           ref={ref}
+          unbound
           shift={shifting ? true : false}
-          startMargin={spinnerHeight}
-          endMargin={spinnerHeight}
           onRangeChange={async (start, end) => {
             if (!ready.current) return;
             if (end + THRESHOLD > count && endFetchedCountRef.current < count) {
@@ -229,10 +283,7 @@ export const BiDirectionalInfiniteScrolling: StoryObj = {
         >
           {items}
         </Virtualizer>
-        <Spinner
-          height={spinnerHeight}
-          style={endFetching ? undefined : { visibility: "hidden" }}
-        />
+        <Spinner style={endFetching ? undefined : { visibility: "hidden" }} />
       </div>
     );
   },
@@ -359,12 +410,7 @@ export const TableElement: StoryObj = {
           overflow: "auto",
         }}
       >
-        <Virtualizer
-          count={1000}
-          as={Table}
-          item="tr"
-          startMargin={TABLE_HEADER_HEIGHT}
-        >
+        <Virtualizer count={1000} as={Table} item="tr" unbound>
           {(i) => (
             <Fragment key={i}>
               {COLUMN_WIDTHS.map((width, j) => (

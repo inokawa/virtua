@@ -110,6 +110,10 @@ export interface VirtualizerProps {
    */
   cache?: CacheSnapshot;
   /**
+   * TODO
+   */
+  unbound?: boolean;
+  /**
    * If you put an element before virtualizer, you have to define its height with this prop.
    */
   startMargin?: number;
@@ -172,6 +176,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       shift,
       horizontal: horizontalProp,
       cache,
+      unbound,
       startMargin,
       endMargin,
       ssrCount,
@@ -209,7 +214,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       return [
         _store,
         createResizer(_store, _isHorizontal),
-        createScroller(_store, _isHorizontal),
+        createScroller(_store, _isHorizontal, unbound),
         _isHorizontal,
       ];
     });
@@ -251,15 +256,16 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
           onScrollEnd[refKey] && onScrollEnd[refKey]();
         }
       );
+      const container = containerRef[refKey]!;
       const assignScrollableElement = (e: HTMLElement) => {
         resizer._observeRoot(e);
-        scroller._observe(e);
+        scroller._observe(e, container);
       };
       if (scrollRef) {
         // parent's ref doesn't exist when useLayoutEffect is called
         microtask(() => assignScrollableElement(scrollRef[refKey]!));
       } else {
-        assignScrollableElement(containerRef[refKey]!.parentElement!);
+        assignScrollableElement(container.parentElement!);
       }
 
       return () => {
