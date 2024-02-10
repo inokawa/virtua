@@ -9,6 +9,7 @@ import {
   updateCacheLength,
   initCache,
   computeRange,
+  estimateDefaultItemSize,
 } from "./cache";
 
 const range = <T>(length: number, cb: (i: number) => T): T[] => {
@@ -623,6 +624,124 @@ describe(findIndex.name, () => {
       );
       expect(findIndex(cache, 1, 0)).toBe(0);
       expect(findIndex(cache, 1, 1)).toBe(0);
+    });
+  });
+});
+
+describe(estimateDefaultItemSize.name, () => {
+  describe("start", () => {
+    it("should update with 1 entry", () => {
+      const cache = initCacheWithComputedOffsets(
+        range(100, () => -1),
+        30
+      );
+      const indexes = [0];
+      indexes.forEach((i) => setItemSize(cache, i, 50));
+      const init = structuredClone(cache);
+
+      const diff = estimateDefaultItemSize(cache, 0);
+      expect(cache._defaultItemSize).toBe(50);
+      expect(cache._sizes).toEqual(init._sizes);
+      expect(cache._computedOffsetIndex).toEqual(-1);
+      expect(diff).toBe(0);
+    });
+
+    it("should update with some entry", () => {
+      const cache = initCacheWithComputedOffsets(
+        range(100, () => -1),
+        30
+      );
+      const indexes = [0, 1, 2, 3];
+      indexes.forEach((i) => setItemSize(cache, i, 50));
+      const init = structuredClone(cache);
+
+      const diff = estimateDefaultItemSize(cache, 0);
+      expect(cache._defaultItemSize).toBe(50);
+      expect(cache._sizes).toEqual(init._sizes);
+      expect(cache._computedOffsetIndex).toEqual(-1);
+      expect(diff).toBe(0);
+    });
+
+    it("should update with some entry from outside", () => {
+      const cache = initCacheWithComputedOffsets(
+        range(100, () => -1),
+        30
+      );
+      const indexes = [20, 21, 22, 23];
+      indexes.forEach((i) => setItemSize(cache, i, 50));
+      const init = structuredClone(cache);
+
+      const diff = estimateDefaultItemSize(cache, 0);
+      expect(cache._defaultItemSize).toBe(50);
+      expect(cache._sizes).toEqual(init._sizes);
+      expect(cache._computedOffsetIndex).toEqual(-1);
+      expect(diff).toBe(0);
+    });
+  });
+
+  describe("end", () => {
+    it("should update with 1 entry", () => {
+      const cache = initCacheWithComputedOffsets(
+        range(100, () => -1),
+        30
+      );
+      const indexes = [92];
+      indexes.forEach((i) => setItemSize(cache, i, 50));
+      const init = structuredClone(cache);
+
+      const diff = estimateDefaultItemSize(cache, cache._length - 10);
+      expect(cache._defaultItemSize).toBe(50);
+      expect(cache._sizes).toEqual(init._sizes);
+      expect(cache._computedOffsetIndex).toEqual(-1);
+      expect(diff).toBe((50 - 30) * 90);
+    });
+
+    it("should update with some entry", () => {
+      const cache = initCacheWithComputedOffsets(
+        range(100, () => -1),
+        30
+      );
+      const indexes = [92, 93, 94, 95];
+      indexes.forEach((i) => setItemSize(cache, i, 50));
+      const init = structuredClone(cache);
+
+      const diff = estimateDefaultItemSize(cache, cache._length - 10);
+      expect(cache._defaultItemSize).toBe(50);
+      expect(cache._sizes).toEqual(init._sizes);
+      expect(cache._computedOffsetIndex).toEqual(-1);
+      expect(diff).toBe((50 - 30) * 90);
+    });
+
+    it("should update with some entry from outside", () => {
+      const cache = initCacheWithComputedOffsets(
+        range(100, () => -1),
+        30
+      );
+      const indexes = [20, 21, 22, 23];
+      indexes.forEach((i) => setItemSize(cache, i, 50));
+      const init = structuredClone(cache);
+
+      const diff = estimateDefaultItemSize(cache, cache._length - 10);
+      expect(cache._defaultItemSize).toBe(50);
+      expect(cache._sizes).toEqual(init._sizes);
+      expect(cache._computedOffsetIndex).toEqual(-1);
+      expect(diff).toBe((50 - 30) * (90 - 4));
+    });
+
+    it("should update with some entry from near bound", () => {
+      const cache = initCacheWithComputedOffsets(
+        range(100, () => -1),
+        30
+      );
+      const indexes = [88, 89, 90, 91];
+      indexes.forEach((i) => setItemSize(cache, i, 50));
+      const init = structuredClone(cache);
+
+      const diff = estimateDefaultItemSize(cache, cache._length - 10);
+      expect(cache._defaultItemSize).toBe(50);
+      expect(cache._sizes).toEqual(init._sizes);
+      expect(cache._computedOffsetIndex).toEqual(-1);
+      expect(diff).toBe((50 - 30) * (90 - 2));
     });
   });
 });
