@@ -2,9 +2,9 @@ import { getCurrentDocument, getCurrentWindow } from "./environment";
 import {
   ACTION_ITEM_RESIZE,
   ACTION_VIEWPORT_RESIZE,
-  ItemResize,
   VirtualStore,
 } from "./store";
+import { ItemResize } from "./types";
 import { exists, max } from "./utils";
 
 const createResizeObserver = (cb: ResizeObserverCallback) => {

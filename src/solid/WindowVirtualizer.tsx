@@ -20,7 +20,6 @@ import {
   overscanEndIndex,
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
-  ItemsRange,
 } from "../core/store";
 import { createWindowResizer } from "../core/resizer";
 import { createWindowScroller } from "../core/scroller";
@@ -28,6 +27,7 @@ import { ListItem } from "./ListItem";
 import { RangedFor } from "./RangedFor";
 import { exists } from "../core/utils";
 import { isSameRange } from "./utils";
+import { ItemsRange } from "../core/types";
 
 // /**
 //  * Methods of {@link WindowVirtualizer}.

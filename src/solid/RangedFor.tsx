@@ -10,7 +10,7 @@ import {
   JSX,
   Signal,
 } from "solid-js";
-import { ItemsRange } from "../core/store";
+import { ItemsRange } from "../core/types";
 
 interface RenderedNode<T> {
   _data: Signal<T>;

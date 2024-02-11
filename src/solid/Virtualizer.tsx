@@ -22,11 +22,10 @@ import {
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
-  ItemsRange,
 } from "../core/store";
 import { createResizer } from "../core/resizer";
 import { createScroller } from "../core/scroller";
-import { ScrollToIndexOpts } from "../core/types";
+import { ItemsRange, ScrollToIndexOpts } from "../core/types";
 import { ListItem } from "./ListItem";
 import { RangedFor } from "./RangedFor";
 import { exists } from "../core/utils";

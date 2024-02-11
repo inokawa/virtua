@@ -11,7 +11,7 @@ import {
   computeRange,
 } from "./cache";
 import { isIOSWebKit } from "./environment";
-import type { CacheSnapshot } from "./types";
+import type { CacheSnapshot, ItemResize, ItemsRange } from "./types";
 import { abs, clamp, max, min } from "./utils";
 
 // Scroll offset and sizes can have sub-pixel value if window.devicePixelRatio has decimal value
@@ -72,11 +72,6 @@ export const UPDATE_SIZE_STATE = 0b0010;
 export const UPDATE_SCROLL_EVENT = 0b0100;
 /** @internal */
 export const UPDATE_SCROLL_END_EVENT = 0b1000;
-
-/** @internal */
-export type ItemResize = Readonly<[index: number, size: number]>;
-/** @internal */
-export type ItemsRange = Readonly<[startIndex: number, endIndex: number]>;
 
 /**
  *  @internal
