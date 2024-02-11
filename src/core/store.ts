@@ -31,11 +31,11 @@ export type ScrollDirection =
 
 const SCROLL_BY_NATIVE = 0;
 const SCROLL_BY_MANUAL_SCROLL = 1;
-const SCROLL_BY_PREPENDING = 2;
+const SCROLL_BY_SHIFT = 2;
 type ScrollMode =
   | typeof SCROLL_BY_NATIVE
   | typeof SCROLL_BY_MANUAL_SCROLL
-  | typeof SCROLL_BY_PREPENDING;
+  | typeof SCROLL_BY_SHIFT;
 
 /** @internal */
 export const ACTION_ITEM_RESIZE = 1;
@@ -169,7 +169,7 @@ export const createVirtualStore = (
   let jumpCount = 0;
   let jump = 0;
   let pendingJump = 0;
-  let isJumpByPrepend = false;
+  let isJumpByShift = false;
   let _flushedJump = 0;
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
   let _scrollMode: ScrollMode = SCROLL_BY_NATIVE;
@@ -264,15 +264,15 @@ export const createVirtualStore = (
     },
     _flushJump() {
       const flushedJump = jump;
-      const flushedIsJumpByPrepend = isJumpByPrepend;
+      const flushedIsJumpByShift = isJumpByShift;
       jump = 0;
-      isJumpByPrepend = false;
+      isJumpByShift = false;
       if (viewportSize > getScrollableSize()) {
         // In this case applying jump will not cause scroll.
         // Current logic expects scroll event occurs after applying jump so discard it.
         return [0, false];
       } else {
-        return [(_flushedJump = flushedJump), flushedIsJumpByPrepend];
+        return [(_flushedJump = flushedJump), flushedIsJumpByShift];
       }
     },
     _subscribe(target, cb) {
@@ -300,26 +300,23 @@ export const createVirtualStore = (
 
           // Calculate jump
           // Should maintain visible position to minimize junks in appearance
-          let diff = 0;
-
-          if (scrollOffset === 0) {
-            // Do nothing to stick to the start
-          } else if (scrollOffset > getMaxScrollOffset() - SUBPIXEL_THRESHOLD) {
-            // Keep end to stick to the end
-            diff = calculateJump(cache, updated, true);
-          } else {
-            if (_scrollMode === SCROLL_BY_PREPENDING) {
+          let diff: number;
+          if (_scrollMode === SCROLL_BY_SHIFT) {
+            if (scrollOffset > getMaxScrollOffset() - SUBPIXEL_THRESHOLD) {
+              // Keep end to stick to the end
+              diff = calculateJump(cache, updated, true);
+            } else {
               // Keep distance from end immediately after prepending
               // We can assume jumps occurred on the upper outside
               diff = calculateJump(cache, updated);
-            } else {
-              // Keep start at mid
-              const [startIndex] = _prevRange;
-              diff = calculateJump(
-                cache,
-                updated.filter(([index]) => index < startIndex)
-              );
             }
+          } else {
+            // Keep start at mid
+            const [startIndex] = _prevRange;
+            diff = calculateJump(
+              cache,
+              updated.filter(([index]) => index < startIndex)
+            );
           }
 
           if (diff) {
@@ -360,16 +357,9 @@ export const createVirtualStore = (
         }
         case ACTION_ITEMS_LENGTH_CHANGE: {
           if (payload[1]) {
-            // Calc distance before updating cache
-            const distanceToEnd = getMaxScrollOffset() - scrollOffset;
-
-            const [shift, isAdd] = updateCacheLength(cache, payload[0], true);
-            applyJump(isAdd ? shift : -min(shift, distanceToEnd));
-
-            if (isAdd) {
-              _scrollMode = SCROLL_BY_PREPENDING;
-              isJumpByPrepend = true;
-            }
+            applyJump(updateCacheLength(cache, payload[0], true));
+            _scrollMode = SCROLL_BY_SHIFT;
+            isJumpByShift = true;
             mutated = UPDATE_SCROLL_STATE;
           } else {
             updateCacheLength(cache, payload[0]);

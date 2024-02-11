@@ -178,7 +178,7 @@ export const updateCacheLength = (
   cache: Writeable<Cache>,
   length: number,
   isShift?: boolean
-): [number, boolean] => {
+): number => {
   const diff = length - cache._length;
 
   const isAdd = diff > 0;
@@ -190,7 +190,7 @@ export const updateCacheLength = (
     fill(cache._offsets, diff);
   } else {
     // Removed
-    shift = (
+    shift = -(
       isShift ? cache._sizes.splice(0, -diff) : cache._sizes.splice(diff)
     ).reduce(
       (acc, removed) =>
@@ -205,5 +205,5 @@ export const updateCacheLength = (
       -1
     : min(length - 1, cache._computedOffsetIndex);
   cache._length = length;
-  return [shift, isAdd];
+  return shift;
 };

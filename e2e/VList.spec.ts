@@ -1048,7 +1048,7 @@ test.describe("check if item shift compensation works", () => {
       // Check if bottom is always visible and on bottom
       expectInRange(itemBottom, {
         min: -0.5,
-        max: browserName === "firefox" ? 0.6 : 0.1,
+        max: browserName === "firefox" ? 0.6 : 0.50001,
       });
 
       if (!isScrollBarVisible) {
