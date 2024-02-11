@@ -46,16 +46,16 @@ export const Default: StoryObj = {
   render: () => {
     const id = useRef(0);
     const createItem = (): Data => {
-      const rand = Math.random();
-      return rand > 0.2
+      const nextId = id.current++;
+      return nextId % 3 !== 1
         ? {
             type: "text",
-            id: id.current++,
+            id: nextId,
             value: faker.lorem.paragraphs(Math.floor(Math.random() * 10) + 1),
           }
         : {
             type: "image",
-            id: id.current++,
+            id: nextId,
             src: faker.image.url(),
           };
     };
@@ -115,10 +115,7 @@ export const Default: StoryObj = {
           ) {
             startFetchedCountRef.current = count;
             await fetchItems(true);
-            setItems((prev) => [
-              ...createItems(ITEM_BATCH_COUNT).reverse(),
-              ...prev,
-            ]);
+            setItems((prev) => [...createItems(ITEM_BATCH_COUNT), ...prev]);
           }
         }}
       >
