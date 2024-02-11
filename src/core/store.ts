@@ -191,12 +191,14 @@ export const createVirtualStore = (
     max(0, getScrollableSize() - viewportSize);
 
   const applyJump = (j: number) => {
-    // In iOS WebKit browsers, updating scroll position will stop scrolling so it have to be deferred during scrolling.
-    if (isIOSWebKit() && _scrollDirection !== SCROLL_IDLE) {
-      pendingJump += j;
-    } else {
-      jump += j;
-      jumpCount++;
+    if (j) {
+      // In iOS WebKit browsers, updating scroll position will stop scrolling so it have to be deferred during scrolling.
+      if (isIOSWebKit() && _scrollDirection !== SCROLL_IDLE) {
+        pendingJump += j;
+      } else {
+        jump += j;
+        jumpCount++;
+      }
     }
   };
 
@@ -318,10 +320,7 @@ export const createVirtualStore = (
               updated.filter(([index]) => index < startIndex)
             );
           }
-
-          if (diff) {
-            applyJump(diff);
-          }
+          applyJump(diff);
 
           // Update item sizes
           for (const [index, size] of updated) {
