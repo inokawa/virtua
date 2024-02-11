@@ -158,7 +158,7 @@ export const createVirtualStore = (
   itemSize: number = 40,
   ssrCount: number = 0,
   cacheSnapshot?: CacheSnapshot | undefined,
-  shouldAutoEstimateItemSize?: boolean | undefined,
+  shouldAutoEstimateItemSize: boolean = false,
   startSpacerSize: number = 0,
   endSpacerSize: number = 0
 ): VirtualStore => {
@@ -177,6 +177,7 @@ export const createVirtualStore = (
     ? [0, max(ssrCount - 1, 0)]
     : null;
   let _prevRange: ItemsRange = [0, 0];
+  let _totalMeasuredSize = 0;
 
   const cache =
     (cacheSnapshot as Cache | undefined) || initCache(elementsCount, itemSize);
@@ -326,22 +327,22 @@ export const createVirtualStore = (
           }
 
           // Update item sizes
-          let isNewItemMeasured = false;
-          updated.forEach(([index, size]) => {
-            if (setItemSize(cache, index, size)) {
-              isNewItemMeasured = true;
+          for (const [index, size] of updated) {
+            if (setItemSize(cache, index, size) && shouldAutoEstimateItemSize) {
+              _totalMeasuredSize += size;
             }
-          });
+          }
 
           // Estimate initial item size from measured sizes
           if (
             shouldAutoEstimateItemSize &&
-            isNewItemMeasured &&
-            // TODO support reverse scroll also
-            !scrollOffset
+            viewportSize &&
+            _totalMeasuredSize > viewportSize
           ) {
-            estimateDefaultItemSize(cache);
+            applyJump(estimateDefaultItemSize(cache, _prevRange[0]));
+            shouldAutoEstimateItemSize = false;
           }
+
           mutated = UPDATE_SIZE_STATE;
 
           // Synchronous update is necessary in current design to minimize visible glitch in concurrent rendering.

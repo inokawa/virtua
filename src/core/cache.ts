@@ -1,4 +1,4 @@
-import { clamp, median, min } from "./utils";
+import { clamp, max, median, min } from "./utils";
 
 type Writeable<T> = {
   -readonly [key in keyof T]: Writeable<T[key]>;
@@ -133,16 +133,29 @@ export const computeRange = (
 /**
  * @internal
  */
-export const estimateDefaultItemSize = (cache: Writeable<Cache>) => {
-  const measuredSizes = cache._sizes.filter((s) => s !== UNCACHED);
+export const estimateDefaultItemSize = (
+  cache: Writeable<Cache>,
+  startIndex: number
+): number => {
+  let measuredCountBeforeStart = 0;
   // This function will be called after measurement so measured size array must be longer than 0
-  const startItemSize = measuredSizes[0]!;
+  const measuredSizes = cache._sizes.filter((s, i) => {
+    const isMeasured = s !== UNCACHED;
+    if (isMeasured && i < startIndex) {
+      measuredCountBeforeStart++;
+    }
+    return isMeasured;
+  });
+  const prevDefaultItemSize = cache._defaultItemSize;
 
-  cache._defaultItemSize = measuredSizes.every((s) => s === startItemSize)
-    ? // Maybe a fixed size array
-      startItemSize
-    : // Maybe a variable size array
-      median(measuredSizes);
+  // Discard cache for now
+  cache._computedOffsetIndex = -1;
+
+  // Calculate diff of unmeasured items before start
+  return (
+    ((cache._defaultItemSize = median(measuredSizes)) - prevDefaultItemSize) *
+    max(startIndex - measuredCountBeforeStart, 0)
+  );
 };
 
 /**
