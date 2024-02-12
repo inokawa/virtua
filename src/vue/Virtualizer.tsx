@@ -206,7 +206,6 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
             _index={i}
             _offset={store._getItemOffset(i)}
             _hide={store._isUnmeasuredItem(i)}
-            _element="div"
             _children={e}
             _isHorizontal={isHorizontal}
           />
