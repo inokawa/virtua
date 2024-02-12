@@ -17,7 +17,6 @@ export const ListItem = /*#__PURE__*/ defineComponent({
     _offset: { type: Number, required: true },
     _hide: { type: Boolean },
     _isHorizontal: { type: Boolean },
-    _element: { type: String, required: true },
   },
   setup(props) {
     const elementRef = ref<HTMLDivElement>();
@@ -38,9 +37,8 @@ export const ListItem = /*#__PURE__*/ defineComponent({
         _children: children,
         _offset: offset,
         _hide: hide,
-        _element: Element,
         _isHorizontal: isHorizontal,
-      } = props as Omit<typeof props, "_element"> & { _element: "div" };
+      } = props;
 
       const style: StyleValue = {
         margin: 0,
@@ -57,9 +55,9 @@ export const ListItem = /*#__PURE__*/ defineComponent({
       }
 
       return (
-        <Element ref={elementRef} style={style}>
+        <div ref={elementRef} style={style}>
           {children}
-        </Element>
+        </div>
       );
     };
   },

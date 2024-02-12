@@ -3,6 +3,7 @@ import terser from "@rollup/plugin-terser";
 import { babel, getBabelOutputPlugin } from "@rollup/plugin-babel";
 import banner from "rollup-plugin-banner2";
 import pkg from "./package.json" assert { type: "json" };
+import vueVNodePlugin from "./scripts/babel-plugin-annotate-vue-vnode.mjs";
 
 const external = (id) =>
   [
@@ -14,7 +15,12 @@ const terserPlugin = terser({
   ecma: 2018,
   module: true,
   compress: { passes: 5, unsafe: true, keep_fargs: false },
-  mangle: { properties: { regex: "^_" } },
+  mangle: {
+    properties: {
+      // @vue/babel-plugin-jsx may generate _ field
+      regex: "^_.+",
+    },
+  },
   format: {
     preserve_annotations: true,
   },
@@ -72,6 +78,18 @@ export default [
         outDir: ".",
         // declaration: true,
         exclude: ["**/*.{spec,stories}.*"],
+        jsx: "preserve",
+      }),
+      babel({
+        babelrc: false,
+        configFile: false,
+        extensions: [".jsx", ".tsx"],
+        babelHelpers: "bundled",
+        plugins: [["@vue/babel-plugin-jsx", { optimize: true }]],
+        parserOpts: { sourceType: "module", plugins: ["jsx", "typescript"] },
+      }),
+      getBabelOutputPlugin({
+        plugins: [vueVNodePlugin],
       }),
       terserPlugin,
     ],
@@ -103,7 +121,6 @@ export default [
       babel({
         babelrc: false,
         configFile: false,
-        filter: /\.(jsx|tsx)$/,
         extensions: [".jsx", ".tsx"],
         babelHelpers: "bundled",
         presets: ["babel-preset-solid"],
