@@ -88,10 +88,10 @@ export const overscanStartIndex = (
   overscan: number,
   scrollDirection: ScrollDirection
 ): number => {
-  return max(
-    startIndex - (scrollDirection === SCROLL_DOWN ? 1 : max(0, overscan)),
-    0
-  );
+  if (scrollDirection !== SCROLL_DOWN) {
+    startIndex -= max(0, overscan);
+  }
+  return max(startIndex, 0);
 };
 
 /**
@@ -103,10 +103,10 @@ export const overscanEndIndex = (
   scrollDirection: ScrollDirection,
   count: number
 ): number => {
-  return min(
-    endIndex + (scrollDirection === SCROLL_UP ? 1 : max(0, overscan)),
-    count - 1
-  );
+  if (scrollDirection !== SCROLL_UP) {
+    endIndex += max(0, overscan);
+  }
+  return min(endIndex, count - 1);
 };
 
 const calculateJump = (
