@@ -27,7 +27,7 @@ import { createResizer } from "../core/resizer";
 import { createScroller } from "../core/scroller";
 import { ScrollToIndexOpts } from "../core/types";
 import { ListItem } from "./ListItem";
-import { exists } from "../core/utils";
+import { getKey } from "./utils";
 
 export interface VirtualizerHandle {
   /**
@@ -199,10 +199,9 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
         i++
       ) {
         const e = slots.default(props.data![i]!)[0]! as VNode;
-        const key = e.key;
         items.push(
           <ListItem
-            key={exists(key) ? key : "_" + i}
+            key={getKey(e, i)}
             _resizer={resizer._observeItem}
             _index={i}
             _offset={store._getItemOffset(i)}
