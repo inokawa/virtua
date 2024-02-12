@@ -42,7 +42,7 @@ Virtualized list component. See [VListProps](../interfaces/solid.VListProps.md) 
 
 #### Defined in
 
-[src/solid/VList.tsx:39](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/VList.tsx#L39)
+[src/solid/VList.tsx:39](https://github.com/inokawa/virtua/blob/06dc6181/src/solid/VList.tsx#L39)
 
 ___
 
@@ -70,7 +70,7 @@ Customizable list virtualizer for advanced usage. See [VirtualizerProps](../inte
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:133](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L133)
+[src/solid/Virtualizer.tsx:131](https://github.com/inokawa/virtua/blob/06dc6181/src/solid/Virtualizer.tsx#L131)
 
 ___
 
@@ -98,4 +98,4 @@ ___
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:95](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/WindowVirtualizer.tsx#L95)
+[src/solid/WindowVirtualizer.tsx:95](https://github.com/inokawa/virtua/blob/06dc6181/src/solid/WindowVirtualizer.tsx#L95)

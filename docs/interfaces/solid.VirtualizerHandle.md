@@ -45,7 +45,7 @@ Scroll to the item specified by index.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:57](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L57)
+[src/solid/Virtualizer.tsx:55](https://github.com/inokawa/virtua/blob/06dc6181/src/solid/Virtualizer.tsx#L55)
 
 ___
 
@@ -67,7 +67,7 @@ Scroll to the given offset.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:62](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L62)
+[src/solid/Virtualizer.tsx:60](https://github.com/inokawa/virtua/blob/06dc6181/src/solid/Virtualizer.tsx#L60)
 
 ___
 
@@ -89,7 +89,7 @@ Scroll by the given offset.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:67](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L67)
+[src/solid/Virtualizer.tsx:65](https://github.com/inokawa/virtua/blob/06dc6181/src/solid/Virtualizer.tsx#L65)
 
 ## Properties
 
@@ -101,7 +101,7 @@ Get current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:43](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L43)
+[src/solid/Virtualizer.tsx:41](https://github.com/inokawa/virtua/blob/06dc6181/src/solid/Virtualizer.tsx#L41)
 
 ___
 
@@ -113,7 +113,7 @@ Get current scrollHeight or scrollWidth.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:47](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L47)
+[src/solid/Virtualizer.tsx:45](https://github.com/inokawa/virtua/blob/06dc6181/src/solid/Virtualizer.tsx#L45)
 
 ___
 
@@ -125,4 +125,4 @@ Get current offsetHeight or offsetWidth.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:51](https://github.com/inokawa/virtua/blob/6233dda9/src/solid/Virtualizer.tsx#L51)
+[src/solid/Virtualizer.tsx:49](https://github.com/inokawa/virtua/blob/06dc6181/src/solid/Virtualizer.tsx#L49)

@@ -6,7 +6,7 @@ Props of [VList](../modules/react.md#vlist).
 
 ## Hierarchy
 
-- `Pick`\<[`VirtualizerProps`](react.VirtualizerProps.md), ``"children"`` \| ``"count"`` \| ``"overscan"`` \| ``"itemSize"`` \| ``"shift"`` \| ``"horizontal"`` \| ``"reverse"`` \| ``"cache"`` \| ``"ssrCount"`` \| ``"item"`` \| ``"onScroll"`` \| ``"onScrollEnd"`` \| ``"onRangeChange"``\>
+- `Pick`\<[`VirtualizerProps`](react.VirtualizerProps.md), ``"children"`` \| ``"count"`` \| ``"overscan"`` \| ``"itemSize"`` \| ``"shift"`` \| ``"horizontal"`` \| ``"cache"`` \| ``"ssrCount"`` \| ``"item"`` \| ``"onScroll"`` \| ``"onScrollEnd"`` \| ``"onRangeChange"``\>
 
 - [`ViewportComponentAttributes`](../modules/react.md#viewportcomponentattributes)
 
@@ -16,9 +16,9 @@ Props of [VList](../modules/react.md#vlist).
 
 ### Properties
 
+- [reverse](react.VListProps.md#reverse)
 - [children](react.VListProps.md#children)
 - [onScroll](react.VListProps.md#onscroll)
-- [reverse](react.VListProps.md#reverse)
 - [shift](react.VListProps.md#shift)
 - [count](react.VListProps.md#count)
 - [overscan](react.VListProps.md#overscan)
@@ -91,6 +91,18 @@ Props of [VList](../modules/react.md#vlist).
 
 ## Properties
 
+### reverse
+
+• `Optional` **reverse**: `boolean`
+
+If true, items are aligned to the end of the list when total size of items are smaller than viewport size. It's useful for chat like app.
+
+#### Defined in
+
+[src/react/VList.tsx:37](https://github.com/inokawa/virtua/blob/06dc6181/src/react/VList.tsx#L37)
+
+___
+
 ### children
 
 • **children**: `ReactNode` \| (`index`: `number`) => `ReactElement`\<`any`, string \| JSXElementConstructor\<any\>\>
@@ -105,7 +117,7 @@ Pick.children
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:84](https://github.com/inokawa/virtua/blob/6233dda9/src/react/Virtualizer.tsx#L84)
+[src/react/Virtualizer.tsx:83](https://github.com/inokawa/virtua/blob/06dc6181/src/react/Virtualizer.tsx#L83)
 
 ___
 
@@ -141,23 +153,7 @@ Pick.onScroll
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:147](https://github.com/inokawa/virtua/blob/6233dda9/src/react/Virtualizer.tsx#L147)
-
-___
-
-### reverse
-
-• `Optional` **reverse**: `boolean`
-
-If true, items are aligned to the end of the list when total size of items are smaller than viewport size. It's useful for chat like app.
-
-#### Inherited from
-
-Pick.reverse
-
-#### Defined in
-
-[src/react/Virtualizer.tsx:112](https://github.com/inokawa/virtua/blob/6233dda9/src/react/Virtualizer.tsx#L112)
+[src/react/Virtualizer.tsx:142](https://github.com/inokawa/virtua/blob/06dc6181/src/react/Virtualizer.tsx#L142)
 
 ___
 
@@ -173,7 +169,7 @@ Pick.shift
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:104](https://github.com/inokawa/virtua/blob/6233dda9/src/react/Virtualizer.tsx#L104)
+[src/react/Virtualizer.tsx:103](https://github.com/inokawa/virtua/blob/06dc6181/src/react/Virtualizer.tsx#L103)
 
 ___
 
@@ -189,7 +185,7 @@ Pick.count
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:88](https://github.com/inokawa/virtua/blob/6233dda9/src/react/Virtualizer.tsx#L88)
+[src/react/Virtualizer.tsx:87](https://github.com/inokawa/virtua/blob/06dc6181/src/react/Virtualizer.tsx#L87)
 
 ___
 
@@ -211,7 +207,7 @@ Pick.overscan
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:93](https://github.com/inokawa/virtua/blob/6233dda9/src/react/Virtualizer.tsx#L93)
+[src/react/Virtualizer.tsx:92](https://github.com/inokawa/virtua/blob/06dc6181/src/react/Virtualizer.tsx#L92)
 
 ___
 
@@ -230,7 +226,7 @@ Pick.itemSize
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:100](https://github.com/inokawa/virtua/blob/6233dda9/src/react/Virtualizer.tsx#L100)
+[src/react/Virtualizer.tsx:99](https://github.com/inokawa/virtua/blob/06dc6181/src/react/Virtualizer.tsx#L99)
 
 ___
 
@@ -246,7 +242,7 @@ Pick.horizontal
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:108](https://github.com/inokawa/virtua/blob/6233dda9/src/react/Virtualizer.tsx#L108)
+[src/react/Virtualizer.tsx:107](https://github.com/inokawa/virtua/blob/06dc6181/src/react/Virtualizer.tsx#L107)
 
 ___
 
@@ -262,7 +258,7 @@ Pick.cache
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:116](https://github.com/inokawa/virtua/blob/6233dda9/src/react/Virtualizer.tsx#L116)
+[src/react/Virtualizer.tsx:111](https://github.com/inokawa/virtua/blob/06dc6181/src/react/Virtualizer.tsx#L111)
 
 ___
 
@@ -278,7 +274,7 @@ Pick.ssrCount
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:128](https://github.com/inokawa/virtua/blob/6233dda9/src/react/Virtualizer.tsx#L128)
+[src/react/Virtualizer.tsx:123](https://github.com/inokawa/virtua/blob/06dc6181/src/react/Virtualizer.tsx#L123)
 
 ___
 
@@ -300,7 +296,7 @@ Pick.item
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:138](https://github.com/inokawa/virtua/blob/6233dda9/src/react/Virtualizer.tsx#L138)
+[src/react/Virtualizer.tsx:133](https://github.com/inokawa/virtua/blob/06dc6181/src/react/Virtualizer.tsx#L133)
 
 ___
 
@@ -326,7 +322,7 @@ Pick.onScrollEnd
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:151](https://github.com/inokawa/virtua/blob/6233dda9/src/react/Virtualizer.tsx#L151)
+[src/react/Virtualizer.tsx:146](https://github.com/inokawa/virtua/blob/06dc6181/src/react/Virtualizer.tsx#L146)
 
 ___
 
@@ -359,7 +355,7 @@ Pick.onRangeChange
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:155](https://github.com/inokawa/virtua/blob/6233dda9/src/react/Virtualizer.tsx#L155)
+[src/react/Virtualizer.tsx:150](https://github.com/inokawa/virtua/blob/06dc6181/src/react/Virtualizer.tsx#L150)
 
 ___
 
