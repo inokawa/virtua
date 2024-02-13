@@ -109,20 +109,6 @@ export const overscanEndIndex = (
   return min(endIndex, count - 1);
 };
 
-const calculateJump = (
-  cache: Cache,
-  items: readonly ItemResize[],
-  keepEnd?: boolean
-): number => {
-  return items.reduce((acc, [index, size]) => {
-    const diff = size - getItemSize(cache, index);
-    if (!keepEnd || diff > 0) {
-      acc += diff;
-    }
-    return acc;
-  }, 0);
-};
-
 type Subscriber = (sync?: boolean) => void;
 
 type StateVersion = readonly [];
@@ -301,31 +287,45 @@ export const createVirtualStore = (
             break;
           }
 
-          // Calculate jump
-          // Should maintain visible position to minimize junks in appearance
-          let diff: number;
+          let shouldKeepStart = false;
+          let shouldStickToEnd = false;
           if (_scrollMode === SCROLL_BY_SHIFT) {
             if (scrollOffset > getMaxScrollOffset() - SUBPIXEL_THRESHOLD) {
               // Keep end to stick to the end
-              diff = calculateJump(cache, updated, true);
+              shouldStickToEnd = true;
             } else {
               // Keep distance from end immediately after prepending
               // We can assume jumps occurred on the upper outside
-              diff = calculateJump(cache, updated);
             }
           } else {
             // Keep start at mid
-            diff = calculateJump(
-              cache,
-              updated.filter(([index]) => getItemOffset(index) < scrollOffset)
-            );
+            shouldKeepStart = true;
           }
-          applyJump(diff);
+
+          // Calculate jump
+          // Should maintain visible position to minimize junks in appearance
+          applyJump(
+            updated.reduce((acc, [index, size]) => {
+              if (!shouldKeepStart || getItemOffset(index) < scrollOffset) {
+                const diff = size - getItemSize(cache, index);
+                if (!shouldStickToEnd || diff > 0) {
+                  acc += diff;
+                }
+              }
+              return acc;
+            }, 0)
+          );
 
           // Update item sizes
           for (const [index, size] of updated) {
-            if (setItemSize(cache, index, size) && shouldAutoEstimateItemSize) {
+            const prevSize = getItemSize(cache, index);
+            const isInitialMeasurement = setItemSize(cache, index, size);
+
+            if (shouldAutoEstimateItemSize) {
               _totalMeasuredSize += size;
+              if (!isInitialMeasurement) {
+                _totalMeasuredSize -= prevSize;
+              }
             }
           }
 
@@ -333,6 +333,7 @@ export const createVirtualStore = (
           if (
             shouldAutoEstimateItemSize &&
             viewportSize &&
+            // If the total size is lower than the viewport, the item may be a empty state
             _totalMeasuredSize > viewportSize
           ) {
             applyJump(estimateDefaultItemSize(cache, _prevRange[0]));
