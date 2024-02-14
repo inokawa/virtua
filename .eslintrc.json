@@ -12,6 +12,37 @@
       "jsx": true
     }
   },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "plugins": ["import"],
+  "rules": {
+    "import/no-restricted-paths": [
+      "error",
+      {
+        "zones": [
+          {
+            "target": ["./src/core/**/*"],
+            "from": ["./src/!(core)/**/*"]
+          },
+          {
+            "target": ["./src/react/**/*"],
+            "from": ["./src/!(core|react)/**/*"]
+          },
+          {
+            "target": ["./src/solid/**/*"],
+            "from": ["./src/!(core|solid)/**/*"]
+          },
+          {
+            "target": ["./src/vue/**/*"],
+            "from": ["./src/!(core|vue)/**/*"]
+          }
+        ]
+      }
+    ]
+  },
   "overrides": [
     {
       "files": ["src/react/**/*.{jsx,tsx}"],
