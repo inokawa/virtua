@@ -317,14 +317,12 @@ export const createScroller = (
       scheduleImperativeScroll(() => {
         return (
           store._getStartSpacerSize() +
+          store._getItemOffset(index) +
           (align === "end"
-            ? store._getItemOffset(index) +
-              store._getItemSize(index) -
-              store._getViewportSize()
+            ? store._getItemSize(index) - store._getViewportSize()
             : align === "center"
-            ? store._getItemOffset(index) +
-              (store._getItemSize(index) - store._getViewportSize()) / 2
-            : store._getItemOffset(index))
+            ? (store._getItemSize(index) - store._getViewportSize()) / 2
+            : 0)
         );
       }, smooth);
     },
