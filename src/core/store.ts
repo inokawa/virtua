@@ -74,7 +74,7 @@ export const UPDATE_SCROLL_EVENT = 0b0100;
 export const UPDATE_SCROLL_END_EVENT = 0b1000;
 
 /**
- *  @internal
+ * @internal
  */
 export const getScrollSize = (store: VirtualStore): number => {
   return max(store._getTotalSize(), store._getViewportSize());
@@ -83,30 +83,20 @@ export const getScrollSize = (store: VirtualStore): number => {
 /**
  * @internal
  */
-export const overscanStartIndex = (
+export const getOverscanedRange = (
   startIndex: number,
-  overscan: number,
-  scrollDirection: ScrollDirection
-): number => {
-  if (scrollDirection !== SCROLL_DOWN) {
-    startIndex -= max(0, overscan);
-  }
-  return max(startIndex, 0);
-};
-
-/**
- * @internal
- */
-export const overscanEndIndex = (
   endIndex: number,
   overscan: number,
   scrollDirection: ScrollDirection,
   count: number
-): number => {
+): ItemsRange => {
+  if (scrollDirection !== SCROLL_DOWN) {
+    startIndex -= max(0, overscan);
+  }
   if (scrollDirection !== SCROLL_UP) {
     endIndex += max(0, overscan);
   }
-  return min(endIndex, count - 1);
+  return [max(startIndex, 0), min(endIndex, count - 1)];
 };
 
 type Subscriber = (sync?: boolean) => void;

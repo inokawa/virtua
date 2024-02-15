@@ -181,29 +181,26 @@ export const updateCacheLength = (
 ): number => {
   const diff = length - cache._length;
 
-  const isAdd = diff > 0;
-  let shift: number;
-  if (isAdd) {
-    // Added
-    shift = cache._defaultItemSize * diff;
-    fill(cache._sizes, diff, isShift);
-    fill(cache._offsets, diff);
-  } else {
-    // Removed
-    shift = -(
-      isShift ? cache._sizes.splice(0, -diff) : cache._sizes.splice(diff)
-    ).reduce(
-      (acc, removed) =>
-        acc + (removed === UNCACHED ? cache._defaultItemSize : removed),
-      0
-    );
-    cache._offsets.splice(diff);
-  }
-
   cache._computedOffsetIndex = isShift
     ? // Discard cache for now
       -1
     : min(length - 1, cache._computedOffsetIndex);
   cache._length = length;
-  return shift;
+
+  if (diff > 0) {
+    // Added
+    fill(cache._offsets, diff);
+    fill(cache._sizes, diff, isShift);
+    return cache._defaultItemSize * diff;
+  } else {
+    // Removed
+    cache._offsets.splice(diff);
+    return (
+      isShift ? cache._sizes.splice(0, -diff) : cache._sizes.splice(diff)
+    ).reduce(
+      (acc, removed) =>
+        acc - (removed === UNCACHED ? cache._defaultItemSize : removed),
+      0
+    );
+  }
 };

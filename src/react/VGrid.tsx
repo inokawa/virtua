@@ -12,8 +12,7 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_SCROLL_STATE,
   UPDATE_SIZE_STATE,
-  overscanEndIndex,
-  overscanStartIndex,
+  getOverscanedRange,
   createVirtualStore,
   SCROLL_IDLE,
   getScrollSize,
@@ -328,23 +327,15 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       };
     }, [children]);
 
-    const overscanedStartRowIndex = overscanStartIndex(
+    const [overscanedStartRowIndex, overscanedEndRowIndex] = getOverscanedRange(
       startRowIndex,
-      overscan,
-      vScrollDirection
-    );
-    const overscanedEndRowIndex = overscanEndIndex(
       endRowIndex,
       overscan,
       vScrollDirection,
       rowCount
     );
-    const overscanedStartColIndex = overscanStartIndex(
+    const [overscanedStartColIndex, overscanedEndColIndex] = getOverscanedRange(
       startColIndex,
-      overscan,
-      hScrollDirection
-    );
-    const overscanedEndColIndex = overscanEndIndex(
       endColIndex,
       overscan,
       hScrollDirection,

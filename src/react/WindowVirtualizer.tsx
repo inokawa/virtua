@@ -10,8 +10,7 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_SCROLL_STATE,
   UPDATE_SIZE_STATE,
-  overscanEndIndex,
-  overscanStartIndex,
+  getOverscanedRange,
   createVirtualStore,
   SCROLL_IDLE,
   UPDATE_SCROLL_END_EVENT,
@@ -230,8 +229,13 @@ export const WindowVirtualizer = forwardRef<
     );
 
     for (
-      let i = overscanStartIndex(startIndex, overscan, scrollDirection),
-        j = overscanEndIndex(endIndex, overscan, scrollDirection, count);
+      let [i, j] = getOverscanedRange(
+        startIndex,
+        endIndex,
+        overscan,
+        scrollDirection,
+        count
+      );
       i <= j;
       i++
     ) {

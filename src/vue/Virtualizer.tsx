@@ -17,8 +17,7 @@ import {
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SIZE_STATE,
-  overscanEndIndex,
-  overscanStartIndex,
+  getOverscanedRange,
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
@@ -188,13 +187,13 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
 
       const items: VNode[] = [];
       for (
-        let i = overscanStartIndex(startIndex, props.overscan, scrollDirection),
-          j = overscanEndIndex(
-            endIndex,
-            props.overscan,
-            scrollDirection,
-            count
-          );
+        let [i, j] = getOverscanedRange(
+          startIndex,
+          endIndex,
+          props.overscan,
+          scrollDirection,
+          count
+        );
         i <= j;
         i++
       ) {

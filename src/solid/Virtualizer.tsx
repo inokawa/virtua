@@ -17,8 +17,7 @@ import {
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SIZE_STATE,
-  overscanStartIndex,
-  overscanEndIndex,
+  getOverscanedRange,
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
@@ -191,15 +190,13 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   const overscanedRange = createMemo<ItemsRange>((prev) => {
     const overscan = props.overscan ?? 4;
     const [startIndex, endIndex] = range();
-    const next: ItemsRange = [
-      overscanStartIndex(startIndex, overscan, scrollDirection()),
-      overscanEndIndex(
-        endIndex,
-        overscan,
-        scrollDirection(),
-        props.data.length
-      ),
-    ];
+    const next = getOverscanedRange(
+      startIndex,
+      endIndex,
+      overscan,
+      scrollDirection(),
+      props.data.length
+    );
     if (prev && isSameRange(prev, next)) {
       return prev;
     }
