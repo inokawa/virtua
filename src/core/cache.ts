@@ -95,18 +95,16 @@ export const computeTotalSize = (cache: Cache): number => {
  * @internal
  */
 export const findIndex = (cache: Cache, offset: number, i: number): number => {
-  let sum = computeOffset(cache, i);
   while (i >= 0 && i < cache._length) {
-    if (sum <= offset) {
-      const next = getItemSize(cache, i);
-      if (sum + next > offset) {
+    const itemOffset = computeOffset(cache, i);
+    if (itemOffset <= offset) {
+      if (itemOffset + getItemSize(cache, i) > offset) {
         break;
       } else {
-        sum += next;
         i++;
       }
     } else {
-      sum -= getItemSize(cache, --i);
+      i--;
     }
   }
   return clamp(i, 0, cache._length - 1);
