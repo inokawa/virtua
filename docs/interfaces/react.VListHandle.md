@@ -50,7 +50,7 @@ Scroll to the item specified by index.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:61](https://github.com/inokawa/virtua/blob/128b4d1a/src/react/Virtualizer.tsx#L61)
+[src/react/Virtualizer.tsx:60](https://github.com/inokawa/virtua/blob/12562528/src/react/Virtualizer.tsx#L60)
 
 ___
 
@@ -76,7 +76,7 @@ Scroll to the given offset.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:66](https://github.com/inokawa/virtua/blob/128b4d1a/src/react/Virtualizer.tsx#L66)
+[src/react/Virtualizer.tsx:65](https://github.com/inokawa/virtua/blob/12562528/src/react/Virtualizer.tsx#L65)
 
 ___
 
@@ -102,7 +102,7 @@ Scroll by the given offset.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:71](https://github.com/inokawa/virtua/blob/128b4d1a/src/react/Virtualizer.tsx#L71)
+[src/react/Virtualizer.tsx:70](https://github.com/inokawa/virtua/blob/12562528/src/react/Virtualizer.tsx#L70)
 
 ## Properties
 
@@ -118,7 +118,7 @@ Get current [CacheSnapshot](react.CacheSnapshot.md).
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:43](https://github.com/inokawa/virtua/blob/128b4d1a/src/react/Virtualizer.tsx#L43)
+[src/react/Virtualizer.tsx:42](https://github.com/inokawa/virtua/blob/12562528/src/react/Virtualizer.tsx#L42)
 
 ___
 
@@ -134,7 +134,7 @@ Get current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:47](https://github.com/inokawa/virtua/blob/128b4d1a/src/react/Virtualizer.tsx#L47)
+[src/react/Virtualizer.tsx:46](https://github.com/inokawa/virtua/blob/12562528/src/react/Virtualizer.tsx#L46)
 
 ___
 
@@ -150,7 +150,7 @@ Get current scrollHeight or scrollWidth.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:51](https://github.com/inokawa/virtua/blob/128b4d1a/src/react/Virtualizer.tsx#L51)
+[src/react/Virtualizer.tsx:50](https://github.com/inokawa/virtua/blob/12562528/src/react/Virtualizer.tsx#L50)
 
 ___
 
@@ -166,4 +166,4 @@ Get current offsetHeight or offsetWidth.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:55](https://github.com/inokawa/virtua/blob/128b4d1a/src/react/Virtualizer.tsx#L55)
+[src/react/Virtualizer.tsx:54](https://github.com/inokawa/virtua/blob/12562528/src/react/Virtualizer.tsx#L54)
