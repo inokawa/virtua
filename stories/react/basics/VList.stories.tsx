@@ -695,63 +695,6 @@ export const Statuses: StoryObj = {
   },
 };
 
-export const WithState: StoryObj = {
-  render: () => {
-    const [actives, setActives] = useState<{ [key: number]: boolean }>({
-      0: true,
-      3: true,
-      6: true,
-      9: true,
-      12: true,
-    });
-    return (
-      <VList style={{ height: "100vh" }}>
-        {Array.from({ length: 1000 }).map((_, i) => {
-          const active = !!actives[i];
-          return (
-            <div
-              key={i}
-              style={{
-                borderBottom: "solid 1px #ccc",
-                background: active ? "lightpink" : "#fff",
-                display: "flex",
-                flexDirection: "row",
-                transition: "0.5s ease",
-              }}
-            >
-              <div>
-                <button
-                  style={{ height: "100%" }}
-                  onClick={() => {
-                    setActives((prev) => ({
-                      ...prev,
-                      [i]: !prev[i],
-                    }));
-                  }}
-                >
-                  {active ? "close" : "open"}
-                </button>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flex: 1,
-                  height: active ? 200 : 40,
-                  transition: "0.5s ease",
-                }}
-              >
-                {i}
-              </div>
-            </div>
-          );
-        })}
-      </VList>
-    );
-  },
-};
-
 export const IncreasingItems: StoryObj = {
   render: () => {
     const id = useRef(0);
