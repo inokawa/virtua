@@ -336,24 +336,8 @@ test.describe("check if scroll jump compensation works", () => {
     };
 
     // scroll from the upper side
-    {
-      // collapse
-      await scrollTo(component, 0);
-      const initialItem = await getFirstItem(component);
-      expect(initialItem.top).toEqual(0);
-      expect(initialItem.text).not.toContain(String(targetIndex));
-
-      await page.waitForTimeout(200);
-      const scrollListener = listenScrollCount(component, 1000);
-      await (await getResizeAndScrollButton()).click();
-      const called = await scrollListener;
-      await expect(called).toBeGreaterThanOrEqual(2);
-      const updatedItem = await getFirstItem(component);
-      expect(updatedItem.top).toEqual(0);
-      expect(updatedItem.text).toContain(String(targetIndex));
-    }
-    {
-      // expand
+    // collapse -> expand
+    for (let i = 0; i <= 1; i++) {
       await scrollTo(component, 0);
       const initialItem = await getFirstItem(component);
       expect(initialItem.top).toEqual(0);
@@ -370,24 +354,9 @@ test.describe("check if scroll jump compensation works", () => {
     }
 
     // scroll from the lower side
-    {
+    // collapse -> expand
+    for (let i = 0; i <= 1; i++) {
       // collapse
-      await scrollTo(component, await getTargetBottom());
-      const initialItem = await getFirstItem(component);
-      expect(initialItem.top).toEqual(0);
-      expect(initialItem.text).not.toContain(String(targetIndex));
-
-      await page.waitForTimeout(200);
-      const scrollListener = listenScrollCount(component, 1000);
-      await (await getResizeAndScrollButton()).click();
-      const called = await scrollListener;
-      await expect(called).toBeGreaterThanOrEqual(2);
-      const updatedItem = await getFirstItem(component);
-      expect(updatedItem.top).toEqual(0);
-      expect(updatedItem.text).toContain(String(targetIndex));
-    }
-    {
-      // expand
       await scrollTo(component, await getTargetBottom());
       const initialItem = await getFirstItem(component);
       expect(initialItem.top).toEqual(0);
