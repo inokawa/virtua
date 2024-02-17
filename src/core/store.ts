@@ -158,7 +158,7 @@ export const createVirtualStore = (
   const cache =
     (cacheSnapshot as Cache | undefined) || initCache(elementsCount, itemSize);
   const subscribers = new Set<[number, Subscriber]>();
-  const getRange = (offset: number): ItemsRange => {
+  const getRange = (offset: number) => {
     return computeRange(cache, offset, _prevRange[0], viewportSize);
   };
   const getTotalSize = (): number => computeTotalSize(cache);

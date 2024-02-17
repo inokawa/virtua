@@ -1,3 +1,4 @@
+import { ItemsRange } from "./types";
 import { clamp, max, median, min } from "./utils";
 
 type Writeable<T> = {
@@ -118,7 +119,7 @@ export const computeRange = (
   scrollOffset: number,
   prevStartIndex: number,
   viewportSize: number
-): [number, number] => {
+): ItemsRange => {
   const start = findIndex(
     cache,
     scrollOffset,
