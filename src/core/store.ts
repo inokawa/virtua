@@ -296,7 +296,13 @@ export const createVirtualStore = (
           // Should maintain visible position to minimize junks in appearance
           applyJump(
             updated.reduce((acc, [index, size]) => {
-              if (!shouldKeepStart || getItemOffset(index) < scrollOffset) {
+              if (
+                !shouldKeepStart ||
+                (_frozenRange
+                  ? // https://github.com/inokawa/virtua/issues/380
+                    index < _frozenRange[0]
+                  : getItemOffset(index) < scrollOffset)
+              ) {
                 const diff = size - getItemSize(cache, index);
                 if (!shouldStickToEnd || diff > 0) {
                   acc += diff;

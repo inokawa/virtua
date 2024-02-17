@@ -162,6 +162,15 @@ export const getWindowScrollRight = (page: Page) => {
   return page.evaluate(() => document.body.scrollWidth - window.scrollX);
 };
 
+export const scrollTo = (
+  scrollable: ElementHandle<HTMLElement | SVGElement>,
+  offset: number
+) => {
+  return scrollable.evaluate((e, offset) => {
+    e.scrollTop = offset;
+  }, offset);
+};
+
 export const scrollBy = (
   scrollable: ElementHandle<HTMLElement | SVGElement>,
   offset: number

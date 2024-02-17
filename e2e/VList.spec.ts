@@ -19,12 +19,14 @@ import {
   getVirtualizer,
   getScrollable,
   clearTimer,
+  scrollTo,
 } from "./utils";
 
 const listenScrollCount = (
-  component: ElementHandle<SVGElement | HTMLElement>
+  component: ElementHandle<SVGElement | HTMLElement>,
+  timeout = 2000
 ): Promise<number> => {
-  return component.evaluate((c) => {
+  return component.evaluate((c, t) => {
     let timer: null | ReturnType<typeof setTimeout> = null;
     let called = 0;
 
@@ -37,11 +39,11 @@ const listenScrollCount = (
         timer = setTimeout(() => {
           c.removeEventListener("scroll", cb);
           resolve(called);
-        }, 2000);
+        }, t);
       };
       c.addEventListener("scroll", cb);
     });
-  });
+  }, timeout);
 };
 
 test.describe("smoke", () => {
@@ -296,6 +298,112 @@ test.describe("check if scroll jump compensation works", () => {
     await expect(prev).toBeGreaterThan(initial + min);
   });
 
+  test("resize with smooth scroll", async ({ page }) => {
+    await page.goto(storyUrl("advanced-collapse-and-scroll--default"));
+    const component = await getScrollable(page);
+    const container = await getVirtualizer(page);
+    await component.waitForElementState("stable");
+
+    expect(
+      await container.evaluate((e) => e.children.length)
+    ).toBeGreaterThanOrEqual(3);
+
+    const targetIndex = 1;
+
+    const getTargetItem = () => {
+      return container.evaluateHandle((e, i) => {
+        return Array.from(e.children).find((c) =>
+          c.textContent!.startsWith(String(i) + "Resize")
+        )!;
+      }, targetIndex);
+    };
+
+    const getResizeAndScrollButton = async () => {
+      const target = await getTargetItem();
+      const button = await target.evaluateHandle((e) => {
+        const buttons = e.querySelectorAll("button");
+        return buttons[buttons.length - 1];
+      });
+      expect(await button.textContent()).toBe("Resize + Smooth Scroll");
+      return button;
+    };
+
+    const getTargetBottom = async () => {
+      const target = await getTargetItem();
+      return target.evaluate((e) => {
+        return (e as HTMLElement).offsetTop + e.getBoundingClientRect().height;
+      });
+    };
+
+    // scroll from the upper side
+    {
+      // collapse
+      await scrollTo(component, 0);
+      const initialItem = await getFirstItem(component);
+      expect(initialItem.top).toEqual(0);
+      expect(initialItem.text).not.toContain(String(targetIndex));
+
+      await page.waitForTimeout(200);
+      const scrollListener = listenScrollCount(component, 1000);
+      await (await getResizeAndScrollButton()).click();
+      const called = await scrollListener;
+      await expect(called).toBeGreaterThanOrEqual(2);
+      const updatedItem = await getFirstItem(component);
+      expect(updatedItem.top).toEqual(0);
+      expect(updatedItem.text).toContain(String(targetIndex));
+    }
+    {
+      // expand
+      await scrollTo(component, 0);
+      const initialItem = await getFirstItem(component);
+      expect(initialItem.top).toEqual(0);
+      expect(initialItem.text).not.toContain(String(targetIndex));
+
+      await page.waitForTimeout(200);
+      const scrollListener = listenScrollCount(component, 1000);
+      await (await getResizeAndScrollButton()).click();
+      const called = await scrollListener;
+      await expect(called).toBeGreaterThanOrEqual(2);
+      const updatedItem = await getFirstItem(component);
+      expect(updatedItem.top).toEqual(0);
+      expect(updatedItem.text).toContain(String(targetIndex));
+    }
+
+    // scroll from the lower side
+    {
+      // collapse
+      await scrollTo(component, await getTargetBottom());
+      const initialItem = await getFirstItem(component);
+      expect(initialItem.top).toEqual(0);
+      expect(initialItem.text).not.toContain(String(targetIndex));
+
+      await page.waitForTimeout(200);
+      const scrollListener = listenScrollCount(component, 1000);
+      await (await getResizeAndScrollButton()).click();
+      const called = await scrollListener;
+      await expect(called).toBeGreaterThanOrEqual(2);
+      const updatedItem = await getFirstItem(component);
+      expect(updatedItem.top).toEqual(0);
+      expect(updatedItem.text).toContain(String(targetIndex));
+    }
+    {
+      // expand
+      await scrollTo(component, await getTargetBottom());
+      const initialItem = await getFirstItem(component);
+      expect(initialItem.top).toEqual(0);
+      expect(initialItem.text).not.toContain(String(targetIndex));
+
+      await page.waitForTimeout(200);
+      const scrollListener = listenScrollCount(component, 1000);
+      await (await getResizeAndScrollButton()).click();
+      const called = await scrollListener;
+      await expect(called).toBeGreaterThanOrEqual(2);
+      const updatedItem = await getFirstItem(component);
+      expect(updatedItem.top).toEqual(0);
+      expect(updatedItem.text).toContain(String(targetIndex));
+    }
+  });
+
   test("stick to bottom", async ({ page }) => {
     await page.goto(storyUrl("advanced-chat--default"));
     const component = await getScrollable(page);
@@ -353,7 +461,7 @@ test.describe("check if scroll jump compensation works", () => {
     });
 
     // scroll to top
-    await component.evaluate((e) => (e.scrollTop = 0));
+    await scrollTo(component, 0);
 
     // wait for prepending
     await component.evaluate((e) => {

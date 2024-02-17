@@ -3,13 +3,11 @@ import { VList, VListHandle } from "../../../src";
 import React, {
   CSSProperties,
   ReactNode,
-  useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
-import { delay, range } from "../common";
-import { faker } from "@faker-js/faker";
+import { range } from "../common";
 
 export default {
   component: VList,
@@ -33,7 +31,7 @@ const Item = ({ content }: { content: ReactNode }) => {
 };
 
 export const Default: StoryObj = {
-  name: "Resize and scroll",
+  name: "Collapse and scroll",
   render: () => {
     const [itemCollapseState, setItemCollapseState] = useState<
       Record<string, boolean>
@@ -55,6 +53,7 @@ export const Default: StoryObj = {
             key={d.id}
             content={
               <Collapser
+                id={d.id}
                 isCollapsed={itemCollapseState[d.id]}
                 resize={() => {
                   setItemCollapseState((state) => ({
@@ -69,7 +68,7 @@ export const Default: StoryObj = {
             }
           />
         )),
-      [items, itemCollapseState],
+      [items, itemCollapseState]
     );
 
     return (
@@ -81,10 +80,12 @@ export const Default: StoryObj = {
 };
 
 const Collapser = ({
+  id,
   isCollapsed,
   resize,
   scroll,
 }: {
+  id: number;
   isCollapsed: boolean;
   resize: () => void;
   scroll: () => void;
@@ -102,6 +103,7 @@ const Collapser = ({
         gap: "16px",
       }}
     >
+      <div>{id}</div>
       <button onClick={resize}>Resize</button>
       <button onClick={scroll}>Smooth Scroll</button>
       <button
