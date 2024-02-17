@@ -20,4 +20,4 @@ Get current [CacheSnapshot](react.CacheSnapshot.md).
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:38](https://github.com/inokawa/virtua/blob/12562528/src/react/WindowVirtualizer.tsx#L38)
+[src/react/WindowVirtualizer.tsx:38](https://github.com/inokawa/virtua/blob/9a5dd870/src/react/WindowVirtualizer.tsx#L38)
