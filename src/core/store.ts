@@ -189,22 +189,23 @@ export const createVirtualStore = (
       return JSON.parse(JSON.stringify(cache)) as unknown as CacheSnapshot;
     },
     _getRange() {
+      // Return previous range for consistent render until next scroll event comes in.
+      if (_flushedJump) {
+        return _prevRange;
+      }
+      _prevRange = computeRange(
+        cache,
+        getRelativeScrollOffset() + pendingJump + jump,
+        _prevRange[0],
+        viewportSize
+      );
       if (_frozenRange) {
         return [
           min(_prevRange[0], _frozenRange[0]),
           max(_prevRange[1], _frozenRange[1]),
         ];
       }
-      // Return previous range for consistent render until next scroll event comes in.
-      if (_flushedJump) {
-        return _prevRange;
-      }
-      return (_prevRange = computeRange(
-        cache,
-        getRelativeScrollOffset() + pendingJump + jump,
-        _prevRange[0],
-        viewportSize
-      ));
+      return _prevRange;
     },
     _isUnmeasuredItem(index) {
       return cache._sizes[index] === UNCACHED;
