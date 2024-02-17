@@ -158,6 +158,9 @@ export const createVirtualStore = (
   const cache =
     (cacheSnapshot as Cache | undefined) || initCache(elementsCount, itemSize);
   const subscribers = new Set<[number, Subscriber]>();
+  const getRange = (offset: number): ItemsRange => {
+    return computeRange(cache, offset, _prevRange[0], viewportSize);
+  };
   const getTotalSize = (): number => computeTotalSize(cache);
   const getScrollableSize = (): number =>
     getTotalSize() + startSpacerSize + endSpacerSize;
@@ -193,12 +196,8 @@ export const createVirtualStore = (
       if (_flushedJump) {
         return _prevRange;
       }
-      _prevRange = computeRange(
-        cache,
-        getRelativeScrollOffset() + pendingJump + jump,
-        _prevRange[0],
-        viewportSize
-      );
+      _prevRange = getRange(getRelativeScrollOffset() + pendingJump + jump);
+
       if (_frozenRange) {
         return [
           min(_prevRange[0], _frozenRange[0]),
@@ -430,12 +429,7 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_BEFORE_MANUAL_SMOOTH_SCROLL: {
-          _frozenRange = computeRange(
-            cache,
-            payload,
-            _prevRange[0],
-            viewportSize
-          );
+          _frozenRange = getRange(payload);
           mutated = UPDATE_SCROLL_STATE;
           break;
         }
