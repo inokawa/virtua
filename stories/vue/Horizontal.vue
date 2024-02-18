@@ -10,12 +10,10 @@ const data = Array.from({ length: 1000 }).map((_, i) => createItem(i));
 
 <template>
   <div :style="{ padding: '10px' }">
-    <VList :data="data" :style="{ width: '100%', height: '200px' }" horizontal>
-      <template #default="item">
-        <div :key="item.index" :style="{ width: item.size, background: 'white', borderRight: 'solid 1px #ccc' }">
-          {{ item.index }}
-        </div>
-      </template>
+    <VList :data="data" :style="{ width: '100%', height: '200px' }" horizontal #default="item">
+      <div :key="item.index" :style="{ width: item.size, background: 'white', borderRight: 'solid 1px #ccc' }">
+        {{ item.index }}
+      </div>
     </VList>
   </div>
 </template>

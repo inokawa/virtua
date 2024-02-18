@@ -9,12 +9,10 @@ const data = Array.from({ length: 1000 }).map((_, i) => createItem(i));
 </script>
 
 <template>
-  <VList :data="data" :style="{ height: '100vh' }">
-    <template #default="item">
-      <div :key="item.index" :style="{ height: item.size, background: 'white', borderBottom: 'solid 1px #ccc' }">
-        {{ item.index }}
-      </div>
-    </template>
+  <VList :data="data" :style="{ height: '100vh' }" #default="item">
+    <div :key="item.index" :style="{ height: item.size, background: 'white', borderBottom: 'solid 1px #ccc' }">
+      {{ item.index }}
+    </div>
   </VList>
 </template>
 

@@ -11,12 +11,10 @@ const data = Array.from({ length: 1000 }).map((_, i) => createItem(i));
 <template>
   <div :style="{ padding: '200px 100px' }">
     <div :style="{ border: 'solid 1px gray' }">
-      <WindowVirtualizer :data="data">
-        <template #default="item">
-          <div :key="item.index" :style="{ height: item.size, background: 'white', borderBottom: 'solid 1px #ccc' }">
-            {{ item.index }}
-          </div>
-        </template>
+      <WindowVirtualizer :data="data" #default="item">
+        <div :key="item.index" :style="{ height: item.size, background: 'white', borderBottom: 'solid 1px #ccc' }">
+          {{ item.index }}
+        </div>
       </WindowVirtualizer>
     </div>
   </div>

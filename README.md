@@ -209,19 +209,17 @@ const data = Array.from({ length: 1000 }).map((_, i) => ({
 </script>
 
 <template>
-  <VList :data="data" :style="{ height: '800px' }">
-    <template #default="item">
-      <div
-        :key="item.id"
-        :style="{
-          height: item.size,
-          background: 'white',
-          borderBottom: 'solid 1px #ccc',
-        }"
-      >
-        {{ item.id }}
-      </div>
-    </template>
+  <VList :data="data" :style="{ height: '800px' }" #default="item">
+    <div
+      :key="item.id"
+      :style="{
+        height: item.size,
+        background: 'white',
+        borderBottom: 'solid 1px #ccc',
+      }"
+    >
+      {{ item.id }}
+    </div>
   </VList>
 </template>
 ```
