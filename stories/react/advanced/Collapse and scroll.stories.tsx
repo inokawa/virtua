@@ -94,7 +94,7 @@ const Collapser = ({
     <div
       style={{
         transition: "height 250ms linear",
-        height: isCollapsed ? 200 : 800,
+        height: isCollapsed ? 200 : 600,
         background: "#ccc",
         display: "flex",
         flexDirection: "column",

@@ -298,6 +298,61 @@ test.describe("check if scroll jump compensation works", () => {
     await expect(prev).toBeGreaterThan(initial + min);
   });
 
+  test("resize when its top is out of viewport", async ({ page }) => {
+    await page.goto(storyUrl("advanced-collapse-and-scroll--default"));
+    const component = await getScrollable(page);
+    const container = await getVirtualizer(page);
+    await component.waitForElementState("stable");
+
+    expect(
+      await container.evaluate((e) => e.children.length)
+    ).toBeGreaterThanOrEqual(3);
+
+    const targetIndex = 1;
+    const marginTop = 100;
+
+    const getTargetItem = () => {
+      return container.evaluateHandle((e, i) => {
+        return Array.from(e.children).find((c) =>
+          c.textContent!.startsWith(String(i) + "Resize")
+        )!;
+      }, targetIndex);
+    };
+
+    const getResizeButton = async () => {
+      const target = await getTargetItem();
+      const button = await target.evaluateHandle((e) => {
+        const buttons = e.querySelectorAll("button");
+        return buttons[0];
+      });
+      expect(await button.textContent()).toBe("Resize");
+      return button;
+    };
+
+    const getTargetTop = async () => {
+      const target = await getTargetItem();
+      return target.evaluate((e) => {
+        return (e as HTMLElement).offsetTop;
+      });
+    };
+
+    // resize and check if jump compensation doesn't work
+    // collapse -> expand
+    for (let i = 0; i <= 1; i++) {
+      await scrollTo(component, (await getTargetTop()) + marginTop);
+      const initialItem = await getFirstItem(component);
+      expect(initialItem.top).toBeLessThan(0);
+      expect(initialItem.text).toContain(String(targetIndex));
+
+      await page.waitForTimeout(200);
+      await (await getResizeButton()).click();
+      await (await getTargetItem()).waitForElementState("stable");
+      const updatedItem = await getFirstItem(component);
+      expect(updatedItem.top).toEqual(initialItem.top);
+      expect(updatedItem.text).toContain(String(targetIndex));
+    }
+  });
+
   test("resize with smooth scroll", async ({ page }) => {
     await page.goto(storyUrl("advanced-collapse-and-scroll--default"));
     const component = await getScrollable(page);

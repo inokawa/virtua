@@ -301,7 +301,13 @@ export const createVirtualStore = (
                 (_frozenRange
                   ? // https://github.com/inokawa/virtua/issues/380
                     index < _frozenRange[0]
-                  : getItemOffset(index) < scrollOffset)
+                  : getItemOffset(index) +
+                      // https://github.com/inokawa/virtua/issues/385
+                      (_scrollDirection === SCROLL_IDLE &&
+                      _scrollMode === SCROLL_BY_NATIVE
+                        ? getItemSize(cache, index)
+                        : 0) <
+                    scrollOffset)
               ) {
                 const diff = size - getItemSize(cache, index);
                 if (!shouldStickToEnd || diff > 0) {
