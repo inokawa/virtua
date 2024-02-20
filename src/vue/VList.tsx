@@ -66,6 +66,7 @@ export const VList = /*#__PURE__*/ defineComponent({
       get viewportSize() {
         return handle.value!.viewportSize;
       },
+      getItemOffset: (...args) => handle.value!.getItemOffset(...args),
       scrollToIndex: (...args) => handle.value!.scrollToIndex(...args),
       scrollTo: (...args) => handle.value!.scrollTo(...args),
       scrollBy: (...args) => handle.value!.scrollBy(...args),
