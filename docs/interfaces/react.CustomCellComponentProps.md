@@ -19,7 +19,7 @@ Props of customized cell component for [VGrid](../modules/react.md#experimental_
 
 #### Defined in
 
-[src/react/VGrid.tsx:35](https://github.com/inokawa/virtua/blob/9bad093d/src/react/VGrid.tsx#L35)
+[src/react/VGrid.tsx:35](https://github.com/inokawa/virtua/blob/2a92d85a/src/react/VGrid.tsx#L35)
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 #### Defined in
 
-[src/react/VGrid.tsx:36](https://github.com/inokawa/virtua/blob/9bad093d/src/react/VGrid.tsx#L36)
+[src/react/VGrid.tsx:36](https://github.com/inokawa/virtua/blob/2a92d85a/src/react/VGrid.tsx#L36)
