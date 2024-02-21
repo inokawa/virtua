@@ -89,6 +89,14 @@ const props = {
    * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
    */
   horizontal: Boolean,
+  /**
+   * If you put an element before virtualizer, you have to define its height with this prop.
+   */
+  startMargin: Number,
+  /**
+   * If you put an element after virtualizer, you have to define its height with this prop.
+   */
+  endMargin: Number,
 } satisfies ComponentObjectPropsOptions;
 
 export const Virtualizer = /*#__PURE__*/ defineComponent({
@@ -102,7 +110,9 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       props.itemSize ?? 40,
       undefined,
       undefined,
-      !props.itemSize
+      !props.itemSize,
+      props.startMargin,
+      props.endMargin
     );
     const resizer = createResizer(store, isHorizontal);
     const scroller = createScroller(store, isHorizontal);
