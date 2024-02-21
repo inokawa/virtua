@@ -47,6 +47,11 @@ export interface VirtualizerHandle {
    */
   readonly viewportSize: number;
   /**
+   * Get item offset from start.
+   * @param index index of item
+   */
+  getItemOffset(index: number): number;
+  /**
    * Scroll to the item specified by index.
    * @param index index of item
    * @param opts options
@@ -215,6 +220,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         get viewportSize() {
           return store._getViewportSize();
         },
+        getItemOffset: store._getItemOffset,
         scrollToIndex: scroller._scrollToIndex,
         scrollTo: scroller._scrollTo,
         scrollBy: scroller._scrollBy,
