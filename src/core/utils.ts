@@ -34,6 +34,9 @@ export const median = (arr: number[]): number => {
   return s.length % 2 === 0 ? (s[mid - 1]! + s[mid]!) / 2 : s[mid]!;
 };
 
+/**
+ * @internal
+ */
 export const microtask: (fn: () => void) => void =
   typeof queueMicrotask === "function"
     ? queueMicrotask
