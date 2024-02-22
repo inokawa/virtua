@@ -294,7 +294,7 @@ export const createScroller = (
       offset += store._getScrollOffset();
       scheduleImperativeScroll(() => offset);
     },
-    _scrollToIndex(index, { align, smooth } = {}) {
+    _scrollToIndex(index, { align, smooth, offset = 0 } = {}) {
       index = clamp(index, 0, store._getItemsLength() - 1);
 
       if (align === "nearest") {
@@ -316,6 +316,7 @@ export const createScroller = (
 
       scheduleImperativeScroll(() => {
         return (
+          offset +
           store._getStartSpacerSize() +
           store._getItemOffset(index) +
           (align === "end"
