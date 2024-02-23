@@ -302,6 +302,8 @@ Virtua try to suppress glitch caused by resize as much as possible, but it will 
 It may be dispatched by ResizeObserver in this lib [as described in spec](https://www.w3.org/TR/resize-observer/#deliver-resize-error). If it bothers you,
 [you can safely ignore it](https://github.com/DevExpress/testcafe/issues/4857#issuecomment-598775956).
 
+Especially for `webpack-dev-server`, [you can filter out the specific error with `devServer.client.overlay.runtimeErrors` option](https://webpack.js.org/configuration/dev-server/#overlay).
+
 ## Comparison
 
 ### Features
