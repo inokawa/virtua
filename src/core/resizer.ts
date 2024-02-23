@@ -16,6 +16,7 @@ const createResizeObserver = (cb: ResizeObserverCallback) => {
       // https://www.w3.org/TR/resize-observer/#intro
       (
         ro ||
+        // https://bugs.chromium.org/p/chromium/issues/detail?id=1491739
         (ro = new (getCurrentWindow(getCurrentDocument(e)).ResizeObserver)(cb))
       ).observe(e);
     },
