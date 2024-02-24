@@ -8,8 +8,7 @@ import {
 } from "react";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
-  UPDATE_SCROLL_STATE,
-  UPDATE_SIZE_STATE,
+  UPDATE_VIRTUAL_STATE,
   getOverscanedRange,
   createVirtualStore,
   SCROLL_IDLE,
@@ -179,7 +178,7 @@ export const WindowVirtualizer = forwardRef<
 
       // store must be subscribed first because others may dispatch update on init depending on implementation
       const unsubscribeStore = store._subscribe(
-        UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
+        UPDATE_VIRTUAL_STATE,
         (sync) => {
           if (sync) {
             flushSync(rerender);

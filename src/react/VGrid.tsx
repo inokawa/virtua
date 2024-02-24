@@ -10,12 +10,11 @@ import {
 } from "react";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
-  UPDATE_SCROLL_STATE,
-  UPDATE_SIZE_STATE,
   getOverscanedRange,
   createVirtualStore,
   SCROLL_IDLE,
   getScrollSize,
+  UPDATE_VIRTUAL_STATE,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { createScroller } from "../core/scroller";
@@ -245,7 +244,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       const root = rootRef[refKey]!;
       // store must be subscribed first because others may dispatch update on init depending on implementation
       const unsubscribeVStore = vStore._subscribe(
-        UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
+        UPDATE_VIRTUAL_STATE,
         (sync) => {
           if (sync) {
             flushSync(vRerender);
@@ -255,7 +254,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         }
       );
       const unsubscribeHStore = hStore._subscribe(
-        UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
+        UPDATE_VIRTUAL_STATE,
         (sync) => {
           if (sync) {
             flushSync(hRerender);

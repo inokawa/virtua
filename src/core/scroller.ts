@@ -9,7 +9,7 @@ import {
   ACTION_SCROLL,
   VirtualStore,
   ACTION_SCROLL_END,
-  UPDATE_SIZE_STATE,
+  UPDATE_SIZE_EVENT,
   ACTION_MANUAL_SCROLL,
   SCROLL_IDLE,
   ACTION_BEFORE_MANUAL_SMOOTH_SCROLL,
@@ -196,7 +196,7 @@ export const createScroller = (
           // Reject when items around scroll destination completely measured
           timeout((cancelScroll = reject), 150);
         }),
-        store._subscribe(UPDATE_SIZE_STATE, () => {
+        store._subscribe(UPDATE_SIZE_EVENT, () => {
           queue && queue();
         }),
       ];

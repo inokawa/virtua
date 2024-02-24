@@ -65,9 +65,9 @@ type Actions =
   | [type: typeof ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, offset: number];
 
 /** @internal */
-export const UPDATE_SCROLL_STATE = 0b0001;
+export const UPDATE_VIRTUAL_STATE = 0b0001;
 /** @internal */
-export const UPDATE_SIZE_STATE = 0b0010;
+export const UPDATE_SIZE_EVENT = 0b0010;
 /** @internal */
 export const UPDATE_SCROLL_EVENT = 0b0100;
 /** @internal */
@@ -342,7 +342,7 @@ export const createVirtualStore = (
             shouldAutoEstimateItemSize = false;
           }
 
-          mutated = UPDATE_SIZE_STATE;
+          mutated = UPDATE_VIRTUAL_STATE + UPDATE_SIZE_EVENT;
 
           // Synchronous update is necessary in current design to minimize visible glitch in concurrent rendering.
           // However in React, synchronous update with flushSync after asynchronous update will overtake the asynchronous one.
@@ -353,7 +353,7 @@ export const createVirtualStore = (
         case ACTION_VIEWPORT_RESIZE: {
           if (viewportSize !== payload) {
             viewportSize = payload;
-            mutated = UPDATE_SIZE_STATE;
+            mutated = UPDATE_VIRTUAL_STATE + UPDATE_SIZE_EVENT;
           }
           break;
         }
@@ -362,7 +362,7 @@ export const createVirtualStore = (
             applyJump(updateCacheLength(cache, payload[0], true));
             _scrollMode = SCROLL_BY_SHIFT;
             isJumpByShift = true;
-            mutated = UPDATE_SCROLL_STATE;
+            mutated = UPDATE_VIRTUAL_STATE;
           } else {
             updateCacheLength(cache, payload[0]);
           }
@@ -416,14 +416,14 @@ export const createVirtualStore = (
           shouldSync = distance > viewportSize;
 
           scrollOffset = nextScrollOffset;
-          mutated = UPDATE_SCROLL_STATE + UPDATE_SCROLL_EVENT;
+          mutated = UPDATE_VIRTUAL_STATE + UPDATE_SCROLL_EVENT;
           break;
         }
         case ACTION_SCROLL_END: {
           mutated = UPDATE_SCROLL_END_EVENT;
           if (_scrollDirection !== SCROLL_IDLE) {
             shouldFlushPendingJump = true;
-            mutated += UPDATE_SCROLL_STATE;
+            mutated += UPDATE_VIRTUAL_STATE;
           }
           _scrollDirection = SCROLL_IDLE;
           _scrollMode = SCROLL_BY_NATIVE;
@@ -436,7 +436,7 @@ export const createVirtualStore = (
         }
         case ACTION_BEFORE_MANUAL_SMOOTH_SCROLL: {
           _frozenRange = getRange(payload);
-          mutated = UPDATE_SCROLL_STATE;
+          mutated = UPDATE_VIRTUAL_STATE;
           break;
         }
       }

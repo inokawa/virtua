@@ -12,8 +12,7 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   getOverscanedRange,
   createVirtualStore,
-  UPDATE_SIZE_STATE,
-  UPDATE_SCROLL_STATE,
+  UPDATE_VIRTUAL_STATE,
   SCROLL_IDLE,
   UPDATE_SCROLL_END_EVENT,
   getScrollSize,
@@ -237,7 +236,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
 
       // store must be subscribed first because others may dispatch update on init depending on implementation
       const unsubscribeStore = store._subscribe(
-        UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
+        UPDATE_VIRTUAL_STATE,
         (sync) => {
           if (sync) {
             flushSync(rerender);

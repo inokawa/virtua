@@ -13,9 +13,8 @@ import {
 } from "vue";
 import {
   SCROLL_IDLE,
-  UPDATE_SCROLL_STATE,
   UPDATE_SCROLL_END_EVENT,
-  UPDATE_SIZE_STATE,
+  UPDATE_VIRTUAL_STATE,
   getOverscanedRange,
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
@@ -69,12 +68,9 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     const scroller = createWindowScroller(store, isHorizontal);
 
     const rerender = ref(store._getStateVersion());
-    const unsubscribeStore = store._subscribe(
-      UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
-      () => {
-        rerender.value = store._getStateVersion();
-      }
-    );
+    const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
+      rerender.value = store._getStateVersion();
+    });
 
     const unsubscribeOnScrollEnd = store._subscribe(
       UPDATE_SCROLL_END_EVENT,

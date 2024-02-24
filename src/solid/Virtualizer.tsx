@@ -13,10 +13,9 @@ import {
 } from "solid-js";
 import {
   SCROLL_IDLE,
-  UPDATE_SCROLL_STATE,
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
-  UPDATE_SIZE_STATE,
+  UPDATE_VIRTUAL_STATE,
   getOverscanedRange,
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
@@ -160,12 +159,9 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
   const [rerender, setRerender] = createSignal(store._getStateVersion());
 
-  const unsubscribeStore = store._subscribe(
-    UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
-    () => {
-      setRerender(store._getStateVersion());
-    }
-  );
+  const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
+    setRerender(store._getStateVersion());
+  });
 
   const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
     props.onScroll?.(store._getScrollOffset());

@@ -13,9 +13,8 @@ import {
 } from "solid-js";
 import {
   SCROLL_IDLE,
-  UPDATE_SCROLL_STATE,
   UPDATE_SCROLL_END_EVENT,
-  UPDATE_SIZE_STATE,
+  UPDATE_VIRTUAL_STATE,
   getOverscanedRange,
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
@@ -120,12 +119,9 @@ export const WindowVirtualizer = <T,>(
 
   const [rerender, setRerender] = createSignal(store._getStateVersion());
 
-  const unsubscribeStore = store._subscribe(
-    UPDATE_SCROLL_STATE + UPDATE_SIZE_STATE,
-    () => {
-      setRerender(store._getStateVersion());
-    }
-  );
+  const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
+    setRerender(store._getStateVersion());
+  });
 
   const unsubscribeOnScrollEnd = store._subscribe(
     UPDATE_SCROLL_END_EVENT,
