@@ -1,6 +1,6 @@
 import {
   initCache,
-  getItemSize,
+  getItemSize as _getItemSize,
   computeTotalSize,
   computeOffset as computeStartOffset,
   Cache,
@@ -171,6 +171,9 @@ export const createVirtualStore = (
   const getItemOffset = (index: number): number => {
     return computeStartOffset(cache, index) - pendingJump;
   };
+  const getItemSize = (index: number): number => {
+    return _getItemSize(cache, index);
+  };
 
   const applyJump = (j: number) => {
     if (j) {
@@ -219,9 +222,7 @@ export const createVirtualStore = (
         .includes(UNCACHED);
     },
     _getItemOffset: getItemOffset,
-    _getItemSize(index) {
-      return getItemSize(cache, index);
-    },
+    _getItemSize: getItemSize,
     _getItemsLength() {
       return cache._length;
     },
@@ -305,11 +306,11 @@ export const createVirtualStore = (
                       // https://github.com/inokawa/virtua/issues/385
                       (_scrollDirection === SCROLL_IDLE &&
                       _scrollMode === SCROLL_BY_NATIVE
-                        ? getItemSize(cache, index)
+                        ? getItemSize(index)
                         : 0) <
                     scrollOffset)
               ) {
-                const diff = size - getItemSize(cache, index);
+                const diff = size - getItemSize(index);
                 if (!shouldStickToEnd || diff > 0) {
                   acc += diff;
                 }
@@ -320,7 +321,7 @@ export const createVirtualStore = (
 
           // Update item sizes
           for (const [index, size] of updated) {
-            const prevSize = getItemSize(cache, index);
+            const prevSize = getItemSize(index);
             const isInitialMeasurement = setItemSize(cache, index, size);
 
             if (shouldAutoEstimateItemSize) {
