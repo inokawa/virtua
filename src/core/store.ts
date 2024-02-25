@@ -3,15 +3,20 @@ import {
   getItemSize as _getItemSize,
   computeTotalSize,
   computeOffset as computeStartOffset,
-  Cache,
   UNCACHED,
   setItemSize,
   estimateDefaultItemSize,
   updateCacheLength,
   computeRange,
+  takeCacheSnapshot,
 } from "./cache";
 import { isIOSWebKit } from "./environment";
-import type { CacheSnapshot, ItemResize, ItemsRange } from "./types";
+import type {
+  CacheSnapshot,
+  InternalCacheSnapshot,
+  ItemResize,
+  ItemsRange,
+} from "./types";
 import { abs, clamp, max, min } from "./utils";
 
 // Scroll offset and sizes can have sub-pixel value if window.devicePixelRatio has decimal value
@@ -155,8 +160,11 @@ export const createVirtualStore = (
   let _prevRange: ItemsRange = [0, 0];
   let _totalMeasuredSize = 0;
 
-  const cache =
-    (cacheSnapshot as Cache | undefined) || initCache(elementsCount, itemSize);
+  const cache = initCache(
+    elementsCount,
+    itemSize,
+    cacheSnapshot as unknown as InternalCacheSnapshot | undefined
+  );
   const subscribers = new Set<[number, Subscriber]>();
   const getRange = (offset: number) => {
     return computeRange(cache, offset, _prevRange[0], viewportSize);
@@ -192,7 +200,7 @@ export const createVirtualStore = (
       return stateVersion;
     },
     _getCacheSnapshot() {
-      return JSON.parse(JSON.stringify(cache)) as unknown as CacheSnapshot;
+      return takeCacheSnapshot(cache) as unknown as CacheSnapshot;
     },
     _getRange() {
       // Return previous range for consistent render until next scroll event comes in.
