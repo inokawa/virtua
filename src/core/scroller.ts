@@ -420,3 +420,52 @@ export const createWindowScroller = (
     },
   };
 };
+
+/**
+ * @internal
+ */
+export type GridScroller = {
+  _observe: (viewportElement: HTMLElement) => void;
+  _dispose(): void;
+  _scrollTo: (offsetX: number, offsetY: number) => void;
+  _scrollBy: (offsetX: number, offsetY: number) => void;
+  _scrollToIndex: (indexX: number, indexY: number) => void;
+  _fixScrollJump: () => void;
+};
+
+/**
+ * @internal
+ */
+export const createGridScroller = (
+  vStore: VirtualStore,
+  hStore: VirtualStore
+): GridScroller => {
+  const vScroller = createScroller(vStore, false);
+  const hScroller = createScroller(hStore, true);
+  return {
+    _observe(viewportElement) {
+      vScroller._observe(viewportElement);
+      hScroller._observe(viewportElement);
+    },
+    _dispose() {
+      vScroller._dispose();
+      hScroller._dispose();
+    },
+    _scrollTo(offsetX, offsetY) {
+      vScroller._scrollTo(offsetY);
+      hScroller._scrollTo(offsetX);
+    },
+    _scrollBy(offsetX, offsetY) {
+      vScroller._scrollBy(offsetY);
+      hScroller._scrollBy(offsetX);
+    },
+    _scrollToIndex(indexX, indexY) {
+      vScroller._scrollToIndex(indexY);
+      hScroller._scrollToIndex(indexX);
+    },
+    _fixScrollJump() {
+      vScroller._fixScrollJump();
+      hScroller._fixScrollJump();
+    },
+  };
+};

@@ -17,7 +17,7 @@ import {
   UPDATE_VIRTUAL_STATE,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { createScroller } from "../core/scroller";
+import { createGridScroller } from "../core/scroller";
 import { refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { createGridResizer, GridResizer } from "../core/resizer";
@@ -208,15 +208,14 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     },
     ref
   ): ReactElement => {
-    const [vStore, hStore, resizer, vScroller, hScroller] = useStatic(() => {
+    const [vStore, hStore, resizer, scroller] = useStatic(() => {
       const _vs = createVirtualStore(rowCount, cellHeight, initialRowCount);
       const _hs = createVirtualStore(colCount, cellWidth, initialColCount);
       return [
         _vs,
         _hs,
         createGridResizer(_vs, _hs),
-        createScroller(_vs, false),
-        createScroller(_hs, true),
+        createGridScroller(_vs, _hs),
       ];
     });
     // The elements length and cached items length are different just after element is added/removed.
@@ -264,23 +263,18 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         }
       );
       resizer._observeRoot(root);
-      vScroller._observe(root);
-      hScroller._observe(root);
+      scroller._observe(root);
       return () => {
         unsubscribeVStore();
         unsubscribeHStore();
         resizer._dispose();
-        vScroller._dispose();
-        hScroller._dispose();
+        scroller._dispose();
       };
     }, []);
 
     useIsomorphicLayoutEffect(() => {
-      vScroller._fixScrollJump();
-    }, [vJumpCount]);
-    useIsomorphicLayoutEffect(() => {
-      hScroller._fixScrollJump();
-    }, [hJumpCount]);
+      scroller._fixScrollJump();
+    }, [vJumpCount, hJumpCount]);
 
     useImperativeHandle(
       ref,
@@ -295,18 +289,9 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           get viewportSize(): [number, number] {
             return [hStore._getViewportSize(), vStore._getViewportSize()];
           },
-          scrollToIndex(indexX, indexY) {
-            hScroller._scrollToIndex(indexX);
-            vScroller._scrollToIndex(indexY);
-          },
-          scrollTo(offsetX, offsetY) {
-            hScroller._scrollTo(offsetX);
-            vScroller._scrollTo(offsetY);
-          },
-          scrollBy(offsetX, offsetY) {
-            hScroller._scrollBy(offsetX);
-            vScroller._scrollBy(offsetY);
-          },
+          scrollToIndex: scroller._scrollToIndex,
+          scrollTo: scroller._scrollTo,
+          scrollBy: scroller._scrollBy,
         };
       },
       []
