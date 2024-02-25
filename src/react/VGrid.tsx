@@ -102,17 +102,29 @@ const Cell = memo(
  */
 export interface VGridHandle {
   /**
-   * Get current scrollTop or scrollLeft.
+   * Get current scrollTop.
    */
-  readonly scrollOffset: [x: number, y: number];
+  readonly scrollTop: number;
   /**
-   * Get current scrollHeight or scrollWidth.
+   * Get current scrollLeft.
    */
-  readonly scrollSize: [width: number, height: number];
+  readonly scrollLeft: number;
   /**
-   * Get current offsetHeight or offsetWidth.
+   * Get current scrollHeight.
    */
-  readonly viewportSize: [width: number, height: number];
+  readonly scrollHeight: number;
+  /**
+   * Get current scrollWidth.
+   */
+  readonly scrollWidth: number;
+  /**
+   * Get current offsetHeight.
+   */
+  readonly viewportHeight: number;
+  /**
+   * Get current offsetWidth.
+   */
+  readonly viewportWidth: number;
   /**
    * Scroll to the item specified by index.
    * @param indexX horizontal index of item
@@ -280,14 +292,23 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       ref,
       () => {
         return {
-          get scrollOffset(): [number, number] {
-            return [hStore._getScrollOffset(), vStore._getScrollOffset()];
+          get scrollTop() {
+            return vStore._getScrollOffset();
           },
-          get scrollSize(): [number, number] {
-            return [getScrollSize(hStore), getScrollSize(vStore)];
+          get scrollLeft() {
+            return hStore._getScrollOffset();
           },
-          get viewportSize(): [number, number] {
-            return [hStore._getViewportSize(), vStore._getViewportSize()];
+          get scrollHeight() {
+            return getScrollSize(vStore);
+          },
+          get scrollWidth() {
+            return getScrollSize(hStore);
+          },
+          get viewportHeight() {
+            return vStore._getViewportSize();
+          },
+          get viewportWidth() {
+            return hStore._getViewportSize();
           },
           scrollToIndex: scroller._scrollToIndex,
           scrollTo: scroller._scrollTo,
