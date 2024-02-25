@@ -117,6 +117,39 @@ test.describe("smoke", () => {
     expect(initialTotalHeight).toEqual(changedTotalHeight);
   });
 
+  test("scroll restoration", async ({ page }) => {
+    await page.goto(storyUrl("basics-vlist--scroll-restoration"));
+
+    const component = await getScrollable(page);
+    await component.waitForElementState("stable");
+
+    // check if start is displayed
+    const initialItem = await getFirstItem(component);
+    expect((await initialItem).text).toEqual("0");
+
+    // scroll to mid
+    await scrollTo(component, 5000);
+    await page.waitForTimeout(250);
+    const mountedItem = await getFirstItem(component);
+    expect(mountedItem.text).not.toEqual(initialItem.text);
+
+    const button = (await page
+      .getByRole("button", { name: "hide" })
+      .elementHandle())!;
+
+    // check if items are unmounted
+    await button.click();
+    expect((await getFirstItem(component)).text).not.toEqual(mountedItem.text);
+
+    // check if scroll position is restored
+    await button.click();
+    await page.waitForTimeout(250);
+    const remountedComponent = await getScrollable(page);
+    const remountedItem = await getFirstItem(remountedComponent);
+    expect(remountedItem.text).toEqual(mountedItem.text);
+    expect(remountedItem.top).toEqual(mountedItem.top);
+  });
+
   test("sticky", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--sticky"));
 
