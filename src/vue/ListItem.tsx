@@ -17,6 +17,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
     _offset: { type: Number, required: true },
     _hide: { type: Boolean },
     _isHorizontal: { type: Boolean },
+    _isSSR: { type: Boolean },
   },
   setup(props) {
     const elementRef = ref<HTMLDivElement>();
@@ -38,17 +39,18 @@ export const ListItem = /*#__PURE__*/ defineComponent({
         _offset: offset,
         _hide: hide,
         _isHorizontal: isHorizontal,
+        _isSSR: isSSR,
       } = props;
 
       const style: StyleValue = {
         margin: 0,
         padding: 0,
-        position: "absolute",
+        position: hide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
         [isHorizontal ? "top" : "left"]: "0px",
         [isHorizontal ? (isRTLDocument() ? "right" : "left") : "top"]:
           offset + "px",
-        visibility: hide ? "hidden" : "visible",
+        visibility: !hide || isSSR ? "visible" : "hidden",
       };
       if (isHorizontal) {
         style.display = "flex";
