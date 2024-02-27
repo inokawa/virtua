@@ -96,18 +96,24 @@ const props = {
    * If you put an element after virtualizer, you have to define its height with this prop.
    */
   endMargin: Number,
+  /**
+   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
+   */
+  ssrCount: Number,
 } satisfies ComponentObjectPropsOptions;
 
 export const Virtualizer = /*#__PURE__*/ defineComponent({
   props: props,
   emits: ["scroll", "scrollEnd", "rangeChange"],
   setup(props, { emit, expose, slots }) {
+    let isSSR = !!props.ssrCount;
+
     const isHorizontal = props.horizontal;
     const containerRef = ref<HTMLDivElement>();
     const store = createVirtualStore(
       props.data.length,
       props.itemSize ?? 40,
-      undefined,
+      props.ssrCount,
       undefined,
       !props.itemSize,
       props.startMargin,
@@ -132,6 +138,8 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     );
 
     onMounted(() => {
+      isSSR = false;
+
       const scrollable = containerRef.value!.parentElement;
       if (!scrollable) return;
       resizer._observeRoot(scrollable);
@@ -219,6 +227,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
             _hide={store._isUnmeasuredItem(i)}
             _children={e}
             _isHorizontal={isHorizontal}
+            _isSSR={isSSR}
           />
         );
       }

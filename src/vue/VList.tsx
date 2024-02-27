@@ -36,6 +36,10 @@ const props = {
    * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
    */
   horizontal: Boolean,
+  /**
+   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
+   */
+  ssrCount: Number,
 } satisfies ComponentObjectPropsOptions;
 
 export const VList = /*#__PURE__*/ defineComponent({
@@ -89,6 +93,7 @@ export const VList = /*#__PURE__*/ defineComponent({
             overscan={props.overscan}
             itemSize={props.itemSize}
             shift={props.shift}
+            ssrCount={props.ssrCount}
             horizontal={horizontal}
             onScroll={onScroll}
             onScrollEnd={onScrollEnd}
