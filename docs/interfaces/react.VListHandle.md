@@ -50,7 +50,7 @@ Get item offset from start.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:59](https://github.com/inokawa/virtua/blob/b44a9200/src/react/Virtualizer.tsx#L59)
+[src/react/Virtualizer.tsx:58](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/Virtualizer.tsx#L58)
 
 ___
 
@@ -77,7 +77,7 @@ Scroll to the item specified by index.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:65](https://github.com/inokawa/virtua/blob/b44a9200/src/react/Virtualizer.tsx#L65)
+[src/react/Virtualizer.tsx:64](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/Virtualizer.tsx#L64)
 
 ___
 
@@ -103,7 +103,7 @@ Scroll to the given offset.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:70](https://github.com/inokawa/virtua/blob/b44a9200/src/react/Virtualizer.tsx#L70)
+[src/react/Virtualizer.tsx:69](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/Virtualizer.tsx#L69)
 
 ___
 
@@ -129,7 +129,7 @@ Scroll by the given offset.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:75](https://github.com/inokawa/virtua/blob/b44a9200/src/react/Virtualizer.tsx#L75)
+[src/react/Virtualizer.tsx:74](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/Virtualizer.tsx#L74)
 
 ## Properties
 
@@ -145,7 +145,7 @@ Get current [CacheSnapshot](react.CacheSnapshot.md).
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:42](https://github.com/inokawa/virtua/blob/b44a9200/src/react/Virtualizer.tsx#L42)
+[src/react/Virtualizer.tsx:41](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/Virtualizer.tsx#L41)
 
 ___
 
@@ -161,7 +161,7 @@ Get current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:46](https://github.com/inokawa/virtua/blob/b44a9200/src/react/Virtualizer.tsx#L46)
+[src/react/Virtualizer.tsx:45](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/Virtualizer.tsx#L45)
 
 ___
 
@@ -177,7 +177,7 @@ Get current scrollHeight or scrollWidth.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:50](https://github.com/inokawa/virtua/blob/b44a9200/src/react/Virtualizer.tsx#L50)
+[src/react/Virtualizer.tsx:49](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/Virtualizer.tsx#L49)
 
 ___
 
@@ -193,4 +193,4 @@ Get current offsetHeight or offsetWidth.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:54](https://github.com/inokawa/virtua/blob/b44a9200/src/react/Virtualizer.tsx#L54)
+[src/react/Virtualizer.tsx:53](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/Virtualizer.tsx#L53)

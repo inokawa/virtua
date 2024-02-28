@@ -111,7 +111,7 @@ A function to create elements rendered by this component.
 
 #### Defined in
 
-[src/react/VGrid.tsx:144](https://github.com/inokawa/virtua/blob/b44a9200/src/react/VGrid.tsx#L144)
+[src/react/VGrid.tsx:155](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/VGrid.tsx#L155)
 
 ___
 
@@ -123,7 +123,7 @@ Total row length of grid.
 
 #### Defined in
 
-[src/react/VGrid.tsx:157](https://github.com/inokawa/virtua/blob/b44a9200/src/react/VGrid.tsx#L157)
+[src/react/VGrid.tsx:168](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/VGrid.tsx#L168)
 
 ___
 
@@ -135,7 +135,7 @@ Total column length of grid.
 
 #### Defined in
 
-[src/react/VGrid.tsx:161](https://github.com/inokawa/virtua/blob/b44a9200/src/react/VGrid.tsx#L161)
+[src/react/VGrid.tsx:172](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/VGrid.tsx#L172)
 
 ___
 
@@ -153,7 +153,7 @@ Cell height hint for unmeasured items. It's recommended to specify this prop if 
 
 #### Defined in
 
-[src/react/VGrid.tsx:166](https://github.com/inokawa/virtua/blob/b44a9200/src/react/VGrid.tsx#L166)
+[src/react/VGrid.tsx:177](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/VGrid.tsx#L177)
 
 ___
 
@@ -171,7 +171,7 @@ Cell width hint for unmeasured items. It's recommended to specify this prop if i
 
 #### Defined in
 
-[src/react/VGrid.tsx:171](https://github.com/inokawa/virtua/blob/b44a9200/src/react/VGrid.tsx#L171)
+[src/react/VGrid.tsx:182](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/VGrid.tsx#L182)
 
 ___
 
@@ -189,7 +189,7 @@ Number of items to render above/below the visible bounds of the grid. Lower valu
 
 #### Defined in
 
-[src/react/VGrid.tsx:176](https://github.com/inokawa/virtua/blob/b44a9200/src/react/VGrid.tsx#L176)
+[src/react/VGrid.tsx:187](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/VGrid.tsx#L187)
 
 ___
 
@@ -201,7 +201,7 @@ If set, the specified amount of rows will be mounted in the initial rendering re
 
 #### Defined in
 
-[src/react/VGrid.tsx:180](https://github.com/inokawa/virtua/blob/b44a9200/src/react/VGrid.tsx#L180)
+[src/react/VGrid.tsx:191](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/VGrid.tsx#L191)
 
 ___
 
@@ -213,7 +213,7 @@ If set, the specified amount of cols will be mounted in the initial rendering re
 
 #### Defined in
 
-[src/react/VGrid.tsx:184](https://github.com/inokawa/virtua/blob/b44a9200/src/react/VGrid.tsx#L184)
+[src/react/VGrid.tsx:195](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/VGrid.tsx#L195)
 
 ___
 
@@ -231,7 +231,7 @@ Component or element type for cell element. This component will get [CustomCellC
 
 #### Defined in
 
-[src/react/VGrid.tsx:189](https://github.com/inokawa/virtua/blob/b44a9200/src/react/VGrid.tsx#L189)
+[src/react/VGrid.tsx:200](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/react/VGrid.tsx#L200)
 
 ___
 
