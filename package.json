@@ -50,7 +50,7 @@
     "@dnd-kit/sortable": "8.0.0",
     "@emotion/react": "11.10.8",
     "@emotion/styled": "11.10.8",
-    "@faker-js/faker": "8.4.0",
+    "@faker-js/faker": "8.4.1",
     "@formkit/auto-animate": "0.8.1",
     "@mui/material": "5.15.7",
     "@playwright/test": "1.41.1",
