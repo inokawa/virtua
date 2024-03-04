@@ -53,9 +53,11 @@ export const ACTION_SCROLL = 4;
 /** @internal */
 export const ACTION_SCROLL_END = 5;
 /** @internal */
-export const ACTION_MANUAL_SCROLL = 6;
+export const ACTION_START_OFFSET_CHANGE = 6;
 /** @internal */
-export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 7;
+export const ACTION_MANUAL_SCROLL = 7;
+/** @internal */
+export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 8;
 
 type Actions =
   | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
@@ -66,6 +68,7 @@ type Actions =
     ]
   | [type: typeof ACTION_SCROLL, offset: number]
   | [type: typeof ACTION_SCROLL_END, dummy?: void]
+  | [type: typeof ACTION_START_OFFSET_CHANGE, offset: number]
   | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
   | [type: typeof ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, offset: number];
 
@@ -437,6 +440,10 @@ export const createVirtualStore = (
           _scrollDirection = SCROLL_IDLE;
           _scrollMode = SCROLL_BY_NATIVE;
           _frozenRange = null;
+          break;
+        }
+        case ACTION_START_OFFSET_CHANGE: {
+          startSpacerSize = payload;
           break;
         }
         case ACTION_MANUAL_SCROLL: {
