@@ -13,6 +13,7 @@ import {
   ACTION_MANUAL_SCROLL,
   SCROLL_IDLE,
   ACTION_BEFORE_MANUAL_SMOOTH_SCROLL,
+  ACTION_START_OFFSET_CHANGE,
 } from "./store";
 import { ScrollToIndexOpts } from "./types";
 import { debounce, timeout, clamp, microtask } from "./utils";
@@ -42,7 +43,8 @@ const createScrollObserver = (
     value: number,
     shift: boolean,
     isMomentumScrolling: boolean
-  ) => void
+  ) => void,
+  getStartOffset?: () => number
 ) => {
   const now = Date.now;
 
@@ -73,7 +75,11 @@ const createScrollObserver = (
       stillMomentumScrolling = true;
     }
 
+    if (getStartOffset) {
+      store._update(ACTION_START_OFFSET_CHANGE, getStartOffset());
+    }
     store._update(ACTION_SCROLL, getScrollOffset());
+
     onScrollEnd();
   };
 
@@ -353,8 +359,6 @@ export const createWindowScroller = (
 
   return {
     _observe(container) {
-      let prevStartOffset = 0;
-
       const scrollOffsetKey = isHorizontal ? "scrollX" : "scrollY";
 
       const document = getCurrentDocument(container);
@@ -392,24 +396,18 @@ export const createWindowScroller = (
         store,
         window,
         isHorizontal,
-        () =>
-          normalizeOffset(window[scrollOffsetKey], isHorizontal) -
-          (prevStartOffset = calcOffsetToViewport(
-            container,
-            documentBody,
-            isHorizontal
-          )),
+        () => normalizeOffset(window[scrollOffsetKey], isHorizontal),
         (jump, shift) => {
           // TODO support case two window scrollers exist in the same view
           if (shift) {
             window.scroll({
-              [isHorizontal ? "left" : "top"]:
-                store._getScrollOffset() + prevStartOffset + jump,
+              [isHorizontal ? "left" : "top"]: store._getScrollOffset() + jump,
             });
           } else {
             window.scrollBy(isHorizontal ? jump : 0, isHorizontal ? 0 : jump);
           }
-        }
+        },
+        () => calcOffsetToViewport(container, documentBody, isHorizontal)
       );
     },
     _dispose() {
