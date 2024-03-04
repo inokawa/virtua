@@ -43,15 +43,15 @@ type ScrollMode =
   | typeof SCROLL_BY_SHIFT;
 
 /** @internal */
-export const ACTION_ITEM_RESIZE = 1;
+export const ACTION_SCROLL = 1;
 /** @internal */
-export const ACTION_VIEWPORT_RESIZE = 2;
+export const ACTION_SCROLL_END = 2;
 /** @internal */
-export const ACTION_ITEMS_LENGTH_CHANGE = 3;
+export const ACTION_ITEM_RESIZE = 3;
 /** @internal */
-export const ACTION_SCROLL = 4;
+export const ACTION_VIEWPORT_RESIZE = 4;
 /** @internal */
-export const ACTION_SCROLL_END = 5;
+export const ACTION_ITEMS_LENGTH_CHANGE = 5;
 /** @internal */
 export const ACTION_START_OFFSET_CHANGE = 6;
 /** @internal */
@@ -60,14 +60,14 @@ export const ACTION_MANUAL_SCROLL = 7;
 export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 8;
 
 type Actions =
+  | [type: typeof ACTION_SCROLL, offset: number]
+  | [type: typeof ACTION_SCROLL_END, dummy?: void]
   | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
   | [type: typeof ACTION_VIEWPORT_RESIZE, size: number]
   | [
       type: typeof ACTION_ITEMS_LENGTH_CHANGE,
       arg: [length: number, isShift?: boolean | undefined]
     ]
-  | [type: typeof ACTION_SCROLL, offset: number]
-  | [type: typeof ACTION_SCROLL_END, dummy?: void]
   | [type: typeof ACTION_START_OFFSET_CHANGE, offset: number]
   | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
   | [type: typeof ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, offset: number];
@@ -279,6 +279,68 @@ export const createVirtualStore = (
       let mutated = 0;
 
       switch (type) {
+        case ACTION_SCROLL: {
+          // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
+          const nextScrollOffset = clamp(payload, 0, getMaxScrollOffset());
+          const flushedJump = _flushedJump;
+          _flushedJump = 0;
+          // Skip if offset is not changed
+          if (nextScrollOffset === scrollOffset) {
+            break;
+          }
+
+          const delta = nextScrollOffset - scrollOffset;
+          const distance = abs(delta);
+
+          // Scroll event after jump compensation is not reliable because it may result in the opposite direction.
+          // The delta of artificial scroll may not be equal with the jump because it may be batched with other scrolls.
+          // And at least in latest Chrome/Firefox/Safari in 2023, setting value to scrollTop/scrollLeft can lose subpixel because its integer (sometimes float probably depending on dpr).
+          const isJustJumped = flushedJump && distance < abs(flushedJump) + 1;
+
+          // Scroll events are dispatched enough so it's ok to skip some of them.
+          if (
+            !isJustJumped &&
+            // Ignore until manual scrolling
+            _scrollMode === SCROLL_BY_NATIVE
+          ) {
+            _scrollDirection = delta < 0 ? SCROLL_UP : SCROLL_DOWN;
+          }
+
+          // TODO This will cause glitch in reverse infinite scrolling. Disable this until better solution is found.
+          // if (
+          //   pendingJump &&
+          //   ((_scrollDirection === SCROLL_UP &&
+          //     payload - max(pendingJump, 0) <= 0) ||
+          //     (_scrollDirection === SCROLL_DOWN &&
+          //       payload - min(pendingJump, 0) >= getScrollOffsetMax()))
+          // ) {
+          //   // Flush if almost reached to start or end
+          //   shouldFlushPendingJump = true;
+          // }
+
+          if (isSSR) {
+            _frozenRange = null;
+            isSSR = false;
+          }
+
+          // Update synchronously if scrolled a lot
+          shouldSync = distance > viewportSize;
+
+          scrollOffset = nextScrollOffset;
+          mutated = UPDATE_VIRTUAL_STATE + UPDATE_SCROLL_EVENT;
+          break;
+        }
+        case ACTION_SCROLL_END: {
+          mutated = UPDATE_SCROLL_END_EVENT;
+          if (_scrollDirection !== SCROLL_IDLE) {
+            shouldFlushPendingJump = true;
+            mutated += UPDATE_VIRTUAL_STATE;
+          }
+          _scrollDirection = SCROLL_IDLE;
+          _scrollMode = SCROLL_BY_NATIVE;
+          _frozenRange = null;
+          break;
+        }
         case ACTION_ITEM_RESIZE: {
           const updated = payload.filter(
             ([index, size]) => cache._sizes[index] !== size
@@ -378,68 +440,6 @@ export const createVirtualStore = (
           } else {
             updateCacheLength(cache, payload[0]);
           }
-          break;
-        }
-        case ACTION_SCROLL: {
-          // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
-          const nextScrollOffset = clamp(payload, 0, getMaxScrollOffset());
-          const flushedJump = _flushedJump;
-          _flushedJump = 0;
-          // Skip if offset is not changed
-          if (nextScrollOffset === scrollOffset) {
-            break;
-          }
-
-          const delta = nextScrollOffset - scrollOffset;
-          const distance = abs(delta);
-
-          // Scroll event after jump compensation is not reliable because it may result in the opposite direction.
-          // The delta of artificial scroll may not be equal with the jump because it may be batched with other scrolls.
-          // And at least in latest Chrome/Firefox/Safari in 2023, setting value to scrollTop/scrollLeft can lose subpixel because its integer (sometimes float probably depending on dpr).
-          const isJustJumped = flushedJump && distance < abs(flushedJump) + 1;
-
-          // Scroll events are dispatched enough so it's ok to skip some of them.
-          if (
-            !isJustJumped &&
-            // Ignore until manual scrolling
-            _scrollMode === SCROLL_BY_NATIVE
-          ) {
-            _scrollDirection = delta < 0 ? SCROLL_UP : SCROLL_DOWN;
-          }
-
-          // TODO This will cause glitch in reverse infinite scrolling. Disable this until better solution is found.
-          // if (
-          //   pendingJump &&
-          //   ((_scrollDirection === SCROLL_UP &&
-          //     payload - max(pendingJump, 0) <= 0) ||
-          //     (_scrollDirection === SCROLL_DOWN &&
-          //       payload - min(pendingJump, 0) >= getScrollOffsetMax()))
-          // ) {
-          //   // Flush if almost reached to start or end
-          //   shouldFlushPendingJump = true;
-          // }
-
-          if (isSSR) {
-            _frozenRange = null;
-            isSSR = false;
-          }
-
-          // Update synchronously if scrolled a lot
-          shouldSync = distance > viewportSize;
-
-          scrollOffset = nextScrollOffset;
-          mutated = UPDATE_VIRTUAL_STATE + UPDATE_SCROLL_EVENT;
-          break;
-        }
-        case ACTION_SCROLL_END: {
-          mutated = UPDATE_SCROLL_END_EVENT;
-          if (_scrollDirection !== SCROLL_IDLE) {
-            shouldFlushPendingJump = true;
-            mutated += UPDATE_VIRTUAL_STATE;
-          }
-          _scrollDirection = SCROLL_IDLE;
-          _scrollMode = SCROLL_BY_NATIVE;
-          _frozenRange = null;
           break;
         }
         case ACTION_START_OFFSET_CHANGE: {
