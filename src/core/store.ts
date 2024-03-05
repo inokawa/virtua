@@ -175,7 +175,6 @@ export const createVirtualStore = (
   const getTotalSize = (): number => computeTotalSize(cache);
   const getScrollableSize = (): number =>
     getTotalSize() + startSpacerSize + endSpacerSize;
-  const getRelativeScrollOffset = (): number => scrollOffset - startSpacerSize;
   const getMaxScrollOffset = (): number =>
     // total size can become smaller than viewport size
     max(0, getScrollableSize() - viewportSize);
@@ -210,7 +209,9 @@ export const createVirtualStore = (
       if (_flushedJump) {
         return _prevRange;
       }
-      _prevRange = getRange(getRelativeScrollOffset() + pendingJump + jump);
+      _prevRange = getRange(
+        scrollOffset - startSpacerSize + pendingJump + jump
+      );
 
       if (_frozenRange) {
         return [
