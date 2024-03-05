@@ -17,7 +17,7 @@ import type {
   ItemResize,
   ItemsRange,
 } from "./types";
-import { abs, clamp, max, min } from "./utils";
+import { abs, max, min } from "./utils";
 
 /** @internal */
 export const SCROLL_IDLE = 0;
@@ -63,7 +63,7 @@ type Actions =
   | [type: typeof ACTION_VIEWPORT_RESIZE, size: number]
   | [
       type: typeof ACTION_ITEMS_LENGTH_CHANGE,
-      arg: [length: number, isShift?: boolean | undefined]
+      arg: [length: number, isShift?: boolean | undefined],
     ]
   | [type: typeof ACTION_START_OFFSET_CHANGE, offset: number]
   | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
@@ -140,8 +140,7 @@ export const createVirtualStore = (
   ssrCount: number = 0,
   cacheSnapshot?: CacheSnapshot | undefined,
   shouldAutoEstimateItemSize: boolean = false,
-  startSpacerSize: number = 0,
-  endSpacerSize: number = 0
+  startSpacerSize: number = 0
 ): VirtualStore => {
   let isSSR = !!ssrCount;
   let stateVersion: StateVersion = [];
@@ -201,7 +200,9 @@ export const createVirtualStore = (
       if (_flushedJump) {
         return _prevRange;
       }
-      _prevRange = getRange(getRelativeScrollOffset() + pendingJump + jump);
+      _prevRange = getRange(
+        max(0, getRelativeScrollOffset() + pendingJump + jump)
+      );
 
       if (_frozenRange) {
         return [
@@ -267,20 +268,10 @@ export const createVirtualStore = (
 
       switch (type) {
         case ACTION_SCROLL: {
-          // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
-          const nextScrollOffset = clamp(
-            payload,
-            0,
-            getTotalSize() + startSpacerSize + endSpacerSize
-          );
           const flushedJump = _flushedJump;
           _flushedJump = 0;
-          // Skip if offset is not changed
-          if (nextScrollOffset === scrollOffset) {
-            break;
-          }
 
-          const delta = nextScrollOffset - scrollOffset;
+          const delta = payload - scrollOffset;
           const distance = abs(delta);
 
           // Scroll event after jump compensation is not reliable because it may result in the opposite direction.
@@ -314,11 +305,21 @@ export const createVirtualStore = (
             isSSR = false;
           }
 
-          // Update synchronously if scrolled a lot
-          shouldSync = distance > viewportSize;
+          scrollOffset = payload;
+          mutated = UPDATE_SCROLL_EVENT;
 
-          scrollOffset = nextScrollOffset;
-          mutated = UPDATE_VIRTUAL_STATE + UPDATE_SCROLL_EVENT;
+          // Skip if offset is not changed
+          // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
+          const relativeOffset = getRelativeScrollOffset();
+          if (
+            relativeOffset >= -viewportSize &&
+            relativeOffset <= getTotalSize()
+          ) {
+            mutated += UPDATE_VIRTUAL_STATE;
+
+            // Update synchronously if scrolled a lot
+            shouldSync = distance > viewportSize;
+          }
           break;
         }
         case ACTION_SCROLL_END: {

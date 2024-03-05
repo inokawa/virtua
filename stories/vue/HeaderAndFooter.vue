@@ -8,7 +8,6 @@ const data = Array.from({ length: 1000 }).map((_, i) => createItem(i));
 
 
 const headerHeight = 400;
-const footerHeight = 600;
 </script>
 
 <template>
@@ -22,12 +21,12 @@ const footerHeight = 600;
     <div :style="{ backgroundColor: 'burlywood', height: headerHeight + 'px' }">
       header
     </div>
-    <Virtualizer :data="data" #default="item" :startMargin="headerHeight" :endMargin="footerHeight">
+    <Virtualizer :data="data" #default="item" :startMargin="headerHeight">
       <div :key="item.index" :style="{ height: item.size, background: 'white', borderBottom: 'solid 1px #ccc' }">
         {{ item.index }}
       </div>
     </Virtualizer>
-    <div :style="{ backgroundColor: 'steelblue', height: footerHeight + 'px' }">
+    <div :style="{ backgroundColor: 'steelblue', height: '600px' }">
       footer
     </div>
   </div>

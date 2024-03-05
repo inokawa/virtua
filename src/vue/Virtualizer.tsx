@@ -93,10 +93,6 @@ const props = {
    */
   startMargin: Number,
   /**
-   * If you put an element after virtualizer, you have to define its height with this prop.
-   */
-  endMargin: Number,
-  /**
    * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
    */
   ssrCount: Number,
@@ -116,8 +112,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       props.ssrCount,
       undefined,
       !props.itemSize,
-      props.startMargin,
-      props.endMargin
+      props.startMargin
     );
     const resizer = createResizer(store, isHorizontal);
     const scroller = createScroller(store, isHorizontal);
