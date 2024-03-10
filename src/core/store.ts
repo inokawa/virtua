@@ -173,11 +173,9 @@ export const createVirtualStore = (
     return computeRange(cache, offset, _prevRange[0], viewportSize);
   };
   const getTotalSize = (): number => computeTotalSize(cache);
-  const getScrollableSize = (): number =>
-    getTotalSize() + startSpacerSize + endSpacerSize;
   const getMaxScrollOffset = (): number =>
     // total size can become smaller than viewport size
-    max(0, getScrollableSize() - viewportSize);
+    max(0, getTotalSize() + startSpacerSize + endSpacerSize - viewportSize);
   const getItemOffset = (index: number): number => {
     return computeStartOffset(cache, index) - pendingJump;
   };
@@ -259,13 +257,7 @@ export const createVirtualStore = (
       const flushedIsJumpByShift = isJumpByShift;
       jump = 0;
       isJumpByShift = false;
-      if (viewportSize > getScrollableSize()) {
-        // In this case applying jump will not cause scroll.
-        // Current logic expects scroll event occurs after applying jump so discard it.
-        return [0, false];
-      } else {
-        return [(_flushedJump = flushedJump), flushedIsJumpByShift];
-      }
+      return [(_flushedJump = flushedJump), flushedIsJumpByShift];
     },
     _subscribe(target, cb) {
       const sub: [number, Subscriber] = [target, cb];
@@ -352,27 +344,17 @@ export const createVirtualStore = (
             break;
           }
 
-          let shouldKeepStart = false;
-          let shouldStickToEnd = false;
-          if (_scrollMode === SCROLL_BY_SHIFT) {
-            if (scrollOffset > getMaxScrollOffset() - SUBPIXEL_THRESHOLD) {
-              // Keep end to stick to the end
-              shouldStickToEnd = true;
-            } else {
-              // Keep distance from end immediately after prepending
-              // We can assume jumps occurred on the upper outside
-            }
-          } else {
-            // Keep start at mid
-            shouldKeepStart = true;
-          }
+          // Keep end to stick to the end immediately after prepending
+          const shouldStickToEnd =
+            _scrollMode === SCROLL_BY_SHIFT &&
+            scrollOffset > getMaxScrollOffset() - SUBPIXEL_THRESHOLD;
 
           // Calculate jump
           // Should maintain visible position to minimize junks in appearance
           applyJump(
             updated.reduce((acc, [index, size]) => {
               if (
-                !shouldKeepStart ||
+                shouldStickToEnd ||
                 (_frozenRange
                   ? // https://github.com/inokawa/virtua/issues/380
                     index < _frozenRange[0]
