@@ -143,6 +143,12 @@ const createScrollObserver = (
         stillMomentumScrolling
       );
       stillMomentumScrolling = false;
+
+      if (shift && store._getViewportSize() > store._getTotalSize()) {
+        // In this case applying jump may not cause scroll.
+        // Current logic expects scroll event occurs after applying jump so we dispatch it manually.
+        store._update(ACTION_SCROLL, getScrollOffset());
+      }
     },
   };
 };
