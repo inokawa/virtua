@@ -19,9 +19,6 @@ import type {
 } from "./types";
 import { abs, clamp, max, min } from "./utils";
 
-// Scroll offset and sizes can have sub-pixel value if window.devicePixelRatio has decimal value
-const SUBPIXEL_THRESHOLD = 1.5; // 0.5 * 3
-
 /** @internal */
 export const SCROLL_IDLE = 0;
 /** @internal */
@@ -153,7 +150,6 @@ export const createVirtualStore = (
   let jumpCount = 0;
   let jump = 0;
   let pendingJump = 0;
-  let isJumpByShift = false;
   let _flushedJump = 0;
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
   let _scrollMode: ScrollMode = SCROLL_BY_NATIVE;
@@ -169,13 +165,11 @@ export const createVirtualStore = (
     cacheSnapshot as unknown as InternalCacheSnapshot | undefined
   );
   const subscribers = new Set<[number, Subscriber]>();
+  const getRelativeScrollOffset = () => scrollOffset - startSpacerSize;
   const getRange = (offset: number) => {
     return computeRange(cache, offset, _prevRange[0], viewportSize);
   };
   const getTotalSize = (): number => computeTotalSize(cache);
-  const getMaxScrollOffset = (): number =>
-    // total size can become smaller than viewport size
-    max(0, getTotalSize() + startSpacerSize + endSpacerSize - viewportSize);
   const getItemOffset = (index: number): number => {
     return computeStartOffset(cache, index) - pendingJump;
   };
@@ -207,9 +201,7 @@ export const createVirtualStore = (
       if (_flushedJump) {
         return _prevRange;
       }
-      _prevRange = getRange(
-        scrollOffset - startSpacerSize + pendingJump + jump
-      );
+      _prevRange = getRange(getRelativeScrollOffset() + pendingJump + jump);
 
       if (_frozenRange) {
         return [
@@ -253,11 +245,13 @@ export const createVirtualStore = (
       return jumpCount;
     },
     _flushJump() {
-      const flushedJump = jump;
-      const flushedIsJumpByShift = isJumpByShift;
+      _flushedJump = jump;
       jump = 0;
-      isJumpByShift = false;
-      return [(_flushedJump = flushedJump), flushedIsJumpByShift];
+      return [
+        _flushedJump,
+        // Use absolute position not to exceed scrollable bounds
+        _scrollMode === SCROLL_BY_SHIFT,
+      ];
     },
     _subscribe(target, cb) {
       const sub: [number, Subscriber] = [target, cb];
@@ -274,7 +268,11 @@ export const createVirtualStore = (
       switch (type) {
         case ACTION_SCROLL: {
           // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
-          const nextScrollOffset = clamp(payload, 0, getMaxScrollOffset());
+          const nextScrollOffset = clamp(
+            payload,
+            0,
+            getTotalSize() + startSpacerSize + endSpacerSize
+          );
           const flushedJump = _flushedJump;
           _flushedJump = 0;
           // Skip if offset is not changed
@@ -344,32 +342,25 @@ export const createVirtualStore = (
             break;
           }
 
-          // Keep end to stick to the end immediately after prepending
-          const shouldStickToEnd =
-            _scrollMode === SCROLL_BY_SHIFT &&
-            scrollOffset > getMaxScrollOffset() - SUBPIXEL_THRESHOLD;
-
-          // Calculate jump
-          // Should maintain visible position to minimize junks in appearance
+          // Calculate jump by resize to minimize junks in appearance
           applyJump(
             updated.reduce((acc, [index, size]) => {
               if (
-                shouldStickToEnd ||
+                // Keep distance from end during shifting
+                _scrollMode === SCROLL_BY_SHIFT ||
                 (_frozenRange
                   ? // https://github.com/inokawa/virtua/issues/380
                     index < _frozenRange[0]
-                  : getItemOffset(index) +
+                  : // Otherwise we should maintain visible position
+                    getItemOffset(index) +
                       // https://github.com/inokawa/virtua/issues/385
                       (_scrollDirection === SCROLL_IDLE &&
                       _scrollMode === SCROLL_BY_NATIVE
                         ? getItemSize(index)
                         : 0) <
-                    scrollOffset)
+                    getRelativeScrollOffset())
               ) {
-                const diff = size - getItemSize(index);
-                if (!shouldStickToEnd || diff > 0) {
-                  acc += diff;
-                }
+                acc += size - getItemSize(index);
               }
               return acc;
             }, 0)
@@ -418,7 +409,6 @@ export const createVirtualStore = (
           if (payload[1]) {
             applyJump(updateCacheLength(cache, payload[0], true));
             _scrollMode = SCROLL_BY_SHIFT;
-            isJumpByShift = true;
             mutated = UPDATE_VIRTUAL_STATE;
           } else {
             updateCacheLength(cache, payload[0]);
