@@ -1,35 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <!--suppress HtmlUnknownTarget -->
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Storybook</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-  <meta charset="utf-8" />
-  <title>Storybook</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="prefetch"
+      href="./sb-common-assets/nunito-sans-regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="prefetch"
+      href="./sb-common-assets/nunito-sans-italic.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="prefetch"
+      href="./sb-common-assets/nunito-sans-bold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="prefetch"
+      href="./sb-common-assets/nunito-sans-bold-italic.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="./sb-common-assets/fonts.css" />
 
-  <link rel="prefetch" href="./sb-common-assets/nunito-sans-regular.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="prefetch" href="./sb-common-assets/nunito-sans-italic.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="prefetch" href="./sb-common-assets/nunito-sans-bold.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="prefetch" href="./sb-common-assets/nunito-sans-bold-italic.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="./sb-common-assets/fonts.css" />
+    <script>
+      window.CONFIG_TYPE = 'PRODUCTION';
+      window.LOGLEVEL = 'info';
+      window.FRAMEWORK_OPTIONS = {};
+      window.CHANNEL_OPTIONS = {};
+      window.FEATURES = {"argTypeTargetsV7":true,"legacyDecoratorFileOrder":false,"disallowImplicitActionsInRenderV8":true};
+      window.STORIES = [{"titlePrefix":"","directory":"./stories/vue","files":"**/*.stories.@(js|jsx|ts|tsx)","importPathMatcher":"^\\.[\\\\/](?:stories\\/vue(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)\\/|\\/|$)(?!\\.)(?=.)[^/]*?\\.stories\\.(js|jsx|ts|tsx))$"}];
+      window.DOCS_OPTIONS = {};
+      window.TAGS_OPTIONS = {"dev-only":{"excludeFromDocsStories":true},"docs-only":{"excludeFromSidebar":true},"test-only":{"excludeFromSidebar":true,"excludeFromDocsStories":true}};
 
-  <script>
-    window.CONFIG_TYPE = 'PRODUCTION';
-    window.LOGLEVEL = 'info';
-    window.FRAMEWORK_OPTIONS = {};
-    window.CHANNEL_OPTIONS = {};
-    window.FEATURES = {"warnOnLegacyHierarchySeparator":true,"buildStoriesJson":false,"storyStoreV7":true,"argTypeTargetsV7":true,"legacyDecoratorFileOrder":false,"disallowImplicitActionsInRenderV8":false};
-    window.STORIES = [{"titlePrefix":"","directory":"./stories/vue","files":"**/*.stories.@(js|jsx|ts|tsx)","importPathMatcher":"^\\.[\\\\/](?:stories\\/vue(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)\\/|\\/|$)(?!\\.)(?=.)[^/]*?\\.stories\\.(js|jsx|ts|tsx))$"}];
-    window.DOCS_OPTIONS = {};
+      
 
-    
-
-    // We do this so that "module && module.hot" etc. in Storybook source code
-    // doesn't fail (it will simply be disabled)
-    window.module = undefined;
-    window.global = window;
-  </script>
-  <base target="_parent" />
+      // We do this so that "module && module.hot" etc. in Storybook source code
+      // doesn't fail (it will simply be disabled)
+      window.module = undefined;
+      window.global = window;
+    </script>
+    <base target="_parent" />
 
 <style>
   /* While we aren't showing the main block yet, but still preparing, we want everything the user
@@ -93,8 +117,17 @@
     left: 0;
     right: 0;
     padding: 20px;
-    font-family: 'Nunito Sans', -apple-system, '.SFNSText-Regular', 'San Francisco',
-      BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family:
+      'Nunito Sans',
+      -apple-system,
+      '.SFNSText-Regular',
+      'San Francisco',
+      BlinkMacSystemFont,
+      'Segoe UI',
+      'Helvetica Neue',
+      Helvetica,
+      Arial,
+      sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow: auto;
   }
@@ -288,7 +321,9 @@
 
   .sb-argstableBlock-body {
     border-radius: 4px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0 1px 3px 1px, rgba(0, 0, 0, 0.065) 0 0 0 1px;
+    box-shadow:
+      rgba(0, 0, 0, 0.1) 0 1px 3px 1px,
+      rgba(0, 0, 0, 0.065) 0 0 0 1px;
   }
   .sb-argstableBlock-body tr {
     background: transparent;
@@ -368,11 +403,11 @@
   }
 </style>
 
-  <script type="module" crossorigin src="./assets/iframe-h6j9-kX1.js"></script>
-</head>
+    <script type="module" crossorigin src="./assets/iframe-CoamHFiw.js"></script>
+  </head>
 
-<body>
-  <div class="sb-preparing-story sb-wrapper">
+  <body>
+    <div class="sb-preparing-story sb-wrapper">
   <div class="sb-loader"></div>
 </div>
 
@@ -460,8 +495,7 @@
   <pre class="sb-errordisplay_code"><code id="error-stack"></code></pre>
 </div>
 
-  <div id="storybook-root"></div>
-  <div id="storybook-docs"></div>
-</body>
-
+    <div id="storybook-root"></div>
+    <div id="storybook-docs"></div>
+  </body>
 </html>

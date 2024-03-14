@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
 
     <title>@storybook/cli - Storybook</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
     
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
@@ -28,9 +28,11 @@
     <link href="./sb-manager/runtime.js" rel="modulepreload" />
 
     
-    <link href="./sb-addons/storysource-0/manager-bundle.js" rel="modulepreload" />
+    <link href="./sb-addons/storybook-core-server-presets-0/common-manager-bundle.js" rel="modulepreload" />
     
-    <link href="./sb-addons/storybook-1/manager-bundle.js" rel="modulepreload" />
+    <link href="./sb-addons/storysource-1/manager-bundle.js" rel="modulepreload" />
+    
+    <link href="./sb-addons/storybook-2/manager-bundle.js" rel="modulepreload" />
        
 
     <style>
@@ -49,12 +51,9 @@
       
         
           window['FEATURES'] = {
-  "warnOnLegacyHierarchySeparator": true,
-  "buildStoriesJson": false,
-  "storyStoreV7": true,
   "argTypeTargetsV7": true,
   "legacyDecoratorFileOrder": false,
-  "disallowImplicitActionsInRenderV8": false
+  "disallowImplicitActionsInRenderV8": true
 };
         
       
@@ -78,19 +77,52 @@
       
         
       
+        
+          window['TAGS_OPTIONS'] = {
+  "dev-only": {
+    "excludeFromDocsStories": true
+  },
+  "docs-only": {
+    "excludeFromSidebar": true
+  },
+  "test-only": {
+    "excludeFromSidebar": true,
+    "excludeFromDocsStories": true
+  }
+};
+        
+      
+        
+          window['STORYBOOK_RENDERER'] = "@storybook/vue3";
+        
+      
+        
+          window['STORYBOOK_BUILDER'] = "@storybook/builder-vite";
+        
+      
+        
+          window['STORYBOOK_FRAMEWORK'] = "@storybook/vue3-vite";
+        
+      
     </script>
     
 
     <script type="module">
+      import './sb-manager/globals-runtime.js';
+      
+      
+        import './sb-addons/storybook-core-server-presets-0/common-manager-bundle.js';
+      
+        import './sb-addons/storysource-1/manager-bundle.js';
+      
+        import './sb-addons/storybook-2/manager-bundle.js';
+      
+      
       import './sb-manager/runtime.js';
-
-      
-      import './sb-addons/storysource-0/manager-bundle.js';
-      
-      import './sb-addons/storybook-1/manager-bundle.js';
-      
     </script>
 
+    
     <link href="./sb-preview/runtime.js" rel="prefetch" as="script" />
+    
   </body>
 </html>
