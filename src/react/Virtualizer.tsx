@@ -117,10 +117,6 @@ export interface VirtualizerProps {
    */
   startMargin?: number;
   /**
-   * If you put an element after virtualizer, you have to define its height with this prop.
-   */
-  endMargin?: number;
-  /**
    * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
    */
   ssrCount?: number;
@@ -176,7 +172,6 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       horizontal: horizontalProp,
       cache,
       startMargin,
-      endMargin,
       ssrCount,
       as: Element = "div",
       item: ItemElement = "div",
@@ -206,8 +201,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         ssrCount,
         cache,
         !itemSize,
-        startMargin,
-        endMargin
+        startMargin
       );
       return [
         _store,

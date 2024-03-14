@@ -39,7 +39,6 @@ const createRows = (num: number) => {
 export const HeaderAndFooter: StoryObj = {
   render: () => {
     const headerHeight = 400;
-    const footerHeight = 600;
     return (
       <div
         style={{
@@ -53,12 +52,8 @@ export const HeaderAndFooter: StoryObj = {
         <div style={{ backgroundColor: "burlywood", height: headerHeight }}>
           header
         </div>
-        <Virtualizer startMargin={headerHeight} endMargin={footerHeight}>
-          {createRows(1000)}
-        </Virtualizer>
-        <div style={{ backgroundColor: "steelblue", height: footerHeight }}>
-          footer
-        </div>
+        <Virtualizer startMargin={headerHeight}>{createRows(1000)}</Virtualizer>
+        <div style={{ backgroundColor: "steelblue", height: 600 }}>footer</div>
       </div>
     );
   },
@@ -67,7 +62,6 @@ export const HeaderAndFooter: StoryObj = {
 export const StickyHeaderAndFooter: StoryObj = {
   render: () => {
     const headerHeight = 40;
-    const footerHeight = 60;
     return (
       <div
         style={{
@@ -89,14 +83,12 @@ export const StickyHeaderAndFooter: StoryObj = {
         >
           header
         </div>
-        <Virtualizer startMargin={headerHeight} endMargin={footerHeight}>
-          {createRows(1000)}
-        </Virtualizer>
+        <Virtualizer startMargin={headerHeight}>{createRows(1000)}</Virtualizer>
         <div
           style={{
             position: "sticky",
             backgroundColor: "steelblue",
-            height: footerHeight,
+            height: 60,
             bottom: 0,
           }}
         >
@@ -128,7 +120,6 @@ export const Nested: StoryObj = {
             <Virtualizer
               scrollRef={ref}
               startMargin={outerPadding + innerPadding}
-              endMargin={outerPadding + innerPadding}
             >
               {createRows(1000)}
             </Virtualizer>
@@ -207,7 +198,6 @@ export const BiDirectionalInfiniteScrolling: StoryObj = {
           ref={ref}
           shift={shifting ? true : false}
           startMargin={spinnerHeight}
-          endMargin={spinnerHeight}
           onRangeChange={async (start, end) => {
             if (!ready.current) return;
             if (end + THRESHOLD > count && endFetchedCountRef.current < count) {
