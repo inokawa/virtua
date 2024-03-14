@@ -49,7 +49,7 @@ Get item offset from start.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:52](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/solid/Virtualizer.tsx#L52)
+[src/solid/Virtualizer.tsx:52](https://github.com/inokawa/virtua/blob/42725126/src/solid/Virtualizer.tsx#L52)
 
 ___
 
@@ -76,7 +76,7 @@ Scroll to the item specified by index.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:58](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/solid/Virtualizer.tsx#L58)
+[src/solid/Virtualizer.tsx:58](https://github.com/inokawa/virtua/blob/42725126/src/solid/Virtualizer.tsx#L58)
 
 ___
 
@@ -102,7 +102,7 @@ Scroll to the given offset.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:63](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/solid/Virtualizer.tsx#L63)
+[src/solid/Virtualizer.tsx:63](https://github.com/inokawa/virtua/blob/42725126/src/solid/Virtualizer.tsx#L63)
 
 ___
 
@@ -128,7 +128,7 @@ Scroll by the given offset.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:68](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/solid/Virtualizer.tsx#L68)
+[src/solid/Virtualizer.tsx:68](https://github.com/inokawa/virtua/blob/42725126/src/solid/Virtualizer.tsx#L68)
 
 ## Properties
 
@@ -144,7 +144,7 @@ Get current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:39](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/solid/Virtualizer.tsx#L39)
+[src/solid/Virtualizer.tsx:39](https://github.com/inokawa/virtua/blob/42725126/src/solid/Virtualizer.tsx#L39)
 
 ___
 
@@ -160,7 +160,7 @@ Get current scrollHeight or scrollWidth.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:43](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/solid/Virtualizer.tsx#L43)
+[src/solid/Virtualizer.tsx:43](https://github.com/inokawa/virtua/blob/42725126/src/solid/Virtualizer.tsx#L43)
 
 ___
 
@@ -176,4 +176,4 @@ Get current offsetHeight or offsetWidth.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:47](https://github.com/inokawa/virtua/blob/8c9e4ab3/src/solid/Virtualizer.tsx#L47)
+[src/solid/Virtualizer.tsx:47](https://github.com/inokawa/virtua/blob/42725126/src/solid/Virtualizer.tsx#L47)
