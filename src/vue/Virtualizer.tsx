@@ -10,6 +10,7 @@ import {
   SlotsType,
   ComponentOptionsWithObjectProps,
   ComponentObjectPropsOptions,
+  PropType,
 } from "vue";
 import {
   SCROLL_IDLE,
@@ -26,6 +27,7 @@ import { createScroller } from "../core/scroller";
 import { ScrollToIndexOpts } from "../core/types";
 import { ListItem } from "./ListItem";
 import { getKey } from "./utils";
+import { microtask } from "../core/utils";
 
 export interface VirtualizerHandle {
   /**
@@ -96,6 +98,10 @@ const props = {
    * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
    */
   ssrCount: Number,
+  /**
+   * Reference to the scrollable element. The default will get the parent element of virtualizer.
+   */
+  scrollRef: Object as PropType<HTMLElement>,
 } satisfies ComponentObjectPropsOptions;
 
 export const Virtualizer = /*#__PURE__*/ defineComponent({
@@ -135,10 +141,18 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     onMounted(() => {
       isSSR = false;
 
-      const scrollable = containerRef.value!.parentElement;
-      if (!scrollable) return;
-      resizer._observeRoot(scrollable);
-      scroller._observe(scrollable);
+      microtask(() => {
+        const assignScrollableElement = (e: HTMLElement) => {
+          resizer._observeRoot(e);
+          scroller._observe(e);
+        };
+        if (props.scrollRef) {
+          // parent's ref doesn't exist when onMounted is called
+          assignScrollableElement(props.scrollRef!);
+        } else {
+          assignScrollableElement(containerRef.value!.parentElement!);
+        }
+      });
     });
     onUnmounted(() => {
       unsubscribeStore();

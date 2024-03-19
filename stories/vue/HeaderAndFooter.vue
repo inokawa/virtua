@@ -6,7 +6,6 @@ const createItem = (i: number) => ({ index: i, size: sizes[i % 4] + 'px' })
 
 const data = Array.from({ length: 1000 }).map((_, i) => createItem(i));
 
-
 const headerHeight = 400;
 </script>
 
