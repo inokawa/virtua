@@ -428,13 +428,13 @@ const RestorableList = ({ id }: { id: string }) => {
 
   const ref = useRef<VListHandle>(null);
 
-  const [offset, cache] = useMemo(() => {
+  const cache = useMemo(() => {
     const serialized = sessionStorage.getItem(cacheKey);
-    if (!serialized) return [];
+    if (!serialized) return;
     try {
-      return JSON.parse(serialized) as [number, CacheSnapshot];
+      return JSON.parse(serialized) as CacheSnapshot;
     } catch (e) {
-      return [];
+      return;
     }
   }, []);
 
@@ -442,15 +442,8 @@ const RestorableList = ({ id }: { id: string }) => {
     if (!ref.current) return;
     const handle = ref.current;
 
-    if (offset) {
-      handle.scrollTo(offset);
-    }
-
     return () => {
-      sessionStorage.setItem(
-        cacheKey,
-        JSON.stringify([handle.scrollOffset, handle.cache])
-      );
+      sessionStorage.setItem(cacheKey, JSON.stringify(handle.getCache(true)));
     };
   }, []);
 

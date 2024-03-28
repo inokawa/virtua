@@ -11,12 +11,7 @@ import {
   takeCacheSnapshot,
 } from "./cache";
 import { isIOSWebKit } from "./environment";
-import type {
-  CacheSnapshot,
-  InternalCacheSnapshot,
-  ItemResize,
-  ItemsRange,
-} from "./types";
+import type { CacheSnapshot, ItemResize, ItemsRange } from "./types";
 import { abs, max, min } from "./utils";
 
 /** @internal */
@@ -113,7 +108,7 @@ type StateVersion = readonly [];
  */
 export type VirtualStore = {
   _getStateVersion(): StateVersion;
-  _getCacheSnapshot(): CacheSnapshot;
+  _getCacheSnapshot(restoreScrollPosition?: boolean): CacheSnapshot;
   _getRange(): ItemsRange;
   _isUnmeasuredItem(index: number): boolean;
   _hasUnmeasuredItemsInFrozenRange(): boolean;
@@ -145,7 +140,7 @@ export const createVirtualStore = (
   let isSSR = !!ssrCount;
   let stateVersion: StateVersion = [];
   let viewportSize = 0;
-  let scrollOffset = 0;
+  let scrollOffset = (cacheSnapshot && cacheSnapshot[2]) || 0;
   let jumpCount = 0;
   let jump = 0;
   let pendingJump = 0;
@@ -158,11 +153,7 @@ export const createVirtualStore = (
   let _prevRange: ItemsRange = [0, 0];
   let _totalMeasuredSize = 0;
 
-  const cache = initCache(
-    elementsCount,
-    itemSize,
-    cacheSnapshot as unknown as InternalCacheSnapshot | undefined
-  );
+  const cache = initCache(elementsCount, itemSize, cacheSnapshot);
   const subscribers = new Set<[number, Subscriber]>();
   const getRelativeScrollOffset = () => scrollOffset - startSpacerSize;
   const getRange = (offset: number) => {
@@ -192,8 +183,12 @@ export const createVirtualStore = (
     _getStateVersion() {
       return stateVersion;
     },
-    _getCacheSnapshot() {
-      return takeCacheSnapshot(cache) as unknown as CacheSnapshot;
+    _getCacheSnapshot(restoreScrollPosition) {
+      const snapshot = takeCacheSnapshot(cache);
+      if (restoreScrollPosition) {
+        snapshot.push(scrollOffset);
+      }
+      return snapshot;
     },
     _getRange() {
       // Return previous range for consistent render until next scroll event comes in.

@@ -34,7 +34,7 @@ export interface WindowVirtualizerHandle {
   /**
    * Get current {@link CacheSnapshot}.
    */
-  readonly cache: CacheSnapshot;
+  getCache(): CacheSnapshot;
 }
 
 /**
@@ -72,7 +72,7 @@ export interface WindowVirtualizerProps {
    */
   horizontal?: boolean;
   /**
-   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.cache}.
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.getCache}.
    */
   cache?: CacheSnapshot;
   /**
@@ -219,9 +219,7 @@ export const WindowVirtualizer = forwardRef<
       ref,
       () => {
         return {
-          get cache() {
-            return store._getCacheSnapshot();
-          },
+          getCache: store._getCacheSnapshot,
         };
       },
       []

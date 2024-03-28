@@ -1,4 +1,4 @@
-import { InternalCacheSnapshot, ItemsRange } from "./types";
+import { CacheSnapshot, ItemsRange } from "./types";
 import { clamp, max, median, min } from "./utils";
 
 type Writeable<T> = {
@@ -163,7 +163,7 @@ export const estimateDefaultItemSize = (
 export const initCache = (
   length: number,
   itemSize: number,
-  snapshot?: InternalCacheSnapshot
+  snapshot?: CacheSnapshot
 ): Cache => {
   return {
     _defaultItemSize: snapshot ? snapshot[1] : itemSize,
@@ -177,7 +177,7 @@ export const initCache = (
 /**
  * @internal
  */
-export const takeCacheSnapshot = (cache: Cache): InternalCacheSnapshot => {
+export const takeCacheSnapshot = (cache: Cache): CacheSnapshot => {
   return [[...cache._sizes], cache._defaultItemSize];
 };
 

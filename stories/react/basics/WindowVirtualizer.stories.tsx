@@ -221,7 +221,10 @@ const RestorableList = ({ id }: { id: string }) => {
     return () => {
       window.removeEventListener("scroll", onScroll);
       // Use stored window.scrollY because it may return 0 in useEffect cleanup
-      sessionStorage.setItem(cacheKey, JSON.stringify([scrollY, handle.cache]));
+      sessionStorage.setItem(
+        cacheKey,
+        JSON.stringify([scrollY, handle.getCache()])
+      );
     };
   }, []);
 
