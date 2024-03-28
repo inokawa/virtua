@@ -308,6 +308,10 @@ Especially for `webpack-dev-server`, [you can filter out the specific error with
 
 `viewportSize` will be calculated by ResizeObserver so it's 0 until the first measurement.
 
+#### What is `Cannot find module 'virtua/vue(solid)' or its corresponding type declarations` error?
+
+This package uses [exports of package.json](https://nodejs.org/api/packages.html#package-entry-points) for entry point of Vue/Solid adapter. This field can't be resolved in TypeScript with `moduleResolution: node`. Try `moduleResolution: bundler` or `moduleResolution: nodenext` instead.
+
 ## Comparison
 
 ### Features
