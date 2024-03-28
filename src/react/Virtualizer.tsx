@@ -36,10 +36,6 @@ import { microtask } from "../core/utils";
  */
 export interface VirtualizerHandle {
   /**
-   * Get current {@link CacheSnapshot}.
-   */
-  readonly cache: CacheSnapshot;
-  /**
    * Get current scrollTop or scrollLeft.
    */
   readonly scrollOffset: number;
@@ -51,6 +47,15 @@ export interface VirtualizerHandle {
    * Get current offsetHeight or offsetWidth.
    */
   readonly viewportSize: number;
+  /**
+   * Get current {@link CacheSnapshot}.
+   */
+  getCache(
+    /**
+     * Pass true if you want to include scroll position in snapshot
+     */
+    restoreScrollPosition?: boolean
+  ): CacheSnapshot;
   /**
    * Get item offset from start.
    * @param index index of item
@@ -109,7 +114,7 @@ export interface VirtualizerProps {
    */
   horizontal?: boolean;
   /**
-   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.cache}.
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.getCache}.
    */
   cache?: CacheSnapshot;
   /**
@@ -251,6 +256,11 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       const assignScrollableElement = (e: HTMLElement) => {
         resizer._observeRoot(e);
         scroller._observe(e);
+
+        const initalScrollPosition = cache && cache[2];
+        if (initalScrollPosition) {
+          scroller._scrollTo(initalScrollPosition);
+        }
       };
       if (scrollRef) {
         // parent's ref doesn't exist when useLayoutEffect is called
@@ -282,9 +292,6 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       ref,
       () => {
         return {
-          get cache() {
-            return store._getCacheSnapshot();
-          },
           get scrollOffset() {
             return store._getScrollOffset();
           },
@@ -294,6 +301,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
           get viewportSize() {
             return store._getViewportSize();
           },
+          getCache: store._getCacheSnapshot,
           getItemOffset: store._getItemOffset,
           scrollToIndex: scroller._scrollToIndex,
           scrollTo: scroller._scrollTo,
