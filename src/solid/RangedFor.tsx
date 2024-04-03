@@ -9,6 +9,7 @@ import {
   untrack,
   JSX,
   Signal,
+  Accessor,
 } from "solid-js";
 import { ItemsRange } from "../core/types";
 
@@ -27,7 +28,7 @@ interface RenderedNode<T> {
 export const RangedFor = <T,>(props: {
   _each: T[];
   _range: ItemsRange;
-  _render: (data: T, index: number) => JSX.Element;
+  _render: (data: Accessor<T>, index: number) => JSX.Element;
 }): JSX.Element => {
   let prev = new Map<number, RenderedNode<T>>();
 
@@ -52,7 +53,7 @@ export const RangedFor = <T,>(props: {
             ? lookup._element
             : createRoot((dispose) => {
                 const data = createSignal(newData);
-                const result = props._render(data[0](), i);
+                const result = props._render(data[0], i);
                 current.set(i, {
                   _data: data,
                   _element: result,
