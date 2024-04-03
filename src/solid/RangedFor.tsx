@@ -6,7 +6,6 @@ import {
   createRoot,
   createSignal,
   onCleanup,
-  untrack,
   JSX,
   Signal,
   Accessor,
@@ -44,40 +43,38 @@ export const RangedFor = <T,>(props: {
     const current = new Map<number, RenderedNode<T>>();
     const items: JSX.Element[] = [];
 
-    return untrack(() => {
-      for (let i = start; i <= end; i++) {
-        const newData: T = list[i]!;
-        const lookup = prev.get(i);
-        items.push(
-          lookup
-            ? lookup._element
-            : createRoot((dispose) => {
-                const data = createSignal(newData);
-                const result = props._render(data[0], i);
-                current.set(i, {
-                  _data: data,
-                  _element: result,
-                  _dispose: dispose,
-                });
-                return result;
-              })
-        );
-        if (lookup) {
-          if (newData !== lookup._data) {
-            lookup._data[1](
-              newData as Exclude<T, Function> // TODO improve type
-            );
-          }
-          current.set(i, lookup);
+    for (let i = start; i <= end; i++) {
+      const newData: T = list[i]!;
+      const lookup = prev.get(i);
+      items.push(
+        lookup
+          ? lookup._element
+          : createRoot((dispose) => {
+              const data = createSignal(newData);
+              const result = props._render(data[0], i);
+              current.set(i, {
+                _data: data,
+                _element: result,
+                _dispose: dispose,
+              });
+              return result;
+            })
+      );
+      if (lookup) {
+        if (newData !== lookup._data) {
+          lookup._data[1](
+            newData as Exclude<T, Function> // TODO improve type
+          );
         }
+        current.set(i, lookup);
       }
-      for (const [key, node] of prev.entries()) {
-        if (!current.has(key)) {
-          node._dispose();
-        }
+    }
+    for (const [key, node] of prev.entries()) {
+      if (!current.has(key)) {
+        node._dispose();
       }
-      prev = current;
-      return items;
-    });
+    }
+    prev = current;
+    return items;
   }) as unknown as JSX.Element; // TODO improve type
 };
