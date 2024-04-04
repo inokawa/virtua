@@ -228,7 +228,7 @@ export const WindowVirtualizer = <T,>(
               _resizer={resizer._observeItem}
               _offset={offset()}
               _hide={hide()}
-              _children={props.children(data, index)}
+              _children={props.children(data(), index)}
               _isHorizontal={horizontal}
             />
           );

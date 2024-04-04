@@ -295,7 +295,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
               _resizer={resizer._observeItem}
               _offset={offset()}
               _hide={hide()}
-              _children={props.children(data, index)}
+              _children={props.children(data(), index)}
               _isHorizontal={horizontal}
             />
           );
