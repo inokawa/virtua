@@ -7,7 +7,7 @@ import {
   createEffect,
   createSignal,
   createMemo,
-  JSX,
+  type JSX,
   on,
   createComputed,
 } from "solid-js";
@@ -25,7 +25,7 @@ import { ListItem } from "./ListItem";
 import { RangedFor } from "./RangedFor";
 import { exists } from "../core/utils";
 import { isSameRange } from "./utils";
-import { ItemsRange } from "../core/types";
+import { type ItemsRange } from "../core/types";
 
 // /**
 //  * Methods of {@link WindowVirtualizer}.

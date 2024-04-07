@@ -4,13 +4,13 @@ import {
   onMounted,
   defineComponent,
   onUnmounted,
-  VNode,
+  type VNode,
   watch,
-  ComponentOptionsMixin,
-  SlotsType,
-  ComponentOptionsWithObjectProps,
-  ComponentObjectPropsOptions,
-  PropType,
+  type ComponentOptionsMixin,
+  type SlotsType,
+  type ComponentOptionsWithObjectProps,
+  type ComponentObjectPropsOptions,
+  type PropType,
 } from "vue";
 import {
   SCROLL_IDLE,
@@ -24,7 +24,7 @@ import {
 } from "../core/store";
 import { createResizer } from "../core/resizer";
 import { createScroller } from "../core/scroller";
-import { ScrollToIndexOpts } from "../core/types";
+import { type ScrollToIndexOpts } from "../core/types";
 import { ListItem } from "./ListItem";
 import { getKey } from "./utils";
 import { microtask } from "../core/utils";

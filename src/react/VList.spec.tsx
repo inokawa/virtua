@@ -1,8 +1,14 @@
 import { afterEach, it, expect, describe, vitest } from "vitest";
 import { render, cleanup } from "@testing-library/react";
 import { VList } from "./VList";
-import { Profiler, ReactElement, forwardRef, useEffect, useState } from "react";
-import { CustomItemComponentProps } from "./types";
+import {
+  Profiler,
+  type ReactElement,
+  forwardRef,
+  useEffect,
+  useState,
+} from "react";
+import { type CustomItemComponentProps } from "./types";
 import { setupJsDomEnv } from "../../scripts/spec";
 
 const ITEM_HEIGHT = 50;
