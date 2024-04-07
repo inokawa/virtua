@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { type VirtualStore } from "../core/store";
+import { VirtualStore } from "../core/store";
 
 /**
  * @internal

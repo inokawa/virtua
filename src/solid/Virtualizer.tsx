@@ -7,7 +7,7 @@ import {
   createEffect,
   createSignal,
   createMemo,
-  type JSX,
+  JSX,
   on,
   createComputed,
 } from "solid-js";
@@ -23,7 +23,7 @@ import {
 } from "../core/store";
 import { createResizer } from "../core/resizer";
 import { createScroller } from "../core/scroller";
-import { type ItemsRange, type ScrollToIndexOpts } from "../core/types";
+import { ItemsRange, ScrollToIndexOpts } from "../core/types";
 import { ListItem } from "./ListItem";
 import { RangedFor } from "./RangedFor";
 import { exists } from "../core/utils";

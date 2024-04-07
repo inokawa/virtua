@@ -1,14 +1,8 @@
 import { afterEach, it, expect, describe, vitest } from "vitest";
 import { render, cleanup } from "@testing-library/react";
 import { WindowVirtualizer } from "./WindowVirtualizer";
-import {
-  Profiler,
-  type ReactElement,
-  forwardRef,
-  useEffect,
-  useState,
-} from "react";
-import { type CustomItemComponentProps } from "./types";
+import { Profiler, ReactElement, forwardRef, useEffect, useState } from "react";
+import { CustomItemComponentProps } from "./types";
 import { setupJsDomEnv } from "../../scripts/spec";
 
 setupJsDomEnv({

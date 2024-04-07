@@ -1,4 +1,4 @@
-import { type ReactElement, type ReactFragment, type ReactNode } from "react";
+import { ReactElement, ReactFragment, ReactNode } from "react";
 import { exists, isArray } from "../core/utils";
 
 /**
