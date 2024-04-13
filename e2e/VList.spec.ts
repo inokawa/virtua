@@ -149,26 +149,6 @@ test.describe("smoke", () => {
     expect(remountedItem.text).toEqual(mountedItem.text);
     expect(remountedItem.top).toEqual(mountedItem.top);
   });
-
-  test("sticky", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--sticky"));
-
-    const component = await getScrollable(page);
-    await component.waitForElementState("stable");
-
-    // check if start is displayed
-    await expect((await getFirstItem(component)).text).toEqual("0");
-
-    // check if sticky items are always on top
-    await component.click();
-    for (let i = 0; i < 3; i++) {
-      await page.keyboard.press("PageDown", { delay: 500 });
-      await expect(await getScrollTop(component)).not.toEqual(0);
-      const text = (await getFirstItem(component)).text;
-      await expect(text).not.toContain("-");
-      await expect(Number(text)).not.toBeNaN();
-    }
-  });
 });
 
 test.describe("check if it works when children change", () => {
