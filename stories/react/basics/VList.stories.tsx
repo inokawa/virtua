@@ -159,46 +159,6 @@ export const Responsive: StoryObj = {
   },
 };
 
-export const Sticky: StoryObj = {
-  render: () => {
-    return (
-      <VList style={{ height: "100vh" }} overscan={1}>
-        {Array.from({ length: 100 }).map((_, i) => {
-          return (
-            <div
-              key={i}
-              style={{
-                borderBottom: "solid 1px #ccc",
-              }}
-            >
-              {Array.from({ length: 10 }).map((_, j) => {
-                const isGroupTop = j === 0;
-                return (
-                  <div
-                    key={j}
-                    style={{
-                      height: 60,
-                      background: "#fff",
-                      ...(isGroupTop && {
-                        top: 0,
-                        height: 30,
-                        position: "sticky",
-                        borderBottom: "solid 1px #ccc",
-                      }),
-                    }}
-                  >
-                    {isGroupTop ? i : `${i} - ${j}`}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-      </VList>
-    );
-  },
-};
-
 export const ScrollTo: StoryObj = {
   render: () => {
     const LENGTH = 1000;
