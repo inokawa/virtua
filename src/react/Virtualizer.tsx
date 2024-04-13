@@ -171,7 +171,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       children,
       count: renderCountProp,
       overscan = 4,
-      keepMounted = [],
+      keepMounted,
       itemSize,
       shift,
       horizontal: horizontalProp,
@@ -229,6 +229,32 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     const totalSize = store._getTotalSize();
 
     const items: ReactElement[] = [];
+
+    const [overscanedRangeStart, overscanedRangeEnd] = getOverscanedRange(
+      startIndex,
+      endIndex,
+      overscan,
+      scrollDirection,
+      count
+    );
+
+    const getListItem = (index: number) => {
+      const e = getElement(index);
+
+      return (
+        <ListItem
+          key={getKey(e, index)}
+          _resizer={resizer._observeItem}
+          _index={index}
+          _offset={store._getItemOffset(index)}
+          _hide={store._isUnmeasuredItem(index)}
+          _element={ItemElement as "div"}
+          _children={e}
+          _isHorizontal={isHorizontal}
+          _isSSR={isSSR[refKey]}
+        />
+      );
+    };
 
     useIsomorphicLayoutEffect(() => {
       isSSR[refKey] = false;
@@ -308,47 +334,20 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       []
     );
 
-    const [overscanedRangeStart, overscanedRangeEnd] = getOverscanedRange(
-      startIndex,
-      endIndex,
-      overscan,
-      scrollDirection,
-      count
-    );
-
-    const getListItem = (index: number) => {
-      const e = getElement(index);
-
-      return <ListItem
-        key={getKey(e, index)}
-        _resizer={resizer._observeItem}
-        _index={index}
-        _offset={store._getItemOffset(index)}
-        _hide={store._isUnmeasuredItem(index)}
-        _element={ItemElement as "div"}
-        _children={e}
-        _isHorizontal={isHorizontal}
-        _isSSR={isSSR[refKey]}
-      />
-    }
-
-    for (
-      let [i, j] = [overscanedRangeStart, overscanedRangeEnd];
-      i <= j;
-      i++
-    ) {
+    for (let i = overscanedRangeStart, j = overscanedRangeEnd; i <= j; i++) {
       items.push(getListItem(i));
     }
 
-    keepMounted.forEach(index => {
-      if (index < overscanedRangeStart) {
-        items.unshift(getListItem(index))
-      }
+    keepMounted &&
+      keepMounted.forEach((index) => {
+        if (index < overscanedRangeStart) {
+          items.unshift(getListItem(index));
+        }
 
-      if (index > overscanedRangeEnd) {
-        items.push(getListItem(index))
-      }
-    })
+        if (index > overscanedRangeEnd) {
+          items.push(getListItem(index));
+        }
+      });
 
     return (
       <Element
