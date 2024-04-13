@@ -29,6 +29,7 @@ export interface VListProps
       | "onScroll"
       | "onScrollEnd"
       | "onRangeChange"
+      | "keepMounted"
     >,
     ViewportComponentAttributes {
   /**
@@ -46,6 +47,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       children,
       count,
       overscan,
+      keepMounted,
       itemSize,
       shift,
       horizontal,
@@ -70,6 +72,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
         scrollRef={shouldReverse ? scrollRef : undefined}
         count={count}
         overscan={overscan}
+        keepMounted={keepMounted}
         itemSize={itemSize}
         shift={shift}
         horizontal={horizontal}

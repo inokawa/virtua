@@ -94,6 +94,10 @@ export interface VirtualizerProps {
    */
   overscan?: number;
   /**
+   * List of indexes that should be always mounted, even when off screen.
+   */
+  keepMounted?: number[];
+  /**
    * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
    *
    * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
@@ -167,6 +171,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       children,
       count: renderCountProp,
       overscan = 4,
+      keepMounted,
       itemSize,
       shift,
       horizontal: horizontalProp,
@@ -224,6 +229,32 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     const totalSize = store._getTotalSize();
 
     const items: ReactElement[] = [];
+
+    const [overscanedRangeStart, overscanedRangeEnd] = getOverscanedRange(
+      startIndex,
+      endIndex,
+      overscan,
+      scrollDirection,
+      count
+    );
+
+    const getListItem = (index: number) => {
+      const e = getElement(index);
+
+      return (
+        <ListItem
+          key={getKey(e, index)}
+          _resizer={resizer._observeItem}
+          _index={index}
+          _offset={store._getItemOffset(index)}
+          _hide={store._isUnmeasuredItem(index)}
+          _element={ItemElement as "div"}
+          _children={e}
+          _isHorizontal={isHorizontal}
+          _isSSR={isSSR[refKey]}
+        />
+      );
+    };
 
     useIsomorphicLayoutEffect(() => {
       isSSR[refKey] = false;
@@ -303,32 +334,20 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       []
     );
 
-    for (
-      let [i, j] = getOverscanedRange(
-        startIndex,
-        endIndex,
-        overscan,
-        scrollDirection,
-        count
-      );
-      i <= j;
-      i++
-    ) {
-      const e = getElement(i);
-      items.push(
-        <ListItem
-          key={getKey(e, i)}
-          _resizer={resizer._observeItem}
-          _index={i}
-          _offset={store._getItemOffset(i)}
-          _hide={store._isUnmeasuredItem(i)}
-          _element={ItemElement as "div"}
-          _children={e}
-          _isHorizontal={isHorizontal}
-          _isSSR={isSSR[refKey]}
-        />
-      );
+    for (let i = overscanedRangeStart, j = overscanedRangeEnd; i <= j; i++) {
+      items.push(getListItem(i));
     }
+
+    keepMounted &&
+      keepMounted.forEach((index) => {
+        if (index < overscanedRangeStart) {
+          items.unshift(getListItem(index));
+        }
+
+        if (index > overscanedRangeEnd) {
+          items.push(getListItem(index));
+        }
+      });
 
     return (
       <Element
