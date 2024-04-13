@@ -14,6 +14,67 @@ export default {
   component: VList,
 } as Meta;
 
+const heights = [20, 40, 80, 77];
+
+const ItemWithOnMount = ({
+  i,
+  onMount,
+}: {
+  i: number;
+  onMount: (i: number) => void;
+}) => {
+  useEffect(() => {
+    onMount(i);
+  }, []);
+  return (
+    <div
+      style={{
+        height: heights[i % 4],
+        borderBottom: "solid 1px #ccc",
+        background: "#fff",
+      }}
+    >
+      {i}
+    </div>
+  );
+};
+
+export const AppendOnly: StoryObj = {
+  render: () => {
+    const [indexes, setIndexes] = useState<number[]>([]);
+    return (
+      <div
+        style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+      >
+        <div>
+          <button
+            onClick={() => {
+              setIndexes([]);
+            }}
+          >
+            clear
+          </button>
+        </div>
+        <VList count={1000} keepMounted={indexes}>
+          {(i) => (
+            <ItemWithOnMount
+              key={i}
+              i={i}
+              onMount={(i) => {
+                setIndexes((prev) => {
+                  const next = new Set(prev);
+                  next.add(i);
+                  return Array.from(next).sort((a, b) => a - b);
+                });
+              }}
+            />
+          )}
+        </VList>
+      </div>
+    );
+  },
+};
+
 type Data = {
   id: number;
   value: string;
@@ -22,7 +83,7 @@ type Data = {
 type ItemProps = Data & {
   isEditing: boolean;
   toggleEditing: (id: number) => void;
-}
+};
 
 const itemStyle: CSSProperties = {
   border: "solid 1px #ccc",
@@ -38,15 +99,17 @@ const TextEditor = ({ value }) => {
 
   useEffect(() => {
     ref.current?.focus();
-  }, [])
+  }, []);
 
-  return <textarea
-    style={{ width: "100%" }}
-    rows={6}
-    ref={ref}
-    defaultValue={value}
-  />
-}
+  return (
+    <textarea
+      style={{ width: "100%" }}
+      rows={6}
+      ref={ref}
+      defaultValue={value}
+    />
+  );
+};
 
 const Item = ({ id, value, isEditing, toggleEditing }: ItemProps) => {
   return (
@@ -65,8 +128,7 @@ const Item = ({ id, value, isEditing, toggleEditing }: ItemProps) => {
   );
 };
 
-export const Default: StoryObj = {
-  name: "Keep offscreen items mounted",
+export const SelectedIndex: StoryObj = {
   render: () => {
     const id = useRef(0);
     const createItem = ({
@@ -97,8 +159,10 @@ export const Default: StoryObj = {
     }, []);
 
     const toggleEditing = useCallback((itemId: number) => {
-      setEditingItemId(currentValue => itemId === currentValue ? null : itemId);
-    }, [])
+      setEditingItemId((currentValue) =>
+        itemId === currentValue ? null : itemId
+      );
+    }, []);
 
     return (
       <div
@@ -110,18 +174,21 @@ export const Default: StoryObj = {
         }}
       >
         <div style={{ padding: 10 }}>
-          1. Click "edit" button on any item<br />
-          2. Modify text<br />
-          3. Scroll that item out of view and back - the editor state is not lost, and 
-          item in edit mode is not unmounted when goes offscreen
+          1. Click "edit" button on any item
+          <br />
+          2. Modify text
+          <br />
+          3. Scroll that item out of view and back - the editor state is not
+          lost, and item in edit mode is not unmounted when goes offscreen
         </div>
         <VList
           ref={ref}
           style={{ flex: 1 }}
           reverse
-          keepMounted={editingItemId
-            ? [items.findIndex(item => item.id === editingItemId)]
-            : undefined
+          keepMounted={
+            editingItemId
+              ? [items.findIndex((item) => item.id === editingItemId)]
+              : undefined
           }
           shift
           onScroll={(offset) => {
@@ -137,8 +204,12 @@ export const Default: StoryObj = {
           }}
         >
           {items.map((d) => (
-            <Item key={d.id} isEditing={d.id === editingItemId}
-            toggleEditing={toggleEditing} {...d} />
+            <Item
+              key={d.id}
+              isEditing={d.id === editingItemId}
+              toggleEditing={toggleEditing}
+              {...d}
+            />
           ))}
         </VList>
       </div>

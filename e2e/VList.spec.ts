@@ -332,7 +332,7 @@ test.describe("check if scroll jump compensation works", () => {
   });
 
   test("resize when its top is out of viewport", async ({ page }) => {
-    await page.goto(storyUrl("advanced-collapse-and-scroll--default"));
+    await page.goto(storyUrl("advanced-collapse--collapse-and-scroll"));
     const component = await getScrollable(page);
     const container = await getVirtualizer(page);
     await component.waitForElementState("stable");
@@ -387,7 +387,7 @@ test.describe("check if scroll jump compensation works", () => {
   });
 
   test("resize with smooth scroll", async ({ page }) => {
-    await page.goto(storyUrl("advanced-collapse-and-scroll--default"));
+    await page.goto(storyUrl("advanced-collapse--collapse-and-scroll"));
     const component = await getScrollable(page);
     const container = await getVirtualizer(page);
     await component.waitForElementState("stable");
