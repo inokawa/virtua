@@ -2,8 +2,10 @@ import typescript from "@rollup/plugin-typescript";
 import terser from "@rollup/plugin-terser";
 import { babel, getBabelOutputPlugin } from "@rollup/plugin-babel";
 import banner from "rollup-plugin-banner2";
+import path from "node:path";
 import pkg from "./package.json" with { type: "json" };
 import vueVNodePlugin from "./scripts/babel-plugin-annotate-vue-vnode.mjs";
+import { svelteCopy } from "./scripts/rollup-plugin-svelte-copy.mjs";
 
 const external = (id) =>
   [
@@ -25,6 +27,8 @@ const terserPlugin = terser({
     preserve_annotations: true,
   },
 });
+
+const svelteDir = path.dirname(pkg.exports["./svelte"].default);
 
 /** @type { import('rollup').RollupOptions[] } */
 export default [
@@ -128,6 +132,28 @@ export default [
         parserOpts: { sourceType: "module", plugins: ["jsx", "typescript"] },
       }),
       terserPlugin,
+    ],
+    external,
+  },
+  // svelte
+  {
+    input: "src/svelte/core.ts",
+    output: [
+      {
+        file: path.join(svelteDir, "core.js"),
+        format: "esm",
+        // sourcemap: true,
+      },
+    ],
+    plugins: [
+      typescript({
+        tsconfig: "./tsconfig.json",
+        outDir: ".",
+        // declaration: true,
+        exclude: ["**/*.{spec,stories}.*"],
+      }),
+      terserPlugin,
+      svelteCopy({ dir: svelteDir }),
     ],
     external,
   },

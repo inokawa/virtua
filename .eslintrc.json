@@ -36,6 +36,10 @@
             "from": ["./src/!(core|solid)/**/*"]
           },
           {
+            "target": ["./src/svelte/**/*"],
+            "from": ["./src/!(core|svelte)/**/*"]
+          },
+          {
             "target": ["./src/vue/**/*"],
             "from": ["./src/!(core|vue)/**/*"]
           }

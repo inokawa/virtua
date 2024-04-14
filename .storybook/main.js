@@ -27,30 +27,52 @@ export default process.env.STORYBOOK_VUE
           options: {},
         },
       }
-    : {
-        stories: ["../stories/react/**/*.stories.@(js|jsx|ts|tsx)"],
-        addons: ["@storybook/addon-storysource"],
-        framework: {
-          name: "@storybook/react-vite",
-          options: {},
-        },
-        viteFinal: async (config) => {
-          const { default: react } = await import("@vitejs/plugin-react");
-
-          return mergeConfig(config, {
-            plugins: [react()],
-          });
-        },
-        ...(process.env.STORYBOOK_DEPLOY && {
-          refs: {
-            vue: {
-              title: "Vue",
-              url: "/virtua/vue",
-            },
-            solid: {
-              title: "Solid",
-              url: "/virtua/solid",
-            },
+    : process.env.STORYBOOK_SVELTE
+      ? {
+          stories: ["../stories/svelte/**/*.stories.@(js|jsx|ts|tsx)"],
+          addons: ["@storybook/addon-storysource"],
+          framework: {
+            name: "@storybook/svelte-vite",
+            options: {},
           },
-        }),
-      };
+          viteFinal: async (config) => {
+            const { svelte, vitePreprocess } = await import(
+              "@sveltejs/vite-plugin-svelte"
+            );
+
+            return mergeConfig(config, {
+              plugins: [svelte({ preprocess: vitePreprocess() })],
+            });
+          },
+        }
+      : {
+          stories: ["../stories/react/**/*.stories.@(js|jsx|ts|tsx)"],
+          addons: ["@storybook/addon-storysource"],
+          framework: {
+            name: "@storybook/react-vite",
+            options: {},
+          },
+          viteFinal: async (config) => {
+            const { default: react } = await import("@vitejs/plugin-react");
+
+            return mergeConfig(config, {
+              plugins: [react()],
+            });
+          },
+          ...(process.env.STORYBOOK_DEPLOY && {
+            refs: {
+              vue: {
+                title: "Vue",
+                url: "/virtua/vue",
+              },
+              solid: {
+                title: "Solid",
+                url: "/virtua/solid",
+              },
+              svelte: {
+                title: "Svelte",
+                url: "/virtua/svelte",
+              },
+            },
+          }),
+        };

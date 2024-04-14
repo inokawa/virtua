@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/virtua) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/virtua) ![npm](https://img.shields.io/npm/dw/virtua) [![Best of JS](https://img.shields.io/endpoint?url=https://bestofjs-serverless.now.sh/api/project-badge?fullName=inokawa%2Fvirtua%26since=daily)](https://bestofjs.org/projects/virtua) [![check](https://github.com/inokawa/virtua/actions/workflows/check.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/check.yml) [![demo](https://github.com/inokawa/virtua/actions/workflows/demo.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/demo.yml)
 
-> A zero-config, fast and small (~3kB) virtual list (and grid) component for [React](https://github.com/facebook/react), [Vue](https://vuejs.org/) and [Solid](https://www.solidjs.com/).
+> A zero-config, fast and small (~3kB) virtual list (and grid) component for [React](https://github.com/facebook/react), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/) and [Svelte](https://svelte.dev/).
 
 ![example](./example.gif)
 
@@ -16,7 +16,7 @@ This project is a challenge to rethink virtualization. The goals are...
 - **Fast:** Natural virtual scrolling needs optimization in many aspects (eliminate frame drops by reducing CPU usage and GC and [layout recalculation](https://gist.github.com/paulirish/5d52fb081b3570c81e3a), reduce visual jumps on repaint, optimize with CSS, optimize for frameworks, etc). We are trying to combine the best of them.
 - **Small:** Its bundle size should be small as much as possible to be friendly with modern web development. Currently each components are ~3kB gzipped and tree-shakeable. The total size for React is [~5kB gzipped](https://bundlephobia.com/package/virtua).
 - **Flexible:** Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, RTL, mobile, infinite scrolling, scroll restoration, DnD, keyboard navigation, sticky, placeholder and more. See [live demo](#demo).
-- **Framework agnostic:** [React](https://react.dev/), [Vue](https://vuejs.org/) and [Solid](https://www.solidjs.com/) are supported. We could support other frameworks in the future.
+- **Framework agnostic:** [React](https://react.dev/), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/) and [Svelte](https://svelte.dev/) are supported. We could support other frameworks in the future.
 
 ## Demo
 
@@ -253,6 +253,32 @@ export const App = () => {
 };
 ```
 
+### Svelte
+
+`svelte >= 4.0` is required.
+
+```svelte
+<script lang="ts">
+  import { VList } from "virtua/svelte";
+
+  const sizes = [20, 40, 180, 77];
+
+  const data = Array.from({ length: 1000 }).map((_, i) =>  ({ id: i, size: sizes[i % 4] + "px" }));
+</script>
+
+<VList {data} let:item style={`height: 100vh;`} getKey={(d) => d.id}>
+  <div
+    style={`
+      height: ${item.size};
+      background: white;
+      border-bottom: solid 1px #ccc;
+    `}
+  >
+    {item.id}
+  </div>
+</VList>
+```
+
 ## Documentation
 
 - [API reference](./docs/API.md)
@@ -308,9 +334,9 @@ Especially for `webpack-dev-server`, [you can filter out the specific error with
 
 `viewportSize` will be calculated by ResizeObserver so it's 0 until the first measurement.
 
-#### What is `Cannot find module 'virtua/vue(solid)' or its corresponding type declarations` error?
+#### What is `Cannot find module 'virtua/vue(solid|svelte)' or its corresponding type declarations` error?
 
-This package uses [exports of package.json](https://nodejs.org/api/packages.html#package-entry-points) for entry point of Vue/Solid adapter. This field can't be resolved in TypeScript with `moduleResolution: node`. Try `moduleResolution: bundler` or `moduleResolution: nodenext` instead.
+This package uses [exports of package.json](https://nodejs.org/api/packages.html#package-entry-points) for entry point of Vue/Solid/Svelte adapter. This field can't be resolved in TypeScript with `moduleResolution: node`. Try `moduleResolution: bundler` or `moduleResolution: nodenext` instead.
 
 ## Comparison
 
