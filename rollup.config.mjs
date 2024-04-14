@@ -26,6 +26,7 @@ const terserPlugin = terser({
   },
 });
 
+/** @type { import('rollup').RollupOptions[] } */
 export default [
   // react and type
   {
