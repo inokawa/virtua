@@ -338,16 +338,23 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       items.push(getListItem(i));
     }
 
-    keepMounted &&
-      keepMounted.forEach((index) => {
-        if (index < overscanedRangeStart) {
-          items.unshift(getListItem(index));
-        }
+    if (keepMounted) {
+      const startItems: ReactElement[] = [];
+      const endItems: ReactElement[] = [];
+      keepMounted
+        .sort((a, b) => a - b)
+        .forEach((index) => {
+          if (index < overscanedRangeStart) {
+            startItems.push(getListItem(index));
+          }
+          if (index > overscanedRangeEnd) {
+            endItems.push(getListItem(index));
+          }
+        });
 
-        if (index > overscanedRangeEnd) {
-          items.push(getListItem(index));
-        }
-      });
+      items.unshift(...startItems);
+      items.push(...endItems);
+    }
 
     return (
       <Element
