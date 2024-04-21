@@ -69,7 +69,7 @@ export const Default: StoryObj = {
     };
 
     const ref = useRef<VListHandle>(null);
-    const ITEM_BATCH_COUNT = 30;
+    const ITEM_BATCH_COUNT = 5;
     const [items, setItems] = useState(() => createItems(ITEM_BATCH_COUNT * 2));
     const elements = useMemo(
       () =>

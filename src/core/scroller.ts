@@ -4,7 +4,7 @@ import {
   isIOSWebKit,
   isRTLDocument,
   isSmoothScrollSupported,
-} from "./environment";
+} from './environment';
 import {
   ACTION_SCROLL,
   VirtualStore,
@@ -14,9 +14,9 @@ import {
   SCROLL_IDLE,
   ACTION_BEFORE_MANUAL_SMOOTH_SCROLL,
   ACTION_START_OFFSET_CHANGE,
-} from "./store";
-import { ScrollToIndexOpts } from "./types";
-import { debounce, timeout, clamp, microtask } from "./utils";
+} from './store';
+import {ScrollToIndexOpts} from './types';
+import {debounce, timeout, clamp, microtask} from './utils';
 
 /**
  * scrollLeft is negative value in rtl direction.
@@ -42,9 +42,9 @@ const createScrollObserver = (
   updateScrollOffset: (
     value: number,
     shift: boolean,
-    isMomentumScrolling: boolean
+    isMomentumScrolling: boolean,
   ) => void,
-  getStartOffset?: () => number
+  getStartOffset?: () => number,
 ) => {
   const now = Date.now;
 
@@ -121,34 +121,51 @@ const createScrollObserver = (
     }
   };
 
-  viewport.addEventListener("scroll", onScroll);
-  viewport.addEventListener("wheel", onWheel, { passive: true });
-  viewport.addEventListener("touchstart", onTouchStart, { passive: true });
-  viewport.addEventListener("touchend", onTouchEnd, { passive: true });
+  viewport.addEventListener('scroll', onScroll);
+  viewport.addEventListener('wheel', onWheel, {passive: true});
+  viewport.addEventListener('touchstart', onTouchStart, {passive: true});
+  viewport.addEventListener('touchend', onTouchEnd, {passive: true});
 
   return {
     _dispose: () => {
-      viewport.removeEventListener("scroll", onScroll);
-      viewport.removeEventListener("wheel", onWheel);
-      viewport.removeEventListener("touchstart", onTouchStart);
-      viewport.removeEventListener("touchend", onTouchEnd);
+      viewport.removeEventListener('scroll', onScroll);
+      viewport.removeEventListener('wheel', onWheel);
+      viewport.removeEventListener('touchstart', onTouchStart);
+      viewport.removeEventListener('touchend', onTouchEnd);
       onScrollEnd._cancel();
     },
-    _fixScrollJump: () => {
+    _fixScrollJump: (force = false) => {
+      if (force) console.log('fix start');
+      const style = viewport.style;
+
+      const prev = style['overflowY'];
+      if (force) {
+        style['overflowY'] = 'hidden';
+      }
+      // viewport[scrollOffsetKey] += jump;
+
+      // // timeout(() => {
+      // style[overflowKey] = prev;
       const [jump, shift] = store._flushJump();
-      if (!jump) return;
+      if (!jump) {
+        return;
+      }
       updateScrollOffset(
         normalizeOffset(jump, isHorizontal),
         shift,
-        stillMomentumScrolling
+        stillMomentumScrolling,
       );
       stillMomentumScrolling = false;
 
       if (shift && store._getViewportSize() > store._getTotalSize()) {
+        // if (shift && store._getViewportSize() > store._getTotalSize()) {
         // In this case applying jump may not cause scroll.
         // Current logic expects scroll event occurs after applying jump so we dispatch it manually.
         store._update(ACTION_SCROLL, getScrollOffset());
       }
+
+      style['overflowY'] = 'auto';
+      if (force) console.log('fix end');
     },
   };
 };
@@ -172,19 +189,19 @@ export type Scroller = {
  */
 export const createScroller = (
   store: VirtualStore,
-  isHorizontal: boolean
+  isHorizontal: boolean,
 ): Scroller => {
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let cancelScroll: (() => void) | undefined;
-  const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
-  const overflowKey = isHorizontal ? "overflowX" : "overflowY";
+  const scrollOffsetKey = isHorizontal ? 'scrollLeft' : 'scrollTop';
+  const overflowKey = isHorizontal ? 'overflowX' : 'overflowY';
 
   // The given offset will be clamped by browser
   // https://drafts.csswg.org/cssom-view/#dom-element-scrolltop
   const scheduleImperativeScroll = async (
     getTargetOffset: () => number,
-    smooth?: boolean
+    smooth?: boolean,
   ) => {
     if (!viewportElement) {
       // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
@@ -235,11 +252,11 @@ export const createScroller = (
       }
 
       viewportElement.scrollTo({
-        [isHorizontal ? "left" : "top"]: normalizeOffset(
+        [isHorizontal ? 'left' : 'top']: normalizeOffset(
           getTargetOffset(),
-          isHorizontal
+          isHorizontal,
         ),
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     } else {
       while (true) {
@@ -248,7 +265,7 @@ export const createScroller = (
         try {
           viewportElement[scrollOffsetKey] = normalizeOffset(
             getTargetOffset(),
-            isHorizontal
+            isHorizontal,
           );
           store._update(ACTION_MANUAL_SCROLL);
 
@@ -280,7 +297,7 @@ export const createScroller = (
           if (isMomentumScrolling) {
             const style = viewport.style;
             const prev = style[overflowKey];
-            style[overflowKey] = "hidden";
+            style[overflowKey] = 'hidden';
             timeout(() => {
               style[overflowKey] = prev;
             });
@@ -293,7 +310,7 @@ export const createScroller = (
           } else {
             viewport[scrollOffsetKey] += jump;
           }
-        }
+        },
       );
     },
     _dispose() {
@@ -306,20 +323,20 @@ export const createScroller = (
       offset += store._getScrollOffset();
       scheduleImperativeScroll(() => offset);
     },
-    _scrollToIndex(index, { align, smooth, offset = 0 } = {}) {
+    _scrollToIndex(index, {align, smooth, offset = 0} = {}) {
       index = clamp(index, 0, store._getItemsLength() - 1);
 
-      if (align === "nearest") {
+      if (align === 'nearest') {
         const itemOffset = store._getItemOffset(index);
         const scrollOffset = store._getScrollOffset();
 
         if (itemOffset < scrollOffset) {
-          align = "start";
+          align = 'start';
         } else if (
           itemOffset + store._getItemSize(index) >
           scrollOffset + store._getViewportSize()
         ) {
-          align = "end";
+          align = 'end';
         } else {
           // already completely visible
           return;
@@ -331,16 +348,16 @@ export const createScroller = (
           offset +
           store._getStartSpacerSize() +
           store._getItemOffset(index) +
-          (align === "end"
+          (align === 'end'
             ? store._getItemSize(index) - store._getViewportSize()
-            : align === "center"
-            ? (store._getItemSize(index) - store._getViewportSize()) / 2
-            : 0)
+            : align === 'center'
+              ? (store._getItemSize(index) - store._getViewportSize()) / 2
+              : 0)
         );
       }, smooth);
     },
-    _fixScrollJump: () => {
-      scrollObserver && scrollObserver._fixScrollJump();
+    _fixScrollJump: (force = false) => {
+      scrollObserver && scrollObserver._fixScrollJump(force);
     },
   };
 };
@@ -359,13 +376,13 @@ export type WindowScroller = {
  */
 export const createWindowScroller = (
   store: VirtualStore,
-  isHorizontal: boolean
+  isHorizontal: boolean,
 ): WindowScroller => {
   let scrollObserver: ScrollObserver | undefined;
 
   return {
     _observe(container) {
-      const scrollOffsetKey = isHorizontal ? "scrollX" : "scrollY";
+      const scrollOffsetKey = isHorizontal ? 'scrollX' : 'scrollY';
 
       const document = getCurrentDocument(container);
       const window = getCurrentWindow(document);
@@ -375,10 +392,10 @@ export const createWindowScroller = (
         node: HTMLElement,
         viewport: HTMLElement,
         isHorizontal: boolean,
-        offset: number = 0
+        offset: number = 0,
       ): number => {
         // TODO calc offset only when it changes (maybe impossible)
-        const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
+        const offsetKey = isHorizontal ? 'offsetLeft' : 'offsetTop';
         const offsetSum =
           offset +
           (isHorizontal && isRTLDocument()
@@ -394,7 +411,7 @@ export const createWindowScroller = (
           parent as HTMLElement,
           viewport,
           isHorizontal,
-          offsetSum
+          offsetSum,
         );
       };
 
@@ -407,13 +424,13 @@ export const createWindowScroller = (
           // TODO support case two window scrollers exist in the same view
           if (shift) {
             window.scroll({
-              [isHorizontal ? "left" : "top"]: store._getScrollOffset() + jump,
+              [isHorizontal ? 'left' : 'top']: store._getScrollOffset() + jump,
             });
           } else {
             window.scrollBy(isHorizontal ? jump : 0, isHorizontal ? 0 : jump);
           }
         },
-        () => calcOffsetToViewport(container, documentBody, isHorizontal)
+        () => calcOffsetToViewport(container, documentBody, isHorizontal),
       );
     },
     _dispose() {
@@ -442,7 +459,7 @@ export type GridScroller = {
  */
 export const createGridScroller = (
   vStore: VirtualStore,
-  hStore: VirtualStore
+  hStore: VirtualStore,
 ): GridScroller => {
   const vScroller = createScroller(vStore, false);
   const hScroller = createScroller(hStore, true);

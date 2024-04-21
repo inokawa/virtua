@@ -256,6 +256,8 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       );
     };
 
+    const hasFixedScrollJump = useRef(false);
+
     useIsomorphicLayoutEffect(() => {
       isSSR[refKey] = false;
 
@@ -271,6 +273,17 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         }
       );
       const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
+        const value = store._getScrollOffset();
+
+        if (value <= 0 && !hasFixedScrollJump.current) {
+          scroller._fixScrollJump(true);
+          hasFixedScrollJump.current = true;
+        }
+
+        if (value > 0) {
+          hasFixedScrollJump.current = false;
+        }
+
         onScroll[refKey] && onScroll[refKey](store._getScrollOffset());
       });
       const unsubscribeOnScrollEnd = store._subscribe(
