@@ -135,17 +135,13 @@ const createScrollObserver = (
       onScrollEnd._cancel();
     },
     _fixScrollJump: (force = false) => {
-      if (force) console.log('fix start');
-      const style = viewport.style;
-
-      const prev = style['overflowY'];
       if (force) {
+        const style = viewport.style;
+        const prev = style['overflowY'];
         style['overflowY'] = 'hidden';
+        style['overflowY'] = prev;
+        return;
       }
-      // viewport[scrollOffsetKey] += jump;
-
-      // // timeout(() => {
-      // style[overflowKey] = prev;
       const [jump, shift] = store._flushJump();
       if (!jump) {
         return;
@@ -158,14 +154,10 @@ const createScrollObserver = (
       stillMomentumScrolling = false;
 
       if (shift && store._getViewportSize() > store._getTotalSize()) {
-        // if (shift && store._getViewportSize() > store._getTotalSize()) {
         // In this case applying jump may not cause scroll.
         // Current logic expects scroll event occurs after applying jump so we dispatch it manually.
         store._update(ACTION_SCROLL, getScrollOffset());
       }
-
-      style['overflowY'] = 'auto';
-      if (force) console.log('fix end');
     },
   };
 };
