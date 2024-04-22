@@ -342,6 +342,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       const startItems: ReactElement[] = [];
       const endItems: ReactElement[] = [];
       keepMounted
+        .slice()
         .sort((a, b) => a - b)
         .forEach((index) => {
           if (index < overscanedRangeStart) {
