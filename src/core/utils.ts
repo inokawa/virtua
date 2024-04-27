@@ -28,10 +28,19 @@ export const exists = <T>(v: T): v is Exclude<T, null | undefined> => v != null;
 /**
  * @internal
  */
+export const sort = <T extends number>(arr: readonly T[]): T[] => {
+  return [...arr].sort((a, b) => a - b);
+};
+
+/**
+ * @internal
+ */
 export const median = (arr: number[]): number => {
-  const s = [...arr].sort((a, b) => a - b);
+  const sorted = sort(arr);
   const mid = (arr.length / 2) | 0;
-  return s.length % 2 === 0 ? (s[mid - 1]! + s[mid]!) / 2 : s[mid]!;
+  return sorted.length % 2 === 0
+    ? (sorted[mid - 1]! + sorted[mid]!) / 2
+    : sorted[mid]!;
 };
 
 /**

@@ -29,7 +29,7 @@ import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
 import { useChildren } from "./useChildren";
 import { CustomContainerComponent, CustomItemComponent } from "./types";
-import { microtask } from "../core/utils";
+import { microtask, sort } from "../core/utils";
 
 /**
  * Methods of {@link Virtualizer}.
@@ -341,17 +341,14 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     if (keepMounted) {
       const startItems: ReactElement[] = [];
       const endItems: ReactElement[] = [];
-      keepMounted
-        .slice()
-        .sort((a, b) => a - b)
-        .forEach((index) => {
-          if (index < overscanedRangeStart) {
-            startItems.push(getListItem(index));
-          }
-          if (index > overscanedRangeEnd) {
-            endItems.push(getListItem(index));
-          }
-        });
+      sort(keepMounted).forEach((index) => {
+        if (index < overscanedRangeStart) {
+          startItems.push(getListItem(index));
+        }
+        if (index > overscanedRangeEnd) {
+          endItems.push(getListItem(index));
+        }
+      });
 
       items.unshift(...startItems);
       items.push(...endItems);
