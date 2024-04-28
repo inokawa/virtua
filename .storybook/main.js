@@ -34,6 +34,13 @@ export default process.env.STORYBOOK_VUE
           name: "@storybook/react-vite",
           options: {},
         },
+        viteFinal: async (config) => {
+          const { default: react } = await import("@vitejs/plugin-react");
+
+          return mergeConfig(config, {
+            plugins: [react()],
+          });
+        },
         ...(process.env.STORYBOOK_DEPLOY && {
           refs: {
             vue: {
