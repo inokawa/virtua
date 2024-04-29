@@ -1,11 +1,11 @@
 import {
-  type ReactElement,
+  ReactElement,
   forwardRef,
   useImperativeHandle,
-  type ReactNode,
+  ReactNode,
   useEffect,
   useRef,
-  type RefObject,
+  RefObject,
 } from "react";
 import {
   UPDATE_SCROLL_EVENT,
@@ -24,14 +24,11 @@ import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
 import { createResizer } from "../core/resizer";
 import { ListItem } from "./ListItem";
-import { type CacheSnapshot, type ScrollToIndexOpts } from "../core/types";
+import { CacheSnapshot, ScrollToIndexOpts } from "../core/types";
 import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
 import { useChildren } from "./useChildren";
-import {
-  type CustomContainerComponent,
-  type CustomItemComponent,
-} from "./types";
+import { CustomContainerComponent, CustomItemComponent } from "./types";
 import { microtask, sort } from "../core/utils";
 
 /**

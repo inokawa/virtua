@@ -1,4 +1,4 @@
-import { type CSSProperties, type ReactNode } from "react";
+import { CSSProperties, ReactNode } from "react";
 
 export type ViewportComponentAttributes = Pick<
   React.HTMLAttributes<HTMLElement>,

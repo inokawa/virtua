@@ -2,15 +2,15 @@ import {
   memo,
   useRef,
   useMemo,
-  type CSSProperties,
-  type ReactElement,
-  type ReactNode,
+  CSSProperties,
+  ReactElement,
+  ReactNode,
 } from "react";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { type ItemResizeObserver } from "../core/resizer";
+import { ItemResizeObserver } from "../core/resizer";
 import { refKey } from "./utils";
 import { isRTLDocument } from "../core/environment";
-import { type CustomItemComponent } from "./types";
+import { CustomItemComponent } from "./types";
 
 type ListItemProps = {
   _children: ReactNode;

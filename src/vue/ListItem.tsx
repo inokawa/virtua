@@ -1,13 +1,6 @@
 /** @jsxImportSource vue */
-import {
-  ref,
-  defineComponent,
-  watch,
-  type StyleValue,
-  type PropType,
-  type VNode,
-} from "vue";
-import { type ItemResizeObserver } from "../core/resizer";
+import { ref, defineComponent, watch, StyleValue, PropType, VNode } from "vue";
+import { ItemResizeObserver } from "../core/resizer";
 import { isRTLDocument } from "../core/environment";
 
 /**

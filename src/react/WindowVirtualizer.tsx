@@ -1,6 +1,6 @@
 import {
-  type ReactElement,
-  type ReactNode,
+  ReactElement,
+  ReactNode,
   useEffect,
   forwardRef,
   useImperativeHandle,
@@ -20,11 +20,8 @@ import { getKey, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
 import { createWindowResizer } from "../core/resizer";
-import { type CacheSnapshot } from "../core/types";
-import {
-  type CustomContainerComponent,
-  type CustomItemComponent,
-} from "./types";
+import { CacheSnapshot } from "../core/types";
+import { CustomContainerComponent, CustomItemComponent } from "./types";
 import { ListItem } from "./ListItem";
 import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
