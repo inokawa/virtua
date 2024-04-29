@@ -1,4 +1,4 @@
-import { InternalCacheSnapshot, ItemsRange } from "./types";
+import { type InternalCacheSnapshot, type ItemsRange } from "./types";
 import { clamp, max, median, min } from "./utils";
 
 type Writeable<T> = {

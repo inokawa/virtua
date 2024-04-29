@@ -1,4 +1,4 @@
-import { ItemsRange } from "../core/types";
+import { type ItemsRange } from "../core/types";
 
 /**
  * @internal

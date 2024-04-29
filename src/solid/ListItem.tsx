@@ -1,9 +1,15 @@
 /**
  * @jsxImportSource solid-js
  */
-import { ItemResizeObserver } from "../core/resizer";
+import { type ItemResizeObserver } from "../core/resizer";
 import { isRTLDocument } from "../core/environment";
-import { Component, JSX, createEffect, createMemo, onCleanup } from "solid-js";
+import {
+  type Component,
+  type JSX,
+  createEffect,
+  createMemo,
+  onCleanup,
+} from "solid-js";
 
 type ListItemProps = {
   _children: JSX.Element;

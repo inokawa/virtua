@@ -4,12 +4,12 @@ import {
   onMounted,
   defineComponent,
   onUnmounted,
-  VNode,
+  type VNode,
   watch,
-  ComponentOptionsMixin,
-  SlotsType,
-  ComponentOptionsWithObjectProps,
-  ComponentObjectPropsOptions,
+  type ComponentOptionsMixin,
+  type SlotsType,
+  type ComponentOptionsWithObjectProps,
+  type ComponentObjectPropsOptions,
 } from "vue";
 import {
   SCROLL_IDLE,

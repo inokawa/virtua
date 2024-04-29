@@ -6,11 +6,11 @@ import {
   createRoot,
   createSignal,
   onCleanup,
-  JSX,
-  Signal,
-  Accessor,
+  type JSX,
+  type Signal,
+  type Accessor,
 } from "solid-js";
-import { ItemsRange } from "../core/types";
+import { type ItemsRange } from "../core/types";
 
 interface RenderedNode<T> {
   _data: Signal<T>;

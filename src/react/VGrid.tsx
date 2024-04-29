@@ -2,10 +2,10 @@ import {
   memo,
   useRef,
   useMemo,
-  CSSProperties,
-  ReactElement,
+  type CSSProperties,
+  type ReactElement,
   forwardRef,
-  ReactNode,
+  type ReactNode,
   useImperativeHandle,
 } from "react";
 import {
@@ -20,8 +20,8 @@ import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { createGridScroller } from "../core/scroller";
 import { refKey } from "./utils";
 import { useStatic } from "./useStatic";
-import { createGridResizer, GridResizer } from "../core/resizer";
-import { ViewportComponentAttributes } from "./types";
+import { createGridResizer, type GridResizer } from "../core/resizer";
+import { type ViewportComponentAttributes } from "./types";
 import { flushSync } from "react-dom";
 import { isRTLDocument } from "../core/environment";
 import { useRerender } from "./useRerender";
