@@ -37,8 +37,6 @@ Get reference to [VirtualizerHandle](solid.VirtualizerHandle.md).
 
 ▸ (`handle?`): `void`
 
-Get reference to [VirtualizerHandle](solid.VirtualizerHandle.md).
-
 ##### Parameters
 
 | Name | Type |
@@ -51,7 +49,7 @@ Get reference to [VirtualizerHandle](solid.VirtualizerHandle.md).
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:78](https://github.com/inokawa/virtua/blob/86627b53/src/solid/Virtualizer.tsx#L78)
+[src/solid/Virtualizer.tsx:78](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L78)
 
 ___
 
@@ -63,7 +61,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:82](https://github.com/inokawa/virtua/blob/86627b53/src/solid/Virtualizer.tsx#L82)
+[src/solid/Virtualizer.tsx:82](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L82)
 
 ___
 
@@ -76,8 +74,6 @@ The elements renderer function.
 #### Type declaration
 
 ▸ (`data`, `index`): `Element`
-
-The elements renderer function.
 
 ##### Parameters
 
@@ -92,7 +88,7 @@ The elements renderer function.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:86](https://github.com/inokawa/virtua/blob/86627b53/src/solid/Virtualizer.tsx#L86)
+[src/solid/Virtualizer.tsx:86](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L86)
 
 ___
 
@@ -110,7 +106,7 @@ Number of items to render above/below the visible bounds of the list. Lower valu
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:91](https://github.com/inokawa/virtua/blob/86627b53/src/solid/Virtualizer.tsx#L91)
+[src/solid/Virtualizer.tsx:91](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L91)
 
 ___
 
@@ -125,7 +121,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:98](https://github.com/inokawa/virtua/blob/86627b53/src/solid/Virtualizer.tsx#L98)
+[src/solid/Virtualizer.tsx:98](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L98)
 
 ___
 
@@ -137,7 +133,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:102](https://github.com/inokawa/virtua/blob/86627b53/src/solid/Virtualizer.tsx#L102)
+[src/solid/Virtualizer.tsx:102](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L102)
 
 ___
 
@@ -149,7 +145,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:106](https://github.com/inokawa/virtua/blob/86627b53/src/solid/Virtualizer.tsx#L106)
+[src/solid/Virtualizer.tsx:106](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L106)
 
 ___
 
@@ -159,15 +155,9 @@ ___
 
 Callback invoked whenever scroll offset changes.
 
-**`Param`**
-
-Current scrollTop or scrollLeft.
-
 #### Type declaration
 
 ▸ (`offset`): `void`
-
-Callback invoked whenever scroll offset changes.
 
 ##### Parameters
 
@@ -181,7 +171,7 @@ Callback invoked whenever scroll offset changes.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:111](https://github.com/inokawa/virtua/blob/86627b53/src/solid/Virtualizer.tsx#L111)
+[src/solid/Virtualizer.tsx:111](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L111)
 
 ___
 
@@ -195,15 +185,13 @@ Callback invoked when scrolling stops.
 
 ▸ (): `void`
 
-Callback invoked when scrolling stops.
-
 ##### Returns
 
 `void`
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:115](https://github.com/inokawa/virtua/blob/86627b53/src/solid/Virtualizer.tsx#L115)
+[src/solid/Virtualizer.tsx:115](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L115)
 
 ___
 
@@ -216,8 +204,6 @@ Callback invoked when visible items range changes.
 #### Type declaration
 
 ▸ (`startIndex`, `endIndex`): `void`
-
-Callback invoked when visible items range changes.
 
 ##### Parameters
 
@@ -232,4 +218,4 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:119](https://github.com/inokawa/virtua/blob/86627b53/src/solid/Virtualizer.tsx#L119)
+[src/solid/Virtualizer.tsx:119](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L119)

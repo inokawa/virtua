@@ -229,7 +229,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:47](https://github.com/inokawa/virtua/blob/86627b53/src/vue/WindowVirtualizer.tsx#L47)
+[src/vue/WindowVirtualizer.tsx:47](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/vue/WindowVirtualizer.tsx#L47)
 
 ___
 
@@ -241,7 +241,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:31](https://github.com/inokawa/virtua/blob/86627b53/src/vue/WindowVirtualizer.tsx#L31)
+[src/vue/WindowVirtualizer.tsx:31](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/vue/WindowVirtualizer.tsx#L31)
 
 ___
 
@@ -259,7 +259,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:36](https://github.com/inokawa/virtua/blob/86627b53/src/vue/WindowVirtualizer.tsx#L36)
+[src/vue/WindowVirtualizer.tsx:36](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/vue/WindowVirtualizer.tsx#L36)
 
 ___
 
@@ -274,7 +274,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:43](https://github.com/inokawa/virtua/blob/86627b53/src/vue/WindowVirtualizer.tsx#L43)
+[src/vue/WindowVirtualizer.tsx:43](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/vue/WindowVirtualizer.tsx#L43)
 
 ___
 
@@ -286,7 +286,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:51](https://github.com/inokawa/virtua/blob/86627b53/src/vue/WindowVirtualizer.tsx#L51)
+[src/vue/WindowVirtualizer.tsx:51](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/vue/WindowVirtualizer.tsx#L51)
 
 ___
 
