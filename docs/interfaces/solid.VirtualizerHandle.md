@@ -45,7 +45,7 @@ Get item offset from start.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:52](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L52)
+[src/solid/Virtualizer.tsx:52](https://github.com/inokawa/virtua/blob/d9151a8bfd63d70efa33fb4fc5730732e6ee0bde/src/solid/Virtualizer.tsx#L52)
 
 ___
 
@@ -68,7 +68,7 @@ Scroll to the item specified by index.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:58](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L58)
+[src/solid/Virtualizer.tsx:58](https://github.com/inokawa/virtua/blob/d9151a8bfd63d70efa33fb4fc5730732e6ee0bde/src/solid/Virtualizer.tsx#L58)
 
 ___
 
@@ -90,7 +90,7 @@ Scroll to the given offset.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:63](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L63)
+[src/solid/Virtualizer.tsx:63](https://github.com/inokawa/virtua/blob/d9151a8bfd63d70efa33fb4fc5730732e6ee0bde/src/solid/Virtualizer.tsx#L63)
 
 ___
 
@@ -112,7 +112,7 @@ Scroll by the given offset.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:68](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L68)
+[src/solid/Virtualizer.tsx:68](https://github.com/inokawa/virtua/blob/d9151a8bfd63d70efa33fb4fc5730732e6ee0bde/src/solid/Virtualizer.tsx#L68)
 
 ## Properties
 
@@ -124,7 +124,7 @@ Get current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:39](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L39)
+[src/solid/Virtualizer.tsx:39](https://github.com/inokawa/virtua/blob/d9151a8bfd63d70efa33fb4fc5730732e6ee0bde/src/solid/Virtualizer.tsx#L39)
 
 ___
 
@@ -136,7 +136,7 @@ Get current scrollHeight or scrollWidth.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:43](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L43)
+[src/solid/Virtualizer.tsx:43](https://github.com/inokawa/virtua/blob/d9151a8bfd63d70efa33fb4fc5730732e6ee0bde/src/solid/Virtualizer.tsx#L43)
 
 ___
 
@@ -148,4 +148,4 @@ Get current offsetHeight or offsetWidth.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:47](https://github.com/inokawa/virtua/blob/790b0083d06e536a7c4515467b154fa8fa57f390/src/solid/Virtualizer.tsx#L47)
+[src/solid/Virtualizer.tsx:47](https://github.com/inokawa/virtua/blob/d9151a8bfd63d70efa33fb4fc5730732e6ee0bde/src/solid/Virtualizer.tsx#L47)
