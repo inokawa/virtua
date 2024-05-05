@@ -3,11 +3,10 @@
   "extends": [
     "config:recommended",
     "schedule:monthly",
-    ":pinOnlyDevDependencies"
+    ":preserveSemverRanges",
+    ":automergeMinor",
+    ":maintainLockFilesMonthly"
   ],
   "timezone": "Asia/Tokyo",
-  "automerge": true,
-  "major": {
-    "automerge": false
-  }
+  "configMigration": true
 }
