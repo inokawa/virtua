@@ -782,9 +782,52 @@ describe(initCache.name, () => {
     `);
   });
 
-  it("should create cache from snapshot", () => {
-    expect(initCache(10, 23, [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 123]))
-      .toMatchInlineSnapshot(`
+  it("should restore cache from snapshot", () => {
+    const itemLength = 10;
+    const cache = initCache(itemLength, 23, [
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      123,
+    ]);
+    expect(cache).toMatchInlineSnapshot(`
+        {
+          "_computedOffsetIndex": -1,
+          "_defaultItemSize": 123,
+          "_length": 10,
+          "_offsets": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+          ],
+          "_sizes": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+          ],
+        }
+      `);
+    expect(cache._length).toBe(itemLength);
+    expect(cache._sizes.length).toBe(itemLength);
+    expect(cache._offsets.length).toBe(itemLength);
+  });
+
+  it("should restore cache from snapshot which has shorter length", () => {
+    const itemLength = 10;
+    const cache = initCache(itemLength, 23, [[0, 1, 2, 3, 4], 123]);
+    expect(cache).toMatchInlineSnapshot(`
       {
         "_computedOffsetIndex": -1,
         "_defaultItemSize": 123,
@@ -807,14 +850,59 @@ describe(initCache.name, () => {
           2,
           3,
           4,
-          5,
-          6,
-          7,
-          8,
-          9,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
         ],
       }
     `);
+    expect(cache._length).toBe(itemLength);
+    expect(cache._sizes.length).toBe(itemLength);
+    expect(cache._offsets.length).toBe(itemLength);
+  });
+
+  it("should restore cache from snapshot which has longer length", () => {
+    const itemLength = 10;
+    const cache = initCache(itemLength, 23, [
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      123,
+    ]);
+    expect(cache).toMatchInlineSnapshot(`
+        {
+          "_computedOffsetIndex": -1,
+          "_defaultItemSize": 123,
+          "_length": 10,
+          "_offsets": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+          ],
+          "_sizes": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+          ],
+        }
+      `);
+    expect(cache._length).toBe(itemLength);
+    expect(cache._sizes.length).toBe(itemLength);
+    expect(cache._offsets.length).toBe(itemLength);
   });
 });
 
