@@ -749,7 +749,9 @@ describe(estimateDefaultItemSize.name, () => {
 
 describe(initCache.name, () => {
   it("should create cache", () => {
-    expect(initCache(10, 23)).toMatchInlineSnapshot(`
+    const itemLength = 10;
+    const cache = initCache(itemLength, 23);
+    expect(cache).toMatchInlineSnapshot(`
       {
         "_computedOffsetIndex": -1,
         "_defaultItemSize": 23,
@@ -780,6 +782,9 @@ describe(initCache.name, () => {
         ],
       }
     `);
+    expect(cache._length).toBe(itemLength);
+    expect(cache._sizes.length).toBe(itemLength);
+    expect(cache._offsets.length).toBe(itemLength);
   });
 
   it("should restore cache from snapshot", () => {
