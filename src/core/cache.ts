@@ -165,9 +165,11 @@ export const initCache = (
   itemSize: number,
   snapshot?: InternalCacheSnapshot
 ): Cache => {
+  const hasValidCache =
+    snapshot && snapshot[0] && snapshot[0].length === length;
   return {
-    _defaultItemSize: snapshot ? snapshot[1] : itemSize,
-    _sizes: snapshot ? snapshot[0] : fill([], length),
+    _defaultItemSize: hasValidCache ? snapshot[1] : itemSize,
+    _sizes: hasValidCache ? snapshot[0] : fill([], length),
     _length: length,
     _computedOffsetIndex: -1,
     _offsets: fill([], length),
