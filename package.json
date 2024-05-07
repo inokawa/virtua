@@ -119,9 +119,9 @@
     "typedoc-plugin-vue": "^1.1.0",
     "typescript": "^5.4.5",
     "virtua": "^0.30.2",
-    "vite": "5.1.7",
+    "vite": "^5.2.11",
     "vite-plugin-solid": "^2.10.2",
-    "vitest": "^1.5.2",
+    "vitest": "^1.6.0",
     "vue": "^3.4.25",
     "vue-eslint-parser": "^9.4.2",
     "wait-on": "^7.2.0"
