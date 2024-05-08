@@ -3,7 +3,7 @@ import terser from "@rollup/plugin-terser";
 import { babel, getBabelOutputPlugin } from "@rollup/plugin-babel";
 import banner from "rollup-plugin-banner2";
 import pkg from "./package.json" assert { type: "json" };
-import vueVNodePlugin from "./scripts/babel-plugin-annotate-vue-vnode.mjs";
+import vueVNodePlugin from "./scripts/babel-plugin-annotate-vue-vnode.js";
 
 const external = (id) =>
   [
