@@ -139,7 +139,7 @@ export interface VirtualizerProps {
   /**
    * Reference to the scrollable element. The default will get the parent element of virtualizer.
    */
-  scrollRef?: RefObject<HTMLElement>;
+  scrollRef?: RefObject<HTMLDivElement>;
   /**
    * Callback invoked whenever scroll offset changes.
    * @param offset Current scrollTop or scrollLeft.

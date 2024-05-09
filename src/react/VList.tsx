@@ -30,6 +30,7 @@ export interface VListProps
       | "onScrollEnd"
       | "onRangeChange"
       | "keepMounted"
+      | "scrollRef"
     >,
     ViewportComponentAttributes {
   /**
@@ -59,11 +60,13 @@ export const VList = forwardRef<VListHandle, VListProps>(
       onScrollEnd,
       onRangeChange,
       style,
+      scrollRef: injectedScrollRef,
       ...attrs
     },
     ref
   ): ReactElement => {
-    const scrollRef = useRef<HTMLDivElement>(null);
+    const internalScrollRef = useRef<HTMLDivElement>(null);
+    const scrollRef = injectedScrollRef || internalScrollRef;
     const shouldReverse = reverse && !horizontal;
 
     let element = (
