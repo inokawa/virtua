@@ -24,7 +24,7 @@
     },
     "./svelte": {
       "types": "./lib/svelte/index.d.ts",
-      "svelte": "./dist/svelte/index.js",
+      "svelte": "./lib/svelte/index.js",
       "default": "./lib/svelte/index.js"
     }
   },
