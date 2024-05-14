@@ -81,3 +81,20 @@ jobs:
         run: npx playwright install chromium --with-deps
       - name: Smoke test stories
         run: STORYBOOK_SOLID=1 npm run storybook:test
+
+  e2e-svelte:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
+          cache: "npm"
+
+      - run: npm ci
+      - run: npm run svelte-check
+      - name: Install Playwright Browsers
+        run: npx playwright install chromium --with-deps
+      - name: Smoke test stories
+        run: STORYBOOK_SVELTE=1 npm run storybook:test

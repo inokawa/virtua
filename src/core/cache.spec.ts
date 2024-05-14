@@ -5,7 +5,7 @@ import {
   computeTotalSize,
   computeOffset,
   findIndex,
-  Cache,
+  type Cache,
   updateCacheLength,
   initCache,
   computeRange,

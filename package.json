@@ -1,7 +1,7 @@
 {
   "name": "virtua",
   "version": "0.30.5",
-  "description": "A zero-config, fast and small (~3kB) virtual list (and grid) component for React, Vue and Solid.",
+  "description": "A zero-config, fast and small (~3kB) virtual list (and grid) component for React, Vue, Solid and Svelte.",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
   "types": "lib/index.d.ts",
@@ -21,6 +21,11 @@
       "types": "./lib/solid/index.d.ts",
       "import": "./lib/solid/index.mjs",
       "default": "./lib/solid/index.js"
+    },
+    "./svelte": {
+      "types": "./lib/svelte/index.d.ts",
+      "svelte": "./dist/svelte/index.js",
+      "default": "./lib/svelte/index.js"
     }
   },
   "files": [
@@ -32,12 +37,14 @@
     "tsc": "tsc -p . --noEmit",
     "test": "vitest run --silent",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
+    "svelte-check": "svelte-check --tsconfig ./tsconfig.svelte.json",
     "storybook": "storybook dev -p 6006",
     "storybook:rtl": "STORYBOOK_RTL=1 npm run storybook",
     "storybook:vue": "STORYBOOK_VUE=1 npm run storybook",
     "storybook:solid": "STORYBOOK_SOLID=1 npm run storybook",
+    "storybook:svelte": "STORYBOOK_SVELTE=1 npm run storybook",
     "storybook:build": "storybook build",
-    "storybook:deploy": "STORYBOOK_DEPLOY=1 npm run storybook:build && STORYBOOK_VUE=1 npm run storybook:build -- -o storybook-static/vue && STORYBOOK_SOLID=1 npm run storybook:build -- -o storybook-static/solid",
+    "storybook:deploy": "STORYBOOK_DEPLOY=1 npm run storybook:build && STORYBOOK_VUE=1 npm run storybook:build -- -o storybook-static/vue && STORYBOOK_SOLID=1 npm run storybook:build -- -o storybook-static/solid && STORYBOOK_SVELTE=1 npm run storybook:build -- -o storybook-static/svelte",
     "storybook:test": "concurrently -k -s first -n \"SB,TEST\" -c \"magenta,blue\" \"npm run storybook -- --no-open\" \"wait-on tcp:6006 && test-storybook\"",
     "e2e": "npx playwright test",
     "typedoc": "typedoc",
@@ -70,9 +77,12 @@
     "@storybook/react": "^8.0.9",
     "@storybook/react-vite": "^8.0.9",
     "@storybook/source-loader": "^8.0.9",
+    "@storybook/svelte": "^8.0.9",
+    "@storybook/svelte-vite": "^8.0.9",
     "@storybook/test-runner": "^0.17.1--canary.445.f7d2785.0",
     "@storybook/vue3": "^8.0.9",
     "@storybook/vue3-vite": "^8.0.9",
+    "@sveltejs/vite-plugin-svelte": "^3.1.0",
     "@tanstack/react-virtual": "^3.0.4",
     "@testing-library/react": "^14.2.0",
     "@testing-library/vue": "^8.0.2",
@@ -95,6 +105,7 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-solid": "^0.14.0",
     "eslint-plugin-vue": "^9.25.0",
+    "glob": "^10.3.12",
     "jsdom": "^24.0.0",
     "re-resizable": "^6.9.11",
     "react": "^18.3.1",
@@ -114,6 +125,9 @@
     "storybook": "^8.0.9",
     "storybook-solidjs": "^1.0.0-beta.2",
     "storybook-solidjs-vite": "^1.0.0-beta.2",
+    "svelte": "^4.2.15",
+    "svelte-check": "^3.7.1",
+    "svelte2tsx": "^0.7.8",
     "typedoc": "^0.25.13",
     "typedoc-plugin-markdown": "^3.17.1",
     "typedoc-plugin-vue": "^1.1.0",
@@ -130,6 +144,7 @@
     "react": ">=16.14.0",
     "react-dom": ">=16.14.0",
     "solid-js": ">=1.0",
+    "svelte": ">=4.0",
     "vue": ">=3.2"
   },
   "peerDependenciesMeta": {
@@ -144,6 +159,9 @@
     },
     "solid-js": {
       "optional": true
+    },
+    "svelte": {
+      "optional": true
     }
   },
   "repository": {
@@ -155,6 +173,7 @@
     "react-component",
     "vue",
     "solid",
+    "svelte",
     "ui",
     "headless",
     "list",

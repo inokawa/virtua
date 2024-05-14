@@ -7,7 +7,7 @@ import {
 } from "./environment";
 import {
   ACTION_SCROLL,
-  VirtualStore,
+  type VirtualStore,
   ACTION_SCROLL_END,
   UPDATE_SIZE_EVENT,
   ACTION_MANUAL_SCROLL,
@@ -15,7 +15,7 @@ import {
   ACTION_BEFORE_MANUAL_SMOOTH_SCROLL,
   ACTION_START_OFFSET_CHANGE,
 } from "./store";
-import { ScrollToIndexOpts } from "./types";
+import { type ScrollToIndexOpts } from "./types";
 import { debounce, timeout, clamp, microtask } from "./utils";
 
 /**
@@ -334,8 +334,8 @@ export const createScroller = (
           (align === "end"
             ? store._getItemSize(index) - store._getViewportSize()
             : align === "center"
-            ? (store._getItemSize(index) - store._getViewportSize()) / 2
-            : 0)
+              ? (store._getItemSize(index) - store._getViewportSize()) / 2
+              : 0)
         );
       }, smooth);
     },

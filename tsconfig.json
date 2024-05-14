@@ -18,11 +18,9 @@
     "noUncheckedIndexedAccess": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
-    // "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
-    // "exactOptionalPropertyTypes": true,
     "stripInternal": true
   },
   "include": ["src"],
