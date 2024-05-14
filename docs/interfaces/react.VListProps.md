@@ -100,7 +100,7 @@ If true, items are aligned to the end of the list when total size of items are s
 
 #### Defined in
 
-[src/react/VList.tsx:38](https://github.com/inokawa/virtua/blob/2fada92c8453bda8a8bb6d74d9091ed77b64aeec/src/react/VList.tsx#L38)
+[src/react/VList.tsx:38](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/VList.tsx#L38)
 
 ___
 
@@ -118,7 +118,7 @@ Pick.children
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:86](https://github.com/inokawa/virtua/blob/2fada92c8453bda8a8bb6d74d9091ed77b64aeec/src/react/Virtualizer.tsx#L86)
+[src/react/Virtualizer.tsx:86](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/Virtualizer.tsx#L86)
 
 ___
 
@@ -148,7 +148,7 @@ Pick.onScroll
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:147](https://github.com/inokawa/virtua/blob/2fada92c8453bda8a8bb6d74d9091ed77b64aeec/src/react/Virtualizer.tsx#L147)
+[src/react/Virtualizer.tsx:147](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/Virtualizer.tsx#L147)
 
 ___
 
@@ -164,7 +164,7 @@ Pick.shift
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:110](https://github.com/inokawa/virtua/blob/2fada92c8453bda8a8bb6d74d9091ed77b64aeec/src/react/Virtualizer.tsx#L110)
+[src/react/Virtualizer.tsx:110](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/Virtualizer.tsx#L110)
 
 ___
 
@@ -180,7 +180,7 @@ Pick.count
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:90](https://github.com/inokawa/virtua/blob/2fada92c8453bda8a8bb6d74d9091ed77b64aeec/src/react/Virtualizer.tsx#L90)
+[src/react/Virtualizer.tsx:90](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/Virtualizer.tsx#L90)
 
 ___
 
@@ -202,7 +202,7 @@ Pick.overscan
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:95](https://github.com/inokawa/virtua/blob/2fada92c8453bda8a8bb6d74d9091ed77b64aeec/src/react/Virtualizer.tsx#L95)
+[src/react/Virtualizer.tsx:95](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/Virtualizer.tsx#L95)
 
 ___
 
@@ -218,7 +218,7 @@ Pick.keepMounted
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:99](https://github.com/inokawa/virtua/blob/2fada92c8453bda8a8bb6d74d9091ed77b64aeec/src/react/Virtualizer.tsx#L99)
+[src/react/Virtualizer.tsx:99](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/Virtualizer.tsx#L99)
 
 ___
 
@@ -237,7 +237,7 @@ Pick.itemSize
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:106](https://github.com/inokawa/virtua/blob/2fada92c8453bda8a8bb6d74d9091ed77b64aeec/src/react/Virtualizer.tsx#L106)
+[src/react/Virtualizer.tsx:106](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/Virtualizer.tsx#L106)
 
 ___
 
@@ -253,7 +253,7 @@ Pick.horizontal
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:114](https://github.com/inokawa/virtua/blob/2fada92c8453bda8a8bb6d74d9091ed77b64aeec/src/react/Virtualizer.tsx#L114)
+[src/react/Virtualizer.tsx:114](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/Virtualizer.tsx#L114)
 
 ___
 
@@ -263,7 +263,7 @@ ___
 
 You can restore cache by passing a [CacheSnapshot](react.CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VirtualizerHandle.cache](react.VirtualizerHandle.md#cache).
 
-**The length of items should be the same as when you take the cache, otherwise restoration may not work as expected.**
+**The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
 
 #### Inherited from
 
@@ -271,7 +271,7 @@ Pick.cache
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:120](https://github.com/inokawa/virtua/blob/2fada92c8453bda8a8bb6d74d9091ed77b64aeec/src/react/Virtualizer.tsx#L120)
+[src/react/Virtualizer.tsx:120](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/Virtualizer.tsx#L120)
 
 ___
 
@@ -287,7 +287,7 @@ Pick.ssrCount
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:128](https://github.com/inokawa/virtua/blob/2fada92c8453bda8a8bb6d74d9091ed77b64aeec/src/react/Virtualizer.tsx#L128)
+[src/react/Virtualizer.tsx:128](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/Virtualizer.tsx#L128)
 
 ___
 
@@ -309,7 +309,7 @@ Pick.item
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:138](https://github.com/inokawa/virtua/blob/2fada92c8453bda8a8bb6d74d9091ed77b64aeec/src/react/Virtualizer.tsx#L138)
+[src/react/Virtualizer.tsx:138](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/Virtualizer.tsx#L138)
 
 ___
 
@@ -333,7 +333,7 @@ Pick.onScrollEnd
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:151](https://github.com/inokawa/virtua/blob/2fada92c8453bda8a8bb6d74d9091ed77b64aeec/src/react/Virtualizer.tsx#L151)
+[src/react/Virtualizer.tsx:151](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/Virtualizer.tsx#L151)
 
 ___
 
@@ -364,7 +364,7 @@ Pick.onRangeChange
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:155](https://github.com/inokawa/virtua/blob/2fada92c8453bda8a8bb6d74d9091ed77b64aeec/src/react/Virtualizer.tsx#L155)
+[src/react/Virtualizer.tsx:155](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/Virtualizer.tsx#L155)
 
 ___
 
