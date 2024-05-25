@@ -270,7 +270,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         "overflow-anchor": "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
         flex: "none", // flex style can break layout
         position: "relative",
-        visibility: "hidden",
+        visibility: "hidden", // TODO replace with other optimization methods
         width: horizontal ? totalSize() + "px" : "100%",
         height: horizontal ? "100%" : totalSize() + "px",
         "pointer-events": scrollDirection() !== SCROLL_IDLE ? "none" : "auto",

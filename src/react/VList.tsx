@@ -91,7 +91,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       element = (
         <div
           style={{
-            visibility: "hidden",
+            visibility: "hidden", // TODO replace with other optimization methods
             display: "flex",
             flexDirection: "column",
             justifyContent: "flex-end",

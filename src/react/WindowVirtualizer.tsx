@@ -263,7 +263,7 @@ export const WindowVirtualizer = forwardRef<
           // contain: "content",
           flex: "none", // flex style can break layout
           position: "relative",
-          visibility: "hidden",
+          visibility: "hidden", // TODO replace with other optimization methods
           width: isHorizontal ? totalSize : "100%",
           height: isHorizontal ? "100%" : totalSize,
           pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : "auto",

@@ -364,7 +364,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
           overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
           flex: "none", // flex style can break layout
           position: "relative",
-          visibility: "hidden",
+          visibility: "hidden", // TODO replace with other optimization methods
           width: isHorizontal ? totalSize : "100%",
           height: isHorizontal ? "100%" : totalSize,
           pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : "auto",
