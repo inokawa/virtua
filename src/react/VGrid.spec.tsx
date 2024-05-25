@@ -37,30 +37,6 @@ it("should pass attributes to element", () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
-// it("should change components", () => {
-//   const UlList = forwardRef<HTMLDivElement, CustomViewportComponentProps>(
-//     ({ children, attrs, scrollSize }, ref) => {
-//       return (
-//         <div ref={ref} {...attrs}>
-//           <ul style={{ position: "relative", height: scrollSize, margin: 0 }}>
-//             {children}
-//           </ul>
-//         </div>
-//       );
-//     }
-//   );
-//   const { asFragment } = render(
-//     <VList components={{ Root: UlList, Item: "li" }}>
-//       <div>0</div>
-//       <div>1</div>
-//       <div>2</div>
-//       <div>3</div>
-//       <div>4</div>
-//     </VList>
-//   );
-//   expect(asFragment()).toMatchSnapshot();
-// });
-
 describe("grid", () => {
   it("should render 1 children", () => {
     const { asFragment } = render(
@@ -134,14 +110,14 @@ describe("grid", () => {
           rowIndex === 0
             ? "string"
             : rowIndex === 1
-            ? true
-            : rowIndex === 2
-            ? false
-            : rowIndex === 3
-            ? null
-            : rowIndex === 4
-            ? undefined
-            : 123
+              ? true
+              : rowIndex === 2
+                ? false
+                : rowIndex === 3
+                  ? null
+                  : rowIndex === 4
+                    ? undefined
+                    : 123
         }
       </VGrid>
     );
