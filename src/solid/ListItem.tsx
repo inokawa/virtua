@@ -5,14 +5,14 @@ import { ItemResizeObserver } from "../core/resizer";
 import { isRTLDocument } from "../core/environment";
 import { Component, JSX, createEffect, createMemo, onCleanup } from "solid-js";
 
-type ListItemProps = {
+interface ListItemProps {
   _children: JSX.Element;
   _resizer: ItemResizeObserver;
   _index: number;
   _offset: number;
   _hide: boolean;
   _isHorizontal: boolean;
-};
+}
 
 /**
  * @internal

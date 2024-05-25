@@ -12,7 +12,7 @@ import { refKey } from "./utils";
 import { isRTLDocument } from "../core/environment";
 import { CustomItemComponent } from "./types";
 
-type ListItemProps = {
+interface ListItemProps {
   _children: ReactNode;
   _resizer: ItemResizeObserver;
   _index: number;
@@ -21,7 +21,7 @@ type ListItemProps = {
   _element: "div" | CustomItemComponent;
   _isHorizontal: boolean;
   _isSSR: boolean | undefined;
-};
+}
 
 /**
  * @internal

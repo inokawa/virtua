@@ -39,7 +39,7 @@ export type CustomCellComponent = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<CustomCellComponentProps> & React.RefAttributes<any>
 >;
 
-type CellProps = {
+interface CellProps {
   _children: ReactNode;
   _resizer: GridResizer;
   _rowIndex: number;
@@ -50,7 +50,7 @@ type CellProps = {
   _width: number;
   _hide: boolean;
   _element: "div";
-};
+}
 
 const Cell = memo(
   ({
