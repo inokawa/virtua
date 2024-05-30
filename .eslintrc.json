@@ -50,11 +50,15 @@
   "overrides": [
     {
       "files": ["src/react/**/*.{jsx,tsx}"],
+      "plugins": ["react-compiler"],
       "extends": ["plugin:react-hooks/recommended"],
       "settings": {
         "react": {
           "version": "detect"
         }
+      },
+      "rules": {
+        "react-compiler/react-compiler": "error"
       }
     },
     {
