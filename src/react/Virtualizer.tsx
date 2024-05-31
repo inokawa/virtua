@@ -24,7 +24,11 @@ import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
 import { createResizer } from "../core/resizer";
 import { ListItem } from "./ListItem";
-import { CacheSnapshot, ScrollToIndexOpts } from "../core/types";
+import {
+  CacheSnapshot,
+  ScrollToIndexOpts,
+  StartOffsetType,
+} from "../core/types";
 import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
 import { useChildren } from "./useChildren";
@@ -120,8 +124,10 @@ export interface VirtualizerProps {
   cache?: CacheSnapshot;
   /**
    * If you put an element before virtualizer, you have to define its height with this prop.
+   *
+   * TODO
    */
-  startMargin?: number;
+  startOffset?: StartOffsetType;
   /**
    * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
    */
@@ -178,7 +184,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       shift,
       horizontal: horizontalProp,
       cache,
-      startMargin,
+      startOffset,
       ssrCount,
       as: Element = "div",
       item: ItemElement = "div",
@@ -207,13 +213,12 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         itemSize,
         ssrCount,
         cache,
-        !itemSize,
-        startMargin
+        !itemSize
       );
       return [
         _store,
         createResizer(_store, _isHorizontal),
-        createScroller(_store, _isHorizontal),
+        createScroller(_store, _isHorizontal, startOffset),
         _isHorizontal,
       ];
     });
@@ -281,15 +286,16 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
           onScrollEnd[refKey] && onScrollEnd[refKey]();
         }
       );
+      const container = containerRef[refKey]!;
       const assignScrollableElement = (e: HTMLElement) => {
         resizer._observeRoot(e);
-        scroller._observe(e);
+        scroller._observe(e, container);
       };
       if (scrollRef) {
         // parent's ref doesn't exist when useLayoutEffect is called
         microtask(() => assignScrollableElement(scrollRef[refKey]!));
       } else {
-        assignScrollableElement(containerRef[refKey]!.parentElement!);
+        assignScrollableElement(container.parentElement!);
       }
 
       return () => {

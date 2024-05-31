@@ -8,17 +8,15 @@ export const delay = (ms: number) =>
 
 export const Spinner = ({
   style,
-  height = 100,
 }: {
   style?: CSSProperties;
-  height?: number;
 }) => {
   return (
     <>
       <div
         style={{
           ...style,
-          height: height,
+          height: 100,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",

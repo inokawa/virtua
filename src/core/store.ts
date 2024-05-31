@@ -140,13 +140,13 @@ export const createVirtualStore = (
   itemSize: number = 40,
   ssrCount: number = 0,
   cacheSnapshot?: CacheSnapshot | undefined,
-  shouldAutoEstimateItemSize: boolean = false,
-  startSpacerSize: number = 0
+  shouldAutoEstimateItemSize: boolean = false
 ): VirtualStore => {
   let isSSR = !!ssrCount;
   let stateVersion: StateVersion = [];
   let viewportSize = 0;
   let scrollOffset = 0;
+  let startOffset = 0;
   let jumpCount = 0;
   let jump = 0;
   let pendingJump = 0;
@@ -165,7 +165,7 @@ export const createVirtualStore = (
     cacheSnapshot as unknown as InternalCacheSnapshot | undefined
   );
   const subscribers = new Set<[number, Subscriber]>();
-  const getRelativeScrollOffset = () => scrollOffset - startSpacerSize;
+  const getRelativeScrollOffset = () => scrollOffset - startOffset;
   const getRange = (offset: number) => {
     return computeRange(cache, offset, _prevRange[0], viewportSize);
   };
@@ -240,7 +240,7 @@ export const createVirtualStore = (
       return viewportSize;
     },
     _getStartSpacerSize() {
-      return startSpacerSize;
+      return startOffset;
     },
     _getTotalSize: getTotalSize,
     _getJumpCount() {
@@ -418,7 +418,7 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_START_OFFSET_CHANGE: {
-          startSpacerSize = payload;
+          startOffset = payload;
           break;
         }
         case ACTION_MANUAL_SCROLL: {

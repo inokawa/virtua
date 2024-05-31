@@ -7,8 +7,6 @@ const createItem = (i: number) => ({ index: i, size: sizes[i % 4] + 'px' })
 
 const data = Array.from({ length: 1000 }).map((_, i) => createItem(i));
 
-const outerPadding = 40;
-const innerPadding = 60;
 const scrollRef = ref<HTMLElement>();  
 </script>
 
@@ -20,9 +18,9 @@ const scrollRef = ref<HTMLElement>();
     // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
     overflowAnchor: 'none'
   }">
-    <div :style="{ backgroundColor: 'burlywood', padding: outerPadding + 'px' }">
-      <div :style="{ backgroundColor: 'steelblue', padding: innerPadding + 'px' }">
-        <Virtualizer :data="data" #default="item" :scrollRef="scrollRef" :startMargin="outerPadding + innerPadding">
+    <div :style="{ backgroundColor: 'burlywood', padding: '60px' }">
+      <div :style="{ backgroundColor: 'steelblue', padding: '40px' }">
+        <Virtualizer :data="data" #default="item" :scrollRef="scrollRef" :startOffset="'static'">
           <div :key="item.index" :style="{ height: item.size, background: 'white', borderBottom: 'solid 1px #ccc' }">
             {{ item.index }}
           </div>

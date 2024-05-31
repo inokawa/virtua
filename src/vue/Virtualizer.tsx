@@ -24,7 +24,7 @@ import {
 } from "../core/store";
 import { createResizer } from "../core/resizer";
 import { createScroller } from "../core/scroller";
-import { ScrollToIndexOpts } from "../core/types";
+import { ScrollToIndexOpts, StartOffsetType } from "../core/types";
 import { ListItem } from "./ListItem";
 import { getKey } from "./utils";
 import { microtask } from "../core/utils";
@@ -92,8 +92,10 @@ const props = {
   horizontal: Boolean,
   /**
    * If you put an element before virtualizer, you have to define its height with this prop.
+   *
+   * TODO
    */
-  startMargin: Number,
+  startOffset: [String, Number] as PropType<StartOffsetType>,
   /**
    * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
    */
@@ -117,11 +119,10 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       props.itemSize ?? 40,
       props.ssrCount,
       undefined,
-      !props.itemSize,
-      props.startMargin
+      !props.itemSize
     );
     const resizer = createResizer(store, isHorizontal);
-    const scroller = createScroller(store, isHorizontal);
+    const scroller = createScroller(store, isHorizontal, props.startOffset);
 
     const rerender = ref(store._getStateVersion());
     const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
@@ -142,15 +143,16 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       isSSR = false;
 
       microtask(() => {
+        const container = containerRef.value!;
         const assignScrollableElement = (e: HTMLElement) => {
           resizer._observeRoot(e);
-          scroller._observe(e);
+          scroller._observe(e, container);
         };
         if (props.scrollRef) {
           // parent's ref doesn't exist when onMounted is called
           assignScrollableElement(props.scrollRef!);
         } else {
-          assignScrollableElement(containerRef.value!.parentElement!);
+          assignScrollableElement(container.parentElement!);
         }
       });
     });

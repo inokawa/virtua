@@ -225,7 +225,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
     const scrollable = containerRef!.parentElement!;
     resizer._observeRoot(scrollable);
-    scroller._observe(scrollable);
+    scroller._observe(scrollable, containerRef!);
 
     onCleanup(() => {
       if (props.ref) {

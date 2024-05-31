@@ -42,3 +42,5 @@ export interface ScrollToIndexOpts {
    */
   offset?: number;
 }
+
+export type StartOffsetType = "dynamic" | "static" | number;

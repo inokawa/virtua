@@ -73,9 +73,9 @@ export const createVirtualizer = (
   );
 
   return {
-    [ON_MOUNT]: (scrollable: HTMLElement) => {
+    [ON_MOUNT]: (scrollable: HTMLElement, container: HTMLElement) => {
       resizer._observeRoot(scrollable);
-      scroller._observe(scrollable);
+      scroller._observe(scrollable, container);
     },
     [ON_UN_MOUNT]: () => {
       unsubscribeStore();

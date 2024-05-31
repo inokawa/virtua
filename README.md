@@ -99,7 +99,7 @@ export const App = () => {
   return (
     <div style={{ overflowY: "auto", height: 800 }}>
       <div style={{ height: 40 }}>header</div>
-      <Virtualizer startMargin={40}>
+      <Virtualizer startOffset="static">
         {Array.from({ length: 1000 }).map((_, i) => (
           <div
             key={i}
