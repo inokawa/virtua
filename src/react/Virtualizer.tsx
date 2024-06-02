@@ -24,7 +24,11 @@ import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
 import { createResizer } from "../core/resizer";
 import { ListItem } from "./ListItem";
-import { CacheSnapshot, ScrollToIndexOpts } from "../core/types";
+import {
+  CacheSnapshot,
+  InitialScrollProp,
+  ScrollToIndexOpts,
+} from "../core/types";
 import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
 import { useChildren } from "./useChildren";
@@ -113,6 +117,10 @@ export interface VirtualizerProps {
    */
   horizontal?: boolean;
   /**
+   * TODO
+   */
+  initialScroll?: InitialScrollProp;
+  /**
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.cache}.
    *
    * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
@@ -177,6 +185,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       itemSize,
       shift,
       horizontal: horizontalProp,
+      initialScroll,
       cache,
       startMargin,
       ssrCount,
@@ -208,6 +217,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         ssrCount,
         cache,
         !itemSize,
+        initialScroll,
         startMargin
       );
       return [
@@ -284,6 +294,9 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       const assignScrollableElement = (e: HTMLElement) => {
         resizer._observeRoot(e);
         scroller._observe(e);
+        if (initialScroll) {
+          scroller._scrollToIndex(initialScroll.index || 0, initialScroll);
+        }
       };
       if (scrollRef) {
         // parent's ref doesn't exist when useLayoutEffect is called

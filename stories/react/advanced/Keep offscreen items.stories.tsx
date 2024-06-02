@@ -152,12 +152,6 @@ export const SelectedIndex: StoryObj = {
       isPrepend.current = false;
     });
 
-    useEffect(() => {
-      if (!ref.current) return;
-
-      ref.current.scrollToIndex(items.length - 1, { align: "end" });
-    }, []);
-
     const toggleEditing = useCallback((itemId: number) => {
       setEditingItemId((currentValue) =>
         itemId === currentValue ? null : itemId
@@ -185,6 +179,7 @@ export const SelectedIndex: StoryObj = {
           ref={ref}
           style={{ flex: 1 }}
           reverse
+          initialScroll={{ index: items.length - 1, align: "end" }}
           keepMounted={
             editingItemId
               ? [items.findIndex((item) => item.id === editingItemId)]

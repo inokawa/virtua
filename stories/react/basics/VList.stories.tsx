@@ -106,12 +106,8 @@ export const PaddingAndMargin: StoryObj = {
 
 export const Reverse: StoryObj = {
   render: () => {
-    const ref = useRef<VListHandle>(null);
-    useEffect(() => {
-      ref.current?.scrollToIndex(999);
-    }, []);
     return (
-      <VList ref={ref} style={{ height: "100vh" }} reverse>
+      <VList style={{ height: "100vh" }} reverse initialScroll={{ index: 999 }}>
         {createRows(1000)}
       </VList>
     );
@@ -402,10 +398,6 @@ const RestorableList = ({ id }: { id: string }) => {
     if (!ref.current) return;
     const handle = ref.current;
 
-    if (offset) {
-      handle.scrollTo(offset);
-    }
-
     return () => {
       sessionStorage.setItem(
         cacheKey,
@@ -415,7 +407,12 @@ const RestorableList = ({ id }: { id: string }) => {
   }, []);
 
   return (
-    <VList ref={ref} cache={cache} style={{ height: "100vh" }}>
+    <VList
+      ref={ref}
+      cache={cache}
+      initialScroll={{ offset }}
+      style={{ height: "100vh" }}
+    >
       {createRows(1000)}
     </VList>
   );

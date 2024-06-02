@@ -118,6 +118,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       props.ssrCount,
       undefined,
       !props.itemSize,
+      undefined,
       props.startMargin
     );
     const resizer = createResizer(store, isHorizontal);
