@@ -23,6 +23,7 @@ export interface VListProps
       | "itemSize"
       | "shift"
       | "horizontal"
+      | "initialScroll"
       | "cache"
       | "ssrCount"
       | "item"
@@ -52,6 +53,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       shift,
       horizontal,
       reverse,
+      initialScroll,
       cache,
       ssrCount,
       item,
@@ -76,6 +78,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
         itemSize={itemSize}
         shift={shift}
         horizontal={horizontal}
+        initialScroll={initialScroll}
         cache={cache}
         ssrCount={ssrCount}
         item={item}

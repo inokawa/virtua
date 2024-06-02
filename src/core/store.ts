@@ -13,6 +13,7 @@ import {
 import { isIOSWebKit } from "./environment";
 import type {
   CacheSnapshot,
+  InitialScrollProp,
   InternalCacheSnapshot,
   ItemResize,
   ItemsRange,
@@ -141,6 +142,7 @@ export const createVirtualStore = (
   ssrCount: number = 0,
   cacheSnapshot?: CacheSnapshot | undefined,
   shouldAutoEstimateItemSize: boolean = false,
+  initialScroll?: InitialScrollProp | undefined,
   startSpacerSize: number = 0
 ): VirtualStore => {
   let isSSR = !!ssrCount;
@@ -188,6 +190,11 @@ export const createVirtualStore = (
       }
     }
   };
+
+  if (initialScroll) {
+    scrollOffset =
+      initialScroll.offset ?? getItemOffset(initialScroll.index || 0);
+  }
 
   return {
     _getStateVersion() {

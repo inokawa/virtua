@@ -42,3 +42,11 @@ export interface ScrollToIndexOpts {
    */
   offset?: number;
 }
+
+export interface InitialScrollProp extends ScrollToIndexOpts {
+  /**
+   * Index of item.
+   * @defaultValue 0
+   */
+  index?: number;
+}
