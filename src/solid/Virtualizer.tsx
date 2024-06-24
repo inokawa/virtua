@@ -10,7 +10,7 @@ import {
   JSX,
   on,
   createComputed,
-  ValidComponent,
+  type ValidComponent,
   mergeProps,
 } from "solid-js";
 import { Dynamic } from "solid-js/web";
