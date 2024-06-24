@@ -17,7 +17,7 @@
 
 #### Defined in
 
-[src/react/types.ts:10](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/types.ts#L10)
+[src/react/types.ts:10](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/react/types.ts#L10)
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 #### Defined in
 
-[src/react/types.ts:11](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/types.ts#L11)
+[src/react/types.ts:11](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/react/types.ts#L11)

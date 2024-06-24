@@ -20,7 +20,7 @@ Props of customized item component for [Virtualizer](../modules/react.md#virtual
 
 #### Defined in
 
-[src/react/types.ts:23](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/types.ts#L23)
+[src/react/types.ts:23](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/react/types.ts#L23)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[src/react/types.ts:24](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/types.ts#L24)
+[src/react/types.ts:24](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/react/types.ts#L24)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[src/react/types.ts:25](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/react/types.ts#L25)
+[src/react/types.ts:25](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/react/types.ts#L25)

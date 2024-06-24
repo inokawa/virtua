@@ -90,7 +90,7 @@ Get item offset from start.
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:49](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/vue/Virtualizer.tsx#L49)
+[src/vue/Virtualizer.tsx:50](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/vue/Virtualizer.tsx#L50)
 
 ___
 
@@ -113,7 +113,7 @@ Scroll to the item specified by index.
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:55](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/vue/Virtualizer.tsx#L55)
+[src/vue/Virtualizer.tsx:56](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/vue/Virtualizer.tsx#L56)
 
 ___
 
@@ -135,7 +135,7 @@ Scroll to the given offset.
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:60](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/vue/Virtualizer.tsx#L60)
+[src/vue/Virtualizer.tsx:61](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/vue/Virtualizer.tsx#L61)
 
 ___
 
@@ -157,7 +157,7 @@ Scroll by the given offset.
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:65](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/vue/Virtualizer.tsx#L65)
+[src/vue/Virtualizer.tsx:66](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/vue/Virtualizer.tsx#L66)
 
 ## Properties
 
@@ -183,7 +183,7 @@ ___
 
 ### $props
 
-• **$props**: `Partial`\<\{ `shift`: `boolean` = Boolean; `overscan`: `number` ; `horizontal`: `boolean` = Boolean }\> & `Omit`\<\{ `shift`: `boolean` = Boolean; `data`: `unknown`[] ; `overscan`: `number` ; `horizontal`: `boolean` = Boolean; `itemSize?`: `number` = Number; `startMargin?`: `number` = Number; `ssrCount?`: `number` = Number; `scrollRef?`: `HTMLElement` ; `onScroll`: `undefined` \| (...`args`: [offset: number]) => `any` ; `onScrollEnd`: `undefined` \| (...`args`: []) => `any` ; `onRangeChange`: `undefined` \| (...`args`: [startIndex: number, endIndex: number]) => `any`  } & `VNodeProps` & `AllowedComponentProps` & `ComponentCustomProps` & `Readonly`\<`ExtractPropTypes`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean; `startMargin`: `NumberConstructor` = Number; `ssrCount`: `NumberConstructor` = Number; `scrollRef`: `PropType`\<`HTMLElement`\>  }\>\> & \{ `onScroll`: `undefined` \| (...`args`: [offset: number]) => `any` ; `onScrollEnd`: `undefined` \| (...`args`: []) => `any` ; `onRangeChange`: `undefined` \| (...`args`: [startIndex: number, endIndex: number]) => `any`  }, `DefaultKeys`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean; `startMargin`: `NumberConstructor` = Number; `ssrCount`: `NumberConstructor` = Number; `scrollRef`: `PropType`\<`HTMLElement`\>  }\>\>
+• **$props**: `Partial`\<\{ `shift`: `boolean` = Boolean; `overscan`: `number` ; `horizontal`: `boolean` = Boolean; `startMargin`: `number`  }\> & `Omit`\<\{ `shift`: `boolean` = Boolean; `data`: `unknown`[] ; `overscan`: `number` ; `horizontal`: `boolean` = Boolean; `startMargin`: `number` ; `itemSize?`: `number` = Number; `ssrCount?`: `number` = Number; `scrollRef?`: `HTMLElement` ; `onScroll`: `undefined` \| (...`args`: [offset: number]) => `any` ; `onScrollEnd`: `undefined` \| (...`args`: []) => `any` ; `onRangeChange`: `undefined` \| (...`args`: [startIndex: number, endIndex: number]) => `any`  } & `VNodeProps` & `AllowedComponentProps` & `ComponentCustomProps` & `Readonly`\<`ExtractPropTypes`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean; `startMargin`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 0 } ; `ssrCount`: `NumberConstructor` = Number; `scrollRef`: `PropType`\<`HTMLElement`\>  }\>\> & \{ `onScroll`: `undefined` \| (...`args`: [offset: number]) => `any` ; `onScrollEnd`: `undefined` \| (...`args`: []) => `any` ; `onRangeChange`: `undefined` \| (...`args`: [startIndex: number, endIndex: number]) => `any`  }, `DefaultKeys`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean; `startMargin`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 0 } ; `ssrCount`: `NumberConstructor` = Number; `scrollRef`: `PropType`\<`HTMLElement`\>  }\>\>
 
 #### Defined in
 
@@ -263,7 +263,7 @@ ___
 
 ### $options
 
-• **$options**: `ComponentOptionsBase`\<`ResolveProps`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean; `startMargin`: `NumberConstructor` = Number; `ssrCount`: `NumberConstructor` = Number; `scrollRef`: `PropType`\<`HTMLElement`\>  }, \{ `scroll`: (`offset`: `number`) => `void` ; `scrollEnd`: () => `void` ; `rangeChange`: (`startIndex`: `number`, `endIndex`: `number`) => `void`  }\>, `VirtualizerHandle`, {}, {}, {}, `ComponentOptionsMixin`, `ComponentOptionsMixin`, \{ `scroll`: (`offset`: `number`) => `void` ; `scrollEnd`: () => `void` ; `rangeChange`: (`startIndex`: `number`, `endIndex`: `number`) => `void`  }, `string`, \{ `shift`: `boolean` = Boolean; `overscan`: `number` ; `horizontal`: `boolean` = Boolean }, {}, `string`, `SlotsType`\<\{ `default`: `any`  }\>\> & `MergedComponentOptionsOverride`
+• **$options**: `ComponentOptionsBase`\<`ResolveProps`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean; `startMargin`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 0 } ; `ssrCount`: `NumberConstructor` = Number; `scrollRef`: `PropType`\<`HTMLElement`\>  }, \{ `scroll`: (`offset`: `number`) => `void` ; `scrollEnd`: () => `void` ; `rangeChange`: (`startIndex`: `number`, `endIndex`: `number`) => `void`  }\>, `VirtualizerHandle`, {}, {}, {}, `ComponentOptionsMixin`, `ComponentOptionsMixin`, \{ `scroll`: (`offset`: `number`) => `void` ; `scrollEnd`: () => `void` ; `rangeChange`: (`startIndex`: `number`, `endIndex`: `number`) => `void`  }, `string`, \{ `shift`: `boolean` = Boolean; `overscan`: `number` ; `horizontal`: `boolean` = Boolean; `startMargin`: `number`  }, {}, `string`, `SlotsType`\<\{ `default`: `any`  }\>\> & `MergedComponentOptionsOverride`
 
 #### Defined in
 
@@ -335,7 +335,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:88](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/vue/Virtualizer.tsx#L88)
+[src/vue/Virtualizer.tsx:89](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/vue/Virtualizer.tsx#L89)
 
 ___
 
@@ -347,7 +347,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:72](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/vue/Virtualizer.tsx#L72)
+[src/vue/Virtualizer.tsx:73](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/vue/Virtualizer.tsx#L73)
 
 ___
 
@@ -365,7 +365,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:77](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/vue/Virtualizer.tsx#L77)
+[src/vue/Virtualizer.tsx:78](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/vue/Virtualizer.tsx#L78)
 
 ___
 
@@ -380,7 +380,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:84](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/vue/Virtualizer.tsx#L84)
+[src/vue/Virtualizer.tsx:85](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/vue/Virtualizer.tsx#L85)
 
 ___
 
@@ -392,19 +392,19 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:92](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/vue/Virtualizer.tsx#L92)
+[src/vue/Virtualizer.tsx:93](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/vue/Virtualizer.tsx#L93)
 
 ___
 
 ### startMargin
 
-• `Optional` `Readonly` **startMargin**: `number` = `Number`
+• `Readonly` **startMargin**: `number`
 
 If you put an element before virtualizer, you have to define its height with this prop.
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:96](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/vue/Virtualizer.tsx#L96)
+[src/vue/Virtualizer.tsx:97](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/vue/Virtualizer.tsx#L97)
 
 ___
 
@@ -416,7 +416,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:100](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/vue/Virtualizer.tsx#L100)
+[src/vue/Virtualizer.tsx:101](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/vue/Virtualizer.tsx#L101)
 
 ___
 
@@ -428,7 +428,7 @@ Reference to the scrollable element. The default will get the parent element of 
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:104](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/vue/Virtualizer.tsx#L104)
+[src/vue/Virtualizer.tsx:105](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/vue/Virtualizer.tsx#L105)
 
 ___
 
@@ -452,7 +452,7 @@ Get current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:36](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/vue/Virtualizer.tsx#L36)
+[src/vue/Virtualizer.tsx:37](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/vue/Virtualizer.tsx#L37)
 
 ___
 
@@ -464,7 +464,7 @@ Get current scrollHeight or scrollWidth.
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:40](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/vue/Virtualizer.tsx#L40)
+[src/vue/Virtualizer.tsx:41](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/vue/Virtualizer.tsx#L41)
 
 ___
 
@@ -476,4 +476,4 @@ Get current offsetHeight or offsetWidth.
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:44](https://github.com/inokawa/virtua/blob/347eaf0ee4d42b83126888b3a0a52172043fa2e0/src/vue/Virtualizer.tsx#L44)
+[src/vue/Virtualizer.tsx:45](https://github.com/inokawa/virtua/blob/7830fce86f8965dc3497e8feee92ff1de1b069d2/src/vue/Virtualizer.tsx#L45)
