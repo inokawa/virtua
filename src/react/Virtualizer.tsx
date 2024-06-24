@@ -16,6 +16,7 @@ import {
   SCROLL_IDLE,
   UPDATE_SCROLL_END_EVENT,
   getScrollSize,
+  ACTION_START_OFFSET_CHANGE,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { createScroller } from "../core/scroller";
@@ -178,7 +179,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       shift,
       horizontal: horizontalProp,
       cache,
-      startMargin,
+      startMargin = 0,
       ssrCount,
       as: Element = "div",
       item: ItemElement = "div",
@@ -207,8 +208,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         itemSize,
         ssrCount,
         cache,
-        !itemSize,
-        startMargin
+        !itemSize
       );
       return [
         _store,
@@ -221,6 +221,9 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     // The elements length and cached items length are different just after element is added/removed.
     if (count !== store._getItemsLength()) {
       store._update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
+    }
+    if (startMargin !== store._getStartSpacerSize()) {
+      store._update(ACTION_START_OFFSET_CHANGE, startMargin);
     }
 
     const rerender = useRerender(store);

@@ -140,12 +140,12 @@ export const createVirtualStore = (
   itemSize: number = 40,
   ssrCount: number = 0,
   cacheSnapshot?: CacheSnapshot | undefined,
-  shouldAutoEstimateItemSize: boolean = false,
-  startSpacerSize: number = 0
+  shouldAutoEstimateItemSize: boolean = false
 ): VirtualStore => {
   let isSSR = !!ssrCount;
   let stateVersion: StateVersion = [];
   let viewportSize = 0;
+  let startSpacerSize = 0;
   let scrollOffset = 0;
   let jumpCount = 0;
   let jump = 0;

@@ -21,6 +21,7 @@ import {
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
+  ACTION_START_OFFSET_CHANGE,
 } from "../core/store";
 import { createResizer } from "../core/resizer";
 import { createScroller } from "../core/scroller";
@@ -93,7 +94,7 @@ const props = {
   /**
    * If you put an element before virtualizer, you have to define its height with this prop.
    */
-  startMargin: Number,
+  startMargin: { type: Number, default: 0 },
   /**
    * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
    */
@@ -117,8 +118,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       props.itemSize ?? 40,
       props.ssrCount,
       undefined,
-      !props.itemSize,
-      props.startMargin
+      !props.itemSize
     );
     const resizer = createResizer(store, isHorizontal);
     const scroller = createScroller(store, isHorizontal);
@@ -166,6 +166,12 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       () => props.data.length,
       (count) => {
         store._update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+      }
+    );
+    watch(
+      () => props.startMargin,
+      (value) => {
+        store._update(ACTION_START_OFFSET_CHANGE, value);
       }
     );
 
