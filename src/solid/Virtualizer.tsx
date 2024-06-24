@@ -92,7 +92,15 @@ export interface VirtualizerProps<T> {
    * @defaultValue 4
    */
   overscan?: number;
+  /**
+   * Component or element type for container element.
+   * @defaultValue "div"
+   */
   as?: ValidComponent;
+  /**
+   * Component or element type for item element.
+   * @defaultValue "div"
+   */
   item?: ValidComponent;
   /**
    * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
