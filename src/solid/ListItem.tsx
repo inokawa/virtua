@@ -3,7 +3,16 @@
  */
 import { ItemResizeObserver } from "../core/resizer";
 import { isRTLDocument } from "../core/environment";
-import { Component, JSX, createEffect, createMemo, onCleanup } from "solid-js";
+import {
+  Component,
+  JSX,
+  createEffect,
+  createMemo,
+  mergeProps,
+  onCleanup,
+  type ValidComponent,
+} from "solid-js";
+import { Dynamic } from "solid-js/web";
 
 interface ListItemProps {
   _children: JSX.Element;
@@ -12,6 +21,7 @@ interface ListItemProps {
   _offset: number;
   _hide: boolean;
   _isHorizontal: boolean;
+  _as?: ValidComponent;
 }
 
 /**
@@ -19,6 +29,10 @@ interface ListItemProps {
  */
 export const ListItem: Component<ListItemProps> = (props) => {
   let elementRef: HTMLDivElement | undefined;
+  props = mergeProps<[Partial<ListItemProps>, ListItemProps]>(
+    { _as: "div" },
+    props
+  );
 
   // The index may be changed if elements are inserted to or removed from the start of props.children
   createEffect(() => {
@@ -45,8 +59,8 @@ export const ListItem: Component<ListItemProps> = (props) => {
   });
 
   return (
-    <div ref={elementRef} style={style()}>
+    <Dynamic component={props._as} ref={elementRef} style={style()}>
       {props._children}
-    </div>
+    </Dynamic>
   );
 };
