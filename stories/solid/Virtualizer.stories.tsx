@@ -3,6 +3,7 @@
  */
 import type { Meta, StoryObj } from "storybook-solidjs";
 import { Virtualizer } from "../../src/solid";
+import { For } from "solid-js";
 
 export default {
   component: Virtualizer,
@@ -21,25 +22,27 @@ export const TableElement: StoryObj = {
         <table>
           <thead>
             <tr>
-              {COLUMN_WIDTHS.map((width, j) => (
-                <th style={{ width: `${width}px` }}>Header{j}</th>
-              ))}
+              <For each={COLUMN_WIDTHS}>
+                {(width, j) => (
+                  <th style={{ width: `${width}px` }}>Header{j()}</th>
+                )}
+              </For>
             </tr>
           </thead>
           <Virtualizer
             data={createRows(10000)}
             as="tbody"
             item="tr"
-            overscan={100}
+            overscan={5}
           >
             {(_, i) => (
-              <>
-                {COLUMN_WIDTHS.map((width, j) => (
+              <For each={COLUMN_WIDTHS}>
+                {(width, j) => (
                   <td style={{ width: `${width}px` }}>
-                    {i}, {j}
+                    {i}, {j()}
                   </td>
-                ))}
-              </>
+                )}
+              </For>
             )}
           </Virtualizer>
         </table>
