@@ -15,42 +15,45 @@ const createRows = (num: number) => {
 
 const COLUMN_WIDTHS = [100, 200, 300, 100, 200, 300, 100, 300, 400, 200];
 
-// Commented out until https://github.com/inokawa/virtua/issues/391 is released
-// export const TableElement: StoryObj = {
-//   render: () => {
-//     return (
-//       <div style="height: 500px;overflow:auto;">
-//         <table>
-//           <thead>
-//             <tr>
-//               <For each={COLUMN_WIDTHS}>
-//                 {(width, j) => (
-//                   <th style={{ width: `${width}px` }}>Header{j()}</th>
-//                 )}
-//               </For>
-//             </tr>
-//           </thead>
-//           <Virtualizer
-//             data={createRows(10000)}
-//             as="tbody"
-//             item="tr"
-//             overscan={5}
-//           >
-//             {(_, i) => (
-//               <For each={COLUMN_WIDTHS}>
-//                 {(width, j) => (
-//                   <td style={{ width: `${width}px` }}>
-//                     {i}, {j()}
-//                   </td>
-//                 )}
-//               </For>
-//             )}
-//           </Virtualizer>
-//         </table>
-//       </div>
-//     );
-//   },
-// };
+export const TableElement: StoryObj = {
+  render: () => {
+    const headerHeight = 40;
+    let scrollRef: HTMLDivElement | undefined;
+    return (
+      <div style="height: 500px;overflow:auto;" ref={scrollRef}>
+        <table>
+          <thead>
+            <tr style={{ height: headerHeight + "px" }}>
+              <For each={COLUMN_WIDTHS}>
+                {(width, j) => (
+                  <th style={{ width: `${width}px` }}>Header{j()}</th>
+                )}
+              </For>
+            </tr>
+          </thead>
+          <Virtualizer
+            scrollRef={scrollRef}
+            startMargin={headerHeight}
+            data={createRows(10000)}
+            as="tbody"
+            item="tr"
+            overscan={5}
+          >
+            {(_, i) => (
+              <For each={COLUMN_WIDTHS}>
+                {(width, j) => (
+                  <td style={{ width: `${width}px` }}>
+                    {i}, {j()}
+                  </td>
+                )}
+              </For>
+            )}
+          </Virtualizer>
+        </table>
+      </div>
+    );
+  },
+};
 
 export const DivTable: StoryObj = {
   render: () => {
