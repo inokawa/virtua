@@ -10,7 +10,10 @@ import {
   JSX,
   on,
   createComputed,
+  type ValidComponent,
+  mergeProps,
 } from "solid-js";
+import { Dynamic } from "solid-js/web";
 import {
   SCROLL_IDLE,
   UPDATE_SCROLL_EVENT,
@@ -90,6 +93,16 @@ export interface VirtualizerProps<T> {
    */
   overscan?: number;
   /**
+   * Component or element type for container element.
+   * @defaultValue "div"
+   */
+  as?: ValidComponent;
+  /**
+   * Component or element type for item element.
+   * @defaultValue "div"
+   */
+  item?: ValidComponent;
+  /**
    * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
    *
    * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
@@ -133,19 +146,11 @@ export interface VirtualizerProps<T> {
  */
 export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-
-  const {
-    ref: _ref,
-    data: _data,
-    children: _children,
-    overscan: _overscan,
-    itemSize,
-    shift: _shift,
-    horizontal = false,
-    onScroll: _onScroll,
-    onScrollEnd: _onScrollEnd,
-    onRangeChange: _onRangeChange,
-  } = props;
+  const { itemSize, horizontal = false } = props;
+  props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
+    { as: "div" },
+    props
+  );
 
   const store = createVirtualStore(
     props.data.length,
@@ -263,7 +268,8 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   });
 
   return (
-    <div
+    <Dynamic
+      component={props.as}
       ref={containerRef}
       style={{
         // contain: "content",
@@ -291,6 +297,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
           return (
             <ListItem
+              _as={props.item}
               _index={index}
               _resizer={resizer._observeItem}
               _offset={offset()}
@@ -301,6 +308,6 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
           );
         }}
       />
-    </div>
+    </Dynamic>
   );
 };
