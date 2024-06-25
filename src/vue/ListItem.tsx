@@ -1,5 +1,13 @@
 /** @jsxImportSource vue */
-import { ref, defineComponent, watch, StyleValue, PropType, VNode } from "vue";
+import {
+  ref,
+  defineComponent,
+  watch,
+  StyleValue,
+  PropType,
+  VNode,
+  NativeElements,
+} from "vue";
 import { ItemResizeObserver } from "../core/resizer";
 import { isRTLDocument } from "../core/environment";
 
@@ -18,6 +26,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
     _hide: { type: Boolean },
     _isHorizontal: { type: Boolean },
     _isSSR: { type: Boolean },
+    _as: { type: String as PropType<keyof NativeElements>, required: true },
   },
   setup(props) {
     const elementRef = ref<HTMLDivElement>();
@@ -40,6 +49,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
         _hide: hide,
         _isHorizontal: isHorizontal,
         _isSSR: isSSR,
+        _as: Element,
       } = props;
 
       const style: StyleValue = {
@@ -57,9 +67,9 @@ export const ListItem = /*#__PURE__*/ defineComponent({
       }
 
       return (
-        <div ref={elementRef} style={style}>
+        <Element ref={elementRef} style={style}>
           {children}
-        </div>
+        </Element>
       );
     };
   },

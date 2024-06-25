@@ -11,6 +11,7 @@ import {
   ComponentOptionsWithObjectProps,
   ComponentObjectPropsOptions,
   PropType,
+  NativeElements,
 } from "vue";
 import {
   SCROLL_IDLE,
@@ -103,6 +104,16 @@ const props = {
    * Reference to the scrollable element. The default will get the parent element of virtualizer.
    */
   scrollRef: Object as PropType<HTMLElement>,
+  /**
+   * Component or element type for container element.
+   * @defaultValue "div"
+   */
+  as: { type: String as PropType<keyof NativeElements>, default: "div" },
+  /**
+   * Component or element type for item element.
+   * @defaultValue "div"
+   */
+  item: { type: String as PropType<keyof NativeElements>, default: "div" },
 } satisfies ComponentObjectPropsOptions;
 
 export const Virtualizer = /*#__PURE__*/ defineComponent({
@@ -215,6 +226,8 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     return () => {
       rerender.value;
 
+      const Element = props.as;
+      const ItemElement = props.item;
       const count = props.data.length;
 
       const [startIndex, endIndex] = store._getRange();
@@ -244,12 +257,13 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
             _children={e}
             _isHorizontal={isHorizontal}
             _isSSR={isSSR}
+            _as={ItemElement}
           />
         );
       }
 
       return (
-        <div
+        <Element
           ref={containerRef}
           style={{
             // contain: "content",
@@ -263,7 +277,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
           }}
         >
           {items}
-        </div>
+        </Element>
       );
     };
   },

@@ -10,6 +10,8 @@ import {
   SlotsType,
   ComponentOptionsWithObjectProps,
   ComponentObjectPropsOptions,
+  PropType,
+  NativeElements,
 } from "vue";
 import {
   SCROLL_IDLE,
@@ -49,6 +51,16 @@ const props = {
    * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
    */
   horizontal: Boolean,
+  /**
+   * Component or element type for container element.
+   * @defaultValue "div"
+   */
+  as: { type: String as PropType<keyof NativeElements>, default: "div" },
+  /**
+   * Component or element type for item element.
+   * @defaultValue "div"
+   */
+  item: { type: String as PropType<keyof NativeElements>, default: "div" },
 } satisfies ComponentObjectPropsOptions;
 
 export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
@@ -121,7 +133,9 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
 
     return () => {
       rerender.value;
-
+    
+      const Element = props.as;
+      const ItemElement = props.item;
       const count = props.data.length;
 
       const [startIndex, endIndex] = store._getRange();
@@ -150,12 +164,13 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
             _hide={store._isUnmeasuredItem(i)}
             _children={e}
             _isHorizontal={isHorizontal}
+            _as={ItemElement}
           />
         );
       }
 
       return (
-        <div
+        <Element
           ref={containerRef}
           style={{
             // contain: "content",
@@ -169,7 +184,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
           }}
         >
           {items}
-        </div>
+        </Element>
       );
     };
   },
