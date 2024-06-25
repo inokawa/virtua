@@ -146,24 +146,21 @@ export interface VirtualizerProps<T> {
  */
 export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const {
-    itemSize,
-    horizontal = false,
-  } = props;
+  const { itemSize, horizontal = false } = props;
   props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
-    { as: "div", horizontal: false },
+    { as: "div" },
     props
   );
 
   const store = createVirtualStore(
     props.data.length,
-    props.itemSize ?? 40,
+    itemSize ?? 40,
     undefined,
     undefined,
-    !props.itemSize
+    !itemSize
   );
-  const resizer = createResizer(store, props.horizontal!);
-  const scroller = createScroller(store, props.horizontal!);
+  const resizer = createResizer(store, horizontal);
+  const scroller = createScroller(store, horizontal);
 
   const [rerender, setRerender] = createSignal(store._getStateVersion());
 
@@ -280,8 +277,8 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         flex: "none", // flex style can break layout
         position: "relative",
         visibility: "hidden", // TODO replace with other optimization methods
-        width: props.horizontal ? totalSize() + "px" : "100%",
-        height: props.horizontal ? "100%" : totalSize() + "px",
+        width: horizontal ? totalSize() + "px" : "100%",
+        height: horizontal ? "100%" : totalSize() + "px",
         "pointer-events": scrollDirection() !== SCROLL_IDLE ? "none" : "auto",
       }}
     >
@@ -306,7 +303,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
               _offset={offset()}
               _hide={hide()}
               _children={props.children(data(), index)}
-              _isHorizontal={props.horizontal!}
+              _isHorizontal={horizontal}
             />
           );
         }}

@@ -50,3 +50,61 @@ export const TableElement: StoryObj = {
     );
   },
 };
+
+export const DivTable: StoryObj = {
+  render: () => {
+    return (
+      <div style="max-height: 400px; overflow: auto;">
+        <div
+          style={{
+            display: "grid",
+            position: "sticky",
+            top: 0,
+            "background-color": "white",
+            "z-index": 1,
+            width: "fit-content",
+            "grid-template-columns": `repeat(${COLUMN_WIDTHS.length}, 1fr)`,
+          }}
+        >
+          {COLUMN_WIDTHS.map((_, j) => (
+            <div style={{ width: `${COLUMN_WIDTHS[j]}px`, padding: "10px" }}>
+              Header{j}
+            </div>
+          ))}
+        </div>
+        <Virtualizer
+          data={createRows(10000)}
+          item={(props) => {
+            return (
+              <div
+                {...props}
+                style={{
+                  display: "grid",
+                  "grid-template-columns": `repeat(${COLUMN_WIDTHS.length}, 1fr)`,
+                  "border-bottom": "1px solid black",
+                  ...props.style,
+                  width: "fit-content",
+                }}
+              >
+                {props.children}
+              </div>
+            );
+          }}
+          overscan={5}
+        >
+          {(_, i) => (
+            <>
+              {COLUMN_WIDTHS.map((_, j) => (
+                <div
+                  style={{ width: `${COLUMN_WIDTHS[j]}px`, padding: "10px" }}
+                >
+                  {i}, {j}
+                </div>
+              ))}
+            </>
+          )}
+        </Virtualizer>
+      </div>
+    );
+  },
+};
