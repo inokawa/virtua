@@ -146,6 +146,10 @@ export interface VirtualizerProps<T> {
  */
 export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
+  const {
+    itemSize,
+    horizontal = false,
+  } = props;
   props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
     { as: "div", horizontal: false },
     props
