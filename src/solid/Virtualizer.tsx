@@ -23,6 +23,7 @@ import {
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
+  ACTION_START_OFFSET_CHANGE,
 } from "../core/store";
 import { createResizer } from "../core/resizer";
 import { createScroller } from "../core/scroller";
@@ -103,6 +104,10 @@ export interface VirtualizerProps<T> {
    */
   item?: ValidComponent;
   /**
+   * Reference to the scrollable element. The default will get the parent element of virtualizer.
+   */
+  scrollRef?: HTMLElement;
+  /**
    * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
    *
    * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
@@ -117,6 +122,10 @@ export interface VirtualizerProps<T> {
    * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
    */
   horizontal?: boolean;
+  /**
+   * If you put an element before virtualizer, you have to define its height with this prop.
+   */
+  startMargin?: number;
   /**
    * Callback invoked whenever scroll offset changes.
    * @param offset Current scrollTop or scrollLeft.
@@ -228,7 +237,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
       });
     }
 
-    const scrollable = containerRef!.parentElement!;
+    const scrollable = props.scrollRef || containerRef!.parentElement!;
     resizer._observeRoot(scrollable);
     scroller._observe(scrollable);
 
@@ -251,6 +260,17 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
       (len, prevLen) => {
         if (exists(prevLen) && len !== prevLen) {
           store._update(ACTION_ITEMS_LENGTH_CHANGE, [len, props.shift]);
+        }
+      }
+    )
+  );
+
+  createComputed(
+    on(
+      () => props.startMargin || 0,
+      (value) => {
+        if (value !== store._getStartSpacerSize()) {
+          store._update(ACTION_START_OFFSET_CHANGE, value);
         }
       }
     )
