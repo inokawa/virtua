@@ -52,7 +52,7 @@ const props = {
 } satisfies ComponentObjectPropsOptions;
 
 export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
-  props: props,
+  props,
   emits: ["scrollEnd", "rangeChange"],
   setup(props, { emit, slots }) {
     const isHorizontal = props.horizontal;
