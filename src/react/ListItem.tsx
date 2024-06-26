@@ -18,7 +18,7 @@ interface ListItemProps {
   _index: number;
   _offset: number;
   _hide: boolean;
-  _element: "div" | CustomItemComponent;
+  _as: "div" | CustomItemComponent;
   _isHorizontal: boolean;
   _isSSR: boolean | undefined;
 }
@@ -33,7 +33,7 @@ export const ListItem = memo(
     _index: index,
     _offset: offset,
     _hide: hide,
-    _element: Element,
+    _as: Element,
     _isHorizontal: isHorizontal,
     _isSSR: isSSR,
   }: ListItemProps): ReactElement => {

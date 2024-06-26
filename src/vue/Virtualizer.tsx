@@ -172,7 +172,8 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       () => props.startMargin,
       (value) => {
         store._update(ACTION_START_OFFSET_CHANGE, value);
-      }
+      },
+      { immediate: true }
     );
 
     watch(
