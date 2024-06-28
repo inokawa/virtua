@@ -53,7 +53,7 @@ Get reference to [VirtualizerHandle](solid.VirtualizerHandle.md).
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:82](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/solid/Virtualizer.tsx#L82)
+[src/solid/Virtualizer.tsx:82](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/solid/Virtualizer.tsx#L82)
 
 ___
 
@@ -65,7 +65,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:86](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/solid/Virtualizer.tsx#L86)
+[src/solid/Virtualizer.tsx:86](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/solid/Virtualizer.tsx#L86)
 
 ___
 
@@ -92,7 +92,7 @@ The elements renderer function.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:90](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/solid/Virtualizer.tsx#L90)
+[src/solid/Virtualizer.tsx:90](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/solid/Virtualizer.tsx#L90)
 
 ___
 
@@ -110,7 +110,7 @@ Number of items to render above/below the visible bounds of the list. Lower valu
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:95](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/solid/Virtualizer.tsx#L95)
+[src/solid/Virtualizer.tsx:95](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/solid/Virtualizer.tsx#L95)
 
 ___
 
@@ -128,7 +128,7 @@ Component or element type for container element.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:100](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/solid/Virtualizer.tsx#L100)
+[src/solid/Virtualizer.tsx:100](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/solid/Virtualizer.tsx#L100)
 
 ___
 
@@ -146,7 +146,7 @@ Component or element type for item element.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:105](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/solid/Virtualizer.tsx#L105)
+[src/solid/Virtualizer.tsx:105](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/solid/Virtualizer.tsx#L105)
 
 ___
 
@@ -158,7 +158,7 @@ Reference to the scrollable element. The default will get the parent element of 
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:109](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/solid/Virtualizer.tsx#L109)
+[src/solid/Virtualizer.tsx:109](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/solid/Virtualizer.tsx#L109)
 
 ___
 
@@ -173,7 +173,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:116](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/solid/Virtualizer.tsx#L116)
+[src/solid/Virtualizer.tsx:116](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/solid/Virtualizer.tsx#L116)
 
 ___
 
@@ -185,7 +185,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:120](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/solid/Virtualizer.tsx#L120)
+[src/solid/Virtualizer.tsx:120](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/solid/Virtualizer.tsx#L120)
 
 ___
 
@@ -197,7 +197,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:124](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/solid/Virtualizer.tsx#L124)
+[src/solid/Virtualizer.tsx:124](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/solid/Virtualizer.tsx#L124)
 
 ___
 
@@ -209,7 +209,7 @@ If you put an element before virtualizer, you have to define its height with thi
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:128](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/solid/Virtualizer.tsx#L128)
+[src/solid/Virtualizer.tsx:128](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/solid/Virtualizer.tsx#L128)
 
 ___
 
@@ -235,7 +235,7 @@ Callback invoked whenever scroll offset changes.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:133](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/solid/Virtualizer.tsx#L133)
+[src/solid/Virtualizer.tsx:133](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/solid/Virtualizer.tsx#L133)
 
 ___
 
@@ -255,7 +255,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:137](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/solid/Virtualizer.tsx#L137)
+[src/solid/Virtualizer.tsx:137](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/solid/Virtualizer.tsx#L137)
 
 ___
 
@@ -282,4 +282,4 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:141](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/solid/Virtualizer.tsx#L141)
+[src/solid/Virtualizer.tsx:141](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/solid/Virtualizer.tsx#L141)

@@ -28,6 +28,8 @@
 - [overscan](vue.WindowVirtualizer.md#overscan)
 - [itemSize](vue.WindowVirtualizer.md#itemsize)
 - [horizontal](vue.WindowVirtualizer.md#horizontal)
+- [as](vue.WindowVirtualizer.md#as)
+- [item](vue.WindowVirtualizer.md#item)
 - [onScrollEnd](vue.WindowVirtualizer.md#onscrollend)
 - [onRangeChange](vue.WindowVirtualizer.md#onrangechange)
 
@@ -48,7 +50,7 @@
 | Name | Type |
 | :------ | :------ |
 | `source` | `T` |
-| `cb` | `T` extends (...`args`: `any`) => `R` ? (...`args`: [`R`, `R`]) => `any` : (...`args`: `any`) => `any` |
+| `cb` | `T` extends (...`args`: `any`) => `R` ? (...`args`: [`R`, `R`, `OnCleanup`]) => `any` : (...`args`: [`any`, `any`, `OnCleanup`]) => `any` |
 | `options?` | `WatchOptions`\<`boolean`\> |
 
 #### Returns
@@ -83,7 +85,7 @@ ___
 
 ### $props
 
-• **$props**: `Partial`\<\{ `shift`: `boolean` = Boolean; `overscan`: `number` ; `horizontal`: `boolean` = Boolean }\> & `Omit`\<\{ `shift`: `boolean` = Boolean; `data`: `unknown`[] ; `overscan`: `number` ; `horizontal`: `boolean` = Boolean; `itemSize?`: `number` = Number; `onScrollEnd`: `undefined` \| (...`args`: []) => `any` ; `onRangeChange`: `undefined` \| (...`args`: [startIndex: number, endIndex: number]) => `any`  } & `VNodeProps` & `AllowedComponentProps` & `ComponentCustomProps` & `Readonly`\<`ExtractPropTypes`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean }\>\> & \{ `onScrollEnd`: `undefined` \| (...`args`: []) => `any` ; `onRangeChange`: `undefined` \| (...`args`: [startIndex: number, endIndex: number]) => `any`  }, `DefaultKeys`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean }\>\>
+• **$props**: `Partial`\<\{ `shift`: `boolean` = Boolean; `overscan`: `number` ; `horizontal`: `boolean` = Boolean; `as`: keyof `IntrinsicElementAttributes` ; `item`: keyof `IntrinsicElementAttributes`  }\> & `Omit`\<\{ `shift`: `boolean` = Boolean; `data`: `unknown`[] ; `overscan`: `number` ; `horizontal`: `boolean` = Boolean; `as`: keyof `IntrinsicElementAttributes` ; `item`: keyof `IntrinsicElementAttributes` ; `itemSize?`: `number` = Number; `onScrollEnd`: `undefined` \| (...`args`: []) => `any` ; `onRangeChange`: `undefined` \| (...`args`: [startIndex: number, endIndex: number]) => `any`  } & `VNodeProps` & `AllowedComponentProps` & `ComponentCustomProps` & `Readonly`\<`ExtractPropTypes`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean; `as`: \{ `type`: `PropType`\<keyof `IntrinsicElementAttributes`\> ; `default`: `string` = "div" } ; `item`: \{ `type`: `PropType`\<keyof `IntrinsicElementAttributes`\> ; `default`: `string` = "div" }  }\>\> & \{ `onScrollEnd`: `undefined` \| (...`args`: []) => `any` ; `onRangeChange`: `undefined` \| (...`args`: [startIndex: number, endIndex: number]) => `any`  }, `DefaultKeys`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean; `as`: \{ `type`: `PropType`\<keyof `IntrinsicElementAttributes`\> ; `default`: `string` = "div" } ; `item`: \{ `type`: `PropType`\<keyof `IntrinsicElementAttributes`\> ; `default`: `string` = "div" }  }\>\>
 
 #### Defined in
 
@@ -163,7 +165,7 @@ ___
 
 ### $options
 
-• **$options**: `ComponentOptionsBase`\<`ResolveProps`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean }, \{ `scrollEnd`: () => `void` ; `rangeChange`: (`startIndex`: `number`, `endIndex`: `number`) => `void`  }\>, `void`, {}, {}, {}, `ComponentOptionsMixin`, `ComponentOptionsMixin`, \{ `scrollEnd`: () => `void` ; `rangeChange`: (`startIndex`: `number`, `endIndex`: `number`) => `void`  }, `string`, \{ `shift`: `boolean` = Boolean; `overscan`: `number` ; `horizontal`: `boolean` = Boolean }, {}, `string`, `SlotsType`\<\{ `default`: `any`  }\>\> & `MergedComponentOptionsOverride`
+• **$options**: `ComponentOptionsBase`\<`ResolveProps`\<\{ `data`: \{ `type`: `ArrayConstructor` = Array; `required`: ``true`` = true } ; `overscan`: \{ `type`: `NumberConstructor` = Number; `default`: `number` = 4 } ; `itemSize`: `NumberConstructor` = Number; `shift`: `BooleanConstructor` = Boolean; `horizontal`: `BooleanConstructor` = Boolean; `as`: \{ `type`: `PropType`\<keyof `IntrinsicElementAttributes`\> ; `default`: `string` = "div" } ; `item`: \{ `type`: `PropType`\<keyof `IntrinsicElementAttributes`\> ; `default`: `string` = "div" }  }, \{ `scrollEnd`: () => `void` ; `rangeChange`: (`startIndex`: `number`, `endIndex`: `number`) => `void`  }\>, `void`, {}, {}, {}, `ComponentOptionsMixin`, `ComponentOptionsMixin`, \{ `scrollEnd`: () => `void` ; `rangeChange`: (`startIndex`: `number`, `endIndex`: `number`) => `void`  }, `string`, \{ `shift`: `boolean` = Boolean; `overscan`: `number` ; `horizontal`: `boolean` = Boolean; `as`: keyof `IntrinsicElementAttributes` ; `item`: keyof `IntrinsicElementAttributes`  }, {}, `string`, `SlotsType`\<\{ `default`: `any`  }\>\> & `MergedComponentOptionsOverride`
 
 #### Defined in
 
@@ -229,7 +231,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:47](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/vue/WindowVirtualizer.tsx#L47)
+[src/vue/WindowVirtualizer.tsx:49](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/vue/WindowVirtualizer.tsx#L49)
 
 ___
 
@@ -241,7 +243,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:31](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/vue/WindowVirtualizer.tsx#L31)
+[src/vue/WindowVirtualizer.tsx:33](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/vue/WindowVirtualizer.tsx#L33)
 
 ___
 
@@ -259,7 +261,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:36](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/vue/WindowVirtualizer.tsx#L36)
+[src/vue/WindowVirtualizer.tsx:38](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/vue/WindowVirtualizer.tsx#L38)
 
 ___
 
@@ -274,7 +276,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:43](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/vue/WindowVirtualizer.tsx#L43)
+[src/vue/WindowVirtualizer.tsx:45](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/vue/WindowVirtualizer.tsx#L45)
 
 ___
 
@@ -286,7 +288,43 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:51](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/vue/WindowVirtualizer.tsx#L51)
+[src/vue/WindowVirtualizer.tsx:53](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/vue/WindowVirtualizer.tsx#L53)
+
+___
+
+### as
+
+• `Readonly` **as**: keyof `IntrinsicElementAttributes`
+
+Component or element type for container element.
+
+**`Default Value`**
+
+```ts
+"div"
+```
+
+#### Defined in
+
+[src/vue/WindowVirtualizer.tsx:58](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/vue/WindowVirtualizer.tsx#L58)
+
+___
+
+### item
+
+• `Readonly` **item**: keyof `IntrinsicElementAttributes`
+
+Component or element type for item element.
+
+**`Default Value`**
+
+```ts
+"div"
+```
+
+#### Defined in
+
+[src/vue/WindowVirtualizer.tsx:63](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/vue/WindowVirtualizer.tsx#L63)
 
 ___
 

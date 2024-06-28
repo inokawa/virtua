@@ -37,7 +37,7 @@ You can also pass a function and set [VirtualizerProps.count](react.VirtualizerP
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:87](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/react/Virtualizer.tsx#L87)
+[src/react/Virtualizer.tsx:87](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/react/Virtualizer.tsx#L87)
 
 ___
 
@@ -49,7 +49,7 @@ If you set a function to [VirtualizerProps.children](react.VirtualizerProps.md#c
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:91](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/react/Virtualizer.tsx#L91)
+[src/react/Virtualizer.tsx:91](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/react/Virtualizer.tsx#L91)
 
 ___
 
@@ -67,7 +67,7 @@ Number of items to render above/below the visible bounds of the list. Lower valu
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:96](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/react/Virtualizer.tsx#L96)
+[src/react/Virtualizer.tsx:96](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/react/Virtualizer.tsx#L96)
 
 ___
 
@@ -79,7 +79,7 @@ List of indexes that should be always mounted, even when off screen.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:100](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/react/Virtualizer.tsx#L100)
+[src/react/Virtualizer.tsx:100](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/react/Virtualizer.tsx#L100)
 
 ___
 
@@ -94,7 +94,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:107](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/react/Virtualizer.tsx#L107)
+[src/react/Virtualizer.tsx:107](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/react/Virtualizer.tsx#L107)
 
 ___
 
@@ -106,7 +106,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:111](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/react/Virtualizer.tsx#L111)
+[src/react/Virtualizer.tsx:111](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/react/Virtualizer.tsx#L111)
 
 ___
 
@@ -118,7 +118,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:115](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/react/Virtualizer.tsx#L115)
+[src/react/Virtualizer.tsx:115](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/react/Virtualizer.tsx#L115)
 
 ___
 
@@ -132,7 +132,7 @@ You can restore cache by passing a [CacheSnapshot](react.CacheSnapshot.md) on mo
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:121](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/react/Virtualizer.tsx#L121)
+[src/react/Virtualizer.tsx:121](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/react/Virtualizer.tsx#L121)
 
 ___
 
@@ -144,7 +144,7 @@ If you put an element before virtualizer, you have to define its height with thi
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:125](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/react/Virtualizer.tsx#L125)
+[src/react/Virtualizer.tsx:125](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/react/Virtualizer.tsx#L125)
 
 ___
 
@@ -156,7 +156,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:129](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/react/Virtualizer.tsx#L129)
+[src/react/Virtualizer.tsx:129](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/react/Virtualizer.tsx#L129)
 
 ___
 
@@ -174,7 +174,7 @@ Component or element type for container element.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:134](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/react/Virtualizer.tsx#L134)
+[src/react/Virtualizer.tsx:134](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/react/Virtualizer.tsx#L134)
 
 ___
 
@@ -192,7 +192,7 @@ Component or element type for item element. This component will get [CustomItemC
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:139](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/react/Virtualizer.tsx#L139)
+[src/react/Virtualizer.tsx:139](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/react/Virtualizer.tsx#L139)
 
 ___
 
@@ -204,7 +204,7 @@ Reference to the scrollable element. The default will get the parent element of 
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:143](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/react/Virtualizer.tsx#L143)
+[src/react/Virtualizer.tsx:143](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/react/Virtualizer.tsx#L143)
 
 ___
 
@@ -230,7 +230,7 @@ Callback invoked whenever scroll offset changes.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:148](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/react/Virtualizer.tsx#L148)
+[src/react/Virtualizer.tsx:148](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/react/Virtualizer.tsx#L148)
 
 ___
 
@@ -250,7 +250,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:152](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/react/Virtualizer.tsx#L152)
+[src/react/Virtualizer.tsx:152](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/react/Virtualizer.tsx#L152)
 
 ___
 
@@ -277,4 +277,4 @@ Callback invoked when visible items range changes.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:156](https://github.com/inokawa/virtua/blob/0581bc9da8f43b9ce79d94b16ddd7bd93360b17f/src/react/Virtualizer.tsx#L156)
+[src/react/Virtualizer.tsx:156](https://github.com/inokawa/virtua/blob/d0d02377f34098a2105ecf6e624698c2df2ab54d/src/react/Virtualizer.tsx#L156)
