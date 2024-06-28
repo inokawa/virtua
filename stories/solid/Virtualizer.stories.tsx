@@ -37,7 +37,6 @@ export const TableElement: StoryObj = {
             data={createRows(10000)}
             as="tbody"
             item="tr"
-            overscan={5}
           >
             {(_, i) => (
               <For each={COLUMN_WIDTHS}>
