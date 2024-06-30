@@ -82,7 +82,7 @@
     "@storybook/source-loader": "^8.0.10",
     "@storybook/svelte": "^8.0.10",
     "@storybook/svelte-vite": "^8.0.10",
-    "@storybook/test-runner": "^0.18.2",
+    "@storybook/test-runner": "^0.19.0",
     "@storybook/vue3": "^8.0.10",
     "@storybook/vue3-vite": "^8.0.10",
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
