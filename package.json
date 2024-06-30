@@ -133,7 +133,7 @@
     "svelte": "^4.2.18",
     "svelte-check": "^3.7.1",
     "svelte2tsx": "^0.7.11",
-    "typedoc": "^0.25.13",
+    "typedoc": "^0.26.0",
     "typedoc-plugin-markdown": "^3.17.1",
     "typedoc-plugin-vue": "^1.1.0",
     "typescript": "^5.4.5",
