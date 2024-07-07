@@ -5,7 +5,7 @@ import {
   type VirtualStore,
 } from "./store";
 import { type ItemResize } from "./types";
-import { exists, max } from "./utils";
+import { max, NULL } from "./utils";
 
 const createResizeObserver = (cb: ResizeObserverCallback) => {
   let ro: ResizeObserver | undefined;
@@ -61,7 +61,7 @@ export const createResizer = (
         store._update(ACTION_VIEWPORT_RESIZE, contentRect[sizeKey]);
       } else {
         const index = mountedIndexes.get(target);
-        if (exists(index)) {
+        if (index != NULL) {
           resizes.push([index, contentRect[sizeKey]]);
         }
       }
@@ -112,7 +112,7 @@ export const createWindowResizer = (
       if (!(target as HTMLElement).offsetParent) continue;
 
       const index = mountedIndexes.get(target);
-      if (exists(index)) {
+      if (index != NULL) {
         resizes.push([index, contentRect[sizeKey]]);
       }
     }

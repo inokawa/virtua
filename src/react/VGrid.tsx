@@ -25,6 +25,7 @@ import { ViewportComponentAttributes } from "./types";
 import { flushSync } from "react-dom";
 import { isRTLDocument } from "../core/environment";
 import { useRerender } from "./useRerender";
+import { NULL } from "../core/utils";
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
 /**
@@ -65,7 +66,7 @@ const Cell = memo(
     _hide: hide,
     _element: Element,
   }: CellProps): ReactElement => {
-    const ref = useRef<HTMLDivElement>(null);
+    const ref = useRef<HTMLDivElement>(NULL);
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(
@@ -249,7 +250,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const hJumpCount = hStore._getJumpCount();
     const height = getScrollSize(vStore);
     const width = getScrollSize(hStore);
-    const rootRef = useRef<HTMLDivElement>(null);
+    const rootRef = useRef<HTMLDivElement>(NULL);
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;

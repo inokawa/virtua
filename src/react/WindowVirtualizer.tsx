@@ -26,6 +26,7 @@ import { ListItem } from "./ListItem";
 import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
 import { useChildren } from "./useChildren";
+import { NULL } from "../core/utils";
 
 /**
  * Methods of {@link WindowVirtualizer}.
@@ -138,7 +139,7 @@ export const WindowVirtualizer = forwardRef<
 
     const [getElement, count] = useChildren(children, renderCountProp);
 
-    const containerRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(NULL);
 
     const onScrollEnd = useLatestRef(onScrollEndProp);
 

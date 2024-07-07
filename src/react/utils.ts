@@ -1,5 +1,5 @@
 import { ReactElement, ReactFragment, ReactNode } from "react";
-import { exists, isArray } from "../core/utils";
+import { isArray, NULL } from "../core/utils";
 
 /**
  * @internal
@@ -16,7 +16,7 @@ const forEach = (children: ReactNode, elements: ItemElement[]) => {
     for (const c of children) {
       forEach(c, elements);
     }
-  } else if (!exists(children) || typeof children === "boolean") {
+  } else if (children == NULL || typeof children === "boolean") {
     // filter out, that is the same as React.Children.toArray
   } else {
     elements.push(children);
@@ -49,5 +49,5 @@ type MayHaveKey = { key?: React.Key };
  */
 export const getKey = (e: ItemElement, i: number): React.Key => {
   const key = (e as MayHaveKey).key;
-  return exists(key) ? key : "_" + i;
+  return key != NULL ? key : "_" + i;
 };

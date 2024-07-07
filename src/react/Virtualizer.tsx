@@ -30,7 +30,7 @@ import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
 import { useChildren } from "./useChildren";
 import { CustomContainerComponent, CustomItemComponent } from "./types";
-import { microtask, sort } from "../core/utils";
+import { microtask, NULL, sort } from "../core/utils";
 
 /**
  * Methods of {@link Virtualizer}.
@@ -194,7 +194,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
 
     const [getElement, count] = useChildren(children, renderCountProp);
 
-    const containerRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(NULL);
 
     const isSSR = useRef(!!ssrCount);
 

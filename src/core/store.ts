@@ -17,7 +17,7 @@ import type {
   ItemResize,
   ItemsRange,
 } from "./types";
-import { abs, max, min } from "./utils";
+import { abs, max, min, NULL } from "./utils";
 
 /** @internal */
 export const SCROLL_IDLE = 0;
@@ -155,7 +155,7 @@ export const createVirtualStore = (
   let _scrollMode: ScrollMode = SCROLL_BY_NATIVE;
   let _frozenRange: ItemsRange | null = isSSR
     ? [0, max(ssrCount - 1, 0)]
-    : null;
+    : NULL;
   let _prevRange: ItemsRange = [0, 0];
   let _totalMeasuredSize = 0;
 
@@ -302,7 +302,7 @@ export const createVirtualStore = (
           // }
 
           if (isSSR) {
-            _frozenRange = null;
+            _frozenRange = NULL;
             isSSR = false;
           }
 
@@ -331,7 +331,7 @@ export const createVirtualStore = (
           }
           _scrollDirection = SCROLL_IDLE;
           _scrollMode = SCROLL_BY_NATIVE;
-          _frozenRange = null;
+          _frozenRange = NULL;
           break;
         }
         case ACTION_ITEM_RESIZE: {

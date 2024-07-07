@@ -1,4 +1,7 @@
 /** @internal */
+export const NULL = null;
+
+/** @internal */
 export const min = Math.min;
 /** @internal */
 export const max = Math.max;
@@ -19,11 +22,6 @@ export const clamp = (
   minValue: number,
   maxValue: number
 ): number => min(maxValue, max(minValue, value));
-
-/**
- * @internal
- */
-export const exists = <T>(v: T): v is Exclude<T, null | undefined> => v != null;
 
 /**
  * @internal
@@ -60,14 +58,14 @@ export const debounce = <T extends () => void>(fn: T, ms: number) => {
   let id: ReturnType<typeof setTimeout> | undefined | null;
 
   const cancel = () => {
-    if (exists(id)) {
+    if (id != NULL) {
       clearTimeout(id);
     }
   };
   const debouncedFn = () => {
     cancel();
     id = timeout(() => {
-      id = null;
+      id = NULL;
       fn();
     }, ms);
   };

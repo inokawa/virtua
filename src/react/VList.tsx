@@ -5,6 +5,7 @@ import {
   VirtualizerHandle,
   VirtualizerProps,
 } from "./Virtualizer";
+import { NULL } from "../core/utils";
 
 /**
  * Methods of {@link VList}.
@@ -63,7 +64,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
     },
     ref
   ): ReactElement => {
-    const scrollRef = useRef<HTMLDivElement>(null);
+    const scrollRef = useRef<HTMLDivElement>(NULL);
     const shouldReverse = reverse && !horizontal;
 
     let element = (
