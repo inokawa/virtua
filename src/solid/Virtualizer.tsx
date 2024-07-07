@@ -30,7 +30,6 @@ import { createScroller } from "../core/scroller";
 import { ItemsRange, ScrollToIndexOpts } from "../core/types";
 import { ListItem } from "./ListItem";
 import { RangedFor } from "./RangedFor";
-import { exists } from "../core/utils";
 import { isSameRange } from "./utils";
 
 /**
@@ -257,9 +256,9 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   createComputed(
     on(
       () => props.data.length,
-      (len, prevLen) => {
-        if (exists(prevLen) && len !== prevLen) {
-          store._update(ACTION_ITEMS_LENGTH_CHANGE, [len, props.shift]);
+      (count) => {
+        if (count !== store._getItemsLength()) {
+          store._update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
         }
       }
     )

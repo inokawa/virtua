@@ -38,17 +38,17 @@ export interface VListProps<T>
  */
 export const VList = <T,>(props: VListProps<T>): JSX.Element => {
   const {
-    ref: _ref,
-    data: _data,
-    children: _children,
-    overscan: _overscan,
+    ref,
+    data,
+    children,
+    overscan,
     itemSize,
-    shift: _shift,
-    horizontal = false,
-    onScroll: _onScroll,
-    onScrollEnd: _onScrollEnd,
-    onRangeChange: _onRangeChange,
-    style: _style,
+    shift,
+    horizontal,
+    onScroll,
+    onScrollEnd,
+    onRangeChange,
+    style,
     ...attrs
   } = props;
 

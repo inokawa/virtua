@@ -23,7 +23,6 @@ import { createWindowResizer } from "../core/resizer";
 import { createWindowScroller } from "../core/scroller";
 import { ListItem } from "./ListItem";
 import { RangedFor } from "./RangedFor";
-import { exists } from "../core/utils";
 import { isSameRange } from "./utils";
 import { ItemsRange } from "../core/types";
 
@@ -176,8 +175,8 @@ export const WindowVirtualizer = <T,>(
   createComputed(
     on(
       () => props.data.length,
-      (len, prevLen) => {
-        if (exists(prevLen) && len !== prevLen) {
+      (len) => {
+        if (len !== store._getItemsLength()) {
           store._update(ACTION_ITEMS_LENGTH_CHANGE, [len, props.shift]);
         }
       }
