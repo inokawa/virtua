@@ -11,6 +11,6 @@
   "sort": ["kind"],
   "groupOrder": ["Function", "Interface", "TypeAlias"],
   "githubPages": false,
-  "entryDocument": "API.md",
+  "entryFileName": "API.md",
   "hideBreadcrumbs": true
 }
