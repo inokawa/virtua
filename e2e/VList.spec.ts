@@ -117,6 +117,29 @@ test.describe("smoke", () => {
     expect(initialTotalHeight).toEqual(changedTotalHeight);
   });
 
+  test("new window", async ({ page, context }) => {
+    await page.goto(storyUrl("advanced-newwindow--default"));
+
+    // open new window
+    const newPagePromise = context.waitForEvent("page");
+    await page.getByRole("button", { name: "open window" }).click();
+    const newPage = await newPagePromise;
+
+    const component = await getScrollable(newPage);
+    await component.waitForElementState("stable");
+
+    // check if start is displayed
+    const first = await getFirstItem(component);
+    await expect(first.text).toEqual("0");
+    await expect(first.top).toEqual(0);
+
+    // scroll to the end
+    await scrollToBottom(component);
+
+    // check if the end is displayed
+    await expect(await component.innerText()).toContain("999");
+  });
+
   test("scroll restoration", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--scroll-restoration"));
 
