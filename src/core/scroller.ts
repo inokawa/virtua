@@ -200,13 +200,19 @@ export const createScroller = (
     const waitForMeasurement = (): [Promise<void>, () => void] => {
       // Wait for the scroll destination items to be measured.
       // The measurement will be done asynchronously and the timing is not predictable so we use promise.
-      // For example, ResizeObserver may not fire when window is not visible.
       let queue: (() => void) | undefined;
       return [
         new Promise<void>((resolve, reject) => {
           queue = resolve;
-          // Reject when items around scroll destination completely measured
-          timeout((cancelScroll = reject), 150);
+          cancelScroll = reject;
+
+          // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
+          // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
+          // https://github.com/inokawa/virtua/issues/450
+          if (store._isInitialMeasurementDone()) {
+            // Reject when items around scroll destination completely measured
+            timeout(reject, 150);
+          }
         }),
         store._subscribe(UPDATE_SIZE_EVENT, () => {
           queue && queue();
