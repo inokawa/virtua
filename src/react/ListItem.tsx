@@ -57,7 +57,7 @@ export const ListItem = memo(
         style.display = "flex";
       }
       return style;
-    }, [offset, hide, isSSR]);
+    }, [offset, hide, isSSR, isHorizontal]);
 
     if (typeof Element === "string") {
       return (
