@@ -117,6 +117,7 @@ export type VirtualStore = {
   _getCacheSnapshot(): CacheSnapshot;
   _getRange(): ItemsRange;
   _isUnmeasuredItem(index: number): boolean;
+  _isInitialMeasurementDone(): boolean;
   _hasUnmeasuredItemsInFrozenRange(): boolean;
   _getItemOffset(index: number): number;
   _getItemSize(index: number): number;
@@ -215,6 +216,9 @@ export const createVirtualStore = (
     },
     _isUnmeasuredItem(index) {
       return cache._sizes[index] === UNCACHED;
+    },
+    _isInitialMeasurementDone() {
+      return !!viewportSize;
     },
     _hasUnmeasuredItemsInFrozenRange() {
       if (!_frozenRange) return false;
