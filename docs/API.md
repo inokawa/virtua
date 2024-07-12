@@ -1,9 +1,11 @@
+**API** • **Docs**
+
+***
+
 # API
 
-## Table of contents
+## Modules
 
-### Modules
-
-- [react](modules/react.md)
-- [vue](modules/vue.md)
-- [solid](modules/solid.md)
+- [react](react/API.md)
+- [vue](vue/API.md)
+- [solid](solid/API.md)
