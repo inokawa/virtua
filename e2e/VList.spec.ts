@@ -389,6 +389,42 @@ test.describe("check if scroll jump compensation works", () => {
     }
   });
 
+  test("resize at bottom", async ({ page, browserName }) => {
+    await page.goto(storyUrl("advanced-collapse--two-stage-render"));
+    const component = await getScrollable(page);
+    const container = await getVirtualizer(page);
+    await component.waitForElementState("stable");
+    await page.waitForTimeout(500);
+
+    // should reach to the bottom within the specified number of tries
+    for (let i = 0; i <= 1; i++) {
+      // scroll to bottom
+      await scrollToBottom(component);
+
+      const prevBottomItem = getLastItem(component);
+
+      // wait for resize completed
+      await page.waitForTimeout(500);
+      await container.waitForElementState("stable");
+
+      const bottomItem = getLastItem(component);
+
+      // check if distance from the bottom isn't changed by resizes
+      const prevBottom = (await prevBottomItem).bottom;
+      const bottom = (await bottomItem).bottom;
+      if (
+        browserName === "firefox"
+          ? Math.abs(bottom - prevBottom) <= 2
+          : bottom === prevBottom
+      ) {
+        // succeeded
+        return;
+      }
+    }
+
+    throw new Error(`couldn't reach the bottom`);
+  });
+
   test("resize with smooth scroll", async ({ page }) => {
     await page.goto(storyUrl("advanced-collapse--collapse-and-scroll"));
     const component = await getScrollable(page);

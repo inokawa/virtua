@@ -232,3 +232,49 @@ const Collapser2 = ({ id, onHidden }: { id: number; onHidden: () => void }) => {
     </div>
   );
 };
+
+const TwoStageRenderItem = ({ index }: { index: number }) => {
+  const getRandomHeight = () => Math.floor(Math.random() * 100) + 50; // Random height between 50 and 150 px
+  const getRandomDelay = () => Math.floor(Math.random() * 300) + 100; // Random delay between 100 and 400 ms
+
+  const [immediateHeight] = useState(() => getRandomHeight());
+  const [delayedHeight, setDelayedHeight] = useState<number | null>(null);
+
+  useEffect(() => {
+    const delay = getRandomDelay();
+    const timer = setTimeout(() => {
+      setDelayedHeight(getRandomHeight());
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div style={{ border: "5px solid black", margin: "5px 0" }}>
+      <div style={{ height: immediateHeight, background: "#e0e0e0" }}>
+        Immediate Content {index} (Height: {immediateHeight}px)
+      </div>
+      {delayedHeight !== null ? (
+        <div style={{ height: delayedHeight, background: "#f0f0f0" }}>
+          Delayed Content {index} (Height: {delayedHeight}px)
+        </div>
+      ) : (
+        <div style={{ padding: "10px", background: "#ffe0e0" }}>Loading...</div>
+      )}
+    </div>
+  );
+};
+
+export const TwoStageRender: StoryObj = {
+  render: () => {
+    return (
+      <div style={{ height: "400px", border: "1px solid black" }}>
+        <VList style={{ height: "100%", width: "100%" }}>
+          {Array.from({ length: 100 }).map((_, index) => (
+            <TwoStageRenderItem key={index} index={index} />
+          ))}
+        </VList>
+      </div>
+    );
+  },
+};
