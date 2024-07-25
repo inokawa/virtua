@@ -256,7 +256,9 @@ export const createVirtualStore = (
       return [
         _flushedJump,
         // Use absolute position not to exceed scrollable bounds
-        _scrollMode === SCROLL_BY_SHIFT,
+        _scrollMode === SCROLL_BY_SHIFT ||
+          // https://github.com/inokawa/virtua/discussions/475
+          getRelativeScrollOffset() + viewportSize >= getTotalSize(),
       ];
     },
     _subscribe(target, cb) {
