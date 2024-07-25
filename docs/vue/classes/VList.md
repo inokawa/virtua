@@ -28,7 +28,7 @@
 
 #### Defined in
 
-node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:131
+node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:130
 
 ***
 
@@ -50,7 +50,7 @@ index of item
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:51](https://github.com/inokawa/virtua/blob/f2de1ad1dcae7dcd92746003a86e94d236b5972c/src/vue/Virtualizer.tsx#L51)
+[src/vue/Virtualizer.tsx:51](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/vue/Virtualizer.tsx#L51)
 
 ***
 
@@ -76,7 +76,7 @@ options
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:57](https://github.com/inokawa/virtua/blob/f2de1ad1dcae7dcd92746003a86e94d236b5972c/src/vue/Virtualizer.tsx#L57)
+[src/vue/Virtualizer.tsx:57](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/vue/Virtualizer.tsx#L57)
 
 ***
 
@@ -98,7 +98,7 @@ offset from start
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:62](https://github.com/inokawa/virtua/blob/f2de1ad1dcae7dcd92746003a86e94d236b5972c/src/vue/Virtualizer.tsx#L62)
+[src/vue/Virtualizer.tsx:62](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/vue/Virtualizer.tsx#L62)
 
 ***
 
@@ -120,7 +120,7 @@ offset from current position
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:67](https://github.com/inokawa/virtua/blob/f2de1ad1dcae7dcd92746003a86e94d236b5972c/src/vue/Virtualizer.tsx#L67)
+[src/vue/Virtualizer.tsx:67](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/vue/Virtualizer.tsx#L67)
 
 ## Properties
 
@@ -130,7 +130,7 @@ offset from current position
 
 #### Defined in
 
-node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:118
+node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:117
 
 ***
 
@@ -140,7 +140,7 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:118
 
 #### Defined in
 
-node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:119
+node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:118
 
 ***
 
@@ -150,7 +150,7 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:119
 
 #### Defined in
 
-node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:120
+node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:119
 
 ***
 
@@ -160,7 +160,7 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:120
 
 #### Defined in
 
-node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:121
+node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:120
 
 ***
 
@@ -170,7 +170,7 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:121
 
 #### Defined in
 
-node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:122
+node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:121
 
 ***
 
@@ -186,7 +186,7 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:122
 
 #### Defined in
 
-node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:123
+node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:122
 
 ***
 
@@ -196,7 +196,7 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:123
 
 #### Defined in
 
-node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:124
+node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:123
 
 ***
 
@@ -206,7 +206,7 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:124
 
 #### Defined in
 
-node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:125
+node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:124
 
 ***
 
@@ -216,7 +216,7 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:125
 
 #### Defined in
 
-node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:126
+node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:125
 
 ***
 
@@ -226,7 +226,7 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:126
 
 #### Defined in
 
-node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:127
+node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:126
 
 ***
 
@@ -236,7 +236,7 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:127
 
 #### Defined in
 
-node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:128
+node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:127
 
 ***
 
@@ -250,7 +250,7 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:128
 
 #### Defined in
 
-node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:129
+node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:128
 
 ***
 
@@ -276,7 +276,7 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:129
 
 #### Defined in
 
-node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:130
+node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:129
 
 ***
 
@@ -294,7 +294,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/vue/VList.tsx:34](https://github.com/inokawa/virtua/blob/f2de1ad1dcae7dcd92746003a86e94d236b5972c/src/vue/VList.tsx#L34)
+[src/vue/VList.tsx:34](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/vue/VList.tsx#L34)
 
 ***
 
@@ -306,7 +306,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/vue/VList.tsx:18](https://github.com/inokawa/virtua/blob/f2de1ad1dcae7dcd92746003a86e94d236b5972c/src/vue/VList.tsx#L18)
+[src/vue/VList.tsx:18](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/vue/VList.tsx#L18)
 
 ***
 
@@ -324,7 +324,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/vue/VList.tsx:23](https://github.com/inokawa/virtua/blob/f2de1ad1dcae7dcd92746003a86e94d236b5972c/src/vue/VList.tsx#L23)
+[src/vue/VList.tsx:23](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/vue/VList.tsx#L23)
 
 ***
 
@@ -339,7 +339,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/vue/VList.tsx:30](https://github.com/inokawa/virtua/blob/f2de1ad1dcae7dcd92746003a86e94d236b5972c/src/vue/VList.tsx#L30)
+[src/vue/VList.tsx:30](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/vue/VList.tsx#L30)
 
 ***
 
@@ -351,7 +351,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/vue/VList.tsx:38](https://github.com/inokawa/virtua/blob/f2de1ad1dcae7dcd92746003a86e94d236b5972c/src/vue/VList.tsx#L38)
+[src/vue/VList.tsx:38](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/vue/VList.tsx#L38)
 
 ***
 
@@ -363,7 +363,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 #### Defined in
 
-[src/vue/VList.tsx:42](https://github.com/inokawa/virtua/blob/f2de1ad1dcae7dcd92746003a86e94d236b5972c/src/vue/VList.tsx#L42)
+[src/vue/VList.tsx:42](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/vue/VList.tsx#L42)
 
 ***
 
@@ -387,7 +387,7 @@ Get current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:38](https://github.com/inokawa/virtua/blob/f2de1ad1dcae7dcd92746003a86e94d236b5972c/src/vue/Virtualizer.tsx#L38)
+[src/vue/Virtualizer.tsx:38](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/vue/Virtualizer.tsx#L38)
 
 ***
 
@@ -399,7 +399,7 @@ Get current scrollHeight or scrollWidth.
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:42](https://github.com/inokawa/virtua/blob/f2de1ad1dcae7dcd92746003a86e94d236b5972c/src/vue/Virtualizer.tsx#L42)
+[src/vue/Virtualizer.tsx:42](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/vue/Virtualizer.tsx#L42)
 
 ***
 
@@ -411,4 +411,4 @@ Get current offsetHeight or offsetWidth.
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:46](https://github.com/inokawa/virtua/blob/f2de1ad1dcae7dcd92746003a86e94d236b5972c/src/vue/Virtualizer.tsx#L46)
+[src/vue/Virtualizer.tsx:46](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/vue/Virtualizer.tsx#L46)
