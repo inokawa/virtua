@@ -380,10 +380,9 @@ export const createVirtualStore = (
             const isInitialMeasurement = setItemSize(cache, index, size);
 
             if (shouldAutoEstimateItemSize) {
-              _totalMeasuredSize += size;
-              if (!isInitialMeasurement) {
-                _totalMeasuredSize -= prevSize;
-              }
+              _totalMeasuredSize += isInitialMeasurement
+                ? size
+                : size - prevSize;
             }
           }
 
