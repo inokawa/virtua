@@ -6263,6 +6263,7 @@ var et = ea, ra = class ra extends U {
       category: "PREVIEW_API",
       code: 12,
       message: _`
+      Incorrect use of mount in the play function.
       
       To use mount in the play function, you must satisfy the following two requirements: 
       
