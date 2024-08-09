@@ -2,6 +2,46 @@ import { describe, it, expect } from "vitest";
 import { quickSelect } from "./quickSelect";
 
 describe("quickSelect (handles even and odd length arrays)", () => {
+  class SimpleLinearRegression {
+    private slope: number;
+    private intercept: number;
+
+    constructor() {
+      this.slope = 0;
+      this.intercept = 0;
+    }
+
+    train(data: [number, number][]): void {
+      const n = data.length;
+      const xSum = data.reduce((sum, [x]) => sum + x, 0);
+      const ySum = data.reduce((sum, [, y]) => sum + y, 0);
+      const xySum = data.reduce((sum, [x, y]) => sum + x * y, 0);
+      const xSquaredSum = data.reduce((sum, [x]) => sum + x * x, 0);
+
+      // Calculate slope (m) and intercept (b)
+      this.slope = (n * xySum - xSum * ySum) / (n * xSquaredSum - xSum * xSum);
+      this.intercept = (ySum - this.slope * xSum) / n;
+    }
+
+    predict(x: number): number {
+      return this.slope * x + this.intercept;
+    }
+
+    rSquared(data: [number, number][]): number {
+      const yMean = data.reduce((sum, [, y]) => sum + y, 0) / data.length;
+      const totalSumOfSquares = data.reduce(
+        (sum, [, y]) => sum + (y - yMean) ** 2,
+        0,
+      );
+      const residualSumOfSquares = data.reduce(
+        (sum, [x, y]) => sum + (y - this.predict(x)) ** 2,
+        0,
+      );
+
+      return 1 - residualSumOfSquares / totalSumOfSquares;
+    }
+  }
+
   it("should find the median in an odd-length array", () => {
     const arr = [3, 1, 2];
     expect(quickSelect(arr, arr.length)).toBe(2);
@@ -85,5 +125,56 @@ describe("quickSelect (handles even and odd length arrays)", () => {
   it("should handle a large array", () => {
     const arr = Array.from({ length: 10001 }, (_, i) => i + 1); // [1, 2, 3, ..., 10001]
     expect(quickSelect(arr, arr.length)).toBe(5001); // Median of [1, 2, 3, ..., 10001] is 5001
+  });
+
+  it("should run in roughly linear time", () => {
+    function generateRandomArray(size: number): number[] {
+      return Array.from({ length: size }, () =>
+        Math.floor(Math.random() * size),
+      );
+    }
+
+    function measureExecutionTime(
+      size: number,
+      // ~25 iterations is enough to average out the data so that we can reasonably check if it is running in linear time.
+      iterations: number = 25,
+    ): number {
+      const times = [];
+      for (let i = 0; i < iterations; i++) {
+        const arr = generateRandomArray(size);
+        const start = performance.now();
+        quickSelect(arr, arr.length);
+        const end = performance.now();
+        times.push(end - start);
+      }
+      // Return the average execution time
+      return times.reduce((a, b) => a + b, 0) / times.length;
+    }
+
+    function testQuickSelectPerformance(): {
+      sizes: number[];
+      times: number[];
+    } {
+      const sizes = [
+        10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000,
+      ];
+      const times = sizes.map((size) => measureExecutionTime(size));
+      return { sizes, times };
+    }
+
+    const { sizes, times } = testQuickSelectPerformance();
+
+    // Create data pairs for linear regression (size vs. time)
+    const data = sizes.map((size, i) => [size, times[i]] as [number, number]);
+
+    // Apply linear regression
+    const linearRegression = new SimpleLinearRegression();
+    linearRegression.train(data);
+
+    // Calculate R^2 (coefficient of determination)
+    const rSquared = linearRegression.rSquared(data);
+
+    // Assert that R^2 is greater than or equal to 0.8
+    expect(rSquared).toBeGreaterThanOrEqual(0.8);
   });
 });
