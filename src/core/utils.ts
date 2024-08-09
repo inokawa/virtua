@@ -1,3 +1,5 @@
+import { quickSelect } from "./quickSelect";
+
 /** @internal */
 export const NULL = null;
 
@@ -29,66 +31,6 @@ export const clamp = (
 export const sort = <T extends number>(arr: readonly T[]): T[] => {
   return [...arr].sort((a, b) => a - b);
 };
-
-function swap(arr: number[], i: number, j: number): void {
-  const temp = arr[i]!;
-  arr[i] = arr[j]!;
-  arr[j] = temp;
-}
-
-// Typescript implementation of C quickselect
-// http://ndevilla.free.fr/median/median/
-// http://ndevilla.free.fr/median/median/src/quickselect.c
-function quickSelect(arr: number[], n: number): number {
-  let low = 0;
-  let high = n - 1;
-  let median = Math.floor((low + high) / 2);
-
-  while (true) {
-    if (high <= low) {
-      return arr[median]!;
-    }
-
-    if (high === low + 1) {
-      if (arr[low]! > arr[high]!) {
-        swap(arr, low, high);
-      }
-      return arr[median]!;
-    }
-
-    // Find median of low, middle, and high items; swap into position low
-    let middle = Math.floor((low + high) / 2);
-
-    if (arr[middle]! > arr[high]!) swap(arr, middle, high);
-    if (arr[low]! > arr[high]!) swap(arr, low, high);
-    if (arr[middle]! > arr[low]!) swap(arr, middle, low);
-
-    // Swap low item (now in position middle) into position (low + 1)
-    swap(arr, middle, low + 1);
-
-    // Nibble from each end towards middle, swapping items when stuck
-    let ll = low + 1;
-    let hh = high;
-
-    while (true) {
-      do ll++;
-      while (arr[ll]! < arr[low]!);
-      do hh--;
-      while (arr[hh]! > arr[low]!);
-
-      if (hh < ll) break;
-
-      swap(arr, ll, hh);
-    }
-
-    // Swap middle item (in position low) back into the correct position
-    swap(arr, low, hh);
-
-    // Re-set active partition
-    if (hh <= median) low = ll;
-    if (hh >= median) high = hh - 1;
-  }
-}
 
 /**
  * @internal
