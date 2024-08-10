@@ -12,7 +12,6 @@ import {
   createComputed,
   type ValidComponent,
   mergeProps,
-  splitProps,
   createRoot,
 } from "solid-js";
 import { Dynamic } from "solid-js/web";

@@ -10,6 +10,8 @@ import {
   JSX,
   on,
   createComputed,
+  mergeProps,
+  createRoot,
 } from "solid-js";
 import {
   SCROLL_IDLE,
@@ -82,7 +84,7 @@ export interface WindowVirtualizerProps<T> {
     /**
      * The end index of viewable items.
      */
-    endIndex: number
+    endIndex: number,
   ) => void;
 }
 
@@ -90,59 +92,61 @@ export interface WindowVirtualizerProps<T> {
  * {@link Virtualizer} controlled by the window scrolling. See {@link WindowVirtualizerProps} and {@link WindowVirtualizer}.
  */
 export const WindowVirtualizer = <T,>(
-  props: WindowVirtualizerProps<T>
+  props: WindowVirtualizerProps<T>,
 ): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
 
-  const {
-    // ref: _ref,
-    data: _data,
-    children: _children,
-    overscan: _overscan,
-    itemSize,
-    shift: _shift,
-    horizontal = false,
-    onScrollEnd: _onScrollEnd,
-    onRangeChange: _onRangeChange,
-  } = props;
-
-  const store = createVirtualStore(
-    props.data.length,
-    itemSize ?? 40,
-    undefined,
-    undefined,
-    !itemSize
+  const mergedProps = mergeProps({ horizontal: false }, props);
+  const store = createMemo(() =>
+    createVirtualStore(
+      mergedProps.data.length,
+      mergedProps.itemSize ?? 40,
+      undefined,
+      undefined,
+      !mergedProps.itemSize,
+    ),
   );
-  const resizer = createWindowResizer(store, horizontal);
-  const scroller = createWindowScroller(store, horizontal);
+  const resizer = createMemo(() =>
+    createWindowResizer(store(), mergedProps.horizontal),
+  );
+  const scroller = createMemo(() =>
+    createWindowScroller(store(), mergedProps.horizontal),
+  );
 
-  const [rerender, setRerender] = createSignal(store._getStateVersion());
-
-  const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
-    setRerender(store._getStateVersion());
+  const [rerender, setRerender] = createSignal();
+  createEffect(() => {
+    setRerender(store()._getStateVersion());
   });
 
-  const unsubscribeOnScrollEnd = store._subscribe(
-    UPDATE_SCROLL_END_EVENT,
-    () => {
-      props.onScrollEnd?.();
-    }
-  );
+  const { unsubscribeStore, unsubscribeOnScrollEnd } = createRoot(() => {
+    return {
+      unsubscribeStore: store()._subscribe(UPDATE_VIRTUAL_STATE, () => {
+        createEffect(() => {
+          setRerender(store()._getStateVersion());
+        });
+      }),
+      unsubscribeOnScrollEnd: store()._subscribe(
+        UPDATE_SCROLL_END_EVENT,
+        () => {
+          createEffect(() => {
+            mergedProps.onScrollEnd?.();
+          });
+        },
+      ),
+    };
+  });
 
   const range = createMemo<ItemsRange>((prev) => {
     rerender();
-    const next = store._getRange();
+    const next = store()._getRange();
     if (prev && isSameRange(prev, next)) {
       return prev;
     }
     return next;
   });
-  const scrollDirection = createMemo(
-    () => rerender() && store._getScrollDirection()
-  );
-  const totalSize = createMemo(() => rerender() && store._getTotalSize());
+  const totalSize = createMemo(() => rerender() && store()._getTotalSize());
 
-  const jumpCount = createMemo(() => rerender() && store._getJumpCount());
+  const jumpCount = createMemo(() => rerender() && store()._getJumpCount());
 
   const overscanedRange = createMemo<ItemsRange>((prev) => {
     const overscan = props.overscan ?? 4;
@@ -151,8 +155,8 @@ export const WindowVirtualizer = <T,>(
       startIndex,
       endIndex,
       overscan,
-      scrollDirection(),
-      props.data.length
+      store()._getScrollDirection(),
+      props.data.length,
     );
     if (prev && isSameRange(prev, next)) {
       return prev;
@@ -161,14 +165,14 @@ export const WindowVirtualizer = <T,>(
   });
 
   onMount(() => {
-    resizer._observeRoot(containerRef!);
-    scroller._observe(containerRef!);
+    resizer()._observeRoot(containerRef!);
+    scroller()._observe(containerRef!);
 
     onCleanup(() => {
       unsubscribeStore();
       unsubscribeOnScrollEnd();
-      resizer._dispose();
-      scroller._dispose();
+      resizer()._dispose();
+      scroller()._dispose();
     });
   });
 
@@ -176,22 +180,22 @@ export const WindowVirtualizer = <T,>(
     on(
       () => props.data.length,
       (len) => {
-        if (len !== store._getItemsLength()) {
-          store._update(ACTION_ITEMS_LENGTH_CHANGE, [len, props.shift]);
+        if (len !== store()._getItemsLength()) {
+          store()._update(ACTION_ITEMS_LENGTH_CHANGE, [len, props.shift]);
         }
-      }
-    )
+      },
+    ),
   );
 
   createEffect(
     on(jumpCount, () => {
-      scroller._fixScrollJump();
-    })
+      scroller()._fixScrollJump();
+    }),
   );
 
   createEffect(() => {
     const next = range();
-    props.onRangeChange && props.onRangeChange(next[0], next[1]);
+    mergedProps.onRangeChange && mergedProps.onRangeChange(next[0], next[1]);
   });
 
   return (
@@ -203,9 +207,10 @@ export const WindowVirtualizer = <T,>(
         flex: "none", // flex style can break layout
         position: "relative",
         visibility: "hidden", // TODO replace with other optimization methods
-        width: horizontal ? totalSize() + "px" : "100%",
-        height: horizontal ? "100%" : totalSize() + "px",
-        "pointer-events": scrollDirection() !== SCROLL_IDLE ? "none" : "auto",
+        width: mergedProps.horizontal ? totalSize() + "px" : "100%",
+        height: mergedProps.horizontal ? "100%" : totalSize() + "px",
+        "pointer-events":
+          store()._getScrollDirection() !== SCROLL_IDLE ? "none" : "auto",
       }}
     >
       <RangedFor
@@ -214,21 +219,21 @@ export const WindowVirtualizer = <T,>(
         _render={(data, index) => {
           const offset = createMemo(() => {
             rerender();
-            return store._getItemOffset(index);
+            return store()._getItemOffset(index);
           });
           const hide = createMemo(() => {
             rerender();
-            return store._isUnmeasuredItem(index);
+            return store()._isUnmeasuredItem(index);
           });
 
           return (
             <ListItem
               _index={index}
-              _resizer={resizer._observeItem}
+              _resizer={resizer()._observeItem}
               _offset={offset()}
               _hide={hide()}
-              _children={props.children(data(), index)}
-              _isHorizontal={horizontal}
+              _children={mergedProps.children(data(), index)}
+              _isHorizontal={mergedProps.horizontal}
             />
           );
         }}

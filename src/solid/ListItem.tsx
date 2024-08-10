@@ -29,19 +29,16 @@ interface ListItemProps {
  */
 export const ListItem: Component<ListItemProps> = (props) => {
   let elementRef: HTMLDivElement | undefined;
-  props = mergeProps<[Partial<ListItemProps>, ListItemProps]>(
-    { _as: "div" },
-    props
-  );
+  const mergedProps = mergeProps({ _as: "div" }, props);
 
-  // The index may be changed if elements are inserted to or removed from the start of props.children
+  // The index may be changed if elements are inserted to or removed from the start of mergedProps.children
   createEffect(() => {
     if (!elementRef) return;
-    onCleanup(props._resizer(elementRef, props._index));
+    onCleanup(mergedProps._resizer(elementRef, mergedProps._index));
   });
 
   const style = createMemo(() => {
-    const isHorizontal = props._isHorizontal;
+    const isHorizontal = mergedProps._isHorizontal;
     const style: JSX.CSSProperties = {
       margin: 0,
       padding: 0,
@@ -49,8 +46,8 @@ export const ListItem: Component<ListItemProps> = (props) => {
       [isHorizontal ? "height" : "width"]: "100%",
       [isHorizontal ? "top" : "left"]: "0px",
       [isHorizontal ? (isRTLDocument() ? "right" : "left") : "top"]:
-        props._offset + "px",
-      visibility: props._hide ? "hidden" : "visible",
+        mergedProps._offset + "px",
+      visibility: mergedProps._hide ? "hidden" : "visible",
     };
     if (isHorizontal) {
       style.display = "flex";
@@ -59,8 +56,8 @@ export const ListItem: Component<ListItemProps> = (props) => {
   });
 
   return (
-    <Dynamic component={props._as} ref={elementRef} style={style()}>
-      {props._children}
+    <Dynamic component={mergedProps._as} ref={elementRef} style={style()}>
+      {mergedProps._children}
     </Dynamic>
   );
 };
