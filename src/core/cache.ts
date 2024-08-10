@@ -43,7 +43,7 @@ export const getItemSize = (cache: Cache, index: number): number => {
 export const setItemSize = (
   cache: Writeable<Cache>,
   index: number,
-  size: number
+  size: number,
 ): boolean => {
   const isInitialMeasurement = cache._sizes[index] === UNCACHED;
   cache._sizes[index] = size;
@@ -57,7 +57,7 @@ export const setItemSize = (
  */
 export const computeOffset = (
   cache: Writeable<Cache>,
-  index: number
+  index: number,
 ): number => {
   if (!cache._length) return 0;
   if (cache._computedOffsetIndex >= index) {
@@ -118,13 +118,13 @@ export const computeRange = (
   cache: Cache,
   scrollOffset: number,
   prevStartIndex: number,
-  viewportSize: number
+  viewportSize: number,
 ): ItemsRange => {
   const start = findIndex(
     cache,
     scrollOffset,
     // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
-    min(prevStartIndex, cache._length - 1)
+    min(prevStartIndex, cache._length - 1),
   );
   return [start, findIndex(cache, scrollOffset + viewportSize, start)];
 };
@@ -134,7 +134,7 @@ export const computeRange = (
  */
 export const estimateDefaultItemSize = (
   cache: Writeable<Cache>,
-  startIndex: number
+  startIndex: number,
 ): number => {
   let measuredCountBeforeStart = 0;
   // This function will be called after measurement so measured size array must be longer than 0
@@ -163,7 +163,7 @@ export const estimateDefaultItemSize = (
 export const initCache = (
   length: number,
   itemSize: number,
-  snapshot?: InternalCacheSnapshot
+  snapshot?: InternalCacheSnapshot,
 ): Cache => {
   return {
     _defaultItemSize: snapshot ? snapshot[1] : itemSize,
@@ -172,7 +172,7 @@ export const initCache = (
         ? // https://github.com/inokawa/virtua/issues/441
           fill(
             snapshot[0].slice(0, min(length, snapshot[0].length)),
-            max(0, length - snapshot[0].length)
+            max(0, length - snapshot[0].length),
           )
         : fill([], length),
     _length: length,
@@ -185,7 +185,7 @@ export const initCache = (
  * @internal
  */
 export const takeCacheSnapshot = (cache: Cache): InternalCacheSnapshot => {
-  return [[...cache._sizes], cache._defaultItemSize];
+  return [cache._sizes.slice(), cache._defaultItemSize];
 };
 
 /**
@@ -194,7 +194,7 @@ export const takeCacheSnapshot = (cache: Cache): InternalCacheSnapshot => {
 export const updateCacheLength = (
   cache: Writeable<Cache>,
   length: number,
-  isShift?: boolean
+  isShift?: boolean,
 ): number => {
   const diff = length - cache._length;
 
@@ -209,15 +209,15 @@ export const updateCacheLength = (
     fill(cache._offsets, diff);
     fill(cache._sizes, diff, isShift);
     return cache._defaultItemSize * diff;
-  } else {
-    // Removed
-    cache._offsets.splice(diff);
-    return (
-      isShift ? cache._sizes.splice(0, -diff) : cache._sizes.splice(diff)
-    ).reduce(
-      (acc, removed) =>
-        acc - (removed === UNCACHED ? cache._defaultItemSize : removed),
-      0
-    );
   }
+
+  // Removed
+  cache._offsets.splice(diff);
+  return (
+    isShift ? cache._sizes.splice(0, -diff) : cache._sizes.splice(diff)
+  ).reduce(
+    (acc, removed) =>
+      acc - (removed === UNCACHED ? cache._defaultItemSize : removed),
+    0,
+  );
 };
