@@ -4,8 +4,8 @@
 import { ItemResizeObserver } from "../core/resizer";
 import { isRTLDocument } from "../core/environment";
 import {
-  Component,
-  JSX,
+  type Component,
+  type JSX,
   createEffect,
   createMemo,
   mergeProps,

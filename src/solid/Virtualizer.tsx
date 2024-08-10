@@ -7,7 +7,7 @@ import {
   createEffect,
   createSignal,
   createMemo,
-  JSX,
+  type JSX,
   on,
   createComputed,
   type ValidComponent,
@@ -28,7 +28,7 @@ import {
 } from "../core/store";
 import { createResizer } from "../core/resizer";
 import { createScroller } from "../core/scroller";
-import { ItemsRange, ScrollToIndexOpts } from "../core/types";
+import type { ItemsRange, ScrollToIndexOpts } from "../core/types";
 import { ListItem } from "./ListItem";
 import { RangedFor } from "./RangedFor";
 import { isSameRange } from "./utils";

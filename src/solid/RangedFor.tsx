@@ -6,11 +6,11 @@ import {
   createRoot,
   createSignal,
   onCleanup,
-  JSX,
-  Signal,
-  Accessor,
+  type JSX,
+  type Signal,
+  type Accessor,
 } from "solid-js";
-import { ItemsRange } from "../core/types";
+import type { ItemsRange } from "../core/types";
 
 interface RenderedNode<T> {
   _data: Signal<T>;
@@ -58,12 +58,12 @@ export const RangedFor = <T,>(props: {
                 _dispose: dispose,
               });
               return result;
-            })
+            }),
       );
       if (lookup) {
         if (newData !== lookup._data) {
           lookup._data[1](
-            newData as Exclude<T, Function> // TODO improve type
+            newData as Exclude<T, Function>, // TODO improve type
           );
         }
         current.set(i, lookup);
