@@ -1,4 +1,4 @@
-import { quickSelect } from "./quickSelect";
+import { median as quickselectMedian } from "./median";
 
 /** @internal */
 export const NULL = null;
@@ -35,7 +35,15 @@ export const sort = <T extends number>(arr: readonly T[]): T[] => {
 /**
  * @internal
  */
-export const median = (arr: number[]): number => quickSelect(arr, arr.length);
+export const median = (arr: number[]): number => {
+  const med = quickselectMedian(arr, arr.length);
+
+  if (typeof med === "undefined") {
+    throw new Error("Invalid input provided for median");
+  }
+
+  return med;
+};
 
 /**
  * @internal
