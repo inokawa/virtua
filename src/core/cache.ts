@@ -21,11 +21,7 @@ export type Cache = {
   readonly _offsets: number[];
 };
 
-const fill = (
-  array: number[],
-  length: number,
-  prepend: boolean = false,
-): number[] => {
+const fill = (array: number[], length: number, prepend?: boolean): number[] => {
   const key = prepend ? "unshift" : "push";
   for (let i = 0; i < length; i++) {
     array[key](UNCACHED);
@@ -226,7 +222,7 @@ export const takeCacheSnapshot = (cache: Cache): InternalCacheSnapshot => {
 export const updateCacheLength = (
   cache: Writeable<Cache>,
   length: number,
-  isShift: boolean = false,
+  isShift?: boolean,
 ): number => {
   const diff = length - cache._length;
 
