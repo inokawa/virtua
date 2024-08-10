@@ -2,7 +2,7 @@ import { CSSProperties, ReactNode } from "react";
 
 export type ViewportComponentAttributes = Pick<
   React.HTMLAttributes<HTMLElement>,
-  "className" | "style" | "id" | "role" | "tabIndex" | "onKeyDown"
+  "className" | "style" | "id" | "role" | "tabIndex" | "onKeyDown" | "onWheel"
 > &
   React.AriaAttributes;
 
