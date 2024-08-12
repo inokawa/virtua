@@ -95,23 +95,19 @@ export const computeTotalSize = (cache: Cache): number => {
 /**
  * @internal
  */
-export const findIndex = (
-  cache: Cache,
-  offset: number,
-  initialIndex: number
-): number => {
+export const findIndex = (cache: Cache, offset: number, i: number): number => {
   let low = 0;
   let high = cache._length - 1;
   let mid, itemOffset;
 
   // Adjust the search range based on the initialIndex
-  if (Number.isInteger(index) && index >= 0 && index < cache._length) {
-    if (computeOffset(cache, initialIndex) <= offset) {
+  if (Number.isInteger(i) && i >= 0 && i < cache._length) {
+    if (computeOffset(cache, i) <= offset) {
       // Start searching from initialIndex -> up
-      low = initialIndex;
+      low = i;
     } else {
       // Start searching from initialIndex -> down
-      high = initialIndex;
+      high = i;
     }
   }
 
