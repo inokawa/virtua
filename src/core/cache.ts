@@ -95,9 +95,6 @@ export const computeTotalSize = (cache: Cache): number => {
 /**
  * @internal
  */
-function isValidCacheIndex(cache: Cache, index: number) {
-  return Number.isInteger(index) && index >= 0 && index < cache._length;
-}
 
 /**
  * @internal
@@ -112,7 +109,7 @@ export const findIndex = (
   let mid, itemOffset;
 
   // Adjust the search range based on the initialIndex
-  if (isValidCacheIndex(cache, initialIndex)) {
+  if (Number.isInteger(index) && index >= 0 && index < cache._length) {
     if (computeOffset(cache, initialIndex) <= offset) {
       // Start searching from initialIndex -> up
       low = initialIndex;
