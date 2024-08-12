@@ -124,7 +124,6 @@ export const findIndex = (cache: Cache, offset: number, i: number): number => {
       high = mid - 1;
     }
   }
-
   return clamp(low, 0, cache._length - 1);
 };
 
