@@ -100,15 +100,10 @@ export const findIndex = (cache: Cache, offset: number, i: number): number => {
   let high = cache._length - 1;
   let mid, itemOffset;
 
-  // Adjust the search range based on the initialIndex
-  if (Number.isInteger(i) && i >= 0 && i < cache._length) {
-    if (computeOffset(cache, i) <= offset) {
-      // Start searching from initialIndex -> up
-      low = i;
-    } else {
-      // Start searching from initialIndex -> down
-      high = i;
-    }
+  if (computeOffset(cache, i) <= offset) {
+    low = i; // Start searching from initialIndex -> up
+  } else {
+    high = i; // Start searching from initialIndex -> down
   }
 
   while (low <= high) {
