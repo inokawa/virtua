@@ -92,9 +92,6 @@ export const computeTotalSize = (cache: Cache): number => {
   );
 };
 
-/**
- * @internal
- */
 
 /**
  * @internal
