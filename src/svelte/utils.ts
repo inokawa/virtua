@@ -1,15 +1,8 @@
-import { afterUpdate, beforeUpdate, onDestroy } from "svelte";
+import { afterUpdate, beforeUpdate } from "svelte";
 
-export const effect = (cb: () => (() => void) | void, before?: boolean) => {
-  let cleanup: (() => void) | void;
-
+export const onUpdate = (cb: () => void, before?: boolean) => {
   (before ? beforeUpdate : afterUpdate)(() => {
-    if (cleanup) cleanup();
-    cleanup = cb();
-  });
-
-  onDestroy(() => {
-    if (cleanup) cleanup();
+    cb();
   });
 };
 
