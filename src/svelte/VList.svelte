@@ -25,7 +25,7 @@
     SCROLL_TO_INDEX,
   } from "./core";
   import {
-    effect,
+    onUpdate,
     type UnwrapCustomEvents,
     defaultGetKey,
     styleToString,
@@ -131,20 +131,20 @@
   });
 
   let prevLength = data.length;
-  effect(() => {
+  onUpdate(() => {
     if (prevLength === data.length) return;
     virtualizer[CHANGE_ITEM_LENGTH]((prevLength = data.length), shift);
   }, true);
 
   let prevJumpCount: number | undefined;
-  effect(() => {
+  onUpdate(() => {
     if (prevJumpCount === jumpCount) return;
     prevJumpCount = jumpCount;
     virtualizer[FIX_SCROLL_JUMP]();
   });
 
   let prevRange: typeof range | undefined;
-  effect(() => {
+  onUpdate(() => {
     if (prevRange && prevRange[0] === range[0] && prevRange[1] === range[1])
       return;
     prevRange = range;

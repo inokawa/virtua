@@ -1,6 +1,7 @@
 <script lang="ts">
+  import { afterUpdate, onDestroy } from "svelte";
   import { isRTLDocument, type ItemResizeObserver } from "./core";
-  import { effect, styleToString } from "./utils";
+  import { styleToString } from "./utils";
 
   export let index: number;
   export let offset: number;
@@ -10,11 +11,16 @@
 
   let elementRef: HTMLDivElement;
 
+  let cleanupResizer: (() => void) | undefined;
   // The index may be changed if elements are inserted to or removed from the start of props.children
   let prevIndex: number | undefined;
-  effect(() => {
+  afterUpdate(() => {
     if (prevIndex === index) return;
-    return resizer(elementRef, (prevIndex = index));
+    if (cleanupResizer) cleanupResizer();
+    cleanupResizer = resizer(elementRef, (prevIndex = index));
+  });
+  onDestroy(() => {
+    if (cleanupResizer) cleanupResizer();
   });
 
   let style: string;
