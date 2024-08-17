@@ -133,7 +133,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
 
     return () => {
       rerender.value;
-    
+
       const Element = props.as;
       const ItemElement = props.item;
       const count = props.data.length;
@@ -154,7 +154,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
         i <= j;
         i++
       ) {
-        const e = slots.default(props.data![i]!)[0]! as VNode;
+        const e = slots.default(props.data![i]!, i)[0]!;
         items.push(
           <ListItem
             key={getKey(e, i)}
@@ -218,5 +218,5 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
   string,
   {},
   string,
-  SlotsType<{ default: any }>
+  SlotsType<{ default: (...args: [any, number]) => VNode[] }>
 >);

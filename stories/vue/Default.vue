@@ -2,16 +2,13 @@
 import { VList } from '../../src/vue'
 
 const sizes = [20, 40, 180, 77];
-const createItem = (i: number) => ({ index: i, size: sizes[i % 4] + 'px' })
-
-const data = Array.from({ length: 1000 }).map((_, i) => createItem(i));
-
+const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]!);
 </script>
 
 <template>
-  <VList :data="data" :style="{ height: '100vh' }" #default="item">
-    <div :key="item.index" :style="{ height: item.size, background: 'white', borderBottom: 'solid 1px #ccc' }">
-      {{ item.index }}
+  <VList :data="data" :style="{ height: '100vh' }" #default="item, index">
+    <div :key="index" :style="{ height: item + 'px', background: 'white', borderBottom: 'solid 1px #ccc' }">
+      {{ index }}
     </div>
   </VList>
 </template>
