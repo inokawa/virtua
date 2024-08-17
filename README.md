@@ -266,7 +266,7 @@ export const App = () => {
   const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4] );
 </script>
 
-<VList {data} let:item let:index style={`height: 100vh;`} getKey={(d) => d.id}>
+<VList {data} let:item let:index style={`height: 100vh;`} getKey={(_,i) => i}>
   <div
     style={`
       height: ${item}px;
