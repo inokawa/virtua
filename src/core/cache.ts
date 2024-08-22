@@ -93,7 +93,16 @@ export const computeTotalSize = (cache: Cache): number => {
 };
 
 /**
- * @internal
+ * Finds the index of an item in the cache whose computed offset is closest to the specified offset.
+ *
+ * The search starts from the given initial index `i` and adjusts the search range based on whether
+ * the offset at `i` is less than or equal to the target offset. If a match is found, the index of
+ * the item is returned; otherwise, the function returns -1 if the item is not found.
+ *
+ * @param {Cache} cache - The cache object containing the data.
+ * @param {number} offset - The target offset to search for within the cache.
+ * @param {number} i - The initial index to start searching from.
+ * @returns {number} - The index of the item closest to the offset, or -1 if not found.
  */
 export const findIndex = (cache: Cache, offset: number, i: number): number => {
   let low = 0;
