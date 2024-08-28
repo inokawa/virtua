@@ -19,7 +19,7 @@ describe("SSR", () => {
         template: `
         <VList :data="${JSON.stringify(
           Array.from({ length: 1000 }).map((_, i) => i)
-        )}" :id="'${LIST_ID}'" :ssrCount="${COUNT}" :overscan="${OVERSCAN}" #default="item">
+        )}" :id="'${LIST_ID}'" :ssrCount="${COUNT}" :overscan="${OVERSCAN}" #default="{item}">
           <div :key="item">
             {{ item }}
           </div>
@@ -44,7 +44,7 @@ describe("SSR", () => {
         template: `
         <VList :data="${JSON.stringify(
           Array.from({ length: 1000 }).map((_, i) => i)
-        )}" :id="'${LIST_ID}'" :ssrCount="${COUNT}" :overscan="${OVERSCAN}" #default="item" :horizontal="true">
+        )}" :id="'${LIST_ID}'" :ssrCount="${COUNT}" :overscan="${OVERSCAN}" #default="{item}" :horizontal="true">
           <div :key="item">
             {{ item }}
           </div>

@@ -24,7 +24,7 @@ it("should pass attributes to element", () => {
       "aria-label": "test",
       style: { background: "red" },
     },
-    slots: { default: (data: any) => h("div", { key: data }, data) },
+    slots: { default: ({ item: data }: any) => h("div", { key: data }, data) },
   });
   expect(wrapper.baseElement).toMatchSnapshot();
 });
@@ -35,7 +35,9 @@ describe("vertical", () => {
       props: {
         data: [],
       },
-      slots: { default: (data: any) => h("div", { key: data }, data) },
+      slots: {
+        default: ({ item: data }: any) => h("div", { key: data }, data),
+      },
     });
     expect(wrapper.baseElement).toMatchSnapshot();
   });
@@ -45,7 +47,9 @@ describe("vertical", () => {
       props: {
         data: range(1),
       },
-      slots: { default: (data: any) => h("div", { key: data }, data) },
+      slots: {
+        default: ({ item: data }: any) => h("div", { key: data }, data),
+      },
     });
     expect(wrapper.baseElement).toMatchSnapshot();
   });
@@ -55,7 +59,9 @@ describe("vertical", () => {
       props: {
         data: range(5),
       },
-      slots: { default: (data: any) => h("div", { key: data }, data) },
+      slots: {
+        default: ({ item: data }: any) => h("div", { key: data }, data),
+      },
     });
     expect(wrapper.baseElement).toMatchSnapshot();
   });
@@ -65,7 +71,9 @@ describe("vertical", () => {
       props: {
         data: range(100),
       },
-      slots: { default: (data: any) => h("div", { key: data }, data) },
+      slots: {
+        default: ({ item: data }: any) => h("div", { key: data }, data),
+      },
     });
     expect(wrapper.baseElement).toMatchSnapshot();
   });
@@ -75,7 +83,9 @@ describe("vertical", () => {
       props: {
         data: range(1000),
       },
-      slots: { default: (data: any) => h("div", { key: data }, data) },
+      slots: {
+        default: ({ item: data }: any) => h("div", { key: data }, data),
+      },
     });
     expect(wrapper.baseElement).toMatchSnapshot();
   });
@@ -85,7 +95,9 @@ describe("vertical", () => {
       props: {
         data: range(10000),
       },
-      slots: { default: (data: any) => h("div", { key: data }, data) },
+      slots: {
+        default: ({ item: data }: any) => h("div", { key: data }, data),
+      },
     });
     expect(wrapper.baseElement).toMatchSnapshot();
   });
@@ -103,7 +115,7 @@ describe("vertical", () => {
       props: {
         data: range(3),
       },
-      slots: { default: (data: any) => h(Comp, { key: data, data }) },
+      slots: { default: ({ item: data }: any) => h(Comp, { key: data, data }) },
     });
     expect(wrapper.baseElement).toMatchSnapshot();
   });
@@ -116,7 +128,9 @@ describe("horizontal", () => {
         data: [],
         horizontal: true,
       },
-      slots: { default: (data: any) => h("div", { key: data }, data) },
+      slots: {
+        default: ({ item: data }: any) => h("div", { key: data }, data),
+      },
     });
     expect(wrapper.baseElement).toMatchSnapshot();
   });
@@ -127,7 +141,9 @@ describe("horizontal", () => {
         data: range(1),
         horizontal: true,
       },
-      slots: { default: (data: any) => h("div", { key: data }, data) },
+      slots: {
+        default: ({ item: data }: any) => h("div", { key: data }, data),
+      },
     });
     expect(wrapper.baseElement).toMatchSnapshot();
   });
@@ -138,7 +154,9 @@ describe("horizontal", () => {
         data: range(5),
         horizontal: true,
       },
-      slots: { default: (data: any) => h("div", { key: data }, data) },
+      slots: {
+        default: ({ item: data }: any) => h("div", { key: data }, data),
+      },
     });
     expect(wrapper.baseElement).toMatchSnapshot();
   });
@@ -149,7 +167,9 @@ describe("horizontal", () => {
         data: range(100),
         horizontal: true,
       },
-      slots: { default: (data: any) => h("div", { key: data }, data) },
+      slots: {
+        default: ({ item: data }: any) => h("div", { key: data }, data),
+      },
     });
     expect(wrapper.baseElement).toMatchSnapshot();
   });
@@ -160,7 +180,9 @@ describe("horizontal", () => {
         data: range(1000),
         horizontal: true,
       },
-      slots: { default: (data: any) => h("div", { key: data }, data) },
+      slots: {
+        default: ({ item: data }: any) => h("div", { key: data }, data),
+      },
     });
     expect(wrapper.baseElement).toMatchSnapshot();
   });
@@ -171,7 +193,9 @@ describe("horizontal", () => {
         data: range(10000),
         horizontal: true,
       },
-      slots: { default: (data: any) => h("div", { key: data }, data) },
+      slots: {
+        default: ({ item: data }: any) => h("div", { key: data }, data),
+      },
     });
     expect(wrapper.baseElement).toMatchSnapshot();
   });
@@ -190,7 +214,7 @@ describe("horizontal", () => {
         data: range(3),
         horizontal: true,
       },
-      slots: { default: (data: any) => h(Comp, { key: data, data }) },
+      slots: { default: ({ item: data }: any) => h(Comp, { key: data, data }) },
     });
     expect(wrapper.baseElement).toMatchSnapshot();
   });
