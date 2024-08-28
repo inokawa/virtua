@@ -50,7 +50,7 @@ index of item
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:51](https://github.com/inokawa/virtua/blob/1d47c9dfe46a1eb142dc7f013014bc102340e99f/src/vue/Virtualizer.tsx#L51)
+[src/vue/Virtualizer.tsx:51](https://github.com/inokawa/virtua/blob/50ec6f005e6f27fd2512c1baa8c41e50e75c3f1e/src/vue/Virtualizer.tsx#L51)
 
 ***
 
@@ -76,7 +76,7 @@ options
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:57](https://github.com/inokawa/virtua/blob/1d47c9dfe46a1eb142dc7f013014bc102340e99f/src/vue/Virtualizer.tsx#L57)
+[src/vue/Virtualizer.tsx:57](https://github.com/inokawa/virtua/blob/50ec6f005e6f27fd2512c1baa8c41e50e75c3f1e/src/vue/Virtualizer.tsx#L57)
 
 ***
 
@@ -98,7 +98,7 @@ offset from start
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:62](https://github.com/inokawa/virtua/blob/1d47c9dfe46a1eb142dc7f013014bc102340e99f/src/vue/Virtualizer.tsx#L62)
+[src/vue/Virtualizer.tsx:62](https://github.com/inokawa/virtua/blob/50ec6f005e6f27fd2512c1baa8c41e50e75c3f1e/src/vue/Virtualizer.tsx#L62)
 
 ***
 
@@ -120,7 +120,7 @@ offset from current position
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:67](https://github.com/inokawa/virtua/blob/1d47c9dfe46a1eb142dc7f013014bc102340e99f/src/vue/Virtualizer.tsx#L67)
+[src/vue/Virtualizer.tsx:67](https://github.com/inokawa/virtua/blob/50ec6f005e6f27fd2512c1baa8c41e50e75c3f1e/src/vue/Virtualizer.tsx#L67)
 
 ## Properties
 
@@ -180,9 +180,21 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:121
 
 #### Type declaration
 
-##### default
+##### default()
 
-> **default**: `any`
+> **default**: (`arg`) => `VNode`\<`RendererNode`, `RendererElement`, `object`\>[]
+
+###### Parameters
+
+• **arg**
+
+• **arg.item**: `any`
+
+• **arg.index**: `number`
+
+###### Returns
+
+`VNode`\<`RendererNode`, `RendererElement`, `object`\>[]
 
 #### Defined in
 
@@ -294,7 +306,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/vue/VList.tsx:34](https://github.com/inokawa/virtua/blob/1d47c9dfe46a1eb142dc7f013014bc102340e99f/src/vue/VList.tsx#L34)
+[src/vue/VList.tsx:35](https://github.com/inokawa/virtua/blob/50ec6f005e6f27fd2512c1baa8c41e50e75c3f1e/src/vue/VList.tsx#L35)
 
 ***
 
@@ -306,7 +318,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/vue/VList.tsx:18](https://github.com/inokawa/virtua/blob/1d47c9dfe46a1eb142dc7f013014bc102340e99f/src/vue/VList.tsx#L18)
+[src/vue/VList.tsx:19](https://github.com/inokawa/virtua/blob/50ec6f005e6f27fd2512c1baa8c41e50e75c3f1e/src/vue/VList.tsx#L19)
 
 ***
 
@@ -324,7 +336,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/vue/VList.tsx:23](https://github.com/inokawa/virtua/blob/1d47c9dfe46a1eb142dc7f013014bc102340e99f/src/vue/VList.tsx#L23)
+[src/vue/VList.tsx:24](https://github.com/inokawa/virtua/blob/50ec6f005e6f27fd2512c1baa8c41e50e75c3f1e/src/vue/VList.tsx#L24)
 
 ***
 
@@ -339,7 +351,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/vue/VList.tsx:30](https://github.com/inokawa/virtua/blob/1d47c9dfe46a1eb142dc7f013014bc102340e99f/src/vue/VList.tsx#L30)
+[src/vue/VList.tsx:31](https://github.com/inokawa/virtua/blob/50ec6f005e6f27fd2512c1baa8c41e50e75c3f1e/src/vue/VList.tsx#L31)
 
 ***
 
@@ -351,7 +363,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/vue/VList.tsx:38](https://github.com/inokawa/virtua/blob/1d47c9dfe46a1eb142dc7f013014bc102340e99f/src/vue/VList.tsx#L38)
+[src/vue/VList.tsx:39](https://github.com/inokawa/virtua/blob/50ec6f005e6f27fd2512c1baa8c41e50e75c3f1e/src/vue/VList.tsx#L39)
 
 ***
 
@@ -363,7 +375,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 #### Defined in
 
-[src/vue/VList.tsx:42](https://github.com/inokawa/virtua/blob/1d47c9dfe46a1eb142dc7f013014bc102340e99f/src/vue/VList.tsx#L42)
+[src/vue/VList.tsx:43](https://github.com/inokawa/virtua/blob/50ec6f005e6f27fd2512c1baa8c41e50e75c3f1e/src/vue/VList.tsx#L43)
 
 ***
 
@@ -387,7 +399,7 @@ Get current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:38](https://github.com/inokawa/virtua/blob/1d47c9dfe46a1eb142dc7f013014bc102340e99f/src/vue/Virtualizer.tsx#L38)
+[src/vue/Virtualizer.tsx:38](https://github.com/inokawa/virtua/blob/50ec6f005e6f27fd2512c1baa8c41e50e75c3f1e/src/vue/Virtualizer.tsx#L38)
 
 ***
 
@@ -399,7 +411,7 @@ Get current scrollHeight or scrollWidth.
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:42](https://github.com/inokawa/virtua/blob/1d47c9dfe46a1eb142dc7f013014bc102340e99f/src/vue/Virtualizer.tsx#L42)
+[src/vue/Virtualizer.tsx:42](https://github.com/inokawa/virtua/blob/50ec6f005e6f27fd2512c1baa8c41e50e75c3f1e/src/vue/Virtualizer.tsx#L42)
 
 ***
 
@@ -411,4 +423,4 @@ Get current offsetHeight or offsetWidth.
 
 #### Defined in
 
-[src/vue/Virtualizer.tsx:46](https://github.com/inokawa/virtua/blob/1d47c9dfe46a1eb142dc7f013014bc102340e99f/src/vue/Virtualizer.tsx#L46)
+[src/vue/Virtualizer.tsx:46](https://github.com/inokawa/virtua/blob/50ec6f005e6f27fd2512c1baa8c41e50e75c3f1e/src/vue/Virtualizer.tsx#L46)
