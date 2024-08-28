@@ -202,23 +202,20 @@ export default async () => {
 import { VList } from "virtua/vue";
 
 const sizes = [20, 40, 180, 77];
-const data = Array.from({ length: 1000 }).map((_, i) => ({
-  id: i,
-  size: sizes[i % 4] + "px",
-}));
+const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]);
 </script>
 
 <template>
-  <VList :data="data" :style="{ height: '800px' }" #default="item">
+  <VList :data="data" :style="{ height: '800px' }" #default="{ item, index }">
     <div
-      :key="item.id"
+      :key="index"
       :style="{
-        height: item.size,
+        height: item + 'px',
         background: 'white',
         borderBottom: 'solid 1px #ccc',
       }"
     >
-      {{ item.id }}
+      {{ index }}
     </div>
   </VList>
 </template>
