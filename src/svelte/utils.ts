@@ -1,4 +1,5 @@
 import { afterUpdate, beforeUpdate } from "svelte";
+import { NULL } from "../core/utils";
 
 export const onUpdate = (cb: () => void, before?: boolean) => {
   (before ? beforeUpdate : afterUpdate)(() => {
@@ -6,8 +7,16 @@ export const onUpdate = (cb: () => void, before?: boolean) => {
   });
 };
 
-export const styleToString = (obj: Record<string, string>): string => {
-  return Object.keys(obj).reduce((acc, k) => acc + `${k}:${obj[k]};`, "");
+export const styleToString = (
+  obj: Record<string, string | undefined>
+): string => {
+  return Object.keys(obj).reduce((acc, k) => {
+    const value = obj[k];
+    if (value == NULL) {
+      return acc;
+    }
+    return acc + `${k}:${value};`;
+  }, "");
 };
 
 export const defaultGetKey = (_data: unknown, i: number) => "_" + i;

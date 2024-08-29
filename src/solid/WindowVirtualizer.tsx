@@ -205,7 +205,8 @@ export const WindowVirtualizer = <T,>(
         visibility: "hidden", // TODO replace with other optimization methods
         width: horizontal ? totalSize() + "px" : "100%",
         height: horizontal ? "100%" : totalSize() + "px",
-        "pointer-events": scrollDirection() !== SCROLL_IDLE ? "none" : "auto",
+        "pointer-events":
+          scrollDirection() !== SCROLL_IDLE ? "none" : undefined,
       }}
     >
       <RangedFor

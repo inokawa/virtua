@@ -404,7 +404,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
               vScrollDirection !== SCROLL_IDLE ||
               hScrollDirection !== SCROLL_IDLE
                 ? "none"
-                : "auto",
+                : undefined,
           }}
         >
           {items}

@@ -6,7 +6,7 @@ exports[`horizontal > should render 1 children 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100px; height: 100%;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
@@ -26,7 +26,7 @@ exports[`horizontal > should render 5 children 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 500px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 500px; height: 100%;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
@@ -74,7 +74,7 @@ exports[`horizontal > should render 100 children 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 10000px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 10000px; height: 100%;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
@@ -129,7 +129,7 @@ exports[`horizontal > should render 1000 children 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100000px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100000px; height: 100%;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
@@ -184,7 +184,7 @@ exports[`horizontal > should render 10000 children 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 1000000px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 1000000px; height: 100%;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
@@ -239,7 +239,7 @@ exports[`horizontal > should render component 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 300px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 300px; height: 100%;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
@@ -273,7 +273,7 @@ exports[`horizontal > should render fragments 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 200px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 200px; height: 100%;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
@@ -306,7 +306,7 @@ exports[`horizontal > should render non elements 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 200px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 200px; height: 100%;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
@@ -329,7 +329,7 @@ exports[`horizontal > should render with given width / height 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100px; height: 800px;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 500px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 500px; height: 100%;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
@@ -380,7 +380,7 @@ exports[`reverse > should render many items 1`] = `
       style="visibility: hidden; display: flex; flex-direction: column; justify-content: flex-end; min-height: 100%;"
     >
       <div
-        style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 4000px; pointer-events: auto;"
+        style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 4000px;"
       >
         <div
           style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
@@ -434,7 +434,7 @@ exports[`should pass attributes to element 1`] = `
     tabindex="0"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 50px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 50px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -454,7 +454,7 @@ exports[`should pass index to items 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 250px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 250px;"
     >
       <div
         data-index="0"
@@ -507,7 +507,7 @@ exports[`should render with render prop 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 50000px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 50000px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -562,7 +562,7 @@ exports[`vertical > should render 0 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 0px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 0px;"
     />
   </div>
 </DocumentFragment>
@@ -574,7 +574,7 @@ exports[`vertical > should render 1 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 50px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 50px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -594,7 +594,7 @@ exports[`vertical > should render 5 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 250px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 250px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -642,7 +642,7 @@ exports[`vertical > should render 100 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 5000px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 5000px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -697,7 +697,7 @@ exports[`vertical > should render 1000 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 50000px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 50000px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -752,7 +752,7 @@ exports[`vertical > should render 10000 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 500000px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 500000px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -807,7 +807,7 @@ exports[`vertical > should render component 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 150px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 150px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -841,7 +841,7 @@ exports[`vertical > should render fragments 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 100px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 100px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -874,7 +874,7 @@ exports[`vertical > should render non elements 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 100px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 100px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -897,7 +897,7 @@ exports[`vertical > should render with given width / height 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100px; height: 800px;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 250px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 250px;"
     >
       <div
         style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
