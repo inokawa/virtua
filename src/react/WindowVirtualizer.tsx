@@ -267,7 +267,7 @@ export const WindowVirtualizer = forwardRef<
           visibility: "hidden", // TODO replace with other optimization methods
           width: isHorizontal ? totalSize : "100%",
           height: isHorizontal ? "100%" : totalSize,
-          pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : "auto",
+          pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : undefined,
         }}
       >
         {items}

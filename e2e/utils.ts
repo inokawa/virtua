@@ -10,7 +10,7 @@ export const getScrollable = async (page: Page) => {
 };
 
 export const getVirtualizer = async (page: Page) => {
-  const selector = '*[style*="pointer-events: auto"]';
+  const selector = '*[style*="flex: 0 0 auto"]';
   const component = await page.waitForSelector(selector, { state: "attached" });
   await component.evaluate((e) => (e.style.visibility = "visible"));
   await page.waitForSelector(selector);
