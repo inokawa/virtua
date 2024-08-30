@@ -7,11 +7,12 @@ import {
   createEffect,
   createSignal,
   createMemo,
-  JSX,
+  type JSX,
   on,
   createComputed,
   type ValidComponent,
   mergeProps,
+  createRoot,
 } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import {
@@ -27,7 +28,7 @@ import {
 } from "../core/store";
 import { createResizer } from "../core/resizer";
 import { createScroller } from "../core/scroller";
-import { ItemsRange, ScrollToIndexOpts } from "../core/types";
+import type { ItemsRange, ScrollToIndexOpts } from "../core/types";
 import { ListItem } from "./ListItem";
 import { RangedFor } from "./RangedFor";
 import { isSameRange } from "./utils";
@@ -145,7 +146,7 @@ export interface VirtualizerProps<T> {
     /**
      * The end index of viewable items.
      */
-    endIndex: number
+    endIndex: number,
   ) => void;
 }
 
@@ -154,62 +155,74 @@ export interface VirtualizerProps<T> {
  */
 export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const { itemSize, horizontal = false } = props;
-  props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
-    { as: "div" },
-    props
+  const mergedProps = mergeProps({ as: "div", horizontal: false }, props);
+
+  const store = createMemo(() => {
+    return createVirtualStore(
+      mergedProps.data.length,
+      mergedProps.itemSize ?? 40,
+      undefined,
+      undefined,
+      !mergedProps.itemSize,
+    );
+  });
+  const resizer = createMemo(() =>
+    createResizer(store(), mergedProps.horizontal),
+  );
+  const scroller = createMemo(() =>
+    createScroller(store(), mergedProps.horizontal),
   );
 
-  const store = createVirtualStore(
-    props.data.length,
-    itemSize ?? 40,
-    undefined,
-    undefined,
-    !itemSize
-  );
-  const resizer = createResizer(store, horizontal);
-  const scroller = createScroller(store, horizontal);
-
-  const [rerender, setRerender] = createSignal(store._getStateVersion());
-
-  const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
-    setRerender(store._getStateVersion());
+  const [rerender, setRerender] = createSignal();
+  createEffect(() => {
+    setRerender(store()._getStateVersion());
   });
 
-  const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
-    props.onScroll?.(store._getScrollOffset());
-  });
-  const unsubscribeOnScrollEnd = store._subscribe(
-    UPDATE_SCROLL_END_EVENT,
-    () => {
-      props.onScrollEnd?.();
-    }
-  );
+  const { unsubscribeStore, unsubscribeOnScroll, unsubscribeOnScrollEnd } =
+    createRoot(() => {
+      return {
+        unsubscribeStore: store()._subscribe(UPDATE_VIRTUAL_STATE, () => {
+          createEffect(() => {
+            setRerender(store()._getStateVersion());
+          });
+        }),
+        unsubscribeOnScroll: store()._subscribe(UPDATE_SCROLL_EVENT, () => {
+          createEffect(() => {
+            mergedProps.onScroll?.(store()._getScrollOffset());
+          });
+        }),
+        unsubscribeOnScrollEnd: store()._subscribe(
+          UPDATE_SCROLL_END_EVENT,
+          () => {
+            createEffect(() => {
+              mergedProps.onScrollEnd?.();
+            });
+          },
+        ),
+      };
+    });
 
   const range = createMemo<ItemsRange>((prev) => {
     rerender();
-    const next = store._getRange();
+    const next = store()._getRange();
     if (prev && isSameRange(prev, next)) {
       return prev;
     }
     return next;
   });
-  const scrollDirection = createMemo(
-    () => rerender() && store._getScrollDirection()
-  );
-  const totalSize = createMemo(() => rerender() && store._getTotalSize());
+  const totalSize = createMemo(() => rerender() && store()._getTotalSize());
 
-  const jumpCount = createMemo(() => rerender() && store._getJumpCount());
+  const jumpCount = createMemo(() => rerender() && store()._getJumpCount());
 
   const overscanedRange = createMemo<ItemsRange>((prev) => {
-    const overscan = props.overscan ?? 4;
+    const overscan = mergedProps.overscan ?? 4;
     const [startIndex, endIndex] = range();
     const next = getOverscanedRange(
       startIndex,
       endIndex,
       overscan,
-      scrollDirection(),
-      props.data.length
+      store()._getScrollDirection(),
+      mergedProps.data.length,
     );
     if (prev && isSameRange(prev, next)) {
       return prev;
@@ -218,77 +231,80 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   });
 
   onMount(() => {
-    if (props.ref) {
-      props.ref({
+    if (mergedProps.ref) {
+      mergedProps.ref({
         get scrollOffset() {
-          return store._getScrollOffset();
+          return store()._getScrollOffset();
         },
         get scrollSize() {
-          return getScrollSize(store);
+          return getScrollSize(store());
         },
         get viewportSize() {
-          return store._getViewportSize();
+          return store()._getViewportSize();
         },
-        getItemOffset: store._getItemOffset,
-        scrollToIndex: scroller._scrollToIndex,
-        scrollTo: scroller._scrollTo,
-        scrollBy: scroller._scrollBy,
+        getItemOffset: store()._getItemOffset,
+        scrollToIndex: scroller()._scrollToIndex,
+        scrollTo: scroller()._scrollTo,
+        scrollBy: scroller()._scrollBy,
       });
     }
 
-    const scrollable = props.scrollRef || containerRef!.parentElement!;
-    resizer._observeRoot(scrollable);
-    scroller._observe(scrollable);
+    const scrollable = mergedProps.scrollRef || containerRef!.parentElement!;
+    resizer()._observeRoot(scrollable);
+    scroller()._observe(scrollable);
 
     onCleanup(() => {
-      if (props.ref) {
-        props.ref();
+      if (mergedProps.ref) {
+        mergedProps.ref();
       }
 
       unsubscribeStore();
       unsubscribeOnScroll();
       unsubscribeOnScrollEnd();
-      resizer._dispose();
-      scroller._dispose();
+      resizer()._dispose();
+      scroller()._dispose();
     });
   });
 
   createComputed(
     on(
-      () => props.data.length,
+      () => mergedProps.data.length,
       (count) => {
-        if (count !== store._getItemsLength()) {
-          store._update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+        if (count !== store()._getItemsLength()) {
+          store()._update(ACTION_ITEMS_LENGTH_CHANGE, [
+            count,
+            mergedProps.shift,
+          ]);
         }
-      }
-    )
+      },
+    ),
   );
 
   createComputed(
     on(
-      () => props.startMargin || 0,
+      () => mergedProps.startMargin || 0,
       (value) => {
-        if (value !== store._getStartSpacerSize()) {
-          store._update(ACTION_START_OFFSET_CHANGE, value);
+        if (value !== store()._getStartSpacerSize()) {
+          store()._update(ACTION_START_OFFSET_CHANGE, value);
         }
-      }
-    )
+      },
+    ),
   );
 
   createEffect(
     on(jumpCount, () => {
-      scroller._fixScrollJump();
-    })
+      scroller()._fixScrollJump();
+    }),
   );
 
   createEffect(() => {
     const next = range();
-    props.onRangeChange && props.onRangeChange(next[0], next[1]);
+    mergedProps.onRangeChange && mergedProps.onRangeChange(next[0], next[1]);
   });
 
   return (
     <Dynamic
-      component={props.as}
+      component={mergedProps.as}
       ref={containerRef}
       style={{
         // contain: "content",
@@ -296,33 +312,34 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         flex: "none", // flex style can break layout
         position: "relative",
         visibility: "hidden", // TODO replace with other optimization methods
-        width: horizontal ? totalSize() + "px" : "100%",
-        height: horizontal ? "100%" : totalSize() + "px",
-        "pointer-events": scrollDirection() !== SCROLL_IDLE ? "none" : "auto",
+        width: mergedProps.horizontal ? totalSize() + "px" : "100%",
+        height: mergedProps.horizontal ? "100%" : totalSize() + "px",
+        "pointer-events":
+          store()._getScrollOffset() !== SCROLL_IDLE ? "none" : "auto",
       }}
     >
       <RangedFor
-        _each={props.data}
+        _each={mergedProps.data}
         _range={overscanedRange()}
         _render={(data, index) => {
           const offset = createMemo(() => {
             rerender();
-            return store._getItemOffset(index);
+            return store()._getItemOffset(index);
           });
           const hide = createMemo(() => {
             rerender();
-            return store._isUnmeasuredItem(index);
+            return store()._isUnmeasuredItem(index);
           });
 
           return (
             <ListItem
-              _as={props.item}
+              _as={mergedProps.item}
               _index={index}
-              _resizer={resizer._observeItem}
+              _resizer={resizer()._observeItem}
               _offset={offset()}
               _hide={hide()}
-              _children={props.children(data(), index)}
-              _isHorizontal={horizontal}
+              _children={mergedProps.children(data(), index)}
+              _isHorizontal={mergedProps.horizontal}
             />
           );
         }}
