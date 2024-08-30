@@ -371,6 +371,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
           width: isHorizontal ? totalSize : "100%",
           height: isHorizontal ? "100%" : totalSize,
           pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : "auto",
+          overflowY: 'hidden'
         }}
       >
         {items}
