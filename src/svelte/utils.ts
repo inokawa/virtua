@@ -1,5 +1,4 @@
 import { afterUpdate, beforeUpdate } from "svelte";
-import { NULL } from "../core/utils";
 
 export const onUpdate = (cb: () => void, before?: boolean) => {
   (before ? beforeUpdate : afterUpdate)(() => {
@@ -12,7 +11,7 @@ export const styleToString = (
 ): string => {
   return Object.keys(obj).reduce((acc, k) => {
     const value = obj[k];
-    if (value == NULL) {
+    if (value == null) {
       return acc;
     }
     return acc + `${k}:${value};`;
