@@ -93,22 +93,42 @@ export const computeTotalSize = (cache: Cache): number => {
 };
 
 /**
- * @internal
+ * Finds the index of an item in the cache whose computed offset is closest to the specified offset.
+ *
+ * The search starts from the given initial index `i` and adjusts the search range based on whether
+ * the offset at `i` is less than or equal to the target offset. If a match is found, the index of
+ * the item is returned; otherwise, the function returns -1 if the item is not found.
+ *
+ * @param {Cache} cache - The cache object containing the data.
+ * @param {number} offset - The target offset to search for within the cache.
+ * @param {number} i - The initial index to start searching from.
+ * @returns {number} - The index of the item closest to the offset, or -1 if not found.
  */
 export const findIndex = (cache: Cache, offset: number, i: number): number => {
-  while (i >= 0 && i < cache._length) {
-    const itemOffset = computeOffset(cache, i);
+  let low = 0;
+  let high = cache._length - 1;
+  let mid, itemOffset;
+
+  if (computeOffset(cache, i) <= offset) {
+    low = i; // Start searching from initialIndex -> up
+  } else {
+    high = i; // Start searching from initialIndex -> down
+  }
+
+  while (low <= high) {
+    mid = Math.floor((low + high) / 2);
+    itemOffset = computeOffset(cache, mid);
+
     if (itemOffset <= offset) {
-      if (itemOffset + getItemSize(cache, i) > offset) {
-        break;
-      } else {
-        i++;
+      if (itemOffset + getItemSize(cache, mid) > offset) {
+        return clamp(mid, 0, cache._length - 1);
       }
+      low = mid + 1;
     } else {
-      i--;
+      high = mid - 1;
     }
   }
-  return clamp(i, 0, cache._length - 1);
+  return clamp(low, 0, cache._length - 1);
 };
 
 /**
@@ -185,7 +205,7 @@ export const initCache = (
  * @internal
  */
 export const takeCacheSnapshot = (cache: Cache): InternalCacheSnapshot => {
-  return [[...cache._sizes], cache._defaultItemSize];
+  return [cache._sizes.slice(), cache._defaultItemSize];
 };
 
 /**
