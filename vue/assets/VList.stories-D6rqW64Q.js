@@ -1,0 +1,22 @@
+import{d as x,b as m,e as z,i as j,o as f,f as R,u as _,w as k,g as v,t as h,n as w,j as u}from"./vue.esm-bundler-6P8ENG_2.js";import{V as $}from"./Virtualizer-C6ZFmRtD.js";import{_ as I}from"./_plugin-vue_export-helper-DRD1G9-7.js";function L(e){return typeof e=="function"||Object.prototype.toString.call(e)==="[object Object]"&&!j(e)}const q={data:{type:Array,required:!0},overscan:{type:Number,default:4},itemSize:Number,shift:Boolean,horizontal:Boolean,ssrCount:Number},b=x({props:q,emits:["scroll","scrollEnd","rangeChange"],setup(e,{emit:s,expose:i,slots:t}){const n=e.horizontal,c=o=>{s("scroll",o)},r=()=>{s("scrollEnd")},g=(o,l)=>{s("rangeChange",o,l)},a=m();return i({get scrollOffset(){return a.value.scrollOffset},get scrollSize(){return a.value.scrollSize},get viewportSize(){return a.value.viewportSize},getItemOffset:(...o)=>a.value.getItemOffset(...o),scrollToIndex:(...o)=>a.value.scrollToIndex(...o),scrollTo:(...o)=>a.value.scrollTo(...o),scrollBy:(...o)=>a.value.scrollBy(...o)}),()=>z("div",{style:{display:n?"inline-block":"block",[n?"overflowX":"overflowY"]:"auto",contain:"strict",width:"100%",height:"100%"}},[z($,{ref:a,data:e.data,overscan:e.overscan,itemSize:e.itemSize,shift:e.shift,ssrCount:e.ssrCount,horizontal:n,onScroll:c,onScrollEnd:r,onRangeChange:g},L(t)?t:{default:()=>[t],_:2},8,["data","overscan","itemSize","shift","ssrCount","horizontal","onScroll","onScrollEnd","onRangeChange"])],4)}}),X=x({__name:"Default",setup(e){const s=[20,40,180,77],i=Array.from({length:1e3}).map((t,n)=>s[n%4]);return(t,n)=>(f(),R(_(b),{data:_(i),style:{height:"100vh"}},{default:k(({item:c,index:r})=>[(f(),v("div",{key:r,style:w({height:c+"px",background:"white",borderBottom:"solid 1px #ccc"})},h(r),5))]),_:1},8,["data"]))}}),Y=I(X,[["__scopeId","data-v-34d8090d"]]),F={style:{padding:"10px"}},G=x({__name:"Horizontal",setup(e){const s=[40,180,77],i=Array.from({length:1e3}).map((t,n)=>s[n%3]);return(t,n)=>(f(),v("div",F,[z(_(b),{data:_(i),style:{width:"100%",height:"200px"},horizontal:""},{default:k(({item:c,index:r})=>[(f(),v("div",{key:r,style:w({width:c+"px",background:"white",borderRight:"solid 1px #ccc"})},h(r),5))]),_:1},8,["data"])]))}}),J=I(G,[["__scopeId","data-v-68133a37"]]),K={style:{height:"100%",display:"flex","flex-direction":"column"}},M=["value"],P=x({__name:"Controlls",setup(e){const s=[20,40,180,77],i=l=>({index:l,height:s[l%4]+"px"}),t=m(Array.from({length:1e3}).map((l,p)=>i(p))),n=m(0),c=m(!1),r=m(567),g=m(),a=()=>{var l;(l=g.value)==null||l.scrollToIndex(r.value)},o=()=>{t.value=[...t.value,...Array.from({length:100}).map((l,p)=>i(p+t.value.length))]};return(l,p)=>(f(),v("div",K,[u("div",null,"offset: "+h(n.value),1),u("div",null,"scrolling: "+h(c.value),1),u("div",null,[u("input",{type:"number",value:r.value,onInput:p[0]||(p[0]=d=>{r.value=Number(d.target.value)})},null,40,M),u("button",{onClick:a},"scrollToIndex")]),u("div",null,[u("button",{onClick:o},"append")]),z(_(b),{ref_key:"handle",ref:g,data:t.value,onScroll:d=>{n.value=d,c.value=!0},onScrollEnd:()=>{c.value=!1}},{default:k(({item:d})=>[(f(),v("div",{key:d.index,style:w({height:d.height,background:"white",borderBottom:"solid 1px #ccc"})},h(d.index),5))]),_:1},8,["data","onScroll","onScrollEnd"])]))}}),Q=I(P,[["__scopeId","data-v-877aa5fb"]]),ee={component:b},C={render:()=>({components:{Component:Y},template:"<Component />"})},y={render:()=>({components:{Component:J},template:"<Component />"})},S={render:()=>({components:{Component:Q},template:"<Component />"})};var B,E,O;C.parameters={...C.parameters,docs:{...(B=C.parameters)==null?void 0:B.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: DefaultComponent
+    },
+    template: "<Component />"
+  })
+}`,...(O=(E=C.parameters)==null?void 0:E.docs)==null?void 0:O.source}}};var N,T,V;y.parameters={...y.parameters,docs:{...(N=y.parameters)==null?void 0:N.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: HorizontalComponent
+    },
+    template: "<Component />"
+  })
+}`,...(V=(T=y.parameters)==null?void 0:T.docs)==null?void 0:V.source}}};var D,A,H;S.parameters={...S.parameters,docs:{...(D=S.parameters)==null?void 0:D.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: ControllsComponent
+    },
+    template: "<Component />"
+  })
+}`,...(H=(A=S.parameters)==null?void 0:A.docs)==null?void 0:H.source}}};const oe=["Default","Horizontal","Controlls"];export{S as Controlls,C as Default,y as Horizontal,oe as __namedExportsOrder,ee as default};
