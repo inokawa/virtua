@@ -53,8 +53,6 @@ export const ListItem = /*#__PURE__*/ defineComponent({
       } = props;
 
       const style: StyleValue = {
-        margin: 0,
-        padding: 0,
         position: hide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
         [isHorizontal ? "top" : "left"]: "0px",

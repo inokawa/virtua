@@ -80,8 +80,6 @@ const Cell = memo(
         style={useMemo((): CSSProperties => {
           const style: CSSProperties = {
             display: "grid",
-            margin: 0,
-            padding: 0,
             position: "absolute",
             top: top,
             [isRTLDocument() ? "right" : "left"]: left,

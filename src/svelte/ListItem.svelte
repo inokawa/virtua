@@ -26,8 +26,6 @@
   let style: string;
   $: {
     const _style: Record<string, string> = {
-      margin: "0px",
-      padding: "0px",
       position: "absolute",
       [horizontal ? "height" : "width"]: "100%",
       [horizontal ? "top" : "left"]: "0px",
