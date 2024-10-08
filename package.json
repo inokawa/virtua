@@ -1,6 +1,6 @@
 {
   "name": "virtua",
-  "version": "0.34.2",
+  "version": "0.35.0",
   "description": "A zero-config, fast and small (~3kB) virtual list (and grid) component for React, Vue, Solid and Svelte.",
   "main": "lib/index.js",
   "module": "lib/index.mjs",

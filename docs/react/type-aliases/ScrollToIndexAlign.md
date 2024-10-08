@@ -8,4 +8,4 @@
 
 ## Defined in
 
-[src/core/types.ts:19](https://github.com/inokawa/virtua/blob/0da7ed85f75cef651eeadd5badc2727731b4dcb5/src/core/types.ts#L19)
+[src/core/types.ts:19](https://github.com/inokawa/virtua/blob/21b5b4e90d3d1661add9e7a1149339bf1d18958e/src/core/types.ts#L19)
