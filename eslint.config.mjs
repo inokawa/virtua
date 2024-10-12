@@ -70,8 +70,7 @@ export default [
       },
     },
     plugins: {
-      // https://github.com/facebook/react/issues/28313#issuecomment-2180984628
-      "react-hooks": fixupPluginRules(pluginReactHooks),
+      "react-hooks": pluginReactHooks,
       "react-compiler": pluginReactCompiler,
     },
     rules: {
