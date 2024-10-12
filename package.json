@@ -65,7 +65,7 @@
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@eslint/compat": "^1.1.1",
-    "@faker-js/faker": "^8.4.1",
+    "@faker-js/faker": "^9.0.0",
     "@formkit/auto-animate": "^0.8.2",
     "@mui/material": "^6.0.0",
     "@playwright/test": "^1.45.3",
