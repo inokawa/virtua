@@ -2,9 +2,8 @@
 import { Virtualizer } from '../../src/vue'
 
 const sizes = [20, 40, 180, 77];
-const createItem = (i: number) => ({ index: i, size: sizes[i % 4] + 'px' })
 
-const data = Array.from({ length: 1000 }).map((_, i) => createItem(i));
+const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]);
 
 const headerHeight = 400;
 </script>
@@ -20,9 +19,9 @@ const headerHeight = 400;
     <div :style="{ backgroundColor: 'burlywood', height: headerHeight + 'px' }">
       header
     </div>
-    <Virtualizer :data="data" #default="item" :startMargin="headerHeight">
-      <div :key="item.index" :style="{ height: item.size, background: 'white', borderBottom: 'solid 1px #ccc' }">
-        {{ item.index }}
+    <Virtualizer :data="data" #default="{ item, index }" :startMargin="headerHeight">
+      <div :key="index" :style="{ height: item + 'px', background: 'white', borderBottom: 'solid 1px #ccc' }">
+        {{ index }}
       </div>
     </Virtualizer>
     <div :style="{ backgroundColor: 'steelblue', height: '600px' }">

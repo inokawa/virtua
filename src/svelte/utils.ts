@@ -1,20 +1,21 @@
-import { afterUpdate, beforeUpdate, onDestroy } from "svelte";
+import { afterUpdate, beforeUpdate } from "svelte";
 
-export const effect = (cb: () => (() => void) | void, before?: boolean) => {
-  let cleanup: (() => void) | void;
-
+export const onUpdate = (cb: () => void, before?: boolean) => {
   (before ? beforeUpdate : afterUpdate)(() => {
-    if (cleanup) cleanup();
-    cleanup = cb();
-  });
-
-  onDestroy(() => {
-    if (cleanup) cleanup();
+    cb();
   });
 };
 
-export const styleToString = (obj: Record<string, string>): string => {
-  return Object.keys(obj).reduce((acc, k) => acc + `${k}:${obj[k]};`, "");
+export const styleToString = (
+  obj: Record<string, string | undefined>
+): string => {
+  return Object.keys(obj).reduce((acc, k) => {
+    const value = obj[k];
+    if (value == null) {
+      return acc;
+    }
+    return acc + `${k}:${value};`;
+  }, "");
 };
 
 export const defaultGetKey = (_data: unknown, i: number) => "_" + i;

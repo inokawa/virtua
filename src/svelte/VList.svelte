@@ -25,7 +25,7 @@
     SCROLL_TO_INDEX,
   } from "./core";
   import {
-    effect,
+    onUpdate,
     type UnwrapCustomEvents,
     defaultGetKey,
     styleToString,
@@ -33,6 +33,9 @@
   import ListItem from "./ListItem.svelte";
 
   // https://github.com/sveltejs/rfcs/pull/38
+  interface $$Slots {
+    default: { item: T; index: number };
+  }
   interface $$Props extends HTMLAttributes<HTMLDivElement> {
     /**
      * The data items rendered by this component.
@@ -131,20 +134,20 @@
   });
 
   let prevLength = data.length;
-  effect(() => {
+  onUpdate(() => {
     if (prevLength === data.length) return;
     virtualizer[CHANGE_ITEM_LENGTH]((prevLength = data.length), shift);
   }, true);
 
   let prevJumpCount: number | undefined;
-  effect(() => {
+  onUpdate(() => {
     if (prevJumpCount === jumpCount) return;
     prevJumpCount = jumpCount;
     virtualizer[FIX_SCROLL_JUMP]();
   });
 
   let prevRange: typeof range | undefined;
-  effect(() => {
+  onUpdate(() => {
     if (prevRange && prevRange[0] === range[0] && prevRange[1] === range[1])
       return;
     prevRange = range;
@@ -209,7 +212,7 @@
   $: dynamicContainerStyle = styleToString({
     width: horizontal ? totalSize + "px" : "100%",
     height: horizontal ? "100%" : totalSize + "px",
-    "pointer-events": scrollDirection !== SCROLL_IDLE ? "none" : "auto",
+    "pointer-events": scrollDirection !== SCROLL_IDLE ? "none" : undefined,
   });
 </script>
 
@@ -222,16 +225,16 @@
     bind:this={containerRef}
     style={`${containerStyle} ${dynamicContainerStyle}`}
   >
-    {#each items as item, index (getKey(item, index + extendedRange[0]))}
+    {#each items as item, i (getKey(item, i + extendedRange[0]))}
+      {@const index = i + extendedRange[0]}
       <ListItem
-        index={index + extendedRange[0]}
-        offset={rerender &&
-          virtualizer[GET_ITEM_OFFSET](index + extendedRange[0])}
-        hide={rerender && virtualizer[IS_ITEM_HIDDEN](index + extendedRange[0])}
+        {index}
+        offset={rerender && virtualizer[GET_ITEM_OFFSET](index)}
+        hide={rerender && virtualizer[IS_ITEM_HIDDEN](index)}
         {horizontal}
         resizer={virtualizer[OBSERVE_ITEM_RESIZE]}
       >
-        <slot {item} />
+        <slot {item} {index} />
       </ListItem>
     {/each}
   </div>

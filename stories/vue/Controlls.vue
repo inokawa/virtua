@@ -30,8 +30,8 @@ const append = () => {
       <button @click="scroll">scrollToIndex</button>
     </div>
     <div><button @click="append">append</button></div>
-    <VList ref="handle" :data="data" #default="item" :onScroll="(offset) => { scrollOffset = offset; scrolling = true }"
-      :onScrollEnd="() => { scrolling = false }">
+    <VList ref="handle" :data="data" #default="{ item }"
+      :onScroll="(offset) => { scrollOffset = offset; scrolling = true }" :onScrollEnd="() => { scrolling = false }">
       <div :key="item.index" :style="{ height: item.height, background: 'white', borderBottom: 'solid 1px #ccc' }">
         {{ item.index }}
       </div>

@@ -80,8 +80,6 @@ const Cell = memo(
         style={useMemo((): CSSProperties => {
           const style: CSSProperties = {
             display: "grid",
-            margin: 0,
-            padding: 0,
             position: "absolute",
             top: top,
             [isRTLDocument() ? "right" : "left"]: left,
@@ -404,7 +402,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
               vScrollDirection !== SCROLL_IDLE ||
               hScrollDirection !== SCROLL_IDLE
                 ? "none"
-                : "auto",
+                : undefined,
           }}
         >
           {items}

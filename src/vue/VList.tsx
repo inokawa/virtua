@@ -6,6 +6,7 @@ import {
   ComponentOptionsWithObjectProps,
   ComponentObjectPropsOptions,
   ref,
+  VNode,
 } from "vue";
 import { Virtualizer, VirtualizerHandle } from "./Virtualizer";
 
@@ -140,5 +141,5 @@ export const VList = /*#__PURE__*/ defineComponent({
   string,
   {},
   string,
-  SlotsType<{ default: any }>
+  SlotsType<{ default: (arg: { item: any; index: number }) => VNode[] }>
 >);

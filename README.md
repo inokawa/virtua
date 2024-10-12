@@ -202,23 +202,20 @@ export default async () => {
 import { VList } from "virtua/vue";
 
 const sizes = [20, 40, 180, 77];
-const data = Array.from({ length: 1000 }).map((_, i) => ({
-  id: i,
-  size: sizes[i % 4] + "px",
-}));
+const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]);
 </script>
 
 <template>
-  <VList :data="data" :style="{ height: '800px' }" #default="item">
+  <VList :data="data" :style="{ height: '800px' }" #default="{ item, index }">
     <div
-      :key="item.id"
+      :key="index"
       :style="{
-        height: item.size,
+        height: item + 'px',
         background: 'white',
         borderBottom: 'solid 1px #ccc',
       }"
     >
-      {{ item.id }}
+      {{ index }}
     </div>
   </VList>
 </template>
@@ -263,18 +260,18 @@ export const App = () => {
 
   const sizes = [20, 40, 180, 77];
 
-  const data = Array.from({ length: 1000 }).map((_, i) =>  ({ id: i, size: sizes[i % 4] + "px" }));
+  const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4] );
 </script>
 
-<VList {data} let:item style={`height: 100vh;`} getKey={(d) => d.id}>
+<VList {data} let:item let:index style={`height: 100vh;`} getKey={(_,i) => i}>
   <div
     style={`
-      height: ${item.size};
+      height: ${item}px;
       background: white;
       border-bottom: solid 1px #ccc;
     `}
   >
-    {item.id}
+    {index}
   </div>
 </VList>
 ```
@@ -325,7 +322,7 @@ Virtua try to suppress glitch caused by resize as much as possible, but it will 
 
 #### What is `ResizeObserver loop completed with undelivered notifications.` error?
 
-It may be dispatched by ResizeObserver in this lib [as described in spec](https://www.w3.org/TR/resize-observer/#deliver-resize-error). If it bothers you,
+It may be dispatched by ResizeObserver in this lib [as described in spec](https://www.w3.org/TR/resize-observer/#deliver-resize-error), and [this is a common problem with ResizeObserver](https://github.com/w3c/csswg-drafts/issues/5488). If it bothers you,
 [you can safely ignore it](https://github.com/DevExpress/testcafe/issues/4857#issuecomment-598775956).
 
 Especially for `webpack-dev-server`, [you can filter out the specific error with `devServer.client.overlay.runtimeErrors` option](https://webpack.js.org/configuration/dev-server/#overlay).

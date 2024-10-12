@@ -2,11 +2,7 @@
 export const NULL = null;
 
 /** @internal */
-export const min = Math.min;
-/** @internal */
-export const max = Math.max;
-/** @internal */
-export const abs = Math.abs;
+export const { min, max, abs } = Math;
 /** @internal */
 export const values = Object.values;
 /** @internal */
