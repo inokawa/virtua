@@ -168,7 +168,7 @@ export const createVirtualStore = (
   const subscribers = new Set<[number, Subscriber]>();
   const getRelativeScrollOffset = () => scrollOffset - startSpacerSize;
   const getRange = (offset: number) => {
-    return computeRange(cache, offset, _prevRange[0], viewportSize);
+    return computeRange(cache, offset, viewportSize, _prevRange[0]);
   };
   const getTotalSize = (): number => computeTotalSize(cache);
   const getItemOffset = (index: number): number => {

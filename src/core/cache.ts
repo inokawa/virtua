@@ -129,8 +129,8 @@ export const findIndex = (cache: Cache, offset: number, i: number): number => {
 export const computeRange = (
   cache: Cache,
   scrollOffset: number,
-  prevStartIndex: number,
-  viewportSize: number
+  viewportSize: number,
+  prevStartIndex: number
 ): ItemsRange => {
   const start = findIndex(
     cache,

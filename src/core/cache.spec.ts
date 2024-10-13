@@ -339,8 +339,8 @@ describe(computeRange.name, () => {
           30
         ),
         0,
-        INITIAL_INDEX,
-        100
+        100,
+        INITIAL_INDEX
       )
     ).toEqual([0, 5]);
   });
@@ -353,8 +353,8 @@ describe(computeRange.name, () => {
           30
         ),
         20,
-        INITIAL_INDEX,
-        100
+        100,
+        INITIAL_INDEX
       )
     ).toEqual([1, 6]);
   });
@@ -365,7 +365,7 @@ describe(computeRange.name, () => {
       30
     );
     const last = cache._length - 1;
-    expect(computeRange(cache, sum(cache._sizes), INITIAL_INDEX, 100)).toEqual([
+    expect(computeRange(cache, sum(cache._sizes), 100, INITIAL_INDEX)).toEqual([
       last,
       last,
     ]);
@@ -378,7 +378,7 @@ describe(computeRange.name, () => {
     );
     const last = cache._length - 1;
     expect(
-      computeRange(cache, sum(cache._sizes) - 20, INITIAL_INDEX, 100)
+      computeRange(cache, sum(cache._sizes) - 20, 100, INITIAL_INDEX)
     ).toEqual([last, last]);
   });
 
@@ -389,7 +389,7 @@ describe(computeRange.name, () => {
     );
     const last = cache._length - 1;
     expect(
-      computeRange(cache, sum(cache._sizes) - 20 - 1, INITIAL_INDEX, 100)
+      computeRange(cache, sum(cache._sizes) - 20 - 1, 100, INITIAL_INDEX)
     ).toEqual([last - 1, last]);
   });
 
@@ -401,8 +401,8 @@ describe(computeRange.name, () => {
           30
         ),
         -1000,
-        INITIAL_INDEX,
-        100
+        100,
+        INITIAL_INDEX
       )
     ).toEqual([0, 0]);
   });
@@ -414,7 +414,7 @@ describe(computeRange.name, () => {
     );
     const last = cache._length - 1;
     expect(
-      computeRange(cache, sum(cache._sizes) + 1000, INITIAL_INDEX, 100)
+      computeRange(cache, sum(cache._sizes) + 1000, 100, INITIAL_INDEX)
     ).toEqual([last, last]);
   });
 });
