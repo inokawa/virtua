@@ -1,5 +1,5 @@
 import { type InternalCacheSnapshot, type ItemsRange } from "./types";
-import { clamp, max, median, min } from "./utils";
+import { clamp, floor, max, median, min } from "./utils";
 
 type Writeable<T> = {
   -readonly [key in keyof T]: Writeable<T[key]>;
@@ -93,22 +93,34 @@ export const computeTotalSize = (cache: Cache): number => {
 };
 
 /**
+ * Finds the index of an item in the cache whose computed offset is closest to the specified offset.
+ *
  * @internal
  */
 export const findIndex = (cache: Cache, offset: number, i: number): number => {
-  while (i >= 0 && i < cache._length) {
-    const itemOffset = computeOffset(cache, i);
+  // Find with binary search
+  let low = 0;
+  let high = cache._length - 1;
+
+  if (computeOffset(cache, i) <= offset) {
+    low = i; // Start searching from initialIndex -> up
+  } else {
+    high = i; // Start searching from initialIndex -> down
+  }
+
+  while (low <= high) {
+    const mid = floor((low + high) / 2);
+    const itemOffset = computeOffset(cache, mid);
     if (itemOffset <= offset) {
-      if (itemOffset + getItemSize(cache, i) > offset) {
-        break;
-      } else {
-        i++;
+      if (itemOffset + getItemSize(cache, mid) > offset) {
+        return mid;
       }
+      low = mid + 1;
     } else {
-      i--;
+      high = mid - 1;
     }
   }
-  return clamp(i, 0, cache._length - 1);
+  return clamp(low, 0, cache._length - 1);
 };
 
 /**
@@ -185,7 +197,7 @@ export const initCache = (
  * @internal
  */
 export const takeCacheSnapshot = (cache: Cache): InternalCacheSnapshot => {
-  return [[...cache._sizes], cache._defaultItemSize];
+  return [cache._sizes.slice(), cache._defaultItemSize];
 };
 
 /**
