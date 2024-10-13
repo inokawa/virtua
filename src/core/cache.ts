@@ -1,5 +1,5 @@
 import { type InternalCacheSnapshot, type ItemsRange } from "./types";
-import { clamp, max, median, min } from "./utils";
+import { clamp, floor, max, median, min } from "./utils";
 
 type Writeable<T> = {
   -readonly [key in keyof T]: Writeable<T[key]>;
@@ -95,19 +95,12 @@ export const computeTotalSize = (cache: Cache): number => {
 /**
  * Finds the index of an item in the cache whose computed offset is closest to the specified offset.
  *
- * The search starts from the given initial index `i` and adjusts the search range based on whether
- * the offset at `i` is less than or equal to the target offset. If a match is found, the index of
- * the item is returned; otherwise, the function returns -1 if the item is not found.
- *
- * @param {Cache} cache - The cache object containing the data.
- * @param {number} offset - The target offset to search for within the cache.
- * @param {number} i - The initial index to start searching from.
- * @returns {number} - The index of the item closest to the offset, or -1 if not found.
+ * @internal
  */
 export const findIndex = (cache: Cache, offset: number, i: number): number => {
+  // Find with binary search
   let low = 0;
   let high = cache._length - 1;
-  let mid, itemOffset;
 
   if (computeOffset(cache, i) <= offset) {
     low = i; // Start searching from initialIndex -> up
@@ -116,12 +109,11 @@ export const findIndex = (cache: Cache, offset: number, i: number): number => {
   }
 
   while (low <= high) {
-    mid = Math.floor((low + high) / 2);
-    itemOffset = computeOffset(cache, mid);
-
+    const mid = floor((low + high) / 2);
+    const itemOffset = computeOffset(cache, mid);
     if (itemOffset <= offset) {
       if (itemOffset + getItemSize(cache, mid) > offset) {
-        return clamp(mid, 0, cache._length - 1);
+        return mid;
       }
       low = mid + 1;
     } else {
