@@ -131,15 +131,17 @@ export const computeRange = (
   // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
   prevStartIndex = min(prevStartIndex, cache._length - 1);
 
-  const shouldSearchForward =
-    computeOffset(cache, prevStartIndex) <= scrollOffset;
-  const start = findIndex(
-    cache,
-    scrollOffset,
-    shouldSearchForward ? prevStartIndex : undefined,
-    shouldSearchForward ? undefined : prevStartIndex
-  );
-  return [start, findIndex(cache, scrollOffset + viewportSize, start)];
+  if (computeOffset(cache, prevStartIndex) <= scrollOffset) {
+    // search forward
+    // start <= end, prevStartIndex <= start
+    const end = findIndex(cache, scrollOffset + viewportSize, prevStartIndex);
+    return [findIndex(cache, scrollOffset, prevStartIndex, end), end];
+  } else {
+    // search backward
+    // start <= end, start <= prevStartIndex
+    const start = findIndex(cache, scrollOffset, undefined, prevStartIndex);
+    return [start, findIndex(cache, scrollOffset + viewportSize, start)];
+  }
 };
 
 /**
