@@ -32,7 +32,7 @@ describe("SSR", () => {
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
         .childElementCount
-    ).toEqual(COUNT + OVERSCAN);
+    ).toEqual(COUNT);
   });
 
   it("should render items with renderToString and horizontal", async () => {
@@ -57,6 +57,6 @@ describe("SSR", () => {
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
         .childElementCount
-    ).toEqual(COUNT + OVERSCAN);
+    ).toEqual(COUNT);
   });
 });
