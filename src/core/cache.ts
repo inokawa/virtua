@@ -97,17 +97,13 @@ export const computeTotalSize = (cache: Cache): number => {
  *
  * @internal
  */
-export const findIndex = (cache: Cache, offset: number, i: number): number => {
+export const findIndex = (
+  cache: Cache,
+  offset: number,
+  low: number = 0,
+  high: number = cache._length - 1
+): number => {
   // Find with binary search
-  let low = 0;
-  let high = cache._length - 1;
-
-  if (computeOffset(cache, i) <= offset) {
-    low = i; // Start searching from initialIndex -> up
-  } else {
-    high = i; // Start searching from initialIndex -> down
-  }
-
   while (low <= high) {
     const mid = floor((low + high) / 2);
     const itemOffset = computeOffset(cache, mid);
@@ -132,11 +128,16 @@ export const computeRange = (
   viewportSize: number,
   prevStartIndex: number
 ): ItemsRange => {
+  // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
+  prevStartIndex = min(prevStartIndex, cache._length - 1);
+
+  const shouldSearchForward =
+    computeOffset(cache, prevStartIndex) <= scrollOffset;
   const start = findIndex(
     cache,
     scrollOffset,
-    // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
-    min(prevStartIndex, cache._length - 1)
+    shouldSearchForward ? prevStartIndex : undefined,
+    shouldSearchForward ? undefined : prevStartIndex
   );
   return [start, findIndex(cache, scrollOffset + viewportSize, start)];
 };
