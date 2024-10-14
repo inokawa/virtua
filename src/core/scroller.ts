@@ -14,6 +14,7 @@ import {
   SCROLL_IDLE,
   ACTION_BEFORE_MANUAL_SMOOTH_SCROLL,
   ACTION_START_OFFSET_CHANGE,
+  isInitialMeasurementDone,
 } from "./store";
 import { type ScrollToIndexOpts } from "./types";
 import { debounce, timeout, clamp, microtask } from "./utils";
@@ -209,7 +210,7 @@ export const createScroller = (
           // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
           // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
           // https://github.com/inokawa/virtua/issues/450
-          if (store._isInitialMeasurementDone()) {
+          if (isInitialMeasurementDone(store)) {
             // Reject when items around scroll destination completely measured
             timeout(reject, 150);
           }
