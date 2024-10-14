@@ -400,7 +400,10 @@ export const createVirtualStore = (
           mutated = UPDATE_VIRTUAL_STATE + UPDATE_SIZE_EVENT;
 
           // Synchronous update is necessary in current design to minimize visible glitch in concurrent rendering.
-          // However in React, synchronous update with flushSync after asynchronous update will overtake the asynchronous one.
+          // However this seems to be the main cause of the errors from ResizeObserver.
+          // https://github.com/inokawa/virtua/issues/470
+          //
+          // And in React, synchronous update with flushSync after asynchronous update will overtake the asynchronous one.
           // If items resize happens just after scroll, race condition can occur depending on implementation.
           shouldSync = true;
           break;
