@@ -102,10 +102,10 @@ export const getOverscanedRange = (
   scrollDirection: ScrollDirection,
   count: number
 ): ItemsRange => {
-  if (scrollDirection !== SCROLL_DOWN) {
+  if (scrollDirection === SCROLL_UP) {
     startIndex -= max(0, overscan);
   }
-  if (scrollDirection !== SCROLL_UP) {
+  if (scrollDirection === SCROLL_DOWN) {
     endIndex += max(0, overscan);
   }
   return [max(startIndex, 0), min(endIndex, count - 1)];

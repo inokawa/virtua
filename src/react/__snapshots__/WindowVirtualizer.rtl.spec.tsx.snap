@@ -117,34 +117,6 @@ exports[`rtl > should not work in vertical 1`] = `
         15
       </div>
     </div>
-    <div
-      style="position: absolute; width: 100%; left: 0px; top: 800px; visibility: visible;"
-    >
-      <div>
-        16
-      </div>
-    </div>
-    <div
-      style="position: absolute; width: 100%; left: 0px; top: 850px; visibility: visible;"
-    >
-      <div>
-        17
-      </div>
-    </div>
-    <div
-      style="position: absolute; width: 100%; left: 0px; top: 900px; visibility: visible;"
-    >
-      <div>
-        18
-      </div>
-    </div>
-    <div
-      style="position: absolute; width: 100%; left: 0px; top: 950px; visibility: visible;"
-    >
-      <div>
-        19
-      </div>
-    </div>
   </div>
 </DocumentFragment>
 `;
@@ -229,34 +201,6 @@ exports[`rtl > should work in horizontal 1`] = `
     >
       <div>
         10
-      </div>
-    </div>
-    <div
-      style="position: absolute; height: 100%; top: 0px; right: 1100px; visibility: visible; display: flex;"
-    >
-      <div>
-        11
-      </div>
-    </div>
-    <div
-      style="position: absolute; height: 100%; top: 0px; right: 1200px; visibility: visible; display: flex;"
-    >
-      <div>
-        12
-      </div>
-    </div>
-    <div
-      style="position: absolute; height: 100%; top: 0px; right: 1300px; visibility: visible; display: flex;"
-    >
-      <div>
-        13
-      </div>
-    </div>
-    <div
-      style="position: absolute; height: 100%; top: 0px; right: 1400px; visibility: visible; display: flex;"
-    >
-      <div>
-        14
       </div>
     </div>
   </div>
