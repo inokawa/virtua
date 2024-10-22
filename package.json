@@ -64,7 +64,6 @@
     "@dnd-kit/sortable": "^8.0.0",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@eslint/compat": "^1.2.0",
     "@faker-js/faker": "^9.0.0",
     "@formkit/auto-animate": "^0.8.2",
     "@mui/material": "^6.1.3",

@@ -1,4 +1,3 @@
-import { fixupPluginRules } from "@eslint/compat";
 import typescriptEslintParser from "@typescript-eslint/parser";
 import pluginImport from "eslint-plugin-import";
 import pluginReactHooks from "eslint-plugin-react-hooks";
@@ -28,8 +27,7 @@ export default [
       },
     },
     plugins: {
-      // https://github.com/import-js/eslint-plugin-import/issues/2556#issuecomment-2272395246
-      import: fixupPluginRules(pluginImport),
+      import: pluginImport,
     },
     rules: {
       "import/no-restricted-paths": [
