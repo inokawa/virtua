@@ -4,11 +4,11 @@
   const sizes = [20, 40, 180, 77];
   const createItem = (i: number) => ({ id: i, size: sizes[i % 4] + "px" });
 
-  let ref: VList<{ id: number; size: string }>;
-  let data = Array.from({ length: 1000 }).map((_, i) => createItem(i));
-  let scrollOffset = 0;
-  let scrolling = false;
-  let scrollTarget = 567;
+  let ref: VList<{ id: number; size: string }> = $state();
+  let data = $state(Array.from({ length: 1000 }).map((_, i) => createItem(i)));
+  let scrollOffset = $state(0);
+  let scrolling = $state(false);
+  let scrollTarget = $state(567);
 </script>
 
 <div style="height: 100%; display: flex; flex-direction: column;">
@@ -18,19 +18,19 @@
     <input
       type="number"
       bind:value={scrollTarget}
-      on:input={(e) => {
-        scrollTarget = Number(e.target.value);
+      oninput={(e) => {
+        scrollTarget = Number(e.currentTarget.value);
       }}
     />
     <button
-      on:click={() => {
+      onclick={() => {
         ref.scrollToIndex(scrollTarget);
       }}>scrollToIndex</button
     >
   </div>
   <div>
     <button
-      on:click={() => {
+      onclick={() => {
         data = [
           ...data,
           ...Array.from({ length: 100 }).map((_, i) =>
@@ -43,24 +43,25 @@
   <VList
     bind:this={ref}
     {data}
-    let:item
     getKey={(d) => d.id}
-    on:scroll={(event) => {
-      scrollOffset = event.detail;
+    onscroll={(offset) => {
+      scrollOffset = offset;
       scrolling = true;
     }}
-    on:scrollEnd={() => {
+    onscrollend={() => {
       scrolling = false;
     }}
   >
-    <div
-      style={`
-      height: ${item.size};
-      background: white;
-      border-bottom: solid 1px #ccc;
-    `}
-    >
-      {item.id}
-    </div>
+    {#snippet children({ item })}
+      <div
+        style={`
+          height: ${item.size};
+          background: white;
+          border-bottom: solid 1px #ccc;
+        `}
+      >
+        {item.id}
+      </div>
+    {/snippet}
   </VList>
 </div>

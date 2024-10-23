@@ -86,7 +86,7 @@
     "@storybook/test-runner": "^0.19.1",
     "@storybook/vue3": "^8.3.5",
     "@storybook/vue3-vite": "^8.3.5",
-    "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "@sveltejs/vite-plugin-svelte": "^4.0.0",
     "@tanstack/react-virtual": "^3.10.8",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.0.1",
@@ -133,8 +133,8 @@
     "storybook": "^8.3.5",
     "storybook-solidjs": "^1.0.0-beta.2",
     "storybook-solidjs-vite": "^1.0.0-beta.2",
-    "svelte": "^4.2.19",
-    "svelte-check": "^3.8.6",
+    "svelte": "^5.0.0",
+    "svelte-check": "^4.0.0",
     "svelte2tsx": "^0.7.22",
     "typedoc": "^0.26.10",
     "typedoc-plugin-markdown": "^4.2.9",
@@ -152,7 +152,7 @@
     "react": ">=16.14.0",
     "react-dom": ">=16.14.0",
     "solid-js": ">=1.0",
-    "svelte": ">=4.0",
+    "svelte": ">=5.0",
     "vue": ">=3.2"
   },
   "peerDependenciesMeta": {

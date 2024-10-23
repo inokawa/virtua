@@ -1,20 +1,27 @@
-<script lang="ts">
-  import { afterUpdate, onDestroy } from "svelte";
+<script lang="ts" generics="T">
+  import { type Snippet, onDestroy } from "svelte";
   import { isRTLDocument, type ItemResizeObserver } from "./core";
   import { styleToString } from "./utils";
 
-  export let index: number;
-  export let offset: number;
-  export let hide: boolean;
-  export let horizontal: boolean;
-  export let resizer: ItemResizeObserver;
+  interface Props {
+    children: Snippet<[{ item: T; index: number }]>;
+    item: T;
+    index: number;
+    offset: number;
+    hide: boolean;
+    horizontal: boolean;
+    resizer: ItemResizeObserver;
+  }
+
+  let { children, item, index, offset, hide, horizontal, resizer }: Props =
+    $props();
 
   let elementRef: HTMLDivElement;
 
   let cleanupResizer: (() => void) | undefined;
   // The index may be changed if elements are inserted to or removed from the start of props.children
   let prevIndex: number | undefined;
-  afterUpdate(() => {
+  $effect(() => {
     if (prevIndex === index) return;
     if (cleanupResizer) cleanupResizer();
     cleanupResizer = resizer(elementRef, (prevIndex = index));
@@ -23,8 +30,7 @@
     if (cleanupResizer) cleanupResizer();
   });
 
-  let style: string;
-  $: {
+  let style: string = $derived.by(() => {
     const _style: Record<string, string> = {
       position: "absolute",
       [horizontal ? "height" : "width"]: "100%",
@@ -37,10 +43,10 @@
       _style["display"] = "flex";
     }
 
-    style = styleToString(_style);
-  }
+    return styleToString(_style);
+  });
 </script>
 
 <div bind:this={elementRef} {style}>
-  <slot />
+  {@render children({ item, index })}
 </div>
