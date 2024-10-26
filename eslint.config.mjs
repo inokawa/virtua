@@ -73,7 +73,7 @@ export default [
     },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
-      "react-compiler/react-compiler": "error",
+      "react-compiler/react-compiler": "warn",
     },
   },
   ...[
@@ -82,6 +82,7 @@ export default [
       rules: {
         "vue/no-setup-props-reactivity-loss": "warn",
         "vue/no-ref-object-reactivity-loss": "error",
+        "vue/multi-word-component-names": "off",
       },
     },
   ].map((c) => ({
