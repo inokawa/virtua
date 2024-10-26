@@ -1,5 +1,6 @@
 import typescriptEslintParser from "@typescript-eslint/parser";
 import pluginImport from "eslint-plugin-import";
+import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginReactCompiler from "eslint-plugin-react-compiler";
 import pluginVue from "eslint-plugin-vue";
@@ -59,7 +60,22 @@ export default [
       ],
     },
   },
-  {
+  ...[
+    pluginReact.configs.flat.recommended,
+    pluginReact.configs.flat["jsx-runtime"],
+    {
+      plugins: {
+        "react-hooks": pluginReactHooks,
+        "react-compiler": pluginReactCompiler,
+      },
+      rules: {
+        "react/display-name": "off",
+        ...pluginReactHooks.configs.recommended.rules,
+        "react-compiler/react-compiler": "warn",
+      },
+    },
+  ].map((c) => ({
+    ...c,
     files: ["src/react/**/*.{js,jsx,ts,tsx}"],
     languageOptions,
     settings: {
@@ -67,15 +83,7 @@ export default [
         version: "detect",
       },
     },
-    plugins: {
-      "react-hooks": pluginReactHooks,
-      "react-compiler": pluginReactCompiler,
-    },
-    rules: {
-      ...pluginReactHooks.configs.recommended.rules,
-      "react-compiler/react-compiler": "warn",
-    },
-  },
+  })),
   ...[
     ...pluginVue.configs["flat/recommended"],
     {
