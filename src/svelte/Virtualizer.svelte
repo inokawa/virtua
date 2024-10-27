@@ -150,16 +150,13 @@
     return newItems;
   });
 
-  const containerStyle = styleToString({
-    // contain: "content",
-    "overflow-anchor": "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
-    flex: "none", // flex style can break layout
-    position: "relative",
-    visibility: "hidden", // TODO replace with other optimization methods
-  });
-
-  let dynamicContainerStyle = $derived(
+  let containerStyle = $derived(
     styleToString({
+      // contain: "content",
+      "overflow-anchor": "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
+      flex: "none", // flex style can break layout
+      position: "relative",
+      visibility: "hidden", // TODO replace with other optimization methods
       width: horizontal ? totalSize + "px" : "100%",
       height: horizontal ? "100%" : totalSize + "px",
       "pointer-events": scrollDirection !== SCROLL_IDLE ? "none" : undefined,
@@ -171,11 +168,7 @@
   @component
   Customizable list virtualizer for advanced usage. See {@link VirtualizerProps} and {@link VirtualizerHandle}.
 -->
-<svelte:element
-  this={as}
-  bind:this={containerRef}
-  style={`${containerStyle} ${dynamicContainerStyle}`}
->
+<svelte:element this={as} bind:this={containerRef} style={containerStyle}>
   {#each items as item, i (getKey(item, i + extendedRange[0]))}
     {@const index = i + extendedRange[0]}
     <ListItem
