@@ -1,24 +1,9 @@
 <script lang="ts" generics="T">
-  import type { ComponentProps } from "svelte";
   import { styleToString } from "./utils";
-  import type { ViewportComponentAttributes } from "./types";
   import Virtualizer from "./Virtualizer.svelte";
+  import type { VListProps, VListHandle } from "./VList.type";
 
-  interface Props
-    extends Pick<
-        ComponentProps<Virtualizer<T>>,
-        | "data"
-        | "getKey"
-        | "overscan"
-        | "itemSize"
-        | "shift"
-        | "horizontal"
-        | "children"
-        | "onscroll"
-        | "onscrollend"
-        | "onrangechange"
-      >,
-      ViewportComponentAttributes {}
+  interface Props extends VListProps<T> {}
 
   let {
     data,
@@ -36,37 +21,24 @@
 
   let ref: Virtualizer<T> = $state()!;
 
-  /**
-   * Get current scrollTop or scrollLeft.
-   */
-  export const getScrollOffset = () => ref.getScrollOffset();
-  /**
-   * Get current scrollHeight or scrollWidth.
-   */
-  export const getScrollSize = () => ref.getScrollSize();
-  /**
-   * Get current offsetHeight or offsetWidth.
-   */
-  export const getViewportSize = () => ref.getViewportSize();
-  /**
-   * Scroll to the item specified by index.
-   * @param index index of item
-   * @param opts options
-   */
+  export const getScrollOffset = (() =>
+    ref.getScrollOffset()) satisfies VListHandle["getScrollOffset"] as VListHandle["getScrollOffset"];
+  export const getScrollSize = (() =>
+    ref.getScrollSize()) satisfies VListHandle["getScrollSize"] as VListHandle["getScrollSize"];
+  export const getViewportSize = (() =>
+    ref.getViewportSize()) satisfies VListHandle["getViewportSize"] as VListHandle["getViewportSize"];
   export const scrollToIndex = ((...args) =>
-    ref.scrollToIndex(...args)) as typeof ref.scrollToIndex;
-  /**
-   * Scroll to the given offset.
-   * @param offset offset from start
-   */
+    ref.scrollToIndex(
+      ...args
+    )) satisfies VListHandle["scrollToIndex"] as VListHandle["scrollToIndex"];
   export const scrollTo = ((...args) =>
-    ref.scrollTo(...args)) as typeof ref.scrollTo;
-  /**
-   * Scroll by the given offset.
-   * @param offset offset from current position
-   */
+    ref.scrollTo(
+      ...args
+    )) satisfies VListHandle["scrollTo"] as VListHandle["scrollTo"];
   export const scrollBy = ((...args) =>
-    ref.scrollBy(...args)) as typeof ref.scrollBy;
+    ref.scrollBy(
+      ...args
+    )) satisfies VListHandle["scrollBy"] as VListHandle["scrollBy"];
 
   const viewportStyle = styleToString({
     display: horizontal ? "inline-block" : "block",
@@ -79,7 +51,7 @@
 
 <!-- 
   @component
-  Virtualized list component.
+  Virtualized list component. See {@link VListProps} and {@link VListHandle}.
 -->
 <div {...rest} style={`${viewportStyle} ${rest["style"] || ""}`}>
   <Virtualizer
