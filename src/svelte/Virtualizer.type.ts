@@ -13,7 +13,7 @@ export interface VirtualizerProps<T> {
   /**
    * The elements renderer snippet.
    */
-  children: Snippet<[{ item: T; index: number }]>;
+  children: Snippet<[item: T, index: number]>;
   /**
    * Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
    * @default defaultGetKey (returns index of item)

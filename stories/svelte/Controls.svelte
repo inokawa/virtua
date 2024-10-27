@@ -52,7 +52,7 @@
       scrolling = false;
     }}
   >
-    {#snippet children({ item })}
+    {#snippet children(item)}
       <div
         style={`
           height: ${item.size};

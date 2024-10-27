@@ -21,7 +21,7 @@
     header
   </div>
   <Virtualizer {data} getKey={(_, i) => i} startMargin={headerHeight}>
-    {#snippet children({ item, index })}
+    {#snippet children(item, index)}
     <div
       style={`
         height: ${item}px;
