@@ -5,7 +5,7 @@
   import type { SvelteHTMLElements } from "svelte/elements";
 
   interface Props {
-    children: Snippet<[{ item: T; index: number }]>;
+    children: Snippet<[item: T, index: number]>;
     item: T;
     as: keyof SvelteHTMLElements | undefined;
     index: number;
@@ -58,5 +58,5 @@
 </script>
 
 <svelte:element this={as} bind:this={elementRef} {style}>
-  {@render children({ item, index })}
+  {@render children(item, index)}
 </svelte:element>

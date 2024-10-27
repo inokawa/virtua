@@ -28,7 +28,7 @@
         {scrollRef}
         startMargin={outerPadding + innerPadding}
       >
-        {#snippet children({ item, index })}
+        {#snippet children(item, index)}
           <div
             style={`
               height: ${item}px;

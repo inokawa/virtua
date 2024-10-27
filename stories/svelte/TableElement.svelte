@@ -27,7 +27,7 @@
       item="tr"
       startMargin={headerHeight}
     >
-      {#snippet children({ item })}
+      {#snippet children(item)}
         {#each COLUMN_WIDTHS as width, index}
           <th style={`width: ${width}px`}>{item} {index}</th>
         {/each}

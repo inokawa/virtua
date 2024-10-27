@@ -7,7 +7,7 @@
 </script>
 
 <VList {data} style={`height: 100vh;`} getKey={(_, i) => i}>
-  {#snippet children({ item, index })}
+  {#snippet children(item, index)}
     <div
       style={`
         height: ${item}px;

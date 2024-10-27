@@ -14,7 +14,7 @@
     getKey={(d) => d.id}
     horizontal
   >
-    {#snippet children({ item })}
+    {#snippet children(item)}
       <div
         style={`
           width: ${item.size};
