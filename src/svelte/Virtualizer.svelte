@@ -1,5 +1,5 @@
 <script lang="ts" generics="T">
-  import { type Snippet, onMount, onDestroy } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import {
     SCROLL_IDLE,
     type StateVersion,
@@ -28,83 +28,9 @@
   } from "./core";
   import { defaultGetKey, styleToString } from "./utils";
   import ListItem from "./ListItem.svelte";
-  import type { SvelteHTMLElements } from "svelte/elements";
+  import type { VirtualizerHandle, VirtualizerProps } from "./Virtualizer.type";
 
-  interface Props {
-    /**
-     * The data items rendered by this component.
-     */
-    data: T[];
-    /**
-     * The elements renderer snippet.
-     */
-    children: Snippet<[{ item: T; index: number }]>;
-    /**
-     * Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
-     * @default defaultGetKey (returns index of item)
-     */
-    getKey?: (data: T, index: number) => string | number;
-    /**
-     * Component or element type for container element.
-     * @defaultValue "div"
-     */
-    as?: keyof SvelteHTMLElements;
-    /**
-     * Component or element type for item element.
-     * @defaultValue "div"
-     */
-    item?: keyof SvelteHTMLElements;
-    /**
-     * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
-     * @defaultValue 4
-     */
-    overscan?: number;
-    /**
-     * Reference to the scrollable element. The default will get the parent element of virtualizer.
-     */
-    scrollRef?: HTMLElement;
-    /**
-     * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
-     *
-     * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
-     * - If set, you can opt out estimation and use the value as initial item size.
-     */
-    itemSize?: number;
-    /**
-     * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
-     */
-    shift?: boolean;
-    /**
-     * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
-     */
-    horizontal?: boolean;
-    /**
-     * If you put an element before virtualizer, you have to define its height with this prop.
-     */
-    startMargin?: number;
-    /**
-     * Callback invoked whenever scroll offset changes.
-     * @param offset Current scrollTop or scrollLeft.
-     */
-    onscroll?: (offset: number) => void;
-    /**
-     * Callback invoked when scrolling stops.
-     */
-    onscrollend?: () => void;
-    /**
-     * Callback invoked when visible items range changes.
-     */
-    onrangechange?: (
-      /**
-       * The start index of viewable items.
-       */
-      startIndex: number,
-      /**
-       * The end index of viewable items.
-       */
-      endIndex: number
-    ) => void;
-  }
+  interface Props extends VirtualizerProps<T> {}
 
   let {
     data,
@@ -196,34 +122,24 @@
     onrangechange && onrangechange(range[0], range[1]);
   });
 
-  /**
-   * Get current scrollTop or scrollLeft.
-   */
-  export const getScrollOffset = virtualizer[GET_SCROLL_OFFSET];
-  /**
-   * Get current scrollHeight or scrollWidth.
-   */
-  export const getScrollSize = virtualizer[GET_SCROLL_SIZE];
-  /**
-   * Get current offsetHeight or offsetWidth.
-   */
-  export const getViewportSize = virtualizer[GET_VIEWPORT_SIZE];
-  /**
-   * Scroll to the item specified by index.
-   * @param index index of item
-   * @param opts options
-   */
-  export const scrollToIndex = virtualizer[SCROLL_TO_INDEX];
-  /**
-   * Scroll to the given offset.
-   * @param offset offset from start
-   */
-  export const scrollTo = virtualizer[SCROLL_TO];
-  /**
-   * Scroll by the given offset.
-   * @param offset offset from current position
-   */
-  export const scrollBy = virtualizer[SCROLL_BY];
+  export const getScrollOffset = virtualizer[
+    GET_SCROLL_OFFSET
+  ] satisfies VirtualizerHandle["getScrollOffset"] as VirtualizerHandle["getScrollOffset"];
+  export const getScrollSize = virtualizer[
+    GET_SCROLL_SIZE
+  ] satisfies VirtualizerHandle["getScrollSize"] as VirtualizerHandle["getScrollSize"];
+  export const getViewportSize = virtualizer[
+    GET_VIEWPORT_SIZE
+  ] satisfies VirtualizerHandle["getViewportSize"] as VirtualizerHandle["getViewportSize"];
+  export const scrollToIndex = virtualizer[
+    SCROLL_TO_INDEX
+  ] satisfies VirtualizerHandle["scrollToIndex"] as VirtualizerHandle["scrollToIndex"];
+  export const scrollTo = virtualizer[
+    SCROLL_TO
+  ] satisfies VirtualizerHandle["scrollTo"] as VirtualizerHandle["scrollTo"];
+  export const scrollBy = virtualizer[
+    SCROLL_BY
+  ] satisfies VirtualizerHandle["scrollBy"] as VirtualizerHandle["scrollBy"];
 
   let items = $derived.by(() => {
     const [startIndex, endIndex] = extendedRange;
@@ -253,7 +169,7 @@
 
 <!-- 
   @component
-  Customizable list virtualizer for advanced usage.
+  Customizable list virtualizer for advanced usage. See {@link VirtualizerProps} and {@link VirtualizerHandle}.
 -->
 <svelte:element
   this={as}
