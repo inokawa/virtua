@@ -1,4 +1,4 @@
-import{c as E,i as $,h as v,j as F,B as p,H as T,A as H,C as d,G as M,n as L,k as _,D as U,s as W,f as ee,g as te}from"./props-BiVqxi0i.js";import{c as r,V as A,e as R,i as S}from"./Virtualizer-B7j0e1k5.js";var oe=p("<div> </div>"),re=p("<div><div>header</div> <!> <div>footer</div></div>");function q(b,y){E(y,!1);const u=[20,40,180,77],x=Array.from({length:1e3}).map((m,c)=>u[c%4]),l=400;$();var s=re();r(s,"style",`
+import{c as E,i as $,h as v,j as F,B as p,H as T,A as H,C as d,G as M,n as L,k as _,D as U,s as W,f as ee,g as te}from"./props-BiVqxi0i.js";import{c as r,V as A,e as R,i as S}from"./Virtualizer-DEQrYfTk.js";var oe=p("<div> </div>"),re=p("<div><div>header</div> <!> <div>footer</div></div>");function q(b,y){E(y,!1);const u=[20,40,180,77],x=Array.from({length:1e3}).map((m,c)=>u[c%4]),l=400;$();var s=re();r(s,"style",`
   width: 100%;
   height: 100vh;
   overflow-y: auto;
