@@ -123,10 +123,6 @@
     onrangechange,
   }: Props = $props();
 
-  let containerRef: HTMLDivElement | undefined = $state();
-
-  let rerender: StateVersion = $state([]);
-
   const virtualizer = createVirtualizer(
     data.length,
     itemSize,
@@ -141,6 +137,10 @@
       onscrollend && onscrollend();
     }
   );
+
+  let containerRef: HTMLDivElement | undefined = $state();
+
+  let rerender: StateVersion = $state([]);
 
   let range = $derived(rerender && virtualizer[GET_RANGE]());
   let scrollDirection = $derived(
