@@ -53,7 +53,7 @@
   @component
   Virtualized list component. See {@link VListProps} and {@link VListHandle}.
 -->
-<div {...rest} style={`${viewportStyle} ${rest["style"] || ""}`}>
+<div {...rest} style={`${viewportStyle} ${rest.style || ""}`}>
   <Virtualizer
     bind:this={ref}
     {data}
