@@ -1,6 +1,5 @@
 <script lang="ts" generics="T">
-  import { onMount, onDestroy, createEventDispatcher } from "svelte";
-  import type { HTMLAttributes } from "svelte/elements";
+  import { type Snippet, onMount, onDestroy } from "svelte";
   import {
     SCROLL_IDLE,
     type StateVersion,
@@ -24,23 +23,19 @@
     SCROLL_TO,
     SCROLL_TO_INDEX,
   } from "./core";
-  import {
-    onUpdate,
-    type UnwrapCustomEvents,
-    defaultGetKey,
-    styleToString,
-  } from "./utils";
+  import { defaultGetKey, styleToString } from "./utils";
   import ListItem from "./ListItem.svelte";
+  import type { ViewportComponentAttributes } from "./types";
 
-  // https://github.com/sveltejs/rfcs/pull/38
-  interface $$Slots {
-    default: { item: T; index: number };
-  }
-  interface $$Props extends HTMLAttributes<HTMLDivElement> {
+  interface Props extends ViewportComponentAttributes {
     /**
      * The data items rendered by this component.
      */
     data: T[];
+    /**
+     * The elements renderer snippet.
+     */
+    children: Snippet<[{ item: T; index: number }]>;
     /**
      * Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
      * @default defaultGetKey (returns index of item)
@@ -66,37 +61,47 @@
      * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
      */
     horizontal?: boolean;
-  }
-
-  // https://github.com/kitschpatrol/svelte-tweakpane-ui/blob/248fd7c24926af1e485a0676b6a8c053177e92db/src/lib/control/Button.svelte#L50-L51
-  interface $$Events {
     /**
      * Callback invoked whenever scroll offset changes.
      * @param offset Current scrollTop or scrollLeft.
      */
-    scroll: CustomEvent<number>;
+    onscroll?: (offset: number) => void;
     /**
      * Callback invoked when scrolling stops.
      */
-    scrollEnd: CustomEvent<void>;
+    onscrollend?: () => void;
     /**
      * Callback invoked when visible items range changes.
      */
-    rangeChange: CustomEvent<[start: number, end: number]>;
+    onrangechange?: (
+      /**
+       * The start index of viewable items.
+       */
+      startIndex: number,
+      /**
+       * The end index of viewable items.
+       */
+      endIndex: number
+    ) => void;
   }
 
-  export let data: $$Props["data"];
-  export let getKey: NonNullable<$$Props["getKey"]> = defaultGetKey;
-  export let overscan: NonNullable<$$Props["overscan"]> = 4;
-  export let itemSize: $$Props["itemSize"] = undefined;
-  export let shift: NonNullable<$$Props["shift"]> = false;
-  export let horizontal: NonNullable<$$Props["horizontal"]> = false;
+  let {
+    data,
+    getKey = defaultGetKey,
+    overscan = 4,
+    itemSize,
+    shift = false,
+    horizontal = false,
+    children,
+    onscroll,
+    onscrollend,
+    onrangechange,
+    ...rest
+  }: Props = $props();
 
-  let containerRef: HTMLDivElement;
+  let containerRef: HTMLDivElement | undefined = $state();
 
-  let rerender: StateVersion = [];
-
-  const dispatchEvent = createEventDispatcher<UnwrapCustomEvents<$$Events>>();
+  let rerender: StateVersion = $state([]);
 
   const virtualizer = createVirtualizer(
     data.length,
@@ -106,27 +111,31 @@
       rerender = v;
     },
     (offset) => {
-      dispatchEvent("scroll", offset);
+      onscroll && onscroll(offset);
     },
     () => {
-      dispatchEvent("scrollEnd");
+      onscrollend && onscrollend();
     }
   );
 
-  $: range = rerender && virtualizer[GET_RANGE]();
-  $: scrollDirection = rerender && virtualizer[GET_SCROLL_DIRECTION]();
-  $: totalSize = rerender && virtualizer[GET_TOTAL_SIZE]();
-  $: jumpCount = rerender && virtualizer[GET_JUMP_COUNT]();
-  $: extendedRange = getOverscanedRange(
-    range[0],
-    range[1],
-    overscan,
-    scrollDirection,
-    data.length
+  let range = $derived(rerender && virtualizer[GET_RANGE]());
+  let scrollDirection = $derived(
+    rerender && virtualizer[GET_SCROLL_DIRECTION]()
+  );
+  let totalSize = $derived(rerender && virtualizer[GET_TOTAL_SIZE]());
+  let jumpCount = $derived(rerender && virtualizer[GET_JUMP_COUNT]());
+  let extendedRange = $derived(
+    getOverscanedRange(
+      range[0],
+      range[1],
+      overscan,
+      scrollDirection,
+      data.length
+    )
   );
 
   onMount(() => {
-    const root = containerRef.parentElement!;
+    const root = containerRef!.parentElement!;
     virtualizer[ON_MOUNT](root);
   });
   onDestroy(() => {
@@ -134,24 +143,24 @@
   });
 
   let prevLength = data.length;
-  onUpdate(() => {
+  $effect.pre(() => {
     if (prevLength === data.length) return;
     virtualizer[CHANGE_ITEM_LENGTH]((prevLength = data.length), shift);
-  }, true);
+  });
 
   let prevJumpCount: number | undefined;
-  onUpdate(() => {
+  $effect(() => {
     if (prevJumpCount === jumpCount) return;
     prevJumpCount = jumpCount;
     virtualizer[FIX_SCROLL_JUMP]();
   });
 
   let prevRange: typeof range | undefined;
-  onUpdate(() => {
+  $effect(() => {
     if (prevRange && prevRange[0] === range[0] && prevRange[1] === range[1])
       return;
     prevRange = range;
-    dispatchEvent("rangeChange", [range[0], range[1]]);
+    onrangechange && onrangechange(range[0], range[1]);
   });
 
   /**
@@ -183,15 +192,14 @@
    */
   export const scrollBy = virtualizer[SCROLL_BY];
 
-  let items: T[];
-  $: {
+  let items = $derived.by(() => {
     const [startIndex, endIndex] = extendedRange;
     const newItems: T[] = [];
     for (let i = startIndex, j = endIndex; i <= j; i++) {
       newItems.push(data[i]!);
     }
-    items = newItems;
-  }
+    return newItems;
+  });
 
   const viewportStyle = styleToString({
     display: horizontal ? "inline-block" : "block",
@@ -209,18 +217,20 @@
     visibility: "hidden", // TODO replace with other optimization methods
   });
 
-  $: dynamicContainerStyle = styleToString({
-    width: horizontal ? totalSize + "px" : "100%",
-    height: horizontal ? "100%" : totalSize + "px",
-    "pointer-events": scrollDirection !== SCROLL_IDLE ? "none" : undefined,
-  });
+  let dynamicContainerStyle = $derived(
+    styleToString({
+      width: horizontal ? totalSize + "px" : "100%",
+      height: horizontal ? "100%" : totalSize + "px",
+      "pointer-events": scrollDirection !== SCROLL_IDLE ? "none" : undefined,
+    })
+  );
 </script>
 
 <!-- 
   @component
   Virtualized list component.
 -->
-<div {...$$restProps} style={`${viewportStyle} ${$$restProps["style"] || ""}`}>
+<div {...rest} style={`${viewportStyle} ${rest["style"] || ""}`}>
   <div
     bind:this={containerRef}
     style={`${containerStyle} ${dynamicContainerStyle}`}
@@ -228,14 +238,14 @@
     {#each items as item, i (getKey(item, i + extendedRange[0]))}
       {@const index = i + extendedRange[0]}
       <ListItem
+        {children}
+        {item}
         {index}
         offset={rerender && virtualizer[GET_ITEM_OFFSET](index)}
         hide={rerender && virtualizer[IS_ITEM_HIDDEN](index)}
         {horizontal}
         resizer={virtualizer[OBSERVE_ITEM_RESIZE]}
-      >
-        <slot {item} {index} />
-      </ListItem>
+      />
     {/each}
   </div>
 </div>
