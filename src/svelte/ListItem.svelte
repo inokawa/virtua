@@ -2,10 +2,12 @@
   import { type Snippet, onDestroy } from "svelte";
   import { isRTLDocument, type ItemResizeObserver } from "./core";
   import { styleToString } from "./utils";
+  import type { SvelteHTMLElements } from "svelte/elements";
 
   interface Props {
     children: Snippet<[{ item: T; index: number }]>;
     item: T;
+    as: keyof SvelteHTMLElements | undefined;
     index: number;
     offset: number;
     hide: boolean;
@@ -13,8 +15,16 @@
     resizer: ItemResizeObserver;
   }
 
-  let { children, item, index, offset, hide, horizontal, resizer }: Props =
-    $props();
+  let {
+    children,
+    item,
+    as = "div",
+    index,
+    offset,
+    hide,
+    horizontal,
+    resizer,
+  }: Props = $props();
 
   let elementRef: HTMLDivElement;
 
@@ -47,6 +57,6 @@
   });
 </script>
 
-<div bind:this={elementRef} {style}>
+<svelte:element this={as} bind:this={elementRef} {style}>
   {@render children({ item, index })}
-</div>
+</svelte:element>
