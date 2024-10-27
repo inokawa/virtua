@@ -14,7 +14,7 @@ Props of customized cell component for [VGrid](../functions/experimental_VGrid.m
 
 #### Defined in
 
-[src/react/VGrid.tsx:35](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/react/VGrid.tsx#L35)
+[src/react/VGrid.tsx:35](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/react/VGrid.tsx#L35)
 
 ***
 
@@ -24,4 +24,4 @@ Props of customized cell component for [VGrid](../functions/experimental_VGrid.m
 
 #### Defined in
 
-[src/react/VGrid.tsx:36](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/react/VGrid.tsx#L36)
+[src/react/VGrid.tsx:36](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/react/VGrid.tsx#L36)

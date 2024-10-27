@@ -38,7 +38,7 @@ The elements renderer function.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:89](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/solid/Virtualizer.tsx#L89)
+[src/solid/Virtualizer.tsx:89](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/solid/Virtualizer.tsx#L89)
 
 ***
 
@@ -64,7 +64,7 @@ Current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:132](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/solid/Virtualizer.tsx#L132)
+[src/solid/Virtualizer.tsx:132](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/solid/Virtualizer.tsx#L132)
 
 ***
 
@@ -88,7 +88,7 @@ Get reference to [VirtualizerHandle](VirtualizerHandle.md).
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:81](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/solid/Virtualizer.tsx#L81)
+[src/solid/Virtualizer.tsx:81](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/solid/Virtualizer.tsx#L81)
 
 ***
 
@@ -104,7 +104,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:119](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/solid/Virtualizer.tsx#L119)
+[src/solid/Virtualizer.tsx:119](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/solid/Virtualizer.tsx#L119)
 
 ***
 
@@ -120,7 +120,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:85](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/solid/Virtualizer.tsx#L85)
+[src/solid/Virtualizer.tsx:85](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/solid/Virtualizer.tsx#L85)
 
 ***
 
@@ -142,7 +142,7 @@ Number of items to render above/below the visible bounds of the list. Lower valu
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:94](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/solid/Virtualizer.tsx#L94)
+[src/solid/Virtualizer.tsx:94](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/solid/Virtualizer.tsx#L94)
 
 ***
 
@@ -161,7 +161,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:115](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/solid/Virtualizer.tsx#L115)
+[src/solid/Virtualizer.tsx:115](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/solid/Virtualizer.tsx#L115)
 
 ***
 
@@ -177,7 +177,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:123](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/solid/Virtualizer.tsx#L123)
+[src/solid/Virtualizer.tsx:123](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/solid/Virtualizer.tsx#L123)
 
 ***
 
@@ -197,7 +197,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:136](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/solid/Virtualizer.tsx#L136)
+[src/solid/Virtualizer.tsx:136](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/solid/Virtualizer.tsx#L136)
 
 ***
 
@@ -227,7 +227,7 @@ The end index of viewable items.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:140](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/solid/Virtualizer.tsx#L140)
+[src/solid/Virtualizer.tsx:140](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/solid/Virtualizer.tsx#L140)
 
 ***
 
@@ -241,7 +241,7 @@ The end index of viewable items.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:728
+node\_modules/solid-js/types/jsx.d.ts:899
 
 ***
 
@@ -255,7 +255,7 @@ node\_modules/solid-js/types/jsx.d.ts:728
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:638
+node\_modules/solid-js/types/jsx.d.ts:808
 
 ***
 
@@ -269,13 +269,13 @@ node\_modules/solid-js/types/jsx.d.ts:638
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:758
+node\_modules/solid-js/types/jsx.d.ts:939
 
 ***
 
 ### onKeyDown?
 
-> `optional` **onKeyDown**: `EventHandlerUnion`\<`HTMLElement`, `KeyboardEvent`\>
+> `optional` **onKeyDown**: `EventHandlerUnion`\<`HTMLElement`, `KeyboardEvent`, `EventHandler`\<`HTMLElement`, `KeyboardEvent`\>\>
 
 #### Inherited from
 
@@ -283,13 +283,13 @@ node\_modules/solid-js/types/jsx.d.ts:758
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:247
+node\_modules/solid-js/types/jsx.d.ts:255
 
 ***
 
 ### onWheel?
 
-> `optional` **onWheel**: `EventHandlerUnion`\<`HTMLElement`, `WheelEvent`\>
+> `optional` **onWheel**: `EventHandlerUnion`\<`HTMLElement`, `WheelEvent`, `EventHandler`\<`HTMLElement`, `WheelEvent`\>\>
 
 #### Inherited from
 
@@ -297,7 +297,7 @@ node\_modules/solid-js/types/jsx.d.ts:247
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:301
+node\_modules/solid-js/types/jsx.d.ts:304
 
 ***
 
@@ -311,7 +311,7 @@ node\_modules/solid-js/types/jsx.d.ts:301
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:722
+node\_modules/solid-js/types/jsx.d.ts:893
 
 ***
 
@@ -319,7 +319,8 @@ node\_modules/solid-js/types/jsx.d.ts:722
 
 > `optional` **aria-activedescendant**: `string`
 
-Identifies the currently active element when DOM focus is on a composite widget, textbox, group, or application.
+Identifies the currently active element when DOM focus is on a composite widget, textbox,
+group, or application.
 
 #### Inherited from
 
@@ -327,7 +328,7 @@ Identifies the currently active element when DOM focus is on a composite widget,
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:445
+node\_modules/solid-js/types/jsx.d.ts:533
 
 ***
 
@@ -335,7 +336,8 @@ node\_modules/solid-js/types/jsx.d.ts:445
 
 > `optional` **aria-atomic**: `boolean` \| `"false"` \| `"true"`
 
-Indicates whether assistive technologies will present all, or only parts of, the changed region based on the change notifications defined by the aria-relevant attribute.
+Indicates whether assistive technologies will present all, or only parts of, the changed
+region based on the change notifications defined by the aria-relevant attribute.
 
 #### Inherited from
 
@@ -343,7 +345,7 @@ Indicates whether assistive technologies will present all, or only parts of, the
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:447
+node\_modules/solid-js/types/jsx.d.ts:538
 
 ***
 
@@ -351,8 +353,9 @@ node\_modules/solid-js/types/jsx.d.ts:447
 
 > `optional` **aria-autocomplete**: `"inline"` \| `"none"` \| `"both"` \| `"list"`
 
-Indicates whether inputting text could trigger display of one or more predictions of the user's intended value for an input and specifies how predictions would be
-presented if they are made.
+Indicates whether inputting text could trigger display of one or more predictions of the
+user's intended value for an input and specifies how predictions would be presented if they
+are made.
 
 #### Inherited from
 
@@ -360,7 +363,7 @@ presented if they are made.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:452
+node\_modules/solid-js/types/jsx.d.ts:544
 
 ***
 
@@ -368,7 +371,8 @@ node\_modules/solid-js/types/jsx.d.ts:452
 
 > `optional` **aria-busy**: `boolean` \| `"false"` \| `"true"`
 
-Indicates an element is being modified and that assistive technologies MAY want to wait until the modifications are complete before exposing them to the user.
+Indicates an element is being modified and that assistive technologies MAY want to wait until
+the modifications are complete before exposing them to the user.
 
 #### Inherited from
 
@@ -376,7 +380,7 @@ Indicates an element is being modified and that assistive technologies MAY want 
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:454
+node\_modules/solid-js/types/jsx.d.ts:549
 
 ***
 
@@ -397,7 +401,7 @@ Indicates the current "checked" state of checkboxes, radio buttons, and other wi
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:459
+node\_modules/solid-js/types/jsx.d.ts:555
 
 ***
 
@@ -417,7 +421,7 @@ aria-colindex.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:464
+node\_modules/solid-js/types/jsx.d.ts:561
 
 ***
 
@@ -425,7 +429,8 @@ node\_modules/solid-js/types/jsx.d.ts:464
 
 > `optional` **aria-colindex**: `string` \| `number`
 
-Defines an element's column index or position with respect to the total number of columns within a table, grid, or treegrid.
+Defines an element's column index or position with respect to the total number of columns
+within a table, grid, or treegrid.
 
 #### See
 
@@ -438,7 +443,7 @@ Defines an element's column index or position with respect to the total number o
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:469
+node\_modules/solid-js/types/jsx.d.ts:568
 
 ***
 
@@ -446,7 +451,8 @@ node\_modules/solid-js/types/jsx.d.ts:469
 
 > `optional` **aria-colspan**: `string` \| `number`
 
-Defines the number of columns spanned by a cell or gridcell within a table, grid, or treegrid.
+Defines the number of columns spanned by a cell or gridcell within a table, grid, or
+treegrid.
 
 #### See
 
@@ -459,7 +465,7 @@ Defines the number of columns spanned by a cell or gridcell within a table, grid
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:474
+node\_modules/solid-js/types/jsx.d.ts:575
 
 ***
 
@@ -467,7 +473,8 @@ node\_modules/solid-js/types/jsx.d.ts:474
 
 > `optional` **aria-controls**: `string`
 
-Identifies the element (or elements) whose contents or presence are controlled by the current element.
+Identifies the element (or elements) whose contents or presence are controlled by the current
+element.
 
 #### See
 
@@ -479,7 +486,7 @@ aria-owns.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:479
+node\_modules/solid-js/types/jsx.d.ts:582
 
 ***
 
@@ -487,7 +494,8 @@ node\_modules/solid-js/types/jsx.d.ts:479
 
 > `optional` **aria-current**: `boolean` \| `"time"` \| `"page"` \| `"false"` \| `"true"` \| `"location"` \| `"date"` \| `"step"`
 
-Indicates the element that represents the current item within a container or set of related elements.
+Indicates the element that represents the current item within a container or set of related
+elements.
 
 #### Inherited from
 
@@ -495,7 +503,7 @@ Indicates the element that represents the current item within a container or set
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:481
+node\_modules/solid-js/types/jsx.d.ts:587
 
 ***
 
@@ -515,7 +523,7 @@ aria-labelledby
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:486
+node\_modules/solid-js/types/jsx.d.ts:602
 
 ***
 
@@ -535,7 +543,7 @@ aria-describedby.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:491
+node\_modules/solid-js/types/jsx.d.ts:608
 
 ***
 
@@ -543,7 +551,8 @@ node\_modules/solid-js/types/jsx.d.ts:491
 
 > `optional` **aria-disabled**: `boolean` \| `"false"` \| `"true"`
 
-Indicates that the element is perceivable but disabled, so it is not editable or otherwise operable.
+Indicates that the element is perceivable but disabled, so it is not editable or otherwise
+operable.
 
 #### See
 
@@ -556,7 +565,7 @@ Indicates that the element is perceivable but disabled, so it is not editable or
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:496
+node\_modules/solid-js/types/jsx.d.ts:615
 
 ***
 
@@ -564,11 +573,12 @@ node\_modules/solid-js/types/jsx.d.ts:496
 
 > `optional` **aria-dropeffect**: `"copy"` \| `"none"` \| `"link"` \| `"move"` \| `"execute"` \| `"popup"`
 
-Indicates what functions can be performed when a dragged object is released on the drop target.
+Indicates what functions can be performed when a dragged object is released on the drop
+target.
 
 #### Deprecated
 
-in ARIA 1.1
+In ARIA 1.1
 
 #### Inherited from
 
@@ -576,7 +586,7 @@ in ARIA 1.1
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:501
+node\_modules/solid-js/types/jsx.d.ts:622
 
 ***
 
@@ -597,7 +607,7 @@ Identifies the element that provides an error message for the object.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:506
+node\_modules/solid-js/types/jsx.d.ts:628
 
 ***
 
@@ -605,7 +615,8 @@ node\_modules/solid-js/types/jsx.d.ts:506
 
 > `optional` **aria-expanded**: `boolean` \| `"false"` \| `"true"`
 
-Indicates whether the element, or another grouping element it controls, is currently expanded or collapsed.
+Indicates whether the element, or another grouping element it controls, is currently expanded
+or collapsed.
 
 #### Inherited from
 
@@ -613,7 +624,7 @@ Indicates whether the element, or another grouping element it controls, is curre
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:508
+node\_modules/solid-js/types/jsx.d.ts:633
 
 ***
 
@@ -621,8 +632,9 @@ node\_modules/solid-js/types/jsx.d.ts:508
 
 > `optional` **aria-flowto**: `string`
 
-Identifies the next element (or elements) in an alternate reading order of content which, at the user's discretion,
-allows assistive technology to override the general default of reading in document source order.
+Identifies the next element (or elements) in an alternate reading order of content which, at
+the user's discretion, allows assistive technology to override the general default of reading
+in document source order.
 
 #### Inherited from
 
@@ -630,7 +642,7 @@ allows assistive technology to override the general default of reading in docume
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:513
+node\_modules/solid-js/types/jsx.d.ts:639
 
 ***
 
@@ -642,7 +654,7 @@ Indicates an element's "grabbed" state in a drag-and-drop operation.
 
 #### Deprecated
 
-in ARIA 1.1
+In ARIA 1.1
 
 #### Inherited from
 
@@ -650,7 +662,7 @@ in ARIA 1.1
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:518
+node\_modules/solid-js/types/jsx.d.ts:645
 
 ***
 
@@ -658,7 +670,8 @@ node\_modules/solid-js/types/jsx.d.ts:518
 
 > `optional` **aria-haspopup**: `boolean` \| `"grid"` \| `"dialog"` \| `"menu"` \| `"listbox"` \| `"false"` \| `"true"` \| `"tree"`
 
-Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by an element.
+Indicates the availability and type of interactive popup element, such as menu or dialog,
+that can be triggered by an element.
 
 #### Inherited from
 
@@ -666,7 +679,7 @@ Indicates the availability and type of interactive popup element, such as menu o
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:520
+node\_modules/solid-js/types/jsx.d.ts:650
 
 ***
 
@@ -686,7 +699,7 @@ aria-disabled.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:525
+node\_modules/solid-js/types/jsx.d.ts:665
 
 ***
 
@@ -706,7 +719,7 @@ aria-errormessage.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:530
+node\_modules/solid-js/types/jsx.d.ts:671
 
 ***
 
@@ -714,7 +727,8 @@ node\_modules/solid-js/types/jsx.d.ts:530
 
 > `optional` **aria-keyshortcuts**: `string`
 
-Indicates keyboard shortcuts that an author has implemented to activate or give focus to an element.
+Indicates keyboard shortcuts that an author has implemented to activate or give focus to an
+element.
 
 #### Inherited from
 
@@ -722,7 +736,7 @@ Indicates keyboard shortcuts that an author has implemented to activate or give 
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:532
+node\_modules/solid-js/types/jsx.d.ts:676
 
 ***
 
@@ -742,7 +756,7 @@ aria-labelledby.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:537
+node\_modules/solid-js/types/jsx.d.ts:682
 
 ***
 
@@ -762,7 +776,7 @@ aria-describedby.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:542
+node\_modules/solid-js/types/jsx.d.ts:688
 
 ***
 
@@ -778,7 +792,7 @@ Defines the hierarchical level of an element within a structure.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:544
+node\_modules/solid-js/types/jsx.d.ts:690
 
 ***
 
@@ -786,7 +800,8 @@ node\_modules/solid-js/types/jsx.d.ts:544
 
 > `optional` **aria-live**: `"off"` \| `"assertive"` \| `"polite"`
 
-Indicates that an element will be updated, and describes the types of updates the user agents, assistive technologies, and user can expect from the live region.
+Indicates that an element will be updated, and describes the types of updates the user
+agents, assistive technologies, and user can expect from the live region.
 
 #### Inherited from
 
@@ -794,7 +809,7 @@ Indicates that an element will be updated, and describes the types of updates th
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:546
+node\_modules/solid-js/types/jsx.d.ts:695
 
 ***
 
@@ -810,7 +825,7 @@ Indicates whether an element is modal when displayed.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:548
+node\_modules/solid-js/types/jsx.d.ts:697
 
 ***
 
@@ -826,7 +841,7 @@ Indicates whether a text box accepts multiple lines of input or only a single li
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:550
+node\_modules/solid-js/types/jsx.d.ts:699
 
 ***
 
@@ -834,7 +849,8 @@ node\_modules/solid-js/types/jsx.d.ts:550
 
 > `optional` **aria-multiselectable**: `boolean` \| `"false"` \| `"true"`
 
-Indicates that the user may select more than one item from the current selectable descendants.
+Indicates that the user may select more than one item from the current selectable
+descendants.
 
 #### Inherited from
 
@@ -842,7 +858,7 @@ Indicates that the user may select more than one item from the current selectabl
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:552
+node\_modules/solid-js/types/jsx.d.ts:704
 
 ***
 
@@ -858,7 +874,7 @@ Indicates whether the element's orientation is horizontal, vertical, or unknown/
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:554
+node\_modules/solid-js/types/jsx.d.ts:706
 
 ***
 
@@ -866,8 +882,9 @@ node\_modules/solid-js/types/jsx.d.ts:554
 
 > `optional` **aria-owns**: `string`
 
-Identifies an element (or elements) in order to define a visual, functional, or contextual parent/child relationship
-between DOM elements where the DOM hierarchy cannot be used to represent the relationship.
+Identifies an element (or elements) in order to define a visual, functional, or contextual
+parent/child relationship between DOM elements where the DOM hierarchy cannot be used to
+represent the relationship.
 
 #### See
 
@@ -879,7 +896,7 @@ aria-controls.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:560
+node\_modules/solid-js/types/jsx.d.ts:714
 
 ***
 
@@ -887,8 +904,9 @@ node\_modules/solid-js/types/jsx.d.ts:560
 
 > `optional` **aria-placeholder**: `string`
 
-Defines a short hint (a word or short phrase) intended to aid the user with data entry when the control has no value.
-A hint could be a sample value or a brief description of the expected format.
+Defines a short hint (a word or short phrase) intended to aid the user with data entry when
+the control has no value. A hint could be a sample value or a brief description of the
+expected format.
 
 #### Inherited from
 
@@ -896,7 +914,7 @@ A hint could be a sample value or a brief description of the expected format.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:565
+node\_modules/solid-js/types/jsx.d.ts:720
 
 ***
 
@@ -904,7 +922,8 @@ node\_modules/solid-js/types/jsx.d.ts:565
 
 > `optional` **aria-posinset**: `string` \| `number`
 
-Defines an element's number or position in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.
+Defines an element's number or position in the current set of listitems or treeitems. Not
+required if all elements in the set are present in the DOM.
 
 #### See
 
@@ -916,7 +935,7 @@ aria-setsize.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:570
+node\_modules/solid-js/types/jsx.d.ts:727
 
 ***
 
@@ -937,7 +956,7 @@ Indicates the current "pressed" state of toggle buttons.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:575
+node\_modules/solid-js/types/jsx.d.ts:733
 
 ***
 
@@ -957,7 +976,7 @@ aria-disabled.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:580
+node\_modules/solid-js/types/jsx.d.ts:739
 
 ***
 
@@ -965,7 +984,8 @@ node\_modules/solid-js/types/jsx.d.ts:580
 
 > `optional` **aria-relevant**: `"text"` \| `"all"` \| `"additions"` \| `"additions removals"` \| `"additions text"` \| `"removals"` \| `"removals additions"` \| `"removals text"` \| `"text additions"` \| `"text removals"`
 
-Indicates what notifications the user agent will trigger when the accessibility tree within a live region is modified.
+Indicates what notifications the user agent will trigger when the accessibility tree within a
+live region is modified.
 
 #### See
 
@@ -977,7 +997,7 @@ aria-atomic.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:585
+node\_modules/solid-js/types/jsx.d.ts:746
 
 ***
 
@@ -993,7 +1013,7 @@ Indicates that user input is required on the element before a form may be submit
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:597
+node\_modules/solid-js/types/jsx.d.ts:759
 
 ***
 
@@ -1009,7 +1029,7 @@ Defines a human-readable, author-localized description for the role of an elemen
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:599
+node\_modules/solid-js/types/jsx.d.ts:761
 
 ***
 
@@ -1029,7 +1049,7 @@ aria-rowindex.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:604
+node\_modules/solid-js/types/jsx.d.ts:767
 
 ***
 
@@ -1037,7 +1057,8 @@ node\_modules/solid-js/types/jsx.d.ts:604
 
 > `optional` **aria-rowindex**: `string` \| `number`
 
-Defines an element's row index or position with respect to the total number of rows within a table, grid, or treegrid.
+Defines an element's row index or position with respect to the total number of rows within a
+table, grid, or treegrid.
 
 #### See
 
@@ -1050,7 +1071,7 @@ Defines an element's row index or position with respect to the total number of r
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:609
+node\_modules/solid-js/types/jsx.d.ts:774
 
 ***
 
@@ -1071,7 +1092,7 @@ Defines the number of rows spanned by a cell or gridcell within a table, grid, o
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:614
+node\_modules/solid-js/types/jsx.d.ts:780
 
 ***
 
@@ -1092,7 +1113,7 @@ Indicates the current "selected" state of various widgets.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:619
+node\_modules/solid-js/types/jsx.d.ts:786
 
 ***
 
@@ -1100,7 +1121,8 @@ node\_modules/solid-js/types/jsx.d.ts:619
 
 > `optional` **aria-setsize**: `string` \| `number`
 
-Defines the number of items in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.
+Defines the number of items in the current set of listitems or treeitems. Not required if all
+elements in the set are present in the DOM.
 
 #### See
 
@@ -1112,7 +1134,7 @@ aria-posinset.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:624
+node\_modules/solid-js/types/jsx.d.ts:793
 
 ***
 
@@ -1128,7 +1150,7 @@ Indicates if items in a table or grid are sorted in ascending or descending orde
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:626
+node\_modules/solid-js/types/jsx.d.ts:795
 
 ***
 
@@ -1144,7 +1166,7 @@ Defines the maximum allowed value for a range widget.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:628
+node\_modules/solid-js/types/jsx.d.ts:797
 
 ***
 
@@ -1160,7 +1182,7 @@ Defines the minimum allowed value for a range widget.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:630
+node\_modules/solid-js/types/jsx.d.ts:799
 
 ***
 
@@ -1180,7 +1202,7 @@ aria-valuetext.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:635
+node\_modules/solid-js/types/jsx.d.ts:805
 
 ***
 
@@ -1196,7 +1218,7 @@ Defines the human readable text alternative of aria-valuenow for a range widget.
 
 #### Defined in
 
-node\_modules/solid-js/types/jsx.d.ts:637
+node\_modules/solid-js/types/jsx.d.ts:807
 
 ***
 
@@ -1210,4 +1232,4 @@ node\_modules/solid-js/types/jsx.d.ts:637
 
 #### Defined in
 
-[src/solid/types.ts:7](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/solid/types.ts#L7)
+[src/solid/types.ts:7](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/solid/types.ts#L7)

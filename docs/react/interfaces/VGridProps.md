@@ -36,7 +36,7 @@ column index of cell
 
 #### Defined in
 
-[src/react/VGrid.tsx:154](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/react/VGrid.tsx#L154)
+[src/react/VGrid.tsx:154](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/react/VGrid.tsx#L154)
 
 ***
 
@@ -48,7 +48,7 @@ Total row length of grid.
 
 #### Defined in
 
-[src/react/VGrid.tsx:167](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/react/VGrid.tsx#L167)
+[src/react/VGrid.tsx:167](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/react/VGrid.tsx#L167)
 
 ***
 
@@ -60,7 +60,7 @@ Total column length of grid.
 
 #### Defined in
 
-[src/react/VGrid.tsx:171](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/react/VGrid.tsx#L171)
+[src/react/VGrid.tsx:171](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/react/VGrid.tsx#L171)
 
 ***
 
@@ -78,7 +78,7 @@ Cell height hint for unmeasured items. It's recommended to specify this prop if 
 
 #### Defined in
 
-[src/react/VGrid.tsx:176](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/react/VGrid.tsx#L176)
+[src/react/VGrid.tsx:176](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/react/VGrid.tsx#L176)
 
 ***
 
@@ -96,7 +96,7 @@ Cell width hint for unmeasured items. It's recommended to specify this prop if i
 
 #### Defined in
 
-[src/react/VGrid.tsx:181](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/react/VGrid.tsx#L181)
+[src/react/VGrid.tsx:181](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/react/VGrid.tsx#L181)
 
 ***
 
@@ -114,7 +114,7 @@ Number of items to render above/below the visible bounds of the grid. Lower valu
 
 #### Defined in
 
-[src/react/VGrid.tsx:186](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/react/VGrid.tsx#L186)
+[src/react/VGrid.tsx:186](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/react/VGrid.tsx#L186)
 
 ***
 
@@ -126,7 +126,7 @@ If set, the specified amount of rows will be mounted in the initial rendering re
 
 #### Defined in
 
-[src/react/VGrid.tsx:190](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/react/VGrid.tsx#L190)
+[src/react/VGrid.tsx:190](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/react/VGrid.tsx#L190)
 
 ***
 
@@ -138,7 +138,7 @@ If set, the specified amount of cols will be mounted in the initial rendering re
 
 #### Defined in
 
-[src/react/VGrid.tsx:194](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/react/VGrid.tsx#L194)
+[src/react/VGrid.tsx:194](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/react/VGrid.tsx#L194)
 
 ***
 
@@ -156,7 +156,7 @@ Component or element type for cell element. This component will get [CustomCellC
 
 #### Defined in
 
-[src/react/VGrid.tsx:199](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/react/VGrid.tsx#L199)
+[src/react/VGrid.tsx:199](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/react/VGrid.tsx#L199)
 
 ***
 
@@ -170,7 +170,7 @@ Component or element type for cell element. This component will get [CustomCellC
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2897
+node\_modules/@types/react/index.d.ts:2904
 
 ***
 
@@ -184,7 +184,7 @@ node\_modules/@types/react/index.d.ts:2897
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2908
+node\_modules/@types/react/index.d.ts:2916
 
 ***
 
@@ -198,7 +198,7 @@ node\_modules/@types/react/index.d.ts:2908
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2903
+node\_modules/@types/react/index.d.ts:2911
 
 ***
 
@@ -212,7 +212,7 @@ node\_modules/@types/react/index.d.ts:2903
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2917
+node\_modules/@types/react/index.d.ts:2925
 
 ***
 
@@ -226,7 +226,7 @@ node\_modules/@types/react/index.d.ts:2917
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2909
+node\_modules/@types/react/index.d.ts:2917
 
 ***
 
@@ -240,7 +240,7 @@ node\_modules/@types/react/index.d.ts:2909
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2429
+node\_modules/@types/react/index.d.ts:2435
 
 ***
 
@@ -254,7 +254,7 @@ node\_modules/@types/react/index.d.ts:2429
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2563
+node\_modules/@types/react/index.d.ts:2569
 
 ***
 
@@ -270,7 +270,7 @@ Identifies the currently active element when DOM focus is on a composite widget,
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2593
+node\_modules/@types/react/index.d.ts:2599
 
 ***
 
@@ -286,7 +286,7 @@ Indicates whether assistive technologies will present all, or only parts of, the
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2595
+node\_modules/@types/react/index.d.ts:2601
 
 ***
 
@@ -303,7 +303,7 @@ presented if they are made.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2600
+node\_modules/@types/react/index.d.ts:2606
 
 ***
 
@@ -323,7 +323,7 @@ aria-label.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2606
+node\_modules/@types/react/index.d.ts:2612
 
 ***
 
@@ -343,7 +343,7 @@ aria-roledescription.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2611
+node\_modules/@types/react/index.d.ts:2617
 
 ***
 
@@ -357,7 +357,7 @@ node\_modules/@types/react/index.d.ts:2611
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2612
+node\_modules/@types/react/index.d.ts:2618
 
 ***
 
@@ -378,7 +378,7 @@ Indicates the current "checked" state of checkboxes, radio buttons, and other wi
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2617
+node\_modules/@types/react/index.d.ts:2623
 
 ***
 
@@ -398,7 +398,7 @@ aria-colindex.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2622
+node\_modules/@types/react/index.d.ts:2628
 
 ***
 
@@ -419,7 +419,7 @@ Defines an element's column index or position with respect to the total number o
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2627
+node\_modules/@types/react/index.d.ts:2633
 
 ***
 
@@ -439,7 +439,7 @@ aria-rowindextext.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2632
+node\_modules/@types/react/index.d.ts:2638
 
 ***
 
@@ -460,7 +460,7 @@ Defines the number of columns spanned by a cell or gridcell within a table, grid
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2637
+node\_modules/@types/react/index.d.ts:2643
 
 ***
 
@@ -480,7 +480,7 @@ aria-owns.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2642
+node\_modules/@types/react/index.d.ts:2648
 
 ***
 
@@ -496,7 +496,7 @@ Indicates the element that represents the current item within a container or set
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2644
+node\_modules/@types/react/index.d.ts:2650
 
 ***
 
@@ -516,7 +516,7 @@ aria-labelledby
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2649
+node\_modules/@types/react/index.d.ts:2655
 
 ***
 
@@ -536,7 +536,7 @@ related aria-describedby.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2654
+node\_modules/@types/react/index.d.ts:2660
 
 ***
 
@@ -556,7 +556,7 @@ aria-describedby.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2659
+node\_modules/@types/react/index.d.ts:2665
 
 ***
 
@@ -577,7 +577,7 @@ Indicates that the element is perceivable but disabled, so it is not editable or
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2664
+node\_modules/@types/react/index.d.ts:2670
 
 ***
 
@@ -597,7 +597,7 @@ in ARIA 1.1
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2669
+node\_modules/@types/react/index.d.ts:2675
 
 ***
 
@@ -618,7 +618,7 @@ Identifies the element that provides an error message for the object.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2674
+node\_modules/@types/react/index.d.ts:2680
 
 ***
 
@@ -634,7 +634,7 @@ Indicates whether the element, or another grouping element it controls, is curre
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2676
+node\_modules/@types/react/index.d.ts:2682
 
 ***
 
@@ -651,7 +651,7 @@ allows assistive technology to override the general default of reading in docume
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2681
+node\_modules/@types/react/index.d.ts:2687
 
 ***
 
@@ -671,7 +671,7 @@ in ARIA 1.1
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2686
+node\_modules/@types/react/index.d.ts:2692
 
 ***
 
@@ -687,7 +687,7 @@ Indicates the availability and type of interactive popup element, such as menu o
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2688
+node\_modules/@types/react/index.d.ts:2694
 
 ***
 
@@ -707,7 +707,7 @@ aria-disabled.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2693
+node\_modules/@types/react/index.d.ts:2699
 
 ***
 
@@ -727,7 +727,7 @@ aria-errormessage.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2698
+node\_modules/@types/react/index.d.ts:2704
 
 ***
 
@@ -743,7 +743,7 @@ Indicates keyboard shortcuts that an author has implemented to activate or give 
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2700
+node\_modules/@types/react/index.d.ts:2706
 
 ***
 
@@ -763,7 +763,7 @@ aria-labelledby.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2705
+node\_modules/@types/react/index.d.ts:2711
 
 ***
 
@@ -783,7 +783,7 @@ aria-describedby.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2710
+node\_modules/@types/react/index.d.ts:2716
 
 ***
 
@@ -799,7 +799,7 @@ Defines the hierarchical level of an element within a structure.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2712
+node\_modules/@types/react/index.d.ts:2718
 
 ***
 
@@ -815,7 +815,7 @@ Indicates that an element will be updated, and describes the types of updates th
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2714
+node\_modules/@types/react/index.d.ts:2720
 
 ***
 
@@ -831,7 +831,7 @@ Indicates whether an element is modal when displayed.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2716
+node\_modules/@types/react/index.d.ts:2722
 
 ***
 
@@ -847,7 +847,7 @@ Indicates whether a text box accepts multiple lines of input or only a single li
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2718
+node\_modules/@types/react/index.d.ts:2724
 
 ***
 
@@ -863,7 +863,7 @@ Indicates that the user may select more than one item from the current selectabl
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2720
+node\_modules/@types/react/index.d.ts:2726
 
 ***
 
@@ -879,7 +879,7 @@ Indicates whether the element's orientation is horizontal, vertical, or unknown/
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2722
+node\_modules/@types/react/index.d.ts:2728
 
 ***
 
@@ -900,7 +900,7 @@ aria-controls.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2728
+node\_modules/@types/react/index.d.ts:2734
 
 ***
 
@@ -917,7 +917,7 @@ A hint could be a sample value or a brief description of the expected format.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2733
+node\_modules/@types/react/index.d.ts:2739
 
 ***
 
@@ -937,7 +937,7 @@ aria-setsize.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2738
+node\_modules/@types/react/index.d.ts:2744
 
 ***
 
@@ -958,7 +958,7 @@ Indicates the current "pressed" state of toggle buttons.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2743
+node\_modules/@types/react/index.d.ts:2749
 
 ***
 
@@ -978,7 +978,7 @@ aria-disabled.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2748
+node\_modules/@types/react/index.d.ts:2754
 
 ***
 
@@ -998,7 +998,7 @@ aria-atomic.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2753
+node\_modules/@types/react/index.d.ts:2759
 
 ***
 
@@ -1014,7 +1014,7 @@ Indicates that user input is required on the element before a form may be submit
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2766
+node\_modules/@types/react/index.d.ts:2772
 
 ***
 
@@ -1030,7 +1030,7 @@ Defines a human-readable, author-localized description for the role of an elemen
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2768
+node\_modules/@types/react/index.d.ts:2774
 
 ***
 
@@ -1050,7 +1050,7 @@ aria-rowindex.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2773
+node\_modules/@types/react/index.d.ts:2779
 
 ***
 
@@ -1071,7 +1071,7 @@ Defines an element's row index or position with respect to the total number of r
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2778
+node\_modules/@types/react/index.d.ts:2784
 
 ***
 
@@ -1091,7 +1091,7 @@ aria-colindextext.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2783
+node\_modules/@types/react/index.d.ts:2789
 
 ***
 
@@ -1112,7 +1112,7 @@ Defines the number of rows spanned by a cell or gridcell within a table, grid, o
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2788
+node\_modules/@types/react/index.d.ts:2794
 
 ***
 
@@ -1133,7 +1133,7 @@ Indicates the current "selected" state of various widgets.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2793
+node\_modules/@types/react/index.d.ts:2799
 
 ***
 
@@ -1153,7 +1153,7 @@ aria-posinset.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2798
+node\_modules/@types/react/index.d.ts:2804
 
 ***
 
@@ -1169,7 +1169,7 @@ Indicates if items in a table or grid are sorted in ascending or descending orde
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2800
+node\_modules/@types/react/index.d.ts:2806
 
 ***
 
@@ -1185,7 +1185,7 @@ Defines the maximum allowed value for a range widget.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2802
+node\_modules/@types/react/index.d.ts:2808
 
 ***
 
@@ -1201,7 +1201,7 @@ Defines the minimum allowed value for a range widget.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2804
+node\_modules/@types/react/index.d.ts:2810
 
 ***
 
@@ -1221,7 +1221,7 @@ aria-valuetext.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2809
+node\_modules/@types/react/index.d.ts:2815
 
 ***
 
@@ -1237,4 +1237,4 @@ Defines the human readable text alternative of aria-valuenow for a range widget.
 
 #### Defined in
 
-node\_modules/@types/react/index.d.ts:2811
+node\_modules/@types/react/index.d.ts:2817

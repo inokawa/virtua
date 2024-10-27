@@ -16,4 +16,4 @@ Serializable cache snapshot.
 
 #### Defined in
 
-[src/core/types.ts:16](https://github.com/inokawa/virtua/blob/2354131db851fd7526c2b9bc4d9c490858dbde64/src/core/types.ts#L16)
+[src/core/types.ts:16](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/core/types.ts#L16)
