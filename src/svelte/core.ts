@@ -7,6 +7,7 @@ import {
   getScrollSize as _getScrollSize,
   type StateVersion,
   getScrollSize,
+  ACTION_START_OFFSET_CHANGE,
 } from "../core/store";
 import { createResizer } from "../core/resizer";
 import { createScroller } from "../core/scroller";
@@ -29,13 +30,16 @@ export const GET_SCROLL_DIRECTION = 6;
 export const GET_JUMP_COUNT = 7;
 export const GET_ITEM_OFFSET = 8;
 export const IS_ITEM_HIDDEN = 9;
-export const OBSERVE_ITEM_RESIZE = 10;
-export const FIX_SCROLL_JUMP = 11;
-export const CHANGE_ITEM_LENGTH = 12;
-export const GET_SCROLL_SIZE = 13;
-export const SCROLL_TO = 14;
-export const SCROLL_BY = 15;
-export const SCROLL_TO_INDEX = 16;
+export const GET_ITEMS_LENGTH = 10;
+export const GET_START_SPACER_SIZE = 11;
+export const OBSERVE_ITEM_RESIZE = 12;
+export const FIX_SCROLL_JUMP = 13;
+export const CHANGE_ITEM_LENGTH = 14;
+export const CHANGE_START_MARGIN = 15;
+export const GET_SCROLL_SIZE = 16;
+export const SCROLL_TO = 17;
+export const SCROLL_BY = 18;
+export const SCROLL_TO_INDEX = 19;
 
 /**
  * This function is workaround for terser minification.
@@ -92,10 +96,15 @@ export const createVirtualizer = (
     [GET_JUMP_COUNT]: store._getJumpCount,
     [GET_ITEM_OFFSET]: store._getItemOffset,
     [IS_ITEM_HIDDEN]: store._isUnmeasuredItem,
+    [GET_ITEMS_LENGTH]: store._getItemsLength,
+    [GET_START_SPACER_SIZE]: store._getStartSpacerSize,
     [OBSERVE_ITEM_RESIZE]: resizer._observeItem,
     [FIX_SCROLL_JUMP]: scroller._fixScrollJump,
     [CHANGE_ITEM_LENGTH]: (len: number, shift?: boolean) => {
       store._update(ACTION_ITEMS_LENGTH_CHANGE, [len, shift]);
+    },
+    [CHANGE_START_MARGIN]: (value: number) => {
+      store._update(ACTION_START_OFFSET_CHANGE, value);
     },
     [GET_SCROLL_SIZE]: () => getScrollSize(store),
     [SCROLL_TO]: scroller._scrollTo,
