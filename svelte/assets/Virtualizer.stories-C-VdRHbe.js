@@ -1,4 +1,4 @@
-import{c as T,i as Z,h as v,j as E,B as u,I as N,A as k,G as $,C as d,H as F,n as G,k as g,D as L,s as U,f as ee,g as te}from"./props-DabDn2RK.js";import{c as o,V as H,e as M,i as R}from"./Virtualizer-BRPrBmMO.js";var re=u("<div> </div>"),oe=u("<div><div>header</div> <!> <div>footer</div></div>");function W(f,_){T(_,!1);const m=[20,40,180,77],b=Array.from({length:1e3}).map((p,c)=>m[c%4]),l=400;Z();var n=oe();o(n,"style",`
+import{c as T,i as Z,h as v,j as E,B as u,I as N,A as k,G as $,C as d,H as F,n as G,k as g,D as L,s as U,f as ee,g as te}from"./props-DabDn2RK.js";import{c as o,V as H,e as M,i as R}from"./Virtualizer-BKzTq3K8.js";var re=u("<div> </div>"),oe=u("<div><div>header</div> <!> <div>footer</div></div>");function W(f,_){T(_,!1);const m=[20,40,180,77],b=Array.from({length:1e3}).map((p,c)=>m[c%4]),l=400;Z();var n=oe();o(n,"style",`
   width: 100%;
   height: 100vh;
   overflow-y: auto;
