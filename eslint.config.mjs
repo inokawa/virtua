@@ -1,4 +1,4 @@
-import typescriptEslintParser from "@typescript-eslint/parser";
+import tseslint from "typescript-eslint";
 import pluginImport from "eslint-plugin-import";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
@@ -6,16 +6,17 @@ import pluginReactCompiler from "eslint-plugin-react-compiler";
 import pluginVue from "eslint-plugin-vue";
 import solid from "eslint-plugin-solid/configs/typescript";
 
-const parserOptions = {
-  ecmaVersion: 2018,
-  sourceType: "module",
-  ecmaFeatures: {
-    jsx: true,
-  },
-};
 const languageOptions = {
-  parser: typescriptEslintParser,
-  parserOptions,
+  parser: tseslint.parser,
+  parserOptions: {
+    ecmaVersion: 2018,
+    sourceType: "module",
+    ecmaFeatures: {
+      jsx: true,
+    },
+    projectService: true,
+    tsconfigRootDir: import.meta.dirname,
+  },
 };
 
 export default [
@@ -97,9 +98,7 @@ export default [
     //  https://github.com/vuejs/vue-eslint-parser/issues/232
     ...c,
     files: ["src/vue/**/*.{js,jsx,ts,tsx}"],
-    languageOptions: {
-      parserOptions,
-    },
+    languageOptions,
   })),
   {
     files: ["src/solid/**/*.{js,jsx,ts,tsx}"],
