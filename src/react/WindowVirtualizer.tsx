@@ -112,7 +112,7 @@ export interface WindowVirtualizerProps {
 }
 
 /**
- * {@link Virtualizer} controlled by the window scrolling. See {@link WindowVirtualizerProps} and {@link WindowVirtualizer}.
+ * {@link Virtualizer} controlled by the window scrolling. See {@link WindowVirtualizerProps} and {@link WindowVirtualizerHandle}.
  */
 export const WindowVirtualizer = forwardRef<
   WindowVirtualizerHandle,

@@ -87,7 +87,7 @@ export interface WindowVirtualizerProps<T> {
 }
 
 /**
- * {@link Virtualizer} controlled by the window scrolling. See {@link WindowVirtualizerProps} and {@link WindowVirtualizer}.
+ * {@link Virtualizer} controlled by the window scrolling. See {@link WindowVirtualizerProps} and {@link WindowVirtualizerHandle}.
  */
 export const WindowVirtualizer = <T,>(
   props: WindowVirtualizerProps<T>
