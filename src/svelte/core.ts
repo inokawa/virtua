@@ -9,8 +9,8 @@ import {
   getScrollSize,
   ACTION_START_OFFSET_CHANGE,
 } from "../core/store";
-import { createResizer } from "../core/resizer";
-import { createScroller } from "../core/scroller";
+import { createResizer, createWindowResizer } from "../core/resizer";
+import { createScroller, createWindowScroller } from "../core/scroller";
 
 export {
   SCROLL_IDLE,
@@ -110,5 +110,65 @@ export const createVirtualizer = (
     [SCROLL_TO]: scroller._scrollTo,
     [SCROLL_BY]: scroller._scrollBy,
     [SCROLL_TO_INDEX]: scroller._scrollToIndex,
+  };
+};
+
+/**
+ * This function is workaround for terser minification.
+ * Svelte doesn't seem to have a good way to modify and print its AST.
+ */
+export const createWindowVirtualizer = (
+  count: number,
+  itemSize: number | undefined,
+  horizontal: boolean,
+  onUpdate: (v: StateVersion) => void,
+  onScrollEnd: () => void
+) => {
+  const store = createVirtualStore(
+    count,
+    itemSize ?? 40,
+    undefined,
+    undefined,
+    !itemSize
+  );
+  const resizer = createWindowResizer(store, horizontal);
+  const scroller = createWindowScroller(store, horizontal);
+  const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
+    onUpdate(store._getStateVersion());
+  });
+
+  const unsubscribeOnScrollEnd = store._subscribe(
+    UPDATE_SCROLL_END_EVENT,
+    () => {
+      onScrollEnd();
+    }
+  );
+
+  return {
+    [ON_MOUNT]: (scrollable: HTMLElement) => {
+      resizer._observeRoot(scrollable);
+      scroller._observe(scrollable);
+    },
+    [ON_UN_MOUNT]: () => {
+      unsubscribeStore();
+      unsubscribeOnScrollEnd();
+      resizer._dispose();
+      scroller._dispose();
+    },
+    [GET_RANGE]: store._getRange,
+    [GET_TOTAL_SIZE]: store._getTotalSize,
+    [GET_VIEWPORT_SIZE]: store._getViewportSize,
+    [GET_SCROLL_OFFSET]: store._getScrollOffset,
+    [GET_SCROLL_DIRECTION]: store._getScrollDirection,
+    [GET_JUMP_COUNT]: store._getJumpCount,
+    [GET_ITEM_OFFSET]: store._getItemOffset,
+    [IS_ITEM_HIDDEN]: store._isUnmeasuredItem,
+    [GET_ITEMS_LENGTH]: store._getItemsLength,
+    [GET_START_SPACER_SIZE]: store._getStartSpacerSize,
+    [OBSERVE_ITEM_RESIZE]: resizer._observeItem,
+    [FIX_SCROLL_JUMP]: scroller._fixScrollJump,
+    [CHANGE_ITEM_LENGTH]: (len: number, shift?: boolean) => {
+      store._update(ACTION_ITEMS_LENGTH_CHANGE, [len, shift]);
+    },
   };
 };
