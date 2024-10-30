@@ -164,7 +164,6 @@ export const createWindowVirtualizer = (
     [GET_ITEM_OFFSET]: store._getItemOffset,
     [IS_ITEM_HIDDEN]: store._isUnmeasuredItem,
     [GET_ITEMS_LENGTH]: store._getItemsLength,
-    [GET_START_SPACER_SIZE]: store._getStartSpacerSize,
     [OBSERVE_ITEM_RESIZE]: resizer._observeItem,
     [FIX_SCROLL_JUMP]: scroller._fixScrollJump,
     [CHANGE_ITEM_LENGTH]: (len: number, shift?: boolean) => {
