@@ -34,7 +34,7 @@ options
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:105](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/svelte/Virtualizer.type.ts#L105)
+[src/svelte/Virtualizer.type.ts:105](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L105)
 
 ***
 
@@ -56,7 +56,7 @@ offset from start
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:110](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/svelte/Virtualizer.type.ts#L110)
+[src/svelte/Virtualizer.type.ts:110](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L110)
 
 ***
 
@@ -78,7 +78,7 @@ offset from current position
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:115](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/svelte/Virtualizer.type.ts#L115)
+[src/svelte/Virtualizer.type.ts:115](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L115)
 
 ## Properties
 
@@ -94,7 +94,7 @@ Get current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:91](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/svelte/Virtualizer.type.ts#L91)
+[src/svelte/Virtualizer.type.ts:91](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L91)
 
 ***
 
@@ -110,7 +110,7 @@ Get current scrollHeight or scrollWidth.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:95](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/svelte/Virtualizer.type.ts#L95)
+[src/svelte/Virtualizer.type.ts:95](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L95)
 
 ***
 
@@ -126,4 +126,4 @@ Get current offsetHeight or offsetWidth.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:99](https://github.com/inokawa/virtua/blob/6cd860619e919a666920e5c0cef1f2aae0f982a7/src/svelte/Virtualizer.type.ts#L99)
+[src/svelte/Virtualizer.type.ts:99](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L99)
