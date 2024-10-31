@@ -203,17 +203,10 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     scrollEnd: () => void;
     /**
      * Callback invoked when visible items range changes.
+     * @param startIndex The start index of viewable items.
+     * @param endIndex The end index of viewable items.
      */
-    rangeChange: (
-      /**
-       * The start index of viewable items.
-       */
-      startIndex: number,
-      /**
-       * The end index of viewable items.
-       */
-      endIndex: number
-    ) => void;
+    rangeChange: (startIndex: number, endIndex: number) => void;
   },
   string,
   {},

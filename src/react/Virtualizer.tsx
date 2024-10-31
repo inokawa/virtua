@@ -152,17 +152,10 @@ export interface VirtualizerProps {
   onScrollEnd?: () => void;
   /**
    * Callback invoked when visible items range changes.
+   * @param startIndex The start index of viewable items.
+   * @param endIndex The end index of viewable items.
    */
-  onRangeChange?: (
-    /**
-     * The start index of viewable items.
-     */
-    startIndex: number,
-    /**
-     * The end index of viewable items.
-     */
-    endIndex: number
-  ) => void;
+  onRangeChange?: (startIndex: number, endIndex: number) => void;
 }
 
 /**
