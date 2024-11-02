@@ -37,15 +37,15 @@ import { isSameRange } from "./utils";
  */
 export interface VirtualizerHandle {
   /**
-   * Get current scrollTop or scrollLeft.
+   * Get current scrollTop, or scrollLeft if horizontal: true.
    */
   readonly scrollOffset: number;
   /**
-   * Get current scrollHeight or scrollWidth.
+   * Get current scrollHeight, or scrollWidth if horizontal: true.
    */
   readonly scrollSize: number;
   /**
-   * Get current offsetHeight or offsetWidth.
+   * Get current offsetHeight, or offsetWidth if horizontal: true.
    */
   readonly viewportSize: number;
   /**
@@ -127,7 +127,7 @@ export interface VirtualizerProps<T> {
   startMargin?: number;
   /**
    * Callback invoked whenever scroll offset changes.
-   * @param offset Current scrollTop or scrollLeft.
+   * @param offset Current scrollTop, or scrollLeft if horizontal: true.
    */
   onScroll?: (offset: number) => void;
   /**

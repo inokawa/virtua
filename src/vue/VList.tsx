@@ -117,7 +117,7 @@ export const VList = /*#__PURE__*/ defineComponent({
   {
     /**
      * Callback invoked whenever scroll offset changes.
-     * @param offset Current scrollTop or scrollLeft.
+     * @param offset Current scrollTop, or scrollLeft if horizontal: true.
      */
     scroll: (offset: number) => void;
     /**

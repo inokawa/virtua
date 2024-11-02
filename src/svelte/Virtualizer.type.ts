@@ -59,7 +59,7 @@ export interface VirtualizerProps<T> {
   startMargin?: number;
   /**
    * Callback invoked whenever scroll offset changes.
-   * @param offset Current scrollTop or scrollLeft.
+   * @param offset Current scrollTop, or scrollLeft if horizontal: true.
    */
   onscroll?: (offset: number) => void;
   /**
@@ -79,15 +79,15 @@ export interface VirtualizerProps<T> {
  */
 export interface VirtualizerHandle {
   /**
-   * Get current scrollTop or scrollLeft.
+   * Get current scrollTop, or scrollLeft if horizontal: true.
    */
   getScrollOffset: () => number;
   /**
-   * Get current scrollHeight or scrollWidth.
+   * Get current scrollHeight, or scrollWidth if horizontal: true.
    */
   getScrollSize: () => number;
   /**
-   * Get current offsetHeight or offsetWidth.
+   * Get current offsetHeight, or offsetWidth if horizontal: true.
    */
   getViewportSize: () => number;
   /**
