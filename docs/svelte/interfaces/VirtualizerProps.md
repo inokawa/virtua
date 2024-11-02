@@ -20,7 +20,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:12](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L12)
+[src/svelte/Virtualizer.type.ts:12](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L12)
 
 ***
 
@@ -32,7 +32,7 @@ The elements renderer snippet.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:16](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L16)
+[src/svelte/Virtualizer.type.ts:16](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L16)
 
 ***
 
@@ -60,7 +60,7 @@ defaultGetKey (returns index of item)
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:21](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L21)
+[src/svelte/Virtualizer.type.ts:21](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L21)
 
 ***
 
@@ -78,7 +78,7 @@ Component or element type for container element.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:26](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L26)
+[src/svelte/Virtualizer.type.ts:26](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L26)
 
 ***
 
@@ -96,7 +96,7 @@ Component or element type for item element.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:31](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L31)
+[src/svelte/Virtualizer.type.ts:31](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L31)
 
 ***
 
@@ -114,7 +114,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L36)
+[src/svelte/Virtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L36)
 
 ***
 
@@ -122,11 +122,11 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 > `optional` **scrollRef**: `HTMLElement`
 
-Reference to the scrollable element. The default will get the parent element of virtualizer.
+Reference to the scrollable element. The default will get the direct parent element of virtualizer.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:40](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L40)
+[src/svelte/Virtualizer.type.ts:40](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L40)
 
 ***
 
@@ -141,7 +141,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:47](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L47)
+[src/svelte/Virtualizer.type.ts:47](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L47)
 
 ***
 
@@ -153,7 +153,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:51](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L51)
+[src/svelte/Virtualizer.type.ts:51](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L51)
 
 ***
 
@@ -165,7 +165,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:55](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L55)
+[src/svelte/Virtualizer.type.ts:55](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L55)
 
 ***
 
@@ -177,7 +177,7 @@ If you put an element before virtualizer, you have to define its height with thi
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:59](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L59)
+[src/svelte/Virtualizer.type.ts:59](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L59)
 
 ***
 
@@ -191,7 +191,7 @@ Callback invoked whenever scroll offset changes.
 
 • **offset**: `number`
 
-Current scrollTop or scrollLeft.
+Current scrollTop, or scrollLeft if horizontal: true.
 
 #### Returns
 
@@ -199,7 +199,7 @@ Current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:64](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L64)
+[src/svelte/Virtualizer.type.ts:64](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L64)
 
 ***
 
@@ -215,7 +215,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:68](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L68)
+[src/svelte/Virtualizer.type.ts:68](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L68)
 
 ***
 
@@ -241,4 +241,4 @@ The end index of viewable items.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:72](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L72)
+[src/svelte/Virtualizer.type.ts:74](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L74)

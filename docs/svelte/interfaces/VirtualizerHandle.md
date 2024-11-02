@@ -34,7 +34,7 @@ options
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:105](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L105)
+[src/svelte/Virtualizer.type.ts:98](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L98)
 
 ***
 
@@ -56,7 +56,7 @@ offset from start
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:110](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L110)
+[src/svelte/Virtualizer.type.ts:103](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L103)
 
 ***
 
@@ -78,7 +78,7 @@ offset from current position
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:115](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L115)
+[src/svelte/Virtualizer.type.ts:108](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L108)
 
 ## Properties
 
@@ -86,7 +86,7 @@ offset from current position
 
 > **getScrollOffset**: () => `number`
 
-Get current scrollTop or scrollLeft.
+Get current scrollTop, or scrollLeft if horizontal: true.
 
 #### Returns
 
@@ -94,7 +94,7 @@ Get current scrollTop or scrollLeft.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:91](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L91)
+[src/svelte/Virtualizer.type.ts:84](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L84)
 
 ***
 
@@ -102,7 +102,7 @@ Get current scrollTop or scrollLeft.
 
 > **getScrollSize**: () => `number`
 
-Get current scrollHeight or scrollWidth.
+Get current scrollHeight, or scrollWidth if horizontal: true.
 
 #### Returns
 
@@ -110,7 +110,7 @@ Get current scrollHeight or scrollWidth.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:95](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L95)
+[src/svelte/Virtualizer.type.ts:88](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L88)
 
 ***
 
@@ -118,7 +118,7 @@ Get current scrollHeight or scrollWidth.
 
 > **getViewportSize**: () => `number`
 
-Get current offsetHeight or offsetWidth.
+Get current offsetHeight, or offsetWidth if horizontal: true.
 
 #### Returns
 
@@ -126,4 +126,4 @@ Get current offsetHeight or offsetWidth.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:99](https://github.com/inokawa/virtua/blob/08d8d51c9ef9e4787fdb60c111e66e6fda55b507/src/svelte/Virtualizer.type.ts#L99)
+[src/svelte/Virtualizer.type.ts:92](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/svelte/Virtualizer.type.ts#L92)
