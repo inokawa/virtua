@@ -103,7 +103,7 @@ export interface VirtualizerProps<T> {
    */
   item?: ValidComponent;
   /**
-   * Reference to the scrollable element. The default will get the parent element of virtualizer.
+   * Reference to the scrollable element. The default will get the direct parent element of virtualizer.
    */
   scrollRef?: HTMLElement;
   /**

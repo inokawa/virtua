@@ -138,7 +138,7 @@ export interface VirtualizerProps {
    */
   item?: keyof JSX.IntrinsicElements | CustomItemComponent;
   /**
-   * Reference to the scrollable element. The default will get the parent element of virtualizer.
+   * Reference to the scrollable element. The default will get the direct parent element of virtualizer.
    */
   scrollRef?: RefObject<HTMLElement>;
   /**
