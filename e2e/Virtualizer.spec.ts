@@ -4,16 +4,15 @@ import {
   scrollToBottom,
   expectInRange,
   getScrollable,
+  getVirtualizer,
 } from "./utils";
 
 test("header and footer", async ({ page }) => {
   await page.goto(storyUrl("basics-virtualizer--header-and-footer"));
 
   const scrollable = await getScrollable(page);
+  const container = await getVirtualizer(page);
   await scrollable.waitForElementState("stable");
-  const container = await scrollable.evaluateHandle(
-    (e) => e.firstElementChild!.nextElementSibling!
-  );
 
   const [topPadding, bottomPadding] = await scrollable.evaluate((e) => {
     const topSpacer = e.firstElementChild as HTMLElement;
@@ -60,9 +59,7 @@ test("sticky header and footer", async ({ page }) => {
 
   const scrollable = await getScrollable(page);
   await scrollable.waitForElementState("stable");
-  const container = await scrollable.evaluateHandle(
-    (e) => e.firstElementChild!.nextElementSibling!
-  );
+  const container = await getVirtualizer(page);
 
   const [topPadding, bottomPadding] = await scrollable.evaluate((e) => {
     const topSpacer = e.firstElementChild as HTMLElement;
