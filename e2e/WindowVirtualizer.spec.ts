@@ -22,55 +22,50 @@ test.describe("smoke", () => {
     await page.goto(storyUrl("basics-windowvirtualizer--default"));
 
     const component = await getVirtualizer(page);
-    await component.waitForElementState("stable");
 
     // check if start is displayed
     const first = await getFirstItem(component);
-    await expect(first.text).toEqual("0");
-    await expect(await component.innerText()).not.toContain("50");
+    expect(first.text).toEqual("0");
+    expect(await component.innerText()).not.toContain("50");
 
     // scroll to the end
     await windowScrollToBottom(page);
 
     // check if the end is displayed
     const text = await component.innerText();
-    await expect(text).toContain("999");
-    await expect(text).not.toContain("949");
+    expect(text).toContain("999");
+    expect(text).not.toContain("949");
   });
 
   test("horizontally scrollable", async ({ page }) => {
     await page.goto(storyUrl("basics-windowvirtualizer--horizontal"));
 
     const component = await getVirtualizer(page);
-    await component.waitForElementState("stable");
 
     // check if start is displayed
     const first = await getFirstItem(component);
-    await expect(first.text).toEqual("Column 0");
-    await expect(await component.innerText()).not.toContain("Column 50");
+    expect(first.text).toEqual("Column 0");
+    expect(await component.innerText()).not.toContain("Column 50");
 
     // scroll to the end
     await windowScrollToRight(page);
 
     // check if the end is displayed
     const text = await component.innerText();
-    await expect(text).toContain("999");
-    await expect(text).not.toContain("949");
+    expect(text).toContain("999");
+    expect(text).not.toContain("949");
   });
 
   test("display: none", async ({ page }) => {
     await page.goto(storyUrl("basics-windowvirtualizer--default"));
 
     const component = await getVirtualizer(page);
-    await component.waitForElementState("stable");
 
     const initialTotalHeight = await component.evaluate(
       (s) => getComputedStyle(s as HTMLElement).height
     );
 
     await component.evaluate((s) => (s.style.display = "none"));
-
-    await component.waitForElementState("stable");
 
     const changedTotalHeight = await component.evaluate(
       (s) => getComputedStyle(s as HTMLElement).height
@@ -84,7 +79,6 @@ test.describe("smoke", () => {
     await page.goto(storyUrl("basics-windowvirtualizer--increasing-items"));
 
     const component = await getVirtualizer(page);
-    await component.waitForElementState("stable");
 
     expect(await component.evaluate((s) => document.body.scrollHeight)).toBe(
       await component.evaluate((s) => document.body.offsetHeight)
@@ -96,10 +90,9 @@ test.describe("check if scroll jump compensation works", () => {
   test("vertical start -> end", async ({ page }) => {
     await page.goto(storyUrl("basics-windowvirtualizer--default"));
     const component = await getVirtualizer(page);
-    await component.waitForElementState("stable");
 
     // check if start is displayed
-    await expect((await getFirstItem(component)).text).toEqual("0");
+    expect((await getFirstItem(component)).text).toEqual("0");
 
     // check if offset from start is always keeped
     await component.click();
@@ -109,19 +102,18 @@ test.describe("check if scroll jump compensation works", () => {
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowDown", { delay: 10 });
       const offset = await getWindowScrollTop(page);
-      await expect(offset).toBeGreaterThanOrEqual(prev);
+      expect(offset).toBeGreaterThanOrEqual(prev);
       prev = offset;
     }
-    await expect(prev).toBeGreaterThan(initial + min);
+    expect(prev).toBeGreaterThan(initial + min);
   });
 
   test("vertical end -> start", async ({ page, browserName }) => {
     await page.goto(storyUrl("basics-windowvirtualizer--default"));
     const component = await getVirtualizer(page);
-    await component.waitForElementState("stable");
 
     // check if start is displayed
-    await expect((await getFirstItem(component)).text).toEqual("0");
+    expect((await getFirstItem(component)).text).toEqual("0");
 
     // scroll to the end
     await windowScrollToBottom(page);
@@ -134,21 +126,20 @@ test.describe("check if scroll jump compensation works", () => {
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowUp", { delay: 10 });
       const offset = await getWindowScrollBottom(page);
-      await expect(offset).toBeGreaterThanOrEqual(
+      expect(offset).toBeGreaterThanOrEqual(
         browserName === "firefox" ? prev - 1 : prev
       );
       prev = offset;
     }
-    await expect(prev).toBeGreaterThan(initial + min);
+    expect(prev).toBeGreaterThan(initial + min);
   });
 
   test("horizontal start -> end", async ({ page }) => {
     await page.goto(storyUrl("basics-windowvirtualizer--horizontal"));
     const component = await getVirtualizer(page);
-    await component.waitForElementState("stable");
 
     // check if start is displayed
-    await expect((await getFirstItem(component)).text).toEqual("Column 0");
+    expect((await getFirstItem(component)).text).toEqual("Column 0");
 
     // check if offset from start is always keeped
     await component.click();
@@ -158,19 +149,18 @@ test.describe("check if scroll jump compensation works", () => {
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowRight", { delay: 10 });
       const offset = await getWindowScrollLeft(page);
-      await expect(offset).toBeGreaterThanOrEqual(prev);
+      expect(offset).toBeGreaterThanOrEqual(prev);
       prev = offset;
     }
-    await expect(prev).toBeGreaterThan(initial + min);
+    expect(prev).toBeGreaterThan(initial + min);
   });
 
   test("horizontal end -> start", async ({ page, browserName }) => {
     await page.goto(storyUrl("basics-windowvirtualizer--horizontal"));
     const component = await getVirtualizer(page);
-    await component.waitForElementState("stable");
 
     // check if start is displayed
-    await expect((await getFirstItem(component)).text).toEqual("Column 0");
+    expect((await getFirstItem(component)).text).toEqual("Column 0");
 
     // scroll to the end
     await windowScrollToRight(page);
@@ -183,12 +173,12 @@ test.describe("check if scroll jump compensation works", () => {
     for (let i = 0; i < 500; i++) {
       await page.keyboard.press("ArrowLeft", { delay: 10 });
       const offset = await getWindowScrollRight(page);
-      await expect(offset).toBeGreaterThanOrEqual(
+      expect(offset).toBeGreaterThanOrEqual(
         browserName === "firefox" ? prev - 1 : prev
       );
       prev = offset;
     }
-    await expect(prev).toBeGreaterThan(initial + min);
+    expect(prev).toBeGreaterThan(initial + min);
   });
 });
 
@@ -199,7 +189,6 @@ test.describe("check if item shift compensation works", () => {
 
   test("keep end at mid when add to/remove from end", async ({ page }) => {
     const component = await getVirtualizer(page);
-    await component.waitForElementState("stable");
 
     const updateButton = page.getByRole("button", { name: "update" });
 
@@ -232,7 +221,6 @@ test.describe("check if item shift compensation works", () => {
 
   test("keep start at mid when add to/remove from start", async ({ page }) => {
     const component = await getVirtualizer(page);
-    await component.waitForElementState("stable");
 
     const updateButton = page.getByRole("button", { name: "update" });
 
@@ -269,7 +257,6 @@ test.describe("check if item shift compensation works", () => {
     browserName,
   }) => {
     const component = await getVirtualizer(page);
-    await component.waitForElementState("stable");
 
     await page.getByRole("checkbox", { name: "prepend" }).click();
     const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
@@ -290,7 +277,7 @@ test.describe("check if item shift compensation works", () => {
       // preprend
       await increaseRadio.click();
       await updateButton.click();
-      await component.waitForElementState("stable");
+      await (await component.elementHandle())!.waitForElementState("stable");
 
       const [childrenCount, firstItemRectTop] = await container.evaluate(
         (e) => {
@@ -333,7 +320,6 @@ test.describe("check if item shift compensation works", () => {
     browserName,
   }) => {
     const component = await getVirtualizer(page);
-    await component.waitForElementState("stable");
 
     await page.getByRole("checkbox", { name: "prepend" }).click();
     const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
@@ -348,7 +334,6 @@ test.describe("check if item shift compensation works", () => {
     await valueInput.fill("50");
     await increaseRadio.click();
     await updateButton.click();
-    await component.waitForElementState("stable");
 
     // scroll to bottom
     await windowScrollToBottom(page);
@@ -361,7 +346,6 @@ test.describe("check if item shift compensation works", () => {
     while (true) {
       i++;
       await updateButton.click();
-      await component.waitForElementState("stable");
 
       const lastItemRectBottom = await container.evaluate((e) => {
         const children = e.childNodes;
@@ -404,20 +388,19 @@ test.describe("RTL", () => {
     });
 
     const component = await getVirtualizer(page);
-    await component.waitForElementState("stable");
 
     // check if start is displayed
     const first = await getFirstItem(component);
-    await expect(first.text).toEqual("0");
-    await expect(await component.innerText()).not.toContain("50");
+    expect(first.text).toEqual("0");
+    expect(await component.innerText()).not.toContain("50");
 
     // scroll to the end
     await windowScrollToBottom(page);
 
     // check if the end is displayed
     const text = await component.innerText();
-    await expect(text).toContain("999");
-    await expect(text).not.toContain("949");
+    expect(text).toContain("999");
+    expect(text).not.toContain("949");
   });
 
   test("horizontally scrollable", async ({ page }) => {
@@ -429,19 +412,18 @@ test.describe("RTL", () => {
     });
 
     const component = await getVirtualizer(page);
-    await component.waitForElementState("stable");
 
     // check if start is displayed
     const first = await getFirstItemRtl(component);
-    await expect(first.text).toEqual("Column 0");
-    await expect(await component.innerText()).not.toContain("Column 50");
+    expect(first.text).toEqual("Column 0");
+    expect(await component.innerText()).not.toContain("Column 50");
 
     // scroll to the end
     await windowScrollToLeft(page);
 
     // check if the end is displayed
     const text = await component.innerText();
-    await expect(text).toContain("999");
-    await expect(text).not.toContain("949");
+    expect(text).toContain("999");
+    expect(text).not.toContain("949");
   });
 });
