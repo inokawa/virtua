@@ -156,16 +156,12 @@ test.describe("smoke", () => {
     const mountedItem = await getFirstItem(component);
     expect(mountedItem.text).not.toEqual(initialItem.text);
 
-    const button = (await page
-      .getByRole("button", { name: "hide" })
-      .elementHandle())!;
-
     // check if items are unmounted
-    await button.click();
+    await page.getByRole("button", { name: "hide" }).click();
     expect((await getFirstItem(component)).text).not.toEqual(mountedItem.text);
 
     // check if scroll position is restored
-    await button.click();
+    await page.getByRole("button", { name: "show" }).click();
     await page.waitForTimeout(250);
     const remountedComponent = await getScrollable(page);
     const remountedItem = await getFirstItem(remountedComponent);
@@ -510,9 +506,7 @@ test.describe("check if scroll jump compensation works", () => {
 
     await clearTimer(page);
 
-    const button = (await page
-      .getByRole("button", { name: "submit" })
-      .elementHandle())!;
+    const button = page.getByRole("button", { name: "submit" });
     const textarea = (await page.getByRole("textbox"))!;
 
     // append small item
@@ -612,12 +606,9 @@ test.describe("check if scrollToIndex works", () => {
       // check if start is displayed
       await expect((await getFirstItem(component)).text).toEqual("0");
 
-      const button = (await page
-        .getByRole("button", { name: "scroll to index" })
-        .elementHandle())!;
-      const input = await page.evaluateHandle(
-        (el) => el!.previousSibling as HTMLInputElement,
-        button
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = await button.evaluateHandle(
+        (el) => el.previousSibling as HTMLInputElement
       );
 
       await clearInput(input);
@@ -643,12 +634,9 @@ test.describe("check if scrollToIndex works", () => {
       // check if start is displayed
       await expect((await getFirstItem(component)).text).toEqual("0");
 
-      const button = (await page
-        .getByRole("button", { name: "scroll to index" })
-        .elementHandle())!;
-      const input = await page.evaluateHandle(
-        (el) => el!.previousSibling as HTMLInputElement,
-        button
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = await button.evaluateHandle(
+        (el) => el.previousSibling as HTMLInputElement
       );
 
       await clearInput(input);
@@ -681,12 +669,9 @@ test.describe("check if scrollToIndex works", () => {
       // check if start is displayed
       await expect((await getFirstItem(component)).text).toEqual("0");
 
-      const button = (await page
-        .getByRole("button", { name: "scroll to index" })
-        .elementHandle())!;
-      const input = await page.evaluateHandle(
-        (el) => el!.previousSibling as HTMLInputElement,
-        button
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = await button.evaluateHandle(
+        (el) => el.previousSibling as HTMLInputElement
       );
 
       await clearInput(input);
@@ -713,12 +698,9 @@ test.describe("check if scrollToIndex works", () => {
 
       await page.getByRole("checkbox", { name: "smooth" }).click();
 
-      const button = (await page
-        .getByRole("button", { name: "scroll to index" })
-        .elementHandle())!;
-      const input = await page.evaluateHandle(
-        (el) => el!.previousSibling as HTMLInputElement,
-        button
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = await button.evaluateHandle(
+        (el) => el.previousSibling as HTMLInputElement
       );
 
       const scrollListener = listenScrollCount(component);
@@ -760,12 +742,9 @@ test.describe("check if scrollToIndex works", () => {
       // check if start is displayed
       await expect((await getFirstItem(component)).text).toEqual("0");
 
-      const button = (await page
-        .getByRole("button", { name: "scroll to index" })
-        .elementHandle())!;
-      const input = await page.evaluateHandle(
-        (el) => el!.previousSibling as HTMLInputElement,
-        button
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = await button.evaluateHandle(
+        (el) => el.previousSibling as HTMLInputElement
       );
 
       await clearInput(input);
@@ -791,12 +770,9 @@ test.describe("check if scrollToIndex works", () => {
       // check if start is displayed
       await expect((await getFirstItem(component)).text).toEqual("0");
 
-      const button = (await page
-        .getByRole("button", { name: "scroll to index" })
-        .elementHandle())!;
-      const input = await page.evaluateHandle(
-        (el) => el!.previousSibling as HTMLInputElement,
-        button
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = await button.evaluateHandle(
+        (el) => el.previousSibling as HTMLInputElement
       );
 
       await clearInput(input);
@@ -829,12 +805,9 @@ test.describe("check if scrollToIndex works", () => {
       // check if start is displayed
       await expect((await getFirstItem(component)).text).toEqual("0");
 
-      const button = (await page
-        .getByRole("button", { name: "scroll to index" })
-        .elementHandle())!;
-      const input = await page.evaluateHandle(
-        (el) => el!.previousSibling as HTMLInputElement,
-        button
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = await button.evaluateHandle(
+        (el) => el.previousSibling as HTMLInputElement
       );
 
       await clearInput(input);
@@ -861,12 +834,9 @@ test.describe("check if scrollToIndex works", () => {
 
       await page.getByRole("checkbox", { name: "smooth" }).click();
 
-      const button = (await page
-        .getByRole("button", { name: "scroll to index" })
-        .elementHandle())!;
-      const input = await page.evaluateHandle(
-        (el) => el!.previousSibling as HTMLInputElement,
-        button
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = await button.evaluateHandle(
+        (el) => el.previousSibling as HTMLInputElement
       );
 
       const scrollListener = listenScrollCount(component);
@@ -909,12 +879,9 @@ test.describe("check if scrollTo works", () => {
     // check if start is displayed
     await expect((await getFirstItem(component)).text).toEqual("0");
 
-    const button = (await page
-      .getByRole("button", { name: "scroll to offset" })
-      .elementHandle())!;
-    const input = await page.evaluateHandle(
-      (el) => el!.previousSibling as HTMLInputElement,
-      button
+    const button = page.getByRole("button", { name: "scroll to offset" });
+    const input = await button.evaluateHandle(
+      (el) => el.previousSibling as HTMLInputElement
     );
 
     // scroll down
@@ -955,12 +922,11 @@ test.describe("check if scrollBy works", () => {
     // check if start is displayed
     await expect((await getFirstItem(component)).text).toEqual("0");
 
-    const button = (await page
-      .getByRole("button", { name: "scroll by offset" })
-      .elementHandle())!;
-    const input = await page.evaluateHandle(
-      (el) => el!.previousSibling!.previousSibling as HTMLInputElement,
-      button
+    const button = page.getByRole("button", {
+      name: "scroll by offset",
+    });
+    const input = await button.evaluateHandle(
+      (el) => el.previousSibling!.previousSibling as HTMLInputElement
     );
 
     // scroll down
@@ -1278,9 +1244,7 @@ test.describe("check if item shift compensation works", () => {
 
     const scrollListener = listenScrollCount(component);
 
-    const button = (await page
-      .getByRole("button", { name: "jump to top" })
-      .elementHandle())!;
+    const button = page.getByRole("button", { name: "jump to top" });
 
     // scroll to top
     await button.click();

@@ -134,9 +134,7 @@ test("check if scrollToIndex works", async ({ page }) => {
     (await getFirstItem(component)).text.startsWith("0 / 0")
   ).toBeTruthy();
 
-  const button = (await page
-    .getByRole("button", { name: "scroll to index" })
-    .elementHandle())!;
+  const button = page.getByRole("button", { name: "scroll to index" });
   const [colInput, rowInput] = await page.$$("input");
 
   await button.click();
