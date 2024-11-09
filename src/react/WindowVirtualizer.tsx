@@ -13,6 +13,7 @@ import {
   createVirtualStore,
   SCROLL_IDLE,
   UPDATE_SCROLL_END_EVENT,
+  ACTION_START_OFFSET_CHANGE,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { createWindowScroller } from "../core/scroller";
@@ -20,7 +21,7 @@ import { getKey, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
 import { createWindowResizer } from "../core/resizer";
-import { CacheSnapshot } from "../core/types";
+import { CacheSnapshot, ScrollToIndexOpts } from "../core/types";
 import { CustomContainerComponent, CustomItemComponent } from "./types";
 import { ListItem } from "./ListItem";
 import { flushSync } from "react-dom";
@@ -36,6 +37,22 @@ export interface WindowVirtualizerHandle {
    * Get current {@link CacheSnapshot}.
    */
   readonly cache: CacheSnapshot;
+  /**
+   * Scroll to the item specified by index.
+   * @param index index of item
+   * @param opts options
+   */
+  scrollToIndex(index: number, opts?: ScrollToIndexOpts): void;
+  /**
+   * Scroll to the given offset.
+   * @param offset offset from start
+   */
+  scrollTo(offset: number): void;
+  /**
+   * Scroll by the given offset.
+   * @param offset offset from current position
+   */
+  scrollBy(offset: number): void;
 }
 
 /**
@@ -93,6 +110,10 @@ export interface WindowVirtualizerProps {
    */
   item?: keyof JSX.IntrinsicElements | CustomItemComponent;
   /**
+   * If you put an element before virtualizer, you have to define its height with this prop.
+   */
+  startMargin: number;
+  /**
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
@@ -123,6 +144,7 @@ export const WindowVirtualizer = forwardRef<
       ssrCount,
       as: Element = "div",
       item: ItemElement = "div",
+      startMargin = 0, // Add default value
       onScrollEnd: onScrollEndProp,
       onRangeChange: onRangeChangeProp,
     },
@@ -158,6 +180,9 @@ export const WindowVirtualizer = forwardRef<
     // The elements length and cached items length are different just after element is added/removed.
     if (count !== store._getItemsLength()) {
       store._update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
+    }
+    if (startMargin !== store._getStartSpacerSize()) {
+      store._update(ACTION_START_OFFSET_CHANGE, startMargin);
     }
 
     const rerender = useRerender(store);
@@ -218,6 +243,13 @@ export const WindowVirtualizer = forwardRef<
           get cache() {
             return store._getCacheSnapshot();
           },
+          get scrollOffset() {
+            return store._getScrollOffset();
+          },
+          getItemOffset: store._getItemOffset,
+          scrollToIndex: scroller._scrollToIndex,
+          scrollTo: scroller._scrollTo,
+          scrollBy: scroller._scrollBy,
         };
       },
       []
