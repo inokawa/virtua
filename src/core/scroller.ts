@@ -495,13 +495,19 @@ export const createWindowScroller = (
         window,
         isHorizontal,
         () => normalizeOffset(window[scrollOffsetKey], isHorizontal),
-        (jump) => {
-          // Use absolute position not to exceed scrollable bounds
-          // https://github.com/inokawa/virtua/discussions/475
+        (jump, shift) => {
           // TODO support case two window scrollers exist in the same view
-          window.scroll({
-            [scrollToKey]: store.$getScrollOffset() + jump,
-          });
+          if (shift) {
+            // Use absolute position not to exceed scrollable bounds
+            window.scroll({
+              [scrollToKey]: store.$getScrollOffset() + jump,
+            });
+          } else {
+            // Use window.scrollBy here, which causes less layout shift for some reason.
+            window.scrollBy({
+              [scrollToKey]: jump,
+            });
+          }
         },
         () =>
           calcOffsetToViewport(container, document.body, window, isHorizontal)

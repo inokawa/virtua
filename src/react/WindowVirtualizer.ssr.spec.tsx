@@ -11,10 +11,15 @@ const LIST_ID = "list-id";
 describe("SSR", () => {
   it("should render items with renderToString and vertical", () => {
     const COUNT = 10;
-    const OVERSCAN = 4;
+    const ITEM_SIZE = 40;
+    const BUFFER_SIZE = ITEM_SIZE * 4;
     const html = renderToString(
       <div id={LIST_ID}>
-        <WindowVirtualizer ssrCount={COUNT} overscan={OVERSCAN}>
+        <WindowVirtualizer
+          ssrCount={COUNT}
+          bufferSize={BUFFER_SIZE}
+          itemSize={ITEM_SIZE}
+        >
           {Array.from({ length: 1000 }).map((_, i) => (
             <div key={i}>{i}</div>
           ))}
@@ -26,15 +31,20 @@ describe("SSR", () => {
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!
         .firstElementChild!.childElementCount
-    ).toEqual(COUNT + OVERSCAN);
+    ).toEqual(COUNT);
   });
 
   it("should render items with renderToStaticMarkup and vertical", () => {
     const COUNT = 10;
-    const OVERSCAN = 4;
+    const ITEM_SIZE = 40;
+    const BUFFER_SIZE = ITEM_SIZE * 4;
     const html = renderToStaticMarkup(
       <div id={LIST_ID}>
-        <WindowVirtualizer ssrCount={COUNT} overscan={OVERSCAN}>
+        <WindowVirtualizer
+          ssrCount={COUNT}
+          bufferSize={BUFFER_SIZE}
+          itemSize={ITEM_SIZE}
+        >
           {Array.from({ length: 1000 }).map((_, i) => (
             <div key={i}>{i}</div>
           ))}
@@ -46,17 +56,19 @@ describe("SSR", () => {
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!
         .firstElementChild!.childElementCount
-    ).toEqual(COUNT + OVERSCAN);
+    ).toEqual(COUNT);
   });
 
   it("should render items with renderToString and horizontal", () => {
     const COUNT = 10;
-    const OVERSCAN = 4;
+    const ITEM_SIZE = 40;
+    const BUFFER_SIZE = ITEM_SIZE * 4;
     const html = renderToString(
       <div id={LIST_ID}>
         <WindowVirtualizer
           ssrCount={COUNT}
-          overscan={OVERSCAN}
+          bufferSize={BUFFER_SIZE}
+          itemSize={ITEM_SIZE}
           horizontal
         >
           {Array.from({ length: 1000 }).map((_, i) => (
@@ -70,17 +82,19 @@ describe("SSR", () => {
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!
         .firstElementChild!.childElementCount
-    ).toEqual(COUNT + OVERSCAN);
+    ).toEqual(COUNT);
   });
 
   it("should render items with renderToStaticMarkup and horizontal", () => {
     const COUNT = 10;
-    const OVERSCAN = 4;
+    const ITEM_SIZE = 40;
+    const BUFFER_SIZE = ITEM_SIZE * 4;
     const html = renderToStaticMarkup(
       <div id={LIST_ID}>
         <WindowVirtualizer
           ssrCount={COUNT}
-          overscan={OVERSCAN}
+          bufferSize={BUFFER_SIZE}
+          itemSize={ITEM_SIZE}
           horizontal
         >
           {Array.from({ length: 1000 }).map((_, i) => (
@@ -94,6 +108,6 @@ describe("SSR", () => {
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!
         .firstElementChild!.childElementCount
-    ).toEqual(COUNT + OVERSCAN);
+    ).toEqual(COUNT);
   });
 });

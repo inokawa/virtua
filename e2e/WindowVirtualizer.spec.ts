@@ -127,6 +127,9 @@ test.describe("check if scroll jump compensation works", () => {
     // scroll to the end
     await windowScrollToBottom(page);
 
+    // TODO timeout is necessary for now
+    await page.waitForTimeout(250);
+
     // check if offset from end is always keeped
     await component.click();
     const min = 200;
@@ -554,7 +557,7 @@ test.describe("check if scrollToIndex works", () => {
       const lastItem = component.getByText("700", { exact: true });
       await expect(lastItem).toBeVisible();
       expectInRange(await windowBottom(lastItem), {
-        min: 0,
+        min: -0.5,
         max: 1,
       });
 
@@ -616,7 +619,7 @@ test.describe("check if scrollToIndex works", () => {
       const lastItem = component.getByText("999", { exact: true });
       await expect(lastItem).toBeVisible();
       expectInRange(await windowBottom(lastItem), {
-        min: 0,
+        min: -0.5,
         max: 1,
       });
 

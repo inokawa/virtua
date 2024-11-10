@@ -346,7 +346,7 @@ const Component = memo(HeavyItem);
 </VList>;
 ```
 
-Decreasing `overscan` prop may also improve perf in case that components are large and heavy.
+Decreasing `bufferSize` prop may also improve perf in case that components are large and heavy.
 
 Virtua try to suppress glitch caused by resize as much as possible, but it will also require additional work. If your item contains something resized often, such as lazy loaded image, we recommend to set height or min-height to it if possible.
 

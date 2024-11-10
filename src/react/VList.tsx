@@ -19,7 +19,7 @@ export interface VListProps<T = unknown>
       VirtualizerProps<T>,
       | "children"
       | "data"
-      | "overscan"
+      | "bufferSize"
       | "itemSize"
       | "shift"
       | "horizontal"
@@ -45,7 +45,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
     {
       children,
       data,
-      overscan,
+      bufferSize,
       itemSize,
       shift,
       horizontal,
@@ -69,7 +69,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
         ref={ref}
         scrollRef={shouldReverse ? scrollRef : undefined}
         data={data}
-        overscan={overscan}
+        bufferSize={bufferSize}
         itemSize={itemSize}
         shift={shift}
         horizontal={horizontal}

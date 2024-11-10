@@ -108,10 +108,10 @@ export interface VirtualizerProps<T> {
    */
   children: (data: T, index: Accessor<number>) => JSX.Element;
   /**
-   * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
-   * @defaultValue 4
+   * Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
+   * @defaultValue 200
    */
-  overscan?: number;
+  bufferSize?: number;
   /**
    * Component or element type for container element.
    * @defaultValue "div"
@@ -171,7 +171,7 @@ export interface VirtualizerProps<T> {
  */
 export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const { itemSize, horizontal = false, overscan, cache } = props;
+  const { itemSize, horizontal = false, cache } = props;
   props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
     { as: "div" },
     props
@@ -180,7 +180,6 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   const store = createVirtualStore(
     props.data.length,
     itemSize,
-    overscan,
     undefined,
     cache,
     !itemSize
@@ -206,7 +205,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
   const range = createMemo<ItemsRange>((prev) => {
     stateVersion();
-    const next = store.$getRange();
+    const next = store.$getRange(props.bufferSize);
     if (prev && isSameRange(prev, next)) {
       return prev;
     }

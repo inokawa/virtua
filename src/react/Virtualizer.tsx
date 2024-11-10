@@ -104,10 +104,10 @@ export interface VirtualizerProps<T = unknown> {
    */
   data?: ArrayLike<T>;
   /**
-   * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
-   * @defaultValue 4
+   * Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
+   * @defaultValue 200
    */
-  overscan?: number;
+  bufferSize?: number;
   /**
    * Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
    *
@@ -174,7 +174,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     {
       children,
       data,
-      overscan,
+      bufferSize,
       itemSize,
       shift,
       horizontal: horizontalProp,
@@ -206,7 +206,6 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       const _store = createVirtualStore(
         count,
         itemSize,
-        overscan,
         ssrCount,
         cache,
         !itemSize
@@ -338,14 +337,14 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
 
     if (keepMounted) {
       const mounted = new Set(keepMounted);
-      for (let [i, j] = store.$getRange(); i <= j; i++) {
+      for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
         mounted.add(i);
       }
       sort([...mounted]).forEach((index) => {
         items.push(renderItem(index));
       });
     } else {
-      for (let [i, j] = store.$getRange(); i <= j; i++) {
+      for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
         items.push(renderItem(i));
       }
     }

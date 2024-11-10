@@ -218,10 +218,10 @@ export interface VGridProps extends ViewportComponentAttributes {
    */
   cellWidth?: number;
   /**
-   * Number of items to render above/below the visible bounds of the grid. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
-   * @defaultValue 2
+   * Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
+   * @defaultValue 200
    */
-  overscan?: number;
+  bufferSize?: number;
   /**
    * If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
    */
@@ -260,7 +260,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       col: colCount,
       cellHeight = 40,
       cellWidth = 100,
-      overscan = 2,
+      bufferSize,
       initialRowCount,
       initialColCount,
       item: ItemElement = "div",
@@ -277,13 +277,11 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       const _rowStore = createVirtualStore(
         rowCount,
         cellHeight,
-        overscan,
         initialRowCount
       );
       const _colStore = createVirtualStore(
         colCount,
         cellWidth,
-        overscan,
         initialColCount
       );
       return [
@@ -438,8 +436,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       };
     }, [children]);
 
-    const [startRowIndex, endRowIndex] = rowStore.$getRange();
-    const [startColIndex, endColIndex] = colStore.$getRange();
+    const [startRowIndex, endRowIndex] = rowStore.$getRange(bufferSize);
+    const [startColIndex, endColIndex] = colStore.$getRange(bufferSize);
 
     const items: ReactElement[] = [];
     for (let rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++) {
