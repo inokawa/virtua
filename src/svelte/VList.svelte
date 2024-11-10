@@ -27,6 +27,14 @@
     ref.getScrollSize()) satisfies VListHandle["getScrollSize"] as VListHandle["getScrollSize"];
   export const getViewportSize = (() =>
     ref.getViewportSize()) satisfies VListHandle["getViewportSize"] as VListHandle["getViewportSize"];
+  export const getItemOffset = ((...args) =>
+    ref.getItemOffset(
+      ...args
+    )) satisfies VListHandle["getItemOffset"] as VListHandle["getItemOffset"];
+  export const getItemSize = ((...args) =>
+    ref.getItemSize(
+      ...args
+    )) satisfies VListHandle["getItemSize"] as VListHandle["getItemSize"];
   export const scrollToIndex = ((...args) =>
     ref.scrollToIndex(
       ...args

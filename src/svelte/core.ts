@@ -29,17 +29,18 @@ export const GET_SCROLL_OFFSET = 5;
 export const GET_SCROLL_DIRECTION = 6;
 export const GET_JUMP_COUNT = 7;
 export const GET_ITEM_OFFSET = 8;
-export const IS_ITEM_HIDDEN = 9;
-export const GET_ITEMS_LENGTH = 10;
-export const GET_START_SPACER_SIZE = 11;
-export const OBSERVE_ITEM_RESIZE = 12;
-export const FIX_SCROLL_JUMP = 13;
-export const CHANGE_ITEM_LENGTH = 14;
-export const CHANGE_START_MARGIN = 15;
-export const GET_SCROLL_SIZE = 16;
-export const SCROLL_TO = 17;
-export const SCROLL_BY = 18;
-export const SCROLL_TO_INDEX = 19;
+export const GET_ITEM_SIZE = 9;
+export const IS_ITEM_HIDDEN = 10;
+export const GET_ITEMS_LENGTH = 11;
+export const GET_START_SPACER_SIZE = 12;
+export const OBSERVE_ITEM_RESIZE = 13;
+export const FIX_SCROLL_JUMP = 14;
+export const CHANGE_ITEM_LENGTH = 15;
+export const CHANGE_START_MARGIN = 16;
+export const GET_SCROLL_SIZE = 17;
+export const SCROLL_TO = 18;
+export const SCROLL_BY = 19;
+export const SCROLL_TO_INDEX = 20;
 
 /**
  * This function is workaround for terser minification.
@@ -95,6 +96,7 @@ export const createVirtualizer = (
     [GET_SCROLL_DIRECTION]: store._getScrollDirection,
     [GET_JUMP_COUNT]: store._getJumpCount,
     [GET_ITEM_OFFSET]: store._getItemOffset,
+    [GET_ITEM_SIZE]: store._getItemSize,
     [IS_ITEM_HIDDEN]: store._isUnmeasuredItem,
     [GET_ITEMS_LENGTH]: store._getItemsLength,
     [GET_START_SPACER_SIZE]: store._getStartSpacerSize,

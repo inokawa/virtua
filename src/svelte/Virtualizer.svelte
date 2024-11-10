@@ -25,6 +25,7 @@
     CHANGE_START_MARGIN,
     GET_START_SPACER_SIZE,
     GET_ITEMS_LENGTH,
+    GET_ITEM_SIZE,
   } from "./core";
   import { defaultGetKey, styleToString } from "./utils";
   import ListItem from "./ListItem.svelte";
@@ -131,6 +132,12 @@
   export const getViewportSize = virtualizer[
     GET_VIEWPORT_SIZE
   ] satisfies VirtualizerHandle["getViewportSize"] as VirtualizerHandle["getViewportSize"];
+  export const getItemOffset = virtualizer[
+    GET_ITEM_OFFSET
+  ] satisfies VirtualizerHandle["getItemOffset"] as VirtualizerHandle["getItemOffset"];
+  export const getItemSize = virtualizer[
+    GET_ITEM_SIZE
+  ] satisfies VirtualizerHandle["getItemSize"] as VirtualizerHandle["getItemSize"];
   export const scrollToIndex = virtualizer[
     SCROLL_TO_INDEX
   ] satisfies VirtualizerHandle["scrollToIndex"] as VirtualizerHandle["scrollToIndex"];
