@@ -197,13 +197,11 @@ export const createVirtualStore = (
   };
 
   return {
-    _getStateVersion() {
-      return stateVersion;
-    },
-    _getCacheSnapshot() {
+    _getStateVersion: () => stateVersion,
+    _getCacheSnapshot: () => {
       return takeCacheSnapshot(cache) as unknown as CacheSnapshot;
     },
-    _getRange() {
+    _getRange: () => {
       // Return previous range for consistent render until next scroll event comes in.
       if (_flushedJump) {
         return _prevRange;
@@ -220,10 +218,8 @@ export const createVirtualStore = (
       }
       return _prevRange;
     },
-    _isUnmeasuredItem(index) {
-      return cache._sizes[index] === UNCACHED;
-    },
-    _hasUnmeasuredItemsInFrozenRange() {
+    _isUnmeasuredItem: (index) => cache._sizes[index] === UNCACHED,
+    _hasUnmeasuredItemsInFrozenRange: () => {
       if (!_frozenRange) return false;
       return cache._sizes
         .slice(
@@ -234,26 +230,14 @@ export const createVirtualStore = (
     },
     _getItemOffset: getItemOffset,
     _getItemSize: getItemSize,
-    _getItemsLength() {
-      return cache._length;
-    },
-    _getScrollOffset() {
-      return scrollOffset;
-    },
-    _getScrollDirection() {
-      return _scrollDirection;
-    },
-    _getViewportSize() {
-      return viewportSize;
-    },
-    _getStartSpacerSize() {
-      return startSpacerSize;
-    },
+    _getItemsLength: () => cache._length,
+    _getScrollOffset: () => scrollOffset,
+    _getScrollDirection: () => _scrollDirection,
+    _getViewportSize: () => viewportSize,
+    _getStartSpacerSize: () => startSpacerSize,
     _getTotalSize: getTotalSize,
-    _getJumpCount() {
-      return jumpCount;
-    },
-    _flushJump() {
+    _getJumpCount: () => jumpCount,
+    _flushJump: () => {
       _flushedJump = jump;
       jump = 0;
       return [
@@ -264,14 +248,14 @@ export const createVirtualStore = (
           getRelativeScrollOffset() + viewportSize >= getTotalSize(),
       ];
     },
-    _subscribe(target, cb) {
+    _subscribe: (target, cb) => {
       const sub: [number, Subscriber] = [target, cb];
       subscribers.add(sub);
       return () => {
         subscribers.delete(sub);
       };
     },
-    _update(type, payload): void {
+    _update: (type, payload): void => {
       let shouldFlushPendingJump: boolean | undefined;
       let shouldSync: boolean | undefined;
       let mutated = 0;
