@@ -218,10 +218,10 @@ export interface VGridProps extends ViewportComponentAttributes {
    */
   cellWidth?: number;
   /**
-   * Number of items to render above/below the visible bounds of the grid. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
+   * Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 2
    */
-  overscan?: number;
+  bufferSize?: number;
   /**
    * If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
    */
@@ -260,7 +260,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       col: colCount,
       cellHeight = 40,
       cellWidth = 100,
-      overscan = 2,
+      bufferSize,
       initialRowCount,
       initialColCount,
       item: ItemElement = "div",
@@ -274,18 +274,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     ref
   ): ReactElement => {
     const [vStore, hStore, resizer, scroller] = useStatic(() => {
-      const _vs = createVirtualStore(
-        rowCount,
-        cellHeight,
-        overscan,
-        initialRowCount
-      );
-      const _hs = createVirtualStore(
-        colCount,
-        cellWidth,
-        overscan,
-        initialColCount
-      );
+      const _vs = createVirtualStore(rowCount, cellHeight, initialRowCount);
+      const _hs = createVirtualStore(colCount, cellWidth, initialColCount);
       return [
         _vs,
         _hs,
@@ -312,8 +302,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       hStore.$getStateVersion
     );
 
-    const [startRowIndex, endRowIndex] = vStore.$getRange();
-    const [startColIndex, endColIndex] = hStore.$getRange();
+    const [startRowIndex, endRowIndex] = vStore.$getRange(bufferSize);
+    const [startColIndex, endColIndex] = hStore.$getRange(bufferSize);
     const vIsScrolling = vStore.$isScrolling();
     const hIsScrolling = hStore.$isScrolling();
     const height = getScrollSize(vStore);
