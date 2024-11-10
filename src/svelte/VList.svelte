@@ -8,7 +8,7 @@
   let {
     data,
     getKey,
-    overscan,
+    bufferSize,
     itemSize,
     shift,
     horizontal,
@@ -70,7 +70,7 @@
     {data}
     {children}
     {getKey}
-    {overscan}
+    {bufferSize}
     {itemSize}
     {shift}
     {horizontal}
