@@ -52,34 +52,6 @@ exports[`horizontal > should render 5 children 1`] = `
             0
           </div>
         </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 40px; visibility: hidden; display: flex;"
-        >
-          <div>
-            1
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 80px; visibility: hidden; display: flex;"
-        >
-          <div>
-            2
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 120px; visibility: hidden; display: flex;"
-        >
-          <div>
-            3
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 160px; visibility: hidden; display: flex;"
-        >
-          <div>
-            4
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -100,34 +72,6 @@ exports[`horizontal > should render 100 children 1`] = `
         >
           <div>
             0
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 40px; visibility: hidden; display: flex;"
-        >
-          <div>
-            1
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 80px; visibility: hidden; display: flex;"
-        >
-          <div>
-            2
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 120px; visibility: hidden; display: flex;"
-        >
-          <div>
-            3
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 160px; visibility: hidden; display: flex;"
-        >
-          <div>
-            4
           </div>
         </div>
       </div>
@@ -152,34 +96,6 @@ exports[`horizontal > should render 1000 children 1`] = `
             0
           </div>
         </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 40px; visibility: hidden; display: flex;"
-        >
-          <div>
-            1
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 80px; visibility: hidden; display: flex;"
-        >
-          <div>
-            2
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 120px; visibility: hidden; display: flex;"
-        >
-          <div>
-            3
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 160px; visibility: hidden; display: flex;"
-        >
-          <div>
-            4
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -200,34 +116,6 @@ exports[`horizontal > should render 10000 children 1`] = `
         >
           <div>
             0
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 40px; visibility: hidden; display: flex;"
-        >
-          <div>
-            1
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 80px; visibility: hidden; display: flex;"
-        >
-          <div>
-            2
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 120px; visibility: hidden; display: flex;"
-        >
-          <div>
-            3
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 160px; visibility: hidden; display: flex;"
-        >
-          <div>
-            4
           </div>
         </div>
       </div>
@@ -252,20 +140,6 @@ exports[`horizontal > should render component 1`] = `
             0
           </div>
         </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 40px; visibility: hidden; display: flex;"
-        >
-          <div>
-            1
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 80px; visibility: hidden; display: flex;"
-        >
-          <div>
-            2
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -286,34 +160,6 @@ exports[`horizontal > should render with given width / height 1`] = `
         >
           <div>
             0
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 40px; visibility: hidden; display: flex;"
-        >
-          <div>
-            1
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 80px; visibility: hidden; display: flex;"
-        >
-          <div>
-            2
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 120px; visibility: hidden; display: flex;"
-        >
-          <div>
-            3
-          </div>
-        </div>
-        <div
-          style="position: absolute; height: 100%; top: 0px; left: 160px; visibility: hidden; display: flex;"
-        >
-          <div>
-            4
           </div>
         </div>
       </div>
@@ -401,34 +247,6 @@ exports[`vertical > should render 5 children 1`] = `
             0
           </div>
         </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
-        >
-          <div>
-            1
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
-        >
-          <div>
-            2
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
-        >
-          <div>
-            3
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
-        >
-          <div>
-            4
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -449,34 +267,6 @@ exports[`vertical > should render 100 children 1`] = `
         >
           <div>
             0
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
-        >
-          <div>
-            1
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
-        >
-          <div>
-            2
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
-        >
-          <div>
-            3
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
-        >
-          <div>
-            4
           </div>
         </div>
       </div>
@@ -501,34 +291,6 @@ exports[`vertical > should render 1000 children 1`] = `
             0
           </div>
         </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
-        >
-          <div>
-            1
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
-        >
-          <div>
-            2
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
-        >
-          <div>
-            3
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
-        >
-          <div>
-            4
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -549,34 +311,6 @@ exports[`vertical > should render 10000 children 1`] = `
         >
           <div>
             0
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
-        >
-          <div>
-            1
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
-        >
-          <div>
-            2
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
-        >
-          <div>
-            3
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
-        >
-          <div>
-            4
           </div>
         </div>
       </div>
@@ -601,20 +335,6 @@ exports[`vertical > should render component 1`] = `
             0
           </div>
         </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
-        >
-          <div>
-            1
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
-        >
-          <div>
-            2
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -635,34 +355,6 @@ exports[`vertical > should render with given width / height 1`] = `
         >
           <div>
             0
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
-        >
-          <div>
-            1
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
-        >
-          <div>
-            2
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
-        >
-          <div>
-            3
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
-        >
-          <div>
-            4
           </div>
         </div>
       </div>

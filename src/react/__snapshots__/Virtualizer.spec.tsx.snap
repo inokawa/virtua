@@ -22,27 +22,6 @@ exports[`should change components 1`] = `
           1
         </div>
       </li>
-      <li
-        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
-      >
-        <div>
-          2
-        </div>
-      </li>
-      <li
-        style="position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
-      >
-        <div>
-          3
-        </div>
-      </li>
-      <li
-        style="position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
-      >
-        <div>
-          4
-        </div>
-      </li>
     </ul>
   </div>
 </DocumentFragment>

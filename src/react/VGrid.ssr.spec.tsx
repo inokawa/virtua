@@ -34,7 +34,7 @@ describe("SSR", () => {
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
         .childElementCount
-    ).toEqual((ROW_COUNT + OVERSCAN) * (COL_COUNT + OVERSCAN));
+    ).toEqual(ROW_COUNT * COL_COUNT);
   });
 
   it("should render items with renderToStaticMarkup and vertical", () => {
@@ -62,6 +62,6 @@ describe("SSR", () => {
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
         .childElementCount
-    ).toEqual((ROW_COUNT + OVERSCAN) * (COL_COUNT + OVERSCAN));
+    ).toEqual(ROW_COUNT * COL_COUNT);
   });
 });

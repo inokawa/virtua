@@ -42,27 +42,6 @@ exports[`horizontal > should render 5 children 1`] = `
           1
         </div>
       </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
-      >
-        <div>
-          2
-        </div>
-      </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: flex;"
-      >
-        <div>
-          3
-        </div>
-      </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 400px; visibility: visible; display: flex;"
-      >
-        <div>
-          4
-        </div>
-      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -88,34 +67,6 @@ exports[`horizontal > should render 100 children 1`] = `
       >
         <div>
           1
-        </div>
-      </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
-      >
-        <div>
-          2
-        </div>
-      </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: flex;"
-      >
-        <div>
-          3
-        </div>
-      </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 400px; visibility: visible; display: flex;"
-      >
-        <div>
-          4
-        </div>
-      </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 500px; visibility: visible; display: flex;"
-      >
-        <div>
-          5
         </div>
       </div>
     </div>
@@ -145,34 +96,6 @@ exports[`horizontal > should render 1000 children 1`] = `
           1
         </div>
       </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
-      >
-        <div>
-          2
-        </div>
-      </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: flex;"
-      >
-        <div>
-          3
-        </div>
-      </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 400px; visibility: visible; display: flex;"
-      >
-        <div>
-          4
-        </div>
-      </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 500px; visibility: visible; display: flex;"
-      >
-        <div>
-          5
-        </div>
-      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -200,34 +123,6 @@ exports[`horizontal > should render 10000 children 1`] = `
           1
         </div>
       </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
-      >
-        <div>
-          2
-        </div>
-      </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: flex;"
-      >
-        <div>
-          3
-        </div>
-      </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 400px; visibility: visible; display: flex;"
-      >
-        <div>
-          4
-        </div>
-      </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 500px; visibility: visible; display: flex;"
-      >
-        <div>
-          5
-        </div>
-      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -250,13 +145,6 @@ exports[`horizontal > should render component 1`] = `
       </div>
       <div
         style="position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
-      >
-        <div>
-          component
-        </div>
-      </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
       >
         <div>
           component
@@ -345,27 +233,6 @@ exports[`horizontal > should render with given width / height 1`] = `
           1
         </div>
       </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
-      >
-        <div>
-          2
-        </div>
-      </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: flex;"
-      >
-        <div>
-          3
-        </div>
-      </div>
-      <div
-        style="position: absolute; height: 100%; top: 0px; left: 400px; visibility: visible; display: flex;"
-      >
-        <div>
-          4
-        </div>
-      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -387,34 +254,6 @@ exports[`reverse > should render many items 1`] = `
         >
           <div>
             0
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
-        >
-          <div>
-            1
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
-        >
-          <div>
-            2
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
-        >
-          <div>
-            3
-          </div>
-        </div>
-        <div
-          style="position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
-        >
-          <div>
-            4
           </div>
         </div>
       </div>
@@ -472,30 +311,6 @@ exports[`should pass index to items 1`] = `
           1
         </div>
       </div>
-      <div
-        data-index="2"
-        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
-      >
-        <div>
-          2
-        </div>
-      </div>
-      <div
-        data-index="3"
-        style="position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
-      >
-        <div>
-          3
-        </div>
-      </div>
-      <div
-        data-index="4"
-        style="position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
-      >
-        <div>
-          4
-        </div>
-      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -521,34 +336,6 @@ exports[`should render with render prop 1`] = `
       >
         <div>
           This is 1
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
-      >
-        <div>
-          This is 2
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
-      >
-        <div>
-          This is 3
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
-      >
-        <div>
-          This is 4
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
-      >
-        <div>
-          This is 5
         </div>
       </div>
     </div>
@@ -610,27 +397,6 @@ exports[`vertical > should render 5 children 1`] = `
           1
         </div>
       </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
-      >
-        <div>
-          2
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
-      >
-        <div>
-          3
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
-      >
-        <div>
-          4
-        </div>
-      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -656,34 +422,6 @@ exports[`vertical > should render 100 children 1`] = `
       >
         <div>
           1
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
-      >
-        <div>
-          2
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
-      >
-        <div>
-          3
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
-      >
-        <div>
-          4
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
-      >
-        <div>
-          5
         </div>
       </div>
     </div>
@@ -713,34 +451,6 @@ exports[`vertical > should render 1000 children 1`] = `
           1
         </div>
       </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
-      >
-        <div>
-          2
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
-      >
-        <div>
-          3
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
-      >
-        <div>
-          4
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
-      >
-        <div>
-          5
-        </div>
-      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -768,34 +478,6 @@ exports[`vertical > should render 10000 children 1`] = `
           1
         </div>
       </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
-      >
-        <div>
-          2
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
-      >
-        <div>
-          3
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
-      >
-        <div>
-          4
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
-      >
-        <div>
-          5
-        </div>
-      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -818,13 +500,6 @@ exports[`vertical > should render component 1`] = `
       </div>
       <div
         style="position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
-      >
-        <div>
-          component
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
       >
         <div>
           component
@@ -911,27 +586,6 @@ exports[`vertical > should render with given width / height 1`] = `
       >
         <div>
           1
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
-      >
-        <div>
-          2
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
-      >
-        <div>
-          3
-        </div>
-      </div>
-      <div
-        style="position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
-      >
-        <div>
-          4
         </div>
       </div>
     </div>
