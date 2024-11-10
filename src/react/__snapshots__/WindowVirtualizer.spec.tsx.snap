@@ -156,20 +156,6 @@ exports[`horizontal > should render 100 children 1`] = `
         12
       </div>
     </div>
-    <div
-      style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 1300px; visibility: visible; display: inline-flex;"
-    >
-      <div>
-        13
-      </div>
-    </div>
-    <div
-      style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 1400px; visibility: visible; display: inline-flex;"
-    >
-      <div>
-        14
-      </div>
-    </div>
   </div>
 </DocumentFragment>
 `;
@@ -270,20 +256,6 @@ exports[`horizontal > should render 1000 children 1`] = `
         12
       </div>
     </div>
-    <div
-      style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 1300px; visibility: visible; display: inline-flex;"
-    >
-      <div>
-        13
-      </div>
-    </div>
-    <div
-      style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 1400px; visibility: visible; display: inline-flex;"
-    >
-      <div>
-        14
-      </div>
-    </div>
   </div>
 </DocumentFragment>
 `;
@@ -382,20 +354,6 @@ exports[`horizontal > should render 10000 children 1`] = `
     >
       <div>
         12
-      </div>
-    </div>
-    <div
-      style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 1300px; visibility: visible; display: inline-flex;"
-    >
-      <div>
-        13
-      </div>
-    </div>
-    <div
-      style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 1400px; visibility: visible; display: inline-flex;"
-    >
-      <div>
-        14
       </div>
     </div>
   </div>

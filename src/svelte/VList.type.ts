@@ -12,7 +12,7 @@ export interface VListProps<T>
       VirtualizerProps<T>,
       | "data"
       | "getKey"
-      | "overscan"
+      | "bufferSize"
       | "itemSize"
       | "shift"
       | "horizontal"
