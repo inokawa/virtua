@@ -34,7 +34,33 @@ index of item
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:59](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/react/Virtualizer.tsx#L59)
+[src/react/Virtualizer.tsx:59](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/react/Virtualizer.tsx#L59)
+
+***
+
+### getItemSize()
+
+> **getItemSize**(`index`): `number`
+
+Get item size.
+
+#### Parameters
+
+• **index**: `number`
+
+index of item
+
+#### Returns
+
+`number`
+
+#### Inherited from
+
+[`VirtualizerHandle`](VirtualizerHandle.md).[`getItemSize`](VirtualizerHandle.md#getitemsize)
+
+#### Defined in
+
+[src/react/Virtualizer.tsx:64](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/react/Virtualizer.tsx#L64)
 
 ***
 
@@ -64,7 +90,7 @@ options
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:65](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/react/Virtualizer.tsx#L65)
+[src/react/Virtualizer.tsx:70](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/react/Virtualizer.tsx#L70)
 
 ***
 
@@ -90,7 +116,7 @@ offset from start
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:70](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/react/Virtualizer.tsx#L70)
+[src/react/Virtualizer.tsx:75](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/react/Virtualizer.tsx#L75)
 
 ***
 
@@ -116,7 +142,7 @@ offset from current position
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:75](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/react/Virtualizer.tsx#L75)
+[src/react/Virtualizer.tsx:80](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/react/Virtualizer.tsx#L80)
 
 ## Properties
 
@@ -132,7 +158,7 @@ Get current [CacheSnapshot](CacheSnapshot.md).
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:42](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/react/Virtualizer.tsx#L42)
+[src/react/Virtualizer.tsx:42](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/react/Virtualizer.tsx#L42)
 
 ***
 
@@ -148,7 +174,7 @@ Get current scrollTop, or scrollLeft if horizontal: true.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:46](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/react/Virtualizer.tsx#L46)
+[src/react/Virtualizer.tsx:46](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/react/Virtualizer.tsx#L46)
 
 ***
 
@@ -164,7 +190,7 @@ Get current scrollHeight, or scrollWidth if horizontal: true.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:50](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/react/Virtualizer.tsx#L50)
+[src/react/Virtualizer.tsx:50](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/react/Virtualizer.tsx#L50)
 
 ***
 
@@ -180,4 +206,4 @@ Get current offsetHeight, or offsetWidth if horizontal: true.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:54](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/react/Virtualizer.tsx#L54)
+[src/react/Virtualizer.tsx:54](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/react/Virtualizer.tsx#L54)

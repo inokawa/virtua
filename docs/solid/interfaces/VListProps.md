@@ -38,7 +38,7 @@ The elements renderer function.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:89](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/Virtualizer.tsx#L89)
+[src/solid/Virtualizer.tsx:94](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/solid/Virtualizer.tsx#L94)
 
 ***
 
@@ -64,7 +64,7 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:132](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/Virtualizer.tsx#L132)
+[src/solid/Virtualizer.tsx:137](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/solid/Virtualizer.tsx#L137)
 
 ***
 
@@ -88,7 +88,7 @@ Get reference to [VirtualizerHandle](VirtualizerHandle.md).
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:81](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/Virtualizer.tsx#L81)
+[src/solid/Virtualizer.tsx:86](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/solid/Virtualizer.tsx#L86)
 
 ***
 
@@ -104,7 +104,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:119](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/Virtualizer.tsx#L119)
+[src/solid/Virtualizer.tsx:124](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/solid/Virtualizer.tsx#L124)
 
 ***
 
@@ -120,7 +120,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:85](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/Virtualizer.tsx#L85)
+[src/solid/Virtualizer.tsx:90](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/solid/Virtualizer.tsx#L90)
 
 ***
 
@@ -142,7 +142,7 @@ Number of items to render above/below the visible bounds of the list. Lower valu
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:94](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/Virtualizer.tsx#L94)
+[src/solid/Virtualizer.tsx:99](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/solid/Virtualizer.tsx#L99)
 
 ***
 
@@ -161,7 +161,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:115](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/Virtualizer.tsx#L115)
+[src/solid/Virtualizer.tsx:120](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/solid/Virtualizer.tsx#L120)
 
 ***
 
@@ -177,7 +177,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:123](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/Virtualizer.tsx#L123)
+[src/solid/Virtualizer.tsx:128](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/solid/Virtualizer.tsx#L128)
 
 ***
 
@@ -197,7 +197,7 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:136](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/Virtualizer.tsx#L136)
+[src/solid/Virtualizer.tsx:141](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/solid/Virtualizer.tsx#L141)
 
 ***
 
@@ -227,7 +227,7 @@ The end index of viewable items.
 
 #### Defined in
 
-[src/solid/Virtualizer.tsx:142](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/Virtualizer.tsx#L142)
+[src/solid/Virtualizer.tsx:147](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/solid/Virtualizer.tsx#L147)
 
 ***
 
@@ -1232,4 +1232,4 @@ node\_modules/solid-js/types/jsx.d.ts:807
 
 #### Defined in
 
-[src/solid/types.ts:7](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/types.ts#L7)
+[src/solid/types.ts:7](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/solid/types.ts#L7)
