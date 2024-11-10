@@ -24,7 +24,7 @@
     as = "div",
     item: itemAs,
     scrollRef,
-    overscan,
+    bufferSize,
     itemSize,
     shift = false,
     horizontal = false,
@@ -37,7 +37,7 @@
   const store = createVirtualStore(
     data.length,
     itemSize,
-    overscan,
+    bufferSize,
     undefined,
     undefined,
     !itemSize

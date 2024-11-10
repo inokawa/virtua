@@ -19,10 +19,9 @@ export interface WindowVirtualizerProps<T> {
    */
   getKey?: (data: T, index: number) => string | number;
   /**
-   * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
-   * @defaultValue 4
+   * TODO
    */
-  overscan?: number;
+  bufferSize?: number;
   /**
    * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
    *

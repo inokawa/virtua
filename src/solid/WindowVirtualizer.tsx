@@ -69,10 +69,9 @@ export interface WindowVirtualizerProps<T> {
    */
   children: (data: T, index: Accessor<number>) => JSX.Element;
   /**
-   * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
-   * @defaultValue 4
+   * TODO
    */
-  overscan?: number;
+  bufferSize?: number;
   /**
    * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
    *
@@ -116,7 +115,7 @@ export const WindowVirtualizer = <T,>(
     ref: _ref,
     data: _data,
     children: _children,
-    overscan,
+    bufferSize,
     itemSize,
     shift: _shift,
     horizontal = false,
@@ -127,7 +126,7 @@ export const WindowVirtualizer = <T,>(
   const store = createVirtualStore(
     props.data.length,
     itemSize,
-    overscan,
+    bufferSize,
     undefined,
     cache,
     !itemSize
