@@ -56,7 +56,7 @@ export const createVirtualizer = (
 ) => {
   const store = createVirtualStore(
     count,
-    itemSize ?? 40,
+    itemSize,
     undefined,
     undefined,
     !itemSize
@@ -128,7 +128,7 @@ export const createWindowVirtualizer = (
 ) => {
   const store = createVirtualStore(
     count,
-    itemSize ?? 40,
+    itemSize,
     undefined,
     undefined,
     !itemSize

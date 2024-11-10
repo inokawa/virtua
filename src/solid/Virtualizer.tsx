@@ -160,7 +160,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
   const store = createVirtualStore(
     props.data.length,
-    itemSize ?? 40,
+    itemSize,
     undefined,
     undefined,
     !itemSize

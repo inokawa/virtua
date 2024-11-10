@@ -101,7 +101,7 @@ export const WindowVirtualizer = <T,>(
 
   const store = createVirtualStore(
     props.data.length,
-    itemSize ?? 40,
+    itemSize,
     undefined,
     undefined,
     !itemSize

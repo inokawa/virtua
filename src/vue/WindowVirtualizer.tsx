@@ -71,7 +71,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     const containerRef = ref<HTMLDivElement>();
     const store = createVirtualStore(
       props.data.length,
-      props.itemSize ?? 40,
+      props.itemSize,
       undefined,
       undefined,
       !props.itemSize
