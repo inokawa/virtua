@@ -100,10 +100,6 @@ export interface VirtualizerProps {
    */
   overscan?: number;
   /**
-   * List of indexes that should be always mounted, even when off screen.
-   */
-  keepMounted?: number[];
-  /**
    * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
    *
    * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
@@ -118,6 +114,10 @@ export interface VirtualizerProps {
    * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
    */
   horizontal?: boolean;
+  /**
+   * List of indexes that should be always mounted, even when off screen.
+   */
+  keepMounted?: number[];
   /**
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.cache}.
    *
@@ -172,10 +172,10 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       children,
       count: renderCountProp,
       overscan = 4,
-      keepMounted,
       itemSize,
       shift,
       horizontal: horizontalProp,
+      keepMounted,
       cache,
       startMargin = 0,
       ssrCount,
