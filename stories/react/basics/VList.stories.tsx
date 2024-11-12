@@ -553,6 +553,8 @@ export const InfiniteScrolling: StoryObj = {
       setFetching(false);
     };
 
+    const ref = useRef<VListHandle>(null);
+
     const ITEM_BATCH_COUNT = 100;
     const [items, setItems] = useState(() => createRows(ITEM_BATCH_COUNT));
     const fetchedCountRef = useRef(-1);
@@ -560,9 +562,14 @@ export const InfiniteScrolling: StoryObj = {
 
     return (
       <VList
+        ref={ref}
         style={{ flex: 1 }}
-        onRangeChange={async (_, end) => {
-          if (end + 50 > count && fetchedCountRef.current < count) {
+        onScroll={async () => {
+          if (!ref.current) return;
+          if (
+            fetchedCountRef.current < count &&
+            ref.current.endIndex + 50 > count
+          ) {
             fetchedCountRef.current = count;
             await fetchItems();
             setItems((prev) => [
@@ -585,7 +592,8 @@ export const Statuses: StoryObj = {
     const items = useState(() => createRows(1000))[0];
     const [position, setPosition] = useState(0);
     const [scrolling, setScrolling] = useState(false);
-    const [range, setRange] = useState([-1, -1]);
+    const [startIndex, setStartIndex] = useState(-1);
+    const [endIndex, setEndIndex] = useState(-1);
 
     const [isAtTop, setIsAtTop] = useState(false);
     const [isAtBottom, setIsAtBottom] = useState(false);
@@ -623,7 +631,7 @@ export const Statuses: StoryObj = {
           <div>scrollTop: {position}</div>
           <div>scrolling: {scrolling ? "true" : "false"}</div>
           <div>
-            index: ({range[0]}, {range[1]})
+            index: ({startIndex}, {endIndex})
           </div>
           <div>at top: {isAtTop ? "true" : "false"}</div>
           <div>at bottom: {isAtBottom ? "true" : "false"}</div>
@@ -635,16 +643,14 @@ export const Statuses: StoryObj = {
             startTransition(() => {
               setPosition(offset);
               setScrolling(true);
+              if (!ref.current) return;
+              setStartIndex(ref.current.startIndex);
+              setEndIndex(ref.current.endIndex);
             });
           }}
           onScrollEnd={() => {
             startTransition(() => {
               setScrolling(false);
-            });
-          }}
-          onRangeChange={async (start, end) => {
-            startTransition(() => {
-              setRange([start, end]);
             });
           }}
         >

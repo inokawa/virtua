@@ -29,7 +29,6 @@ export interface VListProps<T>
       | "horizontal"
       | "onScroll"
       | "onScrollEnd"
-      | "onRangeChange"
     >,
     ViewportComponentAttributes {}
 
@@ -47,7 +46,6 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
     horizontal,
     onScroll,
     onScrollEnd,
-    onRangeChange,
     style,
     ...attrs
   } = props;
@@ -73,7 +71,6 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
         horizontal={horizontal}
         onScroll={props.onScroll}
         onScrollEnd={props.onScrollEnd}
-        onRangeChange={props.onRangeChange}
       >
         {props.children}
       </Virtualizer>

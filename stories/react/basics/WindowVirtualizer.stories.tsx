@@ -168,11 +168,18 @@ export const InfiniteScrolling: StoryObj = {
     const fetchedCountRef = useRef(-1);
     const count = items.length;
 
+    const ref = useRef<WindowVirtualizerHandle>(null);
+
     return (
       <div style={{ padding: "200px 100px 0px 100px" }}>
         <WindowVirtualizer
-          onRangeChange={async (_, end) => {
-            if (end + 50 > count && fetchedCountRef.current < count) {
+          ref={ref}
+          onScroll={async () => {
+            if (!ref.current) return;
+            if (
+              fetchedCountRef.current < count &&
+              ref.current.endIndex + 50 > count
+            ) {
               fetchedCountRef.current = count;
               await fetchItems();
               setItems((prev) => [

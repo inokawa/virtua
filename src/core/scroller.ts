@@ -11,7 +11,6 @@ import {
   ACTION_SCROLL_END,
   UPDATE_SIZE_EVENT,
   ACTION_MANUAL_SCROLL,
-  SCROLL_IDLE,
   ACTION_BEFORE_MANUAL_SMOOTH_SCROLL,
   ACTION_START_OFFSET_CHANGE,
   isInitialMeasurementDone,
@@ -90,7 +89,7 @@ const createScrollObserver = (
     if (
       wheeling ||
       // Scroll start should be detected with scroll event
-      store._getScrollDirection() === SCROLL_IDLE ||
+      !store._isScrolling() ||
       // Probably a pinch-to-zoom gesture
       e.ctrlKey
     ) {

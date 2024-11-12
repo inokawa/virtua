@@ -1,16 +1,14 @@
 <script lang="ts" generics="T">
   import { onMount, onDestroy } from "svelte";
   import {
-    SCROLL_IDLE,
     type StateVersion,
-    getOverscanedRange,
     CHANGE_ITEM_LENGTH,
     createVirtualizer,
     FIX_SCROLL_JUMP,
     GET_ITEM_OFFSET,
     GET_JUMP_COUNT,
     GET_RANGE,
-    GET_SCROLL_DIRECTION,
+    GET_IS_SCROLLING,
     GET_SCROLL_OFFSET,
     GET_SCROLL_SIZE,
     GET_TOTAL_SIZE,
@@ -26,6 +24,8 @@
     GET_START_SPACER_SIZE,
     GET_ITEMS_LENGTH,
     GET_ITEM_SIZE,
+    GET_START_INDEX,
+    GET_END_INDEX,
   } from "./core";
   import { defaultGetKey, styleToString } from "./utils";
   import ListItem from "./ListItem.svelte";
@@ -39,7 +39,7 @@
     as = "div",
     item: itemAs,
     scrollRef,
-    overscan = 4,
+    overscan,
     itemSize,
     shift = false,
     horizontal = false,
@@ -47,12 +47,12 @@
     children,
     onscroll,
     onscrollend,
-    onrangechange,
   }: Props = $props();
 
   const virtualizer = createVirtualizer(
     data.length,
     itemSize,
+    overscan,
     horizontal,
     (v) => {
       rerender = v;
@@ -70,20 +70,9 @@
   let rerender: StateVersion = $state([]);
 
   let range = $derived(rerender && virtualizer[GET_RANGE]());
-  let scrollDirection = $derived(
-    rerender && virtualizer[GET_SCROLL_DIRECTION]()
-  );
+  let isScrolling = $derived(rerender && virtualizer[GET_IS_SCROLLING]());
   let totalSize = $derived(rerender && virtualizer[GET_TOTAL_SIZE]());
   let jumpCount = $derived(rerender && virtualizer[GET_JUMP_COUNT]());
-  let extendedRange = $derived(
-    getOverscanedRange(
-      range[0],
-      range[1],
-      overscan,
-      scrollDirection,
-      data.length
-    )
-  );
 
   onMount(() => {
     if (scrollRef) {
@@ -115,14 +104,6 @@
     virtualizer[FIX_SCROLL_JUMP]();
   });
 
-  let prevRange: typeof range | undefined;
-  $effect(() => {
-    if (prevRange && prevRange[0] === range[0] && prevRange[1] === range[1])
-      return;
-    prevRange = range;
-    onrangechange && onrangechange(range[0], range[1]);
-  });
-
   export const getScrollOffset = virtualizer[
     GET_SCROLL_OFFSET
   ] satisfies VirtualizerHandle["getScrollOffset"] as VirtualizerHandle["getScrollOffset"];
@@ -132,6 +113,12 @@
   export const getViewportSize = virtualizer[
     GET_VIEWPORT_SIZE
   ] satisfies VirtualizerHandle["getViewportSize"] as VirtualizerHandle["getViewportSize"];
+  export const getStartIndex = virtualizer[
+    GET_START_INDEX
+  ] satisfies VirtualizerHandle["getStartIndex"] as VirtualizerHandle["getStartIndex"];
+  export const getEndIndex = virtualizer[
+    GET_END_INDEX
+  ] satisfies VirtualizerHandle["getEndIndex"] as VirtualizerHandle["getEndIndex"];
   export const getItemOffset = virtualizer[
     GET_ITEM_OFFSET
   ] satisfies VirtualizerHandle["getItemOffset"] as VirtualizerHandle["getItemOffset"];
@@ -149,7 +136,7 @@
   ] satisfies VirtualizerHandle["scrollBy"] as VirtualizerHandle["scrollBy"];
 
   let items = $derived.by(() => {
-    const [startIndex, endIndex] = extendedRange;
+    const [startIndex, endIndex] = range;
     const newItems: T[] = [];
     for (let i = startIndex, j = endIndex; i <= j; i++) {
       newItems.push(data[i]!);
@@ -166,7 +153,7 @@
       visibility: "hidden", // TODO replace with other optimization methods
       width: horizontal ? totalSize + "px" : "100%",
       height: horizontal ? "100%" : totalSize + "px",
-      "pointer-events": scrollDirection !== SCROLL_IDLE ? "none" : undefined,
+      "pointer-events": isScrolling ? "none" : undefined,
     })
   );
 </script>
@@ -176,8 +163,8 @@
   Customizable list virtualizer for advanced usage. See {@link VirtualizerProps} and {@link VirtualizerHandle}.
 -->
 <svelte:element this={as} bind:this={containerRef} style={containerStyle}>
-  {#each items as item, i (getKey(item, i + extendedRange[0]))}
-    {@const index = i + extendedRange[0]}
+  {#each items as item, i (getKey(item, i + range[0]))}
+    {@const index = i + range[0]}
     <ListItem
       {children}
       {item}

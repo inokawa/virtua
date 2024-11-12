@@ -15,7 +15,6 @@
     children,
     onscroll,
     onscrollend,
-    onrangechange,
     ...rest
   }: Props = $props();
 
@@ -27,6 +26,10 @@
     ref.getScrollSize()) satisfies VListHandle["getScrollSize"] as VListHandle["getScrollSize"];
   export const getViewportSize = (() =>
     ref.getViewportSize()) satisfies VListHandle["getViewportSize"] as VListHandle["getViewportSize"];
+  export const getStartIndex = (() =>
+    ref.getStartIndex()) satisfies VListHandle["getStartIndex"] as VListHandle["getStartIndex"];
+  export const getEndIndex = (() =>
+    ref.getEndIndex()) satisfies VListHandle["getEndIndex"] as VListHandle["getEndIndex"];
   export const getItemOffset = ((...args) =>
     ref.getItemOffset(
       ...args
@@ -73,6 +76,5 @@
     {horizontal}
     {onscroll}
     {onscrollend}
-    {onrangechange}
   />
 </div>

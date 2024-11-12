@@ -14,11 +14,9 @@ import {
   NativeElements,
 } from "vue";
 import {
-  SCROLL_IDLE,
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_VIRTUAL_STATE,
-  getOverscanedRange,
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
@@ -44,6 +42,14 @@ export interface VirtualizerHandle {
    * Get current offsetHeight, or offsetWidth if horizontal: true.
    */
   readonly viewportSize: number;
+  /**
+   * Get the start index of visible range of items.
+   */
+  readonly startIndex: number;
+  /**
+   * Get the end index of visible range of items.
+   */
+  readonly endIndex: number;
   /**
    * Get item offset from start.
    * @param index index of item
@@ -81,7 +87,7 @@ const props = {
    * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
    */
-  overscan: { type: Number, default: 4 },
+  overscan: Number,
   /**
    * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
    *
@@ -123,7 +129,7 @@ const props = {
 
 export const Virtualizer = /*#__PURE__*/ defineComponent({
   props: props,
-  emits: ["scroll", "scrollEnd", "rangeChange"],
+  emits: ["scroll", "scrollEnd"],
   setup(props, { emit, expose, slots }) {
     let isSSR = !!props.ssrCount;
 
@@ -132,6 +138,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     const store = createVirtualStore(
       props.data.length,
       props.itemSize,
+      props.overscan,
       props.ssrCount,
       undefined,
       !props.itemSize
@@ -202,16 +209,6 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       { flush: "post" }
     );
 
-    watch(
-      [rerender, store._getRange],
-      ([, [start, end]], [, [prevStart, prevEnd]]) => {
-        if (prevStart === start && prevEnd === end) return;
-
-        emit("rangeChange", start, end);
-      },
-      { flush: "post" }
-    );
-
     expose({
       get scrollOffset() {
         return store._getScrollOffset();
@@ -221,6 +218,12 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       },
       get viewportSize() {
         return store._getViewportSize();
+      },
+      get startIndex() {
+        return store._getStartIndex();
+      },
+      get endIndex() {
+        return store._getEndIndex();
       },
       getItemOffset: store._getItemOffset,
       getItemSize: store._getItemSize,
@@ -234,24 +237,13 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
 
       const Element = props.as;
       const ItemElement = props.item;
-      const count = props.data.length;
 
       const [startIndex, endIndex] = store._getRange();
-      const scrollDirection = store._getScrollDirection();
+      const isScrolling = store._isScrolling();
       const totalSize = store._getTotalSize();
 
       const items: VNode[] = [];
-      for (
-        let [i, j] = getOverscanedRange(
-          startIndex,
-          endIndex,
-          props.overscan,
-          scrollDirection,
-          count
-        );
-        i <= j;
-        i++
-      ) {
+      for (let i = startIndex, j = endIndex; i <= j; i++) {
         const e = slots.default({ item: props.data![i]!, index: i })[0]!;
         items.push(
           <ListItem
@@ -279,7 +271,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
             visibility: "hidden", // TODO replace with other optimization methods
             width: isHorizontal ? totalSize + "px" : "100%",
             height: isHorizontal ? "100%" : totalSize + "px",
-            pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : undefined,
+            pointerEvents: isScrolling ? "none" : undefined,
           }}
         >
           {items}
@@ -305,12 +297,6 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
      * Callback invoked when scrolling stops.
      */
     scrollEnd: () => void;
-    /**
-     * Callback invoked when visible items range changes.
-     * @param startIndex The start index of viewable items.
-     * @param endIndex The end index of viewable items.
-     */
-    rangeChange: (startIndex: number, endIndex: number) => void;
   },
   string,
   {},

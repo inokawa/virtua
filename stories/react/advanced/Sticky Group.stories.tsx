@@ -1,6 +1,12 @@
 import { Meta, StoryObj } from "@storybook/react";
-import React, { createContext, forwardRef, useContext, useState } from "react";
-import { CustomItemComponentProps, VList } from "../../../src";
+import React, {
+  createContext,
+  forwardRef,
+  useContext,
+  useRef,
+  useState,
+} from "react";
+import { CustomItemComponentProps, VList, VListHandle } from "../../../src";
 
 export default {
   component: VList,
@@ -35,13 +41,17 @@ const StickyItem = forwardRef<HTMLDivElement, CustomItemComponentProps>(
 export const Default: StoryObj = {
   name: "Sticky Group",
   render: () => {
+    const ref = useRef<VListHandle>(null);
     const [activeIndex, setActiveIndex] = useState(0);
     return (
       <StickyIndexContext.Provider value={activeIndex}>
         <VList
+          ref={ref}
           item={StickyItem}
           keepMounted={[activeIndex]}
-          onRangeChange={(start) => {
+          onScroll={() => {
+            if (!ref.current) return;
+            const start = ref.current.startIndex;
             const activeStickyIndex = [...stickyIndexes]
               .reverse()
               .find((index) => start >= index)!;
