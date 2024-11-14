@@ -10,9 +10,7 @@ import {
 } from "react";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
-  getOverscanedRange,
   createVirtualStore,
-  SCROLL_IDLE,
   getScrollSize,
   UPDATE_VIRTUAL_STATE,
 } from "../core/store";
@@ -220,8 +218,18 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     ref
   ): ReactElement => {
     const [vStore, hStore, resizer, scroller] = useStatic(() => {
-      const _vs = createVirtualStore(rowCount, cellHeight, initialRowCount);
-      const _hs = createVirtualStore(colCount, cellWidth, initialColCount);
+      const _vs = createVirtualStore(
+        rowCount,
+        cellHeight,
+        overscan,
+        initialRowCount
+      );
+      const _hs = createVirtualStore(
+        colCount,
+        cellWidth,
+        overscan,
+        initialColCount
+      );
       return [
         _vs,
         _hs,
@@ -242,8 +250,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
 
     const [startRowIndex, endRowIndex] = vStore._getRange();
     const [startColIndex, endColIndex] = hStore._getRange();
-    const vScrollDirection = vStore._getScrollDirection();
-    const hScrollDirection = hStore._getScrollDirection();
+    const vIsScrolling = vStore._isScrolling();
+    const hIsScrolling = hStore._isScrolling();
     const vJumpCount = vStore._getJumpCount();
     const hJumpCount = hStore._getJumpCount();
     const height = getScrollSize(vStore);
@@ -287,35 +295,31 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       scroller._fixScrollJump();
     }, [vJumpCount, hJumpCount]);
 
-    useImperativeHandle(
-      ref,
-      () => {
-        return {
-          get scrollTop() {
-            return vStore._getScrollOffset();
-          },
-          get scrollLeft() {
-            return hStore._getScrollOffset();
-          },
-          get scrollHeight() {
-            return getScrollSize(vStore);
-          },
-          get scrollWidth() {
-            return getScrollSize(hStore);
-          },
-          get viewportHeight() {
-            return vStore._getViewportSize();
-          },
-          get viewportWidth() {
-            return hStore._getViewportSize();
-          },
-          scrollToIndex: scroller._scrollToIndex,
-          scrollTo: scroller._scrollTo,
-          scrollBy: scroller._scrollBy,
-        };
-      },
-      []
-    );
+    useImperativeHandle(ref, () => {
+      return {
+        get scrollTop() {
+          return vStore._getScrollOffset();
+        },
+        get scrollLeft() {
+          return hStore._getScrollOffset();
+        },
+        get scrollHeight() {
+          return getScrollSize(vStore);
+        },
+        get scrollWidth() {
+          return getScrollSize(hStore);
+        },
+        get viewportHeight() {
+          return vStore._getViewportSize();
+        },
+        get viewportWidth() {
+          return hStore._getViewportSize();
+        },
+        scrollToIndex: scroller._scrollToIndex,
+        scrollTo: scroller._scrollTo,
+        scrollBy: scroller._scrollBy,
+      };
+    }, []);
 
     const render = useMemo(() => {
       const cache = new Map<string, ReactNode>();
@@ -331,32 +335,9 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       };
     }, [children]);
 
-    const [overscanedStartRowIndex, overscanedEndRowIndex] = getOverscanedRange(
-      startRowIndex,
-      endRowIndex,
-      overscan,
-      vScrollDirection,
-      rowCount
-    );
-    const [overscanedStartColIndex, overscanedEndColIndex] = getOverscanedRange(
-      startColIndex,
-      endColIndex,
-      overscan,
-      hScrollDirection,
-      colCount
-    );
-
     const items: ReactElement[] = [];
-    for (
-      let rowIndex = overscanedStartRowIndex;
-      rowIndex <= overscanedEndRowIndex;
-      rowIndex++
-    ) {
-      for (
-        let colIndex = overscanedStartColIndex;
-        colIndex <= overscanedEndColIndex;
-        colIndex++
-      ) {
+    for (let rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++) {
+      for (let colIndex = startColIndex; colIndex <= endColIndex; colIndex++) {
         items.push(
           <Cell
             key={genKey(rowIndex, colIndex)}
@@ -398,11 +379,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             visibility: "hidden", // TODO replace with other optimization methods
             width: width,
             height: height,
-            pointerEvents:
-              vScrollDirection !== SCROLL_IDLE ||
-              hScrollDirection !== SCROLL_IDLE
-                ? "none"
-                : undefined,
+            pointerEvents: vIsScrolling || hIsScrolling ? "none" : undefined,
           }}
         >
           {items}

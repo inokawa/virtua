@@ -3,17 +3,14 @@ import {
   forwardRef,
   useImperativeHandle,
   ReactNode,
-  useEffect,
   useRef,
   RefObject,
 } from "react";
 import {
   UPDATE_SCROLL_EVENT,
   ACTION_ITEMS_LENGTH_CHANGE,
-  getOverscanedRange,
   createVirtualStore,
   UPDATE_VIRTUAL_STATE,
-  SCROLL_IDLE,
   UPDATE_SCROLL_END_EVENT,
   getScrollSize,
   ACTION_START_OFFSET_CHANGE,
@@ -52,6 +49,14 @@ export interface VirtualizerHandle {
    * Get current offsetHeight, or offsetWidth if horizontal: true.
    */
   readonly viewportSize: number;
+  /**
+   * Get the start index of visible range of items.
+   */
+  readonly startIndex: number;
+  /**
+   * Get the end index of visible range of items.
+   */
+  readonly endIndex: number;
   /**
    * Get item offset from start.
    * @param index index of item
@@ -155,12 +160,6 @@ export interface VirtualizerProps {
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
-  /**
-   * Callback invoked when visible items range changes.
-   * @param startIndex The start index of viewable items.
-   * @param endIndex The end index of viewable items.
-   */
-  onRangeChange?: (startIndex: number, endIndex: number) => void;
 }
 
 /**
@@ -171,7 +170,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     {
       children,
       count: renderCountProp,
-      overscan = 4,
+      overscan,
       itemSize,
       shift,
       horizontal: horizontalProp,
@@ -184,7 +183,6 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       scrollRef,
       onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
-      onRangeChange: onRangeChangeProp,
     },
     ref
   ): ReactElement => {
@@ -204,6 +202,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       const _store = createVirtualStore(
         count,
         itemSize,
+        overscan,
         ssrCount,
         cache,
         !itemSize
@@ -227,19 +226,11 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     const rerender = useRerender(store);
 
     const [startIndex, endIndex] = store._getRange();
-    const scrollDirection = store._getScrollDirection();
+    const isScrolling = store._isScrolling();
     const jumpCount = store._getJumpCount();
     const totalSize = store._getTotalSize();
 
     const items: ReactElement[] = [];
-
-    const [overscanedRangeStart, overscanedRangeEnd] = getOverscanedRange(
-      startIndex,
-      endIndex,
-      overscan,
-      scrollDirection,
-      count
-    );
 
     const getListItem = (index: number) => {
       const e = getElement(index);
@@ -306,39 +297,35 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       scroller._fixScrollJump();
     }, [jumpCount]);
 
-    useEffect(() => {
-      if (!onRangeChangeProp) return;
+    useImperativeHandle(ref, () => {
+      return {
+        get cache() {
+          return store._getCacheSnapshot();
+        },
+        get scrollOffset() {
+          return store._getScrollOffset();
+        },
+        get scrollSize() {
+          return getScrollSize(store);
+        },
+        get viewportSize() {
+          return store._getViewportSize();
+        },
+        get startIndex() {
+          return store._getStartIndex();
+        },
+        get endIndex() {
+          return store._getEndIndex();
+        },
+        getItemOffset: store._getItemOffset,
+        getItemSize: store._getItemSize,
+        scrollToIndex: scroller._scrollToIndex,
+        scrollTo: scroller._scrollTo,
+        scrollBy: scroller._scrollBy,
+      };
+    }, []);
 
-      onRangeChangeProp(startIndex, endIndex);
-    }, [startIndex, endIndex]);
-
-    useImperativeHandle(
-      ref,
-      () => {
-        return {
-          get cache() {
-            return store._getCacheSnapshot();
-          },
-          get scrollOffset() {
-            return store._getScrollOffset();
-          },
-          get scrollSize() {
-            return getScrollSize(store);
-          },
-          get viewportSize() {
-            return store._getViewportSize();
-          },
-          getItemOffset: store._getItemOffset,
-          getItemSize: store._getItemSize,
-          scrollToIndex: scroller._scrollToIndex,
-          scrollTo: scroller._scrollTo,
-          scrollBy: scroller._scrollBy,
-        };
-      },
-      []
-    );
-
-    for (let i = overscanedRangeStart, j = overscanedRangeEnd; i <= j; i++) {
+    for (let i = startIndex, j = endIndex; i <= j; i++) {
       items.push(getListItem(i));
     }
 
@@ -346,10 +333,10 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       const startItems: ReactElement[] = [];
       const endItems: ReactElement[] = [];
       sort(keepMounted).forEach((index) => {
-        if (index < overscanedRangeStart) {
+        if (index < startIndex) {
           startItems.push(getListItem(index));
         }
-        if (index > overscanedRangeEnd) {
+        if (index > endIndex) {
           endItems.push(getListItem(index));
         }
       });
@@ -369,7 +356,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
           visibility: "hidden", // TODO replace with other optimization methods
           width: isHorizontal ? totalSize : "100%",
           height: isHorizontal ? "100%" : totalSize,
-          pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : undefined,
+          pointerEvents: isScrolling ? "none" : undefined,
         }}
       >
         {items}

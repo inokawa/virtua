@@ -1,47 +1,54 @@
 <script lang="ts" generics="T">
   import { onMount, onDestroy } from "svelte";
   import {
-    SCROLL_IDLE,
     type StateVersion,
-    getOverscanedRange,
     CHANGE_ITEM_LENGTH,
     createWindowVirtualizer,
     FIX_SCROLL_JUMP,
     GET_ITEM_OFFSET,
     GET_JUMP_COUNT,
     GET_RANGE,
-    GET_SCROLL_DIRECTION,
+    GET_IS_SCROLLING,
     GET_TOTAL_SIZE,
     IS_ITEM_HIDDEN,
     OBSERVE_ITEM_RESIZE,
     ON_MOUNT,
     ON_UN_MOUNT,
     GET_ITEMS_LENGTH,
+    GET_START_INDEX,
+    GET_END_INDEX,
   } from "./core";
   import { defaultGetKey, styleToString } from "./utils";
   import ListItem from "./ListItem.svelte";
-  import type { WindowVirtualizerProps } from "./WindowVirtualizer.type";
+  import type {
+    WindowVirtualizerHandle,
+    WindowVirtualizerProps,
+  } from "./WindowVirtualizer.type";
 
   interface Props extends WindowVirtualizerProps<T> {}
 
   let {
     data,
     getKey = defaultGetKey,
-    overscan = 4,
+    overscan,
     itemSize,
     shift = false,
     horizontal = false,
     children,
+    onscroll,
     onscrollend,
-    onrangechange,
   }: Props = $props();
 
   const virtualizer = createWindowVirtualizer(
     data.length,
     itemSize,
+    overscan,
     horizontal,
     (v) => {
       rerender = v;
+    },
+    (offset) => {
+      onscroll && onscroll(offset);
     },
     () => {
       onscrollend && onscrollend();
@@ -53,20 +60,9 @@
   let rerender: StateVersion = $state([]);
 
   let range = $derived(rerender && virtualizer[GET_RANGE]());
-  let scrollDirection = $derived(
-    rerender && virtualizer[GET_SCROLL_DIRECTION]()
-  );
+  let isScrolling = $derived(rerender && virtualizer[GET_IS_SCROLLING]());
   let totalSize = $derived(rerender && virtualizer[GET_TOTAL_SIZE]());
   let jumpCount = $derived(rerender && virtualizer[GET_JUMP_COUNT]());
-  let extendedRange = $derived(
-    getOverscanedRange(
-      range[0],
-      range[1],
-      overscan,
-      scrollDirection,
-      data.length
-    )
-  );
 
   onMount(() => {
     virtualizer[ON_MOUNT](containerRef!);
@@ -88,16 +84,15 @@
     virtualizer[FIX_SCROLL_JUMP]();
   });
 
-  let prevRange: typeof range | undefined;
-  $effect(() => {
-    if (prevRange && prevRange[0] === range[0] && prevRange[1] === range[1])
-      return;
-    prevRange = range;
-    onrangechange && onrangechange(range[0], range[1]);
-  });
+  export const getStartIndex = virtualizer[
+    GET_START_INDEX
+  ] satisfies WindowVirtualizerHandle["getStartIndex"] as WindowVirtualizerHandle["getStartIndex"];
+  export const getEndIndex = virtualizer[
+    GET_END_INDEX
+  ] satisfies WindowVirtualizerHandle["getEndIndex"] as WindowVirtualizerHandle["getEndIndex"];
 
   let items = $derived.by(() => {
-    const [startIndex, endIndex] = extendedRange;
+    const [startIndex, endIndex] = range;
     const newItems: T[] = [];
     for (let i = startIndex, j = endIndex; i <= j; i++) {
       newItems.push(data[i]!);
@@ -114,7 +109,7 @@
       visibility: "hidden", // TODO replace with other optimization methods
       width: horizontal ? totalSize + "px" : "100%",
       height: horizontal ? "100%" : totalSize + "px",
-      "pointer-events": scrollDirection !== SCROLL_IDLE ? "none" : undefined,
+      "pointer-events": isScrolling ? "none" : undefined,
     })
   );
 </script>
@@ -124,8 +119,8 @@
   {@link Virtualizer} controlled by the window scrolling. See {@link WindowVirtualizerProps} and {@link WindowVirtualizerHandle}.
 -->
 <div bind:this={containerRef} style={containerStyle}>
-  {#each items as item, i (getKey(item, i + extendedRange[0]))}
-    {@const index = i + extendedRange[0]}
+  {#each items as item, i (getKey(item, i + range[0]))}
+    {@const index = i + range[0]}
     <ListItem
       {children}
       {item}

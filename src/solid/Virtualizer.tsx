@@ -15,11 +15,9 @@ import {
 } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import {
-  SCROLL_IDLE,
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_VIRTUAL_STATE,
-  getOverscanedRange,
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
@@ -48,6 +46,14 @@ export interface VirtualizerHandle {
    * Get current offsetHeight, or offsetWidth if horizontal: true.
    */
   readonly viewportSize: number;
+  /**
+   * Get the start index of visible range of items.
+   */
+  readonly startIndex: number;
+  /**
+   * Get the end index of visible range of items.
+   */
+  readonly endIndex: number;
   /**
    * Get item offset from start.
    * @param index index of item
@@ -139,12 +145,6 @@ export interface VirtualizerProps<T> {
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
-  /**
-   * Callback invoked when visible items range changes.
-   * @param startIndex The start index of viewable items.
-   * @param endIndex The end index of viewable items.
-   */
-  onRangeChange?: (startIndex: number, endIndex: number) => void;
 }
 
 /**
@@ -152,7 +152,7 @@ export interface VirtualizerProps<T> {
  */
 export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const { itemSize, horizontal = false } = props;
+  const { itemSize, horizontal = false, overscan } = props;
   props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
     { as: "div" },
     props
@@ -161,6 +161,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   const store = createVirtualStore(
     props.data.length,
     itemSize,
+    overscan,
     undefined,
     undefined,
     !itemSize
@@ -192,28 +193,10 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     }
     return next;
   });
-  const scrollDirection = createMemo(
-    () => rerender() && store._getScrollDirection()
-  );
+  const isScrolling = createMemo(() => rerender() && store._isScrolling());
   const totalSize = createMemo(() => rerender() && store._getTotalSize());
 
   const jumpCount = createMemo(() => rerender() && store._getJumpCount());
-
-  const overscanedRange = createMemo<ItemsRange>((prev) => {
-    const overscan = props.overscan ?? 4;
-    const [startIndex, endIndex] = range();
-    const next = getOverscanedRange(
-      startIndex,
-      endIndex,
-      overscan,
-      scrollDirection(),
-      props.data.length
-    );
-    if (prev && isSameRange(prev, next)) {
-      return prev;
-    }
-    return next;
-  });
 
   onMount(() => {
     if (props.ref) {
@@ -226,6 +209,12 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         },
         get viewportSize() {
           return store._getViewportSize();
+        },
+        get startIndex() {
+          return store._getStartIndex();
+        },
+        get endIndex() {
+          return store._getEndIndex();
         },
         getItemOffset: store._getItemOffset,
         getItemSize: store._getItemSize,
@@ -280,11 +269,6 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     })
   );
 
-  createEffect(() => {
-    const next = range();
-    props.onRangeChange && props.onRangeChange(next[0], next[1]);
-  });
-
   return (
     <Dynamic
       component={props.as}
@@ -297,13 +281,12 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         visibility: "hidden", // TODO replace with other optimization methods
         width: horizontal ? totalSize() + "px" : "100%",
         height: horizontal ? "100%" : totalSize() + "px",
-        "pointer-events":
-          scrollDirection() !== SCROLL_IDLE ? "none" : undefined,
+        "pointer-events": isScrolling() ? "none" : undefined,
       }}
     >
       <RangedFor
         _each={props.data}
-        _range={overscanedRange()}
+        _range={range()}
         _render={(data, index) => {
           const offset = createMemo(() => {
             rerender();
