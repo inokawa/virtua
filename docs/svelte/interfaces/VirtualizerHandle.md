@@ -30,7 +30,7 @@ index of item
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:97](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/Virtualizer.type.ts#L97)
+[src/svelte/Virtualizer.type.ts:99](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/Virtualizer.type.ts#L99)
 
 ***
 
@@ -52,7 +52,7 @@ index of item
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:102](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/Virtualizer.type.ts#L102)
+[src/svelte/Virtualizer.type.ts:104](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/Virtualizer.type.ts#L104)
 
 ***
 
@@ -78,7 +78,7 @@ options
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:108](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/Virtualizer.type.ts#L108)
+[src/svelte/Virtualizer.type.ts:110](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/Virtualizer.type.ts#L110)
 
 ***
 
@@ -100,7 +100,7 @@ offset from start
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:113](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/Virtualizer.type.ts#L113)
+[src/svelte/Virtualizer.type.ts:115](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/Virtualizer.type.ts#L115)
 
 ***
 
@@ -122,7 +122,7 @@ offset from current position
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:118](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/Virtualizer.type.ts#L118)
+[src/svelte/Virtualizer.type.ts:120](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/Virtualizer.type.ts#L120)
 
 ## Properties
 
@@ -138,7 +138,7 @@ Get current scrollTop, or scrollLeft if horizontal: true.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:84](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/Virtualizer.type.ts#L84)
+[src/svelte/Virtualizer.type.ts:78](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/Virtualizer.type.ts#L78)
 
 ***
 
@@ -154,7 +154,7 @@ Get current scrollHeight, or scrollWidth if horizontal: true.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:88](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/Virtualizer.type.ts#L88)
+[src/svelte/Virtualizer.type.ts:82](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/Virtualizer.type.ts#L82)
 
 ***
 
@@ -170,4 +170,36 @@ Get current offsetHeight, or offsetWidth if horizontal: true.
 
 #### Defined in
 
-[src/svelte/Virtualizer.type.ts:92](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/Virtualizer.type.ts#L92)
+[src/svelte/Virtualizer.type.ts:86](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/Virtualizer.type.ts#L86)
+
+***
+
+### getStartIndex()
+
+> **getStartIndex**: () => `number`
+
+Get the start index of visible range of items.
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[src/svelte/Virtualizer.type.ts:90](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/Virtualizer.type.ts#L90)
+
+***
+
+### getEndIndex()
+
+> **getEndIndex**: () => `number`
+
+Get the end index of visible range of items.
+
+#### Returns
+
+`number`
+
+#### Defined in
+
+[src/svelte/Virtualizer.type.ts:94](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/Virtualizer.type.ts#L94)

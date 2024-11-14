@@ -20,7 +20,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:10](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/WindowVirtualizer.type.ts#L10)
+[src/svelte/WindowVirtualizer.type.ts:10](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/WindowVirtualizer.type.ts#L10)
 
 ***
 
@@ -32,7 +32,7 @@ The elements renderer snippet.
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:14](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/WindowVirtualizer.type.ts#L14)
+[src/svelte/WindowVirtualizer.type.ts:14](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/WindowVirtualizer.type.ts#L14)
 
 ***
 
@@ -60,7 +60,7 @@ defaultGetKey (returns index of item)
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:19](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/WindowVirtualizer.type.ts#L19)
+[src/svelte/WindowVirtualizer.type.ts:19](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/WindowVirtualizer.type.ts#L19)
 
 ***
 
@@ -78,7 +78,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:24](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/WindowVirtualizer.type.ts#L24)
+[src/svelte/WindowVirtualizer.type.ts:24](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/WindowVirtualizer.type.ts#L24)
 
 ***
 
@@ -93,7 +93,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:31](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/WindowVirtualizer.type.ts#L31)
+[src/svelte/WindowVirtualizer.type.ts:31](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/WindowVirtualizer.type.ts#L31)
 
 ***
 
@@ -105,7 +105,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:35](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/WindowVirtualizer.type.ts#L35)
+[src/svelte/WindowVirtualizer.type.ts:35](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/WindowVirtualizer.type.ts#L35)
 
 ***
 
@@ -117,7 +117,29 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:39](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/WindowVirtualizer.type.ts#L39)
+[src/svelte/WindowVirtualizer.type.ts:39](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/WindowVirtualizer.type.ts#L39)
+
+***
+
+### onscroll()?
+
+> `optional` **onscroll**: (`offset`) => `void`
+
+Callback invoked whenever scroll offset changes.
+
+#### Parameters
+
+• **offset**: `number`
+
+Current scrollTop, or scrollLeft if horizontal: true.
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[src/svelte/WindowVirtualizer.type.ts:44](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/WindowVirtualizer.type.ts#L44)
 
 ***
 
@@ -133,30 +155,4 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:43](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/WindowVirtualizer.type.ts#L43)
-
-***
-
-### onrangechange()?
-
-> `optional` **onrangechange**: (`startIndex`, `endIndex`) => `void`
-
-Callback invoked when visible items range changes.
-
-#### Parameters
-
-• **startIndex**: `number`
-
-The start index of viewable items.
-
-• **endIndex**: `number`
-
-The end index of viewable items.
-
-#### Returns
-
-`void`
-
-#### Defined in
-
-[src/svelte/WindowVirtualizer.type.ts:49](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/svelte/WindowVirtualizer.type.ts#L49)
+[src/svelte/WindowVirtualizer.type.ts:48](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/svelte/WindowVirtualizer.type.ts#L48)

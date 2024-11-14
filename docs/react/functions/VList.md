@@ -18,4 +18,4 @@ Virtualized list component. See [VListProps](../interfaces/VListProps.md) and [V
 
 ## Defined in
 
-[src/react/VList.tsx:45](https://github.com/inokawa/virtua/blob/2bf55a31e3bee8397ca25af4a973a53323737c4b/src/react/VList.tsx#L45)
+[src/react/VList.tsx:44](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/react/VList.tsx#L44)
