@@ -37,8 +37,8 @@ export const GET_SCROLL_SIZE = 17;
 export const SCROLL_TO = 18;
 export const SCROLL_BY = 19;
 export const SCROLL_TO_INDEX = 20;
-export const GET_START_INDEX = 21;
-export const GET_END_INDEX = 22;
+export const FIND_START_INDEX = 21;
+export const FIND_END_INDEX = 22;
 
 /**
  * This function is workaround for terser minification.
@@ -112,8 +112,8 @@ export const createVirtualizer = (
     [SCROLL_TO]: scroller._scrollTo,
     [SCROLL_BY]: scroller._scrollBy,
     [SCROLL_TO_INDEX]: scroller._scrollToIndex,
-    [GET_START_INDEX]: store._getStartIndex,
-    [GET_END_INDEX]: store._getEndIndex,
+    [FIND_START_INDEX]: store._findStartIndex,
+    [FIND_END_INDEX]: store._findEndIndex,
   };
 };
 
@@ -180,7 +180,7 @@ export const createWindowVirtualizer = (
     [CHANGE_ITEM_LENGTH]: (len: number, shift?: boolean) => {
       store._update(ACTION_ITEMS_LENGTH_CHANGE, [len, shift]);
     },
-    [GET_START_INDEX]: store._getStartIndex,
-    [GET_END_INDEX]: store._getEndIndex,
+    [FIND_START_INDEX]: store._findStartIndex,
+    [FIND_END_INDEX]: store._findEndIndex,
   };
 };

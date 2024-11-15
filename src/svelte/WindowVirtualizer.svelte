@@ -15,8 +15,8 @@
     ON_MOUNT,
     ON_UN_MOUNT,
     GET_ITEMS_LENGTH,
-    GET_START_INDEX,
-    GET_END_INDEX,
+    FIND_START_INDEX,
+    FIND_END_INDEX,
   } from "./core";
   import { defaultGetKey, styleToString } from "./utils";
   import ListItem from "./ListItem.svelte";
@@ -84,12 +84,12 @@
     virtualizer[FIX_SCROLL_JUMP]();
   });
 
-  export const getStartIndex = virtualizer[
-    GET_START_INDEX
-  ] satisfies WindowVirtualizerHandle["getStartIndex"] as WindowVirtualizerHandle["getStartIndex"];
-  export const getEndIndex = virtualizer[
-    GET_END_INDEX
-  ] satisfies WindowVirtualizerHandle["getEndIndex"] as WindowVirtualizerHandle["getEndIndex"];
+  export const findStartIndex = virtualizer[
+    FIND_START_INDEX
+  ] satisfies WindowVirtualizerHandle["findStartIndex"] as WindowVirtualizerHandle["findStartIndex"];
+  export const findEndIndex = virtualizer[
+    FIND_END_INDEX
+  ] satisfies WindowVirtualizerHandle["findEndIndex"] as WindowVirtualizerHandle["findEndIndex"];
 
   let items = $derived.by(() => {
     const [startIndex, endIndex] = range;

@@ -204,14 +204,14 @@ export const BiDirectionalInfiniteScrolling: StoryObj = {
 
             if (
               endFetchedCountRef.current < count &&
-              ref.current.endIndex + THRESHOLD > count
+              ref.current.findEndIndex() + THRESHOLD > count
             ) {
               endFetchedCountRef.current = count;
               await fetchItems();
               setItems((prev) => [...prev, ...createRows(ITEM_BATCH_COUNT)]);
             } else if (
               startFetchedCountRef.current < count &&
-              ref.current.startIndex - THRESHOLD < 0
+              ref.current.findStartIndex() - THRESHOLD < 0
             ) {
               startFetchedCountRef.current = count;
               await fetchItems(true);

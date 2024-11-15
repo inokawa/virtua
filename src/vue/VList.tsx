@@ -68,12 +68,8 @@ export const VList = /*#__PURE__*/ defineComponent({
       get viewportSize() {
         return handle.value!.viewportSize;
       },
-      get startIndex() {
-        return handle.value!.startIndex;
-      },
-      get endIndex() {
-        return handle.value!.endIndex;
-      },
+      findStartIndex: (...args) => handle.value!.findStartIndex(...args),
+      findEndIndex: (...args) => handle.value!.findEndIndex(...args),
       getItemOffset: (...args) => handle.value!.getItemOffset(...args),
       getItemSize: (...args) => handle.value!.getItemSize(...args),
       scrollToIndex: (...args) => handle.value!.scrollToIndex(...args),

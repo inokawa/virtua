@@ -30,13 +30,13 @@ import { ItemsRange } from "../core/types";
  */
 export interface WindowVirtualizerHandle {
   /**
-   * Get the start index of visible range of items.
+   * Find the start index of visible range of items.
    */
-  readonly startIndex: number;
+  findStartIndex: () => number;
   /**
-   * Get the end index of visible range of items.
+   * Find the end index of visible range of items.
    */
-  readonly endIndex: number;
+  findEndIndex: () => number;
 }
 
 /**
@@ -148,12 +148,8 @@ export const WindowVirtualizer = <T,>(
   onMount(() => {
     if (props.ref) {
       props.ref({
-        get startIndex() {
-          return store._getStartIndex();
-        },
-        get endIndex() {
-          return store._getEndIndex();
-        },
+        findStartIndex: store._findStartIndex,
+        findEndIndex: store._findEndIndex,
       });
     }
 

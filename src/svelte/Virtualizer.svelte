@@ -24,8 +24,8 @@
     GET_START_SPACER_SIZE,
     GET_ITEMS_LENGTH,
     GET_ITEM_SIZE,
-    GET_START_INDEX,
-    GET_END_INDEX,
+    FIND_START_INDEX,
+    FIND_END_INDEX,
   } from "./core";
   import { defaultGetKey, styleToString } from "./utils";
   import ListItem from "./ListItem.svelte";
@@ -113,12 +113,12 @@
   export const getViewportSize = virtualizer[
     GET_VIEWPORT_SIZE
   ] satisfies VirtualizerHandle["getViewportSize"] as VirtualizerHandle["getViewportSize"];
-  export const getStartIndex = virtualizer[
-    GET_START_INDEX
-  ] satisfies VirtualizerHandle["getStartIndex"] as VirtualizerHandle["getStartIndex"];
-  export const getEndIndex = virtualizer[
-    GET_END_INDEX
-  ] satisfies VirtualizerHandle["getEndIndex"] as VirtualizerHandle["getEndIndex"];
+  export const findStartIndex = virtualizer[
+    FIND_START_INDEX
+  ] satisfies VirtualizerHandle["findStartIndex"] as VirtualizerHandle["findStartIndex"];
+  export const findEndIndex = virtualizer[
+    FIND_END_INDEX
+  ] satisfies VirtualizerHandle["findEndIndex"] as VirtualizerHandle["findEndIndex"];
   export const getItemOffset = virtualizer[
     GET_ITEM_OFFSET
   ] satisfies VirtualizerHandle["getItemOffset"] as VirtualizerHandle["getItemOffset"];
