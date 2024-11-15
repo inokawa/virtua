@@ -384,6 +384,8 @@ export const createWindowScroller = (
     isHorizontal: boolean,
     offset: number = 0
   ): number => {
+    window = getCurrentWindow(getCurrentDocument(node))
+    
     // TODO calc offset only when it changes (maybe impossible)
     const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
     const offsetSum =
