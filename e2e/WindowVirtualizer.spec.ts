@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, ElementHandle } from "@playwright/test";
 import {
   storyUrl,
   getFirstItem,
@@ -15,6 +15,8 @@ import {
   windowScrollBy,
   getWindowFirstItem,
   getWindowLastItem,
+  clearInput,
+  listenScrollCount,
 } from "./utils";
 
 test.describe("smoke", () => {
@@ -443,5 +445,283 @@ test.describe("RTL", () => {
     const text = await component.innerText();
     await expect(text).toContain("999");
     await expect(text).not.toContain("949");
+  });
+});
+
+test.describe("check if scrollToIndex works", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(storyUrl("basics-windowvirtualizer--scroll-to"));
+  });
+
+  test.describe("align start", () => {
+    test("mid", async ({ page }) => {
+      const component = await getVirtualizer(page)
+      await component.waitForElementState("stable");
+
+      // check if start is displayed
+      await expect((await getFirstItem(component)).text).toEqual("0");
+            
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = await button.evaluateHandle(
+        (el) => el.previousSibling as HTMLInputElement
+      );
+
+      await clearInput(input);
+      await input.fill("700");
+      await button.click();
+
+      await component.waitForElementState("stable");
+      
+      // Check if scrolled precisely
+      const firstItem = await getWindowFirstItem(page);
+      await expect(firstItem.text).toEqual("700");
+      await expect(firstItem.top).toEqual(0);
+
+      // Check if unnecessary items are not rendered
+      await expect(await component.innerText()).not.toContain("650");
+      await expect(await component.innerText()).not.toContain("750");
+    });
+
+    test("start", async ({ page }) => {
+      const component = await getVirtualizer(page)
+      await component.waitForElementState("stable");
+
+      // check if start is displayed
+      await expect((await getFirstItem(component)).text).toEqual("0");
+
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = await button.evaluateHandle(
+        (el) => el.previousSibling as HTMLInputElement
+      );
+
+      await clearInput(input);
+      await input.fill("500");
+      await button.click();
+
+      await component.waitForElementState("stable");
+
+      await expect(await component.innerText()).toContain("500");
+
+      await clearInput(input);
+      await input.fill("0");
+      await button.click();
+
+      await component.waitForElementState("stable");
+
+      // Check if scrolled precisely
+      const firstItem = await getWindowFirstItem(page);
+      await expect(firstItem.text).toEqual("0");
+      await expect(firstItem.top).toEqual(0);
+
+      // Check if unnecessary items are not rendered
+      await expect(await component.innerText()).not.toContain("50\n");
+    });
+
+    test("end", async ({ page }) => {
+      const component = await getVirtualizer(page)
+      await component.waitForElementState("stable");
+
+      // check if start is displayed
+      await expect((await getFirstItem(component)).text).toEqual("0");
+
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = await button.evaluateHandle(
+        (el) => el.previousSibling as HTMLInputElement
+      );
+
+      await clearInput(input);
+      await input.fill("999");
+      await button.click();
+
+      await component.waitForElementState("stable");
+
+      // Check if scrolled precisely
+      const lastItem = await getWindowLastItem(page);
+      await expect(lastItem.text).toEqual("999");
+      expectInRange(lastItem.bottom, { min: -0.9, max: 1 });
+
+      // Check if unnecessary items are not rendered
+      await expect(await component.innerText()).not.toContain("949");
+    });
+
+    test("mid smooth", async ({ page, browserName }) => {
+      const component = await getVirtualizer(page)
+      await component.waitForElementState("stable");
+      
+      const window = await page.evaluateHandle(() => window);
+      
+      // check if start is displayed
+      await expect((await getFirstItem(component)).text).toEqual("0");
+
+      await page.getByRole("checkbox", { name: "smooth" }).click();
+
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = await button.evaluateHandle(
+        (el) => el.previousSibling as HTMLInputElement
+      );
+
+      const scrollListener = listenScrollCount(window);
+
+      await clearInput(input);
+      await input.fill("700");
+      await button.click();
+
+      await page.waitForTimeout(500);
+
+      const called = await scrollListener;
+
+      // Check if this is smooth scrolling
+      await expect(called).toBeGreaterThanOrEqual(
+        // TODO find better way to check in webkit
+        browserName === "webkit" ? 2 : 10
+      );
+
+      // Check if scrolled precisely
+      const firstItem = await getWindowFirstItem(page);
+      await expect(firstItem.text).toEqual("700");
+      expectInRange(firstItem.top, { min: 0, max: 1 });
+
+      // Check if unnecessary items are not rendered
+      await expect(await component.innerText()).not.toContain("650");
+      await expect(await component.innerText()).not.toContain("750");
+    });
+  });
+
+  test.describe("align end", () => {
+    test.beforeEach(async ({ page }) => {
+      await page.getByRole("radio", { name: "end" }).click();
+    });
+
+    test("mid", async ({ page }) => {
+      const component = await getVirtualizer(page)
+      await component.waitForElementState("stable");
+
+      // check if start is displayed
+      await expect((await getFirstItem(component)).text).toEqual("0");
+
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = await button.evaluateHandle(
+        (el) => el.previousSibling as HTMLInputElement
+      );
+
+      await clearInput(input);
+      await input.fill("700");
+      await button.click();
+
+      await component.waitForElementState("stable");
+
+      // Check if scrolled precisely
+      const lastItem = await getWindowLastItem(page);
+      await expect(lastItem.text).toEqual("700");
+      expectInRange(lastItem.bottom, { min: 0, max: 1 });
+
+      // Check if unnecessary items are not rendered
+      await expect(await component.innerText()).not.toContain("650");
+      await expect(await component.innerText()).not.toContain("750");
+    });
+
+    test("start", async ({ page }) => {
+      const component = await getVirtualizer(page)
+      await component.waitForElementState("stable");
+
+      // check if start is displayed
+      await expect((await getFirstItem(component)).text).toEqual("0");
+
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = await button.evaluateHandle(
+        (el) => el.previousSibling as HTMLInputElement
+      );
+
+      await clearInput(input);
+      await input.fill("500");
+      await button.click();
+
+      await component.waitForElementState("stable");
+
+      await expect(await component.innerText()).toContain("500");
+
+      await clearInput(input);
+      await input.fill("0");
+      await button.click();
+
+      await component.waitForElementState("stable");
+
+      // Check if scrolled precisely
+      const firstItem = await getFirstItem(component);
+      await expect(firstItem.text).toEqual("0");
+      await expect(firstItem.top).toEqual(0);
+
+      // Check if unnecessary items are not rendered
+      await expect(await component.innerText()).not.toContain("50\n");
+    });
+
+    test("end", async ({ page }) => {
+      const component = await getVirtualizer(page)
+      await component.waitForElementState("stable");
+
+      // check if start is displayed
+      await expect((await getFirstItem(component)).text).toEqual("0");
+
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = await button.evaluateHandle(
+        (el) => el.previousSibling as HTMLInputElement
+      );
+
+      await clearInput(input);
+      await input.fill("999");
+      await button.click();
+
+      await component.waitForElementState("stable");
+
+      // Check if scrolled precisely
+      const lastItem = await getWindowLastItem(component);
+      await expect(lastItem.text).toEqual("999");
+      expectInRange(lastItem.bottom, { min: 0, max: 1 });
+
+      // Check if unnecessary items are not rendered
+      await expect(await component.innerText()).not.toContain("949");
+    });
+
+    test("mid smooth", async ({ page, browserName }) => {
+      const component = await getVirtualizer(page)
+      await component.waitForElementState("stable");
+      
+      const window = await page.evaluateHandle(() => window);
+
+      // check if start is displayed
+      await expect((await getFirstItem(component)).text).toEqual("0");
+
+      await page.getByRole("checkbox", { name: "smooth" }).click();
+
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = await button.evaluateHandle(
+        (el) => el.previousSibling as HTMLInputElement
+      );
+
+      const scrollListener = listenScrollCount(window);
+
+      await clearInput(input);
+      await input.fill("700");
+      await button.click();
+
+      await page.waitForTimeout(500);
+
+      const called = await scrollListener;
+
+      // Check if this is smooth scrolling
+      await expect(called).toBeGreaterThanOrEqual(
+        // TODO find better way to check in webkit
+        browserName === "webkit" ? 2 : 10
+      );
+
+      // Check if scrolled precisely
+      const lastItem = await getWindowLastItem(component);
+      await expect(lastItem.text).toEqual("700");
+      expectInRange(lastItem.bottom, { min: 0, max: 1 });
+
+      // Check if unnecessary items are not rendered
+      await expect(await component.innerText()).not.toContain("650");
+      await expect(await component.innerText()).not.toContain("750");
+    });
   });
 });
