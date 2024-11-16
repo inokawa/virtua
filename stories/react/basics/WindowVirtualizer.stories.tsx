@@ -178,7 +178,7 @@ export const InfiniteScrolling: StoryObj = {
             if (!ref.current) return;
             if (
               fetchedCountRef.current < count &&
-              ref.current.endIndex + 50 > count
+              ref.current.findEndIndex() + 50 > count
             ) {
               fetchedCountRef.current = count;
               await fetchItems();

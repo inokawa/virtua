@@ -85,13 +85,13 @@ export interface VirtualizerHandle {
    */
   getViewportSize: () => number;
   /**
-   * Get the start index of visible range of items.
+   * Find the start index of visible range of items.
    */
-  getStartIndex: () => number;
+  findStartIndex: () => number;
   /**
-   * Get the end index of visible range of items.
+   * Find the end index of visible range of items.
    */
-  getEndIndex: () => number;
+  findEndIndex: () => number;
   /**
    * Get item offset from start.
    * @param index index of item

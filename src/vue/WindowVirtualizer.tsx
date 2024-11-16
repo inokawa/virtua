@@ -27,13 +27,13 @@ import { getKey } from "./utils";
 
 export interface WindowVirtualizerHandle {
   /**
-   * Get the start index of visible range of items.
+   * Find the start index of visible range of items.
    */
-  readonly startIndex: number;
+  findStartIndex: () => number;
   /**
-   * Get the end index of visible range of items.
+   * Find the end index of visible range of items.
    */
-  readonly endIndex: number;
+  findEndIndex: () => number;
 }
 
 const props = {
@@ -137,12 +137,8 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     );
 
     expose({
-      get startIndex() {
-        return store._getStartIndex();
-      },
-      get endIndex() {
-        return store._getEndIndex();
-      },
+      findStartIndex: store._findStartIndex,
+      findEndIndex: store._findEndIndex,
     } satisfies WindowVirtualizerHandle);
 
     return () => {

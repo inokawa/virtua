@@ -53,11 +53,11 @@ export interface WindowVirtualizerProps<T> {
  */
 export interface WindowVirtualizerHandle {
   /**
-   * Get the start index of visible range of items.
+   * Find the start index of visible range of items.
    */
-  getStartIndex: () => number;
+  findStartIndex: () => number;
   /**
-   * Get the end index of visible range of items.
+   * Find the end index of visible range of items.
    */
-  getEndIndex: () => number;
+  findEndIndex: () => number;
 }

@@ -43,13 +43,13 @@ export interface VirtualizerHandle {
    */
   readonly viewportSize: number;
   /**
-   * Get the start index of visible range of items.
+   * Find the start index of visible range of items.
    */
-  readonly startIndex: number;
+  findStartIndex: () => number;
   /**
-   * Get the end index of visible range of items.
+   * Find the end index of visible range of items.
    */
-  readonly endIndex: number;
+  findEndIndex: () => number;
   /**
    * Get item offset from start.
    * @param index index of item
@@ -219,12 +219,8 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       get viewportSize() {
         return store._getViewportSize();
       },
-      get startIndex() {
-        return store._getStartIndex();
-      },
-      get endIndex() {
-        return store._getEndIndex();
-      },
+      findStartIndex: store._findStartIndex,
+      findEndIndex: store._findEndIndex,
       getItemOffset: store._getItemOffset,
       getItemSize: store._getItemSize,
       scrollToIndex: scroller._scrollToIndex,

@@ -35,13 +35,13 @@ export interface WindowVirtualizerHandle {
    */
   readonly cache: CacheSnapshot;
   /**
-   * Get the start index of visible range of items.
+   * Find the start index of visible range of items.
    */
-  readonly startIndex: number;
+  findStartIndex: () => number;
   /**
-   * Get the end index of visible range of items.
+   * Find the end index of visible range of items.
    */
-  readonly endIndex: number;
+  findEndIndex: () => number;
 }
 
 /**
@@ -221,12 +221,8 @@ export const WindowVirtualizer = forwardRef<
         get cache() {
           return store._getCacheSnapshot();
         },
-        get startIndex() {
-          return store._getStartIndex();
-        },
-        get endIndex() {
-          return store._getEndIndex();
-        },
+        findStartIndex: store._findStartIndex,
+        findEndIndex: store._findEndIndex,
       };
     }, []);
 
