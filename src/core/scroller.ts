@@ -197,7 +197,7 @@ export const createScroller = (
       // Cancel waiting scrollTo
       cancelScroll();
     }
-    
+
 
     const waitForMeasurement = (): [Promise<void>, () => void] => {
       // Wait for the scroll destination items to be measured.
@@ -385,7 +385,7 @@ export const createWindowScroller = (
     offset: number = 0
   ): number => {
     window = getCurrentWindow(getCurrentDocument(node))
-    
+
     // TODO calc offset only when it changes (maybe impossible)
     const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
     const offsetSum =
@@ -407,7 +407,7 @@ export const createWindowScroller = (
     );
   };
 
-  
+
   const scheduleImperativeScroll = async (
     getTargetOffset: () => number,
     smooth?: boolean
@@ -417,18 +417,18 @@ export const createWindowScroller = (
       microtask(() => scheduleImperativeScroll(getTargetOffset, smooth));
       return;
     }
-  
+
     if (cancelScroll) {
       cancelScroll();
     }
-  
+
     const waitForMeasurement = (): [Promise<void>, () => void] => {
       let queue: (() => void) | undefined;
       return [
         new Promise<void>((resolve, reject) => {
           queue = resolve;
           cancelScroll = reject;
-  
+
           if (isInitialMeasurementDone(store)) {
             timeout(reject, 150);
           }
@@ -438,19 +438,19 @@ export const createWindowScroller = (
         }),
       ];
     };
-  
+
     const window = getCurrentWindow(getCurrentDocument(containerElement));
-  
+
     if (smooth && isSmoothScrollSupported()) {
       while (true) {
         store._update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
-  
+
         if (!store._hasUnmeasuredItemsInFrozenRange()) {
           break;
         }
-  
+
         const [promise, unsubscribe] = waitForMeasurement();
-  
+
         try {
           await promise;
         } catch (e) {
@@ -459,7 +459,7 @@ export const createWindowScroller = (
           unsubscribe();
         }
       }
-  
+
       window.scrollTo({
         [isHorizontal ? 'left' : 'top']: normalizeOffset(getTargetOffset(), isHorizontal),
         behavior: 'smooth'
@@ -467,19 +467,19 @@ export const createWindowScroller = (
     } else {
       while (true) {
         const [promise, unsubscribe] = waitForMeasurement();
-  
+
         try {
           window.scrollTo(
             isHorizontal ? normalizeOffset(getTargetOffset(), isHorizontal) : window.scrollX,
             isHorizontal ? window.scrollY : getTargetOffset()
           );
           store._update(ACTION_MANUAL_SCROLL);
-  
+
           await promise;
         } catch (e) {
           return;
         } finally {
-          unsubscribe(); 
+          unsubscribe();
         }
       }
     }
@@ -515,7 +515,7 @@ export const createWindowScroller = (
     _dispose() {
       scrollObserver && scrollObserver._dispose();
       containerElement = undefined;
-      // document = undefined; 
+      // document = undefined;
       window = undefined;
     },
     _fixScrollJump: () => {
@@ -530,13 +530,13 @@ export const createWindowScroller = (
     },
     _scrollToIndex(index, { align, smooth, offset = 0 } = {}) {
       if (!document || !containerElement) return;
-      
+
       index = clamp(index, 0, store._getItemsLength() - 1);
-  
+
       if (align === "nearest") {
         const itemOffset = store._getItemOffset(index);
         const scrollOffset = store._getScrollOffset();
-  
+
         if (itemOffset < scrollOffset) {
           align = "start";
         } else if (
@@ -548,7 +548,7 @@ export const createWindowScroller = (
           return;
         }
       }
-  
+
       scheduleImperativeScroll(() => {
         // Calculate target scroll position including container's offset from document
         const containerOffset = calcOffsetToViewport(
@@ -556,17 +556,25 @@ export const createWindowScroller = (
           document!.body,
           isHorizontal
         );
-        
+
+        const scrollbarHeight = window!.innerHeight - document!.documentElement.clientHeight;
+        const scrollbarWidth = window!.innerHeight - document!.documentElement.clientWidth;
+
+        // slight tech debt: this would otherwise need to be accounted for in store._getViewportSize in a way that's flexible for windowScroller
+        const viewportAdjustment = (align === "end" || align === "center")
+          ? (isHorizontal ? scrollbarWidth : scrollbarHeight)
+          : 0;
+
         return (
           offset +
           containerOffset +
-          // store._getStartSpacerSize() +
-          // I'm somewhat confused why this isn't needed 
+          store._getStartSpacerSize() +
+          // I'm somewhat confused why this isn't needed
           store._getItemOffset(index) +
           (align === "end"
-            ? store._getItemSize(index) - store._getViewportSize()
+            ? store._getItemSize(index) - (store._getViewportSize() - viewportAdjustment)
             : align === "center"
-              ? (store._getItemSize(index) - store._getViewportSize()) / 2
+              ? (store._getItemSize(index) - (store._getViewportSize() - viewportAdjustment)) / 2
               : 0)
         );
       }, smooth);
