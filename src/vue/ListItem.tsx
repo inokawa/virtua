@@ -7,29 +7,40 @@ import {
   PropType,
   VNode,
   NativeElements,
+  computed,
+  Ref,
 } from "vue";
 import { ItemResizeObserver } from "../core/resizer";
 import { isRTLDocument } from "../core/environment";
+import { StateVersion, VirtualStore } from "../core/store";
 
 /**
  * @internal
  */
 export const ListItem = /*#__PURE__*/ defineComponent({
   props: {
+    _rerender: { type: Object as PropType<Ref<StateVersion>>, required: true },
+    _store: { type: Object as PropType<VirtualStore>, required: true },
     _children: { type: Object as PropType<VNode>, required: true },
     _resizer: {
       type: Function as PropType<ItemResizeObserver>,
       required: true,
     },
     _index: { type: Number, required: true },
-    _offset: { type: Number, required: true },
-    _hide: { type: Boolean },
     _isHorizontal: { type: Boolean },
     _isSSR: { type: Boolean },
     _as: { type: String as PropType<keyof NativeElements>, required: true },
   },
   setup(props) {
     const elementRef = ref<HTMLDivElement>();
+
+    const offset = computed(
+      () => props._rerender.value && props._store._getItemOffset(props._index)
+    );
+    const hide = computed(
+      () =>
+        props._rerender.value && props._store._isUnmeasuredItem(props._index)
+    );
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     watch(
@@ -45,20 +56,19 @@ export const ListItem = /*#__PURE__*/ defineComponent({
     return () => {
       const {
         _children: children,
-        _offset: offset,
-        _hide: hide,
         _isHorizontal: isHorizontal,
         _isSSR: isSSR,
         _as: Element,
       } = props;
+      const isHide = hide.value;
 
       const style: StyleValue = {
-        position: hide && isSSR ? undefined : "absolute",
+        position: isHide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
         [isHorizontal ? "top" : "left"]: "0px",
         [isHorizontal ? (isRTLDocument() ? "right" : "left") : "top"]:
-          offset + "px",
-        visibility: !hide || isSSR ? "visible" : "hidden",
+          offset.value + "px",
+        visibility: !isHide || isSSR ? "visible" : "hidden",
       };
       if (isHorizontal) {
         style.display = "flex";

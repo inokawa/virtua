@@ -12,6 +12,7 @@ import {
   ComponentObjectPropsOptions,
   PropType,
   NativeElements,
+  computed,
 } from "vue";
 import {
   UPDATE_SCROLL_EVENT,
@@ -24,9 +25,9 @@ import {
 } from "../core/store";
 import { createResizer } from "../core/resizer";
 import { createScroller } from "../core/scroller";
-import { ScrollToIndexOpts } from "../core/types";
+import { ItemsRange, ScrollToIndexOpts } from "../core/types";
 import { ListItem } from "./ListItem";
-import { getKey } from "./utils";
+import { getKey, isSameRange } from "./utils";
 import { microtask } from "../core/utils";
 
 export interface VirtualizerHandle {
@@ -161,6 +162,18 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       }
     );
 
+    const range = computed<ItemsRange>((prev) => {
+      rerender.value;
+      const next = store._getRange();
+      if (prev && isSameRange(prev, next)) {
+        return prev;
+      }
+      return next;
+    });
+    const isScrolling = computed(() => rerender.value && store._isScrolling());
+    const totalSize = computed(() => rerender.value && store._getTotalSize());
+    const jumpCount = computed(() => rerender.value && store._getJumpCount());
+
     onMounted(() => {
       isSSR = false;
 
@@ -200,10 +213,8 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     );
 
     watch(
-      [rerender, store._getJumpCount],
-      ([, count], [, prevCount]) => {
-        if (count === prevCount) return;
-
+      [jumpCount],
+      () => {
         scroller._fixScrollJump();
       },
       { flush: "post" }
@@ -229,14 +240,11 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     } satisfies VirtualizerHandle);
 
     return () => {
-      rerender.value;
-
       const Element = props.as;
       const ItemElement = props.item;
 
-      const [startIndex, endIndex] = store._getRange();
-      const isScrolling = store._isScrolling();
-      const totalSize = store._getTotalSize();
+      const [startIndex, endIndex] = range.value;
+      const total = totalSize.value;
 
       const items: VNode[] = [];
       for (let i = startIndex, j = endIndex; i <= j; i++) {
@@ -244,10 +252,10 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
         items.push(
           <ListItem
             key={getKey(e, i)}
+            _rerender={rerender}
+            _store={store}
             _resizer={resizer._observeItem}
             _index={i}
-            _offset={store._getItemOffset(i)}
-            _hide={store._isUnmeasuredItem(i)}
             _children={e}
             _isHorizontal={isHorizontal}
             _isSSR={isSSR}
@@ -265,9 +273,9 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
             flex: "none", // flex style can break layout
             position: "relative",
             visibility: "hidden", // TODO replace with other optimization methods
-            width: isHorizontal ? totalSize + "px" : "100%",
-            height: isHorizontal ? "100%" : totalSize + "px",
-            pointerEvents: isScrolling ? "none" : undefined,
+            width: isHorizontal ? total + "px" : "100%",
+            height: isHorizontal ? "100%" : total + "px",
+            pointerEvents: isScrolling.value ? "none" : undefined,
           }}
         >
           {items}
