@@ -16,28 +16,36 @@ Get current [CacheSnapshot](CacheSnapshot.md).
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:36](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/react/WindowVirtualizer.tsx#L36)
+[src/react/WindowVirtualizer.tsx:36](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/WindowVirtualizer.tsx#L36)
 
 ***
 
-### startIndex
+### findStartIndex()
 
-> `readonly` **startIndex**: `number`
+> **findStartIndex**: () => `number`
 
-Get the start index of visible range of items.
+Find the start index of visible range of items.
+
+#### Returns
+
+`number`
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:40](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/react/WindowVirtualizer.tsx#L40)
+[src/react/WindowVirtualizer.tsx:40](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/WindowVirtualizer.tsx#L40)
 
 ***
 
-### endIndex
+### findEndIndex()
 
-> `readonly` **endIndex**: `number`
+> **findEndIndex**: () => `number`
 
-Get the end index of visible range of items.
+Find the end index of visible range of items.
+
+#### Returns
+
+`number`
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:44](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/react/WindowVirtualizer.tsx#L44)
+[src/react/WindowVirtualizer.tsx:44](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/WindowVirtualizer.tsx#L44)

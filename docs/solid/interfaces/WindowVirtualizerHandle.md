@@ -8,24 +8,32 @@ Methods of [WindowVirtualizer](../functions/WindowVirtualizer.md).
 
 ## Properties
 
-### startIndex
+### findStartIndex()
 
-> `readonly` **startIndex**: `number`
+> **findStartIndex**: () => `number`
 
-Get the start index of visible range of items.
+Find the start index of visible range of items.
+
+#### Returns
+
+`number`
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:35](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/solid/WindowVirtualizer.tsx#L35)
+[src/solid/WindowVirtualizer.tsx:35](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/solid/WindowVirtualizer.tsx#L35)
 
 ***
 
-### endIndex
+### findEndIndex()
 
-> `readonly` **endIndex**: `number`
+> **findEndIndex**: () => `number`
 
-Get the end index of visible range of items.
+Find the end index of visible range of items.
+
+#### Returns
+
+`number`
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:39](https://github.com/inokawa/virtua/blob/98aa56b9fcaf2174be1b18d019adf2076098e81d/src/solid/WindowVirtualizer.tsx#L39)
+[src/solid/WindowVirtualizer.tsx:39](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/solid/WindowVirtualizer.tsx#L39)
