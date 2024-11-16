@@ -521,13 +521,6 @@ export const createWindowScroller = (
     _fixScrollJump: () => {
       scrollObserver && scrollObserver._fixScrollJump();
     },
-    _scrollTo(offset) {
-      scheduleImperativeScroll(() => offset);
-    },
-    _scrollBy(offset) {
-      offset += store._getScrollOffset();
-      scheduleImperativeScroll(() => offset);
-    },
     _scrollToIndex(index, { align, smooth, offset = 0 } = {}) {
       if (!document || !containerElement) return;
 
