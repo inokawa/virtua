@@ -4,6 +4,7 @@ import { babel, getBabelOutputPlugin } from "@rollup/plugin-babel";
 import banner from "rollup-plugin-banner2";
 import path from "node:path";
 import pkg from "./package.json" with { type: "json" };
+import vueJsx from "unplugin-vue-jsx/rollup";
 import vueVNodePlugin from "./scripts/babel-plugin-annotate-vue-vnode.mjs";
 import { svelteCopy } from "./scripts/rollup-plugin-svelte-copy.mjs";
 
@@ -85,14 +86,7 @@ export default [
         exclude: ["**/*.{spec,stories}.*"],
         jsx: "preserve",
       }),
-      babel({
-        babelrc: false,
-        configFile: false,
-        extensions: [".jsx", ".tsx"],
-        babelHelpers: "bundled",
-        plugins: [["@vue/babel-plugin-jsx", { optimize: true }]],
-        parserOpts: { sourceType: "module", plugins: ["jsx", "typescript"] },
-      }),
+      vueJsx({ optimize: true }),
       getBabelOutputPlugin({
         plugins: [vueVNodePlugin],
       }),
