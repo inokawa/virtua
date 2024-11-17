@@ -18,7 +18,7 @@
     FIND_START_INDEX,
     FIND_END_INDEX,
   } from "./core";
-  import { defaultGetKey, styleToString } from "./utils";
+  import { defaultGetKey, iterRange, styleToString } from "./utils";
   import ListItem from "./ListItem.svelte";
   import type {
     WindowVirtualizerHandle,
@@ -91,15 +91,6 @@
     FIND_END_INDEX
   ] satisfies WindowVirtualizerHandle["findEndIndex"] as WindowVirtualizerHandle["findEndIndex"];
 
-  let items = $derived.by(() => {
-    const [startIndex, endIndex] = range;
-    const newItems: T[] = [];
-    for (let i = startIndex, j = endIndex; i <= j; i++) {
-      newItems.push(data[i]!);
-    }
-    return newItems;
-  });
-
   let containerStyle = $derived(
     styleToString({
       // contain: "content",
@@ -119,8 +110,8 @@
   {@link Virtualizer} controlled by the window scrolling. See {@link WindowVirtualizerProps} and {@link WindowVirtualizerHandle}.
 -->
 <div bind:this={containerRef} style={containerStyle}>
-  {#each items as item, i (getKey(item, i + range[0]))}
-    {@const index = i + range[0]}
+  {#each iterRange(range) as index (getKey(data[index]!, index))}
+    {@const item = data[index]!}
     <ListItem
       {children}
       {item}
