@@ -27,7 +27,7 @@
     FIND_START_INDEX,
     FIND_END_INDEX,
   } from "./core";
-  import { defaultGetKey, styleToString } from "./utils";
+  import { defaultGetKey, styleToString, iterRange } from "./utils";
   import ListItem from "./ListItem.svelte";
   import type { VirtualizerHandle, VirtualizerProps } from "./Virtualizer.type";
 
@@ -135,15 +135,6 @@
     SCROLL_BY
   ] satisfies VirtualizerHandle["scrollBy"] as VirtualizerHandle["scrollBy"];
 
-  let items = $derived.by(() => {
-    const [startIndex, endIndex] = range;
-    const newItems: T[] = [];
-    for (let i = startIndex, j = endIndex; i <= j; i++) {
-      newItems.push(data[i]!);
-    }
-    return newItems;
-  });
-
   let containerStyle = $derived(
     styleToString({
       // contain: "content",
@@ -163,8 +154,8 @@
   Customizable list virtualizer for advanced usage. See {@link VirtualizerProps} and {@link VirtualizerHandle}.
 -->
 <svelte:element this={as} bind:this={containerRef} style={containerStyle}>
-  {#each items as item, i (getKey(item, i + range[0]))}
-    {@const index = i + range[0]}
+  {#each iterRange(range) as index (getKey(data[index]!, index))}
+    {@const item = data[index]!}
     <ListItem
       {children}
       {item}
