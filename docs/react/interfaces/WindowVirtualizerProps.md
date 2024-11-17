@@ -18,7 +18,7 @@ You can also pass a function and set [WindowVirtualizerProps.count](WindowVirtua
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:56](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/WindowVirtualizer.tsx#L56)
+[src/react/WindowVirtualizer.tsx:56](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/WindowVirtualizer.tsx#L56)
 
 ***
 
@@ -30,7 +30,7 @@ If you set a function to [WindowVirtualizerProps.children](WindowVirtualizerProp
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:60](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/WindowVirtualizer.tsx#L60)
+[src/react/WindowVirtualizer.tsx:60](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/WindowVirtualizer.tsx#L60)
 
 ***
 
@@ -48,7 +48,7 @@ Number of items to render above/below the visible bounds of the list. Lower valu
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:65](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/WindowVirtualizer.tsx#L65)
+[src/react/WindowVirtualizer.tsx:65](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/WindowVirtualizer.tsx#L65)
 
 ***
 
@@ -63,7 +63,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:72](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/WindowVirtualizer.tsx#L72)
+[src/react/WindowVirtualizer.tsx:72](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/WindowVirtualizer.tsx#L72)
 
 ***
 
@@ -75,7 +75,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:76](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/WindowVirtualizer.tsx#L76)
+[src/react/WindowVirtualizer.tsx:76](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/WindowVirtualizer.tsx#L76)
 
 ***
 
@@ -87,7 +87,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:80](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/WindowVirtualizer.tsx#L80)
+[src/react/WindowVirtualizer.tsx:80](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/WindowVirtualizer.tsx#L80)
 
 ***
 
@@ -101,7 +101,7 @@ You can restore cache by passing a [CacheSnapshot](CacheSnapshot.md) on mount. T
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:86](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/WindowVirtualizer.tsx#L86)
+[src/react/WindowVirtualizer.tsx:86](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/WindowVirtualizer.tsx#L86)
 
 ***
 
@@ -113,7 +113,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:90](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/WindowVirtualizer.tsx#L90)
+[src/react/WindowVirtualizer.tsx:90](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/WindowVirtualizer.tsx#L90)
 
 ***
 
@@ -131,7 +131,7 @@ Component or element type for container element.
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:95](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/WindowVirtualizer.tsx#L95)
+[src/react/WindowVirtualizer.tsx:95](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/WindowVirtualizer.tsx#L95)
 
 ***
 
@@ -149,7 +149,7 @@ Component or element type for item element. This component will get [CustomItemC
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:100](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/WindowVirtualizer.tsx#L100)
+[src/react/WindowVirtualizer.tsx:100](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/WindowVirtualizer.tsx#L100)
 
 ***
 
@@ -171,7 +171,7 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:105](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/WindowVirtualizer.tsx#L105)
+[src/react/WindowVirtualizer.tsx:105](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/WindowVirtualizer.tsx#L105)
 
 ***
 
@@ -187,4 +187,4 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:109](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/WindowVirtualizer.tsx#L109)
+[src/react/WindowVirtualizer.tsx:109](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/WindowVirtualizer.tsx#L109)

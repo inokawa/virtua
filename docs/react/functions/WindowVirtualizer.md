@@ -18,4 +18,4 @@
 
 ## Defined in
 
-[src/react/WindowVirtualizer.tsx:115](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/WindowVirtualizer.tsx#L115)
+[src/react/WindowVirtualizer.tsx:115](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/WindowVirtualizer.tsx#L115)
