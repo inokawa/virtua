@@ -1,30 +1,18 @@
-import { CSSProperties, ReactNode } from "react";
-
 export type ViewportComponentAttributes = Pick<
   React.HTMLAttributes<HTMLElement>,
   "className" | "style" | "id" | "role" | "tabIndex" | "onKeyDown" | "onWheel"
 > &
   React.AriaAttributes;
 
-export interface CustomContainerComponentProps {
-  style: CSSProperties;
-  children: ReactNode;
-}
+export type CustomContainerComponentProps<R extends React.ElementType = 'div'> = React.ComponentPropsWithRef<R>
 
-export type CustomContainerComponent = React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<CustomContainerComponentProps> &
-    React.RefAttributes<any>
->;
+export type CustomContainerComponent<R extends React.ElementType = 'div'> = React.FunctionComponent<CustomContainerComponentProps<R>>;
 
 /**
  * Props of customized item component for {@link Virtualizer} or {@link WindowVirtualizer}.
  */
-export interface CustomItemComponentProps {
-  style: CSSProperties;
+export type CustomItemComponentProps<R extends React.ElementType = 'div'> = React.ComponentPropsWithRef<R> & React.PropsWithChildren<{
   index: number;
-  children: ReactNode;
-}
+}>;
 
-export type CustomItemComponent = React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<CustomItemComponentProps> & React.RefAttributes<any>
->;
+export type CustomItemComponent<R extends React.ElementType = 'div'> = React.FunctionComponent<CustomItemComponentProps<R>>;

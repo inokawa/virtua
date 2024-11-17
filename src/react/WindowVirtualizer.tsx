@@ -92,12 +92,12 @@ export interface WindowVirtualizerProps {
    * Component or element type for container element.
    * @defaultValue "div"
    */
-  as?: keyof JSX.IntrinsicElements | CustomContainerComponent;
+  as?: keyof JSX.IntrinsicElements | CustomContainerComponent<React.ElementType>;
   /**
    * Component or element type for item element. This component will get {@link CustomItemComponentProps} as props.
    * @defaultValue "div"
    */
-  item?: keyof JSX.IntrinsicElements | CustomItemComponent;
+  item?: keyof JSX.IntrinsicElements | CustomItemComponent<React.ElementType>;
   /**
    * Callback invoked whenever scroll offset changes.
    * @param offset Current scrollTop, or scrollLeft if horizontal: true.

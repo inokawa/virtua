@@ -141,12 +141,12 @@ export interface VirtualizerProps {
    * Component or element type for container element.
    * @defaultValue "div"
    */
-  as?: keyof JSX.IntrinsicElements | CustomContainerComponent;
+  as?: keyof JSX.IntrinsicElements | CustomContainerComponent<React.ElementType>;
   /**
    * Component or element type for item element. This component will get {@link CustomItemComponentProps} as props.
    * @defaultValue "div"
    */
-  item?: keyof JSX.IntrinsicElements | CustomItemComponent;
+  item?: keyof JSX.IntrinsicElements | CustomItemComponent<React.ElementType>;
   /**
    * Reference to the scrollable element. The default will get the direct parent element of virtualizer.
    */
