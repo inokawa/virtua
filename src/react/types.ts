@@ -11,8 +11,8 @@ export type CustomContainerComponent<R extends React.ElementType = 'div'> = Reac
 /**
  * Props of customized item component for {@link Virtualizer} or {@link WindowVirtualizer}.
  */
-export type CustomItemComponentProps<R extends React.ElementType = 'div'> = React.ComponentPropsWithRef<R> & React.PropsWithChildren<{
+export type CustomItemComponentProps<R extends React.ElementType = 'div'> = React.ComponentPropsWithRef<R> & {
   index: number;
-}>;
+};
 
 export type CustomItemComponent<R extends React.ElementType = 'div'> = React.FunctionComponent<CustomItemComponentProps<R>>;
