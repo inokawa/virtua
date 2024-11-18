@@ -449,7 +449,7 @@ export const scrollWithTouch = (
 };
 
 export const listenScrollCount = (
-  component: ElementHandle<SVGElement | HTMLElement | Window>,
+  component: Locator,
   timeout = 2000
 ): Promise<number> => {
   return component.evaluate((c, t) => {
@@ -458,7 +458,6 @@ export const listenScrollCount = (
 
     return new Promise<number>((resolve) => {
       const cb = () => {
-        console.log("called scroll count callback")
         called++;
         if (timer !== null) {
           clearTimeout(timer);
