@@ -14,20 +14,25 @@ const external = (id) =>
     ...Object.keys(pkg.devDependencies || {}),
   ].some((d) => id.startsWith(d));
 
-const terserPlugin = terser({
-  ecma: 2018,
-  module: true,
-  compress: { passes: 5, unsafe: true, keep_fargs: false },
-  mangle: {
-    properties: {
-      // @vue/babel-plugin-jsx may generate _ field
-      regex: "^_.+",
+const terserPlugin = ({ vue } = {}) =>
+  terser({
+    ecma: 2018,
+    module: true,
+    compress: { passes: 5, unsafe: true, keep_fargs: false },
+    mangle: {
+      properties: {
+        // @vue/babel-plugin-jsx may generate _ field
+        regex: "^_.+",
+        ...(vue && {
+          // [Vue warn]: Invalid prop name: "$" is a reserved property.
+          reserved: ["$"],
+        }),
+      },
     },
-  },
-  format: {
-    preserve_annotations: true,
-  },
-});
+    format: {
+      preserve_annotations: true,
+    },
+  });
 
 const svelteDir = path.dirname(pkg.exports["./svelte"].default);
 
@@ -58,7 +63,7 @@ export default [
       getBabelOutputPlugin({
         plugins: ["@babel/plugin-transform-react-pure-annotations"],
       }),
-      terserPlugin,
+      terserPlugin(),
       banner(() => '"use client";\n'),
     ],
     external,
@@ -90,7 +95,7 @@ export default [
       getBabelOutputPlugin({
         plugins: [vueVNodePlugin],
       }),
-      terserPlugin,
+      terserPlugin({ vue: true }),
     ],
     external,
   },
@@ -125,7 +130,7 @@ export default [
         presets: ["babel-preset-solid"],
         parserOpts: { sourceType: "module", plugins: ["jsx", "typescript"] },
       }),
-      terserPlugin,
+      terserPlugin(),
     ],
     external,
   },
@@ -146,7 +151,7 @@ export default [
         // declaration: true,
         exclude: ["**/*.{spec,stories}.*"],
       }),
-      terserPlugin,
+      terserPlugin(),
       svelteCopy({ dir: svelteDir }),
     ],
     external,
