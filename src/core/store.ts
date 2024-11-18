@@ -9,6 +9,7 @@ import {
   updateCacheLength,
   computeRange,
   takeCacheSnapshot,
+  findIndex,
 } from "./cache";
 import { isIOSWebKit } from "./environment";
 import type {
@@ -19,14 +20,10 @@ import type {
 } from "./types";
 import { abs, max, min, NULL } from "./utils";
 
-/** @internal */
-export const SCROLL_IDLE = 0;
-/** @internal */
-export const SCROLL_DOWN = 1;
-/** @internal */
-export const SCROLL_UP = 2;
-/** @internal */
-export type ScrollDirection =
+const SCROLL_IDLE = 0;
+const SCROLL_DOWN = 1;
+const SCROLL_UP = 2;
+type ScrollDirection =
   | typeof SCROLL_IDLE
   | typeof SCROLL_DOWN
   | typeof SCROLL_UP;
@@ -92,25 +89,6 @@ export const isInitialMeasurementDone = (store: VirtualStore): boolean => {
   return !!store._getViewportSize();
 };
 
-/**
- * @internal
- */
-export const getOverscanedRange = (
-  startIndex: number,
-  endIndex: number,
-  overscan: number,
-  scrollDirection: ScrollDirection,
-  count: number
-): ItemsRange => {
-  if (scrollDirection !== SCROLL_DOWN) {
-    startIndex -= max(0, overscan);
-  }
-  if (scrollDirection !== SCROLL_UP) {
-    endIndex += max(0, overscan);
-  }
-  return [max(startIndex, 0), min(endIndex, count - 1)];
-};
-
 type Subscriber = (sync?: boolean) => void;
 
 /** @internal */
@@ -123,13 +101,15 @@ export type VirtualStore = {
   _getStateVersion(): StateVersion;
   _getCacheSnapshot(): CacheSnapshot;
   _getRange(): ItemsRange;
+  _findStartIndex(): number;
+  _findEndIndex(): number;
   _isUnmeasuredItem(index: number): boolean;
   _hasUnmeasuredItemsInFrozenRange(): boolean;
   _getItemOffset(index: number): number;
   _getItemSize(index: number): number;
   _getItemsLength(): number;
   _getScrollOffset(): number;
-  _getScrollDirection(): ScrollDirection;
+  _isScrolling(): boolean;
   _getViewportSize(): number;
   _getStartSpacerSize(): number;
   _getTotalSize(): number;
@@ -145,6 +125,7 @@ export type VirtualStore = {
 export const createVirtualStore = (
   elementsCount: number,
   itemSize: number = 40,
+  overscan: number = 4,
   ssrCount: number = 0,
   cacheSnapshot?: CacheSnapshot | undefined,
   shouldAutoEstimateItemSize: boolean = false
@@ -173,6 +154,7 @@ export const createVirtualStore = (
   );
   const subscribers = new Set<[number, Subscriber]>();
   const getRelativeScrollOffset = () => scrollOffset - startSpacerSize;
+  const getVisibleOffset = () => getRelativeScrollOffset() + pendingJump + jump;
   const getRange = (offset: number) => {
     return computeRange(cache, offset, viewportSize, _prevRange[0]);
   };
@@ -197,33 +179,36 @@ export const createVirtualStore = (
   };
 
   return {
-    _getStateVersion() {
-      return stateVersion;
-    },
-    _getCacheSnapshot() {
+    _getStateVersion: () => stateVersion,
+    _getCacheSnapshot: () => {
       return takeCacheSnapshot(cache) as unknown as CacheSnapshot;
     },
-    _getRange() {
+    _getRange: () => {
       // Return previous range for consistent render until next scroll event comes in.
       if (_flushedJump) {
         return _prevRange;
       }
-      _prevRange = getRange(
-        max(0, getRelativeScrollOffset() + pendingJump + jump)
-      );
-
+      let [startIndex, endIndex] = getRange(max(0, getVisibleOffset()));
       if (_frozenRange) {
-        return [
-          min(_prevRange[0], _frozenRange[0]),
-          max(_prevRange[1], _frozenRange[1]),
-        ];
+        startIndex = min(startIndex, _frozenRange[0]);
+        endIndex = max(endIndex, _frozenRange[1]);
       }
-      return _prevRange;
+
+      if (_scrollDirection !== SCROLL_DOWN) {
+        startIndex -= max(0, overscan);
+      }
+      if (_scrollDirection !== SCROLL_UP) {
+        endIndex += max(0, overscan);
+      }
+      return (_prevRange = [
+        max(startIndex, 0),
+        min(endIndex, cache._length - 1),
+      ]);
     },
-    _isUnmeasuredItem(index) {
-      return cache._sizes[index] === UNCACHED;
-    },
-    _hasUnmeasuredItemsInFrozenRange() {
+    _findStartIndex: () => findIndex(cache, getVisibleOffset()),
+    _findEndIndex: () => findIndex(cache, getVisibleOffset() + viewportSize),
+    _isUnmeasuredItem: (index) => cache._sizes[index] === UNCACHED,
+    _hasUnmeasuredItemsInFrozenRange: () => {
       if (!_frozenRange) return false;
       return cache._sizes
         .slice(
@@ -234,26 +219,14 @@ export const createVirtualStore = (
     },
     _getItemOffset: getItemOffset,
     _getItemSize: getItemSize,
-    _getItemsLength() {
-      return cache._length;
-    },
-    _getScrollOffset() {
-      return scrollOffset;
-    },
-    _getScrollDirection() {
-      return _scrollDirection;
-    },
-    _getViewportSize() {
-      return viewportSize;
-    },
-    _getStartSpacerSize() {
-      return startSpacerSize;
-    },
+    _getItemsLength: () => cache._length,
+    _getScrollOffset: () => scrollOffset,
+    _isScrolling: () => _scrollDirection !== SCROLL_IDLE,
+    _getViewportSize: () => viewportSize,
+    _getStartSpacerSize: () => startSpacerSize,
     _getTotalSize: getTotalSize,
-    _getJumpCount() {
-      return jumpCount;
-    },
-    _flushJump() {
+    _getJumpCount: () => jumpCount,
+    _flushJump: () => {
       _flushedJump = jump;
       jump = 0;
       return [
@@ -264,14 +237,14 @@ export const createVirtualStore = (
           getRelativeScrollOffset() + viewportSize >= getTotalSize(),
       ];
     },
-    _subscribe(target, cb) {
+    _subscribe: (target, cb) => {
       const sub: [number, Subscriber] = [target, cb];
       subscribers.add(sub);
       return () => {
         subscribers.delete(sub);
       };
     },
-    _update(type, payload): void {
+    _update: (type, payload): void => {
       let shouldFlushPendingJump: boolean | undefined;
       let shouldSync: boolean | undefined;
       let mutated = 0;
@@ -396,7 +369,12 @@ export const createVirtualStore = (
             // If the total size is lower than the viewport, the item may be a empty state
             _totalMeasuredSize > viewportSize
           ) {
-            applyJump(estimateDefaultItemSize(cache, _prevRange[0]));
+            applyJump(
+              estimateDefaultItemSize(
+                cache,
+                findIndex(cache, getVisibleOffset())
+              )
+            );
             shouldAutoEstimateItemSize = false;
           }
 

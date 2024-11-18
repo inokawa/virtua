@@ -66,12 +66,6 @@ export interface VirtualizerProps<T> {
    * Callback invoked when scrolling stops.
    */
   onscrollend?: () => void;
-  /**
-   * Callback invoked when visible items range changes.
-   * @param startIndex The start index of viewable items.
-   * @param endIndex The end index of viewable items.
-   */
-  onrangechange?: (startIndex: number, endIndex: number) => void;
 }
 
 /**
@@ -90,6 +84,24 @@ export interface VirtualizerHandle {
    * Get current offsetHeight, or offsetWidth if horizontal: true.
    */
   getViewportSize: () => number;
+  /**
+   * Find the start index of visible range of items.
+   */
+  findStartIndex: () => number;
+  /**
+   * Find the end index of visible range of items.
+   */
+  findEndIndex: () => number;
+  /**
+   * Get item offset from start.
+   * @param index index of item
+   */
+  getItemOffset(index: number): number;
+  /**
+   * Get item size.
+   * @param index index of item
+   */
+  getItemSize(index: number): number;
   /**
    * Scroll to the item specified by index.
    * @param index index of item

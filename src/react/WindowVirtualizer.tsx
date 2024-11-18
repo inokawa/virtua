@@ -1,7 +1,6 @@
 import {
   ReactElement,
   ReactNode,
-  useEffect,
   forwardRef,
   useImperativeHandle,
   useRef,
@@ -9,10 +8,9 @@ import {
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_VIRTUAL_STATE,
-  getOverscanedRange,
   createVirtualStore,
-  SCROLL_IDLE,
   UPDATE_SCROLL_END_EVENT,
+  UPDATE_SCROLL_EVENT,
 } from "../core/store";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { createWindowScroller } from "../core/scroller";
@@ -36,6 +34,14 @@ export interface WindowVirtualizerHandle {
    * Get current {@link CacheSnapshot}.
    */
   readonly cache: CacheSnapshot;
+  /**
+   * Find the start index of visible range of items.
+   */
+  findStartIndex: () => number;
+  /**
+   * Find the end index of visible range of items.
+   */
+  findEndIndex: () => number;
   /**
    * Scroll to the item specified by index.
    * @param index index of item
@@ -99,15 +105,14 @@ export interface WindowVirtualizerProps {
    */
   item?: keyof JSX.IntrinsicElements | CustomItemComponent;
   /**
+   * Callback invoked whenever scroll offset changes.
+   * @param offset Current scrollTop, or scrollLeft if horizontal: true.
+   */
+  onScroll?: (offset: number) => void;
+  /**
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
-  /**
-   * Callback invoked when visible items range changes.
-   * @param startIndex The start index of viewable items.
-   * @param endIndex The end index of viewable items.
-   */
-  onRangeChange?: (startIndex: number, endIndex: number) => void;
 }
 
 /**
@@ -121,7 +126,7 @@ export const WindowVirtualizer = forwardRef<
     {
       children,
       count: renderCountProp,
-      overscan = 4,
+      overscan,
       itemSize,
       shift,
       horizontal: horizontalProp,
@@ -129,8 +134,8 @@ export const WindowVirtualizer = forwardRef<
       ssrCount,
       as: Element = "div",
       item: ItemElement = "div",
+      onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
-      onRangeChange: onRangeChangeProp,
     },
     ref
   ): ReactElement => {
@@ -140,6 +145,7 @@ export const WindowVirtualizer = forwardRef<
 
     const containerRef = useRef<HTMLDivElement>(NULL);
 
+    const onScroll = useLatestRef(onScrollProp);
     const onScrollEnd = useLatestRef(onScrollEndProp);
 
     const isSSR = useRef(!!ssrCount);
@@ -149,6 +155,7 @@ export const WindowVirtualizer = forwardRef<
       const _store = createVirtualStore(
         count,
         itemSize,
+        overscan,
         ssrCount,
         cache,
         !itemSize
@@ -169,7 +176,7 @@ export const WindowVirtualizer = forwardRef<
     const rerender = useRerender(store);
 
     const [startIndex, endIndex] = store._getRange();
-    const scrollDirection = store._getScrollDirection();
+    const isScrolling = store._isScrolling();
     const jumpCount = store._getJumpCount();
     const totalSize = store._getTotalSize();
 
@@ -189,6 +196,9 @@ export const WindowVirtualizer = forwardRef<
           }
         }
       );
+      const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
+        onScroll[refKey] && onScroll[refKey](store._getScrollOffset());
+      });
       const unsubscribeOnScrollEnd = store._subscribe(
         UPDATE_SCROLL_END_EVENT,
         () => {
@@ -201,6 +211,7 @@ export const WindowVirtualizer = forwardRef<
       scroller._observe(el);
       return () => {
         unsubscribeStore();
+        unsubscribeOnScroll();
         unsubscribeOnScrollEnd();
         resizer._dispose();
         scroller._dispose();
@@ -211,42 +222,24 @@ export const WindowVirtualizer = forwardRef<
       scroller._fixScrollJump();
     }, [jumpCount]);
 
-    useEffect(() => {
-      if (!onRangeChangeProp) return;
+    useImperativeHandle(ref, () => {
+      return {
+        get cache() {
+          return store._getCacheSnapshot();
+        },
+        get scrollOffset() {
+          return store._getScrollOffset();
+        },
+        findStartIndex: store._findStartIndex,
+        findEndIndex: store._findEndIndex,
+        getItemOffset: store._getItemOffset,
+        scrollToIndex: scroller._scrollToIndex,
+        scrollTo: scroller._scrollTo,
+        scrollBy: scroller._scrollBy,
+      };
+    }, []);
 
-      onRangeChangeProp(startIndex, endIndex);
-    }, [startIndex, endIndex]);
-
-    useImperativeHandle(
-      ref,
-      () => {
-        return {
-          get cache() {
-            return store._getCacheSnapshot();
-          },
-          get scrollOffset() {
-            return store._getScrollOffset();
-          },
-          getItemOffset: store._getItemOffset,
-          scrollToIndex: scroller._scrollToIndex,
-          scrollTo: scroller._scrollTo,
-          scrollBy: scroller._scrollBy,
-        };
-      },
-      []
-    );
-
-    for (
-      let [i, j] = getOverscanedRange(
-        startIndex,
-        endIndex,
-        overscan,
-        scrollDirection,
-        count
-      );
-      i <= j;
-      i++
-    ) {
+    for (let i = startIndex, j = endIndex; i <= j; i++) {
       const e = getElement(i);
       items.push(
         <ListItem
@@ -273,7 +266,7 @@ export const WindowVirtualizer = forwardRef<
           visibility: "hidden", // TODO replace with other optimization methods
           width: isHorizontal ? totalSize : "100%",
           height: isHorizontal ? "100%" : totalSize,
-          pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : undefined,
+          pointerEvents: isScrolling ? "none" : undefined,
         }}
       >
         {items}

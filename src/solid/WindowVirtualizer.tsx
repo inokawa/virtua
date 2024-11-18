@@ -12,12 +12,11 @@ import {
   createComputed,
 } from "solid-js";
 import {
-  SCROLL_IDLE,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_VIRTUAL_STATE,
-  getOverscanedRange,
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
+  UPDATE_SCROLL_EVENT,
 } from "../core/store";
 import { createWindowResizer } from "../core/resizer";
 import { createWindowScroller } from "../core/scroller";
@@ -26,19 +25,28 @@ import { RangedFor } from "./RangedFor";
 import { isSameRange } from "./utils";
 import { ItemsRange } from "../core/types";
 
-// /**
-//  * Methods of {@link WindowVirtualizer}.
-//  */
-// export interface WindowVirtualizerHandle {}
+/**
+ * Methods of {@link WindowVirtualizer}.
+ */
+export interface WindowVirtualizerHandle {
+  /**
+   * Find the start index of visible range of items.
+   */
+  findStartIndex: () => number;
+  /**
+   * Find the end index of visible range of items.
+   */
+  findEndIndex: () => number;
+}
 
 /**
  * Props of {@link WindowVirtualizer}.
  */
 export interface WindowVirtualizerProps<T> {
-  // /**
-  //  * Get reference to {@link WindowVirtualizerHandle}.
-  //  */
-  // ref?: (handle?: WindowVirtualizerHandle) => void;
+  /**
+   * Get reference to {@link WindowVirtualizerHandle}.
+   */
+  ref?: (handle?: WindowVirtualizerHandle) => void;
   /**
    * The data items rendered by this component.
    */
@@ -68,15 +76,14 @@ export interface WindowVirtualizerProps<T> {
    */
   horizontal?: boolean;
   /**
+   * Callback invoked whenever scroll offset changes.
+   * @param offset Current scrollTop, or scrollLeft if horizontal: true.
+   */
+  onScroll?: (offset: number) => void;
+  /**
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
-  /**
-   * Callback invoked when visible items range changes.
-   * @param startIndex The start index of viewable items.
-   * @param endIndex The end index of viewable items.
-   */
-  onRangeChange?: (startIndex: number, endIndex: number) => void;
 }
 
 /**
@@ -88,20 +95,20 @@ export const WindowVirtualizer = <T,>(
   let containerRef: HTMLDivElement | undefined;
 
   const {
-    // ref: _ref,
+    ref: _ref,
     data: _data,
     children: _children,
-    overscan: _overscan,
+    overscan,
     itemSize,
     shift: _shift,
     horizontal = false,
     onScrollEnd: _onScrollEnd,
-    onRangeChange: _onRangeChange,
   } = props;
 
   const store = createVirtualStore(
     props.data.length,
-    itemSize ?? 40,
+    itemSize,
+    overscan,
     undefined,
     undefined,
     !itemSize
@@ -115,6 +122,9 @@ export const WindowVirtualizer = <T,>(
     setRerender(store._getStateVersion());
   });
 
+  const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
+    props.onScroll?.(store._getScrollOffset());
+  });
   const unsubscribeOnScrollEnd = store._subscribe(
     UPDATE_SCROLL_END_EVENT,
     () => {
@@ -130,35 +140,29 @@ export const WindowVirtualizer = <T,>(
     }
     return next;
   });
-  const scrollDirection = createMemo(
-    () => rerender() && store._getScrollDirection()
-  );
+  const isScrolling = createMemo(() => rerender() && store._isScrolling());
   const totalSize = createMemo(() => rerender() && store._getTotalSize());
 
   const jumpCount = createMemo(() => rerender() && store._getJumpCount());
 
-  const overscanedRange = createMemo<ItemsRange>((prev) => {
-    const overscan = props.overscan ?? 4;
-    const [startIndex, endIndex] = range();
-    const next = getOverscanedRange(
-      startIndex,
-      endIndex,
-      overscan,
-      scrollDirection(),
-      props.data.length
-    );
-    if (prev && isSameRange(prev, next)) {
-      return prev;
-    }
-    return next;
-  });
-
   onMount(() => {
+    if (props.ref) {
+      props.ref({
+        findStartIndex: store._findStartIndex,
+        findEndIndex: store._findEndIndex,
+      });
+    }
+
     resizer._observeRoot(containerRef!);
     scroller._observe(containerRef!);
 
     onCleanup(() => {
+      if (props.ref) {
+        props.ref();
+      }
+
       unsubscribeStore();
+      unsubscribeOnScroll();
       unsubscribeOnScrollEnd();
       resizer._dispose();
       scroller._dispose();
@@ -182,11 +186,6 @@ export const WindowVirtualizer = <T,>(
     })
   );
 
-  createEffect(() => {
-    const next = range();
-    props.onRangeChange && props.onRangeChange(next[0], next[1]);
-  });
-
   return (
     <div
       ref={containerRef}
@@ -198,13 +197,12 @@ export const WindowVirtualizer = <T,>(
         visibility: "hidden", // TODO replace with other optimization methods
         width: horizontal ? totalSize() + "px" : "100%",
         height: horizontal ? "100%" : totalSize() + "px",
-        "pointer-events":
-          scrollDirection() !== SCROLL_IDLE ? "none" : undefined,
+        "pointer-events": isScrolling() ? "none" : undefined,
       }}
     >
       <RangedFor
         _each={props.data}
-        _range={overscanedRange()}
+        _range={range()}
         _render={(data, index) => {
           const offset = createMemo(() => {
             rerender();

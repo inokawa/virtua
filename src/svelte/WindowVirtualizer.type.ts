@@ -38,23 +38,26 @@ export interface WindowVirtualizerProps<T> {
    */
   horizontal?: boolean;
   /**
+   * Callback invoked whenever scroll offset changes.
+   * @param offset Current scrollTop, or scrollLeft if horizontal: true.
+   */
+  onscroll?: (offset: number) => void;
+  /**
    * Callback invoked when scrolling stops.
    */
   onscrollend?: () => void;
-  /**
-   * Callback invoked when visible items range changes.
-   * @param startIndex The start index of viewable items.
-   * @param endIndex The end index of viewable items.
-   */
-  onrangechange?: (startIndex: number, endIndex: number) => void;
 }
 
-// /**
-//  * Methods of {@link WindowVirtualizer}.
-//  */
-// export interface WindowVirtualizerHandle {
-//   /**
-//    * Get current {@link CacheSnapshot}.
-//    */
-//   readonly cache: CacheSnapshot;
-// }
+/**
+ * Methods of {@link WindowVirtualizer}.
+ */
+export interface WindowVirtualizerHandle {
+  /**
+   * Find the start index of visible range of items.
+   */
+  findStartIndex: () => number;
+  /**
+   * Find the end index of visible range of items.
+   */
+  findEndIndex: () => number;
+}

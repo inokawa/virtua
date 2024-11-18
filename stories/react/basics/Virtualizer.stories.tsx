@@ -198,15 +198,20 @@ export const BiDirectionalInfiniteScrolling: StoryObj = {
           ref={ref}
           shift={shifting ? true : false}
           startMargin={spinnerHeight}
-          onRangeChange={async (start, end) => {
+          onScroll={async () => {
             if (!ready.current) return;
-            if (end + THRESHOLD > count && endFetchedCountRef.current < count) {
+            if (!ref.current) return;
+
+            if (
+              endFetchedCountRef.current < count &&
+              ref.current.findEndIndex() + THRESHOLD > count
+            ) {
               endFetchedCountRef.current = count;
               await fetchItems();
               setItems((prev) => [...prev, ...createRows(ITEM_BATCH_COUNT)]);
             } else if (
-              start - THRESHOLD < 0 &&
-              startFetchedCountRef.current < count
+              startFetchedCountRef.current < count &&
+              ref.current.findStartIndex() - THRESHOLD < 0
             ) {
               startFetchedCountRef.current = count;
               await fetchItems(true);

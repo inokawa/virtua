@@ -12,6 +12,26 @@ Props of [WindowVirtualizer](../functions/WindowVirtualizer.md).
 
 ## Properties
 
+### ref()?
+
+> `optional` **ref**: (`handle`?) => `void`
+
+Get reference to [WindowVirtualizerHandle](WindowVirtualizerHandle.md).
+
+#### Parameters
+
+• **handle?**: [`WindowVirtualizerHandle`](WindowVirtualizerHandle.md)
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[src/solid/WindowVirtualizer.tsx:49](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/solid/WindowVirtualizer.tsx#L49)
+
+***
+
 ### data
 
 > **data**: `T`[]
@@ -20,7 +40,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:45](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/WindowVirtualizer.tsx#L45)
+[src/solid/WindowVirtualizer.tsx:53](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/solid/WindowVirtualizer.tsx#L53)
 
 ***
 
@@ -42,7 +62,7 @@ The elements renderer function.
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:49](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/WindowVirtualizer.tsx#L49)
+[src/solid/WindowVirtualizer.tsx:57](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/solid/WindowVirtualizer.tsx#L57)
 
 ***
 
@@ -60,7 +80,7 @@ Number of items to render above/below the visible bounds of the list. Lower valu
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:54](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/WindowVirtualizer.tsx#L54)
+[src/solid/WindowVirtualizer.tsx:62](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/solid/WindowVirtualizer.tsx#L62)
 
 ***
 
@@ -75,7 +95,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:61](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/WindowVirtualizer.tsx#L61)
+[src/solid/WindowVirtualizer.tsx:69](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/solid/WindowVirtualizer.tsx#L69)
 
 ***
 
@@ -87,7 +107,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:65](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/WindowVirtualizer.tsx#L65)
+[src/solid/WindowVirtualizer.tsx:73](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/solid/WindowVirtualizer.tsx#L73)
 
 ***
 
@@ -99,7 +119,29 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:69](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/WindowVirtualizer.tsx#L69)
+[src/solid/WindowVirtualizer.tsx:77](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/solid/WindowVirtualizer.tsx#L77)
+
+***
+
+### onScroll()?
+
+> `optional` **onScroll**: (`offset`) => `void`
+
+Callback invoked whenever scroll offset changes.
+
+#### Parameters
+
+• **offset**: `number`
+
+Current scrollTop, or scrollLeft if horizontal: true.
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[src/solid/WindowVirtualizer.tsx:82](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/solid/WindowVirtualizer.tsx#L82)
 
 ***
 
@@ -115,30 +157,4 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:73](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/WindowVirtualizer.tsx#L73)
-
-***
-
-### onRangeChange()?
-
-> `optional` **onRangeChange**: (`startIndex`, `endIndex`) => `void`
-
-Callback invoked when visible items range changes.
-
-#### Parameters
-
-• **startIndex**: `number`
-
-The start index of viewable items.
-
-• **endIndex**: `number`
-
-The end index of viewable items.
-
-#### Returns
-
-`void`
-
-#### Defined in
-
-[src/solid/WindowVirtualizer.tsx:79](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/solid/WindowVirtualizer.tsx#L79)
+[src/solid/WindowVirtualizer.tsx:86](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/solid/WindowVirtualizer.tsx#L86)

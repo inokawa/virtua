@@ -21,7 +21,7 @@ const props = {
    * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
    */
-  overscan: { type: Number, default: 4 },
+  overscan: Number,
   /**
    * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
    *
@@ -45,7 +45,7 @@ const props = {
 
 export const VList = /*#__PURE__*/ defineComponent({
   props: props,
-  emits: ["scroll", "scrollEnd", "rangeChange"],
+  emits: ["scroll", "scrollEnd"],
   setup(props, { emit, expose, slots }) {
     const horizontal = props.horizontal;
 
@@ -54,9 +54,6 @@ export const VList = /*#__PURE__*/ defineComponent({
     };
     const onScrollEnd = () => {
       emit("scrollEnd");
-    };
-    const onRangeChange = (start: number, end: number) => {
-      emit("rangeChange", start, end);
     };
 
     const handle = ref<InstanceType<typeof Virtualizer>>();
@@ -71,7 +68,10 @@ export const VList = /*#__PURE__*/ defineComponent({
       get viewportSize() {
         return handle.value!.viewportSize;
       },
+      findStartIndex: (...args) => handle.value!.findStartIndex(...args),
+      findEndIndex: (...args) => handle.value!.findEndIndex(...args),
       getItemOffset: (...args) => handle.value!.getItemOffset(...args),
+      getItemSize: (...args) => handle.value!.getItemSize(...args),
       scrollToIndex: (...args) => handle.value!.scrollToIndex(...args),
       scrollTo: (...args) => handle.value!.scrollTo(...args),
       scrollBy: (...args) => handle.value!.scrollBy(...args),
@@ -98,7 +98,6 @@ export const VList = /*#__PURE__*/ defineComponent({
             horizontal={horizontal}
             onScroll={onScroll}
             onScrollEnd={onScrollEnd}
-            onRangeChange={onRangeChange}
           >
             {slots}
           </Virtualizer>
@@ -124,12 +123,6 @@ export const VList = /*#__PURE__*/ defineComponent({
      * Callback invoked when scrolling stops.
      */
     scrollEnd: () => void;
-    /**
-     * Callback invoked when visible items range changes.
-     * @param startIndex The start index of viewable items.
-     * @param endIndex The end index of viewable items.
-     */
-    rangeChange: (startIndex: number, endIndex: number) => void;
   },
   string,
   {},

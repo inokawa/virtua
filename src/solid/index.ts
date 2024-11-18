@@ -8,5 +8,5 @@ export type { VirtualizerProps, VirtualizerHandle } from "./Virtualizer";
 export { WindowVirtualizer } from "./WindowVirtualizer";
 export type {
   WindowVirtualizerProps,
-  // WindowVirtualizerHandle,
+  WindowVirtualizerHandle,
 } from "./WindowVirtualizer";

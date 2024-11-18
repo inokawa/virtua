@@ -12,19 +12,31 @@ import {
   ComponentObjectPropsOptions,
   PropType,
   NativeElements,
+  computed,
 } from "vue";
 import {
-  SCROLL_IDLE,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_VIRTUAL_STATE,
-  getOverscanedRange,
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
+  UPDATE_SCROLL_EVENT,
 } from "../core/store";
 import { createWindowResizer } from "../core/resizer";
 import { createWindowScroller } from "../core/scroller";
 import { ListItem } from "./ListItem";
-import { getKey } from "./utils";
+import { getKey, isSameRange } from "./utils";
+import { ItemsRange } from "../core/types";
+
+export interface WindowVirtualizerHandle {
+  /**
+   * Find the start index of visible range of items.
+   */
+  findStartIndex: () => number;
+  /**
+   * Find the end index of visible range of items.
+   */
+  findEndIndex: () => number;
+}
 
 const props = {
   /**
@@ -35,7 +47,7 @@ const props = {
    * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
    */
-  overscan: { type: Number, default: 4 },
+  overscan: Number,
   /**
    * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
    *
@@ -65,13 +77,14 @@ const props = {
 
 export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
   props,
-  emits: ["scrollEnd", "rangeChange"],
-  setup(props, { emit, slots }) {
+  emits: ["scroll", "scrollEnd"],
+  setup(props, { emit, slots, expose }) {
     const isHorizontal = props.horizontal;
     const containerRef = ref<HTMLDivElement>();
     const store = createVirtualStore(
       props.data.length,
-      props.itemSize ?? 40,
+      props.itemSize,
+      props.overscan,
       undefined,
       undefined,
       !props.itemSize
@@ -84,12 +97,27 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       rerender.value = store._getStateVersion();
     });
 
+    const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
+      emit("scroll", store._getScrollOffset());
+    });
     const unsubscribeOnScrollEnd = store._subscribe(
       UPDATE_SCROLL_END_EVENT,
       () => {
         emit("scrollEnd");
       }
     );
+
+    const range = computed<ItemsRange>((prev) => {
+      rerender.value;
+      const next = store._getRange();
+      if (prev && isSameRange(prev, next)) {
+        return prev;
+      }
+      return next;
+    });
+    const isScrolling = computed(() => rerender.value && store._isScrolling());
+    const totalSize = computed(() => rerender.value && store._getTotalSize());
+    const jumpCount = computed(() => rerender.value && store._getJumpCount());
 
     onMounted(() => {
       const el = containerRef.value;
@@ -99,6 +127,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     });
     onUnmounted(() => {
       unsubscribeStore();
+      unsubscribeOnScroll();
       unsubscribeOnScrollEnd();
       resizer._dispose();
       scroller._dispose();
@@ -112,56 +141,35 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     );
 
     watch(
-      [rerender, store._getJumpCount],
-      ([, count], [, prevCount]) => {
-        if (count === prevCount) return;
-
+      [jumpCount],
+      () => {
         scroller._fixScrollJump();
       },
       { flush: "post" }
     );
 
-    watch(
-      [rerender, store._getRange],
-      ([, [start, end]], [, [prevStart, prevEnd]]) => {
-        if (prevStart === start && prevEnd === end) return;
-
-        emit("rangeChange", start, end);
-      },
-      { flush: "post" }
-    );
+    expose({
+      findStartIndex: store._findStartIndex,
+      findEndIndex: store._findEndIndex,
+    } satisfies WindowVirtualizerHandle);
 
     return () => {
-      rerender.value;
-
       const Element = props.as;
       const ItemElement = props.item;
-      const count = props.data.length;
 
-      const [startIndex, endIndex] = store._getRange();
-      const scrollDirection = store._getScrollDirection();
-      const totalSize = store._getTotalSize();
+      const [startIndex, endIndex] = range.value;
+      const total = totalSize.value;
 
       const items: VNode[] = [];
-      for (
-        let [i, j] = getOverscanedRange(
-          startIndex,
-          endIndex,
-          props.overscan,
-          scrollDirection,
-          count
-        );
-        i <= j;
-        i++
-      ) {
+      for (let i = startIndex, j = endIndex; i <= j; i++) {
         const e = slots.default({ item: props.data![i]!, index: i })[0]!;
         items.push(
           <ListItem
             key={getKey(e, i)}
+            _rerender={rerender}
+            _store={store}
             _resizer={resizer._observeItem}
             _index={i}
-            _offset={store._getItemOffset(i)}
-            _hide={store._isUnmeasuredItem(i)}
             _children={e}
             _isHorizontal={isHorizontal}
             _as={ItemElement}
@@ -178,9 +186,9 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
             flex: "none", // flex style can break layout
             position: "relative",
             visibility: "hidden", // TODO replace with other optimization methods
-            width: isHorizontal ? totalSize + "px" : "100%",
-            height: isHorizontal ? "100%" : totalSize + "px",
-            pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : undefined,
+            width: isHorizontal ? total + "px" : "100%",
+            height: isHorizontal ? "100%" : total + "px",
+            pointerEvents: isScrolling.value ? "none" : undefined,
           }}
         >
           {items}
@@ -198,15 +206,14 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
   ComponentOptionsMixin,
   {
     /**
+     * Callback invoked whenever scroll offset changes.
+     * @param offset Current scrollTop, or scrollLeft if horizontal: true.
+     */
+    scroll: (offset: number) => void;
+    /**
      * Callback invoked when scrolling stops.
      */
     scrollEnd: () => void;
-    /**
-     * Callback invoked when visible items range changes.
-     * @param startIndex The start index of viewable items.
-     * @param endIndex The end index of viewable items.
-     */
-    rangeChange: (startIndex: number, endIndex: number) => void;
   },
   string,
   {},

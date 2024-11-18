@@ -12,11 +12,7 @@ import {
 import { createResizer, createWindowResizer } from "../core/resizer";
 import { createScroller, createWindowScroller } from "../core/scroller";
 
-export {
-  SCROLL_IDLE,
-  type StateVersion,
-  getOverscanedRange,
-} from "../core/store";
+export { type StateVersion } from "../core/store";
 export { isRTLDocument } from "../core/environment";
 export type { ItemResizeObserver } from "../core/resizer";
 
@@ -26,20 +22,23 @@ export const GET_RANGE = 2;
 export const GET_TOTAL_SIZE = 3;
 export const GET_VIEWPORT_SIZE = 4;
 export const GET_SCROLL_OFFSET = 5;
-export const GET_SCROLL_DIRECTION = 6;
+export const GET_IS_SCROLLING = 6;
 export const GET_JUMP_COUNT = 7;
 export const GET_ITEM_OFFSET = 8;
-export const IS_ITEM_HIDDEN = 9;
-export const GET_ITEMS_LENGTH = 10;
-export const GET_START_SPACER_SIZE = 11;
-export const OBSERVE_ITEM_RESIZE = 12;
-export const FIX_SCROLL_JUMP = 13;
-export const CHANGE_ITEM_LENGTH = 14;
-export const CHANGE_START_MARGIN = 15;
-export const GET_SCROLL_SIZE = 16;
-export const SCROLL_TO = 17;
-export const SCROLL_BY = 18;
-export const SCROLL_TO_INDEX = 19;
+export const GET_ITEM_SIZE = 9;
+export const IS_ITEM_HIDDEN = 10;
+export const GET_ITEMS_LENGTH = 11;
+export const GET_START_SPACER_SIZE = 12;
+export const OBSERVE_ITEM_RESIZE = 13;
+export const FIX_SCROLL_JUMP = 14;
+export const CHANGE_ITEM_LENGTH = 15;
+export const CHANGE_START_MARGIN = 16;
+export const GET_SCROLL_SIZE = 17;
+export const SCROLL_TO = 18;
+export const SCROLL_BY = 19;
+export const SCROLL_TO_INDEX = 20;
+export const FIND_START_INDEX = 21;
+export const FIND_END_INDEX = 22;
 
 /**
  * This function is workaround for terser minification.
@@ -48,6 +47,7 @@ export const SCROLL_TO_INDEX = 19;
 export const createVirtualizer = (
   count: number,
   itemSize: number | undefined,
+  overscan: number | undefined,
   horizontal: boolean,
   onUpdate: (v: StateVersion) => void,
   onScroll: (offset: number) => void,
@@ -55,7 +55,8 @@ export const createVirtualizer = (
 ) => {
   const store = createVirtualStore(
     count,
-    itemSize ?? 40,
+    itemSize,
+    overscan,
     undefined,
     undefined,
     !itemSize
@@ -92,9 +93,10 @@ export const createVirtualizer = (
     [GET_TOTAL_SIZE]: store._getTotalSize,
     [GET_VIEWPORT_SIZE]: store._getViewportSize,
     [GET_SCROLL_OFFSET]: store._getScrollOffset,
-    [GET_SCROLL_DIRECTION]: store._getScrollDirection,
+    [GET_IS_SCROLLING]: store._isScrolling,
     [GET_JUMP_COUNT]: store._getJumpCount,
     [GET_ITEM_OFFSET]: store._getItemOffset,
+    [GET_ITEM_SIZE]: store._getItemSize,
     [IS_ITEM_HIDDEN]: store._isUnmeasuredItem,
     [GET_ITEMS_LENGTH]: store._getItemsLength,
     [GET_START_SPACER_SIZE]: store._getStartSpacerSize,
@@ -110,6 +112,8 @@ export const createVirtualizer = (
     [SCROLL_TO]: scroller._scrollTo,
     [SCROLL_BY]: scroller._scrollBy,
     [SCROLL_TO_INDEX]: scroller._scrollToIndex,
+    [FIND_START_INDEX]: store._findStartIndex,
+    [FIND_END_INDEX]: store._findEndIndex,
   };
 };
 
@@ -120,13 +124,16 @@ export const createVirtualizer = (
 export const createWindowVirtualizer = (
   count: number,
   itemSize: number | undefined,
+  overscan: number | undefined,
   horizontal: boolean,
   onUpdate: (v: StateVersion) => void,
+  onScroll: (offset: number) => void,
   onScrollEnd: () => void
 ) => {
   const store = createVirtualStore(
     count,
-    itemSize ?? 40,
+    itemSize,
+    overscan,
     undefined,
     undefined,
     !itemSize
@@ -137,6 +144,9 @@ export const createWindowVirtualizer = (
     onUpdate(store._getStateVersion());
   });
 
+  const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
+    onScroll(store._getScrollOffset());
+  });
   const unsubscribeOnScrollEnd = store._subscribe(
     UPDATE_SCROLL_END_EVENT,
     () => {
@@ -151,6 +161,7 @@ export const createWindowVirtualizer = (
     },
     [ON_UN_MOUNT]: () => {
       unsubscribeStore();
+      unsubscribeOnScroll();
       unsubscribeOnScrollEnd();
       resizer._dispose();
       scroller._dispose();
@@ -159,7 +170,7 @@ export const createWindowVirtualizer = (
     [GET_TOTAL_SIZE]: store._getTotalSize,
     [GET_VIEWPORT_SIZE]: store._getViewportSize,
     [GET_SCROLL_OFFSET]: store._getScrollOffset,
-    [GET_SCROLL_DIRECTION]: store._getScrollDirection,
+    [GET_IS_SCROLLING]: store._isScrolling,
     [GET_JUMP_COUNT]: store._getJumpCount,
     [GET_ITEM_OFFSET]: store._getItemOffset,
     [IS_ITEM_HIDDEN]: store._isUnmeasuredItem,
@@ -169,5 +180,7 @@ export const createWindowVirtualizer = (
     [CHANGE_ITEM_LENGTH]: (len: number, shift?: boolean) => {
       store._update(ACTION_ITEMS_LENGTH_CHANGE, [len, shift]);
     },
+    [FIND_START_INDEX]: store._findStartIndex,
+    [FIND_END_INDEX]: store._findEndIndex,
   };
 };

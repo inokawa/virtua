@@ -72,17 +72,17 @@ export const debounce = <T extends () => void>(fn: T, ms: number) => {
 /**
  * @internal
  */
-export const once = <F extends (...args: any[]) => any>(fn: F): F => {
+export const once = <V>(fn: () => V): (() => V) => {
   let called: undefined | boolean;
-  let cache: ReturnType<F>;
+  let cache: V;
 
-  return ((...args) => {
+  return () => {
     if (!called) {
       called = true;
-      cache = fn(...args);
+      cache = fn();
     }
     return cache;
-  }) as F;
+  };
 };
 
 /**

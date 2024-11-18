@@ -200,6 +200,12 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:129
 
 ***
 
+### onScroll
+
+> **onScroll**: `undefined` \| (...`args`) => `any`
+
+***
+
 ### shift
 
 > `readonly` **shift**: `boolean` = `Boolean`
@@ -208,7 +214,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:49](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/vue/WindowVirtualizer.tsx#L49)
+[src/vue/WindowVirtualizer.tsx:61](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/vue/WindowVirtualizer.tsx#L61)
 
 ***
 
@@ -220,13 +226,13 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:33](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/vue/WindowVirtualizer.tsx#L33)
+[src/vue/WindowVirtualizer.tsx:45](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/vue/WindowVirtualizer.tsx#L45)
 
 ***
 
-### overscan
+### overscan?
 
-> `readonly` **overscan**: `number`
+> `readonly` `optional` **overscan**: `number` = `Number`
 
 Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
 
@@ -238,7 +244,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:38](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/vue/WindowVirtualizer.tsx#L38)
+[src/vue/WindowVirtualizer.tsx:50](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/vue/WindowVirtualizer.tsx#L50)
 
 ***
 
@@ -253,7 +259,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:45](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/vue/WindowVirtualizer.tsx#L45)
+[src/vue/WindowVirtualizer.tsx:57](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/vue/WindowVirtualizer.tsx#L57)
 
 ***
 
@@ -265,7 +271,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:53](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/vue/WindowVirtualizer.tsx#L53)
+[src/vue/WindowVirtualizer.tsx:65](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/vue/WindowVirtualizer.tsx#L65)
 
 ***
 
@@ -283,7 +289,7 @@ Component or element type for container element.
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:58](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/vue/WindowVirtualizer.tsx#L58)
+[src/vue/WindowVirtualizer.tsx:70](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/vue/WindowVirtualizer.tsx#L70)
 
 ***
 
@@ -301,16 +307,10 @@ Component or element type for item element.
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:63](https://github.com/inokawa/virtua/blob/14b234e8961e7ac5ef0ab5b2e4930d837883b8d5/src/vue/WindowVirtualizer.tsx#L63)
+[src/vue/WindowVirtualizer.tsx:75](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/vue/WindowVirtualizer.tsx#L75)
 
 ***
 
 ### onScrollEnd
 
 > **onScrollEnd**: `undefined` \| (...`args`) => `any`
-
-***
-
-### onRangeChange
-
-> **onRangeChange**: `undefined` \| (...`args`) => `any`

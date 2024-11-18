@@ -16,7 +16,6 @@ export interface VListProps<T>
       | "children"
       | "onscroll"
       | "onscrollend"
-      | "onrangechange"
     >,
     ViewportComponentAttributes {}
 
