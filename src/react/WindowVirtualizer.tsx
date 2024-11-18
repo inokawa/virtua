@@ -234,8 +234,6 @@ export const WindowVirtualizer = forwardRef<
         findEndIndex: store._findEndIndex,
         getItemOffset: store._getItemOffset,
         scrollToIndex: scroller._scrollToIndex,
-        scrollTo: scroller._scrollTo,
-        scrollBy: scroller._scrollBy,
       };
     }, []);
 

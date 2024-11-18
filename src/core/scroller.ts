@@ -358,8 +358,6 @@ export const createScroller = (
 export type WindowScroller = {
   _observe(containerElement: HTMLElement): void;
   _dispose(): void;
-  _scrollTo: (offset: number) => void;
-  _scrollBy: (offset: number) => void;
   _scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
   _fixScrollJump: () => void;
 };
