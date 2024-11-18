@@ -20,7 +20,7 @@ Find the start index of visible range of items.
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:35](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/solid/WindowVirtualizer.tsx#L35)
+[src/solid/WindowVirtualizer.tsx:35](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/solid/WindowVirtualizer.tsx#L35)
 
 ***
 
@@ -36,4 +36,4 @@ Find the end index of visible range of items.
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:39](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/solid/WindowVirtualizer.tsx#L39)
+[src/solid/WindowVirtualizer.tsx:39](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/solid/WindowVirtualizer.tsx#L39)

@@ -34,7 +34,7 @@ index of item
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:64](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/Virtualizer.tsx#L64)
+[src/react/Virtualizer.tsx:64](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/react/Virtualizer.tsx#L64)
 
 ***
 
@@ -60,7 +60,7 @@ index of item
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:69](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/Virtualizer.tsx#L69)
+[src/react/Virtualizer.tsx:69](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/react/Virtualizer.tsx#L69)
 
 ***
 
@@ -90,7 +90,7 @@ options
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:75](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/Virtualizer.tsx#L75)
+[src/react/Virtualizer.tsx:75](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/react/Virtualizer.tsx#L75)
 
 ***
 
@@ -116,7 +116,7 @@ offset from start
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:80](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/Virtualizer.tsx#L80)
+[src/react/Virtualizer.tsx:80](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/react/Virtualizer.tsx#L80)
 
 ***
 
@@ -142,7 +142,7 @@ offset from current position
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:85](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/Virtualizer.tsx#L85)
+[src/react/Virtualizer.tsx:85](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/react/Virtualizer.tsx#L85)
 
 ## Properties
 
@@ -158,7 +158,7 @@ Get current [CacheSnapshot](CacheSnapshot.md).
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:39](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/Virtualizer.tsx#L39)
+[src/react/Virtualizer.tsx:39](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/react/Virtualizer.tsx#L39)
 
 ***
 
@@ -174,7 +174,7 @@ Get current scrollTop, or scrollLeft if horizontal: true.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:43](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/Virtualizer.tsx#L43)
+[src/react/Virtualizer.tsx:43](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/react/Virtualizer.tsx#L43)
 
 ***
 
@@ -190,7 +190,7 @@ Get current scrollHeight, or scrollWidth if horizontal: true.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:47](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/Virtualizer.tsx#L47)
+[src/react/Virtualizer.tsx:47](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/react/Virtualizer.tsx#L47)
 
 ***
 
@@ -206,7 +206,7 @@ Get current offsetHeight, or offsetWidth if horizontal: true.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:51](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/Virtualizer.tsx#L51)
+[src/react/Virtualizer.tsx:51](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/react/Virtualizer.tsx#L51)
 
 ***
 
@@ -226,7 +226,7 @@ Find the start index of visible range of items.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:55](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/Virtualizer.tsx#L55)
+[src/react/Virtualizer.tsx:55](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/react/Virtualizer.tsx#L55)
 
 ***
 
@@ -246,4 +246,4 @@ Find the end index of visible range of items.
 
 #### Defined in
 
-[src/react/Virtualizer.tsx:59](https://github.com/inokawa/virtua/blob/cde6b757a74b1e8c69e920fc596425ef39738abf/src/react/Virtualizer.tsx#L59)
+[src/react/Virtualizer.tsx:59](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/react/Virtualizer.tsx#L59)
