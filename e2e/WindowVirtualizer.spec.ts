@@ -437,12 +437,11 @@ test.describe("check if scrollToIndex works", () => {
 
   test.describe("align start", () => {
     test("mid", async ({ page }) => {
-      const component = await getVirtualizer(page)
-      await component.waitForElementState("stable");
+      const component = await getVirtualizer(page);
 
       // check if start is displayed
       await expect((await getFirstItem(component)).text).toEqual("0");
-            
+
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = await button.evaluateHandle(
         (el) => el.previousSibling as HTMLInputElement
@@ -452,8 +451,8 @@ test.describe("check if scrollToIndex works", () => {
       await input.fill("700");
       await button.click();
 
-      await component.waitForElementState("stable");
-      
+      await (await component.elementHandle())!.waitForElementState("stable");
+
       // Check if scrolled precisely
       const firstItem = await getWindowFirstItem(page);
       await expect(firstItem.text).toEqual("700");
@@ -465,8 +464,7 @@ test.describe("check if scrollToIndex works", () => {
     });
 
     test("start", async ({ page }) => {
-      const component = await getVirtualizer(page)
-      await component.waitForElementState("stable");
+      const component = await getVirtualizer(page);
 
       // check if start is displayed
       await expect((await getFirstItem(component)).text).toEqual("0");
@@ -480,7 +478,7 @@ test.describe("check if scrollToIndex works", () => {
       await input.fill("500");
       await button.click();
 
-      await component.waitForElementState("stable");
+      await (await component.elementHandle())!.waitForElementState("stable");
 
       await expect(await component.innerText()).toContain("500");
 
@@ -488,7 +486,7 @@ test.describe("check if scrollToIndex works", () => {
       await input.fill("0");
       await button.click();
 
-      await component.waitForElementState("stable");
+      await (await component.elementHandle())!.waitForElementState("stable");
 
       // Check if scrolled precisely
       const firstItem = await getWindowFirstItem(page);
@@ -500,8 +498,7 @@ test.describe("check if scrollToIndex works", () => {
     });
 
     test("end", async ({ page }) => {
-      const component = await getVirtualizer(page)
-      await component.waitForElementState("stable");
+      const component = await getVirtualizer(page);
 
       // check if start is displayed
       await expect((await getFirstItem(component)).text).toEqual("0");
@@ -515,7 +512,7 @@ test.describe("check if scrollToIndex works", () => {
       await input.fill("999");
       await button.click();
 
-      await component.waitForElementState("stable");
+      await (await component.elementHandle())!.waitForElementState("stable");
 
       // Check if scrolled precisely
       const lastItem = await getWindowLastItem(page);
@@ -527,11 +524,10 @@ test.describe("check if scrollToIndex works", () => {
     });
 
     test("mid smooth", async ({ page, browserName }) => {
-      const component = await getVirtualizer(page)
-      await component.waitForElementState("stable");
-      
+      const component = await getVirtualizer(page);
+
       const window = await page.evaluateHandle(() => window);
-      
+
       // check if start is displayed
       await expect((await getFirstItem(component)).text).toEqual("0");
 
@@ -575,8 +571,7 @@ test.describe("check if scrollToIndex works", () => {
     });
 
     test("mid", async ({ page }) => {
-      const component = await getVirtualizer(page)
-      await component.waitForElementState("stable");
+      const component = await getVirtualizer(page);
 
       // check if start is displayed
       await expect((await getFirstItem(component)).text).toEqual("0");
@@ -590,7 +585,7 @@ test.describe("check if scrollToIndex works", () => {
       await input.fill("700");
       await button.click();
 
-      await component.waitForElementState("stable");
+      await (await component.elementHandle())!.waitForElementState("stable");
 
       // Check if scrolled precisely
       const lastItem = await getWindowLastItem(page);
@@ -603,8 +598,7 @@ test.describe("check if scrollToIndex works", () => {
     });
 
     test("start", async ({ page }) => {
-      const component = await getVirtualizer(page)
-      await component.waitForElementState("stable");
+      const component = await getVirtualizer(page);
 
       // check if start is displayed
       await expect((await getFirstItem(component)).text).toEqual("0");
@@ -618,7 +612,7 @@ test.describe("check if scrollToIndex works", () => {
       await input.fill("500");
       await button.click();
 
-      await component.waitForElementState("stable");
+      await (await component.elementHandle())!.waitForElementState("stable");
 
       await expect(await component.innerText()).toContain("500");
 
@@ -626,7 +620,7 @@ test.describe("check if scrollToIndex works", () => {
       await input.fill("0");
       await button.click();
 
-      await component.waitForElementState("stable");
+      await (await component.elementHandle())!.waitForElementState("stable");
 
       // Check if scrolled precisely
       const firstItem = await getFirstItem(component);
@@ -638,8 +632,7 @@ test.describe("check if scrollToIndex works", () => {
     });
 
     test("end", async ({ page }) => {
-      const component = await getVirtualizer(page)
-      await component.waitForElementState("stable");
+      const component = await getVirtualizer(page);
 
       // check if start is displayed
       await expect((await getFirstItem(component)).text).toEqual("0");
@@ -653,10 +646,10 @@ test.describe("check if scrollToIndex works", () => {
       await input.fill("999");
       await button.click();
 
-      await component.waitForElementState("stable");
+      await (await component.elementHandle())!.waitForElementState("stable");
 
       // Check if scrolled precisely
-      const lastItem = await getWindowLastItem(component);
+      const lastItem = await getWindowLastItem(page);
       await expect(lastItem.text).toEqual("999");
       expectInRange(lastItem.bottom, { min: 0, max: 1 });
 
@@ -665,9 +658,8 @@ test.describe("check if scrollToIndex works", () => {
     });
 
     test("mid smooth", async ({ page, browserName }) => {
-      const component = await getVirtualizer(page)
-      await component.waitForElementState("stable");
-      
+      const component = await getVirtualizer(page);
+
       const window = await page.evaluateHandle(() => window);
 
       // check if start is displayed
@@ -697,7 +689,7 @@ test.describe("check if scrollToIndex works", () => {
       );
 
       // Check if scrolled precisely
-      const lastItem = await getWindowLastItem(component);
+      const lastItem = await getWindowLastItem(page);
       await expect(lastItem.text).toEqual("700");
       expectInRange(lastItem.bottom, { min: 0, max: 1 });
 
