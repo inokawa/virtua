@@ -558,7 +558,7 @@ export const createWindowScroller = (
         return (
           offset +
           containerOffset +
-          store._getStartSpacerSize() +
+          // store._getStartSpacerSize() +
           // I'm somewhat confused why this isn't needed
           store._getItemOffset(index) +
           (align === "end"
