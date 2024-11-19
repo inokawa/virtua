@@ -498,9 +498,13 @@ export const ScrollTo: StoryObj = {
           smooth
         </label>
       </div>
-      <WindowVirtualizer ref={ref} >
-        {createRows(LENGTH)}
-      </WindowVirtualizer>
+      <div style={{padding: "100px"}}>
+        <div style={{border: "1px solid darkgrey"}} id="window-virtualizer-parent">
+        <WindowVirtualizer ref={ref} >
+          {createRows(LENGTH)}
+        </WindowVirtualizer>
+        </div>
+      </div>
     </>
     );
   }
