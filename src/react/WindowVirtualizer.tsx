@@ -1,4 +1,5 @@
 import {
+  JSX,
   ReactElement,
   ReactNode,
   forwardRef,

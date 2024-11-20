@@ -1,4 +1,4 @@
-import { ReactElement, ReactFragment, ReactNode } from "react";
+import { ReactNode } from "react";
 import { isArray, NULL } from "../core/utils";
 
 /**
@@ -9,7 +9,7 @@ export const refKey = "current";
 /**
  * @internal
  */
-export type ItemElement = ReactElement | ReactFragment | string | number;
+export type ItemElement = Exclude<ReactNode, null | boolean | Array<any>>;
 
 const forEach = (children: ReactNode, elements: ItemElement[]) => {
   if (isArray(children)) {
