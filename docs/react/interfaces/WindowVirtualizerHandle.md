@@ -6,6 +6,32 @@
 
 Methods of [WindowVirtualizer](../functions/WindowVirtualizer.md).
 
+## Methods
+
+### scrollToIndex()
+
+> **scrollToIndex**(`index`, `opts`?): `void`
+
+Scroll to the item specified by index.
+
+#### Parameters
+
+• **index**: `number`
+
+index of item
+
+• **opts?**: [`ScrollToIndexOpts`](ScrollToIndexOpts.md)
+
+options
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[src/react/WindowVirtualizer.tsx:51](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/react/WindowVirtualizer.tsx#L51)
+
 ## Properties
 
 ### cache
@@ -16,7 +42,7 @@ Get current [CacheSnapshot](CacheSnapshot.md).
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:36](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/react/WindowVirtualizer.tsx#L36)
+[src/react/WindowVirtualizer.tsx:37](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/react/WindowVirtualizer.tsx#L37)
 
 ***
 
@@ -32,7 +58,7 @@ Find the start index of visible range of items.
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:40](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/react/WindowVirtualizer.tsx#L40)
+[src/react/WindowVirtualizer.tsx:41](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/react/WindowVirtualizer.tsx#L41)
 
 ***
 
@@ -48,4 +74,4 @@ Find the end index of visible range of items.
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:44](https://github.com/inokawa/virtua/blob/7b801f16c7f1cf5eb033801b816966faaa8a6b18/src/react/WindowVirtualizer.tsx#L44)
+[src/react/WindowVirtualizer.tsx:45](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/react/WindowVirtualizer.tsx#L45)
