@@ -454,7 +454,7 @@ test.describe("check if scrollToIndex works", () => {
       await (await component.elementHandle())!.waitForElementState("stable");
 
       // Check if scrolled precisely
-      const firstItem = await getWindowFirstItem(page, {x: 102});
+      const firstItem = await getWindowFirstItem(page, { x: 102 });
       expect(firstItem.text).toEqual("700");
       expect(firstItem.top).toEqual(0);
 
@@ -489,7 +489,7 @@ test.describe("check if scrollToIndex works", () => {
       await (await component.elementHandle())!.waitForElementState("stable");
 
       // Check if scrolled precisely
-      const firstItem = await getWindowFirstItem(page, {x: 102});
+      const firstItem = await getWindowFirstItem(page, { x: 102 });
       expect(firstItem.text).toEqual("0");
       expect(firstItem.top).toEqual(0);
 
@@ -515,7 +515,7 @@ test.describe("check if scrollToIndex works", () => {
       await (await component.elementHandle())!.waitForElementState("stable");
 
       // Check if scrolled precisely
-      const lastItem = await getWindowLastItem(page, {x: 102, y: 102});
+      const lastItem = await getWindowLastItem(page, { x: 102, y: 102 });
       expect(lastItem.text).toEqual("999");
       expectInRange(lastItem.bottom, { min: -101.9, max: 100 });
 
@@ -555,7 +555,7 @@ test.describe("check if scrollToIndex works", () => {
       );
 
       // Check if scrolled precisely
-      const firstItem = await getWindowFirstItem(page, {x: 102});
+      const firstItem = await getWindowFirstItem(page, { x: 102 });
       expect(firstItem.text).toEqual("700");
       expectInRange(firstItem.top, { min: 0, max: 1 });
 
@@ -588,7 +588,7 @@ test.describe("check if scrollToIndex works", () => {
       await (await component.elementHandle())!.waitForElementState("stable");
 
       // Check if scrolled precisely
-      const lastItem = await getWindowLastItem(page, {x: 102,});
+      const lastItem = await getWindowLastItem(page, { x: 102 });
       expect(lastItem.text).toEqual("700");
       expectInRange(lastItem.bottom, { min: 0, max: 1 });
 
@@ -649,7 +649,7 @@ test.describe("check if scrollToIndex works", () => {
       await (await component.elementHandle())!.waitForElementState("stable");
 
       // Check if scrolled precisely
-      const lastItem = await getWindowLastItem(page, {x: 102});
+      const lastItem = await getWindowLastItem(page, { x: 102 });
       expect(lastItem.text).toEqual("999");
       expectInRange(lastItem.bottom, { min: 0, max: 1 });
 
@@ -689,7 +689,7 @@ test.describe("check if scrollToIndex works", () => {
       );
 
       // Check if scrolled precisely
-      const lastItem = await getWindowLastItem(page, {x: 102});
+      const lastItem = await getWindowLastItem(page, { x: 102 });
       expect(lastItem.text).toEqual("700");
       expectInRange(lastItem.bottom, { min: 0, max: 1 });
 
