@@ -17,6 +17,7 @@
     GET_ITEMS_LENGTH,
     FIND_START_INDEX,
     FIND_END_INDEX,
+    SCROLL_TO_INDEX,
   } from "./core";
   import { defaultGetKey, iterRange, styleToString } from "./utils";
   import ListItem from "./ListItem.svelte";
@@ -90,6 +91,9 @@
   export const findEndIndex = virtualizer[
     FIND_END_INDEX
   ] satisfies WindowVirtualizerHandle["findEndIndex"] as WindowVirtualizerHandle["findEndIndex"];
+  export const scrollToIndex = virtualizer[
+    SCROLL_TO_INDEX
+  ] satisfies WindowVirtualizerHandle["scrollToIndex"] as WindowVirtualizerHandle["scrollToIndex"];
 
   let containerStyle = $derived(
     styleToString({

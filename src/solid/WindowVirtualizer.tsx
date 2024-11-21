@@ -23,7 +23,7 @@ import { createWindowScroller } from "../core/scroller";
 import { ListItem } from "./ListItem";
 import { RangedFor } from "./RangedFor";
 import { isSameRange } from "./utils";
-import { ItemsRange } from "../core/types";
+import { ItemsRange, ScrollToIndexOpts } from "../core/types";
 
 /**
  * Methods of {@link WindowVirtualizer}.
@@ -37,6 +37,12 @@ export interface WindowVirtualizerHandle {
    * Find the end index of visible range of items.
    */
   findEndIndex: () => number;
+  /**
+   * Scroll to the item specified by index.
+   * @param index index of item
+   * @param opts options
+   */
+  scrollToIndex(index: number, opts?: ScrollToIndexOpts): void;
 }
 
 /**
@@ -150,6 +156,7 @@ export const WindowVirtualizer = <T,>(
       props.ref({
         findStartIndex: store._findStartIndex,
         findEndIndex: store._findEndIndex,
+        scrollToIndex: scroller._scrollToIndex,
       });
     }
 

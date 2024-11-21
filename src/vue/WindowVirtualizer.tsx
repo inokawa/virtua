@@ -25,7 +25,7 @@ import { createWindowResizer } from "../core/resizer";
 import { createWindowScroller } from "../core/scroller";
 import { ListItem } from "./ListItem";
 import { getKey, isSameRange } from "./utils";
-import { ItemsRange } from "../core/types";
+import { ItemsRange, ScrollToIndexOpts } from "../core/types";
 
 export interface WindowVirtualizerHandle {
   /**
@@ -36,6 +36,12 @@ export interface WindowVirtualizerHandle {
    * Find the end index of visible range of items.
    */
   findEndIndex: () => number;
+  /**
+   * Scroll to the item specified by index.
+   * @param index index of item
+   * @param opts options
+   */
+  scrollToIndex(index: number, opts?: ScrollToIndexOpts): void;
 }
 
 const props = {
@@ -151,6 +157,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     expose({
       findStartIndex: store._findStartIndex,
       findEndIndex: store._findEndIndex,
+      scrollToIndex: scroller._scrollToIndex,
     } satisfies WindowVirtualizerHandle);
 
     return () => {
