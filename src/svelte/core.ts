@@ -180,6 +180,7 @@ export const createWindowVirtualizer = (
     [CHANGE_ITEM_LENGTH]: (len: number, shift?: boolean) => {
       store._update(ACTION_ITEMS_LENGTH_CHANGE, [len, shift]);
     },
+    [SCROLL_TO_INDEX]: scroller._scrollToIndex,
     [FIND_START_INDEX]: store._findStartIndex,
     [FIND_END_INDEX]: store._findEndIndex,
   };
