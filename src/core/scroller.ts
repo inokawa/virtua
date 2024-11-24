@@ -453,7 +453,6 @@ export const createWindowScroller = (
         }
       }
 
-      
       window.scroll({
         [isHorizontal ? "left" : "top"]: normalizeOffset(
           getTargetOffset(),
