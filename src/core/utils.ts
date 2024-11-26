@@ -29,17 +29,6 @@ export const sort = <T extends number>(arr: readonly T[]): T[] => {
 /**
  * @internal
  */
-export const median = (arr: number[]): number => {
-  const sorted = sort(arr);
-  const mid = (arr.length / 2) | 0;
-  return sorted.length % 2 === 0
-    ? (sorted[mid - 1]! + sorted[mid]!) / 2
-    : sorted[mid]!;
-};
-
-/**
- * @internal
- */
 export const microtask: (fn: () => void) => void =
   typeof queueMicrotask === "function"
     ? queueMicrotask
