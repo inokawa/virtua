@@ -153,14 +153,16 @@ export const estimateDefaultItemSize = (
 ): number => {
   let measuredCountBeforeStart = 0;
   // This function will be called after measurement so measured size array must be longer than 0
-  const measuredSizes = cache._sizes.filter((s, i) => {
-    const isMeasured = s !== UNCACHED;
-    if (isMeasured && i < startIndex) {
-      measuredCountBeforeStart++;
-    }
-    return isMeasured;
-  });
   const prevDefaultItemSize = cache._defaultItemSize;
+  const measuredSizes: number[] = [];
+  cache._sizes.forEach((s, i) => {
+    if (s !== UNCACHED) {
+      measuredSizes.push(s);
+      if (i < startIndex) {
+        measuredCountBeforeStart++;
+      }
+    }
+  });
 
   // Discard cache for now
   cache._computedOffsetIndex = -1;
