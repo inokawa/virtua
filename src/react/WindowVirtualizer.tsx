@@ -12,20 +12,20 @@ import {
   createVirtualStore,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SCROLL_EVENT,
-} from "../core/store";
+  createWindowScroller,
+  createWindowResizer,
+  CacheSnapshot,
+  ScrollToIndexOpts,
+} from "../core";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { createWindowScroller } from "../core/scroller";
 import { getKey, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
-import { createWindowResizer } from "../core/resizer";
-import { CacheSnapshot, ScrollToIndexOpts } from "../core/types";
 import { CustomContainerComponent, CustomItemComponent } from "./types";
 import { ListItem } from "./ListItem";
 import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
 import { useChildren } from "./useChildren";
-import { NULL } from "../core/utils";
 
 /**
  * Methods of {@link WindowVirtualizer}.
@@ -144,7 +144,7 @@ export const WindowVirtualizer = forwardRef<
 
     const [getElement, count] = useChildren(children, renderCountProp);
 
-    const containerRef = useRef<HTMLDivElement>(NULL);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const onScroll = useLatestRef(onScrollProp);
     const onScrollEnd = useLatestRef(onScrollEndProp);

@@ -1,4 +1,4 @@
-import type { ItemsRange } from "../core/types";
+import type { ItemsRange } from "../core";
 
 export const styleToString = (
   obj: Record<string, string | undefined>

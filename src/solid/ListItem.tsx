@@ -1,8 +1,7 @@
 /**
  * @jsxImportSource solid-js
  */
-import { ItemResizeObserver } from "../core/resizer";
-import { isRTLDocument } from "../core/environment";
+import { ItemResizeObserver, isRTLDocument } from "../core";
 import {
   Component,
   JSX,

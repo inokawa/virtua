@@ -10,9 +10,12 @@ import {
   computed,
   Ref,
 } from "vue";
-import { ItemResizeObserver } from "../core/resizer";
-import { isRTLDocument } from "../core/environment";
-import { StateVersion, VirtualStore } from "../core/store";
+import {
+  ItemResizeObserver,
+  isRTLDocument,
+  StateVersion,
+  VirtualStore,
+} from "../core";
 
 /**
  * @internal

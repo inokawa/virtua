@@ -14,17 +14,18 @@ import {
   createVirtualStore,
   getScrollSize,
   UPDATE_VIRTUAL_STATE,
-} from "../core/store";
+  createGridScroller,
+  createGridResizer,
+  GridResizer,
+  isRTLDocument,
+} from "../core";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { createGridScroller } from "../core/scroller";
 import { refKey } from "./utils";
 import { useStatic } from "./useStatic";
-import { createGridResizer, GridResizer } from "../core/resizer";
 import { ViewportComponentAttributes } from "./types";
 import { flushSync } from "react-dom";
-import { isRTLDocument } from "../core/environment";
 import { useRerender } from "./useRerender";
-import { NULL } from "../core/utils";
+
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
 /**
@@ -65,7 +66,7 @@ const Cell = memo(
     _hide: hide,
     _element: Element,
   }: CellProps): ReactElement => {
-    const ref = useRef<HTMLDivElement>(NULL);
+    const ref = useRef<HTMLDivElement>(null);
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(
@@ -257,7 +258,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const hJumpCount = hStore._getJumpCount();
     const height = getScrollSize(vStore);
     const width = getScrollSize(hStore);
-    const rootRef = useRef<HTMLDivElement>(NULL);
+    const rootRef = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;

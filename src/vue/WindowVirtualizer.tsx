@@ -20,12 +20,13 @@ import {
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_SCROLL_EVENT,
-} from "../core/store";
-import { createWindowResizer } from "../core/resizer";
-import { createWindowScroller } from "../core/scroller";
+  createWindowResizer,
+  createWindowScroller,
+  ItemsRange,
+  ScrollToIndexOpts,
+} from "../core";
 import { ListItem } from "./ListItem";
 import { getKey, isSameRange } from "./utils";
-import { ItemsRange, ScrollToIndexOpts } from "../core/types";
 
 export interface WindowVirtualizerHandle {
   /**
