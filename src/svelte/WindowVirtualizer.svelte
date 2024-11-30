@@ -58,7 +58,7 @@
 
   let containerRef: HTMLDivElement | undefined = $state();
 
-  let rerender: StateVersion = $state([]);
+  let rerender: StateVersion = $state(store.$getStateVersion());
 
   let range = $derived(rerender && store.$getRange());
   let isScrolling = $derived(rerender && store.$isScrolling());
