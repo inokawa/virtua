@@ -170,16 +170,16 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   const resizer = createResizer(store, horizontal);
   const scroller = createScroller(store, horizontal);
 
-  const [rerender, setRerender] = createSignal(store._getStateVersion());
+  const [rerender, setRerender] = createSignal(store.$getStateVersion());
 
-  const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
-    setRerender(store._getStateVersion());
+  const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+    setRerender(store.$getStateVersion());
   });
 
-  const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
-    props.onScroll?.(store._getScrollOffset());
+  const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+    props.onScroll?.(store.$getScrollOffset());
   });
-  const unsubscribeOnScrollEnd = store._subscribe(
+  const unsubscribeOnScrollEnd = store.$subscribe(
     UPDATE_SCROLL_END_EVENT,
     () => {
       props.onScrollEnd?.();
@@ -188,42 +188,42 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
   const range = createMemo<ItemsRange>((prev) => {
     rerender();
-    const next = store._getRange();
+    const next = store.$getRange();
     if (prev && isSameRange(prev, next)) {
       return prev;
     }
     return next;
   });
-  const isScrolling = createMemo(() => rerender() && store._isScrolling());
-  const totalSize = createMemo(() => rerender() && store._getTotalSize());
+  const isScrolling = createMemo(() => rerender() && store.$isScrolling());
+  const totalSize = createMemo(() => rerender() && store.$getTotalSize());
 
-  const jumpCount = createMemo(() => rerender() && store._getJumpCount());
+  const jumpCount = createMemo(() => rerender() && store.$getJumpCount());
 
   onMount(() => {
     if (props.ref) {
       props.ref({
         get scrollOffset() {
-          return store._getScrollOffset();
+          return store.$getScrollOffset();
         },
         get scrollSize() {
           return getScrollSize(store);
         },
         get viewportSize() {
-          return store._getViewportSize();
+          return store.$getViewportSize();
         },
-        findStartIndex: store._findStartIndex,
-        findEndIndex: store._findEndIndex,
-        getItemOffset: store._getItemOffset,
-        getItemSize: store._getItemSize,
-        scrollToIndex: scroller._scrollToIndex,
-        scrollTo: scroller._scrollTo,
-        scrollBy: scroller._scrollBy,
+        findStartIndex: store.$findStartIndex,
+        findEndIndex: store.$findEndIndex,
+        getItemOffset: store.$getItemOffset,
+        getItemSize: store.$getItemSize,
+        scrollToIndex: scroller.$scrollToIndex,
+        scrollTo: scroller.$scrollTo,
+        scrollBy: scroller.$scrollBy,
       });
     }
 
     const scrollable = props.scrollRef || containerRef!.parentElement!;
-    resizer._observeRoot(scrollable);
-    scroller._observe(scrollable);
+    resizer.$observeRoot(scrollable);
+    scroller.$observe(scrollable);
 
     onCleanup(() => {
       if (props.ref) {
@@ -233,8 +233,8 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
       unsubscribeStore();
       unsubscribeOnScroll();
       unsubscribeOnScrollEnd();
-      resizer._dispose();
-      scroller._dispose();
+      resizer.$dispose();
+      scroller.$dispose();
     });
   });
 
@@ -242,8 +242,8 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     on(
       () => props.data.length,
       (count) => {
-        if (count !== store._getItemsLength()) {
-          store._update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+        if (count !== store.$getItemsLength()) {
+          store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
         }
       }
     )
@@ -253,8 +253,8 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     on(
       () => props.startMargin || 0,
       (value) => {
-        if (value !== store._getStartSpacerSize()) {
-          store._update(ACTION_START_OFFSET_CHANGE, value);
+        if (value !== store.$getStartSpacerSize()) {
+          store.$update(ACTION_START_OFFSET_CHANGE, value);
         }
       }
     )
@@ -262,7 +262,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
   createEffect(
     on(jumpCount, () => {
-      scroller._fixScrollJump();
+      scroller.$fixScrollJump();
     })
   );
 
@@ -287,18 +287,18 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         _render={(data, index) => {
           const offset = createMemo(() => {
             rerender();
-            return store._getItemOffset(index);
+            return store.$getItemOffset(index);
           });
           const hide = createMemo(() => {
             rerender();
-            return store._isUnmeasuredItem(index);
+            return store.$isUnmeasuredItem(index);
           });
 
           return (
             <ListItem
               _as={props.item}
               _index={index}
-              _resizer={resizer._observeItem}
+              _resizer={resizer.$observeItem}
               _offset={offset()}
               _hide={hide()}
               _children={props.children(data(), index)}

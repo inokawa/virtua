@@ -6,8 +6,8 @@ import { VirtualStore } from "../core";
  */
 export const useRerender = (store: VirtualStore): (() => void) => {
   return useReducer(
-    store._getStateVersion,
+    store.$getStateVersion,
     undefined,
-    store._getStateVersion
+    store.$getStateVersion
   )[1];
 };

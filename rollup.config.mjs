@@ -14,7 +14,7 @@ const external = (id) =>
     ...Object.keys(pkg.devDependencies || {}),
   ].some((d) => id.startsWith(d));
 
-const terserPlugin = ({ vue } = {}) =>
+const terserPlugin = ({ core, vue } = {}) =>
   terser({
     ecma: 2018,
     module: true,
@@ -22,7 +22,7 @@ const terserPlugin = ({ vue } = {}) =>
     mangle: {
       properties: {
         // @vue/babel-plugin-jsx may generate _ field
-        regex: "^_.+",
+        regex: core ? "^_.+" : "^[$_].+",
         ...(vue && {
           // [Vue warn]: Invalid prop name: "$" is a reserved property.
           reserved: ["$"],
@@ -34,7 +34,7 @@ const terserPlugin = ({ vue } = {}) =>
     },
   });
 
-const svelteDir = path.dirname(pkg.exports["./svelte"].default);
+const corePath = "./lib/core/index.js";
 
 /** @type { import('rollup').RollupOptions[] } */
 export default [
@@ -136,10 +136,10 @@ export default [
   },
   // svelte
   {
-    input: "src/svelte/core.ts",
+    input: "src/core/index.ts",
     output: [
       {
-        file: path.join(svelteDir, "core.js"),
+        file: corePath,
         format: "esm",
         // sourcemap: true,
       },
@@ -151,8 +151,11 @@ export default [
         // declaration: true,
         exclude: ["**/*.{spec,stories}.*"],
       }),
-      terserPlugin(),
-      svelteCopy({ dir: svelteDir }),
+      terserPlugin({ core: true }),
+      svelteCopy({
+        dir: path.dirname(pkg.exports["./svelte"].default),
+        coreDts: path.join(path.dirname(corePath), "index.d.ts"),
+      }),
     ],
     external,
   },

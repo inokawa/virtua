@@ -70,7 +70,7 @@ const Cell = memo(
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(
-      () => resizer._observeItem(ref[refKey]!, rowIndex, colIndex),
+      () => resizer.$observeItem(ref[refKey]!, rowIndex, colIndex),
       [colIndex, rowIndex]
     );
 
@@ -240,22 +240,22 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       ];
     });
     // The elements length and cached items length are different just after element is added/removed.
-    if (rowCount !== vStore._getItemsLength()) {
-      vStore._update(ACTION_ITEMS_LENGTH_CHANGE, [rowCount]);
+    if (rowCount !== vStore.$getItemsLength()) {
+      vStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [rowCount]);
     }
-    if (colCount !== hStore._getItemsLength()) {
-      hStore._update(ACTION_ITEMS_LENGTH_CHANGE, [colCount]);
+    if (colCount !== hStore.$getItemsLength()) {
+      hStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colCount]);
     }
 
     const vRerender = useRerender(vStore);
     const hRerender = useRerender(hStore);
 
-    const [startRowIndex, endRowIndex] = vStore._getRange();
-    const [startColIndex, endColIndex] = hStore._getRange();
-    const vIsScrolling = vStore._isScrolling();
-    const hIsScrolling = hStore._isScrolling();
-    const vJumpCount = vStore._getJumpCount();
-    const hJumpCount = hStore._getJumpCount();
+    const [startRowIndex, endRowIndex] = vStore.$getRange();
+    const [startColIndex, endColIndex] = hStore.$getRange();
+    const vIsScrolling = vStore.$isScrolling();
+    const hIsScrolling = hStore.$isScrolling();
+    const vJumpCount = vStore.$getJumpCount();
+    const hJumpCount = hStore.$getJumpCount();
     const height = getScrollSize(vStore);
     const width = getScrollSize(hStore);
     const rootRef = useRef<HTMLDivElement>(null);
@@ -263,7 +263,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
       // store must be subscribed first because others may dispatch update on init depending on implementation
-      const unsubscribeVStore = vStore._subscribe(
+      const unsubscribeVStore = vStore.$subscribe(
         UPDATE_VIRTUAL_STATE,
         (sync) => {
           if (sync) {
@@ -273,7 +273,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           }
         }
       );
-      const unsubscribeHStore = hStore._subscribe(
+      const unsubscribeHStore = hStore.$subscribe(
         UPDATE_VIRTUAL_STATE,
         (sync) => {
           if (sync) {
@@ -283,27 +283,27 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           }
         }
       );
-      resizer._observeRoot(root);
-      scroller._observe(root);
+      resizer.$observeRoot(root);
+      scroller.$observe(root);
       return () => {
         unsubscribeVStore();
         unsubscribeHStore();
-        resizer._dispose();
-        scroller._dispose();
+        resizer.$dispose();
+        scroller.$dispose();
       };
     }, []);
 
     useIsomorphicLayoutEffect(() => {
-      scroller._fixScrollJump();
+      scroller.$fixScrollJump();
     }, [vJumpCount, hJumpCount]);
 
     useImperativeHandle(ref, () => {
       return {
         get scrollTop() {
-          return vStore._getScrollOffset();
+          return vStore.$getScrollOffset();
         },
         get scrollLeft() {
-          return hStore._getScrollOffset();
+          return hStore.$getScrollOffset();
         },
         get scrollHeight() {
           return getScrollSize(vStore);
@@ -312,14 +312,14 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           return getScrollSize(hStore);
         },
         get viewportHeight() {
-          return vStore._getViewportSize();
+          return vStore.$getViewportSize();
         },
         get viewportWidth() {
-          return hStore._getViewportSize();
+          return hStore.$getViewportSize();
         },
-        scrollToIndex: scroller._scrollToIndex,
-        scrollTo: scroller._scrollTo,
-        scrollBy: scroller._scrollBy,
+        scrollToIndex: scroller.$scrollToIndex,
+        scrollTo: scroller.$scrollTo,
+        scrollBy: scroller.$scrollBy,
       };
     }, []);
 
@@ -346,13 +346,13 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             _resizer={resizer}
             _rowIndex={rowIndex}
             _colIndex={colIndex}
-            _top={vStore._getItemOffset(rowIndex)}
-            _left={hStore._getItemOffset(colIndex)}
-            _height={vStore._getItemSize(rowIndex)}
-            _width={hStore._getItemSize(colIndex)}
+            _top={vStore.$getItemOffset(rowIndex)}
+            _left={hStore.$getItemOffset(colIndex)}
+            _height={vStore.$getItemSize(rowIndex)}
+            _width={hStore.$getItemSize(colIndex)}
             _hide={
-              vStore._isUnmeasuredItem(rowIndex) ||
-              hStore._isUnmeasuredItem(colIndex)
+              vStore.$isUnmeasuredItem(rowIndex) ||
+              hStore.$isUnmeasuredItem(colIndex)
             }
             _element={ItemElement as "div"}
             _children={render(rowIndex, colIndex)}

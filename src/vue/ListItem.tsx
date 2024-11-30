@@ -38,11 +38,11 @@ export const ListItem = /*#__PURE__*/ defineComponent({
     const elementRef = ref<HTMLDivElement>();
 
     const offset = computed(
-      () => props._rerender.value && props._store._getItemOffset(props._index)
+      () => props._rerender.value && props._store.$getItemOffset(props._index)
     );
     const hide = computed(
       () =>
-        props._rerender.value && props._store._isUnmeasuredItem(props._index)
+        props._rerender.value && props._store.$isUnmeasuredItem(props._index)
     );
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
