@@ -1,4 +1,4 @@
-import{c as T,i as Z,h as v,j as E,B as m,I as N,A as k,G as $,C as d,H as F,n as G,k as g,D as L,s as U,f as ee,g as te}from"./props-EeEA5hs9.js";import{c as o,e as M,i as R}from"./ListItem-Cpka-yUq.js";import{V as H}from"./Virtualizer-DoGy9qS2.js";var re=m("<div> </div>"),oe=m("<div><div>header</div> <!> <div>footer</div></div>");function W(f,_){T(_,!1);const u=[20,40,180,77],b=Array.from({length:1e3}).map((p,c)=>u[c%4]),l=400;Z();var n=oe();o(n,"style",`
+import{c as T,i as Z,h as v,j as E,B as m,I as N,A as k,G as $,C as d,H as F,n as G,k as g,D as L,s as U,f as ee,g as te}from"./props-EeEA5hs9.js";import{c as o,e as M,i as R}from"./ListItem-Cpka-yUq.js";import{V as H}from"./Virtualizer-D-gxyh3t.js";var re=m("<div> </div>"),oe=m("<div><div>header</div> <!> <div>footer</div></div>");function W(f,_){T(_,!1);const u=[20,40,180,77],b=Array.from({length:1e3}).map((p,c)=>u[c%4]),l=400;Z();var n=oe();o(n,"style",`
   width: 100%;
   height: 100vh;
   overflow-y: auto;
