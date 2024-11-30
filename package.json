@@ -37,7 +37,7 @@
     "tsc": "tsc -p . --noEmit",
     "test": "vitest run --silent",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "svelte-check": "svelte-check --tsconfig ./tsconfig.svelte.json",
+    "check:svelte": "svelte-check --tsconfig ./tsconfig.svelte.json",
     "storybook": "storybook dev -p 6006",
     "storybook:rtl": "STORYBOOK_RTL=1 npm run storybook",
     "storybook:vue": "STORYBOOK_VUE=1 npm run storybook",
