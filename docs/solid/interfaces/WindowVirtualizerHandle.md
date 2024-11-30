@@ -34,7 +34,7 @@ options
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:46](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/solid/WindowVirtualizer.tsx#L46)
+[src/solid/WindowVirtualizer.tsx:46](https://github.com/inokawa/virtua/blob/e7edf00e268ee12af9ee8e11abed3a725aa02859/src/solid/WindowVirtualizer.tsx#L46)
 
 ## Properties
 
@@ -50,7 +50,7 @@ Find the start index of visible range of items.
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:36](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/solid/WindowVirtualizer.tsx#L36)
+[src/solid/WindowVirtualizer.tsx:36](https://github.com/inokawa/virtua/blob/e7edf00e268ee12af9ee8e11abed3a725aa02859/src/solid/WindowVirtualizer.tsx#L36)
 
 ***
 
@@ -66,4 +66,4 @@ Find the end index of visible range of items.
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:40](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/solid/WindowVirtualizer.tsx#L40)
+[src/solid/WindowVirtualizer.tsx:40](https://github.com/inokawa/virtua/blob/e7edf00e268ee12af9ee8e11abed3a725aa02859/src/solid/WindowVirtualizer.tsx#L40)

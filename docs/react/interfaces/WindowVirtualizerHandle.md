@@ -34,7 +34,7 @@ options
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:51](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/react/WindowVirtualizer.tsx#L51)
+[src/react/WindowVirtualizer.tsx:51](https://github.com/inokawa/virtua/blob/e7edf00e268ee12af9ee8e11abed3a725aa02859/src/react/WindowVirtualizer.tsx#L51)
 
 ## Properties
 
@@ -46,7 +46,7 @@ Get current [CacheSnapshot](CacheSnapshot.md).
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:37](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/react/WindowVirtualizer.tsx#L37)
+[src/react/WindowVirtualizer.tsx:37](https://github.com/inokawa/virtua/blob/e7edf00e268ee12af9ee8e11abed3a725aa02859/src/react/WindowVirtualizer.tsx#L37)
 
 ***
 
@@ -62,7 +62,7 @@ Find the start index of visible range of items.
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:41](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/react/WindowVirtualizer.tsx#L41)
+[src/react/WindowVirtualizer.tsx:41](https://github.com/inokawa/virtua/blob/e7edf00e268ee12af9ee8e11abed3a725aa02859/src/react/WindowVirtualizer.tsx#L41)
 
 ***
 
@@ -78,4 +78,4 @@ Find the end index of visible range of items.
 
 #### Defined in
 
-[src/react/WindowVirtualizer.tsx:45](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/react/WindowVirtualizer.tsx#L45)
+[src/react/WindowVirtualizer.tsx:45](https://github.com/inokawa/virtua/blob/e7edf00e268ee12af9ee8e11abed3a725aa02859/src/react/WindowVirtualizer.tsx#L45)
