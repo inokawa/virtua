@@ -1,4 +1,4 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
@@ -16,11 +16,15 @@ Scroll to the item specified by index.
 
 #### Parameters
 
-• **index**: `number`
+##### index
+
+`number`
 
 index of item
 
-• **opts?**: [`ScrollToIndexOpts`](../../react/interfaces/ScrollToIndexOpts.md)
+##### opts?
+
+[`ScrollToIndexOpts`](../../react/interfaces/ScrollToIndexOpts.md)
 
 options
 
@@ -30,7 +34,7 @@ options
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:45](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/solid/WindowVirtualizer.tsx#L45)
+[src/solid/WindowVirtualizer.tsx:46](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/solid/WindowVirtualizer.tsx#L46)
 
 ## Properties
 
@@ -46,7 +50,7 @@ Find the start index of visible range of items.
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:35](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/solid/WindowVirtualizer.tsx#L35)
+[src/solid/WindowVirtualizer.tsx:36](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/solid/WindowVirtualizer.tsx#L36)
 
 ***
 
@@ -62,4 +66,4 @@ Find the end index of visible range of items.
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:39](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/solid/WindowVirtualizer.tsx#L39)
+[src/solid/WindowVirtualizer.tsx:40](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/solid/WindowVirtualizer.tsx#L40)

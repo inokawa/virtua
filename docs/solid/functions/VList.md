@@ -1,4 +1,4 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
@@ -14,7 +14,9 @@ Virtualized list component. See [VListProps](../interfaces/VListProps.md) and [V
 
 ## Parameters
 
-• **props**: [`VListProps`](../interfaces/VListProps.md)\<`T`\>
+### props
+
+[`VListProps`](../interfaces/VListProps.md)\<`T`\>
 
 ## Returns
 
@@ -22,4 +24,4 @@ Virtualized list component. See [VListProps](../interfaces/VListProps.md) and [V
 
 ## Defined in
 
-[src/solid/VList.tsx:38](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/solid/VList.tsx#L38)
+[src/solid/VList.tsx:38](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/solid/VList.tsx#L38)

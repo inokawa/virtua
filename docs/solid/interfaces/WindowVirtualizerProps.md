@@ -1,4 +1,4 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
@@ -20,7 +20,9 @@ Get reference to [WindowVirtualizerHandle](WindowVirtualizerHandle.md).
 
 #### Parameters
 
-• **handle?**: [`WindowVirtualizerHandle`](WindowVirtualizerHandle.md)
+##### handle?
+
+[`WindowVirtualizerHandle`](WindowVirtualizerHandle.md)
 
 #### Returns
 
@@ -28,7 +30,7 @@ Get reference to [WindowVirtualizerHandle](WindowVirtualizerHandle.md).
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:55](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/solid/WindowVirtualizer.tsx#L55)
+[src/solid/WindowVirtualizer.tsx:56](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/solid/WindowVirtualizer.tsx#L56)
 
 ***
 
@@ -40,7 +42,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:59](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/solid/WindowVirtualizer.tsx#L59)
+[src/solid/WindowVirtualizer.tsx:60](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/solid/WindowVirtualizer.tsx#L60)
 
 ***
 
@@ -52,9 +54,13 @@ The elements renderer function.
 
 #### Parameters
 
-• **data**: `T`
+##### data
 
-• **index**: `number`
+`T`
+
+##### index
+
+`number`
 
 #### Returns
 
@@ -62,7 +68,7 @@ The elements renderer function.
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:63](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/solid/WindowVirtualizer.tsx#L63)
+[src/solid/WindowVirtualizer.tsx:64](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/solid/WindowVirtualizer.tsx#L64)
 
 ***
 
@@ -80,7 +86,7 @@ Number of items to render above/below the visible bounds of the list. Lower valu
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:68](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/solid/WindowVirtualizer.tsx#L68)
+[src/solid/WindowVirtualizer.tsx:69](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/solid/WindowVirtualizer.tsx#L69)
 
 ***
 
@@ -95,7 +101,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:75](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/solid/WindowVirtualizer.tsx#L75)
+[src/solid/WindowVirtualizer.tsx:76](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/solid/WindowVirtualizer.tsx#L76)
 
 ***
 
@@ -107,7 +113,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:79](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/solid/WindowVirtualizer.tsx#L79)
+[src/solid/WindowVirtualizer.tsx:80](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/solid/WindowVirtualizer.tsx#L80)
 
 ***
 
@@ -119,7 +125,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:83](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/solid/WindowVirtualizer.tsx#L83)
+[src/solid/WindowVirtualizer.tsx:84](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/solid/WindowVirtualizer.tsx#L84)
 
 ***
 
@@ -131,7 +137,9 @@ Callback invoked whenever scroll offset changes.
 
 #### Parameters
 
-• **offset**: `number`
+##### offset
+
+`number`
 
 Current scrollTop, or scrollLeft if horizontal: true.
 
@@ -141,7 +149,7 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:88](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/solid/WindowVirtualizer.tsx#L88)
+[src/solid/WindowVirtualizer.tsx:89](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/solid/WindowVirtualizer.tsx#L89)
 
 ***
 
@@ -157,4 +165,4 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/solid/WindowVirtualizer.tsx:92](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/solid/WindowVirtualizer.tsx#L92)
+[src/solid/WindowVirtualizer.tsx:93](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/solid/WindowVirtualizer.tsx#L93)

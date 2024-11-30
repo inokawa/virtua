@@ -1,4 +1,4 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
@@ -8,4 +8,4 @@
 
 ## Defined in
 
-[src/react/VGrid.tsx:38](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/react/VGrid.tsx#L38)
+[src/react/VGrid.tsx:39](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/react/VGrid.tsx#L39)

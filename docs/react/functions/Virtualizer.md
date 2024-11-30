@@ -1,4 +1,4 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
@@ -10,7 +10,9 @@ Customizable list virtualizer for advanced usage. See [VirtualizerProps](../inte
 
 ## Parameters
 
-• **props**: [`VirtualizerProps`](../interfaces/VirtualizerProps.md) & `RefAttributes`\<[`VirtualizerHandle`](../interfaces/VirtualizerHandle.md)\>
+### props
+
+[`VirtualizerProps`](../interfaces/VirtualizerProps.md) & `RefAttributes`\<[`VirtualizerHandle`](../interfaces/VirtualizerHandle.md)\>
 
 ## Returns
 
@@ -18,4 +20,4 @@ Customizable list virtualizer for advanced usage. See [VirtualizerProps](../inte
 
 ## Defined in
 
-[src/react/Virtualizer.tsx:169](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/react/Virtualizer.tsx#L169)
+[src/react/Virtualizer.tsx:171](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/react/Virtualizer.tsx#L171)

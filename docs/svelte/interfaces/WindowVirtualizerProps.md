@@ -1,4 +1,4 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
@@ -20,7 +20,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:11](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/svelte/WindowVirtualizer.type.ts#L11)
+[src/svelte/WindowVirtualizer.type.ts:11](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/svelte/WindowVirtualizer.type.ts#L11)
 
 ***
 
@@ -32,7 +32,7 @@ The elements renderer snippet.
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:15](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/svelte/WindowVirtualizer.type.ts#L15)
+[src/svelte/WindowVirtualizer.type.ts:15](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/svelte/WindowVirtualizer.type.ts#L15)
 
 ***
 
@@ -44,9 +44,13 @@ Function that returns the key of an item in the list. It's recommended to specif
 
 #### Parameters
 
-• **data**: `T`
+##### data
 
-• **index**: `number`
+`T`
+
+##### index
+
+`number`
 
 #### Returns
 
@@ -60,7 +64,7 @@ defaultGetKey (returns index of item)
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:20](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/svelte/WindowVirtualizer.type.ts#L20)
+[src/svelte/WindowVirtualizer.type.ts:20](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/svelte/WindowVirtualizer.type.ts#L20)
 
 ***
 
@@ -78,7 +82,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:25](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/svelte/WindowVirtualizer.type.ts#L25)
+[src/svelte/WindowVirtualizer.type.ts:25](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/svelte/WindowVirtualizer.type.ts#L25)
 
 ***
 
@@ -93,7 +97,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:32](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/svelte/WindowVirtualizer.type.ts#L32)
+[src/svelte/WindowVirtualizer.type.ts:32](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/svelte/WindowVirtualizer.type.ts#L32)
 
 ***
 
@@ -105,7 +109,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/svelte/WindowVirtualizer.type.ts#L36)
+[src/svelte/WindowVirtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/svelte/WindowVirtualizer.type.ts#L36)
 
 ***
 
@@ -117,7 +121,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:40](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/svelte/WindowVirtualizer.type.ts#L40)
+[src/svelte/WindowVirtualizer.type.ts:40](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/svelte/WindowVirtualizer.type.ts#L40)
 
 ***
 
@@ -129,7 +133,9 @@ Callback invoked whenever scroll offset changes.
 
 #### Parameters
 
-• **offset**: `number`
+##### offset
+
+`number`
 
 Current scrollTop, or scrollLeft if horizontal: true.
 
@@ -139,7 +145,7 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:45](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/svelte/WindowVirtualizer.type.ts#L45)
+[src/svelte/WindowVirtualizer.type.ts:45](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/svelte/WindowVirtualizer.type.ts#L45)
 
 ***
 
@@ -155,4 +161,4 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:49](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/svelte/WindowVirtualizer.type.ts#L49)
+[src/svelte/WindowVirtualizer.type.ts:49](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/svelte/WindowVirtualizer.type.ts#L49)

@@ -1,4 +1,4 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
@@ -16,11 +16,15 @@ Scroll to the item specified by index.
 
 #### Parameters
 
-• **indexX**: `number`
+##### indexX
+
+`number`
 
 horizontal index of item
 
-• **indexY**: `number`
+##### indexY
+
+`number`
 
 vertical index of item
 
@@ -30,7 +34,7 @@ vertical index of item
 
 #### Defined in
 
-[src/react/VGrid.tsx:131](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/react/VGrid.tsx#L131)
+[src/react/VGrid.tsx:132](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/react/VGrid.tsx#L132)
 
 ***
 
@@ -42,11 +46,15 @@ Scroll to the given offset.
 
 #### Parameters
 
-• **offsetX**: `number`
+##### offsetX
+
+`number`
 
 offset from left
 
-• **offsetY**: `number`
+##### offsetY
+
+`number`
 
 offset from top
 
@@ -56,7 +64,7 @@ offset from top
 
 #### Defined in
 
-[src/react/VGrid.tsx:137](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/react/VGrid.tsx#L137)
+[src/react/VGrid.tsx:138](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/react/VGrid.tsx#L138)
 
 ***
 
@@ -68,11 +76,15 @@ Scroll by the given offset.
 
 #### Parameters
 
-• **offsetX**: `number`
+##### offsetX
+
+`number`
 
 horizontal offset from current position
 
-• **offsetY**: `number`
+##### offsetY
+
+`number`
 
 vertical offset from current position
 
@@ -82,7 +94,7 @@ vertical offset from current position
 
 #### Defined in
 
-[src/react/VGrid.tsx:143](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/react/VGrid.tsx#L143)
+[src/react/VGrid.tsx:144](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/react/VGrid.tsx#L144)
 
 ## Properties
 
@@ -94,7 +106,7 @@ Get current scrollTop.
 
 #### Defined in
 
-[src/react/VGrid.tsx:105](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/react/VGrid.tsx#L105)
+[src/react/VGrid.tsx:106](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/react/VGrid.tsx#L106)
 
 ***
 
@@ -106,7 +118,7 @@ Get current scrollLeft.
 
 #### Defined in
 
-[src/react/VGrid.tsx:109](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/react/VGrid.tsx#L109)
+[src/react/VGrid.tsx:110](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/react/VGrid.tsx#L110)
 
 ***
 
@@ -118,7 +130,7 @@ Get current scrollHeight.
 
 #### Defined in
 
-[src/react/VGrid.tsx:113](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/react/VGrid.tsx#L113)
+[src/react/VGrid.tsx:114](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/react/VGrid.tsx#L114)
 
 ***
 
@@ -130,7 +142,7 @@ Get current scrollWidth.
 
 #### Defined in
 
-[src/react/VGrid.tsx:117](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/react/VGrid.tsx#L117)
+[src/react/VGrid.tsx:118](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/react/VGrid.tsx#L118)
 
 ***
 
@@ -142,7 +154,7 @@ Get current offsetHeight.
 
 #### Defined in
 
-[src/react/VGrid.tsx:121](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/react/VGrid.tsx#L121)
+[src/react/VGrid.tsx:122](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/react/VGrid.tsx#L122)
 
 ***
 
@@ -154,4 +166,4 @@ Get current offsetWidth.
 
 #### Defined in
 
-[src/react/VGrid.tsx:125](https://github.com/inokawa/virtua/blob/32f9f6b9c3b95459050bec74dc68e5e83f575685/src/react/VGrid.tsx#L125)
+[src/react/VGrid.tsx:126](https://github.com/inokawa/virtua/blob/8d5222c7e9c2619e43b1dc82d4eede5869ba50ca/src/react/VGrid.tsx#L126)
