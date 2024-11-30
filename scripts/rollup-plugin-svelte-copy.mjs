@@ -23,9 +23,6 @@ export const svelteCopy = ({ dir, coreDts }) => {
     name: "svelte-copy",
     buildEnd: () => {
       writeFileSync(coreDts, "// @ts-nocheck\n" + readFileSync(coreDts));
-      for (const filename of globSync(`${dir}/[!index]*.d.ts`)) {
-        writeFileSync(filename, "// @ts-nocheck\n" + readFileSync(filename));
-      }
 
       const svelteCodes = [];
 
