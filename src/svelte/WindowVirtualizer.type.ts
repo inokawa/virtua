@@ -1,5 +1,5 @@
 import { type Snippet } from "svelte";
-import { type ScrollToIndexOpts } from "../core/types";
+import { type ScrollToIndexOpts } from "../core";
 
 /**
  * Props of {@link WindowVirtualizer}.

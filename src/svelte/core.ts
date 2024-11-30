@@ -8,13 +8,17 @@ import {
   type StateVersion,
   getScrollSize,
   ACTION_START_OFFSET_CHANGE,
-} from "../core/store";
-import { createResizer, createWindowResizer } from "../core/resizer";
-import { createScroller, createWindowScroller } from "../core/scroller";
+  createResizer,
+  createWindowResizer,
+  createScroller,
+  createWindowScroller,
+} from "../core";
 
-export { type StateVersion } from "../core/store";
-export { isRTLDocument } from "../core/environment";
-export type { ItemResizeObserver } from "../core/resizer";
+export {
+  type StateVersion,
+  type ItemResizeObserver,
+  isRTLDocument,
+} from "../core";
 
 export const ON_MOUNT = 0;
 export const ON_UN_MOUNT = 1;

@@ -6,8 +6,6 @@ export const { min, max, abs, floor } = Math;
 /** @internal */
 export const values = Object.values;
 /** @internal */
-export const isArray = Array.isArray;
-/** @internal */
 export const timeout = setTimeout;
 
 /**

@@ -15,20 +15,22 @@ import {
   UPDATE_SCROLL_END_EVENT,
   getScrollSize,
   ACTION_START_OFFSET_CHANGE,
-} from "../core/store";
+  createScroller,
+  createResizer,
+  CacheSnapshot,
+  ScrollToIndexOpts,
+  microtask,
+  sort,
+} from "../core";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { createScroller } from "../core/scroller";
 import { getKey, refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
-import { createResizer } from "../core/resizer";
 import { ListItem } from "./ListItem";
-import { CacheSnapshot, ScrollToIndexOpts } from "../core/types";
 import { flushSync } from "react-dom";
 import { useRerender } from "./useRerender";
 import { useChildren } from "./useChildren";
 import { CustomContainerComponent, CustomItemComponent } from "./types";
-import { microtask, NULL, sort } from "../core/utils";
 
 /**
  * Methods of {@link Virtualizer}.
@@ -191,7 +193,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
 
     const [getElement, count] = useChildren(children, renderCountProp);
 
-    const containerRef = useRef<HTMLDivElement>(NULL);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const isSSR = useRef(!!ssrCount);
 
