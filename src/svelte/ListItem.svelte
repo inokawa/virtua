@@ -1,6 +1,6 @@
 <script lang="ts" generics="T">
   import { type Snippet, onDestroy } from "svelte";
-  import { isRTLDocument, type ItemResizeObserver } from "./core";
+  import { isRTLDocument, type ItemResizeObserver } from "../core";
   import { styleToString } from "./utils";
   import type { SvelteHTMLElements } from "svelte/elements";
 

@@ -9,7 +9,7 @@ import tsconfig from "../tsconfig.json" with { type: "json" };
 /**
  * @type { (arg:{dir:string}) => import('rollup').InputPluginOption }
  */
-export const svelteCopy = ({ dir }) => {
+export const svelteCopy = ({ dir, coreDts }) => {
   const require = createRequire(import.meta.url);
 
   const svelteShimsPath = require.resolve("svelte2tsx/svelte-shims-v4.d.ts");
@@ -22,13 +22,14 @@ export const svelteCopy = ({ dir }) => {
   return {
     name: "svelte-copy",
     buildEnd: () => {
+      writeFileSync(coreDts, "// @ts-nocheck\n" + readFileSync(coreDts));
       for (const filename of globSync(`${dir}/[!index]*.d.ts`)) {
         writeFileSync(filename, "// @ts-nocheck\n" + readFileSync(filename));
       }
 
       const svelteCodes = [];
 
-      for (const filename of globSync("./src/svelte/[!core.ts]*")) {
+      for (const filename of globSync("./src/svelte/*")) {
         if (filename.endsWith(".svelte")) {
           const code = readFileSync(filename, "utf8");
           writeFileSync(join(dir, basename(filename)), code);

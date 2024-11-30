@@ -1,24 +1,16 @@
 <script lang="ts" generics="T">
   import { onMount, onDestroy } from "svelte";
   import {
+    ACTION_ITEMS_LENGTH_CHANGE,
     type StateVersion,
-    CHANGE_ITEM_LENGTH,
-    createWindowVirtualizer,
-    FIX_SCROLL_JUMP,
-    GET_ITEM_OFFSET,
-    GET_JUMP_COUNT,
-    GET_RANGE,
-    GET_IS_SCROLLING,
-    GET_TOTAL_SIZE,
-    IS_ITEM_HIDDEN,
-    OBSERVE_ITEM_RESIZE,
-    ON_MOUNT,
-    ON_UN_MOUNT,
-    GET_ITEMS_LENGTH,
-    FIND_START_INDEX,
-    FIND_END_INDEX,
-    SCROLL_TO_INDEX,
-  } from "./core";
+    UPDATE_SCROLL_END_EVENT,
+    UPDATE_SCROLL_EVENT,
+    UPDATE_VIRTUAL_STATE,
+    createVirtualStore,
+    getScrollSize as _getScrollSize,
+    createWindowResizer,
+    createWindowScroller,
+  } from "../core";
   import { defaultGetKey, iterRange, styleToString } from "./utils";
   import ListItem from "./ListItem.svelte";
   import type {
@@ -40,17 +32,25 @@
     onscrollend,
   }: Props = $props();
 
-  const virtualizer = createWindowVirtualizer(
+  const store = createVirtualStore(
     data.length,
     itemSize,
     overscan,
-    horizontal,
-    (v) => {
-      rerender = v;
-    },
-    (offset) => {
-      onscroll && onscroll(offset);
-    },
+    undefined,
+    undefined,
+    !itemSize
+  );
+  const resizer = createWindowResizer(store, horizontal);
+  const scroller = createWindowScroller(store, horizontal);
+  const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
+    rerender = store._getStateVersion();
+  });
+
+  const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
+    onscroll && onscroll(store._getScrollOffset());
+  });
+  const unsubscribeOnScrollEnd = store._subscribe(
+    UPDATE_SCROLL_END_EVENT,
     () => {
       onscrollend && onscrollend();
     }
@@ -60,21 +60,26 @@
 
   let rerender: StateVersion = $state([]);
 
-  let range = $derived(rerender && virtualizer[GET_RANGE]());
-  let isScrolling = $derived(rerender && virtualizer[GET_IS_SCROLLING]());
-  let totalSize = $derived(rerender && virtualizer[GET_TOTAL_SIZE]());
-  let jumpCount = $derived(rerender && virtualizer[GET_JUMP_COUNT]());
+  let range = $derived(rerender && store._getRange());
+  let isScrolling = $derived(rerender && store._isScrolling());
+  let totalSize = $derived(rerender && store._getTotalSize());
+  let jumpCount = $derived(rerender && store._getJumpCount());
 
   onMount(() => {
-    virtualizer[ON_MOUNT](containerRef!);
+    resizer._observeRoot(containerRef!);
+    scroller._observe(containerRef!);
   });
   onDestroy(() => {
-    virtualizer[ON_UN_MOUNT]();
+    unsubscribeStore();
+    unsubscribeOnScroll();
+    unsubscribeOnScrollEnd();
+    resizer._dispose();
+    scroller._dispose();
   });
 
   $effect.pre(() => {
-    if (data.length !== virtualizer[GET_ITEMS_LENGTH]()) {
-      virtualizer[CHANGE_ITEM_LENGTH](data.length, shift);
+    if (data.length !== store._getItemsLength()) {
+      store._update(ACTION_ITEMS_LENGTH_CHANGE, [data.length, shift]);
     }
   });
 
@@ -82,18 +87,15 @@
   $effect(() => {
     if (prevJumpCount === jumpCount) return;
     prevJumpCount = jumpCount;
-    virtualizer[FIX_SCROLL_JUMP]();
+    scroller._fixScrollJump();
   });
 
-  export const findStartIndex = virtualizer[
-    FIND_START_INDEX
-  ] satisfies WindowVirtualizerHandle["findStartIndex"] as WindowVirtualizerHandle["findStartIndex"];
-  export const findEndIndex = virtualizer[
-    FIND_END_INDEX
-  ] satisfies WindowVirtualizerHandle["findEndIndex"] as WindowVirtualizerHandle["findEndIndex"];
-  export const scrollToIndex = virtualizer[
-    SCROLL_TO_INDEX
-  ] satisfies WindowVirtualizerHandle["scrollToIndex"] as WindowVirtualizerHandle["scrollToIndex"];
+  export const findStartIndex =
+    store._findStartIndex satisfies WindowVirtualizerHandle["findStartIndex"] as WindowVirtualizerHandle["findStartIndex"];
+  export const findEndIndex =
+    store._findEndIndex satisfies WindowVirtualizerHandle["findEndIndex"] as WindowVirtualizerHandle["findEndIndex"];
+  export const scrollToIndex =
+    scroller._scrollToIndex satisfies WindowVirtualizerHandle["scrollToIndex"] as WindowVirtualizerHandle["scrollToIndex"];
 
   let containerStyle = $derived(
     styleToString({
@@ -121,10 +123,10 @@
       {item}
       {index}
       as={"div"}
-      offset={rerender && virtualizer[GET_ITEM_OFFSET](index)}
-      hide={rerender && virtualizer[IS_ITEM_HIDDEN](index)}
+      offset={rerender && store._getItemOffset(index)}
+      hide={rerender && store._isUnmeasuredItem(index)}
       {horizontal}
-      resizer={virtualizer[OBSERVE_ITEM_RESIZE]}
+      resizer={resizer._observeItem}
     />
   {/each}
 </div>
