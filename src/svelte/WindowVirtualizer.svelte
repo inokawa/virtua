@@ -42,14 +42,14 @@
   );
   const resizer = createWindowResizer(store, horizontal);
   const scroller = createWindowScroller(store, horizontal);
-  const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
-    rerender = store._getStateVersion();
+  const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+    rerender = store.$getStateVersion();
   });
 
-  const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
-    onscroll && onscroll(store._getScrollOffset());
+  const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+    onscroll && onscroll(store.$getScrollOffset());
   });
-  const unsubscribeOnScrollEnd = store._subscribe(
+  const unsubscribeOnScrollEnd = store.$subscribe(
     UPDATE_SCROLL_END_EVENT,
     () => {
       onscrollend && onscrollend();
@@ -60,26 +60,26 @@
 
   let rerender: StateVersion = $state([]);
 
-  let range = $derived(rerender && store._getRange());
-  let isScrolling = $derived(rerender && store._isScrolling());
-  let totalSize = $derived(rerender && store._getTotalSize());
-  let jumpCount = $derived(rerender && store._getJumpCount());
+  let range = $derived(rerender && store.$getRange());
+  let isScrolling = $derived(rerender && store.$isScrolling());
+  let totalSize = $derived(rerender && store.$getTotalSize());
+  let jumpCount = $derived(rerender && store.$getJumpCount());
 
   onMount(() => {
-    resizer._observeRoot(containerRef!);
-    scroller._observe(containerRef!);
+    resizer.$observeRoot(containerRef!);
+    scroller.$observe(containerRef!);
   });
   onDestroy(() => {
     unsubscribeStore();
     unsubscribeOnScroll();
     unsubscribeOnScrollEnd();
-    resizer._dispose();
-    scroller._dispose();
+    resizer.$dispose();
+    scroller.$dispose();
   });
 
   $effect.pre(() => {
-    if (data.length !== store._getItemsLength()) {
-      store._update(ACTION_ITEMS_LENGTH_CHANGE, [data.length, shift]);
+    if (data.length !== store.$getItemsLength()) {
+      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [data.length, shift]);
     }
   });
 
@@ -87,15 +87,15 @@
   $effect(() => {
     if (prevJumpCount === jumpCount) return;
     prevJumpCount = jumpCount;
-    scroller._fixScrollJump();
+    scroller.$fixScrollJump();
   });
 
   export const findStartIndex =
-    store._findStartIndex satisfies WindowVirtualizerHandle["findStartIndex"] as WindowVirtualizerHandle["findStartIndex"];
+    store.$findStartIndex satisfies WindowVirtualizerHandle["findStartIndex"] as WindowVirtualizerHandle["findStartIndex"];
   export const findEndIndex =
-    store._findEndIndex satisfies WindowVirtualizerHandle["findEndIndex"] as WindowVirtualizerHandle["findEndIndex"];
+    store.$findEndIndex satisfies WindowVirtualizerHandle["findEndIndex"] as WindowVirtualizerHandle["findEndIndex"];
   export const scrollToIndex =
-    scroller._scrollToIndex satisfies WindowVirtualizerHandle["scrollToIndex"] as WindowVirtualizerHandle["scrollToIndex"];
+    scroller.$scrollToIndex satisfies WindowVirtualizerHandle["scrollToIndex"] as WindowVirtualizerHandle["scrollToIndex"];
 
   let containerStyle = $derived(
     styleToString({
@@ -123,10 +123,10 @@
       {item}
       {index}
       as={"div"}
-      offset={rerender && store._getItemOffset(index)}
-      hide={rerender && store._isUnmeasuredItem(index)}
+      offset={rerender && store.$getItemOffset(index)}
+      hide={rerender && store.$isUnmeasuredItem(index)}
       {horizontal}
-      resizer={resizer._observeItem}
+      resizer={resizer.$observeItem}
     />
   {/each}
 </div>

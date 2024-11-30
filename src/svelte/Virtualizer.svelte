@@ -44,13 +44,13 @@
   );
   const resizer = createResizer(store, horizontal);
   const scroller = createScroller(store, horizontal);
-  const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
-    rerender = store._getStateVersion();
+  const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+    rerender = store.$getStateVersion();
   });
-  const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
-    onscroll && onscroll(store._getScrollOffset());
+  const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+    onscroll && onscroll(store.$getScrollOffset());
   });
-  const unsubscribeOnScrollEnd = store._subscribe(
+  const unsubscribeOnScrollEnd = store.$subscribe(
     UPDATE_SCROLL_END_EVENT,
     () => {
       onscrollend && onscrollend();
@@ -61,15 +61,15 @@
 
   let rerender: StateVersion = $state([]);
 
-  let range = $derived(rerender && store._getRange());
-  let isScrolling = $derived(rerender && store._isScrolling());
-  let totalSize = $derived(rerender && store._getTotalSize());
-  let jumpCount = $derived(rerender && store._getJumpCount());
+  let range = $derived(rerender && store.$getRange());
+  let isScrolling = $derived(rerender && store.$isScrolling());
+  let totalSize = $derived(rerender && store.$getTotalSize());
+  let jumpCount = $derived(rerender && store.$getJumpCount());
 
   onMount(() => {
     const assignRef = (scrollable: HTMLElement) => {
-      resizer._observeRoot(scrollable);
-      scroller._observe(scrollable);
+      resizer.$observeRoot(scrollable);
+      scroller.$observe(scrollable);
     };
     if (scrollRef) {
       assignRef(scrollRef);
@@ -81,19 +81,19 @@
     unsubscribeStore();
     unsubscribeOnScroll();
     unsubscribeOnScrollEnd();
-    resizer._dispose();
-    scroller._dispose();
+    resizer.$dispose();
+    scroller.$dispose();
   });
 
   $effect.pre(() => {
-    if (data.length !== store._getItemsLength()) {
-      store._update(ACTION_ITEMS_LENGTH_CHANGE, [data.length, shift]);
+    if (data.length !== store.$getItemsLength()) {
+      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [data.length, shift]);
     }
   });
 
   $effect.pre(() => {
-    if (startMargin !== store._getStartSpacerSize()) {
-      store._update(ACTION_START_OFFSET_CHANGE, startMargin);
+    if (startMargin !== store.$getStartSpacerSize()) {
+      store.$update(ACTION_START_OFFSET_CHANGE, startMargin);
     }
   });
 
@@ -101,31 +101,31 @@
   $effect(() => {
     if (prevJumpCount === jumpCount) return;
     prevJumpCount = jumpCount;
-    scroller._fixScrollJump();
+    scroller.$fixScrollJump();
   });
 
   export const getScrollOffset =
-    store._getScrollOffset satisfies VirtualizerHandle["getScrollOffset"] as VirtualizerHandle["getScrollOffset"];
+    store.$getScrollOffset satisfies VirtualizerHandle["getScrollOffset"] as VirtualizerHandle["getScrollOffset"];
   export const getScrollSize = (() =>
     _getScrollSize(
       store
     )) satisfies VirtualizerHandle["getScrollSize"] as VirtualizerHandle["getScrollSize"];
   export const getViewportSize =
-    store._getViewportSize satisfies VirtualizerHandle["getViewportSize"] as VirtualizerHandle["getViewportSize"];
+    store.$getViewportSize satisfies VirtualizerHandle["getViewportSize"] as VirtualizerHandle["getViewportSize"];
   export const findStartIndex =
-    store._findStartIndex satisfies VirtualizerHandle["findStartIndex"] as VirtualizerHandle["findStartIndex"];
+    store.$findStartIndex satisfies VirtualizerHandle["findStartIndex"] as VirtualizerHandle["findStartIndex"];
   export const findEndIndex =
-    store._findEndIndex satisfies VirtualizerHandle["findEndIndex"] as VirtualizerHandle["findEndIndex"];
+    store.$findEndIndex satisfies VirtualizerHandle["findEndIndex"] as VirtualizerHandle["findEndIndex"];
   export const getItemOffset =
-    store._getItemOffset satisfies VirtualizerHandle["getItemOffset"] as VirtualizerHandle["getItemOffset"];
+    store.$getItemOffset satisfies VirtualizerHandle["getItemOffset"] as VirtualizerHandle["getItemOffset"];
   export const getItemSize =
-    store._getItemSize satisfies VirtualizerHandle["getItemSize"] as VirtualizerHandle["getItemSize"];
+    store.$getItemSize satisfies VirtualizerHandle["getItemSize"] as VirtualizerHandle["getItemSize"];
   export const scrollToIndex =
-    scroller._scrollToIndex satisfies VirtualizerHandle["scrollToIndex"] as VirtualizerHandle["scrollToIndex"];
+    scroller.$scrollToIndex satisfies VirtualizerHandle["scrollToIndex"] as VirtualizerHandle["scrollToIndex"];
   export const scrollTo =
-    scroller._scrollTo satisfies VirtualizerHandle["scrollTo"] as VirtualizerHandle["scrollTo"];
+    scroller.$scrollTo satisfies VirtualizerHandle["scrollTo"] as VirtualizerHandle["scrollTo"];
   export const scrollBy =
-    scroller._scrollBy satisfies VirtualizerHandle["scrollBy"] as VirtualizerHandle["scrollBy"];
+    scroller.$scrollBy satisfies VirtualizerHandle["scrollBy"] as VirtualizerHandle["scrollBy"];
 
   let containerStyle = $derived(
     styleToString({
@@ -153,10 +153,10 @@
       {item}
       {index}
       as={itemAs}
-      offset={rerender && store._getItemOffset(index)}
-      hide={rerender && store._isUnmeasuredItem(index)}
+      offset={rerender && store.$getItemOffset(index)}
+      hide={rerender && store.$isUnmeasuredItem(index)}
       {horizontal}
-      resizer={resizer._observeItem}
+      resizer={resizer.$observeItem}
     />
   {/each}
 </svelte:element>

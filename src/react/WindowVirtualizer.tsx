@@ -170,16 +170,16 @@ export const WindowVirtualizer = forwardRef<
       ];
     });
     // The elements length and cached items length are different just after element is added/removed.
-    if (count !== store._getItemsLength()) {
-      store._update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
+    if (count !== store.$getItemsLength()) {
+      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
     }
 
     const rerender = useRerender(store);
 
-    const [startIndex, endIndex] = store._getRange();
-    const isScrolling = store._isScrolling();
-    const jumpCount = store._getJumpCount();
-    const totalSize = store._getTotalSize();
+    const [startIndex, endIndex] = store.$getRange();
+    const isScrolling = store.$isScrolling();
+    const jumpCount = store.$getJumpCount();
+    const totalSize = store.$getTotalSize();
 
     const items: ReactElement[] = [];
 
@@ -187,7 +187,7 @@ export const WindowVirtualizer = forwardRef<
       isSSR[refKey] = false;
 
       // store must be subscribed first because others may dispatch update on init depending on implementation
-      const unsubscribeStore = store._subscribe(
+      const unsubscribeStore = store.$subscribe(
         UPDATE_VIRTUAL_STATE,
         (sync) => {
           if (sync) {
@@ -197,10 +197,10 @@ export const WindowVirtualizer = forwardRef<
           }
         }
       );
-      const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
-        onScroll[refKey] && onScroll[refKey](store._getScrollOffset());
+      const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+        onScroll[refKey] && onScroll[refKey](store.$getScrollOffset());
       });
-      const unsubscribeOnScrollEnd = store._subscribe(
+      const unsubscribeOnScrollEnd = store.$subscribe(
         UPDATE_SCROLL_END_EVENT,
         () => {
           onScrollEnd[refKey] && onScrollEnd[refKey]();
@@ -208,29 +208,29 @@ export const WindowVirtualizer = forwardRef<
       );
 
       const el = containerRef[refKey]!;
-      resizer._observeRoot(el);
-      scroller._observe(el);
+      resizer.$observeRoot(el);
+      scroller.$observe(el);
       return () => {
         unsubscribeStore();
         unsubscribeOnScroll();
         unsubscribeOnScrollEnd();
-        resizer._dispose();
-        scroller._dispose();
+        resizer.$dispose();
+        scroller.$dispose();
       };
     }, []);
 
     useIsomorphicLayoutEffect(() => {
-      scroller._fixScrollJump();
+      scroller.$fixScrollJump();
     }, [jumpCount]);
 
     useImperativeHandle(ref, () => {
       return {
         get cache() {
-          return store._getCacheSnapshot();
+          return store.$getCacheSnapshot();
         },
-        findStartIndex: store._findStartIndex,
-        findEndIndex: store._findEndIndex,
-        scrollToIndex: scroller._scrollToIndex,
+        findStartIndex: store.$findStartIndex,
+        findEndIndex: store.$findEndIndex,
+        scrollToIndex: scroller.$scrollToIndex,
       };
     }, []);
 
@@ -239,10 +239,10 @@ export const WindowVirtualizer = forwardRef<
       items.push(
         <ListItem
           key={getKey(e, i)}
-          _resizer={resizer._observeItem}
+          _resizer={resizer.$observeItem}
           _index={i}
-          _offset={store._getItemOffset(i)}
-          _hide={store._isUnmeasuredItem(i)}
+          _offset={store.$getItemOffset(i)}
+          _hide={store.$isUnmeasuredItem(i)}
           _as={ItemElement as "div"}
           _children={e}
           _isHorizontal={isHorizontal}

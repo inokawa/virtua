@@ -14,7 +14,7 @@ const external = (id) =>
     ...Object.keys(pkg.devDependencies || {}),
   ].some((d) => id.startsWith(d));
 
-const terserPlugin = ({ vue } = {}) =>
+const terserPlugin = ({ core, vue } = {}) =>
   terser({
     ecma: 2018,
     module: true,
@@ -22,7 +22,7 @@ const terserPlugin = ({ vue } = {}) =>
     mangle: {
       properties: {
         // @vue/babel-plugin-jsx may generate _ field
-        regex: "^_.+",
+        regex: core ? "^_.+" : "^[$_].+",
         ...(vue && {
           // [Vue warn]: Invalid prop name: "$" is a reserved property.
           reserved: ["$"],
@@ -151,7 +151,7 @@ export default [
         // declaration: true,
         exclude: ["**/*.{spec,stories}.*"],
       }),
-      terserPlugin(),
+      terserPlugin({ core: true }),
       svelteCopy({
         dir: path.dirname(pkg.exports["./svelte"].default),
         coreDts: path.join(path.dirname(corePath), "index.d.ts"),
