@@ -112,7 +112,7 @@
     "eslint-plugin-vue": "^9.31.0",
     "glob": "^11.0.0",
     "jsdom": "^25.0.0",
-    "npm-check-updates": "^16.14.20",
+    "npm-check-updates": "^17.0.0",
     "re-resizable": "^6.10.1",
     "react": "^18.3.1",
     "react-content-loader": "^7.0.2",
