@@ -1,8 +1,9 @@
-import { type InternalCacheSnapshot, type ItemsRange } from "./types.js";
-import { clamp, floor, max, min, sort } from "./utils.js";
+import * as bit from "./bit.js";
+import { type InternalCacheSnapshot } from "./types.js";
+import { abs, clamp, max, min, sort } from "./utils.js";
 
 type Writeable<T> = {
-  -readonly [key in keyof T]: Writeable<T[key]>;
+  -readonly [key in keyof T]: T[key];
 };
 
 /** @internal */
@@ -11,23 +12,14 @@ export const UNCACHED = -1;
 /**
  * @internal
  */
-export type Cache = {
+export interface Cache {
   readonly _length: number;
   // sizes
-  readonly _sizes: number[];
   readonly _defaultItemSize: number;
+  readonly _sizes: number[];
   // offsets
-  readonly _computedOffsetIndex: number;
-  readonly _offsets: number[];
-};
-
-const fill = (array: number[], length: number, prepend?: boolean): number[] => {
-  const key = prepend ? "unshift" : "push";
-  for (let i = 0; i < length; i++) {
-    array[key](UNCACHED);
-  }
-  return array;
-};
+  readonly _offsets: bit.BIT;
+}
 
 /**
  * @internal
@@ -41,95 +33,43 @@ export const getItemSize = (cache: Cache, index: number): number => {
  * @internal
  */
 export const setItemSize = (
-  cache: Writeable<Cache>,
+  cache: Cache,
   index: number,
   size: number
 ): boolean => {
+  const prevSize = getItemSize(cache, index);
   const isInitialMeasurement = cache._sizes[index] === UNCACHED;
   cache._sizes[index] = size;
-  // mark as dirty
-  cache._computedOffsetIndex = min(index, cache._computedOffsetIndex);
+  /*#__NOINLINE__*/ bit.add(cache._offsets, index + 1, size - prevSize);
   return isInitialMeasurement;
 };
 
 /**
  * @internal
  */
-export const getItemOffset = (
-  cache: Writeable<Cache>,
-  index: number
-): number => {
+export const getItemOffset = (cache: Cache, index: number): number => {
   if (!cache._length) return 0;
-  if (cache._computedOffsetIndex >= index) {
-    return cache._offsets[index]!;
-  }
-
-  if (cache._computedOffsetIndex < 0) {
-    // first offset must be 0 to avoid returning NaN, which can cause infinite rerender.
-    // https://github.com/inokawa/virtua/pull/160
-    cache._offsets[0] = 0;
-    cache._computedOffsetIndex = 0;
-  }
-  let i = cache._computedOffsetIndex;
-  let top = cache._offsets[i]!;
-  while (i < index) {
-    top += getItemSize(cache, i);
-    cache._offsets[++i] = top;
-  }
-  // mark as measured
-  cache._computedOffsetIndex = index;
-  return top;
-};
-
-/**
- * Finds the index of an item in the cache whose computed offset is closest to the specified offset.
- *
- * @internal
- */
-export const findIndex = (
-  cache: Cache,
-  offset: number,
-  low: number = 0,
-  high: number = cache._length - 1
-): number => {
-  // Find with binary search
-  while (low <= high) {
-    const mid = floor((low + high) / 2);
-    if (getItemOffset(cache, mid) <= offset) {
-      if (getItemOffset(cache, mid + 1) > offset) {
-        return mid;
-      }
-      low = mid + 1;
-    } else {
-      high = mid - 1;
-    }
-  }
-  return clamp(low, 0, cache._length - 1);
+  return /*#__NOINLINE__*/ bit.get(cache._offsets, index);
 };
 
 /**
  * @internal
  */
-export const computeRange = (
-  cache: Cache,
-  startOffset: number,
-  endOffset: number,
-  prevStartIndex: number
-): ItemsRange => {
-  // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
-  prevStartIndex = min(prevStartIndex, cache._length - 1);
+export const findIndex = (cache: Cache, offset: number): number => {
+  return clamp(
+    /*#__NOINLINE__*/ bit.lowerBound(cache._offsets, offset),
+    0,
+    cache._length - 1
+  );
+};
 
-  if (getItemOffset(cache, prevStartIndex) <= startOffset) {
-    // search forward
-    // start <= end, prevStartIndex <= start
-    const end = findIndex(cache, endOffset, prevStartIndex);
-    return [findIndex(cache, startOffset, prevStartIndex, end), end];
-  } else {
-    // search backward
-    // start <= end, start <= prevStartIndex
-    const start = findIndex(cache, startOffset, undefined, prevStartIndex);
-    return [start, findIndex(cache, endOffset, start)];
-  }
+const initOffsets = (
+  sizes: readonly number[],
+  defaultSize: number
+): bit.BIT => {
+  return /*#__NOINLINE__*/ bit.init(
+    sizes.map((s) => (s === UNCACHED ? defaultSize : s))
+  );
 };
 
 /**
@@ -151,9 +91,6 @@ export const estimateDefaultItemSize = (
     }
   });
 
-  // Discard cache for now
-  cache._computedOffsetIndex = -1;
-
   // Calculate median
   const sorted = sort(measuredSizes);
   const len = sorted.length;
@@ -162,10 +99,14 @@ export const estimateDefaultItemSize = (
     len % 2 === 0 ? (sorted[mid - 1]! + sorted[mid]!) / 2 : sorted[mid]!;
 
   const prevDefaultItemSize = cache._defaultItemSize;
+  cache._defaultItemSize = median;
+
+  // TODO optimize if possible
+  cache._offsets = initOffsets(cache._sizes, cache._defaultItemSize);
 
   // Calculate diff of unmeasured items before start
   return (
-    ((cache._defaultItemSize = median) - prevDefaultItemSize) *
+    (cache._defaultItemSize - prevDefaultItemSize) *
     max(startIndex - measuredCountBeforeStart, 0)
   );
 };
@@ -178,19 +119,25 @@ export const initCache = (
   itemSize: number,
   snapshot?: InternalCacheSnapshot
 ): Cache => {
+  const defaultSize = snapshot ? snapshot[1] : itemSize;
+  let sizes: number[];
+  let uncachedLength: number;
+  if (snapshot && snapshot[0]) {
+    // https://github.com/inokawa/virtua/issues/441
+    sizes = snapshot[0].slice(0, min(length, snapshot[0].length));
+    uncachedLength = max(0, length - snapshot[0].length);
+  } else {
+    sizes = [];
+    uncachedLength = length;
+  }
+  while (uncachedLength--) {
+    sizes.push(UNCACHED);
+  }
   return {
-    _defaultItemSize: snapshot ? snapshot[1] : itemSize,
-    _sizes:
-      snapshot && snapshot[0]
-        ? // https://github.com/inokawa/virtua/issues/441
-          fill(
-            snapshot[0].slice(0, min(length, snapshot[0].length)),
-            max(0, length - snapshot[0].length)
-          )
-        : fill([], length),
     _length: length,
-    _computedOffsetIndex: -1,
-    _offsets: fill([], length + 1),
+    _defaultItemSize: defaultSize,
+    _sizes: sizes,
+    _offsets: initOffsets(sizes, defaultSize),
   };
 };
 
@@ -210,27 +157,36 @@ export const updateCacheLength = (
   isShift?: boolean
 ): number => {
   const diff = length - cache._length;
-
-  cache._computedOffsetIndex = isShift
-    ? // Discard cache for now
-      -1
-    : min(length - 1, cache._computedOffsetIndex);
+  const isAdd = diff > 0;
   cache._length = length;
 
-  if (diff > 0) {
-    // Added
-    fill(cache._offsets, diff);
-    fill(cache._sizes, diff, isShift);
-    return cache._defaultItemSize * diff;
-  } else {
-    // Removed
-    cache._offsets.splice(diff);
-    return (
-      isShift ? cache._sizes.splice(0, -diff) : cache._sizes.splice(diff)
-    ).reduce(
-      (acc, removed) =>
-        acc - (removed === UNCACHED ? cache._defaultItemSize : removed),
-      0
-    );
+  let amount = 0;
+  if (diff) {
+    let absDiff = abs(diff);
+    while (absDiff--) {
+      if (isAdd) {
+        if (isShift) {
+          cache._sizes.unshift(UNCACHED);
+        } else {
+          cache._sizes.push(UNCACHED);
+          /*#__NOINLINE__*/ bit.push(cache._offsets, cache._defaultItemSize);
+        }
+        amount += cache._defaultItemSize;
+      } else {
+        let removed: number;
+        if (isShift) {
+          removed = cache._sizes.shift()!;
+        } else {
+          removed = cache._sizes.pop()!;
+          cache._offsets.pop();
+        }
+        amount -= removed === UNCACHED ? cache._defaultItemSize : removed;
+      }
+    }
+    if (isShift) {
+      // TODO optimize if possible
+      cache._offsets = initOffsets(cache._sizes, cache._defaultItemSize);
+    }
   }
+  return amount;
 };
