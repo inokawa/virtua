@@ -19,6 +19,7 @@
     },
     "./solid": {
       "types": "./lib/solid/index.d.ts",
+      "solid": "./lib/solid/index.jsx",
       "import": "./lib/solid/index.mjs",
       "default": "./lib/solid/index.js"
     },
