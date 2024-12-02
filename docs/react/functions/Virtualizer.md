@@ -20,4 +20,4 @@ Customizable list virtualizer for advanced usage. See [VirtualizerProps](../inte
 
 ## Defined in
 
-[src/react/Virtualizer.tsx:171](https://github.com/inokawa/virtua/blob/e7edf00e268ee12af9ee8e11abed3a725aa02859/src/react/Virtualizer.tsx#L171)
+[src/react/Virtualizer.tsx:171](https://github.com/inokawa/virtua/blob/64cebdce92d1a512a90db9e1b3ad8bc60a86ac59/src/react/Virtualizer.tsx#L171)
