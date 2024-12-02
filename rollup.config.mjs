@@ -134,6 +134,31 @@ export default [
     ],
     external,
   },
+  // solid (for SSR)
+  {
+    input: "src/solid/index.ts",
+    output: [
+      {
+        file: pkg.exports["./solid"].solid,
+        format: "es",
+        sourcemap: true,
+      },
+    ],
+    jsx: "preserve",
+    // FIXME: props._resizer call inside ListItem is unexpectedly treeshaked by rollup.
+    treeshake: false,
+    plugins: [
+      typescript({
+        tsconfig: "./tsconfig.json",
+        outDir: ".",
+        // declaration: true,
+        exclude: ["**/*.{spec,stories}.*"],
+        jsx: "preserve",
+      }),
+      // terserPlugin(),
+    ],
+    external,
+  },
   // svelte
   {
     input: "src/core/index.ts",
