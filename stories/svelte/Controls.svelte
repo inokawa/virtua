@@ -54,11 +54,11 @@
   >
     {#snippet children(item)}
       <div
-        style={`
-          height: ${item.size};
+        style="
+          height: {item.size};
           background: white;
           border-bottom: solid 1px #ccc;
-        `}
+        "
       >
         {item.id}
       </div>

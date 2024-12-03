@@ -10,12 +10,12 @@
   let scrollRef: HTMLElement = $state();
 </script>
 
-<div bind:this={scrollRef} style={`height: 500px; overflow: auto;`}>
+<div bind:this={scrollRef} style="height: 500px; overflow: auto;">
   <table>
     <thead>
-      <tr style={`height: ${headerHeight}px`}>
+      <tr style="height: {headerHeight}px">
         {#each COLUMN_WIDTHS as width, index}
-          <th style={`width: ${width}px`}>Header{index}</th>
+          <th style="width: {width}px">Header{index}</th>
         {/each}
       </tr>
     </thead>
@@ -29,7 +29,7 @@
     >
       {#snippet children(item)}
         {#each COLUMN_WIDTHS as width, index}
-          <th style={`width: ${width}px`}>{item} {index}</th>
+          <th style="width: {width}px">{item} {index}</th>
         {/each}
       {/snippet}
     </Virtualizer>

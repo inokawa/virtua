@@ -122,7 +122,7 @@
       {children}
       {item}
       {index}
-      as={"div"}
+      as="div"
       offset={rerender && store.$getItemOffset(index)}
       hide={rerender && store.$isUnmeasuredItem(index)}
       {horizontal}

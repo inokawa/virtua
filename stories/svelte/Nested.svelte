@@ -20,8 +20,8 @@
   overflow-anchor: none;
 `}
 >
-  <div style={`background-color: burlywood; padding: ${outerPadding}px;`}>
-    <div style={`background-color: steelblue; padding: ${innerPadding}px;`}>
+  <div style="background-color: burlywood; padding: {outerPadding}px;">
+    <div style="background-color: steelblue; padding: {innerPadding}px;">
       <Virtualizer
         {data}
         getKey={(_, i) => i}
@@ -30,11 +30,11 @@
       >
         {#snippet children(item, index)}
           <div
-            style={`
-              height: ${item}px;
+            style="
+              height: {item}px;
               background: white;
               border-bottom: solid 1px #ccc;
-            `}
+            "
           >
             {index}
           </div>
