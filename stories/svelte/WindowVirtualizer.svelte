@@ -11,11 +11,11 @@
     <WindowVirtualizer {data} getKey={(_, i) => i}>
       {#snippet children(item, index)}
         <div
-          style={`
-            height: ${item}px;
+          style="
+            height: {item}px;
             background: white;
             border-bottom: solid 1px #ccc;
-          `}
+          "
         >
           {index}
         </div>

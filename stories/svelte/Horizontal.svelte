@@ -10,17 +10,17 @@
 <div style="padding: 10px;">
   <VList
     {data}
-    style={`width: 100%; height: 200px;`}
+    style="width: 100%; height: 200px;"
     getKey={(d) => d.id}
     horizontal
   >
     {#snippet children(item)}
       <div
-        style={`
-          width: ${item.size};
+        style="
+          width: {item.size};
           background: white;
           border-right: solid 1px #ccc;
-        `}
+        "
       >
         {item.id}
       </div>
