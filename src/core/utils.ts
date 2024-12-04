@@ -5,8 +5,6 @@ export const NULL = null;
 export const { min, max, abs, floor } = Math;
 /** @internal */
 export const values = Object.values;
-/** @internal */
-export const timeout = setTimeout;
 
 /**
  * @internal
@@ -37,28 +35,6 @@ export const microtask: (fn: () => void) => void =
 /**
  * @internal
  */
-export const debounce = <T extends () => void>(fn: T, ms: number) => {
-  let id: ReturnType<typeof setTimeout> | undefined | null;
-
-  const cancel = () => {
-    if (id != NULL) {
-      clearTimeout(id);
-    }
-  };
-  const debouncedFn = () => {
-    cancel();
-    id = timeout(() => {
-      id = NULL;
-      fn();
-    }, ms);
-  };
-  debouncedFn._cancel = cancel;
-  return debouncedFn;
-};
-
-/**
- * @internal
- */
 export const once = <V>(fn: () => V): (() => V) => {
   let called: undefined | boolean;
   let cache: V;
@@ -70,15 +46,4 @@ export const once = <V>(fn: () => V): (() => V) => {
     }
     return cache;
   };
-};
-
-/**
- * @internal
- */
-export const getStyleNumber = (v: string): number => {
-  if (v) {
-    return parseFloat(v);
-  } else {
-    return 0;
-  }
 };

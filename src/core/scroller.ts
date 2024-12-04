@@ -16,7 +16,28 @@ import {
   isInitialMeasurementDone,
 } from "./store";
 import { type ScrollToIndexOpts } from "./types";
-import { debounce, timeout, clamp, microtask } from "./utils";
+import { clamp, microtask, NULL } from "./utils";
+
+const timeout = setTimeout;
+
+const debounce = <T extends () => void>(fn: T, ms: number) => {
+  let id: ReturnType<typeof setTimeout> | undefined | null;
+
+  const cancel = () => {
+    if (id != NULL) {
+      clearTimeout(id);
+    }
+  };
+  const debouncedFn = () => {
+    cancel();
+    id = timeout(() => {
+      id = NULL;
+      fn();
+    }, ms);
+  };
+  debouncedFn._cancel = cancel;
+  return debouncedFn;
+};
 
 /**
  * scrollLeft is negative value in rtl direction.
