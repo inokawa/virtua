@@ -3,8 +3,6 @@ export const NULL = null;
 
 /** @internal */
 export const { min, max, abs, floor } = Math;
-/** @internal */
-export const values = Object.values;
 
 /**
  * @internal
