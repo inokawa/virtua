@@ -406,6 +406,7 @@ export const createVirtualStore = (
             updateCacheLength(cache, payload[0]);
           }
 
+          // https://github.com/inokawa/virtua/issues/552
           if (payload[1] || atBottom) {
             mutated = UPDATE_VIRTUAL_STATE;
           }
