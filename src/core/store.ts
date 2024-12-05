@@ -397,12 +397,18 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_ITEMS_LENGTH_CHANGE: {
+          const atBottom = scrollOffset + viewportSize >= getTotalSize();
+
           if (payload[1]) {
             applyJump(updateCacheLength(cache, payload[0], true));
             _scrollMode = SCROLL_BY_SHIFT;
-            mutated = UPDATE_VIRTUAL_STATE;
           } else {
             updateCacheLength(cache, payload[0]);
+          }
+
+          // https://github.com/inokawa/virtua/issues/552
+          if (payload[1] || atBottom) {
+            mutated = UPDATE_VIRTUAL_STATE;
           }
           break;
         }
