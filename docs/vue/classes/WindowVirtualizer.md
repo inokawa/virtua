@@ -238,7 +238,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:68](https://github.com/inokawa/virtua/blob/0a4513b80d8d679540fff553774df27612ecd80e/src/vue/WindowVirtualizer.tsx#L68)
+[src/vue/WindowVirtualizer.tsx:68](https://github.com/inokawa/virtua/blob/0345a8b0716d4f6d9809727c10b6fd29b8b00699/src/vue/WindowVirtualizer.tsx#L68)
 
 ***
 
@@ -250,7 +250,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:52](https://github.com/inokawa/virtua/blob/0a4513b80d8d679540fff553774df27612ecd80e/src/vue/WindowVirtualizer.tsx#L52)
+[src/vue/WindowVirtualizer.tsx:52](https://github.com/inokawa/virtua/blob/0345a8b0716d4f6d9809727c10b6fd29b8b00699/src/vue/WindowVirtualizer.tsx#L52)
 
 ***
 
@@ -268,7 +268,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:57](https://github.com/inokawa/virtua/blob/0a4513b80d8d679540fff553774df27612ecd80e/src/vue/WindowVirtualizer.tsx#L57)
+[src/vue/WindowVirtualizer.tsx:57](https://github.com/inokawa/virtua/blob/0345a8b0716d4f6d9809727c10b6fd29b8b00699/src/vue/WindowVirtualizer.tsx#L57)
 
 ***
 
@@ -283,7 +283,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:64](https://github.com/inokawa/virtua/blob/0a4513b80d8d679540fff553774df27612ecd80e/src/vue/WindowVirtualizer.tsx#L64)
+[src/vue/WindowVirtualizer.tsx:64](https://github.com/inokawa/virtua/blob/0345a8b0716d4f6d9809727c10b6fd29b8b00699/src/vue/WindowVirtualizer.tsx#L64)
 
 ***
 
@@ -295,7 +295,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:72](https://github.com/inokawa/virtua/blob/0a4513b80d8d679540fff553774df27612ecd80e/src/vue/WindowVirtualizer.tsx#L72)
+[src/vue/WindowVirtualizer.tsx:72](https://github.com/inokawa/virtua/blob/0345a8b0716d4f6d9809727c10b6fd29b8b00699/src/vue/WindowVirtualizer.tsx#L72)
 
 ***
 
@@ -313,7 +313,7 @@ Component or element type for container element.
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:77](https://github.com/inokawa/virtua/blob/0a4513b80d8d679540fff553774df27612ecd80e/src/vue/WindowVirtualizer.tsx#L77)
+[src/vue/WindowVirtualizer.tsx:77](https://github.com/inokawa/virtua/blob/0345a8b0716d4f6d9809727c10b6fd29b8b00699/src/vue/WindowVirtualizer.tsx#L77)
 
 ***
 
@@ -331,7 +331,7 @@ Component or element type for item element.
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:82](https://github.com/inokawa/virtua/blob/0a4513b80d8d679540fff553774df27612ecd80e/src/vue/WindowVirtualizer.tsx#L82)
+[src/vue/WindowVirtualizer.tsx:82](https://github.com/inokawa/virtua/blob/0345a8b0716d4f6d9809727c10b6fd29b8b00699/src/vue/WindowVirtualizer.tsx#L82)
 
 ***
 
