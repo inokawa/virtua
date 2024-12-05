@@ -106,11 +106,11 @@ export type VirtualStore = {
   $isUnmeasuredItem(index: number): boolean;
   $getItemOffset(index: number): number;
   $getItemSize(index: number): number;
-  $getItemsLength(): number;
+  _getItemsLength(): number;
   $getScrollOffset(): number;
   $isScrolling(): boolean;
   $getViewportSize(): number;
-  $getStartSpacerSize(): number;
+  _getStartSpacerSize(): number;
   $getTotalSize(): number;
   $getJumpCount(): number;
   _flushJump(): [number, boolean];
@@ -219,11 +219,11 @@ export const createVirtualStore = (
     },
     $getItemOffset: getItemOffset,
     $getItemSize: getItemSize,
-    $getItemsLength: () => cache._length,
+    _getItemsLength: () => cache._length,
     $getScrollOffset: () => scrollOffset,
     $isScrolling: () => _scrollDirection !== SCROLL_IDLE,
     $getViewportSize: () => viewportSize,
-    $getStartSpacerSize: () => startSpacerSize,
+    _getStartSpacerSize: () => startSpacerSize,
     $getTotalSize: getTotalSize,
     $getJumpCount: () => jumpCount,
     _flushJump: () => {
@@ -397,15 +397,18 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_ITEMS_LENGTH_CHANGE: {
-          if (payload[1]) {
-            applyJump(updateCacheLength(cache, payload[0], true));
-            _scrollMode = SCROLL_BY_SHIFT;
-            mutated = UPDATE_VIRTUAL_STATE;
-          } else {
-            updateCacheLength(cache, payload[0]);
-            // https://github.com/inokawa/virtua/issues/552
-            // https://github.com/inokawa/virtua/issues/557
-            mutated = UPDATE_VIRTUAL_STATE;
+          const [length, isShift] = payload;
+          if (cache._length !== length) {
+            if (isShift) {
+              applyJump(updateCacheLength(cache, length, true));
+              _scrollMode = SCROLL_BY_SHIFT;
+              mutated = UPDATE_VIRTUAL_STATE;
+            } else {
+              updateCacheLength(cache, length);
+              // https://github.com/inokawa/virtua/issues/552
+              // https://github.com/inokawa/virtua/issues/557
+              mutated = UPDATE_VIRTUAL_STATE;
+            }
           }
           break;
         }
