@@ -562,39 +562,29 @@ export const createWindowScroller = (
 
       const document = getCurrentDocument(containerElement);
       const window = getCurrentWindow(document);
+      const html = document.documentElement;
+      const getScrollbarSize = () =>
+        store.$getViewportSize() -
+        (isHorizontal ? html.clientWidth : html.clientHeight);
 
       scheduleImperativeScroll(() => {
-        // Calculate target scroll position including container's offset from document
-        const containerOffset = calcOffsetToViewport(
-          containerElement!,
-          document.body,
-          window,
-          isHorizontal
-        );
-
-        // slight tech debt: this would otherwise need to be accounted for in store._getViewportSize in a way that's flexible for windowScroller
-        const scrollbarHeight =
-          window.innerHeight - document.documentElement.clientHeight;
-        const scrollbarWidth =
-          window.innerHeight - document.documentElement.clientWidth;
-        const viewportAdjustment =
-          align === "end" || align === "center"
-            ? isHorizontal
-              ? scrollbarWidth
-              : scrollbarHeight
-            : 0;
-
         return (
           offset +
-          containerOffset +
+          // Calculate target scroll position including container's offset from document
+          calcOffsetToViewport(
+            containerElement!,
+            document.body,
+            window,
+            isHorizontal
+          ) +
           // store._getStartSpacerSize() +
           store.$getItemOffset(index) +
           (align === "end"
             ? store.$getItemSize(index) -
-              (store.$getViewportSize() - viewportAdjustment)
+              (store.$getViewportSize() - getScrollbarSize())
             : align === "center"
               ? (store.$getItemSize(index) -
-                  (store.$getViewportSize() - viewportAdjustment)) /
+                  (store.$getViewportSize() - getScrollbarSize())) /
                 2
               : 0)
         );
