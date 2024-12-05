@@ -8,4 +8,4 @@
 
 ## Defined in
 
-[src/react/types.ts:28](https://github.com/inokawa/virtua/blob/64cebdce92d1a512a90db9e1b3ad8bc60a86ac59/src/react/types.ts#L28)
+[src/react/types.ts:28](https://github.com/inokawa/virtua/blob/0a4513b80d8d679540fff553774df27612ecd80e/src/react/types.ts#L28)
