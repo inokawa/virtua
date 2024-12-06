@@ -14,11 +14,9 @@ afterEach(cleanup);
 
 it("should pass index to items", () => {
   const Item = forwardRef<HTMLDivElement, CustomItemComponentProps>(
-    ({ children, index, style }, ref) => {
+    ({ index, ...rest }, ref) => {
       return (
-        <div ref={ref} style={style} data-index={index}>
-          {children}
-        </div>
+        <div ref={ref} data-index={index} {...rest} />
       );
     }
   );

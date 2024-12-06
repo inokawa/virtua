@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from "react";
+import { ComponentType, CSSProperties, LegacyRef, ReactNode } from "react";
 
 export type ViewportComponentAttributes = Pick<
   React.HTMLAttributes<HTMLElement>,
@@ -9,12 +9,14 @@ export type ViewportComponentAttributes = Pick<
 export interface CustomContainerComponentProps {
   style: CSSProperties;
   children: ReactNode;
+  /**
+   * only available after React 19
+   */
+  ref?: LegacyRef<any>;
 }
 
-export type CustomContainerComponent = React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<CustomContainerComponentProps> &
-    React.RefAttributes<any>
->;
+export type CustomContainerComponent =
+  ComponentType<CustomContainerComponentProps>;
 
 /**
  * Props of customized item component for {@link Virtualizer} or {@link WindowVirtualizer}.
@@ -23,8 +25,10 @@ export interface CustomItemComponentProps {
   style: CSSProperties;
   index: number;
   children: ReactNode;
+  /**
+   * only available after React 19
+   */
+  ref?: LegacyRef<any>;
 }
 
-export type CustomItemComponent = React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<CustomItemComponentProps> & React.RefAttributes<any>
->;
+export type CustomItemComponent = ComponentType<CustomItemComponentProps>;
