@@ -1,18 +1,34 @@
+import { ComponentType, CSSProperties, LegacyRef, ReactNode } from "react";
+
 export type ViewportComponentAttributes = Pick<
   React.HTMLAttributes<HTMLElement>,
   "className" | "style" | "id" | "role" | "tabIndex" | "onKeyDown" | "onWheel"
 > &
   React.AriaAttributes;
 
-export type CustomContainerComponentProps<R extends React.ElementType = 'div'> = React.ComponentPropsWithRef<R>
+export interface CustomContainerComponentProps {
+  style: CSSProperties;
+  children: ReactNode;
+  /**
+   * only available after React 19
+   */
+  ref?: LegacyRef<any>;
+}
 
-export type CustomContainerComponent<R extends React.ElementType = 'div'> = React.FunctionComponent<CustomContainerComponentProps<R>>;
+export type CustomContainerComponent =
+  ComponentType<CustomContainerComponentProps>;
 
 /**
  * Props of customized item component for {@link Virtualizer} or {@link WindowVirtualizer}.
  */
-export type CustomItemComponentProps<R extends React.ElementType = 'div'> = React.ComponentPropsWithRef<R> & {
+export interface CustomItemComponentProps {
+  style: CSSProperties;
   index: number;
-};
+  children: ReactNode;
+  /**
+   * only available after React 19
+   */
+  ref?: LegacyRef<any>;
+}
 
-export type CustomItemComponent<R extends React.ElementType = 'div'> = React.FunctionComponent<CustomItemComponentProps<R>>;
+export type CustomItemComponent = ComponentType<CustomItemComponentProps>;
