@@ -12,7 +12,7 @@
 
 #### Defined in
 
-[src/react/types.ts:10](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/react/types.ts#L10)
+[src/react/types.ts:10](https://github.com/inokawa/virtua/blob/d38b45573a7cac6e3633108c8eb946f094cdcc02/src/react/types.ts#L10)
 
 ***
 
@@ -22,4 +22,16 @@
 
 #### Defined in
 
-[src/react/types.ts:11](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/react/types.ts#L11)
+[src/react/types.ts:11](https://github.com/inokawa/virtua/blob/d38b45573a7cac6e3633108c8eb946f094cdcc02/src/react/types.ts#L11)
+
+***
+
+### ref?
+
+> `optional` **ref**: `LegacyRef`\<`any`\>
+
+only available after React 19
+
+#### Defined in
+
+[src/react/types.ts:15](https://github.com/inokawa/virtua/blob/d38b45573a7cac6e3633108c8eb946f094cdcc02/src/react/types.ts#L15)

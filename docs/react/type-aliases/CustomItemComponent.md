@@ -4,8 +4,8 @@
 
 # Type Alias: CustomItemComponent
 
-> **CustomItemComponent**: `React.ForwardRefExoticComponent`\<`React.PropsWithoutRef`\<[`CustomItemComponentProps`](../interfaces/CustomItemComponentProps.md)\> & `React.RefAttributes`\<`any`\>\>
+> **CustomItemComponent**: `ComponentType`\<[`CustomItemComponentProps`](../interfaces/CustomItemComponentProps.md)\>
 
 ## Defined in
 
-[src/react/types.ts:28](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/react/types.ts#L28)
+[src/react/types.ts:34](https://github.com/inokawa/virtua/blob/d38b45573a7cac6e3633108c8eb946f094cdcc02/src/react/types.ts#L34)

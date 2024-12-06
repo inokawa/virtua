@@ -24,4 +24,4 @@
 
 ## Defined in
 
-[src/solid/WindowVirtualizer.tsx:99](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/solid/WindowVirtualizer.tsx#L99)
+[src/solid/WindowVirtualizer.tsx:99](https://github.com/inokawa/virtua/blob/d38b45573a7cac6e3633108c8eb946f094cdcc02/src/solid/WindowVirtualizer.tsx#L99)
