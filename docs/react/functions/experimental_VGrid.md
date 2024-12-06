@@ -1,4 +1,4 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
@@ -10,7 +10,9 @@ Virtualized grid component. See [VGridProps](../interfaces/VGridProps.md) and [V
 
 ## Parameters
 
-• **props**: [`VGridProps`](../interfaces/VGridProps.md) & `RefAttributes`\<[`VGridHandle`](../interfaces/VGridHandle.md)\>
+### props
+
+[`VGridProps`](../interfaces/VGridProps.md) & `RefAttributes`\<[`VGridHandle`](../interfaces/VGridHandle.md)\>
 
 ## Returns
 
@@ -18,4 +20,4 @@ Virtualized grid component. See [VGridProps](../interfaces/VGridProps.md) and [V
 
 ## Defined in
 
-[src/react/VGrid.tsx:203](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/VGrid.tsx#L203)
+[src/react/VGrid.tsx:205](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/react/VGrid.tsx#L205)

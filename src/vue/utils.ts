@@ -1,13 +1,12 @@
 import { VNode } from "vue";
-import { NULL } from "../core/utils";
-import { ItemsRange } from "../core/types";
+import { ItemsRange } from "../core";
 
 /**
  * @internal
  */
 export const getKey = (e: VNode, i: number): Exclude<VNode["key"], null> => {
   const key = e.key;
-  return key != NULL ? key : "_" + i;
+  return key != null ? key : "_" + i;
 };
 
 /**

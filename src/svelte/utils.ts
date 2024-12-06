@@ -1,3 +1,5 @@
+import type { ItemsRange } from "../core";
+
 export const styleToString = (
   obj: Record<string, string | undefined>
 ): string => {
@@ -11,3 +13,9 @@ export const styleToString = (
 };
 
 export const defaultGetKey = (_data: unknown, i: number) => "_" + i;
+
+export function* iterRange([start, end]: ItemsRange) {
+  for (let i = start; i <= end; i++) {
+    yield i;
+  }
+}

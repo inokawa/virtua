@@ -42,19 +42,19 @@ export default [
             },
             {
               target: ["./src/react/**/*"],
-              from: ["./src/!(core|react)/**/*"],
+              from: ["./src/!(core|react)/**/*", "./src/core/!(index.ts)"],
             },
             {
               target: ["./src/solid/**/*"],
-              from: ["./src/!(core|solid)/**/*"],
+              from: ["./src/!(core|solid)/**/*", "./src/core/!(index.ts)"],
             },
             {
               target: ["./src/svelte/**/*"],
-              from: ["./src/!(core|svelte)/**/*"],
+              from: ["./src/!(core|svelte)/**/*", "./src/core/!(index.ts)"],
             },
             {
               target: ["./src/vue/**/*"],
-              from: ["./src/!(core|vue)/**/*"],
+              from: ["./src/!(core|vue)/**/*", "./src/core/!(index.ts)"],
             },
           ],
         },

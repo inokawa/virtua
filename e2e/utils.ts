@@ -447,3 +447,27 @@ export const scrollWithTouch = (
     target
   );
 };
+
+export const listenScrollCount = (
+  component: Locator,
+  timeout = 2000
+): Promise<number> => {
+  return component.evaluate((c, t) => {
+    let timer: null | ReturnType<typeof setTimeout> = null;
+    let called = 0;
+
+    return new Promise<number>((resolve) => {
+      const cb = () => {
+        called++;
+        if (timer !== null) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+          c.removeEventListener("scroll", cb);
+          resolve(called);
+        }, t);
+      };
+      c.addEventListener("scroll", cb);
+    });
+  }, timeout);
+};

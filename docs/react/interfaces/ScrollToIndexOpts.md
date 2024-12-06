@@ -1,4 +1,4 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
@@ -25,7 +25,7 @@ Alignment of item.
 
 #### Defined in
 
-[src/core/types.ts:32](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/core/types.ts#L32)
+[src/core/types.ts:32](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/core/types.ts#L32)
 
 ***
 
@@ -39,7 +39,7 @@ If true, scrolling animates smoothly with [`behavior: smooth` of scrollTo](https
 
 #### Defined in
 
-[src/core/types.ts:38](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/core/types.ts#L38)
+[src/core/types.ts:38](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/core/types.ts#L38)
 
 ***
 
@@ -57,4 +57,4 @@ Additional offset from the scrolled position.
 
 #### Defined in
 
-[src/core/types.ts:43](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/core/types.ts#L43)
+[src/core/types.ts:43](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/core/types.ts#L43)

@@ -1,4 +1,4 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
@@ -14,7 +14,9 @@ Customizable list virtualizer for advanced usage. See [VirtualizerProps](../inte
 
 ## Parameters
 
-• **props**: [`VirtualizerProps`](../interfaces/VirtualizerProps.md)\<`T`\>
+### props
+
+[`VirtualizerProps`](../interfaces/VirtualizerProps.md)\<`T`\>
 
 ## Returns
 
@@ -22,4 +24,4 @@ Customizable list virtualizer for advanced usage. See [VirtualizerProps](../inte
 
 ## Defined in
 
-[src/solid/Virtualizer.tsx:153](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/solid/Virtualizer.tsx#L153)
+[src/solid/Virtualizer.tsx:154](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/solid/Virtualizer.tsx#L154)

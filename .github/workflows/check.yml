@@ -93,7 +93,7 @@ jobs:
           cache: "npm"
 
       - run: npm ci
-      - run: npm run svelte-check
+      - run: npm run check:svelte
       - name: Install Playwright Browsers
         run: npx playwright install chromium --with-deps
       - name: Smoke test stories

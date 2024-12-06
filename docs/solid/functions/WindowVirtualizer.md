@@ -1,4 +1,4 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
@@ -14,7 +14,9 @@
 
 ## Parameters
 
-• **props**: [`WindowVirtualizerProps`](../interfaces/WindowVirtualizerProps.md)\<`T`\>
+### props
+
+[`WindowVirtualizerProps`](../interfaces/WindowVirtualizerProps.md)\<`T`\>
 
 ## Returns
 
@@ -22,4 +24,4 @@
 
 ## Defined in
 
-[src/solid/WindowVirtualizer.tsx:92](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/solid/WindowVirtualizer.tsx#L92)
+[src/solid/WindowVirtualizer.tsx:99](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/solid/WindowVirtualizer.tsx#L99)

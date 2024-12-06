@@ -1,4 +1,4 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
@@ -16,11 +16,17 @@
 
 #### Parameters
 
-• **source**: `T`
+##### source
 
-• **cb**: `T` *extends* (...`args`) => `R` ? (...`args`) => `any` : (...`args`) => `any`
+`T`
 
-• **options?**: `WatchOptions`\<`boolean`\>
+##### cb
+
+`T` *extends* (...`args`) => `R` ? (...`args`) => `any` : (...`args`) => `any`
+
+##### options?
+
+`WatchOptions`\<`boolean`\>
 
 #### Returns
 
@@ -94,11 +100,15 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:121
 
 ###### Parameters
 
-• **arg**
+###### arg
 
-• **arg.item**: `any`
+###### arg.item
 
-• **arg.index**: `number`
+`any`
+
+###### arg.index
+
+`number`
 
 ###### Returns
 
@@ -186,9 +196,13 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:128
 
 #### Parameters
 
-• **this**: `T`
+##### this
 
-• **fn?**
+`T`
+
+##### fn?
+
+(`this`) => `R`
 
 #### Returns
 
@@ -200,9 +214,19 @@ node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:129
 
 ***
 
-### onScroll
+### onScroll()?
 
-> **onScroll**: `undefined` \| (...`args`) => `any`
+> `optional` **onScroll**: (...`args`) => `any`
+
+#### Parameters
+
+##### args
+
+...[`number`]
+
+#### Returns
+
+`any`
 
 ***
 
@@ -214,7 +238,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:59](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/vue/WindowVirtualizer.tsx#L59)
+[src/vue/WindowVirtualizer.tsx:68](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/vue/WindowVirtualizer.tsx#L68)
 
 ***
 
@@ -226,7 +250,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:43](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/vue/WindowVirtualizer.tsx#L43)
+[src/vue/WindowVirtualizer.tsx:52](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/vue/WindowVirtualizer.tsx#L52)
 
 ***
 
@@ -244,7 +268,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:48](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/vue/WindowVirtualizer.tsx#L48)
+[src/vue/WindowVirtualizer.tsx:57](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/vue/WindowVirtualizer.tsx#L57)
 
 ***
 
@@ -259,7 +283,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:55](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/vue/WindowVirtualizer.tsx#L55)
+[src/vue/WindowVirtualizer.tsx:64](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/vue/WindowVirtualizer.tsx#L64)
 
 ***
 
@@ -271,7 +295,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:63](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/vue/WindowVirtualizer.tsx#L63)
+[src/vue/WindowVirtualizer.tsx:72](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/vue/WindowVirtualizer.tsx#L72)
 
 ***
 
@@ -289,7 +313,7 @@ Component or element type for container element.
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:68](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/vue/WindowVirtualizer.tsx#L68)
+[src/vue/WindowVirtualizer.tsx:77](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/vue/WindowVirtualizer.tsx#L77)
 
 ***
 
@@ -307,10 +331,20 @@ Component or element type for item element.
 
 #### Defined in
 
-[src/vue/WindowVirtualizer.tsx:73](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/vue/WindowVirtualizer.tsx#L73)
+[src/vue/WindowVirtualizer.tsx:82](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/vue/WindowVirtualizer.tsx#L82)
 
 ***
 
-### onScrollEnd
+### onScrollEnd()?
 
-> **onScrollEnd**: `undefined` \| (...`args`) => `any`
+> `optional` **onScrollEnd**: (...`args`) => `any`
+
+#### Parameters
+
+##### args
+
+...[]
+
+#### Returns
+
+`any`

@@ -22,13 +22,14 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
   ACTION_START_OFFSET_CHANGE,
-} from "../core/store";
-import { createResizer } from "../core/resizer";
-import { createScroller } from "../core/scroller";
-import { ItemsRange, ScrollToIndexOpts } from "../core/types";
+  createResizer,
+  createScroller,
+  ItemsRange,
+  ScrollToIndexOpts,
+  microtask,
+} from "../core";
 import { ListItem } from "./ListItem";
 import { getKey, isSameRange } from "./utils";
-import { microtask } from "../core/utils";
 
 export interface VirtualizerHandle {
   /**
@@ -147,15 +148,15 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     const resizer = createResizer(store, isHorizontal);
     const scroller = createScroller(store, isHorizontal);
 
-    const rerender = ref(store._getStateVersion());
-    const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
-      rerender.value = store._getStateVersion();
+    const rerender = ref(store.$getStateVersion());
+    const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+      rerender.value = store.$getStateVersion();
     });
 
-    const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
-      emit("scroll", store._getScrollOffset());
+    const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+      emit("scroll", store.$getScrollOffset());
     });
-    const unsubscribeOnScrollEnd = store._subscribe(
+    const unsubscribeOnScrollEnd = store.$subscribe(
       UPDATE_SCROLL_END_EVENT,
       () => {
         emit("scrollEnd");
@@ -164,23 +165,23 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
 
     const range = computed<ItemsRange>((prev) => {
       rerender.value;
-      const next = store._getRange();
+      const next = store.$getRange();
       if (prev && isSameRange(prev, next)) {
         return prev;
       }
       return next;
     });
-    const isScrolling = computed(() => rerender.value && store._isScrolling());
-    const totalSize = computed(() => rerender.value && store._getTotalSize());
-    const jumpCount = computed(() => rerender.value && store._getJumpCount());
+    const isScrolling = computed(() => rerender.value && store.$isScrolling());
+    const totalSize = computed(() => rerender.value && store.$getTotalSize());
+    const jumpCount = computed(() => rerender.value && store.$getJumpCount());
 
     onMounted(() => {
       isSSR = false;
 
       microtask(() => {
         const assignScrollableElement = (e: HTMLElement) => {
-          resizer._observeRoot(e);
-          scroller._observe(e);
+          resizer.$observeRoot(e);
+          scroller.$observe(e);
         };
         if (props.scrollRef) {
           // parent's ref doesn't exist when onMounted is called
@@ -194,20 +195,20 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       unsubscribeStore();
       unsubscribeOnScroll();
       unsubscribeOnScrollEnd();
-      resizer._dispose();
-      scroller._dispose();
+      resizer.$dispose();
+      scroller.$dispose();
     });
 
     watch(
       () => props.data.length,
       (count) => {
-        store._update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
       }
     );
     watch(
       () => props.startMargin,
       (value) => {
-        store._update(ACTION_START_OFFSET_CHANGE, value);
+        store.$update(ACTION_START_OFFSET_CHANGE, value);
       },
       { immediate: true }
     );
@@ -215,28 +216,28 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     watch(
       [jumpCount],
       () => {
-        scroller._fixScrollJump();
+        scroller.$fixScrollJump();
       },
       { flush: "post" }
     );
 
     expose({
       get scrollOffset() {
-        return store._getScrollOffset();
+        return store.$getScrollOffset();
       },
       get scrollSize() {
         return getScrollSize(store);
       },
       get viewportSize() {
-        return store._getViewportSize();
+        return store.$getViewportSize();
       },
-      findStartIndex: store._findStartIndex,
-      findEndIndex: store._findEndIndex,
-      getItemOffset: store._getItemOffset,
-      getItemSize: store._getItemSize,
-      scrollToIndex: scroller._scrollToIndex,
-      scrollTo: scroller._scrollTo,
-      scrollBy: scroller._scrollBy,
+      findStartIndex: store.$findStartIndex,
+      findEndIndex: store.$findEndIndex,
+      getItemOffset: store.$getItemOffset,
+      getItemSize: store.$getItemSize,
+      scrollToIndex: scroller.$scrollToIndex,
+      scrollTo: scroller.$scrollTo,
+      scrollBy: scroller.$scrollBy,
     } satisfies VirtualizerHandle);
 
     return () => {
@@ -254,7 +255,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
             key={getKey(e, i)}
             _rerender={rerender}
             _store={store}
-            _resizer={resizer._observeItem}
+            _resizer={resizer.$observeItem}
             _index={i}
             _children={e}
             _isHorizontal={isHorizontal}

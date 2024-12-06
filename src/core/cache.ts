@@ -1,5 +1,5 @@
 import { type InternalCacheSnapshot, type ItemsRange } from "./types";
-import { clamp, floor, max, median, min } from "./utils";
+import { clamp, floor, max, min, sort } from "./utils";
 
 type Writeable<T> = {
   -readonly [key in keyof T]: Writeable<T[key]>;
@@ -153,21 +153,31 @@ export const estimateDefaultItemSize = (
 ): number => {
   let measuredCountBeforeStart = 0;
   // This function will be called after measurement so measured size array must be longer than 0
-  const measuredSizes = cache._sizes.filter((s, i) => {
-    const isMeasured = s !== UNCACHED;
-    if (isMeasured && i < startIndex) {
-      measuredCountBeforeStart++;
+  const measuredSizes: number[] = [];
+  cache._sizes.forEach((s, i) => {
+    if (s !== UNCACHED) {
+      measuredSizes.push(s);
+      if (i < startIndex) {
+        measuredCountBeforeStart++;
+      }
     }
-    return isMeasured;
   });
-  const prevDefaultItemSize = cache._defaultItemSize;
 
   // Discard cache for now
   cache._computedOffsetIndex = -1;
 
+  // Calculate median
+  const sorted = sort(measuredSizes);
+  const len = sorted.length;
+  const mid = (len / 2) | 0;
+  const median =
+    len % 2 === 0 ? (sorted[mid - 1]! + sorted[mid]!) / 2 : sorted[mid]!;
+
+  const prevDefaultItemSize = cache._defaultItemSize;
+
   // Calculate diff of unmeasured items before start
   return (
-    ((cache._defaultItemSize = median(measuredSizes)) - prevDefaultItemSize) *
+    ((cache._defaultItemSize = median) - prevDefaultItemSize) *
     max(startIndex - measuredCountBeforeStart, 0)
   );
 };

@@ -17,13 +17,14 @@ import {
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_SCROLL_EVENT,
-} from "../core/store";
-import { createWindowResizer } from "../core/resizer";
-import { createWindowScroller } from "../core/scroller";
+  createWindowResizer,
+  createWindowScroller,
+  ItemsRange,
+  ScrollToIndexOpts,
+} from "../core";
 import { ListItem } from "./ListItem";
 import { RangedFor } from "./RangedFor";
 import { isSameRange } from "./utils";
-import { ItemsRange } from "../core/types";
 
 /**
  * Methods of {@link WindowVirtualizer}.
@@ -37,6 +38,12 @@ export interface WindowVirtualizerHandle {
    * Find the end index of visible range of items.
    */
   findEndIndex: () => number;
+  /**
+   * Scroll to the item specified by index.
+   * @param index index of item
+   * @param opts options
+   */
+  scrollToIndex(index: number, opts?: ScrollToIndexOpts): void;
 }
 
 /**
@@ -116,16 +123,16 @@ export const WindowVirtualizer = <T,>(
   const resizer = createWindowResizer(store, horizontal);
   const scroller = createWindowScroller(store, horizontal);
 
-  const [rerender, setRerender] = createSignal(store._getStateVersion());
+  const [rerender, setRerender] = createSignal(store.$getStateVersion());
 
-  const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
-    setRerender(store._getStateVersion());
+  const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+    setRerender(store.$getStateVersion());
   });
 
-  const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
-    props.onScroll?.(store._getScrollOffset());
+  const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+    props.onScroll?.(store.$getScrollOffset());
   });
-  const unsubscribeOnScrollEnd = store._subscribe(
+  const unsubscribeOnScrollEnd = store.$subscribe(
     UPDATE_SCROLL_END_EVENT,
     () => {
       props.onScrollEnd?.();
@@ -134,27 +141,28 @@ export const WindowVirtualizer = <T,>(
 
   const range = createMemo<ItemsRange>((prev) => {
     rerender();
-    const next = store._getRange();
+    const next = store.$getRange();
     if (prev && isSameRange(prev, next)) {
       return prev;
     }
     return next;
   });
-  const isScrolling = createMemo(() => rerender() && store._isScrolling());
-  const totalSize = createMemo(() => rerender() && store._getTotalSize());
+  const isScrolling = createMemo(() => rerender() && store.$isScrolling());
+  const totalSize = createMemo(() => rerender() && store.$getTotalSize());
 
-  const jumpCount = createMemo(() => rerender() && store._getJumpCount());
+  const jumpCount = createMemo(() => rerender() && store.$getJumpCount());
 
   onMount(() => {
     if (props.ref) {
       props.ref({
-        findStartIndex: store._findStartIndex,
-        findEndIndex: store._findEndIndex,
+        findStartIndex: store.$findStartIndex,
+        findEndIndex: store.$findEndIndex,
+        scrollToIndex: scroller.$scrollToIndex,
       });
     }
 
-    resizer._observeRoot(containerRef!);
-    scroller._observe(containerRef!);
+    resizer.$observeRoot(containerRef!);
+    scroller.$observe(containerRef!);
 
     onCleanup(() => {
       if (props.ref) {
@@ -164,8 +172,8 @@ export const WindowVirtualizer = <T,>(
       unsubscribeStore();
       unsubscribeOnScroll();
       unsubscribeOnScrollEnd();
-      resizer._dispose();
-      scroller._dispose();
+      resizer.$dispose();
+      scroller.$dispose();
     });
   });
 
@@ -173,8 +181,8 @@ export const WindowVirtualizer = <T,>(
     on(
       () => props.data.length,
       (len) => {
-        if (len !== store._getItemsLength()) {
-          store._update(ACTION_ITEMS_LENGTH_CHANGE, [len, props.shift]);
+        if (len !== store.$getItemsLength()) {
+          store.$update(ACTION_ITEMS_LENGTH_CHANGE, [len, props.shift]);
         }
       }
     )
@@ -182,7 +190,7 @@ export const WindowVirtualizer = <T,>(
 
   createEffect(
     on(jumpCount, () => {
-      scroller._fixScrollJump();
+      scroller.$fixScrollJump();
     })
   );
 
@@ -206,17 +214,17 @@ export const WindowVirtualizer = <T,>(
         _render={(data, index) => {
           const offset = createMemo(() => {
             rerender();
-            return store._getItemOffset(index);
+            return store.$getItemOffset(index);
           });
           const hide = createMemo(() => {
             rerender();
-            return store._isUnmeasuredItem(index);
+            return store.$isUnmeasuredItem(index);
           });
 
           return (
             <ListItem
               _index={index}
-              _resizer={resizer._observeItem}
+              _resizer={resizer.$observeItem}
               _offset={offset()}
               _hide={hide()}
               _children={props.children(data(), index)}

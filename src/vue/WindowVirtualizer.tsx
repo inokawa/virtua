@@ -20,12 +20,13 @@ import {
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_SCROLL_EVENT,
-} from "../core/store";
-import { createWindowResizer } from "../core/resizer";
-import { createWindowScroller } from "../core/scroller";
+  createWindowResizer,
+  createWindowScroller,
+  ItemsRange,
+  ScrollToIndexOpts,
+} from "../core";
 import { ListItem } from "./ListItem";
 import { getKey, isSameRange } from "./utils";
-import { ItemsRange } from "../core/types";
 
 export interface WindowVirtualizerHandle {
   /**
@@ -36,6 +37,12 @@ export interface WindowVirtualizerHandle {
    * Find the end index of visible range of items.
    */
   findEndIndex: () => number;
+  /**
+   * Scroll to the item specified by index.
+   * @param index index of item
+   * @param opts options
+   */
+  scrollToIndex(index: number, opts?: ScrollToIndexOpts): void;
 }
 
 const props = {
@@ -92,15 +99,15 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     const resizer = createWindowResizer(store, isHorizontal);
     const scroller = createWindowScroller(store, isHorizontal);
 
-    const rerender = ref(store._getStateVersion());
-    const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
-      rerender.value = store._getStateVersion();
+    const rerender = ref(store.$getStateVersion());
+    const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+      rerender.value = store.$getStateVersion();
     });
 
-    const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
-      emit("scroll", store._getScrollOffset());
+    const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+      emit("scroll", store.$getScrollOffset());
     });
-    const unsubscribeOnScrollEnd = store._subscribe(
+    const unsubscribeOnScrollEnd = store.$subscribe(
       UPDATE_SCROLL_END_EVENT,
       () => {
         emit("scrollEnd");
@@ -109,48 +116,49 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
 
     const range = computed<ItemsRange>((prev) => {
       rerender.value;
-      const next = store._getRange();
+      const next = store.$getRange();
       if (prev && isSameRange(prev, next)) {
         return prev;
       }
       return next;
     });
-    const isScrolling = computed(() => rerender.value && store._isScrolling());
-    const totalSize = computed(() => rerender.value && store._getTotalSize());
-    const jumpCount = computed(() => rerender.value && store._getJumpCount());
+    const isScrolling = computed(() => rerender.value && store.$isScrolling());
+    const totalSize = computed(() => rerender.value && store.$getTotalSize());
+    const jumpCount = computed(() => rerender.value && store.$getJumpCount());
 
     onMounted(() => {
       const el = containerRef.value;
       if (!el) return;
-      resizer._observeRoot(el);
-      scroller._observe(el);
+      resizer.$observeRoot(el);
+      scroller.$observe(el);
     });
     onUnmounted(() => {
       unsubscribeStore();
       unsubscribeOnScroll();
       unsubscribeOnScrollEnd();
-      resizer._dispose();
-      scroller._dispose();
+      resizer.$dispose();
+      scroller.$dispose();
     });
 
     watch(
       () => props.data.length,
       (count) => {
-        store._update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
       }
     );
 
     watch(
       [jumpCount],
       () => {
-        scroller._fixScrollJump();
+        scroller.$fixScrollJump();
       },
       { flush: "post" }
     );
 
     expose({
-      findStartIndex: store._findStartIndex,
-      findEndIndex: store._findEndIndex,
+      findStartIndex: store.$findStartIndex,
+      findEndIndex: store.$findEndIndex,
+      scrollToIndex: scroller.$scrollToIndex,
     } satisfies WindowVirtualizerHandle);
 
     return () => {
@@ -168,7 +176,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
             key={getKey(e, i)}
             _rerender={rerender}
             _store={store}
-            _resizer={resizer._observeItem}
+            _resizer={resizer.$observeItem}
             _index={i}
             _children={e}
             _isHorizontal={isHorizontal}

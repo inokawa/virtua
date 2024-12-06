@@ -1,4 +1,4 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
@@ -14,7 +14,7 @@ Props of customized item component for [Virtualizer](../functions/Virtualizer.md
 
 #### Defined in
 
-[src/react/types.ts:23](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/types.ts#L23)
+[src/react/types.ts:23](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/react/types.ts#L23)
 
 ***
 
@@ -24,7 +24,7 @@ Props of customized item component for [Virtualizer](../functions/Virtualizer.md
 
 #### Defined in
 
-[src/react/types.ts:24](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/types.ts#L24)
+[src/react/types.ts:24](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/react/types.ts#L24)
 
 ***
 
@@ -34,4 +34,4 @@ Props of customized item component for [Virtualizer](../functions/Virtualizer.md
 
 #### Defined in
 
-[src/react/types.ts:25](https://github.com/inokawa/virtua/blob/da030dacd100511f676477a3b0a55aed96ffd083/src/react/types.ts#L25)
+[src/react/types.ts:25](https://github.com/inokawa/virtua/blob/4a7f66c9788e53f97a695274750013e5dc0e13b9/src/react/types.ts#L25)
