@@ -28,6 +28,13 @@ const components: [string, typeof VirtuaList][] = [
   [`@tanstack/react-virtual@${ReactVirtualVersion}`, ReactVirtualList],
 ];
 
+const itemComponents: [string, typeof SimpleItem][] = [
+  ["same sized items", SimpleItem],
+  ["dynamic sized items", DynamicItem],
+  ["heavy DOM", HeavyDOMItem],
+  ["heavy JS", HeavyJsItem],
+];
+
 const VIEWPORT_SIZE = 50 * 30;
 
 const Viewport = ({ children }: { children: ReactNode }) => (
@@ -35,13 +42,6 @@ const Viewport = ({ children }: { children: ReactNode }) => (
 );
 
 [1000, 100000].forEach((count) => {
-  const itemComponents: [string, typeof SimpleItem][] = [
-    ["same sized items", SimpleItem],
-    ["dynamic sized items", DynamicItem],
-    ["heavy DOM", HeavyDOMItem],
-    ["heavy JS", HeavyJsItem],
-  ];
-
   itemComponents.forEach(([name, ItemComponent]) => {
     describe(`mount / ${count} items / ${name}`, () => {
       components.forEach(([name, Component]) => {
