@@ -366,9 +366,65 @@ This package uses [exports of package.json](https://nodejs.org/api/packages.html
 - 🟠 - Supported but partial, limited or requires some user custom code
 - ❌ - Not officially supported
 
-### Benchmarks
+### Benchmark
 
-WIP
+A rough benchmark with vitest running on headless Chromium.
+
+> [!WARNING]
+> Each virtualization library has different characteristics. Their performance on browser varies depending on library settings and situations.
+
+```sh
+npm install
+npm run bench
+```
+
+This is a result in my Intel MacBook Pro 2018.
+
+```
+ BENCH  Summary
+
+  virtua@0.39.0 (elements) - index.bench.tsx > mount / 1000 items / same sized items
+    2.34x faster than virtua@0.39.0 (render prop)
+    4.30x faster than react-virtuoso@4.12.3
+    4.75x faster than react-virtualized@9.22.5
+    5.44x faster than @tanstack/react-virtual@3.11.0
+    5.56x faster than react-window@1.8.10
+
+  react-virtuoso@4.12.3 - index.bench.tsx > mount / 1000 items / same sized, heavy items
+    1.37x faster than virtua@0.39.0 (render prop)
+    1.68x faster than virtua@0.39.0 (elements)
+    7.28x faster than @tanstack/react-virtual@3.11.0
+    7.84x faster than react-window@1.8.10
+    9.13x faster than react-virtualized@9.22.5
+
+  virtua@0.39.0 (elements) - index.bench.tsx > mount / 1000 items / dynamic sized items
+    1.01x faster than virtua@0.39.0 (render prop)
+    1.17x faster than react-virtuoso@4.12.3
+    1.25x faster than react-virtualized@9.22.5
+    1.27x faster than @tanstack/react-virtual@3.11.0
+    1.27x faster than react-window@1.8.10
+
+  virtua@0.39.0 (render prop) - index.bench.tsx > mount / 100000 items / same sized items
+    1.13x faster than react-virtuoso@4.12.3
+    1.16x faster than react-virtualized@9.22.5
+    1.29x faster than react-window@1.8.10
+    1.60x faster than @tanstack/react-virtual@3.11.0
+    4.60x faster than virtua@0.39.0 (elements)
+
+  react-virtuoso@4.12.3 - index.bench.tsx > mount / 100000 items / same sized, heavy items
+    1.19x faster than virtua@0.39.0 (render prop)
+    3.85x faster than virtua@0.39.0 (elements)
+    4.43x faster than @tanstack/react-virtual@3.11.0
+    4.45x faster than react-window@1.8.10
+    5.05x faster than react-virtualized@9.22.5
+
+  virtua@0.39.0 (render prop) - index.bench.tsx > mount / 100000 items / dynamic sized items
+    1.04x faster than react-virtuoso@4.12.3
+    1.10x faster than react-virtualized@9.22.5
+    1.17x faster than react-window@1.8.10
+    1.39x faster than @tanstack/react-virtual@3.11.0
+    3.42x faster than virtua@0.39.0 (elements)
+```
 
 ## Contribute
 
