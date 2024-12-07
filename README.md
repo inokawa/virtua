@@ -381,99 +381,99 @@ npm run bench
 This is a result in my Intel MacBook Pro 2018.
 
 ```
- ✓ index.bench.tsx (36) 98124ms
-   ✓ mount / 1000 items / same sized items (6) 5122ms
+ ✓ index.bench.tsx (36) 98015ms
+   ✓ mount / 1000 items / same sized items (6) 5101ms
      name                                 hz      min      max     mean      p75      p99     p995     p999      rme  samples
-   · virtua@0.39.0 (elements)         151.45   4.5000  28.6000   6.6026   6.4000  28.6000  28.6000  28.6000  ±10.76%       76   fastest
-   · virtua@0.39.0 (render prop)     64.7440  13.6000  18.0000  15.4455  16.3000  18.0000  18.0000  18.0000   ±3.26%       33
-   · react-virtualized@9.22.5        31.8591  28.0000  36.0000  31.3882  33.1000  36.0000  36.0000  36.0000   ±3.62%       17
-   · react-window@1.8.10             27.2427  30.3000  89.0000  36.7071  34.4000  89.0000  89.0000  89.0000  ±23.79%       14   slowest
-   · react-virtuoso@4.12.3           35.1975  26.7000  30.8000  28.4111  29.4000  30.8000  30.8000  30.8000   ±2.25%       18
-   · @tanstack/react-virtual@3.11.0  27.8496  33.6000  39.2000  35.9071  36.9000  39.2000  39.2000  39.2000   ±2.71%       14
-   ✓ mount / 1000 items / same sized, heavy items (6) 28000ms
+   · virtua@0.39.0 (elements)         149.40   4.7000  33.5000   6.6933   6.4000  33.5000  33.5000  33.5000  ±12.08%       75   fastest
+   · virtua@0.39.0 (render prop)     64.5035  13.8000  19.1000  15.5030  17.2000  19.1000  19.1000  19.1000   ±3.55%       33
+   · react-virtualized@9.22.5        32.2826  28.6000  34.0000  30.9765  32.5000  34.0000  34.0000  34.0000   ±2.78%       17
+   · react-window@1.8.10             27.4026  30.7000  81.0000  36.4929  34.9000  81.0000  81.0000  81.0000  ±20.46%       14   slowest
+   · react-virtuoso@4.12.3           35.3496  25.9000  30.8000  28.2889  28.9000  30.8000  30.8000  30.8000   ±2.32%       18
+   · @tanstack/react-virtual@3.11.0  27.8385  34.2000  39.0000  35.9214  37.2000  39.0000  39.0000  39.0000   ±2.53%       14
+   ✓ mount / 1000 items / dynamic sized items (6) 4870ms
      name                                 hz      min      max     mean      p75      p99     p995     p999     rme  samples
-   · virtua@0.39.0 (elements)        14.1864  66.5000  73.5000  70.4900  72.4000  73.5000  73.5000  73.5000  ±2.45%       10
-   · virtua@0.39.0 (render prop)     17.3611  55.4000  58.8000  57.6000  58.2000  58.8000  58.8000  58.8000  ±1.42%       10
-   · react-virtualized@9.22.5         2.6055   375.40   399.90   383.80   389.60   399.90   399.90   399.90  ±1.39%       10   slowest
-   · react-window@1.8.10              3.0323   322.60   354.10   329.78   329.60   354.10   354.10   354.10  ±2.03%       10
-   · react-virtuoso@4.12.3           23.7812  38.7000  44.8000  42.0500  43.3000  44.8000  44.8000  44.8000  ±3.01%       12   fastest
-   · @tanstack/react-virtual@3.11.0   3.2681   303.00   309.50   305.99   308.70   309.50   309.50   309.50  ±0.59%       10
-   ✓ mount / 1000 items / dynamic sized items (6) 5710ms
+   · virtua@0.39.0 (elements)        26.9646  34.8000  39.2000  37.0857  38.4000  39.2000  39.2000  39.2000  ±2.24%       14
+   · virtua@0.39.0 (render prop)     27.5482  34.6000  38.6000  36.3000  37.2000  38.6000  38.6000  38.6000  ±2.03%       14   fastest
+   · react-virtualized@9.22.5        20.9884  43.8000  50.8000  47.6455  49.7000  50.8000  50.8000  50.8000  ±3.52%       11
+   · react-window@1.8.10             20.2840  44.0000  66.3000  49.3000  49.1000  66.3000  66.3000  66.3000  ±8.46%       11   slowest
+   · react-virtuoso@4.12.3           23.5064  39.8000  44.7000  42.5417  43.9000  44.7000  44.7000  44.7000  ±2.71%       12
+   · @tanstack/react-virtual@3.11.0  21.0970  44.1000  49.2000  47.4000  48.4000  49.2000  49.2000  49.2000  ±2.26%       11
+   ✓ mount / 1000 items / same sized, heavy items (6) 28506ms
      name                                 hz      min      max     mean      p75      p99     p995     p999     rme  samples
-   · virtua@0.39.0 (elements)        20.7352  45.4000  51.1000  48.2273  49.9000  51.1000  51.1000  51.1000  ±2.37%       11   fastest
-   · virtua@0.39.0 (render prop)     20.5531  45.0000  53.0000  48.6545  49.8000  53.0000  53.0000  53.0000  ±3.12%       11
-   · react-virtualized@9.22.5        16.5893  54.8000  64.2000  60.2800  61.5000  64.2000  64.2000  64.2000  ±3.30%       10
-   · react-window@1.8.10             16.3639  57.7000  63.3000  61.1100  62.1000  63.3000  63.3000  63.3000  ±2.02%       10   slowest
-   · react-virtuoso@4.12.3           17.7022  52.6000  59.2000  56.4900  57.4000  59.2000  59.2000  59.2000  ±2.26%       10
-   · @tanstack/react-virtual@3.11.0  16.3827  57.1000  64.1000  61.0400  62.0000  64.1000  64.1000  64.1000  ±2.52%       10
-   ✓ mount / 100000 items / same sized items (6) 10303ms
-     name                                 hz      min      max     mean      p75      p99     p995     p999     rme  samples
-   · virtua@0.39.0 (elements)         3.5290   258.40   344.20   283.37   273.10   344.20   344.20   344.20  ±7.91%       10   slowest
-   · virtua@0.39.0 (render prop)     16.2206  57.2000  65.1000  61.6500  63.1000  65.1000  65.1000  65.1000  ±2.71%       10   fastest
-   · react-virtualized@9.22.5        13.9899  69.6000  74.4000  71.4800  72.4000  74.4000  74.4000  74.4000  ±1.74%       10
-   · react-window@1.8.10             12.5266  75.6000  82.9000  79.8300  80.9000  82.9000  82.9000  82.9000  ±1.81%       10
-   · react-virtuoso@4.12.3           14.3082  67.5000  71.9000  69.8900  71.2000  71.9000  71.9000  71.9000  ±1.69%       10
-   · @tanstack/react-virtual@3.11.0  10.1092  95.4000   103.10  98.9200   102.10   103.10   103.10   103.10  ±2.23%       10
-   ✓ mount / 100000 items / same sized, heavy items (6) 35225ms
-     name                                 hz      min      max     mean      p75      p99     p995     p999     rme  samples
-   · virtua@0.39.0 (elements)         3.0971   317.60   327.40   322.88   325.60   327.40   327.40   327.40  ±0.69%       10
-   · virtua@0.39.0 (render prop)      9.9820  91.5000   118.10   100.18  99.7000   118.10   118.10   118.10  ±5.15%       10
-   · react-virtualized@9.22.5         2.3620   418.60   427.80   423.37   427.00   427.80   427.80   427.80  ±0.56%       10   slowest
-   · react-window@1.8.10              2.6775   369.00   379.00   373.48   375.90   379.00   379.00   379.00  ±0.60%       10
-   · react-virtuoso@4.12.3           11.9246  77.3000  91.0000  83.8600  86.6000  91.0000  91.0000  91.0000  ±3.38%       10   fastest
-   · @tanstack/react-virtual@3.11.0   2.6937   366.20   378.10   371.24   372.90   378.10   378.10   378.10  ±0.75%       10
-   ✓ mount / 100000 items / dynamic sized items (6) 13681ms
-     name                                 hz      min      max     mean      p75      p99     p995     p999     rme  samples
-   · virtua@0.39.0 (elements)         3.2172   291.90   351.40   310.83   315.20   351.40   351.40   351.40  ±3.80%       10   slowest
-   · virtua@0.39.0 (render prop)     11.0084  87.1000  94.4000  90.8400  92.1000  94.4000  94.4000  94.4000  ±1.68%       10   fastest
-   · react-virtualized@9.22.5        10.0170  97.8000   102.70  99.8300   100.30   102.70   102.70   102.70  ±0.95%       10
-   · react-window@1.8.10              9.3729   102.90   109.90   106.69   107.90   109.90   109.90   109.90  ±1.61%       10
-   · react-virtuoso@4.12.3           10.6293  90.6000  96.9000  94.0800  94.5000  96.9000  96.9000  96.9000  ±1.19%       10
-   · @tanstack/react-virtual@3.11.0   7.8989   121.60   131.20   126.60   128.50   131.20   131.20   131.20  ±1.76%       10
+   · virtua@0.39.0 (elements)        12.5992  75.4000  83.4000  79.3700  80.2000  83.4000  83.4000  83.4000  ±2.00%       10
+   · virtua@0.39.0 (render prop)     15.3633  63.5000  67.8000  65.0900  65.1000  67.8000  67.8000  67.8000  ±1.40%       10
+   · react-virtualized@9.22.5         2.5050   385.20   488.00   399.20   391.70   488.00   488.00   488.00  ±5.63%       10   slowest
+   · react-window@1.8.10              2.9734   330.30   345.70   336.31   339.70   345.70   345.70   345.70  ±0.94%       10
+   · react-virtuoso@4.12.3           18.6498  49.8000  59.7000  53.6200  56.1000  59.7000  59.7000  59.7000  ±4.25%       10   fastest
+   · @tanstack/react-virtual@3.11.0   3.1405   315.90   322.10   318.42   320.20   322.10   322.10   322.10  ±0.48%       10
+   ✓ mount / 100000 items / same sized items (6) 10629ms
+     name                                 hz      min      max     mean      p75      p99     p995     p999      rme  samples
+   · virtua@0.39.0 (elements)         3.3494   267.10   430.20   298.56   289.10   430.20   430.20   430.20  ±11.35%       10   slowest
+   · virtua@0.39.0 (render prop)     15.9033  60.4000  64.9000  62.8800  64.1000  64.9000  64.9000  64.9000   ±1.76%       10   fastest
+   · react-virtualized@9.22.5        13.7043  69.4000  75.5000  72.9700  74.4000  75.5000  75.5000  75.5000   ±2.09%       10
+   · react-window@1.8.10             12.1374  77.1000  85.0000  82.3900  84.3000  85.0000  85.0000  85.0000   ±1.94%       10
+   · react-virtuoso@4.12.3           14.1323  66.7000  73.6000  70.7600  72.8000  73.6000  73.6000  73.6000   ±2.30%       10
+   · @tanstack/react-virtual@3.11.0   9.8600  96.1000   108.60   101.42   104.60   108.60   108.60   108.60   ±2.81%       10
+   ✓ mount / 100000 items / dynamic sized items (6) 12819ms
+     name                                 hz      min      max     mean      p75      p99     p995     p999      rme  samples
+   · virtua@0.39.0 (elements)         3.2517   296.80   323.40   307.53   313.30   323.40   323.40   323.40   ±2.00%       10   slowest
+   · virtua@0.39.0 (render prop)     12.6326  75.9000  81.4000  79.1600  80.3000  81.4000  81.4000  81.4000   ±1.52%       10   fastest
+   · react-virtualized@9.22.5        11.4903  83.5000  88.3000  87.0300  88.1000  88.3000  88.3000  88.3000   ±1.17%       10
+   · react-window@1.8.10             10.5899  92.2000  97.4000  94.4300  95.0000  97.4000  97.4000  97.4000   ±1.06%       10
+   · react-virtuoso@4.12.3           10.3831  76.9000   184.90  96.3100   100.30   184.90   184.90   184.90  ±24.53%       10
+   · @tanstack/react-virtual@3.11.0   9.4545   102.70   109.80   105.77   106.80   109.80   109.80   109.80   ±1.47%       10
+   ✓ mount / 100000 items / same sized, heavy items (6) 36012ms
+     name                                 hz      min     max     mean      p75     p99    p995    p999      rme  samples
+   · virtua@0.39.0 (elements)         3.0557   322.40  334.60   327.26   329.70  334.60  334.60  334.60   ±0.87%       10
+   · virtua@0.39.0 (render prop)      9.2507   103.80  112.90   108.10   112.60  112.90  112.90  112.90   ±2.39%       10
+   · react-virtualized@9.22.5         1.9927   425.90  939.70   501.83   436.60  939.70  939.70  939.70  ±23.72%       10   slowest
+   · react-window@1.8.10              2.6018   379.80  389.50   384.35   387.20  389.50  389.50  389.50   ±0.60%       10
+   · react-virtuoso@4.12.3           10.6270  87.3000  100.30  94.1000  98.1000  100.30  100.30  100.30   ±3.27%       10   fastest
+   · @tanstack/react-virtual@3.11.0   2.6173   373.50  396.60   382.07   383.70  396.60  396.60  396.60   ±1.15%       10
 
  BENCH  Summary
 
   virtua@0.39.0 (elements) - index.bench.tsx > mount / 1000 items / same sized items
-    2.34x faster than virtua@0.39.0 (render prop)
-    4.30x faster than react-virtuoso@4.12.3
-    4.75x faster than react-virtualized@9.22.5
-    5.44x faster than @tanstack/react-virtual@3.11.0
-    5.56x faster than react-window@1.8.10
+    2.32x faster than virtua@0.39.0 (render prop)
+    4.23x faster than react-virtuoso@4.12.3
+    4.63x faster than react-virtualized@9.22.5
+    5.37x faster than @tanstack/react-virtual@3.11.0
+    5.45x faster than react-window@1.8.10
+
+  virtua@0.39.0 (render prop) - index.bench.tsx > mount / 1000 items / dynamic sized items
+    1.02x faster than virtua@0.39.0 (elements)
+    1.17x faster than react-virtuoso@4.12.3
+    1.31x faster than @tanstack/react-virtual@3.11.0
+    1.31x faster than react-virtualized@9.22.5
+    1.36x faster than react-window@1.8.10
 
   react-virtuoso@4.12.3 - index.bench.tsx > mount / 1000 items / same sized, heavy items
-    1.37x faster than virtua@0.39.0 (render prop)
-    1.68x faster than virtua@0.39.0 (elements)
-    7.28x faster than @tanstack/react-virtual@3.11.0
-    7.84x faster than react-window@1.8.10
-    9.13x faster than react-virtualized@9.22.5
-
-  virtua@0.39.0 (elements) - index.bench.tsx > mount / 1000 items / dynamic sized items
-    1.01x faster than virtua@0.39.0 (render prop)
-    1.17x faster than react-virtuoso@4.12.3
-    1.25x faster than react-virtualized@9.22.5
-    1.27x faster than @tanstack/react-virtual@3.11.0
-    1.27x faster than react-window@1.8.10
+    1.21x faster than virtua@0.39.0 (render prop)
+    1.48x faster than virtua@0.39.0 (elements)
+    5.94x faster than @tanstack/react-virtual@3.11.0
+    6.27x faster than react-window@1.8.10
+    7.44x faster than react-virtualized@9.22.5
 
   virtua@0.39.0 (render prop) - index.bench.tsx > mount / 100000 items / same sized items
     1.13x faster than react-virtuoso@4.12.3
     1.16x faster than react-virtualized@9.22.5
-    1.29x faster than react-window@1.8.10
-    1.60x faster than @tanstack/react-virtual@3.11.0
-    4.60x faster than virtua@0.39.0 (elements)
-
-  react-virtuoso@4.12.3 - index.bench.tsx > mount / 100000 items / same sized, heavy items
-    1.19x faster than virtua@0.39.0 (render prop)
-    3.85x faster than virtua@0.39.0 (elements)
-    4.43x faster than @tanstack/react-virtual@3.11.0
-    4.45x faster than react-window@1.8.10
-    5.05x faster than react-virtualized@9.22.5
+    1.31x faster than react-window@1.8.10
+    1.61x faster than @tanstack/react-virtual@3.11.0
+    4.75x faster than virtua@0.39.0 (elements)
 
   virtua@0.39.0 (render prop) - index.bench.tsx > mount / 100000 items / dynamic sized items
-    1.04x faster than react-virtuoso@4.12.3
     1.10x faster than react-virtualized@9.22.5
-    1.17x faster than react-window@1.8.10
-    1.39x faster than @tanstack/react-virtual@3.11.0
-    3.42x faster than virtua@0.39.0 (elements)
+    1.19x faster than react-window@1.8.10
+    1.22x faster than react-virtuoso@4.12.3
+    1.34x faster than @tanstack/react-virtual@3.11.0
+    3.88x faster than virtua@0.39.0 (elements)
+
+  react-virtuoso@4.12.3 - index.bench.tsx > mount / 100000 items / same sized, heavy items
+    1.15x faster than virtua@0.39.0 (render prop)
+    3.48x faster than virtua@0.39.0 (elements)
+    4.06x faster than @tanstack/react-virtual@3.11.0
+    4.08x faster than react-window@1.8.10
+    5.33x faster than react-virtualized@9.22.5
 ```
 
 ## Contribute

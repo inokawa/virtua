@@ -32,8 +32,8 @@ const Viewport = ({ children }: { children: ReactNode }) => (
 [1000, 100000].forEach((count) => {
   const itemComponents: [string, typeof SimpleItem][] = [
     ["same sized items", SimpleItem],
-    ["same sized, heavy items", HeavyItem],
     ["dynamic sized items", DynamicItem],
+    ["same sized, heavy items", HeavyItem],
   ];
 
   itemComponents.forEach(([name, ItemComponent]) => {
