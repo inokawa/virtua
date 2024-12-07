@@ -64,20 +64,5 @@
     "path": "lib/solid/index.mjs",
     "import": "{ WindowVirtualizer }",
     "limit": "4 kB"
-  },
-  {
-    "name": "react-virtuoso Virtuoso",
-    "path": "node_modules/react-virtuoso/dist/index.mjs",
-    "import": "{ Virtuoso }"
-  },
-  {
-    "name": "react-window VariableSizeList",
-    "path": "node_modules/react-window/dist/index.esm.js",
-    "import": "{ VariableSizeList }"
-  },
-  {
-    "name": "react-virtualized List",
-    "path": "node_modules/react-virtualized/dist/es/List/index.js",
-    "import": "{ List }"
   }
 ]
