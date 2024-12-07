@@ -1,7 +1,12 @@
 import React, { ReactNode } from "react";
 import { bench, describe } from "vitest";
 import { render } from "vitest-browser-react";
-import { DynamicItem, HeavyItem, SimpleItem } from "./components/common";
+import {
+  DynamicItem,
+  HeavyDOMItem,
+  HeavyJsItem,
+  SimpleItem,
+} from "./components/common";
 import { VirtuaList } from "./components/virtua";
 import { VirtuaList as VirtuaListRender } from "./components/virtua-render";
 import { ReactVirtualList } from "./components/react-virtual";
@@ -33,7 +38,8 @@ const Viewport = ({ children }: { children: ReactNode }) => (
   const itemComponents: [string, typeof SimpleItem][] = [
     ["same sized items", SimpleItem],
     ["dynamic sized items", DynamicItem],
-    ["same sized, heavy items", HeavyItem],
+    ["heavy DOM", HeavyDOMItem],
+    ["heavy JS", HeavyJsItem],
   ];
 
   itemComponents.forEach(([name, ItemComponent]) => {
