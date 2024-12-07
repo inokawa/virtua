@@ -36,7 +36,7 @@
   "scripts": {
     "build": "rollup -c",
     "tsc": "tsc -p . --noEmit",
-    "test": "vitest run --silent",
+    "test": "vitest --run --silent",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "check:svelte": "svelte-check --tsconfig ./tsconfig.svelte.json",
     "storybook": "storybook dev -p 6006",
