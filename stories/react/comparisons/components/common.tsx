@@ -40,7 +40,68 @@ export const DynamicItem = forwardRef<HTMLDivElement, { index: number }>(
   }
 );
 
-export const HeavyItem = forwardRef<HTMLDivElement, { index: number }>(
+export const HeavyDOMItem = forwardRef<HTMLDivElement, { index: number }>(
+  ({ index: i }, ref) => {
+    return (
+      <div
+        ref={ref}
+        style={{
+          height: 50,
+          borderBottom: "solid 1px #ccc",
+          background: "#fff",
+        }}
+      >
+        <div>
+          <div>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <div style={{ background: "darkgray", width: 10 }} />
+              <div
+                style={{ display: "flex", flexDirection: "column", flex: 1 }}
+              >
+                <div style={{ height: 1, background: "gray" }}></div>
+                <div style={{ height: 1, background: "gray" }}></div>
+                <div style={{ height: 1, background: "gray" }}></div>
+                <div style={{ height: 1, background: "gray" }}></div>
+                <div style={{ height: 1, background: "gray" }}></div>
+                <div>
+                  <div>
+                    <div>
+                      <div>
+                        <div style={{ height: 1, background: "red" }}></div>
+                        <div style={{ height: 1, background: "orange" }}></div>
+                        <div style={{ height: 1, background: "yellow" }}></div>
+                        <div style={{ height: 1, background: "green" }}></div>
+                        <div style={{ height: 1, background: "blue" }}></div>
+                        <div style={{ height: 1, background: "indigo" }}></div>
+                        <div style={{ height: 1, background: "violet" }}></div>
+                        <div>{i}</div>
+                        <div style={{ height: 1, background: "red" }}></div>
+                        <div style={{ height: 1, background: "orange" }}></div>
+                        <div style={{ height: 1, background: "yellow" }}></div>
+                        <div style={{ height: 1, background: "green" }}></div>
+                        <div style={{ height: 1, background: "blue" }}></div>
+                        <div style={{ height: 1, background: "indigo" }}></div>
+                        <div style={{ height: 1, background: "violet" }}></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ height: 1, background: "gray" }}></div>
+                <div style={{ height: 1, background: "gray" }}></div>
+                <div style={{ height: 1, background: "gray" }}></div>
+                <div style={{ height: 1, background: "gray" }}></div>
+                <div style={{ height: 1, background: "gray" }}></div>
+              </div>
+              <div style={{ background: "darkgray", width: 10 }} />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+);
+
+export const HeavyJsItem = forwardRef<HTMLDivElement, { index: number }>(
   ({ index: i }, ref) => {
     let count = 0;
     while (count <= 10000000) {

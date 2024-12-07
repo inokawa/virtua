@@ -1,11 +1,12 @@
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import {
-  HeavyItem,
+  HeavyJsItem,
   DynamicItem,
   SimpleItem,
   ItemWithRenderCount,
   DynamicImageItem,
+  HeavyDOMItem,
 } from "../components/common";
 import { ReactWindowList } from "../components/react-window";
 
@@ -36,10 +37,17 @@ export const DynamicHeight: StoryObj = {
   },
 };
 
-export const HeavyComponent: StoryObj = {
+export const HeavyDOM: StoryObj = {
   render: () => {
     const ROW_COUNT = 10000;
-    return <ReactWindowList count={ROW_COUNT} Component={HeavyItem} />;
+    return <ReactWindowList count={ROW_COUNT} Component={HeavyDOMItem} />;
+  },
+};
+
+export const HeavyJS: StoryObj = {
+  render: () => {
+    const ROW_COUNT = 10000;
+    return <ReactWindowList count={ROW_COUNT} Component={HeavyJsItem} />;
   },
 };
 

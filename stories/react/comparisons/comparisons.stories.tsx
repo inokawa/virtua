@@ -1,13 +1,14 @@
 import React, { useRef, useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 import {
-  HeavyItem,
+  HeavyJsItem,
   DynamicItem,
   SimpleItem,
   TestComponent,
   ItemWithRenderCount,
   ListHandle,
   DynamicImageItem,
+  HeavyDOMItem,
 } from "./components/common";
 import { ReactVirtualList } from "./components/react-virtual";
 import { ReactVirtuosoList } from "./components/react-virtuoso";
@@ -167,10 +168,17 @@ export const DynamicHeight: StoryObj = {
   },
 };
 
-export const HeavyComponent: StoryObj = {
+export const HeavyDOM: StoryObj = {
   render: () => {
     const ROW_COUNT = 10000;
-    return <Frame count={ROW_COUNT} ItemComponent={HeavyItem} />;
+    return <Frame count={ROW_COUNT} ItemComponent={HeavyDOMItem} />;
+  },
+};
+
+export const HeavyJS: StoryObj = {
+  render: () => {
+    const ROW_COUNT = 10000;
+    return <Frame count={ROW_COUNT} ItemComponent={HeavyJsItem} />;
   },
 };
 
