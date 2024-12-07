@@ -88,7 +88,7 @@
     "@storybook/test-runner": "^0.20.0",
     "@storybook/vue3": "^8.4.6",
     "@storybook/vue3-vite": "^8.4.6",
-    "@sveltejs/vite-plugin-svelte": "^4.0.0",
+    "@sveltejs/vite-plugin-svelte": "^5.0.0",
     "@tanstack/react-virtual": "^3.11.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.0.1",
