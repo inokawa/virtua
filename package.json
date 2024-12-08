@@ -36,8 +36,7 @@
   "scripts": {
     "build": "rollup -c",
     "tsc": "tsc -p . --noEmit",
-    "test": "vitest --run --project test --silent",
-    "bench": "vitest bench --run --project bench",
+    "test": "vitest --run --silent",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "check:svelte": "svelte-check --tsconfig ./tsconfig.svelte.json",
     "storybook": "storybook dev -p 6006",
@@ -101,7 +100,6 @@
     "@vitejs/plugin-react": "^4.3.3",
     "@vitejs/plugin-vue": "^5.1.4",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
-    "@vitest/browser": "^2.1.8",
     "babel-preset-solid": "^1.9.3",
     "cmdk": "^1.0.4",
     "concurrently": "^9.0.1",
@@ -147,7 +145,6 @@
     "vite": "5.1.8",
     "vite-plugin-solid": "^2.11.0",
     "vitest": "^2.1.3",
-    "vitest-browser-react": "^0.0.4",
     "vue": "^3.4.34",
     "vue-eslint-parser": "^9.4.3",
     "wait-on": "^8.0.1"
