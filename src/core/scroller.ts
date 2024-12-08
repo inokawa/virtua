@@ -334,7 +334,7 @@ export const createScroller = (
       scheduleImperativeScroll(() => offset);
     },
     $scrollToIndex(index, { align, smooth, offset = 0 } = {}) {
-      index = clamp(index, 0, store.$getItemsLength() - 1);
+      index = clamp(index, 0, store._getItemsLength() - 1);
 
       if (align === "nearest") {
         const itemOffset = store.$getItemOffset(index);
@@ -356,7 +356,7 @@ export const createScroller = (
       scheduleImperativeScroll(() => {
         return (
           offset +
-          store.$getStartSpacerSize() +
+          store._getStartSpacerSize() +
           store.$getItemOffset(index) +
           (align === "end"
             ? store.$getItemSize(index) - store.$getViewportSize()
@@ -542,7 +542,7 @@ export const createWindowScroller = (
     $scrollToIndex(index, { align, smooth, offset = 0 } = {}) {
       if (!containerElement) return;
 
-      index = clamp(index, 0, store.$getItemsLength() - 1);
+      index = clamp(index, 0, store._getItemsLength() - 1);
 
       if (align === "nearest") {
         const itemOffset = store.$getItemOffset(index);
