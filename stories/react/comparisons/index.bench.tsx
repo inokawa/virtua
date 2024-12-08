@@ -29,8 +29,8 @@ const components: [string, typeof VirtuaList][] = [
 ];
 
 const itemComponents: [string, typeof SimpleItem][] = [
-  ["same sized items", SimpleItem],
-  ["dynamic sized items", DynamicItem],
+  ["fixed size", SimpleItem],
+  ["dynamic size", DynamicItem],
   ["heavy DOM", HeavyDOMItem],
   ["heavy JS", HeavyJsItem],
 ];
@@ -43,7 +43,7 @@ const Viewport = ({ children }: { children: ReactNode }) => (
 
 [1000, 100000].forEach((count) => {
   itemComponents.forEach(([name, ItemComponent]) => {
-    describe(`mount / ${count} items / ${name}`, () => {
+    describe(`mount / ${count} items (${name})`, () => {
       components.forEach(([name, Component]) => {
         bench(name, async () => {
           const screen = render(
