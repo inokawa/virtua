@@ -7,8 +7,8 @@ import {
   ItemWithRenderCount,
   DynamicImageItem,
   HeavyDOMItem,
-} from "../components/common";
-import { ReactVirtuosoList } from "../components/react-virtuoso";
+} from "./components/common";
+import { ReactVirtuosoList } from "./components/react-virtuoso";
 
 export default {
   component: ReactVirtuosoList,

@@ -7,8 +7,8 @@ import {
   ItemWithRenderCount,
   DynamicImageItem,
   HeavyDOMItem,
-} from "../components/common";
-import { VirtuaList } from "../components/virtua";
+} from "./components/common";
+import { VirtuaList } from "./components/virtua";
 
 export default {
   component: VirtuaList,
