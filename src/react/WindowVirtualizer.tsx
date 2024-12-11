@@ -107,9 +107,8 @@ export interface WindowVirtualizerProps {
   item?: keyof JSX.IntrinsicElements | CustomItemComponent;
   /**
    * Callback invoked whenever scroll offset changes.
-   * @param offset Current scrollTop, or scrollLeft if horizontal: true.
    */
-  onScroll?: (offset: number) => void;
+  onScroll?: () => void;
   /**
    * Callback invoked when scrolling stops.
    */
@@ -198,7 +197,8 @@ export const WindowVirtualizer = forwardRef<
         }
       );
       const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
-        onScroll[refKey] && onScroll[refKey](store.$getScrollOffset());
+        // https://github.com/inokawa/virtua/discussions/580
+        onScroll[refKey] && onScroll[refKey]();
       });
       const unsubscribeOnScrollEnd = store.$subscribe(
         UPDATE_SCROLL_END_EVENT,

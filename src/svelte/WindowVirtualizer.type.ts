@@ -40,9 +40,8 @@ export interface WindowVirtualizerProps<T> {
   horizontal?: boolean;
   /**
    * Callback invoked whenever scroll offset changes.
-   * @param offset Current scrollTop, or scrollLeft if horizontal: true.
    */
-  onscroll?: (offset: number) => void;
+  onscroll?: () => void;
   /**
    * Callback invoked when scrolling stops.
    */
