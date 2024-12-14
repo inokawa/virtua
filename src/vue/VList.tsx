@@ -7,8 +7,10 @@ import {
   ComponentObjectPropsOptions,
   ref,
   VNode,
+  PropType,
 } from "vue";
 import { Virtualizer, VirtualizerHandle } from "./Virtualizer";
+import { ItemProps } from "./utils";
 
 interface VListHandle extends VirtualizerHandle {}
 
@@ -41,6 +43,16 @@ const props = {
    * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
    */
   ssrCount: Number,
+  /**
+   * A function that provides properties/attributes for item element
+   *
+   * **This prop will be merged into `item` prop in the future**
+   */
+  itemProps: Function as PropType<ItemProps>,
+  /**
+   * List of indexes that should be always mounted, even when off screen.
+   */
+  keepMounted: Array as PropType<number[]>,
 } satisfies ComponentObjectPropsOptions;
 
 export const VList = /*#__PURE__*/ defineComponent({
@@ -93,9 +105,11 @@ export const VList = /*#__PURE__*/ defineComponent({
             data={props.data}
             overscan={props.overscan}
             itemSize={props.itemSize}
+            itemProps={props.itemProps}
             shift={props.shift}
             ssrCount={props.ssrCount}
             horizontal={horizontal}
+            keepMounted={props.keepMounted}
             onScroll={onScroll}
             onScrollEnd={onScrollEnd}
           >

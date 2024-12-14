@@ -27,9 +27,10 @@ import {
   ItemsRange,
   ScrollToIndexOpts,
   microtask,
+  sort,
 } from "../core";
 import { ListItem } from "./ListItem";
-import { getKey, isSameRange } from "./utils";
+import { getKey, isSameRange, ItemProps } from "./utils";
 
 export interface VirtualizerHandle {
   /**
@@ -127,6 +128,16 @@ const props = {
    * @defaultValue "div"
    */
   item: { type: String as PropType<keyof NativeElements>, default: "div" },
+  /**
+   * A function that provides properties/attributes for item element
+   *
+   * **This prop will be merged into `item` prop in the future**
+   */
+  itemProps: Function as PropType<ItemProps>,
+  /**
+   * List of indexes that should be always mounted, even when off screen.
+   */
+  keepMounted: Array as PropType<number[]>,
 } satisfies ComponentObjectPropsOptions;
 
 export const Virtualizer = /*#__PURE__*/ defineComponent({
@@ -248,9 +259,10 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       const total = totalSize.value;
 
       const items: VNode[] = [];
-      for (let i = startIndex, j = endIndex; i <= j; i++) {
+
+      function getListItem(i: number) {
         const e = slots.default({ item: props.data![i]!, index: i })[0]!;
-        items.push(
+        return (
           <ListItem
             key={getKey(e, i)}
             _rerender={rerender}
@@ -261,8 +273,28 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
             _isHorizontal={isHorizontal}
             _isSSR={isSSR}
             _as={ItemElement}
+            _itemProps={props.itemProps?.({ item: props.data![i]!, index: i })}
           />
         );
+      }
+      for (let i = startIndex, j = endIndex; i <= j; i++) {
+        items.push(getListItem(i));
+      }
+
+      if (props.keepMounted) {
+        const startItems: VNode[] = [];
+        const endItems: VNode[] = [];
+        sort(props.keepMounted).forEach((index) => {
+          if (index < startIndex) {
+            startItems.push(getListItem(index));
+          }
+          if (index > endIndex) {
+            endItems.push(getListItem(index));
+          }
+        });
+
+        items.unshift(...startItems);
+        items.push(...endItems);
       }
 
       return (

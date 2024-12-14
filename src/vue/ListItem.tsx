@@ -16,6 +16,7 @@ import {
   StateVersion,
   VirtualStore,
 } from "../core";
+import { ItemProps } from "./utils";
 
 /**
  * @internal
@@ -33,6 +34,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
     _isHorizontal: { type: Boolean },
     _isSSR: { type: Boolean },
     _as: { type: String as PropType<keyof NativeElements>, required: true },
+    _itemProps: Object as PropType<ReturnType<ItemProps>>,
   },
   setup(props) {
     const elementRef = ref<HTMLDivElement>();
@@ -65,6 +67,8 @@ export const ListItem = /*#__PURE__*/ defineComponent({
       } = props;
       const isHide = hide.value;
 
+      const { style: styleProp, ...rest } = props._itemProps ?? {};
+
       const style: StyleValue = {
         position: isHide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
@@ -72,13 +76,14 @@ export const ListItem = /*#__PURE__*/ defineComponent({
         [isHorizontal ? (isRTLDocument() ? "right" : "left") : "top"]:
           offset.value + "px",
         visibility: !isHide || isSSR ? "visible" : "hidden",
+        ...styleProp,
       };
       if (isHorizontal) {
         style.display = "flex";
       }
 
       return (
-        <Element ref={elementRef} style={style}>
+        <Element ref={elementRef} style={style} {...rest}>
           {children}
         </Element>
       );
