@@ -47,7 +47,8 @@
   });
 
   const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
-    onscroll && onscroll(store.$getScrollOffset());
+    // https://github.com/inokawa/virtua/discussions/580
+    onscroll && onscroll();
   });
   const unsubscribeOnScrollEnd = store.$subscribe(
     UPDATE_SCROLL_END_EVENT,

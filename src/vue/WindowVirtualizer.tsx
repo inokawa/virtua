@@ -105,7 +105,8 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     });
 
     const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
-      emit("scroll", store.$getScrollOffset());
+      // https://github.com/inokawa/virtua/discussions/580
+      emit("scroll");
     });
     const unsubscribeOnScrollEnd = store.$subscribe(
       UPDATE_SCROLL_END_EVENT,
@@ -215,9 +216,8 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
   {
     /**
      * Callback invoked whenever scroll offset changes.
-     * @param offset Current scrollTop, or scrollLeft if horizontal: true.
      */
-    scroll: (offset: number) => void;
+    scroll: () => void;
     /**
      * Callback invoked when scrolling stops.
      */
