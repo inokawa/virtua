@@ -10,7 +10,7 @@ import {
   PropType,
 } from "vue";
 import { Virtualizer, VirtualizerHandle } from "./Virtualizer";
-import { ItemProps } from './utils';
+import { ItemProps } from "./utils";
 
 interface VListHandle extends VirtualizerHandle {}
 
@@ -45,6 +45,8 @@ const props = {
   ssrCount: Number,
   /**
    * A function that provides properties/attributes for item element
+   *
+   * **This prop will be merged into `item` prop in the future**
    */
   itemProps: Function as PropType<ItemProps>,
   /**

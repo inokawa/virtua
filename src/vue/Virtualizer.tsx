@@ -130,6 +130,8 @@ const props = {
   item: { type: String as PropType<keyof NativeElements>, default: "div" },
   /**
    * A function that provides properties/attributes for item element
+   *
+   * **This prop will be merged into `item` prop in the future**
    */
   itemProps: Function as PropType<ItemProps>,
   /**

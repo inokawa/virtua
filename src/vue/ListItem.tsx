@@ -16,7 +16,7 @@ import {
   StateVersion,
   VirtualStore,
 } from "../core";
-import { ItemProps } from './utils';
+import { ItemProps } from "./utils";
 
 /**
  * @internal
@@ -76,7 +76,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
         [isHorizontal ? (isRTLDocument() ? "right" : "left") : "top"]:
           offset.value + "px",
         visibility: !isHide || isSSR ? "visible" : "hidden",
-        ...styleProp
+        ...styleProp,
       };
       if (isHorizontal) {
         style.display = "flex";
