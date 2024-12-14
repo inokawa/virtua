@@ -20,7 +20,7 @@ The data items rendered by this component.
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:11](https://github.com/inokawa/virtua/blob/d38b45573a7cac6e3633108c8eb946f094cdcc02/src/svelte/WindowVirtualizer.type.ts#L11)
+[src/svelte/WindowVirtualizer.type.ts:11](https://github.com/inokawa/virtua/blob/35dfa1c6e2e6854ecd417abe6fb93c829e7500e4/src/svelte/WindowVirtualizer.type.ts#L11)
 
 ***
 
@@ -32,7 +32,7 @@ The elements renderer snippet.
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:15](https://github.com/inokawa/virtua/blob/d38b45573a7cac6e3633108c8eb946f094cdcc02/src/svelte/WindowVirtualizer.type.ts#L15)
+[src/svelte/WindowVirtualizer.type.ts:15](https://github.com/inokawa/virtua/blob/35dfa1c6e2e6854ecd417abe6fb93c829e7500e4/src/svelte/WindowVirtualizer.type.ts#L15)
 
 ***
 
@@ -64,7 +64,7 @@ defaultGetKey (returns index of item)
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:20](https://github.com/inokawa/virtua/blob/d38b45573a7cac6e3633108c8eb946f094cdcc02/src/svelte/WindowVirtualizer.type.ts#L20)
+[src/svelte/WindowVirtualizer.type.ts:20](https://github.com/inokawa/virtua/blob/35dfa1c6e2e6854ecd417abe6fb93c829e7500e4/src/svelte/WindowVirtualizer.type.ts#L20)
 
 ***
 
@@ -82,7 +82,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:25](https://github.com/inokawa/virtua/blob/d38b45573a7cac6e3633108c8eb946f094cdcc02/src/svelte/WindowVirtualizer.type.ts#L25)
+[src/svelte/WindowVirtualizer.type.ts:25](https://github.com/inokawa/virtua/blob/35dfa1c6e2e6854ecd417abe6fb93c829e7500e4/src/svelte/WindowVirtualizer.type.ts#L25)
 
 ***
 
@@ -97,7 +97,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:32](https://github.com/inokawa/virtua/blob/d38b45573a7cac6e3633108c8eb946f094cdcc02/src/svelte/WindowVirtualizer.type.ts#L32)
+[src/svelte/WindowVirtualizer.type.ts:32](https://github.com/inokawa/virtua/blob/35dfa1c6e2e6854ecd417abe6fb93c829e7500e4/src/svelte/WindowVirtualizer.type.ts#L32)
 
 ***
 
@@ -109,7 +109,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/d38b45573a7cac6e3633108c8eb946f094cdcc02/src/svelte/WindowVirtualizer.type.ts#L36)
+[src/svelte/WindowVirtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/35dfa1c6e2e6854ecd417abe6fb93c829e7500e4/src/svelte/WindowVirtualizer.type.ts#L36)
 
 ***
 
@@ -121,7 +121,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:40](https://github.com/inokawa/virtua/blob/d38b45573a7cac6e3633108c8eb946f094cdcc02/src/svelte/WindowVirtualizer.type.ts#L40)
+[src/svelte/WindowVirtualizer.type.ts:40](https://github.com/inokawa/virtua/blob/35dfa1c6e2e6854ecd417abe6fb93c829e7500e4/src/svelte/WindowVirtualizer.type.ts#L40)
 
 ***
 
@@ -145,7 +145,7 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:45](https://github.com/inokawa/virtua/blob/d38b45573a7cac6e3633108c8eb946f094cdcc02/src/svelte/WindowVirtualizer.type.ts#L45)
+[src/svelte/WindowVirtualizer.type.ts:45](https://github.com/inokawa/virtua/blob/35dfa1c6e2e6854ecd417abe6fb93c829e7500e4/src/svelte/WindowVirtualizer.type.ts#L45)
 
 ***
 
@@ -161,4 +161,4 @@ Callback invoked when scrolling stops.
 
 #### Defined in
 
-[src/svelte/WindowVirtualizer.type.ts:49](https://github.com/inokawa/virtua/blob/d38b45573a7cac6e3633108c8eb946f094cdcc02/src/svelte/WindowVirtualizer.type.ts#L49)
+[src/svelte/WindowVirtualizer.type.ts:49](https://github.com/inokawa/virtua/blob/35dfa1c6e2e6854ecd417abe6fb93c829e7500e4/src/svelte/WindowVirtualizer.type.ts#L49)
