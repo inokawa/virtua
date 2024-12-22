@@ -99,12 +99,11 @@ export const Default: StoryObj = {
           >
             hydrate
           </button>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <label>On hydration:</label>
-            <label style={{ marginLeft: 4 }}>
+            <label>
               <input
                 type="checkbox"
-                style={{ marginLeft: 4 }}
                 checked={scrollOnMount}
                 onChange={() => {
                   setScrollOnMount((prev) => !prev);
@@ -119,10 +118,9 @@ export const Default: StoryObj = {
                 setScrollIndex(Number(e.target.value));
               }}
             />
-            <label style={{ marginLeft: 4 }}>
+            <label>
               <input
                 type="checkbox"
-                style={{ marginLeft: 4 }}
                 checked={smooth}
                 onChange={() => {
                   setSmooth((prev) => !prev);
