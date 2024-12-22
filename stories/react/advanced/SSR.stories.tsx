@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
-import React, { useLayoutEffect, useRef, useState } from "react";
-import { VList } from "../../../src";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { VList, type VListHandle } from "../../../src";
 import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 
@@ -26,14 +26,40 @@ const createRows = (num: number) => {
   });
 };
 
-const App = () => {
-  const COUNT = 1000;
-  return <VList ssrCount={30}>{createRows(COUNT)}</VList>;
+const App = ({
+  scrollOnMount,
+  scrollToIndex,
+  smooth,
+}: {
+  scrollOnMount?: boolean;
+  scrollToIndex?: number;
+  smooth?: boolean;
+}) => {
+  const ref = useRef<VListHandle>(null);
+  useEffect(() => {
+    if (!ref.current || !scrollOnMount || !scrollToIndex) return;
+
+    ref.current.scrollToIndex(scrollToIndex, {
+      smooth: smooth,
+    });
+  }, []);
+
+  const COUNT = 10000;
+  return (
+    <>
+      <VList ref={ref} ssrCount={30}>
+        {createRows(COUNT)}
+      </VList>
+    </>
+  );
 };
 
 export const Default: StoryObj = {
   name: "SSR",
   render: () => {
+    const [scrollOnMount, setScrollOnMount] = useState(false);
+    const [scrollIndex, setScrollIndex] = useState(100);
+    const [smooth, setSmooth] = useState(true);
     const [hydrated, setHydrated] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
@@ -43,7 +69,14 @@ export const Default: StoryObj = {
       if (!hydrated) {
         ref.current.innerHTML = renderToString(<App />);
       } else {
-        hydrateRoot(ref.current, <App />);
+        hydrateRoot(
+          ref.current,
+          <App
+            scrollOnMount={scrollOnMount}
+            scrollToIndex={scrollIndex}
+            smooth={smooth}
+          />
+        );
       }
     }, [hydrated]);
 
@@ -51,7 +84,13 @@ export const Default: StoryObj = {
       <div
         style={{ height: "100vh", display: "flex", flexDirection: "column" }}
       >
-        <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: 8,
+          }}
+        >
           <button
             disabled={hydrated}
             onClick={() => {
@@ -60,6 +99,38 @@ export const Default: StoryObj = {
           >
             hydrate
           </button>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <label>On hydration:</label>
+            <label style={{ marginLeft: 4 }}>
+              <input
+                type="checkbox"
+                style={{ marginLeft: 4 }}
+                checked={scrollOnMount}
+                onChange={() => {
+                  setScrollOnMount((prev) => !prev);
+                }}
+              />
+              scroll to index
+            </label>
+            <input
+              type="number"
+              value={scrollIndex}
+              onChange={(e) => {
+                setScrollIndex(Number(e.target.value));
+              }}
+            />
+            <label style={{ marginLeft: 4 }}>
+              <input
+                type="checkbox"
+                style={{ marginLeft: 4 }}
+                checked={smooth}
+                onChange={() => {
+                  setSmooth((prev) => !prev);
+                }}
+              />
+              smooth
+            </label>
+          </div>
         </div>
         <div ref={ref} style={{ flex: 1 }} />
       </div>
