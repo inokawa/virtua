@@ -332,13 +332,17 @@ export const createVirtualStore = (
               if (
                 // Keep distance from end during shifting
                 _scrollMode === SCROLL_BY_SHIFT ||
+                (_frozenRange
+                  ? // https://github.com/inokawa/virtua/issues/380
+                    !isSSR && index < _frozenRange[0]
+                  : // Otherwise we should maintain visible position
                     getItemOffset(index) +
                       // https://github.com/inokawa/virtua/issues/385
                       (_scrollDirection === SCROLL_IDLE &&
                       _scrollMode === SCROLL_BY_NATIVE
                         ? getItemSize(index)
                         : 0) <
-                  getRelativeScrollOffset()
+                    getRelativeScrollOffset())
               ) {
                 acc += size - getItemSize(index);
               }
