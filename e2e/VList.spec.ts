@@ -1240,51 +1240,72 @@ test.describe("RTL", () => {
   });
 });
 
-test("SSR and hydration", async ({ page }) => {
-  await page.goto(storyUrl("advanced-ssr--default"));
+test.describe("SSR and hydration", () => {
+  test("check if hydration works", async ({ page }) => {
+    await page.goto(storyUrl("advanced-ssr--default"));
 
-  const component = await getScrollable(page);
+    const component = await getScrollable(page);
 
-  const first = await getFirstItem(component);
-  const last = await getLastItem(component);
+    const first = await getFirstItem(component);
+    const last = await getLastItem(component);
 
-  // check if SSR suceeded
-  const itemsSelector = '*[style*="top"]';
-  const items = component.locator(itemsSelector);
-  const initialLength = await items.count();
-  expect(initialLength).toBeGreaterThanOrEqual(30);
-  expect(await items.first().textContent()).toEqual("0");
-  expect(await items.last().textContent()).toEqual(String(initialLength - 1));
-  // check if items have styles for SSR
-  expect(await items.first().evaluate((e) => e.style.position)).not.toBe(
-    "absolute"
-  );
+    // check if SSR suceeded
+    const itemsSelector = '*[style*="top"]';
+    const items = component.locator(itemsSelector);
+    const initialLength = await items.count();
+    expect(initialLength).toBeGreaterThanOrEqual(30);
+    expect(await items.first().textContent()).toEqual("0");
+    expect(await items.last().textContent()).toEqual(String(initialLength - 1));
+    // check if items have styles for SSR
+    expect(await items.first().evaluate((e) => e.style.position)).not.toBe(
+      "absolute"
+    );
 
-  // should not change state with scroll before hydration
-  await component.evaluate((e) => e.scrollTo({ top: 1000 }));
-  expect(initialLength).toBe(await component.locator(itemsSelector).count());
-  await page.waitForTimeout(500);
-  await component.evaluate((e) => e.scrollTo({ top: 0 }));
+    // should not change state with scroll before hydration
+    await component.evaluate((e) => e.scrollTo({ top: 1000 }));
+    expect(initialLength).toBe(await component.locator(itemsSelector).count());
+    await page.waitForTimeout(500);
+    await component.evaluate((e) => e.scrollTo({ top: 0 }));
 
-  // hydrate
-  await page.getByRole("button", { name: "hydrate" }).click();
+    // hydrate
+    await page.getByRole("button", { name: "hydrate" }).click();
 
-  // check if hydration suceeded but state is not changed
-  const hydratedItemsLength = await component.locator(itemsSelector).count();
-  expect(hydratedItemsLength).toBe(initialLength);
-  expect((await getFirstItem(component)).top).toBe(first.top);
-  expect((await getLastItem(component)).bottom).toBe(last.bottom);
-  // check if items do not have styles for SSR
-  expect(await items.first().evaluate((e) => e.style.position)).toBe(
-    "absolute"
-  );
+    // check if hydration suceeded but state is not changed
+    const hydratedItemsLength = await component.locator(itemsSelector).count();
+    expect(hydratedItemsLength).toBe(initialLength);
+    expect((await getFirstItem(component)).top).toBe(first.top);
+    expect((await getLastItem(component)).bottom).toBe(last.bottom);
+    // check if items do not have styles for SSR
+    expect(await items.first().evaluate((e) => e.style.position)).toBe(
+      "absolute"
+    );
 
-  // should change state with scroll after hydration
-  await component.evaluate((e) => e.scrollTo({ top: 1000 }));
-  await page.waitForTimeout(500);
-  expect(await component.locator(itemsSelector).count()).not.toBe(
-    initialLength
-  );
+    // should change state with scroll after hydration
+    await component.evaluate((e) => e.scrollTo({ top: 1000 }));
+    await page.waitForTimeout(500);
+    expect(await component.locator(itemsSelector).count()).not.toBe(
+      initialLength
+    );
+  });
+
+  test("check if smooth scrolling works after hydration", async ({ page }) => {
+    await page.goto(storyUrl("advanced-ssr--scroll-to"));
+
+    const component = await getScrollable(page);
+
+    // turn scroll to index with smooth on
+    await page.getByRole("checkbox", { name: "scroll to index" }).check();
+    await page.getByRole("checkbox", { name: "smooth" }).check();
+
+    // set scroll index to 100
+    await page.locator("input[type=number]").fill("100");
+
+    // hydrate
+    await page.getByRole("button", { name: "hydrate" }).click();
+
+    await page.waitForTimeout(1000);
+    expect((await getFirstItem(component)).text).toEqual("100");
+  });
 });
 
 test.describe("emulated iOS WebKit", () => {
