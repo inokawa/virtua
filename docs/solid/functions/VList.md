@@ -24,4 +24,4 @@ Virtualized list component. See [VListProps](../interfaces/VListProps.md) and [V
 
 ## Defined in
 
-[src/solid/VList.tsx:38](https://github.com/inokawa/virtua/blob/07a9bf9ed8118e1336c76ca2d56bbd6662d2b6ba/src/solid/VList.tsx#L38)
+[src/solid/VList.tsx:38](https://github.com/inokawa/virtua/blob/821400e846ec2c2c787245e430bae0769921405f/src/solid/VList.tsx#L38)

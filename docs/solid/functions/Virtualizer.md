@@ -24,4 +24,4 @@ Customizable list virtualizer for advanced usage. See [VirtualizerProps](../inte
 
 ## Defined in
 
-[src/solid/Virtualizer.tsx:154](https://github.com/inokawa/virtua/blob/07a9bf9ed8118e1336c76ca2d56bbd6662d2b6ba/src/solid/Virtualizer.tsx#L154)
+[src/solid/Virtualizer.tsx:154](https://github.com/inokawa/virtua/blob/821400e846ec2c2c787245e430bae0769921405f/src/solid/Virtualizer.tsx#L154)
