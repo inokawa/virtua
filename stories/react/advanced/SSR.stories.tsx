@@ -26,7 +26,47 @@ const createRows = (num: number) => {
   });
 };
 
-const App = ({
+const App = () => {
+  const COUNT = 1000;
+  return <VList ssrCount={30}>{createRows(COUNT)}</VList>;
+};
+
+export const Default: StoryObj = {
+  render: () => {
+    const [hydrated, setHydrated] = useState(false);
+    const ref = useRef<HTMLDivElement>(null);
+
+    useLayoutEffect(() => {
+      if (!ref.current) return;
+
+      if (!hydrated) {
+        ref.current.innerHTML = renderToString(<App />);
+      } else {
+        hydrateRoot(ref.current, <App />);
+      }
+    }, [hydrated]);
+
+    return (
+      <div
+        style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+      >
+        <div>
+          <button
+            disabled={hydrated}
+            onClick={() => {
+              setHydrated(true);
+            }}
+          >
+            hydrate
+          </button>
+        </div>
+        <div ref={ref} style={{ flex: 1 }} />
+      </div>
+    );
+  },
+};
+
+const AppScrollOnMount = ({
   scrollOnMount,
   scrollToIndex,
   smooth,
@@ -54,8 +94,7 @@ const App = ({
   );
 };
 
-export const Default: StoryObj = {
-  name: "SSR",
+export const ScrollTo: StoryObj = {
   render: () => {
     const [scrollOnMount, setScrollOnMount] = useState(false);
     const [scrollIndex, setScrollIndex] = useState(100);
@@ -67,11 +106,11 @@ export const Default: StoryObj = {
       if (!ref.current) return;
 
       if (!hydrated) {
-        ref.current.innerHTML = renderToString(<App />);
+        ref.current.innerHTML = renderToString(<AppScrollOnMount />);
       } else {
         hydrateRoot(
           ref.current,
-          <App
+          <AppScrollOnMount
             scrollOnMount={scrollOnMount}
             scrollToIndex={scrollIndex}
             smooth={smooth}

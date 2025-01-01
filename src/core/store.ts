@@ -334,6 +334,7 @@ export const createVirtualStore = (
                 _scrollMode === SCROLL_BY_SHIFT ||
                 (_frozenRange
                   ? // https://github.com/inokawa/virtua/issues/380
+                    // https://github.com/inokawa/virtua/issues/590
                     !isSSR && index < _frozenRange[0]
                   : // Otherwise we should maintain visible position
                     getItemOffset(index) +

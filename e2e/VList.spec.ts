@@ -1289,7 +1289,7 @@ test.describe("SSR and hydration", () => {
   });
 
   test("check if smooth scrolling works after hydration", async ({ page }) => {
-    await page.goto(storyUrl("advanced-ssr--default"));
+    await page.goto(storyUrl("advanced-ssr--scroll-to"));
 
     const component = await getScrollable(page);
 
