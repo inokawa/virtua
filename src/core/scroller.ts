@@ -585,11 +585,11 @@ export const createWindowScroller = (
           store.$getItemOffset(index) +
           (align === "end"
             ? store.$getItemSize(index) -
-            (store.$getViewportSize() - getScrollbarSize())
+              (store.$getViewportSize() - getScrollbarSize())
             : align === "center"
               ? (store.$getItemSize(index) -
-                (store.$getViewportSize() - getScrollbarSize())) /
-              2
+                  (store.$getViewportSize() - getScrollbarSize())) /
+                2
               : 0)
         );
       }, smooth);
