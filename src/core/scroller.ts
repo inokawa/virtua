@@ -186,6 +186,7 @@ export type Scroller = {
   $scrollBy: (offset: number) => void;
   $scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
   $fixScrollJump: () => void;
+  $cancelScroll: () => void;
 };
 
 /**
@@ -368,6 +369,9 @@ export const createScroller = (
     },
     $fixScrollJump: () => {
       scrollObserver && scrollObserver._fixScrollJump();
+    },
+    $cancelScroll: () => {
+      cancelScroll && cancelScroll();
     },
   };
 };
@@ -581,11 +585,11 @@ export const createWindowScroller = (
           store.$getItemOffset(index) +
           (align === "end"
             ? store.$getItemSize(index) -
-              (store.$getViewportSize() - getScrollbarSize())
+            (store.$getViewportSize() - getScrollbarSize())
             : align === "center"
               ? (store.$getItemSize(index) -
-                  (store.$getViewportSize() - getScrollbarSize())) /
-                2
+                (store.$getViewportSize() - getScrollbarSize())) /
+              2
               : 0)
         );
       }, smooth);

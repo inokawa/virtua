@@ -86,6 +86,10 @@ export interface VirtualizerHandle {
    * @param offset offset from current position
    */
   scrollBy(offset: number): void;
+  /**
+   * Cancel unfinished scroll.
+   */
+  cancelScroll(): void;
 }
 
 /**
@@ -321,6 +325,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         scrollToIndex: scroller.$scrollToIndex,
         scrollTo: scroller.$scrollTo,
         scrollBy: scroller.$scrollBy,
+        cancelScroll: scroller.$cancelScroll,
       };
     }, []);
 
