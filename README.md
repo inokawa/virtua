@@ -329,6 +329,10 @@ It may be dispatched by ResizeObserver in this lib [as described in spec](https:
 
 Especially for `webpack-dev-server`, [you can filter out the specific error with `devServer.client.overlay.runtimeErrors` option](https://webpack.js.org/configuration/dev-server/#overlay).
 
+#### Why my items are squashed on resize/add/remove?
+
+Maybe you forgot to pass `key` prop to each items, or the keys are not unique. Item sizes are stored per key.
+
 #### Why `VListHandle.viewportSize` is 0 on mount?
 
 `viewportSize` will be calculated by ResizeObserver so it's 0 until the first measurement.
