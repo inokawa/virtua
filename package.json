@@ -27,6 +27,11 @@
       "types": "./lib/svelte/index.d.ts",
       "svelte": "./lib/svelte/index.js",
       "default": "./lib/svelte/index.js"
+    },
+    "./unstable_core": {
+      "types": "./lib/core/index.d.ts",
+      "import": "./lib/core/index.mjs",
+      "default": "./lib/core/index.js"
     }
   },
   "files": [

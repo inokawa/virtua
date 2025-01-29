@@ -34,8 +34,6 @@ const terserPlugin = ({ core, vue } = {}) =>
     },
   });
 
-const corePath = "./lib/core/index.js";
-
 /** @type { import('rollup').RollupOptions[] } */
 export default [
   // react and type
@@ -164,9 +162,14 @@ export default [
     input: "src/core/index.ts",
     output: [
       {
-        file: corePath,
-        format: "esm",
-        // sourcemap: true,
+        file: pkg.exports["./unstable_core"].default,
+        format: "cjs",
+        sourcemap: true,
+      },
+      {
+        file: pkg.exports["./unstable_core"].import,
+        format: "es",
+        sourcemap: true,
       },
     ],
     plugins: [
@@ -179,7 +182,10 @@ export default [
       terserPlugin({ core: true }),
       svelteCopy({
         dir: path.dirname(pkg.exports["./svelte"].default),
-        coreDts: path.join(path.dirname(corePath), "index.d.ts"),
+        coreDts: path.join(
+          path.dirname(pkg.exports["./unstable_core"].import),
+          "index.d.ts"
+        ),
       }),
     ],
     external,
