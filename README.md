@@ -278,6 +278,10 @@ export const App = () => {
 </VList>
 ```
 
+### Other bindings
+
+- [vanilla-virtua](https://github.com/aabccd021/vanilla-virtua): virtua for vanilla js
+
 ## Documentation
 
 - [API reference](./docs/API.md)
