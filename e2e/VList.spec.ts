@@ -465,7 +465,7 @@ test.describe("check if scroll jump compensation works", () => {
     await clearTimer(page);
 
     const button = page.getByRole("button", { name: "submit" });
-    const textarea = (await page.getByRole("textbox"))!;
+    const textarea = page.getByRole("textbox")!;
 
     // append small item
     await button.click();
@@ -969,8 +969,8 @@ test.describe("check if item shift compensation works", () => {
     ]);
 
     await page.getByRole("checkbox", { name: "prepend" }).click();
-    const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
-    const increaseRadio = await page.getByRole("radio", { name: "increase" });
+    const decreaseRadio = page.getByRole("radio", { name: "decrease" });
+    const increaseRadio = page.getByRole("radio", { name: "increase" });
     const valueInput = page.getByRole("spinbutton");
     const updateButton = page.getByRole("button", { name: "update" });
 
@@ -1042,8 +1042,8 @@ test.describe("check if item shift compensation works", () => {
     await page.getByRole("checkbox", { name: "reverse" }).click();
 
     await page.getByRole("checkbox", { name: "prepend" }).click();
-    const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
-    const increaseRadio = await page.getByRole("radio", { name: "increase" });
+    const decreaseRadio = page.getByRole("radio", { name: "decrease" });
+    const increaseRadio = page.getByRole("radio", { name: "increase" });
     const valueInput = page.getByRole("spinbutton");
     const updateButton = page.getByRole("button", { name: "update" });
 
@@ -1117,8 +1117,8 @@ test.describe("check if item shift compensation works", () => {
     await page.getByRole("checkbox", { name: "reverse" }).click();
 
     await page.getByRole("checkbox", { name: "prepend" }).click();
-    const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
-    const increaseRadio = await page.getByRole("radio", { name: "increase" });
+    const decreaseRadio = page.getByRole("radio", { name: "decrease" });
+    const increaseRadio = page.getByRole("radio", { name: "increase" });
     const valueInput = page.getByRole("spinbutton");
     const updateButton = page.getByRole("button", { name: "update" });
 
