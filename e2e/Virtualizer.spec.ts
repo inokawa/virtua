@@ -29,7 +29,7 @@ test("header and footer", async ({ page }) => {
   const itemsSelector = '*[style*="top"]';
 
   // check if start is displayed
-  const topItem = await container.locator(itemsSelector).first();
+  const topItem = container.locator(itemsSelector).first();
   expect(await topItem.textContent()).toEqual("0");
   expect(
     await (async () => {
@@ -77,7 +77,7 @@ test("sticky header and footer", async ({ page }) => {
   const itemsSelector = '*[style*="top"]';
 
   // check if start is displayed
-  const topItem = await container.locator(itemsSelector).first();
+  const topItem = container.locator(itemsSelector).first();
   expect(await topItem.textContent()).toEqual("0");
   expect(
     await (async () => {
@@ -92,7 +92,7 @@ test("sticky header and footer", async ({ page }) => {
 
   // check if the end is displayed
   const items = container.locator(itemsSelector);
-  const bottomItem = await items.last();
+  const bottomItem = items.last();
   expect(await bottomItem.textContent()).toEqual("999");
   expectInRange(
     await (async () => {

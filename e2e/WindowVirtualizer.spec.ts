@@ -1,4 +1,4 @@
-import { test, expect, ElementHandle } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import {
   storyUrl,
   getFirstItem,
@@ -190,8 +190,6 @@ test.describe("check if item shift compensation works", () => {
   });
 
   test("keep end at mid when add to/remove from end", async ({ page }) => {
-    const component = await getVirtualizer(page);
-
     const updateButton = page.getByRole("button", { name: "update" });
 
     // fill list and move to mid
@@ -222,8 +220,6 @@ test.describe("check if item shift compensation works", () => {
   });
 
   test("keep start at mid when add to/remove from start", async ({ page }) => {
-    const component = await getVirtualizer(page);
-
     const updateButton = page.getByRole("button", { name: "update" });
 
     // fill list and move to mid
@@ -261,8 +257,8 @@ test.describe("check if item shift compensation works", () => {
     const component = await getVirtualizer(page);
 
     await page.getByRole("checkbox", { name: "prepend" }).click();
-    const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
-    const increaseRadio = await page.getByRole("radio", { name: "increase" });
+    const decreaseRadio = page.getByRole("radio", { name: "decrease" });
+    const increaseRadio = page.getByRole("radio", { name: "increase" });
     const valueInput = page.getByRole("spinbutton");
     const updateButton = page.getByRole("button", { name: "update" });
 
@@ -324,8 +320,8 @@ test.describe("check if item shift compensation works", () => {
     const component = await getVirtualizer(page);
 
     await page.getByRole("checkbox", { name: "prepend" }).click();
-    const decreaseRadio = await page.getByRole("radio", { name: "decrease" });
-    const increaseRadio = await page.getByRole("radio", { name: "increase" });
+    const decreaseRadio = page.getByRole("radio", { name: "decrease" });
+    const increaseRadio = page.getByRole("radio", { name: "increase" });
     const valueInput = page.getByRole("spinbutton");
     const updateButton = page.getByRole("button", { name: "update" });
 
