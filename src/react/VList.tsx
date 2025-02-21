@@ -1,4 +1,4 @@
-import { ReactElement, forwardRef, useRef } from "react";
+import { ReactElement, RefObject, forwardRef, useRef } from "react";
 import { ViewportComponentAttributes } from "./types";
 import {
   Virtualizer,
@@ -35,6 +35,10 @@ export interface VListProps
    * If true, items are aligned to the end of the list when total size of items are smaller than viewport size. It's useful for chat like app.
    */
   reverse?: boolean;
+  /**
+   * Reference to the scrollable element.
+   */
+  scrollRef?: RefObject<HTMLDivElement>;
 }
 
 /**
@@ -57,11 +61,13 @@ export const VList = forwardRef<VListHandle, VListProps>(
       onScroll,
       onScrollEnd,
       style,
+      scrollRef: externalScrollRef,
       ...attrs
     },
     ref
   ): ReactElement => {
-    const scrollRef = useRef<HTMLDivElement>(null);
+    const internalScrollRef = useRef<HTMLDivElement>(null);
+    const scrollRef = externalScrollRef ?? internalScrollRef;
     const shouldReverse = reverse && !horizontal;
 
     let element = (
