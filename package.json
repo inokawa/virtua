@@ -112,7 +112,7 @@
     "eslint-import-resolver-typescript": "^3.7.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react": "^7.37.4",
-    "eslint-plugin-react-compiler": "19.0.0-beta-27714ef-20250124",
+    "eslint-plugin-react-compiler": "19.0.0-beta-e1e972c-20250221",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-solid": "^0.14.5",
     "eslint-plugin-vue": "^9.32.0",
