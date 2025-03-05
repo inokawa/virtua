@@ -4,15 +4,13 @@
 
 # solid
 
-## Index
-
-### Functions
+## Functions
 
 - [VList](functions/VList.md)
 - [Virtualizer](functions/Virtualizer.md)
 - [WindowVirtualizer](functions/WindowVirtualizer.md)
 
-### Interfaces
+## Interfaces
 
 - [VListProps](interfaces/VListProps.md)
 - [VListHandle](interfaces/VListHandle.md)

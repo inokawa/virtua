@@ -4,6 +4,8 @@
 
 # Interface: VListHandle
 
+Defined in: [src/solid/VList.tsx:15](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/solid/VList.tsx#L15)
+
 Methods of [VList](../functions/VList.md).
 
 ## Extends
@@ -15,6 +17,8 @@ Methods of [VList](../functions/VList.md).
 ### getItemOffset()
 
 > **getItemOffset**(`index`): `number`
+
+Defined in: [src/solid/Virtualizer.tsx:62](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/solid/Virtualizer.tsx#L62)
 
 Get item offset from start.
 
@@ -34,15 +38,13 @@ index of item
 
 [`VirtualizerHandle`](VirtualizerHandle.md).[`getItemOffset`](VirtualizerHandle.md#getitemoffset)
 
-#### Defined in
-
-[src/solid/Virtualizer.tsx:62](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/solid/Virtualizer.tsx#L62)
-
 ***
 
 ### getItemSize()
 
 > **getItemSize**(`index`): `number`
+
+Defined in: [src/solid/Virtualizer.tsx:67](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/solid/Virtualizer.tsx#L67)
 
 Get item size.
 
@@ -62,15 +64,13 @@ index of item
 
 [`VirtualizerHandle`](VirtualizerHandle.md).[`getItemSize`](VirtualizerHandle.md#getitemsize)
 
-#### Defined in
-
-[src/solid/Virtualizer.tsx:67](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/solid/Virtualizer.tsx#L67)
-
 ***
 
 ### scrollToIndex()
 
 > **scrollToIndex**(`index`, `opts`?): `void`
+
+Defined in: [src/solid/Virtualizer.tsx:73](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/solid/Virtualizer.tsx#L73)
 
 Scroll to the item specified by index.
 
@@ -96,15 +96,13 @@ options
 
 [`VirtualizerHandle`](VirtualizerHandle.md).[`scrollToIndex`](VirtualizerHandle.md#scrolltoindex)
 
-#### Defined in
-
-[src/solid/Virtualizer.tsx:73](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/solid/Virtualizer.tsx#L73)
-
 ***
 
 ### scrollTo()
 
 > **scrollTo**(`offset`): `void`
+
+Defined in: [src/solid/Virtualizer.tsx:78](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/solid/Virtualizer.tsx#L78)
 
 Scroll to the given offset.
 
@@ -124,15 +122,13 @@ offset from start
 
 [`VirtualizerHandle`](VirtualizerHandle.md).[`scrollTo`](VirtualizerHandle.md#scrollto)
 
-#### Defined in
-
-[src/solid/Virtualizer.tsx:78](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/solid/Virtualizer.tsx#L78)
-
 ***
 
 ### scrollBy()
 
 > **scrollBy**(`offset`): `void`
+
+Defined in: [src/solid/Virtualizer.tsx:83](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/solid/Virtualizer.tsx#L83)
 
 Scroll by the given offset.
 
@@ -152,15 +148,13 @@ offset from current position
 
 [`VirtualizerHandle`](VirtualizerHandle.md).[`scrollBy`](VirtualizerHandle.md#scrollby)
 
-#### Defined in
-
-[src/solid/Virtualizer.tsx:83](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/solid/Virtualizer.tsx#L83)
-
 ## Properties
 
 ### scrollOffset
 
 > `readonly` **scrollOffset**: `number`
+
+Defined in: [src/solid/Virtualizer.tsx:41](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/solid/Virtualizer.tsx#L41)
 
 Get current scrollTop, or scrollLeft if horizontal: true.
 
@@ -168,15 +162,13 @@ Get current scrollTop, or scrollLeft if horizontal: true.
 
 [`VirtualizerHandle`](VirtualizerHandle.md).[`scrollOffset`](VirtualizerHandle.md#scrolloffset)
 
-#### Defined in
-
-[src/solid/Virtualizer.tsx:41](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/solid/Virtualizer.tsx#L41)
-
 ***
 
 ### scrollSize
 
 > `readonly` **scrollSize**: `number`
+
+Defined in: [src/solid/Virtualizer.tsx:45](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/solid/Virtualizer.tsx#L45)
 
 Get current scrollHeight, or scrollWidth if horizontal: true.
 
@@ -184,15 +176,13 @@ Get current scrollHeight, or scrollWidth if horizontal: true.
 
 [`VirtualizerHandle`](VirtualizerHandle.md).[`scrollSize`](VirtualizerHandle.md#scrollsize)
 
-#### Defined in
-
-[src/solid/Virtualizer.tsx:45](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/solid/Virtualizer.tsx#L45)
-
 ***
 
 ### viewportSize
 
 > `readonly` **viewportSize**: `number`
+
+Defined in: [src/solid/Virtualizer.tsx:49](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/solid/Virtualizer.tsx#L49)
 
 Get current offsetHeight, or offsetWidth if horizontal: true.
 
@@ -200,15 +190,13 @@ Get current offsetHeight, or offsetWidth if horizontal: true.
 
 [`VirtualizerHandle`](VirtualizerHandle.md).[`viewportSize`](VirtualizerHandle.md#viewportsize)
 
-#### Defined in
-
-[src/solid/Virtualizer.tsx:49](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/solid/Virtualizer.tsx#L49)
-
 ***
 
 ### findStartIndex()
 
 > **findStartIndex**: () => `number`
+
+Defined in: [src/solid/Virtualizer.tsx:53](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/solid/Virtualizer.tsx#L53)
 
 Find the start index of visible range of items.
 
@@ -220,15 +208,13 @@ Find the start index of visible range of items.
 
 [`VirtualizerHandle`](VirtualizerHandle.md).[`findStartIndex`](VirtualizerHandle.md#findstartindex)
 
-#### Defined in
-
-[src/solid/Virtualizer.tsx:53](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/solid/Virtualizer.tsx#L53)
-
 ***
 
 ### findEndIndex()
 
 > **findEndIndex**: () => `number`
+
+Defined in: [src/solid/Virtualizer.tsx:57](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/solid/Virtualizer.tsx#L57)
 
 Find the end index of visible range of items.
 
@@ -239,7 +225,3 @@ Find the end index of visible range of items.
 #### Inherited from
 
 [`VirtualizerHandle`](VirtualizerHandle.md).[`findEndIndex`](VirtualizerHandle.md#findendindex)
-
-#### Defined in
-
-[src/solid/Virtualizer.tsx:57](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/solid/Virtualizer.tsx#L57)

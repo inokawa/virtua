@@ -4,6 +4,8 @@
 
 # Interface: VListProps\<T\>
 
+Defined in: [src/svelte/VList.type.ts:7](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/svelte/VList.type.ts#L7)
+
 Props of [VList](../type-aliases/VList.md).
 
 ## Extends
@@ -18,7 +20,9 @@ Props of [VList](../type-aliases/VList.md).
 
 ### children
 
-> **children**: `Snippet`\<[`T`, `number`]\>
+> **children**: `Snippet`\<\[`T`, `number`\]\>
+
+Defined in: [src/svelte/Virtualizer.type.ts:16](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/svelte/Virtualizer.type.ts#L16)
 
 The elements renderer snippet.
 
@@ -26,15 +30,13 @@ The elements renderer snippet.
 
 `Pick.children`
 
-#### Defined in
-
-[src/svelte/Virtualizer.type.ts:16](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/svelte/Virtualizer.type.ts#L16)
-
 ***
 
 ### shift?
 
 > `optional` **shift**: `boolean`
+
+Defined in: [src/svelte/Virtualizer.type.ts:51](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/svelte/Virtualizer.type.ts#L51)
 
 While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
 
@@ -42,15 +44,13 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 `Pick.shift`
 
-#### Defined in
-
-[src/svelte/Virtualizer.type.ts:51](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/svelte/Virtualizer.type.ts#L51)
-
 ***
 
 ### data
 
 > **data**: `T`[]
+
+Defined in: [src/svelte/Virtualizer.type.ts:12](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/svelte/Virtualizer.type.ts#L12)
 
 The data items rendered by this component.
 
@@ -58,15 +58,13 @@ The data items rendered by this component.
 
 `Pick.data`
 
-#### Defined in
-
-[src/svelte/Virtualizer.type.ts:12](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/svelte/Virtualizer.type.ts#L12)
-
 ***
 
 ### overscan?
 
 > `optional` **overscan**: `number`
+
+Defined in: [src/svelte/Virtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/svelte/Virtualizer.type.ts#L36)
 
 Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
 
@@ -80,15 +78,13 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 `Pick.overscan`
 
-#### Defined in
-
-[src/svelte/Virtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/svelte/Virtualizer.type.ts#L36)
-
 ***
 
 ### itemSize?
 
 > `optional` **itemSize**: `number`
+
+Defined in: [src/svelte/Virtualizer.type.ts:47](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/svelte/Virtualizer.type.ts#L47)
 
 Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -99,15 +95,13 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 `Pick.itemSize`
 
-#### Defined in
-
-[src/svelte/Virtualizer.type.ts:47](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/svelte/Virtualizer.type.ts#L47)
-
 ***
 
 ### horizontal?
 
 > `optional` **horizontal**: `boolean`
+
+Defined in: [src/svelte/Virtualizer.type.ts:55](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/svelte/Virtualizer.type.ts#L55)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -115,15 +109,13 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 `Pick.horizontal`
 
-#### Defined in
-
-[src/svelte/Virtualizer.type.ts:55](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/svelte/Virtualizer.type.ts#L55)
-
 ***
 
 ### onscroll()?
 
 > `optional` **onscroll**: (`offset`) => `void`
+
+Defined in: [src/svelte/Virtualizer.type.ts:64](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/svelte/Virtualizer.type.ts#L64)
 
 Callback invoked whenever scroll offset changes.
 
@@ -143,15 +135,13 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 `Pick.onscroll`
 
-#### Defined in
-
-[src/svelte/Virtualizer.type.ts:64](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/svelte/Virtualizer.type.ts#L64)
-
 ***
 
 ### onscrollend()?
 
 > `optional` **onscrollend**: () => `void`
+
+Defined in: [src/svelte/Virtualizer.type.ts:68](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/svelte/Virtualizer.type.ts#L68)
 
 Callback invoked when scrolling stops.
 
@@ -163,15 +153,13 @@ Callback invoked when scrolling stops.
 
 `Pick.onscrollend`
 
-#### Defined in
-
-[src/svelte/Virtualizer.type.ts:68](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/svelte/Virtualizer.type.ts#L68)
-
 ***
 
 ### getKey()?
 
 > `optional` **getKey**: (`data`, `index`) => `string` \| `number`
+
+Defined in: [src/svelte/Virtualizer.type.ts:21](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/svelte/Virtualizer.type.ts#L21)
 
 Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
 
@@ -199,23 +187,17 @@ defaultGetKey (returns index of item)
 
 `Pick.getKey`
 
-#### Defined in
-
-[src/svelte/Virtualizer.type.ts:21](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/svelte/Virtualizer.type.ts#L21)
-
 ***
 
 ### style?
 
 > `optional` **style**: `null` \| `string`
 
+Defined in: node\_modules/svelte/elements.d.ts:749
+
 #### Inherited from
 
 `ViewportComponentAttributes.style`
-
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:749
 
 ***
 
@@ -223,13 +205,11 @@ node\_modules/svelte/elements.d.ts:749
 
 > `optional` **id**: `null` \| `string`
 
+Defined in: node\_modules/svelte/elements.d.ts:743
+
 #### Inherited from
 
 `ViewportComponentAttributes.id`
-
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:743
 
 ***
 
@@ -237,13 +217,11 @@ node\_modules/svelte/elements.d.ts:743
 
 > `optional` **role**: `null` \| `AriaRole`
 
+Defined in: node\_modules/svelte/elements.d.ts:761
+
 #### Inherited from
 
 `ViewportComponentAttributes.role`
-
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:761
 
 ***
 
@@ -251,13 +229,11 @@ node\_modules/svelte/elements.d.ts:761
 
 > `optional` **class**: `null` \| `string`
 
+Defined in: node\_modules/svelte/elements.d.ts:726
+
 #### Inherited from
 
 `ViewportComponentAttributes.class`
-
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:726
 
 ***
 
@@ -265,13 +241,11 @@ node\_modules/svelte/elements.d.ts:726
 
 > `optional` **tabindex**: `null` \| `number`
 
+Defined in: node\_modules/svelte/elements.d.ts:750
+
 #### Inherited from
 
 `ViewportComponentAttributes.tabindex`
-
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:750
 
 ***
 
@@ -279,15 +253,13 @@ node\_modules/svelte/elements.d.ts:750
 
 > `optional` **aria-activedescendant**: `null` \| `string`
 
+Defined in: node\_modules/svelte/elements.d.ts:451
+
 Identifies the currently active element when DOM focus is on a composite widget, textbox, group, or application.
 
 #### Inherited from
 
 `ViewportComponentAttributes.aria-activedescendant`
-
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:451
 
 ***
 
@@ -295,21 +267,21 @@ node\_modules/svelte/elements.d.ts:451
 
 > `optional` **aria-atomic**: `null` \| `Booleanish`
 
+Defined in: node\_modules/svelte/elements.d.ts:453
+
 Indicates whether assistive technologies will present all, or only parts of, the changed region based on the change notifications defined by the aria-relevant attribute.
 
 #### Inherited from
 
 `ViewportComponentAttributes.aria-atomic`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:453
-
 ***
 
 ### aria-autocomplete?
 
 > `optional` **aria-autocomplete**: `null` \| `"inline"` \| `"none"` \| `"both"` \| `"list"`
+
+Defined in: node\_modules/svelte/elements.d.ts:458
 
 Indicates whether inputting text could trigger display of one or more predictions of the user's intended value for an input and specifies how predictions would be
 presented if they are made.
@@ -318,15 +290,13 @@ presented if they are made.
 
 `ViewportComponentAttributes.aria-autocomplete`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:458
-
 ***
 
 ### aria-busy?
 
 > `optional` **aria-busy**: `null` \| `Booleanish`
+
+Defined in: node\_modules/svelte/elements.d.ts:460
 
 Indicates an element is being modified and that assistive technologies MAY want to wait until the modifications are complete before exposing them to the user.
 
@@ -334,15 +304,13 @@ Indicates an element is being modified and that assistive technologies MAY want 
 
 `ViewportComponentAttributes.aria-busy`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:460
-
 ***
 
 ### aria-checked?
 
 > `optional` **aria-checked**: `null` \| `boolean` \| `"mixed"` \| `"false"` \| `"true"`
+
+Defined in: node\_modules/svelte/elements.d.ts:465
 
 Indicates the current "checked" state of checkboxes, radio buttons, and other widgets.
 
@@ -355,15 +323,13 @@ Indicates the current "checked" state of checkboxes, radio buttons, and other wi
 
 `ViewportComponentAttributes.aria-checked`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:465
-
 ***
 
 ### aria-colcount?
 
 > `optional` **aria-colcount**: `null` \| `number`
+
+Defined in: node\_modules/svelte/elements.d.ts:470
 
 Defines the total number of columns in a table, grid, or treegrid.
 
@@ -375,15 +341,13 @@ aria-colindex.
 
 `ViewportComponentAttributes.aria-colcount`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:470
-
 ***
 
 ### aria-colindex?
 
 > `optional` **aria-colindex**: `null` \| `number`
+
+Defined in: node\_modules/svelte/elements.d.ts:475
 
 Defines an element's column index or position with respect to the total number of columns within a table, grid, or treegrid.
 
@@ -396,15 +360,13 @@ Defines an element's column index or position with respect to the total number o
 
 `ViewportComponentAttributes.aria-colindex`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:475
-
 ***
 
 ### aria-colspan?
 
 > `optional` **aria-colspan**: `null` \| `number`
+
+Defined in: node\_modules/svelte/elements.d.ts:480
 
 Defines the number of columns spanned by a cell or gridcell within a table, grid, or treegrid.
 
@@ -417,15 +379,13 @@ Defines the number of columns spanned by a cell or gridcell within a table, grid
 
 `ViewportComponentAttributes.aria-colspan`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:480
-
 ***
 
 ### aria-controls?
 
 > `optional` **aria-controls**: `null` \| `string`
+
+Defined in: node\_modules/svelte/elements.d.ts:485
 
 Identifies the element (or elements) whose contents or presence are controlled by the current element.
 
@@ -437,15 +397,13 @@ aria-owns.
 
 `ViewportComponentAttributes.aria-controls`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:485
-
 ***
 
 ### aria-current?
 
 > `optional` **aria-current**: `null` \| `"time"` \| `"page"` \| `"location"` \| `"date"` \| `"step"` \| `Booleanish`
+
+Defined in: node\_modules/svelte/elements.d.ts:487
 
 Indicates the element that represents the current item within a container or set of related elements.
 
@@ -453,15 +411,13 @@ Indicates the element that represents the current item within a container or set
 
 `ViewportComponentAttributes.aria-current`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:487
-
 ***
 
 ### aria-describedby?
 
 > `optional` **aria-describedby**: `null` \| `string`
+
+Defined in: node\_modules/svelte/elements.d.ts:492
 
 Identifies the element (or elements) that describes the object.
 
@@ -473,15 +429,13 @@ aria-labelledby
 
 `ViewportComponentAttributes.aria-describedby`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:492
-
 ***
 
 ### aria-details?
 
 > `optional` **aria-details**: `null` \| `string`
+
+Defined in: node\_modules/svelte/elements.d.ts:497
 
 Identifies the element that provides a detailed, extended description for the object.
 
@@ -493,15 +447,13 @@ aria-describedby.
 
 `ViewportComponentAttributes.aria-details`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:497
-
 ***
 
 ### aria-disabled?
 
 > `optional` **aria-disabled**: `null` \| `Booleanish`
+
+Defined in: node\_modules/svelte/elements.d.ts:502
 
 Indicates that the element is perceivable but disabled, so it is not editable or otherwise operable.
 
@@ -514,15 +466,13 @@ Indicates that the element is perceivable but disabled, so it is not editable or
 
 `ViewportComponentAttributes.aria-disabled`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:502
-
 ***
 
 ### ~~aria-dropeffect?~~
 
 > `optional` **aria-dropeffect**: `null` \| `"copy"` \| `"none"` \| `"link"` \| `"move"` \| `"execute"` \| `"popup"`
+
+Defined in: node\_modules/svelte/elements.d.ts:507
 
 Indicates what functions can be performed when a dragged object is released on the drop target.
 
@@ -534,15 +484,13 @@ in ARIA 1.1
 
 `ViewportComponentAttributes.aria-dropeffect`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:507
-
 ***
 
 ### aria-errormessage?
 
 > `optional` **aria-errormessage**: `null` \| `string`
+
+Defined in: node\_modules/svelte/elements.d.ts:512
 
 Identifies the element that provides an error message for the object.
 
@@ -555,15 +503,13 @@ Identifies the element that provides an error message for the object.
 
 `ViewportComponentAttributes.aria-errormessage`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:512
-
 ***
 
 ### aria-expanded?
 
 > `optional` **aria-expanded**: `null` \| `Booleanish`
+
+Defined in: node\_modules/svelte/elements.d.ts:514
 
 Indicates whether the element, or another grouping element it controls, is currently expanded or collapsed.
 
@@ -571,15 +517,13 @@ Indicates whether the element, or another grouping element it controls, is curre
 
 `ViewportComponentAttributes.aria-expanded`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:514
-
 ***
 
 ### aria-flowto?
 
 > `optional` **aria-flowto**: `null` \| `string`
+
+Defined in: node\_modules/svelte/elements.d.ts:519
 
 Identifies the next element (or elements) in an alternate reading order of content which, at the user's discretion,
 allows assistive technology to override the general default of reading in document source order.
@@ -588,15 +532,13 @@ allows assistive technology to override the general default of reading in docume
 
 `ViewportComponentAttributes.aria-flowto`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:519
-
 ***
 
 ### ~~aria-grabbed?~~
 
 > `optional` **aria-grabbed**: `null` \| `Booleanish`
+
+Defined in: node\_modules/svelte/elements.d.ts:524
 
 Indicates an element's "grabbed" state in a drag-and-drop operation.
 
@@ -608,15 +550,13 @@ in ARIA 1.1
 
 `ViewportComponentAttributes.aria-grabbed`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:524
-
 ***
 
 ### aria-haspopup?
 
 > `optional` **aria-haspopup**: `null` \| `"grid"` \| `"dialog"` \| `"menu"` \| `"listbox"` \| `"tree"` \| `Booleanish`
+
+Defined in: node\_modules/svelte/elements.d.ts:526
 
 Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by an element.
 
@@ -624,15 +564,13 @@ Indicates the availability and type of interactive popup element, such as menu o
 
 `ViewportComponentAttributes.aria-haspopup`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:526
-
 ***
 
 ### aria-hidden?
 
 > `optional` **aria-hidden**: `null` \| `Booleanish`
+
+Defined in: node\_modules/svelte/elements.d.ts:531
 
 Indicates whether the element is exposed to an accessibility API.
 
@@ -644,15 +582,13 @@ aria-disabled.
 
 `ViewportComponentAttributes.aria-hidden`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:531
-
 ***
 
 ### aria-invalid?
 
 > `optional` **aria-invalid**: `null` \| `"grammar"` \| `"spelling"` \| `Booleanish`
+
+Defined in: node\_modules/svelte/elements.d.ts:536
 
 Indicates the entered value does not conform to the format expected by the application.
 
@@ -664,15 +600,13 @@ aria-errormessage.
 
 `ViewportComponentAttributes.aria-invalid`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:536
-
 ***
 
 ### aria-keyshortcuts?
 
 > `optional` **aria-keyshortcuts**: `null` \| `string`
+
+Defined in: node\_modules/svelte/elements.d.ts:538
 
 Indicates keyboard shortcuts that an author has implemented to activate or give focus to an element.
 
@@ -680,15 +614,13 @@ Indicates keyboard shortcuts that an author has implemented to activate or give 
 
 `ViewportComponentAttributes.aria-keyshortcuts`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:538
-
 ***
 
 ### aria-label?
 
 > `optional` **aria-label**: `null` \| `string`
+
+Defined in: node\_modules/svelte/elements.d.ts:543
 
 Defines a string value that labels the current element.
 
@@ -700,15 +632,13 @@ aria-labelledby.
 
 `ViewportComponentAttributes.aria-label`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:543
-
 ***
 
 ### aria-labelledby?
 
 > `optional` **aria-labelledby**: `null` \| `string`
+
+Defined in: node\_modules/svelte/elements.d.ts:548
 
 Identifies the element (or elements) that labels the current element.
 
@@ -720,15 +650,13 @@ aria-describedby.
 
 `ViewportComponentAttributes.aria-labelledby`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:548
-
 ***
 
 ### aria-level?
 
 > `optional` **aria-level**: `null` \| `number`
+
+Defined in: node\_modules/svelte/elements.d.ts:550
 
 Defines the hierarchical level of an element within a structure.
 
@@ -736,15 +664,13 @@ Defines the hierarchical level of an element within a structure.
 
 `ViewportComponentAttributes.aria-level`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:550
-
 ***
 
 ### aria-live?
 
 > `optional` **aria-live**: `null` \| `"off"` \| `"assertive"` \| `"polite"`
+
+Defined in: node\_modules/svelte/elements.d.ts:552
 
 Indicates that an element will be updated, and describes the types of updates the user agents, assistive technologies, and user can expect from the live region.
 
@@ -752,15 +678,13 @@ Indicates that an element will be updated, and describes the types of updates th
 
 `ViewportComponentAttributes.aria-live`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:552
-
 ***
 
 ### aria-modal?
 
 > `optional` **aria-modal**: `null` \| `Booleanish`
+
+Defined in: node\_modules/svelte/elements.d.ts:554
 
 Indicates whether an element is modal when displayed.
 
@@ -768,15 +692,13 @@ Indicates whether an element is modal when displayed.
 
 `ViewportComponentAttributes.aria-modal`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:554
-
 ***
 
 ### aria-multiline?
 
 > `optional` **aria-multiline**: `null` \| `Booleanish`
+
+Defined in: node\_modules/svelte/elements.d.ts:556
 
 Indicates whether a text box accepts multiple lines of input or only a single line.
 
@@ -784,15 +706,13 @@ Indicates whether a text box accepts multiple lines of input or only a single li
 
 `ViewportComponentAttributes.aria-multiline`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:556
-
 ***
 
 ### aria-multiselectable?
 
 > `optional` **aria-multiselectable**: `null` \| `Booleanish`
+
+Defined in: node\_modules/svelte/elements.d.ts:558
 
 Indicates that the user may select more than one item from the current selectable descendants.
 
@@ -800,15 +720,13 @@ Indicates that the user may select more than one item from the current selectabl
 
 `ViewportComponentAttributes.aria-multiselectable`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:558
-
 ***
 
 ### aria-orientation?
 
 > `optional` **aria-orientation**: `null` \| `"horizontal"` \| `"vertical"`
+
+Defined in: node\_modules/svelte/elements.d.ts:560
 
 Indicates whether the element's orientation is horizontal, vertical, or unknown/ambiguous.
 
@@ -816,15 +734,13 @@ Indicates whether the element's orientation is horizontal, vertical, or unknown/
 
 `ViewportComponentAttributes.aria-orientation`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:560
-
 ***
 
 ### aria-owns?
 
 > `optional` **aria-owns**: `null` \| `string`
+
+Defined in: node\_modules/svelte/elements.d.ts:566
 
 Identifies an element (or elements) in order to define a visual, functional, or contextual parent/child relationship
 between DOM elements where the DOM hierarchy cannot be used to represent the relationship.
@@ -837,15 +753,13 @@ aria-controls.
 
 `ViewportComponentAttributes.aria-owns`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:566
-
 ***
 
 ### aria-placeholder?
 
 > `optional` **aria-placeholder**: `null` \| `string`
+
+Defined in: node\_modules/svelte/elements.d.ts:571
 
 Defines a short hint (a word or short phrase) intended to aid the user with data entry when the control has no value.
 A hint could be a sample value or a brief description of the expected format.
@@ -854,15 +768,13 @@ A hint could be a sample value or a brief description of the expected format.
 
 `ViewportComponentAttributes.aria-placeholder`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:571
-
 ***
 
 ### aria-posinset?
 
 > `optional` **aria-posinset**: `null` \| `number`
+
+Defined in: node\_modules/svelte/elements.d.ts:576
 
 Defines an element's number or position in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.
 
@@ -874,15 +786,13 @@ aria-setsize.
 
 `ViewportComponentAttributes.aria-posinset`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:576
-
 ***
 
 ### aria-pressed?
 
 > `optional` **aria-pressed**: `null` \| `boolean` \| `"mixed"` \| `"false"` \| `"true"`
+
+Defined in: node\_modules/svelte/elements.d.ts:581
 
 Indicates the current "pressed" state of toggle buttons.
 
@@ -895,15 +805,13 @@ Indicates the current "pressed" state of toggle buttons.
 
 `ViewportComponentAttributes.aria-pressed`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:581
-
 ***
 
 ### aria-readonly?
 
 > `optional` **aria-readonly**: `null` \| `Booleanish`
+
+Defined in: node\_modules/svelte/elements.d.ts:586
 
 Indicates that the element is not editable, but is otherwise operable.
 
@@ -915,15 +823,13 @@ aria-disabled.
 
 `ViewportComponentAttributes.aria-readonly`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:586
-
 ***
 
 ### aria-relevant?
 
 > `optional` **aria-relevant**: `null` \| `"text"` \| `"all"` \| `"additions"` \| `"additions removals"` \| `"additions text"` \| `"removals"` \| `"removals additions"` \| `"removals text"` \| `"text additions"` \| `"text removals"`
+
+Defined in: node\_modules/svelte/elements.d.ts:591
 
 Indicates what notifications the user agent will trigger when the accessibility tree within a live region is modified.
 
@@ -935,15 +841,13 @@ aria-atomic.
 
 `ViewportComponentAttributes.aria-relevant`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:591
-
 ***
 
 ### aria-required?
 
 > `optional` **aria-required**: `null` \| `Booleanish`
+
+Defined in: node\_modules/svelte/elements.d.ts:605
 
 Indicates that user input is required on the element before a form may be submitted.
 
@@ -951,15 +855,13 @@ Indicates that user input is required on the element before a form may be submit
 
 `ViewportComponentAttributes.aria-required`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:605
-
 ***
 
 ### aria-roledescription?
 
 > `optional` **aria-roledescription**: `null` \| `string`
+
+Defined in: node\_modules/svelte/elements.d.ts:607
 
 Defines a human-readable, author-localized description for the role of an element.
 
@@ -967,15 +869,13 @@ Defines a human-readable, author-localized description for the role of an elemen
 
 `ViewportComponentAttributes.aria-roledescription`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:607
-
 ***
 
 ### aria-rowcount?
 
 > `optional` **aria-rowcount**: `null` \| `number`
+
+Defined in: node\_modules/svelte/elements.d.ts:612
 
 Defines the total number of rows in a table, grid, or treegrid.
 
@@ -987,15 +887,13 @@ aria-rowindex.
 
 `ViewportComponentAttributes.aria-rowcount`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:612
-
 ***
 
 ### aria-rowindex?
 
 > `optional` **aria-rowindex**: `null` \| `number`
+
+Defined in: node\_modules/svelte/elements.d.ts:617
 
 Defines an element's row index or position with respect to the total number of rows within a table, grid, or treegrid.
 
@@ -1008,15 +906,13 @@ Defines an element's row index or position with respect to the total number of r
 
 `ViewportComponentAttributes.aria-rowindex`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:617
-
 ***
 
 ### aria-rowspan?
 
 > `optional` **aria-rowspan**: `null` \| `number`
+
+Defined in: node\_modules/svelte/elements.d.ts:622
 
 Defines the number of rows spanned by a cell or gridcell within a table, grid, or treegrid.
 
@@ -1029,15 +925,13 @@ Defines the number of rows spanned by a cell or gridcell within a table, grid, o
 
 `ViewportComponentAttributes.aria-rowspan`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:622
-
 ***
 
 ### aria-selected?
 
 > `optional` **aria-selected**: `null` \| `Booleanish`
+
+Defined in: node\_modules/svelte/elements.d.ts:627
 
 Indicates the current "selected" state of various widgets.
 
@@ -1050,15 +944,13 @@ Indicates the current "selected" state of various widgets.
 
 `ViewportComponentAttributes.aria-selected`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:627
-
 ***
 
 ### aria-setsize?
 
 > `optional` **aria-setsize**: `null` \| `number`
+
+Defined in: node\_modules/svelte/elements.d.ts:632
 
 Defines the number of items in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.
 
@@ -1070,15 +962,13 @@ aria-posinset.
 
 `ViewportComponentAttributes.aria-setsize`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:632
-
 ***
 
 ### aria-sort?
 
 > `optional` **aria-sort**: `null` \| `"none"` \| `"ascending"` \| `"descending"` \| `"other"`
+
+Defined in: node\_modules/svelte/elements.d.ts:634
 
 Indicates if items in a table or grid are sorted in ascending or descending order.
 
@@ -1086,15 +976,13 @@ Indicates if items in a table or grid are sorted in ascending or descending orde
 
 `ViewportComponentAttributes.aria-sort`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:634
-
 ***
 
 ### aria-valuemax?
 
 > `optional` **aria-valuemax**: `null` \| `number`
+
+Defined in: node\_modules/svelte/elements.d.ts:636
 
 Defines the maximum allowed value for a range widget.
 
@@ -1102,15 +990,13 @@ Defines the maximum allowed value for a range widget.
 
 `ViewportComponentAttributes.aria-valuemax`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:636
-
 ***
 
 ### aria-valuemin?
 
 > `optional` **aria-valuemin**: `null` \| `number`
+
+Defined in: node\_modules/svelte/elements.d.ts:638
 
 Defines the minimum allowed value for a range widget.
 
@@ -1118,15 +1004,13 @@ Defines the minimum allowed value for a range widget.
 
 `ViewportComponentAttributes.aria-valuemin`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:638
-
 ***
 
 ### aria-valuenow?
 
 > `optional` **aria-valuenow**: `null` \| `number`
+
+Defined in: node\_modules/svelte/elements.d.ts:643
 
 Defines the current value for a range widget.
 
@@ -1138,22 +1022,16 @@ aria-valuetext.
 
 `ViewportComponentAttributes.aria-valuenow`
 
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:643
-
 ***
 
 ### aria-valuetext?
 
 > `optional` **aria-valuetext**: `null` \| `string`
 
+Defined in: node\_modules/svelte/elements.d.ts:645
+
 Defines the human readable text alternative of aria-valuenow for a range widget.
 
 #### Inherited from
 
 `ViewportComponentAttributes.aria-valuetext`
-
-#### Defined in
-
-node\_modules/svelte/elements.d.ts:645

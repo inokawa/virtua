@@ -4,6 +4,8 @@
 
 # Interface: WindowVirtualizerHandle
 
+Defined in: [src/solid/WindowVirtualizer.tsx:32](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/solid/WindowVirtualizer.tsx#L32)
+
 Methods of [WindowVirtualizer](../functions/WindowVirtualizer.md).
 
 ## Methods
@@ -11,6 +13,8 @@ Methods of [WindowVirtualizer](../functions/WindowVirtualizer.md).
 ### scrollToIndex()
 
 > **scrollToIndex**(`index`, `opts`?): `void`
+
+Defined in: [src/solid/WindowVirtualizer.tsx:46](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/solid/WindowVirtualizer.tsx#L46)
 
 Scroll to the item specified by index.
 
@@ -32,15 +36,13 @@ options
 
 `void`
 
-#### Defined in
-
-[src/solid/WindowVirtualizer.tsx:46](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/solid/WindowVirtualizer.tsx#L46)
-
 ## Properties
 
 ### findStartIndex()
 
 > **findStartIndex**: () => `number`
+
+Defined in: [src/solid/WindowVirtualizer.tsx:36](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/solid/WindowVirtualizer.tsx#L36)
 
 Find the start index of visible range of items.
 
@@ -48,22 +50,16 @@ Find the start index of visible range of items.
 
 `number`
 
-#### Defined in
-
-[src/solid/WindowVirtualizer.tsx:36](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/solid/WindowVirtualizer.tsx#L36)
-
 ***
 
 ### findEndIndex()
 
 > **findEndIndex**: () => `number`
 
+Defined in: [src/solid/WindowVirtualizer.tsx:40](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/solid/WindowVirtualizer.tsx#L40)
+
 Find the end index of visible range of items.
 
 #### Returns
 
 `number`
-
-#### Defined in
-
-[src/solid/WindowVirtualizer.tsx:40](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/solid/WindowVirtualizer.tsx#L40)

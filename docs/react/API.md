@@ -4,16 +4,14 @@
 
 # react
 
-## Index
-
-### Functions
+## Functions
 
 - [VList](functions/VList.md)
 - [Virtualizer](functions/Virtualizer.md)
 - [WindowVirtualizer](functions/WindowVirtualizer.md)
 - [experimental\_VGrid](functions/experimental_VGrid.md)
 
-### Interfaces
+## Interfaces
 
 - [CacheSnapshot](interfaces/CacheSnapshot.md)
 - [ScrollToIndexOpts](interfaces/ScrollToIndexOpts.md)
@@ -29,7 +27,7 @@
 - [CustomContainerComponentProps](interfaces/CustomContainerComponentProps.md)
 - [CustomItemComponentProps](interfaces/CustomItemComponentProps.md)
 
-### Type Aliases
+## Type Aliases
 
 - [ScrollToIndexAlign](type-aliases/ScrollToIndexAlign.md)
 - [CustomCellComponent](type-aliases/CustomCellComponent.md)

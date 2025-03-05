@@ -4,15 +4,15 @@
 
 # Interface: CustomContainerComponentProps
 
+Defined in: [src/react/types.ts:9](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/types.ts#L9)
+
 ## Properties
 
 ### style
 
 > **style**: `CSSProperties`
 
-#### Defined in
-
-[src/react/types.ts:10](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/react/types.ts#L10)
+Defined in: [src/react/types.ts:10](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/types.ts#L10)
 
 ***
 
@@ -20,9 +20,7 @@
 
 > **children**: `ReactNode`
 
-#### Defined in
-
-[src/react/types.ts:11](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/react/types.ts#L11)
+Defined in: [src/react/types.ts:11](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/types.ts#L11)
 
 ***
 
@@ -30,8 +28,6 @@
 
 > `optional` **ref**: `LegacyRef`\<`any`\>
 
+Defined in: [src/react/types.ts:15](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/types.ts#L15)
+
 only available after React 19
-
-#### Defined in
-
-[src/react/types.ts:15](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/react/types.ts#L15)

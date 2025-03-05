@@ -4,9 +4,7 @@
 
 # svelte
 
-## Index
-
-### Interfaces
+## Interfaces
 
 - [VListProps](interfaces/VListProps.md)
 - [VListHandle](interfaces/VListHandle.md)
@@ -14,11 +12,11 @@
 - [VirtualizerHandle](interfaces/VirtualizerHandle.md)
 - [WindowVirtualizerProps](interfaces/WindowVirtualizerProps.md)
 
-### Type Aliases
+## Type Aliases
 
 - [VList](type-aliases/VList.md)
 
-### Variables
+## Variables
 
 - [VList](variables/VList.md)
 

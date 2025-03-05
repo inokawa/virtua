@@ -6,6 +6,8 @@
 
 > **Virtualizer**(`props`): `ReactNode`
 
+Defined in: [src/react/Virtualizer.tsx:171](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/Virtualizer.tsx#L171)
+
 Customizable list virtualizer for advanced usage. See [VirtualizerProps](../interfaces/VirtualizerProps.md) and [VirtualizerHandle](../interfaces/VirtualizerHandle.md).
 
 ## Parameters
@@ -17,7 +19,3 @@ Customizable list virtualizer for advanced usage. See [VirtualizerProps](../inte
 ## Returns
 
 `ReactNode`
-
-## Defined in
-
-[src/react/Virtualizer.tsx:171](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/react/Virtualizer.tsx#L171)

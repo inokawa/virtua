@@ -6,6 +6,8 @@
 
 > **VList**(`props`): `ReactNode`
 
+Defined in: [src/react/VList.tsx:43](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/VList.tsx#L43)
+
 Virtualized list component. See [VListProps](../interfaces/VListProps.md) and [VListHandle](../interfaces/VListHandle.md).
 
 ## Parameters
@@ -17,7 +19,3 @@ Virtualized list component. See [VListProps](../interfaces/VListProps.md) and [V
 ## Returns
 
 `ReactNode`
-
-## Defined in
-
-[src/react/VList.tsx:43](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/react/VList.tsx#L43)

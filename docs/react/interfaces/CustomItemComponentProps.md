@@ -4,6 +4,8 @@
 
 # Interface: CustomItemComponentProps
 
+Defined in: [src/react/types.ts:24](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/types.ts#L24)
+
 Props of customized item component for [Virtualizer](../functions/Virtualizer.md) or [WindowVirtualizer](../functions/WindowVirtualizer.md).
 
 ## Properties
@@ -12,9 +14,7 @@ Props of customized item component for [Virtualizer](../functions/Virtualizer.md
 
 > **style**: `CSSProperties`
 
-#### Defined in
-
-[src/react/types.ts:25](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/react/types.ts#L25)
+Defined in: [src/react/types.ts:25](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/types.ts#L25)
 
 ***
 
@@ -22,9 +22,7 @@ Props of customized item component for [Virtualizer](../functions/Virtualizer.md
 
 > **index**: `number`
 
-#### Defined in
-
-[src/react/types.ts:26](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/react/types.ts#L26)
+Defined in: [src/react/types.ts:26](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/types.ts#L26)
 
 ***
 
@@ -32,9 +30,7 @@ Props of customized item component for [Virtualizer](../functions/Virtualizer.md
 
 > **children**: `ReactNode`
 
-#### Defined in
-
-[src/react/types.ts:27](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/react/types.ts#L27)
+Defined in: [src/react/types.ts:27](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/types.ts#L27)
 
 ***
 
@@ -42,8 +38,6 @@ Props of customized item component for [Virtualizer](../functions/Virtualizer.md
 
 > `optional` **ref**: `LegacyRef`\<`any`\>
 
+Defined in: [src/react/types.ts:31](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/types.ts#L31)
+
 only available after React 19
-
-#### Defined in
-
-[src/react/types.ts:31](https://github.com/inokawa/virtua/blob/d2c1d3653c8c81252d5e36872bda7c628b56b149/src/react/types.ts#L31)
