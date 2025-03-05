@@ -186,6 +186,7 @@ export type Scroller = {
   $scrollBy: (offset: number) => void;
   $scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
   $fixScrollJump: () => void;
+  $cancelScroll: () => void;
 };
 
 /**
@@ -368,6 +369,9 @@ export const createScroller = (
     },
     $fixScrollJump: () => {
       scrollObserver && scrollObserver._fixScrollJump();
+    },
+    $cancelScroll: () => {
+      cancelScroll && cancelScroll();
     },
   };
 };
