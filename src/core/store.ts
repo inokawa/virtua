@@ -184,14 +184,20 @@ export const createVirtualStore = (
       return takeCacheSnapshot(cache) as unknown as CacheSnapshot;
     },
     $getRange: () => {
-      // Return previous range for consistent render until next scroll event comes in.
+      let startIndex: number;
+      let endIndex: number;
       if (_flushedJump) {
-        return _prevRange;
-      }
-      let [startIndex, endIndex] = getRange(max(0, getVisibleOffset()));
-      if (_frozenRange) {
-        startIndex = min(startIndex, _frozenRange[0]);
-        endIndex = max(endIndex, _frozenRange[1]);
+        // Return previous range for consistent render until next scroll event comes in.
+        // And it must be clamped. https://github.com/inokawa/virtua/issues/597
+        [startIndex, endIndex] = _prevRange;
+      } else {
+        [startIndex, endIndex] = _prevRange = getRange(
+          max(0, getVisibleOffset())
+        );
+        if (_frozenRange) {
+          startIndex = min(startIndex, _frozenRange[0]);
+          endIndex = max(endIndex, _frozenRange[1]);
+        }
       }
 
       if (_scrollDirection !== SCROLL_DOWN) {
@@ -200,10 +206,7 @@ export const createVirtualStore = (
       if (_scrollDirection !== SCROLL_UP) {
         endIndex += max(0, overscan);
       }
-      return (_prevRange = [
-        max(startIndex, 0),
-        min(endIndex, cache._length - 1),
-      ]);
+      return [max(startIndex, 0), min(endIndex, cache._length - 1)];
     },
     $findStartIndex: () => findIndex(cache, getVisibleOffset()),
     $findEndIndex: () => findIndex(cache, getVisibleOffset() + viewportSize),
