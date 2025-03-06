@@ -23,7 +23,10 @@ import { ItemProps } from "./utils";
  */
 export const ListItem = /*#__PURE__*/ defineComponent({
   props: {
-    _rerender: { type: Object as PropType<Ref<StateVersion>>, required: true },
+    _stateVersion: {
+      type: Object as PropType<Ref<StateVersion>>,
+      required: true,
+    },
     _store: { type: Object as PropType<VirtualStore>, required: true },
     _children: { type: Object as PropType<VNode>, required: true },
     _resizer: {
@@ -40,11 +43,13 @@ export const ListItem = /*#__PURE__*/ defineComponent({
     const elementRef = ref<HTMLDivElement>();
 
     const offset = computed(
-      () => props._rerender.value && props._store.$getItemOffset(props._index)
+      () =>
+        props._stateVersion.value && props._store.$getItemOffset(props._index)
     );
     const hide = computed(
       () =>
-        props._rerender.value && props._store.$isUnmeasuredItem(props._index)
+        props._stateVersion.value &&
+        props._store.$isUnmeasuredItem(props._index)
     );
 
     // The index may be changed if elements are inserted to or removed from the start of props.children

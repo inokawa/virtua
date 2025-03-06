@@ -45,7 +45,7 @@
   const resizer = createResizer(store, horizontal);
   const scroller = createScroller(store, horizontal);
   const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
-    rerender = store.$getStateVersion();
+    stateVersion = store.$getStateVersion();
   });
   const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
     onscroll && onscroll(store.$getScrollOffset());
@@ -59,12 +59,11 @@
 
   let containerRef: HTMLDivElement | undefined = $state();
 
-  let rerender: StateVersion = $state(store.$getStateVersion());
+  let stateVersion: StateVersion = $state(store.$getStateVersion());
 
-  let range = $derived(rerender && store.$getRange());
-  let isScrolling = $derived(rerender && store.$isScrolling());
-  let totalSize = $derived(rerender && store.$getTotalSize());
-  let jumpCount = $derived(rerender && store.$getJumpCount());
+  let range = $derived(stateVersion && store.$getRange());
+  let isScrolling = $derived(stateVersion && store.$isScrolling());
+  let totalSize = $derived(stateVersion && store.$getTotalSize());
 
   onMount(() => {
     const assignRef = (scrollable: HTMLElement) => {
@@ -97,10 +96,10 @@
     }
   });
 
-  let prevJumpCount: number | undefined;
+  let prevStateVersion: StateVersion | undefined;
   $effect(() => {
-    if (prevJumpCount === jumpCount) return;
-    prevJumpCount = jumpCount;
+    if (prevStateVersion === stateVersion) return;
+    prevStateVersion = stateVersion;
     scroller.$fixScrollJump();
   });
 
@@ -153,8 +152,8 @@
       {item}
       {index}
       as={itemAs}
-      offset={rerender && store.$getItemOffset(index)}
-      hide={rerender && store.$isUnmeasuredItem(index)}
+      offset={stateVersion && store.$getItemOffset(index)}
+      hide={stateVersion && store.$isUnmeasuredItem(index)}
       {horizontal}
       resizer={resizer.$observeItem}
     />

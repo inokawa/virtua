@@ -20,6 +20,8 @@ import type {
 } from "./types";
 import { abs, max, min, NULL } from "./utils";
 
+const MAX_INT_32 = 0x7fffffff;
+
 const SCROLL_IDLE = 0;
 const SCROLL_DOWN = 1;
 const SCROLL_UP = 2;
@@ -92,7 +94,8 @@ export const isInitialMeasurementDone = (store: VirtualStore): boolean => {
 type Subscriber = (sync?: boolean) => void;
 
 /** @internal */
-export type StateVersion = readonly [];
+export type StateVersion =
+  number & {} /* hack for typescript to pretend as not falsy */;
 
 /**
  * @internal
@@ -112,7 +115,6 @@ export type VirtualStore = {
   $getViewportSize(): number;
   $getStartSpacerSize(): number;
   $getTotalSize(): number;
-  $getJumpCount(): number;
   _flushJump(): [number, boolean];
   $subscribe(target: number, cb: Subscriber): () => void;
   $update(...action: Actions): void;
@@ -131,11 +133,10 @@ export const createVirtualStore = (
   shouldAutoEstimateItemSize: boolean = false
 ): VirtualStore => {
   let isSSR = !!ssrCount;
-  let stateVersion: StateVersion = [];
+  let stateVersion: StateVersion = 1;
   let viewportSize = 0;
   let startSpacerSize = 0;
   let scrollOffset = 0;
-  let jumpCount = 0;
   let jump = 0;
   let pendingJump = 0;
   let _flushedJump = 0;
@@ -173,7 +174,6 @@ export const createVirtualStore = (
         pendingJump += j;
       } else {
         jump += j;
-        jumpCount++;
       }
     }
   };
@@ -228,7 +228,6 @@ export const createVirtualStore = (
     $getViewportSize: () => viewportSize,
     $getStartSpacerSize: () => startSpacerSize,
     $getTotalSize: getTotalSize,
-    $getJumpCount: () => jumpCount,
     _flushJump: () => {
       _flushedJump = jump;
       jump = 0;
@@ -429,12 +428,11 @@ export const createVirtualStore = (
       }
 
       if (mutated) {
-        stateVersion = [];
+        stateVersion = (stateVersion % MAX_INT_32) + 1;
 
         if (shouldFlushPendingJump && pendingJump) {
           jump += pendingJump;
           pendingJump = 0;
-          jumpCount++;
         }
 
         subscribers.forEach(([target, cb]) => {

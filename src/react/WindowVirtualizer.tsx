@@ -4,6 +4,7 @@ import {
   ReactNode,
   forwardRef,
   useImperativeHandle,
+  useReducer,
   useRef,
 } from "react";
 import {
@@ -24,7 +25,6 @@ import { useLatestRef } from "./useLatestRef";
 import { CustomContainerComponent, CustomItemComponent } from "./types";
 import { ListItem } from "./ListItem";
 import { flushSync } from "react-dom";
-import { useRerender } from "./useRerender";
 import { useChildren } from "./useChildren";
 
 /**
@@ -173,11 +173,14 @@ export const WindowVirtualizer = forwardRef<
       store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
     }
 
-    const rerender = useRerender(store);
+    const [stateVersion, rerender] = useReducer(
+      store.$getStateVersion,
+      undefined,
+      store.$getStateVersion
+    );
 
     const [startIndex, endIndex] = store.$getRange();
     const isScrolling = store.$isScrolling();
-    const jumpCount = store.$getJumpCount();
     const totalSize = store.$getTotalSize();
 
     const items: ReactElement[] = [];
@@ -221,7 +224,7 @@ export const WindowVirtualizer = forwardRef<
 
     useIsomorphicLayoutEffect(() => {
       scroller.$fixScrollJump();
-    }, [jumpCount]);
+    }, [stateVersion]);
 
     useImperativeHandle(ref, () => {
       return {

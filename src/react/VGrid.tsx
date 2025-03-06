@@ -8,6 +8,7 @@ import {
   forwardRef,
   ReactNode,
   useImperativeHandle,
+  useReducer,
 } from "react";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
@@ -24,7 +25,6 @@ import { refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { ViewportComponentAttributes } from "./types";
 import { flushSync } from "react-dom";
-import { useRerender } from "./useRerender";
 
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
@@ -247,15 +247,21 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       hStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colCount]);
     }
 
-    const vRerender = useRerender(vStore);
-    const hRerender = useRerender(hStore);
+    const [vStateVersion, vRerender] = useReducer(
+      vStore.$getStateVersion,
+      undefined,
+      vStore.$getStateVersion
+    );
+    const [hStateVersion, hRerender] = useReducer(
+      hStore.$getStateVersion,
+      undefined,
+      hStore.$getStateVersion
+    );
 
     const [startRowIndex, endRowIndex] = vStore.$getRange();
     const [startColIndex, endColIndex] = hStore.$getRange();
     const vIsScrolling = vStore.$isScrolling();
     const hIsScrolling = hStore.$isScrolling();
-    const vJumpCount = vStore.$getJumpCount();
-    const hJumpCount = hStore.$getJumpCount();
     const height = getScrollSize(vStore);
     const width = getScrollSize(hStore);
     const rootRef = useRef<HTMLDivElement>(null);
@@ -295,7 +301,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
 
     useIsomorphicLayoutEffect(() => {
       scroller.$fixScrollJump();
-    }, [vJumpCount, hJumpCount]);
+    }, [vStateVersion, hStateVersion]);
 
     useImperativeHandle(ref, () => {
       return {

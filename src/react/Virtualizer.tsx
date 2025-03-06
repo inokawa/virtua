@@ -6,6 +6,7 @@ import {
   ReactNode,
   useRef,
   RefObject,
+  useReducer,
 } from "react";
 import {
   UPDATE_SCROLL_EVENT,
@@ -28,7 +29,6 @@ import { useStatic } from "./useStatic";
 import { useLatestRef } from "./useLatestRef";
 import { ListItem } from "./ListItem";
 import { flushSync } from "react-dom";
-import { useRerender } from "./useRerender";
 import { useChildren } from "./useChildren";
 import { CustomContainerComponent, CustomItemComponent } from "./types";
 
@@ -226,11 +226,14 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       store.$update(ACTION_START_OFFSET_CHANGE, startMargin);
     }
 
-    const rerender = useRerender(store);
+    const [stateVersion, rerender] = useReducer(
+      store.$getStateVersion,
+      undefined,
+      store.$getStateVersion
+    );
 
     const [startIndex, endIndex] = store.$getRange();
     const isScrolling = store.$isScrolling();
-    const jumpCount = store.$getJumpCount();
     const totalSize = store.$getTotalSize();
 
     const items: ReactElement[] = [];
@@ -298,7 +301,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
 
     useIsomorphicLayoutEffect(() => {
       scroller.$fixScrollJump();
-    }, [jumpCount]);
+    }, [stateVersion]);
 
     useImperativeHandle(ref, () => {
       return {
