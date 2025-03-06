@@ -122,7 +122,7 @@ export const WindowVirtualizer = <T,>(
   const resizer = createWindowResizer(store, horizontal);
   const scroller = createWindowScroller(store, horizontal);
 
-  const [rerender, setRerender] = createSignal(store.$getStateVersion());
+  const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
   const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
     setRerender(store.$getStateVersion());
@@ -140,17 +140,15 @@ export const WindowVirtualizer = <T,>(
   );
 
   const range = createMemo<ItemsRange>((prev) => {
-    rerender();
+    stateVersion();
     const next = store.$getRange();
     if (prev && isSameRange(prev, next)) {
       return prev;
     }
     return next;
   });
-  const isScrolling = createMemo(() => rerender() && store.$isScrolling());
-  const totalSize = createMemo(() => rerender() && store.$getTotalSize());
-
-  const jumpCount = createMemo(() => rerender() && store.$getJumpCount());
+  const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
+  const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
 
   onMount(() => {
     if (props.ref) {
@@ -189,7 +187,7 @@ export const WindowVirtualizer = <T,>(
   );
 
   createEffect(
-    on(jumpCount, () => {
+    on(stateVersion, () => {
       scroller.$fixScrollJump();
     })
   );
@@ -213,11 +211,11 @@ export const WindowVirtualizer = <T,>(
         _range={range()}
         _render={(data, index) => {
           const offset = createMemo(() => {
-            rerender();
+            stateVersion();
             return store.$getItemOffset(index);
           });
           const hide = createMemo(() => {
-            rerender();
+            stateVersion();
             return store.$isUnmeasuredItem(index);
           });
 

@@ -99,9 +99,9 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     const resizer = createWindowResizer(store, isHorizontal);
     const scroller = createWindowScroller(store, isHorizontal);
 
-    const rerender = ref(store.$getStateVersion());
+    const stateVersion = ref(store.$getStateVersion());
     const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
-      rerender.value = store.$getStateVersion();
+      stateVersion.value = store.$getStateVersion();
     });
 
     const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
@@ -116,16 +116,19 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     );
 
     const range = computed<ItemsRange>((prev) => {
-      rerender.value;
+      stateVersion.value;
       const next = store.$getRange();
       if (prev && isSameRange(prev, next)) {
         return prev;
       }
       return next;
     });
-    const isScrolling = computed(() => rerender.value && store.$isScrolling());
-    const totalSize = computed(() => rerender.value && store.$getTotalSize());
-    const jumpCount = computed(() => rerender.value && store.$getJumpCount());
+    const isScrolling = computed(
+      () => stateVersion.value && store.$isScrolling()
+    );
+    const totalSize = computed(
+      () => stateVersion.value && store.$getTotalSize()
+    );
 
     onMounted(() => {
       const el = containerRef.value;
@@ -149,7 +152,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     );
 
     watch(
-      [jumpCount],
+      [stateVersion],
       () => {
         scroller.$fixScrollJump();
       },
@@ -175,7 +178,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
         items.push(
           <ListItem
             key={getKey(e, i)}
-            _rerender={rerender}
+            _stateVersion={stateVersion}
             _store={store}
             _resizer={resizer.$observeItem}
             _index={i}
