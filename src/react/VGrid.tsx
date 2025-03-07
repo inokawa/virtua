@@ -19,11 +19,14 @@ import {
   createGridResizer,
   GridResizer,
   isRTLDocument,
+  UPDATE_SCROLL_EVENT,
+  UPDATE_SCROLL_END_EVENT,
 } from "../core";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { refKey } from "./utils";
 import { useStatic } from "./useStatic";
 import { ViewportComponentAttributes } from "./types";
+import { useLatestRef } from "./useLatestRef";
 import { flushSync } from "react-dom";
 
 const genKey = (i: number, j: number) => `${i}-${j}`;
@@ -197,6 +200,14 @@ export interface VGridProps extends ViewportComponentAttributes {
    * @defaultValue "div"
    */
   item?: keyof JSX.IntrinsicElements | CustomCellComponent;
+  /**
+   * Callback invoked whenever scroll offset changes.
+   */
+  onScroll?: (offset: number) => void;
+  /**
+   * Callback invoked when scrolling stops.
+   */
+  onScrollEnd?: () => void;
 }
 
 /**
@@ -214,6 +225,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       initialRowCount,
       initialColCount,
       item: ItemElement = "div",
+      onScroll: onScrollProp,
+      onScrollEnd: onScrollEndProp,
       style,
       ...attrs
     },
@@ -265,6 +278,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const height = getScrollSize(vStore);
     const width = getScrollSize(hStore);
     const rootRef = useRef<HTMLDivElement>(null);
+    const onScroll = useLatestRef(onScrollProp);
+    const onScrollEnd = useLatestRef(onScrollEndProp);
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
@@ -289,6 +304,13 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           }
         }
       );
+      const unsubscribeVScroll = vStore.$subscribe(UPDATE_SCROLL_EVENT, () => {
+        onScroll[refKey] && onScroll[refKey](vStore.$getScrollOffset())
+      })
+      const unsubscribeVScrollEnd = vStore.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
+        onScrollEnd[refKey] && onScrollEnd[refKey]()
+      })
+
       resizer.$observeRoot(root);
       scroller.$observe(root);
       return () => {
@@ -296,6 +318,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         unsubscribeHStore();
         resizer.$dispose();
         scroller.$dispose();
+        unsubscribeVScroll();
+        unsubscribeVScrollEnd();
       };
     }, []);
 
