@@ -4,7 +4,7 @@
 
 # Interface: CacheSnapshot
 
-Defined in: [src/core/types.ts:15](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/core/types.ts#L15)
+Defined in: [src/core/types.ts:15](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/core/types.ts#L15)
 
 Serializable cache snapshot.
 
@@ -16,4 +16,4 @@ Serializable cache snapshot.
 
 > **\[cacheSymbol\]**: `never`
 
-Defined in: [src/core/types.ts:16](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/core/types.ts#L16)
+Defined in: [src/core/types.ts:16](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/core/types.ts#L16)

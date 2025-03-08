@@ -6,7 +6,7 @@
 
 > **WindowVirtualizer**(`props`): `ReactNode`
 
-Defined in: [src/react/WindowVirtualizer.tsx:121](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/WindowVirtualizer.tsx#L121)
+Defined in: [src/react/WindowVirtualizer.tsx:121](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/react/WindowVirtualizer.tsx#L121)
 
 [Virtualizer](Virtualizer.md) controlled by the window scrolling. See [WindowVirtualizerProps](../interfaces/WindowVirtualizerProps.md) and [WindowVirtualizerHandle](../interfaces/WindowVirtualizerHandle.md).
 

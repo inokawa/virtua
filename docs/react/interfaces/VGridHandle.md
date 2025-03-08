@@ -4,7 +4,7 @@
 
 # Interface: VGridHandle
 
-Defined in: [src/react/VGrid.tsx:102](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/VGrid.tsx#L102)
+Defined in: [src/react/VGrid.tsx:105](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/react/VGrid.tsx#L105)
 
 Methods of [VGrid](../functions/experimental_VGrid.md).
 
@@ -14,7 +14,7 @@ Methods of [VGrid](../functions/experimental_VGrid.md).
 
 > **scrollToIndex**(`indexX`, `indexY`): `void`
 
-Defined in: [src/react/VGrid.tsx:132](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/VGrid.tsx#L132)
+Defined in: [src/react/VGrid.tsx:135](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/react/VGrid.tsx#L135)
 
 Scroll to the item specified by index.
 
@@ -42,7 +42,7 @@ vertical index of item
 
 > **scrollTo**(`offsetX`, `offsetY`): `void`
 
-Defined in: [src/react/VGrid.tsx:138](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/VGrid.tsx#L138)
+Defined in: [src/react/VGrid.tsx:141](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/react/VGrid.tsx#L141)
 
 Scroll to the given offset.
 
@@ -70,7 +70,7 @@ offset from top
 
 > **scrollBy**(`offsetX`, `offsetY`): `void`
 
-Defined in: [src/react/VGrid.tsx:144](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/VGrid.tsx#L144)
+Defined in: [src/react/VGrid.tsx:147](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/react/VGrid.tsx#L147)
 
 Scroll by the given offset.
 
@@ -98,7 +98,7 @@ vertical offset from current position
 
 > `readonly` **scrollTop**: `number`
 
-Defined in: [src/react/VGrid.tsx:106](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/VGrid.tsx#L106)
+Defined in: [src/react/VGrid.tsx:109](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/react/VGrid.tsx#L109)
 
 Get current scrollTop.
 
@@ -108,7 +108,7 @@ Get current scrollTop.
 
 > `readonly` **scrollLeft**: `number`
 
-Defined in: [src/react/VGrid.tsx:110](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/VGrid.tsx#L110)
+Defined in: [src/react/VGrid.tsx:113](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/react/VGrid.tsx#L113)
 
 Get current scrollLeft.
 
@@ -118,7 +118,7 @@ Get current scrollLeft.
 
 > `readonly` **scrollHeight**: `number`
 
-Defined in: [src/react/VGrid.tsx:114](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/VGrid.tsx#L114)
+Defined in: [src/react/VGrid.tsx:117](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/react/VGrid.tsx#L117)
 
 Get current scrollHeight.
 
@@ -128,7 +128,7 @@ Get current scrollHeight.
 
 > `readonly` **scrollWidth**: `number`
 
-Defined in: [src/react/VGrid.tsx:118](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/VGrid.tsx#L118)
+Defined in: [src/react/VGrid.tsx:121](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/react/VGrid.tsx#L121)
 
 Get current scrollWidth.
 
@@ -138,7 +138,7 @@ Get current scrollWidth.
 
 > `readonly` **viewportHeight**: `number`
 
-Defined in: [src/react/VGrid.tsx:122](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/VGrid.tsx#L122)
+Defined in: [src/react/VGrid.tsx:125](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/react/VGrid.tsx#L125)
 
 Get current offsetHeight.
 
@@ -148,6 +148,6 @@ Get current offsetHeight.
 
 > `readonly` **viewportWidth**: `number`
 
-Defined in: [src/react/VGrid.tsx:126](https://github.com/inokawa/virtua/blob/6f0a2cc73821555ca70fe196669f946c5e86c72d/src/react/VGrid.tsx#L126)
+Defined in: [src/react/VGrid.tsx:129](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/react/VGrid.tsx#L129)
 
 Get current offsetWidth.
