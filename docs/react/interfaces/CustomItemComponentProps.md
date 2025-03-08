@@ -4,7 +4,7 @@
 
 # Interface: CustomItemComponentProps
 
-Defined in: [src/react/types.ts:24](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/react/types.ts#L24)
+Defined in: [src/react/types.ts:24](https://github.com/inokawa/virtua/blob/469498bf9b9213391999278aeb12adba7b00fff9/src/react/types.ts#L24)
 
 Props of customized item component for [Virtualizer](../functions/Virtualizer.md) or [WindowVirtualizer](../functions/WindowVirtualizer.md).
 
@@ -14,7 +14,7 @@ Props of customized item component for [Virtualizer](../functions/Virtualizer.md
 
 > **style**: `CSSProperties`
 
-Defined in: [src/react/types.ts:25](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/react/types.ts#L25)
+Defined in: [src/react/types.ts:25](https://github.com/inokawa/virtua/blob/469498bf9b9213391999278aeb12adba7b00fff9/src/react/types.ts#L25)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [src/react/types.ts:25](https://github.com/inokawa/virtua/blob/0ce0c
 
 > **index**: `number`
 
-Defined in: [src/react/types.ts:26](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/react/types.ts#L26)
+Defined in: [src/react/types.ts:26](https://github.com/inokawa/virtua/blob/469498bf9b9213391999278aeb12adba7b00fff9/src/react/types.ts#L26)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [src/react/types.ts:26](https://github.com/inokawa/virtua/blob/0ce0c
 
 > **children**: `ReactNode`
 
-Defined in: [src/react/types.ts:27](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/react/types.ts#L27)
+Defined in: [src/react/types.ts:27](https://github.com/inokawa/virtua/blob/469498bf9b9213391999278aeb12adba7b00fff9/src/react/types.ts#L27)
 
 ***
 
@@ -38,6 +38,6 @@ Defined in: [src/react/types.ts:27](https://github.com/inokawa/virtua/blob/0ce0c
 
 > `optional` **ref**: `LegacyRef`\<`any`\>
 
-Defined in: [src/react/types.ts:31](https://github.com/inokawa/virtua/blob/0ce0cc2cff2931917967ae53679917fd6b9407b9/src/react/types.ts#L31)
+Defined in: [src/react/types.ts:31](https://github.com/inokawa/virtua/blob/469498bf9b9213391999278aeb12adba7b00fff9/src/react/types.ts#L31)
 
 only available after React 19
