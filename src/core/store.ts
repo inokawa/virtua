@@ -428,7 +428,7 @@ export const createVirtualStore = (
       }
 
       if (mutated) {
-        stateVersion = (stateVersion % MAX_INT_32) + 1;
+        stateVersion = (stateVersion & MAX_INT_32) + 1;
 
         if (shouldFlushPendingJump && pendingJump) {
           jump += pendingJump;
