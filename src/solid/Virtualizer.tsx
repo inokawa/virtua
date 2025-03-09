@@ -100,10 +100,9 @@ export interface VirtualizerProps<T> {
    */
   children: (data: T, index: number) => JSX.Element;
   /**
-   * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
-   * @defaultValue 4
+   * TODO
    */
-  overscan?: number;
+  bufferSize?: number;
   /**
    * Component or element type for container element.
    * @defaultValue "div"
@@ -153,7 +152,7 @@ export interface VirtualizerProps<T> {
  */
 export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const { itemSize, horizontal = false, overscan } = props;
+  const { bufferSize, itemSize, horizontal = false } = props;
   props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
     { as: "div" },
     props
@@ -162,7 +161,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   const store = createVirtualStore(
     props.data.length,
     itemSize,
-    overscan,
+    bufferSize,
     undefined,
     undefined,
     !itemSize
