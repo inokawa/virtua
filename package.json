@@ -83,6 +83,7 @@
     "@rollup/plugin-typescript": "^11.1.6",
     "@size-limit/preset-small-lib": "^11.1.6",
     "@storybook/addon-storysource": "^8.6.2",
+    "@storybook/addon-viewport": "^8.6.4",
     "@storybook/docs-tools": "^8.6.2",
     "@storybook/react": "^8.6.2",
     "@storybook/react-vite": "^8.6.2",
