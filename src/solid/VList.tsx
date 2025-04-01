@@ -23,7 +23,7 @@ export interface VListProps<T>
       | "ref"
       | "data"
       | "children"
-      | "overscan"
+      | "bufferSize"
       | "itemSize"
       | "shift"
       | "horizontal"
@@ -40,7 +40,7 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
     ref,
     data,
     children,
-    overscan,
+    bufferSize,
     itemSize,
     shift,
     horizontal,
@@ -65,7 +65,7 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
       <Virtualizer
         ref={props.ref}
         data={props.data}
-        overscan={props.overscan}
+        bufferSize={props.bufferSize}
         itemSize={props.itemSize}
         shift={props.shift}
         horizontal={horizontal}
