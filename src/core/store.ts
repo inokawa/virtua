@@ -400,15 +400,18 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_ITEMS_LENGTH_CHANGE: {
-          if (payload[1]) {
-            applyJump(updateCacheLength(cache, payload[0], true));
-            _scrollMode = SCROLL_BY_SHIFT;
-            mutated = UPDATE_VIRTUAL_STATE;
-          } else {
-            updateCacheLength(cache, payload[0]);
-            // https://github.com/inokawa/virtua/issues/552
-            // https://github.com/inokawa/virtua/issues/557
-            mutated = UPDATE_VIRTUAL_STATE;
+          const [length, isShift] = payload;
+          if (cache._length !== length) {
+            if (isShift) {
+              applyJump(updateCacheLength(cache, length, true));
+              _scrollMode = SCROLL_BY_SHIFT;
+              mutated = UPDATE_VIRTUAL_STATE;
+            } else {
+              updateCacheLength(cache, length);
+              // https://github.com/inokawa/virtua/issues/552
+              // https://github.com/inokawa/virtua/issues/557
+              mutated = UPDATE_VIRTUAL_STATE;
+            }
           }
           break;
         }

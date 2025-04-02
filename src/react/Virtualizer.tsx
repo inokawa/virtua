@@ -219,12 +219,8 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     });
 
     // The elements length and cached items length are different just after element is added/removed.
-    if (count !== store.$getItemsLength()) {
-      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
-    }
-    if (startMargin !== store.$getStartSpacerSize()) {
-      store.$update(ACTION_START_OFFSET_CHANGE, startMargin);
-    }
+    store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
+    store.$update(ACTION_START_OFFSET_CHANGE, startMargin);
 
     const [stateVersion, rerender] = useReducer(
       store.$getStateVersion,
