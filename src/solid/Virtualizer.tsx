@@ -180,14 +180,6 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   const resizer = createResizer(store, horizontal);
   const scroller = createScroller(store, horizontal);
 
-  // The elements length and cached items length are different just after element is added/removed.
-  if (props.data.length !== store.$getItemsLength()) {
-    store.$update(ACTION_ITEMS_LENGTH_CHANGE, [props.data.length, props.shift]);
-  }
-  if (props.startMargin !== store.$getStartSpacerSize()) {
-    store.$update(ACTION_START_OFFSET_CHANGE, props.startMargin ?? 0);
-  }
-
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
   const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {

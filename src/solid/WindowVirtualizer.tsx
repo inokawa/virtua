@@ -132,10 +132,6 @@ export const WindowVirtualizer = <T,>(
   );
   const resizer = createWindowResizer(store, horizontal);
   const scroller = createWindowScroller(store, horizontal);
-  // The elements length and cached items length are different just after element is added/removed.
-  if (props.data.length !== store.$getItemsLength()) {
-    store.$update(ACTION_ITEMS_LENGTH_CHANGE, [props.data.length, props.shift]);
-  }
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
