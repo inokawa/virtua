@@ -25,7 +25,7 @@ import {
   createResizer,
   createScroller,
   ItemsRange,
-  ScrollToIndexOpts,
+  ScrollToIndexOpts, CacheSnapshot,
 } from "../core";
 import { ListItem } from "./ListItem";
 import { RangedFor } from "./RangedFor";
@@ -35,6 +35,10 @@ import { isSameRange } from "./utils";
  * Methods of {@link Virtualizer}.
  */
 export interface VirtualizerHandle {
+  /**
+   * Get current {@link CacheSnapshot}.
+   */
+  readonly cache: CacheSnapshot;
   /**
    * Get current scrollTop, or scrollLeft if horizontal: true.
    */
@@ -134,6 +138,12 @@ export interface VirtualizerProps<T> {
    */
   horizontal?: boolean;
   /**
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.cache}.
+   *
+   * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
+   */
+  cache?: CacheSnapshot;
+  /**
    * If you put an element before virtualizer, you have to define its height with this prop.
    */
   startMargin?: number;
@@ -153,7 +163,7 @@ export interface VirtualizerProps<T> {
  */
 export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const { itemSize, horizontal = false, overscan } = props;
+  const { itemSize, horizontal = false, overscan, cache } = props;
   props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
     { as: "div" },
     props
@@ -164,11 +174,19 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     itemSize,
     overscan,
     undefined,
-    undefined,
+    cache,
     !itemSize
   );
   const resizer = createResizer(store, horizontal);
   const scroller = createScroller(store, horizontal);
+
+  // The elements length and cached items length are different just after element is added/removed.
+  if (props.data.length !== store.$getItemsLength()) {
+    store.$update(ACTION_ITEMS_LENGTH_CHANGE, [props.data.length, props.shift]);
+  }
+  if (props.startMargin !== store.$getStartSpacerSize()) {
+    store.$update(ACTION_START_OFFSET_CHANGE, props.startMargin ?? 0);
+  }
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
@@ -200,6 +218,9 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   onMount(() => {
     if (props.ref) {
       props.ref({
+        get cache() {
+          return store.$getCacheSnapshot();
+        },
         get scrollOffset() {
           return store.$getScrollOffset();
         },

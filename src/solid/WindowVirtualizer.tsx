@@ -20,7 +20,7 @@ import {
   createWindowResizer,
   createWindowScroller,
   ItemsRange,
-  ScrollToIndexOpts,
+  ScrollToIndexOpts, CacheSnapshot,
 } from "../core";
 import { ListItem } from "./ListItem";
 import { RangedFor } from "./RangedFor";
@@ -30,6 +30,10 @@ import { isSameRange } from "./utils";
  * Methods of {@link WindowVirtualizer}.
  */
 export interface WindowVirtualizerHandle {
+  /**
+   * Get current {@link CacheSnapshot}.
+   */
+  readonly cache: CacheSnapshot;
   /**
    * Find the start index of visible range of items.
    */
@@ -83,6 +87,12 @@ export interface WindowVirtualizerProps<T> {
    */
   horizontal?: boolean;
   /**
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.cache}.
+   *
+   * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
+   */
+  cache?: CacheSnapshot;
+  /**
    * Callback invoked whenever scroll offset changes.
    */
   onScroll?: () => void;
@@ -108,6 +118,7 @@ export const WindowVirtualizer = <T,>(
     itemSize,
     shift: _shift,
     horizontal = false,
+    cache,
     onScrollEnd: _onScrollEnd,
   } = props;
 
@@ -116,11 +127,15 @@ export const WindowVirtualizer = <T,>(
     itemSize,
     overscan,
     undefined,
-    undefined,
+    cache,
     !itemSize
   );
   const resizer = createWindowResizer(store, horizontal);
   const scroller = createWindowScroller(store, horizontal);
+  // The elements length and cached items length are different just after element is added/removed.
+  if (props.data.length !== store.$getItemsLength()) {
+    store.$update(ACTION_ITEMS_LENGTH_CHANGE, [props.data.length, props.shift]);
+  }
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
@@ -153,6 +168,9 @@ export const WindowVirtualizer = <T,>(
   onMount(() => {
     if (props.ref) {
       props.ref({
+        get cache() {
+          return store.$getCacheSnapshot();
+        },
         findStartIndex: store.$findStartIndex,
         findEndIndex: store.$findEndIndex,
         scrollToIndex: scroller.$scrollToIndex,
