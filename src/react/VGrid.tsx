@@ -128,6 +128,24 @@ export interface VGridHandle {
    */
   readonly viewportWidth: number;
   /**
+   * Find the start index of visible range of items.
+   */
+  findStartIndex: () => [x: number, y: number];
+  /**
+   * Find the end index of visible range of items.
+   */
+  findEndIndex: () => [x: number, y: number];
+  /**
+   * Get item offset from start.
+   * @param index index of item
+   */
+  getItemOffset(indexX: number, indexY: number): [x: number, y: number];
+  /**
+   * Get item size.
+   * @param index index of item
+   */
+  getItemSize(indexX: number, indexY: number): [width: number, height: number];
+  /**
    * Scroll to the item specified by index.
    * @param indexX horizontal index of item
    * @param indexY vertical index of item
@@ -347,6 +365,10 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         get viewportWidth() {
           return hStore.$getViewportSize();
         },
+        findStartIndex: () => [hStore.$findStartIndex(), vStore.$findStartIndex()],
+        findEndIndex: () => [hStore.$findEndIndex(), vStore.$findEndIndex()],
+        getItemOffset: (indexX, indexY) => [hStore.$getItemOffset(indexX), vStore.$getItemOffset(indexY)],
+        getItemSize: (indexX, indexY) => [hStore.$getItemSize(indexX), vStore.$getItemSize(indexY)],
         scrollToIndex: scroller.$scrollToIndex,
         scrollTo: scroller.$scrollTo,
         scrollBy: scroller.$scrollBy,
