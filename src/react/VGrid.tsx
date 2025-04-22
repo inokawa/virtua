@@ -137,12 +137,14 @@ export interface VGridHandle {
   findEndIndex: () => [x: number, y: number];
   /**
    * Get item offset from start.
-   * @param index index of item
+   * @param indexX horizontal index of item
+   * @param indexY vertical of item
    */
   getItemOffset(indexX: number, indexY: number): [x: number, y: number];
   /**
    * Get item size.
-   * @param index index of item
+   * @param indexX horizontal index of item
+   * @param indexY vertical of item
    */
   getItemSize(indexX: number, indexY: number): [width: number, height: number];
   /**
