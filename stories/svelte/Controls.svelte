@@ -9,6 +9,7 @@
   let scrollOffset = $state(0);
   let scrolling = $state(false);
   let scrollTarget = $state(567);
+  let prepend = $state(false);
 </script>
 
 <div style="height: 100%; display: flex; flex-direction: column;">
@@ -31,18 +32,27 @@
   <div>
     <button
       onclick={() => {
-        data = [
-          ...data,
-          ...Array.from({ length: 100 }).map((_, i) =>
-            createItem(i + data.length)
-          ),
-        ];
+        const items = Array.from({ length: 100 }).map((_, i) =>
+          createItem(i + data.length)
+        );
+        data = prepend ? [...items, ...data] : [...data, ...items];
       }}>append</button
     >
+    <label>
+      <input
+        type="checkbox"
+        checked={prepend}
+        onchange={() => {
+          prepend = !prepend;
+        }}
+      />
+      prepend
+    </label>
   </div>
   <VList
     bind:this={ref}
     {data}
+    shift={prepend}
     getKey={(d) => d.id}
     onscroll={(offset) => {
       scrollOffset = offset;
