@@ -9,6 +9,7 @@ import {
   createMemo,
   mergeProps,
   onCleanup,
+  on,
   type ValidComponent,
 } from "solid-js";
 import { Dynamic } from "solid-js/web";
@@ -28,15 +29,24 @@ interface ListItemProps {
  */
 export const ListItem: Component<ListItemProps> = (props) => {
   let elementRef: HTMLDivElement | undefined;
+  let cleanupResizer: (() => void) | undefined;
   props = mergeProps<[Partial<ListItemProps>, ListItemProps]>(
     { _as: "div" },
     props
   );
 
   // The index may be changed if elements are inserted to or removed from the start of props.children
-  createEffect(() => {
-    if (!elementRef) return;
-    onCleanup(props._resizer(elementRef, props._index));
+  createEffect(on([() => props._index, () => props._children], () => {
+    if (!elementRef)
+      return;
+    if (cleanupResizer)
+      cleanupResizer();
+    cleanupResizer = props._resizer(elementRef, props._index);
+  }));
+
+  onCleanup(() => {
+    if (cleanupResizer)
+      cleanupResizer();
   });
 
   const style = createMemo(() => {
