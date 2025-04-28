@@ -1,4 +1,4 @@
-import{c as N,i as Z,h as v,j as T,B as m,I as B,A as k,G as $,C as s,H as E,n as G,k as g,D as L,s as U,f as ee,g as te}from"./props-EeEA5hs9.js";import{c as d,e as F,i as M}from"./ListItem-DHIiBQX_.js";import{V as H}from"./Virtualizer-zVKXv0Ge.js";var re=m("<div> </div>"),oe=m('<div><div>header</div> <!> <div style="background-color: steelblue; height: 600px;">footer</div></div>');function W(f,_){N(_,!1);const u=[20,40,180,77],b=Array.from({length:1e3}).map((h,n)=>u[n%4]),i=400;Z();var o=oe();d(o,"style",`
+import{c as N,i as Z,h as v,j as T,B as m,I as B,A as k,G as $,C as s,H as E,n as G,k as g,D as L,s as U,f as ee,g as te}from"./props-EeEA5hs9.js";import{c as d,e as F,i as M}from"./ListItem-BcvSjCB8.js";import{V as H}from"./Virtualizer-BC8aXlTx.js";var re=m("<div> </div>"),oe=m('<div><div>header</div> <!> <div style="background-color: steelblue; height: 600px;">footer</div></div>');function W(f,_){N(_,!1);const u=[20,40,180,77],b=Array.from({length:1e3}).map((h,n)=>u[n%4]),i=400;Z();var o=oe();d(o,"style",`
   width: 100%;
   height: 100vh;
   overflow-y: auto;
