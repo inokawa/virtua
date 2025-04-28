@@ -76,6 +76,7 @@ export const Controlls: StoryObj = {
     const [scrollOffset, setScrollOffset] = createSignal(0);
     const [scrolling, setScrolling] = createSignal(false);
     const [scrollTarget, setScrollTarget] = createSignal(567);
+    const [prepend, setPrepend] = createSignal(false);
 
     let handle: VListHandle | undefined;
 
@@ -104,22 +105,33 @@ export const Controlls: StoryObj = {
         <div>
           <button
             onClick={() => {
-              setData((prev) => [
-                ...prev,
-                ...Array.from({ length: 100 }).map((_, i) =>
+              setData((prev) => {
+                const items = Array.from({ length: 100 }).map((_, i) =>
                   createItem(i + prev.length)
-                ),
-              ]);
+                );
+                return prepend() ? [...items, ...prev] : [...prev, ...items];
+              });
             }}
           >
             append
           </button>
+          <label>
+            <input
+              type="checkbox"
+              checked={prepend()}
+              onchange={() => {
+                setPrepend((prev) => !prev);
+              }}
+            />
+            prepend
+          </label>
         </div>
         <VList
           ref={(h) => {
             handle = h;
           }}
           data={data()}
+          shift={prepend()}
           style={{ height: "100vh" }}
           onScroll={(offset) => {
             setScrollOffset(offset);
