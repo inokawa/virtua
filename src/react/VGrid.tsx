@@ -203,10 +203,10 @@ export interface VGridProps extends ViewportComponentAttributes {
    */
   cellWidth?: number;
   /**
-   * Number of items to render above/below the visible bounds of the grid. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
-   * @defaultValue 2
+   * TODO
+   * @defaultValue 200
    */
-  overscan?: number;
+  bufferSize?: number;
   /**
    * If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
    */
@@ -241,7 +241,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       col: colCount,
       cellHeight = 40,
       cellWidth = 100,
-      overscan = 2,
+      bufferSize,
       initialRowCount,
       initialColCount,
       item: ItemElement = "div",
@@ -256,13 +256,13 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       const _vs = createVirtualStore(
         rowCount,
         cellHeight,
-        overscan,
+        bufferSize,
         initialRowCount
       );
       const _hs = createVirtualStore(
         colCount,
         cellWidth,
-        overscan,
+        bufferSize,
         initialColCount
       );
       return [

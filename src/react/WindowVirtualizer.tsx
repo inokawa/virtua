@@ -66,10 +66,10 @@ export interface WindowVirtualizerProps {
    */
   count?: number;
   /**
-   * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
-   * @defaultValue 4
+   * TODO
+   * @defaultValue 200
    */
-  overscan?: number;
+  bufferSize?: number;
   /**
    * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
    *
@@ -126,7 +126,7 @@ export const WindowVirtualizer = forwardRef<
     {
       children,
       count: renderCountProp,
-      overscan,
+      bufferSize,
       itemSize,
       shift,
       horizontal: horizontalProp,
@@ -155,7 +155,7 @@ export const WindowVirtualizer = forwardRef<
       const _store = createVirtualStore(
         count,
         itemSize,
-        overscan,
+        bufferSize,
         ssrCount,
         cache,
         !itemSize
