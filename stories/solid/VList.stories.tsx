@@ -24,7 +24,7 @@ export const Default: StoryObj = {
               background: "#fff",
             }}
           >
-            {i}
+            {i()}
           </div>
         )}
       </VList>
@@ -52,7 +52,7 @@ export const Horizontal: StoryObj = {
                 background: "#fff",
               }}
             >
-              {i}
+              {i()}
             </div>
           )}
         </VList>
