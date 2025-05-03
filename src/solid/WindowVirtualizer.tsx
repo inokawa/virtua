@@ -196,9 +196,7 @@ export const WindowVirtualizer = <T,>(
     on(
       () => props.data.length,
       (len) => {
-        if (len !== store.$getItemsLength()) {
-          store.$update(ACTION_ITEMS_LENGTH_CHANGE, [len, props.shift]);
-        }
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [len, props.shift]);
       }
     )
   );
