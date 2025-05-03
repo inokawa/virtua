@@ -51,7 +51,7 @@ export default process.env.STORYBOOK_VUE
         }
       : {
           stories: ["../stories/react/**/*.stories.@(js|jsx|ts|tsx)"],
-          addons: ["@storybook/addon-storysource"],
+          addons: ["@storybook/addon-storysource", "@storybook/addon-viewport"],
           framework: {
             name: "@storybook/react-vite",
             options: {},

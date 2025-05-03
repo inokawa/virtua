@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
-import React, { useRef, useState } from "react";
+import React, {forwardRef, useRef, useState} from "react";
 import { experimental_VGrid as VGrid, VGridHandle } from "../../../src";
+import {CustomCellComponent} from "../../../lib";
 
 export default {
   component: VGrid,
@@ -47,6 +48,59 @@ export const Fixed: StoryObj = {
     );
   },
 };
+
+export const FitToViewport: StoryObj = {
+  render: () => {
+    return (
+      <VGrid style={{ height: "100vh" }} row={50} col={3}>
+        {({ rowIndex, colIndex }) => (
+          <div
+            style={{
+              border: "solid 1px gray",
+              background: "white",
+              padding: 4,
+              width: '33vw',
+            }}
+          >
+            {rowIndex} / {colIndex}
+          </div>
+        )}
+      </VGrid>
+    );
+  },
+};
+
+const Item: CustomCellComponent = forwardRef(({style: {minWidth: _minWidthUnused, minHeight: _minHeightUnused, ...style}, ...props}, ref) => {
+    return <div {...props} style={style} ref={ref} />
+})
+
+export const FitToViewportAdjusted: StoryObj = {
+  render: () => {
+    return (
+      <VGrid
+          style={{ height: "100vh" }}
+          row={50}
+          col={3}
+          item={Item}
+      >
+        {({ rowIndex, colIndex }) => (
+          <div
+            style={{
+              border: "solid 1px gray",
+              background: "white",
+              padding: 4,
+              width: '33vw',
+            }}
+          >
+            {rowIndex} / {colIndex}
+          </div>
+        )}
+      </VGrid>
+    );
+  },
+};
+
+
 
 export const DynamicHeight: StoryObj = {
   render: () => {
