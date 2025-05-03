@@ -11,7 +11,8 @@ import {
   Accessor,
   on,
   createComputed,
-  For, untrack
+  For,
+  untrack,
 } from "solid-js";
 import {
   UPDATE_SCROLL_END_EVENT,
@@ -22,7 +23,8 @@ import {
   createWindowResizer,
   createWindowScroller,
   ItemsRange,
-  ScrollToIndexOpts, CacheSnapshot,
+  ScrollToIndexOpts,
+  CacheSnapshot,
 } from "../core";
 import { ListItem } from "./ListItem";
 import { isSameRange } from "./utils";
@@ -210,7 +212,7 @@ export const WindowVirtualizer = <T,>(
   const dataSlice = createMemo<T[]>(() => {
     const [start, end] = range();
     return end >= 0 ? props.data.slice(start, end + 1) : [];
-  })
+  });
 
   return (
     <div
@@ -226,31 +228,33 @@ export const WindowVirtualizer = <T,>(
         "pointer-events": isScrolling() ? "none" : undefined,
       }}
     >
-      <For each={dataSlice()}>{(data, index) => {
-        const itemIndex = createMemo(() => range()[0] + index());
-        const offset = createMemo(() => {
-          stateVersion();
-          return store.$getItemOffset(itemIndex());
-        });
-        const hide = createMemo(() => {
-          stateVersion();
-          return store.$isUnmeasuredItem(itemIndex());
-        });
-        const children = createMemo(() => {
-          return untrack(() => props.children(data, itemIndex));
-        });
+      <For each={dataSlice()}>
+        {(data, index) => {
+          const itemIndex = createMemo(() => range()[0] + index());
+          const offset = createMemo(() => {
+            stateVersion();
+            return store.$getItemOffset(itemIndex());
+          });
+          const hide = createMemo(() => {
+            stateVersion();
+            return store.$isUnmeasuredItem(itemIndex());
+          });
+          const children = createMemo(() => {
+            return untrack(() => props.children(data, itemIndex));
+          });
 
-        return (
-          <ListItem
-            _index={itemIndex()}
-            _resizer={resizer.$observeItem}
-            _offset={offset()}
-            _hide={hide()}
-            _children={children()}
-            _isHorizontal={horizontal}
-          />
-        );
-      }}</For>
+          return (
+            <ListItem
+              _index={itemIndex()}
+              _resizer={resizer.$observeItem}
+              _offset={offset()}
+              _hide={hide()}
+              _children={children()}
+              _isHorizontal={horizontal}
+            />
+          );
+        }}
+      </For>
     </div>
   );
 };

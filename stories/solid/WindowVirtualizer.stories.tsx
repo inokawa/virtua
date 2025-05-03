@@ -25,7 +25,7 @@ export const Default: StoryObj = {
                   background: "#fff",
                 }}
               >
-                {i}
+                {i()}
               </div>
             )}
           </WindowVirtualizer>

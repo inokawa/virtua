@@ -242,7 +242,7 @@ export const App = () => {
             background: "#fff",
           }}
         >
-          {i}
+          {i()}
         </div>
       )}
     </VList>

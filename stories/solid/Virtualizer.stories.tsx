@@ -42,7 +42,7 @@ export const TableElement: StoryObj = {
               <For each={COLUMN_WIDTHS}>
                 {(width, j) => (
                   <td style={{ width: `${width}px` }}>
-                    {i}, {j()}
+                    {i()}, {j()}
                   </td>
                 )}
               </For>
@@ -101,7 +101,7 @@ export const DivTable: StoryObj = {
                 <div
                   style={{ width: `${COLUMN_WIDTHS[j]}px`, padding: "10px" }}
                 >
-                  {i}, {j}
+                  {i()}, {j}
                 </div>
               ))}
             </>
