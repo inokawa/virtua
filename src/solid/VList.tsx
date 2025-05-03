@@ -30,6 +30,7 @@ export interface VListProps<T>
       | "cache"
       | "onScroll"
       | "onScrollEnd"
+      | "keepMounted"
     >,
     ViewportComponentAttributes {}
 
@@ -48,6 +49,7 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
     cache,
     onScroll,
     onScrollEnd,
+    keepMounted,
     style,
     ...attrs
   } = props;
@@ -74,6 +76,7 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
         cache={cache}
         onScroll={props.onScroll}
         onScrollEnd={props.onScrollEnd}
+        keepMounted={props.keepMounted}
       >
         {props.children}
       </Virtualizer>
