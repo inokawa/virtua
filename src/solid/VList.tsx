@@ -27,6 +27,7 @@ export interface VListProps<T>
       | "itemSize"
       | "shift"
       | "horizontal"
+      | "cache"
       | "onScroll"
       | "onScrollEnd"
     >,
@@ -44,6 +45,7 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
     itemSize,
     shift,
     horizontal,
+    cache,
     onScroll,
     onScrollEnd,
     style,
@@ -69,6 +71,7 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
         itemSize={props.itemSize}
         shift={props.shift}
         horizontal={horizontal}
+        cache={cache}
         onScroll={props.onScroll}
         onScrollEnd={props.onScrollEnd}
       >

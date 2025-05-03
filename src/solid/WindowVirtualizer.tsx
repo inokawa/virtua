@@ -8,8 +8,10 @@ import {
   createSignal,
   createMemo,
   JSX,
+  Accessor,
   on,
   createComputed,
+  For, untrack
 } from "solid-js";
 import {
   UPDATE_SCROLL_END_EVENT,
@@ -20,16 +22,19 @@ import {
   createWindowResizer,
   createWindowScroller,
   ItemsRange,
-  ScrollToIndexOpts,
+  ScrollToIndexOpts, CacheSnapshot,
 } from "../core";
 import { ListItem } from "./ListItem";
-import { RangedFor } from "./RangedFor";
 import { isSameRange } from "./utils";
 
 /**
  * Methods of {@link WindowVirtualizer}.
  */
 export interface WindowVirtualizerHandle {
+  /**
+   * Get current {@link CacheSnapshot}.
+   */
+  readonly cache: CacheSnapshot;
   /**
    * Find the start index of visible range of items.
    */
@@ -61,7 +66,7 @@ export interface WindowVirtualizerProps<T> {
   /**
    * The elements renderer function.
    */
-  children: (data: T, index: number) => JSX.Element;
+  children: (data: T, index: Accessor<number>) => JSX.Element;
   /**
    * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
@@ -82,6 +87,12 @@ export interface WindowVirtualizerProps<T> {
    * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
    */
   horizontal?: boolean;
+  /**
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.cache}.
+   *
+   * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
+   */
+  cache?: CacheSnapshot;
   /**
    * Callback invoked whenever scroll offset changes.
    */
@@ -108,6 +119,7 @@ export const WindowVirtualizer = <T,>(
     itemSize,
     shift: _shift,
     horizontal = false,
+    cache,
     onScrollEnd: _onScrollEnd,
   } = props;
 
@@ -116,7 +128,7 @@ export const WindowVirtualizer = <T,>(
     itemSize,
     overscan,
     undefined,
-    undefined,
+    cache,
     !itemSize
   );
   const resizer = createWindowResizer(store, horizontal);
@@ -153,6 +165,9 @@ export const WindowVirtualizer = <T,>(
   onMount(() => {
     if (props.ref) {
       props.ref({
+        get cache() {
+          return store.$getCacheSnapshot();
+        },
         findStartIndex: store.$findStartIndex,
         findEndIndex: store.$findEndIndex,
         scrollToIndex: scroller.$scrollToIndex,
@@ -192,6 +207,11 @@ export const WindowVirtualizer = <T,>(
     })
   );
 
+  const dataSlice = createMemo<T[]>(() => {
+    const [start, end] = range();
+    return end >= 0 ? props.data.slice(start, end + 1) : [];
+  })
+
   return (
     <div
       ref={containerRef}
@@ -206,31 +226,31 @@ export const WindowVirtualizer = <T,>(
         "pointer-events": isScrolling() ? "none" : undefined,
       }}
     >
-      <RangedFor
-        _each={props.data}
-        _range={range()}
-        _render={(data, index) => {
-          const offset = createMemo(() => {
-            stateVersion();
-            return store.$getItemOffset(index);
-          });
-          const hide = createMemo(() => {
-            stateVersion();
-            return store.$isUnmeasuredItem(index);
-          });
+      <For each={dataSlice()}>{(data, index) => {
+        const itemIndex = createMemo(() => range()[0] + index());
+        const offset = createMemo(() => {
+          stateVersion();
+          return store.$getItemOffset(itemIndex());
+        });
+        const hide = createMemo(() => {
+          stateVersion();
+          return store.$isUnmeasuredItem(itemIndex());
+        });
+        const children = createMemo(() => {
+          return untrack(() => props.children(data, itemIndex));
+        });
 
-          return (
-            <ListItem
-              _index={index}
-              _resizer={resizer.$observeItem}
-              _offset={offset()}
-              _hide={hide()}
-              _children={props.children(data(), index)}
-              _isHorizontal={horizontal}
-            />
-          );
-        }}
-      />
+        return (
+          <ListItem
+            _index={itemIndex()}
+            _resizer={resizer.$observeItem}
+            _offset={offset()}
+            _hide={hide()}
+            _children={children()}
+            _isHorizontal={horizontal}
+          />
+        );
+      }}</For>
     </div>
   );
 };
