@@ -12,7 +12,7 @@ import{s as J,m as K,i as c,d as S,t as z,c as f,e as k,f as Q}from"./web-CXCq-P
         "border-bottom": "solid 1px #ccc",
         background: "#fff"
       }}>
-            {i}
+            {i()}
           </div>}
       </VList>;
   }
@@ -34,7 +34,7 @@ import{s as J,m as K,i as c,d as S,t as z,c as f,e as k,f as Q}from"./web-CXCq-P
           "border-right": "solid 1px #ccc",
           background: "#fff"
         }}>
-              {i}
+              {i()}
             </div>}
         </VList>
       </div>;

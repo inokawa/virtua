@@ -20,7 +20,7 @@ import{i as n,d as v,e as g,t as d,u as D,F as f,s as S,m as L,h as O}from"./web
                 {(width, j) => <td style={{
               width: \`\${width}px\`
             }}>
-                    {i}, {j()}
+                    {i()}, {j()}
                   </td>}
               </For>}
           </Virtualizer>
@@ -62,7 +62,7 @@ import{i as n,d as v,e as g,t as d,u as D,F as f,s as S,m as L,h as O}from"./web
             width: \`\${COLUMN_WIDTHS[j]}px\`,
             padding: "10px"
           }}>
-                  {i}, {j}
+                  {i()}, {j}
                 </div>)}
             </>}
         </Virtualizer>

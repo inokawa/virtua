@@ -16,7 +16,7 @@ import{c as W,h as a,o as k,j as H,k as M,i as $,d as x,e as j,t as b,u as F,F a
             "border-bottom": "solid 1px #ccc",
             background: "#fff"
           }}>
-                {i}
+                {i()}
               </div>}
           </WindowVirtualizer>
         </div>
