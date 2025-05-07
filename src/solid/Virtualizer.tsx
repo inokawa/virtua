@@ -297,6 +297,8 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     if (props.keepMounted) {
       const [start, end] = range();
       sort(props.keepMounted).forEach((index) => {
+        if (index < 0 || index >= props.data.length)
+          return;
         if (index < start) {
           startItems.push(props.data[index]!);
           startIndexes.push(index);
