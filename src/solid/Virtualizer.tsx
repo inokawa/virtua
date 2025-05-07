@@ -295,12 +295,13 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     const startIndexes: number[] = [];
     const endIndexes: number[] = [];
     if (props.keepMounted) {
+      const [start, end] = range();
       sort(props.keepMounted).forEach((index) => {
-        if (index < range()[0]) {
+        if (index < start) {
           startItems.push(props.data[index]!);
           startIndexes.push(index);
         }
-        if (index > range()[1]) {
+        if (index > end) {
           endItems.push(props.data[index]!);
           endIndexes.push(index);
         }
