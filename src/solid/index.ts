@@ -10,3 +10,4 @@ export type {
   WindowVirtualizerProps,
   WindowVirtualizerHandle,
 } from "./WindowVirtualizer";
+export type * from "./types";

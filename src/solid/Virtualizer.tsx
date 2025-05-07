@@ -29,7 +29,7 @@ import {
   createScroller,
   ItemsRange,
   ScrollToIndexOpts,
-  CacheSnapshot,
+  CacheSnapshot, sort,
 } from "../core";
 import { ListItem } from "./ListItem";
 import { isSameRange } from "./utils";
@@ -140,6 +140,10 @@ export interface VirtualizerProps<T> {
    * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
    */
   horizontal?: boolean;
+  /**
+   * List of indexes that should be always mounted, even when off screen.
+   */
+  keepMounted?: number[];
   /**
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.cache}.
    *
@@ -285,6 +289,57 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     return end >= 0 ? props.data.slice(start, end + 1) : [];
   });
 
+  const mountedItems = createMemo(() => {
+    const startItems: T[] = [];
+    const endItems: T[] = [];
+    const startIndexes: number[] = [];
+    const endIndexes: number[] = [];
+    if (props.keepMounted) {
+      sort(props.keepMounted).forEach((index) => {
+        if (index < range()[0]) {
+          startItems.push(props.data[index]!);
+          startIndexes.push(index);
+        }
+        if (index > range()[1]) {
+          endItems.push(props.data[index]!);
+          endIndexes.push(index);
+        }
+      });
+    }
+    return {
+      startItems,
+      startIndexes,
+      endItems,
+      endIndexes
+    };
+  });
+
+  const renderItem = (data: T, index: Accessor<number>) => {
+    const offset = createMemo(() => {
+      stateVersion();
+      return store.$getItemOffset(index());
+    });
+    const hide = createMemo(() => {
+      stateVersion();
+      return store.$isUnmeasuredItem(index());
+    });
+    const children = createMemo(() => {
+      return untrack(() => props.children(data, index));
+    });
+
+    return (
+      <ListItem
+        _as={props.item}
+        _index={index()}
+        _resizer={resizer.$observeItem}
+        _offset={offset()}
+        _hide={hide()}
+        _children={children()}
+        _isHorizontal={horizontal}
+      />
+    );
+  }
+  
   return (
     <Dynamic
       component={props.as}
@@ -300,32 +355,24 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         "pointer-events": isScrolling() ? "none" : undefined,
       }}
     >
+      <For each={mountedItems().startItems}>
+        {(data, index) => {
+          const itemIndex = createMemo(() => mountedItems().startIndexes[index()]!);
+          return <>{renderItem(data, itemIndex)}</>;
+        }}
+      </For>
+
       <For each={dataSlice()}>
         {(data, index) => {
           const itemIndex = createMemo(() => range()[0] + index());
-          const offset = createMemo(() => {
-            stateVersion();
-            return store.$getItemOffset(itemIndex());
-          });
-          const hide = createMemo(() => {
-            stateVersion();
-            return store.$isUnmeasuredItem(itemIndex());
-          });
-          const children = createMemo(() => {
-            return untrack(() => props.children(data, itemIndex));
-          });
+          return <>{renderItem(data, itemIndex)}</>;
+        }}
+      </For>
 
-          return (
-            <ListItem
-              _as={props.item}
-              _index={itemIndex()}
-              _resizer={resizer.$observeItem}
-              _offset={offset()}
-              _hide={hide()}
-              _children={children()}
-              _isHorizontal={horizontal}
-            />
-          );
+      <For each={mountedItems().endItems}>
+        {(data, index) => {
+          const itemIndex = createMemo(() => mountedItems().endIndexes[index()]!);
+          return <>{renderItem(data, itemIndex)}</>;
         }}
       </For>
     </Dynamic>
