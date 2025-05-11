@@ -284,18 +284,16 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     })
   );
 
-  const dataSlice = createMemo<T[]>(() => {
+  const dataSlice = createMemo(() => {
     const [start, end] = range();
-    return end >= 0 ? props.data.slice(start, end + 1) : [];
-  });
+    const items = end >= 0 ? props.data.slice(start, end + 1) : [];
+    const indexes = items.map((_, index) => start + index);
 
-  const mountedItems = createMemo(() => {
-    const startItems: T[] = [];
-    const endItems: T[] = [];
-    const startIndexes: number[] = [];
-    const endIndexes: number[] = [];
     if (props.keepMounted) {
-      const [start, end] = range();
+      const startItems: T[] = [];
+      const startIndexes: number[] = [];
+      const endItems: T[] = [];
+      const endIndexes: number[] = [];
       sort(props.keepMounted).forEach((index) => {
         if (index < 0 || index >= props.data.length)
           return;
@@ -308,13 +306,13 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
           endIndexes.push(index);
         }
       });
+      items.unshift(...startItems);
+      indexes.unshift(...startIndexes);
+      items.push(...endItems);
+      indexes.push(...endIndexes);
     }
-    return {
-      startItems,
-      startIndexes,
-      endItems,
-      endIndexes
-    };
+
+    return { items, indexes };
   });
 
   const renderItem = (data: T, index: Accessor<number>) => {
@@ -358,24 +356,11 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         "pointer-events": isScrolling() ? "none" : undefined,
       }}
     >
-      <For each={mountedItems().startItems}>
+      <For each={dataSlice().items}>
         {(data, index) => {
-          const itemIndex = createMemo(() => mountedItems().startIndexes[index()]!);
-          return <>{renderItem(data, itemIndex)}</>;
-        }}
-      </For>
-
-      <For each={dataSlice()}>
-        {(data, index) => {
-          const itemIndex = createMemo(() => range()[0] + index());
-          return <>{renderItem(data, itemIndex)}</>;
-        }}
-      </For>
-
-      <For each={mountedItems().endItems}>
-        {(data, index) => {
-          const itemIndex = createMemo(() => mountedItems().endIndexes[index()]!);
-          return <>{renderItem(data, itemIndex)}</>;
+          const itemIndex = createMemo(() => dataSlice().indexes[index()]!);
+          // eslint-disable-next-line solid/reactivity
+          return renderItem(data, itemIndex);
         }}
       </For>
     </Dynamic>
