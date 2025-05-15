@@ -4,21 +4,23 @@
 
 # Interface: VirtualizerProps\<T\>
 
-Defined in: [src/solid/Virtualizer.tsx:97](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/Virtualizer.tsx#L97)
+Defined in: [src/solid/Virtualizer.tsx:97](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/Virtualizer.tsx#L97)
 
 Props of [Virtualizer](../functions/Virtualizer.md).
 
 ## Type Parameters
 
-• **T**
+### T
+
+`T`
 
 ## Properties
 
 ### ref()?
 
-> `optional` **ref**: (`handle`?) => `void`
+> `optional` **ref**: (`handle?`) => `void`
 
-Defined in: [src/solid/Virtualizer.tsx:101](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/Virtualizer.tsx#L101)
+Defined in: [src/solid/Virtualizer.tsx:101](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/Virtualizer.tsx#L101)
 
 Get reference to [VirtualizerHandle](VirtualizerHandle.md).
 
@@ -38,7 +40,7 @@ Get reference to [VirtualizerHandle](VirtualizerHandle.md).
 
 > **data**: `T`[]
 
-Defined in: [src/solid/Virtualizer.tsx:105](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/Virtualizer.tsx#L105)
+Defined in: [src/solid/Virtualizer.tsx:105](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/Virtualizer.tsx#L105)
 
 The data items rendered by this component.
 
@@ -48,7 +50,7 @@ The data items rendered by this component.
 
 > **children**: (`data`, `index`) => `Element`
 
-Defined in: [src/solid/Virtualizer.tsx:109](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/Virtualizer.tsx#L109)
+Defined in: [src/solid/Virtualizer.tsx:109](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/Virtualizer.tsx#L109)
 
 The elements renderer function.
 
@@ -72,7 +74,7 @@ The elements renderer function.
 
 > `optional` **overscan**: `number`
 
-Defined in: [src/solid/Virtualizer.tsx:114](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/Virtualizer.tsx#L114)
+Defined in: [src/solid/Virtualizer.tsx:114](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/Virtualizer.tsx#L114)
 
 Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -88,7 +90,7 @@ Number of items to render above/below the visible bounds of the list. Lower valu
 
 > `optional` **as**: `ValidComponent`
 
-Defined in: [src/solid/Virtualizer.tsx:119](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/Virtualizer.tsx#L119)
+Defined in: [src/solid/Virtualizer.tsx:119](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/Virtualizer.tsx#L119)
 
 Component or element type for container element.
 
@@ -104,7 +106,7 @@ Component or element type for container element.
 
 > `optional` **item**: `ValidComponent`
 
-Defined in: [src/solid/Virtualizer.tsx:124](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/Virtualizer.tsx#L124)
+Defined in: [src/solid/Virtualizer.tsx:124](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/Virtualizer.tsx#L124)
 
 Component or element type for item element.
 
@@ -120,7 +122,7 @@ Component or element type for item element.
 
 > `optional` **scrollRef**: `HTMLElement`
 
-Defined in: [src/solid/Virtualizer.tsx:128](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/Virtualizer.tsx#L128)
+Defined in: [src/solid/Virtualizer.tsx:128](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/Virtualizer.tsx#L128)
 
 Reference to the scrollable element. The default will get the direct parent element of virtualizer.
 
@@ -130,7 +132,7 @@ Reference to the scrollable element. The default will get the direct parent elem
 
 > `optional` **itemSize**: `number`
 
-Defined in: [src/solid/Virtualizer.tsx:135](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/Virtualizer.tsx#L135)
+Defined in: [src/solid/Virtualizer.tsx:135](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/Virtualizer.tsx#L135)
 
 Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -143,7 +145,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 > `optional` **shift**: `boolean`
 
-Defined in: [src/solid/Virtualizer.tsx:139](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/Virtualizer.tsx#L139)
+Defined in: [src/solid/Virtualizer.tsx:139](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/Virtualizer.tsx#L139)
 
 While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
 
@@ -153,7 +155,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 > `optional` **horizontal**: `boolean`
 
-Defined in: [src/solid/Virtualizer.tsx:143](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/Virtualizer.tsx#L143)
+Defined in: [src/solid/Virtualizer.tsx:143](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/Virtualizer.tsx#L143)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -163,7 +165,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `optional` **keepMounted**: `number`[]
 
-Defined in: [src/solid/Virtualizer.tsx:147](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/Virtualizer.tsx#L147)
+Defined in: [src/solid/Virtualizer.tsx:147](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/Virtualizer.tsx#L147)
 
 List of indexes that should be always mounted, even when off screen.
 
@@ -173,9 +175,9 @@ List of indexes that should be always mounted, even when off screen.
 
 > `optional` **cache**: [`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md)
 
-Defined in: [src/solid/Virtualizer.tsx:153](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/Virtualizer.tsx#L153)
+Defined in: [src/solid/Virtualizer.tsx:153](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/Virtualizer.tsx#L153)
 
-You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VirtualizerHandle.cache](VirtualizerHandle.md#cache).
+You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VirtualizerHandle.cache](VListHandle.md#cache).
 
 **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
 
@@ -185,7 +187,7 @@ You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheS
 
 > `optional` **startMargin**: `number`
 
-Defined in: [src/solid/Virtualizer.tsx:157](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/Virtualizer.tsx#L157)
+Defined in: [src/solid/Virtualizer.tsx:157](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/Virtualizer.tsx#L157)
 
 If you put an element before virtualizer, you have to define its height with this prop.
 
@@ -195,7 +197,7 @@ If you put an element before virtualizer, you have to define its height with thi
 
 > `optional` **onScroll**: (`offset`) => `void`
 
-Defined in: [src/solid/Virtualizer.tsx:162](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/Virtualizer.tsx#L162)
+Defined in: [src/solid/Virtualizer.tsx:162](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/Virtualizer.tsx#L162)
 
 Callback invoked whenever scroll offset changes.
 
@@ -217,7 +219,7 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 > `optional` **onScrollEnd**: () => `void`
 
-Defined in: [src/solid/Virtualizer.tsx:166](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/Virtualizer.tsx#L166)
+Defined in: [src/solid/Virtualizer.tsx:166](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/Virtualizer.tsx#L166)
 
 Callback invoked when scrolling stops.
 

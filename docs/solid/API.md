@@ -12,14 +12,14 @@
 
 ## Interfaces
 
+- [CustomContainerComponentProps](interfaces/CustomContainerComponentProps.md)
+- [CustomItemComponentProps](interfaces/CustomItemComponentProps.md)
 - [VListProps](interfaces/VListProps.md)
 - [VListHandle](interfaces/VListHandle.md)
 - [VirtualizerProps](interfaces/VirtualizerProps.md)
 - [VirtualizerHandle](interfaces/VirtualizerHandle.md)
 - [WindowVirtualizerProps](interfaces/WindowVirtualizerProps.md)
 - [WindowVirtualizerHandle](interfaces/WindowVirtualizerHandle.md)
-- [CustomContainerComponentProps](interfaces/CustomContainerComponentProps.md)
-- [CustomItemComponentProps](interfaces/CustomItemComponentProps.md)
 
 ## Type Aliases
 

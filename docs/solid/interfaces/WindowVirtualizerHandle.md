@@ -4,7 +4,7 @@
 
 # Interface: WindowVirtualizerHandle
 
-Defined in: [src/solid/WindowVirtualizer.tsx:35](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/WindowVirtualizer.tsx#L35)
+Defined in: [src/solid/WindowVirtualizer.tsx:34](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/WindowVirtualizer.tsx#L34)
 
 Methods of [WindowVirtualizer](../functions/WindowVirtualizer.md).
 
@@ -12,9 +12,9 @@ Methods of [WindowVirtualizer](../functions/WindowVirtualizer.md).
 
 ### scrollToIndex()
 
-> **scrollToIndex**(`index`, `opts`?): `void`
+> **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:53](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/WindowVirtualizer.tsx#L53)
+Defined in: [src/solid/WindowVirtualizer.tsx:52](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/WindowVirtualizer.tsx#L52)
 
 Scroll to the item specified by index.
 
@@ -42,7 +42,7 @@ options
 
 > `readonly` **cache**: [`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md)
 
-Defined in: [src/solid/WindowVirtualizer.tsx:39](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/WindowVirtualizer.tsx#L39)
+Defined in: [src/solid/WindowVirtualizer.tsx:38](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/WindowVirtualizer.tsx#L38)
 
 Get current [CacheSnapshot](../../react/interfaces/CacheSnapshot.md).
 
@@ -52,7 +52,7 @@ Get current [CacheSnapshot](../../react/interfaces/CacheSnapshot.md).
 
 > **findStartIndex**: () => `number`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:43](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/WindowVirtualizer.tsx#L43)
+Defined in: [src/solid/WindowVirtualizer.tsx:42](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/WindowVirtualizer.tsx#L42)
 
 Find the start index of visible range of items.
 
@@ -66,7 +66,7 @@ Find the start index of visible range of items.
 
 > **findEndIndex**: () => `number`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:47](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/solid/WindowVirtualizer.tsx#L47)
+Defined in: [src/solid/WindowVirtualizer.tsx:46](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/solid/WindowVirtualizer.tsx#L46)
 
 Find the end index of visible range of items.
 

@@ -4,7 +4,7 @@
 
 # Interface: CustomContainerComponentProps
 
-Defined in: [src/react/types.ts:9](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/react/types.ts#L9)
+Defined in: [src/react/types.ts:9](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/react/types.ts#L9)
 
 ## Properties
 
@@ -12,7 +12,7 @@ Defined in: [src/react/types.ts:9](https://github.com/inokawa/virtua/blob/f14159
 
 > **style**: `CSSProperties`
 
-Defined in: [src/react/types.ts:10](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/react/types.ts#L10)
+Defined in: [src/react/types.ts:10](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/react/types.ts#L10)
 
 ***
 
@@ -20,7 +20,7 @@ Defined in: [src/react/types.ts:10](https://github.com/inokawa/virtua/blob/f1415
 
 > **children**: `ReactNode`
 
-Defined in: [src/react/types.ts:11](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/react/types.ts#L11)
+Defined in: [src/react/types.ts:11](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/react/types.ts#L11)
 
 ***
 
@@ -28,6 +28,6 @@ Defined in: [src/react/types.ts:11](https://github.com/inokawa/virtua/blob/f1415
 
 > `optional` **ref**: `LegacyRef`\<`any`\>
 
-Defined in: [src/react/types.ts:15](https://github.com/inokawa/virtua/blob/f141590c318c92fb814be380223b1e62dac03ace/src/react/types.ts#L15)
+Defined in: [src/react/types.ts:15](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/react/types.ts#L15)
 
 only available after React 19
