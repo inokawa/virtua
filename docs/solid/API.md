@@ -18,3 +18,11 @@
 - [VirtualizerHandle](interfaces/VirtualizerHandle.md)
 - [WindowVirtualizerProps](interfaces/WindowVirtualizerProps.md)
 - [WindowVirtualizerHandle](interfaces/WindowVirtualizerHandle.md)
+- [CustomContainerComponentProps](interfaces/CustomContainerComponentProps.md)
+- [CustomItemComponentProps](interfaces/CustomItemComponentProps.md)
+
+## Type Aliases
+
+- [ViewportComponentAttributes](type-aliases/ViewportComponentAttributes.md)
+- [CustomContainerComponent](type-aliases/CustomContainerComponent.md)
+- [CustomItemComponent](type-aliases/CustomItemComponent.md)
