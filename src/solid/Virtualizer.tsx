@@ -29,7 +29,8 @@ import {
   createScroller,
   ItemsRange,
   ScrollToIndexOpts,
-  CacheSnapshot, sort,
+  CacheSnapshot,
+  sort,
 } from "../core";
 import { ListItem } from "./ListItem";
 import { isSameRange } from "./utils";
@@ -295,8 +296,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
       const endItems: T[] = [];
       const endIndexes: number[] = [];
       sort(props.keepMounted).forEach((index) => {
-        if (index < 0 || index >= props.data.length)
-          return;
+        if (index < 0 || index >= props.data.length) return;
         if (index < start) {
           startItems.push(props.data[index]!);
           startIndexes.push(index);
@@ -312,7 +312,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
       indexes.push(...endIndexes);
     }
 
-    return { items, indexes };
+    return { _items: items, _indexes: indexes };
   });
 
   const renderItem = (data: T, index: Accessor<number>) => {
@@ -339,8 +339,8 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         _isHorizontal={horizontal}
       />
     );
-  }
-  
+  };
+
   return (
     <Dynamic
       component={props.as}
@@ -356,9 +356,9 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         "pointer-events": isScrolling() ? "none" : undefined,
       }}
     >
-      <For each={dataSlice().items}>
+      <For each={dataSlice()._items}>
         {(data, index) => {
-          const itemIndex = createMemo(() => dataSlice().indexes[index()]!);
+          const itemIndex = createMemo(() => dataSlice()._indexes[index()]!);
           // eslint-disable-next-line solid/reactivity
           return renderItem(data, itemIndex);
         }}
