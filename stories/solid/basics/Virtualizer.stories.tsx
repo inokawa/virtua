@@ -2,7 +2,7 @@
  * @jsxImportSource solid-js
  */
 import type { Meta, StoryObj } from "storybook-solidjs";
-import { Virtualizer } from "../../src/solid";
+import { Virtualizer } from "../../../src/solid";
 import { For } from "solid-js";
 
 export default {

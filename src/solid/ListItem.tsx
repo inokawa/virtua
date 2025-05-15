@@ -56,7 +56,7 @@ export const ListItem: Component<ListItemProps> = (props) => {
   });
 
   return (
-    <Dynamic component={props._as} ref={elementRef} style={style()}>
+    <Dynamic component={props._as} index={props._index} ref={elementRef} style={style()}>
       {props._children}
     </Dynamic>
   );

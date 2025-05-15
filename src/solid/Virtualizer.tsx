@@ -30,6 +30,7 @@ import {
   ItemsRange,
   ScrollToIndexOpts,
   CacheSnapshot,
+  sort,
 } from "../core";
 import { ListItem } from "./ListItem";
 import { isSameRange } from "./utils";
@@ -140,6 +141,10 @@ export interface VirtualizerProps<T> {
    * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
    */
   horizontal?: boolean;
+  /**
+   * List of indexes that should be always mounted, even when off screen.
+   */
+  keepMounted?: number[];
   /**
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.cache}.
    *
@@ -269,7 +274,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     })
   );
 
-  const dataSlice = createMemo<T[]>(() => {
+  const dataSlice = createMemo(() => {
     const count = props.data.length;
     untrack(() => {
       if (count !== store.$getItemsLength()) {
@@ -277,8 +282,59 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
       }
     });
     const [start, end] = range();
-    return end >= 0 ? props.data.slice(start, end + 1) : [];
+    const items = end >= 0 ? props.data.slice(start, end + 1) : [];
+    const indexes = items.map((_, index) => start + index);
+
+    if (props.keepMounted) {
+      const startItems: T[] = [];
+      const startIndexes: number[] = [];
+      const endItems: T[] = [];
+      const endIndexes: number[] = [];
+      sort(props.keepMounted).forEach((index) => {
+        if (index < 0 || index >= props.data.length) return;
+        if (index < start) {
+          startItems.push(props.data[index]!);
+          startIndexes.push(index);
+        }
+        if (index > end) {
+          endItems.push(props.data[index]!);
+          endIndexes.push(index);
+        }
+      });
+      items.unshift(...startItems);
+      indexes.unshift(...startIndexes);
+      items.push(...endItems);
+      indexes.push(...endIndexes);
+    }
+
+    return { _items: items, _indexes: indexes };
   });
+
+  const renderItem = (data: T, index: Accessor<number>) => {
+    const offset = createMemo(() => {
+      stateVersion();
+      return store.$getItemOffset(index());
+    });
+    const hide = createMemo(() => {
+      stateVersion();
+      return store.$isUnmeasuredItem(index());
+    });
+    const children = createMemo(() => {
+      return untrack(() => props.children(data, index));
+    });
+
+    return (
+      <ListItem
+        _as={props.item}
+        _index={index()}
+        _resizer={resizer.$observeItem}
+        _offset={offset()}
+        _hide={hide()}
+        _children={children()}
+        _isHorizontal={horizontal}
+      />
+    );
+  };
 
   return (
     <Dynamic
@@ -295,32 +351,11 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         "pointer-events": isScrolling() ? "none" : undefined,
       }}
     >
-      <For each={dataSlice()}>
+      <For each={dataSlice()._items}>
         {(data, index) => {
-          const itemIndex = createMemo(() => range()[0] + index());
-          const offset = createMemo(() => {
-            stateVersion();
-            return store.$getItemOffset(itemIndex());
-          });
-          const hide = createMemo(() => {
-            stateVersion();
-            return store.$isUnmeasuredItem(itemIndex());
-          });
-          const children = createMemo(() => {
-            return untrack(() => props.children(data, itemIndex));
-          });
-
-          return (
-            <ListItem
-              _as={props.item}
-              _index={itemIndex()}
-              _resizer={resizer.$observeItem}
-              _offset={offset()}
-              _hide={hide()}
-              _children={children()}
-              _isHorizontal={horizontal}
-            />
-          );
+          const itemIndex = createMemo(() => dataSlice()._indexes[index()]!);
+          // eslint-disable-next-line solid/reactivity
+          return renderItem(data, itemIndex);
         }}
       </For>
     </Dynamic>

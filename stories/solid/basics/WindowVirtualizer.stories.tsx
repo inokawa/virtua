@@ -2,7 +2,7 @@
  * @jsxImportSource solid-js
  */
 import type { Meta, StoryObj } from "storybook-solidjs";
-import { WindowVirtualizer } from "../../src/solid";
+import { WindowVirtualizer } from "../../../src/solid";
 
 export default {
   component: WindowVirtualizer,
