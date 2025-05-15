@@ -259,17 +259,6 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
   createComputed(
     on(
-      () => props.data.length,
-      (count) => {
-        if (count !== store.$getItemsLength()) {
-          store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
-        }
-      }
-    )
-  );
-
-  createComputed(
-    on(
       () => props.startMargin || 0,
       (value) => {
         if (value !== store.$getStartSpacerSize()) {
@@ -286,6 +275,12 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   );
 
   const dataSlice = createMemo(() => {
+    const count = props.data.length;
+    untrack(() => {
+      if (count !== store.$getItemsLength()) {
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+      }
+    });
     const [start, end] = range();
     const items = end >= 0 ? props.data.slice(start, end + 1) : [];
     const indexes = items.map((_, index) => start + index);

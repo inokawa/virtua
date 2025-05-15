@@ -10,7 +10,6 @@ import {
   JSX,
   Accessor,
   on,
-  createComputed,
   For,
   untrack,
 } from "solid-js";
@@ -192,17 +191,6 @@ export const WindowVirtualizer = <T,>(
     });
   });
 
-  createComputed(
-    on(
-      () => props.data.length,
-      (len) => {
-        if (len !== store.$getItemsLength()) {
-          store.$update(ACTION_ITEMS_LENGTH_CHANGE, [len, props.shift]);
-        }
-      }
-    )
-  );
-
   createEffect(
     on(stateVersion, () => {
       scroller.$fixScrollJump();
@@ -210,6 +198,12 @@ export const WindowVirtualizer = <T,>(
   );
 
   const dataSlice = createMemo<T[]>(() => {
+    const count = props.data.length;
+    untrack(() => {
+      if (count !== store.$getItemsLength()) {
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+      }
+    });
     const [start, end] = range();
     return end >= 0 ? props.data.slice(start, end + 1) : [];
   });
