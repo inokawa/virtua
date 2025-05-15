@@ -271,9 +271,11 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
   const dataSlice = createMemo<T[]>(() => {
     const count = props.data.length;
-    if (count !== store.$getItemsLength()) {
-      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, untrack(() => props.shift)]);
-    }
+    untrack(() => {
+      if (count !== store.$getItemsLength()) {
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+      }
+    });
     const [start, end] = range();
     return end >= 0 ? props.data.slice(start, end + 1) : [];
   });
