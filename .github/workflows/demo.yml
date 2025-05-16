@@ -17,7 +17,7 @@ jobs:
         with:
           # https://github.com/nodejs/node/issues/56155
           # node-version: "lts/*"
-          node-version: "22.11.0"
+          node-version: "22.15.1"
           cache: "npm"
 
       - run: npm ci
