@@ -2,7 +2,6 @@ import tseslint from "typescript-eslint";
 import pluginImport from "eslint-plugin-import";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
-import pluginReactCompiler from "eslint-plugin-react-compiler";
 import pluginVue from "eslint-plugin-vue";
 import solid from "eslint-plugin-solid/configs/typescript";
 
@@ -64,15 +63,11 @@ export default [
   ...[
     pluginReact.configs.flat.recommended,
     pluginReact.configs.flat["jsx-runtime"],
+    pluginReactHooks.configs.recommended,
     {
-      plugins: {
-        "react-hooks": pluginReactHooks,
-        "react-compiler": pluginReactCompiler,
-      },
       rules: {
         "react/display-name": "off",
-        ...pluginReactHooks.configs.recommended.rules,
-        "react-compiler/react-compiler": "warn",
+        "react-hooks/react-compiler": "warn",
       },
     },
   ].map((c) => ({
