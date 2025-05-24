@@ -2,7 +2,7 @@ import { basename, extname, join } from "node:path";
 import { readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { svelte2tsx } from "svelte2tsx";
-import { globSync } from "glob";
+import { globSync } from "node:fs";
 import ts from "typescript";
 import tsconfig from "../tsconfig.json" with { type: "json" };
 
