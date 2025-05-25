@@ -33,14 +33,13 @@ export const microtask: (fn: () => void) => void =
 /**
  * @internal
  */
-export const once = <V>(fn: () => V): (() => V) => {
-  let called: undefined | boolean;
-  let cache: V;
+export const once = <T>(fn: () => T): (() => T) => {
+  let cache: T;
 
   return () => {
-    if (!called) {
-      called = true;
+    if (fn) {
       cache = fn();
+      fn = undefined!;
     }
     return cache;
   };
