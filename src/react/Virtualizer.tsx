@@ -99,6 +99,10 @@ export interface VirtualizerProps {
    */
   children: ReactNode | ((index: number) => ReactElement);
   /**
+   * CSS classes for the virtualizer container.
+   */
+  className?: string;
+  /**
    * If you set a function to {@link VirtualizerProps.children}, you have to set total number of items to this prop.
    */
   count?: number;
@@ -137,6 +141,10 @@ export interface VirtualizerProps {
    */
   startMargin?: number;
   /**
+   * CSS styles for the virtualizer container. Note that styles set by this component will override the styles set by the user.
+   */
+  style?: React.CSSProperties;
+  /**
    * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
    */
   ssrCount?: number;
@@ -172,6 +180,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
   (
     {
       children,
+      className,
       count: renderCountProp,
       overscan,
       itemSize,
@@ -184,6 +193,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       as: Element = "div",
       item: ItemElement = "div",
       scrollRef,
+      style,
       onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
     },
@@ -350,7 +360,9 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     return (
       <Element
         ref={containerRef}
+        className={className}
         style={{
+          ...style,
           // contain: "content",
           overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
           flex: "none", // flex style can break layout
