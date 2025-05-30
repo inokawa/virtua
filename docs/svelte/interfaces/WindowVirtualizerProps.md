@@ -4,7 +4,7 @@
 
 # Interface: WindowVirtualizerProps\<T\>
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:7](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/svelte/WindowVirtualizer.type.ts#L7)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:7](https://github.com/inokawa/virtua/blob/55ee1f74fd220eab46df8d649d0d7b2c4046c731/src/svelte/WindowVirtualizer.type.ts#L7)
 
 Props of [WindowVirtualizer](../variables/VList.md).
 
@@ -20,7 +20,7 @@ Props of [WindowVirtualizer](../variables/VList.md).
 
 > **data**: `T`[]
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:11](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/svelte/WindowVirtualizer.type.ts#L11)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:11](https://github.com/inokawa/virtua/blob/55ee1f74fd220eab46df8d649d0d7b2c4046c731/src/svelte/WindowVirtualizer.type.ts#L11)
 
 The data items rendered by this component.
 
@@ -30,7 +30,7 @@ The data items rendered by this component.
 
 > **children**: `Snippet`\<\[`T`, `number`\]\>
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:15](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/svelte/WindowVirtualizer.type.ts#L15)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:15](https://github.com/inokawa/virtua/blob/55ee1f74fd220eab46df8d649d0d7b2c4046c731/src/svelte/WindowVirtualizer.type.ts#L15)
 
 The elements renderer snippet.
 
@@ -40,7 +40,7 @@ The elements renderer snippet.
 
 > `optional` **getKey**: (`data`, `index`) => `string` \| `number`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:20](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/svelte/WindowVirtualizer.type.ts#L20)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:20](https://github.com/inokawa/virtua/blob/55ee1f74fd220eab46df8d649d0d7b2c4046c731/src/svelte/WindowVirtualizer.type.ts#L20)
 
 Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
 
@@ -70,7 +70,7 @@ defaultGetKey (returns index of item)
 
 > `optional` **overscan**: `number`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:25](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/svelte/WindowVirtualizer.type.ts#L25)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:25](https://github.com/inokawa/virtua/blob/55ee1f74fd220eab46df8d649d0d7b2c4046c731/src/svelte/WindowVirtualizer.type.ts#L25)
 
 Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
 
@@ -86,7 +86,7 @@ Number of items to render above/below the visible bounds of the list. You can in
 
 > `optional` **itemSize**: `number`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:32](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/svelte/WindowVirtualizer.type.ts#L32)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:32](https://github.com/inokawa/virtua/blob/55ee1f74fd220eab46df8d649d0d7b2c4046c731/src/svelte/WindowVirtualizer.type.ts#L32)
 
 Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -99,7 +99,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 > `optional` **shift**: `boolean`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/svelte/WindowVirtualizer.type.ts#L36)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/55ee1f74fd220eab46df8d649d0d7b2c4046c731/src/svelte/WindowVirtualizer.type.ts#L36)
 
 While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
 
@@ -109,7 +109,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 > `optional` **horizontal**: `boolean`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:40](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/svelte/WindowVirtualizer.type.ts#L40)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:40](https://github.com/inokawa/virtua/blob/55ee1f74fd220eab46df8d649d0d7b2c4046c731/src/svelte/WindowVirtualizer.type.ts#L40)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -119,7 +119,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `optional` **onscroll**: () => `void`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:44](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/svelte/WindowVirtualizer.type.ts#L44)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:44](https://github.com/inokawa/virtua/blob/55ee1f74fd220eab46df8d649d0d7b2c4046c731/src/svelte/WindowVirtualizer.type.ts#L44)
 
 Callback invoked whenever scroll offset changes.
 
@@ -133,7 +133,7 @@ Callback invoked whenever scroll offset changes.
 
 > `optional` **onscrollend**: () => `void`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:48](https://github.com/inokawa/virtua/blob/9beb70eb109c037ab86ea839e5f119e979768d35/src/svelte/WindowVirtualizer.type.ts#L48)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:48](https://github.com/inokawa/virtua/blob/55ee1f74fd220eab46df8d649d0d7b2c4046c731/src/svelte/WindowVirtualizer.type.ts#L48)
 
 Callback invoked when scrolling stops.
 
