@@ -286,6 +286,7 @@ export const App = () => {
 
 - [API reference](./docs/API.md)
 - [Storybook examples](./stories) for more usages
+- [DeepWiki](https://deepwiki.com/inokawa/virtua)
 
 ### FAQs
 
