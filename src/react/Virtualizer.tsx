@@ -7,6 +7,7 @@ import {
   useRef,
   RefObject,
   useReducer,
+  Ref,
 } from "react";
 import {
   UPDATE_SCROLL_EVENT,
@@ -31,6 +32,7 @@ import { ListItem } from "./ListItem";
 import { flushSync } from "react-dom";
 import { useChildren } from "./useChildren";
 import { CustomContainerComponent, CustomItemComponent } from "./types";
+import { useMergeRefs } from "./useMergeRefs";
 
 /**
  * Methods of {@link Virtualizer}.
@@ -102,6 +104,8 @@ export interface VirtualizerProps {
    * If you set a function to {@link VirtualizerProps.children}, you have to set total number of items to this prop.
    */
   count?: number;
+  /** Reference to the rendered DOM element. */
+  domRef?: Ref<HTMLDivElement>;
   /**
    * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
@@ -173,6 +177,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     {
       children,
       count: renderCountProp,
+      domRef,
       overscan,
       itemSize,
       shift,
@@ -349,7 +354,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
 
     return (
       <Element
-        ref={containerRef}
+        ref={useMergeRefs(containerRef, domRef)}
         style={{
           // contain: "content",
           overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
