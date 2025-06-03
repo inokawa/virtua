@@ -1,5 +1,9 @@
 import { Ref, MutableRefObject, useCallback } from "react";
 
+/**
+ * @internal
+ * Merge multiple refs into a single ref callback.
+ */
 export function useMergeRefs<T>(...refs: Array<Ref<T> | undefined>): Ref<T> {
   return useCallback((instance: T | null) => {
     for (const ref of refs) {
