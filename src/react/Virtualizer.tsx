@@ -7,6 +7,9 @@ import {
   useRef,
   RefObject,
   useReducer,
+  useCallback,
+  MutableRefObject,
+  Ref,
 } from "react";
 import {
   UPDATE_SCROLL_EVENT,
@@ -102,6 +105,8 @@ export interface VirtualizerProps {
    * If you set a function to {@link VirtualizerProps.children}, you have to set total number of items to this prop.
    */
   count?: number;
+  /** Reference to the rendered DOM element. */
+  domRef?: Ref<HTMLDivElement | null>;
   /**
    * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
@@ -173,6 +178,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     {
       children,
       count: renderCountProp,
+      domRef,
       overscan,
       itemSize,
       shift,
@@ -347,9 +353,14 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       items.push(...endItems);
     }
 
+    const elementRef = useCallback((el: HTMLDivElement | null) => {
+      updateRef(domRef, el)
+      updateRef(containerRef, el)
+    }, [domRef, containerRef]);
+
     return (
       <Element
-        ref={containerRef}
+        ref={elementRef}
         style={{
           // contain: "content",
           overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
@@ -366,3 +377,11 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     );
   }
 );
+
+function updateRef<T>(ref: Ref<T> | undefined, instance: null | T): void {
+  if (typeof ref === "function") {
+    ref(instance);
+  } else if (ref) {
+    (ref as MutableRefObject<T | null>).current = instance
+  }
+}
