@@ -333,14 +333,11 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         }
       );
       const unsubscribeVScroll = vStore.$subscribe(UPDATE_SCROLL_EVENT, () => {
-        onScroll[refKey] && onScroll[refKey](vStore.$getScrollOffset());
-      });
-      const unsubscribeVScrollEnd = vStore.$subscribe(
-        UPDATE_SCROLL_END_EVENT,
-        () => {
-          onScrollEnd[refKey] && onScrollEnd[refKey]();
-        }
-      );
+        onScroll[refKey] && onScroll[refKey](vStore.$getScrollOffset())
+      })
+      const unsubscribeVScrollEnd = vStore.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
+        onScrollEnd[refKey] && onScrollEnd[refKey]()
+      })
 
       resizer.$observeRoot(root);
       scroller.$observe(root);
@@ -378,19 +375,10 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         get viewportWidth() {
           return hStore.$getViewportSize();
         },
-        findStartIndex: () => [
-          hStore.$findStartIndex(),
-          vStore.$findStartIndex(),
-        ],
+        findStartIndex: () => [hStore.$findStartIndex(), vStore.$findStartIndex()],
         findEndIndex: () => [hStore.$findEndIndex(), vStore.$findEndIndex()],
-        getItemOffset: (indexX, indexY) => [
-          hStore.$getItemOffset(indexX),
-          vStore.$getItemOffset(indexY),
-        ],
-        getItemSize: (indexX, indexY) => [
-          hStore.$getItemSize(indexX),
-          vStore.$getItemSize(indexY),
-        ],
+        getItemOffset: (indexX, indexY) => [hStore.$getItemOffset(indexX), vStore.$getItemOffset(indexY)],
+        getItemSize: (indexX, indexY) => [hStore.$getItemSize(indexX), vStore.$getItemSize(indexY)],
         scrollToIndex: scroller.$scrollToIndex,
         scrollTo: scroller.$scrollTo,
         scrollBy: scroller.$scrollBy,
