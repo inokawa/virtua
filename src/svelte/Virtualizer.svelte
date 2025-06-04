@@ -1,5 +1,5 @@
 <script lang="ts" generics="T">
-  import { onMount, onDestroy } from "svelte";
+  import { onDestroy } from "svelte";
   import {
     ACTION_ITEMS_LENGTH_CHANGE,
     ACTION_START_OFFSET_CHANGE,
@@ -65,11 +65,13 @@
   let isScrolling = $derived(stateVersion && store.$isScrolling());
   let totalSize = $derived(stateVersion && store.$getTotalSize());
 
-  onMount(() => {
+  $effect(() => {
     const assignRef = (scrollable: HTMLElement) => {
+      resizer.$unobserveRoot();
       resizer.$observeRoot(scrollable);
+      scroller.$unobserve();
       scroller.$observe(scrollable);
-    };
+    }
     if (scrollRef) {
       assignRef(scrollRef);
     } else {
