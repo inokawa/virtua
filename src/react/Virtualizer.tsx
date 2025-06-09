@@ -103,8 +103,6 @@ export interface VirtualizerProps {
    * If you set a function to {@link VirtualizerProps.children}, you have to set total number of items to this prop.
    */
   count?: number;
-  /** Reference to the rendered DOM element. */
-  domRef?: Ref<HTMLDivElement>;
   /**
    * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
