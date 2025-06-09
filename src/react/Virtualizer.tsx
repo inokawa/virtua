@@ -7,7 +7,6 @@ import {
   useRef,
   RefObject,
   useReducer,
-  Ref,
 } from "react";
 import {
   UPDATE_SCROLL_EVENT,
