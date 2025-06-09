@@ -32,7 +32,6 @@ import { ListItem } from "./ListItem";
 import { flushSync } from "react-dom";
 import { useChildren } from "./useChildren";
 import { CustomContainerComponent, CustomItemComponent } from "./types";
-import { useMergeRefs } from "./useMergeRefs";
 
 /**
  * Methods of {@link Virtualizer}.
@@ -177,7 +176,6 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     {
       children,
       count: renderCountProp,
-      domRef,
       overscan,
       itemSize,
       shift,
@@ -354,7 +352,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
 
     return (
       <Element
-        ref={useMergeRefs(containerRef, domRef)}
+        ref={containerRef}
         style={{
           // contain: "content",
           overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
