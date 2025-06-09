@@ -9,6 +9,7 @@ import {
   ReactNode,
   useImperativeHandle,
   useReducer,
+  Ref,
 } from "react";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
@@ -28,6 +29,7 @@ import { useStatic } from "./useStatic";
 import { ViewportComponentAttributes } from "./types";
 import { useLatestRef } from "./useLatestRef";
 import { flushSync } from "react-dom";
+import { useMergeRefs } from "./useMergeRefs";
 
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
@@ -220,6 +222,10 @@ export interface VGridProps extends ViewportComponentAttributes {
    * @defaultValue "div"
    */
   item?: keyof JSX.IntrinsicElements | CustomCellComponent;
+  /** Reference to the rendered DOM element (the one that scrolls). */
+  domRef?: Ref<HTMLDivElement>;
+  /** Reference to the inner rendered DOM element (the one that contains all the cells). */
+  innerDomRef?: Ref<HTMLDivElement>;
   /**
    * Callback invoked whenever scroll offset changes.
    */
@@ -245,6 +251,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       initialRowCount,
       initialColCount,
       item: ItemElement = "div",
+      domRef,
+      innerDomRef,
       onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
       style,
@@ -417,7 +425,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
 
     return (
       <div
-        ref={rootRef}
+        ref={useMergeRefs(rootRef, domRef)}
         {...attrs}
         style={{
           overflow: "auto",
@@ -428,6 +436,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         }}
       >
         <div
+          ref={innerDomRef}
           style={{
             overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
             flex: "none", // flex style can break layout
