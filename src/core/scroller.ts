@@ -181,6 +181,7 @@ type ScrollObserver = ReturnType<typeof createScrollObserver>;
  */
 export type Scroller = {
   $observe: (viewportElement: HTMLElement) => void;
+  $unobserve: () => void;
   $dispose(): void;
   $scrollTo: (offset: number) => void;
   $scrollBy: (offset: number) => void;
@@ -322,6 +323,12 @@ export const createScroller = (
           }
         }
       );
+    },
+    $unobserve() {
+      viewportElement = undefined;
+
+      scrollObserver && scrollObserver._dispose();
+      scrollObserver = undefined;
     },
     $dispose() {
       scrollObserver && scrollObserver._dispose();

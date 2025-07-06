@@ -37,6 +37,7 @@ export type ItemResizeObserver = (el: HTMLElement, i: number) => () => void;
 interface ListResizer {
   $observeRoot(viewportElement: HTMLElement): void;
   $observeItem: ItemResizeObserver;
+  $unobserveRoot(): void;
   $dispose(): void;
 }
 
@@ -83,6 +84,10 @@ export const createResizer = (
         mountedIndexes.delete(el);
         resizeObserver._unobserve(el);
       };
+    },
+    $unobserveRoot() {
+      viewportElement && resizeObserver._unobserve(viewportElement);
+      viewportElement = undefined;
     },
     $dispose: resizeObserver._dispose,
   };
