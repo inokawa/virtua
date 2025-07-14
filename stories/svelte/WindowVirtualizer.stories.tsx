@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/svelte";
+import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { WindowVirtualizer } from "../../src/svelte";
 import DefaultComponent from "./WindowVirtualizer.svelte";
 

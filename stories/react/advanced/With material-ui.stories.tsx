@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react-vite";
 import { VList } from "../../../src";
 import React, { useState } from "react";
 import Box from "@mui/material/Box";

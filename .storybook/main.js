@@ -2,7 +2,6 @@
 export default process.env.STORYBOOK_VUE
   ? {
       stories: ["../stories/vue/**/*.stories.@(js|jsx|ts|tsx)"],
-      addons: ["@storybook/addon-storysource"],
       framework: {
         name: "@storybook/vue3-vite",
         options: {},
@@ -22,7 +21,6 @@ export default process.env.STORYBOOK_VUE
   : process.env.STORYBOOK_SOLID
     ? {
         stories: ["../stories/solid/**/*.stories.@(js|jsx|ts|tsx)"],
-        addons: ["@storybook/addon-storysource"],
         framework: {
           name: "storybook-solidjs-vite",
           options: {},
@@ -31,7 +29,6 @@ export default process.env.STORYBOOK_VUE
     : process.env.STORYBOOK_SVELTE
       ? {
           stories: ["../stories/svelte/**/*.stories.@(js|jsx|ts|tsx)"],
-          addons: ["@storybook/addon-storysource"],
           framework: {
             name: "@storybook/svelte-vite",
             options: {},
@@ -51,7 +48,6 @@ export default process.env.STORYBOOK_VUE
         }
       : {
           stories: ["../stories/react/**/*.stories.@(js|jsx|ts|tsx)"],
-          addons: ["@storybook/addon-storysource"],
           framework: {
             name: "@storybook/react-vite",
             options: {},

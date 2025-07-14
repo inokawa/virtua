@@ -1,7 +1,7 @@
 /**
  * @jsxImportSource solid-js
  */
-import type { Meta, StoryObj } from "storybook-solidjs";
+import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { VList, VListHandle } from "../../../src/solid";
 import { createSignal } from "solid-js";
 
