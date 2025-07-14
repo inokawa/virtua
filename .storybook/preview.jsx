@@ -16,7 +16,7 @@ if (import.meta.env.STORYBOOK_E2E) {
   document.head.appendChild(style);
 }
 
-/** @type { import('@storybook/react').Preview } */
+/** @type { import('@storybook/react-vite').Preview } */
 export default {
   parameters: {
     actions: { argTypesRegex: "^on[A-Z].*" },

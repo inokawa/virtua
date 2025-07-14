@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/svelte";
+import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { VList } from "../../src/svelte";
 import DefaultComponent from "./Default.svelte";
 import HorizontalComponent from "./Horizontal.svelte";

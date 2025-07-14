@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react-vite";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { VList, type VListHandle } from "../../../src";
 import { hydrateRoot } from "react-dom/client";

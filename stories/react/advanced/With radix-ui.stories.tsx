@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react-vite";
 import { Virtualizer, VirtualizerHandle } from "../../../src";
 import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { faker } from "@faker-js/faker";
