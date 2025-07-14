@@ -110,14 +110,14 @@ describe("grid", () => {
           rowIndex === 0
             ? "string"
             : rowIndex === 1
-              ? true
-              : rowIndex === 2
-                ? false
-                : rowIndex === 3
-                  ? null
-                  : rowIndex === 4
-                    ? undefined
-                    : 123
+            ? true
+            : rowIndex === 2
+            ? false
+            : rowIndex === 3
+            ? null
+            : rowIndex === 4
+            ? undefined
+            : 123
         }
       </VGrid>
     );
