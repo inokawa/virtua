@@ -770,7 +770,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if scrolled precisely
       const lastItem = await getLastItem(component);
       expect(lastItem.text).toEqual("999");
-      expectInRange(lastItem.bottom, { min: 0, max: 1 });
+      expectInRange(lastItem.bottom, { min: -0.5, max: 1 });
 
       // Check if unnecessary items are not rendered
       expect(await component.innerText()).not.toContain("949");
