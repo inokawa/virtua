@@ -31,5 +31,8 @@ export default {
         ],
       },
     },
+    docs: {
+      codePanel: true,
+    },
   },
 };
