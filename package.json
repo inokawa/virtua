@@ -130,7 +130,7 @@
     "typedoc": "^0.28.4",
     "typedoc-plugin-markdown": "^4.6.3",
     "typedoc-plugin-vue": "^1.5.0",
-    "typescript": "5.7.3",
+    "typescript": "5.9.2",
     "typescript-eslint": "^8.32.1",
     "unplugin-vue-jsx": "^0.6.1",
     "virtua": "^0.41.2",
