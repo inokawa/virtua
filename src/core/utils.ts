@@ -2,7 +2,7 @@
 export const NULL = null;
 
 /** @internal */
-export const { min, max, abs, floor } = Math;
+export const { min, max, abs, clz32 } = Math;
 
 /**
  * @internal
@@ -12,6 +12,22 @@ export const clamp = (
   minValue: number,
   maxValue: number
 ): number => min(maxValue, max(minValue, value));
+
+/**
+ * @internal
+ */
+export const append = (
+  array: number[],
+  length: number,
+  value: number,
+  prepend?: boolean
+): number[] => {
+  const key = prepend ? "unshift" : "push";
+  for (let i = 0; i < length; i++) {
+    array[key](value);
+  }
+  return array;
+};
 
 /**
  * @internal
