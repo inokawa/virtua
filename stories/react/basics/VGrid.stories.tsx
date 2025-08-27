@@ -102,6 +102,58 @@ export const DynamicWidth: StoryObj = {
   },
 };
 
+
+export const Resizeable: StoryObj = {
+  render: () => {
+    const LENGTH = 1000;
+    const [width, setWidth] = useState(80)
+    const [height, setHeight] = useState(80)
+    const grid = useRef<VGridHandle>(null);
+    return (
+      <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+        <div>
+          <label>
+            col
+            <input
+              type="number"
+              value={width}
+              onChange={(e) => {
+                setWidth(e.target.valueAsNumber);
+              }}
+            />
+          </label>
+          <label>
+            row
+            <input
+              type="number"
+              value={height}
+              onChange={(e) => {
+                setHeight(e.target.valueAsNumber);
+              }}
+            />
+          </label>
+        </div>
+        <VGrid ref={grid} style={{ height: "100vh" }} row={LENGTH} col={LENGTH} cellHeight={height} cellWidth={width}>
+          {({ rowIndex, colIndex }) => (
+            <div
+              style={{
+                border: "solid 1px gray",
+                background: "white",
+                padding: 4,
+                width,
+                height,
+              }}
+            >
+              {rowIndex} / {colIndex}
+            </div>
+          )}
+        </VGrid>
+      </div>
+    );
+  },
+};
+
+
 export const ScrollTo: StoryObj = {
   render: () => {
     const LENGTH = 1000;
