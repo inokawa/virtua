@@ -118,7 +118,7 @@ export interface VirtualizerProps {
   /**
    * Render placeholders, allows for a placeholder element to be rendered instead of nothing when out of view
    */
-  renderPlaceholders: boolean;
+  renderPlaceholders?: boolean;
   /**
    * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
@@ -336,9 +336,9 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     const mounted = new Set(keepMounted || []);
     for (let i = 0, j = startIndex; i < j; i++) {
       if (mounted.has(i)) {
-        startItems.push(getListItem(i));
+        items.push(getListItem(i));
       } else if (renderPlaceholders) {
-        startItems.push(getListItem(i, true));
+        items.push(getListItem(i, true));
       }
     }
 
@@ -348,9 +348,9 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
 
     for (let i = endIndex + 1, j = count; i < j; i++) {
       if (mounted.has(i)) {
-        startItems.push(getListItem(i));
+        items.push(getListItem(i));
       } else if (renderPlaceholders) {
-        startItems.push(getListItem(i, true));
+        items.push(getListItem(i, true));
       }
     }
 
