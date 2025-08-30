@@ -346,6 +346,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         flex: "none", // flex style can break layout
         position: "relative",
         visibility: "hidden", // TODO replace with other optimization methods
+        overflow: "hidden", // https://github.com/inokawa/virtua/pull/485
         width: horizontal ? totalSize() + "px" : "100%",
         height: horizontal ? "100%" : totalSize() + "px",
         "pointer-events": isScrolling() ? "none" : undefined,
