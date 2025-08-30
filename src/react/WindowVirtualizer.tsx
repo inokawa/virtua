@@ -226,16 +226,20 @@ export const WindowVirtualizer = forwardRef<
       scroller.$fixScrollJump();
     }, [stateVersion]);
 
-    useImperativeHandle(ref, () => {
-      return {
-        get cache() {
-          return store.$getCacheSnapshot();
-        },
-        findStartIndex: store.$findStartIndex,
-        findEndIndex: store.$findEndIndex,
-        scrollToIndex: scroller.$scrollToIndex,
-      };
-    }, []);
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          get cache() {
+            return store.$getCacheSnapshot();
+          },
+          findStartIndex: store.$findStartIndex,
+          findEndIndex: store.$findEndIndex,
+          scrollToIndex: scroller.$scrollToIndex,
+        };
+      },
+      []
+    );
 
     for (let i = startIndex, j = endIndex; i <= j; i++) {
       const e = getElement(i);
@@ -262,6 +266,7 @@ export const WindowVirtualizer = forwardRef<
           flex: "none", // flex style can break layout
           position: "relative",
           visibility: "hidden", // TODO replace with other optimization methods
+          overflow: "hidden", // https://github.com/inokawa/virtua/pull/485
           width: isHorizontal ? totalSize : "100%",
           height: isHorizontal ? "100%" : totalSize,
           pointerEvents: isScrolling ? "none" : undefined,

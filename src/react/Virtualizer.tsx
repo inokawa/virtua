@@ -303,29 +303,33 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       scroller.$fixScrollJump();
     }, [stateVersion]);
 
-    useImperativeHandle(ref, () => {
-      return {
-        get cache() {
-          return store.$getCacheSnapshot();
-        },
-        get scrollOffset() {
-          return store.$getScrollOffset();
-        },
-        get scrollSize() {
-          return getScrollSize(store);
-        },
-        get viewportSize() {
-          return store.$getViewportSize();
-        },
-        findStartIndex: store.$findStartIndex,
-        findEndIndex: store.$findEndIndex,
-        getItemOffset: store.$getItemOffset,
-        getItemSize: store.$getItemSize,
-        scrollToIndex: scroller.$scrollToIndex,
-        scrollTo: scroller.$scrollTo,
-        scrollBy: scroller.$scrollBy,
-      };
-    }, []);
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          get cache() {
+            return store.$getCacheSnapshot();
+          },
+          get scrollOffset() {
+            return store.$getScrollOffset();
+          },
+          get scrollSize() {
+            return getScrollSize(store);
+          },
+          get viewportSize() {
+            return store.$getViewportSize();
+          },
+          findStartIndex: store.$findStartIndex,
+          findEndIndex: store.$findEndIndex,
+          getItemOffset: store.$getItemOffset,
+          getItemSize: store.$getItemSize,
+          scrollToIndex: scroller.$scrollToIndex,
+          scrollTo: scroller.$scrollTo,
+          scrollBy: scroller.$scrollBy,
+        };
+      },
+      []
+    );
 
     for (let i = startIndex, j = endIndex; i <= j; i++) {
       items.push(getListItem(i));
@@ -356,6 +360,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
           flex: "none", // flex style can break layout
           position: "relative",
           visibility: "hidden", // TODO replace with other optimization methods
+          overflow: "hidden", // https://github.com/inokawa/virtua/pull/485
           width: isHorizontal ? totalSize : "100%",
           height: isHorizontal ? "100%" : totalSize,
           pointerEvents: isScrolling ? "none" : undefined,

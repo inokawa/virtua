@@ -333,11 +333,14 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         }
       );
       const unsubscribeVScroll = vStore.$subscribe(UPDATE_SCROLL_EVENT, () => {
-        onScroll[refKey] && onScroll[refKey](vStore.$getScrollOffset())
-      })
-      const unsubscribeVScrollEnd = vStore.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
-        onScrollEnd[refKey] && onScrollEnd[refKey]()
-      })
+        onScroll[refKey] && onScroll[refKey](vStore.$getScrollOffset());
+      });
+      const unsubscribeVScrollEnd = vStore.$subscribe(
+        UPDATE_SCROLL_END_EVENT,
+        () => {
+          onScrollEnd[refKey] && onScrollEnd[refKey]();
+        }
+      );
 
       resizer.$observeRoot(root);
       scroller.$observe(root);
@@ -355,35 +358,48 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       scroller.$fixScrollJump();
     }, [vStateVersion, hStateVersion]);
 
-    useImperativeHandle(ref, () => {
-      return {
-        get scrollTop() {
-          return vStore.$getScrollOffset();
-        },
-        get scrollLeft() {
-          return hStore.$getScrollOffset();
-        },
-        get scrollHeight() {
-          return getScrollSize(vStore);
-        },
-        get scrollWidth() {
-          return getScrollSize(hStore);
-        },
-        get viewportHeight() {
-          return vStore.$getViewportSize();
-        },
-        get viewportWidth() {
-          return hStore.$getViewportSize();
-        },
-        findStartIndex: () => [hStore.$findStartIndex(), vStore.$findStartIndex()],
-        findEndIndex: () => [hStore.$findEndIndex(), vStore.$findEndIndex()],
-        getItemOffset: (indexX, indexY) => [hStore.$getItemOffset(indexX), vStore.$getItemOffset(indexY)],
-        getItemSize: (indexX, indexY) => [hStore.$getItemSize(indexX), vStore.$getItemSize(indexY)],
-        scrollToIndex: scroller.$scrollToIndex,
-        scrollTo: scroller.$scrollTo,
-        scrollBy: scroller.$scrollBy,
-      };
-    }, []);
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          get scrollTop() {
+            return vStore.$getScrollOffset();
+          },
+          get scrollLeft() {
+            return hStore.$getScrollOffset();
+          },
+          get scrollHeight() {
+            return getScrollSize(vStore);
+          },
+          get scrollWidth() {
+            return getScrollSize(hStore);
+          },
+          get viewportHeight() {
+            return vStore.$getViewportSize();
+          },
+          get viewportWidth() {
+            return hStore.$getViewportSize();
+          },
+          findStartIndex: () => [
+            hStore.$findStartIndex(),
+            vStore.$findStartIndex(),
+          ],
+          findEndIndex: () => [hStore.$findEndIndex(), vStore.$findEndIndex()],
+          getItemOffset: (indexX, indexY) => [
+            hStore.$getItemOffset(indexX),
+            vStore.$getItemOffset(indexY),
+          ],
+          getItemSize: (indexX, indexY) => [
+            hStore.$getItemSize(indexX),
+            vStore.$getItemSize(indexY),
+          ],
+          scrollToIndex: scroller.$scrollToIndex,
+          scrollTo: scroller.$scrollTo,
+          scrollBy: scroller.$scrollBy,
+        };
+      },
+      []
+    );
 
     const render = useMemo(() => {
       const cache = new Map<string, ReactNode>();
@@ -442,6 +458,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             flex: "none", // flex style can break layout
             position: "relative",
             visibility: "hidden", // TODO replace with other optimization methods
+            overflow: "hidden", // https://github.com/inokawa/virtua/pull/485
             width: width,
             height: height,
             pointerEvents: vIsScrolling || hIsScrolling ? "none" : undefined,

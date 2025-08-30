@@ -309,6 +309,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
             flex: "none", // flex style can break layout
             position: "relative",
             visibility: "hidden", // TODO replace with other optimization methods
+            overflow: "hidden", // https://github.com/inokawa/virtua/pull/485
             width: isHorizontal ? total + "px" : "100%",
             height: isHorizontal ? "100%" : total + "px",
             pointerEvents: isScrolling.value ? "none" : undefined,
