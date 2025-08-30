@@ -1,8 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/vue3";
+import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { VList } from "../../src/vue";
 import DefaultComponent from "./Default.vue";
 import HorizontalComponent from "./Horizontal.vue";
 import ControllsComponent from "./Controlls.vue";
+import StickyGroupComponent from './StickyGroup.vue';
 
 export default {
   component: VList,
@@ -28,3 +29,10 @@ export const Controlls: StoryObj = {
     template: "<Component />",
   }),
 };
+
+export const StickyGroup: StoryObj = {
+  render: () => ({
+    components: { Component: StickyGroupComponent },
+    template: "<Component />",
+  }),
+}

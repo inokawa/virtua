@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react-vite";
 import React, {
   useRef,
   useState,
@@ -10,6 +10,7 @@ import {
   WindowVirtualizer,
   type WindowVirtualizerHandle,
   type CacheSnapshot,
+  ScrollToIndexAlign,
 } from "../../../src";
 import { Spinner, delay } from "../common";
 
@@ -168,11 +169,18 @@ export const InfiniteScrolling: StoryObj = {
     const fetchedCountRef = useRef(-1);
     const count = items.length;
 
+    const ref = useRef<WindowVirtualizerHandle>(null);
+
     return (
       <div style={{ padding: "200px 100px 0px 100px" }}>
         <WindowVirtualizer
-          onRangeChange={async (_, end) => {
-            if (end + 50 > count && fetchedCountRef.current < count) {
+          ref={ref}
+          onScroll={async () => {
+            if (!ref.current) return;
+            if (
+              fetchedCountRef.current < count &&
+              ref.current.findEndIndex() + 50 > count
+            ) {
               fetchedCountRef.current = count;
               await fetchItems();
               setItems((prev) => [
@@ -408,3 +416,96 @@ export const IncreasingItems: StoryObj = {
     );
   },
 };
+
+export const ScrollTo: StoryObj = {
+  render: () => {
+    const LENGTH = 1000;
+    const [scrollIndex, setScrollIndex] = useState(567);
+    const [scrollIndexAlign, setScrollToIndexAlign] =
+      useState<ScrollToIndexAlign>("start");
+    const [smooth, setSmooth] = useState(false);
+    const ref = useRef<WindowVirtualizerHandle>(null);
+    
+    return (<>
+      <div style={{ position: "fixed", top: 30, left: 150, zIndex: 1, padding: 10, border: "1px solid #ccc", backgroundColor: "white" }}>
+        <input
+          type="number"
+          value={scrollIndex}
+          onChange={(e) => {
+            setScrollIndex(Number(e.target.value));
+          }}
+        />
+        <button
+          onClick={() => {
+            ref.current?.scrollToIndex(scrollIndex, {
+              align: scrollIndexAlign,
+              smooth: smooth,
+            });
+          }}
+        >
+          scroll to index
+        </button>
+        <button
+          onClick={() => {
+            setScrollIndex(Math.round(LENGTH * Math.random()));
+          }}
+        >
+          randomize
+        </button>
+        <label style={{ marginLeft: 4 }}>
+          <input
+            type="radio"
+            style={{ marginLeft: 4 }}
+            checked={scrollIndexAlign === "start"}
+            onChange={() => {
+              setScrollToIndexAlign("start");
+            }}
+          />
+          start
+        </label>
+        <label style={{ marginLeft: 4 }}>
+          <input
+            type="radio"
+            style={{ marginLeft: 4 }}
+            checked={scrollIndexAlign === "center"}
+            onChange={() => {
+              setScrollToIndexAlign("center");
+            }}
+          />
+          center
+        </label>
+        <label style={{ marginLeft: 4 }}>
+          <input
+            type="radio"
+            style={{ marginLeft: 4 }}
+            checked={scrollIndexAlign === "end"}
+            onChange={() => {
+              setScrollToIndexAlign("end");
+            }}
+          />
+          end
+        </label>
+
+        <label style={{ marginLeft: 4 }}>
+          <input
+            type="checkbox"
+            style={{ marginLeft: 4 }}
+            checked={smooth}
+            onChange={() => {
+              setSmooth((prev) => !prev);
+            }}
+          />
+          smooth
+        </label>
+      </div>
+      <div style={{padding: "100px"}}>
+        <div style={{border: "1px solid darkgrey"}} id="window-virtualizer-parent">
+        <WindowVirtualizer ref={ref} >
+          {createRows(LENGTH)}
+        </WindowVirtualizer>
+        </div>
+      </div>
+    </>
+    );
+  }
+}

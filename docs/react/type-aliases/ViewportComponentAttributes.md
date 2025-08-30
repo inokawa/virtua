@@ -1,11 +1,9 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
 # Type Alias: ViewportComponentAttributes
 
-> **ViewportComponentAttributes**: `Pick`\<`React.HTMLAttributes`\<`HTMLElement`\>, `"className"` \| `"style"` \| `"id"` \| `"role"` \| `"tabIndex"` \| `"onKeyDown"`\> & `React.AriaAttributes`
+> **ViewportComponentAttributes** = `Pick`\<`React.HTMLAttributes`\<`HTMLElement`\>, `"className"` \| `"style"` \| `"id"` \| `"role"` \| `"tabIndex"` \| `"onKeyDown"` \| `"onWheel"`\> & `React.AriaAttributes`
 
-## Defined in
-
-[src/react/types.ts:3](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/react/types.ts#L3)
+Defined in: [src/react/types.ts:3](https://github.com/inokawa/virtua/blob/6ace69a73fb00a1c5dfd30a8b96e49ce7660d8e0/src/react/types.ts#L3)

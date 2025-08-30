@@ -12,24 +12,27 @@ import {
   createComputed,
   type ValidComponent,
   mergeProps,
+  For,
+  Accessor,
+  untrack,
 } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import {
-  SCROLL_IDLE,
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_VIRTUAL_STATE,
-  getOverscanedRange,
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
   ACTION_START_OFFSET_CHANGE,
-} from "../core/store";
-import { createResizer } from "../core/resizer";
-import { createScroller } from "../core/scroller";
-import { ItemsRange, ScrollToIndexOpts } from "../core/types";
+  createResizer,
+  createScroller,
+  ItemsRange,
+  ScrollToIndexOpts,
+  CacheSnapshot,
+  sort,
+} from "../core";
 import { ListItem } from "./ListItem";
-import { RangedFor } from "./RangedFor";
 import { isSameRange } from "./utils";
 
 /**
@@ -37,22 +40,39 @@ import { isSameRange } from "./utils";
  */
 export interface VirtualizerHandle {
   /**
-   * Get current scrollTop or scrollLeft.
+   * Get current {@link CacheSnapshot}.
+   */
+  readonly cache: CacheSnapshot;
+  /**
+   * Get current scrollTop, or scrollLeft if horizontal: true.
    */
   readonly scrollOffset: number;
   /**
-   * Get current scrollHeight or scrollWidth.
+   * Get current scrollHeight, or scrollWidth if horizontal: true.
    */
   readonly scrollSize: number;
   /**
-   * Get current offsetHeight or offsetWidth.
+   * Get current offsetHeight, or offsetWidth if horizontal: true.
    */
   readonly viewportSize: number;
+  /**
+   * Find the start index of visible range of items.
+   */
+  findStartIndex: () => number;
+  /**
+   * Find the end index of visible range of items.
+   */
+  findEndIndex: () => number;
   /**
    * Get item offset from start.
    * @param index index of item
    */
   getItemOffset(index: number): number;
+  /**
+   * Get item size.
+   * @param index index of item
+   */
+  getItemSize(index: number): number;
   /**
    * Scroll to the item specified by index.
    * @param index index of item
@@ -86,7 +106,7 @@ export interface VirtualizerProps<T> {
   /**
    * The elements renderer function.
    */
-  children: (data: T, index: number) => JSX.Element;
+  children: (data: T, index: Accessor<number>) => JSX.Element;
   /**
    * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
@@ -103,7 +123,7 @@ export interface VirtualizerProps<T> {
    */
   item?: ValidComponent;
   /**
-   * Reference to the scrollable element. The default will get the parent element of virtualizer.
+   * Reference to the scrollable element. The default will get the direct parent element of virtualizer.
    */
   scrollRef?: HTMLElement;
   /**
@@ -122,31 +142,28 @@ export interface VirtualizerProps<T> {
    */
   horizontal?: boolean;
   /**
+   * List of indexes that should be always mounted, even when off screen.
+   */
+  keepMounted?: number[];
+  /**
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.cache}.
+   *
+   * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
+   */
+  cache?: CacheSnapshot;
+  /**
    * If you put an element before virtualizer, you have to define its height with this prop.
    */
   startMargin?: number;
   /**
    * Callback invoked whenever scroll offset changes.
-   * @param offset Current scrollTop or scrollLeft.
+   * @param offset Current scrollTop, or scrollLeft if horizontal: true.
    */
   onScroll?: (offset: number) => void;
   /**
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
-  /**
-   * Callback invoked when visible items range changes.
-   */
-  onRangeChange?: (
-    /**
-     * The start index of viewable items.
-     */
-    startIndex: number,
-    /**
-     * The end index of viewable items.
-     */
-    endIndex: number
-  ) => void;
 }
 
 /**
@@ -154,7 +171,7 @@ export interface VirtualizerProps<T> {
  */
 export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const { itemSize, horizontal = false } = props;
+  const { itemSize, horizontal = false, overscan, cache } = props;
   props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
     { as: "div" },
     props
@@ -162,24 +179,25 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
   const store = createVirtualStore(
     props.data.length,
-    itemSize ?? 40,
+    itemSize,
+    overscan,
     undefined,
-    undefined,
+    cache,
     !itemSize
   );
   const resizer = createResizer(store, horizontal);
   const scroller = createScroller(store, horizontal);
 
-  const [rerender, setRerender] = createSignal(store._getStateVersion());
+  const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
-  const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
-    setRerender(store._getStateVersion());
+  const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+    setRerender(store.$getStateVersion());
   });
 
-  const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
-    props.onScroll?.(store._getScrollOffset());
+  const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+    props.onScroll?.(store.$getScrollOffset());
   });
-  const unsubscribeOnScrollEnd = store._subscribe(
+  const unsubscribeOnScrollEnd = store.$subscribe(
     UPDATE_SCROLL_END_EVENT,
     () => {
       props.onScrollEnd?.();
@@ -187,58 +205,44 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   );
 
   const range = createMemo<ItemsRange>((prev) => {
-    rerender();
-    const next = store._getRange();
+    stateVersion();
+    const next = store.$getRange();
     if (prev && isSameRange(prev, next)) {
       return prev;
     }
     return next;
   });
-  const scrollDirection = createMemo(
-    () => rerender() && store._getScrollDirection()
-  );
-  const totalSize = createMemo(() => rerender() && store._getTotalSize());
-
-  const jumpCount = createMemo(() => rerender() && store._getJumpCount());
-
-  const overscanedRange = createMemo<ItemsRange>((prev) => {
-    const overscan = props.overscan ?? 4;
-    const [startIndex, endIndex] = range();
-    const next = getOverscanedRange(
-      startIndex,
-      endIndex,
-      overscan,
-      scrollDirection(),
-      props.data.length
-    );
-    if (prev && isSameRange(prev, next)) {
-      return prev;
-    }
-    return next;
-  });
+  const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
+  const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
 
   onMount(() => {
     if (props.ref) {
       props.ref({
+        get cache() {
+          return store.$getCacheSnapshot();
+        },
         get scrollOffset() {
-          return store._getScrollOffset();
+          return store.$getScrollOffset();
         },
         get scrollSize() {
           return getScrollSize(store);
         },
         get viewportSize() {
-          return store._getViewportSize();
+          return store.$getViewportSize();
         },
-        getItemOffset: store._getItemOffset,
-        scrollToIndex: scroller._scrollToIndex,
-        scrollTo: scroller._scrollTo,
-        scrollBy: scroller._scrollBy,
+        findStartIndex: store.$findStartIndex,
+        findEndIndex: store.$findEndIndex,
+        getItemOffset: store.$getItemOffset,
+        getItemSize: store.$getItemSize,
+        scrollToIndex: scroller.$scrollToIndex,
+        scrollTo: scroller.$scrollTo,
+        scrollBy: scroller.$scrollBy,
       });
     }
 
     const scrollable = props.scrollRef || containerRef!.parentElement!;
-    resizer._observeRoot(scrollable);
-    scroller._observe(scrollable);
+    resizer.$observeRoot(scrollable);
+    scroller.$observe(scrollable);
 
     onCleanup(() => {
       if (props.ref) {
@@ -248,43 +252,89 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
       unsubscribeStore();
       unsubscribeOnScroll();
       unsubscribeOnScrollEnd();
-      resizer._dispose();
-      scroller._dispose();
+      resizer.$dispose();
+      scroller.$dispose();
     });
   });
 
   createComputed(
     on(
-      () => props.data.length,
-      (count) => {
-        if (count !== store._getItemsLength()) {
-          store._update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
-        }
-      }
-    )
-  );
-
-  createComputed(
-    on(
       () => props.startMargin || 0,
       (value) => {
-        if (value !== store._getStartSpacerSize()) {
-          store._update(ACTION_START_OFFSET_CHANGE, value);
+        if (value !== store.$getStartSpacerSize()) {
+          store.$update(ACTION_START_OFFSET_CHANGE, value);
         }
       }
     )
   );
 
   createEffect(
-    on(jumpCount, () => {
-      scroller._fixScrollJump();
+    on(stateVersion, () => {
+      scroller.$fixScrollJump();
     })
   );
 
-  createEffect(() => {
-    const next = range();
-    props.onRangeChange && props.onRangeChange(next[0], next[1]);
+  const dataSlice = createMemo(() => {
+    const count = props.data.length;
+    untrack(() => {
+      if (count !== store.$getItemsLength()) {
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+      }
+    });
+    const [start, end] = range();
+    const items = end >= 0 ? props.data.slice(start, end + 1) : [];
+    const indexes = items.map((_, index) => start + index);
+
+    if (props.keepMounted) {
+      const startItems: T[] = [];
+      const startIndexes: number[] = [];
+      const endItems: T[] = [];
+      const endIndexes: number[] = [];
+      sort(props.keepMounted).forEach((index) => {
+        if (index < 0 || index >= props.data.length) return;
+        if (index < start) {
+          startItems.push(props.data[index]!);
+          startIndexes.push(index);
+        }
+        if (index > end) {
+          endItems.push(props.data[index]!);
+          endIndexes.push(index);
+        }
+      });
+      items.unshift(...startItems);
+      indexes.unshift(...startIndexes);
+      items.push(...endItems);
+      indexes.push(...endIndexes);
+    }
+
+    return { _items: items, _indexes: indexes };
   });
+
+  const renderItem = (data: T, index: Accessor<number>) => {
+    const offset = createMemo(() => {
+      stateVersion();
+      return store.$getItemOffset(index());
+    });
+    const hide = createMemo(() => {
+      stateVersion();
+      return store.$isUnmeasuredItem(index());
+    });
+    const children = createMemo(() => {
+      return untrack(() => props.children(data, index));
+    });
+
+    return (
+      <ListItem
+        _as={props.item}
+        _index={index()}
+        _resizer={resizer.$observeItem}
+        _offset={offset()}
+        _hide={hide()}
+        _children={children()}
+        _isHorizontal={horizontal}
+      />
+    );
+  };
 
   return (
     <Dynamic
@@ -298,35 +348,16 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         visibility: "hidden", // TODO replace with other optimization methods
         width: horizontal ? totalSize() + "px" : "100%",
         height: horizontal ? "100%" : totalSize() + "px",
-        "pointer-events": scrollDirection() !== SCROLL_IDLE ? "none" : "auto",
+        "pointer-events": isScrolling() ? "none" : undefined,
       }}
     >
-      <RangedFor
-        _each={props.data}
-        _range={overscanedRange()}
-        _render={(data, index) => {
-          const offset = createMemo(() => {
-            rerender();
-            return store._getItemOffset(index);
-          });
-          const hide = createMemo(() => {
-            rerender();
-            return store._isUnmeasuredItem(index);
-          });
-
-          return (
-            <ListItem
-              _as={props.item}
-              _index={index}
-              _resizer={resizer._observeItem}
-              _offset={offset()}
-              _hide={hide()}
-              _children={props.children(data(), index)}
-              _isHorizontal={horizontal}
-            />
-          );
+      <For each={dataSlice()._items}>
+        {(data, index) => {
+          const itemIndex = createMemo(() => dataSlice()._indexes[index()]!);
+          // eslint-disable-next-line solid/reactivity
+          return renderItem(data, itemIndex);
         }}
-      />
+      </For>
     </Dynamic>
   );
 };

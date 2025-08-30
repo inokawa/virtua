@@ -9,6 +9,7 @@ const data = ref(Array.from({ length: 1000 }).map((_, i) => createItem(i)));
 const scrollOffset = ref(0)
 const scrolling = ref(false)
 const scrollTarget = ref(567)
+const prepend = ref(false)
 
 const handle = ref<InstanceType<typeof VList>>()
 
@@ -16,7 +17,8 @@ const scroll = () => {
   handle.value?.scrollToIndex(scrollTarget.value)
 }
 const append = () => {
-  data.value = [...data.value, ...Array.from({ length: 100 }).map((_, i) => createItem(i + data.value.length))]
+  const items = Array.from({ length: 100 }).map((_, i) => createItem(i + data.value.length));
+  data.value = prepend.value ? [...items, ...data.value,] : [...data.value, ...items];
 }
 </script>
 
@@ -29,9 +31,13 @@ const append = () => {
         @input="e => { scrollTarget = Number((e.target as HTMLInputElement).value) }">
       <button @click="scroll">scrollToIndex</button>
     </div>
-    <div><button @click="append">append</button></div>
-    <VList ref="handle" :data="data" #default="item" :onScroll="(offset) => { scrollOffset = offset; scrolling = true }"
-      :onScrollEnd="() => { scrolling = false }">
+    <div><button @click="append">append</button>
+      <label>
+        <input type="checkbox" v-model="prepend">
+        prepend</label>
+    </div>
+    <VList ref="handle" :data="data" #default="{ item }" :shift="prepend"
+      :onScroll="(offset) => { scrollOffset = offset; scrolling = true }" :onScrollEnd="() => { scrolling = false }">
       <div :key="item.index" :style="{ height: item.height, background: 'white', borderBottom: 'solid 1px #ccc' }">
         {{ item.index }}
       </div>

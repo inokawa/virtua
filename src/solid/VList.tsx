@@ -1,7 +1,7 @@
 /**
  * @jsxImportSource solid-js
  */
-import { JSX } from "solid-js";
+import { JSX, splitProps } from "solid-js";
 import { ViewportComponentAttributes } from "./types";
 import {
   Virtualizer,
@@ -27,9 +27,11 @@ export interface VListProps<T>
       | "itemSize"
       | "shift"
       | "horizontal"
+      | "cache"
+      | "item"
       | "onScroll"
       | "onScrollEnd"
-      | "onRangeChange"
+      | "keepMounted"
     >,
     ViewportComponentAttributes {}
 
@@ -37,45 +39,48 @@ export interface VListProps<T>
  * Virtualized list component. See {@link VListProps} and {@link VListHandle}.
  */
 export const VList = <T,>(props: VListProps<T>): JSX.Element => {
-  const {
-    ref,
-    data,
-    children,
-    overscan,
-    itemSize,
-    shift,
-    horizontal,
-    onScroll,
-    onScrollEnd,
-    onRangeChange,
-    style,
-    ...attrs
-  } = props;
+  const [local, others] = splitProps(props, [
+    "ref",
+    "data",
+    "children",
+    "overscan",
+    "itemSize",
+    "shift",
+    "horizontal",
+    "keepMounted",
+    "cache",
+    "item",
+    "onScroll",
+    "onScrollEnd",
+    "style",
+  ]);
 
   return (
     <div
-      {...attrs}
+      {...others}
       style={{
-        display: horizontal ? "inline-block" : "block",
-        [horizontal ? "overflow-x" : "overflow-y"]: "auto",
+        display: local.horizontal ? "inline-block" : "block",
+        [local.horizontal ? "overflow-x" : "overflow-y"]: "auto",
         contain: "strict",
         width: "100%",
         height: "100%",
-        ...props.style,
+        ...local.style,
       }}
     >
       <Virtualizer
-        ref={props.ref}
-        data={props.data}
-        overscan={props.overscan}
-        itemSize={props.itemSize}
-        shift={props.shift}
-        horizontal={horizontal}
-        onScroll={props.onScroll}
-        onScrollEnd={props.onScrollEnd}
-        onRangeChange={props.onRangeChange}
+        ref={local.ref}
+        data={local.data}
+        overscan={local.overscan}
+        itemSize={local.itemSize}
+        shift={local.shift}
+        horizontal={local.horizontal}
+        keepMounted={local.keepMounted}
+        cache={local.cache}
+        item={local.item}
+        onScroll={local.onScroll}
+        onScrollEnd={local.onScrollEnd}
       >
-        {props.children}
+        {local.children}
       </Virtualizer>
     </div>
   );

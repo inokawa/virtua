@@ -12,19 +12,38 @@ import {
   ComponentObjectPropsOptions,
   PropType,
   NativeElements,
+  computed,
 } from "vue";
 import {
-  SCROLL_IDLE,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_VIRTUAL_STATE,
-  getOverscanedRange,
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
-} from "../core/store";
-import { createWindowResizer } from "../core/resizer";
-import { createWindowScroller } from "../core/scroller";
+  UPDATE_SCROLL_EVENT,
+  createWindowResizer,
+  createWindowScroller,
+  ItemsRange,
+  ScrollToIndexOpts,
+} from "../core";
 import { ListItem } from "./ListItem";
-import { getKey } from "./utils";
+import { getKey, isSameRange } from "./utils";
+
+export interface WindowVirtualizerHandle {
+  /**
+   * Find the start index of visible range of items.
+   */
+  findStartIndex: () => number;
+  /**
+   * Find the end index of visible range of items.
+   */
+  findEndIndex: () => number;
+  /**
+   * Scroll to the item specified by index.
+   * @param index index of item
+   * @param opts options
+   */
+  scrollToIndex(index: number, opts?: ScrollToIndexOpts): void;
+}
 
 const props = {
   /**
@@ -35,7 +54,7 @@ const props = {
    * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
    */
-  overscan: { type: Number, default: 4 },
+  overscan: Number,
   /**
    * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
    *
@@ -65,13 +84,14 @@ const props = {
 
 export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
   props,
-  emits: ["scrollEnd", "rangeChange"],
-  setup(props, { emit, slots }) {
+  emits: ["scroll", "scrollEnd"],
+  setup(props, { emit, slots, expose }) {
     const isHorizontal = props.horizontal;
     const containerRef = ref<HTMLDivElement>();
     const store = createVirtualStore(
       props.data.length,
-      props.itemSize ?? 40,
+      props.itemSize,
+      props.overscan,
       undefined,
       undefined,
       !props.itemSize
@@ -79,89 +99,89 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     const resizer = createWindowResizer(store, isHorizontal);
     const scroller = createWindowScroller(store, isHorizontal);
 
-    const rerender = ref(store._getStateVersion());
-    const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
-      rerender.value = store._getStateVersion();
+    const stateVersion = ref(store.$getStateVersion());
+    const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+      stateVersion.value = store.$getStateVersion();
     });
 
-    const unsubscribeOnScrollEnd = store._subscribe(
+    const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+      // https://github.com/inokawa/virtua/discussions/580
+      emit("scroll");
+    });
+    const unsubscribeOnScrollEnd = store.$subscribe(
       UPDATE_SCROLL_END_EVENT,
       () => {
         emit("scrollEnd");
       }
     );
 
+    const range = computed<ItemsRange>((prev) => {
+      stateVersion.value;
+      const next = store.$getRange();
+      if (prev && isSameRange(prev, next)) {
+        return prev;
+      }
+      return next;
+    });
+    const isScrolling = computed(
+      () => stateVersion.value && store.$isScrolling()
+    );
+    const totalSize = computed(
+      () => stateVersion.value && store.$getTotalSize()
+    );
+
     onMounted(() => {
       const el = containerRef.value;
       if (!el) return;
-      resizer._observeRoot(el);
-      scroller._observe(el);
+      resizer.$observeRoot(el);
+      scroller.$observe(el);
     });
     onUnmounted(() => {
       unsubscribeStore();
+      unsubscribeOnScroll();
       unsubscribeOnScrollEnd();
-      resizer._dispose();
-      scroller._dispose();
+      resizer.$dispose();
+      scroller.$dispose();
     });
 
     watch(
       () => props.data.length,
       (count) => {
-        store._update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
       }
     );
 
     watch(
-      [rerender, store._getJumpCount],
-      ([, count], [, prevCount]) => {
-        if (count === prevCount) return;
-
-        scroller._fixScrollJump();
+      [stateVersion],
+      () => {
+        scroller.$fixScrollJump();
       },
       { flush: "post" }
     );
 
-    watch(
-      [rerender, store._getRange],
-      ([, [start, end]], [, [prevStart, prevEnd]]) => {
-        if (prevStart === start && prevEnd === end) return;
-
-        emit("rangeChange", start, end);
-      },
-      { flush: "post" }
-    );
+    expose({
+      findStartIndex: store.$findStartIndex,
+      findEndIndex: store.$findEndIndex,
+      scrollToIndex: scroller.$scrollToIndex,
+    } satisfies WindowVirtualizerHandle);
 
     return () => {
-      rerender.value;
-    
       const Element = props.as;
       const ItemElement = props.item;
-      const count = props.data.length;
 
-      const [startIndex, endIndex] = store._getRange();
-      const scrollDirection = store._getScrollDirection();
-      const totalSize = store._getTotalSize();
+      const [startIndex, endIndex] = range.value;
+      const total = totalSize.value;
 
       const items: VNode[] = [];
-      for (
-        let [i, j] = getOverscanedRange(
-          startIndex,
-          endIndex,
-          props.overscan,
-          scrollDirection,
-          count
-        );
-        i <= j;
-        i++
-      ) {
-        const e = slots.default(props.data![i]!)[0]! as VNode;
+      for (let i = startIndex, j = endIndex; i <= j; i++) {
+        const e = slots.default({ item: props.data![i]!, index: i })[0]!;
         items.push(
           <ListItem
             key={getKey(e, i)}
-            _resizer={resizer._observeItem}
+            _stateVersion={stateVersion}
+            _store={store}
+            _resizer={resizer.$observeItem}
             _index={i}
-            _offset={store._getItemOffset(i)}
-            _hide={store._isUnmeasuredItem(i)}
             _children={e}
             _isHorizontal={isHorizontal}
             _as={ItemElement}
@@ -178,9 +198,9 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
             flex: "none", // flex style can break layout
             position: "relative",
             visibility: "hidden", // TODO replace with other optimization methods
-            width: isHorizontal ? totalSize + "px" : "100%",
-            height: isHorizontal ? "100%" : totalSize + "px",
-            pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : "auto",
+            width: isHorizontal ? total + "px" : "100%",
+            height: isHorizontal ? "100%" : total + "px",
+            pointerEvents: isScrolling.value ? "none" : undefined,
           }}
         >
           {items}
@@ -198,25 +218,16 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
   ComponentOptionsMixin,
   {
     /**
+     * Callback invoked whenever scroll offset changes.
+     */
+    scroll: () => void;
+    /**
      * Callback invoked when scrolling stops.
      */
     scrollEnd: () => void;
-    /**
-     * Callback invoked when visible items range changes.
-     */
-    rangeChange: (
-      /**
-       * The start index of viewable items.
-       */
-      startIndex: number,
-      /**
-       * The end index of viewable items.
-       */
-      endIndex: number
-    ) => void;
   },
   string,
   {},
   string,
-  SlotsType<{ default: any }>
+  SlotsType<{ default: (arg: { item: any; index: number }) => VNode[] }>
 >);

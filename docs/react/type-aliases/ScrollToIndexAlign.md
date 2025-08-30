@@ -1,11 +1,9 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
 # Type Alias: ScrollToIndexAlign
 
-> **ScrollToIndexAlign**: `"start"` \| `"center"` \| `"end"` \| `"nearest"`
+> **ScrollToIndexAlign** = `"start"` \| `"center"` \| `"end"` \| `"nearest"`
 
-## Defined in
-
-[src/core/types.ts:19](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/core/types.ts#L19)
+Defined in: [src/core/types.ts:19](https://github.com/inokawa/virtua/blob/6ace69a73fb00a1c5dfd30a8b96e49ce7660d8e0/src/core/types.ts#L19)

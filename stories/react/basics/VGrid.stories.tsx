@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react-vite";
 import React, { useRef, useState } from "react";
 import { experimental_VGrid as VGrid, VGridHandle } from "../../../src";
 

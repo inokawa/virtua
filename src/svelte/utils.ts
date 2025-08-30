@@ -1,27 +1,21 @@
-import { afterUpdate, beforeUpdate, onDestroy } from "svelte";
+import type { ItemsRange } from "../core";
 
-export const effect = (cb: () => (() => void) | void, before?: boolean) => {
-  let cleanup: (() => void) | void;
-
-  (before ? beforeUpdate : afterUpdate)(() => {
-    if (cleanup) cleanup();
-    cleanup = cb();
-  });
-
-  onDestroy(() => {
-    if (cleanup) cleanup();
-  });
-};
-
-export const styleToString = (obj: Record<string, string>): string => {
-  return Object.keys(obj).reduce((acc, k) => acc + `${k}:${obj[k]};`, "");
+export const styleToString = (
+  obj: Record<string, string | undefined>
+): string => {
+  return Object.keys(obj).reduce((acc, k) => {
+    const value = obj[k];
+    if (value == null) {
+      return acc;
+    }
+    return acc + `${k}:${value};`;
+  }, "");
 };
 
 export const defaultGetKey = (_data: unknown, i: number) => "_" + i;
 
-/**
- * https://github.com/kitschpatrol/svelte-tweakpane-ui/blob/248fd7c24926af1e485a0676b6a8c053177e92db/src/lib/utils.ts#L57-L59
- */
-export type UnwrapCustomEvents<T> = {
-  [P in keyof T]: T[P] extends CustomEvent<infer detail> ? detail : never;
-};
+export function* iterRange([start, end]: ItemsRange) {
+  for (let i = start; i <= end; i++) {
+    yield i;
+  }
+}

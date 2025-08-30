@@ -5,7 +5,6 @@ import {
   VirtualizerHandle,
   VirtualizerProps,
 } from "./Virtualizer";
-import { NULL } from "../core/utils";
 
 /**
  * Methods of {@link VList}.
@@ -29,7 +28,6 @@ export interface VListProps
       | "item"
       | "onScroll"
       | "onScrollEnd"
-      | "onRangeChange"
       | "keepMounted"
     >,
     ViewportComponentAttributes {
@@ -48,23 +46,22 @@ export const VList = forwardRef<VListHandle, VListProps>(
       children,
       count,
       overscan,
-      keepMounted,
       itemSize,
       shift,
       horizontal,
+      keepMounted,
       reverse,
       cache,
       ssrCount,
       item,
       onScroll,
       onScrollEnd,
-      onRangeChange,
       style,
       ...attrs
     },
     ref
   ): ReactElement => {
-    const scrollRef = useRef<HTMLDivElement>(NULL);
+    const scrollRef = useRef<HTMLDivElement>(null);
     const shouldReverse = reverse && !horizontal;
 
     let element = (
@@ -73,16 +70,15 @@ export const VList = forwardRef<VListHandle, VListProps>(
         scrollRef={shouldReverse ? scrollRef : undefined}
         count={count}
         overscan={overscan}
-        keepMounted={keepMounted}
         itemSize={itemSize}
         shift={shift}
         horizontal={horizontal}
+        keepMounted={keepMounted}
         cache={cache}
         ssrCount={ssrCount}
         item={item}
         onScroll={onScroll}
         onScrollEnd={onScrollEnd}
-        onRangeChange={onRangeChange}
       >
         {children}
       </Virtualizer>

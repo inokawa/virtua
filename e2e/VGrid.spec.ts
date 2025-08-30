@@ -12,10 +12,9 @@ test.describe("smoke", () => {
     await page.goto(storyUrl("basics-vgrid--default"));
 
     const component = await getScrollable(page);
-    await component.waitForElementState("stable");
 
     // check if start is displayed
-    await expect(
+    expect(
       (await getFirstItem(component)).text.startsWith("0 / 0")
     ).toBeTruthy();
 
@@ -24,7 +23,7 @@ test.describe("smoke", () => {
     await scrollToRight(component);
 
     // check if the end is displayed
-    await expect(await component.innerText()).toContain("999 / 499");
+    expect(await component.innerText()).toContain("999 / 499");
   });
 });
 
@@ -35,7 +34,7 @@ test.describe("smoke", () => {
 //     await component.waitForElementState("stable");
 
 //     // check if start is displayed
-//     await expect((await getFirstItem(component)).text).toEqual("0 / 0Hello world!");
+//     expect((await getFirstItem(component)).text).toEqual("0 / 0Hello world!");
 
 //     // check if offset from start is always keeped
 //     await component.click();
@@ -45,10 +44,10 @@ test.describe("smoke", () => {
 //     for (let i = 0; i < 500; i++) {
 //       await page.keyboard.press("ArrowDown", { delay: 10 });
 //       const offset = await getScrollTop(component);
-//       await expect(offset).toBeGreaterThanOrEqual(prev);
+//       expect(offset).toBeGreaterThanOrEqual(prev);
 //       prev = offset;
 //     }
-//     await expect(prev).toBeGreaterThan(initial + min);
+//     expect(prev).toBeGreaterThan(initial + min);
 //   });
 
 //   test("vertical end -> start", async ({ page }) => {
@@ -57,7 +56,7 @@ test.describe("smoke", () => {
 //     await component.waitForElementState("stable");
 
 //     // check if start is displayed
-//     await expect((await getFirstItem(component)).text).toEqual("0 / 0Hello world!");
+//     expect((await getFirstItem(component)).text).toEqual("0 / 0Hello world!");
 
 //     // scroll to the end
 //     await scrollToBottom(component);
@@ -70,10 +69,10 @@ test.describe("smoke", () => {
 //     for (let i = 0; i < 500; i++) {
 //       await page.keyboard.press("ArrowUp", { delay: 10 });
 //       const offset = await getScrollBottom(component);
-//       await expect(offset).toBeGreaterThanOrEqual(prev);
+//       expect(offset).toBeGreaterThanOrEqual(prev);
 //       prev = offset;
 //     }
-//     await expect(prev).toBeGreaterThan(initial + min);
+//     expect(prev).toBeGreaterThan(initial + min);
 //   });
 
 //   test("horizontal start -> end", async ({ page }) => {
@@ -82,7 +81,7 @@ test.describe("smoke", () => {
 //     await component.waitForElementState("stable");
 
 //     // check if start is displayed
-//     await expect((await getFirstItem(component)).text).toEqual("0 / 0Hello world!");
+//     expect((await getFirstItem(component)).text).toEqual("0 / 0Hello world!");
 
 //     // check if offset from start is always keeped
 //     await component.click();
@@ -92,10 +91,10 @@ test.describe("smoke", () => {
 //     for (let i = 0; i < 500; i++) {
 //       await page.keyboard.press("ArrowRight", { delay: 10 });
 //       const offset = await getScrollLeft(component);
-//       await expect(offset).toBeGreaterThanOrEqual(prev);
+//       expect(offset).toBeGreaterThanOrEqual(prev);
 //       prev = offset;
 //     }
-//     await expect(prev).toBeGreaterThan(initial + min);
+//     expect(prev).toBeGreaterThan(initial + min);
 //   });
 
 //   test("horizontal end -> start", async ({ page }) => {
@@ -104,7 +103,7 @@ test.describe("smoke", () => {
 //     await component.waitForElementState("stable");
 
 //     // check if start is displayed
-//     await expect((await getFirstItem(component)).text).toEqual("0 / 0Hello world!");
+//     expect((await getFirstItem(component)).text).toEqual("0 / 0Hello world!");
 
 //     // scroll to the end
 //     await scrollToRight(component);
@@ -117,10 +116,10 @@ test.describe("smoke", () => {
 //     for (let i = 0; i < 500; i++) {
 //       await page.keyboard.press("ArrowLeft", { delay: 10 });
 //       const offset = await getScrollRight(component);
-//       await expect(offset).toBeGreaterThanOrEqual(prev);
+//       expect(offset).toBeGreaterThanOrEqual(prev);
 //       prev = offset;
 //     }
-//     await expect(prev).toBeGreaterThan(initial + min);
+//     expect(prev).toBeGreaterThan(initial + min);
 //   });
 // });
 
@@ -130,30 +129,26 @@ test("check if scrollToIndex works", async ({ page }) => {
   const component = await getScrollable(page);
 
   // check if start is displayed
-  await expect(
-    (await getFirstItem(component)).text.startsWith("0 / 0")
-  ).toBeTruthy();
+  expect((await getFirstItem(component)).text.startsWith("0 / 0")).toBeTruthy();
 
-  const button = (await page
-    .getByRole("button", { name: "scroll to index" })
-    .elementHandle())!;
-  const [colInput, rowInput] = await page.$$("input");
+  const button = page.getByRole("button", { name: "scroll to index" });
+  const [colInput, rowInput] = await page.locator("input").all();
 
   await button.click();
 
-  await component.waitForElementState("stable");
+  await (await component.elementHandle())!.waitForElementState("stable");
 
   // Check if scrolled precisely
   const firstItem = await getFirstItem(component);
-  await expect(firstItem.text).toEqual(
-    `${await colInput.evaluate((e) => e.value)} / ${await rowInput.evaluate(
-      (e) => e.value
+  expect(firstItem.text).toEqual(
+    `${await colInput.evaluate((e) => (e as HTMLInputElement).value)} / ${await rowInput.evaluate(
+      (e) => (e as HTMLInputElement).value
     )}`
   );
-  await expect(firstItem.top).toEqual(0);
-  await expect(firstItem.left).toEqual(0);
+  expect(firstItem.top).toEqual(0);
+  expect(firstItem.left).toEqual(0);
 
   // Check if unnecessary items are not rendered
-  await expect(await component.innerText()).not.toContain("650");
-  await expect(await component.innerText()).not.toContain("750");
+  expect(await component.innerText()).not.toContain("650");
+  expect(await component.innerText()).not.toContain("750");
 });

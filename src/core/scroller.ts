@@ -11,12 +11,33 @@ import {
   ACTION_SCROLL_END,
   UPDATE_SIZE_EVENT,
   ACTION_MANUAL_SCROLL,
-  SCROLL_IDLE,
   ACTION_BEFORE_MANUAL_SMOOTH_SCROLL,
   ACTION_START_OFFSET_CHANGE,
+  isInitialMeasurementDone,
 } from "./store";
 import { type ScrollToIndexOpts } from "./types";
-import { debounce, timeout, clamp, microtask } from "./utils";
+import { clamp, microtask, NULL } from "./utils";
+
+const timeout = setTimeout;
+
+const debounce = <T extends () => void>(fn: T, ms: number) => {
+  let id: ReturnType<typeof setTimeout> | undefined | null;
+
+  const cancel = () => {
+    if (id != NULL) {
+      clearTimeout(id);
+    }
+  };
+  const debouncedFn = () => {
+    cancel();
+    id = timeout(() => {
+      id = NULL;
+      fn();
+    }, ms);
+  };
+  debouncedFn._cancel = cancel;
+  return debouncedFn;
+};
 
 /**
  * scrollLeft is negative value in rtl direction.
@@ -65,7 +86,7 @@ const createScrollObserver = (
 
     justTouchEnded = false;
 
-    store._update(ACTION_SCROLL_END);
+    store.$update(ACTION_SCROLL_END);
   }, 150);
 
   const onScroll = () => {
@@ -76,9 +97,9 @@ const createScrollObserver = (
     }
 
     if (getStartOffset) {
-      store._update(ACTION_START_OFFSET_CHANGE, getStartOffset());
+      store.$update(ACTION_START_OFFSET_CHANGE, getStartOffset());
     }
-    store._update(ACTION_SCROLL, getScrollOffset());
+    store.$update(ACTION_SCROLL, getScrollOffset());
 
     onScrollEnd();
   };
@@ -89,7 +110,7 @@ const createScrollObserver = (
     if (
       wheeling ||
       // Scroll start should be detected with scroll event
-      store._getScrollDirection() === SCROLL_IDLE ||
+      !store.$isScrolling() ||
       // Probably a pinch-to-zoom gesture
       e.ctrlKey
     ) {
@@ -144,10 +165,10 @@ const createScrollObserver = (
       );
       stillMomentumScrolling = false;
 
-      if (shift && store._getViewportSize() > store._getTotalSize()) {
+      if (shift && store.$getViewportSize() > store.$getTotalSize()) {
         // In this case applying jump may not cause scroll.
         // Current logic expects scroll event occurs after applying jump so we dispatch it manually.
-        store._update(ACTION_SCROLL, getScrollOffset());
+        store.$update(ACTION_SCROLL, getScrollOffset());
       }
     },
   };
@@ -159,12 +180,12 @@ type ScrollObserver = ReturnType<typeof createScrollObserver>;
  * @internal
  */
 export type Scroller = {
-  _observe: (viewportElement: HTMLElement) => void;
-  _dispose(): void;
-  _scrollTo: (offset: number) => void;
-  _scrollBy: (offset: number) => void;
-  _scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
-  _fixScrollJump: () => void;
+  $observe: (viewportElement: HTMLElement) => void;
+  $dispose(): void;
+  $scrollTo: (offset: number) => void;
+  $scrollBy: (offset: number) => void;
+  $scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
+  $fixScrollJump: () => void;
 };
 
 /**
@@ -209,12 +230,12 @@ export const createScroller = (
           // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
           // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
           // https://github.com/inokawa/virtua/issues/450
-          if (store._isInitialMeasurementDone()) {
+          if (isInitialMeasurementDone(store)) {
             // Reject when items around scroll destination completely measured
             timeout(reject, 150);
           }
         }),
-        store._subscribe(UPDATE_SIZE_EVENT, () => {
+        store.$subscribe(UPDATE_SIZE_EVENT, () => {
           queue && queue();
         }),
       ];
@@ -222,7 +243,7 @@ export const createScroller = (
 
     if (smooth && isSmoothScrollSupported()) {
       while (true) {
-        store._update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
+        store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
 
         if (!store._hasUnmeasuredItemsInFrozenRange()) {
           break;
@@ -256,7 +277,7 @@ export const createScroller = (
             getTargetOffset(),
             isHorizontal
           );
-          store._update(ACTION_MANUAL_SCROLL);
+          store.$update(ACTION_MANUAL_SCROLL);
 
           await promise;
         } catch (e) {
@@ -270,7 +291,7 @@ export const createScroller = (
   };
 
   return {
-    _observe(viewport) {
+    $observe(viewport) {
       viewportElement = viewport;
 
       scrollObserver = createScrollObserver(
@@ -293,7 +314,7 @@ export const createScroller = (
           }
 
           if (shift) {
-            viewport[scrollOffsetKey] = store._getScrollOffset() + jump;
+            viewport[scrollOffsetKey] = store.$getScrollOffset() + jump;
             // https://github.com/inokawa/virtua/issues/357
             cancelScroll && cancelScroll();
           } else {
@@ -302,28 +323,28 @@ export const createScroller = (
         }
       );
     },
-    _dispose() {
+    $dispose() {
       scrollObserver && scrollObserver._dispose();
     },
-    _scrollTo(offset) {
+    $scrollTo(offset) {
       scheduleImperativeScroll(() => offset);
     },
-    _scrollBy(offset) {
-      offset += store._getScrollOffset();
+    $scrollBy(offset) {
+      offset += store.$getScrollOffset();
       scheduleImperativeScroll(() => offset);
     },
-    _scrollToIndex(index, { align, smooth, offset = 0 } = {}) {
-      index = clamp(index, 0, store._getItemsLength() - 1);
+    $scrollToIndex(index, { align, smooth, offset = 0 } = {}) {
+      index = clamp(index, 0, store.$getItemsLength() - 1);
 
       if (align === "nearest") {
-        const itemOffset = store._getItemOffset(index);
-        const scrollOffset = store._getScrollOffset();
+        const itemOffset = store.$getItemOffset(index);
+        const scrollOffset = store.$getScrollOffset();
 
         if (itemOffset < scrollOffset) {
           align = "start";
         } else if (
-          itemOffset + store._getItemSize(index) >
-          scrollOffset + store._getViewportSize()
+          itemOffset + store.$getItemSize(index) >
+          scrollOffset + store.$getViewportSize()
         ) {
           align = "end";
         } else {
@@ -335,17 +356,17 @@ export const createScroller = (
       scheduleImperativeScroll(() => {
         return (
           offset +
-          store._getStartSpacerSize() +
-          store._getItemOffset(index) +
+          store.$getStartSpacerSize() +
+          store.$getItemOffset(index) +
           (align === "end"
-            ? store._getItemSize(index) - store._getViewportSize()
+            ? store.$getItemSize(index) - store.$getViewportSize()
             : align === "center"
-              ? (store._getItemSize(index) - store._getViewportSize()) / 2
+              ? (store.$getItemSize(index) - store.$getViewportSize()) / 2
               : 0)
         );
       }, smooth);
     },
-    _fixScrollJump: () => {
+    $fixScrollJump: () => {
       scrollObserver && scrollObserver._fixScrollJump();
     },
   };
@@ -355,9 +376,10 @@ export const createScroller = (
  * @internal
  */
 export type WindowScroller = {
-  _observe(containerElement: HTMLElement): void;
-  _dispose(): void;
-  _fixScrollJump: () => void;
+  $observe(containerElement: HTMLElement): void;
+  $dispose(): void;
+  $scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
+  $fixScrollJump: () => void;
 };
 
 /**
@@ -367,42 +389,129 @@ export const createWindowScroller = (
   store: VirtualStore,
   isHorizontal: boolean
 ): WindowScroller => {
+  let containerElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
+  let cancelScroll: (() => void) | undefined;
+
+  const calcOffsetToViewport = (
+    node: HTMLElement,
+    viewport: HTMLElement,
+    window: Window,
+    isHorizontal: boolean,
+    offset: number = 0
+  ): number => {
+    // TODO calc offset only when it changes (maybe impossible)
+    const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
+    const offsetSum =
+      offset +
+      (isHorizontal && isRTLDocument()
+        ? window.innerWidth - node[offsetKey] - node.offsetWidth
+        : node[offsetKey]);
+
+    const parent = node.offsetParent;
+    if (node === viewport || !parent) {
+      return offsetSum;
+    }
+
+    return calcOffsetToViewport(
+      parent as HTMLElement,
+      viewport,
+      window,
+      isHorizontal,
+      offsetSum
+    );
+  };
+
+  const scheduleImperativeScroll = async (
+    getTargetOffset: () => number,
+    smooth?: boolean
+  ) => {
+    if (!containerElement) {
+      // Wait for element assign
+      microtask(() => scheduleImperativeScroll(getTargetOffset, smooth));
+      return;
+    }
+
+    if (cancelScroll) {
+      cancelScroll();
+    }
+
+    const waitForMeasurement = (): [Promise<void>, () => void] => {
+      let queue: (() => void) | undefined;
+      return [
+        new Promise<void>((resolve, reject) => {
+          queue = resolve;
+          cancelScroll = reject;
+
+          if (isInitialMeasurementDone(store)) {
+            timeout(reject, 150);
+          }
+        }),
+        store.$subscribe(UPDATE_SIZE_EVENT, () => {
+          queue && queue();
+        }),
+      ];
+    };
+
+    const window = getCurrentWindow(getCurrentDocument(containerElement));
+
+    if (smooth && isSmoothScrollSupported()) {
+      while (true) {
+        store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
+
+        if (!store._hasUnmeasuredItemsInFrozenRange()) {
+          break;
+        }
+
+        const [promise, unsubscribe] = waitForMeasurement();
+
+        try {
+          await promise;
+        } catch (e) {
+          return;
+        } finally {
+          unsubscribe();
+        }
+      }
+
+      window.scroll({
+        [isHorizontal ? "left" : "top"]: normalizeOffset(
+          getTargetOffset(),
+          isHorizontal
+        ),
+        behavior: "smooth",
+      });
+    } else {
+      while (true) {
+        const [promise, unsubscribe] = waitForMeasurement();
+
+        try {
+          window.scroll({
+            [isHorizontal ? "left" : "top"]: normalizeOffset(
+              getTargetOffset(),
+              isHorizontal
+            ),
+          });
+          store.$update(ACTION_MANUAL_SCROLL);
+
+          await promise;
+        } catch (e) {
+          return;
+        } finally {
+          unsubscribe();
+        }
+      }
+    }
+  };
 
   return {
-    _observe(container) {
+    $observe(container) {
+      containerElement = container;
       const scrollOffsetKey = isHorizontal ? "scrollX" : "scrollY";
 
       const document = getCurrentDocument(container);
       const window = getCurrentWindow(document);
       const documentBody = document.body;
-
-      const calcOffsetToViewport = (
-        node: HTMLElement,
-        viewport: HTMLElement,
-        isHorizontal: boolean,
-        offset: number = 0
-      ): number => {
-        // TODO calc offset only when it changes (maybe impossible)
-        const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
-        const offsetSum =
-          offset +
-          (isHorizontal && isRTLDocument()
-            ? window.innerWidth - node[offsetKey] - node.offsetWidth
-            : node[offsetKey]);
-
-        const parent = node.offsetParent;
-        if (node === viewport || !parent) {
-          return offsetSum;
-        }
-
-        return calcOffsetToViewport(
-          parent as HTMLElement,
-          viewport,
-          isHorizontal,
-          offsetSum
-        );
-      };
 
       scrollObserver = createScrollObserver(
         store,
@@ -413,20 +522,73 @@ export const createWindowScroller = (
           // TODO support case two window scrollers exist in the same view
           if (shift) {
             window.scroll({
-              [isHorizontal ? "left" : "top"]: store._getScrollOffset() + jump,
+              [isHorizontal ? "left" : "top"]: store.$getScrollOffset() + jump,
             });
           } else {
             window.scrollBy(isHorizontal ? jump : 0, isHorizontal ? 0 : jump);
           }
         },
-        () => calcOffsetToViewport(container, documentBody, isHorizontal)
+        () =>
+          calcOffsetToViewport(container, documentBody, window, isHorizontal)
       );
     },
-    _dispose() {
+    $dispose() {
       scrollObserver && scrollObserver._dispose();
+      containerElement = undefined;
     },
-    _fixScrollJump: () => {
+    $fixScrollJump: () => {
       scrollObserver && scrollObserver._fixScrollJump();
+    },
+    $scrollToIndex(index, { align, smooth, offset = 0 } = {}) {
+      if (!containerElement) return;
+
+      index = clamp(index, 0, store.$getItemsLength() - 1);
+
+      if (align === "nearest") {
+        const itemOffset = store.$getItemOffset(index);
+        const scrollOffset = store.$getScrollOffset();
+
+        if (itemOffset < scrollOffset) {
+          align = "start";
+        } else if (
+          itemOffset + store.$getItemSize(index) >
+          scrollOffset + store.$getViewportSize()
+        ) {
+          align = "end";
+        } else {
+          return;
+        }
+      }
+
+      const document = getCurrentDocument(containerElement);
+      const window = getCurrentWindow(document);
+      const html = document.documentElement;
+      const getScrollbarSize = () =>
+        store.$getViewportSize() -
+        (isHorizontal ? html.clientWidth : html.clientHeight);
+
+      scheduleImperativeScroll(() => {
+        return (
+          offset +
+          // Calculate target scroll position including container's offset from document
+          calcOffsetToViewport(
+            containerElement!,
+            document.body,
+            window,
+            isHorizontal
+          ) +
+          // store._getStartSpacerSize() +
+          store.$getItemOffset(index) +
+          (align === "end"
+            ? store.$getItemSize(index) -
+              (store.$getViewportSize() - getScrollbarSize())
+            : align === "center"
+              ? (store.$getItemSize(index) -
+                  (store.$getViewportSize() - getScrollbarSize())) /
+                2
+              : 0)
+        );
+      }, smooth);
     },
   };
 };
@@ -435,12 +597,12 @@ export const createWindowScroller = (
  * @internal
  */
 export type GridScroller = {
-  _observe: (viewportElement: HTMLElement) => void;
-  _dispose(): void;
-  _scrollTo: (offsetX: number, offsetY: number) => void;
-  _scrollBy: (offsetX: number, offsetY: number) => void;
-  _scrollToIndex: (indexX: number, indexY: number) => void;
-  _fixScrollJump: () => void;
+  $observe: (viewportElement: HTMLElement) => void;
+  $dispose(): void;
+  $scrollTo: (offsetX: number, offsetY: number) => void;
+  $scrollBy: (offsetX: number, offsetY: number) => void;
+  $scrollToIndex: (indexX: number, indexY: number) => void;
+  $fixScrollJump: () => void;
 };
 
 /**
@@ -453,29 +615,29 @@ export const createGridScroller = (
   const vScroller = createScroller(vStore, false);
   const hScroller = createScroller(hStore, true);
   return {
-    _observe(viewportElement) {
-      vScroller._observe(viewportElement);
-      hScroller._observe(viewportElement);
+    $observe(viewportElement) {
+      vScroller.$observe(viewportElement);
+      hScroller.$observe(viewportElement);
     },
-    _dispose() {
-      vScroller._dispose();
-      hScroller._dispose();
+    $dispose() {
+      vScroller.$dispose();
+      hScroller.$dispose();
     },
-    _scrollTo(offsetX, offsetY) {
-      vScroller._scrollTo(offsetY);
-      hScroller._scrollTo(offsetX);
+    $scrollTo(offsetX, offsetY) {
+      vScroller.$scrollTo(offsetY);
+      hScroller.$scrollTo(offsetX);
     },
-    _scrollBy(offsetX, offsetY) {
-      vScroller._scrollBy(offsetY);
-      hScroller._scrollBy(offsetX);
+    $scrollBy(offsetX, offsetY) {
+      vScroller.$scrollBy(offsetY);
+      hScroller.$scrollBy(offsetX);
     },
-    _scrollToIndex(indexX, indexY) {
-      vScroller._scrollToIndex(indexY);
-      hScroller._scrollToIndex(indexX);
+    $scrollToIndex(indexX, indexY) {
+      vScroller.$scrollToIndex(indexY);
+      hScroller.$scrollToIndex(indexX);
     },
-    _fixScrollJump() {
-      vScroller._fixScrollJump();
-      hScroller._fixScrollJump();
+    $fixScrollJump() {
+      vScroller.$fixScrollJump();
+      hScroller.$fixScrollJump();
     },
   };
 };

@@ -1,4 +1,4 @@
-**API** • **Docs**
+**API**
 
 ***
 
@@ -9,3 +9,4 @@
 - [react](react/API.md)
 - [vue](vue/API.md)
 - [solid](solid/API.md)
+- [svelte](svelte/API.md)

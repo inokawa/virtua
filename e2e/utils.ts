@@ -1,20 +1,21 @@
-import { ElementHandle, Page, expect } from "@playwright/test";
+import { ElementHandle, Locator, Page, expect } from "@playwright/test";
 
 export const storyUrl = (id: string) =>
   `http://localhost:6006/iframe.html?id=${id}&viewMode=story`;
 
 export const getScrollable = async (page: Page) => {
-  return page.waitForSelector(
+  const locator = page.locator(
     '*[style*="overflow-y: auto"],*[style*="overflow-y:auto"],*[style*="overflow-x: auto"],*[style*="overflow-x:auto"],*[style*="overflow: auto"],*[style*="overflow:auto"]'
   );
+  await locator.waitFor();
+  return locator;
 };
 
 export const getVirtualizer = async (page: Page) => {
-  const selector = '*[style*="pointer-events: auto"]';
-  const component = await page.waitForSelector(selector, { state: "attached" });
-  await component.evaluate((e) => (e.style.visibility = "visible"));
-  await page.waitForSelector(selector);
-  return component;
+  const locator = page.locator('*[style*="flex: 0 0 auto"]');
+  await locator.evaluate((e) => (e.style.visibility = "visible"));
+  await locator.waitFor();
+  return locator;
 };
 
 export const expectInRange = (
@@ -40,9 +41,7 @@ export const clearTimer = async (page: Page) => {
   });
 };
 
-export const getFirstItem = (
-  scrollable: ElementHandle<HTMLElement | SVGElement>
-) => {
+export const getFirstItem = (scrollable: Locator) => {
   return scrollable.evaluate((s) => {
     const rect = s.getBoundingClientRect();
     const el = document.elementFromPoint(rect.left + 2, rect.top + 2)!;
@@ -56,7 +55,7 @@ export const getFirstItem = (
 };
 
 export const getLastItem = (
-  scrollable: ElementHandle<HTMLElement | SVGElement>,
+  scrollable: Locator,
   offset: { x?: number; y?: number } = {}
 ) => {
   return scrollable.evaluate((s, { x: offsetX = 2, y: offsetY = 2 }) => {
@@ -74,9 +73,7 @@ export const getLastItem = (
   }, offset);
 };
 
-export const getFirstItemRtl = (
-  scrollable: ElementHandle<HTMLElement | SVGElement>
-) => {
+export const getFirstItemRtl = (scrollable: Locator) => {
   return scrollable.evaluate((s) => {
     const rect = s.getBoundingClientRect();
     const el = document.elementFromPoint(rect.right - 2, rect.top + 2)!;
@@ -122,27 +119,19 @@ export const getWindowLastItem = (
   }, offset);
 };
 
-export const getScrollTop = (
-  scrollable: ElementHandle<HTMLElement | SVGElement>
-) => {
+export const getScrollTop = (scrollable: Locator) => {
   return scrollable.evaluate((e) => e.scrollTop);
 };
 
-export const getScrollBottom = (
-  scrollable: ElementHandle<HTMLElement | SVGElement>
-) => {
+export const getScrollBottom = (scrollable: Locator) => {
   return scrollable.evaluate((e) => e.scrollHeight - e.scrollTop);
 };
 
-export const getScrollLeft = (
-  scrollable: ElementHandle<HTMLElement | SVGElement>
-) => {
+export const getScrollLeft = (scrollable: Locator) => {
   return scrollable.evaluate((e) => e.scrollLeft);
 };
 
-export const getScrollRight = (
-  scrollable: ElementHandle<HTMLElement | SVGElement>
-) => {
+export const getScrollRight = (scrollable: Locator) => {
   return scrollable.evaluate((e) => e.scrollWidth - e.scrollLeft);
 };
 
@@ -162,19 +151,13 @@ export const getWindowScrollRight = (page: Page) => {
   return page.evaluate(() => document.body.scrollWidth - window.scrollX);
 };
 
-export const scrollTo = (
-  scrollable: ElementHandle<HTMLElement | SVGElement>,
-  offset: number
-) => {
+export const scrollTo = (scrollable: Locator, offset: number) => {
   return scrollable.evaluate((e, offset) => {
     e.scrollTop = offset;
   }, offset);
 };
 
-export const scrollBy = (
-  scrollable: ElementHandle<HTMLElement | SVGElement>,
-  offset: number
-) => {
+export const scrollBy = (scrollable: Locator, offset: number) => {
   return scrollable.evaluate((e, offset) => {
     e.scrollTop += offset;
   }, offset);
@@ -186,9 +169,7 @@ export const windowScrollBy = (page: Page, offset: number) => {
   }, offset);
 };
 
-export const scrollToBottom = (
-  scrollable: ElementHandle<HTMLElement | SVGElement>
-): Promise<void> => {
+export const scrollToBottom = (scrollable: Locator): Promise<void> => {
   return scrollable.evaluate((e) => {
     return new Promise<void>((resolve) => {
       let timer: ReturnType<typeof setTimeout> | null = null;
@@ -215,9 +196,7 @@ export const scrollToBottom = (
   });
 };
 
-export const scrollToRight = async (
-  scrollable: ElementHandle<HTMLElement | SVGElement>
-): Promise<void> => {
+export const scrollToRight = async (scrollable: Locator): Promise<void> => {
   return scrollable.evaluate((e) => {
     return new Promise<void>((resolve) => {
       let timer: ReturnType<typeof setTimeout> | null = null;
@@ -244,9 +223,7 @@ export const scrollToRight = async (
   });
 };
 
-export const scrollToLeft = async (
-  scrollable: ElementHandle<HTMLElement | SVGElement>
-) => {
+export const scrollToLeft = async (scrollable: Locator) => {
   return scrollable.evaluate((e) => {
     return new Promise<void>((resolve) => {
       let timer: ReturnType<typeof setTimeout> | null = null;
@@ -361,7 +338,7 @@ export const windowScrollToLeft = async (page: Page) => {
 };
 
 export const scrollWithTouch = (
-  scrollable: ElementHandle<HTMLElement | SVGElement>,
+  scrollable: Locator,
   target: {
     fromX: number;
     toX: number;
@@ -469,4 +446,28 @@ export const scrollWithTouch = (
     },
     target
   );
+};
+
+export const listenScrollCount = (
+  component: Locator,
+  timeout = 2000
+): Promise<number> => {
+  return component.evaluate((c, t) => {
+    let timer: null | ReturnType<typeof setTimeout> = null;
+    let called = 0;
+
+    return new Promise<number>((resolve) => {
+      const cb = () => {
+        called++;
+        if (timer !== null) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+          c.removeEventListener("scroll", cb);
+          resolve(called);
+        }, t);
+      };
+      c.addEventListener("scroll", cb);
+    });
+  }, timeout);
 };

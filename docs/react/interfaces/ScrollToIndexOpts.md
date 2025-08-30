@@ -1,14 +1,18 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
 # Interface: ScrollToIndexOpts
+
+Defined in: [src/core/types.ts:21](https://github.com/inokawa/virtua/blob/6ace69a73fb00a1c5dfd30a8b96e49ce7660d8e0/src/core/types.ts#L21)
 
 ## Properties
 
 ### align?
 
 > `optional` **align**: [`ScrollToIndexAlign`](../type-aliases/ScrollToIndexAlign.md)
+
+Defined in: [src/core/types.ts:32](https://github.com/inokawa/virtua/blob/6ace69a73fb00a1c5dfd30a8b96e49ce7660d8e0/src/core/types.ts#L32)
 
 Alignment of item.
 
@@ -23,29 +27,25 @@ Alignment of item.
 "start"
 ```
 
-#### Defined in
-
-[src/core/types.ts:32](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/core/types.ts#L32)
-
 ***
 
 ### smooth?
 
 > `optional` **smooth**: `boolean`
 
+Defined in: [src/core/types.ts:38](https://github.com/inokawa/virtua/blob/6ace69a73fb00a1c5dfd30a8b96e49ce7660d8e0/src/core/types.ts#L38)
+
 If true, scrolling animates smoothly with [`behavior: smooth` of scrollTo](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTo#behavior).
 
 **Using smooth scrolling over many items can kill performance benefit of virtual scroll. Do not overuse it.**
-
-#### Defined in
-
-[src/core/types.ts:38](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/core/types.ts#L38)
 
 ***
 
 ### offset?
 
 > `optional` **offset**: `number`
+
+Defined in: [src/core/types.ts:43](https://github.com/inokawa/virtua/blob/6ace69a73fb00a1c5dfd30a8b96e49ce7660d8e0/src/core/types.ts#L43)
 
 Additional offset from the scrolled position.
 
@@ -54,7 +54,3 @@ Additional offset from the scrolled position.
 ```ts
 0
 ```
-
-#### Defined in
-
-[src/core/types.ts:43](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/core/types.ts#L43)

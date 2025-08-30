@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react-vite";
 import { VList, VListHandle } from "../../../src";
 import React, {
   CSSProperties,
@@ -103,15 +103,20 @@ export const Default: StoryObj = {
         ref={ref}
         style={{ flex: 1 }}
         shift={shifting ? true : false}
-        onRangeChange={async (start, end) => {
+        onScroll={async () => {
           if (!ready.current) return;
-          if (end + THRESHOLD > count && endFetchedCountRef.current < count) {
+          if (!ref.current) return;
+
+          if (
+            endFetchedCountRef.current < count &&
+            ref.current.findEndIndex() + THRESHOLD > count
+          ) {
             endFetchedCountRef.current = count;
             await fetchItems();
             setItems((prev) => [...prev, ...createItems(ITEM_BATCH_COUNT)]);
           } else if (
-            start - THRESHOLD < 0 &&
-            startFetchedCountRef.current < count
+            startFetchedCountRef.current < count &&
+            ref.current.findStartIndex() - THRESHOLD < 0
           ) {
             startFetchedCountRef.current = count;
             await fetchItems(true);

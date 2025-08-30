@@ -12,43 +12,57 @@ import {
   ComponentObjectPropsOptions,
   PropType,
   NativeElements,
+  computed,
 } from "vue";
 import {
-  SCROLL_IDLE,
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_VIRTUAL_STATE,
-  getOverscanedRange,
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
   ACTION_START_OFFSET_CHANGE,
-} from "../core/store";
-import { createResizer } from "../core/resizer";
-import { createScroller } from "../core/scroller";
-import { ScrollToIndexOpts } from "../core/types";
+  createResizer,
+  createScroller,
+  ItemsRange,
+  ScrollToIndexOpts,
+  microtask,
+  sort,
+} from "../core";
 import { ListItem } from "./ListItem";
-import { getKey } from "./utils";
-import { microtask } from "../core/utils";
+import { getKey, isSameRange, ItemProps } from "./utils";
 
 export interface VirtualizerHandle {
   /**
-   * Get current scrollTop or scrollLeft.
+   * Get current scrollTop, or scrollLeft if horizontal: true.
    */
   readonly scrollOffset: number;
   /**
-   * Get current scrollHeight or scrollWidth.
+   * Get current scrollHeight, or scrollWidth if horizontal: true.
    */
   readonly scrollSize: number;
   /**
-   * Get current offsetHeight or offsetWidth.
+   * Get current offsetHeight, or offsetWidth if horizontal: true.
    */
   readonly viewportSize: number;
+  /**
+   * Find the start index of visible range of items.
+   */
+  findStartIndex: () => number;
+  /**
+   * Find the end index of visible range of items.
+   */
+  findEndIndex: () => number;
   /**
    * Get item offset from start.
    * @param index index of item
    */
   getItemOffset(index: number): number;
+  /**
+   * Get item size.
+   * @param index index of item
+   */
+  getItemSize(index: number): number;
   /**
    * Scroll to the item specified by index.
    * @param index index of item
@@ -76,7 +90,7 @@ const props = {
    * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
    */
-  overscan: { type: Number, default: 4 },
+  overscan: Number,
   /**
    * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
    *
@@ -101,7 +115,7 @@ const props = {
    */
   ssrCount: Number,
   /**
-   * Reference to the scrollable element. The default will get the parent element of virtualizer.
+   * Reference to the scrollable element. The default will get the direct parent element of virtualizer.
    */
   scrollRef: Object as PropType<HTMLElement>,
   /**
@@ -114,11 +128,21 @@ const props = {
    * @defaultValue "div"
    */
   item: { type: String as PropType<keyof NativeElements>, default: "div" },
+  /**
+   * A function that provides properties/attributes for item element
+   *
+   * **This prop will be merged into `item` prop in the future**
+   */
+  itemProps: Function as PropType<ItemProps>,
+  /**
+   * List of indexes that should be always mounted, even when off screen.
+   */
+  keepMounted: Array as PropType<number[]>,
 } satisfies ComponentObjectPropsOptions;
 
 export const Virtualizer = /*#__PURE__*/ defineComponent({
   props: props,
-  emits: ["scroll", "scrollEnd", "rangeChange"],
+  emits: ["scroll", "scrollEnd"],
   setup(props, { emit, expose, slots }) {
     let isSSR = !!props.ssrCount;
 
@@ -126,7 +150,8 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     const containerRef = ref<HTMLDivElement>();
     const store = createVirtualStore(
       props.data.length,
-      props.itemSize ?? 40,
+      props.itemSize,
+      props.overscan,
       props.ssrCount,
       undefined,
       !props.itemSize
@@ -134,19 +159,34 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     const resizer = createResizer(store, isHorizontal);
     const scroller = createScroller(store, isHorizontal);
 
-    const rerender = ref(store._getStateVersion());
-    const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
-      rerender.value = store._getStateVersion();
+    const stateVersion = ref(store.$getStateVersion());
+    const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+      stateVersion.value = store.$getStateVersion();
     });
 
-    const unsubscribeOnScroll = store._subscribe(UPDATE_SCROLL_EVENT, () => {
-      emit("scroll", store._getScrollOffset());
+    const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+      emit("scroll", store.$getScrollOffset());
     });
-    const unsubscribeOnScrollEnd = store._subscribe(
+    const unsubscribeOnScrollEnd = store.$subscribe(
       UPDATE_SCROLL_END_EVENT,
       () => {
         emit("scrollEnd");
       }
+    );
+
+    const range = computed<ItemsRange>((prev) => {
+      stateVersion.value;
+      const next = store.$getRange();
+      if (prev && isSameRange(prev, next)) {
+        return prev;
+      }
+      return next;
+    });
+    const isScrolling = computed(
+      () => stateVersion.value && store.$isScrolling()
+    );
+    const totalSize = computed(
+      () => stateVersion.value && store.$getTotalSize()
     );
 
     onMounted(() => {
@@ -154,8 +194,8 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
 
       microtask(() => {
         const assignScrollableElement = (e: HTMLElement) => {
-          resizer._observeRoot(e);
-          scroller._observe(e);
+          resizer.$observeRoot(e);
+          scroller.$observe(e);
         };
         if (props.scrollRef) {
           // parent's ref doesn't exist when onMounted is called
@@ -169,97 +209,95 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       unsubscribeStore();
       unsubscribeOnScroll();
       unsubscribeOnScrollEnd();
-      resizer._dispose();
-      scroller._dispose();
+      resizer.$dispose();
+      scroller.$dispose();
     });
 
     watch(
       () => props.data.length,
       (count) => {
-        store._update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
       }
     );
     watch(
       () => props.startMargin,
       (value) => {
-        store._update(ACTION_START_OFFSET_CHANGE, value);
+        store.$update(ACTION_START_OFFSET_CHANGE, value);
       },
       { immediate: true }
     );
 
     watch(
-      [rerender, store._getJumpCount],
-      ([, count], [, prevCount]) => {
-        if (count === prevCount) return;
-
-        scroller._fixScrollJump();
-      },
-      { flush: "post" }
-    );
-
-    watch(
-      [rerender, store._getRange],
-      ([, [start, end]], [, [prevStart, prevEnd]]) => {
-        if (prevStart === start && prevEnd === end) return;
-
-        emit("rangeChange", start, end);
+      [stateVersion],
+      () => {
+        scroller.$fixScrollJump();
       },
       { flush: "post" }
     );
 
     expose({
       get scrollOffset() {
-        return store._getScrollOffset();
+        return store.$getScrollOffset();
       },
       get scrollSize() {
         return getScrollSize(store);
       },
       get viewportSize() {
-        return store._getViewportSize();
+        return store.$getViewportSize();
       },
-      getItemOffset: store._getItemOffset,
-      scrollToIndex: scroller._scrollToIndex,
-      scrollTo: scroller._scrollTo,
-      scrollBy: scroller._scrollBy,
+      findStartIndex: store.$findStartIndex,
+      findEndIndex: store.$findEndIndex,
+      getItemOffset: store.$getItemOffset,
+      getItemSize: store.$getItemSize,
+      scrollToIndex: scroller.$scrollToIndex,
+      scrollTo: scroller.$scrollTo,
+      scrollBy: scroller.$scrollBy,
     } satisfies VirtualizerHandle);
 
     return () => {
-      rerender.value;
-
       const Element = props.as;
       const ItemElement = props.item;
-      const count = props.data.length;
 
-      const [startIndex, endIndex] = store._getRange();
-      const scrollDirection = store._getScrollDirection();
-      const totalSize = store._getTotalSize();
+      const [startIndex, endIndex] = range.value;
+      const total = totalSize.value;
 
       const items: VNode[] = [];
-      for (
-        let [i, j] = getOverscanedRange(
-          startIndex,
-          endIndex,
-          props.overscan,
-          scrollDirection,
-          count
-        );
-        i <= j;
-        i++
-      ) {
-        const e = slots.default(props.data![i]!)[0]! as VNode;
-        items.push(
+
+      function getListItem(i: number) {
+        const e = slots.default({ item: props.data![i]!, index: i })[0]!;
+        return (
           <ListItem
             key={getKey(e, i)}
-            _resizer={resizer._observeItem}
+            _stateVersion={stateVersion}
+            _store={store}
+            _resizer={resizer.$observeItem}
             _index={i}
-            _offset={store._getItemOffset(i)}
-            _hide={store._isUnmeasuredItem(i)}
             _children={e}
             _isHorizontal={isHorizontal}
             _isSSR={isSSR}
             _as={ItemElement}
+            _itemProps={props.itemProps?.({ item: props.data![i]!, index: i })}
           />
         );
+      }
+      for (let i = startIndex, j = endIndex; i <= j; i++) {
+        items.push(getListItem(i));
+      }
+
+      if (props.keepMounted) {
+        const startItems: VNode[] = [];
+        const endItems: VNode[] = [];
+        sort(props.keepMounted).forEach((index) => {
+          if (index < startIndex) {
+            startItems.push(getListItem(index));
+          }
+          if (index > endIndex) {
+            endItems.push(getListItem(index));
+          }
+        });
+
+        items.unshift(...startItems);
+        items.push(...endItems);
       }
 
       return (
@@ -271,9 +309,9 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
             flex: "none", // flex style can break layout
             position: "relative",
             visibility: "hidden", // TODO replace with other optimization methods
-            width: isHorizontal ? totalSize + "px" : "100%",
-            height: isHorizontal ? "100%" : totalSize + "px",
-            pointerEvents: scrollDirection !== SCROLL_IDLE ? "none" : "auto",
+            width: isHorizontal ? total + "px" : "100%",
+            height: isHorizontal ? "100%" : total + "px",
+            pointerEvents: isScrolling.value ? "none" : undefined,
           }}
         >
           {items}
@@ -292,29 +330,16 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
   {
     /**
      * Callback invoked whenever scroll offset changes.
-     * @param offset Current scrollTop or scrollLeft.
+     * @param offset Current scrollTop, or scrollLeft if horizontal: true.
      */
     scroll: (offset: number) => void;
     /**
      * Callback invoked when scrolling stops.
      */
     scrollEnd: () => void;
-    /**
-     * Callback invoked when visible items range changes.
-     */
-    rangeChange: (
-      /**
-       * The start index of viewable items.
-       */
-      startIndex: number,
-      /**
-       * The end index of viewable items.
-       */
-      endIndex: number
-    ) => void;
   },
   string,
   {},
   string,
-  SlotsType<{ default: any }>
+  SlotsType<{ default: (arg: { item: any; index: number }) => VNode[] }>
 >);

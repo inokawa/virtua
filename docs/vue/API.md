@@ -1,12 +1,10 @@
-[**API**](../API.md) • **Docs**
+[**API**](../API.md)
 
 ***
 
 # vue
 
-## Index
-
-### Classes
+## Classes
 
 - [VList](classes/VList.md)
 - [Virtualizer](classes/Virtualizer.md)

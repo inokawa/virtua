@@ -35,9 +35,9 @@ const createResizeObserver = (cb: ResizeObserverCallback) => {
 export type ItemResizeObserver = (el: HTMLElement, i: number) => () => void;
 
 interface ListResizer {
-  _observeRoot(viewportElement: HTMLElement): void;
-  _observeItem: ItemResizeObserver;
-  _dispose(): void;
+  $observeRoot(viewportElement: HTMLElement): void;
+  $observeItem: ItemResizeObserver;
+  $dispose(): void;
 }
 
 /**
@@ -58,7 +58,7 @@ export const createResizer = (
       if (!(target as HTMLElement).offsetParent) continue;
 
       if (target === viewportElement) {
-        store._update(ACTION_VIEWPORT_RESIZE, contentRect[sizeKey]);
+        store.$update(ACTION_VIEWPORT_RESIZE, contentRect[sizeKey]);
       } else {
         const index = mountedIndexes.get(target);
         if (index != NULL) {
@@ -68,15 +68,15 @@ export const createResizer = (
     }
 
     if (resizes.length) {
-      store._update(ACTION_ITEM_RESIZE, resizes);
+      store.$update(ACTION_ITEM_RESIZE, resizes);
     }
   });
 
   return {
-    _observeRoot(viewport: HTMLElement) {
+    $observeRoot(viewport: HTMLElement) {
       resizeObserver._observe((viewportElement = viewport));
     },
-    _observeItem: (el: HTMLElement, i: number) => {
+    $observeItem: (el: HTMLElement, i: number) => {
       mountedIndexes.set(el, i);
       resizeObserver._observe(el);
       return () => {
@@ -84,14 +84,14 @@ export const createResizer = (
         resizeObserver._unobserve(el);
       };
     },
-    _dispose: resizeObserver._dispose,
+    $dispose: resizeObserver._dispose,
   };
 };
 
 interface WindowListResizer {
-  _observeRoot(container: HTMLElement): void;
-  _observeItem: ItemResizeObserver;
-  _dispose(): void;
+  $observeRoot(container: HTMLElement): void;
+  $observeItem: ItemResizeObserver;
+  $dispose(): void;
 }
 
 /**
@@ -118,17 +118,17 @@ export const createWindowResizer = (
     }
 
     if (resizes.length) {
-      store._update(ACTION_ITEM_RESIZE, resizes);
+      store.$update(ACTION_ITEM_RESIZE, resizes);
     }
   });
 
   let cleanupOnWindowResize: (() => void) | undefined;
 
   return {
-    _observeRoot(container) {
+    $observeRoot(container) {
       const window = getCurrentWindow(getCurrentDocument(container));
       const onWindowResize = () => {
-        store._update(ACTION_VIEWPORT_RESIZE, window[windowSizeKey]);
+        store.$update(ACTION_VIEWPORT_RESIZE, window[windowSizeKey]);
       };
       window.addEventListener("resize", onWindowResize);
       onWindowResize();
@@ -137,7 +137,7 @@ export const createWindowResizer = (
         window.removeEventListener("resize", onWindowResize);
       };
     },
-    _observeItem: (el: HTMLElement, i: number) => {
+    $observeItem: (el: HTMLElement, i: number) => {
       mountedIndexes.set(el, i);
       resizeObserver._observe(el);
       return () => {
@@ -145,7 +145,7 @@ export const createWindowResizer = (
         resizeObserver._unobserve(el);
       };
     },
-    _dispose() {
+    $dispose() {
       cleanupOnWindowResize && cleanupOnWindowResize();
       resizeObserver._dispose();
     },
@@ -183,8 +183,8 @@ export const createGridResizer = (
       if (!(target as HTMLElement).offsetParent) continue;
 
       if (target === viewportElement) {
-        vStore._update(ACTION_VIEWPORT_RESIZE, contentRect[heightKey]);
-        hStore._update(ACTION_VIEWPORT_RESIZE, contentRect[widthKey]);
+        vStore.$update(ACTION_VIEWPORT_RESIZE, contentRect[heightKey]);
+        hStore.$update(ACTION_VIEWPORT_RESIZE, contentRect[widthKey]);
       } else {
         const cell = mountedIndexes.get(target);
         if (cell) {
@@ -234,7 +234,7 @@ export const createGridResizer = (
           heightResizes.push([rowIndex, maxHeight]);
         }
       });
-      vStore._update(ACTION_ITEM_RESIZE, heightResizes);
+      vStore.$update(ACTION_ITEM_RESIZE, heightResizes);
     }
     if (resizedCols.size) {
       const widthResizes: ItemResize[] = [];
@@ -250,15 +250,15 @@ export const createGridResizer = (
           widthResizes.push([colIndex, maxWidth]);
         }
       });
-      hStore._update(ACTION_ITEM_RESIZE, widthResizes);
+      hStore.$update(ACTION_ITEM_RESIZE, widthResizes);
     }
   });
 
   return {
-    _observeRoot(viewport: HTMLElement) {
+    $observeRoot(viewport: HTMLElement) {
       resizeObserver._observe((viewportElement = viewport));
     },
-    _observeItem(el: HTMLElement, rowIndex: number, colIndex: number) {
+    $observeItem(el: HTMLElement, rowIndex: number, colIndex: number) {
       mountedIndexes.set(el, [rowIndex, colIndex]);
       maybeCachedRowIndexes.add(rowIndex);
       maybeCachedColIndexes.add(colIndex);
@@ -268,7 +268,7 @@ export const createGridResizer = (
         resizeObserver._unobserve(el);
       };
     },
-    _dispose: resizeObserver._dispose,
+    $dispose: resizeObserver._dispose,
   };
 };
 

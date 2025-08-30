@@ -1,3 +1,6 @@
+.idea
+.vscode
+.DS_Store
 lib
 node_modules
 /storybook-static/

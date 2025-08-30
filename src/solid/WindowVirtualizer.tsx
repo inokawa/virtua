@@ -8,37 +8,58 @@ import {
   createSignal,
   createMemo,
   JSX,
+  Accessor,
   on,
-  createComputed,
+  For,
+  untrack,
 } from "solid-js";
 import {
-  SCROLL_IDLE,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_VIRTUAL_STATE,
-  getOverscanedRange,
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
-} from "../core/store";
-import { createWindowResizer } from "../core/resizer";
-import { createWindowScroller } from "../core/scroller";
+  UPDATE_SCROLL_EVENT,
+  createWindowResizer,
+  createWindowScroller,
+  ItemsRange,
+  ScrollToIndexOpts,
+  CacheSnapshot,
+} from "../core";
 import { ListItem } from "./ListItem";
-import { RangedFor } from "./RangedFor";
 import { isSameRange } from "./utils";
-import { ItemsRange } from "../core/types";
 
-// /**
-//  * Methods of {@link WindowVirtualizer}.
-//  */
-// export interface WindowVirtualizerHandle {}
+/**
+ * Methods of {@link WindowVirtualizer}.
+ */
+export interface WindowVirtualizerHandle {
+  /**
+   * Get current {@link CacheSnapshot}.
+   */
+  readonly cache: CacheSnapshot;
+  /**
+   * Find the start index of visible range of items.
+   */
+  findStartIndex: () => number;
+  /**
+   * Find the end index of visible range of items.
+   */
+  findEndIndex: () => number;
+  /**
+   * Scroll to the item specified by index.
+   * @param index index of item
+   * @param opts options
+   */
+  scrollToIndex(index: number, opts?: ScrollToIndexOpts): void;
+}
 
 /**
  * Props of {@link WindowVirtualizer}.
  */
 export interface WindowVirtualizerProps<T> {
-  // /**
-  //  * Get reference to {@link WindowVirtualizerHandle}.
-  //  */
-  // ref?: (handle?: WindowVirtualizerHandle) => void;
+  /**
+   * Get reference to {@link WindowVirtualizerHandle}.
+   */
+  ref?: (handle?: WindowVirtualizerHandle) => void;
   /**
    * The data items rendered by this component.
    */
@@ -46,7 +67,7 @@ export interface WindowVirtualizerProps<T> {
   /**
    * The elements renderer function.
    */
-  children: (data: T, index: number) => JSX.Element;
+  children: (data: T, index: Accessor<number>) => JSX.Element;
   /**
    * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
@@ -68,26 +89,23 @@ export interface WindowVirtualizerProps<T> {
    */
   horizontal?: boolean;
   /**
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.cache}.
+   *
+   * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
+   */
+  cache?: CacheSnapshot;
+  /**
+   * Callback invoked whenever scroll offset changes.
+   */
+  onScroll?: () => void;
+  /**
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
-  /**
-   * Callback invoked when visible items range changes.
-   */
-  onRangeChange?: (
-    /**
-     * The start index of viewable items.
-     */
-    startIndex: number,
-    /**
-     * The end index of viewable items.
-     */
-    endIndex: number
-  ) => void;
 }
 
 /**
- * {@link Virtualizer} controlled by the window scrolling. See {@link WindowVirtualizerProps} and {@link WindowVirtualizer}.
+ * {@link Virtualizer} controlled by the window scrolling. See {@link WindowVirtualizerProps} and {@link WindowVirtualizerHandle}.
  */
 export const WindowVirtualizer = <T,>(
   props: WindowVirtualizerProps<T>
@@ -95,34 +113,39 @@ export const WindowVirtualizer = <T,>(
   let containerRef: HTMLDivElement | undefined;
 
   const {
-    // ref: _ref,
+    ref: _ref,
     data: _data,
     children: _children,
-    overscan: _overscan,
+    overscan,
     itemSize,
     shift: _shift,
     horizontal = false,
+    cache,
     onScrollEnd: _onScrollEnd,
-    onRangeChange: _onRangeChange,
   } = props;
 
   const store = createVirtualStore(
     props.data.length,
-    itemSize ?? 40,
+    itemSize,
+    overscan,
     undefined,
-    undefined,
+    cache,
     !itemSize
   );
   const resizer = createWindowResizer(store, horizontal);
   const scroller = createWindowScroller(store, horizontal);
 
-  const [rerender, setRerender] = createSignal(store._getStateVersion());
+  const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
-  const unsubscribeStore = store._subscribe(UPDATE_VIRTUAL_STATE, () => {
-    setRerender(store._getStateVersion());
+  const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+    setRerender(store.$getStateVersion());
   });
 
-  const unsubscribeOnScrollEnd = store._subscribe(
+  const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+    // https://github.com/inokawa/virtua/discussions/580
+    props.onScroll?.();
+  });
+  const unsubscribeOnScrollEnd = store.$subscribe(
     UPDATE_SCROLL_END_EVENT,
     () => {
       props.onScrollEnd?.();
@@ -130,68 +153,59 @@ export const WindowVirtualizer = <T,>(
   );
 
   const range = createMemo<ItemsRange>((prev) => {
-    rerender();
-    const next = store._getRange();
+    stateVersion();
+    const next = store.$getRange();
     if (prev && isSameRange(prev, next)) {
       return prev;
     }
     return next;
   });
-  const scrollDirection = createMemo(
-    () => rerender() && store._getScrollDirection()
-  );
-  const totalSize = createMemo(() => rerender() && store._getTotalSize());
-
-  const jumpCount = createMemo(() => rerender() && store._getJumpCount());
-
-  const overscanedRange = createMemo<ItemsRange>((prev) => {
-    const overscan = props.overscan ?? 4;
-    const [startIndex, endIndex] = range();
-    const next = getOverscanedRange(
-      startIndex,
-      endIndex,
-      overscan,
-      scrollDirection(),
-      props.data.length
-    );
-    if (prev && isSameRange(prev, next)) {
-      return prev;
-    }
-    return next;
-  });
+  const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
+  const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
 
   onMount(() => {
-    resizer._observeRoot(containerRef!);
-    scroller._observe(containerRef!);
+    if (props.ref) {
+      props.ref({
+        get cache() {
+          return store.$getCacheSnapshot();
+        },
+        findStartIndex: store.$findStartIndex,
+        findEndIndex: store.$findEndIndex,
+        scrollToIndex: scroller.$scrollToIndex,
+      });
+    }
+
+    resizer.$observeRoot(containerRef!);
+    scroller.$observe(containerRef!);
 
     onCleanup(() => {
+      if (props.ref) {
+        props.ref();
+      }
+
       unsubscribeStore();
+      unsubscribeOnScroll();
       unsubscribeOnScrollEnd();
-      resizer._dispose();
-      scroller._dispose();
+      resizer.$dispose();
+      scroller.$dispose();
     });
   });
 
-  createComputed(
-    on(
-      () => props.data.length,
-      (len) => {
-        if (len !== store._getItemsLength()) {
-          store._update(ACTION_ITEMS_LENGTH_CHANGE, [len, props.shift]);
-        }
-      }
-    )
-  );
-
   createEffect(
-    on(jumpCount, () => {
-      scroller._fixScrollJump();
+    on(stateVersion, () => {
+      scroller.$fixScrollJump();
     })
   );
 
-  createEffect(() => {
-    const next = range();
-    props.onRangeChange && props.onRangeChange(next[0], next[1]);
+  const dataSlice = createMemo<T[]>(() => {
+    const count = props.data.length;
+    untrack(() => {
+      if (count !== store.$getItemsLength()) {
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+      }
+    });
+    const [start, end] = range();
+    return end >= 0 ? props.data.slice(start, end + 1) : [];
   });
 
   return (
@@ -205,34 +219,36 @@ export const WindowVirtualizer = <T,>(
         visibility: "hidden", // TODO replace with other optimization methods
         width: horizontal ? totalSize() + "px" : "100%",
         height: horizontal ? "100%" : totalSize() + "px",
-        "pointer-events": scrollDirection() !== SCROLL_IDLE ? "none" : "auto",
+        "pointer-events": isScrolling() ? "none" : undefined,
       }}
     >
-      <RangedFor
-        _each={props.data}
-        _range={overscanedRange()}
-        _render={(data, index) => {
+      <For each={dataSlice()}>
+        {(data, index) => {
+          const itemIndex = createMemo(() => range()[0] + index());
           const offset = createMemo(() => {
-            rerender();
-            return store._getItemOffset(index);
+            stateVersion();
+            return store.$getItemOffset(itemIndex());
           });
           const hide = createMemo(() => {
-            rerender();
-            return store._isUnmeasuredItem(index);
+            stateVersion();
+            return store.$isUnmeasuredItem(itemIndex());
+          });
+          const children = createMemo(() => {
+            return untrack(() => props.children(data, itemIndex));
           });
 
           return (
             <ListItem
-              _index={index}
-              _resizer={resizer._observeItem}
+              _index={itemIndex()}
+              _resizer={resizer.$observeItem}
               _offset={offset()}
               _hide={hide()}
-              _children={props.children(data(), index)}
+              _children={children()}
               _isHorizontal={horizontal}
             />
           );
         }}
-      />
+      </For>
     </div>
   );
 };

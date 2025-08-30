@@ -1,8 +1,10 @@
-[**API**](../../API.md) • **Docs**
+[**API**](../../API.md)
 
 ***
 
 # Interface: CustomContainerComponentProps
+
+Defined in: [src/react/types.ts:9](https://github.com/inokawa/virtua/blob/6ace69a73fb00a1c5dfd30a8b96e49ce7660d8e0/src/react/types.ts#L9)
 
 ## Properties
 
@@ -10,9 +12,7 @@
 
 > **style**: `CSSProperties`
 
-#### Defined in
-
-[src/react/types.ts:10](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/react/types.ts#L10)
+Defined in: [src/react/types.ts:10](https://github.com/inokawa/virtua/blob/6ace69a73fb00a1c5dfd30a8b96e49ce7660d8e0/src/react/types.ts#L10)
 
 ***
 
@@ -20,6 +20,14 @@
 
 > **children**: `ReactNode`
 
-#### Defined in
+Defined in: [src/react/types.ts:11](https://github.com/inokawa/virtua/blob/6ace69a73fb00a1c5dfd30a8b96e49ce7660d8e0/src/react/types.ts#L11)
 
-[src/react/types.ts:11](https://github.com/inokawa/virtua/blob/bc9902049dc1e9e77258e865d2ec1befc66a7e39/src/react/types.ts#L11)
+***
+
+### ref?
+
+> `optional` **ref**: `LegacyRef`\<`any`\>
+
+Defined in: [src/react/types.ts:15](https://github.com/inokawa/virtua/blob/6ace69a73fb00a1c5dfd30a8b96e49ce7660d8e0/src/react/types.ts#L15)
+
+only available after React 19

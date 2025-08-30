@@ -2,18 +2,16 @@
 import { WindowVirtualizer } from '../../src/vue'
 
 const sizes = [20, 40, 180, 77];
-const createItem = (i: number) => ({ index: i, size: sizes[i % 4] + 'px' })
-
-const data = Array.from({ length: 1000 }).map((_, i) => createItem(i));
+const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]);
 
 </script>
 
 <template>
   <div :style="{ padding: '200px 100px' }">
     <div :style="{ border: 'solid 1px gray' }">
-      <WindowVirtualizer :data="data" #default="item">
-        <div :key="item.index" :style="{ height: item.size, background: 'white', borderBottom: 'solid 1px #ccc' }">
-          {{ item.index }}
+      <WindowVirtualizer :data="data" #default="{ item, index }">
+        <div :key="index" :style="{ height: item + 'px', background: 'white', borderBottom: 'solid 1px #ccc' }">
+          {{ index }}
         </div>
       </WindowVirtualizer>
     </div>

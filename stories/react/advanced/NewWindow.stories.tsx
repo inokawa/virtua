@@ -1,7 +1,7 @@
-import { Meta, StoryObj } from "@storybook/react";
-import React, { useState } from "react";
+import { Meta, StoryObj } from "@storybook/react-vite";
+import React, { ReactNode, useLayoutEffect, useState } from "react";
 import { VList } from "../../../src";
-import NewWindow from "react-new-window";
+import { createPortal } from "react-dom";
 
 export default {
   component: VList,
@@ -23,6 +23,37 @@ const createRows = (num: number) => {
       </div>
     );
   });
+};
+
+const NewWindow = ({
+  children,
+  onUnload,
+}: {
+  children: ReactNode;
+  onUnload: () => void;
+}) => {
+  const [container, setContainer] = useState<Element | null>(null);
+  useLayoutEffect(() => {
+    const externalWindow = window.open(
+      "",
+      "",
+      "width=400,height=400,left=200,top=200"
+    );
+
+    if (!externalWindow) return;
+
+    const container = externalWindow.document.createElement("div");
+    externalWindow.document.body.appendChild(container);
+    externalWindow.addEventListener("unload", onUnload, { once: true });
+
+    setContainer(container);
+
+    return () => {
+      externalWindow?.close();
+    };
+  }, []);
+
+  return container ? createPortal(children, container) : null;
 };
 
 const Content = () => {

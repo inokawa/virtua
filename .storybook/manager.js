@@ -1,3 +1,6 @@
-import { addons } from "@storybook/manager-api";
+import { addons } from "storybook/manager-api";
 
-addons.setConfig({ panelPosition: "right" });
+addons.setConfig({
+  panelPosition: "right",
+  selectedPanel: "storybook/docs/panel",
+});

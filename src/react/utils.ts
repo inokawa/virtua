@@ -1,5 +1,4 @@
-import { ReactElement, ReactFragment, ReactNode } from "react";
-import { isArray, NULL } from "../core/utils";
+import { ReactNode } from "react";
 
 /**
  * @internal
@@ -9,14 +8,14 @@ export const refKey = "current";
 /**
  * @internal
  */
-export type ItemElement = ReactElement | ReactFragment | string | number;
+export type ItemElement = Exclude<ReactNode, null | boolean | Array<any>>;
 
 const forEach = (children: ReactNode, elements: ItemElement[]) => {
-  if (isArray(children)) {
+  if (Array.isArray(children)) {
     for (const c of children) {
       forEach(c, elements);
     }
-  } else if (children == NULL || typeof children === "boolean") {
+  } else if (children == null || typeof children === "boolean") {
     // filter out, that is the same as React.Children.toArray
   } else {
     elements.push(children);
@@ -49,5 +48,5 @@ type MayHaveKey = { key?: React.Key };
  */
 export const getKey = (e: ItemElement, i: number): React.Key => {
   const key = (e as MayHaveKey).key;
-  return key != NULL ? key : "_" + i;
+  return key != null ? key : "_" + i;
 };

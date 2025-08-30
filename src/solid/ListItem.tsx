@@ -1,8 +1,7 @@
 /**
  * @jsxImportSource solid-js
  */
-import { ItemResizeObserver } from "../core/resizer";
-import { isRTLDocument } from "../core/environment";
+import { ItemResizeObserver, isRTLDocument } from "../core";
 import {
   Component,
   JSX,
@@ -43,8 +42,6 @@ export const ListItem: Component<ListItemProps> = (props) => {
   const style = createMemo(() => {
     const isHorizontal = props._isHorizontal;
     const style: JSX.CSSProperties = {
-      margin: 0,
-      padding: 0,
       position: "absolute",
       [isHorizontal ? "height" : "width"]: "100%",
       [isHorizontal ? "top" : "left"]: "0px",
@@ -59,7 +56,7 @@ export const ListItem: Component<ListItemProps> = (props) => {
   });
 
   return (
-    <Dynamic component={props._as} ref={elementRef} style={style()}>
+    <Dynamic component={props._as} index={props._index} ref={elementRef} style={style()}>
       {props._children}
     </Dynamic>
   );

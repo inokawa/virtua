@@ -1,4 +1,5 @@
 import {
+  JSX,
   memo,
   useRef,
   useMemo,
@@ -7,25 +8,29 @@ import {
   forwardRef,
   ReactNode,
   useImperativeHandle,
+  useReducer,
+  Ref,
 } from "react";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
-  getOverscanedRange,
   createVirtualStore,
-  SCROLL_IDLE,
   getScrollSize,
   UPDATE_VIRTUAL_STATE,
-} from "../core/store";
+  createGridScroller,
+  createGridResizer,
+  GridResizer,
+  isRTLDocument,
+  UPDATE_SCROLL_EVENT,
+  UPDATE_SCROLL_END_EVENT,
+} from "../core";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { createGridScroller } from "../core/scroller";
 import { refKey } from "./utils";
 import { useStatic } from "./useStatic";
-import { createGridResizer, GridResizer } from "../core/resizer";
 import { ViewportComponentAttributes } from "./types";
+import { useLatestRef } from "./useLatestRef";
 import { flushSync } from "react-dom";
-import { isRTLDocument } from "../core/environment";
-import { useRerender } from "./useRerender";
-import { NULL } from "../core/utils";
+import { useMergeRefs } from "./useMergeRefs";
+
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
 /**
@@ -66,11 +71,11 @@ const Cell = memo(
     _hide: hide,
     _element: Element,
   }: CellProps): ReactElement => {
-    const ref = useRef<HTMLDivElement>(NULL);
+    const ref = useRef<HTMLDivElement>(null);
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(
-      () => resizer._observeItem(ref[refKey]!, rowIndex, colIndex),
+      () => resizer.$observeItem(ref[refKey]!, rowIndex, colIndex),
       [colIndex, rowIndex]
     );
 
@@ -80,8 +85,6 @@ const Cell = memo(
         style={useMemo((): CSSProperties => {
           const style: CSSProperties = {
             display: "grid",
-            margin: 0,
-            padding: 0,
             position: "absolute",
             top: top,
             [isRTLDocument() ? "right" : "left"]: left,
@@ -126,6 +129,26 @@ export interface VGridHandle {
    * Get current offsetWidth.
    */
   readonly viewportWidth: number;
+  /**
+   * Find the start index of visible range of items.
+   */
+  findStartIndex: () => [x: number, y: number];
+  /**
+   * Find the end index of visible range of items.
+   */
+  findEndIndex: () => [x: number, y: number];
+  /**
+   * Get item offset from start.
+   * @param indexX horizontal index of item
+   * @param indexY vertical of item
+   */
+  getItemOffset(indexX: number, indexY: number): [x: number, y: number];
+  /**
+   * Get item size.
+   * @param indexX horizontal index of item
+   * @param indexY vertical of item
+   */
+  getItemSize(indexX: number, indexY: number): [width: number, height: number];
   /**
    * Scroll to the item specified by index.
    * @param indexX horizontal index of item
@@ -199,6 +222,18 @@ export interface VGridProps extends ViewportComponentAttributes {
    * @defaultValue "div"
    */
   item?: keyof JSX.IntrinsicElements | CustomCellComponent;
+  /** Reference to the rendered DOM element (the one that scrolls). */
+  domRef?: Ref<HTMLDivElement>;
+  /** Reference to the inner rendered DOM element (the one that contains all the cells). */
+  innerDomRef?: Ref<HTMLDivElement>;
+  /**
+   * Callback invoked whenever scroll offset changes.
+   */
+  onScroll?: (offset: number) => void;
+  /**
+   * Callback invoked when scrolling stops.
+   */
+  onScrollEnd?: () => void;
 }
 
 /**
@@ -216,14 +251,28 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       initialRowCount,
       initialColCount,
       item: ItemElement = "div",
+      domRef,
+      innerDomRef,
+      onScroll: onScrollProp,
+      onScrollEnd: onScrollEndProp,
       style,
       ...attrs
     },
     ref
   ): ReactElement => {
     const [vStore, hStore, resizer, scroller] = useStatic(() => {
-      const _vs = createVirtualStore(rowCount, cellHeight, initialRowCount);
-      const _hs = createVirtualStore(colCount, cellWidth, initialColCount);
+      const _vs = createVirtualStore(
+        rowCount,
+        cellHeight,
+        overscan,
+        initialRowCount
+      );
+      const _hs = createVirtualStore(
+        colCount,
+        cellWidth,
+        overscan,
+        initialColCount
+      );
       return [
         _vs,
         _hs,
@@ -232,30 +281,38 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       ];
     });
     // The elements length and cached items length are different just after element is added/removed.
-    if (rowCount !== vStore._getItemsLength()) {
-      vStore._update(ACTION_ITEMS_LENGTH_CHANGE, [rowCount]);
+    if (rowCount !== vStore.$getItemsLength()) {
+      vStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [rowCount]);
     }
-    if (colCount !== hStore._getItemsLength()) {
-      hStore._update(ACTION_ITEMS_LENGTH_CHANGE, [colCount]);
+    if (colCount !== hStore.$getItemsLength()) {
+      hStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colCount]);
     }
 
-    const vRerender = useRerender(vStore);
-    const hRerender = useRerender(hStore);
+    const [vStateVersion, vRerender] = useReducer(
+      vStore.$getStateVersion,
+      undefined,
+      vStore.$getStateVersion
+    );
+    const [hStateVersion, hRerender] = useReducer(
+      hStore.$getStateVersion,
+      undefined,
+      hStore.$getStateVersion
+    );
 
-    const [startRowIndex, endRowIndex] = vStore._getRange();
-    const [startColIndex, endColIndex] = hStore._getRange();
-    const vScrollDirection = vStore._getScrollDirection();
-    const hScrollDirection = hStore._getScrollDirection();
-    const vJumpCount = vStore._getJumpCount();
-    const hJumpCount = hStore._getJumpCount();
+    const [startRowIndex, endRowIndex] = vStore.$getRange();
+    const [startColIndex, endColIndex] = hStore.$getRange();
+    const vIsScrolling = vStore.$isScrolling();
+    const hIsScrolling = hStore.$isScrolling();
     const height = getScrollSize(vStore);
     const width = getScrollSize(hStore);
-    const rootRef = useRef<HTMLDivElement>(NULL);
+    const rootRef = useRef<HTMLDivElement>(null);
+    const onScroll = useLatestRef(onScrollProp);
+    const onScrollEnd = useLatestRef(onScrollEndProp);
 
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
       // store must be subscribed first because others may dispatch update on init depending on implementation
-      const unsubscribeVStore = vStore._subscribe(
+      const unsubscribeVStore = vStore.$subscribe(
         UPDATE_VIRTUAL_STATE,
         (sync) => {
           if (sync) {
@@ -265,7 +322,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           }
         }
       );
-      const unsubscribeHStore = hStore._subscribe(
+      const unsubscribeHStore = hStore.$subscribe(
         UPDATE_VIRTUAL_STATE,
         (sync) => {
           if (sync) {
@@ -275,49 +332,58 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           }
         }
       );
-      resizer._observeRoot(root);
-      scroller._observe(root);
+      const unsubscribeVScroll = vStore.$subscribe(UPDATE_SCROLL_EVENT, () => {
+        onScroll[refKey] && onScroll[refKey](vStore.$getScrollOffset())
+      })
+      const unsubscribeVScrollEnd = vStore.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
+        onScrollEnd[refKey] && onScrollEnd[refKey]()
+      })
+
+      resizer.$observeRoot(root);
+      scroller.$observe(root);
       return () => {
         unsubscribeVStore();
         unsubscribeHStore();
-        resizer._dispose();
-        scroller._dispose();
+        resizer.$dispose();
+        scroller.$dispose();
+        unsubscribeVScroll();
+        unsubscribeVScrollEnd();
       };
     }, []);
 
     useIsomorphicLayoutEffect(() => {
-      scroller._fixScrollJump();
-    }, [vJumpCount, hJumpCount]);
+      scroller.$fixScrollJump();
+    }, [vStateVersion, hStateVersion]);
 
-    useImperativeHandle(
-      ref,
-      () => {
-        return {
-          get scrollTop() {
-            return vStore._getScrollOffset();
-          },
-          get scrollLeft() {
-            return hStore._getScrollOffset();
-          },
-          get scrollHeight() {
-            return getScrollSize(vStore);
-          },
-          get scrollWidth() {
-            return getScrollSize(hStore);
-          },
-          get viewportHeight() {
-            return vStore._getViewportSize();
-          },
-          get viewportWidth() {
-            return hStore._getViewportSize();
-          },
-          scrollToIndex: scroller._scrollToIndex,
-          scrollTo: scroller._scrollTo,
-          scrollBy: scroller._scrollBy,
-        };
-      },
-      []
-    );
+    useImperativeHandle(ref, () => {
+      return {
+        get scrollTop() {
+          return vStore.$getScrollOffset();
+        },
+        get scrollLeft() {
+          return hStore.$getScrollOffset();
+        },
+        get scrollHeight() {
+          return getScrollSize(vStore);
+        },
+        get scrollWidth() {
+          return getScrollSize(hStore);
+        },
+        get viewportHeight() {
+          return vStore.$getViewportSize();
+        },
+        get viewportWidth() {
+          return hStore.$getViewportSize();
+        },
+        findStartIndex: () => [hStore.$findStartIndex(), vStore.$findStartIndex()],
+        findEndIndex: () => [hStore.$findEndIndex(), vStore.$findEndIndex()],
+        getItemOffset: (indexX, indexY) => [hStore.$getItemOffset(indexX), vStore.$getItemOffset(indexY)],
+        getItemSize: (indexX, indexY) => [hStore.$getItemSize(indexX), vStore.$getItemSize(indexY)],
+        scrollToIndex: scroller.$scrollToIndex,
+        scrollTo: scroller.$scrollTo,
+        scrollBy: scroller.$scrollBy,
+      };
+    }, []);
 
     const render = useMemo(() => {
       const cache = new Map<string, ReactNode>();
@@ -333,45 +399,22 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       };
     }, [children]);
 
-    const [overscanedStartRowIndex, overscanedEndRowIndex] = getOverscanedRange(
-      startRowIndex,
-      endRowIndex,
-      overscan,
-      vScrollDirection,
-      rowCount
-    );
-    const [overscanedStartColIndex, overscanedEndColIndex] = getOverscanedRange(
-      startColIndex,
-      endColIndex,
-      overscan,
-      hScrollDirection,
-      colCount
-    );
-
     const items: ReactElement[] = [];
-    for (
-      let rowIndex = overscanedStartRowIndex;
-      rowIndex <= overscanedEndRowIndex;
-      rowIndex++
-    ) {
-      for (
-        let colIndex = overscanedStartColIndex;
-        colIndex <= overscanedEndColIndex;
-        colIndex++
-      ) {
+    for (let rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++) {
+      for (let colIndex = startColIndex; colIndex <= endColIndex; colIndex++) {
         items.push(
           <Cell
             key={genKey(rowIndex, colIndex)}
             _resizer={resizer}
             _rowIndex={rowIndex}
             _colIndex={colIndex}
-            _top={vStore._getItemOffset(rowIndex)}
-            _left={hStore._getItemOffset(colIndex)}
-            _height={vStore._getItemSize(rowIndex)}
-            _width={hStore._getItemSize(colIndex)}
+            _top={vStore.$getItemOffset(rowIndex)}
+            _left={hStore.$getItemOffset(colIndex)}
+            _height={vStore.$getItemSize(rowIndex)}
+            _width={hStore.$getItemSize(colIndex)}
             _hide={
-              vStore._isUnmeasuredItem(rowIndex) ||
-              hStore._isUnmeasuredItem(colIndex)
+              vStore.$isUnmeasuredItem(rowIndex) ||
+              hStore.$isUnmeasuredItem(colIndex)
             }
             _element={ItemElement as "div"}
             _children={render(rowIndex, colIndex)}
@@ -382,7 +425,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
 
     return (
       <div
-        ref={rootRef}
+        ref={useMergeRefs(rootRef, domRef)}
         {...attrs}
         style={{
           overflow: "auto",
@@ -393,6 +436,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         }}
       >
         <div
+          ref={innerDomRef}
           style={{
             overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
             flex: "none", // flex style can break layout
@@ -400,11 +444,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             visibility: "hidden", // TODO replace with other optimization methods
             width: width,
             height: height,
-            pointerEvents:
-              vScrollDirection !== SCROLL_IDLE ||
-              hScrollDirection !== SCROLL_IDLE
-                ? "none"
-                : "auto",
+            pointerEvents: vIsScrolling || hIsScrolling ? "none" : undefined,
           }}
         >
           {items}

@@ -6,10 +6,10 @@ exports[`horizontal > should render 1 children 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100px; height: 100%;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
       >
         <div>
           0
@@ -26,38 +26,38 @@ exports[`horizontal > should render 5 children 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 500px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 500px; height: 100%;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: flex;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 400px; visibility: visible; display: flex;"
       >
         <div>
           4
@@ -74,45 +74,45 @@ exports[`horizontal > should render 100 children 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 10000px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 10000px; height: 100%;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: flex;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 400px; visibility: visible; display: flex;"
       >
         <div>
           4
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 500px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 500px; visibility: visible; display: flex;"
       >
         <div>
           5
@@ -129,45 +129,45 @@ exports[`horizontal > should render 1000 children 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100000px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100000px; height: 100%;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: flex;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 400px; visibility: visible; display: flex;"
       >
         <div>
           4
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 500px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 500px; visibility: visible; display: flex;"
       >
         <div>
           5
@@ -184,45 +184,45 @@ exports[`horizontal > should render 10000 children 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 1000000px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 1000000px; height: 100%;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: flex;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 400px; visibility: visible; display: flex;"
       >
         <div>
           4
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 500px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 500px; visibility: visible; display: flex;"
       >
         <div>
           5
@@ -239,24 +239,24 @@ exports[`horizontal > should render component 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 300px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 300px; height: 100%;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
       >
         <div>
           component
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
       >
         <div>
           component
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
       >
         <div>
           component
@@ -273,10 +273,10 @@ exports[`horizontal > should render fragments 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 200px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 200px; height: 100%;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
       >
         <div>
           fragment
@@ -289,7 +289,7 @@ exports[`horizontal > should render fragments 1`] = `
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
       >
         <div>
           fragment
@@ -306,15 +306,15 @@ exports[`horizontal > should render non elements 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 200px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 200px; height: 100%;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
       >
         string
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
       >
         123
       </div>
@@ -329,38 +329,38 @@ exports[`horizontal > should render with given width / height 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100px; height: 800px;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 500px; height: 100%; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 500px; height: 100%;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: flex;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: flex;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: flex;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: flex;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; height: 100%; top: 0px; left: 400px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; left: 400px; visibility: visible; display: flex;"
       >
         <div>
           4
@@ -380,38 +380,38 @@ exports[`reverse > should render many items 1`] = `
       style="visibility: hidden; display: flex; flex-direction: column; justify-content: flex-end; min-height: 100%;"
     >
       <div
-        style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 4000px; pointer-events: auto;"
+        style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 4000px;"
       >
         <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
+          style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
         >
           <div>
             0
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
+          style="position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
         >
           <div>
             1
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
+          style="position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
         >
           <div>
             2
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
+          style="position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
         >
           <div>
             3
           </div>
         </div>
         <div
-          style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
+          style="position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
         >
           <div>
             4
@@ -434,10 +434,10 @@ exports[`should pass attributes to element 1`] = `
     tabindex="0"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 50px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 50px;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
       >
         <div>
           0
@@ -454,11 +454,11 @@ exports[`should pass index to items 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 250px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 250px;"
     >
       <div
         data-index="0"
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
       >
         <div>
           0
@@ -466,7 +466,7 @@ exports[`should pass index to items 1`] = `
       </div>
       <div
         data-index="1"
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
       >
         <div>
           1
@@ -474,7 +474,7 @@ exports[`should pass index to items 1`] = `
       </div>
       <div
         data-index="2"
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
       >
         <div>
           2
@@ -482,7 +482,7 @@ exports[`should pass index to items 1`] = `
       </div>
       <div
         data-index="3"
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
       >
         <div>
           3
@@ -490,7 +490,7 @@ exports[`should pass index to items 1`] = `
       </div>
       <div
         data-index="4"
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
       >
         <div>
           4
@@ -507,45 +507,45 @@ exports[`should render with render prop 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 50000px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 50000px;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
       >
         <div>
           This is 0
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
       >
         <div>
           This is 1
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
       >
         <div>
           This is 2
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
       >
         <div>
           This is 3
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
       >
         <div>
           This is 4
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
       >
         <div>
           This is 5
@@ -562,7 +562,7 @@ exports[`vertical > should render 0 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 0px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 0px;"
     />
   </div>
 </DocumentFragment>
@@ -574,10 +574,10 @@ exports[`vertical > should render 1 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 50px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 50px;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
       >
         <div>
           0
@@ -594,38 +594,38 @@ exports[`vertical > should render 5 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 250px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 250px;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
       >
         <div>
           4
@@ -642,45 +642,45 @@ exports[`vertical > should render 100 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 5000px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 5000px;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
       >
         <div>
           4
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
       >
         <div>
           5
@@ -697,45 +697,45 @@ exports[`vertical > should render 1000 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 50000px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 50000px;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
       >
         <div>
           4
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
       >
         <div>
           5
@@ -752,45 +752,45 @@ exports[`vertical > should render 10000 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 500000px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 500000px;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
       >
         <div>
           4
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
       >
         <div>
           5
@@ -807,24 +807,24 @@ exports[`vertical > should render component 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 150px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 150px;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
       >
         <div>
           component
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
       >
         <div>
           component
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
       >
         <div>
           component
@@ -841,10 +841,10 @@ exports[`vertical > should render fragments 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 100px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 100px;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
       >
         <div>
           fragment
@@ -857,7 +857,7 @@ exports[`vertical > should render fragments 1`] = `
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
       >
         <div>
           fragment
@@ -874,15 +874,15 @@ exports[`vertical > should render non elements 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 100px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 100px;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
       >
         string
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
       >
         123
       </div>
@@ -897,38 +897,38 @@ exports[`vertical > should render with given width / height 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100px; height: 800px;"
   >
     <div
-      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 250px; pointer-events: auto;"
+      style="overflow-anchor: none; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 250px;"
     >
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="margin: 0px; padding: 0px; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+        style="position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
       >
         <div>
           4

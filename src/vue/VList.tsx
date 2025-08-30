@@ -6,8 +6,11 @@ import {
   ComponentOptionsWithObjectProps,
   ComponentObjectPropsOptions,
   ref,
+  VNode,
+  PropType,
 } from "vue";
 import { Virtualizer, VirtualizerHandle } from "./Virtualizer";
+import { ItemProps } from "./utils";
 
 interface VListHandle extends VirtualizerHandle {}
 
@@ -20,7 +23,7 @@ const props = {
    * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
    */
-  overscan: { type: Number, default: 4 },
+  overscan: Number,
   /**
    * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
    *
@@ -40,11 +43,21 @@ const props = {
    * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
    */
   ssrCount: Number,
+  /**
+   * A function that provides properties/attributes for item element
+   *
+   * **This prop will be merged into `item` prop in the future**
+   */
+  itemProps: Function as PropType<ItemProps>,
+  /**
+   * List of indexes that should be always mounted, even when off screen.
+   */
+  keepMounted: Array as PropType<number[]>,
 } satisfies ComponentObjectPropsOptions;
 
 export const VList = /*#__PURE__*/ defineComponent({
   props: props,
-  emits: ["scroll", "scrollEnd", "rangeChange"],
+  emits: ["scroll", "scrollEnd"],
   setup(props, { emit, expose, slots }) {
     const horizontal = props.horizontal;
 
@@ -53,9 +66,6 @@ export const VList = /*#__PURE__*/ defineComponent({
     };
     const onScrollEnd = () => {
       emit("scrollEnd");
-    };
-    const onRangeChange = (start: number, end: number) => {
-      emit("rangeChange", start, end);
     };
 
     const handle = ref<InstanceType<typeof Virtualizer>>();
@@ -70,7 +80,10 @@ export const VList = /*#__PURE__*/ defineComponent({
       get viewportSize() {
         return handle.value!.viewportSize;
       },
+      findStartIndex: (...args) => handle.value!.findStartIndex(...args),
+      findEndIndex: (...args) => handle.value!.findEndIndex(...args),
       getItemOffset: (...args) => handle.value!.getItemOffset(...args),
+      getItemSize: (...args) => handle.value!.getItemSize(...args),
       scrollToIndex: (...args) => handle.value!.scrollToIndex(...args),
       scrollTo: (...args) => handle.value!.scrollTo(...args),
       scrollBy: (...args) => handle.value!.scrollBy(...args),
@@ -92,12 +105,13 @@ export const VList = /*#__PURE__*/ defineComponent({
             data={props.data}
             overscan={props.overscan}
             itemSize={props.itemSize}
+            itemProps={props.itemProps}
             shift={props.shift}
             ssrCount={props.ssrCount}
             horizontal={horizontal}
+            keepMounted={props.keepMounted}
             onScroll={onScroll}
             onScrollEnd={onScrollEnd}
-            onRangeChange={onRangeChange}
           >
             {slots}
           </Virtualizer>
@@ -116,29 +130,16 @@ export const VList = /*#__PURE__*/ defineComponent({
   {
     /**
      * Callback invoked whenever scroll offset changes.
-     * @param offset Current scrollTop or scrollLeft.
+     * @param offset Current scrollTop, or scrollLeft if horizontal: true.
      */
     scroll: (offset: number) => void;
     /**
      * Callback invoked when scrolling stops.
      */
     scrollEnd: () => void;
-    /**
-     * Callback invoked when visible items range changes.
-     */
-    rangeChange: (
-      /**
-       * The start index of viewable items.
-       */
-      startIndex: number,
-      /**
-       * The end index of viewable items.
-       */
-      endIndex: number
-    ) => void;
   },
   string,
   {},
   string,
-  SlotsType<{ default: any }>
+  SlotsType<{ default: (arg: { item: any; index: number }) => VNode[] }>
 >);

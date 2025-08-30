@@ -1,5 +1,5 @@
 import { type InternalCacheSnapshot, type ItemsRange } from "./types";
-import { clamp, max, median, min } from "./utils";
+import { clamp, floor, max, min, sort } from "./utils";
 
 type Writeable<T> = {
   -readonly [key in keyof T]: Writeable<T[key]>;
@@ -93,22 +93,30 @@ export const computeTotalSize = (cache: Cache): number => {
 };
 
 /**
+ * Finds the index of an item in the cache whose computed offset is closest to the specified offset.
+ *
  * @internal
  */
-export const findIndex = (cache: Cache, offset: number, i: number): number => {
-  while (i >= 0 && i < cache._length) {
-    const itemOffset = computeOffset(cache, i);
+export const findIndex = (
+  cache: Cache,
+  offset: number,
+  low: number = 0,
+  high: number = cache._length - 1
+): number => {
+  // Find with binary search
+  while (low <= high) {
+    const mid = floor((low + high) / 2);
+    const itemOffset = computeOffset(cache, mid);
     if (itemOffset <= offset) {
-      if (itemOffset + getItemSize(cache, i) > offset) {
-        break;
-      } else {
-        i++;
+      if (itemOffset + getItemSize(cache, mid) > offset) {
+        return mid;
       }
+      low = mid + 1;
     } else {
-      i--;
+      high = mid - 1;
     }
   }
-  return clamp(i, 0, cache._length - 1);
+  return clamp(low, 0, cache._length - 1);
 };
 
 /**
@@ -117,16 +125,23 @@ export const findIndex = (cache: Cache, offset: number, i: number): number => {
 export const computeRange = (
   cache: Cache,
   scrollOffset: number,
-  prevStartIndex: number,
-  viewportSize: number
+  viewportSize: number,
+  prevStartIndex: number
 ): ItemsRange => {
-  const start = findIndex(
-    cache,
-    scrollOffset,
-    // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
-    min(prevStartIndex, cache._length - 1)
-  );
-  return [start, findIndex(cache, scrollOffset + viewportSize, start)];
+  // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
+  prevStartIndex = min(prevStartIndex, cache._length - 1);
+
+  if (computeOffset(cache, prevStartIndex) <= scrollOffset) {
+    // search forward
+    // start <= end, prevStartIndex <= start
+    const end = findIndex(cache, scrollOffset + viewportSize, prevStartIndex);
+    return [findIndex(cache, scrollOffset, prevStartIndex, end), end];
+  } else {
+    // search backward
+    // start <= end, start <= prevStartIndex
+    const start = findIndex(cache, scrollOffset, undefined, prevStartIndex);
+    return [start, findIndex(cache, scrollOffset + viewportSize, start)];
+  }
 };
 
 /**
@@ -138,21 +153,31 @@ export const estimateDefaultItemSize = (
 ): number => {
   let measuredCountBeforeStart = 0;
   // This function will be called after measurement so measured size array must be longer than 0
-  const measuredSizes = cache._sizes.filter((s, i) => {
-    const isMeasured = s !== UNCACHED;
-    if (isMeasured && i < startIndex) {
-      measuredCountBeforeStart++;
+  const measuredSizes: number[] = [];
+  cache._sizes.forEach((s, i) => {
+    if (s !== UNCACHED) {
+      measuredSizes.push(s);
+      if (i < startIndex) {
+        measuredCountBeforeStart++;
+      }
     }
-    return isMeasured;
   });
-  const prevDefaultItemSize = cache._defaultItemSize;
 
   // Discard cache for now
   cache._computedOffsetIndex = -1;
 
+  // Calculate median
+  const sorted = sort(measuredSizes);
+  const len = sorted.length;
+  const mid = (len / 2) | 0;
+  const median =
+    len % 2 === 0 ? (sorted[mid - 1]! + sorted[mid]!) / 2 : sorted[mid]!;
+
+  const prevDefaultItemSize = cache._defaultItemSize;
+
   // Calculate diff of unmeasured items before start
   return (
-    ((cache._defaultItemSize = median(measuredSizes)) - prevDefaultItemSize) *
+    ((cache._defaultItemSize = median) - prevDefaultItemSize) *
     max(startIndex - measuredCountBeforeStart, 0)
   );
 };
@@ -185,7 +210,7 @@ export const initCache = (
  * @internal
  */
 export const takeCacheSnapshot = (cache: Cache): InternalCacheSnapshot => {
-  return [[...cache._sizes], cache._defaultItemSize];
+  return [cache._sizes.slice(), cache._defaultItemSize];
 };
 
 /**

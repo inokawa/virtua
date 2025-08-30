@@ -4,11 +4,12 @@
   const sizes = [20, 40, 180, 77];
   const createItem = (i: number) => ({ id: i, size: sizes[i % 4] + "px" });
 
-  let ref: VList<{ id: number; size: string }>;
-  let data = Array.from({ length: 1000 }).map((_, i) => createItem(i));
-  let scrollOffset = 0;
-  let scrolling = false;
-  let scrollTarget = 567;
+  let ref: VList<{ id: number; size: string }> = $state();
+  let data = $state(Array.from({ length: 1000 }).map((_, i) => createItem(i)));
+  let scrollOffset = $state(0);
+  let scrolling = $state(false);
+  let scrollTarget = $state(567);
+  let prepend = $state(false);
 </script>
 
 <div style="height: 100%; display: flex; flex-direction: column;">
@@ -18,49 +19,59 @@
     <input
       type="number"
       bind:value={scrollTarget}
-      on:input={(e) => {
-        scrollTarget = Number(e.target.value);
+      oninput={(e) => {
+        scrollTarget = Number(e.currentTarget.value);
       }}
     />
     <button
-      on:click={() => {
+      onclick={() => {
         ref.scrollToIndex(scrollTarget);
       }}>scrollToIndex</button
     >
   </div>
   <div>
     <button
-      on:click={() => {
-        data = [
-          ...data,
-          ...Array.from({ length: 100 }).map((_, i) =>
-            createItem(i + data.length)
-          ),
-        ];
+      onclick={() => {
+        const items = Array.from({ length: 100 }).map((_, i) =>
+          createItem(i + data.length)
+        );
+        data = prepend ? [...items, ...data] : [...data, ...items];
       }}>append</button
     >
+    <label>
+      <input
+        type="checkbox"
+        checked={prepend}
+        onchange={() => {
+          prepend = !prepend;
+        }}
+      />
+      prepend
+    </label>
   </div>
   <VList
     bind:this={ref}
     {data}
-    let:item
+    shift={prepend}
     getKey={(d) => d.id}
-    on:scroll={(event) => {
-      scrollOffset = event.detail;
+    onscroll={(offset) => {
+      scrollOffset = offset;
       scrolling = true;
     }}
-    on:scrollEnd={() => {
+    onscrollend={() => {
       scrolling = false;
     }}
   >
-    <div
-      style={`
-      height: ${item.size};
-      background: white;
-      border-bottom: solid 1px #ccc;
-    `}
-    >
-      {item.id}
-    </div>
+    {#snippet children(item)}
+      <div
+        style="
+          height: {item.size};
+          background: white;
+          border-bottom: solid 1px #ccc;
+        "
+      >
+        {item.id}
+      </div>
+    {/snippet}
   </VList>
 </div>

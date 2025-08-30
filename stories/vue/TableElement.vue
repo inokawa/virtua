@@ -4,7 +4,6 @@ import { Virtualizer } from '../../src/vue'
 
 const COLUMN_WIDTHS = [100, 200, 300, 100, 200, 300, 100, 300, 400, 200];
 
-
 const data = Array.from({ length: 10000 }).map((_, i) => i);
 
 const headerHeight = 40;
@@ -23,7 +22,8 @@ const scrollRef = ref<HTMLElement>();
           <th v-for="(width, index) in COLUMN_WIDTHS" :style="{ width: `${width}px` }">Header{{ index }}</th>
         </tr>
       </thead>
-      <Virtualizer :scrollRef="scrollRef" :data="data" #default="item" :startMargin="headerHeight" as="tbody" item="tr">
+      <Virtualizer :scrollRef="scrollRef" :data="data" #default="{ item }" :startMargin="headerHeight" as="tbody"
+        item="tr">
         <th v-for="(width, index) in COLUMN_WIDTHS" :style="{ width: `${width}px` }">{{ item }} {{ index }}</th>
       </Virtualizer>
     </table>

@@ -7,11 +7,9 @@ import {
   ReactNode,
 } from "react";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { ItemResizeObserver } from "../core/resizer";
+import { isRTLDocument, ItemResizeObserver } from "../core";
 import { refKey } from "./utils";
-import { isRTLDocument } from "../core/environment";
 import { CustomItemComponent } from "./types";
-import { NULL } from "../core/utils";
 
 interface ListItemProps {
   _children: ReactNode;
@@ -38,15 +36,13 @@ export const ListItem = memo(
     _isHorizontal: isHorizontal,
     _isSSR: isSSR,
   }: ListItemProps): ReactElement => {
-    const ref = useRef<HTMLDivElement>(NULL);
+    const ref = useRef<HTMLDivElement>(null);
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(() => resizer(ref[refKey]!, index), [index]);
 
     const style = useMemo((): CSSProperties => {
       const style: CSSProperties = {
-        margin: 0,
-        padding: 0,
         position: hide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
         [isHorizontal ? "top" : "left"]: 0,

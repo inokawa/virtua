@@ -1,20 +1,13 @@
-[**API**](../API.md) • **Docs**
+[**API**](../API.md)
 
 ***
 
 # react
 
-## Index
+## Interfaces
 
-### Functions
-
-- [VList](functions/VList.md)
-- [Virtualizer](functions/Virtualizer.md)
-- [WindowVirtualizer](functions/WindowVirtualizer.md)
-- [experimental\_VGrid](functions/experimental_VGrid.md)
-
-### Interfaces
-
+- [CustomContainerComponentProps](interfaces/CustomContainerComponentProps.md)
+- [CustomItemComponentProps](interfaces/CustomItemComponentProps.md)
 - [CacheSnapshot](interfaces/CacheSnapshot.md)
 - [ScrollToIndexOpts](interfaces/ScrollToIndexOpts.md)
 - [VListProps](interfaces/VListProps.md)
@@ -26,13 +19,18 @@
 - [VGridProps](interfaces/VGridProps.md)
 - [VGridHandle](interfaces/VGridHandle.md)
 - [CustomCellComponentProps](interfaces/CustomCellComponentProps.md)
-- [CustomContainerComponentProps](interfaces/CustomContainerComponentProps.md)
-- [CustomItemComponentProps](interfaces/CustomItemComponentProps.md)
 
-### Type Aliases
+## Type Aliases
 
-- [ScrollToIndexAlign](type-aliases/ScrollToIndexAlign.md)
-- [CustomCellComponent](type-aliases/CustomCellComponent.md)
 - [ViewportComponentAttributes](type-aliases/ViewportComponentAttributes.md)
 - [CustomContainerComponent](type-aliases/CustomContainerComponent.md)
 - [CustomItemComponent](type-aliases/CustomItemComponent.md)
+- [ScrollToIndexAlign](type-aliases/ScrollToIndexAlign.md)
+- [CustomCellComponent](type-aliases/CustomCellComponent.md)
+
+## Variables
+
+- [VList](variables/VList.md)
+- [Virtualizer](variables/Virtualizer.md)
+- [WindowVirtualizer](variables/WindowVirtualizer.md)
+- [experimental\_VGrid](variables/experimental_VGrid.md)

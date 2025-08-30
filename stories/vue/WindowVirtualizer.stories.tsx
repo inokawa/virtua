@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/vue3";
+import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { WindowVirtualizer } from "../../src/vue";
 import DefaultComponent from "./WindowVirtualizer.vue";
 
