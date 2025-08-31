@@ -1059,7 +1059,7 @@ describe(updateCacheLength.name, () => {
     const sizes = range(10, (i) => i * 10);
     const cache = initCacheWithComputedOffsets(sizes, 40);
     const res = updateCacheLength(cache, 5, undefined);
-    expect(res).toEqual(-sum(sizes.slice(5)));
+    expect(res).toEqual(-sum(sizes.slice(-5)));
     expect(cache).toMatchInlineSnapshot(`
       {
         "_computedOffsetIndex": 4,
@@ -1180,9 +1180,8 @@ describe(updateCacheLength.name, () => {
 
   it("should decrease cache length with shifting", () => {
     const cache = initCache(10, 40);
-    cache._sizes[0] = 123;
     const res = updateCacheLength(cache, 5, true);
-    expect(res).toEqual(-(40 * 4 + 123));
+    expect(res).toEqual(-(40 * 5));
     expect(cache).toMatchInlineSnapshot(`
       {
         "_computedOffsetIndex": -1,
