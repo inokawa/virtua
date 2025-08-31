@@ -925,6 +925,14 @@ describe(takeCacheSnapshot.name, () => {
 });
 
 describe(updateCacheLength.name, () => {
+  it("should recover cache length from 0", () => {
+    const cache = initCache(10, 40);
+    const initialCache = JSON.parse(JSON.stringify(cache));
+    updateCacheLength(cache, 0);
+    updateCacheLength(cache, 10);
+    expect(cache).toEqual(initialCache);
+  });
+
   it("should increase cache length", () => {
     const cache = initCache(10, 40);
     const res = updateCacheLength(cache, 15, undefined);
@@ -972,11 +980,58 @@ describe(updateCacheLength.name, () => {
     `);
   });
 
+  it("should increase filled cache length", () => {
+    const sizes = range(10, (i) => i * 10);
+    const cache = initCacheWithComputedOffsets(sizes, 40);
+    const res = updateCacheLength(cache, 15, undefined);
+    expect(res).toEqual(40 * 5);
+    expect(cache).toMatchInlineSnapshot(`
+      {
+        "_computedOffsetIndex": 9,
+        "_defaultItemSize": 40,
+        "_length": 15,
+        "_offsets": [
+          0,
+          10,
+          30,
+          60,
+          100,
+          150,
+          210,
+          280,
+          360,
+          450,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+        ],
+        "_sizes": [
+          0,
+          10,
+          20,
+          30,
+          40,
+          50,
+          60,
+          70,
+          80,
+          90,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+        ],
+      }
+    `);
+  });
+
   it("should decrease cache length", () => {
     const cache = initCache(10, 40);
-    cache._sizes[9] = 123;
     const res = updateCacheLength(cache, 5, undefined);
-    expect(res).toEqual(-(40 * 4 + 123));
+    expect(res).toEqual(-(40 * 5));
     expect(cache).toMatchInlineSnapshot(`
       {
         "_computedOffsetIndex": -1,
@@ -1000,12 +1055,32 @@ describe(updateCacheLength.name, () => {
     `);
   });
 
-  it("should recover cache length from 0", () => {
-    const cache = initCache(10, 40);
-    const initialCache = JSON.parse(JSON.stringify(cache));
-    updateCacheLength(cache, 0);
-    updateCacheLength(cache, 10);
-    expect(cache).toEqual(initialCache);
+  it("should decrease filled cache length", () => {
+    const sizes = range(10, (i) => i * 10);
+    const cache = initCacheWithComputedOffsets(sizes, 40);
+    const res = updateCacheLength(cache, 5, undefined);
+    expect(res).toEqual(-sum(sizes.slice(5)));
+    expect(cache).toMatchInlineSnapshot(`
+      {
+        "_computedOffsetIndex": 4,
+        "_defaultItemSize": 40,
+        "_length": 5,
+        "_offsets": [
+          0,
+          10,
+          30,
+          60,
+          100,
+        ],
+        "_sizes": [
+          0,
+          10,
+          20,
+          30,
+          40,
+        ],
+      }
+    `);
   });
 
   it("should increase cache length with shifting", () => {
@@ -1055,6 +1130,54 @@ describe(updateCacheLength.name, () => {
     `);
   });
 
+  it("should increase filled cache length with shifting", () => {
+    const sizes = range(10, (i) => i * 10);
+    const cache = initCacheWithComputedOffsets(sizes, 40);
+    const res = updateCacheLength(cache, 15, true);
+    expect(res).toEqual(40 * 5);
+    expect(cache).toMatchInlineSnapshot(`
+      {
+        "_computedOffsetIndex": -1,
+        "_defaultItemSize": 40,
+        "_length": 15,
+        "_offsets": [
+          0,
+          10,
+          30,
+          60,
+          100,
+          150,
+          210,
+          280,
+          360,
+          450,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+        ],
+        "_sizes": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          0,
+          10,
+          20,
+          30,
+          40,
+          50,
+          60,
+          70,
+          80,
+          90,
+        ],
+      }
+    `);
+  });
+
   it("should decrease cache length with shifting", () => {
     const cache = initCache(10, 40);
     cache._sizes[0] = 123;
@@ -1078,6 +1201,34 @@ describe(updateCacheLength.name, () => {
           -1,
           -1,
           -1,
+        ],
+      }
+    `);
+  });
+
+  it("should decrease filled cache length with shifting", () => {
+    const sizes = range(10, (i) => i * 10);
+    const cache = initCacheWithComputedOffsets(sizes, 40);
+    const res = updateCacheLength(cache, 5, true);
+    expect(res).toEqual(-sum(sizes.slice(0, 5)));
+    expect(cache).toMatchInlineSnapshot(`
+      {
+        "_computedOffsetIndex": -1,
+        "_defaultItemSize": 40,
+        "_length": 5,
+        "_offsets": [
+          0,
+          10,
+          30,
+          60,
+          100,
+        ],
+        "_sizes": [
+          50,
+          60,
+          70,
+          80,
+          90,
         ],
       }
     `);
