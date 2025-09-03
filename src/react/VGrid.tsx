@@ -402,7 +402,10 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             vStore.$getItemSize(indexY),
           ],
           resize(cols, rows) {
-            resizer.$resetAfter(Math.min(...rows.map(([i]) => i)), Math.min(...cols.map(([i]) => i)))
+            // treat empty array as "all" instead of Infinity
+            const minRow = rows.length > 0 ? Math.min(...rows.map(([i]) => i)) : 0;
+            const minCol = cols.length > 0 ? Math.min(...cols.map(([i]) => i)) : 0;
+            resizer.$resetAfter(minRow, minCol)
             hStore.$update(ACTION_ITEM_RESIZE, cols);
             vStore.$update(ACTION_ITEM_RESIZE, rows);
           },
