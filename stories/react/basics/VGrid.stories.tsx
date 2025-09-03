@@ -102,49 +102,89 @@ export const DynamicWidth: StoryObj = {
   },
 };
 
-
 export const Resizeable: StoryObj = {
   render: () => {
-    const LENGTH = 1000;
-    const [width, setWidth] = useState(80)
-    const [height, setHeight] = useState(80)
+    const SIZE = 80;
+    const LENGTH = 100;
+    const [widths, setWidths] = useState(() => new Map<number, number>());
+    const [heights, setHeights] = useState(() => new Map<number, number>());
     const grid = useRef<VGridHandle>(null);
+
+    function randomize() {
+      const indexes: number[] = [];
+      const newWidths = new Map<number, number>();
+      const newHeights = new Map<number, number>();
+      for (let i = 1; i < LENGTH; i++) {
+        indexes.push(i);
+        if (Math.random() < 0.8) {
+          const w = 40 + Math.round(200 * Math.random());
+          newWidths.set(i, w);
+        }
+        if (Math.random() < 0.8) {
+          const h = 40 + Math.round(200 * Math.random());
+          newHeights.set(i, h);
+        }
+      }
+      grid.current?.resize(
+        indexes.map((i) => [i, newWidths.get(i) ?? SIZE]),
+        indexes.map((i) => [i, newHeights.get(i) ?? SIZE])
+      );
+      setWidths(newWidths);
+      setHeights(newHeights);
+    }
+
     return (
       <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
-        <div>
-          <label>
-            col
-            <input
-              type="number"
-              value={width}
-              onChange={(e) => {
-                setWidth(e.target.valueAsNumber);
-              }}
-            />
-          </label>
-          <label>
-            row
-            <input
-              type="number"
-              value={height}
-              onChange={(e) => {
-                setHeight(e.target.valueAsNumber);
-              }}
-            />
-          </label>
-        </div>
-        <VGrid ref={grid} style={{ height: "100vh" }} row={LENGTH} col={LENGTH} cellHeight={height} cellWidth={width}>
+        <VGrid
+          ref={grid}
+          style={{ height: "100vh" }}
+          row={LENGTH}
+          col={LENGTH}
+          cellHeight={SIZE}
+          cellWidth={SIZE}
+        >
           {({ rowIndex, colIndex }) => (
             <div
               style={{
                 border: "solid 1px gray",
                 background: "white",
                 padding: 4,
-                width,
-                height,
+                width: widths.get(colIndex) ?? SIZE,
+                height: heights.get(rowIndex) ?? SIZE,
               }}
             >
-              {rowIndex} / {colIndex}
+              <div>
+                {rowIndex} / {colIndex}
+              </div>
+              {rowIndex === 0 && colIndex > 0 && (
+                // resize column
+                <input
+                  style={{ width: 50 }}
+                  type="number"
+                  value={widths.get(colIndex) ?? SIZE}
+                  onChange={(e) => {
+                    const w = e.target.valueAsNumber;
+                    grid.current?.resize([[colIndex, w]], []);
+                    setWidths((map) => new Map(map).set(colIndex, w));
+                  }}
+                />
+              )}
+              {colIndex === 0 && rowIndex > 0 && (
+                // resize row
+                <input
+                  style={{ width: 50 }}
+                  type="number"
+                  value={heights.get(rowIndex) ?? SIZE}
+                  onChange={(e) => {
+                    const h = e.target.valueAsNumber;
+                    grid.current?.resize([], [[rowIndex, h]]);
+                    setHeights((map) => new Map(map).set(rowIndex, h));
+                  }}
+                />
+              )}
+              {colIndex === 0 && rowIndex === 0 && (
+                <button onClick={randomize}>random</button>
+              )}
             </div>
           )}
         </VGrid>
@@ -152,7 +192,6 @@ export const Resizeable: StoryObj = {
     );
   },
 };
-
 
 export const ScrollTo: StoryObj = {
   render: () => {
