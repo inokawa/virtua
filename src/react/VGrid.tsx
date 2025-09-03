@@ -1,4 +1,4 @@
-import {
+import React, {
   JSX,
   memo,
   useRef,
@@ -30,8 +30,6 @@ import { ViewportComponentAttributes } from "./types";
 import { useLatestRef } from "./useLatestRef";
 import { flushSync } from "react-dom";
 import { useMergeRefs } from "./useMergeRefs";
-import { ACTION_ITEM_RESIZE } from "../core/store";
-import { ItemResize } from "../core/types";
 
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
@@ -156,7 +154,10 @@ export interface VGridHandle {
    * @param cols array of `[index, size]` to update column sizes
    * @param rows array of `[index, size]` to update row sizes
    */
-  resize(cols: ItemResize[], rows: ItemResize[]): void;
+  resize(
+    cols: (readonly [index: number, size: number])[],
+    rows: (readonly [index: number, size: number])[]
+  ): void;
   /**
    * Scroll to the item specified by index.
    * @param indexX horizontal index of item
@@ -402,12 +403,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             vStore.$getItemSize(indexY),
           ],
           resize(cols, rows) {
-            // treat empty array as "all" instead of Infinity
-            const minRow = rows.length > 0 ? Math.min(...rows.map(([i]) => i)) : 0;
-            const minCol = cols.length > 0 ? Math.min(...cols.map(([i]) => i)) : 0;
-            resizer.$resetAfter(minRow, minCol)
-            hStore.$update(ACTION_ITEM_RESIZE, cols);
-            vStore.$update(ACTION_ITEM_RESIZE, rows);
+            resizer.$resize(rows, cols);
           },
           scrollToIndex: scroller.$scrollToIndex,
           scrollTo: scroller.$scrollTo,
