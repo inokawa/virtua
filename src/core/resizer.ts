@@ -268,6 +268,14 @@ export const createGridResizer = (
         resizeObserver._unobserve(el);
       };
     },
+    $resetAfter(rowIndex: number, colIndex: number) {
+      // delete the cache for all cells after (rowIndex, colIndex)
+      for (let r = rowIndex; r < vStore.$getItemsLength(); r++) {
+        for (let c = colIndex; c < hStore.$getItemsLength(); c++) {
+          sizeCache.delete(getKey(r, c));
+        }
+      }
+    },
     $dispose: resizeObserver._dispose,
   };
 };

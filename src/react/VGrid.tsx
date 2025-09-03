@@ -30,6 +30,8 @@ import { ViewportComponentAttributes } from "./types";
 import { useLatestRef } from "./useLatestRef";
 import { flushSync } from "react-dom";
 import { useMergeRefs } from "./useMergeRefs";
+import { ACTION_ITEM_RESIZE } from "../core/store";
+import { ItemResize } from "../core/types";
 
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
@@ -149,6 +151,12 @@ export interface VGridHandle {
    * @param indexY vertical of item
    */
   getItemSize(indexX: number, indexY: number): [width: number, height: number];
+  /**
+   * Resize individual columns and rows.
+   * @param cols array of `[index, size]` to update column sizes
+   * @param rows array of `[index, size]` to update row sizes
+   */
+  resize(cols: ItemResize[], rows: ItemResize[]): void;
   /**
    * Scroll to the item specified by index.
    * @param indexX horizontal index of item
@@ -393,6 +401,11 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             hStore.$getItemSize(indexX),
             vStore.$getItemSize(indexY),
           ],
+          resize(cols, rows) {
+            resizer.$resetAfter(Math.min(...rows.map(([i]) => i)), Math.min(...cols.map(([i]) => i)))
+            hStore.$update(ACTION_ITEM_RESIZE, cols);
+            vStore.$update(ACTION_ITEM_RESIZE, rows);
+          },
           scrollToIndex: scroller.$scrollToIndex,
           scrollTo: scroller.$scrollTo,
           scrollBy: scroller.$scrollBy,
