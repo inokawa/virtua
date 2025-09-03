@@ -101,6 +101,8 @@ const Cell = memo(
   }
 );
 
+export type VGridItemResize = readonly [index: number, size: number];
+
 /**
  * Methods of {@link VGrid}.
  */
@@ -154,10 +156,7 @@ export interface VGridHandle {
    * @param cols array of `[index, size]` to update column sizes
    * @param rows array of `[index, size]` to update row sizes
    */
-  resize(
-    cols: (readonly [index: number, size: number])[],
-    rows: (readonly [index: number, size: number])[]
-  ): void;
+  resize(cols: VGridItemResize[], rows: VGridItemResize[]): void;
   /**
    * Scroll to the item specified by index.
    * @param indexX horizontal index of item
