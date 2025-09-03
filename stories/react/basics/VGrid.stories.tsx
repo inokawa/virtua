@@ -111,84 +111,75 @@ export const Resizeable: StoryObj = {
     const grid = useRef<VGridHandle>(null);
 
     function randomize() {
-      const indexes: number[] = [];
+      const getSize = () => Math.random() < 0.8 ? 40 + Math.round(200 * Math.random()) : SIZE;
       const newWidths = new Map<number, number>();
       const newHeights = new Map<number, number>();
+      // skip index 0 to keep inputs stable
       for (let i = 1; i < LENGTH; i++) {
-        indexes.push(i);
-        if (Math.random() < 0.8) {
-          const w = 40 + Math.round(200 * Math.random());
-          newWidths.set(i, w);
-        }
-        if (Math.random() < 0.8) {
-          const h = 40 + Math.round(200 * Math.random());
-          newHeights.set(i, h);
-        }
+        newWidths.set(i, getSize());
+        newHeights.set(i, getSize());
       }
-      grid.current?.resize(
-        indexes.map((i) => [i, newWidths.get(i) ?? SIZE]),
-        indexes.map((i) => [i, newHeights.get(i) ?? SIZE])
-      );
+      grid.current?.resize([...newWidths.entries()], [...newHeights.entries()]);
       setWidths(newWidths);
       setHeights(newHeights);
     }
 
     return (
-      <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
-        <VGrid
-          ref={grid}
-          style={{ height: "100vh" }}
-          row={LENGTH}
-          col={LENGTH}
-          cellHeight={SIZE}
-          cellWidth={SIZE}
-        >
-          {({ rowIndex, colIndex }) => (
-            <div
-              style={{
-                border: "solid 1px gray",
-                background: "white",
-                padding: 4,
-                width: widths.get(colIndex) ?? SIZE,
-                height: heights.get(rowIndex) ?? SIZE,
-              }}
-            >
-              <div>
-                {rowIndex} / {colIndex}
-              </div>
-              {rowIndex === 0 && colIndex > 0 && (
-                // resize column
-                <input
-                  style={{ width: 50 }}
-                  type="number"
-                  value={widths.get(colIndex) ?? SIZE}
-                  onChange={(e) => {
-                    const w = e.target.valueAsNumber;
-                    grid.current?.resize([[colIndex, w]], []);
-                    setWidths((map) => new Map(map).set(colIndex, w));
-                  }}
-                />
-              )}
-              {colIndex === 0 && rowIndex > 0 && (
-                // resize row
-                <input
-                  style={{ width: 50 }}
-                  type="number"
-                  value={heights.get(rowIndex) ?? SIZE}
-                  onChange={(e) => {
-                    const h = e.target.valueAsNumber;
-                    grid.current?.resize([], [[rowIndex, h]]);
-                    setHeights((map) => new Map(map).set(rowIndex, h));
-                  }}
-                />
-              )}
-              {colIndex === 0 && rowIndex === 0 && (
-                <button onClick={randomize}>random</button>
-              )}
+      <VGrid
+        ref={grid}
+        style={{ height: "100vh" }}
+        row={LENGTH}
+        col={LENGTH}
+        cellHeight={SIZE}
+        cellWidth={SIZE}
+      >
+        {({ rowIndex, colIndex }) => (
+          <div
+            style={{
+              border: "solid 1px gray",
+              background: "white",
+              padding: 4,
+              width: widths.get(colIndex) ?? SIZE,
+              height: heights.get(rowIndex) ?? SIZE,
+            }}
+          >
+            <div>
+              {rowIndex} / {colIndex}
             </div>
-          )}
-        </VGrid>
-      </div>
+
+            {colIndex === 0 && rowIndex === 0 ? (
+              // randomize all cols & rows
+              <button onClick={randomize}>random</button>
+            ) : rowIndex === 0 ? (
+              // resize column
+              <input
+                type="number"
+                step={5}
+                value={widths.get(colIndex) ?? SIZE}
+                style={{ width: 50 }}
+                onChange={(e) => {
+                  const w = e.target.valueAsNumber;
+                  grid.current?.resize([[colIndex, w]], []);
+                  setWidths((map) => new Map(map).set(colIndex, w));
+                }}
+              />
+            ) : colIndex === 0 ? (
+              // resize row
+              <input
+                type="number"
+                step={5}
+                value={heights.get(rowIndex) ?? SIZE}
+                style={{ width: 50 }}
+                onChange={(e) => {
+                  const h = e.target.valueAsNumber;
+                  grid.current?.resize([], [[rowIndex, h]]);
+                  setHeights((map) => new Map(map).set(rowIndex, h));
+                }}
+              />
+            ) : null}
+          </div>
+        )}
+      </VGrid>
     );
   },
 };
