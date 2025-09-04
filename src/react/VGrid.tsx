@@ -154,7 +154,6 @@ export interface VGridHandle {
   /**
    * Resize individual columns.
    * @param cols array of `[index, size]` to update column sizes
-   * @param rows array of `[index, size]` to update row sizes
    */
   resizeCols(cols: VGridItemResize[]): void;
   /**
