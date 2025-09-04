@@ -152,11 +152,16 @@ export interface VGridHandle {
    */
   getItemSize(indexX: number, indexY: number): [width: number, height: number];
   /**
-   * Resize individual columns and rows.
+   * Resize individual columns.
    * @param cols array of `[index, size]` to update column sizes
    * @param rows array of `[index, size]` to update row sizes
    */
-  resize(cols: VGridItemResize[], rows: VGridItemResize[]): void;
+  resizeCols(cols: VGridItemResize[]): void;
+  /**
+   * Resize individual rows.
+   * @param rows array of `[index, size]` to update row sizes
+   */
+  resizeRows(rows: VGridItemResize[]): void;
   /**
    * Scroll to the item specified by index.
    * @param indexX horizontal index of item
@@ -401,8 +406,11 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             hStore.$getItemSize(indexX),
             vStore.$getItemSize(indexY),
           ],
-          resize(cols, rows) {
-            resizer.$resize(rows, cols);
+          resizeCols(cols) {
+            resizer.$resizeCols(cols);
+          },
+          resizeRows(rows) {
+            resizer.$resizeRows(rows);
           },
           scrollToIndex: scroller.$scrollToIndex,
           scrollTo: scroller.$scrollTo,

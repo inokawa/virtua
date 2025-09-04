@@ -268,18 +268,20 @@ export const createGridResizer = (
         resizeObserver._unobserve(el);
       };
     },
-    $resize(rows: ItemResize[], cols: ItemResize[]) {
-      // treat empty array as "all" instead of Infinity
-      const minRow = rows.length > 0 ? Math.min(...rows.map(([i]) => i)) : 0;
-      const minCol = cols.length > 0 ? Math.min(...cols.map(([i]) => i)) : 0;
-      // delete the cache for all cells after (rowIndex, colIndex)
-      for (let r = minRow; r < vStore.$getItemsLength(); r++) {
-        for (let c = minCol; c < hStore.$getItemsLength(); c++) {
+    $resizeCols(cols: ItemResize[]) {
+      for (const [c] of cols) {
+        for (let r = 0; r < vStore.$getItemsLength(); r++) {
           sizeCache.delete(getKey(r, c));
         }
       }
-
       hStore.$update(ACTION_ITEM_RESIZE, cols);
+    },
+    $resizeRows(rows: ItemResize[]) {
+      for (const [r] of rows) {
+        for (let c = 0; c < hStore.$getItemsLength(); c++) {
+          sizeCache.delete(getKey(r, c));
+        }
+      }
       vStore.$update(ACTION_ITEM_RESIZE, rows);
     },
     $dispose: resizeObserver._dispose,

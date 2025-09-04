@@ -119,7 +119,8 @@ export const Resizeable: StoryObj = {
         newWidths.set(i, getSize());
         newHeights.set(i, getSize());
       }
-      grid.current?.resize([...newWidths.entries()], [...newHeights.entries()]);
+      grid.current?.resizeCols([...newWidths.entries()])
+      grid.current?.resizeRows([...newHeights.entries()]);
       setWidths(newWidths);
       setHeights(newHeights);
     }
@@ -159,7 +160,7 @@ export const Resizeable: StoryObj = {
                 style={{ width: 50 }}
                 onChange={(e) => {
                   const w = e.target.valueAsNumber;
-                  grid.current?.resize([[colIndex, w]], []);
+                  grid.current?.resizeCols([[colIndex, w]]);
                   setWidths((map) => new Map(map).set(colIndex, w));
                 }}
               />
@@ -172,7 +173,7 @@ export const Resizeable: StoryObj = {
                 style={{ width: 50 }}
                 onChange={(e) => {
                   const h = e.target.valueAsNumber;
-                  grid.current?.resize([], [[rowIndex, h]]);
+                  grid.current?.resizeRows([[rowIndex, h]]);
                   setHeights((map) => new Map(map).set(rowIndex, h));
                 }}
               />
