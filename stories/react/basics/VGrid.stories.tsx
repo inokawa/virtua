@@ -102,6 +102,89 @@ export const DynamicWidth: StoryObj = {
   },
 };
 
+export const Resizeable: StoryObj = {
+  render: () => {
+    const SIZE = 80;
+    const LENGTH = 100;
+    const [widths, setWidths] = useState(() => new Map<number, number>());
+    const [heights, setHeights] = useState(() => new Map<number, number>());
+    const grid = useRef<VGridHandle>(null);
+
+    function randomize() {
+      const getSize = () => Math.random() < 0.8 ? 40 + Math.round(200 * Math.random()) : SIZE;
+      const newWidths = new Map<number, number>();
+      const newHeights = new Map<number, number>();
+      // skip index 0 to keep inputs stable
+      for (let i = 1; i < LENGTH; i++) {
+        newWidths.set(i, getSize());
+        newHeights.set(i, getSize());
+      }
+      grid.current?.resizeCols([...newWidths.entries()])
+      grid.current?.resizeRows([...newHeights.entries()]);
+      setWidths(newWidths);
+      setHeights(newHeights);
+    }
+
+    return (
+      <VGrid
+        ref={grid}
+        style={{ height: "100vh" }}
+        row={LENGTH}
+        col={LENGTH}
+        cellHeight={SIZE}
+        cellWidth={SIZE}
+      >
+        {({ rowIndex, colIndex }) => (
+          <div
+            style={{
+              border: "solid 1px gray",
+              background: "white",
+              padding: 4,
+              width: widths.get(colIndex) ?? SIZE,
+              height: heights.get(rowIndex) ?? SIZE,
+            }}
+          >
+            <div>
+              {rowIndex} / {colIndex}
+            </div>
+
+            {colIndex === 0 && rowIndex === 0 ? (
+              // randomize all cols & rows
+              <button onClick={randomize}>random</button>
+            ) : rowIndex === 0 ? (
+              // resize column
+              <input
+                type="number"
+                step={5}
+                value={widths.get(colIndex) ?? SIZE}
+                style={{ width: 50 }}
+                onChange={(e) => {
+                  const w = e.target.valueAsNumber;
+                  grid.current?.resizeCols([[colIndex, w]]);
+                  setWidths((map) => new Map(map).set(colIndex, w));
+                }}
+              />
+            ) : colIndex === 0 ? (
+              // resize row
+              <input
+                type="number"
+                step={5}
+                value={heights.get(rowIndex) ?? SIZE}
+                style={{ width: 50 }}
+                onChange={(e) => {
+                  const h = e.target.valueAsNumber;
+                  grid.current?.resizeRows([[rowIndex, h]]);
+                  setHeights((map) => new Map(map).set(rowIndex, h));
+                }}
+              />
+            ) : null}
+          </div>
+        )}
+      </VGrid>
+    );
+  },
+};
+
 export const ScrollTo: StoryObj = {
   render: () => {
     const LENGTH = 1000;

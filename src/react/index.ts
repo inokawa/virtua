@@ -9,6 +9,7 @@ export type {
 } from "./WindowVirtualizer";
 export { VGrid as experimental_VGrid } from "./VGrid";
 export type {
+  VGridItemResize,
   VGridProps,
   VGridHandle,
   CustomCellComponent,

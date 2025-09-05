@@ -268,6 +268,22 @@ export const createGridResizer = (
         resizeObserver._unobserve(el);
       };
     },
+    $resizeCols(cols: ItemResize[]) {
+      for (const [c] of cols) {
+        for (let r = 0; r < vStore.$getItemsLength(); r++) {
+          sizeCache.delete(getKey(r, c));
+        }
+      }
+      hStore.$update(ACTION_ITEM_RESIZE, cols);
+    },
+    $resizeRows(rows: ItemResize[]) {
+      for (const [r] of rows) {
+        for (let c = 0; c < hStore.$getItemsLength(); c++) {
+          sizeCache.delete(getKey(r, c));
+        }
+      }
+      vStore.$update(ACTION_ITEM_RESIZE, rows);
+    },
     $dispose: resizeObserver._dispose,
   };
 };

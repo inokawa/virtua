@@ -1,4 +1,4 @@
-import {
+import React, {
   JSX,
   memo,
   useRef,
@@ -101,6 +101,8 @@ const Cell = memo(
   }
 );
 
+export type VGridItemResize = readonly [index: number, size: number];
+
 /**
  * Methods of {@link VGrid}.
  */
@@ -149,6 +151,16 @@ export interface VGridHandle {
    * @param indexY vertical of item
    */
   getItemSize(indexX: number, indexY: number): [width: number, height: number];
+  /**
+   * Resize individual columns.
+   * @param cols array of `[index, size]` to update column sizes
+   */
+  resizeCols(cols: VGridItemResize[]): void;
+  /**
+   * Resize individual rows.
+   * @param rows array of `[index, size]` to update row sizes
+   */
+  resizeRows(rows: VGridItemResize[]): void;
   /**
    * Scroll to the item specified by index.
    * @param indexX horizontal index of item
@@ -393,6 +405,12 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             hStore.$getItemSize(indexX),
             vStore.$getItemSize(indexY),
           ],
+          resizeCols(cols) {
+            resizer.$resizeCols(cols);
+          },
+          resizeRows(rows) {
+            resizer.$resizeRows(rows);
+          },
           scrollToIndex: scroller.$scrollToIndex,
           scrollTo: scroller.$scrollTo,
           scrollBy: scroller.$scrollBy,
