@@ -26,6 +26,7 @@
 - [CustomContainerComponent](type-aliases/CustomContainerComponent.md)
 - [CustomItemComponent](type-aliases/CustomItemComponent.md)
 - [ScrollToIndexAlign](type-aliases/ScrollToIndexAlign.md)
+- [VGridItemResize](type-aliases/VGridItemResize.md)
 - [CustomCellComponent](type-aliases/CustomCellComponent.md)
 
 ## Variables
