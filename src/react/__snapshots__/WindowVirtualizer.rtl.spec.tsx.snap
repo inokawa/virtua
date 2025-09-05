@@ -3,7 +3,7 @@
 exports[`rtl > should not work in vertical 1`] = `
 <DocumentFragment>
   <div
-    style="flex: 0 0 auto; position: relative; visibility: hidden; overflow: hidden; width: 100%; height: 5000px;"
+    style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 5000px;"
   >
     <div
       style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -152,7 +152,7 @@ exports[`rtl > should not work in vertical 1`] = `
 exports[`rtl > should work in horizontal 1`] = `
 <DocumentFragment>
   <div
-    style="flex: 0 0 auto; position: relative; visibility: hidden; overflow: hidden; width: 10000px; height: 100%;"
+    style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 10000px; height: 100%;"
   >
     <div
       style="position: absolute; height: 100%; top: 0px; right: 0px; visibility: visible; display: flex;"

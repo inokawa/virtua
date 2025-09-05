@@ -130,10 +130,10 @@
     styleToString({
       // contain: "content",
       "overflow-anchor": "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
+      overflow: "clip", // https://github.com/inokawa/virtua/pull/485 https://github.com/inokawa/virtua/issues/717
       flex: "none", // flex style can break layout
       position: "relative",
       visibility: "hidden", // TODO replace with other optimization methods
-      overflow: "hidden", // https://github.com/inokawa/virtua/pull/485
       width: horizontal ? totalSize + "px" : "100%",
       height: horizontal ? "100%" : totalSize + "px",
       "pointer-events": isScrolling ? "none" : undefined,

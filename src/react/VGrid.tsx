@@ -473,10 +473,10 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           ref={innerDomRef}
           style={{
             overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
+            overflow: "clip", // https://github.com/inokawa/virtua/pull/485 https://github.com/inokawa/virtua/issues/717
             flex: "none", // flex style can break layout
             position: "relative",
             visibility: "hidden", // TODO replace with other optimization methods
-            overflow: "hidden", // https://github.com/inokawa/virtua/pull/485
             width: width,
             height: height,
             pointerEvents: vIsScrolling || hIsScrolling ? "none" : undefined,
