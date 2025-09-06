@@ -5,6 +5,8 @@ import {
   scrollToBottom,
   scrollToRight,
   getScrollable,
+  relativeTop,
+  relativeLeft,
 } from "./utils";
 
 test.describe("smoke", () => {
@@ -42,17 +44,14 @@ test("check if scrollToIndex works", async ({ page }) => {
 
   await button.click();
 
-  await (await component.elementHandle())!.waitForElementState("stable");
-
   // Check if scrolled precisely
-  const firstItem = await getFirstItem(component);
-  expect(firstItem.text).toEqual(
-    `${await colInput.evaluate(
-      (e) => (e as HTMLInputElement).value
-    )} / ${await rowInput.evaluate((e) => (e as HTMLInputElement).value)}`
-  );
-  expect(firstItem.top).toEqual(0);
-  expect(firstItem.left).toEqual(0);
+  const text = `${await colInput.evaluate(
+    (e) => (e as HTMLInputElement).value
+  )} / ${await rowInput.evaluate((e) => (e as HTMLInputElement).value)}`;
+  const firstItem = component.getByText(text, { exact: true });
+  await expect(firstItem).toBeVisible();
+  expect(await relativeTop(component, firstItem)).toEqual(0);
+  expect(await relativeLeft(component, firstItem)).toEqual(0);
 
   // Check if unnecessary items are not rendered
   await expect(component.getByText("650", { exact: true })).not.toBeVisible();
