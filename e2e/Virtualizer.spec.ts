@@ -30,7 +30,7 @@ test("header and footer", async ({ page }) => {
 
   // check if start is displayed
   const topItem = container.locator(itemsSelector).first();
-  expect(await topItem.textContent()).toEqual("0");
+  await expect(topItem).toHaveText("0");
   expect(
     await (async () => {
       const rootRect = (await scrollable.boundingBox())!;
@@ -45,7 +45,7 @@ test("header and footer", async ({ page }) => {
   // check if the end is displayed
   const items = container.locator(itemsSelector);
   const bottomItem = items.last();
-  expect(await bottomItem.textContent()).toEqual("999");
+  await expect(bottomItem).toHaveText("999");
   expect(
     await (async () => {
       const rootRect = (await scrollable.boundingBox())!;
@@ -78,7 +78,7 @@ test("sticky header and footer", async ({ page }) => {
 
   // check if start is displayed
   const topItem = container.locator(itemsSelector).first();
-  expect(await topItem.textContent()).toEqual("0");
+  await expect(topItem).toHaveText("0");
   expect(
     await (async () => {
       const rootRect = (await scrollable.boundingBox())!;
@@ -93,7 +93,7 @@ test("sticky header and footer", async ({ page }) => {
   // check if the end is displayed
   const items = container.locator(itemsSelector);
   const bottomItem = items.last();
-  expect(await bottomItem.textContent()).toEqual("999");
+  await expect(bottomItem).toHaveText("999");
   expectInRange(
     await (async () => {
       const rootRect = (await scrollable.boundingBox())!;
