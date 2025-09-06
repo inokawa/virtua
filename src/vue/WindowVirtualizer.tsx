@@ -51,10 +51,9 @@ const props = {
    */
   data: { type: Array, required: true },
   /**
-   * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
-   * @defaultValue 4
+   * TODO
    */
-  overscan: Number,
+  bufferSize: Number,
   /**
    * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
    *
@@ -91,7 +90,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     const store = createVirtualStore(
       props.data.length,
       props.itemSize,
-      props.overscan,
+      props.bufferSize,
       undefined,
       undefined,
       !props.itemSize
