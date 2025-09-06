@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, Page } from "@playwright/test";
 import {
   storyUrl,
   windowScrollToBottom,
@@ -11,13 +11,22 @@ import {
   getWindowScrollRight,
   expectInRange,
   windowScrollBy,
-  clearInput,
   listenScrollCount,
   windowTop,
   windowBottom,
   relativeTop,
   getChildren,
+  getStyleValue,
+  setRTL,
 } from "./utils";
+
+const windowInnerHeight = (page: Page) => {
+  return page.evaluate(() => window.innerHeight);
+};
+
+const isVerticalScrollBarVisible = async (page: Page) => {
+  return page.evaluate(() => document.body.scrollHeight > window.innerHeight);
+};
 
 test.describe("smoke", () => {
   test("vertically scrollable", async ({ page }) => {
@@ -67,15 +76,11 @@ test.describe("smoke", () => {
 
     const component = await getVirtualizer(page);
 
-    const initialTotalHeight = await component.evaluate(
-      (s) => getComputedStyle(s as HTMLElement).height
-    );
+    const initialTotalHeight = await getStyleValue(component, "height");
 
     await component.evaluate((s) => (s.style.display = "none"));
 
-    const changedTotalHeight = await component.evaluate(
-      (s) => getComputedStyle(s as HTMLElement).height
-    );
+    const changedTotalHeight = await getStyleValue(component, "height");
 
     expect(initialTotalHeight).toBeTruthy();
     expect(initialTotalHeight).toEqual(changedTotalHeight);
@@ -286,7 +291,7 @@ test.describe("check if item shift compensation works", () => {
     const updateButton = page.getByRole("button", { name: "update" });
 
     const container = await getVirtualizer(page);
-    const initialLength = await container.evaluate((e) => e.childNodes.length);
+    const initialLength = await getChildren(container).count();
     expect(initialLength).toBeGreaterThan(1);
 
     const getWindowLastItem = () => {
@@ -312,18 +317,11 @@ test.describe("check if item shift compensation works", () => {
       await updateButton.click();
       await (await component.elementHandle())!.waitForElementState("stable");
 
-      const [childrenCount, firstItemRectTop] = await container.evaluate(
-        (e) => {
-          const children = e.childNodes;
-          return [
-            children.length,
-            (children[0] as HTMLElement).getBoundingClientRect().top,
-          ];
-        }
-      );
-      const isScrollBarVisible = await page.evaluate(() => {
-        return document.body.scrollHeight > window.innerHeight;
-      });
+      const items = getChildren(container);
+      const childrenCount = await items.count();
+      const firstItemRect = (await items.first().boundingBox())!;
+      const firstItemRectTop = firstItemRect.y;
+      const isScrollBarVisible = await isVerticalScrollBarVisible(page);
 
       // Check if all items are visible
       expect(childrenCount).toBe(i + initialLength);
@@ -380,18 +378,11 @@ test.describe("check if item shift compensation works", () => {
       i++;
       await updateButton.click();
 
-      const lastItemRectBottom = await container.evaluate((e) => {
-        const children = e.childNodes;
-        return (
-          children[children.length - 1] as HTMLElement
-        ).getBoundingClientRect().bottom;
-      });
-      const [isScrollBarVisible, windowBottom] = await page.evaluate(() => {
-        return [
-          document.body.scrollHeight > window.innerHeight,
-          window.innerHeight,
-        ];
-      });
+      const lastItemRect = (await getChildren(container).last().boundingBox())!;
+      const lastItemRectBottom = lastItemRect.y + lastItemRect.height;
+      const windowBottom = await windowInnerHeight(page);
+      const isScrollBarVisible = await isVerticalScrollBarVisible(page);
+
       const itemBottom = lastItemRectBottom - windowBottom;
 
       if (!isScrollBarVisible) {
@@ -416,9 +407,7 @@ test.describe("RTL", () => {
     await page.goto(storyUrl("basics-windowvirtualizer--default"), {
       waitUntil: "domcontentloaded",
     });
-    await page.evaluate(() => {
-      document.documentElement.dir = "rtl";
-    });
+    await setRTL(page);
 
     const component = await getVirtualizer(page);
 
@@ -438,9 +427,7 @@ test.describe("RTL", () => {
     await page.goto(storyUrl("basics-windowvirtualizer--horizontal"), {
       waitUntil: "domcontentloaded",
     });
-    await page.evaluate(() => {
-      document.documentElement.dir = "rtl";
-    });
+    await setRTL(page);
 
     const component = await getVirtualizer(page);
 
@@ -478,11 +465,9 @@ test.describe("check if scrollToIndex works", () => {
       await expect(component.getByText("0", { exact: true })).toBeVisible();
 
       const button = page.getByRole("button", { name: "scroll to index" });
-      const input = await button.evaluateHandle(
-        (el) => el.previousSibling as HTMLInputElement
-      );
+      const input = page.getByRole("spinbutton").first();
 
-      await clearInput(input);
+      await input.clear();
       await input.fill("700");
       await button.click();
 
@@ -507,17 +492,15 @@ test.describe("check if scrollToIndex works", () => {
       await expect(component.getByText("0", { exact: true })).toBeVisible();
 
       const button = page.getByRole("button", { name: "scroll to index" });
-      const input = await button.evaluateHandle(
-        (el) => el.previousSibling as HTMLInputElement
-      );
+      const input = page.getByRole("spinbutton").first();
 
-      await clearInput(input);
+      await input.clear();
       await input.fill("500");
       await button.click();
 
       await expect(component.getByText("500", { exact: true })).toBeVisible();
 
-      await clearInput(input);
+      await input.clear();
       await input.fill("0");
       await button.click();
 
@@ -539,11 +522,9 @@ test.describe("check if scrollToIndex works", () => {
       await expect(component.getByText("0", { exact: true })).toBeVisible();
 
       const button = page.getByRole("button", { name: "scroll to index" });
-      const input = await button.evaluateHandle(
-        (el) => el.previousSibling as HTMLInputElement
-      );
+      const input = page.getByRole("spinbutton").first();
 
-      await clearInput(input);
+      await input.clear();
       await input.fill("999");
       await button.click();
 
@@ -572,13 +553,11 @@ test.describe("check if scrollToIndex works", () => {
       await page.getByRole("checkbox", { name: "smooth" }).click();
 
       const button = page.getByRole("button", { name: "scroll to index" });
-      const input = await button.evaluateHandle(
-        (el) => el.previousSibling as HTMLInputElement
-      );
+      const input = page.getByRole("spinbutton").first();
 
       const scrollListener = listenScrollCount(window);
 
-      await clearInput(input);
+      await input.clear();
       await input.fill("700");
       await button.click();
 
@@ -622,11 +601,9 @@ test.describe("check if scrollToIndex works", () => {
       await expect(component.getByText("0", { exact: true })).toBeVisible();
 
       const button = page.getByRole("button", { name: "scroll to index" });
-      const input = await button.evaluateHandle(
-        (el) => el.previousSibling as HTMLInputElement
-      );
+      const input = page.getByRole("spinbutton").first();
 
-      await clearInput(input);
+      await input.clear();
       await input.fill("700");
       await button.click();
 
@@ -654,17 +631,15 @@ test.describe("check if scrollToIndex works", () => {
       await expect(component.getByText("0", { exact: true })).toBeVisible();
 
       const button = page.getByRole("button", { name: "scroll to index" });
-      const input = await button.evaluateHandle(
-        (el) => el.previousSibling as HTMLInputElement
-      );
+      const input = page.getByRole("spinbutton").first();
 
-      await clearInput(input);
+      await input.clear();
       await input.fill("500");
       await button.click();
 
       await expect(component.getByText("500", { exact: true })).toBeVisible();
 
-      await clearInput(input);
+      await input.clear();
       await input.fill("0");
       await button.click();
 
@@ -686,11 +661,9 @@ test.describe("check if scrollToIndex works", () => {
       await expect(component.getByText("0", { exact: true })).toBeVisible();
 
       const button = page.getByRole("button", { name: "scroll to index" });
-      const input = await button.evaluateHandle(
-        (el) => el.previousSibling as HTMLInputElement
-      );
+      const input = page.getByRole("spinbutton").first();
 
-      await clearInput(input);
+      await input.clear();
       await input.fill("999");
       await button.click();
 
@@ -719,13 +692,11 @@ test.describe("check if scrollToIndex works", () => {
       await page.getByRole("checkbox", { name: "smooth" }).click();
 
       const button = page.getByRole("button", { name: "scroll to index" });
-      const input = await button.evaluateHandle(
-        (el) => el.previousSibling as HTMLInputElement
-      );
+      const input = page.getByRole("spinbutton").first();
 
       const scrollListener = listenScrollCount(window);
 
-      await clearInput(input);
+      await input.clear();
       await input.fill("700");
       await button.click();
 

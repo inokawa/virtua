@@ -3,6 +3,12 @@ import { ElementHandle, Locator, Page, expect } from "@playwright/test";
 export const storyUrl = (id: string) =>
   `http://localhost:6006/iframe.html?id=${id}&viewMode=story`;
 
+export const setRTL = async (page: Page) => {
+  await page.evaluate(() => {
+    document.documentElement.dir = "rtl";
+  });
+};
+
 export const getScrollable = async (page: Page) => {
   const locator = page.locator(
     '*[style*="overflow-y: auto"],*[style*="overflow-y:auto"],*[style*="overflow-x: auto"],*[style*="overflow-x:auto"],*[style*="overflow: auto"],*[style*="overflow:auto"]'
@@ -32,9 +38,6 @@ export const expectInRange = (
 };
 
 export const approxymate = (v: number): number => Math.round(v / 100) * 100;
-
-export const clearInput = (input: ElementHandle<HTMLElement | SVGElement>) =>
-  input.evaluate((element) => ((element as HTMLInputElement).value = ""));
 
 export const clearTimer = async (page: Page) => {
   await page.evaluate(() => {
@@ -81,6 +84,13 @@ export const relativeRight = async (parent: Locator, child: Locator) => {
   const { x: pX, width: pWidth } = (await parent.boundingBox())!;
   const { x: cX, width: cWidth } = (await child.boundingBox())!;
   return cX + cWidth - (pX + pWidth);
+};
+
+export const getStyleValue = <T extends keyof CSSStyleDeclaration>(
+  locator: Locator,
+  key: T
+) => {
+  return locator.evaluate((s, key) => getComputedStyle(s)[key], key);
 };
 
 export const getFirstItem = (scrollable: Locator) => {

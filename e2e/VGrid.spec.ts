@@ -42,9 +42,7 @@ test("check if scrollToIndex works", async ({ page }) => {
   await button.click();
 
   // Check if scrolled precisely
-  const text = `${await colInput.evaluate(
-    (e) => (e as HTMLInputElement).value
-  )} / ${await rowInput.evaluate((e) => (e as HTMLInputElement).value)}`;
+  const text = `${await colInput.inputValue()} / ${await rowInput.inputValue()}`;
   const firstItem = component.getByText(text, { exact: true });
   await expect(firstItem).toBeVisible();
   expect(await relativeTop(component, firstItem)).toEqual(0);
