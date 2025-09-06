@@ -41,6 +41,44 @@ export const clearTimer = async (page: Page) => {
   });
 };
 
+export const windowTop = async (child: Locator) => {
+  return (await child.boundingBox())!.y;
+};
+
+export const windowBottom = async (child: Locator) => {
+  const rect = (await child.boundingBox())!;
+
+  return (
+    rect.y +
+    rect.height -
+    (0 + (await child.evaluate(() => window.innerHeight)))
+  );
+};
+
+export const relativeTop = async (parent: Locator, child: Locator) => {
+  const p = (await parent.boundingBox())!.y;
+  const c = (await child.boundingBox())!.y;
+  return c - p;
+};
+
+export const relativeLeft = async (parent: Locator, child: Locator) => {
+  const p = (await parent.boundingBox())!.x;
+  const c = (await child.boundingBox())!.x;
+  return c - p;
+};
+
+export const relativeBottom = async (parent: Locator, child: Locator) => {
+  const { y: pY, height: pHeight } = (await parent.boundingBox())!;
+  const { y: cY, height: cHeight } = (await child.boundingBox())!;
+  return cY + cHeight - (pY + pHeight);
+};
+
+export const relativeRight = async (parent: Locator, child: Locator) => {
+  const { x: pX, width: pWidth } = (await parent.boundingBox())!;
+  const { x: cX, width: cWidth } = (await child.boundingBox())!;
+  return cX + cWidth - (pX + pWidth);
+};
+
 export const getFirstItem = (scrollable: Locator) => {
   return scrollable.evaluate((s) => {
     const rect = s.getBoundingClientRect();
@@ -71,18 +109,6 @@ export const getLastItem = (
       height: elRect.height,
     };
   }, offset);
-};
-
-export const getFirstItemRtl = (scrollable: Locator) => {
-  return scrollable.evaluate((s) => {
-    const rect = s.getBoundingClientRect();
-    const el = document.elementFromPoint(rect.right - 2, rect.top + 2)!;
-    return {
-      text: el.textContent!,
-      top: el.getBoundingClientRect().top - rect.top,
-      right: el.getBoundingClientRect().right - rect.right,
-    };
-  });
 };
 
 export const getWindowFirstItem = (
