@@ -1,7 +1,6 @@
 import { test, expect } from "@playwright/test";
 import {
   storyUrl,
-  getFirstItem,
   scrollToBottom,
   scrollToRight,
   getScrollable,
@@ -16,9 +15,7 @@ test.describe("smoke", () => {
     const component = await getScrollable(page);
 
     // check if start is displayed
-    expect(
-      (await getFirstItem(component)).text.startsWith("0 / 0")
-    ).toBeTruthy();
+    await expect(component.getByText("0 / 0", { exact: true })).toBeVisible();
 
     // scroll to the end
     await scrollToBottom(component);
@@ -37,7 +34,7 @@ test("check if scrollToIndex works", async ({ page }) => {
   const component = await getScrollable(page);
 
   // check if start is displayed
-  expect((await getFirstItem(component)).text.startsWith("0 / 0")).toBeTruthy();
+  await expect(component.getByText("0 / 0", { exact: true })).toBeVisible();
 
   const button = page.getByRole("button", { name: "scroll to index" });
   const [colInput, rowInput] = await page.locator("input").all();

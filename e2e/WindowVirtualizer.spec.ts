@@ -11,13 +11,12 @@ import {
   getWindowScrollRight,
   expectInRange,
   windowScrollBy,
-  getWindowFirstItem,
-  getWindowLastItem,
   clearInput,
   listenScrollCount,
   windowTop,
   windowBottom,
   relativeTop,
+  getChildren,
 } from "./utils";
 
 test.describe("smoke", () => {
@@ -212,24 +211,29 @@ test.describe("check if item shift compensation works", () => {
     await windowScrollBy(page, 400);
     await page.waitForTimeout(500);
 
-    const opts = { y: 100 };
-    const topItem = await getWindowFirstItem(page, opts);
-    expect(topItem.text).not.toEqual("0");
-    expect(topItem.text.length).toBeLessThanOrEqual(2);
+    const component = await getVirtualizer(page);
+
+    const topItem = getChildren(component).first();
+    const topItemText = (await topItem.textContent())!;
+    const topItemTop = await windowTop(topItem);
+    expect(topItemText).not.toBe("0");
+    expect(topItemText.length).toBeLessThanOrEqual(2);
 
     // add
     await page.getByRole("radio", { name: "increase" }).click();
     await updateButton.click();
-    await page.waitForTimeout(100);
     // check if visible item is keeped
-    expect(topItem).toEqual(await getWindowFirstItem(page, opts));
+    const topItem2 = getChildren(component).first();
+    await expect(topItem2).toHaveText(topItemText);
+    expect(await windowTop(topItem2)).toBe(topItemTop);
 
     // remove
     await page.getByRole("radio", { name: "decrease" }).click();
     await updateButton.click();
-    await page.waitForTimeout(100);
     // check if visible item is keeped
-    expect(topItem).toEqual(await getWindowFirstItem(page, opts));
+    const topItem3 = getChildren(component).first();
+    await expect(topItem3).toHaveText(topItemText);
+    expect(await windowTop(topItem3)).toBe(topItemTop);
   });
 
   test("keep start at mid when add to/remove from start", async ({ page }) => {
@@ -242,25 +246,31 @@ test.describe("check if item shift compensation works", () => {
     await windowScrollBy(page, 800);
     await page.waitForTimeout(500);
 
-    const opts = { y: 100 };
-    const topItem = await getWindowFirstItem(page, opts);
-    expect(topItem.text).not.toEqual("0");
-    expect(topItem.text.length).toBeLessThanOrEqual(2);
+    const component = await getVirtualizer(page);
+
+    const topItem = getChildren(component).first();
+    const topItemText = (await topItem.textContent())!;
+    const topItemTop = await windowTop(topItem);
+    expect(topItemText).not.toBe("0");
+    expect(topItemText.length).toBeLessThanOrEqual(2);
 
     // add
     await page.getByRole("checkbox", { name: "prepend" }).click();
     await page.getByRole("radio", { name: "increase" }).click();
     await updateButton.click();
-    await page.waitForTimeout(100);
+
     // check if visible item is keeped
-    expect(topItem).toEqual(await getWindowFirstItem(page, opts));
+    const topItem2 = getChildren(component).first();
+    await expect(topItem2).toHaveText(topItemText);
+    expect(await windowTop(topItem2)).toBe(topItemTop);
 
     // remove
     await page.getByRole("radio", { name: "decrease" }).click();
     await updateButton.click();
-    await page.waitForTimeout(100);
     // check if visible item is keeped
-    expect(topItem).toEqual(await getWindowFirstItem(page, opts));
+    const topItem3 = getChildren(component).first();
+    await expect(topItem3).toHaveText(topItemText);
+    expect(await windowTop(topItem3)).toBe(topItemTop);
   });
 
   test("prepending when total height is lower than viewport height", async ({
@@ -278,6 +288,18 @@ test.describe("check if item shift compensation works", () => {
     const container = await getVirtualizer(page);
     const initialLength = await container.evaluate((e) => e.childNodes.length);
     expect(initialLength).toBeGreaterThan(1);
+
+    const getWindowLastItem = () => {
+      return page.evaluate(() => {
+        const bottom = 0 + window.innerHeight;
+        const left = 0;
+        const el = document.elementFromPoint(left + 2, bottom - 2)!;
+        const elRect = el.getBoundingClientRect();
+        return {
+          bottom: elRect.bottom - bottom,
+        };
+      });
+    };
 
     let i = 0;
     while (true) {
@@ -308,7 +330,7 @@ test.describe("check if item shift compensation works", () => {
 
       if (isScrollBarVisible) {
         // Check if sticked to bottom
-        expectInRange((await getWindowLastItem(page)).bottom, {
+        expectInRange((await getWindowLastItem()).bottom, {
           min: browserName === "firefox" ? -0.45 : -0.1,
           max: 0.1,
         });
