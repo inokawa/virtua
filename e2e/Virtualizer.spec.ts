@@ -5,6 +5,7 @@ import {
   expectInRange,
   getScrollable,
   getVirtualizer,
+  getChildren,
 } from "./utils";
 
 test("header and footer", async ({ page }) => {
@@ -26,10 +27,8 @@ test("header and footer", async ({ page }) => {
   expect(topPadding).toBeGreaterThan(10);
   expect(bottomPadding).toBeGreaterThan(10);
 
-  const itemsSelector = '*[style*="top"]';
-
   // check if start is displayed
-  const topItem = container.locator(itemsSelector).first();
+  const topItem = getChildren(container).first();
   await expect(topItem).toHaveText("0");
   expect(
     await (async () => {
@@ -43,7 +42,7 @@ test("header and footer", async ({ page }) => {
   await scrollToBottom(scrollable);
 
   // check if the end is displayed
-  const items = container.locator(itemsSelector);
+  const items = getChildren(container);
   const bottomItem = items.last();
   await expect(bottomItem).toHaveText("999");
   expect(
@@ -74,10 +73,8 @@ test("sticky header and footer", async ({ page }) => {
   expect(topPadding).toBeGreaterThan(10);
   expect(bottomPadding).toBeGreaterThan(10);
 
-  const itemsSelector = '*[style*="top"]';
-
   // check if start is displayed
-  const topItem = container.locator(itemsSelector).first();
+  const topItem = getChildren(container).first();
   await expect(topItem).toHaveText("0");
   expect(
     await (async () => {
@@ -91,7 +88,7 @@ test("sticky header and footer", async ({ page }) => {
   await scrollToBottom(scrollable);
 
   // check if the end is displayed
-  const items = container.locator(itemsSelector);
+  const items = getChildren(container);
   const bottomItem = items.last();
   await expect(bottomItem).toHaveText("999");
   expectInRange(
