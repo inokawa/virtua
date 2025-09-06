@@ -28,15 +28,14 @@ test.describe("smoke", () => {
     // check if start is displayed
     const first = await getFirstItem(component);
     expect(first.text).toEqual("0");
-    expect(await component.innerText()).not.toContain("50");
+    await expect(component.getByText("50", { exact: true })).not.toBeVisible();
 
     // scroll to the end
     await windowScrollToBottom(page);
 
     // check if the end is displayed
-    const text = await component.innerText();
-    expect(text).toContain("999");
-    expect(text).not.toContain("949");
+    await expect(component.getByText("999", { exact: true })).toBeVisible();
+    await expect(component.getByText("949", { exact: true })).not.toBeVisible();
   });
 
   test("horizontally scrollable", async ({ page }) => {
@@ -47,15 +46,20 @@ test.describe("smoke", () => {
     // check if start is displayed
     const first = await getFirstItem(component);
     expect(first.text).toEqual("Column 0");
-    expect(await component.innerText()).not.toContain("Column 50");
+    await expect(
+      component.getByText("Column 50", { exact: true })
+    ).not.toBeVisible();
 
     // scroll to the end
     await windowScrollToRight(page);
 
     // check if the end is displayed
-    const text = await component.innerText();
-    expect(text).toContain("999");
-    expect(text).not.toContain("949");
+    await expect(
+      component.getByText("Column 999", { exact: true })
+    ).toBeVisible();
+    await expect(
+      component.getByText("Column 949", { exact: true })
+    ).not.toBeVisible();
   });
 
   test("display: none", async ({ page }) => {
@@ -101,7 +105,8 @@ test.describe("check if scroll jump compensation works", () => {
     const min = 200;
     const initial = await getWindowScrollTop(page);
     let prev = initial;
-    for (let i = 0; i < 500; i++) {
+    const start = performance.now();
+    while ((performance.now() - start) / 1000 < 8) {
       await page.keyboard.press("ArrowDown", { delay: 10 });
       const offset = await getWindowScrollTop(page);
       expect(offset).toBeGreaterThanOrEqual(prev);
@@ -125,7 +130,8 @@ test.describe("check if scroll jump compensation works", () => {
     const min = 200;
     const initial = await getWindowScrollBottom(page);
     let prev = initial;
-    for (let i = 0; i < 500; i++) {
+    const start = performance.now();
+    while ((performance.now() - start) / 1000 < 8) {
       await page.keyboard.press("ArrowUp", { delay: 10 });
       const offset = await getWindowScrollBottom(page);
       expect(offset).toBeGreaterThanOrEqual(
@@ -148,7 +154,8 @@ test.describe("check if scroll jump compensation works", () => {
     const min = 200;
     const initial = await getWindowScrollLeft(page);
     let prev = initial;
-    for (let i = 0; i < 500; i++) {
+    const start = performance.now();
+    while ((performance.now() - start) / 1000 < 8) {
       await page.keyboard.press("ArrowRight", { delay: 10 });
       const offset = await getWindowScrollLeft(page);
       expect(offset).toBeGreaterThanOrEqual(prev);
@@ -172,7 +179,8 @@ test.describe("check if scroll jump compensation works", () => {
     const min = 200;
     const initial = await getWindowScrollRight(page);
     let prev = initial;
-    for (let i = 0; i < 500; i++) {
+    const start = performance.now();
+    while ((performance.now() - start) / 1000 < 8) {
       await page.keyboard.press("ArrowLeft", { delay: 10 });
       const offset = await getWindowScrollRight(page);
       expect(offset).toBeGreaterThanOrEqual(
@@ -390,15 +398,14 @@ test.describe("RTL", () => {
     // check if start is displayed
     const first = await getFirstItem(component);
     expect(first.text).toEqual("0");
-    expect(await component.innerText()).not.toContain("50");
+    await expect(component.getByText("50", { exact: true })).not.toBeVisible();
 
     // scroll to the end
     await windowScrollToBottom(page);
 
     // check if the end is displayed
-    const text = await component.innerText();
-    expect(text).toContain("999");
-    expect(text).not.toContain("949");
+    await expect(component.getByText("999", { exact: true })).toBeVisible();
+    await expect(component.getByText("949", { exact: true })).not.toBeVisible();
   });
 
   test("horizontally scrollable", async ({ page }) => {
@@ -414,15 +421,20 @@ test.describe("RTL", () => {
     // check if start is displayed
     const first = await getFirstItemRtl(component);
     expect(first.text).toEqual("Column 0");
-    expect(await component.innerText()).not.toContain("Column 50");
+    await expect(
+      component.getByText("Column 50", { exact: true })
+    ).not.toBeVisible();
 
     // scroll to the end
     await windowScrollToLeft(page);
 
     // check if the end is displayed
-    const text = await component.innerText();
-    expect(text).toContain("999");
-    expect(text).not.toContain("949");
+    await expect(
+      component.getByText("Column 999", { exact: true })
+    ).toBeVisible();
+    await expect(
+      component.getByText("Column 949", { exact: true })
+    ).not.toBeVisible();
   });
 });
 
@@ -455,8 +467,12 @@ test.describe("check if scrollToIndex works", () => {
       expect(firstItem.top).toEqual(0);
 
       // Check if unnecessary items are not rendered
-      expect(await component.innerText()).not.toContain("650");
-      expect(await component.innerText()).not.toContain("750");
+      await expect(
+        component.getByText("650", { exact: true })
+      ).not.toBeVisible();
+      await expect(
+        component.getByText("750", { exact: true })
+      ).not.toBeVisible();
     });
 
     test("start", async ({ page }) => {
@@ -476,7 +492,7 @@ test.describe("check if scrollToIndex works", () => {
 
       await (await component.elementHandle())!.waitForElementState("stable");
 
-      expect(await component.innerText()).toContain("500");
+      await expect(component.getByText("500", { exact: true })).toBeVisible();
 
       await clearInput(input);
       await input.fill("0");
@@ -490,7 +506,9 @@ test.describe("check if scrollToIndex works", () => {
       expect(firstItem.top).toEqual(0);
 
       // Check if unnecessary items are not rendered
-      expect(await component.innerText()).not.toContain("50\n");
+      await expect(
+        component.getByText("50\n", { exact: true })
+      ).not.toBeVisible();
     });
 
     test("end", async ({ page }) => {
@@ -516,7 +534,9 @@ test.describe("check if scrollToIndex works", () => {
       expectInRange(lastItem.bottom, { min: -101.9, max: 100 });
 
       // Check if unnecessary items are not rendered
-      expect(await component.innerText()).not.toContain("949");
+      await expect(
+        component.getByText("949", { exact: true })
+      ).not.toBeVisible();
     });
 
     test("mid smooth", async ({ page, browserName }) => {
@@ -556,8 +576,12 @@ test.describe("check if scrollToIndex works", () => {
       expectInRange(firstItem.top, { min: 0, max: 1 });
 
       // Check if unnecessary items are not rendered
-      expect(await component.innerText()).not.toContain("650");
-      expect(await component.innerText()).not.toContain("750");
+      await expect(
+        component.getByText("650", { exact: true })
+      ).not.toBeVisible();
+      await expect(
+        component.getByText("750", { exact: true })
+      ).not.toBeVisible();
     });
   });
 
@@ -589,8 +613,12 @@ test.describe("check if scrollToIndex works", () => {
       expectInRange(lastItem.bottom, { min: 0, max: 1 });
 
       // Check if unnecessary items are not rendered
-      expect(await component.innerText()).not.toContain("650");
-      expect(await component.innerText()).not.toContain("750");
+      await expect(
+        component.getByText("650", { exact: true })
+      ).not.toBeVisible();
+      await expect(
+        component.getByText("750", { exact: true })
+      ).not.toBeVisible();
     });
 
     test("start", async ({ page }) => {
@@ -610,7 +638,7 @@ test.describe("check if scrollToIndex works", () => {
 
       await (await component.elementHandle())!.waitForElementState("stable");
 
-      expect(await component.innerText()).toContain("500");
+      await expect(component.getByText("500", { exact: true })).toBeVisible();
 
       await clearInput(input);
       await input.fill("0");
@@ -624,7 +652,9 @@ test.describe("check if scrollToIndex works", () => {
       expect(firstItem.top).toEqual(0);
 
       // Check if unnecessary items are not rendered
-      expect(await component.innerText()).not.toContain("50\n");
+      await expect(
+        component.getByText("50\n", { exact: true })
+      ).not.toBeVisible();
     });
 
     test("end", async ({ page }) => {
@@ -650,7 +680,9 @@ test.describe("check if scrollToIndex works", () => {
       expectInRange(lastItem.bottom, { min: 0, max: 1 });
 
       // Check if unnecessary items are not rendered
-      expect(await component.innerText()).not.toContain("949");
+      await expect(
+        component.getByText("949", { exact: true })
+      ).not.toBeVisible();
     });
 
     test("mid smooth", async ({ page, browserName }) => {
@@ -690,8 +722,12 @@ test.describe("check if scrollToIndex works", () => {
       expectInRange(lastItem.bottom, { min: 0, max: 1 });
 
       // Check if unnecessary items are not rendered
-      expect(await component.innerText()).not.toContain("650");
-      expect(await component.innerText()).not.toContain("750");
+      await expect(
+        component.getByText("650", { exact: true })
+      ).not.toBeVisible();
+      await expect(
+        component.getByText("750", { exact: true })
+      ).not.toBeVisible();
     });
   });
 });
