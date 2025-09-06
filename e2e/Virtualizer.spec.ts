@@ -6,29 +6,34 @@ import {
   getScrollable,
   getVirtualizer,
   getChildren,
+  getStyleValue,
 } from "./utils";
 
 test("header and footer", async ({ page }) => {
   await page.goto(storyUrl("basics-virtualizer--header-and-footer"));
 
-  const [scrollable, container] = await Promise.all([
-    getScrollable(page),
-    getVirtualizer(page),
-  ]);
+  const scrollable = await getScrollable(page);
+  const container = await getVirtualizer(page);
 
-  const [topPadding, bottomPadding] = await scrollable.evaluate((e) => {
-    const topSpacer = e.firstElementChild as HTMLElement;
-    const bottomSpacer = e.lastElementChild as HTMLElement;
-    return [
-      parseInt(getComputedStyle(topSpacer).height),
-      parseInt(getComputedStyle(bottomSpacer).height),
-    ];
-  });
+  const topPadding = parseInt(
+    await getStyleValue(
+      scrollable.getByText("header", { exact: true }),
+      "height"
+    )
+  );
+  const bottomPadding = parseInt(
+    await getStyleValue(
+      scrollable.getByText("footer", { exact: true }),
+      "height"
+    )
+  );
   expect(topPadding).toBeGreaterThan(10);
   expect(bottomPadding).toBeGreaterThan(10);
 
+  const items = getChildren(container);
+
   // check if start is displayed
-  const topItem = getChildren(container).first();
+  const topItem = items.first();
   await expect(topItem).toHaveText("0");
   expect(
     await (async () => {
@@ -42,7 +47,6 @@ test("header and footer", async ({ page }) => {
   await scrollToBottom(scrollable);
 
   // check if the end is displayed
-  const items = getChildren(container);
   const bottomItem = items.last();
   await expect(bottomItem).toHaveText("999");
   expect(
@@ -57,24 +61,28 @@ test("header and footer", async ({ page }) => {
 test("sticky header and footer", async ({ page }) => {
   await page.goto(storyUrl("basics-virtualizer--sticky-header-and-footer"));
 
-  const [scrollable, container] = await Promise.all([
-    getScrollable(page),
-    getVirtualizer(page),
-  ]);
+  const scrollable = await getScrollable(page);
+  const container = await getVirtualizer(page);
 
-  const [topPadding, bottomPadding] = await scrollable.evaluate((e) => {
-    const topSpacer = e.firstElementChild as HTMLElement;
-    const bottomSpacer = e.lastElementChild as HTMLElement;
-    return [
-      parseInt(getComputedStyle(topSpacer).height),
-      parseInt(getComputedStyle(bottomSpacer).height),
-    ];
-  });
+  const topPadding = parseInt(
+    await getStyleValue(
+      scrollable.getByText("header", { exact: true }),
+      "height"
+    )
+  );
+  const bottomPadding = parseInt(
+    await getStyleValue(
+      scrollable.getByText("footer", { exact: true }),
+      "height"
+    )
+  );
   expect(topPadding).toBeGreaterThan(10);
   expect(bottomPadding).toBeGreaterThan(10);
 
+  const items = getChildren(container);
+
   // check if start is displayed
-  const topItem = getChildren(container).first();
+  const topItem = items.first();
   await expect(topItem).toHaveText("0");
   expect(
     await (async () => {
@@ -88,7 +96,6 @@ test("sticky header and footer", async ({ page }) => {
   await scrollToBottom(scrollable);
 
   // check if the end is displayed
-  const items = getChildren(container);
   const bottomItem = items.last();
   await expect(bottomItem).toHaveText("999");
   expectInRange(
