@@ -1,8 +1,6 @@
-import { test, expect, Locator } from "@playwright/test";
+import { test, expect, Locator, Page } from "@playwright/test";
 import {
   storyUrl,
-  getFirstItem,
-  getLastItem,
   scrollToBottom,
   scrollToRight,
   approxymate,
@@ -23,11 +21,13 @@ import {
   relativeTop,
   relativeBottom,
   relativeLeft,
-  getChildren,
+  getItems,
   getComputedStyleValue,
   setRTL,
   setDisplayNone,
   getStyleValue,
+  findFirstVisibleItem,
+  findLastVisibleItem,
 } from "./utils";
 
 const isVerticalScrollBarVisible = async (e: Locator) => {
@@ -125,14 +125,17 @@ test.describe("smoke", () => {
     const component = await getScrollable(page);
 
     // check if start is displayed
-    const initialItem = await getFirstItem(component);
-    expect(initialItem.text).toEqual("0");
+    const initialItem = await findFirstVisibleItem(component);
+    const initialText = "0";
+    await expect(initialItem).toHaveText(initialText);
 
     // scroll to mid
     await scrollTo(component, 5000);
     await page.waitForTimeout(250);
-    const mountedItem = await getFirstItem(component);
-    expect(mountedItem.text).not.toEqual(initialItem.text);
+    const mountedItem = await findFirstVisibleItem(component);
+    await expect(mountedItem).not.toHaveText(initialText);
+    const mountedItemText = (await mountedItem.textContent())!;
+    const mountedItemTop = await relativeTop(component, mountedItem);
 
     // check if items are unmounted
     await page.getByRole("button", { name: "hide" }).click();
@@ -143,9 +146,11 @@ test.describe("smoke", () => {
     await page.getByRole("button", { name: "show" }).click();
     await page.waitForTimeout(250);
     const remountedComponent = await getScrollable(page);
-    const remountedItem = await getFirstItem(remountedComponent);
-    expect(remountedItem.text).toEqual(mountedItem.text);
-    expect(remountedItem.top).toEqual(mountedItem.top);
+    const remountedItem = await findFirstVisibleItem(remountedComponent);
+    await expect(remountedItem).toHaveText(mountedItemText);
+    expect(await relativeTop(remountedComponent, remountedItem)).toEqual(
+      mountedItemTop
+    );
   });
 });
 
@@ -161,8 +166,7 @@ test.describe("check if it works when children change", () => {
     for (let i = 0; i < 10; i++) {
       await updateButton.click();
     }
-    const topItem = await getFirstItem(component);
-    expect(topItem.text).not.toEqual("0");
+    await expect(getItems(component)).toHaveCount(0);
 
     // add
     await page.getByRole("radio", { name: "increase" }).click();
@@ -188,8 +192,8 @@ test.describe("check if it works when children change", () => {
 
     // scroll a lot
     await scrollToBottom(component);
-    const topItem = await getFirstItem(component);
-    expect(topItem.text).not.toEqual("0");
+    const topItem = await findFirstVisibleItem(component);
+    await expect(topItem!).not.toHaveText("0");
 
     // delete many
     await page.getByRole("radio", { name: "decrease" }).click();
@@ -314,68 +318,71 @@ test.describe("check if scroll jump compensation works", () => {
       getVirtualizer(page),
     ]);
 
-    expect(await getChildren(container).count()).toBeGreaterThanOrEqual(3);
+    expect(await getItems(container).count()).toBeGreaterThanOrEqual(3);
 
     const targetIndex = 1;
+    const targetText =
+      String(targetIndex) + "ResizeSmooth ScrollResize + Smooth Scroll";
     const marginTop = 100;
 
     const getTargetItem = () => {
-      return getChildren(container)
-        .filter({ hasText: String(targetIndex) + "Resize" })
-        .first();
-    };
-
-    const getResizeButton = async () => {
-      const button = getTargetItem().locator("button").first();
-      await expect(button).toHaveText("Resize");
-      return button;
-    };
-
-    const getTargetTop = async () => {
-      return getTargetItem().evaluate((e) => {
-        return (e as HTMLElement).offsetTop;
-      });
+      return getItems(container).filter({ hasText: targetText }).first();
     };
 
     // resize and check if jump compensation doesn't work
     // collapse -> expand
     for (let i = 0; i <= 1; i++) {
-      await scrollTo(component, (await getTargetTop()) + marginTop);
-      const initialItem = await getFirstItem(component);
-      expect(initialItem.top).toBeLessThan(0);
-      expect(initialItem.text).toContain(String(targetIndex));
+      await scrollTo(
+        component,
+        (await getTargetItem().evaluate((e) => (e as HTMLElement).offsetTop)) +
+          marginTop
+      );
+      const initialItem = await findFirstVisibleItem(component);
+      await expect(initialItem).toHaveText(targetText);
+      const initialItemTop = await relativeTop(component, initialItem);
+      expect(initialItemTop).toBeLessThan(0);
 
       await page.waitForTimeout(200);
-      await (await getResizeButton()).click();
+      await getTargetItem()
+        .locator("button")
+        .first()
+        .filter({ hasText: "Resize" })
+        .click();
+
       await (await getTargetItem().elementHandle())!.waitForElementState(
         "stable"
       );
-      const updatedItem = await getFirstItem(component);
-      expect(updatedItem.top).toEqual(initialItem.top);
-      expect(updatedItem.text).toContain(String(targetIndex));
+
+      const updatedItem = await findFirstVisibleItem(component);
+      await expect(updatedItem).toHaveText(targetText);
+      expect(await relativeTop(component, updatedItem)).toEqual(initialItemTop);
     }
   });
 
   test("resize at bottom", async ({ page, browserName }) => {
     await page.goto(storyUrl("advanced-collapse--two-stage-render"));
     const component = await getScrollable(page);
-    await page.waitForTimeout(500);
+    await expect(component.getByText("Delayed Content").first()).toBeVisible();
 
     // should reach to the bottom within the specified number of tries
     for (let i = 0; i <= 1; i++) {
       // scroll to bottom
       await scrollToBottom(component);
 
-      const prevBottomItem = getLastItem(component);
+      const prevBottom = await relativeBottom(
+        component,
+        await findLastVisibleItem(component)
+      );
 
       // wait for resize completed
       await page.waitForTimeout(500);
 
-      const bottomItem = getLastItem(component);
+      const bottom = await relativeBottom(
+        component,
+        await findLastVisibleItem(component)
+      );
 
       // check if distance from the bottom isn't changed by resizes
-      const prevBottom = (await prevBottomItem).bottom;
-      const bottom = (await bottomItem).bottom;
       if (
         browserName === "firefox"
           ? Math.abs(bottom - prevBottom) <= 2
@@ -396,63 +403,65 @@ test.describe("check if scroll jump compensation works", () => {
       getVirtualizer(page),
     ]);
 
-    expect(await getChildren(container).count()).toBeGreaterThanOrEqual(3);
+    expect(await getItems(container).count()).toBeGreaterThanOrEqual(3);
 
     const targetIndex = 1;
+    const targetText =
+      String(targetIndex) + "ResizeSmooth ScrollResize + Smooth Scroll";
 
     const getTargetItem = () => {
-      return getChildren(container)
-        .filter({ hasText: String(targetIndex) + "Resize" })
-        .first();
+      return getItems(container).filter({ hasText: targetText }).first();
     };
 
-    const getResizeAndScrollButton = async () => {
-      const button = getTargetItem().locator("button").last();
-      await expect(button).toHaveText("Resize + Smooth Scroll");
-      return button;
-    };
-
-    const getTargetBottom = async () => {
-      return getTargetItem().evaluate((e) => {
-        return (e as HTMLElement).offsetTop + e.getBoundingClientRect().height;
-      });
+    const getResizeAndScrollButton = () => {
+      return getTargetItem()
+        .locator("button")
+        .last()
+        .filter({ hasText: "Resize + Smooth Scroll" });
     };
 
     // scroll from the upper side
     // collapse -> expand
     for (let i = 0; i <= 1; i++) {
       await scrollTo(component, 0);
-      const initialItem = await getFirstItem(component);
-      expect(initialItem.top).toEqual(0);
-      expect(initialItem.text).not.toContain(String(targetIndex));
+      const initialItem = await findFirstVisibleItem(component);
+      const initialItemTop = await relativeTop(component, initialItem);
+      expect(initialItemTop).toEqual(0);
+      await expect(initialItem).not.toHaveText(targetText);
 
       await page.waitForTimeout(200);
       const scrollListener = listenScrollCount(component, 1000);
-      await (await getResizeAndScrollButton()).click();
+      await getResizeAndScrollButton().click();
       const called = await scrollListener;
       expect(called).toBeGreaterThanOrEqual(2);
-      const updatedItem = await getFirstItem(component);
-      expect(updatedItem.top).toEqual(0);
-      expect(updatedItem.text).toContain(String(targetIndex));
+      const updatedItem = await findFirstVisibleItem(component);
+      expect(await relativeTop(component, updatedItem)).toEqual(0);
+      await expect(updatedItem).toHaveText(targetText);
     }
 
     // scroll from the lower side
     // collapse -> expand
     for (let i = 0; i <= 1; i++) {
       // collapse
-      await scrollTo(component, await getTargetBottom());
-      const initialItem = await getFirstItem(component);
-      expect(initialItem.top).toEqual(0);
-      expect(initialItem.text).not.toContain(String(targetIndex));
+      await scrollTo(
+        component,
+        await getTargetItem().evaluate(
+          (e) => (e as HTMLElement).offsetTop + e.getBoundingClientRect().height
+        )
+      );
+      const initialItem = await findFirstVisibleItem(component);
+      const initialItemTop = await relativeTop(component, initialItem);
+      expect(initialItemTop).toEqual(0);
+      await expect(initialItem).not.toHaveText(targetText);
 
       await page.waitForTimeout(200);
       const scrollListener = listenScrollCount(component, 1000);
-      await (await getResizeAndScrollButton()).click();
+      await getResizeAndScrollButton().click();
       const called = await scrollListener;
       expect(called).toBeGreaterThanOrEqual(2);
-      const updatedItem = await getFirstItem(component);
-      expect(updatedItem.top).toEqual(0);
-      expect(updatedItem.text).toContain(String(targetIndex));
+      const updatedItem = await findFirstVisibleItem(component);
+      expect(await relativeTop(component, updatedItem)).toEqual(0);
+      await expect(updatedItem).toHaveText(targetText);
     }
   });
 
@@ -460,8 +469,10 @@ test.describe("check if scroll jump compensation works", () => {
     await page.goto(storyUrl("advanced-chat--default"));
     const component = await getScrollable(page);
     // check if end is displayed
-    const initialItem = await getLastItem(component);
-    expectInRange(initialItem.bottom, { min: 0, max: 1 });
+    const initialItem = await findLastVisibleItem(component);
+    const initialItemBottom = await relativeBottom(component, initialItem);
+    const initialItemText = (await initialItem.textContent())!;
+    expectInRange(initialItemBottom, { min: 0, max: 1 });
 
     await clearTimer(page);
 
@@ -470,11 +481,15 @@ test.describe("check if scroll jump compensation works", () => {
 
     // append small item
     await button.click();
-    await (await component.elementHandle())!.waitForElementState("stable");
 
-    const smallItem = await getLastItem(component);
-    expect(smallItem.text).not.toEqual(initialItem.text);
-    expectInRange(smallItem.bottom, { min: 0, max: 1 });
+    const smallItem = await findLastVisibleItem(component);
+    await expect(smallItem).not.toHaveText(initialItemText);
+    expectInRange(await relativeBottom(component, smallItem), {
+      min: 0,
+      max: 1,
+    });
+    const smallItemText = (await smallItem.textContent())!;
+    const smallItemHeight = (await smallItem.boundingBox())!.height;
 
     // append large item
     await textarea.clear();
@@ -483,10 +498,16 @@ test.describe("check if scroll jump compensation works", () => {
     );
     await button.click();
     await (await component.elementHandle())!.waitForElementState("stable");
-    const largeItem = await getLastItem(component);
-    expect(largeItem.text).not.toEqual(smallItem.text);
-    expectInRange(largeItem.bottom, { min: 0, max: 1 });
-    expect(largeItem.height).toBeGreaterThan(smallItem.height * 10);
+
+    const largeItem = await findLastVisibleItem(component);
+    await expect(largeItem).not.toHaveText(smallItemText);
+    expectInRange(await relativeBottom(component, largeItem), {
+      min: 0,
+      max: 1,
+    });
+    expect((await largeItem.boundingBox())!.height).toBeGreaterThan(
+      smallItemHeight * 10
+    );
   });
 
   test("dynamic image", async ({ page, browserName }) => {
@@ -497,17 +518,23 @@ test.describe("check if scroll jump compensation works", () => {
     const nearlyZeroMax = browserName === "firefox" ? 2 : 1;
 
     // check if start is displayed
-    expectInRange((await getFirstItem(component)).top, {
-      min: 0,
-      max: nearlyZeroMax,
-    });
+    expectInRange(
+      await relativeTop(component, await findFirstVisibleItem(component)),
+      {
+        min: 0,
+        max: nearlyZeroMax,
+      }
+    );
 
     // check if stable after image load
     await page.waitForTimeout(3000);
-    expectInRange((await getFirstItem(component)).top, {
-      min: 0,
-      max: nearlyZeroMax,
-    });
+    expectInRange(
+      await relativeTop(component, await findFirstVisibleItem(component)),
+      {
+        min: 0,
+        max: nearlyZeroMax,
+      }
+    );
 
     // scroll to top
     await scrollTo(component, 0);
@@ -545,10 +572,13 @@ test.describe("check if scroll jump compensation works", () => {
     });
 
     // check if stable after prepending
-    expectInRange((await getFirstItem(component)).top, {
-      min: 0,
-      max: nearlyZeroMax,
-    });
+    expectInRange(
+      await relativeTop(component, await findFirstVisibleItem(component)),
+      {
+        min: 0,
+        max: nearlyZeroMax,
+      }
+    );
   });
 });
 
@@ -844,8 +874,6 @@ test.describe("check if scrollTo works", () => {
     await input.fill("5000");
     await button.click();
 
-    await (await component.elementHandle())!.waitForElementState("stable");
-
     expect(
       // scrollTo may not scroll to exact position with dynamic sized items
       approxymate(await getScrollTop(component))
@@ -912,23 +940,24 @@ test.describe("check if item shift compensation works", () => {
     await scrollBy(component, 400);
     await page.waitForTimeout(500);
 
-    const topItem = await getFirstItem(component);
-    expect(topItem.text).not.toEqual("0");
-    expect(topItem.text.length).toBeLessThanOrEqual(2);
+    const topItem = await findFirstVisibleItem(component);
+    await expect(topItem).not.toHaveText("0");
+    const topItemTop = await relativeTop(component, topItem);
+    expect((await topItem.textContent())!.length).toBeLessThanOrEqual(2);
 
     // add
     await page.getByRole("radio", { name: "increase" }).click();
     await updateButton.click();
     await page.waitForTimeout(100);
     // check if visible item is keeped
-    expect(topItem).toEqual(await getFirstItem(component));
+    expect(await relativeTop(component, topItem)).toEqual(topItemTop);
 
     // remove
     await page.getByRole("radio", { name: "decrease" }).click();
     await updateButton.click();
     await page.waitForTimeout(100);
     // check if visible item is keeped
-    expect(topItem).toEqual(await getFirstItem(component));
+    expect(await relativeTop(component, topItem)).toEqual(topItemTop);
   });
 
   test("keep start at mid when add to/remove from start", async ({ page }) => {
@@ -943,9 +972,10 @@ test.describe("check if item shift compensation works", () => {
     await scrollBy(component, 800);
     await page.waitForTimeout(500);
 
-    const topItem = await getFirstItem(component);
-    expect(topItem.text).not.toEqual("0");
-    expect(topItem.text.length).toBeLessThanOrEqual(2);
+    const topItem = await findFirstVisibleItem(component);
+    await expect(topItem).not.toHaveText("0");
+    const topItemTop = await relativeTop(component, topItem);
+    expect((await topItem.textContent())!.length).toBeLessThanOrEqual(2);
 
     // add
     await page.getByRole("checkbox", { name: "prepend" }).click();
@@ -953,14 +983,14 @@ test.describe("check if item shift compensation works", () => {
     await updateButton.click();
     await page.waitForTimeout(100);
     // check if visible item is keeped
-    expect(topItem).toEqual(await getFirstItem(component));
+    expect(await relativeTop(component, topItem)).toEqual(topItemTop);
 
     // remove
     await page.getByRole("radio", { name: "decrease" }).click();
     await updateButton.click();
     await page.waitForTimeout(100);
     // check if visible item is keeped
-    expect(topItem).toEqual(await getFirstItem(component));
+    expect(await relativeTop(component, topItem)).toEqual(topItemTop);
   });
 
   test("prepending when total height is lower than viewport height", async ({
@@ -978,7 +1008,7 @@ test.describe("check if item shift compensation works", () => {
     const valueInput = page.getByRole("spinbutton");
     const updateButton = page.getByRole("button", { name: "update" });
 
-    const initialLength = await getChildren(container).count();
+    const initialLength = await getItems(container).count();
     expect(initialLength).toBeGreaterThan(1);
 
     let i = 0;
@@ -990,22 +1020,24 @@ test.describe("check if item shift compensation works", () => {
       // preprend
       await increaseRadio.click();
       await updateButton.click();
-      await (await component.elementHandle())!.waitForElementState("stable");
 
-      const items = getChildren(container);
-      const childrenCount = await items.count();
+      const items = getItems(container);
+
+      // Check if all items are visible
+      await expect(items).toHaveCount(i + initialLength);
+
       const isScrollBarVisible = await isVerticalScrollBarVisible(component);
       const itemTop = await relativeTop(component, items.first());
 
-      // Check if all items are visible
-      expect(childrenCount).toBe(i + initialLength);
-
       if (isScrollBarVisible) {
         // Check if sticked to bottom
-        expectInRange((await getLastItem(component)).bottom, {
-          min: browserName === "firefox" ? -0.45 : -0.1,
-          max: 0.1,
-        });
+        expectInRange(
+          await relativeBottom(component, await findLastVisibleItem(component)),
+          {
+            min: browserName === "firefox" ? -0.45 : -0.1,
+            max: 0.1,
+          }
+        );
         break;
       } else {
         // Check if top is always visible and on top
@@ -1037,7 +1069,7 @@ test.describe("check if item shift compensation works", () => {
     const valueInput = page.getByRole("spinbutton");
     const updateButton = page.getByRole("button", { name: "update" });
 
-    const initialLength = await getChildren(container).count();
+    const initialLength = await getItems(container).count();
     expect(initialLength).toBeGreaterThan(1);
 
     let i = 0;
@@ -1049,16 +1081,14 @@ test.describe("check if item shift compensation works", () => {
       // preprend
       await increaseRadio.click();
       await updateButton.click();
-      await (await component.elementHandle())!.waitForElementState("stable");
 
-      const items = getChildren(container);
-      const childrenCount = await items.count();
+      const items = getItems(container);
+
+      // Check if all items are visible
+      await expect(items).toHaveCount(i + initialLength);
 
       const isScrollBarVisible = await isVerticalScrollBarVisible(component);
       const itemBottom = await relativeBottom(component, items.last());
-
-      // Check if all items are visible
-      expect(childrenCount).toBe(i + initialLength);
 
       if (isScrollBarVisible) {
         // Check if sticked to bottom
@@ -1119,7 +1149,7 @@ test.describe("check if item shift compensation works", () => {
       const isScrollBarVisible = await isVerticalScrollBarVisible(component);
       const itemBottom = await relativeBottom(
         component,
-        getChildren(container).last()
+        getItems(container).last()
       );
 
       // Check if bottom is always visible and on bottom
@@ -1141,12 +1171,14 @@ test.describe("check if item shift compensation works", () => {
 
   test("check if prepending cancels imperative scroll", async ({ page }) => {
     await page.goto(storyUrl("advanced-chat--default"));
+    await clearTimer(page);
+
     const component = await getScrollable(page);
     // check if end is displayed
-    const initialItem = await getLastItem(component);
-    expectInRange(initialItem.bottom, { min: 0, max: 1 });
-
-    await clearTimer(page);
+    expectInRange(
+      await relativeBottom(component, await findLastVisibleItem(component)),
+      { min: 0, max: 1 }
+    );
 
     const scrollListener = listenScrollCount(component);
 
@@ -1211,11 +1243,17 @@ test.describe("SSR and hydration", () => {
 
     const component = await getScrollable(page);
 
-    const first = await getFirstItem(component);
-    const last = await getLastItem(component);
+    const firstTop = await relativeTop(
+      component,
+      await findFirstVisibleItem(component)
+    );
+    const lastBottom = await relativeBottom(
+      component,
+      await findLastVisibleItem(component)
+    );
 
     // check if SSR suceeded
-    const items = getChildren(component);
+    const items = getItems(component);
     const initialLength = await items.count();
     expect(initialLength).toBeGreaterThanOrEqual(30);
     await expect(items.first()).toHaveText("0");
@@ -1225,7 +1263,7 @@ test.describe("SSR and hydration", () => {
 
     // should not change state with scroll before hydration
     await scrollTo(component, 1000);
-    await expect(getChildren(component)).toHaveCount(initialLength);
+    await expect(getItems(component)).toHaveCount(initialLength);
     await page.waitForTimeout(500);
     await scrollTo(component, 0);
 
@@ -1233,16 +1271,20 @@ test.describe("SSR and hydration", () => {
     await page.getByRole("button", { name: "hydrate" }).click();
 
     // check if hydration suceeded but state is not changed
-    await expect(getChildren(component)).toHaveCount(initialLength);
-    expect((await getFirstItem(component)).top).toBe(first.top);
-    expect((await getLastItem(component)).bottom).toBe(last.bottom);
+    await expect(getItems(component)).toHaveCount(initialLength);
+    expect(
+      await relativeTop(component, await findFirstVisibleItem(component))
+    ).toBe(firstTop);
+    expect(
+      await relativeBottom(component, await findLastVisibleItem(component))
+    ).toBe(lastBottom);
     // check if items do not have styles for SSR
     expect(await getStyleValue(items.first(), "position")).toBe("absolute");
 
     // should change state with scroll after hydration
     await scrollTo(component, 1000);
     await page.waitForTimeout(500);
-    await expect(getChildren(component)).not.toHaveCount(initialLength);
+    await expect(getItems(component)).not.toHaveCount(initialLength);
   });
 
   test("check if smooth scrolling works after hydration", async ({ page }) => {
@@ -1261,11 +1303,19 @@ test.describe("SSR and hydration", () => {
     await page.getByRole("button", { name: "hydrate" }).click();
 
     await page.waitForTimeout(1000);
-    expect((await getFirstItem(component)).text).toEqual("100");
+    expect(await (await findFirstVisibleItem(component)).textContent()).toEqual(
+      "100"
+    );
   });
 });
 
 test.describe("emulated iOS WebKit", () => {
+  const getWindowSize = (page: Page) => {
+    return page.evaluate(
+      () => [window.outerWidth, window.outerHeight] as const
+    );
+  };
+
   test.describe("check if scroll jump compensation works", () => {
     test("scroll with touch", async ({ page }) => {
       await page.goto(storyUrl("basics-vlist--default"));
@@ -1273,16 +1323,13 @@ test.describe("emulated iOS WebKit", () => {
       const component = await getScrollable(page);
 
       // check if first is displayed
-      const last = await getFirstItem(component);
-      expect(last.text).toEqual("0");
-      expect(last.top).toEqual(0);
+      const last = component.getByText("0", { exact: true });
+      await expect(last).toBeVisible();
+      expect(await relativeTop(component, last)).toEqual(0);
 
       await component.tap();
 
-      const [w, h] = await page.evaluate(() => [
-        window.outerWidth,
-        window.outerHeight,
-      ]);
+      const [w, h] = await getWindowSize(page);
       const centerX = w / 2;
       const centerY = h / 2;
 
@@ -1296,23 +1343,27 @@ test.describe("emulated iOS WebKit", () => {
         });
 
         // check if item position is preserved during flush
-        const [/*nextTopBeforeFlush,*/ nextLastItemBeforeFlush] =
-          await Promise.all([
-            // getScrollTop(component),
-            getFirstItem(component),
-          ]);
+        // const nextTopBeforeFlush = await getScrollTop(component);
+        const nextLastItemBeforeFlush = await findFirstVisibleItem(component);
+        const nextLastItemBeforeFlushText =
+          (await nextLastItemBeforeFlush.textContent())!;
+        const nextLastItemBeforeFlushTop = await relativeTop(
+          component,
+          nextLastItemBeforeFlush
+        );
         await page.waitForTimeout(500);
-        const [nextTop, nextLastItem] = await Promise.all([
-          getScrollTop(component),
-          getFirstItem(component),
-        ]);
+        const nextLastItem = await findFirstVisibleItem(component);
+        await expect(nextLastItem).toHaveText(nextLastItemBeforeFlushText);
+        expect(
+          Math.abs(
+            (await relativeTop(component, nextLastItem)) -
+              nextLastItemBeforeFlushTop
+          ) // FIXME: may not be 0 in Safari
+        ).toBeLessThanOrEqual(1);
 
+        const nextTop = await getScrollTop(component);
         expect(nextTop).toBeGreaterThan(top);
         // expect(nextTop).not.toBe(nextTopBeforeFlush);
-        expect(nextLastItem.text).toEqual(nextLastItemBeforeFlush.text);
-        expect(
-          Math.abs(nextLastItem.top - nextLastItemBeforeFlush.top) // FIXME: may not be 0 in Safari
-        ).toBeLessThanOrEqual(1);
 
         top = nextTop;
       }
@@ -1333,10 +1384,7 @@ test.describe("emulated iOS WebKit", () => {
 
     //   await component.tap();
 
-    //   const [w, h] = await page.evaluate(() => [
-    //     window.outerWidth,
-    //     window.outerHeight,
-    //   ]);
+    //   const [w, h] = await getWindowSize(page);
     //   const centerX = w / 2;
     //   const centerY = h / 2;
 
@@ -1387,10 +1435,7 @@ test.describe("emulated iOS WebKit", () => {
 
     //   await component.tap();
 
-    //   const [w, h] = await page.evaluate(() => [
-    //     window.outerWidth,
-    //     window.outerHeight,
-    //   ]);
+    //   const [w, h] = await getWindowSize(page);
     //   const centerX = w / 2;
     //   const centerY = h / 2;
 

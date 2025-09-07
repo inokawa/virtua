@@ -1,6 +1,6 @@
 import { Locator, Page, expect } from "@playwright/test";
 
-export const storyUrl = (id: string) =>
+export const storyUrl = (id: `${string}-${string}--${string}`) =>
   `http://localhost:6006/iframe.html?id=${id}&viewMode=story`;
 
 export const setRTL = async (page: Page) => {
@@ -9,12 +9,15 @@ export const setRTL = async (page: Page) => {
   });
 };
 
-export const getScrollable = async (page: Page) => {
+declare const scrollableSymbol: unique symbol;
+type ScrollableLocator = Locator & { [scrollableSymbol]: never };
+
+export const getScrollable = async (page: Page): Promise<ScrollableLocator> => {
   const locator = page.locator(
     '*[style*="overflow-y: auto"],*[style*="overflow-y:auto"],*[style*="overflow-x: auto"],*[style*="overflow-x:auto"],*[style*="overflow: auto"],*[style*="overflow:auto"]'
   );
   await locator.waitFor();
-  return locator;
+  return locator as ScrollableLocator;
 };
 
 export const getVirtualizer = async (page: Page) => {
@@ -24,7 +27,7 @@ export const getVirtualizer = async (page: Page) => {
   return locator;
 };
 
-export const getChildren = (locator: Locator) => {
+export const getItems = (locator: Locator) => {
   return locator.locator('*[style*="top"],*[style*="left"]');
 };
 
@@ -106,51 +109,53 @@ export const getComputedStyleValue = <T extends keyof CSSStyleDeclaration>(
   return locator.evaluate((e, key) => getComputedStyle(e)[key], key);
 };
 
-export const getFirstItem = (scrollable: Locator) => {
-  return scrollable.evaluate((s) => {
-    const rect = s.getBoundingClientRect();
-    const el = document.elementFromPoint(rect.left + 2, rect.top + 2)!;
-    const elRect = el.getBoundingClientRect();
-    return {
-      text: el.textContent!,
-      top: elRect.top - rect.top,
-      left: elRect.left - rect.left,
-    };
-  });
+const isPointedLocator = (loc: Locator, x: number, y: number) => {
+  return loc.evaluate(
+    (e, [x, y]) => {
+      const pointed = document.elementFromPoint(x, y);
+      return !!pointed && (e === pointed || e.contains(pointed));
+    },
+    [x, y]
+  );
 };
 
-export const getLastItem = (
-  scrollable: Locator,
-  offset: { x?: number; y?: number } = {}
-) => {
-  return scrollable.evaluate((s, { x: offsetX = 2, y: offsetY = 2 }) => {
-    const rect = s.getBoundingClientRect();
-    const el = document.elementFromPoint(
-      rect.left + offsetX,
-      rect.bottom - offsetY
-    )!;
-    const elRect = el.getBoundingClientRect();
-    return {
-      text: el.textContent!,
-      bottom: elRect.bottom - rect.bottom,
-      height: elRect.height,
-    };
-  }, offset);
+export const findFirstVisibleItem = async (scrollable: ScrollableLocator) => {
+  const { x, y } = (await scrollable.boundingBox())!;
+  const all = await getItems(scrollable).all();
+  for (let i = 0; i < all.length; i++) {
+    const loc = all[i];
+    if (await isPointedLocator(loc, x + 2, y + 2)) {
+      return loc;
+    }
+  }
+  throw new Error("locator not found");
 };
 
-export const getScrollTop = (scrollable: Locator) => {
+export const findLastVisibleItem = async (scrollable: ScrollableLocator) => {
+  const { x, y, height } = (await scrollable.boundingBox())!;
+  const all = await getItems(scrollable).all();
+  for (let i = all.length - 1; i >= 0; i--) {
+    const loc = all[i];
+    if (await isPointedLocator(loc, x + 2, y + height - 2)) {
+      return loc;
+    }
+  }
+  throw new Error("locator not found");
+};
+
+export const getScrollTop = (scrollable: ScrollableLocator) => {
   return scrollable.evaluate((e) => e.scrollTop);
 };
 
-export const getScrollBottom = (scrollable: Locator) => {
+export const getScrollBottom = (scrollable: ScrollableLocator) => {
   return scrollable.evaluate((e) => e.scrollHeight - e.scrollTop);
 };
 
-export const getScrollLeft = (scrollable: Locator) => {
+export const getScrollLeft = (scrollable: ScrollableLocator) => {
   return scrollable.evaluate((e) => e.scrollLeft);
 };
 
-export const getScrollRight = (scrollable: Locator) => {
+export const getScrollRight = (scrollable: ScrollableLocator) => {
   return scrollable.evaluate((e) => e.scrollWidth - e.scrollLeft);
 };
 
@@ -170,13 +175,13 @@ export const getWindowScrollRight = (page: Page) => {
   return page.evaluate(() => document.body.scrollWidth - window.scrollX);
 };
 
-export const scrollTo = (scrollable: Locator, offset: number) => {
+export const scrollTo = (scrollable: ScrollableLocator, offset: number) => {
   return scrollable.evaluate((e, offset) => {
     e.scrollTop = offset;
   }, offset);
 };
 
-export const scrollBy = (scrollable: Locator, offset: number) => {
+export const scrollBy = (scrollable: ScrollableLocator, offset: number) => {
   return scrollable.evaluate((e, offset) => {
     e.scrollTop += offset;
   }, offset);
@@ -188,7 +193,9 @@ export const windowScrollBy = (page: Page, offset: number) => {
   }, offset);
 };
 
-export const scrollToBottom = (scrollable: Locator): Promise<void> => {
+export const scrollToBottom = (
+  scrollable: ScrollableLocator
+): Promise<void> => {
   return scrollable.evaluate((e) => {
     return new Promise<void>((resolve) => {
       let timer: ReturnType<typeof setTimeout> | null = null;
@@ -215,7 +222,9 @@ export const scrollToBottom = (scrollable: Locator): Promise<void> => {
   });
 };
 
-export const scrollToRight = async (scrollable: Locator): Promise<void> => {
+export const scrollToRight = async (
+  scrollable: ScrollableLocator
+): Promise<void> => {
   return scrollable.evaluate((e) => {
     return new Promise<void>((resolve) => {
       let timer: ReturnType<typeof setTimeout> | null = null;
@@ -242,7 +251,7 @@ export const scrollToRight = async (scrollable: Locator): Promise<void> => {
   });
 };
 
-export const scrollToLeft = async (scrollable: Locator) => {
+export const scrollToLeft = async (scrollable: ScrollableLocator) => {
   return scrollable.evaluate((e) => {
     return new Promise<void>((resolve) => {
       let timer: ReturnType<typeof setTimeout> | null = null;
@@ -357,7 +366,7 @@ export const windowScrollToLeft = async (page: Page) => {
 };
 
 export const scrollWithTouch = (
-  scrollable: Locator,
+  scrollable: ScrollableLocator,
   target: {
     fromX: number;
     toX: number;
@@ -468,7 +477,7 @@ export const scrollWithTouch = (
 };
 
 export const listenScrollCount = (
-  component: Locator,
+  component: ScrollableLocator,
   timeout = 2000
 ): Promise<number> => {
   return component.evaluate((c, t) => {
