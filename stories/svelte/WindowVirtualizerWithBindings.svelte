@@ -37,8 +37,10 @@
 	<input type="number" bind:value={index} min={0} />
 	<button
 		onclick={(e) => {
-			const itemSize = scroller?.$scrollToIndex(index);
-			console.log(itemSize);
+			scroller?.$scrollToIndex(index - 1, {
+				align: 'start',
+				smooth: true,
+			});
 		}}
 	>
 		Scroll to {index}
