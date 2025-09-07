@@ -16,13 +16,10 @@ import {
   windowBottom,
   relativeTop,
   getChildren,
-  getStyleValue,
+  getComputedStyleValue,
   setRTL,
+  setDisplayNone,
 } from "./utils";
-
-const windowInnerHeight = (page: Page) => {
-  return page.evaluate(() => window.innerHeight);
-};
 
 const isVerticalScrollBarVisible = async (page: Page) => {
   return page.evaluate(() => document.body.scrollHeight > window.innerHeight);
@@ -76,11 +73,11 @@ test.describe("smoke", () => {
 
     const component = await getVirtualizer(page);
 
-    const initialTotalHeight = await getStyleValue(component, "height");
+    const initialTotalHeight = await getComputedStyleValue(component, "height");
 
-    await component.evaluate((s) => (s.style.display = "none"));
+    await setDisplayNone(component);
 
-    const changedTotalHeight = await getStyleValue(component, "height");
+    const changedTotalHeight = await getComputedStyleValue(component, "height");
 
     expect(initialTotalHeight).toBeTruthy();
     expect(initialTotalHeight).toEqual(changedTotalHeight);
@@ -319,8 +316,7 @@ test.describe("check if item shift compensation works", () => {
 
       const items = getChildren(container);
       const childrenCount = await items.count();
-      const firstItemRect = (await items.first().boundingBox())!;
-      const firstItemRectTop = firstItemRect.y;
+      const firstItemRectTop = await windowTop(items.first());
       const isScrollBarVisible = await isVerticalScrollBarVisible(page);
 
       // Check if all items are visible
@@ -378,12 +374,9 @@ test.describe("check if item shift compensation works", () => {
       i++;
       await updateButton.click();
 
-      const lastItemRect = (await getChildren(container).last().boundingBox())!;
-      const lastItemRectBottom = lastItemRect.y + lastItemRect.height;
-      const windowBottom = await windowInnerHeight(page);
       const isScrollBarVisible = await isVerticalScrollBarVisible(page);
 
-      const itemBottom = lastItemRectBottom - windowBottom;
+      const itemBottom = await windowBottom(getChildren(container).last());
 
       if (!isScrollBarVisible) {
         break;

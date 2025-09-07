@@ -24,8 +24,10 @@ import {
   relativeBottom,
   relativeLeft,
   getChildren,
-  getStyleValue,
+  getComputedStyleValue,
   setRTL,
+  setDisplayNone,
+  getStyleValue,
 } from "./utils";
 
 const isVerticalScrollBarVisible = async (e: Locator) => {
@@ -85,11 +87,11 @@ test.describe("smoke", () => {
 
     const component = await getVirtualizer(page);
 
-    const initialTotalHeight = await getStyleValue(component, "height");
+    const initialTotalHeight = await getComputedStyleValue(component, "height");
 
-    await component.evaluate((s) => (s.style.display = "none"));
+    await setDisplayNone(component);
 
-    const changedTotalHeight = await getStyleValue(component, "height");
+    const changedTotalHeight = await getComputedStyleValue(component, "height");
 
     expect(initialTotalHeight).toBeTruthy();
     expect(initialTotalHeight).toEqual(changedTotalHeight);
@@ -992,13 +994,8 @@ test.describe("check if item shift compensation works", () => {
 
       const items = getChildren(container);
       const childrenCount = await items.count();
-      const firstItemRect = (await items.first().boundingBox())!;
-      const firstItemRectTop = firstItemRect.y;
-
       const isScrollBarVisible = await isVerticalScrollBarVisible(component);
-      const scrollableRectTop = (await component.boundingBox())!.y;
-
-      const itemTop = firstItemRectTop - scrollableRectTop;
+      const itemTop = await relativeTop(component, items.first());
 
       // Check if all items are visible
       expect(childrenCount).toBe(i + initialLength);
@@ -1056,13 +1053,9 @@ test.describe("check if item shift compensation works", () => {
 
       const items = getChildren(container);
       const childrenCount = await items.count();
-      const lastItemRect = (await items.last().boundingBox())!;
-      const lastItemRectBottom = lastItemRect.y + lastItemRect.height;
 
       const isScrollBarVisible = await isVerticalScrollBarVisible(component);
-      const scrollableRect = (await component.boundingBox())!;
-      const scrollableRectBottom = scrollableRect.y + scrollableRect.height;
-      const itemBottom = lastItemRectBottom - scrollableRectBottom;
+      const itemBottom = await relativeBottom(component, items.last());
 
       // Check if all items are visible
       expect(childrenCount).toBe(i + initialLength);
@@ -1070,8 +1063,8 @@ test.describe("check if item shift compensation works", () => {
       if (isScrollBarVisible) {
         // Check if sticked to bottom
         expectInRange(itemBottom, {
-          min: browserName === "firefox" ? -0.45 : -0.1,
-          max: 0.1,
+          min: -0.1,
+          max: browserName === "firefox" ? 0.45 : 0.1,
         });
         break;
       } else {
@@ -1123,17 +1116,16 @@ test.describe("check if item shift compensation works", () => {
       i++;
       await updateButton.click();
 
-      const lastItemRect = (await getChildren(container).last().boundingBox())!;
-      const lastItemRectBottom = lastItemRect.y + lastItemRect.height;
       const isScrollBarVisible = await isVerticalScrollBarVisible(component);
-      const scrollableRect = (await component.boundingBox())!;
-      const scrollableRectBottom = scrollableRect.y + scrollableRect.height;
-      const itemBottom = lastItemRectBottom - scrollableRectBottom;
+      const itemBottom = await relativeBottom(
+        component,
+        getChildren(container).last()
+      );
 
       // Check if bottom is always visible and on bottom
       expectInRange(itemBottom, {
-        min: -0.5,
-        max: browserName === "firefox" ? 0.6 : 0.50001,
+        min: browserName === "firefox" ? -0.6 : -0.50001,
+        max: 0.5,
       });
 
       if (!isScrollBarVisible) {
@@ -1229,15 +1221,13 @@ test.describe("SSR and hydration", () => {
     await expect(items.first()).toHaveText("0");
     await expect(items.last()).toHaveText(String(initialLength - 1));
     // check if items have styles for SSR
-    expect(await items.first().evaluate((e) => e.style.position)).not.toBe(
-      "absolute"
-    );
+    expect(await getStyleValue(items.first(), "position")).not.toBe("absolute");
 
     // should not change state with scroll before hydration
-    await component.evaluate((e) => e.scrollTo({ top: 1000 }));
+    await scrollTo(component, 1000);
     await expect(getChildren(component)).toHaveCount(initialLength);
     await page.waitForTimeout(500);
-    await component.evaluate((e) => e.scrollTo({ top: 0 }));
+    await scrollTo(component, 0);
 
     // hydrate
     await page.getByRole("button", { name: "hydrate" }).click();
@@ -1247,12 +1237,10 @@ test.describe("SSR and hydration", () => {
     expect((await getFirstItem(component)).top).toBe(first.top);
     expect((await getLastItem(component)).bottom).toBe(last.bottom);
     // check if items do not have styles for SSR
-    expect(await items.first().evaluate((e) => e.style.position)).toBe(
-      "absolute"
-    );
+    expect(await getStyleValue(items.first(), "position")).toBe("absolute");
 
     // should change state with scroll after hydration
-    await component.evaluate((e) => e.scrollTo({ top: 1000 }));
+    await scrollTo(component, 1000);
     await page.waitForTimeout(500);
     await expect(getChildren(component)).not.toHaveCount(initialLength);
   });
@@ -1267,7 +1255,7 @@ test.describe("SSR and hydration", () => {
     await page.getByRole("checkbox", { name: "smooth" }).check();
 
     // set scroll index to 100
-    await page.locator("input[type=number]").fill("100");
+    await page.getByRole("spinbutton").fill("100");
 
     // hydrate
     await page.getByRole("button", { name: "hydrate" }).click();

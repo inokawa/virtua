@@ -7,6 +7,8 @@ import {
   getVirtualizer,
   getChildren,
   getStyleValue,
+  relativeBottom,
+  relativeTop,
 } from "./utils";
 
 test("header and footer", async ({ page }) => {
@@ -35,13 +37,7 @@ test("header and footer", async ({ page }) => {
   // check if start is displayed
   const topItem = items.first();
   await expect(topItem).toHaveText("0");
-  expect(
-    await (async () => {
-      const rootRect = (await scrollable.boundingBox())!;
-      const itemRect = (await topItem.boundingBox())!;
-      return itemRect.y - rootRect.y;
-    })()
-  ).toEqual(topPadding);
+  expect(await relativeTop(scrollable, topItem)).toEqual(topPadding);
 
   // scroll to the end
   await scrollToBottom(scrollable);
@@ -49,13 +45,7 @@ test("header and footer", async ({ page }) => {
   // check if the end is displayed
   const bottomItem = items.last();
   await expect(bottomItem).toHaveText("999");
-  expect(
-    await (async () => {
-      const rootRect = (await scrollable.boundingBox())!;
-      const itemRect = (await bottomItem.boundingBox())!;
-      return rootRect.y + rootRect.height - (itemRect.y + itemRect.height);
-    })()
-  ).toEqual(bottomPadding);
+  expect(await relativeBottom(scrollable, bottomItem)).toEqual(bottomPadding);
 });
 
 test("sticky header and footer", async ({ page }) => {
@@ -84,13 +74,7 @@ test("sticky header and footer", async ({ page }) => {
   // check if start is displayed
   const topItem = items.first();
   await expect(topItem).toHaveText("0");
-  expect(
-    await (async () => {
-      const rootRect = (await scrollable.boundingBox())!;
-      const itemRect = (await topItem.boundingBox())!;
-      return itemRect.y - rootRect.y;
-    })()
-  ).toEqual(topPadding);
+  expect(await relativeTop(scrollable, topItem)).toEqual(topPadding);
 
   // scroll to the end
   await scrollToBottom(scrollable);
@@ -98,12 +82,8 @@ test("sticky header and footer", async ({ page }) => {
   // check if the end is displayed
   const bottomItem = items.last();
   await expect(bottomItem).toHaveText("999");
-  expectInRange(
-    await (async () => {
-      const rootRect = (await scrollable.boundingBox())!;
-      const itemRect = (await bottomItem.boundingBox())!;
-      return rootRect.y + rootRect.height - (itemRect.y + itemRect.height);
-    })(),
-    { min: bottomPadding, max: bottomPadding + 1 }
-  );
+  expectInRange(await relativeBottom(scrollable, bottomItem), {
+    min: bottomPadding,
+    max: bottomPadding + 1,
+  });
 });

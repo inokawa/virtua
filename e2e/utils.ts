@@ -1,4 +1,4 @@
-import { ElementHandle, Locator, Page, expect } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 
 export const storyUrl = (id: string) =>
   `http://localhost:6006/iframe.html?id=${id}&viewMode=story`;
@@ -77,20 +77,33 @@ export const relativeLeft = async (parent: Locator, child: Locator) => {
 export const relativeBottom = async (parent: Locator, child: Locator) => {
   const { y: pY, height: pHeight } = (await parent.boundingBox())!;
   const { y: cY, height: cHeight } = (await child.boundingBox())!;
-  return cY + cHeight - (pY + pHeight);
+  return pY + pHeight - (cY + cHeight);
 };
 
 export const relativeRight = async (parent: Locator, child: Locator) => {
   const { x: pX, width: pWidth } = (await parent.boundingBox())!;
   const { x: cX, width: cWidth } = (await child.boundingBox())!;
-  return cX + cWidth - (pX + pWidth);
+  return pX + pWidth - (cX + cWidth);
+};
+
+export const setDisplayNone = (component: Locator) => {
+  return component.evaluate((s) => {
+    s.style.display = "none";
+  });
 };
 
 export const getStyleValue = <T extends keyof CSSStyleDeclaration>(
   locator: Locator,
   key: T
 ) => {
-  return locator.evaluate((s, key) => getComputedStyle(s)[key], key);
+  return locator.evaluate((e, key) => e.style[key], key);
+};
+
+export const getComputedStyleValue = <T extends keyof CSSStyleDeclaration>(
+  locator: Locator,
+  key: T
+) => {
+  return locator.evaluate((e, key) => getComputedStyle(e)[key], key);
 };
 
 export const getFirstItem = (scrollable: Locator) => {
