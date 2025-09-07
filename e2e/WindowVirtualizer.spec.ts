@@ -15,7 +15,7 @@ import {
   windowTop,
   windowBottom,
   relativeTop,
-  getChildren,
+  getItems,
   getComputedStyleValue,
   setRTL,
   setDisplayNone,
@@ -215,7 +215,7 @@ test.describe("check if item shift compensation works", () => {
 
     const component = await getVirtualizer(page);
 
-    const topItem = getChildren(component).first();
+    const topItem = getItems(component).first();
     const topItemText = (await topItem.textContent())!;
     const topItemTop = await windowTop(topItem);
     expect(topItemText).not.toBe("0");
@@ -225,7 +225,7 @@ test.describe("check if item shift compensation works", () => {
     await page.getByRole("radio", { name: "increase" }).click();
     await updateButton.click();
     // check if visible item is keeped
-    const topItem2 = getChildren(component).first();
+    const topItem2 = getItems(component).first();
     await expect(topItem2).toHaveText(topItemText);
     expect(await windowTop(topItem2)).toBe(topItemTop);
 
@@ -233,7 +233,7 @@ test.describe("check if item shift compensation works", () => {
     await page.getByRole("radio", { name: "decrease" }).click();
     await updateButton.click();
     // check if visible item is keeped
-    const topItem3 = getChildren(component).first();
+    const topItem3 = getItems(component).first();
     await expect(topItem3).toHaveText(topItemText);
     expect(await windowTop(topItem3)).toBe(topItemTop);
   });
@@ -250,7 +250,7 @@ test.describe("check if item shift compensation works", () => {
 
     const component = await getVirtualizer(page);
 
-    const topItem = getChildren(component).first();
+    const topItem = getItems(component).first();
     const topItemText = (await topItem.textContent())!;
     const topItemTop = await windowTop(topItem);
     expect(topItemText).not.toBe("0");
@@ -262,7 +262,7 @@ test.describe("check if item shift compensation works", () => {
     await updateButton.click();
 
     // check if visible item is keeped
-    const topItem2 = getChildren(component).first();
+    const topItem2 = getItems(component).first();
     await expect(topItem2).toHaveText(topItemText);
     expect(await windowTop(topItem2)).toBe(topItemTop);
 
@@ -270,7 +270,7 @@ test.describe("check if item shift compensation works", () => {
     await page.getByRole("radio", { name: "decrease" }).click();
     await updateButton.click();
     // check if visible item is keeped
-    const topItem3 = getChildren(component).first();
+    const topItem3 = getItems(component).first();
     await expect(topItem3).toHaveText(topItemText);
     expect(await windowTop(topItem3)).toBe(topItemTop);
   });
@@ -288,7 +288,7 @@ test.describe("check if item shift compensation works", () => {
     const updateButton = page.getByRole("button", { name: "update" });
 
     const container = await getVirtualizer(page);
-    const initialLength = await getChildren(container).count();
+    const initialLength = await getItems(container).count();
     expect(initialLength).toBeGreaterThan(1);
 
     const getWindowLastItem = () => {
@@ -312,15 +312,14 @@ test.describe("check if item shift compensation works", () => {
       // preprend
       await increaseRadio.click();
       await updateButton.click();
-      await (await component.elementHandle())!.waitForElementState("stable");
 
-      const items = getChildren(container);
-      const childrenCount = await items.count();
-      const firstItemRectTop = await windowTop(items.first());
-      const isScrollBarVisible = await isVerticalScrollBarVisible(page);
+      const items = getItems(container);
 
       // Check if all items are visible
-      expect(childrenCount).toBe(i + initialLength);
+      await expect(items).toHaveCount(i + initialLength);
+
+      const firstItemRectTop = await windowTop(items.first());
+      const isScrollBarVisible = await isVerticalScrollBarVisible(page);
 
       if (isScrollBarVisible) {
         // Check if sticked to bottom
@@ -376,7 +375,7 @@ test.describe("check if item shift compensation works", () => {
 
       const isScrollBarVisible = await isVerticalScrollBarVisible(page);
 
-      const itemBottom = await windowBottom(getChildren(container).last());
+      const itemBottom = await windowBottom(getItems(container).last());
 
       if (!isScrollBarVisible) {
         break;

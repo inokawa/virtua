@@ -5,7 +5,7 @@ import {
   expectInRange,
   getScrollable,
   getVirtualizer,
-  getChildren,
+  getItems,
   getStyleValue,
   relativeBottom,
   relativeTop,
@@ -32,7 +32,7 @@ test("header and footer", async ({ page }) => {
   expect(topPadding).toBeGreaterThan(10);
   expect(bottomPadding).toBeGreaterThan(10);
 
-  const items = getChildren(container);
+  const items = getItems(container);
 
   // check if start is displayed
   const topItem = items.first();
@@ -69,7 +69,7 @@ test("sticky header and footer", async ({ page }) => {
   expect(topPadding).toBeGreaterThan(10);
   expect(bottomPadding).toBeGreaterThan(10);
 
-  const items = getChildren(container);
+  const items = getItems(container);
 
   // check if start is displayed
   const topItem = items.first();
