@@ -16,7 +16,7 @@ import {
   getScrollable,
   clearTimer,
   scrollTo,
-  listenScrollCount,
+  listenScroll,
   relativeRight,
   relativeTop,
   relativeBottom,
@@ -430,9 +430,9 @@ test.describe("check if scroll jump compensation works", () => {
       await expect(initialItem).not.toHaveText(targetText);
 
       await page.waitForTimeout(200);
-      const scrollListener = listenScrollCount(component, 1000);
+      const scrollListener = listenScroll(component, 1000);
       await getResizeAndScrollButton().click();
-      const called = await scrollListener;
+      const { count: called } = await scrollListener;
       expect(called).toBeGreaterThanOrEqual(2);
       const updatedItem = await findFirstVisibleItem(component);
       expect(await relativeTop(component, updatedItem)).toEqual(0);
@@ -455,9 +455,9 @@ test.describe("check if scroll jump compensation works", () => {
       await expect(initialItem).not.toHaveText(targetText);
 
       await page.waitForTimeout(200);
-      const scrollListener = listenScrollCount(component, 1000);
+      const scrollListener = listenScroll(component, 1000);
       await getResizeAndScrollButton().click();
-      const called = await scrollListener;
+      const { count: called } = await scrollListener;
       expect(called).toBeGreaterThanOrEqual(2);
       const updatedItem = await findFirstVisibleItem(component);
       expect(await relativeTop(component, updatedItem)).toEqual(0);
@@ -672,7 +672,7 @@ test.describe("check if scrollToIndex works", () => {
       ).not.toBeVisible();
     });
 
-    test("mid smooth", async ({ page, browserName }) => {
+    test("mid smooth", async ({ page }) => {
       const component = await getScrollable(page);
 
       // check if start is displayed
@@ -683,21 +683,16 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      const scrollListener = listenScrollCount(component);
+      const scrollListener = listenScroll(component, 2000);
 
       await input.clear();
       await input.fill("700");
       await button.click();
 
-      await page.waitForTimeout(500);
-
-      const called = await scrollListener;
+      const { time } = await scrollListener;
 
       // Check if this is smooth scrolling
-      expect(called).toBeGreaterThanOrEqual(
-        // TODO find better way to check in webkit
-        browserName === "webkit" ? 2 : 10
-      );
+      expect(time).toBeGreaterThanOrEqual(150);
 
       // Check if scrolled precisely
       const firstItem = component.getByText("700", { exact: true });
@@ -809,7 +804,7 @@ test.describe("check if scrollToIndex works", () => {
       ).not.toBeVisible();
     });
 
-    test("mid smooth", async ({ page, browserName }) => {
+    test("mid smooth", async ({ page }) => {
       const component = await getScrollable(page);
 
       // check if start is displayed
@@ -820,21 +815,16 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      const scrollListener = listenScrollCount(component);
+      const scrollListener = listenScroll(component, 2000);
 
       await input.clear();
       await input.fill("700");
       await button.click();
 
-      await page.waitForTimeout(500);
-
-      const called = await scrollListener;
+      const { time } = await scrollListener;
 
       // Check if this is smooth scrolling
-      expect(called).toBeGreaterThanOrEqual(
-        // TODO find better way to check in webkit
-        browserName === "webkit" ? 2 : 10
-      );
+      expect(time).toBeGreaterThanOrEqual(150);
 
       // Check if scrolled precisely
       const lastItem = component.getByText("700", { exact: true });
@@ -1180,7 +1170,7 @@ test.describe("check if item shift compensation works", () => {
       { min: 0, max: 1 }
     );
 
-    const scrollListener = listenScrollCount(component);
+    const scrollListener = listenScroll(component, 2000);
 
     const button = page.getByRole("button", { name: "jump to top" });
 
@@ -1188,7 +1178,7 @@ test.describe("check if item shift compensation works", () => {
     await button.click();
 
     // check if imperative scrolling doesn't cause infinite loop
-    const scrollCount = await scrollListener;
+    const { count: scrollCount } = await scrollListener;
     expect(scrollCount).toBeLessThanOrEqual(4);
   });
 });
