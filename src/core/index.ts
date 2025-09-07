@@ -13,6 +13,7 @@ export {
   createScroller,
   createWindowScroller,
   createGridScroller,
+	type WindowScroller
 } from "./scroller";
 export {
   createResizer,

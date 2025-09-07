@@ -30,18 +30,15 @@
     children,
     onscroll,
     onscrollend,
+		store = $bindable(),
+		scroller = $bindable()
   }: Props = $props();
 
-  const store = createVirtualStore(
-    data.length,
-    itemSize,
-    overscan,
-    undefined,
-    undefined,
-    !itemSize
-  );
-  const resizer = createWindowResizer(store, horizontal);
-  const scroller = createWindowScroller(store, horizontal);
+	store = createVirtualStore(data.length, itemSize, overscan, undefined, undefined, !itemSize);
+	scroller = createWindowScroller(store, horizontal);
+	
+	const resizer = createWindowResizer(store, horizontal);
+  
   const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
     stateVersion = store.$getStateVersion();
   });
@@ -69,6 +66,7 @@
     resizer.$observeRoot(containerRef!);
     scroller.$observe(containerRef!);
   });
+	
   onDestroy(() => {
     unsubscribeStore();
     unsubscribeOnScroll();
