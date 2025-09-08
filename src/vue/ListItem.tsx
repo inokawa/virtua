@@ -84,7 +84,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
         ...styleProp,
       };
       if (isHorizontal) {
-        style.display = "flex";
+        style.display = "inline-flex";
       }
 
       return (

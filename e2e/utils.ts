@@ -175,10 +175,17 @@ export const getWindowScrollRight = (page: Page) => {
   return page.evaluate(() => document.body.scrollWidth - window.scrollX);
 };
 
-export const scrollTo = (scrollable: ScrollableLocator, offset: number) => {
-  return scrollable.evaluate((e, offset) => {
-    e.scrollTop = offset;
-  }, offset);
+export const scrollTo = (
+  scrollable: ScrollableLocator,
+  offset: number,
+  key: "Top" | "Left" = "Top"
+) => {
+  return scrollable.evaluate(
+    (e, [offset, key]) => {
+      e[key] = offset;
+    },
+    [offset, `scroll${key}`]
+  );
 };
 
 export const scrollBy = (scrollable: ScrollableLocator, offset: number) => {
