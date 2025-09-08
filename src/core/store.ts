@@ -62,7 +62,7 @@ type Actions =
   | [type: typeof ACTION_VIEWPORT_RESIZE, size: number]
   | [
       type: typeof ACTION_ITEMS_LENGTH_CHANGE,
-      arg: [length: number, isShift?: boolean | undefined],
+      arg: [length: number, isShift?: boolean | undefined]
     ]
   | [type: typeof ACTION_START_OFFSET_CHANGE, offset: number]
   | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
@@ -319,18 +319,19 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_ITEM_RESIZE: {
-          const updated = payload.filter(
-            ([index, size]) => cache._sizes[index] !== size
-          );
+          let visibleStartIndex: number | undefined;
+          let diff = 0;
+          for (const [index, size] of payload) {
+            if (cache._sizes[index] !== size) {
+              if (visibleStartIndex == NULL) {
+                visibleStartIndex = findIndex(cache, getRelativeScrollOffset());
+              }
 
-          // Skip if all items are cached and not updated
-          if (!updated.length) {
-            break;
-          }
+              // Update item sizes
+              const prevSize = getItemSize(index);
+              const isInitialMeasurement = setItemSize(cache, index, size);
 
-          // Calculate jump by resize to minimize junks in appearance
-          applyJump(
-            updated.reduce((acc, [index, size]) => {
+              // Calculate jump by resize to minimize junks in appearance
               if (
                 // Keep distance from end during shifting
                 _scrollMode === SCROLL_BY_SHIFT ||
@@ -339,31 +340,31 @@ export const createVirtualStore = (
                     // https://github.com/inokawa/virtua/issues/590
                     !isSSR && index < _frozenRange[0]
                   : // Otherwise we should maintain visible position
-                    getItemOffset(index) +
+                    index +
                       // https://github.com/inokawa/virtua/issues/385
                       (_scrollDirection === SCROLL_IDLE &&
                       _scrollMode === SCROLL_BY_NATIVE
-                        ? getItemSize(index)
-                        : 0) <
-                    getRelativeScrollOffset())
+                        ? 1
+                        : 0) <=
+                    visibleStartIndex)
               ) {
-                acc += size - getItemSize(index);
+                diff += size - prevSize;
               }
-              return acc;
-            }, 0)
-          );
 
-          // Update item sizes
-          for (const [index, size] of updated) {
-            const prevSize = getItemSize(index);
-            const isInitialMeasurement = setItemSize(cache, index, size);
-
-            if (shouldAutoEstimateItemSize) {
-              _totalMeasuredSize += isInitialMeasurement
-                ? size
-                : size - prevSize;
+              if (shouldAutoEstimateItemSize) {
+                _totalMeasuredSize += isInitialMeasurement
+                  ? size
+                  : size - prevSize;
+              }
             }
           }
+
+          // Skip if all items are cached and not updated
+          if (visibleStartIndex == NULL) {
+            break;
+          }
+
+          applyJump(diff);
 
           // Estimate initial item size from measured sizes
           if (
