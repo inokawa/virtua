@@ -64,42 +64,42 @@ exports[`rtl > should work in horizontal 1`] = `
       style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 10000px; height: 100%;"
     >
       <div
-        style="position: absolute; height: 100%; top: 0px; right: 0px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; right: 0px; visibility: visible; display: inline-flex;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; right: 100px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; right: 100px; visibility: visible; display: inline-flex;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; right: 200px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; right: 200px; visibility: visible; display: inline-flex;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; right: 300px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; right: 300px; visibility: visible; display: inline-flex;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; right: 400px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; right: 400px; visibility: visible; display: inline-flex;"
       >
         <div>
           4
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; right: 500px; visibility: visible; display: flex;"
+        style="position: absolute; height: 100%; top: 0px; right: 500px; visibility: visible; display: inline-flex;"
       >
         <div>
           5

@@ -66,6 +66,67 @@ export const Default: StoryObj = {
   },
 };
 
+const createColumns = (num: number) => {
+  return Array.from({ length: num }).map((_, i) => {
+    return (
+      <div
+        key={i}
+        style={{
+          width: i % 3 === 0 ? 100 : 60,
+          borderRight: "solid 1px #ccc",
+          background: "#fff",
+        }}
+      >
+        Column {i}
+      </div>
+    );
+  });
+};
+
+const AppHorizontal = () => {
+  const COUNT = 1000;
+  return (
+    <VList ssrCount={30} horizontal>
+      {createColumns(COUNT)}
+    </VList>
+  );
+};
+
+export const Horizontal: StoryObj = {
+  render: () => {
+    const [hydrated, setHydrated] = useState(false);
+    const ref = useRef<HTMLDivElement>(null);
+
+    useLayoutEffect(() => {
+      if (!ref.current) return;
+
+      if (!hydrated) {
+        ref.current.innerHTML = renderToString(<AppHorizontal />);
+      } else {
+        hydrateRoot(ref.current, <AppHorizontal />);
+      }
+    }, [hydrated]);
+
+    return (
+      <div
+        style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+      >
+        <div>
+          <button
+            disabled={hydrated}
+            onClick={() => {
+              setHydrated(true);
+            }}
+          >
+            hydrate
+          </button>
+        </div>
+        <div ref={ref} style={{ flex: 1 }} />
+      </div>
+    );
+  },
+};
+
 const AppScrollOnMount = ({
   scrollOnMount,
   scrollToIndex,

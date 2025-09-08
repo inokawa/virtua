@@ -50,13 +50,18 @@ export const ListItem: Component<ListItemProps> = (props) => {
       visibility: props._hide ? "hidden" : "visible",
     };
     if (isHorizontal) {
-      style.display = "flex";
+      style.display = "inline-flex";
     }
     return style;
   });
 
   return (
-    <Dynamic component={props._as} index={props._index} ref={elementRef} style={style()}>
+    <Dynamic
+      component={props._as}
+      index={props._index}
+      ref={elementRef}
+      style={style()}
+    >
       {props._children}
     </Dynamic>
   );

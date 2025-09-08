@@ -50,7 +50,7 @@ export const ListItem = memo(
         visibility: !hide || isSSR ? "visible" : "hidden",
       };
       if (isHorizontal) {
-        style.display = "flex";
+        style.display = "inline-flex";
       }
       return style;
     }, [offset, hide, isSSR, isHorizontal]);

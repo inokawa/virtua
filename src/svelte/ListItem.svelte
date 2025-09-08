@@ -50,7 +50,7 @@
       visibility: hide ? "hidden" : "visible",
     };
     if (horizontal) {
-      _style["display"] = "flex";
+      _style["display"] = "inline-flex";
     }
 
     return styleToString(_style);
