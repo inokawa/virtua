@@ -1252,7 +1252,7 @@ test.describe("SSR and hydration", () => {
       await findLastVisibleItem(component)
     );
 
-    // check if items are aligned correctly befere hydration
+    // check if items are aligned correctly before hydration
     const prevItems = getItems(component);
     const firstRect = (await prevItems.nth(0).boundingBox())!;
     await expect(firstRect.y + firstRect.height).toEqual(
@@ -1308,7 +1308,7 @@ test.describe("SSR and hydration", () => {
       await findLastVisibleItem(component)
     );
 
-    // check if items are aligned correctly befere hydration
+    // check if items are aligned correctly before hydration
     const prevItems = getItems(component);
     const firstRect = (await prevItems.nth(0).boundingBox())!;
     await expect(firstRect.x + firstRect.width).toEqual(
