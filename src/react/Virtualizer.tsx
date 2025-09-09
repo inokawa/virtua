@@ -283,7 +283,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         resizer.$observeRoot(e);
         scroller.$observe(e);
       };
-      if (scrollRef) {
+      if (scrollRef && scrollRef[refKey]) {
         // parent's ref doesn't exist when useLayoutEffect is called
         microtask(() => assignScrollableElement(scrollRef[refKey]!));
       } else {
