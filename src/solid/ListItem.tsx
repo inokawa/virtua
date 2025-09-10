@@ -42,6 +42,7 @@ export const ListItem: Component<ListItemProps> = (props) => {
   const style = createMemo(() => {
     const isHorizontal = props._isHorizontal;
     const style: JSX.CSSProperties = {
+      contain: "layout style",
       position: "absolute",
       [isHorizontal ? "height" : "width"]: "100%",
       [isHorizontal ? "top" : "left"]: "0px",

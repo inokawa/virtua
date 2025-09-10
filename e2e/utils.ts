@@ -22,7 +22,6 @@ export const getScrollable = async (page: Page): Promise<ScrollableLocator> => {
 
 export const getVirtualizer = async (page: Page) => {
   const locator = page.locator('*[style*="flex: 0 0 auto"]');
-  await locator.evaluate((e) => (e.style.visibility = "visible"));
   await locator.waitFor();
   return locator;
 };

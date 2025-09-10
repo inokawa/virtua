@@ -4,7 +4,7 @@ exports[`horizontal > should render 0 children 1`] = `
 <body>
   <div>
     <div
-      style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 0px; height: 100%;"
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 0px; height: 100%;"
     />
   </div>
 </body>
@@ -14,10 +14,10 @@ exports[`horizontal > should render 1 children 1`] = `
 <body>
   <div>
     <div
-      style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 40px; height: 100%;"
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 40px; height: 100%;"
     >
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
       >
         <div>
           0
@@ -32,38 +32,38 @@ exports[`horizontal > should render 5 children 1`] = `
 <body>
   <div>
     <div
-      style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 200px; height: 100%;"
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 200px; height: 100%;"
     >
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 40px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 40px; visibility: hidden; display: inline-flex;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 80px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 80px; visibility: hidden; display: inline-flex;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 120px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 120px; visibility: hidden; display: inline-flex;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 160px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 160px; visibility: hidden; display: inline-flex;"
       >
         <div>
           4
@@ -78,38 +78,38 @@ exports[`horizontal > should render 100 children 1`] = `
 <body>
   <div>
     <div
-      style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 4000px; height: 100%;"
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 4000px; height: 100%;"
     >
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 40px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 40px; visibility: hidden; display: inline-flex;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 80px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 80px; visibility: hidden; display: inline-flex;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 120px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 120px; visibility: hidden; display: inline-flex;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 160px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 160px; visibility: hidden; display: inline-flex;"
       >
         <div>
           4
@@ -124,38 +124,38 @@ exports[`horizontal > should render 1000 children 1`] = `
 <body>
   <div>
     <div
-      style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 40000px; height: 100%;"
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 40000px; height: 100%;"
     >
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 40px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 40px; visibility: hidden; display: inline-flex;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 80px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 80px; visibility: hidden; display: inline-flex;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 120px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 120px; visibility: hidden; display: inline-flex;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 160px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 160px; visibility: hidden; display: inline-flex;"
       >
         <div>
           4
@@ -170,38 +170,38 @@ exports[`horizontal > should render 10000 children 1`] = `
 <body>
   <div>
     <div
-      style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 400000px; height: 100%;"
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 400000px; height: 100%;"
     >
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 40px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 40px; visibility: hidden; display: inline-flex;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 80px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 80px; visibility: hidden; display: inline-flex;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 120px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 120px; visibility: hidden; display: inline-flex;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 160px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 160px; visibility: hidden; display: inline-flex;"
       >
         <div>
           4
@@ -216,24 +216,24 @@ exports[`horizontal > should render component 1`] = `
 <body>
   <div>
     <div
-      style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 120px; height: 100%;"
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 120px; height: 100%;"
     >
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 40px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 40px; visibility: hidden; display: inline-flex;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="position: absolute; height: 100%; top: 0px; left: 80px; visibility: hidden; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 80px; visibility: hidden; display: inline-flex;"
       >
         <div>
           2
@@ -252,11 +252,11 @@ exports[`should pass attributes to element 1`] = `
       class="class"
       id="id"
       role="list"
-      style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 40px; background: red;"
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 40px; background: red;"
       tab-index="0"
     >
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
       >
         <div>
           0
@@ -271,7 +271,7 @@ exports[`vertical > should render 0 children 1`] = `
 <body>
   <div>
     <div
-      style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 0px;"
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 0px;"
     />
   </div>
 </body>
@@ -281,10 +281,10 @@ exports[`vertical > should render 1 children 1`] = `
 <body>
   <div>
     <div
-      style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 40px;"
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 40px;"
     >
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
       >
         <div>
           0
@@ -299,38 +299,38 @@ exports[`vertical > should render 5 children 1`] = `
 <body>
   <div>
     <div
-      style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 200px;"
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 200px;"
     >
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
       >
         <div>
           4
@@ -345,38 +345,38 @@ exports[`vertical > should render 100 children 1`] = `
 <body>
   <div>
     <div
-      style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 4000px;"
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 4000px;"
     >
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
       >
         <div>
           4
@@ -391,38 +391,38 @@ exports[`vertical > should render 1000 children 1`] = `
 <body>
   <div>
     <div
-      style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 40000px;"
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 40000px;"
     >
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
       >
         <div>
           4
@@ -437,38 +437,38 @@ exports[`vertical > should render 10000 children 1`] = `
 <body>
   <div>
     <div
-      style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 400000px;"
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 400000px;"
     >
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
       >
         <div>
           4
@@ -483,24 +483,24 @@ exports[`vertical > should render component 1`] = `
 <body>
   <div>
     <div
-      style="overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; visibility: hidden; width: 100%; height: 120px;"
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 120px;"
     >
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
       >
         <div>
           2

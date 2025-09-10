@@ -75,6 +75,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
       const { style: styleProp, ...rest } = props._itemProps ?? {};
 
       const style: StyleValue = {
+        contain: "layout style",
         position: isHide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
         [isHorizontal ? "top" : "left"]: "0px",

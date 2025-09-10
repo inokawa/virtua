@@ -43,6 +43,7 @@ export const ListItem = memo(
 
     const style = useMemo((): CSSProperties => {
       const style: CSSProperties = {
+        contain: "layout style",
         position: hide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
         [isHorizontal ? "top" : "left"]: 0,

@@ -97,6 +97,27 @@ test.describe("smoke", () => {
     expect(initialTotalHeight).toEqual(changedTotalHeight);
   });
 
+  test("overflow", async ({ page }) => {
+    await page.goto(storyUrl("basics-vlist--overflow"));
+
+    const component = await getVirtualizer(page);
+
+    const label = component.getByText("2", { exact: true });
+    await expect(label).toHaveCSS("position", "absolute");
+
+    // check if element is visible in front
+    expect(
+      await label.evaluate((e) => {
+        const rect = e.getBoundingClientRect();
+        const pointed = document.elementFromPoint(
+          rect.x + rect.width / 2,
+          rect.y + rect.height / 2
+        );
+        return e === pointed;
+      })
+    ).toBe(true);
+  });
+
   test("new window", async ({ page, context }) => {
     await page.goto(storyUrl("advanced-newwindow--default"));
 
