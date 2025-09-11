@@ -283,9 +283,14 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         resizer.$observeRoot(e);
         scroller.$observe(e);
       };
-      if (scrollRef && scrollRef[refKey]) {
+      if (scrollRef) {
         // parent's ref doesn't exist when useLayoutEffect is called
-        microtask(() => assignScrollableElement(scrollRef[refKey]!));
+        microtask(() => {
+          // https://github.com/inokawa/virtua/pull/733
+          if (scrollRef[refKey]!) {
+            assignScrollableElement(scrollRef[refKey]!);
+          }
+        });
       } else {
         assignScrollableElement(containerRef[refKey]!.parentElement!);
       }
