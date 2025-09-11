@@ -1,5 +1,5 @@
 import { type Snippet } from "svelte";
-import type { SvelteHTMLElements } from "svelte/elements";
+import type { ClassValue, SvelteHTMLElements } from "svelte/elements";
 import { type ScrollToIndexOpts } from "../core";
 
 /**
@@ -9,7 +9,7 @@ export interface VirtualizerProps<T> {
   /**
    * The class name of the container element.
    */
-  class: string;
+  class: ClassValue;
   /**
    * The data items rendered by this component.
    */
