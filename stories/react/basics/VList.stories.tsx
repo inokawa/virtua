@@ -104,6 +104,45 @@ export const PaddingAndMargin: StoryObj = {
   },
 };
 
+export const Overflow: StoryObj = {
+  render: () => {
+    return (
+      <VList style={{ height: "100vh" }}>
+        {Array.from({ length: 1000 }).map((_, i) => {
+          const color = i % 2 === 0 ? "#eee" : "#fff";
+          return (
+            <div
+              key={i}
+              style={{
+                height: 80,
+                borderBottom: "solid 1px #ccc",
+                background: color,
+              }}
+            >
+              {i === 0 ? null : (
+                <span
+                  style={{
+                    position: "absolute",
+                    bottom: "100%",
+                    left: 16,
+                    height: 20,
+                    padding: 8,
+                    border: "solid 1px #ccc",
+                    borderBottom: "none",
+                    background: color,
+                  }}
+                >
+                  {i}
+                </span>
+              )}
+            </div>
+          );
+        })}
+      </VList>
+    );
+  },
+};
+
 export const Reverse: StoryObj = {
   render: () => {
     const ref = useRef<VListHandle>(null);

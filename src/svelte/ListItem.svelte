@@ -42,6 +42,7 @@
 
   let style: string = $derived.by(() => {
     const _style: Record<string, string> = {
+      contain: "layout style",
       position: "absolute",
       [horizontal ? "height" : "width"]: "100%",
       [horizontal ? "top" : "left"]: "0px",
