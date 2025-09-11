@@ -19,6 +19,7 @@
   interface Props extends VirtualizerProps<T> {}
 
   let {
+    class: className = "",
     data,
     getKey = defaultGetKey,
     as = "div",
@@ -40,7 +41,7 @@
     overscan,
     undefined,
     undefined,
-    !itemSize
+    !itemSize,
   );
   const resizer = createResizer(store, horizontal);
   const scroller = createScroller(store, horizontal);
@@ -54,7 +55,7 @@
     UPDATE_SCROLL_END_EVENT,
     () => {
       onscrollend && onscrollend();
-    }
+    },
   );
 
   let containerRef: HTMLDivElement | undefined = $state();
@@ -107,7 +108,7 @@
     store.$getScrollOffset satisfies VirtualizerHandle["getScrollOffset"] as VirtualizerHandle["getScrollOffset"];
   export const getScrollSize = (() =>
     _getScrollSize(
-      store
+      store,
     )) satisfies VirtualizerHandle["getScrollSize"] as VirtualizerHandle["getScrollSize"];
   export const getViewportSize =
     store.$getViewportSize satisfies VirtualizerHandle["getViewportSize"] as VirtualizerHandle["getViewportSize"];
@@ -136,15 +137,20 @@
       width: horizontal ? totalSize + "px" : "100%",
       height: horizontal ? "100%" : totalSize + "px",
       "pointer-events": isScrolling ? "none" : undefined,
-    })
+    }),
   );
 </script>
 
-<!-- 
+<!--
   @component
   Customizable list virtualizer for advanced usage. See {@link VirtualizerProps} and {@link VirtualizerHandle}.
 -->
-<svelte:element this={as} bind:this={containerRef} style={containerStyle}>
+<svelte:element
+  this={as}
+  bind:this={containerRef}
+  style={containerStyle}
+  class={className}
+>
   {#each iterRange(range) as index (getKey(data[index]!, index))}
     {@const item = data[index]!}
     <ListItem

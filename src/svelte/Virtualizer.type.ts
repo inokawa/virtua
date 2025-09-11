@@ -7,6 +7,10 @@ import { type ScrollToIndexOpts } from "../core";
  */
 export interface VirtualizerProps<T> {
   /**
+   * The class name of the container element.
+   */
+  class: string;
+  /**
    * The data items rendered by this component.
    */
   data: T[];
