@@ -11,7 +11,7 @@ import {
   getWindowScrollRight,
   expectInRange,
   windowScrollBy,
-  listenScrollCount,
+  listenScroll,
   windowTop,
   windowBottom,
   relativeTop,
@@ -534,7 +534,7 @@ test.describe("check if scrollToIndex works", () => {
       ).not.toBeVisible();
     });
 
-    test("mid smooth", async ({ page, browserName }) => {
+    test("mid smooth", async ({ page }) => {
       const component = await getVirtualizer(page);
 
       const window = await page.evaluateHandle(() => window);
@@ -547,21 +547,16 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      const scrollListener = listenScrollCount(window);
+      const scrollListener = listenScroll(window, 2000);
 
       await input.clear();
       await input.fill("700");
       await button.click();
 
-      await page.waitForTimeout(500);
-
-      const called = await scrollListener;
+      const { time } = await scrollListener;
 
       // Check if this is smooth scrolling
-      expect(called).toBeGreaterThanOrEqual(
-        // TODO find better way to check in webkit
-        browserName === "webkit" ? 2 : 10
-      );
+      expect(time).toBeGreaterThanOrEqual(150);
 
       // Check if scrolled precisely
       const firstItem = component.getByText("700", { exact: true });
@@ -673,7 +668,7 @@ test.describe("check if scrollToIndex works", () => {
       ).not.toBeVisible();
     });
 
-    test("mid smooth", async ({ page, browserName }) => {
+    test("mid smooth", async ({ page }) => {
       const component = await getVirtualizer(page);
 
       const window = await page.evaluateHandle(() => window);
@@ -686,21 +681,16 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      const scrollListener = listenScrollCount(window);
+      const scrollListener = listenScroll(window, 2000);
 
       await input.clear();
       await input.fill("700");
       await button.click();
 
-      await page.waitForTimeout(500);
-
-      const called = await scrollListener;
+      const { time } = await scrollListener;
 
       // Check if this is smooth scrolling
-      expect(called).toBeGreaterThanOrEqual(
-        // TODO find better way to check in webkit
-        browserName === "webkit" ? 2 : 10
-      );
+      expect(time).toBeGreaterThanOrEqual(150);
 
       // Check if scrolled precisely
       const lastItem = component.getByText("700", { exact: true });
