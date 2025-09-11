@@ -4,7 +4,7 @@
 
 # Interface: VGridProps
 
-Defined in: [src/react/VGrid.tsx:187](https://github.com/inokawa/virtua/blob/bef8d3f4969c1398c3cf5c6c917097dd810b514f/src/react/VGrid.tsx#L187)
+Defined in: [src/react/VGrid.tsx:188](https://github.com/inokawa/virtua/blob/18bdff5361056a70d39599b355d881591a864128/src/react/VGrid.tsx#L188)
 
 Props of [VGrid](../variables/experimental_VGrid.md).
 
@@ -18,7 +18,7 @@ Props of [VGrid](../variables/experimental_VGrid.md).
 
 > **children**: (`arg`) => `ReactNode`
 
-Defined in: [src/react/VGrid.tsx:191](https://github.com/inokawa/virtua/blob/bef8d3f4969c1398c3cf5c6c917097dd810b514f/src/react/VGrid.tsx#L191)
+Defined in: [src/react/VGrid.tsx:192](https://github.com/inokawa/virtua/blob/18bdff5361056a70d39599b355d881591a864128/src/react/VGrid.tsx#L192)
 
 A function to create elements rendered by this component.
 
@@ -48,7 +48,7 @@ column index of cell
 
 > **row**: `number`
 
-Defined in: [src/react/VGrid.tsx:204](https://github.com/inokawa/virtua/blob/bef8d3f4969c1398c3cf5c6c917097dd810b514f/src/react/VGrid.tsx#L204)
+Defined in: [src/react/VGrid.tsx:205](https://github.com/inokawa/virtua/blob/18bdff5361056a70d39599b355d881591a864128/src/react/VGrid.tsx#L205)
 
 Total row length of grid.
 
@@ -58,7 +58,7 @@ Total row length of grid.
 
 > **col**: `number`
 
-Defined in: [src/react/VGrid.tsx:208](https://github.com/inokawa/virtua/blob/bef8d3f4969c1398c3cf5c6c917097dd810b514f/src/react/VGrid.tsx#L208)
+Defined in: [src/react/VGrid.tsx:209](https://github.com/inokawa/virtua/blob/18bdff5361056a70d39599b355d881591a864128/src/react/VGrid.tsx#L209)
 
 Total column length of grid.
 
@@ -68,7 +68,7 @@ Total column length of grid.
 
 > `optional` **cellHeight**: `number`
 
-Defined in: [src/react/VGrid.tsx:213](https://github.com/inokawa/virtua/blob/bef8d3f4969c1398c3cf5c6c917097dd810b514f/src/react/VGrid.tsx#L213)
+Defined in: [src/react/VGrid.tsx:214](https://github.com/inokawa/virtua/blob/18bdff5361056a70d39599b355d881591a864128/src/react/VGrid.tsx#L214)
 
 Cell height hint for unmeasured items. It's recommended to specify this prop if item sizes are fixed and known, or much larger than the defaultValue. It will help to reduce scroll jump when items are measured.
 
@@ -84,7 +84,7 @@ Cell height hint for unmeasured items. It's recommended to specify this prop if 
 
 > `optional` **cellWidth**: `number`
 
-Defined in: [src/react/VGrid.tsx:218](https://github.com/inokawa/virtua/blob/bef8d3f4969c1398c3cf5c6c917097dd810b514f/src/react/VGrid.tsx#L218)
+Defined in: [src/react/VGrid.tsx:219](https://github.com/inokawa/virtua/blob/18bdff5361056a70d39599b355d881591a864128/src/react/VGrid.tsx#L219)
 
 Cell width hint for unmeasured items. It's recommended to specify this prop if item sizes are fixed and known, or much larger than the defaultValue. It will help to reduce scroll jump when items are measured.
 
@@ -100,7 +100,7 @@ Cell width hint for unmeasured items. It's recommended to specify this prop if i
 
 > `optional` **overscan**: `number`
 
-Defined in: [src/react/VGrid.tsx:223](https://github.com/inokawa/virtua/blob/bef8d3f4969c1398c3cf5c6c917097dd810b514f/src/react/VGrid.tsx#L223)
+Defined in: [src/react/VGrid.tsx:224](https://github.com/inokawa/virtua/blob/18bdff5361056a70d39599b355d881591a864128/src/react/VGrid.tsx#L224)
 
 Number of items to render above/below the visible bounds of the grid. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -116,7 +116,7 @@ Number of items to render above/below the visible bounds of the grid. Lower valu
 
 > `optional` **initialRowCount**: `number`
 
-Defined in: [src/react/VGrid.tsx:227](https://github.com/inokawa/virtua/blob/bef8d3f4969c1398c3cf5c6c917097dd810b514f/src/react/VGrid.tsx#L227)
+Defined in: [src/react/VGrid.tsx:228](https://github.com/inokawa/virtua/blob/18bdff5361056a70d39599b355d881591a864128/src/react/VGrid.tsx#L228)
 
 If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
 
@@ -126,7 +126,7 @@ If set, the specified amount of rows will be mounted in the initial rendering re
 
 > `optional` **initialColCount**: `number`
 
-Defined in: [src/react/VGrid.tsx:231](https://github.com/inokawa/virtua/blob/bef8d3f4969c1398c3cf5c6c917097dd810b514f/src/react/VGrid.tsx#L231)
+Defined in: [src/react/VGrid.tsx:232](https://github.com/inokawa/virtua/blob/18bdff5361056a70d39599b355d881591a864128/src/react/VGrid.tsx#L232)
 
 If set, the specified amount of cols will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
 
@@ -136,7 +136,7 @@ If set, the specified amount of cols will be mounted in the initial rendering re
 
 > `optional` **item**: keyof IntrinsicElements \| [`CustomCellComponent`](../type-aliases/CustomCellComponent.md)
 
-Defined in: [src/react/VGrid.tsx:236](https://github.com/inokawa/virtua/blob/bef8d3f4969c1398c3cf5c6c917097dd810b514f/src/react/VGrid.tsx#L236)
+Defined in: [src/react/VGrid.tsx:237](https://github.com/inokawa/virtua/blob/18bdff5361056a70d39599b355d881591a864128/src/react/VGrid.tsx#L237)
 
 Component or element type for cell element. This component will get [CustomCellComponentProps](CustomCellComponentProps.md) as props.
 
@@ -152,7 +152,7 @@ Component or element type for cell element. This component will get [CustomCellC
 
 > `optional` **domRef**: `Ref`\<`HTMLDivElement`\>
 
-Defined in: [src/react/VGrid.tsx:238](https://github.com/inokawa/virtua/blob/bef8d3f4969c1398c3cf5c6c917097dd810b514f/src/react/VGrid.tsx#L238)
+Defined in: [src/react/VGrid.tsx:239](https://github.com/inokawa/virtua/blob/18bdff5361056a70d39599b355d881591a864128/src/react/VGrid.tsx#L239)
 
 Reference to the rendered DOM element (the one that scrolls).
 
@@ -162,7 +162,7 @@ Reference to the rendered DOM element (the one that scrolls).
 
 > `optional` **innerDomRef**: `Ref`\<`HTMLDivElement`\>
 
-Defined in: [src/react/VGrid.tsx:240](https://github.com/inokawa/virtua/blob/bef8d3f4969c1398c3cf5c6c917097dd810b514f/src/react/VGrid.tsx#L240)
+Defined in: [src/react/VGrid.tsx:241](https://github.com/inokawa/virtua/blob/18bdff5361056a70d39599b355d881591a864128/src/react/VGrid.tsx#L241)
 
 Reference to the inner rendered DOM element (the one that contains all the cells).
 
@@ -172,7 +172,7 @@ Reference to the inner rendered DOM element (the one that contains all the cells
 
 > `optional` **onScroll**: (`offset`) => `void`
 
-Defined in: [src/react/VGrid.tsx:244](https://github.com/inokawa/virtua/blob/bef8d3f4969c1398c3cf5c6c917097dd810b514f/src/react/VGrid.tsx#L244)
+Defined in: [src/react/VGrid.tsx:245](https://github.com/inokawa/virtua/blob/18bdff5361056a70d39599b355d881591a864128/src/react/VGrid.tsx#L245)
 
 Callback invoked whenever scroll offset changes.
 
@@ -192,7 +192,7 @@ Callback invoked whenever scroll offset changes.
 
 > `optional` **onScrollEnd**: () => `void`
 
-Defined in: [src/react/VGrid.tsx:248](https://github.com/inokawa/virtua/blob/bef8d3f4969c1398c3cf5c6c917097dd810b514f/src/react/VGrid.tsx#L248)
+Defined in: [src/react/VGrid.tsx:249](https://github.com/inokawa/virtua/blob/18bdff5361056a70d39599b355d881591a864128/src/react/VGrid.tsx#L249)
 
 Callback invoked when scrolling stops.
 
@@ -316,7 +316,7 @@ Indicates whether assistive technologies will present all, or only parts of, the
 
 ### aria-autocomplete?
 
-> `optional` **aria-autocomplete**: `"inline"` \| `"none"` \| `"both"` \| `"list"`
+> `optional` **aria-autocomplete**: `"none"` \| `"inline"` \| `"both"` \| `"list"`
 
 Defined in: node\_modules/@types/react/index.d.ts:2404
 
