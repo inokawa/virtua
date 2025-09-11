@@ -6,6 +6,6 @@
 
 > `const` **VList**: `ForwardRefExoticComponent`\<[`VListProps`](../interfaces/VListProps.md) & `RefAttributes`\<[`VListHandle`](../interfaces/VListHandle.md)\>\>
 
-Defined in: [src/react/VList.tsx:43](https://github.com/inokawa/virtua/blob/3489326d86582a5e93a5773f522c17ad61899945/src/react/VList.tsx#L43)
+Defined in: [src/react/VList.tsx:43](https://github.com/inokawa/virtua/blob/bef8d3f4969c1398c3cf5c6c917097dd810b514f/src/react/VList.tsx#L43)
 
 Virtualized list component. See [VListProps](../interfaces/VListProps.md) and [VListHandle](../interfaces/VListHandle.md).
