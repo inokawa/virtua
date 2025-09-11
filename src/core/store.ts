@@ -62,7 +62,7 @@ type Actions =
   | [type: typeof ACTION_VIEWPORT_RESIZE, size: number]
   | [
       type: typeof ACTION_ITEMS_LENGTH_CHANGE,
-      arg: [length: number, isShift?: boolean | undefined],
+      arg: [length: number, isShift?: boolean | undefined]
     ]
   | [type: typeof ACTION_START_OFFSET_CHANGE, offset: number]
   | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
@@ -200,11 +200,13 @@ export const createVirtualStore = (
         }
       }
 
-      if (_scrollDirection !== SCROLL_DOWN) {
-        startIndex -= max(0, overscan);
-      }
-      if (_scrollDirection !== SCROLL_UP) {
-        endIndex += max(0, overscan);
+      if (_scrollMode === SCROLL_BY_NATIVE) {
+        if (_scrollDirection !== SCROLL_DOWN) {
+          startIndex -= max(0, overscan);
+        }
+        if (_scrollDirection !== SCROLL_UP) {
+          endIndex += max(0, overscan);
+        }
       }
       return [max(startIndex, 0), min(endIndex, cache._length - 1)];
     },
