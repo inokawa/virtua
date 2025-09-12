@@ -1,5 +1,5 @@
 <script lang="ts" generics="T">
-  import { onMount, onDestroy } from "svelte";
+  import { onMount, onDestroy, tick } from "svelte";
   import {
     ACTION_ITEMS_LENGTH_CHANGE,
     ACTION_START_OFFSET_CHANGE,
@@ -70,11 +70,14 @@
       resizer.$observeRoot(scrollable);
       scroller.$observe(scrollable);
     };
-    if (scrollRef) {
-      assignRef(scrollRef);
-    } else {
-      assignRef(containerRef!.parentElement!);
-    }
+    // parent's ref may not exist on mount https://github.com/inokawa/virtua/issues/603 https://github.com/inokawa/virtua/issues/690
+    tick().then(() => {
+      if (scrollRef) {
+        assignRef(scrollRef);
+      } else {
+        assignRef(containerRef!.parentElement!);
+      }
+    });
   });
   onDestroy(() => {
     unsubscribeStore();
