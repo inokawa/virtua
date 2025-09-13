@@ -135,7 +135,7 @@
     "typescript-eslint": "^8.43.0",
     "unplugin-vue-jsx": "^0.8.0",
     "virtua": "^0.43.0",
-    "vite": "^6.3.5",
+    "vite": "^7.0.0",
     "vite-plugin-solid": "^2.11.8",
     "vitest": "^3.2.4",
     "vue": "^3.4.34",
