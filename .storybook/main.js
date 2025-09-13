@@ -1,3 +1,5 @@
+import { mergeConfig } from "vite";
+
 /** @type { import('@storybook/react-vite').StorybookConfig } */
 export default process.env.STORYBOOK_VUE
   ? {
@@ -8,9 +10,6 @@ export default process.env.STORYBOOK_VUE
         options: {},
       },
       viteFinal: async (config) => {
-        // https://github.com/storybookjs/storybook/issues/26291#issuecomment-1978193283
-        const { mergeConfig } = await import("vite");
-
         const { default: vue } = await import("@vitejs/plugin-vue");
         const { default: vueJsx } = await import("@vitejs/plugin-vue-jsx");
 
@@ -37,9 +36,6 @@ export default process.env.STORYBOOK_VUE
         options: {},
       },
       viteFinal: async (config) => {
-        // https://github.com/storybookjs/storybook/issues/26291#issuecomment-1978193283
-        const { mergeConfig } = await import("vite");
-
         const { svelte, vitePreprocess } = await import(
           "@sveltejs/vite-plugin-svelte"
         );
@@ -57,9 +53,6 @@ export default process.env.STORYBOOK_VUE
         options: {},
       },
       viteFinal: async (config) => {
-        // https://github.com/storybookjs/storybook/issues/26291#issuecomment-1978193283
-        const { mergeConfig } = await import("vite");
-
         const { default: react } = await import("@vitejs/plugin-react");
 
         return mergeConfig(config, {
