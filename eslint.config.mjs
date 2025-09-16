@@ -13,12 +13,24 @@ const languageOptions = {
     ecmaFeatures: {
       jsx: true,
     },
-    projectService: true,
+    projectService: {
+      allowDefaultProject: ["e2e/*"],
+    },
     tsconfigRootDir: import.meta.dirname,
   },
 };
 
 export default [
+  {
+    files: ["e2e/**/*.ts"],
+    plugins: {
+      "@typescript-eslint": tseslint.plugin,
+    },
+    languageOptions,
+    rules: {
+      "@typescript-eslint/no-floating-promises": "error",
+    },
+  },
   {
     files: ["src/**/*.{js,jsx,ts,tsx}"],
     languageOptions,
