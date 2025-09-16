@@ -42,7 +42,7 @@
     "build": "rollup -c",
     "tsc": "tsc -p . --noEmit",
     "test": "vitest run --project=unit",
-    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
+    "lint": "eslint '{src,e2e}/**/*.{js,jsx,ts,tsx}'",
     "check:svelte": "svelte-check --tsconfig ./tsconfig.svelte.json",
     "storybook": "storybook dev -p 6006",
     "storybook:rtl": "STORYBOOK_RTL=1 npm run storybook",

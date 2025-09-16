@@ -161,7 +161,7 @@ test.describe("smoke", () => {
     // check if items are unmounted
     await page.getByRole("button", { name: "hide" }).click();
 
-    expect(component).not.toBeAttached();
+    await expect(component).not.toBeAttached();
 
     // check if scroll position is restored
     await page.getByRole("button", { name: "show" }).click();
@@ -208,7 +208,7 @@ test.describe("check if it works when children change", () => {
     const updateButton = page.getByRole("button", { name: "update" });
 
     // add many
-    input.fill("1000");
+    await input.fill("1000");
     await updateButton.click();
 
     // scroll a lot
