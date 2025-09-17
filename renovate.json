@@ -8,5 +8,6 @@
     ":maintainLockFilesMonthly"
   ],
   "timezone": "Asia/Tokyo",
-  "configMigration": true
+  "configMigration": true,
+  "minimumReleaseAge": "1 days"
 }
