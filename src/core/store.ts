@@ -18,7 +18,7 @@ import type {
   ItemResize,
   ItemsRange,
 } from "./types";
-import { abs, max, min, NULL } from "./utils";
+import { abs, max, microtask, min, NULL } from "./utils";
 
 const MAX_INT_32 = 0x7fffffff;
 
@@ -55,18 +55,21 @@ export const ACTION_MANUAL_SCROLL = 7;
 /** @internal */
 export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 8;
 
-type Actions =
-  | [type: typeof ACTION_SCROLL, offset: number]
-  | [type: typeof ACTION_SCROLL_END, dummy?: void]
-  | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
-  | [type: typeof ACTION_VIEWPORT_RESIZE, size: number]
-  | [
-      type: typeof ACTION_ITEMS_LENGTH_CHANGE,
-      arg: [length: number, isShift?: boolean | undefined],
-    ]
-  | [type: typeof ACTION_START_OFFSET_CHANGE, offset: number]
-  | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
-  | [type: typeof ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, offset: number];
+type Actions = [
+  ...args:
+    | [type: typeof ACTION_SCROLL, offset: number]
+    | [type: typeof ACTION_SCROLL_END, dummy?: void]
+    | [type: typeof ACTION_ITEM_RESIZE, entry: ItemResize]
+    | [type: typeof ACTION_VIEWPORT_RESIZE, size: number]
+    | [
+        type: typeof ACTION_ITEMS_LENGTH_CHANGE,
+        arg: [length: number, isShift?: boolean | undefined]
+      ]
+    | [type: typeof ACTION_START_OFFSET_CHANGE, offset: number]
+    | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
+    | [type: typeof ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, offset: number],
+  immediate?: boolean
+];
 
 /** @internal */
 export const UPDATE_VIRTUAL_STATE = 0b0001;
@@ -133,7 +136,10 @@ export const createVirtualStore = (
   shouldAutoEstimateItemSize: boolean = false
 ): VirtualStore => {
   let isSSR = !!ssrCount;
+  let isRerenderScheduled = false;
+  let shouldSync = false;
   let stateVersion: StateVersion = 1;
+  let updatedBit = 0;
   let viewportSize = 0;
   let startSpacerSize = 0;
   let scrollOffset = 0;
@@ -246,10 +252,8 @@ export const createVirtualStore = (
         subscribers.delete(sub);
       };
     },
-    $update: (type, payload): void => {
+    $update: (type, payload, immediate = false) => {
       let shouldFlushPendingJump: boolean | undefined;
-      let shouldSync: boolean | undefined;
-      let mutated = 0;
 
       switch (type) {
         case ACTION_SCROLL: {
@@ -291,7 +295,7 @@ export const createVirtualStore = (
           }
 
           scrollOffset = payload;
-          mutated = UPDATE_SCROLL_EVENT;
+          updatedBit |= UPDATE_SCROLL_EVENT;
 
           // Skip if offset is not changed
           // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
@@ -300,7 +304,7 @@ export const createVirtualStore = (
             relativeOffset >= -viewportSize &&
             relativeOffset <= getTotalSize()
           ) {
-            mutated += UPDATE_VIRTUAL_STATE;
+            updatedBit |= UPDATE_VIRTUAL_STATE;
 
             // Update synchronously if scrolled a lot
             shouldSync = distance > viewportSize;
@@ -308,10 +312,10 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_SCROLL_END: {
-          mutated = UPDATE_SCROLL_END_EVENT;
+          updatedBit |= UPDATE_SCROLL_END_EVENT;
           if (_scrollDirection !== SCROLL_IDLE) {
             shouldFlushPendingJump = true;
-            mutated += UPDATE_VIRTUAL_STATE;
+            updatedBit |= UPDATE_VIRTUAL_STATE;
           }
           _scrollDirection = SCROLL_IDLE;
           _scrollMode = SCROLL_BY_NATIVE;
@@ -319,50 +323,40 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_ITEM_RESIZE: {
-          const updated = payload.filter(
-            ([index, size]) => cache._sizes[index] !== size
-          );
+          const [index, size] = payload;
 
-          // Skip if all items are cached and not updated
-          if (!updated.length) {
+          // Skip if item is cached and not updated
+          if (cache._sizes[index] === size) {
             break;
           }
 
+          const prevSize = getItemSize(index);
+
           // Calculate jump by resize to minimize junks in appearance
-          applyJump(
-            updated.reduce((acc, [index, size]) => {
-              if (
-                // Keep distance from end during shifting
-                _scrollMode === SCROLL_BY_SHIFT ||
-                (_frozenRange
-                  ? // https://github.com/inokawa/virtua/issues/380
-                    // https://github.com/inokawa/virtua/issues/590
-                    !isSSR && index < _frozenRange[0]
-                  : // Otherwise we should maintain visible position
-                    getItemOffset(index) +
-                      // https://github.com/inokawa/virtua/issues/385
-                      (_scrollDirection === SCROLL_IDLE &&
-                      _scrollMode === SCROLL_BY_NATIVE
-                        ? getItemSize(index)
-                        : 0) <
-                    getRelativeScrollOffset())
-              ) {
-                acc += size - getItemSize(index);
-              }
-              return acc;
-            }, 0)
-          );
+          if (
+            // Keep distance from end during shifting
+            _scrollMode === SCROLL_BY_SHIFT ||
+            (_frozenRange
+              ? // https://github.com/inokawa/virtua/issues/380
+                // https://github.com/inokawa/virtua/issues/590
+                !isSSR && index < _frozenRange[0]
+              : // Otherwise we should maintain visible position
+                getItemOffset(index) +
+                  // https://github.com/inokawa/virtua/issues/385
+                  (_scrollDirection === SCROLL_IDLE &&
+                  _scrollMode === SCROLL_BY_NATIVE
+                    ? prevSize
+                    : 0) <
+                getRelativeScrollOffset())
+          ) {
+            applyJump(size - prevSize);
+          }
 
-          // Update item sizes
-          for (const [index, size] of updated) {
-            const prevSize = getItemSize(index);
-            const isInitialMeasurement = setItemSize(cache, index, size);
+          // Update item size
+          const isInitialMeasurement = setItemSize(cache, index, size);
 
-            if (shouldAutoEstimateItemSize) {
-              _totalMeasuredSize += isInitialMeasurement
-                ? size
-                : size - prevSize;
-            }
+          if (shouldAutoEstimateItemSize) {
+            _totalMeasuredSize += isInitialMeasurement ? size : size - prevSize;
           }
 
           // Estimate initial item size from measured sizes
@@ -381,7 +375,7 @@ export const createVirtualStore = (
             shouldAutoEstimateItemSize = false;
           }
 
-          mutated = UPDATE_VIRTUAL_STATE + UPDATE_SIZE_EVENT;
+          updatedBit |= UPDATE_VIRTUAL_STATE | UPDATE_SIZE_EVENT;
 
           // Synchronous update is necessary in current design to minimize visible glitch in concurrent rendering.
           // However this seems to be the main cause of the errors from ResizeObserver.
@@ -395,7 +389,7 @@ export const createVirtualStore = (
         case ACTION_VIEWPORT_RESIZE: {
           if (viewportSize !== payload) {
             viewportSize = payload;
-            mutated = UPDATE_VIRTUAL_STATE + UPDATE_SIZE_EVENT;
+            updatedBit |= UPDATE_VIRTUAL_STATE | UPDATE_SIZE_EVENT;
           }
           break;
         }
@@ -403,12 +397,12 @@ export const createVirtualStore = (
           if (payload[1]) {
             applyJump(updateCacheLength(cache, payload[0], true));
             _scrollMode = SCROLL_BY_SHIFT;
-            mutated = UPDATE_VIRTUAL_STATE;
+            updatedBit |= UPDATE_VIRTUAL_STATE;
           } else {
             updateCacheLength(cache, payload[0]);
             // https://github.com/inokawa/virtua/issues/552
             // https://github.com/inokawa/virtua/issues/557
-            mutated = UPDATE_VIRTUAL_STATE;
+            updatedBit |= UPDATE_VIRTUAL_STATE;
           }
           break;
         }
@@ -422,28 +416,43 @@ export const createVirtualStore = (
         }
         case ACTION_BEFORE_MANUAL_SMOOTH_SCROLL: {
           _frozenRange = getRange(payload);
-          mutated = UPDATE_VIRTUAL_STATE;
+          updatedBit |= UPDATE_VIRTUAL_STATE;
           break;
         }
       }
 
-      if (mutated) {
-        stateVersion = (stateVersion & MAX_INT_32) + 1;
-
+      if (updatedBit) {
         if (shouldFlushPendingJump && pendingJump) {
           jump += pendingJump;
           pendingJump = 0;
         }
 
-        subscribers.forEach(([target, cb]) => {
-          // Early return to skip React's computation
-          if (!(mutated & target)) {
-            return;
+        if (!isRerenderScheduled) {
+          isRerenderScheduled = true;
+          const flush = () => {
+            const _updatedBit = updatedBit;
+            const _shouldSync = shouldSync;
+            updatedBit = 0;
+            isRerenderScheduled = shouldSync = false;
+
+            stateVersion = (stateVersion & MAX_INT_32) + 1;
+
+            subscribers.forEach(([target, cb]) => {
+              // Early return to skip React's computation
+              if (!(_updatedBit & target)) {
+                return;
+              }
+              // https://github.com/facebook/react/issues/25191
+              // https://github.com/facebook/react/blob/a5fc797db14c6e05d4d5c4dbb22a0dd70d41f5d5/packages/react-reconciler/src/ReactFiberWorkLoop.js#L1443-L1447
+              cb(_shouldSync);
+            });
+          };
+          if (immediate) {
+            flush();
+          } else {
+            microtask(flush);
           }
-          // https://github.com/facebook/react/issues/25191
-          // https://github.com/facebook/react/blob/a5fc797db14c6e05d4d5c4dbb22a0dd70d41f5d5/packages/react-reconciler/src/ReactFiberWorkLoop.js#L1443-L1447
-          cb(shouldSync);
-        });
+        }
       }
     },
   };
