@@ -262,7 +262,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
       () => props.startMargin || 0,
       (value) => {
         if (value !== store.$getStartSpacerSize()) {
-          store.$update(ACTION_START_OFFSET_CHANGE, value);
+          store.$update(ACTION_START_OFFSET_CHANGE, value, true);
         }
       }
     )
@@ -278,7 +278,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     const count = props.data.length;
     untrack(() => {
       if (count !== store.$getItemsLength()) {
-        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift], true);
       }
     });
     const [start, end] = range();
