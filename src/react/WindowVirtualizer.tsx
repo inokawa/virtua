@@ -170,7 +170,7 @@ export const WindowVirtualizer = forwardRef<
     });
     // The elements length and cached items length are different just after element is added/removed.
     if (count !== store.$getItemsLength()) {
-      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
+      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift], true);
     }
 
     const [stateVersion, rerender] = useReducer(

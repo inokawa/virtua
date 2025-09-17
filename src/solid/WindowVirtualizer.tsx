@@ -199,7 +199,7 @@ export const WindowVirtualizer = <T,>(
     const count = props.data.length;
     untrack(() => {
       if (count !== store.$getItemsLength()) {
-        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift], true);
       }
     });
     const items: T[] = [];
