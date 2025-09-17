@@ -52,7 +52,6 @@ export const createResizer = (
   const mountedIndexes = new WeakMap<Element, number>();
 
   const resizeObserver = createResizeObserver((entries) => {
-    const resizes: ItemResize[] = [];
     for (const { target, contentRect } of entries) {
       // Skip zero-sized rects that may be observed under `display: none` style
       if (!(target as HTMLElement).offsetParent) continue;
@@ -62,13 +61,9 @@ export const createResizer = (
       } else {
         const index = mountedIndexes.get(target);
         if (index != NULL) {
-          resizes.push([index, contentRect[sizeKey]]);
+          store.$update(ACTION_ITEM_RESIZE, [index, contentRect[sizeKey]]);
         }
       }
-    }
-
-    if (resizes.length) {
-      store.$update(ACTION_ITEM_RESIZE, resizes);
     }
   });
 
@@ -106,19 +101,14 @@ export const createWindowResizer = (
   const mountedIndexes = new WeakMap<Element, number>();
 
   const resizeObserver = createResizeObserver((entries) => {
-    const resizes: ItemResize[] = [];
     for (const { target, contentRect } of entries) {
       // Skip zero-sized rects that may be observed under `display: none` style
       if (!(target as HTMLElement).offsetParent) continue;
 
       const index = mountedIndexes.get(target);
       if (index != NULL) {
-        resizes.push([index, contentRect[sizeKey]]);
+        store.$update(ACTION_ITEM_RESIZE, [index, contentRect[sizeKey]]);
       }
-    }
-
-    if (resizes.length) {
-      store.$update(ACTION_ITEM_RESIZE, resizes);
     }
   });
 
@@ -221,7 +211,6 @@ export const createGridResizer = (
     }
 
     if (resizedRows.size) {
-      const heightResizes: ItemResize[] = [];
       resizedRows.forEach((rowIndex) => {
         let maxHeight = 0;
         maybeCachedColIndexes.forEach((colIndex) => {
@@ -231,13 +220,11 @@ export const createGridResizer = (
           }
         });
         if (maxHeight) {
-          heightResizes.push([rowIndex, maxHeight]);
+          vStore.$update(ACTION_ITEM_RESIZE, [rowIndex, maxHeight]);
         }
       });
-      vStore.$update(ACTION_ITEM_RESIZE, heightResizes);
     }
     if (resizedCols.size) {
-      const widthResizes: ItemResize[] = [];
       resizedCols.forEach((colIndex) => {
         let maxWidth = 0;
         maybeCachedRowIndexes.forEach((rowIndex) => {
@@ -247,10 +234,9 @@ export const createGridResizer = (
           }
         });
         if (maxWidth) {
-          widthResizes.push([colIndex, maxWidth]);
+          hStore.$update(ACTION_ITEM_RESIZE, [colIndex, maxWidth]);
         }
       });
-      hStore.$update(ACTION_ITEM_RESIZE, widthResizes);
     }
   });
 
@@ -269,20 +255,20 @@ export const createGridResizer = (
       };
     },
     $resizeCols(cols: ItemResize[]) {
-      for (const [c] of cols) {
+      for (const col of cols) {
         for (let r = 0; r < vStore.$getItemsLength(); r++) {
-          sizeCache.delete(getKey(r, c));
+          sizeCache.delete(getKey(r, col[0]));
         }
+        hStore.$update(ACTION_ITEM_RESIZE, col);
       }
-      hStore.$update(ACTION_ITEM_RESIZE, cols);
     },
     $resizeRows(rows: ItemResize[]) {
-      for (const [r] of rows) {
+      for (const row of rows) {
         for (let c = 0; c < hStore.$getItemsLength(); c++) {
-          sizeCache.delete(getKey(r, c));
+          sizeCache.delete(getKey(row[0], c));
         }
+        vStore.$update(ACTION_ITEM_RESIZE, row);
       }
-      vStore.$update(ACTION_ITEM_RESIZE, rows);
     },
     $dispose: resizeObserver._dispose,
   };
