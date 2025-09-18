@@ -33,6 +33,19 @@ export const microtask: (fn: () => void) => void =
 /**
  * @internal
  */
+export const createPromise = (): [Promise<void>, () => void, () => void] => {
+  let resolve: (() => void) | undefined;
+  let reject: (() => void) | undefined;
+  const promise = new Promise<void>((res, rej) => {
+    resolve = res;
+    reject = rej;
+  });
+  return [promise, resolve!, reject!];
+};
+
+/**
+ * @internal
+ */
 export const once = <T>(fn: () => T): (() => T) => {
   let cache: T;
 
