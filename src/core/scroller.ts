@@ -16,7 +16,7 @@ import {
   isInitialMeasurementDone,
 } from "./store";
 import { type ScrollToIndexOpts } from "./types";
-import { clamp, microtask, NULL } from "./utils";
+import { clamp, createPromise, NULL } from "./utils";
 
 const timeout = setTimeout;
 
@@ -198,6 +198,7 @@ export const createScroller = (
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let cancelScroll: (() => void) | undefined;
+  const [initialized, resolveInitialized, rejectInitialized] = createPromise();
   const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const overflowKey = isHorizontal ? "overflowX" : "overflowY";
 
@@ -207,11 +208,9 @@ export const createScroller = (
     getTargetOffset: () => number,
     smooth?: boolean
   ) => {
-    if (!viewportElement) {
-      // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
-      microtask(() => scheduleImperativeScroll(getTargetOffset, smooth));
-      return;
-    }
+    // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
+    // https://github.com/inokawa/virtua/pull/733
+    await initialized;
 
     if (cancelScroll) {
       // Cancel waiting scrollTo
@@ -221,22 +220,20 @@ export const createScroller = (
     const waitForMeasurement = (): [Promise<void>, () => void] => {
       // Wait for the scroll destination items to be measured.
       // The measurement will be done asynchronously and the timing is not predictable so we use promise.
-      let queue: (() => void) | undefined;
-      return [
-        new Promise<void>((resolve, reject) => {
-          queue = resolve;
-          cancelScroll = reject;
+      const [promise, resolve, reject] = createPromise();
+      cancelScroll = reject;
 
-          // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
-          // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
-          // https://github.com/inokawa/virtua/issues/450
-          if (isInitialMeasurementDone(store)) {
-            // Reject when items around scroll destination completely measured
-            timeout(reject, 150);
-          }
-        }),
+      // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
+      // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
+      // https://github.com/inokawa/virtua/issues/450
+      if (isInitialMeasurementDone(store)) {
+        // Reject when items around scroll destination completely measured
+        timeout(reject, 150);
+      }
+      return [
+        promise,
         store.$subscribe(UPDATE_SIZE_EVENT, () => {
-          queue && queue();
+          resolve();
         }),
       ];
     };
@@ -261,7 +258,7 @@ export const createScroller = (
         }
       }
 
-      viewportElement.scrollTo({
+      viewportElement!.scrollTo({
         [isHorizontal ? "left" : "top"]: normalizeOffset(
           getTargetOffset(),
           isHorizontal
@@ -273,7 +270,7 @@ export const createScroller = (
         const [promise, unsubscribe] = waitForMeasurement();
 
         try {
-          viewportElement[scrollOffsetKey] = normalizeOffset(
+          viewportElement![scrollOffsetKey] = normalizeOffset(
             getTargetOffset(),
             isHorizontal
           );
@@ -322,9 +319,12 @@ export const createScroller = (
           }
         }
       );
+
+      resolveInitialized();
     },
     $dispose() {
       scrollObserver && scrollObserver._dispose();
+      rejectInitialized();
     },
     $scrollTo(offset) {
       scheduleImperativeScroll(() => offset);
@@ -361,8 +361,8 @@ export const createScroller = (
           (align === "end"
             ? store.$getItemSize(index) - store.$getViewportSize()
             : align === "center"
-              ? (store.$getItemSize(index) - store.$getViewportSize()) / 2
-              : 0)
+            ? (store.$getItemSize(index) - store.$getViewportSize()) / 2
+            : 0)
         );
       }, smooth);
     },
@@ -392,6 +392,7 @@ export const createWindowScroller = (
   let containerElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let cancelScroll: (() => void) | undefined;
+  const [initialized, resolveInitialized, rejectInitialized] = createPromise();
 
   const calcOffsetToViewport = (
     node: HTMLElement,
@@ -426,34 +427,36 @@ export const createWindowScroller = (
     getTargetOffset: () => number,
     smooth?: boolean
   ) => {
-    if (!containerElement) {
-      // Wait for element assign
-      microtask(() => scheduleImperativeScroll(getTargetOffset, smooth));
-      return;
-    }
+    // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
+    // https://github.com/inokawa/virtua/pull/733
+    await initialized;
 
     if (cancelScroll) {
       cancelScroll();
     }
 
     const waitForMeasurement = (): [Promise<void>, () => void] => {
-      let queue: (() => void) | undefined;
-      return [
-        new Promise<void>((resolve, reject) => {
-          queue = resolve;
-          cancelScroll = reject;
+      // Wait for the scroll destination items to be measured.
+      // The measurement will be done asynchronously and the timing is not predictable so we use promise.
+      const [promise, resolve, reject] = createPromise();
+      cancelScroll = reject;
 
-          if (isInitialMeasurementDone(store)) {
-            timeout(reject, 150);
-          }
-        }),
+      // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
+      // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
+      // https://github.com/inokawa/virtua/issues/450
+      if (isInitialMeasurementDone(store)) {
+        // Reject when items around scroll destination completely measured
+        timeout(reject, 150);
+      }
+      return [
+        promise,
         store.$subscribe(UPDATE_SIZE_EVENT, () => {
-          queue && queue();
+          resolve();
         }),
       ];
     };
 
-    const window = getCurrentWindow(getCurrentDocument(containerElement));
+    const window = getCurrentWindow(getCurrentDocument(containerElement!));
 
     if (smooth && isSmoothScrollSupported()) {
       while (true) {
@@ -531,10 +534,13 @@ export const createWindowScroller = (
         () =>
           calcOffsetToViewport(container, documentBody, window, isHorizontal)
       );
+
+      resolveInitialized();
     },
     $dispose() {
       scrollObserver && scrollObserver._dispose();
       containerElement = undefined;
+      rejectInitialized();
     },
     $fixScrollJump: () => {
       scrollObserver && scrollObserver._fixScrollJump();
@@ -583,10 +589,10 @@ export const createWindowScroller = (
             ? store.$getItemSize(index) -
               (store.$getViewportSize() - getScrollbarSize())
             : align === "center"
-              ? (store.$getItemSize(index) -
-                  (store.$getViewportSize() - getScrollbarSize())) /
-                2
-              : 0)
+            ? (store.$getItemSize(index) -
+                (store.$getViewportSize() - getScrollbarSize())) /
+              2
+            : 0)
         );
       }, smooth);
     },
