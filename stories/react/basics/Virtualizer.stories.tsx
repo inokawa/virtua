@@ -3,6 +3,7 @@ import React, {
   Fragment,
   forwardRef,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -346,6 +347,10 @@ const Table = forwardRef<HTMLTableElement, CustomContainerComponentProps>(
 
 export const TableElement: StoryObj = {
   render: () => {
+    const data = useMemo(
+      () => Array.from({ length: 1000 }).map((_, i) => i),
+      []
+    );
     return (
       <div
         style={{
@@ -355,7 +360,7 @@ export const TableElement: StoryObj = {
         }}
       >
         <Virtualizer
-          count={1000}
+          data={data}
           as={Table}
           item="tr"
           startMargin={TABLE_HEADER_HEIGHT}

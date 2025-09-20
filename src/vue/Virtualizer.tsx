@@ -263,7 +263,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
 
       const items: VNode[] = [];
 
-      function getListItem(i: number) {
+      const renderItem = (i: number) => {
         const e = slots.default({ item: props.data![i]!, index: i })[0]!;
         return (
           <ListItem
@@ -279,9 +279,9 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
             _itemProps={props.itemProps?.({ item: props.data![i]!, index: i })}
           />
         );
-      }
+      };
       for (let i = startIndex, j = endIndex; i <= j; i++) {
-        items.push(getListItem(i));
+        items.push(renderItem(i));
       }
 
       if (props.keepMounted) {
@@ -289,10 +289,10 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
         const endItems: VNode[] = [];
         sort(props.keepMounted).forEach((index) => {
           if (index < startIndex) {
-            startItems.push(getListItem(index));
+            startItems.push(renderItem(index));
           }
           if (index > endIndex) {
-            endItems.push(getListItem(index));
+            endItems.push(renderItem(index));
           }
         });
 

@@ -347,9 +347,8 @@ export const RenderProp: StoryObj = {
             append more
           </button>
         </div>
-        <VList style={{ flex: 1 }} count={items.length}>
-          {(i) => {
-            const item = items[i];
+        <VList style={{ flex: 1 }} data={items}>
+          {(item, i) => {
             return (
               <div
                 key={item.id}
