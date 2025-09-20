@@ -315,9 +315,8 @@ The other solution is using [`render prop`](https://legacy.reactjs.org/docs/rend
 ```tsx
 const Component = memo(HeavyItem);
 
-<VList count={items.length}>
-  {(i) => {
-    const item = items[i];
+<VList data={items}>
+  {(item) => {
     return <Component key={item.id} data={item} />;
   }}
 </VList>;
