@@ -7,6 +7,7 @@ import {
   useRef,
   RefObject,
   useReducer,
+  Ref,
 } from "react";
 import {
   UPDATE_SCROLL_EVENT,
@@ -91,17 +92,17 @@ export interface VirtualizerHandle {
 /**
  * Props of {@link Virtualizer}.
  */
-export interface VirtualizerProps {
+export interface VirtualizerProps<T = undefined> {
   /**
    * Elements rendered by this component.
    *
-   * You can also pass a function and set {@link VirtualizerProps.count} to create elements lazily.
+   * You can also pass a function and set {@link VirtualizerProps.data} to create elements lazily.
    */
-  children: ReactNode | ((index: number) => ReactElement);
+  children: ReactNode | ((data: T, index: number) => ReactElement);
   /**
-   * If you set a function to {@link VirtualizerProps.children}, you have to set total number of items to this prop.
+   * The data items rendered by this component. If you set a function to {@link VirtualizerProps.children}, you have to set this prop.
    */
-  count?: number;
+  data?: T[];
   /**
    * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
@@ -168,11 +169,14 @@ export interface VirtualizerProps {
 /**
  * Customizable list virtualizer for advanced usage. See {@link VirtualizerProps} and {@link VirtualizerHandle}.
  */
-export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
+export const Virtualizer = forwardRef<
+  VirtualizerHandle,
+  VirtualizerProps<unknown>
+>(
   (
     {
       children,
-      count: renderCountProp,
+      data,
       overscan,
       itemSize,
       shift,
@@ -191,7 +195,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
   ): ReactElement => {
     Element = Element as "div";
 
-    const [getElement, count] = useChildren(children, renderCountProp);
+    const [renderElement, count] = useChildren(children, data);
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -238,8 +242,8 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
 
     const items: ReactElement[] = [];
 
-    const getListItem = (index: number) => {
-      const e = getElement(index);
+    const renderItem = (index: number) => {
+      const e = renderElement(index);
 
       return (
         <ListItem
@@ -342,11 +346,11 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         mounted.add(i);
       }
       sort([...mounted]).forEach((index) => {
-        items.push(getListItem(index));
+        items.push(renderItem(index));
       });
     } else {
       for (let i = startIndex, j = endIndex; i <= j; i++) {
-        items.push(getListItem(i));
+        items.push(renderItem(i));
       }
     }
 
@@ -368,4 +372,6 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       </Element>
     );
   }
-);
+) as <T>(
+  props: VirtualizerProps<T> & { ref?: Ref<VirtualizerHandle> }
+) => ReactElement;

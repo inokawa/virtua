@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -41,6 +42,10 @@ const ItemWithOnMount = ({
 
 export const AppendOnly: StoryObj = {
   render: () => {
+    const data = useMemo(
+      () => Array.from({ length: 1000 }).map((_, i) => i),
+      []
+    );
     const [indexes, setIndexes] = useState<number[]>([]);
     return (
       <div
@@ -55,7 +60,7 @@ export const AppendOnly: StoryObj = {
             clear
           </button>
         </div>
-        <VList count={1000} keepMounted={indexes}>
+        <VList data={data} keepMounted={indexes}>
           {(i) => (
             <ItemWithOnMount
               key={i}
@@ -94,7 +99,7 @@ const itemStyle: CSSProperties = {
   whiteSpace: "pre-wrap",
 };
 
-const TextEditor = ({ value }) => {
+const TextEditor = ({ value }: { value: string }) => {
   const ref = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
