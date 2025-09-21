@@ -1,15 +1,22 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe, vi, afterEach } from "vitest";
 import { defineComponent, h } from "vue";
-import { render } from "@testing-library/vue";
+import { render as _render, cleanup } from "@testing-library/vue";
 import { WindowVirtualizer } from "./WindowVirtualizer";
-import { setupJsDomEnv } from "../../scripts/spec";
+import { setupResizeJsDom } from "../../scripts/spec";
 
-setupJsDomEnv({
-  itemWidth: 100,
-  itemHeight: 50,
+setupResizeJsDom({
+  itemSize: { width: 100, height: 50 },
 });
 
 const range = (length: number) => Array.from({ length }).map((_, i) => i);
+
+const render = (...args: Parameters<typeof _render>) => {
+  const res = _render(...args);
+  vi.runAllTicks();
+  return res;
+};
+
+afterEach(cleanup);
 
 it("should pass attributes to element", () => {
   const wrapper = render(WindowVirtualizer, {

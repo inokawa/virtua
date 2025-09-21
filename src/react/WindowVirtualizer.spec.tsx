@@ -1,14 +1,19 @@
-import { afterEach, it, expect, describe, vitest } from "vitest";
-import { render, cleanup } from "@testing-library/react";
+import { afterEach, it, expect, describe, vitest, vi } from "vitest";
+import { render as _render, cleanup } from "@testing-library/react";
 import { WindowVirtualizer } from "./WindowVirtualizer";
 import { Profiler, forwardRef } from "react";
 import { CustomItemComponentProps } from "./types";
-import { setupJsDomEnv } from "../../scripts/spec";
+import { setupResizeJsDom } from "../../scripts/spec";
 
-setupJsDomEnv({
-  itemWidth: 100,
-  itemHeight: 50,
+setupResizeJsDom({
+  itemSize: { width: 100, height: 50 },
 });
+
+const render = (...args: Parameters<typeof _render>) => {
+  const res = _render(...args);
+  vi.runAllTicks();
+  return res;
+};
 
 afterEach(cleanup);
 
@@ -299,7 +304,7 @@ describe("render count", () => {
       </Profiler>
     );
 
-    expect(rootFn).toBeCalledTimes(2);
+    expect(rootFn).toBeCalledTimes(3);
     itemFns.forEach((itemFn) => {
       expect(itemFn).toHaveBeenCalledTimes(1);
     });

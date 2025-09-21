@@ -1,11 +1,9 @@
-export const setupJsDomEnv = ({
-  viewportHeight,
-  itemHeight,
-  itemWidth,
+export const setupResizeJsDom = ({
+  itemSize,
+  viewportSize,
 }: {
-  itemWidth: number;
-  itemHeight: number;
-  viewportHeight?: number;
+  itemSize: { width: number; height: number };
+  viewportSize?: { width: number; height: number };
 }) => {
   // https://github.com/jsdom/jsdom/issues/1261#issuecomment-362928131
   Object.defineProperty(global.HTMLElement.prototype, "offsetParent", {
@@ -35,42 +33,31 @@ export const setupJsDomEnv = ({
     return entry as any;
   };
 
-  global.ResizeObserver = viewportHeight
-    ? // overflow scroll
-      class {
-        first = false;
-        constructor(private callback: ResizeObserverCallback) {}
-        disconnect() {}
-        observe(e: HTMLElement) {
-          this.callback(
-            [
-              createResizeObserverEntry(e, {
-                width: itemWidth,
-                height: this.first ? viewportHeight : itemHeight,
-              }),
-            ],
-            this
-          );
-          // HACK: first observing should be root
-          this.first = false;
-        }
-        unobserve(_target: Element) {}
+  global.ResizeObserver = class {
+    private flushing = false;
+    private queues: ResizeObserverEntry[] = [];
+    constructor(private callback: ResizeObserverCallback) {}
+    disconnect() {}
+    observe(e: HTMLElement) {
+      const overflowStyle =
+        e.style.overflow || e.style.overflowY || e.style.overflowX;
+      if (overflowStyle.includes("scroll") || overflowStyle.includes("auto")) {
+        if (!viewportSize) return;
+        this.queues.push(createResizeObserverEntry(e, viewportSize));
+      } else {
+        this.queues.push(createResizeObserverEntry(e, itemSize));
       }
-    : // window scroll
-      class {
-        constructor(private callback: ResizeObserverCallback) {}
-        disconnect() {}
-        observe(e: HTMLElement) {
-          this.callback(
-            [
-              createResizeObserverEntry(e, {
-                width: itemWidth,
-                height: itemHeight,
-              }),
-            ],
-            this
-          );
-        }
-        unobserve(_target: Element) {}
-      };
+
+      if (!this.flushing) {
+        this.flushing = true;
+        queueMicrotask(() => {
+          this.flushing = false;
+          const queues = this.queues;
+          this.queues = [];
+          this.callback(queues, this);
+        });
+      }
+    }
+    unobserve(_target: Element) {}
+  };
 };

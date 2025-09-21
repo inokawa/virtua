@@ -1,20 +1,27 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe, vi, afterEach } from "vitest";
 import { defineComponent, h } from "vue";
-import { render } from "@testing-library/vue";
+import { render as _render, cleanup } from "@testing-library/vue";
 import { VList } from "./VList";
-import { setupJsDomEnv } from "../../scripts/spec";
+import { setupResizeJsDom } from "../../scripts/spec";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
 const VIEWPORT_HEIGHT = ITEM_HEIGHT * 10;
 
-setupJsDomEnv({
-  itemWidth: ITEM_WIDTH,
-  itemHeight: ITEM_HEIGHT,
-  viewportHeight: VIEWPORT_HEIGHT,
+setupResizeJsDom({
+  itemSize: { width: ITEM_WIDTH, height: ITEM_HEIGHT },
+  viewportSize: { width: ITEM_WIDTH, height: VIEWPORT_HEIGHT },
 });
 
 const range = (length: number) => Array.from({ length }).map((_, i) => i);
+
+const render = (...args: Parameters<typeof _render>) => {
+  const res = _render(...args);
+  vi.runAllTicks();
+  return res;
+};
+
+afterEach(cleanup);
 
 it("should pass attributes to element", () => {
   const wrapper = render(VList, {

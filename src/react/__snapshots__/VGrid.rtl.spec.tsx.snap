@@ -6,7 +6,7 @@ exports[`rtl > should work 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 10000px; height: 4040px;"
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 10000px; height: 4140px;"
     >
       <div
         style="contain: layout style; display: grid; position: absolute; top: 0px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
@@ -118,6 +118,258 @@ exports[`rtl > should work 1`] = `
       >
         <div>
           3 / 3
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 200px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          4 / 0
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 200px; right: 100px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          4 / 1
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 200px; right: 200px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          4 / 2
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 200px; right: 300px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          4 / 3
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 250px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          5 / 0
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 250px; right: 100px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          5 / 1
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 250px; right: 200px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          5 / 2
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 250px; right: 300px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          5 / 3
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 300px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          6 / 0
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 300px; right: 100px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          6 / 1
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 300px; right: 200px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          6 / 2
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 300px; right: 300px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          6 / 3
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 350px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          7 / 0
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 350px; right: 100px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          7 / 1
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 350px; right: 200px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          7 / 2
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 350px; right: 300px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          7 / 3
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 400px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          8 / 0
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 400px; right: 100px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          8 / 1
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 400px; right: 200px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          8 / 2
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 400px; right: 300px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          8 / 3
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 450px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          9 / 0
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 450px; right: 100px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          9 / 1
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 450px; right: 200px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          9 / 2
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 450px; right: 300px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          9 / 3
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 500px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          10 / 0
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 500px; right: 100px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          10 / 1
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 500px; right: 200px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          10 / 2
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 500px; right: 300px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          10 / 3
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 550px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          11 / 0
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 550px; right: 100px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          11 / 1
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 550px; right: 200px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          11 / 2
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 550px; right: 300px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          11 / 3
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 600px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          12 / 0
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 600px; right: 100px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          12 / 1
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 600px; right: 200px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          12 / 2
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 600px; right: 300px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          12 / 3
         </div>
       </div>
     </div>

@@ -422,10 +422,66 @@ exports[`horizontal > should render with keepMounted 1`] = `
         </div>
       </div>
       <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 300px; visibility: visible;"
+      >
+        <div>
+          6
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 350px; visibility: visible;"
+      >
+        <div>
+          7
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px; visibility: visible;"
+      >
+        <div>
+          8
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 450px; visibility: visible;"
+      >
+        <div>
+          9
+        </div>
+      </div>
+      <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 500px; visibility: visible;"
       >
         <div>
           10
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 550px; visibility: visible;"
+      >
+        <div>
+          11
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 600px; visibility: visible;"
+      >
+        <div>
+          12
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 650px; visibility: visible;"
+      >
+        <div>
+          13
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 700px; visibility: visible;"
+      >
+        <div>
+          14
         </div>
       </div>
       <div
@@ -498,38 +554,38 @@ exports[`reverse > should render many items 1`] = `
       style="display: flex; flex-direction: column; justify-content: flex-end; min-height: 100%;"
     >
       <div
-        style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 4000px;"
+        style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 4050px;"
       >
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
         >
           <div>
             0
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
         >
           <div>
             1
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
         >
           <div>
             2
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
         >
           <div>
             3
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
         >
           <div>
             4
@@ -669,6 +725,69 @@ exports[`should render with render prop 1`] = `
           This is 5
         </div>
       </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 300px; visibility: visible;"
+      >
+        <div>
+          This is 6
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 350px; visibility: visible;"
+      >
+        <div>
+          This is 7
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px; visibility: visible;"
+      >
+        <div>
+          This is 8
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 450px; visibility: visible;"
+      >
+        <div>
+          This is 9
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 500px; visibility: visible;"
+      >
+        <div>
+          This is 10
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 550px; visibility: visible;"
+      >
+        <div>
+          This is 11
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 600px; visibility: visible;"
+      >
+        <div>
+          This is 12
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 650px; visibility: visible;"
+      >
+        <div>
+          This is 13
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 700px; visibility: visible;"
+      >
+        <div>
+          This is 14
+        </div>
+      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -804,6 +923,69 @@ exports[`vertical > should render 100 children 1`] = `
           5
         </div>
       </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 300px; visibility: visible;"
+      >
+        <div>
+          6
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 350px; visibility: visible;"
+      >
+        <div>
+          7
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px; visibility: visible;"
+      >
+        <div>
+          8
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 450px; visibility: visible;"
+      >
+        <div>
+          9
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 500px; visibility: visible;"
+      >
+        <div>
+          10
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 550px; visibility: visible;"
+      >
+        <div>
+          11
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 600px; visibility: visible;"
+      >
+        <div>
+          12
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 650px; visibility: visible;"
+      >
+        <div>
+          13
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 700px; visibility: visible;"
+      >
+        <div>
+          14
+        </div>
+      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -859,6 +1041,69 @@ exports[`vertical > should render 1000 children 1`] = `
           5
         </div>
       </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 300px; visibility: visible;"
+      >
+        <div>
+          6
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 350px; visibility: visible;"
+      >
+        <div>
+          7
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px; visibility: visible;"
+      >
+        <div>
+          8
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 450px; visibility: visible;"
+      >
+        <div>
+          9
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 500px; visibility: visible;"
+      >
+        <div>
+          10
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 550px; visibility: visible;"
+      >
+        <div>
+          11
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 600px; visibility: visible;"
+      >
+        <div>
+          12
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 650px; visibility: visible;"
+      >
+        <div>
+          13
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 700px; visibility: visible;"
+      >
+        <div>
+          14
+        </div>
+      </div>
     </div>
   </div>
 </DocumentFragment>
@@ -912,6 +1157,69 @@ exports[`vertical > should render 10000 children 1`] = `
       >
         <div>
           5
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 300px; visibility: visible;"
+      >
+        <div>
+          6
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 350px; visibility: visible;"
+      >
+        <div>
+          7
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px; visibility: visible;"
+      >
+        <div>
+          8
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 450px; visibility: visible;"
+      >
+        <div>
+          9
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 500px; visibility: visible;"
+      >
+        <div>
+          10
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 550px; visibility: visible;"
+      >
+        <div>
+          11
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 600px; visibility: visible;"
+      >
+        <div>
+          12
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 650px; visibility: visible;"
+      >
+        <div>
+          13
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 700px; visibility: visible;"
+      >
+        <div>
+          14
         </div>
       </div>
     </div>

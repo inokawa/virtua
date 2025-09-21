@@ -15,6 +15,7 @@ export default defineConfig({
           environment: "jsdom",
           // https://github.com/testing-library/vue-testing-library/issues/296
           globals: true,
+          setupFiles: ["./scripts/spec-setup.ts"],
         },
       },
       {

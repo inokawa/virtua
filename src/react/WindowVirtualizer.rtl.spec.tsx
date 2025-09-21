@@ -1,7 +1,7 @@
-import { afterEach, it, expect, describe } from "vitest";
-import { render, cleanup } from "@testing-library/react";
+import { afterEach, it, expect, describe, vi } from "vitest";
+import { render as _render, cleanup } from "@testing-library/react";
 import { WindowVirtualizer } from "./WindowVirtualizer";
-import { setupJsDomEnv } from "../../scripts/spec";
+import { setupResizeJsDom } from "../../scripts/spec";
 
 Object.defineProperty(CSSStyleDeclaration.prototype, "direction", {
   get() {
@@ -9,10 +9,15 @@ Object.defineProperty(CSSStyleDeclaration.prototype, "direction", {
   },
 });
 
-setupJsDomEnv({
-  itemWidth: 100,
-  itemHeight: 50,
+setupResizeJsDom({
+  itemSize: { width: 100, height: 50 },
 });
+
+const render = (...args: Parameters<typeof _render>) => {
+  const res = _render(...args);
+  vi.runAllTicks();
+  return res;
+};
 
 afterEach(cleanup);
 

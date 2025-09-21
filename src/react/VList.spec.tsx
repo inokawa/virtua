@@ -1,19 +1,24 @@
-import { afterEach, it, expect, describe, vitest } from "vitest";
-import { render, cleanup } from "@testing-library/react";
+import { afterEach, it, expect, describe, vitest, vi } from "vitest";
+import { render as _render, cleanup } from "@testing-library/react";
 import { VList } from "./VList";
 import { Profiler, forwardRef } from "react";
 import { CustomItemComponentProps } from "./types";
-import { setupJsDomEnv } from "../../scripts/spec";
+import { setupResizeJsDom } from "../../scripts/spec";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
 const VIEWPORT_HEIGHT = ITEM_HEIGHT * 10;
 
-setupJsDomEnv({
-  itemWidth: ITEM_WIDTH,
-  itemHeight: ITEM_HEIGHT,
-  viewportHeight: VIEWPORT_HEIGHT,
+setupResizeJsDom({
+  itemSize: { width: ITEM_WIDTH, height: ITEM_HEIGHT },
+  viewportSize: { width: ITEM_WIDTH, height: VIEWPORT_HEIGHT },
 });
+
+const render = (...args: Parameters<typeof _render>) => {
+  const res = _render(...args);
+  vi.runAllTicks();
+  return res;
+};
 
 afterEach(cleanup);
 
