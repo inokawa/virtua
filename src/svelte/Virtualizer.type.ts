@@ -54,6 +54,10 @@ export interface VirtualizerProps<T> {
    */
   horizontal?: boolean;
   /**
+   * If true, animation frames will be used in resize observer callbacks. This can help prevent "ResizeObserver loop completed with undelivered notifications"
+   */
+  useAnimationFrameWithResizeObserver?: boolean;
+  /**
    * If you put an element before virtualizer, you have to define its height with this prop.
    */
   startMargin?: number;

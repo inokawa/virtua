@@ -106,19 +106,27 @@ export const createWindowResizer = (
   const mountedIndexes = new WeakMap<Element, number>();
 
   const resizeObserver = createResizeObserver((entries) => {
-    const resizes: ItemResize[] = [];
-    for (const { target, contentRect } of entries) {
-      // Skip zero-sized rects that may be observed under `display: none` style
-      if (!(target as HTMLElement).offsetParent) continue;
-
-      const index = mountedIndexes.get(target);
-      if (index != NULL) {
-        resizes.push([index, contentRect[sizeKey]]);
+    const run = () => {
+      const resizes: ItemResize[] = [];
+      for (const { target, contentRect } of entries) {
+        // Skip zero-sized rects that may be observed under `display: none` style
+        if (!(target as HTMLElement).offsetParent) continue;
+    
+        const index = mountedIndexes.get(target);
+        if (index != NULL) {
+          resizes.push([index, contentRect[sizeKey]]);
+        }
+      }
+    
+      if (resizes.length) {
+        store.$update(ACTION_ITEM_RESIZE, resizes);
       }
     }
 
-    if (resizes.length) {
-      store.$update(ACTION_ITEM_RESIZE, resizes);
+    if (store._shouldRequestAnimationFrameOnResize) {
+      requestAnimationFrame(run);
+    } else {
+      run();
     }
   });
 

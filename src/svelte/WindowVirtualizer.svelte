@@ -27,6 +27,7 @@
     itemSize,
     shift = false,
     horizontal = false,
+    useAnimationFrameWithResizeObserver = false,
     children,
     onscroll,
     onscrollend,
@@ -38,7 +39,8 @@
     overscan,
     undefined,
     undefined,
-    !itemSize
+    !itemSize,
+    useAnimationFrameWithResizeObserver
   );
   const resizer = createWindowResizer(store, horizontal);
   const scroller = createWindowScroller(store, horizontal);

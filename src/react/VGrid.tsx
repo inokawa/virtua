@@ -223,6 +223,10 @@ export interface VGridProps extends ViewportComponentAttributes {
    */
   overscan?: number;
   /**
+   * If true, animation frames will be used in resize observer callbacks. This can help prevent "ResizeObserver loop completed with undelivered notifications"
+   */
+  useAnimationFrameWithResizeObserver?: boolean;
+  /**
    * If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
    */
   initialRowCount?: number;
@@ -261,6 +265,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       cellHeight = 40,
       cellWidth = 100,
       overscan = 2,
+      useAnimationFrameWithResizeObserver = false,
       initialRowCount,
       initialColCount,
       item: ItemElement = "div",
@@ -278,13 +283,19 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         rowCount,
         cellHeight,
         overscan,
-        initialRowCount
+        initialRowCount,
+        undefined,
+        false,
+        useAnimationFrameWithResizeObserver
       );
       const _hs = createVirtualStore(
         colCount,
         cellWidth,
         overscan,
-        initialColCount
+        initialColCount,
+        undefined,
+        false,
+        useAnimationFrameWithResizeObserver
       );
       return [
         _vs,

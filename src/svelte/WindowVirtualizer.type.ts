@@ -39,6 +39,10 @@ export interface WindowVirtualizerProps<T> {
    */
   horizontal?: boolean;
   /**
+   * If true, animation frames will be used in resize observer callbacks. This can help prevent "ResizeObserver loop completed with undelivered notifications"
+   */
+  useAnimationFrameWithResizeObserver?: boolean;
+  /**
    * Callback invoked whenever scroll offset changes.
    */
   onscroll?: () => void;

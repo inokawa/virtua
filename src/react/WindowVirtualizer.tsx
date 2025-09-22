@@ -86,6 +86,10 @@ export interface WindowVirtualizerProps {
    */
   horizontal?: boolean;
   /**
+   * If true, animation frames will be used in resize observer callbacks. This can help prevent "ResizeObserver loop completed with undelivered notifications"
+   */
+  useAnimationFrameWithResizeObserver?: boolean;
+  /**
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.cache}.
    *
    * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
@@ -130,6 +134,7 @@ export const WindowVirtualizer = forwardRef<
       itemSize,
       shift,
       horizontal: horizontalProp,
+      useAnimationFrameWithResizeObserver = false,
       cache,
       ssrCount,
       as: Element = "div",
@@ -158,7 +163,8 @@ export const WindowVirtualizer = forwardRef<
         overscan,
         ssrCount,
         cache,
-        !itemSize
+        !itemSize,
+        useAnimationFrameWithResizeObserver
       );
 
       return [

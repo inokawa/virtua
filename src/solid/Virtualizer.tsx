@@ -142,6 +142,10 @@ export interface VirtualizerProps<T> {
    */
   horizontal?: boolean;
   /**
+   * If true, animation frames will be used in resize observer callbacks. This can help prevent "ResizeObserver loop completed with undelivered notifications"
+   */
+  useAnimationFrameWithResizeObserver?: boolean;
+  /**
    * List of indexes that should be always mounted, even when off screen.
    */
   keepMounted?: number[];
@@ -171,7 +175,7 @@ export interface VirtualizerProps<T> {
  */
 export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const { itemSize, horizontal = false, overscan, cache } = props;
+  const { itemSize, horizontal = false, useAnimationFrameWithResizeObserver = false, overscan, cache } = props;
   props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
     { as: "div" },
     props
@@ -183,7 +187,8 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     overscan,
     undefined,
     cache,
-    !itemSize
+    !itemSize,
+    useAnimationFrameWithResizeObserver
   );
   const resizer = createResizer(store, horizontal);
   const scroller = createScroller(store, horizontal);

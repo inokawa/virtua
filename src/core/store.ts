@@ -119,6 +119,7 @@ export type VirtualStore = {
   $subscribe(target: number, cb: Subscriber): () => void;
   $update(...action: Actions): void;
   _hasUnmeasuredItemsInFrozenRange(): boolean;
+  _shouldRequestAnimationFrameOnResize: boolean;
 };
 
 /**
@@ -130,7 +131,8 @@ export const createVirtualStore = (
   overscan: number = 4,
   ssrCount: number = 0,
   cacheSnapshot?: CacheSnapshot | undefined,
-  shouldAutoEstimateItemSize: boolean = false
+  shouldAutoEstimateItemSize: boolean = false,
+  shouldRequestAnimationFrameOnResize: boolean = false
 ): VirtualStore => {
   let isSSR = !!ssrCount;
   let stateVersion: StateVersion = 1;
@@ -220,6 +222,7 @@ export const createVirtualStore = (
         )
         .includes(UNCACHED);
     },
+    _shouldRequestAnimationFrameOnResize: shouldRequestAnimationFrameOnResize,
     $getItemOffset: getItemOffset,
     $getItemSize: getItemSize,
     $getItemsLength: () => cache._length,

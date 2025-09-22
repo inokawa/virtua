@@ -28,6 +28,7 @@
     itemSize,
     shift = false,
     horizontal = false,
+    useAnimationFrameWithResizeObserver = false,
     startMargin = 0,
     children,
     onscroll,
@@ -40,7 +41,8 @@
     overscan,
     undefined,
     undefined,
-    !itemSize
+    !itemSize,
+    useAnimationFrameWithResizeObserver
   );
   const resizer = createResizer(store, horizontal);
   const scroller = createScroller(store, horizontal);
@@ -143,7 +145,7 @@
   );
 </script>
 
-<!-- 
+<!--
   @component
   Customizable list virtualizer for advanced usage. See {@link VirtualizerProps} and {@link VirtualizerHandle}.
 -->

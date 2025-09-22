@@ -71,6 +71,10 @@ const props = {
    */
   horizontal: Boolean,
   /**
+   * If true, animation frames will be used in resize observer callbacks. This can help prevent "ResizeObserver loop completed with undelivered notifications"
+   */
+  useAnimationFrameWithResizeObserver: Boolean,
+  /**
    * Component or element type for container element.
    * @defaultValue "div"
    */
@@ -94,7 +98,8 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       props.overscan,
       undefined,
       undefined,
-      !props.itemSize
+      !props.itemSize,
+      props.useAnimationFrameWithResizeObserver
     );
     const resizer = createWindowResizer(store, isHorizontal);
     const scroller = createWindowScroller(store, isHorizontal);

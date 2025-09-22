@@ -123,6 +123,10 @@ export interface VirtualizerProps {
    */
   horizontal?: boolean;
   /**
+   * If true, animation frames will be used in resize observer callbacks. This can help prevent "ResizeObserver loop completed with undelivered notifications"
+   */
+  useAnimationFrameWithResizeObserver?: boolean;
+  /**
    * List of indexes that should be always mounted, even when off screen.
    */
   keepMounted?: number[];
@@ -177,6 +181,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       itemSize,
       shift,
       horizontal: horizontalProp,
+      useAnimationFrameWithResizeObserver = false,
       keepMounted,
       cache,
       startMargin = 0,
@@ -208,7 +213,8 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         overscan,
         ssrCount,
         cache,
-        !itemSize
+        !itemSize,
+        useAnimationFrameWithResizeObserver
       );
       return [
         _store,

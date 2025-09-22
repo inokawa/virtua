@@ -107,6 +107,10 @@ const props = {
    */
   horizontal: Boolean,
   /**
+   * If true, animation frames will be used in resize observer callbacks. This can help prevent "ResizeObserver loop completed with undelivered notifications"
+   */
+  useAnimationFrameWithResizeObserver: Boolean,
+  /**
    * If you put an element before virtualizer, you have to define its height with this prop.
    */
   startMargin: { type: Number, default: 0 },
@@ -154,7 +158,8 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       props.overscan,
       props.ssrCount,
       undefined,
-      !props.itemSize
+      !props.itemSize,
+      props.useAnimationFrameWithResizeObserver
     );
     const resizer = createResizer(store, isHorizontal);
     const scroller = createScroller(store, isHorizontal);
