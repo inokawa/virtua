@@ -1,4 +1,4 @@
-import { once } from "./utils";
+import { once } from "./utils.js";
 
 /**
  * @internal

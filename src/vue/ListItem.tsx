@@ -15,8 +15,8 @@ import {
   isRTLDocument,
   StateVersion,
   VirtualStore,
-} from "../core";
-import { ItemProps } from "./utils";
+} from "../core/index.js";
+import { ItemProps } from "./utils.js";
 
 /**
  * @internal

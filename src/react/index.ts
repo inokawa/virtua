@@ -1,18 +1,18 @@
-export { VList } from "./VList";
-export type { VListProps, VListHandle } from "./VList";
-export { Virtualizer } from "./Virtualizer";
-export type { VirtualizerProps, VirtualizerHandle } from "./Virtualizer";
-export { WindowVirtualizer } from "./WindowVirtualizer";
+export { VList } from "./VList.js";
+export type { VListProps, VListHandle } from "./VList.js";
+export { Virtualizer } from "./Virtualizer.js";
+export type { VirtualizerProps, VirtualizerHandle } from "./Virtualizer.js";
+export { WindowVirtualizer } from "./WindowVirtualizer.js";
 export type {
   WindowVirtualizerProps,
   WindowVirtualizerHandle,
-} from "./WindowVirtualizer";
-export { VGrid as experimental_VGrid } from "./VGrid";
+} from "./WindowVirtualizer.js";
+export { VGrid as experimental_VGrid } from "./VGrid.js";
 export type {
   VGridItemResize,
   VGridProps,
   VGridHandle,
   CustomCellComponent,
   CustomCellComponentProps,
-} from "./VGrid";
-export type * from "./types";
+} from "./VGrid.js";
+export type * from "./types.js";

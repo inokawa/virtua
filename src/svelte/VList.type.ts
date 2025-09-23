@@ -1,5 +1,5 @@
-import type { ViewportComponentAttributes } from "./types";
-import type { VirtualizerHandle, VirtualizerProps } from "./Virtualizer.type";
+import type { ViewportComponentAttributes } from "./types.js";
+import type { VirtualizerHandle, VirtualizerProps } from "./Virtualizer.type.js";
 
 /**
  * Props of {@link VList}.

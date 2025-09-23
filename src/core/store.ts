@@ -10,15 +10,15 @@ import {
   computeRange,
   takeCacheSnapshot,
   findIndex,
-} from "./cache";
-import { isIOSWebKit } from "./environment";
+} from "./cache.js";
+import { isIOSWebKit } from "./environment.js";
 import type {
   CacheSnapshot,
   InternalCacheSnapshot,
   ItemResize,
   ItemsRange,
-} from "./types";
-import { abs, max, min, NULL } from "./utils";
+} from "./types.js";
+import { abs, max, min, NULL } from "./utils.js";
 
 const MAX_INT_32 = 0x7fffffff;
 

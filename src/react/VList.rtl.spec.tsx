@@ -1,7 +1,7 @@
 import { afterEach, it, expect, describe, vi } from "vitest";
 import { render as _render, cleanup } from "@testing-library/react";
-import { VList } from "./VList";
-import { setupResizeJsDom } from "../../scripts/spec";
+import { VList } from "./VList.js";
+import { setupResizeJsDom } from "../../scripts/spec.js";
 
 Object.defineProperty(CSSStyleDeclaration.prototype, "direction", {
   get() {

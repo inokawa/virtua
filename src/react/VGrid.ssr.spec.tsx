@@ -3,7 +3,7 @@
  */
 import { it, describe, expect } from "vitest";
 import { renderToString, renderToStaticMarkup } from "react-dom/server";
-import { VGrid } from "./VGrid";
+import { VGrid } from "./VGrid.js";
 import { JSDOM } from "jsdom";
 
 const LIST_ID = "list-id";

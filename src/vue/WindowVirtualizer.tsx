@@ -24,9 +24,9 @@ import {
   createWindowScroller,
   ItemsRange,
   ScrollToIndexOpts,
-} from "../core";
-import { ListItem } from "./ListItem";
-import { getKey, isSameRange } from "./utils";
+} from "../core/index.js";
+import { ListItem } from "./ListItem.js";
+import { getKey, isSameRange } from "./utils.js";
 
 export interface WindowVirtualizerHandle {
   /**

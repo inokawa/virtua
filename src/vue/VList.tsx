@@ -9,8 +9,8 @@ import {
   VNode,
   PropType,
 } from "vue";
-import { Virtualizer, VirtualizerHandle } from "./Virtualizer";
-import { ItemProps } from "./utils";
+import { Virtualizer, VirtualizerHandle } from "./Virtualizer.js";
+import { ItemProps } from "./utils.js";
 
 interface VListHandle extends VirtualizerHandle {}
 

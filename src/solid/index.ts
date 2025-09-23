@@ -1,13 +1,13 @@
 /**
  * @module solid
  */
-export { VList } from "./VList";
-export type { VListProps, VListHandle } from "./VList";
-export { Virtualizer } from "./Virtualizer";
-export type { VirtualizerProps, VirtualizerHandle } from "./Virtualizer";
-export { WindowVirtualizer } from "./WindowVirtualizer";
+export { VList } from "./VList.js";
+export type { VListProps, VListHandle } from "./VList.js";
+export { Virtualizer } from "./Virtualizer.js";
+export type { VirtualizerProps, VirtualizerHandle } from "./Virtualizer.js";
+export { WindowVirtualizer } from "./WindowVirtualizer.js";
 export type {
   WindowVirtualizerProps,
   WindowVirtualizerHandle,
-} from "./WindowVirtualizer";
-export type * from "./types";
+} from "./WindowVirtualizer.js";
+export type * from "./types.js";
