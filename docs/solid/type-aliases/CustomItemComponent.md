@@ -6,4 +6,4 @@
 
 > **CustomItemComponent** = `ParentComponent`\<[`CustomItemComponentProps`](../interfaces/CustomItemComponentProps.md)\>
 
-Defined in: [src/solid/types.ts:28](https://github.com/inokawa/virtua/blob/e20a4f47afebc2fcd9b1badc4340caba09d9d952/src/solid/types.ts#L28)
+Defined in: [src/solid/types.ts:28](https://github.com/inokawa/virtua/blob/71c97bdad291763ca5072b4af388608178a6e6ea/src/solid/types.ts#L28)
