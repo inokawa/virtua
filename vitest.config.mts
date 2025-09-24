@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
+import solid from "vite-plugin-solid";
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -37,6 +38,18 @@ export default defineConfig({
           // https://github.com/testing-library/vue-testing-library/issues/296
           globals: true,
           setupFiles: ["./scripts/spec-setup.ts"],
+        },
+      },
+      {
+        plugins: [solid()],
+        test: {
+          name: "solid",
+          dir: "src/solid",
+          environment: "jsdom",
+          setupFiles: ["./scripts/spec-setup.ts"],
+        },
+        resolve: {
+          conditions: ["development", "browser"],
         },
       },
       {

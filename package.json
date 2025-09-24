@@ -42,7 +42,7 @@
   "scripts": {
     "build": "rollup -c",
     "tsc": "tsc -p . --noEmit",
-    "test": "vitest run --project=unit --project=react --project=vue",
+    "test": "vitest run --project=unit --project=react --project=vue --project=solid",
     "lint": "eslint '{src,e2e}/**/*.{js,jsx,ts,tsx}'",
     "check:svelte": "svelte-check --tsconfig ./tsconfig.svelte.json",
     "storybook": "storybook dev -p 6006",
@@ -80,6 +80,7 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@size-limit/preset-small-lib": "^11.2.0",
+    "@solidjs/testing-library": "^0.8.10",
     "@storybook/addon-docs": "^9.1.7",
     "@storybook/addon-vitest": "^9.1.7",
     "@storybook/react-vite": "^9.1.7",
