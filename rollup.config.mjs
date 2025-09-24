@@ -57,6 +57,7 @@ export default [
         outDir: ".",
         declaration: true,
         exclude: ["**/*.{spec,stories}.*"],
+        jsx: 'react-jsx',
       }),
       getBabelOutputPlugin({
         plugins: ["@babel/plugin-transform-react-pure-annotations"],
@@ -87,7 +88,6 @@ export default [
         outDir: ".",
         // declaration: true,
         exclude: ["**/*.{spec,stories}.*"],
-        jsx: "preserve",
       }),
       vueJsx({ optimize: true }),
       getBabelOutputPlugin({
@@ -118,7 +118,6 @@ export default [
         outDir: ".",
         // declaration: true,
         exclude: ["**/*.{spec,stories}.*"],
-        jsx: "preserve",
       }),
       babel({
         babelrc: false,
@@ -151,7 +150,6 @@ export default [
         outDir: ".",
         // declaration: true,
         exclude: ["**/*.{spec,stories}.*"],
-        jsx: "preserve",
       }),
       // terserPlugin(),
     ],

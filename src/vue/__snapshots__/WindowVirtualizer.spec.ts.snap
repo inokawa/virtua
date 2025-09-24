@@ -5,7 +5,10 @@ exports[`horizontal > should render 0 children 1`] = `
   <div>
     <div
       style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 0px; height: 100%;"
-    />
+    >
+      
+      
+    </div>
   </div>
 </body>
 `;
@@ -16,6 +19,7 @@ exports[`horizontal > should render 1 children 1`] = `
     <div
       style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 40px; height: 100%;"
     >
+      
       <div
         style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
       >
@@ -23,6 +27,7 @@ exports[`horizontal > should render 1 children 1`] = `
           0
         </div>
       </div>
+      
     </div>
   </div>
 </body>
@@ -34,6 +39,7 @@ exports[`horizontal > should render 5 children 1`] = `
     <div
       style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 200px; height: 100%;"
     >
+      
       <div
         style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
       >
@@ -69,6 +75,7 @@ exports[`horizontal > should render 5 children 1`] = `
           4
         </div>
       </div>
+      
     </div>
   </div>
 </body>
@@ -80,6 +87,7 @@ exports[`horizontal > should render 100 children 1`] = `
     <div
       style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 4000px; height: 100%;"
     >
+      
       <div
         style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
       >
@@ -115,6 +123,7 @@ exports[`horizontal > should render 100 children 1`] = `
           4
         </div>
       </div>
+      
     </div>
   </div>
 </body>
@@ -126,6 +135,7 @@ exports[`horizontal > should render 1000 children 1`] = `
     <div
       style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 40000px; height: 100%;"
     >
+      
       <div
         style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
       >
@@ -161,6 +171,7 @@ exports[`horizontal > should render 1000 children 1`] = `
           4
         </div>
       </div>
+      
     </div>
   </div>
 </body>
@@ -172,6 +183,7 @@ exports[`horizontal > should render 10000 children 1`] = `
     <div
       style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 400000px; height: 100%;"
     >
+      
       <div
         style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
       >
@@ -207,6 +219,7 @@ exports[`horizontal > should render 10000 children 1`] = `
           4
         </div>
       </div>
+      
     </div>
   </div>
 </body>
@@ -218,6 +231,7 @@ exports[`horizontal > should render component 1`] = `
     <div
       style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 120px; height: 100%;"
     >
+      
       <div
         style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: hidden; display: inline-flex;"
       >
@@ -239,6 +253,7 @@ exports[`horizontal > should render component 1`] = `
           2
         </div>
       </div>
+      
     </div>
   </div>
 </body>
@@ -255,6 +270,7 @@ exports[`should pass attributes to element 1`] = `
       style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 40px; background: red;"
       tab-index="0"
     >
+      
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
       >
@@ -262,6 +278,7 @@ exports[`should pass attributes to element 1`] = `
           0
         </div>
       </div>
+      
     </div>
   </div>
 </body>
@@ -272,7 +289,10 @@ exports[`vertical > should render 0 children 1`] = `
   <div>
     <div
       style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 0px;"
-    />
+    >
+      
+      
+    </div>
   </div>
 </body>
 `;
@@ -283,6 +303,7 @@ exports[`vertical > should render 1 children 1`] = `
     <div
       style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 40px;"
     >
+      
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
       >
@@ -290,6 +311,7 @@ exports[`vertical > should render 1 children 1`] = `
           0
         </div>
       </div>
+      
     </div>
   </div>
 </body>
@@ -301,6 +323,7 @@ exports[`vertical > should render 5 children 1`] = `
     <div
       style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 200px;"
     >
+      
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
       >
@@ -336,6 +359,7 @@ exports[`vertical > should render 5 children 1`] = `
           4
         </div>
       </div>
+      
     </div>
   </div>
 </body>
@@ -347,6 +371,7 @@ exports[`vertical > should render 100 children 1`] = `
     <div
       style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 4000px;"
     >
+      
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
       >
@@ -382,6 +407,7 @@ exports[`vertical > should render 100 children 1`] = `
           4
         </div>
       </div>
+      
     </div>
   </div>
 </body>
@@ -393,6 +419,7 @@ exports[`vertical > should render 1000 children 1`] = `
     <div
       style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 40000px;"
     >
+      
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
       >
@@ -428,6 +455,7 @@ exports[`vertical > should render 1000 children 1`] = `
           4
         </div>
       </div>
+      
     </div>
   </div>
 </body>
@@ -439,6 +467,7 @@ exports[`vertical > should render 10000 children 1`] = `
     <div
       style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 400000px;"
     >
+      
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
       >
@@ -474,6 +503,7 @@ exports[`vertical > should render 10000 children 1`] = `
           4
         </div>
       </div>
+      
     </div>
   </div>
 </body>
@@ -485,6 +515,7 @@ exports[`vertical > should render component 1`] = `
     <div
       style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 120px;"
     >
+      
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
       >
@@ -506,6 +537,7 @@ exports[`vertical > should render component 1`] = `
           2
         </div>
       </div>
+      
     </div>
   </div>
 </body>

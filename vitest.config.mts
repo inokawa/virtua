@@ -1,7 +1,11 @@
 import { defineConfig } from "vitest/config";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import react from "@vitejs/plugin-react";
+import vue from "@vitejs/plugin-vue";
+import vueJsx from "@vitejs/plugin-vue-jsx";
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
+
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
@@ -11,7 +15,24 @@ export default defineConfig({
       {
         test: {
           name: "unit",
-          root: "src",
+          dir: "src/core",
+          environment: "node",
+        },
+      },
+      {
+        plugins: [react()],
+        test: {
+          name: "react",
+          dir: "src/react",
+          environment: "jsdom",
+          setupFiles: ["./scripts/spec-setup.ts"],
+        },
+      },
+      {
+        plugins: [vue(), vueJsx()],
+        test: {
+          name: "vue",
+          dir: "src/vue",
           environment: "jsdom",
           // https://github.com/testing-library/vue-testing-library/issues/296
           globals: true,
