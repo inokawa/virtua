@@ -242,7 +242,7 @@ export const WindowVirtualizer = forwardRef<
     );
 
     for (let i = startIndex, j = endIndex; i <= j; i++) {
-      const e = getElement(i);
+      const e = getElement(i, false);
       items.push(
         <ListItem
           key={getKey(e, i)}
