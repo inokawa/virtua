@@ -198,6 +198,7 @@ export const createScroller = (
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let cancelScroll: (() => void) | undefined;
+  let error: any = null;
   const [initialized, resolveInitialized, rejectInitialized] = createPromise();
   const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const overflowKey = isHorizontal ? "overflowX" : "overflowY";
@@ -210,7 +211,11 @@ export const createScroller = (
   ) => {
     // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
     // https://github.com/inokawa/virtua/pull/733
-    await initialized;
+    try {
+      await initialized;
+    } catch (err) {
+      error = err;
+    };
 
     if (cancelScroll) {
       // Cancel waiting scrollTo
@@ -239,7 +244,7 @@ export const createScroller = (
     };
 
     if (smooth && isSmoothScrollSupported()) {
-      while (true) {
+      while (true && !error) {
         store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
 
         if (!store._hasUnmeasuredItemsInFrozenRange()) {
@@ -274,8 +279,13 @@ export const createScroller = (
             getTargetOffset(),
             isHorizontal
           );
+          
+          if (error) {
+            throw error
+          };
+          
           store.$update(ACTION_MANUAL_SCROLL);
-
+          
           await promise;
         } catch (e) {
           // canceled or finished
