@@ -6,7 +6,7 @@ import { ItemElement, flattenChildren } from "./utils.js";
  */
 export const useChildren = <T>(
   children: ReactNode | ((data: T, i: number) => ReactElement),
-  data: T[] | undefined
+  data: readonly T[] | undefined
 ) => {
   return useMemo((): [(i: number) => ItemElement, number] => {
     if (typeof children === "function") {
