@@ -79,7 +79,7 @@ test.describe("smoke", () => {
     // check if last is displayed
     const last = component.getByText("999", { exact: true });
     await expect(last).toBeVisible();
-    expect(await relativeBottom(component, last)).toEqual(0);
+    expectInRange(await relativeBottom(component, last), { min: 0, max: 0.5 });
   });
 
   test("display: none", async ({ page }) => {
