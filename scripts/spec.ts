@@ -36,7 +36,10 @@ export const setupResizeJsDom = ({
   global.ResizeObserver = class {
     private flushing = false;
     private queues: ResizeObserverEntry[] = [];
-    constructor(private callback: ResizeObserverCallback) {}
+    private callback: ResizeObserverCallback;
+    constructor(callback: ResizeObserverCallback) {
+      this.callback = callback;
+    }
     disconnect() {}
     observe(e: HTMLElement) {
       const overflowStyle =
