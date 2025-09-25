@@ -45,7 +45,8 @@ interface ListResizer {
  */
 export const createResizer = (
   store: VirtualStore,
-  isHorizontal: boolean
+  isHorizontal: boolean,
+  callback?: (entries: ResizeObserverEntry[]) => void
 ): ListResizer => {
   let viewportElement: HTMLElement | undefined;
   const sizeKey = isHorizontal ? "width" : "height";
@@ -70,6 +71,8 @@ export const createResizer = (
     if (resizes.length) {
       store.$update(ACTION_ITEM_RESIZE, resizes);
     }
+
+    callback?.(entries);
   });
 
   return {
