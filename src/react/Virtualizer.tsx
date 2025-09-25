@@ -163,6 +163,10 @@ export interface VirtualizerProps {
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
+  /**
+   * Callback invoked when an item or the viewport is resized.
+   */
+  onResize?: (entries: ResizeObserverEntry[]) => void;
 }
 
 /**
@@ -186,6 +190,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       scrollRef,
       onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
+      onResize: onResizeProp
     },
     ref
   ): ReactElement => {
@@ -199,6 +204,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
 
     const onScroll = useLatestRef(onScrollProp);
     const onScrollEnd = useLatestRef(onScrollEndProp);
+    const onResize = useLatestRef(onResizeProp);
 
     const [store, resizer, scroller, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
@@ -212,7 +218,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       );
       return [
         _store,
-        createResizer(_store, _isHorizontal),
+        createResizer(_store, _isHorizontal, (entries) => onResize[refKey]?.(entries)),
         createScroller(_store, _isHorizontal),
         _isHorizontal,
       ];
