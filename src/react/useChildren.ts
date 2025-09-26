@@ -17,7 +17,8 @@ type UseChildrenHookReturnT = [
  */
 export const useChildren = <T>(
   children: ReactNode | ((data: T, i: number) => ReactElement),
-  data: ArrayLike<T> | undefined
+  data: ArrayLike<T> | undefined,
+  enableRenderCache: boolean | undefined
 ): UseChildrenHookReturnT => {
   return useMemo(() => {
     if (typeof children === "function") {
@@ -32,7 +33,11 @@ export const useChildren = <T>(
       );
 
       const renderElement = (i: number) => {
-        return cache[i] ?? (cache[i] = children(data[i]!, i));
+        if (enableRenderCache) {
+          return cache[i] ?? (cache[i] = children(data[i]!, i));
+        } else {
+          return children(data[i]!, i);
+        }
       };
 
       return [renderElement, data.length, clearCacheRange];
@@ -40,5 +45,5 @@ export const useChildren = <T>(
     // Memoize element array
     const _elements = flattenChildren(children);
     return [(i) => _elements[i]!, _elements.length, undefined];
-  }, [children, data]);
+  }, [children, data, enableRenderCache]);
 };

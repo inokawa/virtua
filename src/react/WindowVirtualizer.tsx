@@ -114,6 +114,10 @@ export interface WindowVirtualizerProps<T = undefined> {
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
+  /**
+   * Whether to cache rendered elements.
+   */
+  enableRenderCache?: boolean;
 }
 
 /**
@@ -137,12 +141,17 @@ export const WindowVirtualizer = forwardRef<
       item: ItemElement = "div",
       onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
+      enableRenderCache,
     },
     ref
   ): ReactElement => {
     Element = Element as "div";
 
-    const [renderElement, count] = useChildren(children, data);
+    const [renderElement, count] = useChildren(
+      children,
+      data,
+      enableRenderCache
+    );
 
     const containerRef = useRef<HTMLDivElement>(null);
 
