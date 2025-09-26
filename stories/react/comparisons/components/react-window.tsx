@@ -68,7 +68,7 @@ export const ReactWindowList = memo(
 
     useImperativeHandle(handle, () => ({
       scrollToIndex: (i) => {
-        ref.current?.scrollToRow({ index: i });
+        ref.current?.scrollToRow({ index: i, align: "start" });
       },
     }));
 
