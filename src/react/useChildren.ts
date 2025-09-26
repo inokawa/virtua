@@ -1,5 +1,5 @@
 import { ReactElement, ReactNode, useMemo } from "react";
-import { ItemElement, createCacheArray, flattenChildren } from "./utils.js";
+import { IndexedCache, ItemElement, flattenChildren } from "./utils.js";
 
 type ElementRendererT = (i: number) => ItemElement;
 type ClearCacheRangeHandlerT = (
@@ -18,7 +18,8 @@ type UseChildrenHookReturnT = [
 export const useChildren = <T>(
   children: ReactNode | ((data: T, i: number) => ReactElement),
   data: ArrayLike<T> | undefined,
-  enableRenderCache: boolean | undefined
+  enableRenderCache: boolean | undefined,
+  maxCacheSize: number | undefined
 ): UseChildrenHookReturnT => {
   return useMemo(() => {
     if (typeof children === "function") {
@@ -28,22 +29,33 @@ export const useChildren = <T>(
         );
       }
 
-      const { cache, clearCacheRange } = createCacheArray<ItemElement>(
-        data.length
-      );
+      const cache = enableRenderCache
+        ? new IndexedCache<ItemElement>(data.length, maxCacheSize)
+        : undefined;
 
       const renderElement = (i: number) => {
-        if (enableRenderCache) {
-          return cache[i] ?? (cache[i] = children(data[i]!, i));
+        if (cache) {
+          const cacheItem = cache.get(i);
+          if (cacheItem) return cacheItem;
+
+          const renderedItem = children(data[i]!, i);
+          cache.set(i, renderedItem);
+          return renderedItem;
         } else {
           return children(data[i]!, i);
         }
       };
 
-      return [renderElement, data.length, clearCacheRange];
+      const clearRange =
+        cache &&
+        ((startIndex?: number | undefined, endIndex?: number | undefined) => {
+          cache.clearRange(startIndex, endIndex);
+        });
+
+      return [renderElement, data.length, clearRange];
     }
     // Memoize element array
     const _elements = flattenChildren(children);
     return [(i) => _elements[i]!, _elements.length, undefined];
-  }, [children, data, enableRenderCache]);
+  }, [children, data, enableRenderCache, maxCacheSize]);
 };

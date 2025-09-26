@@ -30,6 +30,7 @@ export interface VListProps<T = undefined>
       | "onScrollEnd"
       | "keepMounted"
       | "enableRenderCache"
+      | "maxCacheSize"
     >,
     ViewportComponentAttributes {
   /**
@@ -59,6 +60,7 @@ export const VList = forwardRef<VListHandle, VListProps<unknown>>(
       onScrollEnd,
       style,
       enableRenderCache,
+      maxCacheSize,
       ...attrs
     },
     ref
@@ -82,6 +84,7 @@ export const VList = forwardRef<VListHandle, VListProps<unknown>>(
         onScroll={onScroll}
         onScrollEnd={onScrollEnd}
         enableRenderCache={enableRenderCache}
+        maxCacheSize={maxCacheSize}
       >
         {children}
       </Virtualizer>
