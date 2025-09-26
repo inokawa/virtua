@@ -55,7 +55,7 @@ export class IndexedCache<T> {
   #cache: T[];
   #cachedIndicesOrder: CircularUniqueQueue<number> | undefined;
 
-  constructor(length: number, cacheLimit: number | undefined) {
+  constructor(length: number, cacheLimit: number | undefined | null) {
     // Using a sparse array instead of a Map enables faster cleanup of a specific
     // range. A sparse array also uses a hash map internally, it doesn't allocate
     // slots for all elements, so we can take advantage of the performance
