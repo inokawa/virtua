@@ -1,5 +1,5 @@
 import { ReactElement, ReactNode, useMemo } from "react";
-import { ItemElement, flattenChildren } from "./utils";
+import { ItemElement, flattenChildren } from "./utils.js";
 
 /**
  * @internal

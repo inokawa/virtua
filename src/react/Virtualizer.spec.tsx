@@ -1,7 +1,7 @@
 import { afterEach, it, expect, vi } from "vitest";
 import { render as _render, cleanup } from "@testing-library/react";
-import { Virtualizer } from ".";
-import { setupResizeJsDom } from "../../scripts/spec";
+import { Virtualizer } from "./Virtualizer.js";
+import { setupResizeJsDom } from "../../scripts/spec.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;

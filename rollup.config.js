@@ -5,8 +5,8 @@ import banner from "rollup-plugin-banner2";
 import path from "node:path";
 import pkg from "./package.json" with { type: "json" };
 import vueJsx from "unplugin-vue-jsx/rollup";
-import vueVNodePlugin from "./scripts/babel-plugin-annotate-vue-vnode.mjs";
-import { svelteCopy } from "./scripts/rollup-plugin-svelte-copy.mjs";
+import vueVNodePlugin from "./scripts/babel-plugin-annotate-vue-vnode.js";
+import { svelteCopy } from "./scripts/rollup-plugin-svelte-copy.js";
 
 const external = (id) =>
   [
@@ -72,12 +72,12 @@ export default [
     input: "src/vue/index.ts",
     output: [
       {
-        file: pkg.exports["./vue"].default,
+        file: pkg.exports["./vue"].require,
         format: "cjs",
         sourcemap: true,
       },
       {
-        file: pkg.exports["./vue"].import,
+        file: pkg.exports["./vue"].default,
         format: "es",
         sourcemap: true,
       },
@@ -102,12 +102,12 @@ export default [
     input: "src/solid/index.ts",
     output: [
       {
-        file: pkg.exports["./solid"].default,
+        file: pkg.exports["./solid"].require,
         format: "cjs",
         sourcemap: true,
       },
       {
-        file: pkg.exports["./solid"].import,
+        file: pkg.exports["./solid"].default,
         format: "es",
         sourcemap: true,
       },
@@ -160,12 +160,12 @@ export default [
     input: "src/core/index.ts",
     output: [
       {
-        file: pkg.exports["./unstable_core"].default,
+        file: pkg.exports["./unstable_core"].require,
         format: "cjs",
         sourcemap: true,
       },
       {
-        file: pkg.exports["./unstable_core"].import,
+        file: pkg.exports["./unstable_core"].default,
         format: "es",
         sourcemap: true,
       },
@@ -181,7 +181,7 @@ export default [
       svelteCopy({
         dir: path.dirname(pkg.exports["./svelte"].default),
         coreDts: path.join(
-          path.dirname(pkg.exports["./unstable_core"].import),
+          path.dirname(pkg.exports["./unstable_core"].default),
           "index.d.ts"
         ),
       }),

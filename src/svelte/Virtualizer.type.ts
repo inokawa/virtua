@@ -1,6 +1,6 @@
 import { type Snippet } from "svelte";
 import type { SvelteHTMLElements } from "svelte/elements";
-import { type ScrollToIndexOpts } from "../core";
+import { type ScrollToIndexOpts } from "../core/index.js";
 
 /**
  * Props of {@link Virtualizer}.

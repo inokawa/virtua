@@ -1,9 +1,9 @@
 import { afterEach, it, expect, describe, vitest, vi } from "vitest";
 import { render as _render, cleanup } from "@testing-library/react";
-import { VList } from "./VList";
+import { VList } from "./VList.js";
 import { Profiler, forwardRef } from "react";
-import { CustomItemComponentProps } from "./types";
-import { setupResizeJsDom } from "../../scripts/spec";
+import { CustomItemComponentProps } from "./types.js";
+import { setupResizeJsDom } from "../../scripts/spec.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;

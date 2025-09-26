@@ -1,4 +1,4 @@
-import { Locator, Page, expect } from "@playwright/test";
+import { type Locator, type Page, expect } from "@playwright/test";
 
 export const storyUrl = (id: `${string}-${string}--${string}`) =>
   `http://localhost:6006/iframe.html?id=${id}&viewMode=story`;

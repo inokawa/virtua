@@ -3,7 +3,7 @@
  */
 import { it, describe, expect } from "vitest";
 import { renderToString, renderToStaticMarkup } from "react-dom/server";
-import { WindowVirtualizer } from "./WindowVirtualizer";
+import { WindowVirtualizer } from "./WindowVirtualizer.js";
 import { JSDOM } from "jsdom";
 
 const LIST_ID = "list-id";

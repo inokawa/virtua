@@ -1,4 +1,4 @@
-import type { ItemsRange } from "../core";
+import type { ItemsRange } from "../core/index.js";
 
 export const styleToString = (
   obj: Record<string, string | undefined>

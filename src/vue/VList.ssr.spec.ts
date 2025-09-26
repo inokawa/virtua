@@ -4,7 +4,7 @@
 import { it, describe, expect } from "vitest";
 import { createSSRApp } from "vue";
 import { renderToString } from "vue/server-renderer";
-import { VList } from "./VList";
+import { VList } from "./VList.js";
 import { JSDOM } from "jsdom";
 
 const LIST_ID = "list-id";

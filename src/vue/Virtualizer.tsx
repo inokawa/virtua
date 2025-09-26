@@ -28,9 +28,9 @@ import {
   ScrollToIndexOpts,
   microtask,
   sort,
-} from "../core";
-import { ListItem } from "./ListItem";
-import { getKey, isSameRange, ItemProps } from "./utils";
+} from "../core/index.js";
+import { ListItem } from "./ListItem.js";
+import { getKey, isSameRange, ItemProps } from "./utils.js";
 
 export interface VirtualizerHandle {
   /**

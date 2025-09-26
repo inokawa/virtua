@@ -1,6 +1,6 @@
 /**
  * @module vue
  */
-export { VList } from "./VList";
-export { Virtualizer } from "./Virtualizer";
-export { WindowVirtualizer } from "./WindowVirtualizer";
+export { VList } from "./VList.js";
+export { Virtualizer } from "./Virtualizer.js";
+export { WindowVirtualizer } from "./WindowVirtualizer.js";

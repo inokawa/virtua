@@ -22,14 +22,14 @@ import {
   isRTLDocument,
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
-} from "../core";
-import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { refKey } from "./utils";
-import { useStatic } from "./useStatic";
-import { ViewportComponentAttributes } from "./types";
-import { useLatestRef } from "./useLatestRef";
+} from "../core/index.js";
+import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
+import { refKey } from "./utils.js";
+import { useStatic } from "./useStatic.js";
+import { ViewportComponentAttributes } from "./types.js";
+import { useLatestRef } from "./useLatestRef.js";
 import { flushSync } from "react-dom";
-import { useMergeRefs } from "./useMergeRefs";
+import { useMergeRefs } from "./useMergeRefs.js";
 
 const genKey = (i: number, j: number) => `${i}-${j}`;
 

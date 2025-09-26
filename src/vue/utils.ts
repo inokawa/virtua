@@ -1,5 +1,5 @@
 import { CSSProperties, VNode } from "vue";
-import { ItemsRange } from "../core";
+import { ItemsRange } from "../core/index.js";
 
 /**
  * @internal

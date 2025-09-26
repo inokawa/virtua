@@ -6,10 +6,10 @@ import {
   ReactElement,
   ReactNode,
 } from "react";
-import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { isRTLDocument, ItemResizeObserver } from "../core";
-import { refKey } from "./utils";
-import { CustomItemComponent } from "./types";
+import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
+import { isRTLDocument, ItemResizeObserver } from "../core/index.js";
+import { refKey } from "./utils.js";
+import { CustomItemComponent } from "./types.js";
 
 interface ListItemProps {
   _children: ReactNode;

@@ -1,9 +1,9 @@
 import { afterEach, it, expect, describe, vitest, vi } from "vitest";
 import { render as _render, cleanup } from "@testing-library/react";
-import { WindowVirtualizer } from "./WindowVirtualizer";
+import { WindowVirtualizer } from "./WindowVirtualizer.js";
 import { Profiler, forwardRef } from "react";
-import { CustomItemComponentProps } from "./types";
-import { setupResizeJsDom } from "../../scripts/spec";
+import { CustomItemComponentProps } from "./types.js";
+import { setupResizeJsDom } from "../../scripts/spec.js";
 
 setupResizeJsDom({
   itemSize: { width: 100, height: 50 },

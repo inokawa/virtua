@@ -1,8 +1,8 @@
 import { it, expect, describe, vi, afterEach } from "vitest";
 import { defineComponent, h } from "vue";
 import { render as _render, cleanup } from "@testing-library/vue";
-import { WindowVirtualizer } from "./WindowVirtualizer";
-import { setupResizeJsDom } from "../../scripts/spec";
+import { WindowVirtualizer } from "./WindowVirtualizer.js";
+import { setupResizeJsDom } from "../../scripts/spec.js";
 
 setupResizeJsDom({
   itemSize: { width: 100, height: 50 },

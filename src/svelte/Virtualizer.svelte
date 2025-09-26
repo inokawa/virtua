@@ -11,10 +11,10 @@
     createScroller,
     createVirtualStore,
     getScrollSize as _getScrollSize,
-  } from "../core";
-  import { defaultGetKey, styleToString, iterRange } from "./utils";
+  } from "../core/index.js";
+  import { defaultGetKey, styleToString, iterRange } from "./utils.js";
   import ListItem from "./ListItem.svelte";
-  import type { VirtualizerHandle, VirtualizerProps } from "./Virtualizer.type";
+  import type { VirtualizerHandle, VirtualizerProps } from "./Virtualizer.type.js";
 
   interface Props extends VirtualizerProps<T> {}
 

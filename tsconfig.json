@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "es2018",
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "jsx": "preserve",
     "lib": ["dom", "dom.iterable", "esnext"],
     "strict": true,

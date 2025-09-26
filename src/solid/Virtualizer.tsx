@@ -31,9 +31,9 @@ import {
   ScrollToIndexOpts,
   CacheSnapshot,
   sort,
-} from "../core";
-import { ListItem } from "./ListItem";
-import { isSameRange } from "./utils";
+} from "../core/index.js";
+import { ListItem } from "./ListItem.js";
+import { isSameRange } from "./utils.js";
 
 /**
  * Methods of {@link Virtualizer}.
