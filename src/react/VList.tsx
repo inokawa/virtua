@@ -29,6 +29,7 @@ export interface VListProps
       | "onScroll"
       | "onScrollEnd"
       | "keepMounted"
+      | "onResize"
     >,
     ViewportComponentAttributes {
   /**
@@ -56,6 +57,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       item,
       onScroll,
       onScrollEnd,
+      onResize,
       style,
       ...attrs
     },
@@ -79,6 +81,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
         item={item}
         onScroll={onScroll}
         onScrollEnd={onScrollEnd}
+        onResize={onResize}
       >
         {children}
       </Virtualizer>
