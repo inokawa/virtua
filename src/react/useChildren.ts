@@ -19,7 +19,7 @@ export const useChildren = <T>(
   children: ReactNode | ((data: T, i: number) => ReactElement),
   data: readonly T[] | undefined,
   enableRenderCache: boolean | undefined,
-  maxCacheSize: number | undefined
+  maxCacheSize: number | undefined | null
 ): UseChildrenHookReturnT => {
   return useMemo(() => {
     if (typeof children === "function") {

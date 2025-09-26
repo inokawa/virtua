@@ -122,7 +122,7 @@ export interface WindowVirtualizerProps<T = undefined> {
    * The max size of the cache. If more elements are rendered, old cached elements will be removed from the cache. Has direct impact on memory.
    * @default 1000
    */
-  maxCacheSize?: number;
+  maxCacheSize?: number | null;
 }
 
 /**
