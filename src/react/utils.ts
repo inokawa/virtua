@@ -50,3 +50,37 @@ export const getKey = (e: ItemElement, i: number): React.Key => {
   const key = (e as MayHaveKey).key;
   return key != null ? key : "_" + i;
 };
+
+export const createCacheArray = <T>(
+  length: number
+): {
+  cache: Array<T>;
+  clearCacheRange: (
+    startIndex?: number | undefined,
+    endIndex?: number | undefined
+  ) => void;
+} => {
+  // Using a sparse array instead of a Map enables faster cleanup of a specific
+  // range. A sparse array also uses a hash map internally, it doesn't allocate
+  // slots for all elements, so we can take advantage of the performance
+  // benefits of both an array and a hash map.
+  const cache = new Array(length);
+
+  const clearCacheRange = (
+    startIndex: number | undefined = 0,
+    endIndex: number | undefined = length
+  ) => {
+    for (const indexStr in cache) {
+      const index = Number(indexStr);
+      if (index >= startIndex || index < endIndex) {
+        delete cache[index];
+      }
+
+      if (index >= endIndex) {
+        break;
+      }
+    }
+  };
+
+  return { cache, clearCacheRange };
+};
