@@ -9,7 +9,7 @@ export interface VirtualizerProps<T> {
   /**
    * The data items rendered by this component.
    */
-  data: T[];
+  data: readonly T[];
   /**
    * The elements renderer snippet.
    */

@@ -62,9 +62,8 @@ it("should render with render prop", () => {
     label: "This is " + i,
   }));
   const { asFragment } = render(
-    <VList count={items.length}>
-      {(i) => {
-        const item = items[i]!;
+    <VList data={items}>
+      {(item) => {
         return <div key={item.id}>{item.label}</div>;
       }}
     </VList>

@@ -41,9 +41,8 @@ it("should render with render prop", () => {
     label: "This is " + i,
   }));
   const { asFragment } = render(
-    <WindowVirtualizer count={items.length}>
-      {(i) => {
-        const item = items[i]!;
+    <WindowVirtualizer data={items}>
+      {(item) => {
         return <div key={item.id}>{item.label}</div>;
       }}
     </WindowVirtualizer>

@@ -43,6 +43,7 @@ If you use ESM and webpack 5, use react >= 18 to avoid [Can't resolve `react/jsx
 ```tsx
 import { VList } from "virtua";
 
+// children
 export const App = () => {
   return (
     <VList style={{ height: 800 }}>
@@ -58,6 +59,29 @@ export const App = () => {
           {i}
         </div>
       ))}
+    </VList>
+  );
+};
+
+// or render prop
+export const App = () => {
+  const items = Array.from({ length: 1000 }).map(
+    () => Math.floor(Math.random() * 10) * 10 + 10
+  );
+  return (
+    <VList data={items} style={{ height: 800 }}>
+      {(d, i) => (
+        <div
+          key={i}
+          style={{
+            height: d,
+            borderBottom: "solid 1px gray",
+            background: "white",
+          }}
+        >
+          {i}
+        </div>
+      )}
     </VList>
   );
 };
@@ -229,7 +253,7 @@ const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]);
 import { VList } from "virtua/solid";
 
 export const App = () => {
-  const sizes = [20, 40, 80, 77];
+  const sizes = [20, 40, 180, 77];
   const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]);
 
   return (
@@ -315,9 +339,8 @@ The other solution is using [`render prop`](https://legacy.reactjs.org/docs/rend
 ```tsx
 const Component = memo(HeavyItem);
 
-<VList count={items.length}>
-  {(i) => {
-    const item = items[i];
+<VList data={items}>
+  {(item) => {
     return <Component key={item.id} data={item} />;
   }}
 </VList>;
