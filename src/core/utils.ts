@@ -33,10 +33,14 @@ export const microtask: (fn: () => void) => void =
 /**
  * @internal
  */
-export const createPromise = (): [Promise<void>, () => void, () => void] => {
-  let resolve: (() => void) | undefined;
+export const createPromise = <T = void>(): [
+  Promise<T>,
+  (arg: T) => void,
+  () => void
+] => {
+  let resolve: ((arg: T) => void) | undefined;
   let reject: (() => void) | undefined;
-  const promise = new Promise<void>((res, rej) => {
+  const promise = new Promise<T>((res, rej) => {
     resolve = res;
     reject = rej;
   });
