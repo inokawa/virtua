@@ -198,7 +198,7 @@ export const createScroller = (
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let cancelScroll: (() => void) | undefined;
-  const [initialized, resolveInitialized, rejectInitialized] = createPromise();
+  const [initialized, resolveInitialized] = createPromise<boolean>();
   const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const overflowKey = isHorizontal ? "overflowX" : "overflowY";
 
@@ -210,30 +210,36 @@ export const createScroller = (
   ) => {
     // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
     // https://github.com/inokawa/virtua/pull/733
-    await initialized;
+    // https://github.com/inokawa/virtua/pull/750
+    const ok = await initialized;
+    if (!ok) {
+      return;
+    }
 
     if (cancelScroll) {
       // Cancel waiting scrollTo
       cancelScroll();
     }
 
-    const waitForMeasurement = (): [Promise<void>, () => void] => {
+    const waitForMeasurement = (): [Promise<boolean>, () => void] => {
       // Wait for the scroll destination items to be measured.
       // The measurement will be done asynchronously and the timing is not predictable so we use promise.
-      const [promise, resolve, reject] = createPromise();
-      cancelScroll = reject;
+      const [promise, resolve] = createPromise<boolean>();
+      cancelScroll = () => {
+        resolve(false);
+      };
 
       // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
       // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
       // https://github.com/inokawa/virtua/issues/450
       if (isInitialMeasurementDone(store)) {
-        // Reject when items around scroll destination completely measured
-        timeout(reject, 150);
+        // Cancel when items around scroll destination completely measured
+        timeout(cancelScroll, 150);
       }
       return [
         promise,
         store.$subscribe(UPDATE_SIZE_EVENT, () => {
-          resolve();
+          resolve(true);
         }),
       ];
     };
@@ -249,10 +255,10 @@ export const createScroller = (
         const [promise, unsubscribe] = waitForMeasurement();
 
         try {
-          await promise;
-        } catch (e) {
-          // canceled
-          return;
+          if (!(await promise)) {
+            // canceled
+            return;
+          }
         } finally {
           unsubscribe();
         }
@@ -276,10 +282,10 @@ export const createScroller = (
           );
           store.$update(ACTION_MANUAL_SCROLL);
 
-          await promise;
-        } catch (e) {
-          // canceled or finished
-          return;
+          if (!(await promise)) {
+            // canceled or finished
+            return;
+          }
         } finally {
           unsubscribe();
         }
@@ -320,11 +326,11 @@ export const createScroller = (
         }
       );
 
-      resolveInitialized();
+      resolveInitialized(true);
     },
     $dispose() {
       scrollObserver && scrollObserver._dispose();
-      rejectInitialized();
+      resolveInitialized(false);
     },
     $scrollTo(offset) {
       scheduleImperativeScroll(() => offset);
@@ -392,7 +398,7 @@ export const createWindowScroller = (
   let containerElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let cancelScroll: (() => void) | undefined;
-  const [initialized, resolveInitialized, rejectInitialized] = createPromise();
+  const [initialized, resolveInitialized] = createPromise<boolean>();
 
   const calcOffsetToViewport = (
     node: HTMLElement,
@@ -429,29 +435,35 @@ export const createWindowScroller = (
   ) => {
     // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
     // https://github.com/inokawa/virtua/pull/733
-    await initialized;
+    // https://github.com/inokawa/virtua/pull/750
+    const ok = await initialized;
+    if (!ok) {
+      return;
+    }
 
     if (cancelScroll) {
       cancelScroll();
     }
 
-    const waitForMeasurement = (): [Promise<void>, () => void] => {
+    const waitForMeasurement = (): [Promise<boolean>, () => void] => {
       // Wait for the scroll destination items to be measured.
       // The measurement will be done asynchronously and the timing is not predictable so we use promise.
-      const [promise, resolve, reject] = createPromise();
-      cancelScroll = reject;
+      const [promise, resolve] = createPromise<boolean>();
+      cancelScroll = () => {
+        resolve(false);
+      };
 
       // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
       // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
       // https://github.com/inokawa/virtua/issues/450
       if (isInitialMeasurementDone(store)) {
-        // Reject when items around scroll destination completely measured
-        timeout(reject, 150);
+        // Cancel when items around scroll destination completely measured
+        timeout(cancelScroll, 150);
       }
       return [
         promise,
         store.$subscribe(UPDATE_SIZE_EVENT, () => {
-          resolve();
+          resolve(true);
         }),
       ];
     };
@@ -469,9 +481,9 @@ export const createWindowScroller = (
         const [promise, unsubscribe] = waitForMeasurement();
 
         try {
-          await promise;
-        } catch (e) {
-          return;
+          if (!(await promise)) {
+            return;
+          }
         } finally {
           unsubscribe();
         }
@@ -497,9 +509,9 @@ export const createWindowScroller = (
           });
           store.$update(ACTION_MANUAL_SCROLL);
 
-          await promise;
-        } catch (e) {
-          return;
+          if (!(await promise)) {
+            return;
+          }
         } finally {
           unsubscribe();
         }
@@ -535,12 +547,12 @@ export const createWindowScroller = (
           calcOffsetToViewport(container, documentBody, window, isHorizontal)
       );
 
-      resolveInitialized();
+      resolveInitialized(true);
     },
     $dispose() {
       scrollObserver && scrollObserver._dispose();
       containerElement = undefined;
-      rejectInitialized();
+      resolveInitialized(false);
     },
     $fixScrollJump: () => {
       scrollObserver && scrollObserver._fixScrollJump();
