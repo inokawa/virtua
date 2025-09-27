@@ -211,8 +211,7 @@ export const createScroller = (
     // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
     // https://github.com/inokawa/virtua/pull/733
     // https://github.com/inokawa/virtua/pull/750
-    const ok = await initialized;
-    if (!ok) {
+    if (!(await initialized)) {
       return;
     }
 
@@ -436,8 +435,7 @@ export const createWindowScroller = (
     // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
     // https://github.com/inokawa/virtua/pull/733
     // https://github.com/inokawa/virtua/pull/750
-    const ok = await initialized;
-    if (!ok) {
+    if (!(await initialized)) {
       return;
     }
 
