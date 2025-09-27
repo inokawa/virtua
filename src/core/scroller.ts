@@ -221,23 +221,25 @@ export const createScroller = (
       cancelScroll();
     }
 
-    const waitForMeasurement = (): [Promise<void>, () => void] => {
+    const waitForMeasurement = (): [Promise<boolean>, () => void] => {
       // Wait for the scroll destination items to be measured.
       // The measurement will be done asynchronously and the timing is not predictable so we use promise.
-      const [promise, resolve, reject] = createPromise();
-      cancelScroll = reject;
+      const [promise, resolve] = createPromise<boolean>();
+      cancelScroll = () => {
+        resolve(false);
+      };
 
       // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
       // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
       // https://github.com/inokawa/virtua/issues/450
       if (isInitialMeasurementDone(store)) {
-        // Reject when items around scroll destination completely measured
-        timeout(reject, 150);
+        // Cancel when items around scroll destination completely measured
+        timeout(cancelScroll, 150);
       }
       return [
         promise,
         store.$subscribe(UPDATE_SIZE_EVENT, () => {
-          resolve();
+          resolve(true);
         }),
       ];
     };
@@ -253,10 +255,10 @@ export const createScroller = (
         const [promise, unsubscribe] = waitForMeasurement();
 
         try {
-          await promise;
-        } catch (e) {
-          // canceled
-          return;
+          if (!(await promise)) {
+            // canceled
+            return;
+          }
         } finally {
           unsubscribe();
         }
@@ -280,10 +282,10 @@ export const createScroller = (
           );
           store.$update(ACTION_MANUAL_SCROLL);
 
-          await promise;
-        } catch (e) {
-          // canceled or finished
-          return;
+          if (!(await promise)) {
+            // canceled or finished
+            return;
+          }
         } finally {
           unsubscribe();
         }
@@ -443,23 +445,25 @@ export const createWindowScroller = (
       cancelScroll();
     }
 
-    const waitForMeasurement = (): [Promise<void>, () => void] => {
+    const waitForMeasurement = (): [Promise<boolean>, () => void] => {
       // Wait for the scroll destination items to be measured.
       // The measurement will be done asynchronously and the timing is not predictable so we use promise.
-      const [promise, resolve, reject] = createPromise();
-      cancelScroll = reject;
+      const [promise, resolve] = createPromise<boolean>();
+      cancelScroll = () => {
+        resolve(false);
+      };
 
       // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
       // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
       // https://github.com/inokawa/virtua/issues/450
       if (isInitialMeasurementDone(store)) {
-        // Reject when items around scroll destination completely measured
-        timeout(reject, 150);
+        // Cancel when items around scroll destination completely measured
+        timeout(cancelScroll, 150);
       }
       return [
         promise,
         store.$subscribe(UPDATE_SIZE_EVENT, () => {
-          resolve();
+          resolve(true);
         }),
       ];
     };
@@ -477,9 +481,9 @@ export const createWindowScroller = (
         const [promise, unsubscribe] = waitForMeasurement();
 
         try {
-          await promise;
-        } catch (e) {
-          return;
+          if (!(await promise)) {
+            return;
+          }
         } finally {
           unsubscribe();
         }
@@ -505,9 +509,9 @@ export const createWindowScroller = (
           });
           store.$update(ACTION_MANUAL_SCROLL);
 
-          await promise;
-        } catch (e) {
-          return;
+          if (!(await promise)) {
+            return;
+          }
         } finally {
           unsubscribe();
         }
