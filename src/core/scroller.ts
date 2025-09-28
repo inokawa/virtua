@@ -244,10 +244,30 @@ export const createScroller = (
     };
 
     if (smooth && isSmoothScrollSupported()) {
+      let rerendered = false;
       while (true) {
         store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
 
-        if (!store._hasUnmeasuredItemsInFrozenRange()) {
+        if (!rerendered) {
+          // https://github.com/inokawa/virtua/issues/758
+          rerendered = true;
+          const [promise, resolve] = createPromise();
+          resolve();
+          await promise;
+        }
+
+        // https://github.com/inokawa/virtua/issues/380
+        // https://github.com/inokawa/virtua/issues/590
+        let measuring = false;
+        const [fixedStart, fixedEnd] = store.$getRange();
+        for (let i = fixedStart; i <= fixedEnd; i++) {
+          if (store.$isUnmeasuredItem(i)) {
+            measuring = true;
+            break;
+          }
+        }
+
+        if (!measuring) {
           break;
         }
 
@@ -469,10 +489,30 @@ export const createWindowScroller = (
     const window = getCurrentWindow(getCurrentDocument(containerElement!));
 
     if (smooth && isSmoothScrollSupported()) {
+      let rerendered = false;
       while (true) {
         store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
 
-        if (!store._hasUnmeasuredItemsInFrozenRange()) {
+        if (!rerendered) {
+          // https://github.com/inokawa/virtua/issues/758
+          rerendered = true;
+          const [promise, resolve] = createPromise();
+          resolve();
+          await promise;
+        }
+
+        // https://github.com/inokawa/virtua/issues/380
+        // https://github.com/inokawa/virtua/issues/590
+        let measuring = false;
+        const [fixedStart, fixedEnd] = store.$getRange();
+        for (let i = fixedStart; i <= fixedEnd; i++) {
+          if (store.$isUnmeasuredItem(i)) {
+            measuring = true;
+            break;
+          }
+        }
+
+        if (!measuring) {
           break;
         }
 
@@ -480,6 +520,7 @@ export const createWindowScroller = (
 
         try {
           if (!(await promise)) {
+            // canceled
             return;
           }
         } finally {

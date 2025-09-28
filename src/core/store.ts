@@ -62,7 +62,7 @@ type Actions =
   | [type: typeof ACTION_VIEWPORT_RESIZE, size: number]
   | [
       type: typeof ACTION_ITEMS_LENGTH_CHANGE,
-      arg: [length: number, isShift?: boolean | undefined],
+      arg: [length: number, isShift?: boolean | undefined]
     ]
   | [type: typeof ACTION_START_OFFSET_CHANGE, offset: number]
   | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
@@ -118,7 +118,6 @@ export type VirtualStore = {
   _flushJump(): [number, boolean];
   $subscribe(target: number, cb: Subscriber): () => void;
   $update(...action: Actions): void;
-  _hasUnmeasuredItemsInFrozenRange(): boolean;
 };
 
 /**
@@ -211,15 +210,6 @@ export const createVirtualStore = (
     $findStartIndex: () => findIndex(cache, getVisibleOffset()),
     $findEndIndex: () => findIndex(cache, getVisibleOffset() + viewportSize),
     $isUnmeasuredItem: (index) => cache._sizes[index] === UNCACHED,
-    _hasUnmeasuredItemsInFrozenRange: () => {
-      if (!_frozenRange) return false;
-      return cache._sizes
-        .slice(
-          max(0, _frozenRange[0] - 1),
-          min(cache._length - 1, _frozenRange[1] + 1) + 1
-        )
-        .includes(UNCACHED);
-    },
     $getItemOffset: getItemOffset,
     $getItemSize: getItemSize,
     $getItemsLength: () => cache._length,
@@ -336,8 +326,7 @@ export const createVirtualStore = (
                 _scrollMode === SCROLL_BY_SHIFT ||
                 (_frozenRange
                   ? // https://github.com/inokawa/virtua/issues/380
-                    // https://github.com/inokawa/virtua/issues/590
-                    !isSSR && index < _frozenRange[0]
+                    index < _frozenRange[0]
                   : // Otherwise we should maintain visible position
                     getItemOffset(index) +
                       // https://github.com/inokawa/virtua/issues/385
