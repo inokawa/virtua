@@ -14,6 +14,7 @@ import {
   ACTION_BEFORE_MANUAL_SMOOTH_SCROLL,
   ACTION_START_OFFSET_CHANGE,
   isInitialMeasurementDone,
+  UPDATE_VIRTUAL_STATE,
 } from "./store";
 import { type ScrollToIndexOpts } from "./types";
 import { clamp, createPromise, NULL } from "./utils";
@@ -197,10 +198,28 @@ export const createScroller = (
 ): Scroller => {
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
-  let cancelScroll: (() => void) | undefined;
+  let _cancelScroll: (() => void) | undefined;
+  let _length = store.$getItemsLength();
   const [initialized, resolveInitialized] = createPromise<boolean>();
   const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const overflowKey = isHorizontal ? "overflowX" : "overflowY";
+
+  const clearAndSetQueue = (next?: () => void) => {
+    if (_cancelScroll) {
+      // Cancel waiting scrollTo
+      _cancelScroll();
+      _cancelScroll = next;
+    }
+  };
+
+  const unsubStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+    const nextLength = store.$getItemsLength();
+    if (nextLength !== _length) {
+      _length = nextLength;
+      // https://github.com/inokawa/virtua/issues/357
+      clearAndSetQueue();
+    }
+  });
 
   // The given offset will be clamped by browser
   // https://drafts.csswg.org/cssom-view/#dom-element-scrolltop
@@ -215,25 +234,23 @@ export const createScroller = (
       return;
     }
 
-    if (cancelScroll) {
-      // Cancel waiting scrollTo
-      cancelScroll();
-    }
+    clearAndSetQueue();
 
     const waitForMeasurement = (): [Promise<boolean>, () => void] => {
       // Wait for the scroll destination items to be measured.
       // The measurement will be done asynchronously and the timing is not predictable so we use promise.
       const [promise, resolve] = createPromise<boolean>();
-      cancelScroll = () => {
+      const cancel = () => {
         resolve(false);
       };
+      clearAndSetQueue(cancel);
 
       // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
       // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
       // https://github.com/inokawa/virtua/issues/450
       if (isInitialMeasurementDone(store)) {
         // Cancel when items around scroll destination completely measured
-        timeout(cancelScroll, 150);
+        timeout(cancel, 150);
       }
       return [
         promise,
@@ -317,8 +334,6 @@ export const createScroller = (
 
           if (shift) {
             viewport[scrollOffsetKey] = store.$getScrollOffset() + jump;
-            // https://github.com/inokawa/virtua/issues/357
-            cancelScroll && cancelScroll();
           } else {
             viewport[scrollOffsetKey] += jump;
           }
@@ -329,6 +344,7 @@ export const createScroller = (
     },
     $dispose() {
       scrollObserver && scrollObserver._dispose();
+      unsubStore();
       resolveInitialized(false);
     },
     $scrollTo(offset) {
@@ -396,8 +412,26 @@ export const createWindowScroller = (
 ): WindowScroller => {
   let containerElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
-  let cancelScroll: (() => void) | undefined;
+  let _cancelScroll: (() => void) | undefined;
+  let _length = store.$getItemsLength();
   const [initialized, resolveInitialized] = createPromise<boolean>();
+
+  const clearAndSetQueue = (next?: () => void) => {
+    if (_cancelScroll) {
+      // Cancel waiting scrollTo
+      _cancelScroll();
+      _cancelScroll = next;
+    }
+  };
+
+  const unsubStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+    const nextLength = store.$getItemsLength();
+    if (nextLength !== _length) {
+      _length = nextLength;
+      // https://github.com/inokawa/virtua/issues/357
+      clearAndSetQueue();
+    }
+  });
 
   const calcOffsetToViewport = (
     node: HTMLElement,
@@ -439,24 +473,23 @@ export const createWindowScroller = (
       return;
     }
 
-    if (cancelScroll) {
-      cancelScroll();
-    }
+    clearAndSetQueue();
 
     const waitForMeasurement = (): [Promise<boolean>, () => void] => {
       // Wait for the scroll destination items to be measured.
       // The measurement will be done asynchronously and the timing is not predictable so we use promise.
       const [promise, resolve] = createPromise<boolean>();
-      cancelScroll = () => {
+      const cancel = () => {
         resolve(false);
       };
+      clearAndSetQueue(cancel);
 
       // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
       // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
       // https://github.com/inokawa/virtua/issues/450
       if (isInitialMeasurementDone(store)) {
         // Cancel when items around scroll destination completely measured
-        timeout(cancelScroll, 150);
+        timeout(cancel, 150);
       }
       return [
         promise,
@@ -550,6 +583,7 @@ export const createWindowScroller = (
     $dispose() {
       scrollObserver && scrollObserver._dispose();
       containerElement = undefined;
+      unsubStore();
       resolveInitialized(false);
     },
     $fixScrollJump: () => {
