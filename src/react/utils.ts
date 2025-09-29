@@ -51,9 +51,19 @@ export const getKey = (e: ItemElement, i: number): React.Key => {
   return key != null ? key : "_" + i;
 };
 
+const clamp = (value: number, minValue: number, maxValue: number): number =>
+  Math.min(maxValue, Math.max(minValue, value));
+
+/**
+ * A cache implementation that stores values indexed by number, with optional LRU (Least Recently Used) eviction.
+ *
+ * - Uses a sparse array for efficient range cleanup and memory usage.
+ * - Optionally limits the number of cached items using a numerical LRU queue.
+ * - Provides methods to get, set, and clear cached values by index or range.
+ */
 export class IndexedCache<T> {
   #cache: T[];
-  #cachedIndicesOrder: CircularUniqueQueue<number> | undefined;
+  #cachedIndicesOrder: NumericalLruQueue | undefined;
 
   constructor(length: number, cacheLimit: number | undefined | null) {
     // Using a sparse array instead of a Map enables faster cleanup of a specific
@@ -62,11 +72,11 @@ export class IndexedCache<T> {
     // benefits of both an array and a hash map.
     this.#cache = new Array<T>(length);
 
-    // Using a circular queue for indices order enables deletion of the oldest
+    // Using a LRU queue for indices order enables deletion of the oldest
     // value when threshold is reached, to not exceed the limit, but yet keep
     // the most recent values in the cache.
     if (cacheLimit && cacheLimit < length) {
-      this.#cachedIndicesOrder = new CircularUniqueQueue<number>(cacheLimit);
+      this.#cachedIndicesOrder = new NumericalLruQueue(length, cacheLimit);
     }
   }
 
@@ -77,7 +87,7 @@ export class IndexedCache<T> {
   set(i: number, value: T) {
     if (this.#cachedIndicesOrder && this.#cache[i] === undefined) {
       const cacheIndexToRemove = this.#cachedIndicesOrder.enqueue(i);
-      if (cacheIndexToRemove !== undefined) {
+      if (cacheIndexToRemove !== null) {
         delete this.#cache[cacheIndexToRemove];
       }
     }
@@ -87,74 +97,145 @@ export class IndexedCache<T> {
 
   clearRange(
     startIndex: number | undefined = 0,
-    endIndex: number | undefined = this.#cache.length
+    endIndex: number | undefined = this.#cache.length - 1
   ) {
-    const deletedIndices = this.#cachedIndicesOrder && new Set<number>();
+    startIndex = clamp(startIndex, 0, this.#cache.length - 1);
+    endIndex = clamp(endIndex, 0, this.#cache.length - 1);
 
-    for (const indexStr in this.#cache) {
-      const index = Number(indexStr);
-      if (index >= startIndex || index < endIndex) {
-        delete this.#cache[index];
-
-        if (deletedIndices) {
-          deletedIndices.add(index);
-        }
-      }
-
-      if (index >= endIndex) {
-        break;
-      }
+    for (let i = startIndex; i <= endIndex; i++) {
+      delete this.#cache[i];
     }
 
-    if (deletedIndices && this.#cachedIndicesOrder) {
-      this.#cachedIndicesOrder.filter((i) => deletedIndices.has(i));
-    }
+    this.#cachedIndicesOrder?.clearRange(startIndex, endIndex);
   }
 }
 
-class CircularUniqueQueue<T> {
-  #data: (T | undefined)[];
-  #head = 0;
-  #tail = 0;
-  #size = 0;
-  #capacity: number;
-  #set: Set<T>;
+/**
+ * A numerical Least Recently Used (LRU) queue optimized for integer keys in the range [0, maxValue).
+ *
+ * This class maintains a fixed-capacity LRU queue using efficient array-based doubly-linked lists,
+ * allowing for fast O(1) operations for insertion, access, and removal. It is designed for scenarios
+ * where the set of possible keys is known and bounded, such as managing resources or cache entries
+ * indexed by small integers.
+ *
+ * @example
+ * ```typescript
+ * const lru = new NumericalLruQueue(100, 10); // maxValue = 100, capacity = 10
+ * lru.enqueue(7); // Access or insert 7, evict if over capacity
+ * lru.dequeue(); // Remove and return the least recently used element
+ * lru.clearRange(0, 9); // Remove all elements in the range [0, 9]
+ * ```
+ *
+ * @remarks
+ * - Keys must be integers in the range [0, maxValue).
+ * - Not thread-safe.
+ *
+ * @public
+ */
+class NumericalLruQueue {
+  readonly #capacity: number;
+  readonly #maxValue: number;
 
-  constructor(capacity: number) {
-    this.#data = new Array<T>(capacity);
+  // Doubly-linked list arrays (store indices into 0..maxValue-1)
+  #next: Int32Array; // length = maxValue
+  #prev: Int32Array; // length = maxValue
+
+  // Tracks whether element is in the LRU (and if so, points to itself)
+  // -1 means "not present"
+  #position: Int32Array; // length = maxValue
+
+  #head: number; // LRU oldest
+  #tail: number; // LRU newest
+  #size: number;
+
+  constructor(maxValue: number, capacity: number) {
+    this.#maxValue = maxValue;
     this.#capacity = capacity;
-    this.#set = new Set<T>();
+
+    this.#next = new Int32Array(maxValue);
+    this.#prev = new Int32Array(maxValue);
+    this.#position = new Int32Array(maxValue);
+
+    this.#position.fill(-1);
+
+    this.#head = -1;
+    this.#tail = -1;
+    this.#size = 0;
   }
 
-  enqueue(item: T) {
-    if (this.#set.has(item)) return undefined;
-    const dequeuedItem =
-      this.#size === this.#capacity ? this.dequeue() : undefined;
+  /**
+   * Adds the item at the specified index to the queue and manages the queue size.
+   * If adding the item causes the queue to exceed its capacity, the oldest item is dequeued and its value is returned.
+   * Otherwise, returns `null`.
+   */
+  enqueue(i: number): number | null {
+    if (i < 0 || i >= this.#maxValue) return null;
 
-    this.#data[this.#tail] = item;
-    this.#set.add(item);
-    this.#tail = (this.#tail + 1) % this.#capacity;
-    this.#size++;
-    return dequeuedItem;
+    this.#access(i);
+    if (this.#size > this.#capacity) {
+      return this.dequeue();
+    }
+    return null;
   }
 
-  dequeue() {
-    if (this.#size === 0) return undefined;
-    const item = this.#data[this.#head];
-    if (item !== undefined) this.#set.delete(item);
-
-    this.#data[this.#head] = undefined;
-    this.#head = (this.#head + 1) % this.#capacity;
-    this.#size--;
-    return item;
+  /** Evicts the least used item. If the queue is empty, returns null. */
+  dequeue(): number | null {
+    if (this.#head === -1) return null;
+    const victim = this.#head;
+    this.#detach(victim);
+    return victim;
   }
 
-  filter(predicate: (item: T) => boolean) {
-    for (let i = 0; i < this.#size; i++) {
-      const item = this.dequeue();
-      if (item !== undefined && predicate(item)) {
-        this.enqueue(item);
+  /** Efficiently finds and detaches all items within the desired range. */
+  clearRange(startIndex: number, endIndex: number): void {
+    startIndex = clamp(startIndex, 0, this.#maxValue - 1);
+    endIndex = clamp(endIndex, 0, this.#maxValue - 1);
+
+    for (let i = startIndex; i <= endIndex; i++) {
+      if (this.#position[i] !== -1) {
+        this.#detach(i);
       }
     }
+  }
+
+  #access(i: number): void {
+    if (this.#position[i] === -1) {
+      this.#insertAtTail(i);
+    } else {
+      this.#detach(i);
+      this.#append(i);
+    }
+  }
+
+  #insertAtTail(i: number): void {
+    this.#append(i);
+    this.#size++;
+    this.#position[i] = i;
+  }
+
+  #append(i: number): void {
+    this.#prev[i] = this.#tail;
+    this.#next[i] = -1;
+    if (this.#tail !== -1) this.#next[this.#tail] = i;
+    this.#tail = i;
+    if (this.#head === -1) this.#head = i;
+    this.#position[i] = i;
+  }
+
+  #detach(i: number): void {
+    const p = this.#prev[i]!;
+    const n = this.#next[i]!;
+
+    if (p !== -1) this.#next[p] = n;
+    if (n !== -1) this.#prev[n] = p;
+
+    if (this.#head === i) this.#head = n;
+    if (this.#tail === i) this.#tail = p;
+
+    this.#prev[i] = -1;
+    this.#next[i] = -1;
+    this.#position[i] = -1;
+
+    this.#size--;
   }
 }

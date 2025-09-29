@@ -400,7 +400,12 @@ export const RenderPropCache: StoryObj = {
             append more
           </button>
         </div>
-        <VList style={{ flex: 1 }} data={items} enableRenderCache>
+        <VList
+          style={{ flex: 1 }}
+          data={items}
+          enableRenderCache
+          maxCacheSize={500}
+        >
           {(item, i) => {
             return (
               <div
