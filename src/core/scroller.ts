@@ -198,7 +198,7 @@ export const createScroller = (
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let cancelScroll: (() => void) | undefined;
-  const [initialized, resolveInitialized] = createPromise<boolean>();
+  let initialized = createPromise<boolean>();
   const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const overflowKey = isHorizontal ? "overflowX" : "overflowY";
 
@@ -211,7 +211,7 @@ export const createScroller = (
     // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
     // https://github.com/inokawa/virtua/pull/733
     // https://github.com/inokawa/virtua/pull/750
-    if (!(await initialized)) {
+    if (!(await initialized[0])) {
       return;
     }
 
@@ -325,11 +325,13 @@ export const createScroller = (
         }
       );
 
-      resolveInitialized(true);
+      initialized[1](true);
     },
     $dispose() {
       scrollObserver && scrollObserver._dispose();
-      resolveInitialized(false);
+      initialized[1](false);
+      // https://github.com/inokawa/virtua/pull/765
+      initialized = createPromise();
     },
     $scrollTo(offset) {
       scheduleImperativeScroll(() => offset);
@@ -397,7 +399,7 @@ export const createWindowScroller = (
   let containerElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let cancelScroll: (() => void) | undefined;
-  const [initialized, resolveInitialized] = createPromise<boolean>();
+  let initialized = createPromise<boolean>();
 
   const calcOffsetToViewport = (
     node: HTMLElement,
@@ -435,7 +437,7 @@ export const createWindowScroller = (
     // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
     // https://github.com/inokawa/virtua/pull/733
     // https://github.com/inokawa/virtua/pull/750
-    if (!(await initialized)) {
+    if (!(await initialized[0])) {
       return;
     }
 
@@ -545,12 +547,14 @@ export const createWindowScroller = (
           calcOffsetToViewport(container, documentBody, window, isHorizontal)
       );
 
-      resolveInitialized(true);
+      initialized[1](true);
     },
     $dispose() {
       scrollObserver && scrollObserver._dispose();
       containerElement = undefined;
-      resolveInitialized(false);
+      initialized[1](false);
+      // https://github.com/inokawa/virtua/pull/765
+      initialized = createPromise();
     },
     $fixScrollJump: () => {
       scrollObserver && scrollObserver._fixScrollJump();
