@@ -304,7 +304,7 @@ describe("render count", () => {
       </Profiler>
     );
 
-    expect(rootFn).toBeCalledTimes(3);
+    expect(rootFn).toBeCalledTimes(2);
     itemFns.forEach((itemFn) => {
       expect(itemFn).toHaveBeenCalledTimes(1);
     });
