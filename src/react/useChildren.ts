@@ -5,10 +5,10 @@ import { ItemElement, flattenChildren } from "./utils";
  * @internal
  */
 export const useChildren = (
-  children: ReactNode | ((i: number) => ReactElement),
+  children: ReactNode | ((i: number, placeholder: boolean) => ReactElement),
   count: number | undefined
 ) => {
-  return useMemo((): [(i: number) => ItemElement, number] => {
+  return useMemo((): [(i: number, placeholder: boolean) => ItemElement, number] => {
     if (typeof children === "function") {
       return [children, count || 0];
     }

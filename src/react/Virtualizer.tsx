@@ -96,8 +96,9 @@ export interface VirtualizerProps {
    * Elements rendered by this component.
    *
    * You can also pass a function and set {@link VirtualizerProps.count} to create elements lazily.
+   * Placeholder will be true for out of view elements when renderPlaceholders is turned on, otherwise placeholder is always false.
    */
-  children: ReactNode | ((index: number) => ReactElement);
+  children: ReactNode | ((index: number, placeholder: boolean) => ReactElement);
   /**
    * If you set a function to {@link VirtualizerProps.children}, you have to set total number of items to this prop.
    */
@@ -114,6 +115,10 @@ export interface VirtualizerProps {
    * - If set, you can opt out estimation and use the value as initial item size.
    */
   itemSize?: number;
+  /**
+   * Render placeholders, allows for a placeholder element to be rendered instead of nothing when out of view
+   */
+  renderPlaceholders?: boolean;
   /**
    * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
@@ -183,6 +188,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       ssrCount,
       as: Element = "div",
       item: ItemElement = "div",
+      renderPlaceholders = false,
       scrollRef,
       onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
@@ -238,8 +244,8 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
 
     const items: ReactElement[] = [];
 
-    const getListItem = (index: number) => {
-      const e = getElement(index);
+    const getListItem = (index: number, placeholder = false) => {
+      const e = getElement(index, placeholder);
 
       return (
         <ListItem
@@ -336,24 +342,25 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       []
     );
 
+    const mounted = new Set(keepMounted || []);
+    for (let i = 0, j = startIndex; i < j; i++) {
+      if (mounted.has(i)) {
+        items.push(getListItem(i));
+      } else if (renderPlaceholders) {
+        items.push(getListItem(i, true));
+      }
+    }
+
     for (let i = startIndex, j = endIndex; i <= j; i++) {
       items.push(getListItem(i));
     }
 
-    if (keepMounted) {
-      const startItems: ReactElement[] = [];
-      const endItems: ReactElement[] = [];
-      sort(keepMounted).forEach((index) => {
-        if (index < startIndex) {
-          startItems.push(getListItem(index));
-        }
-        if (index > endIndex) {
-          endItems.push(getListItem(index));
-        }
-      });
-
-      items.unshift(...startItems);
-      items.push(...endItems);
+    for (let i = endIndex + 1, j = count; i < j; i++) {
+      if (mounted.has(i)) {
+        items.push(getListItem(i));
+      } else if (renderPlaceholders) {
+        items.push(getListItem(i, true));
+      }
     }
 
     return (
