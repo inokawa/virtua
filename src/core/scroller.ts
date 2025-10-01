@@ -16,7 +16,7 @@ import {
   isInitialMeasurementDone,
 } from "./store";
 import { type ScrollToIndexOpts } from "./types";
-import { clamp, createPromise, NULL } from "./utils";
+import { clamp, createPromise, microtask, NULL } from "./utils";
 
 const timeout = setTimeout;
 
@@ -244,42 +244,52 @@ export const createScroller = (
     };
 
     if (smooth && isSmoothScrollSupported()) {
-      while (true) {
-        store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
+      store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
 
-        if (!store._hasUnmeasuredItemsInFrozenRange()) {
-          break;
-        }
-
-        const [promise, unsubscribe] = waitForMeasurement();
-
-        try {
-          if (!(await promise)) {
-            // canceled
-            return;
+      // https://github.com/inokawa/virtua/issues/590
+      microtask(async () => {
+        while (true) {
+          let measuring = false;
+          for (let [i, end] = store.$getRange(); i <= end; i++) {
+            if (store.$isUnmeasuredItem(i)) {
+              measuring = true;
+              break;
+            }
           }
-        } finally {
-          unsubscribe();
-        }
-      }
+          if (!measuring) {
+            break;
+          }
+          const [promise, unsubscribe] = waitForMeasurement();
 
-      viewportElement!.scrollTo({
-        [isHorizontal ? "left" : "top"]: normalizeOffset(
-          getTargetOffset(),
-          isHorizontal
-        ),
-        behavior: "smooth",
+          try {
+            if (!(await promise)) {
+              // canceled
+              return;
+            }
+          } finally {
+            unsubscribe();
+          }
+        }
+
+        store.$update(ACTION_MANUAL_SCROLL);
+        viewportElement!.scrollTo({
+          [isHorizontal ? "left" : "top"]: normalizeOffset(
+            getTargetOffset(),
+            isHorizontal
+          ),
+          behavior: "smooth",
+        });
       });
     } else {
       while (true) {
         const [promise, unsubscribe] = waitForMeasurement();
 
         try {
+          store.$update(ACTION_MANUAL_SCROLL);
           viewportElement![scrollOffsetKey] = normalizeOffset(
             getTargetOffset(),
             isHorizontal
           );
-          store.$update(ACTION_MANUAL_SCROLL);
 
           if (!(await promise)) {
             // canceled or finished
@@ -315,12 +325,12 @@ export const createScroller = (
             });
           }
 
+          // Use absolute position not to exceed scrollable bounds
+          // https://github.com/inokawa/virtua/discussions/475
+          viewport[scrollOffsetKey] = store.$getScrollOffset() + jump;
           if (shift) {
-            viewport[scrollOffsetKey] = store.$getScrollOffset() + jump;
             // https://github.com/inokawa/virtua/issues/357
             cancelScroll && cancelScroll();
-          } else {
-            viewport[scrollOffsetKey] += jump;
           }
         }
       );
@@ -471,43 +481,54 @@ export const createWindowScroller = (
     const window = getCurrentWindow(getCurrentDocument(containerElement!));
 
     if (smooth && isSmoothScrollSupported()) {
-      while (true) {
-        store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
+      store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
 
-        if (!store._hasUnmeasuredItemsInFrozenRange()) {
-          break;
-        }
-
-        const [promise, unsubscribe] = waitForMeasurement();
-
-        try {
-          if (!(await promise)) {
-            return;
+      // https://github.com/inokawa/virtua/issues/590
+      microtask(async () => {
+        while (true) {
+          let measuring = false;
+          for (let [i, end] = store.$getRange(); i <= end; i++) {
+            if (store.$isUnmeasuredItem(i)) {
+              measuring = true;
+              break;
+            }
           }
-        } finally {
-          unsubscribe();
-        }
-      }
+          if (!measuring) {
+            break;
+          }
+          const [promise, unsubscribe] = waitForMeasurement();
 
-      window.scroll({
-        [isHorizontal ? "left" : "top"]: normalizeOffset(
-          getTargetOffset(),
-          isHorizontal
-        ),
-        behavior: "smooth",
+          try {
+            if (!(await promise)) {
+              // canceled
+              return;
+            }
+          } finally {
+            unsubscribe();
+          }
+        }
+
+        store.$update(ACTION_MANUAL_SCROLL);
+        window.scroll({
+          [isHorizontal ? "left" : "top"]: normalizeOffset(
+            getTargetOffset(),
+            isHorizontal
+          ),
+          behavior: "smooth",
+        });
       });
     } else {
       while (true) {
         const [promise, unsubscribe] = waitForMeasurement();
 
         try {
+          store.$update(ACTION_MANUAL_SCROLL);
           window.scroll({
             [isHorizontal ? "left" : "top"]: normalizeOffset(
               getTargetOffset(),
               isHorizontal
             ),
           });
-          store.$update(ACTION_MANUAL_SCROLL);
 
           if (!(await promise)) {
             return;
@@ -533,15 +554,13 @@ export const createWindowScroller = (
         window,
         isHorizontal,
         () => normalizeOffset(window[scrollOffsetKey], isHorizontal),
-        (jump, shift) => {
+        (jump) => {
+          // Use absolute position not to exceed scrollable bounds
+          // https://github.com/inokawa/virtua/discussions/475
           // TODO support case two window scrollers exist in the same view
-          if (shift) {
-            window.scroll({
-              [isHorizontal ? "left" : "top"]: store.$getScrollOffset() + jump,
-            });
-          } else {
-            window.scrollBy(isHorizontal ? jump : 0, isHorizontal ? 0 : jump);
-          }
+          window.scroll({
+            [isHorizontal ? "left" : "top"]: store.$getScrollOffset() + jump,
+          });
         },
         () =>
           calcOffsetToViewport(container, documentBody, window, isHorizontal)
