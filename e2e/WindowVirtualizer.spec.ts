@@ -383,7 +383,7 @@ test.describe("check if item shift compensation works", () => {
         // Check if bottom is always visible and on bottom
         expectInRange(itemBottom, {
           min: -0.5,
-          max: browserName === "firefox" ? 0.6 : 0.50001,
+          max: browserName === "firefox" ? 0.6 : 0.5,
         });
         // may have subpixel error so scroll to bottom again
         await component.evaluate((e) => window.scrollBy(0, e.scrollHeight));
