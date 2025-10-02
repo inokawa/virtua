@@ -8,19 +8,19 @@ export {
   type VirtualStore,
   getScrollSize,
   type StateVersion,
-} from "./store";
+} from "./store.js";
 export {
   createScroller,
   createWindowScroller,
   createGridScroller,
-} from "./scroller";
+} from "./scroller.js";
 export {
   createResizer,
   createWindowResizer,
   type ItemResizeObserver,
   createGridResizer,
   type GridResizer,
-} from "./resizer";
-export { isRTLDocument, isBrowser } from "./environment";
-export { microtask, sort } from "./utils";
-export type { CacheSnapshot, ScrollToIndexOpts, ItemsRange } from "./types";
+} from "./resizer.js";
+export { isRTLDocument, isBrowser } from "./environment.js";
+export { microtask, sort } from "./utils.js";
+export type { CacheSnapshot, ScrollToIndexOpts, ItemsRange } from "./types.js";

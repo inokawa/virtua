@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { refKey } from "./utils";
+import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
+import { refKey } from "./utils.js";
 
 /**
  * @internal

@@ -1,10 +1,10 @@
 import { ReactElement, forwardRef, useRef } from "react";
-import { ViewportComponentAttributes } from "./types";
+import { ViewportComponentAttributes } from "./types.js";
 import {
   Virtualizer,
   VirtualizerHandle,
   VirtualizerProps,
-} from "./Virtualizer";
+} from "./Virtualizer.js";
 
 /**
  * Methods of {@link VList}.

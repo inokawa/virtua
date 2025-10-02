@@ -2,26 +2,26 @@
   "name": "virtua",
   "version": "0.43.6",
   "description": "A zero-config, fast and small (~3kB) virtual list (and grid) component for React, Vue, Solid and Svelte.",
-  "main": "lib/index.js",
-  "module": "lib/index.mjs",
+  "main": "lib/index.cjs",
+  "module": "lib/index.js",
   "types": "lib/index.d.ts",
-  "type": "commonjs",
+  "type": "module",
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "types": "./lib/index.d.ts",
-      "import": "./lib/index.mjs",
+      "require": "./lib/index.cjs",
       "default": "./lib/index.js"
     },
     "./vue": {
       "types": "./lib/vue/index.d.ts",
-      "import": "./lib/vue/index.mjs",
+      "require": "./lib/vue/index.cjs",
       "default": "./lib/vue/index.js"
     },
     "./solid": {
       "types": "./lib/solid/index.d.ts",
       "solid": "./lib/solid/index.jsx",
-      "import": "./lib/solid/index.mjs",
+      "require": "./lib/solid/index.cjs",
       "default": "./lib/solid/index.js"
     },
     "./svelte": {
@@ -31,7 +31,7 @@
     },
     "./unstable_core": {
       "types": "./lib/core/index.d.ts",
-      "import": "./lib/core/index.mjs",
+      "require": "./lib/core/index.cjs",
       "default": "./lib/core/index.js"
     }
   },

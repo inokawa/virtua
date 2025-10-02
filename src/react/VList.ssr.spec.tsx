@@ -3,7 +3,7 @@
  */
 import { it, describe, expect } from "vitest";
 import { renderToString, renderToStaticMarkup } from "react-dom/server";
-import { VList } from "./VList";
+import { VList } from "./VList.js";
 import { JSDOM } from "jsdom";
 
 const LIST_ID = "list-id";

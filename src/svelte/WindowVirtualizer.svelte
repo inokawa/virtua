@@ -10,13 +10,13 @@
     getScrollSize as _getScrollSize,
     createWindowResizer,
     createWindowScroller,
-  } from "../core";
-  import { defaultGetKey, iterRange, styleToString } from "./utils";
+  } from "../core/index.js";
+  import { defaultGetKey, iterRange, styleToString } from "./utils.js";
   import ListItem from "./ListItem.svelte";
   import type {
     WindowVirtualizerHandle,
     WindowVirtualizerProps,
-  } from "./WindowVirtualizer.type";
+  } from "./WindowVirtualizer.type.js";
 
   interface Props extends WindowVirtualizerProps<T> {}
 

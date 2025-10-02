@@ -4,7 +4,7 @@ import {
   isIOSWebKit,
   isRTLDocument,
   isSmoothScrollSupported,
-} from "./environment";
+} from "./environment.js";
 import {
   ACTION_SCROLL,
   type VirtualStore,
@@ -14,9 +14,9 @@ import {
   ACTION_BEFORE_MANUAL_SMOOTH_SCROLL,
   ACTION_START_OFFSET_CHANGE,
   isInitialMeasurementDone,
-} from "./store";
-import { type ScrollToIndexOpts } from "./types";
-import { clamp, createPromise, microtask, NULL } from "./utils";
+} from "./store.js";
+import { type ScrollToIndexOpts } from "./types.js";
+import { clamp, createPromise, microtask, NULL } from "./utils.js";
 
 const timeout = setTimeout;
 
