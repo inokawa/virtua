@@ -62,7 +62,7 @@ type Actions =
   | [type: typeof ACTION_VIEWPORT_RESIZE, size: number]
   | [
       type: typeof ACTION_ITEMS_LENGTH_CHANGE,
-      arg: [length: number, isShift?: boolean | undefined],
+      arg: [length: number, isShift?: boolean | undefined]
     ]
   | [type: typeof ACTION_START_OFFSET_CHANGE, offset: number]
   | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
@@ -118,7 +118,6 @@ export type VirtualStore = {
   _flushJump(): [number, boolean];
   $subscribe(target: number, cb: Subscriber): () => void;
   $update(...action: Actions): void;
-  _hasUnmeasuredItemsInFrozenRange(): boolean;
 };
 
 /**
@@ -169,8 +168,13 @@ export const createVirtualStore = (
 
   const applyJump = (j: number) => {
     if (j) {
-      // In iOS WebKit browsers, updating scroll position will stop scrolling so it have to be deferred during scrolling.
-      if (isIOSWebKit() && _scrollDirection !== SCROLL_IDLE) {
+      if (
+        // In iOS WebKit browsers, updating scroll position will stop scrolling so it have to be deferred during scrolling.
+        (isIOSWebKit() && _scrollDirection !== SCROLL_IDLE) ||
+        // Before imperative smooth scrolling, we measure all items which may be visible during scrolling.
+        // However, especially in Firefox, there are rare cases where items resize while scrolling, which can stop smooth scrolling.
+        (_frozenRange && _scrollMode === SCROLL_BY_MANUAL_SCROLL)
+      ) {
         pendingJump += j;
       } else {
         jump += j;
@@ -211,15 +215,6 @@ export const createVirtualStore = (
     $findStartIndex: () => findIndex(cache, getVisibleOffset()),
     $findEndIndex: () => findIndex(cache, getVisibleOffset() + viewportSize),
     $isUnmeasuredItem: (index) => cache._sizes[index] === UNCACHED,
-    _hasUnmeasuredItemsInFrozenRange: () => {
-      if (!_frozenRange) return false;
-      return cache._sizes
-        .slice(
-          max(0, _frozenRange[0] - 1),
-          min(cache._length - 1, _frozenRange[1] + 1) + 1
-        )
-        .includes(UNCACHED);
-    },
     $getItemOffset: getItemOffset,
     $getItemSize: getItemSize,
     $getItemsLength: () => cache._length,
@@ -231,13 +226,7 @@ export const createVirtualStore = (
     _flushJump: () => {
       _flushedJump = jump;
       jump = 0;
-      return [
-        _flushedJump,
-        // Use absolute position not to exceed scrollable bounds
-        _scrollMode === SCROLL_BY_SHIFT ||
-          // https://github.com/inokawa/virtua/discussions/475
-          getRelativeScrollOffset() + viewportSize >= getTotalSize(),
-      ];
+      return [_flushedJump, _scrollMode === SCROLL_BY_SHIFT];
     },
     $subscribe: (target, cb) => {
       const sub: [number, Subscriber] = [target, cb];
@@ -334,10 +323,10 @@ export const createVirtualStore = (
               if (
                 // Keep distance from end during shifting
                 _scrollMode === SCROLL_BY_SHIFT ||
-                (_frozenRange
+                (_frozenRange && _scrollMode === SCROLL_BY_MANUAL_SCROLL
                   ? // https://github.com/inokawa/virtua/issues/380
-                    // https://github.com/inokawa/virtua/issues/590
-                    !isSSR && index < _frozenRange[0]
+                    // https://github.com/inokawa/virtua/issues/758
+                    index < _frozenRange[0]
                   : // Otherwise we should maintain visible position
                     getItemOffset(index) +
                       // https://github.com/inokawa/virtua/issues/385

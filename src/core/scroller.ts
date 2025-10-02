@@ -16,7 +16,7 @@ import {
   isInitialMeasurementDone,
 } from "./store.js";
 import { type ScrollToIndexOpts } from "./types.js";
-import { clamp, createPromise, NULL } from "./utils.js";
+import { clamp, createPromise, microtask, NULL } from "./utils.js";
 
 const timeout = setTimeout;
 
@@ -198,7 +198,7 @@ export const createScroller = (
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let cancelScroll: (() => void) | undefined;
-  const [initialized, resolveInitialized, rejectInitialized] = createPromise();
+  let initialized = createPromise<boolean>();
   const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const overflowKey = isHorizontal ? "overflowX" : "overflowY";
 
@@ -210,76 +210,91 @@ export const createScroller = (
   ) => {
     // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
     // https://github.com/inokawa/virtua/pull/733
-    await initialized;
+    // https://github.com/inokawa/virtua/pull/750
+    if (!(await initialized[0])) {
+      return;
+    }
 
     if (cancelScroll) {
       // Cancel waiting scrollTo
       cancelScroll();
     }
 
-    const waitForMeasurement = (): [Promise<void>, () => void] => {
+    const waitForMeasurement = (): [Promise<boolean>, () => void] => {
       // Wait for the scroll destination items to be measured.
       // The measurement will be done asynchronously and the timing is not predictable so we use promise.
-      const [promise, resolve, reject] = createPromise();
-      cancelScroll = reject;
+      const [promise, resolve] = createPromise<boolean>();
+      cancelScroll = () => {
+        resolve(false);
+      };
 
       // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
       // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
       // https://github.com/inokawa/virtua/issues/450
       if (isInitialMeasurementDone(store)) {
-        // Reject when items around scroll destination completely measured
-        timeout(reject, 150);
+        // Cancel when items around scroll destination completely measured
+        timeout(cancelScroll, 150);
       }
       return [
         promise,
         store.$subscribe(UPDATE_SIZE_EVENT, () => {
-          resolve();
+          resolve(true);
         }),
       ];
     };
 
     if (smooth && isSmoothScrollSupported()) {
-      while (true) {
-        store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
+      store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
 
-        if (!store._hasUnmeasuredItemsInFrozenRange()) {
-          break;
+      // https://github.com/inokawa/virtua/issues/590
+      microtask(async () => {
+        while (true) {
+          let measuring = false;
+          for (let [i, end] = store.$getRange(); i <= end; i++) {
+            if (store.$isUnmeasuredItem(i)) {
+              measuring = true;
+              break;
+            }
+          }
+          if (!measuring) {
+            break;
+          }
+          const [promise, unsubscribe] = waitForMeasurement();
+
+          try {
+            if (!(await promise)) {
+              // canceled
+              return;
+            }
+          } finally {
+            unsubscribe();
+          }
         }
 
-        const [promise, unsubscribe] = waitForMeasurement();
-
-        try {
-          await promise;
-        } catch (e) {
-          // canceled
-          return;
-        } finally {
-          unsubscribe();
-        }
-      }
-
-      viewportElement!.scrollTo({
-        [isHorizontal ? "left" : "top"]: normalizeOffset(
-          getTargetOffset(),
-          isHorizontal
-        ),
-        behavior: "smooth",
+        store.$update(ACTION_MANUAL_SCROLL);
+        viewportElement!.scrollTo({
+          [isHorizontal ? "left" : "top"]: normalizeOffset(
+            getTargetOffset(),
+            isHorizontal
+          ),
+          behavior: "smooth",
+        });
       });
     } else {
       while (true) {
         const [promise, unsubscribe] = waitForMeasurement();
 
         try {
+          store.$update(ACTION_MANUAL_SCROLL);
           viewportElement![scrollOffsetKey] = normalizeOffset(
             getTargetOffset(),
             isHorizontal
           );
-          store.$update(ACTION_MANUAL_SCROLL);
 
-          await promise;
-        } catch (e) {
-          // canceled or finished
-          return;
+          if (!(await promise)) {
+            // canceled or finished
+            return;
+          }
         } finally {
           unsubscribe();
         }
@@ -310,21 +325,23 @@ export const createScroller = (
             });
           }
 
+          // Use absolute position not to exceed scrollable bounds
+          // https://github.com/inokawa/virtua/discussions/475
+          viewport[scrollOffsetKey] = store.$getScrollOffset() + jump;
           if (shift) {
-            viewport[scrollOffsetKey] = store.$getScrollOffset() + jump;
             // https://github.com/inokawa/virtua/issues/357
             cancelScroll && cancelScroll();
-          } else {
-            viewport[scrollOffsetKey] += jump;
           }
         }
       );
 
-      resolveInitialized();
+      initialized[1](true);
     },
     $dispose() {
       scrollObserver && scrollObserver._dispose();
-      rejectInitialized();
+      initialized[1](false);
+      // https://github.com/inokawa/virtua/pull/765
+      initialized = createPromise();
     },
     $scrollTo(offset) {
       scheduleImperativeScroll(() => offset);
@@ -392,7 +409,7 @@ export const createWindowScroller = (
   let containerElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let cancelScroll: (() => void) | undefined;
-  const [initialized, resolveInitialized, rejectInitialized] = createPromise();
+  let initialized = createPromise<boolean>();
 
   const calcOffsetToViewport = (
     node: HTMLElement,
@@ -429,29 +446,34 @@ export const createWindowScroller = (
   ) => {
     // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
     // https://github.com/inokawa/virtua/pull/733
-    await initialized;
+    // https://github.com/inokawa/virtua/pull/750
+    if (!(await initialized[0])) {
+      return;
+    }
 
     if (cancelScroll) {
       cancelScroll();
     }
 
-    const waitForMeasurement = (): [Promise<void>, () => void] => {
+    const waitForMeasurement = (): [Promise<boolean>, () => void] => {
       // Wait for the scroll destination items to be measured.
       // The measurement will be done asynchronously and the timing is not predictable so we use promise.
-      const [promise, resolve, reject] = createPromise();
-      cancelScroll = reject;
+      const [promise, resolve] = createPromise<boolean>();
+      cancelScroll = () => {
+        resolve(false);
+      };
 
       // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
       // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
       // https://github.com/inokawa/virtua/issues/450
       if (isInitialMeasurementDone(store)) {
-        // Reject when items around scroll destination completely measured
-        timeout(reject, 150);
+        // Cancel when items around scroll destination completely measured
+        timeout(cancelScroll, 150);
       }
       return [
         promise,
         store.$subscribe(UPDATE_SIZE_EVENT, () => {
-          resolve();
+          resolve(true);
         }),
       ];
     };
@@ -459,47 +481,58 @@ export const createWindowScroller = (
     const window = getCurrentWindow(getCurrentDocument(containerElement!));
 
     if (smooth && isSmoothScrollSupported()) {
-      while (true) {
-        store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
+      store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
 
-        if (!store._hasUnmeasuredItemsInFrozenRange()) {
-          break;
+      // https://github.com/inokawa/virtua/issues/590
+      microtask(async () => {
+        while (true) {
+          let measuring = false;
+          for (let [i, end] = store.$getRange(); i <= end; i++) {
+            if (store.$isUnmeasuredItem(i)) {
+              measuring = true;
+              break;
+            }
+          }
+          if (!measuring) {
+            break;
+          }
+          const [promise, unsubscribe] = waitForMeasurement();
+
+          try {
+            if (!(await promise)) {
+              // canceled
+              return;
+            }
+          } finally {
+            unsubscribe();
+          }
         }
 
-        const [promise, unsubscribe] = waitForMeasurement();
-
-        try {
-          await promise;
-        } catch (e) {
-          return;
-        } finally {
-          unsubscribe();
-        }
-      }
-
-      window.scroll({
-        [isHorizontal ? "left" : "top"]: normalizeOffset(
-          getTargetOffset(),
-          isHorizontal
-        ),
-        behavior: "smooth",
+        store.$update(ACTION_MANUAL_SCROLL);
+        window.scroll({
+          [isHorizontal ? "left" : "top"]: normalizeOffset(
+            getTargetOffset(),
+            isHorizontal
+          ),
+          behavior: "smooth",
+        });
       });
     } else {
       while (true) {
         const [promise, unsubscribe] = waitForMeasurement();
 
         try {
+          store.$update(ACTION_MANUAL_SCROLL);
           window.scroll({
             [isHorizontal ? "left" : "top"]: normalizeOffset(
               getTargetOffset(),
               isHorizontal
             ),
           });
-          store.$update(ACTION_MANUAL_SCROLL);
 
-          await promise;
-        } catch (e) {
-          return;
+          if (!(await promise)) {
+            return;
+          }
         } finally {
           unsubscribe();
         }
@@ -521,26 +554,26 @@ export const createWindowScroller = (
         window,
         isHorizontal,
         () => normalizeOffset(window[scrollOffsetKey], isHorizontal),
-        (jump, shift) => {
+        (jump) => {
+          // Use absolute position not to exceed scrollable bounds
+          // https://github.com/inokawa/virtua/discussions/475
           // TODO support case two window scrollers exist in the same view
-          if (shift) {
-            window.scroll({
-              [isHorizontal ? "left" : "top"]: store.$getScrollOffset() + jump,
-            });
-          } else {
-            window.scrollBy(isHorizontal ? jump : 0, isHorizontal ? 0 : jump);
-          }
+          window.scroll({
+            [isHorizontal ? "left" : "top"]: store.$getScrollOffset() + jump,
+          });
         },
         () =>
           calcOffsetToViewport(container, documentBody, window, isHorizontal)
       );
 
-      resolveInitialized();
+      initialized[1](true);
     },
     $dispose() {
       scrollObserver && scrollObserver._dispose();
       containerElement = undefined;
-      rejectInitialized();
+      initialized[1](false);
+      // https://github.com/inokawa/virtua/pull/765
+      initialized = createPromise();
     },
     $fixScrollJump: () => {
       scrollObserver && scrollObserver._fixScrollJump();

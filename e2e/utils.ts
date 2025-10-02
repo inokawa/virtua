@@ -36,7 +36,7 @@ export const expectInRange = (
 ) => {
   // sometimes it may not be 0 because of sub pixel value
   expect(value).toBeGreaterThanOrEqual(min);
-  expect(value).toBeLessThan(max);
+  expect(value).toBeLessThanOrEqual(max);
 };
 
 export const approxymate = (v: number): number => Math.round(v / 100) * 100;

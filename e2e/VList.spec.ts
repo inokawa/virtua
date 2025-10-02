@@ -692,8 +692,102 @@ test.describe("check if scrollToIndex works", () => {
         component.getByText("949", { exact: true })
       ).not.toBeVisible();
     });
+  });
 
-    test("mid smooth", async ({ page, browserName }) => {
+  test.describe("align end", () => {
+    test("mid", async ({ page }) => {
+      const component = await getScrollable(page);
+
+      // check if start is displayed
+      await expect(component.getByText("0", { exact: true })).toBeVisible();
+
+      await page.getByRole("radio", { name: "end" }).click();
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = page.getByRole("spinbutton").first();
+
+      await input.clear();
+      await input.fill("700");
+      await button.click();
+
+      // Check if scrolled precisely
+      const lastItem = component.getByText("700", { exact: true });
+      await expect(lastItem).toBeVisible();
+      expectInRange(await relativeBottom(component, lastItem), {
+        min: 0,
+        max: 1,
+      });
+
+      // Check if unnecessary items are not rendered
+      await expect(
+        component.getByText("650", { exact: true })
+      ).not.toBeVisible();
+      await expect(
+        component.getByText("750", { exact: true })
+      ).not.toBeVisible();
+    });
+
+    test("start", async ({ page }) => {
+      const component = await getScrollable(page);
+
+      // check if start is displayed
+      await expect(component.getByText("0", { exact: true })).toBeVisible();
+
+      await page.getByRole("radio", { name: "end" }).click();
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = page.getByRole("spinbutton").first();
+
+      await input.clear();
+      await input.fill("500");
+      await button.click();
+
+      await expect(component.getByText("500", { exact: true })).toBeVisible();
+
+      await input.clear();
+      await input.fill("0");
+      await button.click();
+
+      // Check if scrolled precisely
+      const firstItem = component.getByText("0", { exact: true });
+      await expect(firstItem).toBeVisible();
+      expect(await relativeTop(component, firstItem)).toEqual(0);
+
+      // Check if unnecessary items are not rendered
+      await expect(
+        component.getByText("50", { exact: true })
+      ).not.toBeVisible();
+    });
+
+    test("end", async ({ page }) => {
+      const component = await getScrollable(page);
+
+      // check if start is displayed
+      await expect(component.getByText("0", { exact: true })).toBeVisible();
+
+      await page.getByRole("radio", { name: "end" }).click();
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = page.getByRole("spinbutton").first();
+
+      await input.clear();
+      await input.fill("999");
+      await button.click();
+
+      // Check if scrolled precisely
+      const lastItem = component.getByText("999", { exact: true });
+      await expect(lastItem).toBeVisible();
+      expectInRange(await relativeBottom(component, lastItem), {
+        min: -0.5,
+        max: 1,
+      });
+
+      // Check if unnecessary items are not rendered
+      await expect(
+        component.getByText("949", { exact: true })
+      ).not.toBeVisible();
+    });
+  });
+
+  test.describe("smooth", () => {
+    test("from start (align start)", async ({ page, browserName }) => {
       const component = await getScrollable(page);
 
       // check if start is displayed
@@ -736,106 +830,14 @@ test.describe("check if scrollToIndex works", () => {
         component.getByText("750", { exact: true })
       ).not.toBeVisible();
     });
-  });
 
-  test.describe("align end", () => {
-    test.beforeEach(async ({ page }) => {
+    test("from start (align end)", async ({ page, browserName }) => {
+      const component = await getScrollable(page);
+
+      // check if start is displayed
+      await expect(component.getByText("0", { exact: true })).toBeVisible();
+
       await page.getByRole("radio", { name: "end" }).click();
-    });
-
-    test("mid", async ({ page }) => {
-      const component = await getScrollable(page);
-
-      // check if start is displayed
-      await expect(component.getByText("0", { exact: true })).toBeVisible();
-
-      const button = page.getByRole("button", { name: "scroll to index" });
-      const input = page.getByRole("spinbutton").first();
-
-      await input.clear();
-      await input.fill("700");
-      await button.click();
-
-      // Check if scrolled precisely
-      const lastItem = component.getByText("700", { exact: true });
-      await expect(lastItem).toBeVisible();
-      expectInRange(await relativeBottom(component, lastItem), {
-        min: 0,
-        max: 1,
-      });
-
-      // Check if unnecessary items are not rendered
-      await expect(
-        component.getByText("650", { exact: true })
-      ).not.toBeVisible();
-      await expect(
-        component.getByText("750", { exact: true })
-      ).not.toBeVisible();
-    });
-
-    test("start", async ({ page }) => {
-      const component = await getScrollable(page);
-
-      // check if start is displayed
-      await expect(component.getByText("0", { exact: true })).toBeVisible();
-
-      const button = page.getByRole("button", { name: "scroll to index" });
-      const input = page.getByRole("spinbutton").first();
-
-      await input.clear();
-      await input.fill("500");
-      await button.click();
-
-      await expect(component.getByText("500", { exact: true })).toBeVisible();
-
-      await input.clear();
-      await input.fill("0");
-      await button.click();
-
-      // Check if scrolled precisely
-      const firstItem = component.getByText("0", { exact: true });
-      await expect(firstItem).toBeVisible();
-      expect(await relativeTop(component, firstItem)).toEqual(0);
-
-      // Check if unnecessary items are not rendered
-      await expect(
-        component.getByText("50", { exact: true })
-      ).not.toBeVisible();
-    });
-
-    test("end", async ({ page }) => {
-      const component = await getScrollable(page);
-
-      // check if start is displayed
-      await expect(component.getByText("0", { exact: true })).toBeVisible();
-
-      const button = page.getByRole("button", { name: "scroll to index" });
-      const input = page.getByRole("spinbutton").first();
-
-      await input.clear();
-      await input.fill("999");
-      await button.click();
-
-      // Check if scrolled precisely
-      const lastItem = component.getByText("999", { exact: true });
-      await expect(lastItem).toBeVisible();
-      expectInRange(await relativeBottom(component, lastItem), {
-        min: -0.5,
-        max: 1,
-      });
-
-      // Check if unnecessary items are not rendered
-      await expect(
-        component.getByText("949", { exact: true })
-      ).not.toBeVisible();
-    });
-
-    test("mid smooth", async ({ page, browserName }) => {
-      const component = await getScrollable(page);
-
-      // check if start is displayed
-      await expect(component.getByText("0", { exact: true })).toBeVisible();
-
       await page.getByRole("checkbox", { name: "smooth" }).click();
 
       const button = page.getByRole("button", { name: "scroll to index" });
@@ -872,6 +874,157 @@ test.describe("check if scrollToIndex works", () => {
       await expect(
         component.getByText("750", { exact: true })
       ).not.toBeVisible();
+    });
+
+    test("from end (align start)", async ({ page, browserName }) => {
+      const component = await getScrollable(page);
+
+      // check if start is displayed
+      await expect(component.getByText("0", { exact: true })).toBeVisible();
+
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = page.getByRole("spinbutton").first();
+
+      // scroll to the bottom
+      await input.clear();
+      await input.fill("999");
+      await button.click();
+      await expect(component.getByText("999", { exact: true })).toBeVisible();
+
+      // smooth scroll up
+      await page.getByRole("checkbox", { name: "smooth" }).click();
+
+      const scrollListener = listenScrollCount(component);
+
+      await input.clear();
+      await input.fill("300");
+      await button.click();
+
+      await page.waitForTimeout(500);
+
+      const called = await scrollListener;
+
+      // Check if this is smooth scrolling
+      expect(called).toBeGreaterThanOrEqual(
+        // TODO find better way to check in webkit
+        browserName === "webkit" ? 2 : 10
+      );
+
+      // Check if scrolled precisely
+      const firstItem = component.getByText("300", { exact: true });
+      await expect(firstItem).toBeVisible();
+      expectInRange(await relativeTop(component, firstItem), {
+        min: -1,
+        max: 1,
+      });
+
+      // Check if unnecessary items are not rendered
+      await expect(
+        component.getByText("250", { exact: true })
+      ).not.toBeVisible();
+      await expect(
+        component.getByText("350", { exact: true })
+      ).not.toBeVisible();
+    });
+
+    test("from end (align end)", async ({ page, browserName }) => {
+      const component = await getScrollable(page);
+
+      // check if start is displayed
+      await expect(component.getByText("0", { exact: true })).toBeVisible();
+
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = page.getByRole("spinbutton").first();
+
+      // scroll to the bottom
+      await input.clear();
+      await input.fill("999");
+      await button.click();
+      await expect(component.getByText("999", { exact: true })).toBeVisible();
+
+      // smooth scroll up
+      await page.getByRole("radio", { name: "end" }).click();
+      await page.getByRole("checkbox", { name: "smooth" }).click();
+
+      const scrollListener = listenScrollCount(component);
+
+      await input.clear();
+      await input.fill("300");
+      await button.click();
+
+      await page.waitForTimeout(500);
+
+      const called = await scrollListener;
+
+      // Check if this is smooth scrolling
+      expect(called).toBeGreaterThanOrEqual(
+        // TODO find better way to check in webkit
+        browserName === "webkit" ? 2 : 10
+      );
+
+      // Check if scrolled precisely
+      const lastItem = component.getByText("300", { exact: true });
+      await expect(lastItem).toBeVisible();
+      expectInRange(await relativeBottom(component, lastItem), {
+        min: -1,
+        max: 1,
+      });
+
+      // Check if unnecessary items are not rendered
+      await expect(
+        component.getByText("250", { exact: true })
+      ).not.toBeVisible();
+      await expect(
+        component.getByText("350", { exact: true })
+      ).not.toBeVisible();
+    });
+
+    test("scroll start item to end in reverse", async ({ page }) => {
+      const component = await getScrollable(page);
+
+      // check if start is displayed
+      await expect(component.getByText("0", { exact: true })).toBeVisible();
+
+      const button = page.getByRole("button", { name: "scroll to index" });
+      const input = page.getByRole("spinbutton").first();
+
+      // scroll to the bottom
+      await input.clear();
+      await input.fill("999");
+      await button.click();
+      const initialLastItem = component.getByText("999", { exact: true });
+      await expect(initialLastItem).toBeVisible();
+      expectInRange(await relativeBottom(component, initialLastItem), {
+        min: 0,
+        max: 1,
+      });
+
+      await page.getByRole("radio", { name: "end" }).click();
+      await page.getByRole("checkbox", { name: "smooth" }).click();
+
+      for (let i = 1; i <= 3; i++) {
+        const initialFirstNumber = Number(
+          await (await findFirstVisibleItem(component)).textContent()
+        );
+
+        // smooth scroll up
+        const scrollListener = listenScrollCount(component);
+
+        const targetItemText = String(initialFirstNumber);
+        await input.clear();
+        await input.fill(targetItemText);
+        await button.click();
+
+        await scrollListener;
+
+        // Check if scrolled precisely
+        const lastItem = component.getByText(targetItemText, { exact: true });
+        await expect(lastItem).toBeVisible();
+        expectInRange(await relativeBottom(component, lastItem), {
+          min: -1,
+          max: i * 2, // TODO improve
+        });
+      }
     });
   });
 });
@@ -1175,7 +1328,7 @@ test.describe("check if item shift compensation works", () => {
 
       // Check if bottom is always visible and on bottom
       expectInRange(itemBottom, {
-        min: browserName === "firefox" ? -0.6 : -0.50001,
+        min: browserName === "firefox" ? -0.6 : -0.5,
         max: 0.5,
       });
 

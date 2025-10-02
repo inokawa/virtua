@@ -1,18 +1,17 @@
 import React, {
   Ref,
-  createContext,
   memo,
-  useContext,
   useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
+  useState,
 } from "react";
 import { ListHandle, TestComponent } from "./common";
-import AutoSizer from "react-virtualized/dist/es/AutoSizer";
 import {
-  ListChildComponentProps,
-  VariableSizeList as RWList,
+  ListImperativeAPI,
+  List as RWList,
+  RowComponentProps,
 } from "react-window";
 
 const RWRow = ({
@@ -33,13 +32,17 @@ const RWRow = ({
   return <Component ref={ref} index={i} />;
 };
 
-const Context = createContext<{
+type Context = {
   Component: TestComponent;
   setHeight: (index: number, height: number) => void;
-}>(null!);
+};
 
-const Item = ({ index: i, style }: ListChildComponentProps) => {
-  const { Component, setHeight } = useContext(Context);
+const Item = ({
+  index: i,
+  style,
+  Component,
+  setHeight,
+}: RowComponentProps<Context>) => {
   return (
     <div style={style} key={i}>
       <RWRow index={i} setHeight={setHeight} Component={Component} />
@@ -57,43 +60,38 @@ export const ReactWindowList = memo(
     Component: TestComponent;
     handle?: Ref<ListHandle>;
   }) => {
-    const heightsCache = useMemo<number[]>(
-      () => Array.from({ length: count }).map(() => 50),
-      []
+    const [heights, setHeights] = useState<number[]>(() =>
+      Array.from({ length: count }).map(() => 50)
     );
-    const ref = useRef<RWList>(null);
-    const getHeight = (i: number) => heightsCache[i];
-    const setHeight = (index: number, height: number) => {
-      heightsCache[index] = height;
-      ref.current?.resetAfterIndex(index);
-    };
+    const ref = useRef<ListImperativeAPI>(null);
+    const getHeight = (i: number) => heights[i];
+
     useImperativeHandle(handle, () => ({
       scrollToIndex: (i) => {
-        ref.current?.scrollToItem(i);
+        ref.current?.scrollToRow({ index: i, align: "start" });
       },
     }));
 
     return (
-      <Context.Provider
-        value={useMemo(
-          () => ({ Component, setHeight }),
-          [Component, setHeight]
+      <RWList
+        listRef={ref}
+        rowCount={count}
+        rowHeight={getHeight}
+        rowComponent={Item}
+        rowProps={useMemo(
+          () => ({
+            Component,
+            setHeight: (index: number, height: number) => {
+              setHeights((p) => {
+                const next = [...p];
+                next[index] = height;
+                return next;
+              });
+            },
+          }),
+          [Component]
         )}
-      >
-        <AutoSizer>
-          {({ width, height }) => (
-            <RWList
-              ref={ref}
-              width={width}
-              height={height}
-              itemCount={count}
-              itemSize={getHeight}
-            >
-              {Item}
-            </RWList>
-          )}
-        </AutoSizer>
-      </Context.Provider>
+      />
     );
   }
 );

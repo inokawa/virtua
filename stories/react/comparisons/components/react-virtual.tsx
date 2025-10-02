@@ -19,7 +19,7 @@ export const ReactVirtualList = memo(
       estimateSize: (i) => 50,
     });
     useImperativeHandle(handle, () => ({
-      scrollToIndex: virtualizer.scrollToIndex,
+      scrollToIndex: (i) => virtualizer.scrollToIndex(i, { align: "start" }),
     }));
 
     return (
