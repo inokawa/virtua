@@ -1,7 +1,7 @@
 import { afterEach, it, expect, describe, vi } from "vitest";
 import { render as _render, cleanup } from "@testing-library/react";
-import { VGrid } from "./VGrid";
-import { setupResizeJsDom } from "../../scripts/spec";
+import { VGrid } from "./VGrid.js";
+import { setupResizeJsDom } from "../../scripts/spec.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;

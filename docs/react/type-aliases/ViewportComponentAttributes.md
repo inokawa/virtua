@@ -6,4 +6,4 @@
 
 > **ViewportComponentAttributes** = `Pick`\<`React.HTMLAttributes`\<`HTMLElement`\>, `"className"` \| `"style"` \| `"id"` \| `"role"` \| `"tabIndex"` \| `"onKeyDown"` \| `"onWheel"`\> & `React.AriaAttributes`
 
-Defined in: [src/react/types.ts:3](https://github.com/inokawa/virtua/blob/71c97bdad291763ca5072b4af388608178a6e6ea/src/react/types.ts#L3)
+Defined in: [src/react/types.ts:3](https://github.com/inokawa/virtua/blob/696142aff086a3ad020c63fe974c17e2d03b9354/src/react/types.ts#L3)

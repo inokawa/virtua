@@ -11,7 +11,7 @@ import {
   computeRange,
   estimateDefaultItemSize,
   takeCacheSnapshot,
-} from "./cache";
+} from "./cache.js";
 
 const range = <T>(length: number, cb: (i: number) => T): T[] => {
   const array: T[] = [];

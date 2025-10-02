@@ -1,67 +1,67 @@
 [
   {
     "name": "Total",
-    "path": "lib/index.mjs",
+    "path": "lib/index.js",
     "import": "*",
     "limit": "5.6 kB"
   },
   {
     "name": "VList",
-    "path": "lib/index.mjs",
+    "path": "lib/index.js",
     "import": "{ VList }",
     "limit": "4 kB"
   },
   {
     "name": "Virtualizer",
-    "path": "lib/index.mjs",
+    "path": "lib/index.js",
     "import": "{ Virtualizer }",
     "limit": "4 kB"
   },
   {
     "name": "WindowVirtualizer",
-    "path": "lib/index.mjs",
+    "path": "lib/index.js",
     "import": "{ WindowVirtualizer }",
     "limit": "4 kB"
   },
   {
     "name": "VGrid",
-    "path": "lib/index.mjs",
+    "path": "lib/index.js",
     "import": "{ experimental_VGrid }",
     "limit": "4 kB"
   },
   {
     "name": "vue VList",
-    "path": "lib/vue/index.mjs",
+    "path": "lib/vue/index.js",
     "import": "{ VList }",
     "limit": "4.1 kB"
   },
   {
     "name": "vue Virtualizer",
-    "path": "lib/vue/index.mjs",
+    "path": "lib/vue/index.js",
     "import": "{ Virtualizer }",
     "limit": "4 kB"
   },
   {
     "name": "vue WindowVirtualizer",
-    "path": "lib/vue/index.mjs",
+    "path": "lib/vue/index.js",
     "import": "{ WindowVirtualizer }",
     "limit": "4 kB"
   },
   {
     "name": "solid VList",
-    "path": "lib/solid/index.mjs",
+    "path": "lib/solid/index.js",
     "import": "{ VList }",
     "limit": "4 kB"
   },
   {
     "name": "solid Virtualizer",
-    "path": "lib/solid/index.mjs",
+    "path": "lib/solid/index.js",
     "import": "{ Virtualizer }",
     "limit": "4 kB"
   },
   {
     "name": "solid WindowVirtualizer",
-    "path": "lib/solid/index.mjs",
+    "path": "lib/solid/index.js",
     "import": "{ WindowVirtualizer }",
     "limit": "4 kB"
   }

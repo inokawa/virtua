@@ -23,15 +23,15 @@ import {
   ScrollToIndexOpts,
   microtask,
   sort,
-} from "../core";
-import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
-import { getKey, refKey } from "./utils";
-import { useStatic } from "./useStatic";
-import { useLatestRef } from "./useLatestRef";
-import { ListItem } from "./ListItem";
+} from "../core/index.js";
+import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
+import { getKey, refKey } from "./utils.js";
+import { useStatic } from "./useStatic.js";
+import { useLatestRef } from "./useLatestRef.js";
+import { ListItem } from "./ListItem.js";
 import { flushSync } from "react-dom";
-import { useChildren } from "./useChildren";
-import { CustomContainerComponent, CustomItemComponent } from "./types";
+import { useChildren } from "./useChildren.js";
+import { CustomContainerComponent, CustomItemComponent } from "./types.js";
 
 /**
  * Methods of {@link Virtualizer}.

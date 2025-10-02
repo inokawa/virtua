@@ -1,7 +1,7 @@
 <script lang="ts" generics="T">
-  import { styleToString } from "./utils";
+  import { styleToString } from "./utils.js";
   import Virtualizer from "./Virtualizer.svelte";
-  import type { VListProps, VListHandle } from "./VList.type";
+  import type { VListProps, VListHandle } from "./VList.type.js";
 
   interface Props extends VListProps<T> {}
 
