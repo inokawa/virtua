@@ -105,7 +105,7 @@
     "eslint-import-resolver-typescript": "^4.3.5",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^6.1.0",
+    "eslint-plugin-react-hooks": "6.0.0-rc.1",
     "eslint-plugin-solid": "^0.14.5",
     "eslint-plugin-vue": "^10.4.0",
     "jsdom": "^27.0.0",
