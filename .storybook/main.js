@@ -34,7 +34,10 @@ export default process.env.STORYBOOK_VUE
       addons: ["@storybook/addon-docs", "@storybook/addon-vitest"],
       framework: {
         name: "@storybook/svelte-vite",
-        options: {},
+        options: {
+          // FIXME: [storybook:svelte-docgen-plugin] Expression expected
+          docgen: false,
+        },
       },
       viteFinal: async (config) => {
         const { svelte, vitePreprocess } = await import(
