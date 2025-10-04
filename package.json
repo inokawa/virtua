@@ -85,7 +85,7 @@
     "@storybook/react-vite": "^9.1.7",
     "@storybook/svelte-vite": "^9.1.7",
     "@storybook/vue3-vite": "^9.1.7",
-    "@sveltejs/vite-plugin-svelte": "^4.0.4",
+    "@sveltejs/vite-plugin-svelte": "^6.0.0",
     "@tanstack/react-virtual": "^3.13.12",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.3.0",
