@@ -1,4 +1,5 @@
 import { mergeConfig } from "vite";
+import * as path from "node:path";
 
 /** @type { import('@storybook/react-vite').StorybookConfig } */
 export default process.env.STORYBOOK_VUE
@@ -57,6 +58,14 @@ export default process.env.STORYBOOK_VUE
 
         return mergeConfig(config, {
           plugins: [react()],
+          // FIXME: ✘ [ERROR] Failed to resolve entry for package "virtua". The package may have incorrect main/module/exports specified in its package.json. [plugin vite:dep-scan]
+          ...(process.env.CI && {
+            resolve: {
+              alias: {
+                virtua: path.resolve(__dirname, "../node_modules/virtua"),
+              },
+            },
+          }),
         });
       },
       ...(process.env.STORYBOOK_DEPLOY && {
