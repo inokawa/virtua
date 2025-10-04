@@ -371,7 +371,137 @@ exports[`horizontal > should render with given width / height 1`] = `
 </DocumentFragment>
 `;
 
-exports[`horizontal > should render with keepMounted 1`] = `
+exports[`reverse > should render many items 1`] = `
+<DocumentFragment>
+  <div
+    style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
+  >
+    <div
+      style="display: flex; flex-direction: column; justify-content: flex-end; min-height: 100%;"
+    >
+      <div
+        style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 4050px;"
+      >
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        >
+          <div>
+            0
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        >
+          <div>
+            1
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        >
+          <div>
+            2
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+        >
+          <div>
+            3
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+        >
+          <div>
+            4
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`should pass attributes to element 1`] = `
+<DocumentFragment>
+  <div
+    aria-label="test"
+    class="class"
+    id="id"
+    role="list"
+    style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%; background: red;"
+    tabindex="0"
+  >
+    <div
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 50px;"
+    >
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+      >
+        <div>
+          0
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`should pass index to items 1`] = `
+<DocumentFragment>
+  <div
+    style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
+  >
+    <div
+      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 250px;"
+    >
+      <div
+        data-index="0"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+      >
+        <div>
+          0
+        </div>
+      </div>
+      <div
+        data-index="1"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+      >
+        <div>
+          1
+        </div>
+      </div>
+      <div
+        data-index="2"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+      >
+        <div>
+          2
+        </div>
+      </div>
+      <div
+        data-index="3"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+      >
+        <div>
+          3
+        </div>
+      </div>
+      <div
+        data-index="4"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+      >
+        <div>
+          4
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`should render with keepMounted 1`] = `
 <DocumentFragment>
   <div
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
@@ -538,136 +668,6 @@ exports[`horizontal > should render with keepMounted 1`] = `
       >
         <div>
           90
-        </div>
-      </div>
-    </div>
-  </div>
-</DocumentFragment>
-`;
-
-exports[`reverse > should render many items 1`] = `
-<DocumentFragment>
-  <div
-    style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
-  >
-    <div
-      style="display: flex; flex-direction: column; justify-content: flex-end; min-height: 100%;"
-    >
-      <div
-        style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 4050px;"
-      >
-        <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
-        >
-          <div>
-            0
-          </div>
-        </div>
-        <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
-        >
-          <div>
-            1
-          </div>
-        </div>
-        <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
-        >
-          <div>
-            2
-          </div>
-        </div>
-        <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
-        >
-          <div>
-            3
-          </div>
-        </div>
-        <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
-        >
-          <div>
-            4
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</DocumentFragment>
-`;
-
-exports[`should pass attributes to element 1`] = `
-<DocumentFragment>
-  <div
-    aria-label="test"
-    class="class"
-    id="id"
-    role="list"
-    style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%; background: red;"
-    tabindex="0"
-  >
-    <div
-      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 50px;"
-    >
-      <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
-      >
-        <div>
-          0
-        </div>
-      </div>
-    </div>
-  </div>
-</DocumentFragment>
-`;
-
-exports[`should pass index to items 1`] = `
-<DocumentFragment>
-  <div
-    style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
-  >
-    <div
-      style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 250px;"
-    >
-      <div
-        data-index="0"
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
-      >
-        <div>
-          0
-        </div>
-      </div>
-      <div
-        data-index="1"
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
-      >
-        <div>
-          1
-        </div>
-      </div>
-      <div
-        data-index="2"
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
-      >
-        <div>
-          2
-        </div>
-      </div>
-      <div
-        data-index="3"
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
-      >
-        <div>
-          3
-        </div>
-      </div>
-      <div
-        data-index="4"
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
-      >
-        <div>
-          4
         </div>
       </div>
     </div>

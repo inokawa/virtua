@@ -368,6 +368,121 @@ exports[`should pass attributes to element 1`] = `
 </body>
 `;
 
+exports[`should render with keepMounted 1`] = `
+<body>
+  <div>
+    <div
+      style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
+    >
+      <div
+        style="contain: strict; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 4000px;"
+      >
+        
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: hidden;"
+        >
+          <div>
+            0
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 40px; visibility: hidden;"
+        >
+          <div>
+            1
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 80px; visibility: hidden;"
+        >
+          <div>
+            2
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 120px; visibility: hidden;"
+        >
+          <div>
+            3
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;"
+        >
+          <div>
+            4
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px; visibility: hidden;"
+        >
+          <div>
+            10
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 800px; visibility: hidden;"
+        >
+          <div>
+            20
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 1200px; visibility: hidden;"
+        >
+          <div>
+            30
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 1600px; visibility: hidden;"
+        >
+          <div>
+            40
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 2000px; visibility: hidden;"
+        >
+          <div>
+            50
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 2400px; visibility: hidden;"
+        >
+          <div>
+            60
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 2800px; visibility: hidden;"
+        >
+          <div>
+            70
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 3200px; visibility: hidden;"
+        >
+          <div>
+            80
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 3600px; visibility: hidden;"
+        >
+          <div>
+            90
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
 exports[`vertical > should render 0 children 1`] = `
 <body>
   <div>

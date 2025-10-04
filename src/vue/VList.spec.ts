@@ -41,6 +41,19 @@ it("should pass attributes to element", () => {
   expect(wrapper.baseElement).toMatchSnapshot();
 });
 
+it("should render with keepMounted", () => {
+  const wrapper = render(VList, {
+    props: {
+      data: range(100),
+      keepMounted: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
+    },
+    slots: {
+      default: ({ item: data }: any) => h("div", { key: data }, data),
+    },
+  });
+  expect(wrapper.baseElement).toMatchSnapshot();
+});
+
 describe("vertical", () => {
   it("should render 0 children", () => {
     const wrapper = render(VList, {

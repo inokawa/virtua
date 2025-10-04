@@ -72,6 +72,17 @@ it("should render with render prop", () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
+it("should render with keepMounted", () => {
+  const { asFragment } = render(
+    <VList keepMounted={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90]}>
+      {Array.from({ length: 100 }).map((_, i) => (
+        <div key={i}>{i}</div>
+      ))}
+    </VList>
+  );
+  expect(asFragment()).toMatchSnapshot();
+});
+
 describe("vertical", () => {
   it("should render 0 children", () => {
     const { asFragment } = render(<VList>{[]}</VList>);
@@ -299,17 +310,6 @@ describe("horizontal", () => {
         <div>2</div>
         <div>3</div>
         <div>4</div>
-      </VList>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render with keepMounted", () => {
-    const { asFragment } = render(
-      <VList keepMounted={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90]}>
-        {Array.from({ length: 100 }).map((_, i) => (
-          <div key={i}>{i}</div>
-        ))}
       </VList>
     );
     expect(asFragment()).toMatchSnapshot();
