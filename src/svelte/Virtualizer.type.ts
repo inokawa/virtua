@@ -54,6 +54,10 @@ export interface VirtualizerProps<T> {
    */
   horizontal?: boolean;
   /**
+   * List of indexes that should be always mounted, even when off screen.
+   */
+  keepMounted?: readonly number[];
+  /**
    * If you put an element before virtualizer, you have to define its height with this prop.
    */
   startMargin?: number;

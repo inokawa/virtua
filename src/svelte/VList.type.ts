@@ -1,5 +1,8 @@
 import type { ViewportComponentAttributes } from "./types.js";
-import type { VirtualizerHandle, VirtualizerProps } from "./Virtualizer.type.js";
+import type {
+  VirtualizerHandle,
+  VirtualizerProps,
+} from "./Virtualizer.type.js";
 
 /**
  * Props of {@link VList}.
@@ -16,6 +19,7 @@ export interface VListProps<T>
       | "children"
       | "onscroll"
       | "onscrollend"
+      | "keepMounted"
     >,
     ViewportComponentAttributes {}
 
