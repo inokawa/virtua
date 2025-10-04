@@ -14,7 +14,10 @@
   } from "../core/index.js";
   import { defaultGetKey, styleToString, iterRange } from "./utils.js";
   import ListItem from "./ListItem.svelte";
-  import type { VirtualizerHandle, VirtualizerProps } from "./Virtualizer.type.js";
+  import type {
+    VirtualizerHandle,
+    VirtualizerProps,
+  } from "./Virtualizer.type.js";
 
   interface Props extends VirtualizerProps<T> {}
 
@@ -28,6 +31,7 @@
     itemSize,
     shift = false,
     horizontal = false,
+    keepMounted,
     startMargin = 0,
     children,
     onscroll,
@@ -148,7 +152,7 @@
   Customizable list virtualizer for advanced usage. See {@link VirtualizerProps} and {@link VirtualizerHandle}.
 -->
 <svelte:element this={as} bind:this={containerRef} style={containerStyle}>
-  {#each iterRange(range) as index (getKey(data[index]!, index))}
+  {#each iterRange(range, keepMounted) as index (getKey(data[index]!, index))}
     {@const item = data[index]!}
     <ListItem
       {children}

@@ -12,6 +12,7 @@
     itemSize,
     shift,
     horizontal,
+    keepMounted,
     children,
     onscroll,
     onscrollend,
@@ -74,6 +75,7 @@
     {itemSize}
     {shift}
     {horizontal}
+    {keepMounted}
     {onscroll}
     {onscrollend}
   />
