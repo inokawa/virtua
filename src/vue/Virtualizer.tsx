@@ -137,7 +137,7 @@ const props = {
   /**
    * List of indexes that should be always mounted, even when off screen.
    */
-  keepMounted: Array as PropType<number[]>,
+  keepMounted: Array as PropType<readonly number[]>,
 } satisfies ComponentObjectPropsOptions;
 
 export const Virtualizer = /*#__PURE__*/ defineComponent({
@@ -280,24 +280,19 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
           />
         );
       }
-      for (let i = startIndex, j = endIndex; i <= j; i++) {
-        items.push(getListItem(i));
-      }
 
       if (props.keepMounted) {
-        const startItems: VNode[] = [];
-        const endItems: VNode[] = [];
-        sort(props.keepMounted).forEach((index) => {
-          if (index < startIndex) {
-            startItems.push(getListItem(index));
-          }
-          if (index > endIndex) {
-            endItems.push(getListItem(index));
-          }
+        const mounted = new Set(props.keepMounted);
+        for (let i = startIndex, j = endIndex; i <= j; i++) {
+          mounted.add(i);
+        }
+        sort([...mounted]).forEach((index) => {
+          items.push(getListItem(index));
         });
-
-        items.unshift(...startItems);
-        items.push(...endItems);
+      } else {
+        for (let i = startIndex, j = endIndex; i <= j; i++) {
+          items.push(getListItem(i));
+        }
       }
 
       return (

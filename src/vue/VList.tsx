@@ -52,7 +52,7 @@ const props = {
   /**
    * List of indexes that should be always mounted, even when off screen.
    */
-  keepMounted: Array as PropType<number[]>,
+  keepMounted: Array as PropType<readonly number[]>,
 } satisfies ComponentObjectPropsOptions;
 
 export const VList = /*#__PURE__*/ defineComponent({

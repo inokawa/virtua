@@ -144,7 +144,7 @@ export interface VirtualizerProps<T> {
   /**
    * List of indexes that should be always mounted, even when off screen.
    */
-  keepMounted?: number[];
+  keepMounted?: readonly number[];
   /**
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.cache}.
    *
@@ -281,30 +281,24 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
       }
     });
-    const [start, end] = range();
-    const items = end >= 0 ? props.data.slice(start, end + 1) : [];
-    const indexes = items.map((_, index) => start + index);
+    const [startIndex, endIndex] = range();
+    const items: T[] = [];
+    const indexes: number[] = [];
 
     if (props.keepMounted) {
-      const startItems: T[] = [];
-      const startIndexes: number[] = [];
-      const endItems: T[] = [];
-      const endIndexes: number[] = [];
-      sort(props.keepMounted).forEach((index) => {
-        if (index < 0 || index >= props.data.length) return;
-        if (index < start) {
-          startItems.push(props.data[index]!);
-          startIndexes.push(index);
-        }
-        if (index > end) {
-          endItems.push(props.data[index]!);
-          endIndexes.push(index);
-        }
+      const mounted = new Set(props.keepMounted);
+      for (let i = startIndex, j = endIndex; i <= j; i++) {
+        mounted.add(i);
+      }
+      sort([...mounted]).forEach((index) => {
+        items.push(props.data[index]!);
+        indexes.push(index);
       });
-      items.unshift(...startItems);
-      indexes.unshift(...startIndexes);
-      items.push(...endItems);
-      indexes.push(...endIndexes);
+    } else {
+      for (let i = startIndex, j = endIndex; i <= j; i++) {
+        items.push(props.data[i]!);
+        indexes.push(i);
+      }
     }
 
     return { _items: items, _indexes: indexes };

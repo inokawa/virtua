@@ -204,8 +204,12 @@ export const WindowVirtualizer = <T,>(
         store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
       }
     });
-    const [start, end] = range();
-    return end >= 0 ? props.data.slice(start, end + 1) : [];
+    const [startIndex, endIndex] = range();
+    const items: T[] = [];
+    for (let i = startIndex, j = endIndex; i <= j; i++) {
+      items.push(props.data[i]!);
+    }
+    return items;
   });
 
   return (
