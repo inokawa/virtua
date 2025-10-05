@@ -10,6 +10,7 @@ import {
   relativeBottom,
   relativeTop,
   scrollBy,
+  isVerticalScrollBarVisible,
 } from "./utils";
 
 test("header and footer", async ({ page }) => {
@@ -135,4 +136,155 @@ test("overflow", async ({ page }) => {
       })
     ).toBe(true);
   }
+});
+
+test.describe("aligned to bottom", () => {
+  test("reverse", async ({ page }) => {
+    await page.goto(storyUrl("basics-virtualizer--reverse"), {
+      waitUntil: "domcontentloaded",
+    });
+    await page.evaluate(() => {
+      (window as any)._displayed = false;
+      const mo = new MutationObserver((entries) => {
+        for (const e of entries) {
+          for (const n of [...e.addedNodes]) {
+            const walker = document.createTreeWalker(n, NodeFilter.SHOW_TEXT);
+            let node: Node;
+            while ((node = walker.nextNode()!)) {
+              if (node.textContent === "0") {
+                (window as any)._displayed = true;
+                return;
+              }
+            }
+          }
+        }
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+    });
+
+    const component = await getScrollable(page);
+
+    // check if last is displayed
+    const last = component.getByText("999", { exact: true });
+    await expect(last).toBeVisible();
+    expect(await relativeBottom(component, last)).toEqual(0);
+    // check if start is not displayed
+    expect(await page.evaluate(() => (window as any)._displayed)).toBe(false);
+  });
+
+  test("prepending when total height is lower than viewport height", async ({
+    page,
+    browserName,
+  }) => {
+    await page.goto(storyUrl("basics-virtualizer--align-bottom"));
+
+    const [component, container] = await Promise.all([
+      getScrollable(page),
+      getVirtualizer(page),
+    ]);
+
+    await page.getByRole("checkbox", { name: "prepend" }).click();
+    const decreaseRadio = page.getByRole("radio", { name: "decrease" });
+    const increaseRadio = page.getByRole("radio", { name: "increase" });
+    const valueInput = page.getByRole("spinbutton");
+    const updateButton = page.getByRole("button", { name: "update" });
+
+    const initialLength = await getItems(container).count();
+    expect(initialLength).toBeGreaterThan(1);
+
+    let i = 0;
+    while (true) {
+      i++;
+      await valueInput.clear();
+      await valueInput.fill(String(i));
+
+      // preprend
+      await increaseRadio.click();
+      await updateButton.click();
+
+      const items = getItems(container);
+
+      // Check if all items are visible
+      await expect(items).toHaveCount(i + initialLength);
+
+      const isScrollBarVisible = await isVerticalScrollBarVisible(component);
+      const itemBottom = await relativeBottom(component, items.last());
+
+      if (isScrollBarVisible) {
+        // Check if sticked to bottom
+        expectInRange(itemBottom, {
+          min: -0.1,
+          max: browserName === "firefox" ? 0.45 : 0.1,
+        });
+        break;
+      } else {
+        // Check if bottom is always visible and on bottom
+        expectInRange(itemBottom, { min: -0.1, max: 0.1 });
+      }
+
+      // remove
+      await decreaseRadio.click();
+      await updateButton.click();
+    }
+
+    expect(i).toBeGreaterThanOrEqual(8);
+  });
+
+  test("stick to bottom even if many items are removed from top", async ({
+    page,
+    browserName,
+  }) => {
+    await page.goto(storyUrl("basics-virtualizer--align-bottom"));
+
+    const [component, container] = await Promise.all([
+      getScrollable(page),
+      getVirtualizer(page),
+    ]);
+
+    await page.getByRole("checkbox", { name: "prepend" }).click();
+    const decreaseRadio = page.getByRole("radio", { name: "decrease" });
+    const increaseRadio = page.getByRole("radio", { name: "increase" });
+    const valueInput = page.getByRole("spinbutton");
+    const updateButton = page.getByRole("button", { name: "update" });
+
+    // preprend many
+    await valueInput.clear();
+    await valueInput.fill("50");
+    await increaseRadio.click();
+    await updateButton.click();
+
+    // scroll to bottom
+    await scrollToBottom(component);
+
+    // remove many
+    await valueInput.clear();
+    await valueInput.fill("1");
+    await decreaseRadio.click();
+    let i = 0;
+    while (true) {
+      i++;
+      await updateButton.click();
+
+      const isScrollBarVisible = await isVerticalScrollBarVisible(component);
+      const itemBottom = await relativeBottom(
+        component,
+        getItems(container).last()
+      );
+
+      // Check if bottom is always visible and on bottom
+      expectInRange(itemBottom, {
+        min: browserName === "firefox" ? -0.6 : -0.5,
+        max: 0.5,
+      });
+
+      if (!isScrollBarVisible) {
+        break;
+      } else {
+        // may have subpixel error so scroll to bottom again
+        await component.evaluate((e) => (e.scrollTop += e.scrollHeight));
+      }
+    }
+
+    expect(i).toBeGreaterThanOrEqual(30);
+  });
 });

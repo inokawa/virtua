@@ -106,20 +106,6 @@ export const PaddingAndMargin: StoryObj = {
   },
 };
 
-export const Reverse: StoryObj = {
-  render: () => {
-    const ref = useRef<VListHandle>(null);
-    useEffect(() => {
-      ref.current?.scrollToIndex(999);
-    }, []);
-    return (
-      <VList ref={ref} style={{ height: "100vh" }} reverse>
-        {createRows(1000)}
-      </VList>
-    );
-  },
-};
-
 export const Responsive: StoryObj = {
   render: () => {
     const itemClass = "item";
@@ -682,7 +668,6 @@ export const IncreasingItems: StoryObj = {
     const [amount, setAmount] = useState(4);
     const [prepend, setPrepend] = useState(false);
     const [increase, setIncrease] = useState(true);
-    const [reverse, setReverse] = useState(false);
     const [rows, setRows] = useState(() => createRows(amount, 0));
     const update = () => {
       if (increase) {
@@ -763,19 +748,6 @@ export const IncreasingItems: StoryObj = {
           />
         </div>
         <div>
-          <label style={{ marginRight: 4 }}>
-            <input
-              type="checkbox"
-              style={{ marginLeft: 4 }}
-              checked={reverse}
-              onChange={() => {
-                setReverse((prev) => !prev);
-              }}
-            />
-            reverse
-          </label>
-        </div>
-        <div>
           <label style={{ marginRight: 16 }}>
             <input
               type="checkbox"
@@ -795,7 +767,7 @@ export const IncreasingItems: StoryObj = {
             update
           </button>
         </div>
-        <VList style={{ flex: 1 }} shift={prepend} reverse={reverse}>
+        <VList style={{ flex: 1 }} shift={prepend}>
           {rows.map((d) => (
             <div
               key={d.id}
