@@ -249,14 +249,14 @@ export const createScroller = (
       // https://github.com/inokawa/virtua/issues/590
       microtask(async () => {
         while (true) {
-          let measuring = false;
+          let done = true;
           for (let [i, end] = store.$getRange(); i <= end; i++) {
             if (store.$isUnmeasuredItem(i)) {
-              measuring = true;
+              done = false;
               break;
             }
           }
-          if (!measuring) {
+          if (done) {
             break;
           }
           const [promise, unsubscribe] = waitForMeasurement();
@@ -486,14 +486,14 @@ export const createWindowScroller = (
       // https://github.com/inokawa/virtua/issues/590
       microtask(async () => {
         while (true) {
-          let measuring = false;
+          let done = true;
           for (let [i, end] = store.$getRange(); i <= end; i++) {
             if (store.$isUnmeasuredItem(i)) {
-              measuring = true;
+              done = false;
               break;
             }
           }
-          if (!measuring) {
+          if (done) {
             break;
           }
           const [promise, unsubscribe] = waitForMeasurement();
