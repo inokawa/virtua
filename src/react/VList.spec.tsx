@@ -316,19 +316,6 @@ describe("horizontal", () => {
   });
 });
 
-describe("reverse", () => {
-  it("should render many items", () => {
-    const { asFragment } = render(
-      <VList reverse>
-        {Array.from({ length: 100 }).map((_, i) => (
-          <div key={i}>{i}</div>
-        ))}
-      </VList>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-});
-
 describe("render count", () => {
   it("should render on mount", () => {
     const rootFn = vitest.fn();

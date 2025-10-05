@@ -94,7 +94,7 @@ const itemStyle: CSSProperties = {
   whiteSpace: "pre-wrap",
 };
 
-const TextEditor = ({ value }) => {
+const TextEditor = ({ value }: { value: string }) => {
   const ref = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -184,7 +184,6 @@ export const SelectedIndex: StoryObj = {
         <VList
           ref={ref}
           style={{ flex: 1 }}
-          reverse
           keepMounted={
             editingItemId
               ? [items.findIndex((item) => item.id === editingItemId)]
