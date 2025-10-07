@@ -580,9 +580,9 @@ export const createWindowScroller = (
 export type GridScroller = {
   $observe: (viewportElement: HTMLElement) => void;
   $dispose(): void;
-  $scrollTo: (offsetX: number, offsetY: number) => void;
-  $scrollBy: (offsetX: number, offsetY: number) => void;
-  $scrollToIndex: (indexX: number, indexY: number) => void;
+  $scrollTo: (opt: { row?: number; col?: number }) => void;
+  $scrollBy: (opt: { row?: number; col?: number }) => void;
+  $scrollToIndex: (opt: { row?: number; col?: number }) => void;
   $fixScrollJump: () => void;
 };
 
@@ -590,35 +590,47 @@ export type GridScroller = {
  * @internal
  */
 export const createGridScroller = (
-  vStore: VirtualStore,
-  hStore: VirtualStore
+  rowStore: VirtualStore,
+  colStore: VirtualStore
 ): GridScroller => {
-  const vScroller = createScroller(vStore, false);
-  const hScroller = createScroller(hStore, true);
+  const rowScroller = createScroller(rowStore, false);
+  const colScroller = createScroller(colStore, true);
   return {
     $observe(viewportElement) {
-      vScroller.$observe(viewportElement);
-      hScroller.$observe(viewportElement);
+      rowScroller.$observe(viewportElement);
+      colScroller.$observe(viewportElement);
     },
     $dispose() {
-      vScroller.$dispose();
-      hScroller.$dispose();
+      rowScroller.$dispose();
+      colScroller.$dispose();
     },
-    $scrollTo(offsetX, offsetY) {
-      vScroller.$scrollTo(offsetY);
-      hScroller.$scrollTo(offsetX);
+    $scrollTo({ row, col }) {
+      if (row != null) {
+        rowScroller.$scrollTo(row);
+      }
+      if (col != null) {
+        colScroller.$scrollTo(col);
+      }
     },
-    $scrollBy(offsetX, offsetY) {
-      vScroller.$scrollBy(offsetY);
-      hScroller.$scrollBy(offsetX);
+    $scrollBy({ row, col }) {
+      if (row != null) {
+        rowScroller.$scrollBy(row);
+      }
+      if (col != null) {
+        colScroller.$scrollBy(col);
+      }
     },
-    $scrollToIndex(indexX, indexY) {
-      vScroller.$scrollToIndex(indexY);
-      hScroller.$scrollToIndex(indexX);
+    $scrollToIndex({ row, col }) {
+      if (row != null) {
+        rowScroller.$scrollToIndex(row);
+      }
+      if (col != null) {
+        colScroller.$scrollToIndex(col);
+      }
     },
     $fixScrollJump() {
-      vScroller.$fixScrollJump();
-      hScroller.$fixScrollJump();
+      rowScroller.$fixScrollJump();
+      colScroller.$fixScrollJump();
     },
   };
 };
