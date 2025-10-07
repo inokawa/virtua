@@ -106,7 +106,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
         style={{
           display: horizontal ? "inline-block" : "block",
           [horizontal ? "overflowX" : "overflowY"]: "auto",
-          contain: "strict",
+          contain: shouldReverse ? undefined : "strict", // https://github.com/inokawa/virtua/pull/775
           width: "100%",
           height: "100%",
           ...style,
