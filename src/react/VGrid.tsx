@@ -301,12 +301,12 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colCount]);
     }
 
-    const [rowStateVersion, vRerender] = useReducer(
+    const [rowStateVersion, rowRerender] = useReducer(
       rowStore.$getStateVersion,
       undefined,
       rowStore.$getStateVersion
     );
-    const [colStateVersion, hRerender] = useReducer(
+    const [colStateVersion, colRerender] = useReducer(
       colStore.$getStateVersion,
       undefined,
       colStore.$getStateVersion
@@ -329,9 +329,9 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         UPDATE_VIRTUAL_STATE,
         (sync) => {
           if (sync) {
-            flushSync(vRerender);
+            flushSync(rowRerender);
           } else {
-            vRerender();
+            rowRerender();
           }
         }
       );
@@ -339,9 +339,9 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         UPDATE_VIRTUAL_STATE,
         (sync) => {
           if (sync) {
-            flushSync(hRerender);
+            flushSync(colRerender);
           } else {
-            hRerender();
+            colRerender();
           }
         }
       );
