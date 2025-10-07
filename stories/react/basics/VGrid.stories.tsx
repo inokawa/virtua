@@ -228,7 +228,8 @@ export const ScrollTo: StoryObj = {
           </label>
           <button
             onClick={() => {
-              ref.current?.scrollToIndex(scrollIndex[0], scrollIndex[1]);
+              const [col, row] = scrollIndex;
+              ref.current?.scrollToIndex({ col, row });
             }}
           >
             scroll to index
@@ -268,14 +269,16 @@ export const ScrollTo: StoryObj = {
             </label>
             <button
               onClick={() => {
-                ref.current?.scrollTo(scrollOffset[0], scrollOffset[1]);
+                const [col, row] = scrollOffset;
+                ref.current?.scrollTo({ col, row });
               }}
             >
               scroll to offset
             </button>
             <button
               onClick={() => {
-                ref.current?.scrollBy(scrollOffset[0], scrollOffset[1]);
+                const [col, row] = scrollOffset;
+                ref.current?.scrollBy({ col, row });
               }}
             >
               scroll by offset
