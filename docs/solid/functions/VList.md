@@ -6,7 +6,7 @@
 
 > **VList**\<`T`\>(`props`): `Element`
 
-Defined in: [src/solid/VList.tsx:41](https://github.com/inokawa/virtua/blob/efa438607d2ce9708ac0adc401ded24fd5aec6ab/src/solid/VList.tsx#L41)
+Defined in: [src/solid/VList.tsx:41](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/solid/VList.tsx#L41)
 
 Virtualized list component. See [VListProps](../interfaces/VListProps.md) and [VListHandle](../interfaces/VListHandle.md).
 
