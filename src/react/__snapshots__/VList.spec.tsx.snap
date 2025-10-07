@@ -374,7 +374,7 @@ exports[`horizontal > should render with given width / height 1`] = `
 exports[`reverse > should render many items 1`] = `
 <DocumentFragment>
   <div
-    style="display: block; overflow-y: auto; width: 100%; height: 100%;"
+    style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
       style="display: flex; flex-direction: column; justify-content: flex-end; min-height: 100%;"
