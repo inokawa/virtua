@@ -306,7 +306,7 @@ export const createScroller = (
   const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const overflowKey = isHorizontal ? "overflowX" : "overflowY";
 
-  const [scheduleImperativeScroll, cancelScroll] = createScrollScheduler(
+  const [scheduleScroll, cancelScroll] = createScrollScheduler(
     store,
     () => initialized[0],
     (offset, smooth) => {
@@ -365,11 +365,11 @@ export const createScroller = (
       initialized = createPromise();
     },
     $scrollTo(offset) {
-      scheduleImperativeScroll(() => offset);
+      scheduleScroll(() => offset);
     },
     $scrollBy(offset) {
       offset += store.$getScrollOffset();
-      scheduleImperativeScroll(() => offset);
+      scheduleScroll(() => offset);
     },
     $scrollToIndex(index, { align, smooth, offset = 0 } = {}) {
       index = clamp(index, 0, store.$getItemsLength() - 1);
@@ -391,7 +391,7 @@ export const createScroller = (
         }
       }
 
-      scheduleImperativeScroll(() => {
+      scheduleScroll(() => {
         return (
           offset +
           store.$getStartSpacerSize() +
@@ -432,7 +432,7 @@ export const createWindowScroller = (
   let initialized = createPromise<boolean>();
   const scrollToKey = isHorizontal ? "left" : "top";
 
-  const [scheduleImperativeScroll] = createScrollScheduler(
+  const [scheduleScroll] = createScrollScheduler(
     store,
     () => initialized[0],
     (offset, smooth) => {
@@ -548,7 +548,7 @@ export const createWindowScroller = (
         store.$getViewportSize() -
         (isHorizontal ? html.clientWidth : html.clientHeight);
 
-      scheduleImperativeScroll(() => {
+      scheduleScroll(() => {
         return (
           offset +
           // Calculate target scroll position including container's offset from document
