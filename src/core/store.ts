@@ -84,13 +84,6 @@ export const getScrollSize = (store: VirtualStore): number => {
   return max(store.$getTotalSize(), store.$getViewportSize());
 };
 
-/**
- * @internal
- */
-export const isInitialMeasurementDone = (store: VirtualStore): boolean => {
-  return !!store.$getViewportSize();
-};
-
 type Subscriber = (sync?: boolean) => void;
 
 /** @internal */
