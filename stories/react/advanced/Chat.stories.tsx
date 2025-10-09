@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react-vite";
-import { VList, VListHandle } from "../../../src";
+import { Virtualizer, VirtualizerHandle } from "../../../src";
 import React, {
   CSSProperties,
   useEffect,
@@ -11,7 +11,7 @@ import React, {
 import { faker } from "@faker-js/faker";
 
 export default {
-  component: VList,
+  component: Virtualizer,
 } as Meta;
 
 type Data = {
@@ -63,7 +63,8 @@ export const Default: StoryObj = {
       Array.from({ length: 100 }, () => createItem())
     );
 
-    const ref = useRef<VListHandle>(null);
+    const ref = useRef<VirtualizerHandle>(null);
+    const scrollRef = useRef<HTMLDivElement>(null);
 
     const isPrepend = useRef(false);
     const shouldStickToBottom = useRef(true);
@@ -117,31 +118,51 @@ export const Default: StoryObj = {
           flexDirection: "column",
         }}
       >
-        <VList
-          ref={ref}
-          style={{ flex: 1 }}
-          reverse
-          shift={isPrepend.current}
-          onScroll={(offset) => {
-            if (!ref.current) return;
-            shouldStickToBottom.current =
-              offset - ref.current.scrollSize + ref.current.viewportSize >=
-              // FIXME: The sum may not be 0 because of sub-pixel value when browser's window.devicePixelRatio has decimal value
-              -1.5;
-
-            if (offset < 100) {
-              isPrepend.current = true;
-              setItems((p) => [
-                ...Array.from({ length: 100 }, () => createItem()),
-                ...p,
-              ]);
-            }
+        <div
+          ref={scrollRef}
+          style={{
+            // styles for scroll container
+            overflowY: "auto",
+            flex: 1,
+            width: "100%",
+            height: "100%",
           }}
         >
-          {items.map((d) => (
-            <Item key={d.id} {...d} />
-          ))}
-        </VList>
+          <div
+            style={{
+              // styles for aligning virtualizer to bottom
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-end",
+              minHeight: "100%",
+            }}
+          >
+            <Virtualizer
+              ref={ref}
+              scrollRef={scrollRef}
+              shift={isPrepend.current}
+              onScroll={(offset) => {
+                if (!ref.current) return;
+                shouldStickToBottom.current =
+                  offset - ref.current.scrollSize + ref.current.viewportSize >=
+                  // FIXME: The sum may not be 0 because of sub-pixel value when browser's window.devicePixelRatio has decimal value
+                  -1.5;
+
+                if (offset < 100) {
+                  isPrepend.current = true;
+                  setItems((p) => [
+                    ...Array.from({ length: 100 }, () => createItem()),
+                    ...p,
+                  ]);
+                }
+              }}
+            >
+              {items.map((d) => (
+                <Item key={d.id} {...d} />
+              ))}
+            </Virtualizer>
+          </div>
+        </div>
         <form
           style={{ margin: 10 }}
           onSubmit={(e) => {

@@ -130,6 +130,193 @@ export const Nested: StoryObj = {
   },
 };
 
+export const Reverse: StoryObj = {
+  render: () => {
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const ref = useRef<VirtualizerHandle>(null);
+    useEffect(() => {
+      ref.current?.scrollToIndex(999);
+    }, []);
+    return (
+      <div
+        ref={scrollRef}
+        style={{
+          // styles for scroll container
+          height: "100vh",
+          overflowY: "auto",
+        }}
+      >
+        <div
+          style={{
+            // styles for aligning virtualizer to bottom
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            minHeight: "100%",
+          }}
+        >
+          <Virtualizer scrollRef={scrollRef} ref={ref}>
+            {createRows(1000)}
+          </Virtualizer>
+        </div>
+      </div>
+    );
+  },
+};
+
+export const ReverseIncreasingItems: StoryObj = {
+  render: () => {
+    const scrollRef = useRef<HTMLDivElement>(null);
+
+    const id = useRef(0);
+    const createRows = (num: number, offset: number) => {
+      return Array.from({ length: num }).map((_, i) => {
+        i += offset;
+        return { id: id.current++, index: i };
+      });
+    };
+
+    const [auto, setAuto] = useState(false);
+    const [amount, setAmount] = useState(4);
+    const [prepend, setPrepend] = useState(false);
+    const [increase, setIncrease] = useState(true);
+    const [rows, setRows] = useState(() => createRows(amount, 0));
+    const update = () => {
+      if (increase) {
+        setRows((prev) =>
+          prepend
+            ? [...createRows(amount, (prev[0]?.index ?? 0) - amount), ...prev]
+            : [
+                ...prev,
+                ...createRows(amount, (prev[prev.length - 1]?.index ?? 0) + 1),
+              ]
+        );
+      } else {
+        if (prepend) {
+          setRows((prev) => prev.slice(amount));
+        } else {
+          setRows((prev) => prev.slice(0, -amount));
+        }
+      }
+    };
+    useEffect(() => {
+      if (!auto) return;
+      const timer = setInterval(update, 500);
+      return () => {
+        clearInterval(timer);
+      };
+    }, [update, auto]);
+
+    const heights = [20, 40, 80, 77];
+
+    return (
+      <div
+        style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+      >
+        <div>
+          <label style={{ marginRight: 4 }}>
+            <input
+              type="checkbox"
+              style={{ marginLeft: 4 }}
+              checked={prepend}
+              onChange={() => {
+                setPrepend((prev) => !prev);
+              }}
+            />
+            prepend
+          </label>
+          <label style={{ marginRight: 4 }}>
+            <input
+              type="radio"
+              style={{ marginLeft: 4 }}
+              checked={increase}
+              onChange={() => {
+                setIncrease(true);
+              }}
+            />
+            increase
+          </label>
+          <label style={{ marginRight: 4 }}>
+            <input
+              type="radio"
+              style={{ marginLeft: 4 }}
+              checked={!increase}
+              onChange={() => {
+                setIncrease(false);
+              }}
+            />
+            decrease
+          </label>
+          <input
+            style={{ marginLeft: 4 }}
+            value={amount}
+            type="number"
+            min={1}
+            max={10000}
+            step={1}
+            onChange={(e) => {
+              setAmount(Number(e.target.value));
+            }}
+          />
+        </div>
+        <div>
+          <label style={{ marginRight: 16 }}>
+            <input
+              type="checkbox"
+              style={{ marginLeft: 4 }}
+              checked={auto}
+              onChange={() => {
+                setAuto((prev) => !prev);
+              }}
+            />
+            auto
+          </label>
+          <button
+            onClick={() => {
+              update();
+            }}
+          >
+            update
+          </button>
+        </div>
+        <div
+          ref={scrollRef}
+          style={{
+            // styles for scroll container
+            flex: 1,
+            overflowY: "auto",
+          }}
+        >
+          <div
+            style={{
+              // styles for aligning virtualizer to bottom
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-end",
+              minHeight: "100%",
+            }}
+          >
+            <Virtualizer scrollRef={scrollRef} shift={prepend}>
+              {rows.map((d) => (
+                <div
+                  key={d.id}
+                  style={{
+                    height: heights[Math.abs(d.index) % 4],
+                    borderBottom: "solid 1px #ccc",
+                    background: "#fff",
+                  }}
+                >
+                  {d.index}
+                </div>
+              ))}
+            </Virtualizer>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
 export const BiDirectionalInfiniteScrolling: StoryObj = {
   render: () => {
     const id = useRef(0);
