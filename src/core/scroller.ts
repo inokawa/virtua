@@ -489,7 +489,6 @@ export const createWindowScroller = (
 
       const document = getCurrentDocument(container);
       const window = getCurrentWindow(document);
-      const documentBody = document.body;
 
       scrollObserver = createScrollObserver(
         store,
@@ -505,7 +504,7 @@ export const createWindowScroller = (
           });
         },
         () =>
-          calcOffsetToViewport(container, documentBody, window, isHorizontal)
+          calcOffsetToViewport(container, document.body, window, isHorizontal)
       );
 
       initialized[1](true);
