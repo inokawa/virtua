@@ -147,8 +147,8 @@ export const createVirtualStore = (
   const subscribers = new Set<[number, Subscriber]>();
   const getRelativeScrollOffset = () => scrollOffset - startSpacerSize;
   const getVisibleOffset = () => getRelativeScrollOffset() + pendingJump + jump;
-  const getRange = (offset: number, rangeSize: number) => {
-    return computeRange(cache, offset, rangeSize, _prevRange[0]);
+  const getRange = (startOffset: number, endOffset: number) => {
+    return computeRange(cache, startOffset, endOffset, _prevRange[0]);
   };
   const getTotalSize = (): number => computeTotalSize(cache);
   const getItemOffset = (index: number): number => {
@@ -189,20 +189,18 @@ export const createVirtualStore = (
       } else {
         bufferSize = max(0, bufferSize);
 
-        let offset = getVisibleOffset();
-        let rangeSize = viewportSize;
+        let startOffset = max(0, getVisibleOffset());
+        let endOffset = startOffset + viewportSize;
         if (_scrollDirection !== SCROLL_DOWN) {
-          const currentOffset = min(0, offset);
-          offset -= bufferSize;
-          rangeSize += bufferSize + min(0, offset - currentOffset);
+          startOffset -= bufferSize;
         }
         if (_scrollDirection !== SCROLL_UP) {
-          rangeSize += bufferSize;
+          endOffset += bufferSize;
         }
 
         [startIndex, endIndex] = _prevRange = getRange(
-          max(0, offset),
-          rangeSize
+          max(0, startOffset),
+          max(0, endOffset)
         );
         if (_frozenRange) {
           startIndex = min(startIndex, _frozenRange[0]);
@@ -410,7 +408,7 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_BEFORE_MANUAL_SMOOTH_SCROLL: {
-          _frozenRange = getRange(payload, viewportSize);
+          _frozenRange = getRange(payload, payload + viewportSize);
           mutated = UPDATE_VIRTUAL_STATE;
           break;
         }

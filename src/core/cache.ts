@@ -124,23 +124,23 @@ export const findIndex = (
  */
 export const computeRange = (
   cache: Cache,
-  scrollOffset: number,
-  viewportSize: number,
+  startOffset: number,
+  endOffset: number,
   prevStartIndex: number
 ): ItemsRange => {
   // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
   prevStartIndex = min(prevStartIndex, cache._length - 1);
 
-  if (computeOffset(cache, prevStartIndex) <= scrollOffset) {
+  if (computeOffset(cache, prevStartIndex) <= startOffset) {
     // search forward
     // start <= end, prevStartIndex <= start
-    const end = findIndex(cache, scrollOffset + viewportSize, prevStartIndex);
-    return [findIndex(cache, scrollOffset, prevStartIndex, end), end];
+    const end = findIndex(cache, endOffset, prevStartIndex);
+    return [findIndex(cache, startOffset, prevStartIndex, end), end];
   } else {
     // search backward
     // start <= end, start <= prevStartIndex
-    const start = findIndex(cache, scrollOffset, undefined, prevStartIndex);
-    return [start, findIndex(cache, scrollOffset + viewportSize, start)];
+    const start = findIndex(cache, startOffset, undefined, prevStartIndex);
+    return [start, findIndex(cache, endOffset, start)];
   }
 };
 
