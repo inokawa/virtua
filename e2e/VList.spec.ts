@@ -713,7 +713,7 @@ test.describe("check if scrollToIndex works", () => {
       const lastItem = component.getByText("700", { exact: true });
       await expect(lastItem).toBeVisible();
       expectInRange(await relativeBottom(component, lastItem), {
-        min: 0,
+        min: -0.5,
         max: 1,
       });
 

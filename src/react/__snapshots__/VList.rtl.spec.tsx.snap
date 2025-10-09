@@ -154,20 +154,6 @@ exports[`rtl > should work in horizontal 1`] = `
           3
         </div>
       </div>
-      <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; right: 400px; visibility: visible; display: inline-flex;"
-      >
-        <div>
-          4
-        </div>
-      </div>
-      <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; right: 500px; visibility: visible; display: inline-flex;"
-      >
-        <div>
-          5
-        </div>
-      </div>
     </div>
   </div>
 </DocumentFragment>

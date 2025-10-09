@@ -131,7 +131,7 @@ export const _Select: StoryObj = {
                 <Virtualizer
                   ref={ref}
                   keepMounted={index !== -1 ? [index] : undefined}
-                  overscan={2 /* overscan for keyboard */}
+                  bufferSize={5 /* overscan for keyboard */}
                 >
                   {items.map((d) => (
                     <SelectItem key={d.id} value={d.id}>

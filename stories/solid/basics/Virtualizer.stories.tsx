@@ -93,7 +93,6 @@ export const DivTable: StoryObj = {
               </div>
             );
           }}
-          overscan={5}
         >
           {(_, i) => (
             <>
