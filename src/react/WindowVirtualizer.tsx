@@ -65,7 +65,7 @@ export interface WindowVirtualizerProps<T = undefined> {
   /**
    * The data items rendered by this component. If you set a function to {@link WindowVirtualizerProps.children}, you have to set this prop.
    */
-  data?: readonly T[];
+  data?: ArrayLike<T>;
   /**
    * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
