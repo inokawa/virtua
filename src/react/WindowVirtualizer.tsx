@@ -2,6 +2,7 @@ import {
   JSX,
   ReactElement,
   ReactNode,
+  Ref,
   forwardRef,
   useImperativeHandle,
   useReducer,
@@ -54,17 +55,17 @@ export interface WindowVirtualizerHandle {
 /**
  * Props of {@link WindowVirtualizer}.
  */
-export interface WindowVirtualizerProps {
+export interface WindowVirtualizerProps<T = undefined> {
   /**
    * Elements rendered by this component.
    *
-   * You can also pass a function and set {@link WindowVirtualizerProps.count} to create elements lazily.
+   * You can also pass a function and set {@link WindowVirtualizerProps.data} to create elements lazily.
    */
-  children: ReactNode | ((index: number) => ReactElement);
+  children: ReactNode | ((data: T, index: number) => ReactElement);
   /**
-   * If you set a function to {@link WindowVirtualizerProps.children}, you have to set total number of items to this prop.
+   * The data items rendered by this component. If you set a function to {@link WindowVirtualizerProps.children}, you have to set this prop.
    */
-  count?: number;
+  data?: ArrayLike<T>;
   /**
    * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 4
@@ -120,12 +121,12 @@ export interface WindowVirtualizerProps {
  */
 export const WindowVirtualizer = forwardRef<
   WindowVirtualizerHandle,
-  WindowVirtualizerProps
+  WindowVirtualizerProps<unknown>
 >(
   (
     {
       children,
-      count: renderCountProp,
+      data,
       overscan,
       itemSize,
       shift,
@@ -141,7 +142,7 @@ export const WindowVirtualizer = forwardRef<
   ): ReactElement => {
     Element = Element as "div";
 
-    const [getElement, count] = useChildren(children, renderCountProp);
+    const [renderElement, count] = useChildren(children, data);
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -242,7 +243,7 @@ export const WindowVirtualizer = forwardRef<
     );
 
     for (let i = startIndex, j = endIndex; i <= j; i++) {
-      const e = getElement(i);
+      const e = renderElement(i);
       items.push(
         <ListItem
           key={getKey(e, i)}
@@ -276,4 +277,6 @@ export const WindowVirtualizer = forwardRef<
       </Element>
     );
   }
-);
+) as <T>(
+  props: WindowVirtualizerProps<T> & { ref?: Ref<WindowVirtualizerHandle> }
+) => ReactElement;

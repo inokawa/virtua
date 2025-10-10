@@ -1,4 +1,4 @@
-import { ReactElement, forwardRef, useRef } from "react";
+import { ReactElement, Ref, forwardRef, useRef } from "react";
 import { ViewportComponentAttributes } from "./types.js";
 import {
   Virtualizer,
@@ -14,11 +14,11 @@ export interface VListHandle extends VirtualizerHandle {}
 /**
  * Props of {@link VList}.
  */
-export interface VListProps
+export interface VListProps<T = undefined>
   extends Pick<
-      VirtualizerProps,
+      VirtualizerProps<T>,
       | "children"
-      | "count"
+      | "data"
       | "overscan"
       | "itemSize"
       | "shift"
@@ -40,11 +40,11 @@ export interface VListProps
 /**
  * Virtualized list component. See {@link VListProps} and {@link VListHandle}.
  */
-export const VList = forwardRef<VListHandle, VListProps>(
+export const VList = forwardRef<VListHandle, VListProps<unknown>>(
   (
     {
       children,
-      count,
+      data,
       overscan,
       itemSize,
       shift,
@@ -68,7 +68,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       <Virtualizer
         ref={ref}
         scrollRef={shouldReverse ? scrollRef : undefined}
-        count={count}
+        data={data}
         overscan={overscan}
         itemSize={itemSize}
         shift={shift}
@@ -116,4 +116,4 @@ export const VList = forwardRef<VListHandle, VListProps>(
       </div>
     );
   }
-);
+) as <T>(props: VListProps<T> & { ref?: Ref<VListHandle> }) => ReactElement;
