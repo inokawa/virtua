@@ -55,7 +55,7 @@ export interface WindowVirtualizerHandle {
 /**
  * Props of {@link WindowVirtualizer}.
  */
-export interface WindowVirtualizerProps<T = undefined> {
+export interface WindowVirtualizerProps<T = unknown> {
   /**
    * Elements rendered by this component.
    *

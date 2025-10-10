@@ -14,7 +14,7 @@ export interface VListHandle extends VirtualizerHandle {}
 /**
  * Props of {@link VList}.
  */
-export interface VListProps<T = undefined>
+export interface VListProps<T = unknown>
   extends Pick<
       VirtualizerProps<T>,
       | "children"
