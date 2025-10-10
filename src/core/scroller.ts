@@ -589,11 +589,11 @@ export type GridScroller = {
  * @internal
  */
 export const createGridScroller = (
-  vStore: VirtualStore,
-  hStore: VirtualStore
+  rowStore: VirtualStore,
+  colStore: VirtualStore
 ): GridScroller => {
-  const vScroller = createScroller(vStore, false);
-  const hScroller = createScroller(hStore, true);
+  const vScroller = createScroller(rowStore, false);
+  const hScroller = createScroller(colStore, true);
   return {
     $observe(viewportElement) {
       vScroller.$observe(viewportElement);

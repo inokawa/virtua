@@ -156,8 +156,8 @@ export const createWindowResizer = (
  * @internal
  */
 export const createGridResizer = (
-  vStore: VirtualStore,
-  hStore: VirtualStore
+  rowStore: VirtualStore,
+  colStore: VirtualStore
 ) => {
   let viewportElement: HTMLElement | undefined;
 
@@ -183,8 +183,8 @@ export const createGridResizer = (
       if (!(target as HTMLElement).offsetParent) continue;
 
       if (target === viewportElement) {
-        vStore.$update(ACTION_VIEWPORT_RESIZE, contentRect[heightKey]);
-        hStore.$update(ACTION_VIEWPORT_RESIZE, contentRect[widthKey]);
+        rowStore.$update(ACTION_VIEWPORT_RESIZE, contentRect[heightKey]);
+        colStore.$update(ACTION_VIEWPORT_RESIZE, contentRect[widthKey]);
       } else {
         const cell = mountedIndexes.get(target);
         if (cell) {
@@ -234,7 +234,7 @@ export const createGridResizer = (
           heightResizes.push([rowIndex, maxHeight]);
         }
       });
-      vStore.$update(ACTION_ITEM_RESIZE, heightResizes);
+      rowStore.$update(ACTION_ITEM_RESIZE, heightResizes);
     }
     if (resizedCols.size) {
       const widthResizes: ItemResize[] = [];
@@ -250,7 +250,7 @@ export const createGridResizer = (
           widthResizes.push([colIndex, maxWidth]);
         }
       });
-      hStore.$update(ACTION_ITEM_RESIZE, widthResizes);
+      colStore.$update(ACTION_ITEM_RESIZE, widthResizes);
     }
   });
 
@@ -270,19 +270,19 @@ export const createGridResizer = (
     },
     $resizeCols(cols: ItemResize[]) {
       for (const [c] of cols) {
-        for (let r = 0; r < vStore.$getItemsLength(); r++) {
+        for (let r = 0; r < rowStore.$getItemsLength(); r++) {
           sizeCache.delete(getKey(r, c));
         }
       }
-      hStore.$update(ACTION_ITEM_RESIZE, cols);
+      colStore.$update(ACTION_ITEM_RESIZE, cols);
     },
     $resizeRows(rows: ItemResize[]) {
       for (const [r] of rows) {
-        for (let c = 0; c < hStore.$getItemsLength(); c++) {
+        for (let c = 0; c < colStore.$getItemsLength(); c++) {
           sizeCache.delete(getKey(r, c));
         }
       }
-      vStore.$update(ACTION_ITEM_RESIZE, rows);
+      rowStore.$update(ACTION_ITEM_RESIZE, rows);
     },
     $dispose: resizeObserver._dispose,
   };
