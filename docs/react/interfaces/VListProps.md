@@ -2,15 +2,21 @@
 
 ***
 
-# Interface: VListProps
+# Interface: VListProps\<T\>
 
-Defined in: [src/react/VList.tsx:17](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/VList.tsx#L17)
+Defined in: [src/react/VList.tsx:17](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/VList.tsx#L17)
 
 Props of [VList](../variables/VList.md).
 
 ## Extends
 
-- `Pick`\<[`VirtualizerProps`](VirtualizerProps.md), `"children"` \| `"count"` \| `"overscan"` \| `"itemSize"` \| `"shift"` \| `"horizontal"` \| `"cache"` \| `"ssrCount"` \| `"item"` \| `"onScroll"` \| `"onScrollEnd"` \| `"keepMounted"`\>.[`ViewportComponentAttributes`](../type-aliases/ViewportComponentAttributes.md)
+- `Pick`\<[`VirtualizerProps`](VirtualizerProps.md)\<`T`\>, `"children"` \| `"data"` \| `"overscan"` \| `"itemSize"` \| `"shift"` \| `"horizontal"` \| `"cache"` \| `"ssrCount"` \| `"item"` \| `"onScroll"` \| `"onScrollEnd"` \| `"keepMounted"`\>.[`ViewportComponentAttributes`](../type-aliases/ViewportComponentAttributes.md)
+
+## Type Parameters
+
+### T
+
+`T` = `undefined`
 
 ## Properties
 
@@ -18,7 +24,7 @@ Props of [VList](../variables/VList.md).
 
 > `optional` **reverse**: `boolean`
 
-Defined in: [src/react/VList.tsx:37](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/VList.tsx#L37)
+Defined in: [src/react/VList.tsx:37](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/VList.tsx#L37)
 
 If true, items are aligned to the end of the list when total size of items are smaller than viewport size. It's useful for chat like app.
 
@@ -26,17 +32,17 @@ If true, items are aligned to the end of the list when total size of items are s
 
 ### children
 
-> **children**: `ReactNode` \| (`index`) => `ReactElement`
+> **children**: `ReactNode` \| (`data`, `index`) => `ReactElement`
 
-Defined in: [src/react/Virtualizer.tsx:100](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/Virtualizer.tsx#L100)
+Defined in: [src/react/Virtualizer.tsx:101](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/Virtualizer.tsx#L101)
 
 Elements rendered by this component.
 
-You can also pass a function and set [VirtualizerProps.count](VirtualizerProps.md#count) to create elements lazily.
+You can also pass a function and set [VirtualizerProps.data](VirtualizerProps.md#data) to create elements lazily.
 
 #### Inherited from
 
-[`VirtualizerProps`](VirtualizerProps.md).[`children`](VirtualizerProps.md#children)
+`Pick.children`
 
 ***
 
@@ -44,7 +50,7 @@ You can also pass a function and set [VirtualizerProps.count](VirtualizerProps.m
 
 > `optional` **onScroll**: (`offset`) => `void`
 
-Defined in: [src/react/Virtualizer.tsx:161](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/Virtualizer.tsx#L161)
+Defined in: [src/react/Virtualizer.tsx:162](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/Virtualizer.tsx#L162)
 
 Callback invoked whenever scroll offset changes.
 
@@ -62,7 +68,7 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 #### Inherited from
 
-[`VirtualizerProps`](VirtualizerProps.md).[`onScroll`](VirtualizerProps.md#onscroll)
+`Pick.onScroll`
 
 ***
 
@@ -70,7 +76,7 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 > `optional` **onScrollEnd**: () => `void`
 
-Defined in: [src/react/Virtualizer.tsx:165](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/Virtualizer.tsx#L165)
+Defined in: [src/react/Virtualizer.tsx:166](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/Virtualizer.tsx#L166)
 
 Callback invoked when scrolling stops.
 
@@ -80,7 +86,7 @@ Callback invoked when scrolling stops.
 
 #### Inherited from
 
-[`VirtualizerProps`](VirtualizerProps.md).[`onScrollEnd`](VirtualizerProps.md#onscrollend)
+`Pick.onScrollEnd`
 
 ***
 
@@ -88,27 +94,27 @@ Callback invoked when scrolling stops.
 
 > `optional` **shift**: `boolean`
 
-Defined in: [src/react/Virtualizer.tsx:120](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/Virtualizer.tsx#L120)
+Defined in: [src/react/Virtualizer.tsx:121](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/Virtualizer.tsx#L121)
 
 While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
 
 #### Inherited from
 
-[`VirtualizerProps`](VirtualizerProps.md).[`shift`](VirtualizerProps.md#shift)
+`Pick.shift`
 
 ***
 
-### count?
+### data?
 
-> `optional` **count**: `number`
+> `optional` **data**: `ArrayLike`\<`T`\>
 
-Defined in: [src/react/Virtualizer.tsx:104](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/Virtualizer.tsx#L104)
+Defined in: [src/react/Virtualizer.tsx:105](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/Virtualizer.tsx#L105)
 
-If you set a function to [VirtualizerProps.children](VirtualizerProps.md#children), you have to set total number of items to this prop.
+The data items rendered by this component. If you set a function to [VirtualizerProps.children](VirtualizerProps.md#children), you have to set this prop.
 
 #### Inherited from
 
-[`VirtualizerProps`](VirtualizerProps.md).[`count`](VirtualizerProps.md#count)
+`Pick.data`
 
 ***
 
@@ -116,7 +122,7 @@ If you set a function to [VirtualizerProps.children](VirtualizerProps.md#childre
 
 > `optional` **overscan**: `number`
 
-Defined in: [src/react/Virtualizer.tsx:109](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/Virtualizer.tsx#L109)
+Defined in: [src/react/Virtualizer.tsx:110](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/Virtualizer.tsx#L110)
 
 Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -128,7 +134,7 @@ Number of items to render above/below the visible bounds of the list. Lower valu
 
 #### Inherited from
 
-[`VirtualizerProps`](VirtualizerProps.md).[`overscan`](VirtualizerProps.md#overscan)
+`Pick.overscan`
 
 ***
 
@@ -136,7 +142,7 @@ Number of items to render above/below the visible bounds of the list. Lower valu
 
 > `optional` **itemSize**: `number`
 
-Defined in: [src/react/Virtualizer.tsx:116](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/Virtualizer.tsx#L116)
+Defined in: [src/react/Virtualizer.tsx:117](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/Virtualizer.tsx#L117)
 
 Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -145,7 +151,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 #### Inherited from
 
-[`VirtualizerProps`](VirtualizerProps.md).[`itemSize`](VirtualizerProps.md#itemsize)
+`Pick.itemSize`
 
 ***
 
@@ -153,13 +159,13 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 > `optional` **horizontal**: `boolean`
 
-Defined in: [src/react/Virtualizer.tsx:124](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/Virtualizer.tsx#L124)
+Defined in: [src/react/Virtualizer.tsx:125](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/Virtualizer.tsx#L125)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
 #### Inherited from
 
-[`VirtualizerProps`](VirtualizerProps.md).[`horizontal`](VirtualizerProps.md#horizontal)
+`Pick.horizontal`
 
 ***
 
@@ -167,13 +173,13 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `optional` **keepMounted**: readonly `number`[]
 
-Defined in: [src/react/Virtualizer.tsx:128](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/Virtualizer.tsx#L128)
+Defined in: [src/react/Virtualizer.tsx:129](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/Virtualizer.tsx#L129)
 
 List of indexes that should be always mounted, even when off screen.
 
 #### Inherited from
 
-[`VirtualizerProps`](VirtualizerProps.md).[`keepMounted`](VirtualizerProps.md#keepmounted)
+`Pick.keepMounted`
 
 ***
 
@@ -181,7 +187,7 @@ List of indexes that should be always mounted, even when off screen.
 
 > `optional` **cache**: [`CacheSnapshot`](CacheSnapshot.md)
 
-Defined in: [src/react/Virtualizer.tsx:134](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/Virtualizer.tsx#L134)
+Defined in: [src/react/Virtualizer.tsx:135](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/Virtualizer.tsx#L135)
 
 You can restore cache by passing a [CacheSnapshot](CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VirtualizerHandle.cache](VListHandle.md#cache).
 
@@ -189,7 +195,7 @@ You can restore cache by passing a [CacheSnapshot](CacheSnapshot.md) on mount. T
 
 #### Inherited from
 
-[`VirtualizerProps`](VirtualizerProps.md).[`cache`](VirtualizerProps.md#cache)
+`Pick.cache`
 
 ***
 
@@ -197,13 +203,13 @@ You can restore cache by passing a [CacheSnapshot](CacheSnapshot.md) on mount. T
 
 > `optional` **ssrCount**: `number`
 
-Defined in: [src/react/Virtualizer.tsx:142](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/Virtualizer.tsx#L142)
+Defined in: [src/react/Virtualizer.tsx:143](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/Virtualizer.tsx#L143)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
 
 #### Inherited from
 
-[`VirtualizerProps`](VirtualizerProps.md).[`ssrCount`](VirtualizerProps.md#ssrcount)
+`Pick.ssrCount`
 
 ***
 
@@ -211,7 +217,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `optional` **item**: [`CustomItemComponent`](../type-aliases/CustomItemComponent.md) \| keyof IntrinsicElements
 
-Defined in: [src/react/Virtualizer.tsx:152](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/Virtualizer.tsx#L152)
+Defined in: [src/react/Virtualizer.tsx:153](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/Virtualizer.tsx#L153)
 
 Component or element type for item element. This component will get [CustomItemComponentProps](CustomItemComponentProps.md) as props.
 
@@ -223,7 +229,7 @@ Component or element type for item element. This component will get [CustomItemC
 
 #### Inherited from
 
-[`VirtualizerProps`](VirtualizerProps.md).[`item`](VirtualizerProps.md#item)
+`Pick.item`
 
 ***
 

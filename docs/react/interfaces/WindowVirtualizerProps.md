@@ -2,33 +2,39 @@
 
 ***
 
-# Interface: WindowVirtualizerProps
+# Interface: WindowVirtualizerProps\<T\>
 
-Defined in: [src/react/WindowVirtualizer.tsx:57](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L57)
+Defined in: [src/react/WindowVirtualizer.tsx:58](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L58)
 
 Props of [WindowVirtualizer](../variables/WindowVirtualizer.md).
+
+## Type Parameters
+
+### T
+
+`T` = `undefined`
 
 ## Properties
 
 ### children
 
-> **children**: `ReactNode` \| (`index`) => `ReactElement`
+> **children**: `ReactNode` \| (`data`, `index`) => `ReactElement`
 
-Defined in: [src/react/WindowVirtualizer.tsx:63](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L63)
+Defined in: [src/react/WindowVirtualizer.tsx:64](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L64)
 
 Elements rendered by this component.
 
-You can also pass a function and set [WindowVirtualizerProps.count](#count) to create elements lazily.
+You can also pass a function and set [WindowVirtualizerProps.data](#data) to create elements lazily.
 
 ***
 
-### count?
+### data?
 
-> `optional` **count**: `number`
+> `optional` **data**: `ArrayLike`\<`T`\>
 
-Defined in: [src/react/WindowVirtualizer.tsx:67](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L67)
+Defined in: [src/react/WindowVirtualizer.tsx:68](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L68)
 
-If you set a function to [WindowVirtualizerProps.children](#children), you have to set total number of items to this prop.
+The data items rendered by this component. If you set a function to [WindowVirtualizerProps.children](#children), you have to set this prop.
 
 ***
 
@@ -36,7 +42,7 @@ If you set a function to [WindowVirtualizerProps.children](#children), you have 
 
 > `optional` **overscan**: `number`
 
-Defined in: [src/react/WindowVirtualizer.tsx:72](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L72)
+Defined in: [src/react/WindowVirtualizer.tsx:73](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L73)
 
 Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -52,7 +58,7 @@ Number of items to render above/below the visible bounds of the list. Lower valu
 
 > `optional` **itemSize**: `number`
 
-Defined in: [src/react/WindowVirtualizer.tsx:79](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L79)
+Defined in: [src/react/WindowVirtualizer.tsx:80](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L80)
 
 Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -65,7 +71,7 @@ Item size hint for unmeasured items. It will help to reduce scroll jump when ite
 
 > `optional` **shift**: `boolean`
 
-Defined in: [src/react/WindowVirtualizer.tsx:83](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L83)
+Defined in: [src/react/WindowVirtualizer.tsx:84](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L84)
 
 While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
 
@@ -75,7 +81,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 > `optional` **horizontal**: `boolean`
 
-Defined in: [src/react/WindowVirtualizer.tsx:87](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L87)
+Defined in: [src/react/WindowVirtualizer.tsx:88](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L88)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -85,7 +91,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `optional` **cache**: [`CacheSnapshot`](CacheSnapshot.md)
 
-Defined in: [src/react/WindowVirtualizer.tsx:93](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L93)
+Defined in: [src/react/WindowVirtualizer.tsx:94](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L94)
 
 You can restore cache by passing a [CacheSnapshot](CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [WindowVirtualizerHandle.cache](WindowVirtualizerHandle.md#cache).
 
@@ -97,7 +103,7 @@ You can restore cache by passing a [CacheSnapshot](CacheSnapshot.md) on mount. T
 
 > `optional` **ssrCount**: `number`
 
-Defined in: [src/react/WindowVirtualizer.tsx:97](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L97)
+Defined in: [src/react/WindowVirtualizer.tsx:98](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L98)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
 
@@ -107,7 +113,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `optional` **as**: [`CustomContainerComponent`](../type-aliases/CustomContainerComponent.md) \| keyof IntrinsicElements
 
-Defined in: [src/react/WindowVirtualizer.tsx:102](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L102)
+Defined in: [src/react/WindowVirtualizer.tsx:103](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L103)
 
 Component or element type for container element.
 
@@ -123,7 +129,7 @@ Component or element type for container element.
 
 > `optional` **item**: [`CustomItemComponent`](../type-aliases/CustomItemComponent.md) \| keyof IntrinsicElements
 
-Defined in: [src/react/WindowVirtualizer.tsx:107](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L107)
+Defined in: [src/react/WindowVirtualizer.tsx:108](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L108)
 
 Component or element type for item element. This component will get [CustomItemComponentProps](CustomItemComponentProps.md) as props.
 
@@ -139,7 +145,7 @@ Component or element type for item element. This component will get [CustomItemC
 
 > `optional` **onScroll**: () => `void`
 
-Defined in: [src/react/WindowVirtualizer.tsx:111](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L111)
+Defined in: [src/react/WindowVirtualizer.tsx:112](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L112)
 
 Callback invoked whenever scroll offset changes.
 
@@ -153,7 +159,7 @@ Callback invoked whenever scroll offset changes.
 
 > `optional` **onScrollEnd**: () => `void`
 
-Defined in: [src/react/WindowVirtualizer.tsx:115](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L115)
+Defined in: [src/react/WindowVirtualizer.tsx:116](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L116)
 
 Callback invoked when scrolling stops.
 

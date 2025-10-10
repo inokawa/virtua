@@ -2,10 +2,26 @@
 
 ***
 
-# Variable: Virtualizer
+# Variable: Virtualizer()
 
-> `const` **Virtualizer**: `ForwardRefExoticComponent`\<[`VirtualizerProps`](../interfaces/VirtualizerProps.md) & `RefAttributes`\<[`VirtualizerHandle`](../interfaces/VirtualizerHandle.md)\>\>
+> `const` **Virtualizer**: \<`T`\>(`props`) => `ReactElement`
 
-Defined in: [src/react/Virtualizer.tsx:171](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/Virtualizer.tsx#L171)
+Defined in: [src/react/Virtualizer.tsx:172](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/Virtualizer.tsx#L172)
 
 Customizable list virtualizer for advanced usage. See [VirtualizerProps](../interfaces/VirtualizerProps.md) and [VirtualizerHandle](../interfaces/VirtualizerHandle.md).
+
+## Type Parameters
+
+### T
+
+`T`
+
+## Parameters
+
+### props
+
+[`VirtualizerProps`](../interfaces/VirtualizerProps.md)\<`T`\> & `object`
+
+## Returns
+
+`ReactElement`

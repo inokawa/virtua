@@ -4,7 +4,7 @@
 
 # Interface: WindowVirtualizerHandle
 
-Defined in: [src/react/WindowVirtualizer.tsx:33](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L33)
+Defined in: [src/react/WindowVirtualizer.tsx:34](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L34)
 
 Methods of [WindowVirtualizer](../variables/WindowVirtualizer.md).
 
@@ -14,7 +14,7 @@ Methods of [WindowVirtualizer](../variables/WindowVirtualizer.md).
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/react/WindowVirtualizer.tsx:51](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L51)
+Defined in: [src/react/WindowVirtualizer.tsx:52](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L52)
 
 Scroll to the item specified by index.
 
@@ -42,7 +42,7 @@ options
 
 > `readonly` **cache**: [`CacheSnapshot`](CacheSnapshot.md)
 
-Defined in: [src/react/WindowVirtualizer.tsx:37](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L37)
+Defined in: [src/react/WindowVirtualizer.tsx:38](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L38)
 
 Get current [CacheSnapshot](CacheSnapshot.md).
 
@@ -52,7 +52,7 @@ Get current [CacheSnapshot](CacheSnapshot.md).
 
 > **findStartIndex**: () => `number`
 
-Defined in: [src/react/WindowVirtualizer.tsx:41](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L41)
+Defined in: [src/react/WindowVirtualizer.tsx:42](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L42)
 
 Find the start index of visible range of items.
 
@@ -66,7 +66,7 @@ Find the start index of visible range of items.
 
 > **findEndIndex**: () => `number`
 
-Defined in: [src/react/WindowVirtualizer.tsx:45](https://github.com/inokawa/virtua/blob/268af5948545eee27d897af009097898db266a80/src/react/WindowVirtualizer.tsx#L45)
+Defined in: [src/react/WindowVirtualizer.tsx:46](https://github.com/inokawa/virtua/blob/89b9568b97601da9b779332f422c8054b3c48a08/src/react/WindowVirtualizer.tsx#L46)
 
 Find the end index of visible range of items.
 
