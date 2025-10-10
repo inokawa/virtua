@@ -121,7 +121,7 @@ import { Virtualizer } from "virtua";
 
 export const App = () => {
   return (
-    <div style={{ overflowY: "auto", height: 800 }}>
+    <div style={{ overflowY: "auto", overflowAnchor: "none", height: 800 }}>
       <div style={{ height: 40 }}>header</div>
       <Virtualizer startMargin={40}>
         {Array.from({ length: 1000 }).map((_, i) => (
