@@ -161,8 +161,6 @@ export const createGridResizer = (
 ) => {
   let viewportElement: HTMLElement | undefined;
 
-  const heightKey = "height";
-  const widthKey = "width";
   const mountedIndexes = new WeakMap<
     Element,
     [rowIndex: number, colIndex: number]
@@ -178,23 +176,23 @@ export const createGridResizer = (
   const resizeObserver = createResizeObserver((entries) => {
     const resizedRows = new Set<number>();
     const resizedCols = new Set<number>();
-    for (const { target, contentRect } of entries) {
+    for (const {
+      target,
+      contentRect: { width, height },
+    } of entries) {
       // Skip zero-sized rects that may be observed under `display: none` style
       if (!(target as HTMLElement).offsetParent) continue;
 
       if (target === viewportElement) {
-        rowStore.$update(ACTION_VIEWPORT_RESIZE, contentRect[heightKey]);
-        colStore.$update(ACTION_VIEWPORT_RESIZE, contentRect[widthKey]);
+        rowStore.$update(ACTION_VIEWPORT_RESIZE, height);
+        colStore.$update(ACTION_VIEWPORT_RESIZE, width);
       } else {
         const cell = mountedIndexes.get(target);
         if (cell) {
           const [rowIndex, colIndex] = cell;
           const key = getKey(rowIndex, colIndex);
           const prevSize = sizeCache.get(key);
-          const size: CellSize = [
-            contentRect[heightKey],
-            contentRect[widthKey],
-          ];
+          const size: CellSize = [height, width];
           let rowResized: boolean | undefined;
           let colResized: boolean | undefined;
           if (!prevSize) {
