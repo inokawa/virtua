@@ -92,7 +92,7 @@ export interface VirtualizerHandle {
 /**
  * Props of {@link Virtualizer}.
  */
-export interface VirtualizerProps<T = undefined> {
+export interface VirtualizerProps<T = unknown> {
   /**
    * Elements rendered by this component.
    *
