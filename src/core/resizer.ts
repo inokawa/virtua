@@ -192,16 +192,15 @@ export const createGridResizer = (
           const [rowIndex, colIndex] = cell;
           const key = getKey(rowIndex, colIndex);
           const prevSize = sizeCache.get(key);
-          const size: CellSize = [height, width];
           let rowResized: boolean | undefined;
           let colResized: boolean | undefined;
           if (!prevSize) {
             rowResized = colResized = true;
           } else {
-            if (prevSize[0] !== size[0]) {
+            if (prevSize[0] !== height) {
               rowResized = true;
             }
-            if (prevSize[1] !== size[1]) {
+            if (prevSize[1] !== width) {
               colResized = true;
             }
           }
@@ -212,7 +211,7 @@ export const createGridResizer = (
             resizedCols.add(colIndex);
           }
           if (rowResized || colResized) {
-            sizeCache.set(key, size);
+            sizeCache.set(key, [height, width]);
           }
         }
       }
