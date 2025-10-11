@@ -197,11 +197,13 @@ export const createVirtualStore = (
         }
       }
 
-      if (_scrollDirection !== SCROLL_DOWN) {
-        startIndex -= max(0, overscan);
-      }
-      if (_scrollDirection !== SCROLL_UP) {
-        endIndex += max(0, overscan);
+      if (_scrollMode === SCROLL_BY_NATIVE) {
+        if (_scrollDirection !== SCROLL_DOWN) {
+          startIndex -= max(0, overscan);
+        }
+        if (_scrollDirection !== SCROLL_UP) {
+          endIndex += max(0, overscan);
+        }
       }
       return [max(startIndex, 0), min(endIndex, cache._length - 1)];
     },
