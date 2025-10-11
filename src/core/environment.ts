@@ -30,8 +30,6 @@ export const isRTLDocument = /*#__PURE__*/ once((): boolean => {
 
 /**
  * Currently, all browsers on iOS/iPadOS are WebKit, including WebView.
- * Note: iPadOS 13+ reports as 'MacIntel' to enable desktop sites,
- * so we need to check for touch support to distinguish from real Macs.
  * @internal
  */
 export const isIOSWebKit = /*#__PURE__*/ once((): boolean => {
@@ -39,9 +37,10 @@ export const isIOSWebKit = /*#__PURE__*/ once((): boolean => {
     return true;
   }
   // Modern iPad detection (iPadOS 13+)
-  // iPad reports as 'MacIntel' but has touch support
+  // iPadOS 13+ reports the same userAgent/platform information as macOS, to enable desktop sites.
+  // So we treat devices that have macOS like information but with touch support as iPadOS.
   // https://stackoverflow.com/questions/57776001/how-to-detect-ipad-pro-as-ipad-using-javascript
-  return navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 0;
+  return navigator.platform === "MacIntel" && navigator.maxTouchPoints > 0;
 });
 
 /**
