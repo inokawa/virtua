@@ -152,7 +152,7 @@ export interface VirtualizerProps<T> {
    */
   cache?: CacheSnapshot;
   /**
-   * The offset to the scroll container before virtualizer in pixels. If you put an element before virtualizer, you have to set its height to this prop.
+   * The offset to the scrollable parent before virtualizer in pixels. If you put an element before virtualizer, you have to set its height to this prop.
    */
   startMargin?: number;
   /**
