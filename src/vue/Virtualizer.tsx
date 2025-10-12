@@ -258,7 +258,6 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       const Element = props.as;
       const ItemElement = props.item;
 
-      const [startIndex, endIndex] = range.value;
       const total = totalSize.value;
 
       const items: VNode[] = [];
@@ -283,14 +282,14 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
 
       if (props.keepMounted) {
         const mounted = new Set(props.keepMounted);
-        for (let i = startIndex, j = endIndex; i <= j; i++) {
+        for (let [i, j] = range.value; i <= j; i++) {
           mounted.add(i);
         }
         sort([...mounted]).forEach((index) => {
           items.push(renderItem(index));
         });
       } else {
-        for (let i = startIndex, j = endIndex; i <= j; i++) {
+        for (let [i, j] = range.value; i <= j; i++) {
           items.push(renderItem(i));
         }
       }

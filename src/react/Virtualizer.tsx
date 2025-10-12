@@ -236,7 +236,6 @@ export const Virtualizer = forwardRef<
       store.$getStateVersion
     );
 
-    const [startIndex, endIndex] = store.$getRange();
     const isScrolling = store.$isScrolling();
     const totalSize = store.$getTotalSize();
 
@@ -342,14 +341,14 @@ export const Virtualizer = forwardRef<
 
     if (keepMounted) {
       const mounted = new Set(keepMounted);
-      for (let i = startIndex, j = endIndex; i <= j; i++) {
+      for (let [i, j] = store.$getRange(); i <= j; i++) {
         mounted.add(i);
       }
       sort([...mounted]).forEach((index) => {
         items.push(renderItem(index));
       });
     } else {
-      for (let i = startIndex, j = endIndex; i <= j; i++) {
+      for (let [i, j] = store.$getRange(); i <= j; i++) {
         items.push(renderItem(i));
       }
     }

@@ -169,11 +169,10 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       const Element = props.as;
       const ItemElement = props.item;
 
-      const [startIndex, endIndex] = range.value;
       const total = totalSize.value;
 
       const items: VNode[] = [];
-      for (let i = startIndex, j = endIndex; i <= j; i++) {
+      for (let [i, j] = range.value; i <= j; i++) {
         const e = slots.default({ item: props.data![i]!, index: i })[0]!;
         items.push(
           <ListItem

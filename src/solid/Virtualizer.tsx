@@ -281,13 +281,12 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
       }
     });
-    const [startIndex, endIndex] = range();
     const items: T[] = [];
     const indexes: number[] = [];
 
     if (props.keepMounted) {
       const mounted = new Set(props.keepMounted);
-      for (let i = startIndex, j = endIndex; i <= j; i++) {
+      for (let [i, j] = range(); i <= j; i++) {
         mounted.add(i);
       }
       sort([...mounted]).forEach((index) => {
@@ -295,7 +294,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         indexes.push(index);
       });
     } else {
-      for (let i = startIndex, j = endIndex; i <= j; i++) {
+      for (let [i, j] = range(); i <= j; i++) {
         items.push(props.data[i]!);
         indexes.push(i);
       }

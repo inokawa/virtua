@@ -312,8 +312,6 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       colStore.$getStateVersion
     );
 
-    const [startRowIndex, endRowIndex] = rowStore.$getRange();
-    const [startColIndex, endColIndex] = colStore.$getRange();
     const isVerticalScrolling = rowStore.$isScrolling();
     const isHorizontalScrolling = colStore.$isScrolling();
     const height = getScrollSize(rowStore);
@@ -439,6 +437,9 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         return e;
       };
     }, [children]);
+
+    const [startRowIndex, endRowIndex] = rowStore.$getRange();
+    const [startColIndex, endColIndex] = colStore.$getRange();
 
     const items: ReactElement[] = [];
     for (let rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++) {

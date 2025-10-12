@@ -180,7 +180,6 @@ export const WindowVirtualizer = forwardRef<
       store.$getStateVersion
     );
 
-    const [startIndex, endIndex] = store.$getRange();
     const isScrolling = store.$isScrolling();
     const totalSize = store.$getTotalSize();
 
@@ -242,7 +241,7 @@ export const WindowVirtualizer = forwardRef<
       []
     );
 
-    for (let i = startIndex, j = endIndex; i <= j; i++) {
+    for (let [i, j] = store.$getRange(); i <= j; i++) {
       const e = renderElement(i);
       items.push(
         <ListItem
