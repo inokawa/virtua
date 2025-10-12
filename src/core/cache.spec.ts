@@ -54,7 +54,7 @@ const initCacheWithSizesAndEmptyOffsets = (
   sizes: readonly number[],
   defaultSize: number
 ): Cache => {
-  return initCache(sizes.length, defaultSize, sizes);
+  return initCache(sizes.length, defaultSize, 0, sizes);
 };
 
 const initCacheWithSizesAndOffsets = (
@@ -65,7 +65,7 @@ const initCacheWithSizesAndOffsets = (
   if (sizes.length + 1 !== offsets.length) {
     throw new Error("wrong offsets for sizes");
   }
-  const cache = initCache(sizes.length, defaultSize, sizes);
+  const cache = initCache(sizes.length, defaultSize, 0, sizes);
   return {
     ...cache,
     _computedOffsetIndex: findComputedOffsetIndex(offsets),
@@ -314,7 +314,7 @@ describe("getTotalSize", () => {
       const filledSizes = range(10, () => 20);
       const offsets = [0, 11, 22, 33, -1, -1, -1, -1, -1, -1, -1];
       const cache: Cache = {
-        ...initCache(filledSizes.length, 30, filledSizes),
+        ...initCache(filledSizes.length, 30, 0, filledSizes),
         _computedOffsetIndex: 2,
         _offsets: offsets,
       };
@@ -328,7 +328,7 @@ describe("getTotalSize", () => {
       const filledSizes = range(10, () => 20);
       const offsets = [0, 11, 22, 33, 44, 55, 66, 77, 88, 99, -1];
       const cache: Cache = {
-        ...initCache(filledSizes.length, 30, filledSizes),
+        ...initCache(filledSizes.length, 30, 0, filledSizes),
         _computedOffsetIndex: 9,
         _offsets: offsets,
       };
@@ -816,11 +816,12 @@ describe(estimateDefaultItemSize.name, () => {
 describe(initCache.name, () => {
   it("should create cache", () => {
     const itemLength = 10;
-    const cache = initCache(itemLength, 23);
+    const cache = initCache(itemLength, 23, 0);
     expect(cache).toMatchInlineSnapshot(`
       {
         "_computedOffsetIndex": -1,
         "_defaultItemSize": 23,
+        "_gap": 0,
         "_length": 10,
         "_offsets": [
           -1,
@@ -856,11 +857,12 @@ describe(initCache.name, () => {
 
   it("should restore cache from snapshot", () => {
     const itemLength = 10;
-    const cache = initCache(itemLength, 123, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    const cache = initCache(itemLength, 123, 0, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
     expect(cache).toMatchInlineSnapshot(`
       {
         "_computedOffsetIndex": -1,
         "_defaultItemSize": 123,
+        "_gap": 0,
         "_length": 10,
         "_offsets": [
           -1,
@@ -896,11 +898,12 @@ describe(initCache.name, () => {
 
   it("should restore cache from snapshot which has shorter length", () => {
     const itemLength = 10;
-    const cache = initCache(itemLength, 123, [0, 1, 2, 3, 4]);
+    const cache = initCache(itemLength, 123, 0, [0, 1, 2, 3, 4]);
     expect(cache).toMatchInlineSnapshot(`
       {
         "_computedOffsetIndex": -1,
         "_defaultItemSize": 123,
+        "_gap": 0,
         "_length": 10,
         "_offsets": [
           -1,
@@ -939,12 +942,14 @@ describe(initCache.name, () => {
     const cache = initCache(
       itemLength,
       123,
+      0,
       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     );
     expect(cache).toMatchInlineSnapshot(`
       {
         "_computedOffsetIndex": -1,
         "_defaultItemSize": 123,
+        "_gap": 0,
         "_length": 10,
         "_offsets": [
           -1,
@@ -1015,7 +1020,7 @@ describe(takeCacheSnapshot.name, () => {
 
 describe(updateCacheLength.name, () => {
   it("should recover cache length from 0", () => {
-    const cache = initCache(10, 40);
+    const cache = initCache(10, 40, 0);
     const initialCache = structuredClone(cache);
     updateCacheLength(cache, 0);
     updateCacheLength(cache, 10);
@@ -1023,7 +1028,7 @@ describe(updateCacheLength.name, () => {
   });
 
   it("should increase cache length", () => {
-    const cache = initCache(10, 40);
+    const cache = initCache(10, 40, 0);
     const cloned = structuredClone(cache);
     const res = updateCacheLength(cache, 15, undefined);
     expect(res).toEqual(40 * 5);
@@ -1031,6 +1036,7 @@ describe(updateCacheLength.name, () => {
       {
         "_computedOffsetIndex": -1,
         "_defaultItemSize": 40,
+        "_gap": 0,
         "_length": 15,
         "_offsets": [
           -1,
@@ -1082,6 +1088,7 @@ describe(updateCacheLength.name, () => {
       {
         "_computedOffsetIndex": 10,
         "_defaultItemSize": 40,
+        "_gap": 0,
         "_length": 15,
         "_offsets": [
           0,
@@ -1124,7 +1131,7 @@ describe(updateCacheLength.name, () => {
   });
 
   it("should decrease cache length", () => {
-    const cache = initCache(10, 40);
+    const cache = initCache(10, 40, 0);
     const cloned = structuredClone(cache);
     const res = updateCacheLength(cache, 5, undefined);
     expect(res).toEqual(-(40 * 5));
@@ -1132,6 +1139,7 @@ describe(updateCacheLength.name, () => {
       {
         "_computedOffsetIndex": -1,
         "_defaultItemSize": 40,
+        "_gap": 0,
         "_length": 5,
         "_offsets": [
           -1,
@@ -1163,6 +1171,7 @@ describe(updateCacheLength.name, () => {
       {
         "_computedOffsetIndex": 4,
         "_defaultItemSize": 40,
+        "_gap": 0,
         "_length": 5,
         "_offsets": [
           0,
@@ -1185,7 +1194,7 @@ describe(updateCacheLength.name, () => {
   });
 
   it("should increase cache length with shifting", () => {
-    const cache = initCache(10, 40);
+    const cache = initCache(10, 40, 0);
     const cloned = structuredClone(cache);
     const res = updateCacheLength(cache, 15, true);
     expect(res).toEqual(40 * 5);
@@ -1193,6 +1202,7 @@ describe(updateCacheLength.name, () => {
       {
         "_computedOffsetIndex": -1,
         "_defaultItemSize": 40,
+        "_gap": 0,
         "_length": 15,
         "_offsets": [
           -1,
@@ -1244,6 +1254,7 @@ describe(updateCacheLength.name, () => {
       {
         "_computedOffsetIndex": -1,
         "_defaultItemSize": 40,
+        "_gap": 0,
         "_length": 15,
         "_offsets": [
           0,
@@ -1286,7 +1297,7 @@ describe(updateCacheLength.name, () => {
   });
 
   it("should decrease cache length with shifting", () => {
-    const cache = initCache(10, 40);
+    const cache = initCache(10, 40, 0);
     const cloned = structuredClone(cache);
     const res = updateCacheLength(cache, 5, true);
     expect(res).toEqual(-(40 * 5));
@@ -1294,6 +1305,7 @@ describe(updateCacheLength.name, () => {
       {
         "_computedOffsetIndex": -1,
         "_defaultItemSize": 40,
+        "_gap": 0,
         "_length": 5,
         "_offsets": [
           -1,
@@ -1325,6 +1337,7 @@ describe(updateCacheLength.name, () => {
       {
         "_computedOffsetIndex": -1,
         "_defaultItemSize": 40,
+        "_gap": 0,
         "_length": 5,
         "_offsets": [
           0,

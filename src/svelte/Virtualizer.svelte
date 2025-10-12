@@ -29,6 +29,7 @@
     scrollRef,
     bufferSize,
     itemSize,
+    gap,
     shift = false,
     horizontal = false,
     keepMounted,
@@ -42,6 +43,7 @@
   const store = createVirtualStore(
     data.length,
     itemSize,
+    gap,
     undefined,
     cache,
     !itemSize

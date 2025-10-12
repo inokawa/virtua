@@ -21,6 +21,7 @@ export interface VListProps<T = unknown>
       | "data"
       | "bufferSize"
       | "itemSize"
+      | "gap"
       | "shift"
       | "horizontal"
       | "cache"
@@ -47,6 +48,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       data,
       bufferSize,
       itemSize,
+      gap,
       shift,
       horizontal,
       keepMounted,
@@ -71,6 +73,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
         data={data}
         bufferSize={bufferSize}
         itemSize={itemSize}
+        gap={gap}
         shift={shift}
         horizontal={horizontal}
         keepMounted={keepMounted}

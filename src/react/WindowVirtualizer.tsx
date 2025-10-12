@@ -97,6 +97,11 @@ export interface WindowVirtualizerProps<T = unknown> {
    */
   itemSize?: number;
   /**
+   * The spacing between items in pixels.
+   * @defaultValue 0
+   */
+  gap?: number;
+  /**
    * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
   shift?: boolean;
@@ -147,6 +152,7 @@ export const WindowVirtualizer = forwardRef<
       data,
       bufferSize,
       itemSize,
+      gap,
       shift,
       horizontal: horizontalProp,
       cache,
@@ -174,6 +180,7 @@ export const WindowVirtualizer = forwardRef<
       const _store = createVirtualStore(
         count,
         itemSize,
+        gap,
         ssrCount,
         cache,
         !itemSize
