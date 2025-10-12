@@ -92,7 +92,7 @@ const props = {
    */
   overscan: Number,
   /**
-   * Item size hint for unmeasured items. It will help to reduce scroll jump when items are measured if used properly.
+   * Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
    *
    * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
    * - If set, you can opt out estimation and use the value as initial item size.
@@ -107,7 +107,7 @@ const props = {
    */
   horizontal: Boolean,
   /**
-   * If you put an element before virtualizer, you have to define its height with this prop.
+   * The offset to the scroll container before virtualizer in pixels. If you put an element before virtualizer, you have to set its height to this prop.
    */
   startMargin: { type: Number, default: 0 },
   /**
