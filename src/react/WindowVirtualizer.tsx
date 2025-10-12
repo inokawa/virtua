@@ -156,7 +156,6 @@ export const WindowVirtualizer = forwardRef<
       const _store = createVirtualStore(
         count,
         itemSize,
-        overscan,
         ssrCount,
         cache,
         !itemSize
@@ -241,7 +240,7 @@ export const WindowVirtualizer = forwardRef<
       []
     );
 
-    for (let [i, j] = store.$getRange(); i <= j; i++) {
+    for (let [i, j] = store.$getRange(overscan); i <= j; i++) {
       const e = renderElement(i);
       items.push(
         <ListItem

@@ -96,7 +96,7 @@ export type StateVersion =
 export type VirtualStore = {
   $getStateVersion(): StateVersion;
   $getCacheSnapshot(): CacheSnapshot;
-  $getRange(): ItemsRange;
+  $getRange(overscan?: number): ItemsRange;
   $findStartIndex(): number;
   $findEndIndex(): number;
   $isUnmeasuredItem(index: number): boolean;
@@ -119,7 +119,6 @@ export type VirtualStore = {
 export const createVirtualStore = (
   elementsCount: number,
   itemSize: number = 40,
-  overscan: number = 4,
   ssrCount: number = 0,
   cacheSnapshot?: CacheSnapshot | undefined,
   shouldAutoEstimateItemSize: boolean = false
@@ -180,7 +179,7 @@ export const createVirtualStore = (
     $getCacheSnapshot: () => {
       return takeCacheSnapshot(cache) as unknown as CacheSnapshot;
     },
-    $getRange: () => {
+    $getRange: (overscan = 4) => {
       let startIndex: number;
       let endIndex: number;
       if (_flushedJump) {

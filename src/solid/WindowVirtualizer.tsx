@@ -116,7 +116,6 @@ export const WindowVirtualizer = <T,>(
     ref: _ref,
     data: _data,
     children: _children,
-    overscan,
     itemSize,
     shift: _shift,
     horizontal = false,
@@ -127,7 +126,6 @@ export const WindowVirtualizer = <T,>(
   const store = createVirtualStore(
     props.data.length,
     itemSize,
-    overscan,
     undefined,
     cache,
     !itemSize
@@ -154,7 +152,7 @@ export const WindowVirtualizer = <T,>(
 
   const range = createMemo<ItemsRange>((prev) => {
     stateVersion();
-    const next = store.$getRange();
+    const next = store.$getRange(props.overscan);
     if (prev && isSameRange(prev, next)) {
       return prev;
     }

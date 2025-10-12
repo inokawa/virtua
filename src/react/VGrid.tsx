@@ -277,13 +277,11 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       const _rowStore = createVirtualStore(
         rowCount,
         cellHeight,
-        overscan,
         initialRowCount
       );
       const _colStore = createVirtualStore(
         colCount,
         cellWidth,
-        overscan,
         initialColCount
       );
       return [
@@ -438,8 +436,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       };
     }, [children]);
 
-    const [startRowIndex, endRowIndex] = rowStore.$getRange();
-    const [startColIndex, endColIndex] = colStore.$getRange();
+    const [startRowIndex, endRowIndex] = rowStore.$getRange(overscan);
+    const [startColIndex, endColIndex] = colStore.$getRange(overscan);
 
     const items: ReactElement[] = [];
     for (let rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++) {

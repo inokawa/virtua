@@ -171,7 +171,7 @@ export interface VirtualizerProps<T> {
  */
 export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const { itemSize, horizontal = false, overscan, cache } = props;
+  const { itemSize, horizontal = false, cache } = props;
   props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
     { as: "div" },
     props
@@ -180,7 +180,6 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   const store = createVirtualStore(
     props.data.length,
     itemSize,
-    overscan,
     undefined,
     cache,
     !itemSize
@@ -206,7 +205,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
   const range = createMemo<ItemsRange>((prev) => {
     stateVersion();
-    const next = store.$getRange();
+    const next = store.$getRange(props.overscan);
     if (prev && isSameRange(prev, next)) {
       return prev;
     }

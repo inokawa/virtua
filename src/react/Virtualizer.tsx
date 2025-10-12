@@ -209,7 +209,6 @@ export const Virtualizer = forwardRef<
       const _store = createVirtualStore(
         count,
         itemSize,
-        overscan,
         ssrCount,
         cache,
         !itemSize
@@ -341,14 +340,14 @@ export const Virtualizer = forwardRef<
 
     if (keepMounted) {
       const mounted = new Set(keepMounted);
-      for (let [i, j] = store.$getRange(); i <= j; i++) {
+      for (let [i, j] = store.$getRange(overscan); i <= j; i++) {
         mounted.add(i);
       }
       sort([...mounted]).forEach((index) => {
         items.push(renderItem(index));
       });
     } else {
-      for (let [i, j] = store.$getRange(); i <= j; i++) {
+      for (let [i, j] = store.$getRange(overscan); i <= j; i++) {
         items.push(renderItem(i));
       }
     }

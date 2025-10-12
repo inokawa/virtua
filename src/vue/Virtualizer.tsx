@@ -151,7 +151,6 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     const store = createVirtualStore(
       props.data.length,
       props.itemSize,
-      props.overscan,
       props.ssrCount,
       undefined,
       !props.itemSize
@@ -176,7 +175,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
 
     const range = computed<ItemsRange>((prev) => {
       stateVersion.value;
-      const next = store.$getRange();
+      const next = store.$getRange(props.overscan);
       if (prev && isSameRange(prev, next)) {
         return prev;
       }

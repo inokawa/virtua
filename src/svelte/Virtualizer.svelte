@@ -41,7 +41,6 @@
   const store = createVirtualStore(
     data.length,
     itemSize,
-    overscan,
     undefined,
     undefined,
     !itemSize
@@ -65,7 +64,7 @@
 
   let stateVersion: StateVersion = $state(store.$getStateVersion());
 
-  let range = $derived(stateVersion && store.$getRange());
+  let range = $derived(stateVersion && store.$getRange(overscan));
   let isScrolling = $derived(stateVersion && store.$isScrolling());
   let totalSize = $derived(stateVersion && store.$getTotalSize());
 
