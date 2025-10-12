@@ -121,7 +121,7 @@ export interface WindowVirtualizerProps<T = unknown> {
  */
 export const WindowVirtualizer = forwardRef<
   WindowVirtualizerHandle,
-  WindowVirtualizerProps<unknown>
+  WindowVirtualizerProps
 >(
   (
     {
