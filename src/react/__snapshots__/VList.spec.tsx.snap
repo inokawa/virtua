@@ -474,6 +474,54 @@ exports[`should pass index to items 1`] = `
 </DocumentFragment>
 `;
 
+exports[`should render with gap 1`] = `
+<DocumentFragment>
+  <div
+    style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
+  >
+    <div
+      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 290px;"
+    >
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+      >
+        <div>
+          0
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 60px; visibility: visible;"
+      >
+        <div>
+          1
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 120px; visibility: visible;"
+      >
+        <div>
+          2
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 180px; visibility: visible;"
+      >
+        <div>
+          3
+        </div>
+      </div>
+      <div
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 240px; visibility: visible;"
+      >
+        <div>
+          4
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
 exports[`should render with keepMounted 1`] = `
 <DocumentFragment>
   <div

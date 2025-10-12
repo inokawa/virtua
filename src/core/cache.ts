@@ -19,6 +19,7 @@ export type Cache = {
   // offsets
   readonly _computedOffsetIndex: number;
   readonly _offsets: number[];
+  readonly _gap: number;
 };
 
 const fill = (array: number[], length: number, prepend?: boolean): number[] => {
@@ -73,7 +74,7 @@ export const computeOffset = (
   let i = cache._computedOffsetIndex;
   let top = cache._offsets[i]!;
   while (i < index) {
-    top += getItemSize(cache, i);
+    top += getItemSize(cache, i) + cache._gap;
     cache._offsets[++i] = top;
   }
   // mark as measured
@@ -188,6 +189,7 @@ export const estimateDefaultItemSize = (
 export const initCache = (
   length: number,
   itemSize: number,
+  gap: number,
   snapshot?: InternalCacheSnapshot
 ): Cache => {
   return {
@@ -203,6 +205,7 @@ export const initCache = (
     _length: length,
     _computedOffsetIndex: -1,
     _offsets: fill([], length),
+    _gap: gap,
   };
 };
 

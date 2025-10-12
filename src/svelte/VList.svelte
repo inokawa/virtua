@@ -10,6 +10,7 @@
     getKey,
     bufferSize,
     itemSize,
+    gap,
     shift,
     horizontal,
     keepMounted,
@@ -73,6 +74,7 @@
     {getKey}
     {bufferSize}
     {itemSize}
+    {gap}
     {shift}
     {horizontal}
     {keepMounted}

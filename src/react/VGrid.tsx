@@ -277,11 +277,13 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       const _rowStore = createVirtualStore(
         rowCount,
         cellHeight,
+        undefined, // TODO
         initialRowCount
       );
       const _colStore = createVirtualStore(
         colCount,
         cellWidth,
+        undefined, // TODO
         initialColCount
       );
       return [

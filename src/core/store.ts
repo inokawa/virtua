@@ -120,6 +120,7 @@ export type VirtualStore = {
 export const createVirtualStore = (
   elementsCount: number,
   itemSize: number = 40,
+  gap: number = 0,
   ssrCount: number = 0,
   cacheSnapshot?: CacheSnapshot | undefined,
   shouldAutoEstimateItemSize: boolean = false
@@ -141,6 +142,7 @@ export const createVirtualStore = (
   const cache = initCache(
     elementsCount,
     itemSize,
+    gap,
     cacheSnapshot as unknown as InternalCacheSnapshot | undefined
   );
   const subscribers = new Set<[number, Subscriber]>();
