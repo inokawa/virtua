@@ -158,6 +158,9 @@ export const createVirtualStore = (
   const getItemSize = (index: number): number => {
     return _getItemSize(cache, index);
   };
+  const isSizeEqual = (index: number, value: number = UNCACHED): boolean => {
+    return cache._sizes[index] === value;
+  };
 
   const applyJump = (j: number) => {
     if (j) {
@@ -207,7 +210,7 @@ export const createVirtualStore = (
     },
     $findStartIndex: () => findIndex(cache, getVisibleOffset()),
     $findEndIndex: () => findIndex(cache, getVisibleOffset() + viewportSize),
-    $isUnmeasuredItem: (index) => cache._sizes[index] === UNCACHED,
+    $isUnmeasuredItem: isSizeEqual,
     $getItemOffset: getItemOffset,
     $getItemSize: getItemSize,
     $getItemsLength: () => cache._length,
@@ -302,7 +305,7 @@ export const createVirtualStore = (
         }
         case ACTION_ITEM_RESIZE: {
           const updated = payload.filter(
-            ([index, size]) => cache._sizes[index] !== size
+            ([index, size]) => !isSizeEqual(index, size)
           );
 
           // Skip if all items are cached and not updated
