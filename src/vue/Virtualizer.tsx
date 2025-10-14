@@ -26,7 +26,6 @@ import {
   createScroller,
   ItemsRange,
   ScrollToIndexOpts,
-  microtask,
   sort,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
@@ -192,7 +191,8 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     onMounted(() => {
       isSSR = false;
 
-      microtask(() => {
+      // https://github.com/inokawa/virtua/issues/784
+      const raf = requestAnimationFrame(() => {
         const assignScrollableElement = (e: HTMLElement) => {
           resizer.$observeRoot(e);
           scroller.$observe(e);
@@ -203,6 +203,10 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
         } else {
           assignScrollableElement(containerRef.value!.parentElement!);
         }
+      });
+
+      onUnmounted(() => {
+        cancelAnimationFrame(raf);
       });
     });
     onUnmounted(() => {
