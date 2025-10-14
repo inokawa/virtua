@@ -191,6 +191,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     onMounted(() => {
       isSSR = false;
 
+      // https://github.com/inokawa/virtua/issues/784
       const raf = requestAnimationFrame(() => {
         const assignScrollableElement = (e: HTMLElement) => {
           resizer.$observeRoot(e);
