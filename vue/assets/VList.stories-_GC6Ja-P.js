@@ -1,0 +1,29 @@
+import{d as C,r as p,c as I,i as N,a as V,w,u as v,o as u,b as h,n as B,t as _,e as d,f as O,g as T,v as A}from"./iframe-C61NK6hC.js";import{V as D}from"./Virtualizer-DoEf6lL5.js";import{_ as E}from"./_plugin-vue_export-helper-DaQdyx7J.js";import"./preload-helper-PPVm8Dsz.js";function G(o){return typeof o=="function"||Object.prototype.toString.call(o)==="[object Object]"&&!N(o)}const H={data:{type:Array,required:!0},overscan:Number,itemSize:Number,shift:Boolean,horizontal:Boolean,ssrCount:Number,itemProps:Function,keepMounted:Array},S=C({props:H,emits:["scroll","scrollEnd"],setup(o,{emit:i,expose:l,slots:n}){const r=o.horizontal,a=t=>{i("scroll",t)},s=()=>{i("scrollEnd")},e=p();return l({get scrollOffset(){return e.value.scrollOffset},get scrollSize(){return e.value.scrollSize},get viewportSize(){return e.value.viewportSize},findStartIndex:(...t)=>e.value.findStartIndex(...t),findEndIndex:(...t)=>e.value.findEndIndex(...t),getItemOffset:(...t)=>e.value.getItemOffset(...t),getItemSize:(...t)=>e.value.getItemSize(...t),scrollToIndex:(...t)=>e.value.scrollToIndex(...t),scrollTo:(...t)=>e.value.scrollTo(...t),scrollBy:(...t)=>e.value.scrollBy(...t)}),()=>I("div",{style:{display:r?"inline-block":"block",[r?"overflowX":"overflowY"]:"auto",contain:"strict",width:"100%",height:"100%"}},[I(D,{ref:e,data:o.data,overscan:o.overscan,itemSize:o.itemSize,itemProps:o.itemProps,shift:o.shift,ssrCount:o.ssrCount,horizontal:r,keepMounted:o.keepMounted,onScroll:a,onScrollEnd:s},G(n)?n:{default:()=>[n],_:2},8,["data","overscan","itemSize","itemProps","shift","ssrCount","horizontal","keepMounted","onScroll","onScrollEnd"])],4)}}),M=C({__name:"Default",setup(o){const i=[20,40,180,77],l=Array.from({length:1e3}).map((n,r)=>i[r%4]);return(n,r)=>(u(),V(v(S),{data:v(l),style:{height:"100vh"}},{default:w(({item:a,index:s})=>[(u(),h("div",{key:s,style:B({height:a+"px",background:"white",borderBottom:"solid 1px #ccc"})},_(s),5))]),_:1},8,["data"]))}}),P=E(M,[["__scopeId","data-v-34d8090d"]]),$={style:{padding:"10px"}},j=C({__name:"Horizontal",setup(o){const i=[40,180,77],l=Array.from({length:1e3}).map((n,r)=>i[r%3]);return(n,r)=>(u(),h("div",$,[I(v(S),{data:v(l),style:{width:"100%",height:"200px"},horizontal:""},{default:w(({item:a,index:s})=>[(u(),h("div",{key:s,style:B({width:a+"px",background:"white",borderRight:"solid 1px #ccc"})},_(s),5))]),_:1},8,["data"])]))}}),R=E(j,[["__scopeId","data-v-68133a37"]]),L={style:{height:"100%",display:"flex","flex-direction":"column"}},q=["value"],F=C({__name:"Controlls",setup(o){const i=[20,40,180,77],l=m=>({index:m,height:i[m%4]+"px"}),n=p(Array.from({length:1e3}).map((m,f)=>l(f))),r=p(0),a=p(!1),s=p(567),e=p(!1),t=p(),y=()=>{t.value?.scrollToIndex(s.value)},g=()=>{const m=Array.from({length:100}).map((f,c)=>l(c+n.value.length));n.value=e.value?[...m,...n.value]:[...n.value,...m]};return(m,f)=>(u(),h("div",L,[d("div",null,"offset: "+_(r.value),1),d("div",null,"scrolling: "+_(a.value),1),d("div",null,[d("input",{type:"number",value:s.value,onInput:f[0]||(f[0]=c=>{s.value=Number(c.target.value)})},null,40,q),d("button",{onClick:y},"scrollToIndex")]),d("div",null,[d("button",{onClick:g},"append"),d("label",null,[O(d("input",{type:"checkbox","onUpdate:modelValue":f[1]||(f[1]=c=>e.value=c)},null,512),[[A,e.value]]),T(" prepend")])]),I(v(S),{ref_key:"handle",ref:t,data:n.value,shift:e.value,onScroll:c=>{r.value=c,a.value=!0},onScrollEnd:()=>{a.value=!1}},{default:w(({item:c})=>[(u(),h("div",{key:c.index,style:B({height:c.height,background:"white",borderBottom:"solid 1px #ccc"})},_(c.index),5))]),_:1},8,["data","shift","onScroll","onScrollEnd"])]))}}),U=E(F,[["__scopeId","data-v-1c73bd19"]]),X=C({__name:"StickyGroup",setup(o){const i=[20,40,180,77],l=p(0),n=Array.from({length:1e3}).map((e,t)=>i[t%4]),r=({index:e})=>e%100===0?{style:{...l.value===e?{position:"sticky",top:0}:{},zIndex:1}}:{},a=p();function s(){if(!a.value)return;const e=a.value.findStartIndex(),t=[0,100,200,300,400,500,600,700,800,900].reverse().find(y=>e>=y);l.value=t}return(e,t)=>(u(),V(v(S),{ref_key:"listRef",ref:a,data:v(n),style:{height:"100vh"},"item-props":r,"keep-mounted":[l.value],onScroll:s},{default:w(({item:y,index:g})=>[(u(),h("div",{key:g,style:B({height:y+"px",background:"white",borderBottom:"solid 1px #ccc",...g%100===0?{background:"yellow"}:{}})},_(g),5))]),_:1},8,["data","keep-mounted"]))}}),Y=E(X,[["__scopeId","data-v-abe236ee"]]),Z={component:S},k={render:()=>({components:{Component:P},template:"<Component />"})},x={render:()=>({components:{Component:R},template:"<Component />"})},b={render:()=>({components:{Component:U},template:"<Component />"})},z={render:()=>({components:{Component:Y},template:"<Component />"})};k.parameters={...k.parameters,docs:{...k.parameters?.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: DefaultComponent
+    },
+    template: "<Component />"
+  })
+}`,...k.parameters?.docs?.source}}};x.parameters={...x.parameters,docs:{...x.parameters?.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: HorizontalComponent
+    },
+    template: "<Component />"
+  })
+}`,...x.parameters?.docs?.source}}};b.parameters={...b.parameters,docs:{...b.parameters?.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: ControllsComponent
+    },
+    template: "<Component />"
+  })
+}`,...b.parameters?.docs?.source}}};z.parameters={...z.parameters,docs:{...z.parameters?.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: StickyGroupComponent
+    },
+    template: "<Component />"
+  })
+}`,...z.parameters?.docs?.source}}};const ee=["Default","Horizontal","Controlls","StickyGroup"];export{b as Controlls,k as Default,x as Horizontal,z as StickyGroup,ee as __namedExportsOrder,Z as default};
