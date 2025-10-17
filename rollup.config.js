@@ -7,8 +7,7 @@ import path from "node:path";
 import { globSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import pkg from "./package.json" with { type: "json" };
-import vueJsx from "unplugin-vue-jsx/rollup";
-import vueVNodePlugin from "./scripts/babel-plugin-annotate-vue-vnode.js";
+import vue from "unplugin-vue/rollup";
 import { coreTsNoCheck } from "./scripts/rollup-plugin-core-ts-nocheck.js";
 
 const external = (id) =>
@@ -86,17 +85,14 @@ export default [
       },
     ],
     plugins: [
+      vue({ isProduction: true }),
       typescript({
         tsconfig: "./tsconfig.json",
         outDir: ".",
         // declaration: true,
         exclude: ["**/*.{spec,stories}.*"],
       }),
-      vueJsx({ optimize: true }),
-      getBabelOutputPlugin({
-        plugins: [vueVNodePlugin],
-      }),
-      terserPlugin({ vue: true }),
+      // terserPlugin({ vue: true }),
     ],
     external,
   },

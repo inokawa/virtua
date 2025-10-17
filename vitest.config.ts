@@ -2,7 +2,7 @@ import { defineConfig } from "vitest/config";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
-import vueJsx from "@vitejs/plugin-vue-jsx";
+import vue from "@vitejs/plugin-vue";
 import solid from "vite-plugin-solid";
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 
@@ -29,7 +29,7 @@ export default defineConfig({
         },
       },
       {
-        plugins: [vueJsx()],
+        plugins: [vue()],
         test: {
           name: "vue",
           dir: "src/vue",

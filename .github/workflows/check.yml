@@ -61,6 +61,7 @@ jobs:
           cache: "npm"
 
       - run: npm ci
+      - run: npm run check:vue
       - name: Install Playwright Browsers
         run: npx playwright install chromium --with-deps
       - name: Smoke test stories

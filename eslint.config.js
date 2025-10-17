@@ -104,7 +104,7 @@ export default [
   ].map((c) => ({
     //  https://github.com/vuejs/vue-eslint-parser/issues/232
     ...c,
-    files: ["src/vue/**/*.{js,jsx,ts,tsx}"],
+    files: ["src/vue/**/*.{js,ts,vue}"],
     languageOptions,
   })),
   {

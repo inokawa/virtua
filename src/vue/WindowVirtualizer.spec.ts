@@ -1,7 +1,7 @@
 import { it, expect, describe, vi, afterEach } from "vitest";
 import { defineComponent, h } from "vue";
 import { render as _render, cleanup } from "@testing-library/vue";
-import { WindowVirtualizer } from "./WindowVirtualizer.js";
+import { WindowVirtualizer } from "./WindowVirtualizer.vue";
 import { setupResizeJsDom } from "../../scripts/spec.js";
 
 setupResizeJsDom({

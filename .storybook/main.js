@@ -12,10 +12,9 @@ export default process.env.STORYBOOK_VUE
     },
     viteFinal: async (config) => {
       const { default: vue } = await import("@vitejs/plugin-vue");
-      const { default: vueJsx } = await import("@vitejs/plugin-vue-jsx");
 
       return mergeConfig(config, {
-        plugins: [vue(), vueJsx({ optimize: true })],
+        plugins: [vue()],
       });
     },
   }

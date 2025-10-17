@@ -219,7 +219,7 @@ export default async () => {
 
 ### Vue
 
-`vue >= 3.2` is required.
+`vue >= 3.3` is required.
 
 ```vue
 <script setup>
