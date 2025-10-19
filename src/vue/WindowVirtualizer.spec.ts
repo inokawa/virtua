@@ -89,7 +89,7 @@ describe("vertical", () => {
         default: ({ item: data }: any) => h("div", { key: data }, data),
       },
     });
-    expect(wrapper.baseElement).toMatchSnapshot();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("should render component", () => {
@@ -174,7 +174,7 @@ describe("horizontal", () => {
         default: ({ item: data }: any) => h("div", { key: data }, data),
       },
     });
-    expect(wrapper.baseElement).toMatchSnapshot();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("should render component", () => {
