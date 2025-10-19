@@ -1,7 +1,8 @@
-import { afterEach, it, expect, vi } from "vitest";
-import { render as _render, cleanup } from "@testing-library/react";
+import { afterEach, it, expect } from "vitest";
+import { cleanup } from "@testing-library/react";
 import { Virtualizer } from "./Virtualizer.js";
 import { setupResizeJsDom } from "../../scripts/spec.js";
+import { render } from "../../scripts/spec-react.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -11,12 +12,6 @@ setupResizeJsDom({
   itemSize: { width: ITEM_WIDTH, height: ITEM_HEIGHT },
   viewportSize: { width: ITEM_WIDTH, height: VIEWPORT_HEIGHT },
 });
-
-const render = (...args: Parameters<typeof _render>) => {
-  const res = _render(...args);
-  vi.runAllTicks();
-  return res;
-};
 
 afterEach(cleanup);
 

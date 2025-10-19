@@ -1,20 +1,15 @@
-import { it, expect, describe, vi, afterEach } from "vitest";
+import { it, expect, describe, afterEach } from "vitest";
 import { defineComponent, h } from "vue";
-import { render as _render, cleanup } from "@testing-library/vue";
+import { cleanup } from "@testing-library/vue";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
 import { setupResizeJsDom } from "../../scripts/spec.js";
+import { render } from "../../scripts/spec-vue.js";
 
 setupResizeJsDom({
   itemSize: { width: 100, height: 50 },
 });
 
 const range = (length: number) => Array.from({ length }).map((_, i) => i);
-
-const render = (...args: Parameters<typeof _render>) => {
-  const res = _render(...args);
-  vi.runAllTicks();
-  return res;
-};
 
 afterEach(cleanup);
 

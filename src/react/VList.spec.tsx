@@ -1,9 +1,10 @@
-import { afterEach, it, expect, describe, vitest, vi } from "vitest";
-import { render as _render, cleanup } from "@testing-library/react";
+import { afterEach, it, expect, describe, vi } from "vitest";
+import { cleanup } from "@testing-library/react";
 import { VList } from "./VList.js";
 import { Profiler, forwardRef } from "react";
 import { CustomItemComponentProps } from "./types.js";
 import { setupResizeJsDom } from "../../scripts/spec.js";
+import { render } from "../../scripts/spec-react.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -13,12 +14,6 @@ setupResizeJsDom({
   itemSize: { width: ITEM_WIDTH, height: ITEM_HEIGHT },
   viewportSize: { width: ITEM_WIDTH, height: VIEWPORT_HEIGHT },
 });
-
-const render = (...args: Parameters<typeof _render>) => {
-  const res = _render(...args);
-  vi.runAllTicks();
-  return res;
-};
 
 afterEach(cleanup);
 
@@ -330,9 +325,9 @@ describe("reverse", () => {
 
 describe("render count", () => {
   it("should render on mount", () => {
-    const rootFn = vitest.fn();
+    const rootFn = vi.fn();
     const itemCount = 4;
-    const itemFns = Array.from({ length: itemCount }, (_) => vitest.fn());
+    const itemFns = Array.from({ length: itemCount }, (_) => vi.fn());
 
     render(
       <Profiler id="root" onRender={rootFn}>
@@ -356,9 +351,9 @@ describe("render count", () => {
   });
 
   it("should render on mount many items", () => {
-    const rootFn = vitest.fn();
+    const rootFn = vi.fn();
     const itemCount = 100;
-    const itemFns = Array.from({ length: itemCount }, (_) => vitest.fn());
+    const itemFns = Array.from({ length: itemCount }, (_) => vi.fn());
 
     render(
       <Profiler id="root" onRender={rootFn}>
@@ -389,10 +384,10 @@ describe("render count", () => {
   //       f(...args);
   //     };
   //   };
-  //   const rootFn = vitest.fn();
+  //   const rootFn = vi.fn();
 
   //   const itemCount = 4;
-  //   const itemFns = Array.from({ length: itemCount }, (_) => vitest.fn());
+  //   const itemFns = Array.from({ length: itemCount }, (_) => vi.fn());
 
   //   const Mounter = ({
   //     children,
@@ -444,10 +439,10 @@ describe("render count", () => {
   //       f(...args);
   //     };
   //   };
-  //   const rootFn = vitest.fn();
+  //   const rootFn = vi.fn();
 
   //   const itemCount = 100;
-  //   const itemFns = Array.from({ length: itemCount }, (_) => vitest.fn());
+  //   const itemFns = Array.from({ length: itemCount }, (_) => vi.fn());
 
   //   const Mounter = ({
   //     children,

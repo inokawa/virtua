@@ -1,11 +1,12 @@
 /**
  * @jsxImportSource solid-js
  */
-import { it, expect, describe, afterEach, vi } from "vitest";
-import { render as _render, cleanup } from "@solidjs/testing-library";
+import { it, expect, describe, afterEach } from "vitest";
+import { cleanup } from "@solidjs/testing-library";
 import { VList } from "./VList.js";
 import { setupResizeJsDom } from "../../scripts/spec.js";
 import { type JSX } from "solid-js";
+import { render } from "../../scripts/spec-solid.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -17,12 +18,6 @@ setupResizeJsDom({
 });
 
 const range = (length: number) => Array.from({ length }).map((_, i) => i);
-
-const render = (...args: Parameters<typeof _render>) => {
-  const res = _render(...args);
-  vi.runAllTicks();
-  return res;
-};
 
 afterEach(cleanup);
 

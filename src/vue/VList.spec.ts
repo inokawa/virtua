@@ -1,8 +1,9 @@
-import { it, expect, describe, vi, afterEach } from "vitest";
+import { it, expect, describe, afterEach } from "vitest";
 import { defineComponent, h } from "vue";
-import { render as _render, cleanup } from "@testing-library/vue";
+import { cleanup } from "@testing-library/vue";
 import { VList } from "./VList.js";
 import { setupResizeJsDom } from "../../scripts/spec.js";
+import { render } from "../../scripts/spec-vue.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -14,12 +15,6 @@ setupResizeJsDom({
 });
 
 const range = (length: number) => Array.from({ length }).map((_, i) => i);
-
-const render = (...args: Parameters<typeof _render>) => {
-  const res = _render(...args);
-  vi.runAllTicks();
-  return res;
-};
 
 afterEach(cleanup);
 

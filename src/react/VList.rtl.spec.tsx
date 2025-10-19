@@ -1,7 +1,8 @@
-import { afterEach, it, expect, describe, vi } from "vitest";
-import { render as _render, cleanup } from "@testing-library/react";
+import { afterEach, it, expect, describe } from "vitest";
+import { cleanup } from "@testing-library/react";
 import { VList } from "./VList.js";
 import { setupResizeJsDom } from "../../scripts/spec.js";
+import { render } from "../../scripts/spec-react.js";
 
 Object.defineProperty(CSSStyleDeclaration.prototype, "direction", {
   get() {
@@ -17,12 +18,6 @@ setupResizeJsDom({
   itemSize: { width: ITEM_WIDTH, height: ITEM_HEIGHT },
   viewportSize: { width: ITEM_WIDTH, height: VIEWPORT_HEIGHT },
 });
-
-const render = (...args: Parameters<typeof _render>) => {
-  const res = _render(...args);
-  vi.runAllTicks();
-  return res;
-};
 
 afterEach(cleanup);
 
