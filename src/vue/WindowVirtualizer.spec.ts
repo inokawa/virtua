@@ -13,8 +13,8 @@ const range = (length: number) => Array.from({ length }).map((_, i) => i);
 
 afterEach(cleanup);
 
-it("should pass attributes to element", () => {
-  const wrapper = render(WindowVirtualizer, {
+it("should pass attributes to element", async () => {
+  const wrapper = await render(WindowVirtualizer, {
     props: {
       data: range(1),
     },
@@ -31,9 +31,9 @@ it("should pass attributes to element", () => {
   expect(wrapper.html()).toMatchSnapshot();
 });
 
-describe("vertical", () => {
-  it("should render 0 children", () => {
-    const wrapper = render(WindowVirtualizer, {
+describe("vertical", async () => {
+  it("should render 0 children", async () => {
+    const wrapper = await render(WindowVirtualizer, {
       props: {
         data: [],
       },
@@ -44,8 +44,8 @@ describe("vertical", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 1 children", () => {
-    const wrapper = render(WindowVirtualizer, {
+  it("should render 1 children", async () => {
+    const wrapper = await render(WindowVirtualizer, {
       props: {
         data: range(1),
       },
@@ -56,8 +56,8 @@ describe("vertical", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 5 children", () => {
-    const wrapper = render(WindowVirtualizer, {
+  it("should render 5 children", async () => {
+    const wrapper = await render(WindowVirtualizer, {
       props: {
         data: range(5),
       },
@@ -68,8 +68,8 @@ describe("vertical", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 100 children", () => {
-    const wrapper = render(WindowVirtualizer, {
+  it("should render 100 children", async () => {
+    const wrapper = await render(WindowVirtualizer, {
       props: {
         data: range(100),
       },
@@ -80,8 +80,8 @@ describe("vertical", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 10000 children", () => {
-    const wrapper = render(WindowVirtualizer, {
+  it("should render 10000 children", async () => {
+    const wrapper = await render(WindowVirtualizer, {
       props: {
         data: range(10000),
       },
@@ -92,7 +92,7 @@ describe("vertical", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render component", () => {
+  it("should render component", async () => {
     const Comp = defineComponent({
       props: ["data"],
       setup(props) {
@@ -101,7 +101,7 @@ describe("vertical", () => {
         };
       },
     });
-    const wrapper = render(WindowVirtualizer, {
+    const wrapper = await render(WindowVirtualizer, {
       props: {
         data: range(3),
       },
@@ -111,9 +111,9 @@ describe("vertical", () => {
   });
 });
 
-describe("horizontal", () => {
-  it("should render 0 children", () => {
-    const wrapper = render(WindowVirtualizer, {
+describe("horizontal", async () => {
+  it("should render 0 children", async () => {
+    const wrapper = await render(WindowVirtualizer, {
       props: {
         data: [],
         horizontal: true,
@@ -125,8 +125,8 @@ describe("horizontal", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 1 children", () => {
-    const wrapper = render(WindowVirtualizer, {
+  it("should render 1 children", async () => {
+    const wrapper = await render(WindowVirtualizer, {
       props: {
         data: range(1),
         horizontal: true,
@@ -138,8 +138,8 @@ describe("horizontal", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 5 children", () => {
-    const wrapper = render(WindowVirtualizer, {
+  it("should render 5 children", async () => {
+    const wrapper = await render(WindowVirtualizer, {
       props: {
         data: range(5),
         horizontal: true,
@@ -151,8 +151,8 @@ describe("horizontal", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 100 children", () => {
-    const wrapper = render(WindowVirtualizer, {
+  it("should render 100 children", async () => {
+    const wrapper = await render(WindowVirtualizer, {
       props: {
         data: range(100),
         horizontal: true,
@@ -164,8 +164,8 @@ describe("horizontal", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 10000 children", () => {
-    const wrapper = render(WindowVirtualizer, {
+  it("should render 10000 children", async () => {
+    const wrapper = await render(WindowVirtualizer, {
       props: {
         data: range(10000),
         horizontal: true,
@@ -177,7 +177,7 @@ describe("horizontal", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render component", () => {
+  it("should render component", async () => {
     const Comp = defineComponent({
       props: ["data"],
       setup(props) {
@@ -186,7 +186,7 @@ describe("horizontal", () => {
         };
       },
     });
-    const wrapper = render(WindowVirtualizer, {
+    const wrapper = await render(WindowVirtualizer, {
       props: {
         data: range(3),
         horizontal: true,

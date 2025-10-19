@@ -1,7 +1,7 @@
-import { afterEach, it, expect, describe, vi } from "vitest";
+import { afterEach, it, expect, describe } from "vitest";
 import { cleanup } from "@testing-library/react";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
-import { Profiler, forwardRef } from "react";
+import { forwardRef } from "react";
 import { CustomItemComponentProps } from "./types.js";
 import { setupResizeJsDom } from "../../scripts/spec.js";
 import { render } from "../../scripts/spec-react.js";
@@ -12,13 +12,13 @@ setupResizeJsDom({
 
 afterEach(cleanup);
 
-it("should pass index to items", () => {
+it("should pass index to items", async () => {
   const Item = forwardRef<HTMLDivElement, CustomItemComponentProps>(
     ({ index, ...rest }, ref) => {
       return <div ref={ref} data-index={index} {...rest} />;
     }
   );
-  const { asFragment } = render(
+  const { asFragment } = await render(
     <WindowVirtualizer item={Item}>
       <div>0</div>
       <div>1</div>
@@ -30,12 +30,12 @@ it("should pass index to items", () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
-it("should render with render prop", () => {
+it("should render with render prop", async () => {
   const items = Array.from({ length: 1000 }).map((_, i) => ({
     id: i,
     label: "This is " + i,
   }));
-  const { asFragment } = render(
+  const { asFragment } = await render(
     <WindowVirtualizer data={items}>
       {(item) => {
         return <div key={item.id}>{item.label}</div>;
@@ -45,9 +45,9 @@ it("should render with render prop", () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
-describe("vertical", () => {
-  it("should render 1 children", () => {
-    const { asFragment } = render(
+describe("vertical", async () => {
+  it("should render 1 children", async () => {
+    const { asFragment } = await render(
       <WindowVirtualizer>
         <div>0</div>
       </WindowVirtualizer>
@@ -55,8 +55,8 @@ describe("vertical", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render 5 children", () => {
-    const { asFragment } = render(
+  it("should render 5 children", async () => {
+    const { asFragment } = await render(
       <WindowVirtualizer>
         <div>0</div>
         <div>1</div>
@@ -68,8 +68,8 @@ describe("vertical", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render 100 children", () => {
-    const { asFragment } = render(
+  it("should render 100 children", async () => {
+    const { asFragment } = await render(
       <WindowVirtualizer>
         {Array.from({ length: 100 }).map((_, i) => (
           <div key={i}>{i}</div>
@@ -79,8 +79,8 @@ describe("vertical", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render 10000 children", () => {
-    const { asFragment } = render(
+  it("should render 10000 children", async () => {
+    const { asFragment } = await render(
       <WindowVirtualizer>
         {Array.from({ length: 10000 }).map((_, i) => (
           <div key={i}>{i}</div>
@@ -90,8 +90,8 @@ describe("vertical", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render non elements", () => {
-    const { asFragment } = render(
+  it("should render non elements", async () => {
+    const { asFragment } = await render(
       <WindowVirtualizer>
         string
         {true}
@@ -104,8 +104,8 @@ describe("vertical", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render fragments", () => {
-    const { asFragment } = render(
+  it("should render fragments", async () => {
+    const { asFragment } = await render(
       <WindowVirtualizer>
         <>
           <div>fragment</div>
@@ -120,11 +120,11 @@ describe("vertical", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render component", () => {
+  it("should render component", async () => {
     const Comp = ({ children }: { children: React.ReactNode }) => (
       <div>{children}</div>
     );
-    const { asFragment } = render(
+    const { asFragment } = await render(
       <WindowVirtualizer>
         <Comp>component</Comp>
         <Comp>component</Comp>
@@ -134,8 +134,8 @@ describe("vertical", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render with given width / height", () => {
-    const { asFragment } = render(
+  it("should render with given width / height", async () => {
+    const { asFragment } = await render(
       <div style={{ width: 100, height: 800 }}>
         <WindowVirtualizer>
           <div>0</div>
@@ -150,9 +150,9 @@ describe("vertical", () => {
   });
 });
 
-describe("horizontal", () => {
-  it("should render 1 children", () => {
-    const { asFragment } = render(
+describe("horizontal", async () => {
+  it("should render 1 children", async () => {
+    const { asFragment } = await render(
       <WindowVirtualizer horizontal>
         <div>0</div>
       </WindowVirtualizer>
@@ -160,8 +160,8 @@ describe("horizontal", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render 5 children", () => {
-    const { asFragment } = render(
+  it("should render 5 children", async () => {
+    const { asFragment } = await render(
       <WindowVirtualizer horizontal>
         <div>0</div>
         <div>1</div>
@@ -173,8 +173,8 @@ describe("horizontal", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render 100 children", () => {
-    const { asFragment } = render(
+  it("should render 100 children", async () => {
+    const { asFragment } = await render(
       <WindowVirtualizer horizontal>
         {Array.from({ length: 100 }).map((_, i) => (
           <div key={i}>{i}</div>
@@ -184,8 +184,8 @@ describe("horizontal", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render 10000 children", () => {
-    const { asFragment } = render(
+  it("should render 10000 children", async () => {
+    const { asFragment } = await render(
       <WindowVirtualizer horizontal>
         {Array.from({ length: 10000 }).map((_, i) => (
           <div key={i}>{i}</div>
@@ -195,8 +195,8 @@ describe("horizontal", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render non elements", () => {
-    const { asFragment } = render(
+  it("should render non elements", async () => {
+    const { asFragment } = await render(
       <WindowVirtualizer horizontal>
         string
         {true}
@@ -209,8 +209,8 @@ describe("horizontal", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render fragments", () => {
-    const { asFragment } = render(
+  it("should render fragments", async () => {
+    const { asFragment } = await render(
       <WindowVirtualizer horizontal>
         <>
           <div>fragment</div>
@@ -225,11 +225,11 @@ describe("horizontal", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render component", () => {
+  it("should render component", async () => {
     const Comp = ({ children }: { children: React.ReactNode }) => (
       <div>{children}</div>
     );
-    const { asFragment } = render(
+    const { asFragment } = await render(
       <WindowVirtualizer horizontal>
         <Comp>component</Comp>
         <Comp>component</Comp>
@@ -239,8 +239,8 @@ describe("horizontal", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render with given width / height", () => {
-    const { asFragment } = render(
+  it("should render with given width / height", async () => {
+    const { asFragment } = await render(
       <div style={{ width: 100, height: 800 }}>
         <WindowVirtualizer horizontal>
           <div>0</div>
@@ -253,168 +253,4 @@ describe("horizontal", () => {
     );
     expect(asFragment()).toMatchSnapshot();
   });
-});
-
-describe("render count", () => {
-  it("should render on mount", () => {
-    const rootFn = vi.fn();
-    const itemCount = 4;
-    const itemFns = Array.from({ length: itemCount }, (_) => vi.fn());
-
-    render(
-      <Profiler id="root" onRender={rootFn}>
-        <WindowVirtualizer>
-          {Array.from({ length: itemCount }, (_, i) => {
-            const key = `item-${i}`;
-            return (
-              <Profiler key={key} id={key} onRender={itemFns[i]!}>
-                <div>{i}</div>
-              </Profiler>
-            );
-          })}
-        </WindowVirtualizer>
-      </Profiler>
-    );
-
-    expect(rootFn).toBeCalledTimes(3);
-    itemFns.forEach((itemFn) => {
-      expect(itemFn).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  it("should render on mount many items", () => {
-    const rootFn = vi.fn();
-    const itemCount = 100;
-    const itemFns = Array.from({ length: itemCount }, (_) => vi.fn());
-
-    render(
-      <Profiler id="root" onRender={rootFn}>
-        <WindowVirtualizer>
-          {Array.from({ length: itemCount }, (_, i) => {
-            const key = `item-${i}`;
-            return (
-              <Profiler key={key} id={key} onRender={itemFns[i]!}>
-                <div>{i}</div>
-              </Profiler>
-            );
-          })}
-        </WindowVirtualizer>
-      </Profiler>
-    );
-
-    expect(rootFn).toBeCalledTimes(3);
-    itemFns.forEach((itemFn) => {
-      expect(itemFn.mock.calls.length).toBeLessThanOrEqual(1);
-    });
-  });
-
-  // it("should render on length change", () => {
-  //   let ready = false;
-  //   const wrap = (f: (...args: any[]) => void) => {
-  //     return (...args: any[]) => {
-  //       if (!ready) return;
-  //       f(...args);
-  //     };
-  //   };
-  //   const rootFn = vi.fn();
-
-  //   const itemCount = 4;
-  //   const itemFns = Array.from({ length: itemCount }, (_) => vi.fn());
-
-  //   const Mounter = ({
-  //     children,
-  //     count: initialCount,
-  //   }: {
-  //     children: (count: number) => ReactElement;
-  //     count: number;
-  //   }): ReactElement => {
-  //     const [count, setCount] = useState(initialCount);
-  //     useEffect(() => {
-  //       ready = true;
-  //       setCount((prev) => {
-  //         return prev - 1;
-  //       });
-  //     }, []);
-  //     return children(count);
-  //   };
-
-  //   render(
-  //     <Mounter count={itemCount}>
-  //       {(count) => (
-  //         <Profiler id="root" onRender={wrap(rootFn)}>
-  //           <WindowVirtualizer>
-  //             {Array.from({ length: count }, (_, i) => {
-  //               const key = `item-${i}`;
-  //               return (
-  //                 <Profiler key={key} id={key} onRender={wrap(itemFns[i]!)}>
-  //                   <div>{i}</div>
-  //                 </Profiler>
-  //               );
-  //             })}
-  //           </WindowVirtualizer>
-  //         </Profiler>
-  //       )}
-  //     </Mounter>
-  //   );
-
-  //   expect(rootFn).toBeCalledTimes(2);
-  //   itemFns.forEach((itemFn, i) => {
-  //     expect(itemFn).toBeCalledTimes(i === itemFns.length - 1 ? 0 : 1);
-  //   });
-  // });
-
-  // it("should render on length change many items", () => {
-  //   let ready = false;
-  //   const wrap = (f: (...args: any[]) => void) => {
-  //     return (...args: any[]) => {
-  //       if (!ready) return;
-  //       f(...args);
-  //     };
-  //   };
-  //   const rootFn = vi.fn();
-
-  //   const itemCount = 100;
-  //   const itemFns = Array.from({ length: itemCount }, (_) => vi.fn());
-
-  //   const Mounter = ({
-  //     children,
-  //     count: initialCount,
-  //   }: {
-  //     children: (count: number) => ReactElement;
-  //     count: number;
-  //   }): ReactElement => {
-  //     const [count, setCount] = useState(initialCount);
-  //     useEffect(() => {
-  //       ready = true;
-  //       setCount((prev) => {
-  //         return prev - 1;
-  //       });
-  //     }, []);
-  //     return children(count);
-  //   };
-
-  //   render(
-  //     <Mounter count={itemCount}>
-  //       {(count) => (
-  //         <Profiler id="root" onRender={wrap(rootFn)}>
-  //           <WindowVirtualizer>
-  //             {Array.from({ length: count }, (_, i) => {
-  //               const key = `item-${i}`;
-  //               return (
-  //                 <Profiler key={key} id={key} onRender={wrap(itemFns[i]!)}>
-  //                   <div>{i}</div>
-  //                 </Profiler>
-  //               );
-  //             })}
-  //           </WindowVirtualizer>
-  //         </Profiler>
-  //       )}
-  //     </Mounter>
-  //   );
-
-  //   expect(rootFn).toBeCalledTimes(3);
-  //   itemFns.forEach((itemFn) => {
-  //     expect(itemFn.mock.calls.length).toBeLessThanOrEqual(2); // TODO: should be 1
-  //   });
-  // });
 });

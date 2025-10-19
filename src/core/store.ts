@@ -194,11 +194,15 @@ export const createVirtualStore = (
 
         let startOffset = max(0, getVisibleOffset());
         let endOffset = startOffset + viewportSize;
-        if (_scrollDirection !== SCROLL_DOWN) {
-          startOffset -= bufferSize;
-        }
-        if (_scrollDirection !== SCROLL_UP) {
-          endOffset += bufferSize;
+
+        // For faster initial render pass, returns without buffer if measurement seems to be in progress.
+        if (viewportSize && !shouldAutoEstimateItemSize) {
+          if (_scrollDirection !== SCROLL_DOWN) {
+            startOffset -= bufferSize;
+          }
+          if (_scrollDirection !== SCROLL_UP) {
+            endOffset += bufferSize;
+          }
         }
 
         [startIndex, endIndex] = _prevRange = getRange(

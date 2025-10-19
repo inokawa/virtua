@@ -21,9 +21,9 @@ setupResizeJsDom({
 
 afterEach(cleanup);
 
-describe("rtl", () => {
-  it("should work", () => {
-    const { asFragment } = render(
+describe("rtl", async () => {
+  it("should work", async () => {
+    const { asFragment } = await render(
       <VGrid row={100} col={100}>
         {({ rowIndex, colIndex }) => (
           <div>

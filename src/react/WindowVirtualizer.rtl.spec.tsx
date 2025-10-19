@@ -16,9 +16,9 @@ setupResizeJsDom({
 
 afterEach(cleanup);
 
-describe("rtl", () => {
-  it("should not work in vertical", () => {
-    const { asFragment } = render(
+describe("rtl", async () => {
+  it("should not work in vertical", async () => {
+    const { asFragment } = await render(
       <WindowVirtualizer>
         {Array.from({ length: 100 }).map((_, i) => (
           <div key={i}>{i}</div>
@@ -28,8 +28,8 @@ describe("rtl", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should work in horizontal", () => {
-    const { asFragment } = render(
+  it("should work in horizontal", async () => {
+    const { asFragment } = await render(
       <WindowVirtualizer horizontal>
         {Array.from({ length: 100 }).map((_, i) => (
           <div key={i}>{i}</div>
