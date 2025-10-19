@@ -531,7 +531,7 @@ describe(computeRange.name, () => {
             30
           ),
           20,
-          100,
+          20 + 100,
           initialIndex
         )
       ).toEqual([1, 6]);
@@ -543,9 +543,11 @@ describe(computeRange.name, () => {
         30
       );
       const last = cache._length - 1;
-      expect(computeRange(cache, sum(cache._sizes), 100, initialIndex)).toEqual(
-        [last, last]
-      );
+      const start = sum(cache._sizes);
+      expect(computeRange(cache, start, start + 100, initialIndex)).toEqual([
+        last,
+        last,
+      ]);
     });
 
     it("should get last if offset is at end - 1", () => {
@@ -554,9 +556,11 @@ describe(computeRange.name, () => {
         30
       );
       const last = cache._length - 1;
-      expect(
-        computeRange(cache, sum(cache._sizes) - 20, 100, initialIndex)
-      ).toEqual([last, last]);
+      const start = sum(cache._sizes) - 20;
+      expect(computeRange(cache, start, start + 100, initialIndex)).toEqual([
+        last,
+        last,
+      ]);
     });
 
     it("should get last - 1 if offset is at end - 1 and more", () => {
@@ -565,20 +569,23 @@ describe(computeRange.name, () => {
         30
       );
       const last = cache._length - 1;
-      expect(
-        computeRange(cache, sum(cache._sizes) - 20 - 1, 100, initialIndex)
-      ).toEqual([last - 1, last]);
+      const start = sum(cache._sizes) - 20 - 1;
+      expect(computeRange(cache, start, start + 100, initialIndex)).toEqual([
+        last - 1,
+        last,
+      ]);
     });
 
     it("should get start if offset is before start", () => {
+      const start = -1000;
       expect(
         computeRange(
           initCacheWithComputedOffsets(
             range(CACHE_LENGTH, () => 20),
             30
           ),
-          -1000,
-          100,
+          start,
+          start + 100,
           initialIndex
         )
       ).toEqual([0, 0]);
@@ -590,9 +597,11 @@ describe(computeRange.name, () => {
         30
       );
       const last = cache._length - 1;
-      expect(
-        computeRange(cache, sum(cache._sizes) + 1000, 100, initialIndex)
-      ).toEqual([last, last]);
+      const start = sum(cache._sizes) + 1000;
+      expect(computeRange(cache, start, start + 100, initialIndex)).toEqual([
+        last,
+        last,
+      ]);
     });
 
     it("should get prevStartIndex if offset fits prevStartIndex", () => {
@@ -601,9 +610,11 @@ describe(computeRange.name, () => {
         range(CACHE_LENGTH, () => 20),
         30
       );
-      expect(
-        computeRange(cache, offset(cache, initialIndex), 100, initialIndex)
-      ).toEqual([initialIndex, expect.any(Number)]);
+      const start = offset(cache, initialIndex);
+      expect(computeRange(cache, start, start + 100, initialIndex)).toEqual([
+        initialIndex,
+        expect.any(Number),
+      ]);
     });
   });
 });
@@ -927,7 +938,7 @@ describe(takeCacheSnapshot.name, () => {
 describe(updateCacheLength.name, () => {
   it("should recover cache length from 0", () => {
     const cache = initCache(10, 40);
-    const initialCache = JSON.parse(JSON.stringify(cache));
+    const initialCache = structuredClone(cache);
     updateCacheLength(cache, 0);
     updateCacheLength(cache, 10);
     expect(cache).toEqual(initialCache);

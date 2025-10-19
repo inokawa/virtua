@@ -96,7 +96,7 @@ export type StateVersion =
 export type VirtualStore = {
   $getStateVersion(): StateVersion;
   $getCacheSnapshot(): CacheSnapshot;
-  $getRange(): ItemsRange;
+  $getRange(bufferSize?: number): ItemsRange;
   $findStartIndex(): number;
   $findEndIndex(): number;
   $isUnmeasuredItem(index: number): boolean;
@@ -119,7 +119,6 @@ export type VirtualStore = {
 export const createVirtualStore = (
   elementsCount: number,
   itemSize: number = 40,
-  overscan: number = 4,
   ssrCount: number = 0,
   cacheSnapshot?: CacheSnapshot | undefined,
   shouldAutoEstimateItemSize: boolean = false
@@ -148,8 +147,8 @@ export const createVirtualStore = (
   const subscribers = new Set<[number, Subscriber]>();
   const getRelativeScrollOffset = () => scrollOffset - startSpacerSize;
   const getVisibleOffset = () => getRelativeScrollOffset() + pendingJump + jump;
-  const getRange = (offset: number) => {
-    return computeRange(cache, offset, viewportSize, _prevRange[0]);
+  const getRange = (startOffset: number, endOffset: number) => {
+    return computeRange(cache, startOffset, endOffset, _prevRange[0]);
   };
   const getTotalSize = (): number => computeTotalSize(cache);
   const getItemOffset = (index: number): number => {
@@ -183,7 +182,7 @@ export const createVirtualStore = (
     $getCacheSnapshot: () => {
       return takeCacheSnapshot(cache) as unknown as CacheSnapshot;
     },
-    $getRange: () => {
+    $getRange: (bufferSize = 200) => {
       let startIndex: number;
       let endIndex: number;
       if (_flushedJump) {
@@ -191,8 +190,20 @@ export const createVirtualStore = (
         // And it must be clamped. https://github.com/inokawa/virtua/issues/597
         [startIndex, endIndex] = _prevRange;
       } else {
+        bufferSize = max(0, bufferSize);
+
+        let startOffset = max(0, getVisibleOffset());
+        let endOffset = startOffset + viewportSize;
+        if (_scrollDirection !== SCROLL_DOWN) {
+          startOffset -= bufferSize;
+        }
+        if (_scrollDirection !== SCROLL_UP) {
+          endOffset += bufferSize;
+        }
+
         [startIndex, endIndex] = _prevRange = getRange(
-          max(0, getVisibleOffset())
+          max(0, startOffset),
+          max(0, endOffset)
         );
         if (_frozenRange) {
           startIndex = min(startIndex, _frozenRange[0]);
@@ -200,12 +211,6 @@ export const createVirtualStore = (
         }
       }
 
-      if (_scrollDirection !== SCROLL_DOWN) {
-        startIndex -= max(0, overscan);
-      }
-      if (_scrollDirection !== SCROLL_UP) {
-        endIndex += max(0, overscan);
-      }
       return [max(startIndex, 0), min(endIndex, cache._length - 1)];
     },
     $findStartIndex: () => findIndex(cache, getVisibleOffset()),
@@ -406,7 +411,7 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_BEFORE_MANUAL_SMOOTH_SCROLL: {
-          _frozenRange = getRange(payload);
+          _frozenRange = getRange(payload, payload + viewportSize);
           mutated = UPDATE_VIRTUAL_STATE;
           break;
         }

@@ -277,7 +277,7 @@ export const UlElement: StoryObj = {
             background: "#fff",
           }}
         >
-          <Virtualizer as={Ul} item={Li} overscan={10}>
+          <Virtualizer as={Ul} item={Li}>
             {Array.from({ length: 1000 }).map((_, i) => i)}
           </Virtualizer>
         </div>

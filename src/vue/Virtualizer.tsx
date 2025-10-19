@@ -86,10 +86,10 @@ const props = {
    */
   data: { type: Array, required: true },
   /**
-   * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
-   * @defaultValue 4
+   * Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
+   * @defaultValue 200
    */
-  overscan: Number,
+  bufferSize: Number,
   /**
    * Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
    *
@@ -150,7 +150,6 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     const store = createVirtualStore(
       props.data.length,
       props.itemSize,
-      props.overscan,
       props.ssrCount,
       undefined,
       !props.itemSize
@@ -175,7 +174,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
 
     const range = computed<ItemsRange>((prev) => {
       stateVersion.value;
-      const next = store.$getRange();
+      const next = store.$getRange(props.bufferSize);
       if (prev && isSameRange(prev, next)) {
         return prev;
       }

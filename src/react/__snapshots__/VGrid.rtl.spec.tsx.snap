@@ -6,7 +6,7 @@ exports[`rtl > should work 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 10000px; height: 4140px;"
+      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 10000px; height: 4170px;"
     >
       <div
         style="contain: layout style; display: grid; position: absolute; top: 0px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
@@ -370,6 +370,62 @@ exports[`rtl > should work 1`] = `
       >
         <div>
           12 / 3
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 650px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          13 / 0
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 650px; right: 100px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          13 / 1
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 650px; right: 200px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          13 / 2
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 650px; right: 300px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          13 / 3
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 700px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          14 / 0
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 700px; right: 100px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          14 / 1
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 700px; right: 200px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          14 / 2
+        </div>
+      </div>
+      <div
+        style="contain: layout style; display: grid; position: absolute; top: 700px; right: 300px; visibility: visible; min-height: 50px; min-width: 100px;"
+      >
+        <div>
+          14 / 3
         </div>
       </div>
     </div>

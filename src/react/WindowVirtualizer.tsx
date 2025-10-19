@@ -67,10 +67,10 @@ export interface WindowVirtualizerProps<T = unknown> {
    */
   data?: ArrayLike<T>;
   /**
-   * Number of items to render above/below the visible bounds of the list. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
-   * @defaultValue 4
+   * Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
+   * @defaultValue 200
    */
-  overscan?: number;
+  bufferSize?: number;
   /**
    * Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
    *
@@ -127,7 +127,7 @@ export const WindowVirtualizer = forwardRef<
     {
       children,
       data,
-      overscan,
+      bufferSize,
       itemSize,
       shift,
       horizontal: horizontalProp,
@@ -156,7 +156,6 @@ export const WindowVirtualizer = forwardRef<
       const _store = createVirtualStore(
         count,
         itemSize,
-        overscan,
         ssrCount,
         cache,
         !itemSize
@@ -241,7 +240,7 @@ export const WindowVirtualizer = forwardRef<
       []
     );
 
-    for (let [i, j] = store.$getRange(); i <= j; i++) {
+    for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
       const e = renderElement(i);
       items.push(
         <ListItem

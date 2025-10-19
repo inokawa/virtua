@@ -56,6 +56,9 @@ exports[`horizontal > should render 100 children 1`] = `
     <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 160px; visibility: hidden; display: inline-flex;">
       <div>4</div>
     </div>
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 200px; visibility: hidden; display: inline-flex;">
+      <div>5</div>
+    </div>
   </div>
 </div>"
 `;
@@ -77,6 +80,9 @@ exports[`horizontal > should render 10000 children 1`] = `
     </div>
     <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 160px; visibility: hidden; display: inline-flex;">
       <div>4</div>
+    </div>
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 200px; visibility: hidden; display: inline-flex;">
+      <div>5</div>
     </div>
   </div>
 </div>"
@@ -147,6 +153,9 @@ exports[`should render with keepMounted 1`] = `
     </div>
     <div style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;">
       <div>4</div>
+    </div>
+    <div style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px; visibility: hidden;">
+      <div>5</div>
     </div>
     <div style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px; visibility: hidden;">
       <div>10</div>
@@ -235,6 +244,9 @@ exports[`vertical > should render 100 children 1`] = `
     <div style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;">
       <div>4</div>
     </div>
+    <div style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px; visibility: hidden;">
+      <div>5</div>
+    </div>
   </div>
 </div>"
 `;
@@ -256,6 +268,9 @@ exports[`vertical > should render 10000 children 1`] = `
     </div>
     <div style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 160px; visibility: hidden;">
       <div>4</div>
+    </div>
+    <div style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px; visibility: hidden;">
+      <div>5</div>
     </div>
   </div>
 </div>"

@@ -30,10 +30,10 @@ export interface VirtualizerProps<T> {
    */
   item?: keyof SvelteHTMLElements;
   /**
-   * Number of items to render above/below the visible bounds of the list. You can increase to avoid showing blank items in fast scrolling.
-   * @defaultValue 4
+   * Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
+   * @defaultValue 200
    */
-  overscan?: number;
+  bufferSize?: number;
   /**
    * Reference to the scrollable element. The default will get the direct parent element of virtualizer.
    */
