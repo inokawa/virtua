@@ -33,7 +33,7 @@ it("should pass attributes to element", () => {
     },
     slots: { default: ({ item: data }: any) => h("div", { key: data }, data) },
   });
-  expect(wrapper.baseElement).toMatchSnapshot();
+  expect(wrapper.html()).toMatchSnapshot();
 });
 
 it("should render with keepMounted", () => {
@@ -46,7 +46,7 @@ it("should render with keepMounted", () => {
       default: ({ item: data }: any) => h("div", { key: data }, data),
     },
   });
-  expect(wrapper.baseElement).toMatchSnapshot();
+  expect(wrapper.html()).toMatchSnapshot();
 });
 
 describe("vertical", () => {
@@ -59,7 +59,7 @@ describe("vertical", () => {
         default: ({ item: data }: any) => h("div", { key: data }, data),
       },
     });
-    expect(wrapper.baseElement).toMatchSnapshot();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("should render 1 children", () => {
@@ -71,7 +71,7 @@ describe("vertical", () => {
         default: ({ item: data }: any) => h("div", { key: data }, data),
       },
     });
-    expect(wrapper.baseElement).toMatchSnapshot();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("should render 5 children", () => {
@@ -83,7 +83,7 @@ describe("vertical", () => {
         default: ({ item: data }: any) => h("div", { key: data }, data),
       },
     });
-    expect(wrapper.baseElement).toMatchSnapshot();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("should render 100 children", () => {
@@ -95,7 +95,7 @@ describe("vertical", () => {
         default: ({ item: data }: any) => h("div", { key: data }, data),
       },
     });
-    expect(wrapper.baseElement).toMatchSnapshot();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("should render 1000 children", () => {
@@ -107,7 +107,7 @@ describe("vertical", () => {
         default: ({ item: data }: any) => h("div", { key: data }, data),
       },
     });
-    expect(wrapper.baseElement).toMatchSnapshot();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("should render 10000 children", () => {
@@ -137,7 +137,7 @@ describe("vertical", () => {
       },
       slots: { default: ({ item: data }: any) => h(Comp, { key: data, data }) },
     });
-    expect(wrapper.baseElement).toMatchSnapshot();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("should render with given width / height", () => {
@@ -152,7 +152,7 @@ describe("vertical", () => {
         default: ({ item: data }: any) => h("div", { key: data }, data),
       },
     });
-    expect(wrapper.baseElement).toMatchSnapshot();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 });
 
@@ -167,7 +167,7 @@ describe("horizontal", () => {
         default: ({ item: data }: any) => h("div", { key: data }, data),
       },
     });
-    expect(wrapper.baseElement).toMatchSnapshot();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("should render 1 children", () => {
@@ -180,7 +180,7 @@ describe("horizontal", () => {
         default: ({ item: data }: any) => h("div", { key: data }, data),
       },
     });
-    expect(wrapper.baseElement).toMatchSnapshot();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("should render 5 children", () => {
@@ -193,7 +193,7 @@ describe("horizontal", () => {
         default: ({ item: data }: any) => h("div", { key: data }, data),
       },
     });
-    expect(wrapper.baseElement).toMatchSnapshot();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("should render 100 children", () => {
@@ -206,7 +206,7 @@ describe("horizontal", () => {
         default: ({ item: data }: any) => h("div", { key: data }, data),
       },
     });
-    expect(wrapper.baseElement).toMatchSnapshot();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("should render 1000 children", () => {
@@ -219,7 +219,7 @@ describe("horizontal", () => {
         default: ({ item: data }: any) => h("div", { key: data }, data),
       },
     });
-    expect(wrapper.baseElement).toMatchSnapshot();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("should render 10000 children", () => {
@@ -251,7 +251,7 @@ describe("horizontal", () => {
       },
       slots: { default: ({ item: data }: any) => h(Comp, { key: data, data }) },
     });
-    expect(wrapper.baseElement).toMatchSnapshot();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 
   it("should render with given width / height", () => {
@@ -267,6 +267,6 @@ describe("horizontal", () => {
         default: ({ item: data }: any) => h("div", { key: data }, data),
       },
     });
-    expect(wrapper.baseElement).toMatchSnapshot();
+    expect(wrapper.html()).toMatchSnapshot();
   });
 });
