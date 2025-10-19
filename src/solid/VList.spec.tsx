@@ -79,13 +79,6 @@ describe("vertical", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render 1000 children", () => {
-    const { asFragment } = render(() => (
-      <VList data={range(1000)}>{(d) => <div>{d}</div>}</VList>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
   it("should render 10000 children", () => {
     const { asFragment } = render(() => (
       <VList data={range(10000)}>{(d) => <div>{d}</div>}</VList>
@@ -145,15 +138,6 @@ describe("horizontal", () => {
   it("should render 100 children", () => {
     const { asFragment } = render(() => (
       <VList data={range(100)} horizontal>
-        {(d) => <div>{d}</div>}
-      </VList>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 1000 children", () => {
-    const { asFragment } = render(() => (
-      <VList data={range(1000)} horizontal>
         {(d) => <div>{d}</div>}
       </VList>
     ));

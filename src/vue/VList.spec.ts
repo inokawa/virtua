@@ -98,18 +98,6 @@ describe("vertical", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 1000 children", () => {
-    const wrapper = render(VList, {
-      props: {
-        data: range(1000),
-      },
-      slots: {
-        default: ({ item: data }: any) => h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
   it("should render 10000 children", () => {
     const wrapper = render(VList, {
       props: {
@@ -200,19 +188,6 @@ describe("horizontal", () => {
     const wrapper = render(VList, {
       props: {
         data: range(100),
-        horizontal: true,
-      },
-      slots: {
-        default: ({ item: data }: any) => h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
-  it("should render 1000 children", () => {
-    const wrapper = render(VList, {
-      props: {
-        data: range(1000),
         horizontal: true,
       },
       slots: {

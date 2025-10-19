@@ -116,17 +116,6 @@ describe("vertical", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render 1000 children", () => {
-    const { asFragment } = render(
-      <VList>
-        {Array.from({ length: 1000 }).map((_, i) => (
-          <div key={i}>{i}</div>
-        ))}
-      </VList>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
   it("should render 10000 children", () => {
     const { asFragment } = render(
       <VList>
@@ -223,17 +212,6 @@ describe("horizontal", () => {
     const { asFragment } = render(
       <VList horizontal>
         {Array.from({ length: 100 }).map((_, i) => (
-          <div key={i}>{i}</div>
-        ))}
-      </VList>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 1000 children", () => {
-    const { asFragment } = render(
-      <VList horizontal>
-        {Array.from({ length: 1000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
       </VList>

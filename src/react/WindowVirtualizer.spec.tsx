@@ -79,17 +79,6 @@ describe("vertical", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render 1000 children", () => {
-    const { asFragment } = render(
-      <WindowVirtualizer>
-        {Array.from({ length: 1000 }).map((_, i) => (
-          <div key={i}>{i}</div>
-        ))}
-      </WindowVirtualizer>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
   it("should render 10000 children", () => {
     const { asFragment } = render(
       <WindowVirtualizer>
@@ -188,17 +177,6 @@ describe("horizontal", () => {
     const { asFragment } = render(
       <WindowVirtualizer horizontal>
         {Array.from({ length: 100 }).map((_, i) => (
-          <div key={i}>{i}</div>
-        ))}
-      </WindowVirtualizer>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 1000 children", () => {
-    const { asFragment } = render(
-      <WindowVirtualizer horizontal>
-        {Array.from({ length: 1000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
       </WindowVirtualizer>

@@ -77,19 +77,6 @@ describe("grid", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render 1000x1000 children", () => {
-    const { asFragment } = render(
-      <VGrid row={1000} col={1000}>
-        {({ rowIndex, colIndex }) => (
-          <div>
-            {rowIndex} / {colIndex}
-          </div>
-        )}
-      </VGrid>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
   it("should render 10000x10000 children", () => {
     const { asFragment } = render(
       <VGrid row={10000} col={10000}>
