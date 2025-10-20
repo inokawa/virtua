@@ -72,7 +72,27 @@ test.describe("smoke", () => {
   });
 
   test("reverse", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--reverse"));
+    await page.goto(storyUrl("basics-vlist--reverse"), {
+      waitUntil: "domcontentloaded",
+    });
+    await page.evaluate(() => {
+      (window as any)._displayed = false;
+      const mo = new MutationObserver((entries) => {
+        for (const e of entries) {
+          for (const n of [...e.addedNodes]) {
+            const walker = document.createTreeWalker(n, NodeFilter.SHOW_TEXT);
+            let node: Node;
+            while ((node = walker.nextNode()!)) {
+              if (node.textContent === "0") {
+                (window as any)._displayed = true;
+                return;
+              }
+            }
+          }
+        }
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+    });
 
     const component = await getScrollable(page);
 
@@ -80,6 +100,8 @@ test.describe("smoke", () => {
     const last = component.getByText("999", { exact: true });
     await expect(last).toBeVisible();
     expect(await relativeBottom(component, last)).toEqual(0);
+    // check if start is not displayed
+    expect(await page.evaluate(() => (window as any)._displayed)).toBe(false);
   });
 
   test("display: none", async ({ page }) => {

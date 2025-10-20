@@ -133,10 +133,8 @@ export const createVirtualStore = (
   let _flushedJump = 0;
   let _scrollDirection: ScrollDirection = SCROLL_IDLE;
   let _scrollMode: ScrollMode = SCROLL_BY_NATIVE;
-  let _frozenRange: ItemsRange | null = isSSR
-    ? [0, max(ssrCount - 1, 0)]
-    : NULL;
-  let _prevRange: ItemsRange = [0, 0];
+  let _frozenRange: ItemsRange | null = NULL;
+  let _prevRange: ItemsRange = [0, isSSR ? max(ssrCount - 1, 0) : -1];
   let _totalMeasuredSize = 0;
 
   const cache = initCache(
@@ -183,6 +181,12 @@ export const createVirtualStore = (
       return takeCacheSnapshot(cache) as unknown as CacheSnapshot;
     },
     $getRange: (bufferSize = 200) => {
+      if (!viewportSize || isSSR) {
+        // Empty viewportSize means the first render.
+        // We return range for SSR here, or return [0, -1] to render nothing, until the scroll offset and viewport size are determined.
+        // https://github.com/inokawa/virtua/issues/415
+        return _prevRange;
+      }
       let startIndex: number;
       let endIndex: number;
       if (_flushedJump) {
@@ -194,11 +198,15 @@ export const createVirtualStore = (
 
         let startOffset = max(0, getVisibleOffset());
         let endOffset = startOffset + viewportSize;
-        if (_scrollDirection !== SCROLL_DOWN) {
-          startOffset -= bufferSize;
-        }
-        if (_scrollDirection !== SCROLL_UP) {
-          endOffset += bufferSize;
+
+        // For faster initial render pass, returns without buffer if measurement seems to be in progress.
+        if (!shouldAutoEstimateItemSize) {
+          if (_scrollDirection !== SCROLL_DOWN) {
+            startOffset -= bufferSize;
+          }
+          if (_scrollDirection !== SCROLL_UP) {
+            endOffset += bufferSize;
+          }
         }
 
         [startIndex, endIndex] = _prevRange = getRange(
@@ -276,7 +284,6 @@ export const createVirtualStore = (
           // }
 
           if (isSSR) {
-            _frozenRange = NULL;
             isSSR = false;
           }
 

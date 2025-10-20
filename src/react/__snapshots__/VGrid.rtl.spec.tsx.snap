@@ -6,7 +6,7 @@ exports[`rtl > should work 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 10000px; height: 4170px;"
+      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 10000px; height: 4180px;"
     >
       <div
         style="contain: layout style; display: grid; position: absolute; top: 0px; right: 0px; visibility: visible; min-height: 50px; min-width: 100px;"

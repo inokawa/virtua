@@ -18,8 +18,8 @@ const range = (length: number) => Array.from({ length }).map((_, i) => i);
 
 afterEach(cleanup);
 
-it("should pass attributes to element", () => {
-  const wrapper = render(VList, {
+it("should pass attributes to element", async () => {
+  const wrapper = await render(VList, {
     props: {
       data: range(1),
     },
@@ -36,8 +36,8 @@ it("should pass attributes to element", () => {
   expect(wrapper.html()).toMatchSnapshot();
 });
 
-it("should render with keepMounted", () => {
-  const wrapper = render(VList, {
+it("should render with keepMounted", async () => {
+  const wrapper = await render(VList, {
     props: {
       data: range(100),
       keepMounted: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
@@ -49,9 +49,9 @@ it("should render with keepMounted", () => {
   expect(wrapper.html()).toMatchSnapshot();
 });
 
-describe("vertical", () => {
-  it("should render 0 children", () => {
-    const wrapper = render(VList, {
+describe("vertical", async () => {
+  it("should render 0 children", async () => {
+    const wrapper = await render(VList, {
       props: {
         data: [],
       },
@@ -62,8 +62,8 @@ describe("vertical", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 1 children", () => {
-    const wrapper = render(VList, {
+  it("should render 1 children", async () => {
+    const wrapper = await render(VList, {
       props: {
         data: range(1),
       },
@@ -74,8 +74,8 @@ describe("vertical", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 5 children", () => {
-    const wrapper = render(VList, {
+  it("should render 5 children", async () => {
+    const wrapper = await render(VList, {
       props: {
         data: range(5),
       },
@@ -86,8 +86,8 @@ describe("vertical", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 100 children", () => {
-    const wrapper = render(VList, {
+  it("should render 100 children", async () => {
+    const wrapper = await render(VList, {
       props: {
         data: range(100),
       },
@@ -98,8 +98,8 @@ describe("vertical", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 10000 children", () => {
-    const wrapper = render(VList, {
+  it("should render 10000 children", async () => {
+    const wrapper = await render(VList, {
       props: {
         data: range(10000),
       },
@@ -110,7 +110,7 @@ describe("vertical", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render component", () => {
+  it("should render component", async () => {
     const Comp = defineComponent({
       props: ["data"],
       setup(props) {
@@ -119,7 +119,7 @@ describe("vertical", () => {
         };
       },
     });
-    const wrapper = render(VList, {
+    const wrapper = await render(VList, {
       props: {
         data: range(3),
       },
@@ -128,8 +128,8 @@ describe("vertical", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render with given width / height", () => {
-    const wrapper = render(VList, {
+  it("should render with given width / height", async () => {
+    const wrapper = await render(VList, {
       props: {
         data: range(5),
       },
@@ -144,9 +144,9 @@ describe("vertical", () => {
   });
 });
 
-describe("horizontal", () => {
-  it("should render 0 children", () => {
-    const wrapper = render(VList, {
+describe("horizontal", async () => {
+  it("should render 0 children", async () => {
+    const wrapper = await render(VList, {
       props: {
         data: [],
         horizontal: true,
@@ -158,8 +158,8 @@ describe("horizontal", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 1 children", () => {
-    const wrapper = render(VList, {
+  it("should render 1 children", async () => {
+    const wrapper = await render(VList, {
       props: {
         data: range(1),
         horizontal: true,
@@ -171,8 +171,8 @@ describe("horizontal", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 5 children", () => {
-    const wrapper = render(VList, {
+  it("should render 5 children", async () => {
+    const wrapper = await render(VList, {
       props: {
         data: range(5),
         horizontal: true,
@@ -184,8 +184,8 @@ describe("horizontal", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 100 children", () => {
-    const wrapper = render(VList, {
+  it("should render 100 children", async () => {
+    const wrapper = await render(VList, {
       props: {
         data: range(100),
         horizontal: true,
@@ -197,8 +197,8 @@ describe("horizontal", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 10000 children", () => {
-    const wrapper = render(VList, {
+  it("should render 10000 children", async () => {
+    const wrapper = await render(VList, {
       props: {
         data: range(10000),
         horizontal: true,
@@ -210,7 +210,7 @@ describe("horizontal", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render component", () => {
+  it("should render component", async () => {
     const Comp = defineComponent({
       props: ["data"],
       setup(props) {
@@ -219,7 +219,7 @@ describe("horizontal", () => {
         };
       },
     });
-    const wrapper = render(VList, {
+    const wrapper = await render(VList, {
       props: {
         data: range(3),
         horizontal: true,
@@ -229,8 +229,8 @@ describe("horizontal", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render with given width / height", () => {
-    const wrapper = render(VList, {
+  it("should render with given width / height", async () => {
+    const wrapper = await render(VList, {
       props: {
         data: range(5),
         horizontal: true,

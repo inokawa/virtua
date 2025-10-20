@@ -283,7 +283,7 @@ exports[`reverse > should render many items 1`] = `
       style="display: flex; flex-direction: column; justify-content: flex-end; min-height: 100%;"
     >
       <div
-        style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 4060px;"
+        style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 5000px;"
       >
         <div
           style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -318,6 +318,76 @@ exports[`reverse > should render many items 1`] = `
         >
           <div>
             4
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
+        >
+          <div>
+            5
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 300px; visibility: visible;"
+        >
+          <div>
+            6
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 350px; visibility: visible;"
+        >
+          <div>
+            7
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px; visibility: visible;"
+        >
+          <div>
+            8
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 450px; visibility: visible;"
+        >
+          <div>
+            9
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 500px; visibility: visible;"
+        >
+          <div>
+            10
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 550px; visibility: visible;"
+        >
+          <div>
+            11
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 600px; visibility: visible;"
+        >
+          <div>
+            12
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 650px; visibility: visible;"
+        >
+          <div>
+            13
+          </div>
+        </div>
+        <div
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 700px; visibility: visible;"
+        >
+          <div>
+            14
           </div>
         </div>
       </div>

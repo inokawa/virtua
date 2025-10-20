@@ -15,8 +15,8 @@ setupResizeJsDom({
 
 afterEach(cleanup);
 
-it("should change components", () => {
-  const { asFragment } = render(
+it("should change components", async () => {
+  const { asFragment } = await render(
     <div style={{ overflowY: "auto" }}>
       <Virtualizer as="ul" item="li">
         <div>0</div>
