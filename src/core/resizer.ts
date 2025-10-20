@@ -5,7 +5,7 @@ import {
   type VirtualStore,
 } from "./store.js";
 import { type ItemResize } from "./types.js";
-import { max, NULL } from "./utils.js";
+import { max, microtask, NULL } from "./utils.js";
 
 const createResizeObserver = (cb: ResizeObserverCallback) => {
   let ro: ResizeObserver | undefined;
@@ -131,7 +131,9 @@ export const createWindowResizer = (
         store.$update(ACTION_VIEWPORT_RESIZE, window[windowSizeKey]);
       };
       window.addEventListener("resize", onWindowResize);
-      onWindowResize();
+
+      // https://github.com/inokawa/virtua/issues/792
+      microtask(onWindowResize);
 
       cleanupOnWindowResize = () => {
         window.removeEventListener("resize", onWindowResize);
