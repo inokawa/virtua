@@ -40,7 +40,7 @@ const props = {
    */
   horizontal: Boolean,
   /**
-   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated.
+   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
    */
   ssrCount: Number,
   /**
