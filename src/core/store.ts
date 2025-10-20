@@ -391,6 +391,9 @@ export const createVirtualStore = (
         }
         case ACTION_VIEWPORT_RESIZE: {
           if (viewportSize !== payload) {
+            if (!viewportSize) {
+              shouldSync = true;
+            }
             viewportSize = payload;
             mutated = UPDATE_VIRTUAL_STATE + UPDATE_SIZE_EVENT;
           }
