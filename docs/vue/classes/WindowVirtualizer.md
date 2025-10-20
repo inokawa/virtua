@@ -4,7 +4,7 @@
 
 # Class: WindowVirtualizer
 
-Defined in: [src/vue/WindowVirtualizer.tsx:85](https://github.com/inokawa/virtua/blob/abf3f68debe26f3e9ab924819f65d2702d5707c4/src/vue/WindowVirtualizer.tsx#L85)
+Defined in: [src/vue/WindowVirtualizer.tsx:85](https://github.com/inokawa/virtua/blob/a4dc37ae2c2c92c0fc6479150a2364bca543b622/src/vue/WindowVirtualizer.tsx#L85)
 
 ## Properties
 
@@ -44,7 +44,7 @@ Defined in: [src/vue/WindowVirtualizer.tsx:85](https://github.com/inokawa/virtua
 
 > `readonly` **shift**: `boolean` = `Boolean`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:68](https://github.com/inokawa/virtua/blob/abf3f68debe26f3e9ab924819f65d2702d5707c4/src/vue/WindowVirtualizer.tsx#L68)
+Defined in: [src/vue/WindowVirtualizer.tsx:68](https://github.com/inokawa/virtua/blob/a4dc37ae2c2c92c0fc6479150a2364bca543b622/src/vue/WindowVirtualizer.tsx#L68)
 
 While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
 
@@ -54,7 +54,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 > `readonly` **data**: `unknown`[]
 
-Defined in: [src/vue/WindowVirtualizer.tsx:52](https://github.com/inokawa/virtua/blob/abf3f68debe26f3e9ab924819f65d2702d5707c4/src/vue/WindowVirtualizer.tsx#L52)
+Defined in: [src/vue/WindowVirtualizer.tsx:52](https://github.com/inokawa/virtua/blob/a4dc37ae2c2c92c0fc6479150a2364bca543b622/src/vue/WindowVirtualizer.tsx#L52)
 
 The data items rendered by this component.
 
@@ -64,7 +64,7 @@ The data items rendered by this component.
 
 > `readonly` `optional` **bufferSize**: `number` = `Number`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:57](https://github.com/inokawa/virtua/blob/abf3f68debe26f3e9ab924819f65d2702d5707c4/src/vue/WindowVirtualizer.tsx#L57)
+Defined in: [src/vue/WindowVirtualizer.tsx:57](https://github.com/inokawa/virtua/blob/a4dc37ae2c2c92c0fc6479150a2364bca543b622/src/vue/WindowVirtualizer.tsx#L57)
 
 Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -80,7 +80,7 @@ Extra item space in pixels to render before/after the viewport. The minimum valu
 
 > `readonly` `optional` **itemSize**: `number` = `Number`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:64](https://github.com/inokawa/virtua/blob/abf3f68debe26f3e9ab924819f65d2702d5707c4/src/vue/WindowVirtualizer.tsx#L64)
+Defined in: [src/vue/WindowVirtualizer.tsx:64](https://github.com/inokawa/virtua/blob/a4dc37ae2c2c92c0fc6479150a2364bca543b622/src/vue/WindowVirtualizer.tsx#L64)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -93,7 +93,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `readonly` **horizontal**: `boolean` = `Boolean`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:72](https://github.com/inokawa/virtua/blob/abf3f68debe26f3e9ab924819f65d2702d5707c4/src/vue/WindowVirtualizer.tsx#L72)
+Defined in: [src/vue/WindowVirtualizer.tsx:72](https://github.com/inokawa/virtua/blob/a4dc37ae2c2c92c0fc6479150a2364bca543b622/src/vue/WindowVirtualizer.tsx#L72)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -103,7 +103,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `readonly` **as**: keyof `IntrinsicElementAttributes`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:77](https://github.com/inokawa/virtua/blob/abf3f68debe26f3e9ab924819f65d2702d5707c4/src/vue/WindowVirtualizer.tsx#L77)
+Defined in: [src/vue/WindowVirtualizer.tsx:77](https://github.com/inokawa/virtua/blob/a4dc37ae2c2c92c0fc6479150a2364bca543b622/src/vue/WindowVirtualizer.tsx#L77)
 
 Component or element type for container element.
 
@@ -119,7 +119,7 @@ Component or element type for container element.
 
 > `readonly` **item**: keyof `IntrinsicElementAttributes`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:82](https://github.com/inokawa/virtua/blob/abf3f68debe26f3e9ab924819f65d2702d5707c4/src/vue/WindowVirtualizer.tsx#L82)
+Defined in: [src/vue/WindowVirtualizer.tsx:82](https://github.com/inokawa/virtua/blob/a4dc37ae2c2c92c0fc6479150a2364bca543b622/src/vue/WindowVirtualizer.tsx#L82)
 
 Component or element type for item element.
 
