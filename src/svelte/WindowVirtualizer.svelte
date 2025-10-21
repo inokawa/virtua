@@ -78,7 +78,7 @@
 
   $effect.pre(() => {
     if (data.length !== store.$getItemsLength()) {
-      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [data.length, shift]);
+      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [data.length, shift], true);
     }
   });
 

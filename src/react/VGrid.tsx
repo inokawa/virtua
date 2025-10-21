@@ -293,10 +293,10 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     });
     // The elements length and cached items length are different just after element is added/removed.
     if (rowCount !== rowStore.$getItemsLength()) {
-      rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [rowCount]);
+      rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [rowCount], true);
     }
     if (colCount !== colStore.$getItemsLength()) {
-      colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colCount]);
+      colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colCount], true);
     }
 
     const [rowStateVersion, rowRerender] = useReducer(

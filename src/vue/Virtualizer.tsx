@@ -219,13 +219,13 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     watch(
       () => props.data.length,
       (count) => {
-        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift], true);
       }
     );
     watch(
       () => props.startMargin,
       (value) => {
-        store.$update(ACTION_START_OFFSET_CHANGE, value);
+        store.$update(ACTION_START_OFFSET_CHANGE, value, true);
       },
       { immediate: true }
     );
