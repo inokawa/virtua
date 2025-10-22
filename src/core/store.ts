@@ -251,6 +251,11 @@ export const createVirtualStore = (
 
       switch (type) {
         case ACTION_SCROLL: {
+          if (payload === scrollOffset && _scrollMode === SCROLL_BY_NATIVE) {
+            // Ignore scroll events from different direction
+            break;
+          }
+
           const flushedJump = _flushedJump;
           _flushedJump = 0;
 
