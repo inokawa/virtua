@@ -135,20 +135,16 @@ export const WindowVirtualizer = <T,>(
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
-  const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+  store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
     setRerender(store.$getStateVersion());
   });
-
-  const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+  store.$subscribe(UPDATE_SCROLL_EVENT, () => {
     // https://github.com/inokawa/virtua/discussions/580
     props.onScroll?.();
   });
-  const unsubscribeOnScrollEnd = store.$subscribe(
-    UPDATE_SCROLL_END_EVENT,
-    () => {
-      props.onScrollEnd?.();
-    }
-  );
+  store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
+    props.onScrollEnd?.();
+  });
 
   const range = createMemo<ItemsRange>((prev) => {
     stateVersion();
@@ -181,9 +177,7 @@ export const WindowVirtualizer = <T,>(
         props.ref();
       }
 
-      unsubscribeStore();
-      unsubscribeOnScroll();
-      unsubscribeOnScrollEnd();
+      store.$dispose();
       resizer.$dispose();
       scroller.$dispose();
     });

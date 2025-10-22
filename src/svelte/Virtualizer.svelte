@@ -47,18 +47,15 @@
   );
   const resizer = createResizer(store, horizontal);
   const scroller = createScroller(store, horizontal);
-  const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+  store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
     stateVersion = store.$getStateVersion();
   });
-  const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+  store.$subscribe(UPDATE_SCROLL_EVENT, () => {
     onscroll && onscroll(store.$getScrollOffset());
   });
-  const unsubscribeOnScrollEnd = store.$subscribe(
-    UPDATE_SCROLL_END_EVENT,
-    () => {
-      onscrollend && onscrollend();
-    }
-  );
+  store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
+    onscrollend && onscrollend();
+  });
 
   let containerRef: HTMLDivElement | undefined = $state();
 
@@ -83,9 +80,7 @@
     });
   });
   onDestroy(() => {
-    unsubscribeStore();
-    unsubscribeOnScroll();
-    unsubscribeOnScrollEnd();
+    store.$dispose();
     resizer.$dispose();
     scroller.$dispose();
   });

@@ -99,20 +99,16 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     const scroller = createWindowScroller(store, isHorizontal);
 
     const stateVersion = ref(store.$getStateVersion());
-    const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+    store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
       stateVersion.value = store.$getStateVersion();
     });
-
-    const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+    store.$subscribe(UPDATE_SCROLL_EVENT, () => {
       // https://github.com/inokawa/virtua/discussions/580
       emit("scroll");
     });
-    const unsubscribeOnScrollEnd = store.$subscribe(
-      UPDATE_SCROLL_END_EVENT,
-      () => {
-        emit("scrollEnd");
-      }
-    );
+    store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
+      emit("scrollEnd");
+    });
 
     const range = computed<ItemsRange>((prev) => {
       stateVersion.value;
@@ -136,9 +132,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       scroller.$observe(el);
     });
     onUnmounted(() => {
-      unsubscribeStore();
-      unsubscribeOnScroll();
-      unsubscribeOnScrollEnd();
+      store.$dispose();
       resizer.$dispose();
       scroller.$dispose();
     });

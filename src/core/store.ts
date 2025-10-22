@@ -94,6 +94,7 @@ export type StateVersion =
  * @internal
  */
 export type VirtualStore = {
+  $dispose(): void;
   $getStateVersion(): StateVersion;
   $getCacheSnapshot(): CacheSnapshot;
   $getRange(bufferSize?: number): ItemsRange;
@@ -176,6 +177,9 @@ export const createVirtualStore = (
   };
 
   return {
+    $dispose: () => {
+      subscribers.clear();
+    },
     $getStateVersion: () => stateVersion,
     $getCacheSnapshot: () => {
       return takeCacheSnapshot(cache) as unknown as CacheSnapshot;
