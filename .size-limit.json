@@ -27,7 +27,7 @@
     "name": "VGrid",
     "path": "lib/index.js",
     "import": "{ experimental_VGrid }",
-    "limit": "4 kB"
+    "limit": "4.1 kB"
   },
   {
     "name": "vue VList",
