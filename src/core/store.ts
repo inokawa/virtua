@@ -198,13 +198,13 @@ export const createVirtualStore = (
         // And it must be clamped. https://github.com/inokawa/virtua/issues/597
         [startIndex, endIndex] = _prevRange;
       } else {
-        bufferSize = max(0, bufferSize);
-
         let startOffset = max(0, getVisibleOffset());
         let endOffset = startOffset + viewportSize;
 
         // For faster initial render pass, returns without buffer if measurement seems to be in progress.
         if (!shouldAutoEstimateItemSize) {
+          bufferSize = max(0, bufferSize);
+
           if (_scrollDirection !== SCROLL_DOWN) {
             startOffset -= bufferSize;
           }
