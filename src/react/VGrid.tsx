@@ -321,48 +321,34 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     useIsomorphicLayoutEffect(() => {
       const root = rootRef[refKey]!;
       // store must be subscribed first because others may dispatch update on init depending on implementation
-      const unsubscribeRowStore = rowStore.$subscribe(
-        UPDATE_VIRTUAL_STATE,
-        (sync) => {
-          if (sync) {
-            flushSync(rowRerender);
-          } else {
-            rowRerender();
-          }
+      rowStore.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
+        if (sync) {
+          flushSync(rowRerender);
+        } else {
+          rowRerender();
         }
-      );
-      const unsubscribeColStore = colStore.$subscribe(
-        UPDATE_VIRTUAL_STATE,
-        (sync) => {
-          if (sync) {
-            flushSync(colRerender);
-          } else {
-            colRerender();
-          }
+      });
+      colStore.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
+        if (sync) {
+          flushSync(colRerender);
+        } else {
+          colRerender();
         }
-      );
-      const unsubscribeRowScroll = rowStore.$subscribe(
-        UPDATE_SCROLL_EVENT,
-        () => {
-          onScroll[refKey] && onScroll[refKey](rowStore.$getScrollOffset());
-        }
-      );
-      const unsubscribeRowScrollEnd = rowStore.$subscribe(
-        UPDATE_SCROLL_END_EVENT,
-        () => {
-          onScrollEnd[refKey] && onScrollEnd[refKey]();
-        }
-      );
+      });
+      rowStore.$subscribe(UPDATE_SCROLL_EVENT, () => {
+        onScroll[refKey] && onScroll[refKey](rowStore.$getScrollOffset());
+      });
+      rowStore.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
+        onScrollEnd[refKey] && onScrollEnd[refKey]();
+      });
 
       resizer.$observeRoot(root);
       scroller.$observe(root);
       return () => {
-        unsubscribeRowStore();
-        unsubscribeColStore();
+        rowStore.$dispose();
+        colStore.$dispose();
         resizer.$dispose();
         scroller.$dispose();
-        unsubscribeRowScroll();
-        unsubscribeRowScrollEnd();
       };
     }, []);
 

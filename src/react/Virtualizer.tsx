@@ -259,25 +259,19 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       isSSR[refKey] = false;
 
       // store must be subscribed first because others may dispatch update on init depending on implementation
-      const unsubscribeStore = store.$subscribe(
-        UPDATE_VIRTUAL_STATE,
-        (sync) => {
-          if (sync) {
-            flushSync(rerender);
-          } else {
-            rerender();
-          }
+      store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
+        if (sync) {
+          flushSync(rerender);
+        } else {
+          rerender();
         }
-      );
-      const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+      });
+      store.$subscribe(UPDATE_SCROLL_EVENT, () => {
         onScroll[refKey] && onScroll[refKey](store.$getScrollOffset());
       });
-      const unsubscribeOnScrollEnd = store.$subscribe(
-        UPDATE_SCROLL_END_EVENT,
-        () => {
-          onScrollEnd[refKey] && onScrollEnd[refKey]();
-        }
-      );
+      store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
+        onScrollEnd[refKey] && onScrollEnd[refKey]();
+      });
       const assignScrollableElement = (e: HTMLElement) => {
         resizer.$observeRoot(e);
         scroller.$observe(e);
@@ -295,9 +289,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       }
 
       return () => {
-        unsubscribeStore();
-        unsubscribeOnScroll();
-        unsubscribeOnScrollEnd();
+        store.$dispose();
         resizer.$dispose();
         scroller.$dispose();
       };

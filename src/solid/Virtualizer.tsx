@@ -189,19 +189,15 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
-  const unsubscribeStore = store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+  store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
     setRerender(store.$getStateVersion());
   });
-
-  const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+  store.$subscribe(UPDATE_SCROLL_EVENT, () => {
     props.onScroll?.(store.$getScrollOffset());
   });
-  const unsubscribeOnScrollEnd = store.$subscribe(
-    UPDATE_SCROLL_END_EVENT,
-    () => {
-      props.onScrollEnd?.();
-    }
-  );
+  store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
+    props.onScrollEnd?.();
+  });
 
   const range = createMemo<ItemsRange>((prev) => {
     stateVersion();
@@ -248,9 +244,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         props.ref();
       }
 
-      unsubscribeStore();
-      unsubscribeOnScroll();
-      unsubscribeOnScrollEnd();
+      store.$dispose();
       resizer.$dispose();
       scroller.$dispose();
     });

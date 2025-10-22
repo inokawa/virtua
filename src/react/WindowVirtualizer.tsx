@@ -188,34 +188,26 @@ export const WindowVirtualizer = forwardRef<
       isSSR[refKey] = false;
 
       // store must be subscribed first because others may dispatch update on init depending on implementation
-      const unsubscribeStore = store.$subscribe(
-        UPDATE_VIRTUAL_STATE,
-        (sync) => {
-          if (sync) {
-            flushSync(rerender);
-          } else {
-            rerender();
-          }
+      store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
+        if (sync) {
+          flushSync(rerender);
+        } else {
+          rerender();
         }
-      );
-      const unsubscribeOnScroll = store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+      });
+      store.$subscribe(UPDATE_SCROLL_EVENT, () => {
         // https://github.com/inokawa/virtua/discussions/580
         onScroll[refKey] && onScroll[refKey]();
       });
-      const unsubscribeOnScrollEnd = store.$subscribe(
-        UPDATE_SCROLL_END_EVENT,
-        () => {
-          onScrollEnd[refKey] && onScrollEnd[refKey]();
-        }
-      );
+      store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
+        onScrollEnd[refKey] && onScrollEnd[refKey]();
+      });
 
       const el = containerRef[refKey]!;
       resizer.$observeRoot(el);
       scroller.$observe(el);
       return () => {
-        unsubscribeStore();
-        unsubscribeOnScroll();
-        unsubscribeOnScrollEnd();
+        store.$dispose();
         resizer.$dispose();
         scroller.$dispose();
       };
