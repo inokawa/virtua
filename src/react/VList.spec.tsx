@@ -66,6 +66,17 @@ it("should render with render prop", async () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
+it("should render with gap", async () => {
+  const { asFragment } = await render(
+    <VList gap={10}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <div key={i}>{i}</div>
+      ))}
+    </VList>
+  );
+  expect(asFragment()).toMatchSnapshot();
+});
+
 it("should render with keepMounted", async () => {
   const { asFragment } = await render(
     <VList keepMounted={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90]}>

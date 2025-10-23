@@ -134,6 +134,11 @@ export interface VirtualizerProps<T> {
    */
   itemSize?: number;
   /**
+   * The spacing between items in pixels.
+   * @defaultValue 0
+   */
+  gap?: number;
+  /**
    * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
   shift?: boolean;
@@ -171,7 +176,7 @@ export interface VirtualizerProps<T> {
  */
 export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const { itemSize, horizontal = false, cache } = props;
+  const { itemSize, gap, horizontal = false, cache } = props;
   props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
     { as: "div" },
     props
@@ -180,6 +185,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   const store = createVirtualStore(
     props.data.length,
     itemSize,
+    gap,
     undefined,
     cache,
     !itemSize

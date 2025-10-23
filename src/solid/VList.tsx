@@ -25,6 +25,7 @@ export interface VListProps<T>
       | "children"
       | "bufferSize"
       | "itemSize"
+      | "gap"
       | "shift"
       | "horizontal"
       | "cache"
@@ -45,6 +46,7 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
     "children",
     "bufferSize",
     "itemSize",
+    "gap",
     "shift",
     "horizontal",
     "keepMounted",
@@ -72,6 +74,7 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
         data={local.data}
         bufferSize={local.bufferSize}
         itemSize={local.itemSize}
+        gap={local.gap}
         shift={local.shift}
         horizontal={local.horizontal}
         keepMounted={local.keepMounted}

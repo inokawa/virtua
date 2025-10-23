@@ -104,6 +104,16 @@ export const PaddingAndMargin: StoryObj = {
   },
 };
 
+export const Gap: StoryObj = {
+  render: () => {
+    return (
+      <VList gap={10} style={{ height: "100vh" }}>
+        {createRows(1000)}
+      </VList>
+    );
+  },
+};
+
 export const Overflow: StoryObj = {
   render: () => {
     return (
