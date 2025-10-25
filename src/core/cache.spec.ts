@@ -2,8 +2,8 @@ import { describe, it, expect } from "vitest";
 import {
   getItemSize,
   setItemSize,
-  computeTotalSize,
-  computeOffset,
+  getTotalSize,
+  getItemOffset,
   findIndex,
   type Cache,
   updateCacheLength,
@@ -184,12 +184,12 @@ describe(setItemSize.name, () => {
   });
 });
 
-describe(computeOffset.name, () => {
+describe(getItemOffset.name, () => {
   it("should get 0 if index is at start", () => {
     const filledSizes = range(10, () => 20);
     const cache = initCacheWithEmptyOffsets(filledSizes, 30);
 
-    expect(computeOffset(cache, 0)).toBe(0);
+    expect(getItemOffset(cache, 0)).toBe(0);
     expect(cache._offsets).toEqual([0, -1, -1, -1, -1, -1, -1, -1, -1, -1]);
   });
 
@@ -197,7 +197,7 @@ describe(computeOffset.name, () => {
     const filledSizes = range(10, () => 20);
     const cache = initCacheWithEmptyOffsets(filledSizes, 30);
 
-    expect(computeOffset(cache, 1)).toBe(20);
+    expect(getItemOffset(cache, 1)).toBe(20);
     expect(cache._offsets).toEqual([0, 20, -1, -1, -1, -1, -1, -1, -1, -1]);
   });
 
@@ -206,7 +206,7 @@ describe(computeOffset.name, () => {
     const cache = initCacheWithEmptyOffsets(filledSizes, 30);
 
     const last = filledSizes.length - 1;
-    expect(computeOffset(cache, last)).toBe(
+    expect(getItemOffset(cache, last)).toBe(
       sum(filledSizes) - filledSizes[last]!
     );
     expect(cache._offsets).toEqual([
@@ -218,15 +218,15 @@ describe(computeOffset.name, () => {
     const emptySizes = range(10, () => -1);
     const cache = initCacheWithEmptyOffsets(emptySizes, 30);
 
-    expect(computeOffset(cache, 2)).toBe(60);
+    expect(getItemOffset(cache, 2)).toBe(60);
     expect(cache._offsets).toEqual([0, 30, 60, -1, -1, -1, -1, -1, -1, -1]);
   });
 
   it("should return 0 if cache length is 0", () => {
     const cache = initCacheWithEmptyOffsets([], 30);
 
-    expect(computeOffset(cache, 0)).toBe(0);
-    expect(computeOffset(cache, 10)).toBe(0);
+    expect(getItemOffset(cache, 0)).toBe(0);
+    expect(getItemOffset(cache, 10)).toBe(0);
     expect(cache._offsets).toEqual([]);
   });
 
@@ -239,7 +239,7 @@ describe(computeOffset.name, () => {
         30
       );
 
-      expect(computeOffset(cache, 2)).toBe(22);
+      expect(getItemOffset(cache, 2)).toBe(22);
       expect(cache._offsets).toEqual([0, 11, 22, 33, -1, -1, -1, -1, -1, -1]);
     });
 
@@ -251,7 +251,7 @@ describe(computeOffset.name, () => {
         30
       );
 
-      expect(computeOffset(cache, 3)).toBe(33);
+      expect(getItemOffset(cache, 3)).toBe(33);
       expect(cache._offsets).toEqual([0, 11, 22, 33, -1, -1, -1, -1, -1, -1]);
     });
 
@@ -263,18 +263,18 @@ describe(computeOffset.name, () => {
         30
       );
 
-      expect(computeOffset(cache, 5)).toBe(33 + 20 * 2);
+      expect(getItemOffset(cache, 5)).toBe(33 + 20 * 2);
       expect(cache._offsets).toEqual([0, 11, 22, 33, 53, 73, -1, -1, -1, -1]);
     });
   });
 });
 
-describe(computeTotalSize.name, () => {
+describe(getTotalSize.name, () => {
   it("should succeed if sizes is filled", () => {
     const filledSizes = range(10, () => 20);
     const cache = initCacheWithEmptyOffsets(filledSizes, 30);
 
-    expect(computeTotalSize(cache)).toBe(sum(filledSizes));
+    expect(getTotalSize(cache)).toBe(sum(filledSizes));
     expect(cache._offsets).toEqual([
       0, 20, 40, 60, 80, 100, 120, 140, 160, 180,
     ]);
@@ -284,7 +284,7 @@ describe(computeTotalSize.name, () => {
     const emptySizes = range(10, () => -1);
     const cache = initCacheWithEmptyOffsets(emptySizes, 30);
 
-    expect(computeTotalSize(cache)).toBe(sum(range(10, () => 30)));
+    expect(getTotalSize(cache)).toBe(sum(range(10, () => 30)));
     expect(cache._offsets).toEqual([
       0, 30, 60, 90, 120, 150, 180, 210, 240, 270,
     ]);
@@ -292,7 +292,7 @@ describe(computeTotalSize.name, () => {
 
   it("should return 0 if cache length is 0", () => {
     const cache = initCacheWithEmptyOffsets([], 30);
-    expect(computeTotalSize(cache)).toBe(0);
+    expect(getTotalSize(cache)).toBe(0);
     expect(cache._offsets).toEqual([]);
   });
 
@@ -307,7 +307,7 @@ describe(computeTotalSize.name, () => {
         _offsets: offsets,
         _defaultItemSize: 30,
       };
-      expect(computeTotalSize(cache)).toBe(sum(range(8, () => 20)) + 22);
+      expect(getTotalSize(cache)).toBe(sum(range(8, () => 20)) + 22);
       expect(cache._offsets).toEqual([
         0, 11, 22, 42, 62, 82, 102, 122, 142, 162,
       ]);
@@ -323,7 +323,7 @@ describe(computeTotalSize.name, () => {
         _offsets: offsets,
         _defaultItemSize: 30,
       };
-      expect(computeTotalSize(cache)).toBe(99 + 20);
+      expect(getTotalSize(cache)).toBe(99 + 20);
       expect(cache._offsets).toEqual([0, 11, 22, 33, 44, 55, 66, 77, 88, 99]);
     });
   });

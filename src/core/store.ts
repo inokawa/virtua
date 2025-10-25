@@ -1,8 +1,8 @@
 import {
   initCache,
   getItemSize as _getItemSize,
-  computeTotalSize,
-  computeOffset as computeStartOffset,
+  getTotalSize as _getTotalSize,
+  getItemOffset as _getItemOffset,
   UNCACHED,
   setItemSize,
   estimateDefaultItemSize,
@@ -149,9 +149,9 @@ export const createVirtualStore = (
   const getRange = (startOffset: number, endOffset: number) => {
     return computeRange(cache, startOffset, endOffset, _prevRange[0]);
   };
-  const getTotalSize = (): number => computeTotalSize(cache);
+  const getTotalSize = (): number => _getTotalSize(cache);
   const getItemOffset = (index: number): number => {
-    return computeStartOffset(cache, index) - pendingJump;
+    return _getItemOffset(cache, index) - pendingJump;
   };
   const getItemSize = (index: number): number => {
     return _getItemSize(cache, index);

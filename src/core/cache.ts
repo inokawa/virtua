@@ -55,7 +55,7 @@ export const setItemSize = (
 /**
  * @internal
  */
-export const computeOffset = (
+export const getItemOffset = (
   cache: Writeable<Cache>,
   index: number
 ): number => {
@@ -84,10 +84,10 @@ export const computeOffset = (
 /**
  * @internal
  */
-export const computeTotalSize = (cache: Cache): number => {
+export const getTotalSize = (cache: Cache): number => {
   if (!cache._length) return 0;
   return (
-    computeOffset(cache, cache._length - 1) +
+    getItemOffset(cache, cache._length - 1) +
     getItemSize(cache, cache._length - 1)
   );
 };
@@ -106,7 +106,7 @@ export const findIndex = (
   // Find with binary search
   while (low <= high) {
     const mid = floor((low + high) / 2);
-    const itemOffset = computeOffset(cache, mid);
+    const itemOffset = getItemOffset(cache, mid);
     if (itemOffset <= offset) {
       if (itemOffset + getItemSize(cache, mid) > offset) {
         return mid;
@@ -131,7 +131,7 @@ export const computeRange = (
   // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
   prevStartIndex = min(prevStartIndex, cache._length - 1);
 
-  if (computeOffset(cache, prevStartIndex) <= startOffset) {
+  if (getItemOffset(cache, prevStartIndex) <= startOffset) {
     // search forward
     // start <= end, prevStartIndex <= start
     const end = findIndex(cache, endOffset, prevStartIndex);
