@@ -39,30 +39,22 @@ export const Default: StoryObj = {
           shouldPrepend.current = offset - prevScrollOffset.current < 0;
           prevScrollOffset.current = offset;
           if (!ref.current) return;
+
+          const currentShouldPrepend = shouldPrepend.current;
           if (offset < OFFSET_TO_BOUND) {
-            const currentShouldPrepend = shouldPrepend.current;
-            setItems((prev) => {
-              return [...createItems(TOTAL_LENGTH / 4), ...prev];
-            });
+            setItems((prev) => [...createItems(TOTAL_LENGTH / 4), ...prev]);
             setTimeout(() => {
               shouldPrepend.current = !currentShouldPrepend;
-              setItems((prev) => {
-                return [...prev.slice(0, (TOTAL_LENGTH * 3) / 4)];
-              });
+              setItems((prev) => [...prev.slice(0, (TOTAL_LENGTH * 3) / 4)]);
             });
           } else if (
             ref.current.scrollSize - ref.current.viewportSize - offset <
             OFFSET_TO_BOUND
           ) {
-            const currentShouldPrepend = shouldPrepend.current;
-            setItems((prev) => {
-              return [...prev, ...createItems(TOTAL_LENGTH / 4)];
-            });
+            setItems((prev) => [...prev, ...createItems(TOTAL_LENGTH / 4)]);
             setTimeout(() => {
               shouldPrepend.current = !currentShouldPrepend;
-              setItems((prev) => {
-                return [...prev.slice(TOTAL_LENGTH / 4)];
-              });
+              setItems((prev) => [...prev.slice(TOTAL_LENGTH / 4)]);
             });
           }
         }}
