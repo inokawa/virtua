@@ -34,37 +34,31 @@ const initCacheWithComputedOffsets = (
   sizes: readonly number[],
   defaultSize: number
 ): Cache => {
-  const offsets = sizes.reduce((acc, s, i) => {
-    acc.push(i === 0 ? 0 : acc[i - 1]! + s);
-    return acc;
-  }, [] as number[]);
-  return {
-    _length: sizes.length,
-    _sizes: [...sizes],
-    _computedOffsetIndex: findComputedOffsetIndex(offsets),
-    _offsets: offsets,
-    _defaultItemSize: defaultSize,
-  };
+  return initCacheWithOffsets(
+    sizes,
+    defaultSize,
+    sizes.reduce((acc, s, i) => {
+      acc.push(i === 0 ? 0 : acc[i - 1]! + s);
+      return acc;
+    }, [] as number[])
+  );
 };
 
 const initCacheWithEmptyOffsets = (
   sizes: readonly number[],
   defaultSize: number
 ): Cache => {
-  const offsets = range(sizes.length, () => -1);
-  return {
-    _length: sizes.length,
-    _sizes: [...sizes],
-    _computedOffsetIndex: findComputedOffsetIndex(offsets),
-    _offsets: offsets,
-    _defaultItemSize: defaultSize,
-  };
+  return initCacheWithOffsets(
+    sizes,
+    defaultSize,
+    range(sizes.length, () => -1)
+  );
 };
 
 const initCacheWithOffsets = (
   sizes: readonly number[],
-  offsets: readonly number[],
-  defaultSize: number
+  defaultSize: number,
+  offsets: readonly number[]
 ): Cache => {
   if (sizes.length !== offsets.length) {
     throw new Error("wrong offsets for sizes");
@@ -133,8 +127,8 @@ describe(setItemSize.name, () => {
       const filledSizes = range(10, () => 20);
       const cache = initCacheWithOffsets(
         filledSizes,
-        [0, 10, 20, 30, 40, -1, -1, -1, -1, -1],
-        20
+        20,
+        [0, 10, 20, 30, 40, -1, -1, -1, -1, -1]
       );
 
       setItemSize(cache, 1, 123);
@@ -147,8 +141,8 @@ describe(setItemSize.name, () => {
       const filledSizes = range(10, () => 20);
       const cache = initCacheWithOffsets(
         filledSizes,
-        [0, 10, 20, 30, 40, -1, -1, -1, -1, -1],
-        20
+        20,
+        [0, 10, 20, 30, 40, -1, -1, -1, -1, -1]
       );
 
       setItemSize(cache, 4, 123);
@@ -161,8 +155,8 @@ describe(setItemSize.name, () => {
       const filledSizes = range(10, () => 20);
       const cache = initCacheWithOffsets(
         filledSizes,
-        [0, 10, 20, 30, 40, -1, -1, -1, -1, -1],
-        20
+        20,
+        [0, 10, 20, 30, 40, -1, -1, -1, -1, -1]
       );
 
       setItemSize(cache, 5, 123);
@@ -242,8 +236,8 @@ describe(getItemOffset.name, () => {
       const filledSizes = range(10, () => 20);
       const cache = initCacheWithOffsets(
         filledSizes,
-        [0, 11, 22, 33, -1, -1, -1, -1, -1, -1],
-        30
+        30,
+        [0, 11, 22, 33, -1, -1, -1, -1, -1, -1]
       );
 
       expect(getItemOffset(cache, 2)).toBe(22);
@@ -254,8 +248,8 @@ describe(getItemOffset.name, () => {
       const filledSizes = range(10, () => 20);
       const cache = initCacheWithOffsets(
         filledSizes,
-        [0, 11, 22, 33, -1, -1, -1, -1, -1, -1],
-        30
+        30,
+        [0, 11, 22, 33, -1, -1, -1, -1, -1, -1]
       );
 
       expect(getItemOffset(cache, 3)).toBe(33);
@@ -266,8 +260,8 @@ describe(getItemOffset.name, () => {
       const filledSizes = range(10, () => 20);
       const cache = initCacheWithOffsets(
         filledSizes,
-        [0, 11, 22, 33, -1, -1, -1, -1, -1, -1],
-        30
+        30,
+        [0, 11, 22, 33, -1, -1, -1, -1, -1, -1]
       );
 
       expect(getItemOffset(cache, 5)).toBe(33 + 20 * 2);
