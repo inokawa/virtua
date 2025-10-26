@@ -266,13 +266,13 @@ export interface VGridProps extends ViewportComponentAttributes {
    */
   bufferSize?: number;
   /**
-   * If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
+   * A prop for SSR. If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size until hydrated.
    */
-  initialRowCount?: number;
+  ssrRowCount?: number;
   /**
-   * If set, the specified amount of cols will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
+   * A prop for SSR. If set, the specified amount of cols will be mounted in the initial rendering regardless of the container size until hydrated.
    */
-  initialColCount?: number;
+  ssrColCount?: number;
   /**
    * Component or element type for cell element. This component will get {@link CustomCellComponentProps} as props.
    * @defaultValue "div"
@@ -304,8 +304,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       cellHeight = 40,
       cellWidth = 100,
       bufferSize,
-      initialRowCount,
-      initialColCount,
+      ssrRowCount,
+      ssrColCount,
       item: ItemElement = "div",
       domRef,
       innerDomRef,
@@ -317,16 +317,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     ref
   ): ReactElement => {
     const [rowStore, colStore, resizer, scroller] = useStatic(() => {
-      const _rowStore = createVirtualStore(
-        rowCount,
-        cellHeight,
-        initialRowCount
-      );
-      const _colStore = createVirtualStore(
-        colCount,
-        cellWidth,
-        initialColCount
-      );
+      const _rowStore = createVirtualStore(rowCount, cellHeight, ssrRowCount);
+      const _colStore = createVirtualStore(colCount, cellWidth, ssrColCount);
       return [
         _rowStore,
         _colStore,
