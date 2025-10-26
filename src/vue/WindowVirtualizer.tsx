@@ -140,7 +140,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     watch(
       () => props.data.length,
       (count) => {
-        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift], true);
       }
     );
 
