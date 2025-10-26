@@ -375,13 +375,12 @@ export const createScroller = (
       index = clamp(index, 0, store.$getItemsLength() - 1);
 
       if (align === "nearest") {
-        const itemOffset = store.$getItemOffset(index);
         const scrollOffset = store.$getScrollOffset();
 
-        if (itemOffset < scrollOffset) {
+        if (store.$getItemOffset(index) < scrollOffset) {
           align = "start";
         } else if (
-          itemOffset + store.$getItemSize(index) >
+          store.$getItemOffset(index + 1) >
           scrollOffset + store.$getViewportSize()
         ) {
           align = "end";
@@ -395,12 +394,11 @@ export const createScroller = (
         return (
           offset +
           store.$getStartSpacerSize() +
-          store.$getItemOffset(index) +
           (align === "end"
-            ? store.$getItemSize(index) - store.$getViewportSize()
+            ? store.$getItemOffset(index + 1) - store.$getViewportSize()
             : align === "center"
-            ? (store.$getItemSize(index) - store.$getViewportSize()) / 2
-            : 0)
+            ? (store.$getItemOffset(index + 1) - store.$getViewportSize()) / 2
+            : store.$getItemOffset(index))
         );
       }, smooth);
     },
@@ -531,13 +529,12 @@ export const createWindowScroller = (
       index = clamp(index, 0, store.$getItemsLength() - 1);
 
       if (align === "nearest") {
-        const itemOffset = store.$getItemOffset(index);
         const scrollOffset = store.$getScrollOffset();
 
-        if (itemOffset < scrollOffset) {
+        if (store.$getItemOffset(index) < scrollOffset) {
           align = "start";
         } else if (
-          itemOffset + store.$getItemSize(index) >
+          store.$getItemOffset(index + 1) >
           scrollOffset + store.$getViewportSize()
         ) {
           align = "end";
@@ -564,15 +561,14 @@ export const createWindowScroller = (
             isHorizontal
           ) +
           // store._getStartSpacerSize() +
-          store.$getItemOffset(index) +
           (align === "end"
-            ? store.$getItemSize(index) -
+            ? store.$getItemOffset(index + 1) -
               (store.$getViewportSize() - getScrollbarSize())
             : align === "center"
-            ? (store.$getItemSize(index) -
+            ? (store.$getItemOffset(index + 1) -
                 (store.$getViewportSize() - getScrollbarSize())) /
               2
-            : 0)
+            : store.$getItemOffset(index))
         );
       }, smooth);
     },
