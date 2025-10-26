@@ -82,17 +82,6 @@ export const getItemOffset = (
 };
 
 /**
- * @internal
- */
-export const getTotalSize = (cache: Cache): number => {
-  if (!cache._length) return 0;
-  return (
-    getItemOffset(cache, cache._length - 1) +
-    getItemSize(cache, cache._length - 1)
-  );
-};
-
-/**
  * Finds the index of an item in the cache whose computed offset is closest to the specified offset.
  *
  * @internal
@@ -106,9 +95,8 @@ export const findIndex = (
   // Find with binary search
   while (low <= high) {
     const mid = floor((low + high) / 2);
-    const itemOffset = getItemOffset(cache, mid);
-    if (itemOffset <= offset) {
-      if (itemOffset + getItemSize(cache, mid) > offset) {
+    if (getItemOffset(cache, mid) <= offset) {
+      if (getItemOffset(cache, mid + 1) > offset) {
         return mid;
       }
       low = mid + 1;
@@ -202,7 +190,7 @@ export const initCache = (
         : fill([], length),
     _length: length,
     _computedOffsetIndex: -1,
-    _offsets: fill([], length),
+    _offsets: fill([], length + 1),
   };
 };
 

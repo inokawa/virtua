@@ -1,7 +1,6 @@
 import {
   initCache,
   getItemSize as _getItemSize,
-  getTotalSize as _getTotalSize,
   getItemOffset as _getItemOffset,
   UNCACHED,
   setItemSize,
@@ -149,7 +148,7 @@ export const createVirtualStore = (
   const getRange = (startOffset: number, endOffset: number) => {
     return computeRange(cache, startOffset, endOffset, _prevRange[0]);
   };
-  const getTotalSize = (): number => _getTotalSize(cache);
+  const getTotalSize = (): number => _getItemOffset(cache, cache._length);
   const getItemOffset = (index: number): number => {
     return _getItemOffset(cache, index) - pendingJump;
   };
@@ -345,13 +344,14 @@ export const createVirtualStore = (
                     // https://github.com/inokawa/virtua/issues/758
                     index < _frozenRange[0]
                   : // Otherwise we should maintain visible position
-                    getItemOffset(index) +
-                      // https://github.com/inokawa/virtua/issues/385
-                      (_scrollDirection === SCROLL_IDLE &&
-                      _scrollMode === SCROLL_BY_NATIVE
-                        ? getItemSize(index)
-                        : 0) <
-                    getRelativeScrollOffset())
+                    getItemOffset(
+                      index +
+                        // https://github.com/inokawa/virtua/issues/385
+                        (_scrollDirection === SCROLL_IDLE &&
+                        _scrollMode === SCROLL_BY_NATIVE
+                          ? 1
+                          : 0)
+                    ) < getRelativeScrollOffset())
               ) {
                 acc += size - getItemSize(index);
               }
