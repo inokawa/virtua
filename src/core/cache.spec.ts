@@ -25,18 +25,24 @@ const sum = (cache: readonly number[]): number => {
   return cache.reduce((acc, c) => acc + c, 0);
 };
 
+const findComputedOffsetIndex = (offsets: readonly number[]): number => {
+  const index = offsets.findIndex((o) => o === -1);
+  return (index === -1 ? offsets.length : index) - 1;
+};
+
 const initCacheWithComputedOffsets = (
   sizes: readonly number[],
   defaultSize: number
 ): Cache => {
+  const offsets = sizes.reduce((acc, s, i) => {
+    acc.push(i === 0 ? 0 : acc[i - 1]! + s);
+    return acc;
+  }, [] as number[]);
   return {
     _length: sizes.length,
     _sizes: [...sizes],
-    _computedOffsetIndex: sizes.length - 1,
-    _offsets: sizes.reduce((acc, s, i) => {
-      acc.push(i === 0 ? 0 : acc[i - 1]! + s);
-      return acc;
-    }, [] as number[]),
+    _computedOffsetIndex: findComputedOffsetIndex(offsets),
+    _offsets: offsets,
     _defaultItemSize: defaultSize,
   };
 };
@@ -45,11 +51,12 @@ const initCacheWithEmptyOffsets = (
   sizes: readonly number[],
   defaultSize: number
 ): Cache => {
+  const offsets = range(sizes.length, () => -1);
   return {
     _length: sizes.length,
     _sizes: [...sizes],
-    _computedOffsetIndex: -1,
-    _offsets: range(sizes.length, () => -1),
+    _computedOffsetIndex: findComputedOffsetIndex(offsets),
+    _offsets: offsets,
     _defaultItemSize: defaultSize,
   };
 };
@@ -65,7 +72,7 @@ const initCacheWithOffsets = (
   return {
     _length: sizes.length,
     _sizes: [...sizes],
-    _computedOffsetIndex: offsets.findIndex((o) => o === -1) - 1,
+    _computedOffsetIndex: findComputedOffsetIndex(offsets),
     _offsets: [...offsets],
     _defaultItemSize: defaultSize,
   };
