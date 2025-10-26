@@ -78,6 +78,8 @@ const initCacheWithSizesAndOffsets = (
   };
 };
 
+const getTotalSize = (cache: Cache) => getItemOffset(cache, cache._length);
+
 describe(getItemSize.name, () => {
   const cache = initCacheWithSizesAndEmptyOffsets([10, -1], 20);
 
@@ -289,9 +291,6 @@ describe(getItemOffset.name, () => {
 });
 
 describe("getTotalSize", () => {
-  const getTotalSize = (cache: Cache): number =>
-    getItemOffset(cache, cache._length);
-
   it("should succeed if sizes is filled", () => {
     const filledSizes = range(10, () => 20);
     const cache = initCacheWithSizesAndEmptyOffsets(filledSizes, 30);
@@ -656,6 +655,11 @@ describe(estimateDefaultItemSize.name, () => {
       expect(cache._sizes).toEqual(init._sizes);
       expect(cache._computedOffsetIndex).toEqual(-1);
       expect(diff).toBe(0);
+      expect(getTotalSize(cache)).toBe(
+        getTotalSize(init) +
+          (cache._defaultItemSize - init._defaultItemSize) *
+            (100 - indexes.length)
+      );
     });
 
     it("should update with some entry", () => {
@@ -672,6 +676,11 @@ describe(estimateDefaultItemSize.name, () => {
       expect(cache._sizes).toEqual(init._sizes);
       expect(cache._computedOffsetIndex).toEqual(-1);
       expect(diff).toBe(0);
+      expect(getTotalSize(cache)).toBe(
+        getTotalSize(init) +
+          (cache._defaultItemSize - init._defaultItemSize) *
+            (100 - indexes.length)
+      );
     });
 
     it("should update with some entry from outside", () => {
@@ -688,6 +697,11 @@ describe(estimateDefaultItemSize.name, () => {
       expect(cache._sizes).toEqual(init._sizes);
       expect(cache._computedOffsetIndex).toEqual(-1);
       expect(diff).toBe(0);
+      expect(getTotalSize(cache)).toBe(
+        getTotalSize(init) +
+          (cache._defaultItemSize - init._defaultItemSize) *
+            (100 - indexes.length)
+      );
     });
   });
 
@@ -706,6 +720,11 @@ describe(estimateDefaultItemSize.name, () => {
       expect(cache._sizes).toEqual(init._sizes);
       expect(cache._computedOffsetIndex).toEqual(-1);
       expect(diff).toBe((50 - 30) * 90);
+      expect(getTotalSize(cache)).toBe(
+        getTotalSize(init) +
+          (cache._defaultItemSize - init._defaultItemSize) *
+            (100 - indexes.length)
+      );
     });
 
     it("should update with some entry", () => {
@@ -722,6 +741,11 @@ describe(estimateDefaultItemSize.name, () => {
       expect(cache._sizes).toEqual(init._sizes);
       expect(cache._computedOffsetIndex).toEqual(-1);
       expect(diff).toBe((50 - 30) * 90);
+      expect(getTotalSize(cache)).toBe(
+        getTotalSize(init) +
+          (cache._defaultItemSize - init._defaultItemSize) *
+            (100 - indexes.length)
+      );
     });
 
     it("should update with some entry from outside", () => {
@@ -738,6 +762,11 @@ describe(estimateDefaultItemSize.name, () => {
       expect(cache._sizes).toEqual(init._sizes);
       expect(cache._computedOffsetIndex).toEqual(-1);
       expect(diff).toBe((50 - 30) * (90 - 4));
+      expect(getTotalSize(cache)).toBe(
+        getTotalSize(init) +
+          (cache._defaultItemSize - init._defaultItemSize) *
+            (100 - indexes.length)
+      );
     });
 
     it("should update with some entry from near bound", () => {
@@ -754,6 +783,11 @@ describe(estimateDefaultItemSize.name, () => {
       expect(cache._sizes).toEqual(init._sizes);
       expect(cache._computedOffsetIndex).toEqual(-1);
       expect(diff).toBe((50 - 30) * (90 - 2));
+      expect(getTotalSize(cache)).toBe(
+        getTotalSize(init) +
+          (cache._defaultItemSize - init._defaultItemSize) *
+            (100 - indexes.length)
+      );
     });
   });
 });
@@ -971,6 +1005,7 @@ describe(updateCacheLength.name, () => {
 
   it("should increase cache length", () => {
     const cache = initCache(10, 40);
+    const cloned = structuredClone(cache);
     const res = updateCacheLength(cache, 15, undefined);
     expect(res).toEqual(40 * 5);
     expect(cache).toMatchInlineSnapshot(`
@@ -1015,11 +1050,13 @@ describe(updateCacheLength.name, () => {
         ],
       }
     `);
+    expect(getTotalSize(cache)).toBe(getTotalSize(cloned) + res);
   });
 
   it("should increase filled cache length", () => {
     const sizes = range(10, (i) => (i + 1) * 10);
     const cache = initCacheWithSizes(sizes, 40);
+    const cloned = structuredClone(cache);
     const res = updateCacheLength(cache, 15, undefined);
     expect(res).toEqual(40 * 5);
     expect(cache).toMatchInlineSnapshot(`
@@ -1064,10 +1101,12 @@ describe(updateCacheLength.name, () => {
         ],
       }
     `);
+    expect(getTotalSize(cache)).toBe(getTotalSize(cloned) + res);
   });
 
   it("should decrease cache length", () => {
     const cache = initCache(10, 40);
+    const cloned = structuredClone(cache);
     const res = updateCacheLength(cache, 5, undefined);
     expect(res).toEqual(-(40 * 5));
     expect(cache).toMatchInlineSnapshot(`
@@ -1092,11 +1131,13 @@ describe(updateCacheLength.name, () => {
         ],
       }
     `);
+    expect(getTotalSize(cache)).toBe(getTotalSize(cloned) + res);
   });
 
   it("should decrease filled cache length", () => {
     const sizes = range(10, (i) => (i + 1) * 10);
     const cache = initCacheWithSizes(sizes, 40);
+    const cloned = structuredClone(cache);
     const res = updateCacheLength(cache, 5, undefined);
     expect(res).toEqual(-sum(sizes.slice(-5)));
     expect(cache).toMatchInlineSnapshot(`
@@ -1121,10 +1162,12 @@ describe(updateCacheLength.name, () => {
         ],
       }
     `);
+    expect(getTotalSize(cache)).toBe(getTotalSize(cloned) + res);
   });
 
   it("should increase cache length with shifting", () => {
     const cache = initCache(10, 40);
+    const cloned = structuredClone(cache);
     const res = updateCacheLength(cache, 15, true);
     expect(res).toEqual(40 * 5);
     expect(cache).toMatchInlineSnapshot(`
@@ -1169,11 +1212,13 @@ describe(updateCacheLength.name, () => {
         ],
       }
     `);
+    expect(getTotalSize(cache)).toBe(getTotalSize(cloned) + res);
   });
 
   it("should increase filled cache length with shifting", () => {
     const sizes = range(10, (i) => (i + 1) * 10);
     const cache = initCacheWithSizes(sizes, 40);
+    const cloned = structuredClone(cache);
     const res = updateCacheLength(cache, 15, true);
     expect(res).toEqual(40 * 5);
     expect(cache).toMatchInlineSnapshot(`
@@ -1218,10 +1263,12 @@ describe(updateCacheLength.name, () => {
         ],
       }
     `);
+    expect(getTotalSize(cache)).toBe(getTotalSize(cloned) + res);
   });
 
   it("should decrease cache length with shifting", () => {
     const cache = initCache(10, 40);
+    const cloned = structuredClone(cache);
     const res = updateCacheLength(cache, 5, true);
     expect(res).toEqual(-(40 * 5));
     expect(cache).toMatchInlineSnapshot(`
@@ -1246,11 +1293,13 @@ describe(updateCacheLength.name, () => {
         ],
       }
     `);
+    expect(getTotalSize(cache)).toBe(getTotalSize(cloned) + res);
   });
 
   it("should decrease filled cache length with shifting", () => {
     const sizes = range(10, (i) => (i + 1) * 10);
     const cache = initCacheWithSizes(sizes, 40);
+    const cloned = structuredClone(cache);
     const res = updateCacheLength(cache, 5, true);
     expect(res).toEqual(-sum(sizes.slice(0, 5)));
     expect(cache).toMatchInlineSnapshot(`
@@ -1275,5 +1324,6 @@ describe(updateCacheLength.name, () => {
         ],
       }
     `);
+    expect(getTotalSize(cache)).toBe(getTotalSize(cloned) + res);
   });
 });
