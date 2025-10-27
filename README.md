@@ -181,8 +181,9 @@ export const App = () => {
         <div
           style={{
             width: ((colIndex % 3) + 1) * 100,
-            border: "solid 1px gray",
             background: "white",
+            borderLeft: colIndex !== 0 ? "solid 1px gray" : undefined,
+            borderTop: rowIndex !== 0 ? "solid 1px gray" : undefined,
           }}
         >
           {rowIndex} / {colIndex}

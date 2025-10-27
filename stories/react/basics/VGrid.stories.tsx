@@ -13,9 +13,10 @@ export const Default: StoryObj = {
         {({ rowIndex, colIndex }) => (
           <div
             style={{
-              border: "solid 1px gray",
               background: "white",
               padding: 4,
+              borderLeft: colIndex !== 0 ? "solid 1px gray" : undefined,
+              borderTop: rowIndex !== 0 ? "solid 1px gray" : undefined,
             }}
           >
             {rowIndex} / {colIndex}
@@ -33,11 +34,12 @@ export const Fixed: StoryObj = {
         {({ rowIndex, colIndex }) => (
           <div
             style={{
-              border: "solid 1px gray",
               background: "white",
               padding: 4,
               width: ((colIndex % 2) + 1) * 100,
               height: ((rowIndex % 2) + 1) * 100,
+              borderLeft: colIndex !== 0 ? "solid 1px gray" : undefined,
+              borderTop: rowIndex !== 0 ? "solid 1px gray" : undefined,
             }}
           >
             {rowIndex} / {colIndex}
@@ -55,10 +57,11 @@ export const DynamicHeight: StoryObj = {
         {({ rowIndex, colIndex }) => (
           <div
             style={{
-              border: "solid 1px gray",
               background: "white",
               padding: 4,
               width: ((colIndex % 2) + 1) * 100,
+              borderLeft: colIndex !== 0 ? "solid 1px gray" : undefined,
+              borderTop: rowIndex !== 0 ? "solid 1px gray" : undefined,
             }}
           >
             <div>
@@ -81,10 +84,11 @@ export const DynamicWidth: StoryObj = {
         {({ rowIndex, colIndex }) => (
           <div
             style={{
-              border: "solid 1px gray",
               background: "white",
               padding: 4,
               height: ((rowIndex % 2) + 1) * 100,
+              borderLeft: colIndex !== 0 ? "solid 1px gray" : undefined,
+              borderTop: rowIndex !== 0 ? "solid 1px gray" : undefined,
             }}
           >
             <div>
@@ -111,7 +115,8 @@ export const Resizeable: StoryObj = {
     const grid = useRef<VGridHandle>(null);
 
     function randomize() {
-      const getSize = () => Math.random() < 0.8 ? 40 + Math.round(200 * Math.random()) : SIZE;
+      const getSize = () =>
+        Math.random() < 0.8 ? 40 + Math.round(200 * Math.random()) : SIZE;
       const newWidths = new Map<number, number>();
       const newHeights = new Map<number, number>();
       // skip index 0 to keep inputs stable
@@ -119,7 +124,7 @@ export const Resizeable: StoryObj = {
         newWidths.set(i, getSize());
         newHeights.set(i, getSize());
       }
-      grid.current?.resizeCols([...newWidths.entries()])
+      grid.current?.resizeCols([...newWidths.entries()]);
       grid.current?.resizeRows([...newHeights.entries()]);
       setWidths(newWidths);
       setHeights(newHeights);
@@ -137,11 +142,12 @@ export const Resizeable: StoryObj = {
         {({ rowIndex, colIndex }) => (
           <div
             style={{
-              border: "solid 1px gray",
               background: "white",
               padding: 4,
               width: widths.get(colIndex) ?? SIZE,
               height: heights.get(rowIndex) ?? SIZE,
+              borderLeft: colIndex !== 0 ? "solid 1px gray" : undefined,
+              borderTop: rowIndex !== 0 ? "solid 1px gray" : undefined,
             }}
           >
             <div>
@@ -280,11 +286,12 @@ export const ScrollTo: StoryObj = {
           {({ rowIndex, colIndex }) => (
             <div
               style={{
-                border: "solid 1px gray",
                 background: "white",
                 padding: 4,
                 width: 160,
                 height: 80,
+                borderLeft: colIndex !== 0 ? "solid 1px gray" : undefined,
+                borderTop: rowIndex !== 0 ? "solid 1px gray" : undefined,
               }}
             >
               {rowIndex} / {colIndex}
