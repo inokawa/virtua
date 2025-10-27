@@ -111,11 +111,11 @@ export interface VGridHandle {
   /**
    * Get current scrollTop.
    */
-  readonly scrollTop: number;
+  readonly scrollRowOffset: number;
   /**
    * Get current scrollLeft.
    */
-  readonly scrollLeft: number;
+  readonly scrollColOffset: number;
   /**
    * Get current scrollHeight.
    */
@@ -133,25 +133,47 @@ export interface VGridHandle {
    */
   readonly viewportWidth: number;
   /**
-   * Find the start index of visible range of items.
+   * Find the start index of visible range of rows.
    */
-  findStartIndex: () => [x: number, y: number];
+  findRowStartIndex: () => number;
   /**
-   * Find the end index of visible range of items.
+   * Find the end index of visible range of rows.
    */
-  findEndIndex: () => [x: number, y: number];
+  findRowEndIndex: () => number;
+  /**
+   * Find the start index of visible range of cols.
+   */
+  findColStartIndex: () => number;
+  /**
+   * Find the end index of visible range of cols.
+   */
+  findColEndIndex: () => number;
   /**
    * Get item offset from start.
-   * @param indexX horizontal index of item
-   * @param indexY vertical of item
    */
-  getItemOffset(indexX: number, indexY: number): [x: number, y: number];
+  getItemOffset(opts: {
+    /**
+     * vertical index of item
+     */
+    row: number;
+    /**
+     * horizontal index of item
+     */
+    col: number;
+  }): [x: number, y: number];
   /**
    * Get item size.
-   * @param indexX horizontal index of item
-   * @param indexY vertical of item
    */
-  getItemSize(indexX: number, indexY: number): [width: number, height: number];
+  getItemSize(opts: {
+    /**
+     * vertical index of item
+     */
+    row: number;
+    /**
+     * horizontal index of item
+     */
+    col: number;
+  }): [width: number, height: number];
   /**
    * Resize individual columns.
    * @param cols array of `[index, size]` to update column sizes
@@ -164,22 +186,43 @@ export interface VGridHandle {
   resizeRows(rows: VGridItemResize[]): void;
   /**
    * Scroll to the item specified by index.
-   * @param indexX horizontal index of item
-   * @param indexY vertical index of item
    */
-  scrollToIndex(indexX: number, indexY: number): void;
+  scrollToIndex(opts: {
+    /**
+     * vertical index of item
+     */
+    row?: number;
+    /**
+     * horizontal index of item
+     */
+    col?: number;
+  }): void;
   /**
    * Scroll to the given offset.
-   * @param offsetX offset from left
-   * @param offsetY offset from top
    */
-  scrollTo(offsetX: number, offsetY: number): void;
+  scrollTo(opts: {
+    /**
+     * offset from top
+     */
+    row?: number;
+    /**
+     *  offset from left (or right in RTL direction)
+     */
+    col?: number;
+  }): void;
   /**
    * Scroll by the given offset.
-   * @param offsetX horizontal offset from current position
-   * @param offsetY vertical offset from current position
    */
-  scrollBy(offsetX: number, offsetY: number): void;
+  scrollBy(opts: {
+    /**
+     * vertical offset from current position
+     */
+    row?: number;
+    /**
+     * horizontal offset from current position
+     */
+    col?: number;
+  }): void;
 }
 
 /**
@@ -223,13 +266,13 @@ export interface VGridProps extends ViewportComponentAttributes {
    */
   bufferSize?: number;
   /**
-   * If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
+   * A prop for SSR. If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size until hydrated.
    */
-  initialRowCount?: number;
+  ssrRowCount?: number;
   /**
-   * If set, the specified amount of cols will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
+   * A prop for SSR. If set, the specified amount of cols will be mounted in the initial rendering regardless of the container size until hydrated.
    */
-  initialColCount?: number;
+  ssrColCount?: number;
   /**
    * Component or element type for cell element. This component will get {@link CustomCellComponentProps} as props.
    * @defaultValue "div"
@@ -261,8 +304,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       cellHeight = 40,
       cellWidth = 100,
       bufferSize,
-      initialRowCount,
-      initialColCount,
+      ssrRowCount,
+      ssrColCount,
       item: ItemElement = "div",
       domRef,
       innerDomRef,
@@ -274,16 +317,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     ref
   ): ReactElement => {
     const [rowStore, colStore, resizer, scroller] = useStatic(() => {
-      const _rowStore = createVirtualStore(
-        rowCount,
-        cellHeight,
-        initialRowCount
-      );
-      const _colStore = createVirtualStore(
-        colCount,
-        cellWidth,
-        initialColCount
-      );
+      const _rowStore = createVirtualStore(rowCount, cellHeight, ssrRowCount);
+      const _colStore = createVirtualStore(colCount, cellWidth, ssrColCount);
       return [
         _rowStore,
         _colStore,
@@ -360,10 +395,10 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       ref,
       () => {
         return {
-          get scrollTop() {
+          get scrollRowOffset() {
             return rowStore.$getScrollOffset();
           },
-          get scrollLeft() {
+          get scrollColOffset() {
             return colStore.$getScrollOffset();
           },
           get scrollHeight() {
@@ -378,21 +413,17 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           get viewportWidth() {
             return colStore.$getViewportSize();
           },
-          findStartIndex: () => [
-            colStore.$findStartIndex(),
-            rowStore.$findStartIndex(),
+          findRowStartIndex: rowStore.$findStartIndex,
+          findRowEndIndex: rowStore.$findEndIndex,
+          findColStartIndex: colStore.$findStartIndex,
+          findColEndIndex: colStore.$findEndIndex,
+          getItemOffset: ({ row, col }) => [
+            rowStore.$getItemOffset(row),
+            colStore.$getItemOffset(col),
           ],
-          findEndIndex: () => [
-            colStore.$findEndIndex(),
-            rowStore.$findEndIndex(),
-          ],
-          getItemOffset: (indexX, indexY) => [
-            colStore.$getItemOffset(indexX),
-            rowStore.$getItemOffset(indexY),
-          ],
-          getItemSize: (indexX, indexY) => [
-            colStore.$getItemSize(indexX),
-            rowStore.$getItemSize(indexY),
+          getItemSize: ({ row, col }) => [
+            rowStore.$getItemSize(row),
+            colStore.$getItemSize(col),
           ],
           resizeCols(cols) {
             resizer.$resizeCols(cols);

@@ -111,7 +111,8 @@ export const Resizeable: StoryObj = {
     const grid = useRef<VGridHandle>(null);
 
     function randomize() {
-      const getSize = () => Math.random() < 0.8 ? 40 + Math.round(200 * Math.random()) : SIZE;
+      const getSize = () =>
+        Math.random() < 0.8 ? 40 + Math.round(200 * Math.random()) : SIZE;
       const newWidths = new Map<number, number>();
       const newHeights = new Map<number, number>();
       // skip index 0 to keep inputs stable
@@ -119,7 +120,7 @@ export const Resizeable: StoryObj = {
         newWidths.set(i, getSize());
         newHeights.set(i, getSize());
       }
-      grid.current?.resizeCols([...newWidths.entries()])
+      grid.current?.resizeCols([...newWidths.entries()]);
       grid.current?.resizeRows([...newHeights.entries()]);
       setWidths(newWidths);
       setHeights(newHeights);
@@ -222,7 +223,8 @@ export const ScrollTo: StoryObj = {
           </label>
           <button
             onClick={() => {
-              ref.current?.scrollToIndex(scrollIndex[0], scrollIndex[1]);
+              const [col, row] = scrollIndex;
+              ref.current?.scrollToIndex({ col, row });
             }}
           >
             scroll to index
@@ -262,14 +264,16 @@ export const ScrollTo: StoryObj = {
             </label>
             <button
               onClick={() => {
-                ref.current?.scrollTo(scrollOffset[0], scrollOffset[1]);
+                const [col, row] = scrollOffset;
+                ref.current?.scrollTo({ col, row });
               }}
             >
               scroll to offset
             </button>
             <button
               onClick={() => {
-                ref.current?.scrollBy(scrollOffset[0], scrollOffset[1]);
+                const [col, row] = scrollOffset;
+                ref.current?.scrollBy({ col, row });
               }}
             >
               scroll by offset
