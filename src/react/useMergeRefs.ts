@@ -9,6 +9,7 @@ export function useMergeRefs<T>(...refs: Array<Ref<T> | undefined>): Ref<T> {
     for (const ref of refs) {
       ref && updateRef(ref, instance);
     }
+    // eslint-disable-next-line react-hooks/use-memo
   }, refs);
 }
 

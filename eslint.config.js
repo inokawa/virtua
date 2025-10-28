@@ -75,11 +75,10 @@ export default [
   ...[
     pluginReact.configs.flat.recommended,
     pluginReact.configs.flat["jsx-runtime"],
-    pluginReactHooks.configs.recommended,
+    pluginReactHooks.configs.flat.recommended,
     {
       rules: {
         "react/display-name": "off",
-        "react-hooks/react-compiler": "warn",
       },
     },
   ].map((c) => ({
