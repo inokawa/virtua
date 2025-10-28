@@ -92,6 +92,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
             flexDirection: "column",
             justifyContent: "flex-end",
             minHeight: "100%",
+            overflow: "clip", // https://github.com/inokawa/virtua/pull/485 https://github.com/inokawa/virtua/issues/717
           }}
         >
           {element}

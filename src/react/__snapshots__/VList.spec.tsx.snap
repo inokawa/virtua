@@ -6,7 +6,7 @@ exports[`horizontal > should render 1 children 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100px; height: 100%;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 100%;"
     >
       <div
         style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;"
@@ -26,7 +26,7 @@ exports[`horizontal > should render 5 children 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 500px; height: 100%;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 500px; height: 100%;"
     >
       <div
         style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;"
@@ -67,7 +67,7 @@ exports[`horizontal > should render 100 children 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 10000px; height: 100%;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 100%;"
     >
       <div
         style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;"
@@ -108,7 +108,7 @@ exports[`horizontal > should render 10000 children 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 1000000px; height: 100%;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 1000000px; height: 100%;"
     >
       <div
         style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;"
@@ -149,7 +149,7 @@ exports[`horizontal > should render component 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 300px; height: 100%;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 300px; height: 100%;"
     >
       <div
         style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;"
@@ -183,7 +183,7 @@ exports[`horizontal > should render fragments 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 200px; height: 100%;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 200px; height: 100%;"
     >
       <div
         style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;"
@@ -216,7 +216,7 @@ exports[`horizontal > should render non elements 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 200px; height: 100%;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 200px; height: 100%;"
     >
       <div
         style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;"
@@ -239,7 +239,7 @@ exports[`horizontal > should render with given width / height 1`] = `
     style="display: inline-block; overflow-x: auto; contain: strict; width: 100px; height: 800px;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 500px; height: 100%;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 500px; height: 100%;"
     >
       <div
         style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;"
@@ -280,10 +280,10 @@ exports[`reverse > should render many items 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="display: flex; flex-direction: column; justify-content: flex-end; min-height: 100%;"
+      style="display: flex; flex-direction: column; justify-content: flex-end; min-height: 100%; overflow: clip;"
     >
       <div
-        style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 5000px;"
+        style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 5000px;"
       >
         <div
           style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -407,7 +407,7 @@ exports[`should pass attributes to element 1`] = `
     tabindex="0"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 50px;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 50px;"
     >
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -427,7 +427,7 @@ exports[`should pass index to items 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 250px;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 250px;"
     >
       <div
         data-index="0"
@@ -480,7 +480,7 @@ exports[`should render with keepMounted 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 5000px;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 5000px;"
     >
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -654,7 +654,7 @@ exports[`should render with render prop 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 50000px;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 50000px;"
     >
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -772,7 +772,7 @@ exports[`vertical > should render 0 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 0px;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 0px;"
     />
   </div>
 </DocumentFragment>
@@ -784,7 +784,7 @@ exports[`vertical > should render 1 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 50px;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 50px;"
     >
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -804,7 +804,7 @@ exports[`vertical > should render 5 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 250px;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 250px;"
     >
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -852,7 +852,7 @@ exports[`vertical > should render 100 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 5000px;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 5000px;"
     >
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -970,7 +970,7 @@ exports[`vertical > should render 10000 children 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 500000px;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 500000px;"
     >
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -1088,7 +1088,7 @@ exports[`vertical > should render component 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 150px;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 150px;"
     >
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -1122,7 +1122,7 @@ exports[`vertical > should render fragments 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 100px;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 100px;"
     >
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -1155,7 +1155,7 @@ exports[`vertical > should render non elements 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 100px;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 100px;"
     >
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
@@ -1178,7 +1178,7 @@ exports[`vertical > should render with given width / height 1`] = `
     style="display: block; overflow-y: auto; contain: strict; width: 100px; height: 800px;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; overflow: clip; flex: 0 0 auto; position: relative; width: 100%; height: 250px;"
+      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 250px;"
     >
       <div
         style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
