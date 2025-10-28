@@ -38,6 +38,19 @@ it("should pass attributes to element", async () => {
 });
 
 describe("grid", async () => {
+  it("should render 0 children", async () => {
+    const { asFragment } = await render(
+      <VGrid row={0} col={0}>
+        {({ rowIndex, colIndex }) => (
+          <div>
+            {rowIndex} / {colIndex}
+          </div>
+        )}
+      </VGrid>
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
   it("should render 1 children", async () => {
     const { asFragment } = await render(
       <VGrid row={1} col={1}>

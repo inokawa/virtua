@@ -19,9 +19,10 @@ import {
   createGridScroller,
   createGridResizer,
   GridResizer,
-  isRTLDocument,
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
+  isRTLDocument,
+  sort,
 } from "../core/index.js";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
 import { refKey } from "./utils.js";
@@ -32,6 +33,36 @@ import { flushSync } from "react-dom";
 import { useMergeRefs } from "./useMergeRefs.js";
 
 const genKey = (i: number, j: number) => `${i}-${j}`;
+
+const generateGridTemplate = (
+  sizes: readonly string[],
+  start: number,
+  end: number
+): string => {
+  if (sizes.length === 0) return "";
+  let result = "";
+  let prev = "";
+  let count = 1;
+  for (let i = 0; i <= sizes.length; i++) {
+    const hasSize = i < sizes.length;
+    const value =
+      i >= start && i <= end ? "max-content" : hasSize ? sizes[i]! : "";
+    if (value && value === prev) {
+      count++;
+    } else {
+      if (result) {
+        result += " ";
+      }
+      result += count > 1 ? `repeat(${count},${prev})` : prev;
+
+      if (hasSize) {
+        prev = value;
+        count = 1;
+      }
+    }
+  }
+  return result;
+};
 
 /**
  * Props of customized cell component for {@link VGrid}.
@@ -52,9 +83,8 @@ interface CellProps {
   _colIndex: number;
   _top: number;
   _left: number;
-  _height: number;
-  _width: number;
-  _hide: boolean;
+  _stickyRow: boolean;
+  _stickyCol: boolean;
   _element: "div";
 }
 
@@ -66,9 +96,8 @@ const Cell = memo(
     _colIndex: colIndex,
     _top: top,
     _left: left,
-    _height: height,
-    _width: width,
-    _hide: hide,
+    _stickyRow: stickyRow,
+    _stickyCol: stickyCol,
     _element: Element,
   }: CellProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
@@ -83,26 +112,31 @@ const Cell = memo(
       <Element
         ref={ref}
         style={useMemo((): CSSProperties => {
+          const r = rowIndex + 1;
+          const c = colIndex + 1;
           const style: CSSProperties = {
             contain: "layout style",
             display: "grid",
-            position: "absolute",
-            top: top,
-            [isRTLDocument() ? "right" : "left"]: left,
-            visibility: hide ? "hidden" : "visible",
-            minHeight: height,
-            minWidth: width,
+            gridArea: `${r} / ${c}`,
           };
+          if (stickyRow) {
+            style.position = "sticky";
+            style.top = top;
+            style.zIndex = 1;
+          }
+          if (stickyCol) {
+            style.position = "sticky";
+            style[isRTLDocument() ? "right" : "left"] = left;
+            style.zIndex = ((style.zIndex as number) || 0) + 1;
+          }
           return style;
-        }, [top, left, width, height, hide])}
+        }, [rowIndex, colIndex, stickyRow, stickyCol, top, left])}
       >
         {children}
       </Element>
     );
   }
 );
-
-export type VGridItemResize = readonly [index: number, size: number];
 
 /**
  * Methods of {@link VGrid}.
@@ -152,16 +186,6 @@ export interface VGridHandle {
    * @param indexY vertical of item
    */
   getItemSize(indexX: number, indexY: number): [width: number, height: number];
-  /**
-   * Resize individual columns.
-   * @param cols array of `[index, size]` to update column sizes
-   */
-  resizeCols(cols: VGridItemResize[]): void;
-  /**
-   * Resize individual rows.
-   * @param rows array of `[index, size]` to update row sizes
-   */
-  resizeRows(rows: VGridItemResize[]): void;
   /**
    * Scroll to the item specified by index.
    * @param indexX horizontal index of item
@@ -223,22 +247,30 @@ export interface VGridProps extends ViewportComponentAttributes {
    */
   bufferSize?: number;
   /**
-   * If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
+   * A prop for SSR. If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size until hydrated.
    */
-  initialRowCount?: number;
+  ssrRowCount?: number;
   /**
-   * If set, the specified amount of cols will be mounted in the initial rendering regardless of the container size. This prop is mostly for SSR.
+   * A prop for SSR. If set, the specified amount of cols will be mounted in the initial rendering regardless of the container size until hydrated.
    */
-  initialColCount?: number;
+  ssrColCount?: number;
+  /**
+   * TODO
+   */
+  stickyRows?: number[];
+  /**
+   * TODO
+   */
+  stickyCols?: number[];
   /**
    * Component or element type for cell element. This component will get {@link CustomCellComponentProps} as props.
    * @defaultValue "div"
    */
   item?: keyof JSX.IntrinsicElements | CustomCellComponent;
-  /** Reference to the rendered DOM element (the one that scrolls). */
+  /**
+   * Reference to the rendered DOM element (the one that scrolls).
+   */
   domRef?: Ref<HTMLDivElement>;
-  /** Reference to the inner rendered DOM element (the one that contains all the cells). */
-  innerDomRef?: Ref<HTMLDivElement>;
   /**
    * Callback invoked whenever scroll offset changes.
    */
@@ -261,11 +293,12 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       cellHeight = 40,
       cellWidth = 100,
       bufferSize,
-      initialRowCount,
-      initialColCount,
+      ssrRowCount,
+      ssrColCount,
+      stickyRows,
+      stickyCols,
       item: ItemElement = "div",
       domRef,
-      innerDomRef,
       onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
       style,
@@ -274,16 +307,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     ref
   ): ReactElement => {
     const [rowStore, colStore, resizer, scroller] = useStatic(() => {
-      const _rowStore = createVirtualStore(
-        rowCount,
-        cellHeight,
-        initialRowCount
-      );
-      const _colStore = createVirtualStore(
-        colCount,
-        cellWidth,
-        initialColCount
-      );
+      const _rowStore = createVirtualStore(rowCount, cellHeight, ssrRowCount);
+      const _colStore = createVirtualStore(colCount, cellWidth, ssrColCount);
       return [
         _rowStore,
         _colStore,
@@ -394,12 +419,6 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             colStore.$getItemSize(indexX),
             rowStore.$getItemSize(indexY),
           ],
-          resizeCols(cols) {
-            resizer.$resizeCols(cols);
-          },
-          resizeRows(rows) {
-            resizer.$resizeRows(rows);
-          },
           scrollToIndex: scroller.$scrollToIndex,
           scrollTo: scroller.$scrollTo,
           scrollBy: scroller.$scrollBy,
@@ -426,8 +445,18 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const [startColIndex, endColIndex] = colStore.$getRange(bufferSize);
 
     const items: ReactElement[] = [];
+    const rowsSet = new Set(stickyRows);
+    const colsSet = new Set(stickyCols);
+
     for (let rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++) {
-      for (let colIndex = startColIndex; colIndex <= endColIndex; colIndex++) {
+      rowsSet.add(rowIndex);
+    }
+    for (let colIndex = startColIndex; colIndex <= endColIndex; colIndex++) {
+      colsSet.add(colIndex);
+    }
+
+    for (const rowIndex of sort([...rowsSet])) {
+      for (const colIndex of sort([...colsSet])) {
         items.push(
           <Cell
             key={genKey(rowIndex, colIndex)}
@@ -436,18 +465,30 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             _colIndex={colIndex}
             _top={rowStore.$getItemOffset(rowIndex)}
             _left={colStore.$getItemOffset(colIndex)}
-            _height={rowStore.$getItemSize(rowIndex)}
-            _width={colStore.$getItemSize(colIndex)}
-            _hide={
-              rowStore.$isUnmeasuredItem(rowIndex) ||
-              colStore.$isUnmeasuredItem(colIndex)
-            }
+            _stickyRow={stickyRows?.includes(rowIndex) ?? false}
+            _stickyCol={stickyCols?.includes(colIndex) ?? false}
             _element={ItemElement as "div"}
             _children={render(rowIndex, colIndex)}
           />
         );
       }
     }
+
+    const rowTemplate = useMemo(() => {
+      const rowSizes: string[] = [];
+      for (let rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+        rowSizes.push(rowStore.$getItemSize(rowIndex) + "px");
+      }
+      return generateGridTemplate(rowSizes, startRowIndex, endRowIndex);
+    }, [startRowIndex, endRowIndex, rowCount]);
+
+    const colTemplate = useMemo(() => {
+      const colSizes: string[] = [];
+      for (let colIndex = 0; colIndex < colCount; colIndex++) {
+        colSizes.push(colStore.$getItemSize(colIndex) + "px");
+      }
+      return generateGridTemplate(colSizes, startColIndex, endColIndex);
+    }, [startColIndex, endColIndex, colCount]);
 
     return (
       <div
@@ -462,12 +503,12 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         }}
       >
         <div
-          ref={innerDomRef}
           style={{
             contain: "size paint style", // https://github.com/inokawa/virtua/pull/775
             overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
             flex: "none", // flex style can break layout
-            position: "relative",
+            display: "grid",
+            gridTemplate: `${rowTemplate} / ${colTemplate}`,
             width: width,
             height: height,
             pointerEvents:

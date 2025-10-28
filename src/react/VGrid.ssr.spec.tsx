@@ -17,8 +17,8 @@ describe("SSR", () => {
     const html = renderToString(
       <VGrid
         id={LIST_ID}
-        initialRowCount={ROW_COUNT}
-        initialColCount={COL_COUNT}
+        ssrRowCount={ROW_COUNT}
+        ssrColCount={COL_COUNT}
         cellHeight={ITEM_SIZE}
         cellWidth={ITEM_SIZE}
         bufferSize={BUFFER_SIZE}
@@ -48,8 +48,8 @@ describe("SSR", () => {
     const html = renderToString(
       <VGrid
         id={LIST_ID}
-        initialRowCount={ROW_COUNT}
-        initialColCount={COL_COUNT}
+        ssrRowCount={ROW_COUNT}
+        ssrColCount={COL_COUNT}
         cellHeight={ITEM_SIZE}
         cellWidth={ITEM_SIZE}
         bufferSize={BUFFER_SIZE}
@@ -79,8 +79,8 @@ describe("SSR", () => {
     const html = renderToStaticMarkup(
       <VGrid
         id={LIST_ID}
-        initialRowCount={ROW_COUNT}
-        initialColCount={COL_COUNT}
+        ssrRowCount={ROW_COUNT}
+        ssrColCount={COL_COUNT}
         cellHeight={ITEM_SIZE}
         cellWidth={ITEM_SIZE}
         bufferSize={BUFFER_SIZE}
