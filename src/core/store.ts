@@ -6,7 +6,6 @@ import {
   setItemSize,
   estimateDefaultItemSize,
   updateCacheLength,
-  computeRange,
   takeCacheSnapshot,
   findIndex,
 } from "./cache.js";
@@ -145,8 +144,8 @@ export const createVirtualStore = (
   const subscribers = new Set<[number, Subscriber]>();
   const getRelativeScrollOffset = () => scrollOffset - startSpacerSize;
   const getVisibleOffset = () => getRelativeScrollOffset() + pendingJump + jump;
-  const getRange = (startOffset: number, endOffset: number) => {
-    return computeRange(cache, startOffset, endOffset, _prevRange[0]);
+  const getRange = (startOffset: number, endOffset: number): ItemsRange => {
+    return [findIndex(cache, startOffset), findIndex(cache, endOffset)];
   };
   const getTotalSize = (): number => _getItemOffset(cache, cache._length);
   const getItemOffset = (index: number): number => {
