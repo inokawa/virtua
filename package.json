@@ -99,6 +99,7 @@
     "@vitejs/plugin-vue": "^6.0.1",
     "@vitejs/plugin-vue-jsx": "^5.1.1",
     "@vitest/browser": "^4.0.0",
+    "@vitest/browser-playwright": "^4.0.4",
     "@vitest/coverage-v8": "^4.0.0",
     "babel-preset-solid": "^1.9.9",
     "cmdk": "^1.1.1",
