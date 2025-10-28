@@ -1,4 +1,4 @@
-import { Ref, MutableRefObject, useCallback } from "react";
+import { Ref, useCallback, RefObject } from "react";
 
 /**
  * @internal
@@ -17,6 +17,6 @@ function updateRef<T>(ref: Ref<T>, instance: T | null): void {
   if (typeof ref === "function") {
     ref(instance);
   } else if (ref) {
-    (ref as MutableRefObject<T | null>).current = instance;
+    (ref as RefObject<T | null>).current = instance;
   }
 }
