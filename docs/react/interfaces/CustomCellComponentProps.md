@@ -4,7 +4,7 @@
 
 # Interface: CustomCellComponentProps
 
-Defined in: [src/react/VGrid.tsx:39](https://github.com/inokawa/virtua/blob/34eed8b48e1c1faedc2591408cf599f908a493e8/src/react/VGrid.tsx#L39)
+Defined in: [src/react/VGrid.tsx:39](https://github.com/inokawa/virtua/blob/1ff5411536e2b87ecd49256c9dcae583bb8a7836/src/react/VGrid.tsx#L39)
 
 Props of customized cell component for [VGrid](../variables/experimental_VGrid.md).
 
@@ -14,7 +14,7 @@ Props of customized cell component for [VGrid](../variables/experimental_VGrid.m
 
 > **style**: `CSSProperties`
 
-Defined in: [src/react/VGrid.tsx:40](https://github.com/inokawa/virtua/blob/34eed8b48e1c1faedc2591408cf599f908a493e8/src/react/VGrid.tsx#L40)
+Defined in: [src/react/VGrid.tsx:40](https://github.com/inokawa/virtua/blob/1ff5411536e2b87ecd49256c9dcae583bb8a7836/src/react/VGrid.tsx#L40)
 
 ***
 
@@ -22,4 +22,4 @@ Defined in: [src/react/VGrid.tsx:40](https://github.com/inokawa/virtua/blob/34ee
 
 > **children**: `ReactNode`
 
-Defined in: [src/react/VGrid.tsx:41](https://github.com/inokawa/virtua/blob/34eed8b48e1c1faedc2591408cf599f908a493e8/src/react/VGrid.tsx#L41)
+Defined in: [src/react/VGrid.tsx:41](https://github.com/inokawa/virtua/blob/1ff5411536e2b87ecd49256c9dcae583bb8a7836/src/react/VGrid.tsx#L41)
