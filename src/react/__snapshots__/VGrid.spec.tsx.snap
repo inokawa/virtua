@@ -6,7 +6,7 @@ exports[`grid > should render 0 children 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 500px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; width: 100px; height: 500px;"
     />
   </div>
 </DocumentFragment>
@@ -18,10 +18,10 @@ exports[`grid > should render 1 children 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 500px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template: max-content / max-content; width: 100px; height: 500px;"
     >
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 1;"
       >
         <div>
           0 / 0
@@ -38,115 +38,115 @@ exports[`grid > should render 4x4 children 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 400px; height: 500px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template: repeat(4,max-content) / repeat(4,max-content); width: 400px; height: 500px;"
     >
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 1;"
       >
         <div>
           0 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 2;"
       >
         <div>
           0 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 3;"
       >
         <div>
           0 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 4;"
       >
         <div>
           0 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 1;"
       >
         <div>
           1 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 2;"
       >
         <div>
           1 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 3;"
       >
         <div>
           1 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 4;"
       >
         <div>
           1 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 1;"
       >
         <div>
           2 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 2;"
       >
         <div>
           2 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 3;"
       >
         <div>
           2 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 4;"
       >
         <div>
           2 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 1;"
       >
         <div>
           3 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 2;"
       >
         <div>
           3 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 3;"
       >
         <div>
           3 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 4;"
       >
         <div>
           3 / 3
@@ -163,423 +163,423 @@ exports[`grid > should render 100x100 children 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 4180px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template: repeat(15,max-content) repeat(3,50px) repeat(82,40px) / repeat(4,max-content) repeat(96,100px); width: 10000px; height: 4180px;"
     >
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 1;"
       >
         <div>
           0 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 2;"
       >
         <div>
           0 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 3;"
       >
         <div>
           0 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 4;"
       >
         <div>
           0 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 1;"
       >
         <div>
           1 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 2;"
       >
         <div>
           1 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 3;"
       >
         <div>
           1 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 4;"
       >
         <div>
           1 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 1;"
       >
         <div>
           2 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 2;"
       >
         <div>
           2 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 3;"
       >
         <div>
           2 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 4;"
       >
         <div>
           2 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 1;"
       >
         <div>
           3 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 2;"
       >
         <div>
           3 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 3;"
       >
         <div>
           3 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 4;"
       >
         <div>
           3 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 1;"
       >
         <div>
           4 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 2;"
       >
         <div>
           4 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 3;"
       >
         <div>
           4 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 4;"
       >
         <div>
           4 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 1;"
       >
         <div>
           5 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 2;"
       >
         <div>
           5 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 3;"
       >
         <div>
           5 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 4;"
       >
         <div>
           5 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 7 / 1;"
       >
         <div>
           6 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 7 / 2;"
       >
         <div>
           6 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 7 / 3;"
       >
         <div>
           6 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 7 / 4;"
       >
         <div>
           6 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 8 / 1;"
       >
         <div>
           7 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 8 / 2;"
       >
         <div>
           7 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 8 / 3;"
       >
         <div>
           7 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 8 / 4;"
       >
         <div>
           7 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 9 / 1;"
       >
         <div>
           8 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 9 / 2;"
       >
         <div>
           8 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 9 / 3;"
       >
         <div>
           8 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 9 / 4;"
       >
         <div>
           8 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 10 / 1;"
       >
         <div>
           9 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 10 / 2;"
       >
         <div>
           9 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 10 / 3;"
       >
         <div>
           9 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 10 / 4;"
       >
         <div>
           9 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 11 / 1;"
       >
         <div>
           10 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 11 / 2;"
       >
         <div>
           10 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 11 / 3;"
       >
         <div>
           10 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 11 / 4;"
       >
         <div>
           10 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 12 / 1;"
       >
         <div>
           11 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 12 / 2;"
       >
         <div>
           11 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 12 / 3;"
       >
         <div>
           11 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 12 / 4;"
       >
         <div>
           11 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 13 / 1;"
       >
         <div>
           12 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 13 / 2;"
       >
         <div>
           12 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 13 / 3;"
       >
         <div>
           12 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 13 / 4;"
       >
         <div>
           12 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 14 / 1;"
       >
         <div>
           13 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 14 / 2;"
       >
         <div>
           13 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 14 / 3;"
       >
         <div>
           13 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 14 / 4;"
       >
         <div>
           13 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 15 / 1;"
       >
         <div>
           14 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 15 / 2;"
       >
         <div>
           14 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 15 / 3;"
       >
         <div>
           14 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 15 / 4;"
       >
         <div>
           14 / 3
@@ -596,423 +596,423 @@ exports[`grid > should render 10000x10000 children 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 1000000px; height: 400180px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template: repeat(15,max-content) repeat(3,50px) repeat(9982,40px) / repeat(4,max-content) repeat(9996,100px); width: 1000000px; height: 400180px;"
     >
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 1;"
       >
         <div>
           0 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 2;"
       >
         <div>
           0 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 3;"
       >
         <div>
           0 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 4;"
       >
         <div>
           0 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 1;"
       >
         <div>
           1 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 2;"
       >
         <div>
           1 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 3;"
       >
         <div>
           1 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 4;"
       >
         <div>
           1 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 1;"
       >
         <div>
           2 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 2;"
       >
         <div>
           2 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 3;"
       >
         <div>
           2 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 4;"
       >
         <div>
           2 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 1;"
       >
         <div>
           3 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 2;"
       >
         <div>
           3 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 3;"
       >
         <div>
           3 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 4;"
       >
         <div>
           3 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 1;"
       >
         <div>
           4 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 2;"
       >
         <div>
           4 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 3;"
       >
         <div>
           4 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 4;"
       >
         <div>
           4 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 1;"
       >
         <div>
           5 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 2;"
       >
         <div>
           5 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 3;"
       >
         <div>
           5 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 4;"
       >
         <div>
           5 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 7 / 1;"
       >
         <div>
           6 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 7 / 2;"
       >
         <div>
           6 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 7 / 3;"
       >
         <div>
           6 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 7 / 4;"
       >
         <div>
           6 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 8 / 1;"
       >
         <div>
           7 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 8 / 2;"
       >
         <div>
           7 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 8 / 3;"
       >
         <div>
           7 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 8 / 4;"
       >
         <div>
           7 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 9 / 1;"
       >
         <div>
           8 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 9 / 2;"
       >
         <div>
           8 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 9 / 3;"
       >
         <div>
           8 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 9 / 4;"
       >
         <div>
           8 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 10 / 1;"
       >
         <div>
           9 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 10 / 2;"
       >
         <div>
           9 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 10 / 3;"
       >
         <div>
           9 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 10 / 4;"
       >
         <div>
           9 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 11 / 1;"
       >
         <div>
           10 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 11 / 2;"
       >
         <div>
           10 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 11 / 3;"
       >
         <div>
           10 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 11 / 4;"
       >
         <div>
           10 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 12 / 1;"
       >
         <div>
           11 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 12 / 2;"
       >
         <div>
           11 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 12 / 3;"
       >
         <div>
           11 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 12 / 4;"
       >
         <div>
           11 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 13 / 1;"
       >
         <div>
           12 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 13 / 2;"
       >
         <div>
           12 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 13 / 3;"
       >
         <div>
           12 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 13 / 4;"
       >
         <div>
           12 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 14 / 1;"
       >
         <div>
           13 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 14 / 2;"
       >
         <div>
           13 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 14 / 3;"
       >
         <div>
           13 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 14 / 4;"
       >
         <div>
           13 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 15 / 1;"
       >
         <div>
           14 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 15 / 2;"
       >
         <div>
           14 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 15 / 3;"
       >
         <div>
           14 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 15 / 4;"
       >
         <div>
           14 / 3
@@ -1029,423 +1029,423 @@ exports[`grid > should render component 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 4180px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template: repeat(15,max-content) repeat(3,50px) repeat(82,40px) / repeat(4,max-content) repeat(96,100px); width: 10000px; height: 4180px;"
     >
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 1;"
       >
         <div>
           0 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 2;"
       >
         <div>
           0 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 3;"
       >
         <div>
           0 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 4;"
       >
         <div>
           0 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 1;"
       >
         <div>
           1 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 2;"
       >
         <div>
           1 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 3;"
       >
         <div>
           1 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 4;"
       >
         <div>
           1 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 1;"
       >
         <div>
           2 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 2;"
       >
         <div>
           2 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 3;"
       >
         <div>
           2 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 4;"
       >
         <div>
           2 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 1;"
       >
         <div>
           3 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 2;"
       >
         <div>
           3 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 3;"
       >
         <div>
           3 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 4;"
       >
         <div>
           3 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 1;"
       >
         <div>
           4 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 2;"
       >
         <div>
           4 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 3;"
       >
         <div>
           4 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 4;"
       >
         <div>
           4 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 1;"
       >
         <div>
           5 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 2;"
       >
         <div>
           5 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 3;"
       >
         <div>
           5 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 4;"
       >
         <div>
           5 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 7 / 1;"
       >
         <div>
           6 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 7 / 2;"
       >
         <div>
           6 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 7 / 3;"
       >
         <div>
           6 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 7 / 4;"
       >
         <div>
           6 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 8 / 1;"
       >
         <div>
           7 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 8 / 2;"
       >
         <div>
           7 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 8 / 3;"
       >
         <div>
           7 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 8 / 4;"
       >
         <div>
           7 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 9 / 1;"
       >
         <div>
           8 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 9 / 2;"
       >
         <div>
           8 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 9 / 3;"
       >
         <div>
           8 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 9 / 4;"
       >
         <div>
           8 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 10 / 1;"
       >
         <div>
           9 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 10 / 2;"
       >
         <div>
           9 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 10 / 3;"
       >
         <div>
           9 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 10 / 4;"
       >
         <div>
           9 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 11 / 1;"
       >
         <div>
           10 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 11 / 2;"
       >
         <div>
           10 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 11 / 3;"
       >
         <div>
           10 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 11 / 4;"
       >
         <div>
           10 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 12 / 1;"
       >
         <div>
           11 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 12 / 2;"
       >
         <div>
           11 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 12 / 3;"
       >
         <div>
           11 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 12 / 4;"
       >
         <div>
           11 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 13 / 1;"
       >
         <div>
           12 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 13 / 2;"
       >
         <div>
           12 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 13 / 3;"
       >
         <div>
           12 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 13 / 4;"
       >
         <div>
           12 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 14 / 1;"
       >
         <div>
           13 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 14 / 2;"
       >
         <div>
           13 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 14 / 3;"
       >
         <div>
           13 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 14 / 4;"
       >
         <div>
           13 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 15 / 1;"
       >
         <div>
           14 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 15 / 2;"
       >
         <div>
           14 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 15 / 3;"
       >
         <div>
           14 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 15 / 4;"
       >
         <div>
           14 / 3
@@ -1462,10 +1462,10 @@ exports[`grid > should render fragments 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 500px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template: repeat(2,max-content) / max-content; width: 100px; height: 500px;"
     >
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 1;"
       >
         <div>
           fragment
@@ -1478,7 +1478,7 @@ exports[`grid > should render fragments 1`] = `
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 1;"
       >
         <div>
           fragment
@@ -1495,27 +1495,27 @@ exports[`grid > should render non elements 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 500px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template: repeat(6,max-content) / max-content; width: 100px; height: 500px;"
     >
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 1;"
       >
         string
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 1;"
       />
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 1;"
       />
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 1;"
       />
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 1;"
       />
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 1;"
       >
         123
       </div>
@@ -1530,115 +1530,115 @@ exports[`grid > should render with given width / height 1`] = `
     style="overflow: auto; contain: strict; width: 100px; height: 100px;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 400px; height: 500px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template: repeat(4,max-content) / repeat(4,max-content); width: 400px; height: 500px;"
     >
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 1;"
       >
         <div>
           0 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 2;"
       >
         <div>
           0 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 3;"
       >
         <div>
           0 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 4;"
       >
         <div>
           0 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 1;"
       >
         <div>
           1 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 2;"
       >
         <div>
           1 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 3;"
       >
         <div>
           1 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 4;"
       >
         <div>
           1 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 1;"
       >
         <div>
           2 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 2;"
       >
         <div>
           2 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 3;"
       >
         <div>
           2 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 4;"
       >
         <div>
           2 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 1;"
       >
         <div>
           3 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 2;"
       >
         <div>
           3 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 3;"
       >
         <div>
           3 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 4;"
       >
         <div>
           3 / 3
@@ -1660,423 +1660,423 @@ exports[`should pass attributes to element 1`] = `
     tabindex="0"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 4180px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template: repeat(15,max-content) repeat(3,50px) repeat(82,40px) / repeat(4,max-content) repeat(96,100px); width: 10000px; height: 4180px;"
     >
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 1;"
       >
         <div>
           0 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 2;"
       >
         <div>
           0 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 3;"
       >
         <div>
           0 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 1 / 4;"
       >
         <div>
           0 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 1;"
       >
         <div>
           1 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 2;"
       >
         <div>
           1 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 3;"
       >
         <div>
           1 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 2 / 4;"
       >
         <div>
           1 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 1;"
       >
         <div>
           2 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 2;"
       >
         <div>
           2 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 3;"
       >
         <div>
           2 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 3 / 4;"
       >
         <div>
           2 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 1;"
       >
         <div>
           3 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 2;"
       >
         <div>
           3 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 3;"
       >
         <div>
           3 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 4 / 4;"
       >
         <div>
           3 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 1;"
       >
         <div>
           4 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 2;"
       >
         <div>
           4 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 3;"
       >
         <div>
           4 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 5 / 4;"
       >
         <div>
           4 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 1;"
       >
         <div>
           5 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 2;"
       >
         <div>
           5 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 3;"
       >
         <div>
           5 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 6 / 4;"
       >
         <div>
           5 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 7 / 1;"
       >
         <div>
           6 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 7 / 2;"
       >
         <div>
           6 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 7 / 3;"
       >
         <div>
           6 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 7 / 4;"
       >
         <div>
           6 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 8 / 1;"
       >
         <div>
           7 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 8 / 2;"
       >
         <div>
           7 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 8 / 3;"
       >
         <div>
           7 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 8 / 4;"
       >
         <div>
           7 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 9 / 1;"
       >
         <div>
           8 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 9 / 2;"
       >
         <div>
           8 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 9 / 3;"
       >
         <div>
           8 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 9 / 4;"
       >
         <div>
           8 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 10 / 1;"
       >
         <div>
           9 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 10 / 2;"
       >
         <div>
           9 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 10 / 3;"
       >
         <div>
           9 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 10 / 4;"
       >
         <div>
           9 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 11 / 1;"
       >
         <div>
           10 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 11 / 2;"
       >
         <div>
           10 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 11 / 3;"
       >
         <div>
           10 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 11 / 4;"
       >
         <div>
           10 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 12 / 1;"
       >
         <div>
           11 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 12 / 2;"
       >
         <div>
           11 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 12 / 3;"
       >
         <div>
           11 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 12 / 4;"
       >
         <div>
           11 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 13 / 1;"
       >
         <div>
           12 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 13 / 2;"
       >
         <div>
           12 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 13 / 3;"
       >
         <div>
           12 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 13 / 4;"
       >
         <div>
           12 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 14 / 1;"
       >
         <div>
           13 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 14 / 2;"
       >
         <div>
           13 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 14 / 3;"
       >
         <div>
           13 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 14 / 4;"
       >
         <div>
           13 / 3
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; left: 0px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 15 / 1;"
       >
         <div>
           14 / 0
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; left: 100px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 15 / 2;"
       >
         <div>
           14 / 1
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; left: 200px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 15 / 3;"
       >
         <div>
           14 / 2
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; left: 300px; min-height: 50px; min-width: 100px;"
+        style="contain: layout style; display: grid; grid-area: 15 / 4;"
       >
         <div>
           14 / 3
