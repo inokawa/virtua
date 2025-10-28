@@ -297,7 +297,6 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
           style={{
             contain: "size paint style", // https://github.com/inokawa/virtua/pull/775
             overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
-            overflow: "clip", // https://github.com/inokawa/virtua/pull/485 https://github.com/inokawa/virtua/issues/717
             flex: "none", // flex style can break layout
             position: "relative",
             width: isHorizontal ? total + "px" : "100%",
