@@ -64,7 +64,7 @@ export default process.env.STORYBOOK_VUE
             // FIXME: ✘ [ERROR] Failed to resolve entry for package "virtua". The package may have incorrect main/module/exports specified in its package.json. [plugin vite:dep-scan]
             resolve: {
               alias: {
-                virtua: path.resolve(__dirname, "../node_modules/virtua"),
+                virtua: path.resolve(import.meta.dirname, "../node_modules/virtua"),
               },
             },
           });
