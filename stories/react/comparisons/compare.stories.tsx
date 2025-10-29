@@ -18,6 +18,7 @@ import { VirtuaList } from "./components/virtua";
 
 export default {
   component: DynamicItem,
+  tags: ["comparison"],
 } satisfies Meta;
 
 const ScrollInput = ({ count }: { count: number }) => {

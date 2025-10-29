@@ -19,6 +19,7 @@ export default {
       </div>
     ),
   ],
+  tags: ["comparison"],
 } satisfies Meta;
 
 export const RenderCount: StoryObj = {
