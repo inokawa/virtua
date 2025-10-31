@@ -127,7 +127,7 @@
     "size-limit": "^11.2.0",
     "solid-js": "^1.9.9",
     "storybook": "^10.0.0",
-    "storybook-solidjs-vite": "^10.0.1",
+    "storybook-solidjs-vite": "^10.0.2",
     "svelte": "^5.38.9",
     "svelte-check": "^4.3.1",
     "typedoc": "^0.28.4",
