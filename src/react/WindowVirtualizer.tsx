@@ -253,7 +253,7 @@ export const WindowVirtualizer = forwardRef<
       <Element
         ref={containerRef}
         style={{
-          contain: "size paint style", // https://github.com/inokawa/virtua/pull/775
+          contain: "size style", // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
           overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
           flex: "none", // flex style can break layout
           position: "relative",

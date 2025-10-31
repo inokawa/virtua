@@ -6,7 +6,7 @@ exports[`grid > should render 1 children 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 500px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 500px;"
     >
       <div
         style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
@@ -26,7 +26,7 @@ exports[`grid > should render 4x4 children 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 400px; height: 500px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 400px; height: 500px;"
     >
       <div
         style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
@@ -151,7 +151,7 @@ exports[`grid > should render 100x100 children 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 4180px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 4180px;"
     >
       <div
         style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
@@ -584,7 +584,7 @@ exports[`grid > should render 10000x10000 children 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 1000000px; height: 400180px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 1000000px; height: 400180px;"
     >
       <div
         style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
@@ -1017,7 +1017,7 @@ exports[`grid > should render component 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 4180px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 4180px;"
     >
       <div
         style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
@@ -1450,7 +1450,7 @@ exports[`grid > should render fragments 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 500px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 500px;"
     >
       <div
         style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
@@ -1483,7 +1483,7 @@ exports[`grid > should render non elements 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 500px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 500px;"
     >
       <div
         style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
@@ -1518,7 +1518,7 @@ exports[`grid > should render with given width / height 1`] = `
     style="overflow: auto; contain: strict; width: 100px; height: 100px;"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 400px; height: 500px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 400px; height: 500px;"
     >
       <div
         style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; visibility: visible; min-height: 50px; min-width: 100px;"
@@ -1648,7 +1648,7 @@ exports[`should pass attributes to element 1`] = `
     tabindex="0"
   >
     <div
-      style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 4180px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 4180px;"
     >
       <div
         style="contain: layout style; display: grid; position: absolute; top: 0px; left: 0px; visibility: visible; min-height: 50px; min-width: 100px;"

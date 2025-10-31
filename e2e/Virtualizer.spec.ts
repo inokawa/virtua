@@ -110,3 +110,29 @@ test("sticky items", async ({ page }) => {
   await expect(first).toBeVisible();
   expect(await relativeTop(component, first)).toEqual(0);
 });
+
+test("overflow", async ({ page }) => {
+  await page.goto(storyUrl("basics-virtualizer--overflow"));
+
+  const component = await getVirtualizer(page);
+
+  const items = getItems(component);
+
+  for (const target of [0, 2, 4]) {
+    const item = items.nth(target);
+    await expect(item).toContainText(String(target / 2));
+    const label = item.getByText("😊", { exact: true });
+
+    // check if overflowed element is visible in front
+    expect(
+      await label.evaluate((e) => {
+        const rect = e.getBoundingClientRect();
+        const pointed = document.elementFromPoint(
+          rect.x + rect.width / 4,
+          rect.y + rect.height / 4
+        );
+        return e === pointed;
+      })
+    ).toBe(true);
+  }
+});

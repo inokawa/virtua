@@ -1,9 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`horizontal > should render 0 children 1`] = `"<div style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 0px; height: 100%;"></div>"`;
+exports[`horizontal > should render 0 children 1`] = `"<div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 0px; height: 100%;"></div>"`;
 
 exports[`horizontal > should render 1 children 1`] = `
-"<div style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 100%;">
+"<div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 100%;">
   <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;">
     <div>0</div>
   </div>
@@ -11,7 +11,7 @@ exports[`horizontal > should render 1 children 1`] = `
 `;
 
 exports[`horizontal > should render 5 children 1`] = `
-"<div style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 500px; height: 100%;">
+"<div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 500px; height: 100%;">
   <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;">
     <div>0</div>
   </div>
@@ -31,7 +31,7 @@ exports[`horizontal > should render 5 children 1`] = `
 `;
 
 exports[`horizontal > should render 100 children 1`] = `
-"<div style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 100%;">
+"<div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 100%;">
   <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;">
     <div>0</div>
   </div>
@@ -75,7 +75,7 @@ exports[`horizontal > should render 100 children 1`] = `
 `;
 
 exports[`horizontal > should render 10000 children 1`] = `
-"<div style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 1000000px; height: 100%;">
+"<div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 1000000px; height: 100%;">
   <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;">
     <div>0</div>
   </div>
@@ -119,7 +119,7 @@ exports[`horizontal > should render 10000 children 1`] = `
 `;
 
 exports[`horizontal > should render component 1`] = `
-"<div style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 300px; height: 100%;">
+"<div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 300px; height: 100%;">
   <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;">
     <div>0</div>
   </div>
@@ -133,17 +133,17 @@ exports[`horizontal > should render component 1`] = `
 `;
 
 exports[`should pass attributes to element 1`] = `
-"<div style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 50px; background: red;" id="id" class="class" tab-index="0" role="list" aria-label="test">
+"<div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 50px; background: red;" id="id" class="class" tab-index="0" role="list" aria-label="test">
   <div style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;">
     <div>0</div>
   </div>
 </div>"
 `;
 
-exports[`vertical > should render 0 children 1`] = `"<div style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 0px;"></div>"`;
+exports[`vertical > should render 0 children 1`] = `"<div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 0px;"></div>"`;
 
 exports[`vertical > should render 1 children 1`] = `
-"<div style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 50px;">
+"<div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 50px;">
   <div style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;">
     <div>0</div>
   </div>
@@ -151,7 +151,7 @@ exports[`vertical > should render 1 children 1`] = `
 `;
 
 exports[`vertical > should render 5 children 1`] = `
-"<div style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 250px;">
+"<div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 250px;">
   <div style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;">
     <div>0</div>
   </div>
@@ -171,7 +171,7 @@ exports[`vertical > should render 5 children 1`] = `
 `;
 
 exports[`vertical > should render 100 children 1`] = `
-"<div style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 5000px;">
+"<div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 5000px;">
   <div style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;">
     <div>0</div>
   </div>
@@ -236,7 +236,7 @@ exports[`vertical > should render 100 children 1`] = `
 `;
 
 exports[`vertical > should render 10000 children 1`] = `
-"<div style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 500000px;">
+"<div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 500000px;">
   <div style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;">
     <div>0</div>
   </div>
@@ -301,7 +301,7 @@ exports[`vertical > should render 10000 children 1`] = `
 `;
 
 exports[`vertical > should render component 1`] = `
-"<div style="contain: size paint style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 150px;">
+"<div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 150px;">
   <div style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;">
     <div>0</div>
   </div>
