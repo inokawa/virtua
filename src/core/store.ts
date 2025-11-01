@@ -1,5 +1,4 @@
 import {
-  initCache,
   getItemSize as _getItemSize,
   getItemOffset as _getItemOffset,
   UNCACHED,
@@ -9,14 +8,10 @@ import {
   computeRange,
   takeCacheSnapshot,
   findIndex,
+  type Cache,
 } from "./cache.js";
 import { isIOSWebKit } from "./environment.js";
-import type {
-  CacheSnapshot,
-  InternalCacheSnapshot,
-  ItemResize,
-  ItemsRange,
-} from "./types.js";
+import type { CacheSnapshot, ItemResize, ItemsRange } from "./types.js";
 import { abs, max, min, NULL } from "./utils.js";
 
 const MAX_INT_32 = 0x7fffffff;
@@ -117,10 +112,8 @@ export type VirtualStore = {
  * @internal
  */
 export const createVirtualStore = (
-  elementsCount: number,
-  itemSize: number = 40,
+  cache: Cache,
   ssrCount: number = 0,
-  cacheSnapshot?: CacheSnapshot | undefined,
   shouldAutoEstimateItemSize: boolean = false
 ): VirtualStore => {
   let isSSR = !!ssrCount;
@@ -137,11 +130,6 @@ export const createVirtualStore = (
   let _prevRange: ItemsRange = [0, isSSR ? max(ssrCount - 1, 0) : -1];
   let _totalMeasuredSize = 0;
 
-  const cache = initCache(
-    elementsCount,
-    itemSize,
-    cacheSnapshot as unknown as InternalCacheSnapshot | undefined
-  );
   const subscribers = new Set<[number, Subscriber]>();
   const getRelativeScrollOffset = () => scrollOffset - startSpacerSize;
   const getVisibleOffset = () => getRelativeScrollOffset() + pendingJump + jump;

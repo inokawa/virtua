@@ -23,6 +23,7 @@ import {
   ScrollToIndexOpts,
   microtask,
   sort,
+  initCache,
 } from "../core/index.js";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
 import { getKey, refKey } from "./utils.js";
@@ -204,10 +205,8 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     const [store, resizer, scroller, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
       const _store = createVirtualStore(
-        count,
-        itemSize,
+        initCache(count, itemSize, cache),
         ssrCount,
-        cache,
         !itemSize
       );
       return [

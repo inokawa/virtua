@@ -27,6 +27,7 @@ import {
   ItemsRange,
   ScrollToIndexOpts,
   sort,
+  initCache,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
 import { getKey, isSameRange, ItemProps } from "./utils.js";
@@ -148,10 +149,8 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     const isHorizontal = props.horizontal;
     const containerRef = ref<HTMLDivElement>();
     const store = createVirtualStore(
-      props.data.length,
-      props.itemSize,
+      initCache(props.data.length, props.itemSize),
       props.ssrCount,
-      undefined,
       !props.itemSize
     );
     const resizer = createResizer(store, isHorizontal);

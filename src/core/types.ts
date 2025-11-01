@@ -3,18 +3,12 @@ export type ItemResize = Readonly<[index: number, size: number]>;
 /** @internal */
 export type ItemsRange = Readonly<[startIndex: number, endIndex: number]>;
 
-/** @internal */
-export type InternalCacheSnapshot = [sizes: number[], defaultSize: number];
-
-declare const cacheSymbol: unique symbol;
 /**
  * Serializable cache snapshot.
  *
  * **This is not intended to be modified by users. And it is not guaranteed to work if you pass it to the different version of this package.**
  */
-export interface CacheSnapshot {
-  [cacheSymbol]: never;
-}
+export type CacheSnapshot = [sizes: number[], defaultSize: number];
 
 export type ScrollToIndexAlign = "start" | "center" | "end" | "nearest";
 

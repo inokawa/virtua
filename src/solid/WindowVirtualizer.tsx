@@ -24,6 +24,7 @@ import {
   ItemsRange,
   ScrollToIndexOpts,
   CacheSnapshot,
+  initCache,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
 import { isSameRange } from "./utils.js";
@@ -124,10 +125,8 @@ export const WindowVirtualizer = <T,>(
   } = props;
 
   const store = createVirtualStore(
-    props.data.length,
-    itemSize,
+    initCache(props.data.length, itemSize, cache),
     undefined,
-    cache,
     !itemSize
   );
   const resizer = createWindowResizer(store, horizontal);
