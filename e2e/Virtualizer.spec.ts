@@ -128,8 +128,8 @@ test("overflow", async ({ page }) => {
       await label.evaluate((e) => {
         const rect = e.getBoundingClientRect();
         const pointed = document.elementFromPoint(
-          rect.x + rect.width / 4,
-          rect.y + rect.height / 4
+          rect.x + rect.width / 8,
+          rect.y + rect.height / 8
         );
         return e === pointed;
       })
