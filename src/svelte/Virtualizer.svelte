@@ -11,6 +11,7 @@
     createScroller,
     createVirtualStore,
     getScrollSize as _getScrollSize,
+    initCache,
   } from "../core/index.js";
   import { defaultGetKey, styleToString, iterRange } from "./utils.js";
   import ListItem from "./ListItem.svelte";
@@ -39,9 +40,7 @@
   }: Props = $props();
 
   const store = createVirtualStore(
-    data.length,
-    itemSize,
-    undefined,
+    initCache(data.length, itemSize),
     undefined,
     !itemSize
   );

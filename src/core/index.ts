@@ -9,6 +9,7 @@ export {
   getScrollSize,
   type StateVersion,
 } from "./store.js";
+export { initCache } from "./cache.js";
 export {
   createScroller,
   createWindowScroller,

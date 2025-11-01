@@ -31,6 +31,7 @@ import {
   ScrollToIndexOpts,
   CacheSnapshot,
   sort,
+  initCache,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
 import { isSameRange } from "./utils.js";
@@ -178,10 +179,8 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   );
 
   const store = createVirtualStore(
-    props.data.length,
-    itemSize,
+    initCache(props.data.length, itemSize, cache),
     undefined,
-    cache,
     !itemSize
   );
   const resizer = createResizer(store, horizontal);
