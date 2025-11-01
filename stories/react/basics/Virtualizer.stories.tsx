@@ -100,6 +100,76 @@ export const StickyHeaderAndFooter: StoryObj = {
   },
 };
 
+export const Overflow: StoryObj = {
+  render: () => {
+    const spacerSize = 24;
+    return (
+      <div
+        style={{
+          boxSizing: "border-box",
+          height: "100vh",
+          overflowY: "auto",
+          // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+          overflowAnchor: "none",
+          border: "solid 1px #eee",
+          borderRadius: 8,
+        }}
+      >
+        <div style={{ height: spacerSize }} />
+        <Virtualizer startMargin={spacerSize}>
+          {Array.from({ length: 1000 }).map((_, i) => {
+            return (
+              <div
+                key={i}
+                style={{
+                  padding: "16px 20px",
+                  borderBottom: "1px solid #eee",
+                  position: "relative",
+                  background: "white",
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: 16,
+                }}
+              >
+                {i}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: -16,
+                    right: 8,
+                    background: "white",
+                    border: "1px solid #ddd",
+                    borderRadius: 8,
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                    zIndex: 10,
+                    display: "flex",
+                    gap: 2,
+                  }}
+                >
+                  {["😊", "💬", "✏️", "⋯"].map((t) => (
+                    <button
+                      style={{
+                        padding: "4px 8px",
+                        border: "none",
+                        background: "white",
+                        borderRadius: 6,
+                        cursor: "pointer",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </Virtualizer>
+      </div>
+    );
+  },
+};
+
 export const Nested: StoryObj = {
   render: () => {
     const ref = useRef<HTMLDivElement>(null);
