@@ -89,7 +89,7 @@ const Cell = memo(
             position: "absolute",
             top: top,
             [isRTLDocument() ? "right" : "left"]: left,
-            visibility: hide ? "hidden" : "visible",
+            visibility: hide ? "hidden" : undefined,
             minHeight: height,
             minWidth: width,
           };

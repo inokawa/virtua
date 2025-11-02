@@ -81,7 +81,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
         [isHorizontal ? "top" : "left"]: "0px",
         [isHorizontal ? (isRTLDocument() ? "right" : "left") : "top"]:
           offset.value + "px",
-        visibility: !isHide || isSSR ? "visible" : "hidden",
+        visibility: !isHide || isSSR ? undefined : "hidden",
         ...styleProp,
       };
       if (isHorizontal) {

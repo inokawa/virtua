@@ -48,7 +48,7 @@ export const ListItem: Component<ListItemProps> = (props) => {
       [isHorizontal ? "top" : "left"]: "0px",
       [isHorizontal ? (isRTLDocument() ? "right" : "left") : "top"]:
         props._offset + "px",
-      visibility: props._hide ? "hidden" : "visible",
+      visibility: props._hide ? "hidden" : undefined,
     };
     if (isHorizontal) {
       style.display = "inline-flex";
