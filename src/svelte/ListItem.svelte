@@ -41,14 +41,14 @@
   });
 
   let style: string = $derived.by(() => {
-    const _style: Record<string, string> = {
+    const _style: Record<string, string | undefined> = {
       contain: "layout style",
       position: "absolute",
       [horizontal ? "height" : "width"]: "100%",
       [horizontal ? "top" : "left"]: "0px",
       [horizontal ? (isRTLDocument() ? "right" : "left") : "top"]:
         offset + "px",
-      visibility: hide ? "hidden" : "visible",
+      visibility: hide ? "hidden" : undefined,
     };
     if (horizontal) {
       _style["display"] = "inline-flex";

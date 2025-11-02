@@ -9,7 +9,7 @@ exports[`horizontal > should render 1 children 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 100%;"
     >
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; display: inline-flex;"
       >
         <div>
           0
@@ -29,28 +29,28 @@ exports[`horizontal > should render 5 children 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 500px; height: 100%;"
     >
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; display: inline-flex;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; display: inline-flex;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 200px; display: inline-flex;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 300px; display: inline-flex;"
       >
         <div>
           3
@@ -70,28 +70,28 @@ exports[`horizontal > should render 100 children 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 100%;"
     >
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; display: inline-flex;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; display: inline-flex;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 200px; display: inline-flex;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 300px; display: inline-flex;"
       >
         <div>
           3
@@ -111,28 +111,28 @@ exports[`horizontal > should render 10000 children 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 1000000px; height: 100%;"
     >
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; display: inline-flex;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; display: inline-flex;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 200px; display: inline-flex;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 300px; display: inline-flex;"
       >
         <div>
           3
@@ -152,21 +152,21 @@ exports[`horizontal > should render component 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 300px; height: 100%;"
     >
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; display: inline-flex;"
       >
         <div>
           component
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; display: inline-flex;"
       >
         <div>
           component
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 200px; display: inline-flex;"
       >
         <div>
           component
@@ -186,7 +186,7 @@ exports[`horizontal > should render fragments 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 200px; height: 100%;"
     >
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; display: inline-flex;"
       >
         <div>
           fragment
@@ -199,7 +199,7 @@ exports[`horizontal > should render fragments 1`] = `
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; display: inline-flex;"
       >
         <div>
           fragment
@@ -219,12 +219,12 @@ exports[`horizontal > should render non elements 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 200px; height: 100%;"
     >
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; display: inline-flex;"
       >
         string
       </div>
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; display: inline-flex;"
       >
         123
       </div>
@@ -242,28 +242,28 @@ exports[`horizontal > should render with given width / height 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 500px; height: 100%;"
     >
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; display: inline-flex;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; display: inline-flex;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 200px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 200px; display: inline-flex;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 300px; visibility: visible; display: inline-flex;"
+        style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 300px; display: inline-flex;"
       >
         <div>
           3
@@ -286,105 +286,105 @@ exports[`reverse > should render many items 1`] = `
         style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 5000px;"
       >
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px;"
         >
           <div>
             0
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px;"
         >
           <div>
             1
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px;"
         >
           <div>
             2
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px;"
         >
           <div>
             3
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px;"
         >
           <div>
             4
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 250px;"
         >
           <div>
             5
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 300px; visibility: visible;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 300px;"
         >
           <div>
             6
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 350px; visibility: visible;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 350px;"
         >
           <div>
             7
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px; visibility: visible;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px;"
         >
           <div>
             8
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 450px; visibility: visible;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 450px;"
         >
           <div>
             9
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 500px; visibility: visible;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 500px;"
         >
           <div>
             10
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 550px; visibility: visible;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 550px;"
         >
           <div>
             11
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 600px; visibility: visible;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 600px;"
         >
           <div>
             12
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 650px; visibility: visible;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 650px;"
         >
           <div>
             13
           </div>
         </div>
         <div
-          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 700px; visibility: visible;"
+          style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 700px;"
         >
           <div>
             14
@@ -410,7 +410,7 @@ exports[`should pass attributes to element 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 50px;"
     >
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
         <div>
           0
@@ -431,7 +431,7 @@ exports[`should pass index to items 1`] = `
     >
       <div
         data-index="0"
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
         <div>
           0
@@ -439,7 +439,7 @@ exports[`should pass index to items 1`] = `
       </div>
       <div
         data-index="1"
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px;"
       >
         <div>
           1
@@ -447,7 +447,7 @@ exports[`should pass index to items 1`] = `
       </div>
       <div
         data-index="2"
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px;"
       >
         <div>
           2
@@ -455,7 +455,7 @@ exports[`should pass index to items 1`] = `
       </div>
       <div
         data-index="3"
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px;"
       >
         <div>
           3
@@ -463,7 +463,7 @@ exports[`should pass index to items 1`] = `
       </div>
       <div
         data-index="4"
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px;"
       >
         <div>
           4
@@ -483,161 +483,161 @@ exports[`should render with keepMounted 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 5000px;"
     >
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px;"
       >
         <div>
           4
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 250px;"
       >
         <div>
           5
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 300px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 300px;"
       >
         <div>
           6
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 350px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 350px;"
       >
         <div>
           7
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px;"
       >
         <div>
           8
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 450px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 450px;"
       >
         <div>
           9
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 500px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 500px;"
       >
         <div>
           10
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 550px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 550px;"
       >
         <div>
           11
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 600px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 600px;"
       >
         <div>
           12
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 650px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 650px;"
       >
         <div>
           13
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 700px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 700px;"
       >
         <div>
           14
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 1000px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 1000px;"
       >
         <div>
           20
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 1500px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 1500px;"
       >
         <div>
           30
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 2000px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 2000px;"
       >
         <div>
           40
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 2500px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 2500px;"
       >
         <div>
           50
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 3000px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 3000px;"
       >
         <div>
           60
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 3500px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 3500px;"
       >
         <div>
           70
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 4000px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 4000px;"
       >
         <div>
           80
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 4500px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 4500px;"
       >
         <div>
           90
@@ -657,105 +657,105 @@ exports[`should render with render prop 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 50000px;"
     >
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
         <div>
           This is 0
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px;"
       >
         <div>
           This is 1
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px;"
       >
         <div>
           This is 2
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px;"
       >
         <div>
           This is 3
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px;"
       >
         <div>
           This is 4
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 250px;"
       >
         <div>
           This is 5
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 300px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 300px;"
       >
         <div>
           This is 6
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 350px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 350px;"
       >
         <div>
           This is 7
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px;"
       >
         <div>
           This is 8
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 450px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 450px;"
       >
         <div>
           This is 9
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 500px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 500px;"
       >
         <div>
           This is 10
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 550px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 550px;"
       >
         <div>
           This is 11
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 600px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 600px;"
       >
         <div>
           This is 12
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 650px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 650px;"
       >
         <div>
           This is 13
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 700px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 700px;"
       >
         <div>
           This is 14
@@ -787,7 +787,7 @@ exports[`vertical > should render 1 children 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 50px;"
     >
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
         <div>
           0
@@ -807,35 +807,35 @@ exports[`vertical > should render 5 children 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 250px;"
     >
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px;"
       >
         <div>
           4
@@ -855,105 +855,105 @@ exports[`vertical > should render 100 children 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 5000px;"
     >
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px;"
       >
         <div>
           4
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 250px;"
       >
         <div>
           5
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 300px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 300px;"
       >
         <div>
           6
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 350px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 350px;"
       >
         <div>
           7
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px;"
       >
         <div>
           8
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 450px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 450px;"
       >
         <div>
           9
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 500px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 500px;"
       >
         <div>
           10
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 550px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 550px;"
       >
         <div>
           11
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 600px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 600px;"
       >
         <div>
           12
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 650px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 650px;"
       >
         <div>
           13
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 700px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 700px;"
       >
         <div>
           14
@@ -973,105 +973,105 @@ exports[`vertical > should render 10000 children 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 500000px;"
     >
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px;"
       >
         <div>
           4
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 250px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 250px;"
       >
         <div>
           5
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 300px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 300px;"
       >
         <div>
           6
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 350px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 350px;"
       >
         <div>
           7
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 400px;"
       >
         <div>
           8
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 450px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 450px;"
       >
         <div>
           9
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 500px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 500px;"
       >
         <div>
           10
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 550px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 550px;"
       >
         <div>
           11
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 600px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 600px;"
       >
         <div>
           12
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 650px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 650px;"
       >
         <div>
           13
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 700px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 700px;"
       >
         <div>
           14
@@ -1091,21 +1091,21 @@ exports[`vertical > should render component 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 150px;"
     >
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
         <div>
           component
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px;"
       >
         <div>
           component
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px;"
       >
         <div>
           component
@@ -1125,7 +1125,7 @@ exports[`vertical > should render fragments 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 100px;"
     >
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
         <div>
           fragment
@@ -1138,7 +1138,7 @@ exports[`vertical > should render fragments 1`] = `
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px;"
       >
         <div>
           fragment
@@ -1158,12 +1158,12 @@ exports[`vertical > should render non elements 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 100px;"
     >
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
         string
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px;"
       >
         123
       </div>
@@ -1181,35 +1181,35 @@ exports[`vertical > should render with given width / height 1`] = `
       style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 250px;"
     >
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 0px;"
       >
         <div>
           0
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 50px;"
       >
         <div>
           1
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 100px;"
       >
         <div>
           2
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 150px;"
       >
         <div>
           3
         </div>
       </div>
       <div
-        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px; visibility: visible;"
+        style="contain: layout style; position: absolute; width: 100%; left: 0px; top: 200px;"
       >
         <div>
           4
