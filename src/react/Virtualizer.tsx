@@ -318,8 +318,16 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
           get viewportSize() {
             return store.$getViewportSize();
           },
-          findStartIndex: store.$findStartIndex,
-          findEndIndex: store.$findEndIndex,
+          findStartIndex: () =>
+            store.$findItemIndex(
+              store.$getStartSpacerSize() + store.$getScrollOffset()
+            ),
+          findEndIndex: () =>
+            store.$findItemIndex(
+              store.$getStartSpacerSize() +
+                store.$getScrollOffset() +
+                store.$getViewportSize()
+            ),
           getItemOffset: store.$getItemOffset,
           getItemSize: store.$getItemSize,
           scrollToIndex: scroller.$scrollToIndex,

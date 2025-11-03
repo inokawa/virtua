@@ -167,8 +167,16 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       get cache() {
         return store.$getCacheSnapshot();
       },
-      findStartIndex: store.$findStartIndex,
-      findEndIndex: store.$findEndIndex,
+      findStartIndex: () =>
+        store.$findItemIndex(
+          store.$getStartSpacerSize() + store.$getScrollOffset()
+        ),
+      findEndIndex: () =>
+        store.$findItemIndex(
+          store.$getStartSpacerSize() +
+            store.$getScrollOffset() +
+            store.$getViewportSize()
+        ),
       scrollToIndex: scroller.$scrollToIndex,
     } satisfies WindowVirtualizerHandle);
 

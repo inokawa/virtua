@@ -227,8 +227,16 @@ export const WindowVirtualizer = forwardRef<
           get cache() {
             return store.$getCacheSnapshot();
           },
-          findStartIndex: store.$findStartIndex,
-          findEndIndex: store.$findEndIndex,
+          findStartIndex: () =>
+            store.$findItemIndex(
+              store.$getStartSpacerSize() + store.$getScrollOffset()
+            ),
+          findEndIndex: () =>
+            store.$findItemIndex(
+              store.$getStartSpacerSize() +
+                store.$getScrollOffset() +
+                store.$getViewportSize()
+            ),
           scrollToIndex: scroller.$scrollToIndex,
         };
       },
