@@ -24,6 +24,7 @@ import {
   createWindowScroller,
   ItemsRange,
   ScrollToIndexOpts,
+  initCache,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
 import { getKey, isSameRange } from "./utils.js";
@@ -89,9 +90,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     const isHorizontal = props.horizontal;
     const containerRef = ref<HTMLDivElement>();
     const store = createVirtualStore(
-      props.data.length,
-      props.itemSize,
-      undefined,
+      initCache(props.data.length, props.itemSize),
       undefined,
       !props.itemSize
     );

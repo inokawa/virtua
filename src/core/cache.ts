@@ -1,4 +1,4 @@
-import { type InternalCacheSnapshot, type ItemsRange } from "./types.js";
+import { type CacheSnapshot, type ItemsRange } from "./types.js";
 import { clamp, floor, max, min, sort } from "./utils.js";
 
 type Writeable<T> = {
@@ -175,8 +175,8 @@ export const estimateDefaultItemSize = (
  */
 export const initCache = (
   length: number,
-  itemSize: number,
-  snapshot?: InternalCacheSnapshot
+  itemSize: number = 40,
+  snapshot?: CacheSnapshot
 ): Cache => {
   return {
     _defaultItemSize: snapshot ? snapshot[1] : itemSize,
@@ -197,7 +197,7 @@ export const initCache = (
 /**
  * @internal
  */
-export const takeCacheSnapshot = (cache: Cache): InternalCacheSnapshot => {
+export const takeCacheSnapshot = (cache: Cache): CacheSnapshot => {
   return [cache._sizes.slice(), cache._defaultItemSize];
 };
 
