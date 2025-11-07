@@ -1,8 +1,8 @@
 import {
-  JSX,
-  ReactElement,
-  ReactNode,
-  Ref,
+  type JSX,
+  type ReactElement,
+  type ReactNode,
+  type Ref,
   forwardRef,
   useImperativeHandle,
   useReducer,
@@ -16,14 +16,17 @@ import {
   UPDATE_SCROLL_EVENT,
   createWindowScroller,
   createWindowResizer,
-  CacheSnapshot,
-  ScrollToIndexOpts,
+  type CacheSnapshot,
+  type ScrollToIndexOpts,
 } from "../core/index.js";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
 import { getKey, refKey } from "./utils.js";
 import { useStatic } from "./useStatic.js";
 import { useLatestRef } from "./useLatestRef.js";
-import { CustomContainerComponent, CustomItemComponent } from "./types.js";
+import {
+  type CustomContainerComponent,
+  type CustomItemComponent,
+} from "./types.js";
 import { ListItem } from "./ListItem.js";
 import { flushSync } from "react-dom";
 import { useChildren } from "./useChildren.js";

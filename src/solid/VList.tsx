@@ -1,12 +1,12 @@
 /**
  * @jsxImportSource solid-js
  */
-import { JSX, splitProps } from "solid-js";
-import { ViewportComponentAttributes } from "./types.js";
+import { type JSX, splitProps } from "solid-js";
+import { type ViewportComponentAttributes } from "./types.js";
 import {
   Virtualizer,
-  VirtualizerHandle,
-  VirtualizerProps,
+  type VirtualizerHandle,
+  type VirtualizerProps,
 } from "./Virtualizer.js";
 
 /**

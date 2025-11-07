@@ -1,4 +1,4 @@
-import { Ref, useCallback, RefObject } from "react";
+import { type Ref, useCallback, type RefObject } from "react";
 
 /**
  * @internal

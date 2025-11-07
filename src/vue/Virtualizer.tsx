@@ -4,14 +4,14 @@ import {
   onMounted,
   defineComponent,
   onUnmounted,
-  VNode,
+  type VNode,
   watch,
-  ComponentOptionsMixin,
-  SlotsType,
-  ComponentOptionsWithObjectProps,
-  ComponentObjectPropsOptions,
-  PropType,
-  NativeElements,
+  type ComponentOptionsMixin,
+  type SlotsType,
+  type ComponentOptionsWithObjectProps,
+  type ComponentObjectPropsOptions,
+  type PropType,
+  type NativeElements,
   computed,
 } from "vue";
 import {
@@ -24,12 +24,12 @@ import {
   ACTION_START_OFFSET_CHANGE,
   createResizer,
   createScroller,
-  ItemsRange,
-  ScrollToIndexOpts,
+  type ItemsRange,
+  type ScrollToIndexOpts,
   sort,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
-import { getKey, isSameRange, ItemProps } from "./utils.js";
+import { getKey, isSameRange, type ItemProps } from "./utils.js";
 
 export interface VirtualizerHandle {
   /**

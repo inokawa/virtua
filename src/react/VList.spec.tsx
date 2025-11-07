@@ -2,7 +2,7 @@ import { afterEach, it, expect, describe } from "vitest";
 import { cleanup } from "@testing-library/react";
 import { VList } from "./VList.js";
 import { forwardRef } from "react";
-import { CustomItemComponentProps } from "./types.js";
+import { type CustomItemComponentProps } from "./types.js";
 import { setupResizeJsDom } from "../../scripts/spec.js";
 import { render } from "../../scripts/spec-react.js";
 

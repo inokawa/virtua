@@ -1,13 +1,13 @@
 import {
-  JSX,
-  ReactElement,
+  type JSX,
+  type ReactElement,
   forwardRef,
   useImperativeHandle,
-  ReactNode,
+  type ReactNode,
   useRef,
-  RefObject,
+  type RefObject,
   useReducer,
-  Ref,
+  type Ref,
 } from "react";
 import {
   UPDATE_SCROLL_EVENT,
@@ -19,8 +19,8 @@ import {
   ACTION_START_OFFSET_CHANGE,
   createScroller,
   createResizer,
-  CacheSnapshot,
-  ScrollToIndexOpts,
+  type CacheSnapshot,
+  type ScrollToIndexOpts,
   microtask,
   sort,
 } from "../core/index.js";
@@ -31,7 +31,10 @@ import { useLatestRef } from "./useLatestRef.js";
 import { ListItem } from "./ListItem.js";
 import { flushSync } from "react-dom";
 import { useChildren } from "./useChildren.js";
-import { CustomContainerComponent, CustomItemComponent } from "./types.js";
+import {
+  type CustomContainerComponent,
+  type CustomItemComponent,
+} from "./types.js";
 
 /**
  * Methods of {@link Virtualizer}.

@@ -7,8 +7,8 @@ import {
   createEffect,
   createSignal,
   createMemo,
-  JSX,
-  Accessor,
+  type JSX,
+  type Accessor,
   on,
   For,
   untrack,
@@ -21,9 +21,9 @@ import {
   UPDATE_SCROLL_EVENT,
   createWindowResizer,
   createWindowScroller,
-  ItemsRange,
-  ScrollToIndexOpts,
-  CacheSnapshot,
+  type ItemsRange,
+  type ScrollToIndexOpts,
+  type CacheSnapshot,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
 import { isSameRange } from "./utils.js";

@@ -7,13 +7,13 @@ import {
   createEffect,
   createSignal,
   createMemo,
-  JSX,
+  type JSX,
   on,
   createComputed,
   type ValidComponent,
   mergeProps,
   For,
-  Accessor,
+  type Accessor,
   untrack,
 } from "solid-js";
 import { Dynamic } from "solid-js/web";
@@ -27,9 +27,9 @@ import {
   ACTION_START_OFFSET_CHANGE,
   createResizer,
   createScroller,
-  ItemsRange,
-  ScrollToIndexOpts,
-  CacheSnapshot,
+  type ItemsRange,
+  type ScrollToIndexOpts,
+  type CacheSnapshot,
   sort,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";

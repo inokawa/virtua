@@ -1,16 +1,16 @@
 /** @jsxImportSource vue */
 import {
   defineComponent,
-  ComponentOptionsMixin,
-  SlotsType,
-  ComponentOptionsWithObjectProps,
-  ComponentObjectPropsOptions,
+  type ComponentOptionsMixin,
+  type SlotsType,
+  type ComponentOptionsWithObjectProps,
+  type ComponentObjectPropsOptions,
   ref,
-  VNode,
-  PropType,
+  type VNode,
+  type PropType,
 } from "vue";
-import { Virtualizer, VirtualizerHandle } from "./Virtualizer.js";
-import { ItemProps } from "./utils.js";
+import { Virtualizer, type VirtualizerHandle } from "./Virtualizer.js";
+import { type ItemProps } from "./utils.js";
 
 interface VListHandle extends VirtualizerHandle {}
 

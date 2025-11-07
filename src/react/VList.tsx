@@ -1,9 +1,9 @@
-import { ReactElement, Ref, forwardRef, useRef } from "react";
-import { ViewportComponentAttributes } from "./types.js";
+import { type ReactElement, type Ref, forwardRef, useRef } from "react";
+import { type ViewportComponentAttributes } from "./types.js";
 import {
   Virtualizer,
-  VirtualizerHandle,
-  VirtualizerProps,
+  type VirtualizerHandle,
+  type VirtualizerProps,
 } from "./Virtualizer.js";
 
 /**

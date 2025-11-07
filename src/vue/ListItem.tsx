@@ -3,20 +3,20 @@ import {
   ref,
   defineComponent,
   watch,
-  StyleValue,
-  PropType,
-  VNode,
-  NativeElements,
+  type StyleValue,
+  type PropType,
+  type VNode,
+  type NativeElements,
   computed,
-  Ref,
+  type Ref,
 } from "vue";
 import {
-  ItemResizeObserver,
+  type ItemResizeObserver,
   isRTLDocument,
-  StateVersion,
-  VirtualStore,
+  type StateVersion,
+  type VirtualStore,
 } from "../core/index.js";
-import { ItemProps } from "./utils.js";
+import { type ItemProps } from "./utils.js";
 
 /**
  * @internal

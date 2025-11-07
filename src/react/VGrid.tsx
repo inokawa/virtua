@@ -1,15 +1,15 @@
 import React, {
-  JSX,
+  type JSX,
   memo,
   useRef,
   useMemo,
-  CSSProperties,
-  ReactElement,
+  type CSSProperties,
+  type ReactElement,
   forwardRef,
-  ReactNode,
+  type ReactNode,
   useImperativeHandle,
   useReducer,
-  Ref,
+  type Ref,
 } from "react";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
@@ -18,7 +18,7 @@ import {
   UPDATE_VIRTUAL_STATE,
   createGridScroller,
   createGridResizer,
-  GridResizer,
+  type GridResizer,
   isRTLDocument,
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
@@ -26,7 +26,7 @@ import {
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
 import { refKey } from "./utils.js";
 import { useStatic } from "./useStatic.js";
-import { ViewportComponentAttributes } from "./types.js";
+import { type ViewportComponentAttributes } from "./types.js";
 import { useLatestRef } from "./useLatestRef.js";
 import { flushSync } from "react-dom";
 import { useMergeRefs } from "./useMergeRefs.js";

@@ -1,4 +1,4 @@
-import { ItemsRange } from "../core/index.js";
+import { type ItemsRange } from "../core/index.js";
 
 /**
  * @internal

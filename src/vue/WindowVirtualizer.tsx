@@ -4,14 +4,14 @@ import {
   onMounted,
   defineComponent,
   onUnmounted,
-  VNode,
+  type VNode,
   watch,
-  ComponentOptionsMixin,
-  SlotsType,
-  ComponentOptionsWithObjectProps,
-  ComponentObjectPropsOptions,
-  PropType,
-  NativeElements,
+  type ComponentOptionsMixin,
+  type SlotsType,
+  type ComponentOptionsWithObjectProps,
+  type ComponentObjectPropsOptions,
+  type PropType,
+  type NativeElements,
   computed,
 } from "vue";
 import {
@@ -22,8 +22,8 @@ import {
   UPDATE_SCROLL_EVENT,
   createWindowResizer,
   createWindowScroller,
-  ItemsRange,
-  ScrollToIndexOpts,
+  type ItemsRange,
+  type ScrollToIndexOpts,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
 import { getKey, isSameRange } from "./utils.js";
