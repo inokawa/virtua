@@ -1,5 +1,17 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`grid > should render 0 children 1`] = `
+<DocumentFragment>
+  <div
+    style="overflow: auto; contain: strict; width: 100%; height: 100%;"
+  >
+    <div
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 500px;"
+    />
+  </div>
+</DocumentFragment>
+`;
+
 exports[`grid > should render 1 children 1`] = `
 <DocumentFragment>
   <div
