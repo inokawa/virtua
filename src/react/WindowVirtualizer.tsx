@@ -114,6 +114,15 @@ export interface WindowVirtualizerProps<T = unknown> {
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
+  /**
+   * Whether to cache rendered elements. Reduces render count. Recommended if your render function is complex and costly.
+   */
+  enableRenderCache?: boolean;
+  /**
+   * The max size of the cache. If more elements are rendered, old cached elements will be removed from the cache. Has direct impact on memory.
+   * @default 1000
+   */
+  maxCacheSize?: number | null;
 }
 
 /**
@@ -137,12 +146,19 @@ export const WindowVirtualizer = forwardRef<
       item: ItemElement = "div",
       onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
+      enableRenderCache,
+      maxCacheSize = 1000,
     },
     ref
   ): ReactElement => {
     Element = Element as "div";
 
-    const [renderElement, count] = useChildren(children, data);
+    const [renderElement, count] = useChildren(
+      children,
+      data,
+      enableRenderCache,
+      maxCacheSize
+    );
 
     const containerRef = useRef<HTMLDivElement>(null);
 

@@ -329,6 +329,64 @@ export const RenderProp: StoryObj = {
   },
 };
 
+export const RenderPropCache: StoryObj = {
+  render: () => {
+    const id = useRef(0);
+    const heights = [20, 40, 80, 77];
+    const createItem = () => {
+      const i = id.current++;
+      return {
+        id: i,
+        height: heights[i % 4],
+      };
+    };
+
+    const [items, setItems] = useState(() => {
+      return Array.from({ length: 1000 }).map(() => createItem());
+    });
+
+    return (
+      <div
+        style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+      >
+        <div>
+          <button
+            onClick={() => {
+              setItems((prev) => [
+                ...prev,
+                ...Array.from({ length: 500 }).map(() => createItem()),
+              ]);
+            }}
+          >
+            append more
+          </button>
+        </div>
+        <VList
+          style={{ flex: 1 }}
+          data={items}
+          enableRenderCache
+          maxCacheSize={500}
+        >
+          {(item, i) => {
+            return (
+              <div
+                key={item.id}
+                style={{
+                  height: item.height,
+                  borderBottom: "solid 1px #ccc",
+                  background: "#fff",
+                }}
+              >
+                {i} render time: {Math.floor(Date.now() / 1000)}
+              </div>
+            );
+          }}
+        </VList>
+      </div>
+    );
+  },
+};
+
 export const Keyboard: StoryObj = {
   render: () => {
     const ref = useRef<VListHandle>(null);
