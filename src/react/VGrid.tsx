@@ -451,7 +451,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
 
     return (
       <div
-        ref={useMergeRefs(rootRef, domRef)}
+        ref={useMergeRefs([rootRef, domRef])}
         {...attrs}
         style={{
           overflow: "auto",
