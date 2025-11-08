@@ -18,6 +18,7 @@ import {
   createWindowResizer,
   type CacheSnapshot,
   type ScrollToIndexOpts,
+  createLinearCache,
 } from "../core/index.js";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
 import { getKey, refKey } from "./utils.js";
@@ -134,7 +135,7 @@ export const WindowVirtualizer = forwardRef<
       itemSize,
       shift,
       horizontal: horizontalProp,
-      cache,
+      cache: cacheSnapshot,
       ssrCount,
       as: Element = "div",
       item: ItemElement = "div",
@@ -154,18 +155,14 @@ export const WindowVirtualizer = forwardRef<
 
     const isSSR = useRef(!!ssrCount);
 
-    const [store, resizer, scroller, isHorizontal] = useStatic(() => {
+    const [store, cache, resizer, scroller, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
-      const _store = createVirtualStore(
-        count,
-        itemSize,
-        ssrCount,
-        cache,
-        !itemSize
-      );
+      const _cache = createLinearCache(count, itemSize, cacheSnapshot);
+      const _store = createVirtualStore(_cache, ssrCount, !itemSize);
 
       return [
         _store,
+        _cache,
         createWindowResizer(_store, _isHorizontal),
         createWindowScroller(_store, _isHorizontal),
         _isHorizontal,
@@ -225,7 +222,7 @@ export const WindowVirtualizer = forwardRef<
       () => {
         return {
           get cache() {
-            return store.$getCacheSnapshot();
+            return cache.$snapshot();
           },
           findStartIndex: store.$findStartIndex,
           findEndIndex: store.$findEndIndex,

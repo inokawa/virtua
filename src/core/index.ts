@@ -1,3 +1,4 @@
+export { createLinearCache } from "./layout.js";
 export {
   ACTION_ITEMS_LENGTH_CHANGE,
   ACTION_START_OFFSET_CHANGE,

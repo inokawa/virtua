@@ -10,6 +10,7 @@
     getScrollSize as _getScrollSize,
     createWindowResizer,
     createWindowScroller,
+    createLinearCache,
   } from "../core/index.js";
   import { defaultGetKey, iterRange, styleToString } from "./utils.js";
   import ListItem from "./ListItem.svelte";
@@ -33,9 +34,7 @@
   }: Props = $props();
 
   const store = createVirtualStore(
-    data.length,
-    itemSize,
-    undefined,
+    createLinearCache(data.length, itemSize),
     undefined,
     !itemSize
   );

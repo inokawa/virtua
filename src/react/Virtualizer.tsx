@@ -19,6 +19,7 @@ import {
   ACTION_START_OFFSET_CHANGE,
   createScroller,
   createResizer,
+  createLinearCache,
   type CacheSnapshot,
   type ScrollToIndexOpts,
   microtask,
@@ -182,7 +183,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       shift,
       horizontal: horizontalProp,
       keepMounted,
-      cache,
+      cache: cacheSnapshot,
       startMargin = 0,
       ssrCount,
       as: Element = "div",
@@ -204,17 +205,13 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     const onScroll = useLatestRef(onScrollProp);
     const onScrollEnd = useLatestRef(onScrollEndProp);
 
-    const [store, resizer, scroller, isHorizontal] = useStatic(() => {
+    const [store, cache, resizer, scroller, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
-      const _store = createVirtualStore(
-        count,
-        itemSize,
-        ssrCount,
-        cache,
-        !itemSize
-      );
+      const _cache = createLinearCache(count, itemSize, cacheSnapshot);
+      const _store = createVirtualStore(_cache, ssrCount, !itemSize);
       return [
         _store,
+        _cache,
         createResizer(_store, _isHorizontal),
         createScroller(_store, _isHorizontal),
         _isHorizontal,
@@ -307,7 +304,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       () => {
         return {
           get cache() {
-            return store.$getCacheSnapshot();
+            return cache.$snapshot();
           },
           get scrollOffset() {
             return store.$getScrollOffset();

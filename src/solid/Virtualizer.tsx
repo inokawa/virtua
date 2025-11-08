@@ -31,6 +31,7 @@ import {
   type ScrollToIndexOpts,
   type CacheSnapshot,
   sort,
+  createLinearCache,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
 import { isSameRange } from "./utils.js";
@@ -171,19 +172,14 @@ export interface VirtualizerProps<T> {
  */
 export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const { itemSize, horizontal = false, cache } = props;
+  const { itemSize, horizontal = false, cache: cacheSnapshot } = props;
   props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
     { as: "div" },
     props
   );
 
-  const store = createVirtualStore(
-    props.data.length,
-    itemSize,
-    undefined,
-    cache,
-    !itemSize
-  );
+  const cache = createLinearCache(props.data.length, itemSize, cacheSnapshot);
+  const store = createVirtualStore(cache, undefined, !itemSize);
   const resizer = createResizer(store, horizontal);
   const scroller = createScroller(store, horizontal);
 
@@ -214,7 +210,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     if (props.ref) {
       props.ref({
         get cache() {
-          return store.$getCacheSnapshot();
+          return cache.$snapshot();
         },
         get scrollOffset() {
           return store.$getScrollOffset();
