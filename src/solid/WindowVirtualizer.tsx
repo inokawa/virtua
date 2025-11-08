@@ -24,6 +24,7 @@ import {
   type ItemsRange,
   type ScrollToIndexOpts,
   type CacheSnapshot,
+  createLinearCache,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
 import { isSameRange } from "./utils.js";
@@ -119,17 +120,12 @@ export const WindowVirtualizer = <T,>(
     itemSize,
     shift: _shift,
     horizontal = false,
-    cache,
+    cache: cacheSnapshot,
     onScrollEnd: _onScrollEnd,
   } = props;
 
-  const store = createVirtualStore(
-    props.data.length,
-    itemSize,
-    undefined,
-    cache,
-    !itemSize
-  );
+  const cache = createLinearCache(props.data.length, itemSize, cacheSnapshot);
+  const store = createVirtualStore(cache, undefined, !itemSize);
   const resizer = createWindowResizer(store, horizontal);
   const scroller = createWindowScroller(store, horizontal);
 
@@ -161,7 +157,7 @@ export const WindowVirtualizer = <T,>(
     if (props.ref) {
       props.ref({
         get cache() {
-          return store.$getCacheSnapshot();
+          return cache.$snapshot();
         },
         findStartIndex: store.$findStartIndex,
         findEndIndex: store.$findEndIndex,

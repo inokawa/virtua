@@ -22,6 +22,7 @@ import {
   isRTLDocument,
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
+  createLinearCache,
 } from "../core/index.js";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
 import { refKey } from "./utils.js";
@@ -275,13 +276,11 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
   ): ReactElement => {
     const [rowStore, colStore, resizer, scroller] = useStatic(() => {
       const _rowStore = createVirtualStore(
-        rowCount,
-        cellHeight,
+        createLinearCache(rowCount, cellHeight),
         initialRowCount
       );
       const _colStore = createVirtualStore(
-        colCount,
-        cellWidth,
+        createLinearCache(colCount, cellWidth),
         initialColCount
       );
       return [
