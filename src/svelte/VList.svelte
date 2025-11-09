@@ -13,6 +13,7 @@
     shift,
     horizontal,
     keepMounted,
+    cache,
     children,
     onscroll,
     onscrollend,
@@ -21,6 +22,8 @@
 
   let ref: Virtualizer<T> = $state()!;
 
+  export const getCache = (() =>
+    ref.getCache()) satisfies VListHandle["getCache"] as VListHandle["getCache"];
   export const getScrollOffset = (() =>
     ref.getScrollOffset()) satisfies VListHandle["getScrollOffset"] as VListHandle["getScrollOffset"];
   export const getScrollSize = (() =>
@@ -76,6 +79,7 @@
     {shift}
     {horizontal}
     {keepMounted}
+    {cache}
     {onscroll}
     {onscrollend}
   />

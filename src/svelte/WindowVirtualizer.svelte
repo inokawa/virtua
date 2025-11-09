@@ -27,6 +27,7 @@
     itemSize,
     shift = false,
     horizontal = false,
+    cache,
     children,
     onscroll,
     onscrollend,
@@ -36,7 +37,7 @@
     data.length,
     itemSize,
     undefined,
-    undefined,
+    cache,
     !itemSize
   );
   const resizer = createWindowResizer(store, horizontal);
@@ -83,6 +84,8 @@
     scroller.$fixScrollJump();
   });
 
+  export const getCache =
+    store.$getCacheSnapshot satisfies WindowVirtualizerHandle["getCache"] as WindowVirtualizerHandle["getCache"];
   export const findStartIndex =
     store.$findStartIndex satisfies WindowVirtualizerHandle["findStartIndex"] as WindowVirtualizerHandle["findStartIndex"];
   export const findEndIndex =

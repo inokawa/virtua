@@ -1,5 +1,5 @@
 import { type Snippet } from "svelte";
-import { type ScrollToIndexOpts } from "../core/index.js";
+import { type CacheSnapshot, type ScrollToIndexOpts } from "../core/index.js";
 
 /**
  * Props of {@link WindowVirtualizer}.
@@ -39,6 +39,12 @@ export interface WindowVirtualizerProps<T> {
    */
   horizontal?: boolean;
   /**
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.cache}.
+   *
+   * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
+   */
+  cache?: CacheSnapshot;
+  /**
    * Callback invoked whenever scroll offset changes.
    */
   onscroll?: () => void;
@@ -52,6 +58,10 @@ export interface WindowVirtualizerProps<T> {
  * Methods of {@link WindowVirtualizer}.
  */
 export interface WindowVirtualizerHandle {
+  /**
+   * Get current {@link CacheSnapshot}.
+   */
+  getCache: () => CacheSnapshot;
   /**
    * Find the start index of visible range of items.
    */

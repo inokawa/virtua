@@ -1,6 +1,6 @@
 import { type Snippet } from "svelte";
 import type { SvelteHTMLElements } from "svelte/elements";
-import { type ScrollToIndexOpts } from "../core/index.js";
+import { type CacheSnapshot, type ScrollToIndexOpts } from "../core/index.js";
 
 /**
  * Props of {@link Virtualizer}.
@@ -58,6 +58,12 @@ export interface VirtualizerProps<T> {
    */
   keepMounted?: readonly number[];
   /**
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.cache}.
+   *
+   * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
+   */
+  cache?: CacheSnapshot;
+  /**
    * The offset to the scrollable parent before virtualizer in pixels. If you put an element before virtualizer, you have to set its height to this prop.
    */
   startMargin?: number;
@@ -76,6 +82,10 @@ export interface VirtualizerProps<T> {
  * Methods of {@link Virtualizer}.
  */
 export interface VirtualizerHandle {
+  /**
+   * Get current {@link CacheSnapshot}.
+   */
+  getCache: () => CacheSnapshot;
   /**
    * Get current scrollTop, or scrollLeft if horizontal: true.
    */

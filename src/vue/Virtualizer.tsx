@@ -27,11 +27,16 @@ import {
   type ItemsRange,
   type ScrollToIndexOpts,
   sort,
+  type CacheSnapshot,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
 import { getKey, isSameRange, type ItemProps } from "./utils.js";
 
 export interface VirtualizerHandle {
+  /**
+   * Get current {@link CacheSnapshot}.
+   */
+  readonly cache: CacheSnapshot;
   /**
    * Get current scrollTop, or scrollLeft if horizontal: true.
    */
@@ -137,6 +142,12 @@ const props = {
    * List of indexes that should be always mounted, even when off screen.
    */
   keepMounted: Array as PropType<readonly number[]>,
+  /**
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.cache}.
+   *
+   * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
+   */
+  cache: Object as PropType<CacheSnapshot>,
 } satisfies ComponentObjectPropsOptions;
 
 export const Virtualizer = /*#__PURE__*/ defineComponent({
@@ -151,7 +162,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       props.data.length,
       props.itemSize,
       props.ssrCount,
-      undefined,
+      props.cache,
       !props.itemSize
     );
     const resizer = createResizer(store, isHorizontal);
@@ -233,6 +244,9 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     );
 
     expose({
+      get cache() {
+        return store.$getCacheSnapshot();
+      },
       get scrollOffset() {
         return store.$getScrollOffset();
       },
