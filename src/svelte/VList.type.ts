@@ -20,6 +20,7 @@ export interface VListProps<T>
       | "onscroll"
       | "onscrollend"
       | "keepMounted"
+      | "cache"
     >,
     ViewportComponentAttributes {}
 

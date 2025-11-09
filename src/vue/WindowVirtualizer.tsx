@@ -24,11 +24,16 @@ import {
   createWindowScroller,
   type ItemsRange,
   type ScrollToIndexOpts,
+  type CacheSnapshot,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
 import { getKey, isSameRange } from "./utils.js";
 
 export interface WindowVirtualizerHandle {
+  /**
+   * Get current {@link CacheSnapshot}.
+   */
+  readonly cache: CacheSnapshot;
   /**
    * Find the start index of visible range of items.
    */
@@ -80,6 +85,12 @@ const props = {
    * @defaultValue "div"
    */
   item: { type: String as PropType<keyof NativeElements>, default: "div" },
+  /**
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.cache}.
+   *
+   * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
+   */
+  cache: Object as PropType<CacheSnapshot>,
 } satisfies ComponentObjectPropsOptions;
 
 export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
@@ -92,7 +103,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       props.data.length,
       props.itemSize,
       undefined,
-      undefined,
+      props.cache,
       !props.itemSize
     );
     const resizer = createWindowResizer(store, isHorizontal);
@@ -153,6 +164,9 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     );
 
     expose({
+      get cache() {
+        return store.$getCacheSnapshot();
+      },
       findStartIndex: store.$findStartIndex,
       findEndIndex: store.$findEndIndex,
       scrollToIndex: scroller.$scrollToIndex,

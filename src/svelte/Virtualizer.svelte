@@ -32,6 +32,7 @@
     shift = false,
     horizontal = false,
     keepMounted,
+    cache,
     startMargin = 0,
     children,
     onscroll,
@@ -42,7 +43,7 @@
     data.length,
     itemSize,
     undefined,
-    undefined,
+    cache,
     !itemSize
   );
   const resizer = createResizer(store, horizontal);
@@ -104,6 +105,8 @@
     scroller.$fixScrollJump();
   });
 
+  export const getCache =
+    store.$getCacheSnapshot satisfies VirtualizerHandle["getCache"] as VirtualizerHandle["getCache"];
   export const getScrollOffset =
     store.$getScrollOffset satisfies VirtualizerHandle["getScrollOffset"] as VirtualizerHandle["getScrollOffset"];
   export const getScrollSize = (() =>
