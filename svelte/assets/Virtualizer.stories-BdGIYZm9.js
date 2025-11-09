@@ -1,4 +1,4 @@
-import{q as p,v as $,b as l,d as N,e as T,y as R,r as H,w as n,x as E,i as m,g as S,s as K,c as D,f as I}from"./iframe-CBwuZQeC.js";import{t as L,r as s,k as V,m as F,u as M}from"./legacy-BbzA0eHn.js";import{V as k}from"./Virtualizer-C4ToOOlD.js";import"./preload-helper-PPVm8Dsz.js";var U=p("<div> </div>"),W=p('<div><div>header</div> <!> <div style="background-color: steelblue; height: 600px;">footer</div></div>');function j(g,f){T(f,!1);const u=[20,40,180,77],b=Array.from({length:1e3}).map((v,a)=>u[a%4]),_=400;L();var d=W();s(d,`
+import{q as p,v as $,b as l,d as N,e as T,y as R,r as H,w as n,x as E,i as m,g as S,s as K,c as D,f as I}from"./iframe-B_1LQILL.js";import{t as L,r as s,k as V,m as F,u as M}from"./legacy-Dw8lRAUV.js";import{V as k}from"./Virtualizer-CxIQYk1m.js";import"./preload-helper-PPVm8Dsz.js";var U=p("<div> </div>"),W=p('<div><div>header</div> <!> <div style="background-color: steelblue; height: 600px;">footer</div></div>');function j(g,f){T(f,!1);const u=[20,40,180,77],b=Array.from({length:1e3}).map((v,a)=>u[a%4]),_=400;L();var d=W();s(d,`
   width: 100%;
   height: 100vh;
   overflow-y: auto;

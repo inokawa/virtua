@@ -1,0 +1,29 @@
+import{d as S,r as u,b as I,i as V,y as O,m as w,u as h,n as p,k as _,p as B,t as v,l as d,z as A,A as N,B as T}from"./iframe-DtJFNP5z.js";import{V as D}from"./Virtualizer-BkmZr6MT.js";import{_ as E}from"./_plugin-vue_export-helper-B1RJtAmN.js";import"./preload-helper-PPVm8Dsz.js";function G(o){return typeof o=="function"||Object.prototype.toString.call(o)==="[object Object]"&&!V(o)}const H={data:{type:Array,required:!0},bufferSize:Number,itemSize:Number,shift:Boolean,horizontal:Boolean,ssrCount:Number,itemProps:Function,keepMounted:Array,cache:Object},C=S({props:H,emits:["scroll","scrollEnd"],setup(o,{emit:i,expose:s,slots:n}){const r=o.horizontal,a=t=>{i("scroll",t)},l=()=>{i("scrollEnd")},e=u();return s({get cache(){return e.value.cache},get scrollOffset(){return e.value.scrollOffset},get scrollSize(){return e.value.scrollSize},get viewportSize(){return e.value.viewportSize},findStartIndex:(...t)=>e.value.findStartIndex(...t),findEndIndex:(...t)=>e.value.findEndIndex(...t),getItemOffset:(...t)=>e.value.getItemOffset(...t),getItemSize:(...t)=>e.value.getItemSize(...t),scrollToIndex:(...t)=>e.value.scrollToIndex(...t),scrollTo:(...t)=>e.value.scrollTo(...t),scrollBy:(...t)=>e.value.scrollBy(...t)}),()=>I("div",{style:{display:r?"inline-block":"block",[r?"overflowX":"overflowY"]:"auto",contain:"strict",width:"100%",height:"100%"}},[I(D,{ref:e,data:o.data,bufferSize:o.bufferSize,itemSize:o.itemSize,itemProps:o.itemProps,shift:o.shift,ssrCount:o.ssrCount,horizontal:r,keepMounted:o.keepMounted,cache:o.cache,onScroll:a,onScrollEnd:l},G(n)?n:{default:()=>[n],_:2},8,["data","bufferSize","itemSize","itemProps","shift","ssrCount","horizontal","keepMounted","cache","onScroll","onScrollEnd"])],4)}}),M=S({__name:"Default",setup(o){const i=[20,40,180,77],s=Array.from({length:1e3}).map((n,r)=>i[r%4]);return(n,r)=>(p(),O(h(C),{data:h(s),style:{height:"100vh"}},{default:w(({item:a,index:l})=>[(p(),_("div",{key:l,style:B({height:a+"px",background:"white",borderBottom:"solid 1px #ccc"})},v(l),5))]),_:1},8,["data"]))}}),P=E(M,[["__scopeId","data-v-34d8090d"]]),j={style:{padding:"10px"}},$=S({__name:"Horizontal",setup(o){const i=[40,180,77],s=Array.from({length:1e3}).map((n,r)=>i[r%3]);return(n,r)=>(p(),_("div",j,[I(h(C),{data:h(s),style:{width:"100%",height:"200px"},horizontal:""},{default:w(({item:a,index:l})=>[(p(),_("div",{key:l,style:B({width:a+"px",background:"white",borderRight:"solid 1px #ccc"})},v(l),5))]),_:1},8,["data"])]))}}),R=E($,[["__scopeId","data-v-68133a37"]]),L={style:{height:"100%",display:"flex","flex-direction":"column"}},q=["value"],F=S({__name:"Controlls",setup(o){const i=[20,40,180,77],s=m=>({index:m,height:i[m%4]+"px"}),n=u(Array.from({length:1e3}).map((m,f)=>s(f))),r=u(0),a=u(!1),l=u(567),e=u(!1),t=u(),y=()=>{t.value?.scrollToIndex(l.value)},g=()=>{const m=Array.from({length:100}).map((f,c)=>s(c+n.value.length));n.value=e.value?[...m,...n.value]:[...n.value,...m]};return(m,f)=>(p(),_("div",L,[d("div",null,"offset: "+v(r.value),1),d("div",null,"scrolling: "+v(a.value),1),d("div",null,[d("input",{type:"number",value:l.value,onInput:f[0]||(f[0]=c=>{l.value=Number(c.target.value)})},null,40,q),d("button",{onClick:y},"scrollToIndex")]),d("div",null,[d("button",{onClick:g},"append"),d("label",null,[A(d("input",{type:"checkbox","onUpdate:modelValue":f[1]||(f[1]=c=>e.value=c)},null,512),[[T,e.value]]),N(" prepend")])]),I(h(C),{ref_key:"handle",ref:t,data:n.value,shift:e.value,onScroll:c=>{r.value=c,a.value=!0},onScrollEnd:()=>{a.value=!1}},{default:w(({item:c})=>[(p(),_("div",{key:c.index,style:B({height:c.height,background:"white",borderBottom:"solid 1px #ccc"})},v(c.index),5))]),_:1},8,["data","shift","onScroll","onScrollEnd"])]))}}),U=E(F,[["__scopeId","data-v-1c73bd19"]]),X=S({__name:"StickyGroup",setup(o){const i=[20,40,180,77],s=u(0),n=Array.from({length:1e3}).map((e,t)=>i[t%4]),r=({index:e})=>e%100===0?{style:{...s.value===e?{position:"sticky",top:0}:{},zIndex:1}}:{},a=u();function l(){if(!a.value)return;const e=a.value.findStartIndex(),t=[0,100,200,300,400,500,600,700,800,900].reverse().find(y=>e>=y);s.value=t}return(e,t)=>(p(),O(h(C),{ref_key:"listRef",ref:a,data:h(n),style:{height:"100vh"},"item-props":r,"keep-mounted":[s.value],onScroll:l},{default:w(({item:y,index:g})=>[(p(),_("div",{key:g,style:B({height:y+"px",background:"white",borderBottom:"solid 1px #ccc",...g%100===0?{background:"yellow"}:{}})},v(g),5))]),_:1},8,["data","keep-mounted"]))}}),Y=E(X,[["__scopeId","data-v-abe236ee"]]),Z={component:C},k={render:()=>({components:{Component:P},template:"<Component />"})},x={render:()=>({components:{Component:R},template:"<Component />"})},b={render:()=>({components:{Component:U},template:"<Component />"})},z={render:()=>({components:{Component:Y},template:"<Component />"})};k.parameters={...k.parameters,docs:{...k.parameters?.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: DefaultComponent
+    },
+    template: "<Component />"
+  })
+}`,...k.parameters?.docs?.source}}};x.parameters={...x.parameters,docs:{...x.parameters?.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: HorizontalComponent
+    },
+    template: "<Component />"
+  })
+}`,...x.parameters?.docs?.source}}};b.parameters={...b.parameters,docs:{...b.parameters?.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: ControllsComponent
+    },
+    template: "<Component />"
+  })
+}`,...b.parameters?.docs?.source}}};z.parameters={...z.parameters,docs:{...z.parameters?.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: StickyGroupComponent
+    },
+    template: "<Component />"
+  })
+}`,...z.parameters?.docs?.source}}};const ee=["Default","Horizontal","Controlls","StickyGroup"];export{b as Controlls,k as Default,x as Horizontal,z as StickyGroup,ee as __namedExportsOrder,Z as default};
