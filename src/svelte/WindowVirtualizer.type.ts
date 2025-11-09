@@ -39,7 +39,7 @@ export interface WindowVirtualizerProps<T> {
    */
   horizontal?: boolean;
   /**
-   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.cache}.
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.getCache}.
    *
    * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
    */
