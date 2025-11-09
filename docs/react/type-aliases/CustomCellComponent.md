@@ -6,4 +6,4 @@
 
 > **CustomCellComponent** = `React.ForwardRefExoticComponent`\<`React.PropsWithoutRef`\<[`CustomCellComponentProps`](../interfaces/CustomCellComponentProps.md)\> & `React.RefAttributes`\<`any`\>\>
 
-Defined in: [src/react/VGrid.tsx:44](https://github.com/inokawa/virtua/blob/cfffda19cedc05da98b190d8729de5abea160d59/src/react/VGrid.tsx#L44)
+Defined in: [src/react/VGrid.tsx:44](https://github.com/inokawa/virtua/blob/95f7baa9d41005ec345c4c24d32d7e368d440bb8/src/react/VGrid.tsx#L44)
