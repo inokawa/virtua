@@ -54,11 +54,7 @@ const initCacheWithSizesAndEmptyOffsets = (
   sizes: readonly number[],
   defaultSize: number
 ): Cache => {
-  return initCacheWithSizesAndOffsets(
-    sizes,
-    defaultSize,
-    range(sizes.length + 1, () => -1)
-  );
+  return initCache(sizes.length, defaultSize, sizes);
 };
 
 const initCacheWithSizesAndOffsets = (
@@ -69,12 +65,11 @@ const initCacheWithSizesAndOffsets = (
   if (sizes.length + 1 !== offsets.length) {
     throw new Error("wrong offsets for sizes");
   }
+  const cache = initCache(sizes.length, defaultSize, sizes);
   return {
-    _length: sizes.length,
-    _sizes: [...sizes],
+    ...cache,
     _computedOffsetIndex: findComputedOffsetIndex(offsets),
     _offsets: [...offsets],
-    _defaultItemSize: defaultSize,
   };
 };
 
@@ -319,11 +314,9 @@ describe("getTotalSize", () => {
       const filledSizes = range(10, () => 20);
       const offsets = [0, 11, 22, 33, -1, -1, -1, -1, -1, -1, -1];
       const cache: Cache = {
-        _length: filledSizes.length,
-        _sizes: filledSizes,
+        ...initCache(filledSizes.length, 30, filledSizes),
         _computedOffsetIndex: 2,
         _offsets: offsets,
-        _defaultItemSize: 30,
       };
       expect(getTotalSize(cache)).toBe(sum(range(8, () => 20)) + 22);
       expect(cache._offsets).toEqual([
@@ -335,11 +328,9 @@ describe("getTotalSize", () => {
       const filledSizes = range(10, () => 20);
       const offsets = [0, 11, 22, 33, 44, 55, 66, 77, 88, 99, -1];
       const cache: Cache = {
-        _length: filledSizes.length,
-        _sizes: filledSizes,
+        ...initCache(filledSizes.length, 30, filledSizes),
         _computedOffsetIndex: 9,
         _offsets: offsets,
-        _defaultItemSize: 30,
       };
       expect(getTotalSize(cache)).toBe(99 + 20);
       expect(cache._offsets).toEqual([

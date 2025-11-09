@@ -176,7 +176,7 @@ export const estimateDefaultItemSize = (
 export const initCache = (
   length: number,
   itemSize: number,
-  sizes?: number[]
+  sizes?: readonly number[]
 ): Cache => {
   return {
     _defaultItemSize: itemSize,
