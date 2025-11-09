@@ -1534,7 +1534,7 @@ test.describe("SSR and hydration", () => {
     await page.goto(storyUrl("basics-vlist--ssr"));
 
     // turn scroll to index with smooth on
-    await page.getByRole("radio", { name: "smooth" }).click();
+    await page.getByRole("radio", { name: "smooth scroll on hydrate" }).click();
 
     const component = await getScrollable(page);
 
