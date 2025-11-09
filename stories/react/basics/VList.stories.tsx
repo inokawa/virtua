@@ -15,6 +15,8 @@ import {
   ScrollToIndexAlign,
 } from "../../../src";
 import { Spinner, delay } from "../common";
+import { renderToString } from "react-dom/server";
+import { hydrateRoot } from "react-dom/client";
 
 export default {
   component: VList,
@@ -801,6 +803,116 @@ export const IncreasingItems: StoryObj = {
             </div>
           ))}
         </VList>
+      </div>
+    );
+  },
+};
+
+const SSRApp = () => {
+  const COUNT = 1000;
+  return <VList ssrCount={30}>{createRows(COUNT)}</VList>;
+};
+
+const SSRAppHorizontal = () => {
+  const COUNT = 1000;
+  return (
+    <VList ssrCount={30} horizontal>
+      {createColumns(COUNT)}
+    </VList>
+  );
+};
+
+const SSRAppScrollOnMount = () => {
+  const ref = useRef<VListHandle>(null);
+  useEffect(() => {
+    if (!ref.current) return;
+
+    ref.current.scrollToIndex(100, {
+      smooth: true,
+    });
+  }, []);
+
+  const COUNT = 10000;
+  return (
+    <VList ref={ref} ssrCount={30}>
+      {createRows(COUNT)}
+    </VList>
+  );
+};
+
+export const SSR: StoryObj = {
+  render: () => {
+    const [hydrated, setHydrated] = useState(false);
+    const [type, setType] = useState<"vertical" | "horizontal" | "smooth">(
+      "vertical"
+    );
+    const ref = useRef<HTMLDivElement>(null);
+
+    useLayoutEffect(() => {
+      if (!ref.current) return;
+      const App =
+        type === "smooth"
+          ? SSRAppScrollOnMount
+          : type === "horizontal"
+          ? SSRAppHorizontal
+          : SSRApp;
+
+      if (!hydrated) {
+        ref.current.innerHTML = renderToString(<App />);
+      } else {
+        hydrateRoot(ref.current, <App />);
+      }
+    }, [hydrated, type]);
+
+    return (
+      <div
+        style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+      >
+        <div>
+          <div>
+            <button
+              disabled={hydrated}
+              onClick={() => {
+                setHydrated(true);
+              }}
+            >
+              hydrate
+            </button>
+          </div>
+          <div>
+            <label>
+              <input
+                type="radio"
+                checked={type === "vertical"}
+                onChange={() => {
+                  setType("vertical");
+                }}
+              />
+              vertical
+            </label>
+            <label>
+              <input
+                type="radio"
+                checked={type === "horizontal"}
+                onChange={() => {
+                  setType("horizontal");
+                }}
+              />
+              horizontal
+            </label>
+            <label>
+              <input
+                type="radio"
+                checked={type === "smooth"}
+                onChange={() => {
+                  setType("smooth");
+                }}
+              />
+              smooth scroll on hydrate
+            </label>
+          </div>
+        </div>
+        <div ref={ref} style={{ flex: 1 }} />
       </div>
     );
   },

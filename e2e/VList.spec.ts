@@ -1414,7 +1414,7 @@ test.describe("RTL", () => {
 
 test.describe("SSR and hydration", () => {
   test("check if hydration works", async ({ page }) => {
-    await page.goto(storyUrl("advanced-ssr--default"));
+    await page.goto(storyUrl("basics-vlist--ssr"));
 
     const component = await getScrollable(page);
 
@@ -1470,7 +1470,9 @@ test.describe("SSR and hydration", () => {
   });
 
   test("check if hydration works (horizontal)", async ({ page }) => {
-    await page.goto(storyUrl("advanced-ssr--horizontal"));
+    await page.goto(storyUrl("basics-vlist--ssr"));
+
+    await page.getByRole("radio", { name: "horizontal" }).click();
 
     const component = await getScrollable(page);
 
@@ -1529,16 +1531,12 @@ test.describe("SSR and hydration", () => {
   });
 
   test("check if smooth scrolling works after hydration", async ({ page }) => {
-    await page.goto(storyUrl("advanced-ssr--scroll-to"));
-
-    const component = await getScrollable(page);
+    await page.goto(storyUrl("basics-vlist--ssr"));
 
     // turn scroll to index with smooth on
-    await page.getByRole("checkbox", { name: "scroll to index" }).check();
-    await page.getByRole("checkbox", { name: "smooth" }).check();
+    await page.getByRole("radio", { name: "smooth" }).click();
 
-    // set scroll index to 100
-    await page.getByRole("spinbutton").fill("100");
+    const component = await getScrollable(page);
 
     // hydrate
     await page.getByRole("button", { name: "hydrate" }).click();
