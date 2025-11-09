@@ -139,8 +139,10 @@ export const createVirtualStore = (
 
   const cache = initCache(
     elementsCount,
-    itemSize,
-    cacheSnapshot as unknown as InternalCacheSnapshot | undefined
+    cacheSnapshot
+      ? (cacheSnapshot as unknown as InternalCacheSnapshot)[1]
+      : itemSize,
+    cacheSnapshot && (cacheSnapshot as unknown as InternalCacheSnapshot)[0]
   );
   const subscribers = new Set<[number, Subscriber]>();
   const getRelativeScrollOffset = () => scrollOffset - startSpacerSize;

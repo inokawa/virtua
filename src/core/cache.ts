@@ -176,18 +176,17 @@ export const estimateDefaultItemSize = (
 export const initCache = (
   length: number,
   itemSize: number,
-  snapshot?: InternalCacheSnapshot
+  sizes?: number[]
 ): Cache => {
   return {
-    _defaultItemSize: snapshot ? snapshot[1] : itemSize,
-    _sizes:
-      snapshot && snapshot[0]
-        ? // https://github.com/inokawa/virtua/issues/441
-          fill(
-            snapshot[0].slice(0, min(length, snapshot[0].length)),
-            max(0, length - snapshot[0].length)
-          )
-        : fill([], length),
+    _defaultItemSize: itemSize,
+    _sizes: sizes
+      ? // https://github.com/inokawa/virtua/issues/441
+        fill(
+          sizes.slice(0, min(length, sizes.length)),
+          max(0, length - sizes.length)
+        )
+      : fill([], length),
     _length: length,
     _computedOffsetIndex: -1,
     _offsets: fill([], length + 1),

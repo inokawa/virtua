@@ -835,10 +835,7 @@ describe(initCache.name, () => {
 
   it("should restore cache from snapshot", () => {
     const itemLength = 10;
-    const cache = initCache(itemLength, 23, [
-      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      123,
-    ]);
+    const cache = initCache(itemLength, 123, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
     expect(cache).toMatchInlineSnapshot(`
       {
         "_computedOffsetIndex": -1,
@@ -878,7 +875,7 @@ describe(initCache.name, () => {
 
   it("should restore cache from snapshot which has shorter length", () => {
     const itemLength = 10;
-    const cache = initCache(itemLength, 23, [[0, 1, 2, 3, 4], 123]);
+    const cache = initCache(itemLength, 123, [0, 1, 2, 3, 4]);
     expect(cache).toMatchInlineSnapshot(`
       {
         "_computedOffsetIndex": -1,
@@ -918,10 +915,11 @@ describe(initCache.name, () => {
 
   it("should restore cache from snapshot which has longer length", () => {
     const itemLength = 10;
-    const cache = initCache(itemLength, 23, [
-      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    const cache = initCache(
+      itemLength,
       123,
-    ]);
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    );
     expect(cache).toMatchInlineSnapshot(`
       {
         "_computedOffsetIndex": -1,
