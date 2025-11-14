@@ -379,15 +379,23 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             return colStore.$getViewportSize();
           },
           findStartIndex: () => [
-            colStore.$findItemIndex(colStore.$getScrollOffset()),
-            rowStore.$findItemIndex(rowStore.$getScrollOffset()),
+            colStore.$findItemIndex(
+              colStore.$getStartSpacerSize() + colStore.$getScrollOffset()
+            ),
+            rowStore.$findItemIndex(
+              rowStore.$getStartSpacerSize() + rowStore.$getScrollOffset()
+            ),
           ],
           findEndIndex: () => [
             colStore.$findItemIndex(
-              colStore.$getScrollOffset() + colStore.$getViewportSize()
+              colStore.$getStartSpacerSize() +
+                colStore.$getScrollOffset() +
+                colStore.$getViewportSize()
             ),
             rowStore.$findItemIndex(
-              rowStore.$getScrollOffset() + rowStore.$getViewportSize()
+              rowStore.$getStartSpacerSize() +
+                rowStore.$getScrollOffset() +
+                rowStore.$getViewportSize()
             ),
           ],
           getItemOffset: (indexX, indexY) => [
