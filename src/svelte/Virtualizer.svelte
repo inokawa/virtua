@@ -117,13 +117,11 @@
     store.$getViewportSize satisfies VirtualizerHandle["getViewportSize"] as VirtualizerHandle["getViewportSize"];
   export const findStartIndex = (() =>
     store.$findItemIndex(
-      store.$getStartSpacerSize() + store.$getScrollOffset()
+      store.$getScrollOffset()
     )) satisfies VirtualizerHandle["findStartIndex"] as VirtualizerHandle["findStartIndex"];
   export const findEndIndex = (() =>
     store.$findItemIndex(
-      store.$getStartSpacerSize() +
-        store.$getScrollOffset() +
-        store.$getViewportSize()
+      store.$getScrollOffset() + store.$getViewportSize()
     )) satisfies VirtualizerHandle["findEndIndex"] as VirtualizerHandle["findEndIndex"];
   export const getItemOffset =
     store.$getItemOffset satisfies VirtualizerHandle["getItemOffset"] as VirtualizerHandle["getItemOffset"];
