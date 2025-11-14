@@ -45,6 +45,16 @@ export interface WindowVirtualizerHandle {
    */
   findEndIndex: () => number;
   /**
+   * Get item offset from start.
+   * @param index index of item
+   */
+  getItemOffset(index: number): number;
+  /**
+   * Get item size.
+   * @param index index of item
+   */
+  getItemSize(index: number): number;
+  /**
    * Scroll to the item specified by index.
    * @param index index of item
    * @param opts options
@@ -168,6 +178,8 @@ export const WindowVirtualizer = <T,>(
           store.$findItemIndex(
             store.$getScrollOffset() + store.$getViewportSize()
           ),
+        getItemOffset: store.$getItemOffset,
+        getItemSize: store.$getItemSize,
         scrollToIndex: scroller.$scrollToIndex,
       });
     }
