@@ -351,6 +351,14 @@ describe(findIndex.name, () => {
     expect(findIndex(cache, 100)).toBe(4);
   });
 
+  it("should get start if offset exceeds start", () => {
+    const cache = initCacheWithSizes(
+      range(CACHE_LENGTH, () => 20),
+      30
+    );
+    expect(findIndex(cache, -Number.MAX_SAFE_INTEGER)).toBe(0);
+  });
+
   it("should get start if offset is at start", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
@@ -429,6 +437,14 @@ describe(findIndex.name, () => {
       30
     );
     expect(findIndex(cache, sum(cache._sizes) - 0.01)).toBe(cache._length - 1);
+  });
+
+  it("should get end if offset exceeds end", () => {
+    const cache = initCacheWithSizes(
+      range(CACHE_LENGTH, () => 20),
+      30
+    );
+    expect(findIndex(cache, Number.MAX_SAFE_INTEGER)).toBe(cache._length - 1);
   });
 
   it("should get 1 if offset fits index 1", () => {
