@@ -2,8 +2,18 @@
  * @jsxImportSource solid-js
  */
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
-import { CustomItemComponentProps, VList, VListHandle } from "../../../src/solid";
-import {createSignal, ParentComponent, createContext, useContext, Signal, createEffect} from "solid-js";
+import {
+  CustomItemComponentProps,
+  VList,
+  VListHandle,
+} from "../../../src/solid";
+import {
+  createSignal,
+  ParentComponent,
+  createContext,
+  useContext,
+  Signal,
+} from "solid-js";
 
 export default {
   component: VList,
@@ -38,7 +48,9 @@ export const Default: StoryObj = {
   render: () => {
     let ref: VListHandle | undefined;
     const [activeIndex, setActiveIndex] = createSignal(0);
-    const [items] = createSignal(Array.from({ length: 1000 }).map((_, id) => ({ id })));
+    const [items] = createSignal(
+      Array.from({ length: 1000 }).map((_, id) => ({ id }))
+    );
     return (
       <StickyIndexContext.Provider value={[activeIndex, setActiveIndex]}>
         <VList
@@ -47,9 +59,8 @@ export const Default: StoryObj = {
           item={StickyItem}
           keepMounted={[activeIndex()]}
           onScroll={() => {
-            if (!ref)
-              return;
-            const start = ref.findStartIndex();
+            if (!ref) return;
+            const start = ref.findItemIndex(ref.scrollOffset);
             const activeStickyIndex = [...stickyIndexes]
               .reverse()
               .find((index) => start >= index)!;
