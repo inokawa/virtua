@@ -225,7 +225,7 @@ export const createVirtualStore = (
 
       return [max(startIndex, 0), min(endIndex, cache._length - 1)];
     },
-    $findItemIndex: (offset) => findIndex(cache, offset),
+    $findItemIndex: (offset) => findIndex(cache, offset - startSpacerSize),
     $isUnmeasuredItem: isSizeEqual,
     $getItemOffset: getItemOffset,
     $getItemSize: getItemSize,

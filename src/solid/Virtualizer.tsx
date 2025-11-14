@@ -225,15 +225,10 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         get viewportSize() {
           return store.$getViewportSize();
         },
-        findStartIndex: () =>
-          store.$findItemIndex(
-            store.$getStartSpacerSize() + store.$getScrollOffset()
-          ),
+        findStartIndex: () => store.$findItemIndex(store.$getScrollOffset()),
         findEndIndex: () =>
           store.$findItemIndex(
-            store.$getStartSpacerSize() +
-              store.$getScrollOffset() +
-              store.$getViewportSize()
+            store.$getScrollOffset() + store.$getViewportSize()
           ),
         getItemOffset: store.$getItemOffset,
         getItemSize: store.$getItemSize,

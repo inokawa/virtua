@@ -163,15 +163,10 @@ export const WindowVirtualizer = <T,>(
         get cache() {
           return store.$getCacheSnapshot();
         },
-        findStartIndex: () =>
-          store.$findItemIndex(
-            store.$getStartSpacerSize() + store.$getScrollOffset()
-          ),
+        findStartIndex: () => store.$findItemIndex(store.$getScrollOffset()),
         findEndIndex: () =>
           store.$findItemIndex(
-            store.$getStartSpacerSize() +
-              store.$getScrollOffset() +
-              store.$getViewportSize()
+            store.$getScrollOffset() + store.$getViewportSize()
           ),
         scrollToIndex: scroller.$scrollToIndex,
       });
