@@ -86,10 +86,16 @@
 
   export const getCache =
     store.$getCacheSnapshot satisfies WindowVirtualizerHandle["getCache"] as WindowVirtualizerHandle["getCache"];
-  export const findStartIndex =
-    store.$findStartIndex satisfies WindowVirtualizerHandle["findStartIndex"] as WindowVirtualizerHandle["findStartIndex"];
-  export const findEndIndex =
-    store.$findEndIndex satisfies WindowVirtualizerHandle["findEndIndex"] as WindowVirtualizerHandle["findEndIndex"];
+  export const findStartIndex = (() =>
+    store.$findItemIndex(
+      store.$getStartSpacerSize() + store.$getScrollOffset()
+    )) satisfies WindowVirtualizerHandle["findStartIndex"] as WindowVirtualizerHandle["findStartIndex"];
+  export const findEndIndex = (() =>
+    store.$findItemIndex(
+      store.$getStartSpacerSize() +
+        store.$getScrollOffset() +
+        store.$getViewportSize()
+    )) satisfies WindowVirtualizerHandle["findEndIndex"] as WindowVirtualizerHandle["findEndIndex"];
   export const scrollToIndex =
     scroller.$scrollToIndex satisfies WindowVirtualizerHandle["scrollToIndex"] as WindowVirtualizerHandle["scrollToIndex"];
 

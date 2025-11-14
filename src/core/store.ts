@@ -97,8 +97,7 @@ export type VirtualStore = {
   $getStateVersion(): StateVersion;
   $getCacheSnapshot(): CacheSnapshot;
   $getRange(bufferSize?: number): ItemsRange;
-  $findStartIndex(): number;
-  $findEndIndex(): number;
+  $findItemIndex(offset: number): number;
   $isUnmeasuredItem(index: number): boolean;
   $getItemOffset(index: number): number;
   $getItemSize(index: number): number;
@@ -226,8 +225,7 @@ export const createVirtualStore = (
 
       return [max(startIndex, 0), min(endIndex, cache._length - 1)];
     },
-    $findStartIndex: () => findIndex(cache, getVisibleOffset()),
-    $findEndIndex: () => findIndex(cache, getVisibleOffset() + viewportSize),
+    $findItemIndex: (offset) => findIndex(cache, offset),
     $isUnmeasuredItem: isSizeEqual,
     $getItemOffset: getItemOffset,
     $getItemSize: getItemSize,
