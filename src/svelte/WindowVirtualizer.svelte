@@ -94,6 +94,10 @@
     store.$findItemIndex(
       store.$getScrollOffset() + store.$getViewportSize()
     )) satisfies WindowVirtualizerHandle["findEndIndex"] as WindowVirtualizerHandle["findEndIndex"];
+  export const getItemOffset =
+    store.$getItemOffset satisfies WindowVirtualizerHandle["getItemOffset"] as WindowVirtualizerHandle["getItemOffset"];
+  export const getItemSize =
+    store.$getItemSize satisfies WindowVirtualizerHandle["getItemSize"] as WindowVirtualizerHandle["getItemSize"];
   export const scrollToIndex =
     scroller.$scrollToIndex satisfies WindowVirtualizerHandle["scrollToIndex"] as WindowVirtualizerHandle["scrollToIndex"];
 
