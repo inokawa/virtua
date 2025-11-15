@@ -526,6 +526,20 @@ describe(findIndex.name, () => {
     );
     expect(findIndex(cache, 29.99)).toBe(1);
   });
+
+  it("should not get items with size 0", () => {
+    const CACHE_LENGTH = 20;
+    const sizes = range(CACHE_LENGTH, (i) =>
+      [0, 1, CACHE_LENGTH - 2, CACHE_LENGTH - 1].includes(i) ? 20 : 0
+    );
+    const cache = initCacheWithSizes(sizes, 30);
+    expect(findIndex(cache, sum(sizes) / 2 - 0.00001)).toBe(
+      sizes.findIndex((s) => s === 0) - 1
+    );
+    expect(findIndex(cache, sum(sizes) / 2)).toBe(
+      sizes.findLastIndex((s) => s === 0) + 1
+    );
+  });
 });
 
 describe(computeRange.name, () => {
