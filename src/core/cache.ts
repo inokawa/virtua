@@ -93,18 +93,17 @@ export const findIndex = (
   high: number = cache._length - 1
 ): number => {
   // Find with binary search
+  let found: number = low;
   while (low <= high) {
     const mid = floor((low + high) / 2);
     if (getItemOffset(cache, mid) <= offset) {
-      if (getItemOffset(cache, mid + 1) > offset) {
-        return mid;
-      }
+      found = mid;
       low = mid + 1;
     } else {
       high = mid - 1;
     }
   }
-  return clamp(low, 0, cache._length - 1);
+  return clamp(found, 0, cache._length - 1);
 };
 
 /**
