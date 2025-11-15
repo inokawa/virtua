@@ -425,87 +425,98 @@ export const ScrollTo: StoryObj = {
       useState<ScrollToIndexAlign>("start");
     const [smooth, setSmooth] = useState(false);
     const ref = useRef<WindowVirtualizerHandle>(null);
-    
-    return (<>
-      <div style={{ position: "fixed", top: 30, left: 150, zIndex: 1, padding: 10, border: "1px solid #ccc", backgroundColor: "white" }}>
-        <input
-          type="number"
-          value={scrollIndex}
-          onChange={(e) => {
-            setScrollIndex(Number(e.target.value));
-          }}
-        />
-        <button
-          onClick={() => {
-            ref.current?.scrollToIndex(scrollIndex, {
-              align: scrollIndexAlign,
-              smooth: smooth,
-            });
-          }}
-        >
-          scroll to index
-        </button>
-        <button
-          onClick={() => {
-            setScrollIndex(Math.round(LENGTH * Math.random()));
-          }}
-        >
-          randomize
-        </button>
-        <label style={{ marginLeft: 4 }}>
-          <input
-            type="radio"
-            style={{ marginLeft: 4 }}
-            checked={scrollIndexAlign === "start"}
-            onChange={() => {
-              setScrollToIndexAlign("start");
-            }}
-          />
-          start
-        </label>
-        <label style={{ marginLeft: 4 }}>
-          <input
-            type="radio"
-            style={{ marginLeft: 4 }}
-            checked={scrollIndexAlign === "center"}
-            onChange={() => {
-              setScrollToIndexAlign("center");
-            }}
-          />
-          center
-        </label>
-        <label style={{ marginLeft: 4 }}>
-          <input
-            type="radio"
-            style={{ marginLeft: 4 }}
-            checked={scrollIndexAlign === "end"}
-            onChange={() => {
-              setScrollToIndexAlign("end");
-            }}
-          />
-          end
-        </label>
 
-        <label style={{ marginLeft: 4 }}>
+    return (
+      <>
+        <div
+          style={{
+            position: "fixed",
+            top: 30,
+            left: 150,
+            zIndex: 1,
+            padding: 10,
+            border: "1px solid #ccc",
+            backgroundColor: "white",
+          }}
+        >
           <input
-            type="checkbox"
-            style={{ marginLeft: 4 }}
-            checked={smooth}
-            onChange={() => {
-              setSmooth((prev) => !prev);
+            type="number"
+            value={scrollIndex}
+            onChange={(e) => {
+              setScrollIndex(Number(e.target.value));
             }}
           />
-          smooth
-        </label>
-      </div>
-      <div style={{padding: "100px"}}>
-        <div style={{border: "1px solid darkgrey"}} id="window-virtualizer-parent">
-        <WindowVirtualizer ref={ref} >
-          {createRows(LENGTH)}
-        </WindowVirtualizer>
+          <button
+            onClick={() => {
+              ref.current?.scrollToIndex(scrollIndex, {
+                align: scrollIndexAlign,
+                smooth: smooth,
+              });
+            }}
+          >
+            scroll to index
+          </button>
+          <button
+            onClick={() => {
+              setScrollIndex(Math.round(LENGTH * Math.random()));
+            }}
+          >
+            randomize
+          </button>
+          <label style={{ marginLeft: 4 }}>
+            <input
+              type="radio"
+              style={{ marginLeft: 4 }}
+              checked={scrollIndexAlign === "start"}
+              onChange={() => {
+                setScrollToIndexAlign("start");
+              }}
+            />
+            start
+          </label>
+          <label style={{ marginLeft: 4 }}>
+            <input
+              type="radio"
+              style={{ marginLeft: 4 }}
+              checked={scrollIndexAlign === "center"}
+              onChange={() => {
+                setScrollToIndexAlign("center");
+              }}
+            />
+            center
+          </label>
+          <label style={{ marginLeft: 4 }}>
+            <input
+              type="radio"
+              style={{ marginLeft: 4 }}
+              checked={scrollIndexAlign === "end"}
+              onChange={() => {
+                setScrollToIndexAlign("end");
+              }}
+            />
+            end
+          </label>
+
+          <label style={{ marginLeft: 4 }}>
+            <input
+              type="checkbox"
+              style={{ marginLeft: 4 }}
+              checked={smooth}
+              onChange={() => {
+                setSmooth((prev) => !prev);
+              }}
+            />
+            smooth
+          </label>
         </div>
-      </div>
-    </>
+        <div style={{ padding: "100px" }}>
+          <div style={{ border: "1px solid darkgrey" }}>
+            <WindowVirtualizer ref={ref}>
+              {createRows(LENGTH)}
+            </WindowVirtualizer>
+          </div>
+        </div>
+      </>
     );
-  }
-}
+  },
+};
