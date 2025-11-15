@@ -35,13 +35,18 @@ export interface WindowVirtualizerHandle {
    */
   readonly cache: CacheSnapshot;
   /**
-   * Find the start index of visible range of items.
+   * Get current scrollTop, or scrollLeft if horizontal: true.
    */
-  findStartIndex: () => number;
+  readonly scrollOffset: number;
   /**
-   * Find the end index of visible range of items.
+   * Get current offsetHeight, or offsetWidth if horizontal: true.
    */
-  findEndIndex: () => number;
+  readonly viewportSize: number;
+  /**
+   * Find nearest item index from offset.
+   * @param offset offset in pixels from the start of the scroll container
+   */
+  findItemIndex: (offset: number) => number;
   /**
    * Get item offset from start.
    * @param index index of item
@@ -177,11 +182,13 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       get cache() {
         return store.$getCacheSnapshot();
       },
-      findStartIndex: () => store.$findItemIndex(store.$getScrollOffset()),
-      findEndIndex: () =>
-        store.$findItemIndex(
-          store.$getScrollOffset() + store.$getViewportSize()
-        ),
+      get scrollOffset() {
+        return store.$getScrollOffset();
+      },
+      get viewportSize() {
+        return store.$getViewportSize();
+      },
+      findItemIndex: store.$findItemIndex,
       getItemOffset: store.$getItemOffset,
       getItemSize: store.$getItemSize,
       scrollToIndex: scroller.$scrollToIndex,

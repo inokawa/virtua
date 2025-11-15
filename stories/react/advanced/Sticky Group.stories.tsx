@@ -51,7 +51,7 @@ export const Default: StoryObj = {
           keepMounted={[activeIndex]}
           onScroll={() => {
             if (!ref.current) return;
-            const start = ref.current.findStartIndex();
+            const start = ref.current.findItemIndex(ref.current.scrollOffset);
             const activeStickyIndex = [...stickyIndexes]
               .reverse()
               .find((index) => start >= index)!;

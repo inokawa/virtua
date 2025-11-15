@@ -133,13 +133,15 @@ export interface VGridHandle {
    */
   readonly viewportWidth: number;
   /**
-   * Find the start index of visible range of items.
+   * Find nearest row index from offset.
+   * @param offset offset in pixels from the start of the scroll container
    */
-  findStartIndex: () => [x: number, y: number];
+  findRowIndex: (offset: number) => number;
   /**
-   * Find the end index of visible range of items.
+   * Find nearest col index from offset.
+   * @param offset offset in pixels from the start of the scroll container
    */
-  findEndIndex: () => [x: number, y: number];
+  findColIndex: (offset: number) => number;
   /**
    * Get item offset from start.
    * @param indexX horizontal index of item
@@ -378,18 +380,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
           get viewportWidth() {
             return colStore.$getViewportSize();
           },
-          findStartIndex: () => [
-            colStore.$findItemIndex(colStore.$getScrollOffset()),
-            rowStore.$findItemIndex(rowStore.$getScrollOffset()),
-          ],
-          findEndIndex: () => [
-            colStore.$findItemIndex(
-              colStore.$getScrollOffset() + colStore.$getViewportSize()
-            ),
-            rowStore.$findItemIndex(
-              rowStore.$getScrollOffset() + rowStore.$getViewportSize()
-            ),
-          ],
+          findRowIndex: rowStore.$findItemIndex,
+          findColIndex: colStore.$findItemIndex,
           getItemOffset: (indexX, indexY) => [
             colStore.$getItemOffset(indexX),
             rowStore.$getItemOffset(indexY),

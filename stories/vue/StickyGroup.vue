@@ -11,9 +11,9 @@ const itemProps = ({ index }: { index: number }) => {
       style: {
         ...(activeIndex.value === index
           ? {
-              position: "sticky",
-              top: 0,
-            }
+            position: "sticky",
+            top: 0,
+          }
           : {}),
         zIndex: 1,
       } as CSSProperties,
@@ -24,7 +24,7 @@ const listRef = ref<InstanceType<typeof Virtualizer>>();
 
 function onScroll() {
   if (!listRef.value) return;
-  const start = listRef.value.findStartIndex();
+  const start = listRef.value.findItemIndex(listRef.value.scrollOffset);
   const activeStickyIndex = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900]
     .reverse()
     .find((index) => start >= index)!;
@@ -33,28 +33,18 @@ function onScroll() {
 </script>
 
 <template>
-  <VList
-    ref="listRef"
-    :data="data"
-    :style="{ height: '100vh' }"
-    #default="{ item, index }"
-    :item-props="itemProps"
-    :keep-mounted="[activeIndex]"
-    @scroll="onScroll"
-  >
-    <div
-      :key="index"
-      :style="{
-        height: item + 'px',
-        background: 'white',
-        borderBottom: 'solid 1px #ccc',
-        ...(index % 100 === 0
-          ? {
-              background: 'yellow',
-            }
-          : {}),
-      }"
-    >
+  <VList ref="listRef" :data="data" :style="{ height: '100vh' }" #default="{ item, index }" :item-props="itemProps"
+    :keep-mounted="[activeIndex]" @scroll="onScroll">
+    <div :key="index" :style="{
+      height: item + 'px',
+      background: 'white',
+      borderBottom: 'solid 1px #ccc',
+      ...(index % 100 === 0
+        ? {
+          background: 'yellow',
+        }
+        : {}),
+    }">
       {{ index }}
     </div>
   </VList>

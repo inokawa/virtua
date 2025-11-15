@@ -63,13 +63,18 @@ export interface WindowVirtualizerHandle {
    */
   getCache: () => CacheSnapshot;
   /**
-   * Find the start index of visible range of items.
+   * Get current scrollTop, or scrollLeft if horizontal: true.
    */
-  findStartIndex: () => number;
+  getScrollOffset: () => number;
   /**
-   * Find the end index of visible range of items.
+   * Get current offsetHeight, or offsetWidth if horizontal: true.
    */
-  findEndIndex: () => number;
+  getViewportSize: () => number;
+  /**
+   * Find nearest item index from offset.
+   * @param offset offset in pixels from the start of the scroll container
+   */
+  findItemIndex: (offset: number) => number;
   /**
    * Get item offset from start.
    * @param index index of item

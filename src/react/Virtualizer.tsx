@@ -57,13 +57,10 @@ export interface VirtualizerHandle {
    */
   readonly viewportSize: number;
   /**
-   * Find the start index of visible range of items.
+   * Find nearest item index from offset.
+   * @param offset offset in pixels from the start of the scroll container
    */
-  findStartIndex: () => number;
-  /**
-   * Find the end index of visible range of items.
-   */
-  findEndIndex: () => number;
+  findItemIndex: (offset: number) => number;
   /**
    * Get item offset from start.
    * @param index index of item
@@ -318,11 +315,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
           get viewportSize() {
             return store.$getViewportSize();
           },
-          findStartIndex: () => store.$findItemIndex(store.$getScrollOffset()),
-          findEndIndex: () =>
-            store.$findItemIndex(
-              store.$getScrollOffset() + store.$getViewportSize()
-            ),
+          findItemIndex: store.$findItemIndex,
           getItemOffset: store.$getItemOffset,
           getItemSize: store.$getItemSize,
           scrollToIndex: scroller.$scrollToIndex,

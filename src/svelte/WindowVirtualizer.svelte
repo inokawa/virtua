@@ -86,14 +86,12 @@
 
   export const getCache =
     store.$getCacheSnapshot satisfies WindowVirtualizerHandle["getCache"] as WindowVirtualizerHandle["getCache"];
-  export const findStartIndex = (() =>
-    store.$findItemIndex(
-      store.$getScrollOffset()
-    )) satisfies WindowVirtualizerHandle["findStartIndex"] as WindowVirtualizerHandle["findStartIndex"];
-  export const findEndIndex = (() =>
-    store.$findItemIndex(
-      store.$getScrollOffset() + store.$getViewportSize()
-    )) satisfies WindowVirtualizerHandle["findEndIndex"] as WindowVirtualizerHandle["findEndIndex"];
+  export const getScrollOffset =
+    store.$getScrollOffset satisfies WindowVirtualizerHandle["getScrollOffset"] as WindowVirtualizerHandle["getScrollOffset"];
+  export const getViewportSize =
+    store.$getViewportSize satisfies WindowVirtualizerHandle["getViewportSize"] as WindowVirtualizerHandle["getViewportSize"];
+  export const findItemIndex =
+    store.$findItemIndex satisfies WindowVirtualizerHandle["findItemIndex"] as WindowVirtualizerHandle["findItemIndex"];
   export const getItemOffset =
     store.$getItemOffset satisfies WindowVirtualizerHandle["getItemOffset"] as WindowVirtualizerHandle["getItemOffset"];
   export const getItemSize =
