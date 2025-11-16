@@ -569,7 +569,11 @@ export const InfiniteScrolling: StoryObj = {
           if (!ref.current) return;
           if (
             fetchedCountRef.current < count &&
-            ref.current.findEndIndex() + 50 > count
+            ref.current.findItemIndex(
+              ref.current.scrollOffset + ref.current.viewportSize
+            ) +
+              50 >
+              count
           ) {
             fetchedCountRef.current = count;
             await fetchItems();
@@ -645,8 +649,10 @@ export const Statuses: StoryObj = {
               setPosition(offset);
               setScrolling(true);
               if (!ref.current) return;
-              setStartIndex(ref.current.findStartIndex());
-              setEndIndex(ref.current.findEndIndex());
+              const startOffset = ref.current.scrollOffset;
+              const endOffset = startOffset + ref.current.viewportSize;
+              setStartIndex(ref.current.findItemIndex(startOffset));
+              setEndIndex(ref.current.findItemIndex(endOffset));
             });
           }}
           onScrollEnd={() => {

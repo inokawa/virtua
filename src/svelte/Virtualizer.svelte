@@ -115,14 +115,8 @@
     )) satisfies VirtualizerHandle["getScrollSize"] as VirtualizerHandle["getScrollSize"];
   export const getViewportSize =
     store.$getViewportSize satisfies VirtualizerHandle["getViewportSize"] as VirtualizerHandle["getViewportSize"];
-  export const findStartIndex = (() =>
-    store.$findItemIndex(
-      store.$getScrollOffset()
-    )) satisfies VirtualizerHandle["findStartIndex"] as VirtualizerHandle["findStartIndex"];
-  export const findEndIndex = (() =>
-    store.$findItemIndex(
-      store.$getScrollOffset() + store.$getViewportSize()
-    )) satisfies VirtualizerHandle["findEndIndex"] as VirtualizerHandle["findEndIndex"];
+  export const findItemIndex =
+    store.$findItemIndex satisfies VirtualizerHandle["findItemIndex"] as VirtualizerHandle["findItemIndex"];
   export const getItemOffset =
     store.$getItemOffset satisfies VirtualizerHandle["getItemOffset"] as VirtualizerHandle["getItemOffset"];
   export const getItemSize =

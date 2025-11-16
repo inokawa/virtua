@@ -30,10 +30,10 @@
     ref.getScrollSize()) satisfies VListHandle["getScrollSize"] as VListHandle["getScrollSize"];
   export const getViewportSize = (() =>
     ref.getViewportSize()) satisfies VListHandle["getViewportSize"] as VListHandle["getViewportSize"];
-  export const findStartIndex = (() =>
-    ref.findStartIndex()) satisfies VListHandle["findStartIndex"] as VListHandle["findStartIndex"];
-  export const findEndIndex = (() =>
-    ref.findEndIndex()) satisfies VListHandle["findEndIndex"] as VListHandle["findEndIndex"];
+  export const findItemIndex = ((...args) =>
+    ref.findItemIndex(
+      ...args
+    )) satisfies VListHandle["findItemIndex"] as VListHandle["findItemIndex"];
   export const getItemOffset = ((...args) =>
     ref.getItemOffset(
       ...args

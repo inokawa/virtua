@@ -107,16 +107,18 @@ export const Default: StoryObj = {
           if (!ready.current) return;
           if (!ref.current) return;
 
+          const startOffset = ref.current.scrollOffset;
+          const endOffset = startOffset + ref.current.viewportSize;
           if (
             endFetchedCountRef.current < count &&
-            ref.current.findEndIndex() + THRESHOLD > count
+            ref.current.findItemIndex(endOffset) + THRESHOLD > count
           ) {
             endFetchedCountRef.current = count;
             await fetchItems();
             setItems((prev) => [...prev, ...createItems(ITEM_BATCH_COUNT)]);
           } else if (
             startFetchedCountRef.current < count &&
-            ref.current.findStartIndex() - THRESHOLD < 0
+            ref.current.findItemIndex(startOffset) - THRESHOLD < 0
           ) {
             startFetchedCountRef.current = count;
             await fetchItems(true);
