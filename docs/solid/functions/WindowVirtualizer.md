@@ -6,7 +6,7 @@
 
 > **WindowVirtualizer**\<`T`\>(`props`): `Element`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:110](https://github.com/inokawa/virtua/blob/95f7baa9d41005ec345c4c24d32d7e368d440bb8/src/solid/WindowVirtualizer.tsx#L110)
+Defined in: [src/solid/WindowVirtualizer.tsx:125](https://github.com/inokawa/virtua/blob/5e7be16c9ad0cffebf703be63d25c8d831494a07/src/solid/WindowVirtualizer.tsx#L125)
 
 [Virtualizer](Virtualizer.md) controlled by the window scrolling. See [WindowVirtualizerProps](../interfaces/WindowVirtualizerProps.md) and [WindowVirtualizerHandle](../interfaces/WindowVirtualizerHandle.md).
 
