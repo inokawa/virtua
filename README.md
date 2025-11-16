@@ -335,9 +335,21 @@ return (
 );
 ```
 
-The other solution is using [`render prop`](https://legacy.reactjs.org/docs/render-props.html) as children to create elements lazily. It will effectively reduce cost on start up when you render many items (>1000). An important point is that newly created elements from `render prop` will disable [optimization possible with cached element instances](https://github.com/facebook/react/issues/8669#issuecomment-270032204). We recommend using [`memo`](https://react.dev/reference/react/memo) to reduce calling render function of your item components during scrolling.
+The other solution is using [`render prop`](https://legacy.reactjs.org/docs/render-props.html) as children to create elements lazily. It will effectively reduce cost on start up when you render many items (>1000). An important point is that newly created elements from `render prop` will disable [optimization possible with cached element instances](https://github.com/facebook/react/issues/8669#issuecomment-270032204). We recommend using memoization to reduce calling the function and your item component during scrolling.
 
 ```tsx
+// memoize render function with some memoization library
+import memoize from "memoize";
+
+const renderItem = memoize((item: Data) => {
+  return <Component key={item.id} data={item} />;
+});
+
+<VList data={items}>{renderItem}</VList>;
+
+// memoize component with React.memo
+import { memo } from "react";
+
 const Component = memo(HeavyItem);
 
 <VList data={items}>
