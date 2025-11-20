@@ -175,16 +175,16 @@ const createScrollObserver = (
 
 type ScrollObserver = ReturnType<typeof createScrollObserver>;
 
-type ScrollScheduler = [
-  scroll: (getTargetOffset: () => number, smooth?: boolean) => Promise<void>,
-  cancel: () => void
-];
+type ScheduleScrollFunction = (
+  getTargetOffset: () => number,
+  smooth?: boolean
+) => Promise<void>;
 
 const createScrollScheduler = (
   store: VirtualStore,
   initialized: () => Promise<boolean>,
   scroll: (offset: number, smooth?: boolean) => void
-): ScrollScheduler => {
+): [scroll: ScheduleScrollFunction, cancel: () => void] => {
   let cancelScroll: (() => void) | undefined;
 
   // The given offset will be clamped by browser
