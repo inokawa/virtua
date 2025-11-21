@@ -135,6 +135,7 @@ export const createVirtualStore = (
   let _frozenRange: ItemsRange | null = NULL;
   let _prevRange: ItemsRange = [0, isSSR ? max(ssrCount - 1, 0) : -1];
   let _totalMeasuredSize = 0;
+  let _isViewportMeasured = false;
 
   const cache = initCache(
     elementsCount,
@@ -185,12 +186,11 @@ export const createVirtualStore = (
       return takeCacheSnapshot(cache) as unknown as CacheSnapshot;
     },
     $getRange: (bufferSize = 200) => {
-      if (!viewportSize || isSSR) {
-        // Return previous range for SSR, or when viewport size is not yet measured (first render)
-        // or has collapsed to 0 (e.g., when all items are removed).
-        // Must clamp because _prevRange can have stale/invalid values (e.g., [-1, -1]) after items are removed.
+      if (!_isViewportMeasured || isSSR) {
+        // Return range for SSR, or return [0, -1] to render nothing, until the scroll offset and viewport size are determined.
         // https://github.com/inokawa/virtua/issues/415
-        return [max(_prevRange[0], 0), min(_prevRange[1], cache._length - 1)];
+        // https://github.com/inokawa/virtua/pull/818
+        return _prevRange;
       }
       let startIndex: number;
       let endIndex: number;
@@ -402,7 +402,7 @@ export const createVirtualStore = (
         case ACTION_VIEWPORT_RESIZE: {
           if (viewportSize !== payload) {
             if (!viewportSize) {
-              shouldSync = true;
+              _isViewportMeasured = shouldSync = true;
             }
             viewportSize = payload;
             mutated = UPDATE_VIRTUAL_STATE + UPDATE_SIZE_EVENT;
