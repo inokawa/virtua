@@ -186,10 +186,11 @@ export const createVirtualStore = (
     },
     $getRange: (bufferSize = 200) => {
       if (!viewportSize || isSSR) {
-        // Empty viewportSize means the first render.
-        // We return range for SSR here, or return [0, -1] to render nothing, until the scroll offset and viewport size are determined.
+        // Return previous range for SSR, or when viewport size is not yet measured (first render)
+        // or has collapsed to 0 (e.g., when all items are removed).
+        // Must clamp because _prevRange can have stale/invalid values (e.g., [-1, -1]) after items are removed.
         // https://github.com/inokawa/virtua/issues/415
-        return _prevRange;
+        return [max(_prevRange[0], 0), min(_prevRange[1], cache._length - 1)];
       }
       let startIndex: number;
       let endIndex: number;
