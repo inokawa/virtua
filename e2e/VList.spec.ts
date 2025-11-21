@@ -177,6 +177,10 @@ test.describe("smoke", () => {
 });
 
 test.describe("check if it works when children change", () => {
+  const hasError = async (page: Page): Promise<boolean> => {
+    return !!(await page.innerText("body")).toLowerCase().includes("localhost");
+  };
+
   test("recovering from 0", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--increasing-items"));
     const component = await getScrollable(page);
@@ -193,12 +197,37 @@ test.describe("check if it works when children change", () => {
     // add
     await page.getByRole("radio", { name: "increase" }).click();
     await updateButton.click();
-    {
-      // check if an error didn't occur
-      expect(
-        (await page.innerText("body")).toLowerCase().includes("localhost")
-      ).toBeFalsy();
+
+    // check if an error didn't occur
+    expect(await hasError(page)).toBeFalsy();
+  });
+
+  test("recovering from 0 with height: auto style", async ({ page }) => {
+    await page.goto(storyUrl("basics-vlist--increasing-items"));
+    const component = await getScrollable(page);
+
+    // set height: auto
+    await component.evaluate((e) => {
+      e.style.flex = "";
+      e.style.height = "auto";
+      e.style.contain = "content";
+    });
+
+    const updateButton = page.getByRole("button", { name: "update" });
+
+    // delete all
+    await page.getByRole("radio", { name: "decrease" }).click();
+    for (let i = 0; i < 10; i++) {
+      await updateButton.click();
     }
+    await expect(getItems(component)).toHaveCount(0);
+
+    // add
+    await page.getByRole("radio", { name: "increase" }).click();
+    await updateButton.click();
+
+    // check if an error didn't occur
+    expect(await hasError(page)).toBeFalsy();
   });
 
   test("recovering when changed a lot after scrolling", async ({ page }) => {
@@ -225,12 +254,8 @@ test.describe("check if it works when children change", () => {
     await page.getByRole("radio", { name: "increase" }).click();
     await updateButton.click();
 
-    {
-      // check if an error didn't occur
-      expect(
-        (await page.innerText("body")).toLowerCase().includes("localhost")
-      ).toBeFalsy();
-    }
+    // check if an error didn't occur
+    expect(await hasError(page)).toBeFalsy();
   });
 });
 
