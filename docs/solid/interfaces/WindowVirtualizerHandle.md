@@ -4,7 +4,7 @@
 
 # Interface: WindowVirtualizerHandle
 
-Defined in: [src/solid/WindowVirtualizer.tsx:34](https://github.com/inokawa/virtua/blob/5e7be16c9ad0cffebf703be63d25c8d831494a07/src/solid/WindowVirtualizer.tsx#L34)
+Defined in: [src/solid/WindowVirtualizer.tsx:34](https://github.com/inokawa/virtua/blob/4737e4b380b68e3c89f424dfc1518ce96f6213d1/src/solid/WindowVirtualizer.tsx#L34)
 
 Methods of [WindowVirtualizer](../functions/WindowVirtualizer.md).
 
@@ -14,7 +14,7 @@ Methods of [WindowVirtualizer](../functions/WindowVirtualizer.md).
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:56](https://github.com/inokawa/virtua/blob/5e7be16c9ad0cffebf703be63d25c8d831494a07/src/solid/WindowVirtualizer.tsx#L56)
+Defined in: [src/solid/WindowVirtualizer.tsx:56](https://github.com/inokawa/virtua/blob/4737e4b380b68e3c89f424dfc1518ce96f6213d1/src/solid/WindowVirtualizer.tsx#L56)
 
 Get item offset from start.
 
@@ -36,7 +36,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:61](https://github.com/inokawa/virtua/blob/5e7be16c9ad0cffebf703be63d25c8d831494a07/src/solid/WindowVirtualizer.tsx#L61)
+Defined in: [src/solid/WindowVirtualizer.tsx:61](https://github.com/inokawa/virtua/blob/4737e4b380b68e3c89f424dfc1518ce96f6213d1/src/solid/WindowVirtualizer.tsx#L61)
 
 Get item size.
 
@@ -58,7 +58,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:67](https://github.com/inokawa/virtua/blob/5e7be16c9ad0cffebf703be63d25c8d831494a07/src/solid/WindowVirtualizer.tsx#L67)
+Defined in: [src/solid/WindowVirtualizer.tsx:67](https://github.com/inokawa/virtua/blob/4737e4b380b68e3c89f424dfc1518ce96f6213d1/src/solid/WindowVirtualizer.tsx#L67)
 
 Scroll to the item specified by index.
 
@@ -86,7 +86,7 @@ options
 
 > `readonly` **cache**: [`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md)
 
-Defined in: [src/solid/WindowVirtualizer.tsx:38](https://github.com/inokawa/virtua/blob/5e7be16c9ad0cffebf703be63d25c8d831494a07/src/solid/WindowVirtualizer.tsx#L38)
+Defined in: [src/solid/WindowVirtualizer.tsx:38](https://github.com/inokawa/virtua/blob/4737e4b380b68e3c89f424dfc1518ce96f6213d1/src/solid/WindowVirtualizer.tsx#L38)
 
 Get current [CacheSnapshot](../../react/interfaces/CacheSnapshot.md).
 
@@ -96,7 +96,7 @@ Get current [CacheSnapshot](../../react/interfaces/CacheSnapshot.md).
 
 > `readonly` **scrollOffset**: `number`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:42](https://github.com/inokawa/virtua/blob/5e7be16c9ad0cffebf703be63d25c8d831494a07/src/solid/WindowVirtualizer.tsx#L42)
+Defined in: [src/solid/WindowVirtualizer.tsx:42](https://github.com/inokawa/virtua/blob/4737e4b380b68e3c89f424dfc1518ce96f6213d1/src/solid/WindowVirtualizer.tsx#L42)
 
 Get current scrollTop, or scrollLeft if horizontal: true.
 
@@ -106,7 +106,7 @@ Get current scrollTop, or scrollLeft if horizontal: true.
 
 > `readonly` **viewportSize**: `number`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:46](https://github.com/inokawa/virtua/blob/5e7be16c9ad0cffebf703be63d25c8d831494a07/src/solid/WindowVirtualizer.tsx#L46)
+Defined in: [src/solid/WindowVirtualizer.tsx:46](https://github.com/inokawa/virtua/blob/4737e4b380b68e3c89f424dfc1518ce96f6213d1/src/solid/WindowVirtualizer.tsx#L46)
 
 Get current offsetHeight, or offsetWidth if horizontal: true.
 
@@ -116,7 +116,7 @@ Get current offsetHeight, or offsetWidth if horizontal: true.
 
 > **findItemIndex**: (`offset`) => `number`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:51](https://github.com/inokawa/virtua/blob/5e7be16c9ad0cffebf703be63d25c8d831494a07/src/solid/WindowVirtualizer.tsx#L51)
+Defined in: [src/solid/WindowVirtualizer.tsx:51](https://github.com/inokawa/virtua/blob/4737e4b380b68e3c89f424dfc1518ce96f6213d1/src/solid/WindowVirtualizer.tsx#L51)
 
 Find nearest item index from offset.
 
