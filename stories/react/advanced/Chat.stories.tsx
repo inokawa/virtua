@@ -2,9 +2,9 @@ import { Meta, StoryObj } from "@storybook/react-vite";
 import { VList, VListHandle } from "../../../src";
 import React, {
   CSSProperties,
+  ReactNode,
   useEffect,
   useLayoutEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
@@ -17,29 +17,59 @@ export default {
 type Data = {
   id: number;
   value: string;
-  me: boolean;
+  role?: "me" | "ai";
 };
 
 const itemStyle: CSSProperties = {
   border: "solid 1px #ccc",
   background: "#fff",
-  margin: 10,
   padding: 10,
   borderRadius: 8,
   whiteSpace: "pre-wrap",
 };
 
-const Item = ({ value, me }: Data) => {
+const AiItem = ({ children }: { children: ReactNode }) => {
+  return (
+    <div style={{ padding: 10, minHeight: "50vh" }}>
+      {children ? (
+        <div
+          style={{
+            ...itemStyle,
+            marginRight: 160,
+          }}
+        >
+          {children}
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+const MeItem = ({ children }: { children: ReactNode }) => {
   return (
     <div
       style={{
         ...itemStyle,
-        ...(me
-          ? { background: "lightyellow", marginLeft: 80 }
-          : { marginRight: 80 }),
+        background: "lightyellow",
+        margin: 10,
+        marginLeft: 160,
       }}
     >
-      {value}
+      {children}
+    </div>
+  );
+};
+
+const Item = ({ children }: { children: ReactNode }) => {
+  return (
+    <div
+      style={{
+        ...itemStyle,
+        margin: 10,
+        marginRight: 160,
+      }}
+    >
+      {children}
     </div>
   );
 };
@@ -50,14 +80,14 @@ export const Default: StoryObj = {
     const id = useRef(0);
     const createItem = ({
       value = faker.lorem.paragraphs(1),
-      me = false,
+      role,
     }: {
       value?: string;
-      me?: boolean;
+      role?: Data["role"];
     } = {}): Data => ({
       id: id.current++,
       value: value,
-      me,
+      role,
     });
     const [items, setItems] = useState(() =>
       Array.from({ length: 100 }, () => createItem())
@@ -68,6 +98,8 @@ export const Default: StoryObj = {
     const isPrepend = useRef(false);
     const shouldStickToBottom = useRef(true);
 
+    const [streaming, setStreaming] = useState(false);
+
     const [value, setValue] = useState("Hello world!");
 
     useLayoutEffect(() => {
@@ -76,12 +108,16 @@ export const Default: StoryObj = {
 
     useEffect(() => {
       if (!ref.current) return;
-      if (!shouldStickToBottom.current) return;
-
-      ref.current.scrollToIndex(items.length - 1, { align: "end" });
-    }, [items.length]);
+      const handle = ref.current;
+      const lastItemIndex = items.length - 1;
+      if (shouldStickToBottom.current) {
+        handle.scrollToIndex(lastItemIndex, { align: "end" });
+      }
+    }, [items]);
 
     useEffect(() => {
+      if (streaming) return;
+
       let canceled = false;
       let timer: ReturnType<typeof setTimeout> | null = null;
       const setTimer = () => {
@@ -98,21 +134,21 @@ export const Default: StoryObj = {
           clearTimeout(timer);
         }
       };
-    }, []);
+    }, [streaming]);
 
     const disabled = !value.length;
     const submit = () => {
       if (disabled) return;
       shouldStickToBottom.current = true;
-      setItems((p) => [...p, createItem({ value, me: true })]);
+      setItems((p) => [...p, createItem({ value, role: "me" })]);
       setValue("");
     };
 
     return (
       <div
         style={{
-          width: "90vw",
-          height: "90vh",
+          width: "100vw",
+          height: "100vh",
           display: "flex",
           flexDirection: "column",
         }}
@@ -138,36 +174,26 @@ export const Default: StoryObj = {
             }
           }}
         >
-          {items.map((d) => (
-            <Item key={d.id} {...d} />
-          ))}
+          {items.map((d, i) =>
+            d.role === "ai" ? (
+              <AiItem key={d.id}>{d.value}</AiItem>
+            ) : d.role === "me" ? (
+              <MeItem key={d.id}>{d.value}</MeItem>
+            ) : (
+              <Item key={d.id}>{d.value}</Item>
+            )
+          )}
         </VList>
         <form
-          style={{ margin: 10 }}
+          style={{ display: "flex", justifyContent: "flex-end", margin: 10 }}
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
             submit();
           }}
         >
-          <textarea
-            style={{ width: 400 }}
-            rows={6}
-            value={value}
-            onChange={(e) => {
-              setValue(e.target.value);
-            }}
-            onKeyDown={(e) => {
-              if (e.code === "Enter" && (e.ctrlKey || e.metaKey)) {
-                submit();
-                e.preventDefault();
-              }
-            }}
-          />
-          <button type="submit" disabled={disabled}>
-            submit
-          </button>
           <button
+            style={{ position: "absolute", left: 10, bottom: 10 }}
             type="button"
             onClick={() => {
               ref.current?.scrollTo(0);
@@ -175,6 +201,83 @@ export const Default: StoryObj = {
           >
             jump to top
           </button>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-end",
+            }}
+          >
+            <textarea
+              style={{ width: 400 }}
+              rows={6}
+              value={value}
+              onChange={(e) => {
+                setValue(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.code === "Enter" && (e.ctrlKey || e.metaKey)) {
+                  submit();
+                  e.preventDefault();
+                }
+              }}
+            />
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: 8,
+                justifyContent: "flex-end",
+              }}
+            >
+              <button
+                type="button"
+                disabled={streaming}
+                onClick={() => {
+                  const lastIndex = items.length;
+                  const item = createItem({ value: "", role: "ai" });
+                  const { id } = item;
+                  setItems((p) => [...p, createItem({ role: "me" }), item]);
+                  setStreaming(true);
+                  shouldStickToBottom.current = false;
+
+                  requestAnimationFrame(() => {
+                    ref.current?.scrollToIndex(lastIndex, {
+                      smooth: true,
+                      align: "start",
+                    });
+                  });
+
+                  setTimeout(() => {
+                    shouldStickToBottom.current = true;
+
+                    let counter = 0;
+                    const interval = setInterval(() => {
+                      if (counter++ > 40) {
+                        setStreaming(false);
+                        clearInterval(interval);
+                      }
+
+                      setItems((p) => {
+                        const next = [...p];
+                        const i = next.findIndex((item) => item.id === id);
+                        next[i] = {
+                          ...next[i],
+                          value: next[i].value + faker.lorem.paragraph(2),
+                        };
+                        return next;
+                      });
+                    }, 100);
+                  }, 1000);
+                }}
+              >
+                ask ai
+              </button>
+              <button type="submit" disabled={disabled}>
+                submit
+              </button>
+            </div>
+          </div>
         </form>
       </div>
     );
