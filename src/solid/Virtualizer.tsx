@@ -59,7 +59,7 @@ export interface VirtualizerHandle {
    * Find nearest item index from offset.
    * @param offset offset in pixels from the start of the scroll container
    */
-  findItemIndex: (offset: number) => number;
+  findItemIndex(offset: number): number;
   /**
    * Get item offset from start.
    * @param index index of item
