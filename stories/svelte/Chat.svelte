@@ -1,0 +1,215 @@
+<script lang="ts">
+    import { VList } from "../../src/svelte";
+    import type { VListHandle } from "../../src/svelte";
+    import { faker } from "@faker-js/faker";
+    import { onMount } from "svelte";
+
+    type Data = {
+        id: number;
+        value: string;
+        role?: "me" | "ai";
+    };
+
+    let id = 0;
+    const createItem = ({
+        value = faker.lorem.paragraphs(1),
+        role,
+    }: {
+        value?: string;
+        role?: Data["role"];
+    } = {}): Data => ({
+        id: id++,
+        value: value,
+        role,
+    });
+
+    let items = $state(Array.from({ length: 100 }, () => createItem()));
+    let value = $state("Hello world!");
+    let ref: VListHandle;
+    let shouldStickToBottom = $state(true);
+    let isPrepend = $state(false);
+    let streaming = $state(false);
+
+    // Reset isPrepend after each update
+    $effect(() => {
+        items;
+        isPrepend = false;
+    });
+
+    // Auto-scroll to bottom when items change
+    $effect(() => {
+        if (!ref) return;
+        const lastItemIndex = items.length - 1;
+        if (shouldStickToBottom) {
+            ref.scrollToIndex(lastItemIndex, { align: "end" });
+        }
+    });
+
+    // Auto-add items timer (when not streaming)
+    onMount(() => {
+        let timer: ReturnType<typeof setTimeout> | null = null;
+
+        const setTimer = () => {
+            timer = setTimeout(() => {
+                if (!streaming) {
+                    items = [...items, createItem()];
+                }
+                setTimer();
+            }, 5000);
+        };
+
+        setTimer();
+
+        return () => {
+            if (timer) {
+                clearTimeout(timer);
+            }
+        };
+    });
+
+    const handleScroll = (offset: number) => {
+        if (!ref) return;
+
+        shouldStickToBottom =
+            offset - ref.getScrollSize() + ref.getViewportSize() >=
+            -1.5;
+
+        if (offset < 100) {
+            isPrepend = true;
+            items = [
+                ...Array.from({ length: 100 }, () => createItem()),
+                ...items,
+            ];
+        }
+    };
+
+    const disabled = $derived(!value.length);
+
+    const submit = () => {
+        if (disabled) return;
+        shouldStickToBottom = true;
+        items = [...items, createItem({ value, role: "me" })];
+        value = "";
+    };
+
+    const askAi = () => {
+        const lastIndex = items.length;
+        const item = createItem({ value: "", role: "ai" });
+        const { id: aiId } = item;
+        items = [...items, createItem({ role: "me" }), item];
+        streaming = true;
+        shouldStickToBottom = false;
+
+        requestAnimationFrame(() => {
+            ref?.scrollToIndex(lastIndex, {
+                smooth: true,
+                align: "start",
+            });
+        });
+
+        setTimeout(() => {
+            shouldStickToBottom = true;
+
+            let counter = 0;
+            const interval = setInterval(() => {
+                if (counter++ > 40) {
+                    streaming = false;
+                    clearInterval(interval);
+                }
+
+                items = items.map((item) =>
+                    item.id === aiId
+                        ? {
+                              ...item,
+                              value: item.value + faker.lorem.paragraph(2),
+                          }
+                        : item
+                );
+            }, 100);
+        }, 1000);
+    };
+
+    const jumpToTop = () => {
+        ref?.scrollTo(0);
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.code === "Enter" && (e.ctrlKey || e.metaKey)) {
+            submit();
+            e.preventDefault();
+        }
+    };
+</script>
+
+
+<div style="width: 100vw; height: 100vh; display: flex; flex-direction: column;">
+  <VList
+    bind:this={ref}
+    data={items}
+    shift={isPrepend}
+    style="flex: 1"
+    getKey={(d) => d.id}
+    onscroll={handleScroll}
+  >
+    {#snippet children(item)}
+      {#if item.role === "ai"}
+        <div style="padding: 10px; min-height: 50vh;">
+          {#if item.value}
+            <div
+              style="border: solid 1px #ccc; background: #fff; padding: 10px; border-radius: 8px; white-space: pre-wrap; margin-right: 160px;"
+            >
+              {item.value}
+            </div>
+          {/if}
+        </div>
+      {:else if item.role === "me"}
+        <div
+          style="border: solid 1px #ccc; background: lightyellow; padding: 10px; border-radius: 8px; white-space: pre-wrap; margin: 10px; margin-left: 160px;"
+        >
+          {item.value}
+        </div>
+      {:else}
+        <div
+          style="border: solid 1px #ccc; background: #fff; padding: 10px; border-radius: 8px; white-space: pre-wrap; margin: 10px; margin-right: 160px;"
+        >
+          {item.value}
+        </div>
+      {/if}
+    {/snippet}
+  </VList>
+
+  <form
+    style="display: flex; justify-content: flex-end; margin: 10px;"
+    onsubmit={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      submit();
+    }}
+  >
+    <button
+      style="position: absolute; left: 10px; bottom: 10px;"
+      type="button"
+      onclick={jumpToTop}
+    >
+      jump to top
+    </button>
+    <div
+      style="display: flex; flex-direction: column; justify-content: flex-end;"
+    >
+      <textarea
+        style="width: 400px;"
+        rows="6"
+        bind:value
+        onkeydown={handleKeyDown}
+      ></textarea>
+      <div
+        style="display: flex; flex-direction: row; gap: 8px; justify-content: flex-end;"
+      >
+        <button type="button" disabled={streaming} onclick={askAi}>
+          ask ai
+        </button>
+        <button type="submit" {disabled}> submit </button>
+      </div>
+    </div>
+  </form>
+</div>
