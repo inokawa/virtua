@@ -17,26 +17,42 @@ export default {
 type Data = {
   id: number;
   value: string;
-  me?: boolean;
+  role: "user" | "assistant";
 };
 
 const itemStyle: CSSProperties = {
   border: "solid 1px #ccc",
   background: "#fff",
-  margin: 10,
   padding: 10,
   borderRadius: 8,
   whiteSpace: "pre-wrap",
 };
 
-const Item = ({ me, children }: { me?: boolean; children: ReactNode }) => {
+const AiItem = ({ children }: { children: ReactNode }) => {
+  return (
+    <div style={{ padding: 10, minHeight: "50vh" }}>
+      {children ? (
+        <div
+          style={{
+            ...itemStyle,
+            marginRight: 160,
+          }}
+        >
+          {children}
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+const MeItem = ({ children }: { children: ReactNode }) => {
   return (
     <div
       style={{
         ...itemStyle,
-        ...(me
-          ? { background: "lightyellow", marginLeft: 160 }
-          : { marginRight: 160 }),
+        background: "lightyellow",
+        margin: 10,
+        marginLeft: 160,
       }}
     >
       {children}
@@ -45,28 +61,28 @@ const Item = ({ me, children }: { me?: boolean; children: ReactNode }) => {
 };
 
 export const Default: StoryObj = {
-  name: "Chat",
+  name: "Chatbot",
   render: () => {
     const id = useRef(0);
     const createItem = ({
       value = faker.lorem.paragraphs(1),
-      me,
+      role,
     }: {
       value?: string;
-      me?: boolean;
-    } = {}): Data => ({
+      role: Data["role"];
+    }): Data => ({
       id: id.current++,
       value: value,
-      me,
+      role,
     });
-    const [items, setItems] = useState(() =>
-      Array.from({ length: 100 }, () => createItem())
-    );
+    const [items, setItems] = useState<Data[]>([]);
 
     const ref = useRef<VListHandle>(null);
 
     const isPrepend = useRef(false);
     const shouldStickToBottom = useRef(true);
+
+    const [streaming, setStreaming] = useState(false);
 
     const [value, setValue] = useState("Hello world!");
 
@@ -83,31 +99,46 @@ export const Default: StoryObj = {
       }
     }, [items]);
 
-    useEffect(() => {
-      let canceled = false;
-      let timer: ReturnType<typeof setTimeout> | null = null;
-      const setTimer = () => {
-        timer = setTimeout(() => {
-          if (canceled) return;
-          setItems((p) => [...p, createItem()]);
-          setTimer();
-        }, 5000);
-      };
-      setTimer();
-      return () => {
-        canceled = true;
-        if (timer) {
-          clearTimeout(timer);
-        }
-      };
-    }, []);
-
     const disabled = !value.length;
     const submit = () => {
       if (disabled) return;
-      shouldStickToBottom.current = true;
-      setItems((p) => [...p, createItem({ value, me: true })]);
       setValue("");
+
+      const lastIndex = items.length;
+      const item = createItem({ value: "", role: "assistant" });
+      const { id } = item;
+      setItems((p) => [...p, createItem({ role: "user", value }), item]);
+      setStreaming(true);
+      shouldStickToBottom.current = false;
+
+      requestAnimationFrame(() => {
+        ref.current?.scrollToIndex(lastIndex, {
+          smooth: true,
+          align: "start",
+        });
+      });
+
+      setTimeout(() => {
+        shouldStickToBottom.current = true;
+
+        let counter = 0;
+        const interval = setInterval(() => {
+          if (counter++ > 40) {
+            setStreaming(false);
+            clearInterval(interval);
+          }
+
+          setItems((p) => {
+            const next = [...p];
+            const i = next.findIndex((item) => item.id === id);
+            next[i] = {
+              ...next[i],
+              value: next[i].value + faker.lorem.paragraph(2),
+            };
+            return next;
+          });
+        }, 100);
+      }, 1000);
     };
 
     return (
@@ -119,32 +150,14 @@ export const Default: StoryObj = {
           flexDirection: "column",
         }}
       >
-        <VList
-          ref={ref}
-          style={{ flex: 1 }}
-          reverse
-          shift={isPrepend.current}
-          onScroll={(offset) => {
-            if (!ref.current) return;
-            shouldStickToBottom.current =
-              offset - ref.current.scrollSize + ref.current.viewportSize >=
-              // FIXME: The sum may not be 0 because of sub-pixel value when browser's window.devicePixelRatio has decimal value
-              -1.5;
-
-            if (offset < 100) {
-              isPrepend.current = true;
-              setItems((p) => [
-                ...Array.from({ length: 100 }, () => createItem()),
-                ...p,
-              ]);
-            }
-          }}
-        >
-          {items.map((d) => (
-            <Item key={d.id} me={d.me}>
-              {d.value}
-            </Item>
-          ))}
+        <VList ref={ref} style={{ flex: 1 }} reverse shift={isPrepend.current}>
+          {items.map((d, i) =>
+            d.role === "assistant" ? (
+              <AiItem key={d.id}>{d.value}</AiItem>
+            ) : (
+              <MeItem key={d.id}>{d.value}</MeItem>
+            )
+          )}
         </VList>
         <form
           style={{ display: "flex", justifyContent: "flex-end", margin: 10 }}
@@ -154,15 +167,6 @@ export const Default: StoryObj = {
             submit();
           }}
         >
-          <button
-            style={{ position: "absolute", left: 10, bottom: 10 }}
-            type="button"
-            onClick={() => {
-              ref.current?.scrollTo(0);
-            }}
-          >
-            jump to top
-          </button>
           <div
             style={{
               display: "flex",
@@ -192,8 +196,8 @@ export const Default: StoryObj = {
                 justifyContent: "flex-end",
               }}
             >
-              <button type="submit" disabled={disabled}>
-                submit
+              <button type="submit" disabled={streaming || disabled}>
+                ask ai
               </button>
             </div>
           </div>
