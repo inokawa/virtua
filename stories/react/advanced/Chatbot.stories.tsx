@@ -28,7 +28,7 @@ const itemStyle: CSSProperties = {
   whiteSpace: "pre-wrap",
 };
 
-const AiItem = ({
+const AssistantItem = ({
   children,
   blankSize,
 }: {
@@ -51,7 +51,7 @@ const AiItem = ({
   );
 };
 
-const MeItem = ({ children }: { children: ReactNode }) => {
+const UserItem = ({ children }: { children: ReactNode }) => {
   return (
     <div
       style={{
@@ -147,8 +147,9 @@ export const Default: StoryObj = {
         shouldStickToBottom.current = true;
 
         let counter = 0;
+        const amount = Math.floor(Math.random() * 5) + 1;
         const interval = setInterval(() => {
-          if (counter++ > 40) {
+          if (counter++ > 20) {
             setStreaming(false);
             clearInterval(interval);
           }
@@ -158,7 +159,7 @@ export const Default: StoryObj = {
             const i = next.findIndex((item) => item.id === id);
             next[i] = {
               ...next[i],
-              value: next[i].value + faker.lorem.paragraph(2),
+              value: next[i].value + faker.lorem.paragraph(amount),
             };
             return next;
           });
@@ -178,14 +179,14 @@ export const Default: StoryObj = {
         <VList ref={ref} shift={isPrepend.current}>
           {items.map((d, i) =>
             d.role === "assistant" ? (
-              <AiItem
+              <AssistantItem
                 key={d.id}
                 blankSize={i === items.length - 1 ? blankSize : undefined}
               >
                 {d.value}
-              </AiItem>
+              </AssistantItem>
             ) : (
-              <MeItem key={d.id}>{d.value}</MeItem>
+              <UserItem key={d.id}>{d.value}</UserItem>
             )
           )}
         </VList>
