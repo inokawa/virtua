@@ -41,15 +41,6 @@ export const expectInRange = (
 
 export const approxymate = (v: number): number => Math.round(v / 100) * 100;
 
-export const clearTimer = async (page: Page) => {
-  await page.evaluate(() => {
-    // stop all timer
-    for (let i = 1; i < 65536; i++) {
-      clearTimeout(i);
-    }
-  });
-};
-
 export const windowTop = async (child: Locator) => {
   return (await child.boundingBox())!.y;
 };
