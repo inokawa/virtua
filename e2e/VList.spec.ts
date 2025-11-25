@@ -14,7 +14,6 @@ import {
   scrollToLeft,
   getVirtualizer,
   getScrollable,
-  clearTimer,
   scrollTo,
   listenScrollCount,
   relativeRight,
@@ -521,7 +520,7 @@ test.describe("check if scroll jump compensation works", () => {
     const initialItemText = (await initialItem.textContent())!;
     expectInRange(initialItemBottom, { min: 0, max: 1 });
 
-    await clearTimer(page);
+    await page.getByRole("checkbox", { name: "auto update" }).click();
 
     const button = page.getByRole("button", { name: "submit" });
     const textarea = page.getByRole("textbox")!;
@@ -1371,7 +1370,7 @@ test.describe("check if item shift compensation works", () => {
 
   test("check if prepending cancels imperative scroll", async ({ page }) => {
     await page.goto(storyUrl("advanced-chat--default"));
-    await clearTimer(page);
+    await page.getByRole("checkbox", { name: "auto update" }).click();
 
     const component = await getScrollable(page);
     // check if end is displayed

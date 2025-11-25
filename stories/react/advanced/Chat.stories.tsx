@@ -62,6 +62,7 @@ export const Default: StoryObj = {
     const [items, setItems] = useState(() =>
       Array.from({ length: 100 }, () => createItem())
     );
+    const [autoUpdating, setAutoUpdating] = useState(true);
 
     const ref = useRef<VListHandle>(null);
 
@@ -84,6 +85,7 @@ export const Default: StoryObj = {
     }, [items]);
 
     useEffect(() => {
+      if (!autoUpdating) return;
       let canceled = false;
       let timer: ReturnType<typeof setTimeout> | null = null;
       const setTimer = () => {
@@ -100,7 +102,7 @@ export const Default: StoryObj = {
           clearTimeout(timer);
         }
       };
-    }, []);
+    }, [autoUpdating]);
 
     const disabled = !value.length;
     const submit = () => {
@@ -154,15 +156,34 @@ export const Default: StoryObj = {
             submit();
           }}
         >
-          <button
-            style={{ position: "absolute", left: 10, bottom: 10 }}
-            type="button"
-            onClick={() => {
-              ref.current?.scrollTo(0);
+          <div
+            style={{
+              position: "absolute",
+              left: 10,
+              bottom: 10,
+              display: "flex",
+              gap: 4,
             }}
           >
-            jump to top
-          </button>
+            <label>
+              <input
+                type="checkbox"
+                checked={autoUpdating}
+                onChange={() => {
+                  setAutoUpdating((prev) => !prev);
+                }}
+              />
+              auto update
+            </label>
+            <button
+              type="button"
+              onClick={() => {
+                ref.current?.scrollTo(0);
+              }}
+            >
+              jump to top
+            </button>
+          </div>
           <div
             style={{
               display: "flex",
