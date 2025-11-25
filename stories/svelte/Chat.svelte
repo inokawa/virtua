@@ -1,148 +1,105 @@
 <script lang="ts">
-    import { VList } from "../../src/svelte";
-    import type { VListHandle } from "../../src/svelte";
-    import { faker } from "@faker-js/faker";
-    import { onMount } from "svelte";
+  import { VList } from "../../src/svelte";
+  import type { VListHandle } from "../../src/svelte";
+  import { faker } from "@faker-js/faker";
+  import { onMount } from "svelte";
 
-    type Data = {
-        id: number;
-        value: string;
-        role?: "me" | "ai";
-    };
+  type Data = {
+    id: number;
+    value: string;
+    me?: boolean;
+  };
 
-    let id = 0;
-    const createItem = ({
-        value = faker.lorem.paragraphs(1),
-        role,
-    }: {
-        value?: string;
-        role?: Data["role"];
-    } = {}): Data => ({
-        id: id++,
-        value: value,
-        role,
-    });
+  let id = 0;
+  const createItem = ({
+    value = faker.lorem.paragraphs(1),
+    me,
+  }: {
+    value?: string;
+    me?: boolean;
+  } = {}): Data => ({
+    id: id++,
+    value: value,
+    me,
+  });
 
-    let items = $state(Array.from({ length: 100 }, () => createItem()));
-    let value = $state("Hello world!");
-    let ref: VListHandle;
-    let shouldStickToBottom = $state(true);
-    let isPrepend = $state(false);
-    let streaming = $state(false);
+  let items = $state(Array.from({ length: 100 }, () => createItem()));
+  let value = $state("Hello world!");
+  let ref: VListHandle;
+  let shouldStickToBottom = $state(true);
+  let isPrepend = $state(false);
 
-    // Reset isPrepend after each update
-    $effect(() => {
-        items;
-        isPrepend = false;
-    });
+  // Reset isPrepend after each update
+  $effect(() => {
+    items;
+    isPrepend = false;
+  });
 
-    // Auto-scroll to bottom when items change
-    $effect(() => {
-        if (!ref) return;
-        const lastItemIndex = items.length - 1;
-        if (shouldStickToBottom) {
-            ref.scrollToIndex(lastItemIndex, { align: "end" });
-        }
-    });
+  // Auto-scroll to bottom when items change
+  $effect(() => {
+    if (!ref) return;
+    const lastItemIndex = items.length - 1;
+    if (shouldStickToBottom) {
+      ref.scrollToIndex(lastItemIndex, { align: "end" });
+    }
+  });
 
-    // Auto-add items timer (when not streaming)
-    onMount(() => {
-        let timer: ReturnType<typeof setTimeout> | null = null;
+  // Auto-add items timer (when not streaming)
+  onMount(() => {
+    let timer: ReturnType<typeof setTimeout> | null = null;
 
-        const setTimer = () => {
-            timer = setTimeout(() => {
-                if (!streaming) {
-                    items = [...items, createItem()];
-                }
-                setTimer();
-            }, 5000);
-        };
-
+    const setTimer = () => {
+      timer = setTimeout(() => {
+        items = [...items, createItem()];
         setTimer();
-
-        return () => {
-            if (timer) {
-                clearTimeout(timer);
-            }
-        };
-    });
-
-    const handleScroll = (offset: number) => {
-        if (!ref) return;
-
-        shouldStickToBottom =
-            offset - ref.getScrollSize() + ref.getViewportSize() >=
-            -1.5;
-
-        if (offset < 100) {
-            isPrepend = true;
-            items = [
-                ...Array.from({ length: 100 }, () => createItem()),
-                ...items,
-            ];
-        }
+      }, 5000);
     };
 
-    const disabled = $derived(!value.length);
+    setTimer();
 
-    const submit = () => {
-        if (disabled) return;
-        shouldStickToBottom = true;
-        items = [...items, createItem({ value, role: "me" })];
-        value = "";
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
     };
+  });
 
-    const askAi = () => {
-        const lastIndex = items.length;
-        const item = createItem({ value: "", role: "ai" });
-        const { id: aiId } = item;
-        items = [...items, createItem({ role: "me" }), item];
-        streaming = true;
-        shouldStickToBottom = false;
+  const handleScroll = (offset: number) => {
+    if (!ref) return;
 
-        requestAnimationFrame(() => {
-            ref?.scrollToIndex(lastIndex, {
-                smooth: true,
-                align: "start",
-            });
-        });
+    shouldStickToBottom =
+      offset - ref.getScrollSize() + ref.getViewportSize() >= -1.5;
 
-        setTimeout(() => {
-            shouldStickToBottom = true;
+    if (offset < 100) {
+      isPrepend = true;
+      items = [...Array.from({ length: 100 }, () => createItem()), ...items];
+    }
+  };
 
-            let counter = 0;
-            const interval = setInterval(() => {
-                if (counter++ > 40) {
-                    streaming = false;
-                    clearInterval(interval);
-                }
+  const disabled = $derived(!value.length);
 
-                items = items.map((item) =>
-                    item.id === aiId
-                        ? {
-                              ...item,
-                              value: item.value + faker.lorem.paragraph(2),
-                          }
-                        : item
-                );
-            }, 100);
-        }, 1000);
-    };
+  const submit = () => {
+    if (disabled) return;
+    shouldStickToBottom = true;
+    items = [...items, createItem({ value, me: true })];
+    value = "";
+  };
 
-    const jumpToTop = () => {
-        ref?.scrollTo(0);
-    };
+  const jumpToTop = () => {
+    ref?.scrollTo(0);
+  };
 
-    const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.code === "Enter" && (e.ctrlKey || e.metaKey)) {
-            submit();
-            e.preventDefault();
-        }
-    };
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.code === "Enter" && (e.ctrlKey || e.metaKey)) {
+      submit();
+      e.preventDefault();
+    }
+  };
 </script>
 
-
-<div style="width: 100vw; height: 100vh; display: flex; flex-direction: column;">
+<div
+  style="width: 100vw; height: 100vh; display: flex; flex-direction: column;"
+>
   <VList
     bind:this={ref}
     data={items}
@@ -152,17 +109,7 @@
     onscroll={handleScroll}
   >
     {#snippet children(item)}
-      {#if item.role === "ai"}
-        <div style="padding: 10px; min-height: 50vh;">
-          {#if item.value}
-            <div
-              style="border: solid 1px #ccc; background: #fff; padding: 10px; border-radius: 8px; white-space: pre-wrap; margin-right: 160px;"
-            >
-              {item.value}
-            </div>
-          {/if}
-        </div>
-      {:else if item.role === "me"}
+      {#if item.me === true}
         <div
           style="border: solid 1px #ccc; background: lightyellow; padding: 10px; border-radius: 8px; white-space: pre-wrap; margin: 10px; margin-left: 160px;"
         >
@@ -186,13 +133,11 @@
       submit();
     }}
   >
-    <button
-      style="position: absolute; left: 10px; bottom: 10px;"
-      type="button"
-      onclick={jumpToTop}
+    <div
+      style="position: absolute; left: 10px; bottom:10px; display: flex; gap: 4px;"
     >
-      jump to top
-    </button>
+      <button type="button" onclick={jumpToTop}> jump to top </button>
+    </div>
     <div
       style="display: flex; flex-direction: column; justify-content: flex-end;"
     >
@@ -205,9 +150,6 @@
       <div
         style="display: flex; flex-direction: row; gap: 8px; justify-content: flex-end;"
       >
-        <button type="button" disabled={streaming} onclick={askAi}>
-          ask ai
-        </button>
         <button type="submit" {disabled}> submit </button>
       </div>
     </div>
