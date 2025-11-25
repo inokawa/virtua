@@ -28,9 +28,15 @@ const itemStyle: CSSProperties = {
   whiteSpace: "pre-wrap",
 };
 
-const AiItem = ({ children }: { children: ReactNode }) => {
+const AiItem = ({
+  children,
+  blankSize,
+}: {
+  children: ReactNode;
+  blankSize?: number;
+}) => {
   return (
-    <div style={{ padding: 10, minHeight: "50vh" }}>
+    <div style={{ padding: 10, boxSizing: "border-box", minHeight: blankSize }}>
       {children ? (
         <div
           style={{
@@ -83,6 +89,7 @@ export const Default: StoryObj = {
     const shouldStickToBottom = useRef(true);
 
     const [streaming, setStreaming] = useState(false);
+    const [blankSize, setBlankSize] = useState(0);
 
     const [value, setValue] = useState("Hello world!");
 
@@ -99,25 +106,43 @@ export const Default: StoryObj = {
       }
     }, [items]);
 
-    const disabled = !value.length;
+    const disabled = !value.length || streaming;
     const submit = () => {
       if (disabled) return;
       setValue("");
 
-      const lastIndex = items.length;
+      const handle = ref.current;
+      if (!handle) return;
+      const lastItemIndex = items.length - 1;
       const item = createItem({ value: "", role: "assistant" });
       const { id } = item;
       setItems((p) => [...p, createItem({ role: "user", value }), item]);
       setStreaming(true);
       shouldStickToBottom.current = false;
 
-      requestAnimationFrame(() => {
-        ref.current?.scrollToIndex(lastIndex, {
+      const isAtBottom =
+        handle.scrollOffset - handle.scrollSize + handle.viewportSize >=
+        // FIXME: The sum may not be 0 because of sub-pixel value when browser's window.devicePixelRatio has decimal value
+        -1.5;
+      if (!isAtBottom) {
+        handle.scrollToIndex(lastItemIndex, {
+          align: "start",
+          offset: handle.getItemSize(lastItemIndex),
+        });
+      }
+
+      // wait for new item mounts
+      setTimeout(() => {
+        const userIndex = lastItemIndex + 1;
+        setBlankSize(handle.viewportSize - handle.getItemSize(userIndex));
+
+        handle.scrollToIndex(userIndex, {
           smooth: true,
           align: "start",
         });
-      });
+      }, 50);
 
+      // emulate streaming from LLM
       setTimeout(() => {
         shouldStickToBottom.current = true;
 
@@ -150,10 +175,15 @@ export const Default: StoryObj = {
           flexDirection: "column",
         }}
       >
-        <VList ref={ref} style={{ flex: 1 }} reverse shift={isPrepend.current}>
+        <VList ref={ref} shift={isPrepend.current}>
           {items.map((d, i) =>
             d.role === "assistant" ? (
-              <AiItem key={d.id}>{d.value}</AiItem>
+              <AiItem
+                key={d.id}
+                blankSize={i === items.length - 1 ? blankSize : undefined}
+              >
+                {d.value}
+              </AiItem>
             ) : (
               <MeItem key={d.id}>{d.value}</MeItem>
             )
@@ -196,7 +226,7 @@ export const Default: StoryObj = {
                 justifyContent: "flex-end",
               }}
             >
-              <button type="submit" disabled={streaming || disabled}>
+              <button type="submit" disabled={disabled}>
                 ask ai
               </button>
             </div>
