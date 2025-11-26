@@ -47,7 +47,7 @@ const debounce = <T extends () => void>(fn: T, ms: number) => {
  * https://github.com/othree/jquery.rtl-scroll-type
  */
 const normalizeOffset = (offset: number, isHorizontal: boolean): number => {
-  if (isHorizontal && isRTLDocument()) {
+  if (isRTLDocument()) {
     return -offset;
   } else {
     return offset;

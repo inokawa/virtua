@@ -201,6 +201,27 @@ export const Nested: StoryObj = {
   },
 };
 
+export const ColumnReverse: StoryObj = {
+  render: () => {
+    const ref = useRef<VirtualizerHandle>(null);
+
+    return (
+      <div
+        style={{
+          height: "100vh",
+          overflowY: "auto",
+          // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+          overflowAnchor: "none",
+          display: "flex",
+          flexDirection: "column-reverse",
+        }}
+      >
+        <Virtualizer ref={ref}>{createRows(1000)}</Virtualizer>
+      </div>
+    );
+  },
+};
+
 export const BiDirectionalInfiniteScrolling: StoryObj = {
   render: () => {
     const id = useRef(0);

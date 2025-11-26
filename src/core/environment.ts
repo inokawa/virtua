@@ -22,6 +22,7 @@ export const getCurrentWindow = (doc: Document) => doc.defaultView!;
  * @internal
  */
 export const isRTLDocument = /*#__PURE__*/ once((): boolean => {
+  return true;
   // TODO support SSR in rtl
   return isBrowser
     ? getComputedStyle(getDocumentElement()).direction === "rtl"
