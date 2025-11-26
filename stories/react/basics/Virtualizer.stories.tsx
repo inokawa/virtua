@@ -226,14 +226,21 @@ export const BiDirectionalInfiniteScrolling: StoryObj = {
     const [shifting, setShifting] = useState(false);
     const [startFetching, setStartFetching] = useState(false);
     const [endFetching, setEndFetching] = useState(false);
-    const fetchItems = async (isStart: boolean = false) => {
-      setShifting(isStart);
+    const fetchStart = async () => {
+      setShifting(true);
 
-      const setFetching = isStart ? setStartFetching : setEndFetching;
-
-      setFetching(true);
+      setStartFetching(true);
       await delay(1000);
-      setFetching(false);
+      setItems((prev) => [...createRows(ITEM_BATCH_COUNT).reverse(), ...prev]);
+      setStartFetching(false);
+    };
+    const fetchEnd = async () => {
+      setShifting(false);
+
+      setEndFetching(true);
+      await delay(1000);
+      setItems((prev) => [...prev, ...createRows(ITEM_BATCH_COUNT)]);
+      setEndFetching(false);
     };
 
     const ref = useRef<VirtualizerHandle>(null);
@@ -280,18 +287,13 @@ export const BiDirectionalInfiniteScrolling: StoryObj = {
               ref.current.findItemIndex(endOffset) + THRESHOLD > count
             ) {
               endFetchedCountRef.current = count;
-              await fetchItems();
-              setItems((prev) => [...prev, ...createRows(ITEM_BATCH_COUNT)]);
+              await fetchEnd();
             } else if (
               startFetchedCountRef.current < count &&
               ref.current.findItemIndex(startOffset) - THRESHOLD < 0
             ) {
               startFetchedCountRef.current = count;
-              await fetchItems(true);
-              setItems((prev) => [
-                ...createRows(ITEM_BATCH_COUNT).reverse(),
-                ...prev,
-              ]);
+              await fetchStart();
             }
           }}
         >
