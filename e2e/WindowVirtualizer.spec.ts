@@ -68,6 +68,54 @@ test.describe("smoke", () => {
     ).not.toBeVisible();
   });
 
+  test("vertically scrollable (RTL)", async ({ page }) => {
+    await page.goto(storyUrl("basics-windowvirtualizer--default"), {
+      waitUntil: "domcontentloaded",
+    });
+    await setRTL(page);
+
+    const component = await getVirtualizer(page);
+
+    // check if start is displayed
+    await expect(component.getByText("0", { exact: true })).toBeVisible();
+    await expect(component.getByText("50", { exact: true })).not.toBeVisible();
+
+    // scroll to the end
+    await windowScrollToBottom(page);
+
+    // check if the end is displayed
+    await expect(component.getByText("999", { exact: true })).toBeVisible();
+    await expect(component.getByText("949", { exact: true })).not.toBeVisible();
+  });
+
+  test("horizontally scrollable (RTL)", async ({ page }) => {
+    await page.goto(storyUrl("basics-windowvirtualizer--horizontal"), {
+      waitUntil: "domcontentloaded",
+    });
+    await setRTL(page);
+
+    const component = await getVirtualizer(page);
+
+    // check if start is displayed
+    await expect(
+      component.getByText("Column 0", { exact: true })
+    ).toBeVisible();
+    await expect(
+      component.getByText("Column 50", { exact: true })
+    ).not.toBeVisible();
+
+    // scroll to the end
+    await windowScrollToLeft(page);
+
+    // check if the end is displayed
+    await expect(
+      component.getByText("Column 999", { exact: true })
+    ).toBeVisible();
+    await expect(
+      component.getByText("Column 949", { exact: true })
+    ).not.toBeVisible();
+  });
+
   test("display: none", async ({ page }) => {
     await page.goto(storyUrl("basics-windowvirtualizer--default"));
 
@@ -394,56 +442,6 @@ test.describe("check if item shift compensation works", () => {
     }
 
     expect(i).toBeGreaterThanOrEqual(30);
-  });
-});
-
-test.describe("RTL", () => {
-  test("vertically scrollable", async ({ page }) => {
-    await page.goto(storyUrl("basics-windowvirtualizer--default"), {
-      waitUntil: "domcontentloaded",
-    });
-    await setRTL(page);
-
-    const component = await getVirtualizer(page);
-
-    // check if start is displayed
-    await expect(component.getByText("0", { exact: true })).toBeVisible();
-    await expect(component.getByText("50", { exact: true })).not.toBeVisible();
-
-    // scroll to the end
-    await windowScrollToBottom(page);
-
-    // check if the end is displayed
-    await expect(component.getByText("999", { exact: true })).toBeVisible();
-    await expect(component.getByText("949", { exact: true })).not.toBeVisible();
-  });
-
-  test("horizontally scrollable", async ({ page }) => {
-    await page.goto(storyUrl("basics-windowvirtualizer--horizontal"), {
-      waitUntil: "domcontentloaded",
-    });
-    await setRTL(page);
-
-    const component = await getVirtualizer(page);
-
-    // check if start is displayed
-    await expect(
-      component.getByText("Column 0", { exact: true })
-    ).toBeVisible();
-    await expect(
-      component.getByText("Column 50", { exact: true })
-    ).not.toBeVisible();
-
-    // scroll to the end
-    await windowScrollToLeft(page);
-
-    // check if the end is displayed
-    await expect(
-      component.getByText("Column 999", { exact: true })
-    ).toBeVisible();
-    await expect(
-      component.getByText("Column 949", { exact: true })
-    ).not.toBeVisible();
   });
 });
 

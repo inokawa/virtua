@@ -157,11 +157,7 @@ const createScrollObserver = (
     _fixScrollJump: () => {
       const [jump, shift] = store._flushJump();
       if (!jump) return;
-      updateScrollOffset(
-        normalizeOffset(jump, isHorizontal),
-        shift,
-        stillMomentumScrolling
-      );
+      updateScrollOffset(jump, shift, stillMomentumScrolling);
       stillMomentumScrolling = false;
 
       if (shift && store.$getViewportSize() > store.$getTotalSize()) {
@@ -348,7 +344,10 @@ export const createScroller = (
 
           // Use absolute position not to exceed scrollable bounds
           // https://github.com/inokawa/virtua/discussions/475
-          viewport[scrollOffsetKey] = store.$getScrollOffset() + jump;
+          viewport[scrollOffsetKey] = normalizeOffset(
+            store.$getScrollOffset() + jump,
+            isHorizontal
+          );
           if (shift) {
             // https://github.com/inokawa/virtua/issues/357
             cancelScroll();
@@ -500,12 +499,15 @@ export const createWindowScroller = (
           if (shift) {
             // Use absolute position not to exceed scrollable bounds
             window.scroll({
-              [scrollToKey]: store.$getScrollOffset() + jump,
+              [scrollToKey]: normalizeOffset(
+                store.$getScrollOffset() + jump,
+                isHorizontal
+              ),
             });
           } else {
             // Use window.scrollBy here, which causes less layout shift for some reason.
             window.scrollBy({
-              [scrollToKey]: jump,
+              [scrollToKey]: normalizeOffset(jump, isHorizontal),
             });
           }
         },
