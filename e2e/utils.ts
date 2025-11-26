@@ -174,14 +174,21 @@ export const scrollTo = (
     (e, [offset, key]) => {
       e[key] = offset;
     },
-    [offset, `scroll${key}`]
+    [offset, `scroll${key}`] as const
   );
 };
 
-export const scrollBy = (scrollable: ScrollableLocator, offset: number) => {
-  return scrollable.evaluate((e, offset) => {
-    e.scrollTop += offset;
-  }, offset);
+export const scrollBy = (
+  scrollable: ScrollableLocator,
+  offset: number,
+  key: "Top" | "Left" = "Top"
+) => {
+  return scrollable.evaluate(
+    (e, [offset, key]) => {
+      e[key] += offset;
+    },
+    [offset, `scroll${key}`] as const
+  );
 };
 
 export const windowScrollBy = (page: Page, offset: number) => {
