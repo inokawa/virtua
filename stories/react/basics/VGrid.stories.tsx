@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react-vite";
 import React, { useRef, useState } from "react";
 import { experimental_VGrid as VGrid, VGridHandle } from "../../../src";
+import { faker } from "@faker-js/faker";
 
 export default {
   component: VGrid,
@@ -45,6 +46,93 @@ export const Fixed: StoryObj = {
             {rowIndex} / {colIndex}
           </div>
         )}
+      </VGrid>
+    );
+  },
+};
+
+export const Objects: StoryObj = {
+  render: () => {
+    const columns = ["id", "username", "email", "company", "domain"] as const;
+    const data = Array.from({ length: 1000 }).map((_, i) => ({
+      id: i,
+      username: faker.person.fullName(),
+      email: faker.internet.email(),
+      company: faker.company.name(),
+      domain: faker.internet.domainName(),
+    }));
+    return (
+      <VGrid
+        style={{ height: "100vh" }}
+        row={data.length}
+        col={columns.length}
+        stickyRows={[0]}
+      >
+        {({ rowIndex, colIndex }) =>
+          rowIndex === 0 ? (
+            <div
+              style={{
+                position: "sticky",
+                top: 0,
+                left: 0,
+                background: "lightgray",
+                padding: 4,
+                borderLeft: colIndex !== 0 ? "solid 1px black" : undefined,
+                borderTop: rowIndex !== 0 ? "solid 1px black" : undefined,
+              }}
+            >
+              {[columns[colIndex]]}
+            </div>
+          ) : (
+            <div
+              style={{
+                background: "white",
+                padding: 4,
+                borderLeft: colIndex !== 0 ? "solid 1px black" : undefined,
+                borderTop: rowIndex !== 0 ? "solid 1px black" : undefined,
+              }}
+            >
+              {data[rowIndex][columns[colIndex]]}
+            </div>
+          )
+        }
+      </VGrid>
+    );
+  },
+};
+
+export const Sticky: StoryObj = {
+  render: () => {
+    const stickyRows = [0];
+    const stickyCols = [0, 1];
+    return (
+      <VGrid
+        style={{ height: "100vh" }}
+        row={1000}
+        col={500}
+        stickyRows={stickyRows}
+        stickyCols={stickyCols}
+      >
+        {({ rowIndex, colIndex }) => {
+          const isStickyRow = stickyRows.includes(rowIndex);
+          const isStickyCol = stickyCols.includes(colIndex);
+          return (
+            <div
+              style={{
+                border: "solid 1px gray",
+                background: isStickyRow
+                  ? "darkgray"
+                  : isStickyCol
+                  ? "lightgray"
+                  : "white",
+                color: isStickyRow ? "white" : undefined,
+                padding: 4,
+              }}
+            >
+              {rowIndex} / {colIndex}
+            </div>
+          );
+        }}
       </VGrid>
     );
   },
@@ -124,8 +212,6 @@ export const Resizeable: StoryObj = {
         newWidths.set(i, getSize());
         newHeights.set(i, getSize());
       }
-      grid.current?.resizeCols([...newWidths.entries()]);
-      grid.current?.resizeRows([...newHeights.entries()]);
       setWidths(newWidths);
       setHeights(newHeights);
     }
@@ -166,7 +252,6 @@ export const Resizeable: StoryObj = {
                 style={{ width: 50 }}
                 onChange={(e) => {
                   const w = e.target.valueAsNumber;
-                  grid.current?.resizeCols([[colIndex, w]]);
                   setWidths((map) => new Map(map).set(colIndex, w));
                 }}
               />
@@ -179,7 +264,6 @@ export const Resizeable: StoryObj = {
                 style={{ width: 50 }}
                 onChange={(e) => {
                   const h = e.target.valueAsNumber;
-                  grid.current?.resizeRows([[rowIndex, h]]);
                   setHeights((map) => new Map(map).set(rowIndex, h));
                 }}
               />
@@ -299,6 +383,27 @@ export const ScrollTo: StoryObj = {
           )}
         </VGrid>
       </div>
+    );
+  },
+};
+
+export const Few: StoryObj = {
+  render: () => {
+    return (
+      <VGrid style={{ height: "100vh" }} row={3} col={3}>
+        {({ rowIndex, colIndex }) => (
+          <div
+            style={{
+              background: "white",
+              padding: 4,
+              borderLeft: colIndex !== 0 ? "solid 1px gray" : undefined,
+              borderTop: rowIndex !== 0 ? "solid 1px gray" : undefined,
+            }}
+          >
+            {rowIndex} / {colIndex}
+          </div>
+        )}
+      </VGrid>
     );
   },
 };

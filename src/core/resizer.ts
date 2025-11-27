@@ -5,7 +5,7 @@ import {
   type VirtualStore,
 } from "./store.js";
 import { type ItemResize } from "./types.js";
-import { max, microtask, NULL } from "./utils.js";
+import { microtask, NULL } from "./utils.js";
 
 const createResizeObserver = (cb: ResizeObserverCallback) => {
   let ro: ResizeObserver | undefined;
@@ -168,16 +168,9 @@ export const createGridResizer = (
     [rowIndex: number, colIndex: number]
   >();
 
-  type CellSize = [height: number, width: number];
-  const maybeCachedRowIndexes = new Set<number>();
-  const maybeCachedColIndexes = new Set<number>();
-  const sizeCache = new Map<string, CellSize>();
-  const getKey = (rowIndex: number, colIndex: number): string =>
-    `${rowIndex}-${colIndex}`;
-
   const resizeObserver = createResizeObserver((entries) => {
-    const resizedRows = new Set<number>();
-    const resizedCols = new Set<number>();
+    const resizedRows = new Map<number, number>();
+    const resizedCols = new Map<number, number>();
     for (const {
       target,
       contentRect: { width, height },
@@ -192,62 +185,24 @@ export const createGridResizer = (
         const cell = mountedIndexes.get(target);
         if (cell) {
           const [rowIndex, colIndex] = cell;
-          const key = getKey(rowIndex, colIndex);
-          const prevSize = sizeCache.get(key);
-          let rowResized: boolean | undefined;
-          let colResized: boolean | undefined;
-          if (!prevSize) {
-            rowResized = colResized = true;
-          } else {
-            if (prevSize[0] !== height) {
-              rowResized = true;
-            }
-            if (prevSize[1] !== width) {
-              colResized = true;
-            }
-          }
-          if (rowResized) {
-            resizedRows.add(rowIndex);
-          }
-          if (colResized) {
-            resizedCols.add(colIndex);
-          }
-          if (rowResized || colResized) {
-            sizeCache.set(key, [height, width]);
-          }
+
+          resizedRows.set(rowIndex, height);
+          resizedCols.set(colIndex, width);
         }
       }
     }
 
     if (resizedRows.size) {
       const heightResizes: ItemResize[] = [];
-      resizedRows.forEach((rowIndex) => {
-        let maxHeight = 0;
-        maybeCachedColIndexes.forEach((colIndex) => {
-          const size = sizeCache.get(getKey(rowIndex, colIndex));
-          if (size) {
-            maxHeight = max(maxHeight, size[0]);
-          }
-        });
-        if (maxHeight) {
-          heightResizes.push([rowIndex, maxHeight]);
-        }
+      resizedRows.entries().forEach((entry) => {
+        heightResizes.push(entry);
       });
       rowStore.$update(ACTION_ITEM_RESIZE, heightResizes);
     }
     if (resizedCols.size) {
       const widthResizes: ItemResize[] = [];
-      resizedCols.forEach((colIndex) => {
-        let maxWidth = 0;
-        maybeCachedRowIndexes.forEach((rowIndex) => {
-          const size = sizeCache.get(getKey(rowIndex, colIndex));
-          if (size) {
-            maxWidth = max(maxWidth, size[1]);
-          }
-        });
-        if (maxWidth) {
-          widthResizes.push([colIndex, maxWidth]);
-        }
+      resizedCols.entries().forEach((entry) => {
+        widthResizes.push(entry);
       });
       colStore.$update(ACTION_ITEM_RESIZE, widthResizes);
     }
@@ -259,29 +214,11 @@ export const createGridResizer = (
     },
     $observeItem(el: HTMLElement, rowIndex: number, colIndex: number) {
       mountedIndexes.set(el, [rowIndex, colIndex]);
-      maybeCachedRowIndexes.add(rowIndex);
-      maybeCachedColIndexes.add(colIndex);
       resizeObserver._observe(el);
       return () => {
         mountedIndexes.delete(el);
         resizeObserver._unobserve(el);
       };
-    },
-    $resizeCols(cols: ItemResize[]) {
-      for (const [c] of cols) {
-        for (let r = 0; r < rowStore.$getItemsLength(); r++) {
-          sizeCache.delete(getKey(r, c));
-        }
-      }
-      colStore.$update(ACTION_ITEM_RESIZE, cols);
-    },
-    $resizeRows(rows: ItemResize[]) {
-      for (const [r] of rows) {
-        for (let c = 0; c < colStore.$getItemsLength(); c++) {
-          sizeCache.delete(getKey(r, c));
-        }
-      }
-      rowStore.$update(ACTION_ITEM_RESIZE, rows);
     },
     $dispose: resizeObserver._dispose,
   };
