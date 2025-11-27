@@ -11,6 +11,7 @@ import {
   relativeTop,
   scrollBy,
   isVerticalScrollBarVisible,
+  scrollToTop,
 } from "./utils";
 
 test("header and footer", async ({ page }) => {
@@ -136,6 +137,23 @@ test("overflow", async ({ page }) => {
       })
     ).toBe(true);
   }
+});
+
+test("reverse with flex-direction: column-reverse", async ({ page }) => {
+  await page.goto(storyUrl("basics-virtualizer--inverted"));
+
+  const component = await getScrollable(page);
+
+  // check if start is displayed
+  const first = component.getByText("0", { exact: true });
+  await expect(first).toBeVisible();
+  expect(await relativeBottom(component, first)).toEqual(0);
+
+  // scroll to the end
+  await scrollToTop(component);
+
+  // check if the end is displayed
+  await expect(component.getByText("999", { exact: true })).toBeVisible();
 });
 
 test.describe("aligned to bottom", () => {

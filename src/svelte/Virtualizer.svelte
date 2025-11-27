@@ -66,6 +66,7 @@
   let range = $derived(stateVersion && store.$getRange(bufferSize));
   let isScrolling = $derived(stateVersion && store.$isScrolling());
   let totalSize = $derived(stateVersion && store.$getTotalSize());
+  let negative = $derived(stateVersion && scroller.$isNegative());
 
   let indexes = $derived.by(() => {
     const [start, end] = range;
@@ -176,6 +177,7 @@
       offset={stateVersion && store.$getItemOffset(index)}
       hide={stateVersion && store.$isUnmeasuredItem(index)}
       {horizontal}
+      {negative}
       resizer={resizer.$observeItem}
     />
   {/each}

@@ -19,7 +19,6 @@ import {
   createGridScroller,
   createGridResizer,
   type GridResizer,
-  isRTLDocument,
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
 } from "../core/index.js";
@@ -55,6 +54,7 @@ interface CellProps {
   _height: number;
   _width: number;
   _hide: boolean;
+  _isNegative: boolean;
   _element: "div";
 }
 
@@ -69,6 +69,7 @@ const Cell = memo(
     _height: height,
     _width: width,
     _hide: hide,
+    _isNegative: isNegative,
     _element: Element,
   }: CellProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
@@ -88,7 +89,7 @@ const Cell = memo(
             display: "grid",
             position: "absolute",
             top: top,
-            [isRTLDocument() ? "right" : "left"]: left,
+            [isNegative ? "right" : "left"]: left,
             visibility: hide ? "hidden" : undefined,
             minHeight: height,
             minWidth: width,
@@ -414,6 +415,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       };
     }, [children]);
 
+    const isNegative = scroller.$isNegative();
+
     const [startRowIndex, endRowIndex] = rowStore.$getRange(bufferSize);
     const [startColIndex, endColIndex] = colStore.$getRange(bufferSize);
 
@@ -434,6 +437,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
               rowStore.$isUnmeasuredItem(rowIndex) ||
               colStore.$isUnmeasuredItem(colIndex)
             }
+            _isNegative={isNegative}
             _element={ItemElement as "div"}
             _children={render(rowIndex, colIndex)}
           />

@@ -234,6 +234,26 @@ export const Reverse: StoryObj = {
   },
 };
 
+export const Inverted: StoryObj = {
+  render: () => {
+    return (
+      <div
+        style={{
+          height: "100vh",
+          overflowY: "auto",
+          // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+          overflowAnchor: "none",
+          // apply column-reverse to reverse scroll direction
+          display: "flex",
+          flexDirection: "column-reverse",
+        }}
+      >
+        <Virtualizer>{createRows(1000)}</Virtualizer>
+      </div>
+    );
+  },
+};
+
 export const AlignBottom: StoryObj = {
   render: () => {
     const id = useRef(0);

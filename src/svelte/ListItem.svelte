@@ -1,6 +1,6 @@
 <script lang="ts" generics="T">
   import { type Snippet, onDestroy } from "svelte";
-  import { isRTLDocument, type ItemResizeObserver } from "../core/index.js";
+  import { type ItemResizeObserver } from "../core/index.js";
   import { styleToString } from "./utils.js";
   import type { SvelteHTMLElements } from "svelte/elements";
 
@@ -12,6 +12,7 @@
     offset: number;
     hide: boolean;
     horizontal: boolean;
+    negative: boolean;
     resizer: ItemResizeObserver;
   }
 
@@ -23,6 +24,7 @@
     offset,
     hide,
     horizontal,
+    negative,
     resizer,
   }: Props = $props();
 
@@ -46,8 +48,13 @@
       position: "absolute",
       [horizontal ? "height" : "width"]: "100%",
       [horizontal ? "top" : "left"]: "0px",
-      [horizontal ? (isRTLDocument() ? "right" : "left") : "top"]:
-        offset + "px",
+      [horizontal
+        ? negative
+          ? "right"
+          : "left"
+        : negative
+          ? "bottom"
+          : "top"]: offset + "px",
       visibility: hide ? "hidden" : undefined,
     };
     if (horizontal) {

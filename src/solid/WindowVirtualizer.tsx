@@ -171,6 +171,7 @@ export const WindowVirtualizer = <T,>(
   });
   const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
   const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
+  const isNegative = createMemo(() => stateVersion() && scroller.$isNegative());
 
   onMount(() => {
     if (props.ref) {
@@ -261,6 +262,7 @@ export const WindowVirtualizer = <T,>(
               _hide={hide()}
               _children={children()}
               _isHorizontal={horizontal}
+              _isNegative={isNegative()}
             />
           );
         }}

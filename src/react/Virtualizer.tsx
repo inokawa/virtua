@@ -235,6 +235,8 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     const isScrolling = store.$isScrolling();
     const totalSize = store.$getTotalSize();
 
+    const isNegative = scroller.$isNegative();
+
     const items: ReactElement[] = [];
 
     const renderItem = (index: number) => {
@@ -250,6 +252,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
           _as={ItemElement as "div"}
           _children={e}
           _isHorizontal={isHorizontal}
+          _isNegative={isNegative}
           _isSSR={isSSR[refKey]}
         />
       );

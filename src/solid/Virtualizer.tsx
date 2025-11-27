@@ -206,6 +206,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   });
   const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
   const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
+  const isNegative = createMemo(() => stateVersion() && scroller.$isNegative());
 
   onMount(() => {
     if (props.ref) {
@@ -314,6 +315,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         _hide={hide()}
         _children={children()}
         _isHorizontal={horizontal}
+        _isNegative={isNegative()}
       />
     );
   };

@@ -1,7 +1,7 @@
 /**
  * @jsxImportSource solid-js
  */
-import { type ItemResizeObserver, isRTLDocument } from "../core/index.js";
+import { type ItemResizeObserver } from "../core/index.js";
 import {
   type Component,
   type JSX,
@@ -20,6 +20,7 @@ interface ListItemProps {
   _offset: number;
   _hide: boolean;
   _isHorizontal: boolean;
+  _isNegative: boolean;
   _as?: ValidComponent;
 }
 
@@ -41,13 +42,19 @@ export const ListItem: Component<ListItemProps> = (props) => {
 
   const style = createMemo(() => {
     const isHorizontal = props._isHorizontal;
+    const isNegative = props._isNegative;
     const style: JSX.CSSProperties = {
       contain: "layout style",
       position: "absolute",
       [isHorizontal ? "height" : "width"]: "100%",
       [isHorizontal ? "top" : "left"]: "0px",
-      [isHorizontal ? (isRTLDocument() ? "right" : "left") : "top"]:
-        props._offset + "px",
+      [isHorizontal
+        ? isNegative
+          ? "right"
+          : "left"
+        : isNegative
+        ? "bottom"
+        : "top"]: props._offset + "px",
       visibility: props._hide ? "hidden" : undefined,
     };
     if (isHorizontal) {

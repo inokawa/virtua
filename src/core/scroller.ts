@@ -1,8 +1,8 @@
 import {
   getCurrentDocument,
   getCurrentWindow,
+  getDocumentElement,
   isIOSWebKit,
-  isRTLDocument,
   isSmoothScrollSupported,
 } from "./environment.js";
 import {
@@ -39,19 +39,18 @@ const debounce = <T extends () => void>(fn: T, ms: number) => {
 };
 
 /**
- * scrollLeft is negative value in rtl direction.
+ * scrollTop/scrollLeft can be negative value under certain styles.
+ * - direction: rtl https://github.com/othree/jquery.rtl-scroll-type
+ * - writing-mode   https://people.igalia.com/fwang/scrollable-elements-in-non-default-writing-modes/
+ * - flex-direction: column-reverse/row-reverse
  *
- * left  right
- * 0     100    spec compliant (ltr)
- * -100  0      spec compliant (rtl)
- * https://github.com/othree/jquery.rtl-scroll-type
+ * top/left bottom/right
+ * 0        100          spec compliant bottom/right overflow, or possibly top/left overflow in Chrome earlier than v85
+ * -100     0            spec compliant top/left overflow
+ * https://drafts.csswg.org/cssom-view/#scroll-an-element
  */
-const normalizeOffset = (offset: number, isHorizontal: boolean): number => {
-  if (isHorizontal && isRTLDocument()) {
-    return -offset;
-  } else {
-    return offset;
-  }
+const normalizeScrollOffset = (offset: number, isNegative: boolean): number => {
+  return isNegative ? -offset : offset;
 };
 
 const createScrollObserver = (
@@ -283,6 +282,7 @@ const createScrollScheduler = (
 export type Scroller = {
   $observe: (viewportElement: HTMLElement) => void;
   $dispose(): void;
+  $isNegative(): boolean;
   $scrollTo: (offset: number) => void;
   $scrollBy: (offset: number) => void;
   $scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
@@ -299,6 +299,7 @@ export const createScroller = (
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
+  let isNegative = false;
   const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const overflowKey = isHorizontal ? "overflowX" : "overflowY";
 
@@ -306,7 +307,7 @@ export const createScroller = (
     store,
     () => initialized[0],
     (offset, smooth) => {
-      offset = normalizeOffset(offset, isHorizontal);
+      offset = normalizeScrollOffset(offset, isNegative);
 
       if (smooth) {
         viewportElement!.scrollTo({
@@ -323,11 +324,33 @@ export const createScroller = (
     $observe(viewport) {
       viewportElement = viewport;
 
+      const clean = store.$subscribe(UPDATE_SIZE_EVENT, () => {
+        const viewportSize = store.$getViewportSize();
+        if (viewportSize) {
+          const prev = viewport[scrollOffsetKey];
+
+          // Detect overflowed direction after the initial viewport measurement
+          const dummy = getCurrentDocument(viewport).createElement("div");
+          dummy.style.cssText = `visibility:hidden;min-${
+            isHorizontal ? "width" : "height"
+          }:${viewportSize + 1}px`;
+          viewport.appendChild(dummy);
+          viewport[scrollOffsetKey] = 1;
+          // It can be positive under some specific situations even if negative mode, so we use `<` for now.
+          isNegative = viewport[scrollOffsetKey] < 1;
+          viewport.removeChild(dummy);
+
+          viewport[scrollOffsetKey] = prev;
+
+          clean();
+        }
+      });
+
       scrollObserver = createScrollObserver(
         store,
         viewport,
         isHorizontal,
-        () => normalizeOffset(viewport[scrollOffsetKey], isHorizontal),
+        () => normalizeScrollOffset(viewport[scrollOffsetKey], isNegative),
         (jump, shift, isMomentumScrolling) => {
           // If we update scroll position while touching on iOS, the position will be reverted.
           // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
@@ -344,9 +367,9 @@ export const createScroller = (
 
           // Use absolute position not to exceed scrollable bounds
           // https://github.com/inokawa/virtua/discussions/475
-          viewport[scrollOffsetKey] = normalizeOffset(
+          viewport[scrollOffsetKey] = normalizeScrollOffset(
             store.$getScrollOffset() + jump,
-            isHorizontal
+            isNegative
           );
           if (shift) {
             // https://github.com/inokawa/virtua/issues/357
@@ -363,6 +386,7 @@ export const createScroller = (
       // https://github.com/inokawa/virtua/pull/765
       initialized = createPromise();
     },
+    $isNegative: () => isNegative,
     $scrollTo(offset) {
       scheduleScroll(() => offset);
     },
@@ -415,6 +439,7 @@ export const createScroller = (
 export type WindowScroller = {
   $observe(containerElement: HTMLElement): void;
   $dispose(): void;
+  $isNegative(): boolean;
   $scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
   $fixScrollJump: () => void;
 };
@@ -429,13 +454,14 @@ export const createWindowScroller = (
   let containerElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
+  let isNegative = false;
   const scrollToKey = isHorizontal ? "left" : "top";
 
   const [scheduleScroll] = createScrollScheduler(
     store,
     () => initialized[0],
     (offset, smooth) => {
-      offset = normalizeOffset(offset, isHorizontal);
+      offset = normalizeScrollOffset(offset, isNegative);
 
       const window = getCurrentWindow(getCurrentDocument(containerElement!));
 
@@ -463,7 +489,7 @@ export const createWindowScroller = (
     const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
     const offsetSum =
       offset +
-      (isHorizontal && isRTLDocument()
+      (isHorizontal && isNegative
         ? window.innerWidth - node[offsetKey] - node.offsetWidth
         : node[offsetKey]);
 
@@ -489,25 +515,31 @@ export const createWindowScroller = (
       const document = getCurrentDocument(container);
       const window = getCurrentWindow(document);
 
+      if (isHorizontal) {
+        // Detect RTL document
+        isNegative =
+          getComputedStyle(getDocumentElement(document)).direction === "rtl";
+      }
+
       scrollObserver = createScrollObserver(
         store,
         window,
         isHorizontal,
-        () => normalizeOffset(window[scrollOffsetKey], isHorizontal),
+        () => normalizeScrollOffset(window[scrollOffsetKey], isNegative),
         (jump, shift) => {
           // TODO support case two window scrollers exist in the same view
           if (shift) {
             // Use absolute position not to exceed scrollable bounds
             window.scroll({
-              [scrollToKey]: normalizeOffset(
+              [scrollToKey]: normalizeScrollOffset(
                 store.$getScrollOffset() + jump,
-                isHorizontal
+                isNegative
               ),
             });
           } else {
             // Use window.scrollBy here, which causes less layout shift for some reason.
             window.scrollBy({
-              [scrollToKey]: normalizeOffset(jump, isHorizontal),
+              [scrollToKey]: normalizeScrollOffset(jump, isNegative),
             });
           }
         },
@@ -524,6 +556,7 @@ export const createWindowScroller = (
       // https://github.com/inokawa/virtua/pull/765
       initialized = createPromise();
     },
+    $isNegative: () => isNegative,
     $fixScrollJump: () => {
       scrollObserver && scrollObserver._fixScrollJump();
     },
@@ -550,7 +583,7 @@ export const createWindowScroller = (
 
       const document = getCurrentDocument(containerElement);
       const window = getCurrentWindow(document);
-      const html = document.documentElement;
+      const html = getDocumentElement(document);
       const getScrollbarSize = () =>
         store.$getViewportSize() -
         (isHorizontal ? html.clientWidth : html.clientHeight);
@@ -587,6 +620,7 @@ export const createWindowScroller = (
 export type GridScroller = {
   $observe: (viewportElement: HTMLElement) => void;
   $dispose(): void;
+  $isNegative(): boolean;
   $scrollTo: (offsetX?: number, offsetY?: number) => void;
   $scrollBy: (offsetX?: number, offsetY?: number) => void;
   $scrollToIndex: (indexX?: number, indexY?: number) => void;
@@ -611,6 +645,7 @@ export const createGridScroller = (
       rowScroller.$dispose();
       colScroller.$dispose();
     },
+    $isNegative: colScroller.$isNegative,
     $scrollTo(row, col) {
       if (row != null) {
         rowScroller.$scrollTo(row);

@@ -10,7 +10,7 @@ export const setRTL = async (page: Page) => {
 };
 
 declare const scrollableSymbol: unique symbol;
-type ScrollableLocator = Locator & { [scrollableSymbol]: never };
+export type ScrollableLocator = Locator & { [scrollableSymbol]: never };
 
 export const getScrollable = async (page: Page): Promise<ScrollableLocator> => {
   const locator = page.locator(
@@ -230,6 +230,35 @@ export const scrollToBottom = (
   });
 };
 
+export const scrollToTop = (scrollable: ScrollableLocator): Promise<void> => {
+  return scrollable.evaluate((e) => {
+    return new Promise<void>((resolve) => {
+      let timer: ReturnType<typeof setTimeout> | null = null;
+
+      const onScroll = () => {
+        e.scrollTop = -e.scrollHeight;
+
+        if (timer !== null) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+          if (
+            e.scrollTop - (e as HTMLElement).offsetHeight <=
+            -e.scrollHeight
+          ) {
+            e.removeEventListener("scroll", onScroll);
+            resolve();
+          } else {
+            onScroll();
+          }
+        }, 50);
+      };
+      e.addEventListener("scroll", onScroll);
+
+      onScroll();
+    });
+  });
+};
 export const scrollToRight = async (
   scrollable: ScrollableLocator
 ): Promise<void> => {

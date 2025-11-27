@@ -21,6 +21,6 @@ export {
   createGridResizer,
   type GridResizer,
 } from "./resizer.js";
-export { isRTLDocument, isBrowser } from "./environment.js";
+export { isBrowser } from "./environment.js";
 export { microtask, sort } from "./utils.js";
 export type { CacheSnapshot, ScrollToIndexOpts, ItemsRange } from "./types.js";
