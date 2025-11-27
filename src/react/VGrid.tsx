@@ -284,8 +284,18 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     ref
   ): ReactElement => {
     const [rowStore, colStore, resizer, scroller] = useStatic(() => {
-      const _rowStore = createVirtualStore(rowCount, cellHeight, ssrRowCount);
-      const _colStore = createVirtualStore(colCount, cellWidth, ssrColCount);
+      const _rowStore = createVirtualStore(
+        rowCount,
+        cellHeight,
+        undefined, // TODO
+        ssrRowCount
+      );
+      const _colStore = createVirtualStore(
+        colCount,
+        cellWidth,
+        undefined, // TODO
+        ssrColCount
+      );
       return [
         _rowStore,
         _colStore,

@@ -33,6 +33,11 @@ const props = {
    */
   itemSize: Number,
   /**
+   * The spacing between items in pixels.
+   * @defaultValue 0
+   */
+  gap: Number,
+  /**
    * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
   shift: Boolean,
@@ -114,6 +119,7 @@ export const VList = /*#__PURE__*/ defineComponent({
             data={props.data}
             bufferSize={props.bufferSize}
             itemSize={props.itemSize}
+            gap={props.gap}
             itemProps={props.itemProps}
             shift={props.shift}
             ssrCount={props.ssrCount}

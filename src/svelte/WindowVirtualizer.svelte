@@ -25,6 +25,7 @@
     getKey = defaultGetKey,
     bufferSize,
     itemSize,
+    gap,
     shift = false,
     horizontal = false,
     cache,
@@ -36,6 +37,7 @@
   const store = createVirtualStore(
     data.length,
     itemSize,
+    gap,
     undefined,
     cache,
     !itemSize
