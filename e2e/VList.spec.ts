@@ -314,7 +314,7 @@ test.describe("check if scroll jump compensation works", () => {
     const initial = await getScrollTop(component);
     let prev = initial;
     const start = performance.now();
-    while ((performance.now() - start) / 1000 < 8) {
+    while ((performance.now() - start) / 1000 < 4) {
       await page.keyboard.press("ArrowDown", { delay: 10 });
       const offset = await getScrollTop(component);
       expect(offset).toBeGreaterThanOrEqual(prev);
@@ -339,7 +339,7 @@ test.describe("check if scroll jump compensation works", () => {
     const initial = await getScrollBottom(component);
     let prev = initial;
     const start = performance.now();
-    while ((performance.now() - start) / 1000 < 8) {
+    while ((performance.now() - start) / 1000 < 4) {
       await page.keyboard.press("ArrowUp", { delay: 10 });
       const offset = await getScrollBottom(component);
       expect(offset).toBeGreaterThanOrEqual(prev);
@@ -363,7 +363,7 @@ test.describe("check if scroll jump compensation works", () => {
     const initial = await getScrollLeft(component);
     let prev = initial;
     const start = performance.now();
-    while ((performance.now() - start) / 1000 < 8) {
+    while ((performance.now() - start) / 1000 < 4) {
       await page.keyboard.press("ArrowRight", { delay: 10 });
       const offset = await getScrollLeft(component);
       expect(offset).toBeGreaterThanOrEqual(prev);
@@ -420,7 +420,7 @@ test.describe("check if scroll jump compensation works", () => {
     const initial = await getScrollRight(component);
     let prev = initial;
     const start = performance.now();
-    while ((performance.now() - start) / 1000 < 8) {
+    while ((performance.now() - start) / 1000 < 4) {
       await page.keyboard.press("ArrowLeft", { delay: 10 });
       const offset = await getScrollRight(component);
       expect(offset).toBeGreaterThanOrEqual(prev);
@@ -493,7 +493,7 @@ test.describe("check if scroll jump compensation works", () => {
       );
 
       // wait for resize completed
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(300);
 
       const bottom = await relativeBottom(
         component,
@@ -645,7 +645,12 @@ test.describe("check if scroll jump compensation works", () => {
     );
 
     // check if stable after image load
-    await page.waitForTimeout(3000);
+    // https://github.com/microsoft/playwright/issues/6046
+    for (const img of await page.locator("img").all()) {
+      await expect(img).toHaveJSProperty("complete", true);
+      await expect(img).not.toHaveJSProperty("naturalWidth", 0);
+    }
+
     expectInRange(
       await relativeTop(component, await findFirstVisibleItem(component)),
       {
@@ -901,7 +906,7 @@ test.describe("check if scrollToIndex works", () => {
       await input.fill("700");
       await button.click();
 
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(100);
 
       const called = await scrollListener;
 
@@ -946,7 +951,7 @@ test.describe("check if scrollToIndex works", () => {
       await input.fill("700");
       await button.click();
 
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(100);
 
       const called = await scrollListener;
 
@@ -997,7 +1002,7 @@ test.describe("check if scrollToIndex works", () => {
       await input.fill("300");
       await button.click();
 
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(100);
 
       const called = await scrollListener;
 
@@ -1049,7 +1054,7 @@ test.describe("check if scrollToIndex works", () => {
       await input.fill("300");
       await button.click();
 
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(100);
 
       const called = await scrollListener;
 
@@ -1209,7 +1214,7 @@ test.describe("check if item shift compensation works", () => {
       await updateButton.click();
     }
     await scrollBy(component, 400);
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
 
     const topItem = await findFirstVisibleItem(component);
     await expect(topItem).not.toHaveText("0");
@@ -1241,7 +1246,7 @@ test.describe("check if item shift compensation works", () => {
       await updateButton.click();
     }
     await scrollBy(component, 800);
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
 
     const topItem = await findFirstVisibleItem(component);
     await expect(topItem).not.toHaveText("0");
@@ -1498,7 +1503,7 @@ test.describe("SSR and hydration", () => {
     // should not change state with scroll before hydration
     await scrollTo(component, 1000);
     await expect(getItems(component)).toHaveCount(initialLength);
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
     await scrollTo(component, 0);
 
     // hydrate
@@ -1517,7 +1522,7 @@ test.describe("SSR and hydration", () => {
 
     // should change state with scroll after hydration
     await scrollTo(component, 1000);
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
     await expect(getItems(component)).not.toHaveCount(initialLength);
   });
 
@@ -1559,7 +1564,7 @@ test.describe("SSR and hydration", () => {
     // should not change state with scroll before hydration
     await scrollTo(component, 1000, "Left");
     await expect(getItems(component)).toHaveCount(initialLength);
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
     await scrollTo(component, 0, "Left");
 
     // hydrate
@@ -1578,7 +1583,7 @@ test.describe("SSR and hydration", () => {
 
     // should change state with scroll after hydration
     await scrollTo(component, 1000, "Left");
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
     await expect(getItems(component)).not.toHaveCount(initialLength);
   });
 
@@ -1590,10 +1595,15 @@ test.describe("SSR and hydration", () => {
 
     const component = await getScrollable(page);
 
+    const scrollListener = listenScrollCount(component);
+
     // hydrate
     await page.getByRole("button", { name: "hydrate" }).click();
 
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(100);
+    const called = await scrollListener;
+    expect(called).toBeGreaterThanOrEqual(2);
+
     expect(await (await findFirstVisibleItem(component)).textContent()).toEqual(
       "100"
     );
@@ -1642,7 +1652,7 @@ test.describe("emulated iOS WebKit", () => {
           component,
           nextLastItemBeforeFlush
         );
-        await page.waitForTimeout(500);
+        await page.waitForTimeout(300);
         const nextLastItem = await findFirstVisibleItem(component);
         await expect(nextLastItem).toHaveText(nextLastItemBeforeFlushText);
         expect(
@@ -1692,7 +1702,7 @@ test.describe("emulated iOS WebKit", () => {
     //     const [nextTopBeforeFlush, nextLastItemBeforeFlush] = await Promise.all(
     //       [getScrollTop(component), getLastItem(component, opts)]
     //     );
-    //     await page.waitForTimeout(500);
+    //     await page.waitForTimeout(300);
     //     const [nextTop, nextLastItem] = await Promise.all([
     //       getScrollTop(component),
     //       getLastItem(component, opts),
@@ -1744,7 +1754,7 @@ test.describe("emulated iOS WebKit", () => {
     //     const [nextTopBeforeFlush, nextLastItemBeforeFlush] = await Promise.all(
     //       [getScrollTop(component), getLastItem(component, opts)]
     //     );
-    //     await page.waitForTimeout(500);
+    //     await page.waitForTimeout(300);
     //     const [nextTop, nextLastItem] = await Promise.all([
     //       getScrollTop(component),
     //       getLastItem(component, opts),

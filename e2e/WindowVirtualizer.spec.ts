@@ -156,7 +156,7 @@ test.describe("check if scroll jump compensation works", () => {
     const initial = await getWindowScrollTop(page);
     let prev = initial;
     const start = performance.now();
-    while ((performance.now() - start) / 1000 < 8) {
+    while ((performance.now() - start) / 1000 < 4) {
       await page.keyboard.press("ArrowDown", { delay: 10 });
       const offset = await getWindowScrollTop(page);
       expect(offset).toBeGreaterThanOrEqual(prev);
@@ -184,7 +184,7 @@ test.describe("check if scroll jump compensation works", () => {
     const initial = await getWindowScrollBottom(page);
     let prev = initial;
     const start = performance.now();
-    while ((performance.now() - start) / 1000 < 8) {
+    while ((performance.now() - start) / 1000 < 4) {
       await page.keyboard.press("ArrowUp", { delay: 10 });
       const offset = await getWindowScrollBottom(page);
       expect(offset).toBeGreaterThanOrEqual(
@@ -210,7 +210,7 @@ test.describe("check if scroll jump compensation works", () => {
     const initial = await getWindowScrollLeft(page);
     let prev = initial;
     const start = performance.now();
-    while ((performance.now() - start) / 1000 < 8) {
+    while ((performance.now() - start) / 1000 < 4) {
       await page.keyboard.press("ArrowRight", { delay: 10 });
       const offset = await getWindowScrollLeft(page);
       expect(offset).toBeGreaterThanOrEqual(prev);
@@ -237,7 +237,7 @@ test.describe("check if scroll jump compensation works", () => {
     const initial = await getWindowScrollRight(page);
     let prev = initial;
     const start = performance.now();
-    while ((performance.now() - start) / 1000 < 8) {
+    while ((performance.now() - start) / 1000 < 4) {
       await page.keyboard.press("ArrowLeft", { delay: 10 });
       const offset = await getWindowScrollRight(page);
       expect(offset).toBeGreaterThanOrEqual(
@@ -262,7 +262,7 @@ test.describe("check if item shift compensation works", () => {
       await updateButton.click();
     }
     await windowScrollBy(page, 400);
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
 
     const component = await getVirtualizer(page);
 
@@ -297,7 +297,7 @@ test.describe("check if item shift compensation works", () => {
       await updateButton.click();
     }
     await windowScrollBy(page, 800);
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
 
     const component = await getVirtualizer(page);
 
@@ -648,7 +648,7 @@ test.describe("check if scrollToIndex works", () => {
       await input.fill("700");
       await button.click();
 
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(300);
 
       const called = await scrollListener;
 
@@ -695,7 +695,7 @@ test.describe("check if scrollToIndex works", () => {
       await input.fill("700");
       await button.click();
 
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(300);
 
       const called = await scrollListener;
 
