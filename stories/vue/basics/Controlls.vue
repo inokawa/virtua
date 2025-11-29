@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VList } from '../../src/vue'
+import { VList } from '../../../src/vue'
 
 const heights = [20, 40, 180, 77];
 const createItem = (i: number) => ({ index: i, height: heights[i % 4] + 'px' })

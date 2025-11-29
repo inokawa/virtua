@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Virtualizer } from '../../src/vue'
+import { Virtualizer } from '../../../src/vue'
 
 const sizes = [20, 40, 180, 77];
 const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]);

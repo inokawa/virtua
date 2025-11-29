@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CSSProperties, ref } from "vue";
-import { Virtualizer, VList } from "../../src/vue";
+import { Virtualizer, VList } from "../../../src/vue";
 
 const sizes = [20, 40, 180, 77];
 const activeIndex = ref(0);

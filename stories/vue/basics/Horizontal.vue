@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VList } from '../../src/vue'
+import { VList } from '../../../src/vue'
 
 const sizes = [40, 180, 77];
 const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 3]);

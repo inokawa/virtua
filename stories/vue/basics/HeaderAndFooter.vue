@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Virtualizer } from '../../src/vue'
+import { Virtualizer } from '../../../src/vue'
 
 const sizes = [20, 40, 180, 77];
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, } from 'vue';
-import { Virtualizer } from '../../src/vue'
+import { Virtualizer } from '../../../src/vue'
 
 const COLUMN_WIDTHS = [100, 200, 300, 100, 200, 300, 100, 300, 400, 200];
 
