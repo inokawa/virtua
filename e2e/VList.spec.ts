@@ -645,7 +645,6 @@ test.describe("check if scroll jump compensation works", () => {
     );
 
     // check if stable after image load
-    // https://github.com/microsoft/playwright/issues/6046
     await page.waitForTimeout(3000);
 
     expectInRange(
