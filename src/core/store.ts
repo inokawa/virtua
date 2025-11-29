@@ -99,7 +99,7 @@ export type VirtualStore = {
   $getRange(bufferSize?: number): ItemsRange;
   $findItemIndex(offset: number): number;
   $isUnmeasuredItem(index: number): boolean;
-  $getItemOffset(index: number): number;
+  $getItemOffset(index: number, fromEnd?: boolean): number;
   $getItemSize(index: number): number;
   $getItemsLength(): number;
   $getScrollOffset(): number;
@@ -151,8 +151,12 @@ export const createVirtualStore = (
     return computeRange(cache, startOffset, endOffset, _prevRange[0]);
   };
   const getTotalSize = (): number => _getItemOffset(cache, cache._length);
-  const getItemOffset = (index: number): number => {
-    return _getItemOffset(cache, index) - pendingJump;
+  const getItemOffset = (index: number, fromEnd?: boolean): number => {
+    const offset = _getItemOffset(cache, index) - pendingJump;
+    if (fromEnd) {
+      return getTotalSize() - offset - getItemSize(index);
+    }
+    return offset;
   };
   const getItemSize = (index: number): number => {
     return _getItemSize(cache, index);

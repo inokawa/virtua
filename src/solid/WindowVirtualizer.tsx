@@ -245,7 +245,7 @@ export const WindowVirtualizer = <T,>(
           const itemIndex = createMemo(() => range()[0] + index());
           const offset = createMemo(() => {
             stateVersion();
-            return store.$getItemOffset(itemIndex());
+            return store.$getItemOffset(itemIndex(), isNegative());
           });
           const hide = createMemo(() => {
             stateVersion();
@@ -263,7 +263,6 @@ export const WindowVirtualizer = <T,>(
               _hide={hide()}
               _children={children()}
               _isHorizontal={horizontal}
-              _isNegative={isNegative()}
             />
           );
         }}

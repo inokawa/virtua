@@ -248,12 +248,11 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
           key={getKey(e, index)}
           _resizer={resizer.$observeItem}
           _index={index}
-          _offset={store.$getItemOffset(index)}
+          _offset={store.$getItemOffset(index, isNegative)}
           _hide={store.$isUnmeasuredItem(index)}
           _as={ItemElement as "div"}
           _children={e}
           _isHorizontal={isHorizontal}
-          _isNegative={isNegative}
           _isSSR={isSSR[refKey]}
         />
       );

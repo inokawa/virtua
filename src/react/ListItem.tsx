@@ -19,7 +19,6 @@ interface ListItemProps {
   _hide: boolean;
   _as: "div" | CustomItemComponent;
   _isHorizontal: boolean;
-  _isNegative: boolean;
   _isSSR: boolean | undefined;
 }
 
@@ -35,7 +34,6 @@ export const ListItem = memo(
     _hide: hide,
     _as: Element,
     _isHorizontal: isHorizontal,
-    _isNegative: isNegative,
     _isSSR: isSSR,
   }: ListItemProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
@@ -49,20 +47,14 @@ export const ListItem = memo(
         position: hide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
         [isHorizontal ? "top" : "left"]: 0,
-        [isHorizontal
-          ? isNegative
-            ? "right"
-            : "left"
-          : isNegative
-          ? "bottom"
-          : "top"]: offset,
+        [isHorizontal ? "left" : "top"]: offset,
         visibility: !hide || isSSR ? undefined : "hidden",
       };
       if (isHorizontal) {
         style.display = "inline-flex";
       }
       return style;
-    }, [offset, hide, isSSR, isHorizontal, isNegative]);
+    }, [offset, hide, isSSR, isHorizontal]);
 
     if (typeof Element === "string") {
       return (

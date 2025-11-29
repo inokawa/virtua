@@ -12,7 +12,6 @@
     offset: number;
     hide: boolean;
     horizontal: boolean;
-    negative: boolean;
     resizer: ItemResizeObserver;
   }
 
@@ -24,7 +23,6 @@
     offset,
     hide,
     horizontal,
-    negative,
     resizer,
   }: Props = $props();
 
@@ -48,13 +46,7 @@
       position: "absolute",
       [horizontal ? "height" : "width"]: "100%",
       [horizontal ? "top" : "left"]: "0px",
-      [horizontal
-        ? negative
-          ? "right"
-          : "left"
-        : negative
-          ? "bottom"
-          : "top"]: offset + "px",
+      [horizontal ? "left" : "top"]: offset + "px",
       visibility: hide ? "hidden" : undefined,
     };
     if (horizontal) {

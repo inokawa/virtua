@@ -54,7 +54,6 @@ interface CellProps {
   _height: number;
   _width: number;
   _hide: boolean;
-  _isNegative: boolean;
   _element: "div";
 }
 
@@ -69,7 +68,6 @@ const Cell = memo(
     _height: height,
     _width: width,
     _hide: hide,
-    _isNegative: isNegative,
     _element: Element,
   }: CellProps): ReactElement => {
     const ref = useRef<HTMLDivElement>(null);
@@ -89,7 +87,7 @@ const Cell = memo(
             display: "grid",
             position: "absolute",
             top: top,
-            [isNegative ? "right" : "left"]: left,
+            left: left,
             visibility: hide ? "hidden" : undefined,
             minHeight: height,
             minWidth: width,
@@ -430,14 +428,13 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             _rowIndex={rowIndex}
             _colIndex={colIndex}
             _top={rowStore.$getItemOffset(rowIndex)}
-            _left={colStore.$getItemOffset(colIndex)}
+            _left={colStore.$getItemOffset(colIndex, isNegative)}
             _height={rowStore.$getItemSize(rowIndex)}
             _width={colStore.$getItemSize(colIndex)}
             _hide={
               rowStore.$isUnmeasuredItem(rowIndex) ||
               colStore.$isUnmeasuredItem(colIndex)
             }
-            _isNegative={isNegative}
             _element={ItemElement as "div"}
             _children={render(rowIndex, colIndex)}
           />

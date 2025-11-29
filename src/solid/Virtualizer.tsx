@@ -297,7 +297,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   const renderItem = (data: T, index: Accessor<number>) => {
     const offset = createMemo(() => {
       stateVersion();
-      return store.$getItemOffset(index());
+      return store.$getItemOffset(index(), isNegative());
     });
     const hide = createMemo(() => {
       stateVersion();
@@ -316,7 +316,6 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         _hide={hide()}
         _children={children()}
         _isHorizontal={horizontal}
-        _isNegative={isNegative()}
       />
     );
   };

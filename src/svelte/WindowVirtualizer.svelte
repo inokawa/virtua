@@ -135,10 +135,9 @@
       {item}
       {index}
       as="div"
-      offset={stateVersion && store.$getItemOffset(index)}
+      offset={stateVersion && store.$getItemOffset(index, negative)}
       hide={stateVersion && store.$isUnmeasuredItem(index)}
       {horizontal}
-      {negative}
       resizer={resizer.$observeItem}
     />
   {/each}

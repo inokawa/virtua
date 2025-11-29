@@ -267,12 +267,11 @@ export const WindowVirtualizer = forwardRef<
           key={getKey(e, i)}
           _resizer={resizer.$observeItem}
           _index={i}
-          _offset={store.$getItemOffset(i)}
+          _offset={store.$getItemOffset(i, isNegative)}
           _hide={store.$isUnmeasuredItem(i)}
           _as={ItemElement as "div"}
           _children={e}
           _isHorizontal={isHorizontal}
-          _isNegative={isNegative}
           _isSSR={isSSR[refKey]}
         />
       );
