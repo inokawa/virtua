@@ -11,8 +11,9 @@
     createScroller,
     createVirtualStore,
     getScrollSize as _getScrollSize,
+    sort,
   } from "../core/index.js";
-  import { defaultGetKey, styleToString, iterRange } from "./utils.js";
+  import { defaultGetKey, styleToString } from "./utils.js";
   import ListItem from "./ListItem.svelte";
   import type {
     VirtualizerHandle,
@@ -65,6 +66,25 @@
   let range = $derived(stateVersion && store.$getRange(bufferSize));
   let isScrolling = $derived(stateVersion && store.$isScrolling());
   let totalSize = $derived(stateVersion && store.$getTotalSize());
+
+  let indexes = $derived.by(() => {
+    const [start, end] = range;
+    const arr: number[] = [];
+    if (keepMounted) {
+      const mounted = new Set(keepMounted);
+      for (let i = start; i <= end; i++) {
+        mounted.add(i);
+      }
+      for (const index of sort([...mounted])) {
+        arr.push(index);
+      }
+    } else {
+      for (let i = start; i <= end; i++) {
+        arr.push(i);
+      }
+    }
+    return arr;
+  });
 
   onMount(() => {
     const assignRef = (scrollable: HTMLElement) => {
@@ -146,7 +166,7 @@
   Customizable list virtualizer for advanced usage. See {@link VirtualizerProps} and {@link VirtualizerHandle}.
 -->
 <svelte:element this={as} bind:this={containerRef} style={containerStyle}>
-  {#each iterRange(range, keepMounted) as index (getKey(data[index]!, index))}
+  {#each indexes as index (getKey(data[index]!, index))}
     {@const item = data[index]!}
     <ListItem
       {children}

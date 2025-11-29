@@ -11,7 +11,7 @@
     createWindowResizer,
     createWindowScroller,
   } from "../core/index.js";
-  import { defaultGetKey, iterRange, styleToString } from "./utils.js";
+  import { defaultGetKey, styleToString } from "./utils.js";
   import ListItem from "./ListItem.svelte";
   import type {
     WindowVirtualizerHandle,
@@ -60,6 +60,15 @@
   let range = $derived(stateVersion && store.$getRange(bufferSize));
   let isScrolling = $derived(stateVersion && store.$isScrolling());
   let totalSize = $derived(stateVersion && store.$getTotalSize());
+
+  let indexes = $derived.by(() => {
+    const [start, end] = range;
+    const arr: number[] = [];
+    for (let i = start; i <= end; i++) {
+      arr.push(i);
+    }
+    return arr;
+  });
 
   onMount(() => {
     resizer.$observeRoot(containerRef!);
@@ -117,7 +126,7 @@
   {@link Virtualizer} controlled by the window scrolling. See {@link WindowVirtualizerProps} and {@link WindowVirtualizerHandle}.
 -->
 <div bind:this={containerRef} style={containerStyle}>
-  {#each iterRange(range) as index (getKey(data[index]!, index))}
+  {#each indexes as index (getKey(data[index]!, index))}
     {@const item = data[index]!}
     <ListItem
       {children}
