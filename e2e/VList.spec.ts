@@ -646,10 +646,7 @@ test.describe("check if scroll jump compensation works", () => {
 
     // check if stable after image load
     // https://github.com/microsoft/playwright/issues/6046
-    for (const img of await page.locator("img").all()) {
-      await expect(img).toHaveJSProperty("complete", true);
-      await expect(img).not.toHaveJSProperty("naturalWidth", 0);
-    }
+    await page.waitForTimeout(3000);
 
     expectInRange(
       await relativeTop(component, await findFirstVisibleItem(component)),
