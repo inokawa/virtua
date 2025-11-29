@@ -287,16 +287,3 @@ describe("horizontal", async () => {
     expect(asFragment()).toMatchSnapshot();
   });
 });
-
-describe("reverse", async () => {
-  it("should render many items", async () => {
-    const { asFragment } = await render(
-      <VList reverse>
-        {Array.from({ length: 100 }).map((_, i) => (
-          <div key={i}>{i}</div>
-        ))}
-      </VList>
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-});

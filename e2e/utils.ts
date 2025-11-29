@@ -165,6 +165,10 @@ export const getWindowScrollRight = (page: Page) => {
   return page.evaluate(() => document.body.scrollWidth - window.scrollX);
 };
 
+export const isVerticalScrollBarVisible = async (e: Locator) => {
+  return e.evaluate((e) => e.scrollHeight > (e as HTMLElement).offsetHeight);
+};
+
 export const scrollTo = (
   scrollable: ScrollableLocator,
   offset: number,

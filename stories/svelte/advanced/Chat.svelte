@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { VList } from "../../../src/svelte";
-  import type { VListHandle } from "../../../src/svelte";
+  import { Virtualizer, type VirtualizerHandle } from "../../../src/svelte";
   import { faker } from "@faker-js/faker";
   import { onMount } from "svelte";
 
@@ -25,7 +24,7 @@
 
   let items = $state(Array.from({ length: 100 }, () => createItem()));
   let value = $state("Hello world!");
-  let ref: VListHandle;
+  let ref: VirtualizerHandle;
   let shouldStickToBottom = $state(true);
   let isPrepend = $state(false);
 
@@ -100,31 +99,47 @@
 <div
   style="width: 100vw; height: 100vh; display: flex; flex-direction: column;"
 >
-  <VList
-    bind:this={ref}
-    data={items}
-    shift={isPrepend}
-    style="flex: 1"
-    getKey={(d) => d.id}
-    onscroll={handleScroll}
+  <div
+    style="
+    overflow-y: auto;
+    flex: 1;
+    /* opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer */
+    overflow-anchor: none;
+    /* flex style for spacer */
+    display: flex;
+    flex-direction: column;
+  "
   >
-    {#snippet children(item)}
-      {#if item.me === true}
-        <div
-          style="border: solid 1px #ccc; background: lightyellow; padding: 10px; border-radius: 8px; white-space: pre-wrap; margin: 10px; margin-left: 160px;"
-        >
-          {item.value}
-        </div>
-      {:else}
-        <div
-          style="border: solid 1px #ccc; background: #fff; padding: 10px; border-radius: 8px; white-space: pre-wrap; margin: 10px; margin-right: 160px;"
-        >
-          {item.value}
-        </div>
-      {/if}
-    {/snippet}
-  </VList>
-
+    <div
+      style="
+      /* spacer to align virtualizer to the bottom when all items are visible in the viewport */
+      flex-grow: 1
+    "
+    ></div>
+    <Virtualizer
+      bind:this={ref}
+      data={items}
+      shift={isPrepend}
+      getKey={(d) => d.id}
+      onscroll={handleScroll}
+    >
+      {#snippet children(item)}
+        {#if item.me === true}
+          <div
+            style="border: solid 1px #ccc; background: lightyellow; padding: 10px; border-radius: 8px; white-space: pre-wrap; margin: 10px; margin-left: 160px;"
+          >
+            {item.value}
+          </div>
+        {:else}
+          <div
+            style="border: solid 1px #ccc; background: #fff; padding: 10px; border-radius: 8px; white-space: pre-wrap; margin: 10px; margin-right: 160px;"
+          >
+            {item.value}
+          </div>
+        {/if}
+      {/snippet}
+    </Virtualizer>
+  </div>
   <form
     style="display: flex; justify-content: flex-end; margin: 10px;"
     onsubmit={(e) => {
