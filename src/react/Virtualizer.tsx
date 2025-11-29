@@ -236,6 +236,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     const totalSize = store.$getTotalSize();
 
     const isNegative = scroller.$isNegative();
+    const pushKey = !isHorizontal && isNegative ? "unshift" : "push";
 
     const items: ReactElement[] = [];
 
@@ -335,11 +336,11 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         mounted.add(i);
       }
       sort([...mounted]).forEach((index) => {
-        items.push(renderItem(index));
+        items[pushKey](renderItem(index));
       });
     } else {
       for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
-        items.push(renderItem(i));
+        items[pushKey](renderItem(i));
       }
     }
 

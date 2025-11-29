@@ -200,11 +200,12 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
 
       const total = totalSize.value;
       const isNegative = scroller.$isNegative();
+      const pushKey = !isHorizontal && isNegative ? "unshift" : "push";
 
       const items: VNode[] = [];
       for (let [i, j] = range.value; i <= j; i++) {
         const e = slots.default({ item: props.data![i]!, index: i })[0]!;
-        items.push(
+        items[pushKey](
           <ListItem
             key={getKey(e, i)}
             _stateVersion={stateVersion}

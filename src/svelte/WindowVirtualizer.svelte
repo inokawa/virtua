@@ -64,9 +64,10 @@
 
   let indexes = $derived.by(() => {
     const [start, end] = range;
+    const pushKey = !horizontal && negative ? "unshift" : "push";
     const arr: number[] = [];
     for (let i = start; i <= end; i++) {
-      arr.push(i);
+      arr[pushKey](i);
     }
     return arr;
   });
