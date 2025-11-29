@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { WindowVirtualizer } from "../../src/svelte";
+  import { WindowVirtualizer } from "../../../src/svelte";
 
   const sizes = [20, 40, 180, 77];
 

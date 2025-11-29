@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { VList } from "../../src/svelte";
+  import { VList } from "../../../src/svelte";
 
   const sizes = [20, 40, 180, 77];
 

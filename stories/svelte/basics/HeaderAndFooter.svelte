@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Virtualizer } from "../../src/svelte";
+  import { Virtualizer } from "../../../src/svelte";
 
   const sizes = [20, 40, 180, 77];
 

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { VList } from "../../src/svelte";
-  import type { VListHandle } from "../../src/svelte";
+  import { VList } from "../../../src/svelte";
+  import type { VListHandle } from "../../../src/svelte";
   import { faker } from "@faker-js/faker";
   import { onMount } from "svelte";
 

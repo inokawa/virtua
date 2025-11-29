@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Virtualizer } from "../../src/svelte";
+  import { Virtualizer } from "../../../src/svelte";
 
   const COLUMN_WIDTHS = [100, 200, 300, 100, 200, 300, 100, 300, 400, 200];
 
