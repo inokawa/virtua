@@ -141,32 +141,24 @@
     </Virtualizer>
   </div>
   <form
-    style="display: flex; justify-content: flex-end; margin: 10px;"
+    style="display: flex; flex-direction: column; margin: 10px;"
     onsubmit={(e) => {
       e.preventDefault();
       e.stopPropagation();
       submit();
     }}
   >
+    <textarea
+      style="flex: 1;"
+      rows="6"
+      bind:value
+      onkeydown={handleKeyDown}
+    ></textarea>
     <div
-      style="position: absolute; left: 10px; bottom:10px; display: flex; gap: 4px;"
+      style="display: flex; flex-direction: row; gap: 8px; justify-content: flex-end;"
     >
       <button type="button" onclick={jumpToTop}> jump to top </button>
-    </div>
-    <div
-      style="display: flex; flex-direction: column; justify-content: flex-end;"
-    >
-      <textarea
-        style="width: 400px;"
-        rows="6"
-        bind:value
-        onkeydown={handleKeyDown}
-      ></textarea>
-      <div
-        style="display: flex; flex-direction: row; gap: 8px; justify-content: flex-end;"
-      >
-        <button type="submit" {disabled}> submit </button>
-      </div>
+      <button type="submit" {disabled}> submit </button>
     </div>
   </form>
 </div>

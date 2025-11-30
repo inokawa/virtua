@@ -178,47 +178,40 @@ export const Default: StoryObj = {
             )
           )}
         </VList>
+
         <form
-          style={{ display: "flex", justifyContent: "flex-end", margin: 10 }}
+          style={{ display: "flex", flexDirection: "column", margin: 10 }}
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
             submit();
           }}
         >
+          <textarea
+            style={{ flex: 1 }}
+            rows={6}
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.code === "Enter" && (e.ctrlKey || e.metaKey)) {
+                submit();
+                e.preventDefault();
+              }
+            }}
+          />
           <div
             style={{
               display: "flex",
-              flexDirection: "column",
+              flexDirection: "row",
+              gap: 8,
               justifyContent: "flex-end",
             }}
           >
-            <textarea
-              style={{ width: 400 }}
-              rows={6}
-              value={value}
-              onChange={(e) => {
-                setValue(e.target.value);
-              }}
-              onKeyDown={(e) => {
-                if (e.code === "Enter" && (e.ctrlKey || e.metaKey)) {
-                  submit();
-                  e.preventDefault();
-                }
-              }}
-            />
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: 8,
-                justifyContent: "flex-end",
-              }}
-            >
-              <button type="submit" disabled={disabled}>
-                ask ai
-              </button>
-            </div>
+            <button type="submit" disabled={disabled}>
+              ask ai
+            </button>
           </div>
         </form>
       </div>
