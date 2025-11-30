@@ -4,7 +4,6 @@ import React, {
   CSSProperties,
   ReactNode,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -51,17 +50,30 @@ const AssistantItem = ({
   );
 };
 
-const UserItem = ({ children }: { children: ReactNode }) => {
+const UserItem = ({
+  children,
+  onMeasure,
+}: {
+  children: ReactNode;
+  onMeasure?: (size: number) => void;
+}) => {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (ref.current && onMeasure) {
+      onMeasure(ref.current.getBoundingClientRect().height);
+    }
+  }, []);
   return (
-    <div
-      style={{
-        ...itemStyle,
-        background: "lightyellow",
-        margin: 10,
-        marginLeft: 160,
-      }}
-    >
-      {children}
+    <div ref={ref} style={{ padding: 10, boxSizing: "border-box" }}>
+      <div
+        style={{
+          ...itemStyle,
+          background: "lightyellow",
+          marginLeft: 160,
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 };
@@ -85,26 +97,11 @@ export const Default: StoryObj = {
 
     const ref = useRef<VListHandle>(null);
 
-    const isPrepend = useRef(false);
-    const shouldStickToBottom = useRef(true);
-
     const [streaming, setStreaming] = useState(false);
+    const [lastUserSize, setLastUserSize] = useState(0);
     const [blankSize, setBlankSize] = useState(0);
 
     const [value, setValue] = useState("Hello world!");
-
-    useLayoutEffect(() => {
-      isPrepend.current = false;
-    });
-
-    useEffect(() => {
-      if (!ref.current) return;
-      const handle = ref.current;
-      const lastItemIndex = items.length - 1;
-      if (shouldStickToBottom.current) {
-        handle.scrollToIndex(lastItemIndex, { align: "end" });
-      }
-    }, [items]);
 
     const disabled = !value.length || streaming;
     const submit = () => {
@@ -116,36 +113,18 @@ export const Default: StoryObj = {
       const lastItemIndex = items.length - 1;
       const item = createItem({ value: "", role: "assistant" });
       const { id } = item;
+
       setItems((p) => [...p, createItem({ role: "user", value }), item]);
       setStreaming(true);
-      shouldStickToBottom.current = false;
-
-      const isAtBottom =
-        handle.scrollOffset - handle.scrollSize + handle.viewportSize >=
-        // FIXME: The sum may not be 0 because of sub-pixel value when browser's window.devicePixelRatio has decimal value
-        -1.5;
-      if (!isAtBottom) {
-        handle.scrollToIndex(lastItemIndex, {
-          align: "start",
-          offset: handle.getItemSize(lastItemIndex),
-        });
-      }
-
-      // wait for new item mounts
-      setTimeout(() => {
-        const userIndex = lastItemIndex + 1;
-        setBlankSize(handle.viewportSize - handle.getItemSize(userIndex));
-
-        handle.scrollToIndex(userIndex, {
-          smooth: true,
-          align: "start",
-        });
-      }, 50);
+      setBlankSize(handle.viewportSize);
+      handle.scrollToIndex(lastItemIndex, {
+        smooth: true,
+        align: "start",
+        offset: handle.getItemSize(lastItemIndex),
+      });
 
       // emulate streaming from LLM
       setTimeout(() => {
-        shouldStickToBottom.current = true;
-
         let counter = 0;
         const amount = Math.floor(Math.random() * 5) + 1;
         const interval = setInterval(() => {
@@ -176,17 +155,24 @@ export const Default: StoryObj = {
           flexDirection: "column",
         }}
       >
-        <VList ref={ref} shift={isPrepend.current}>
+        <VList ref={ref}>
           {items.map((d, i) =>
             d.role === "assistant" ? (
               <AssistantItem
                 key={d.id}
-                blankSize={i === items.length - 1 ? blankSize : undefined}
+                blankSize={
+                  i === items.length - 1 ? blankSize - lastUserSize : undefined
+                }
               >
                 {d.value}
               </AssistantItem>
             ) : (
-              <UserItem key={d.id}>{d.value}</UserItem>
+              <UserItem
+                key={d.id}
+                onMeasure={i === items.length - 2 ? setLastUserSize : undefined}
+              >
+                {d.value}
+              </UserItem>
             )
           )}
         </VList>
