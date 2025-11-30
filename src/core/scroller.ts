@@ -333,7 +333,10 @@ export const createScroller = (
           const dummy = getCurrentDocument(viewport).createElement("div");
           dummy.style.cssText = `visibility:hidden;min-${
             isHorizontal ? "width" : "height"
-          }:${viewportSize + 1}px`;
+          }:${
+            // Set larger value than the viewportSize to force overflow. And the value must take subpixels into account.
+            viewportSize + 9
+          }px`;
           viewport.appendChild(dummy);
           viewport[scrollOffsetKey] = 1;
           // It can be positive under some specific situations even if negative mode, so we use `<` for now.
