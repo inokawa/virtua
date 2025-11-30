@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from "react";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
-import { isRTLDocument, type ItemResizeObserver } from "../core/index.js";
+import { type ItemResizeObserver } from "../core/index.js";
 import { refKey } from "./utils.js";
 import { type CustomItemComponent } from "./types.js";
 
@@ -47,7 +47,7 @@ export const ListItem = memo(
         position: hide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
         [isHorizontal ? "top" : "left"]: 0,
-        [isHorizontal ? (isRTLDocument() ? "right" : "left") : "top"]: offset,
+        [isHorizontal ? "left" : "top"]: offset,
         visibility: !hide || isSSR ? undefined : "hidden",
       };
       if (isHorizontal) {

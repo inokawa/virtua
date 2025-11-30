@@ -33,7 +33,7 @@
     "name": "vue VList",
     "path": "lib/vue/index.js",
     "import": "{ VList }",
-    "limit": "4.2 kB"
+    "limit": "4.3 kB"
   },
   {
     "name": "vue Virtualizer",

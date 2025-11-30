@@ -1,7 +1,7 @@
 /**
  * @jsxImportSource solid-js
  */
-import { type ItemResizeObserver, isRTLDocument } from "../core/index.js";
+import { type ItemResizeObserver } from "../core/index.js";
 import {
   type Component,
   type JSX,
@@ -46,8 +46,7 @@ export const ListItem: Component<ListItemProps> = (props) => {
       position: "absolute",
       [isHorizontal ? "height" : "width"]: "100%",
       [isHorizontal ? "top" : "left"]: "0px",
-      [isHorizontal ? (isRTLDocument() ? "right" : "left") : "top"]:
-        props._offset + "px",
+      [isHorizontal ? "left" : "top"]: props._offset + "px",
       visibility: props._hide ? "hidden" : undefined,
     };
     if (isHorizontal) {

@@ -200,6 +200,9 @@ export const WindowVirtualizer = forwardRef<
     const isScrolling = store.$isScrolling();
     const totalSize = store.$getTotalSize();
 
+    const isNegative = scroller.$isNegative();
+    const pushKey = !isHorizontal && isNegative ? "unshift" : "push";
+
     const items: ReactElement[] = [];
 
     useIsomorphicLayoutEffect(() => {
@@ -259,12 +262,12 @@ export const WindowVirtualizer = forwardRef<
 
     for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
       const e = renderElement(i);
-      items.push(
+      items[pushKey](
         <ListItem
           key={getKey(e, i)}
           _resizer={resizer.$observeItem}
           _index={i}
-          _offset={store.$getItemOffset(i)}
+          _offset={store.$getItemOffset(i, isNegative)}
           _hide={store.$isUnmeasuredItem(i)}
           _as={ItemElement as "div"}
           _children={e}

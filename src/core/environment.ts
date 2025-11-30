@@ -5,7 +5,11 @@ import { once } from "./utils.js";
  */
 export const isBrowser = typeof window !== "undefined";
 
-const getDocumentElement = () => document.documentElement;
+/**
+ * @internal
+ */
+export const getDocumentElement = (doc: Document): HTMLElement =>
+  doc.documentElement;
 
 /**
  * @internal
@@ -17,16 +21,6 @@ export const getCurrentDocument = (node: HTMLElement): Document =>
  * @internal
  */
 export const getCurrentWindow = (doc: Document) => doc.defaultView!;
-
-/**
- * @internal
- */
-export const isRTLDocument = /*#__PURE__*/ once((): boolean => {
-  // TODO support SSR in rtl
-  return isBrowser
-    ? getComputedStyle(getDocumentElement()).direction === "rtl"
-    : false;
-});
 
 /**
  * Currently, all browsers on iOS/iPadOS are WebKit, including WebView.
@@ -47,5 +41,5 @@ export const isIOSWebKit = /*#__PURE__*/ once((): boolean => {
  * @internal
  */
 export const isSmoothScrollSupported = /*#__PURE__*/ once((): boolean => {
-  return "scrollBehavior" in getDocumentElement().style;
+  return "scrollBehavior" in getDocumentElement(document).style;
 });

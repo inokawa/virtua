@@ -19,7 +19,6 @@ import {
   createGridScroller,
   createGridResizer,
   type GridResizer,
-  isRTLDocument,
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
 } from "../core/index.js";
@@ -88,7 +87,7 @@ const Cell = memo(
             display: "grid",
             position: "absolute",
             top: top,
-            [isRTLDocument() ? "right" : "left"]: left,
+            left: left,
             visibility: hide ? "hidden" : undefined,
             minHeight: height,
             minWidth: width,
@@ -414,6 +413,8 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       };
     }, [children]);
 
+    const isNegative = scroller.$isNegative();
+
     const [startRowIndex, endRowIndex] = rowStore.$getRange(bufferSize);
     const [startColIndex, endColIndex] = colStore.$getRange(bufferSize);
 
@@ -427,7 +428,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             _rowIndex={rowIndex}
             _colIndex={colIndex}
             _top={rowStore.$getItemOffset(rowIndex)}
-            _left={colStore.$getItemOffset(colIndex)}
+            _left={colStore.$getItemOffset(colIndex, isNegative)}
             _height={rowStore.$getItemSize(rowIndex)}
             _width={colStore.$getItemSize(colIndex)}
             _hide={

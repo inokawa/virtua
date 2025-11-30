@@ -266,6 +266,8 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       const ItemElement = props.item;
 
       const total = totalSize.value;
+      const isNegative = scroller.$isNegative();
+      const pushKey = !isHorizontal && isNegative ? "unshift" : "push";
 
       const items: VNode[] = [];
 
@@ -280,6 +282,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
             _index={i}
             _children={e}
             _isHorizontal={isHorizontal}
+            _isNegative={isNegative}
             _isSSR={isSSR}
             _as={ItemElement}
             _itemProps={props.itemProps?.({ item: props.data![i]!, index: i })}
@@ -293,11 +296,11 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
           mounted.add(i);
         }
         sort([...mounted]).forEach((index) => {
-          items.push(renderItem(index));
+          items[pushKey](renderItem(index));
         });
       } else {
         for (let [i, j] = range.value; i <= j; i++) {
-          items.push(renderItem(i));
+          items[pushKey](renderItem(i));
         }
       }
 

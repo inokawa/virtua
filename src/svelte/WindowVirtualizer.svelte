@@ -60,12 +60,14 @@
   let range = $derived(stateVersion && store.$getRange(bufferSize));
   let isScrolling = $derived(stateVersion && store.$isScrolling());
   let totalSize = $derived(stateVersion && store.$getTotalSize());
+  let negative = $derived(stateVersion && scroller.$isNegative());
 
   let indexes = $derived.by(() => {
     const [start, end] = range;
+    const pushKey = !horizontal && negative ? "unshift" : "push";
     const arr: number[] = [];
     for (let i = start; i <= end; i++) {
-      arr.push(i);
+      arr[pushKey](i);
     }
     return arr;
   });
@@ -133,7 +135,7 @@
       {item}
       {index}
       as="div"
-      offset={stateVersion && store.$getItemOffset(index)}
+      offset={stateVersion && store.$getItemOffset(index, negative)}
       hide={stateVersion && store.$isUnmeasuredItem(index)}
       {horizontal}
       resizer={resizer.$observeItem}

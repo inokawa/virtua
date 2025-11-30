@@ -171,6 +171,7 @@ export const WindowVirtualizer = <T,>(
   });
   const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
   const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
+  const isNegative = createMemo(() => stateVersion() && scroller.$isNegative());
 
   onMount(() => {
     if (props.ref) {
@@ -218,9 +219,10 @@ export const WindowVirtualizer = <T,>(
         store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
       }
     });
+    const pushKey = !horizontal && isNegative() ? "unshift" : "push";
     const items: T[] = [];
     for (let [i, j] = range(); i <= j; i++) {
-      items.push(props.data[i]!);
+      items[pushKey](props.data[i]!);
     }
     return items;
   });
@@ -243,7 +245,7 @@ export const WindowVirtualizer = <T,>(
           const itemIndex = createMemo(() => range()[0] + index());
           const offset = createMemo(() => {
             stateVersion();
-            return store.$getItemOffset(itemIndex());
+            return store.$getItemOffset(itemIndex(), isNegative());
           });
           const hide = createMemo(() => {
             stateVersion();

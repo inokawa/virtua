@@ -12,7 +12,6 @@ import {
 } from "vue";
 import {
   type ItemResizeObserver,
-  isRTLDocument,
   type StateVersion,
   type VirtualStore,
 } from "../core/index.js";
@@ -36,6 +35,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
     _index: { type: Number, required: true },
     _isHorizontal: { type: Boolean },
     _isSSR: { type: Boolean },
+    _isNegative: { type: Boolean },
     _as: { type: String as PropType<keyof NativeElements>, required: true },
     _itemProps: Object as PropType<ReturnType<ItemProps>>,
   },
@@ -44,7 +44,8 @@ export const ListItem = /*#__PURE__*/ defineComponent({
 
     const offset = computed(
       () =>
-        props._stateVersion.value && props._store.$getItemOffset(props._index)
+        props._stateVersion.value &&
+        props._store.$getItemOffset(props._index, props._isNegative)
     );
     const hide = computed(
       () =>
@@ -79,8 +80,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
         position: isHide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
         [isHorizontal ? "top" : "left"]: "0px",
-        [isHorizontal ? (isRTLDocument() ? "right" : "left") : "top"]:
-          offset.value + "px",
+        [isHorizontal ? "left" : "top"]: offset.value + "px",
         visibility: !isHide || isSSR ? undefined : "hidden",
         ...styleProp,
       };

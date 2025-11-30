@@ -75,6 +75,61 @@ export const Horizontal: StoryObj = {
   },
 };
 
+export const Rtl: StoryObj = {
+  render: () => {
+    return (
+      <div>
+        <VList
+          style={{ width: "100%", height: 200, direction: "rtl" }}
+          horizontal
+        >
+          {Array.from({ length: 1000 }).map((_, i) => {
+            return (
+              <div
+                key={i}
+                style={{
+                  width: i % 3 === 0 ? 100 : 60,
+                  borderRight: "solid 1px #ccc",
+                  background: "#fff",
+                }}
+              >
+                العمود {i}
+              </div>
+            );
+          })}
+        </VList>
+        <VList
+          style={{ width: "100%", height: 200, writingMode: "vertical-rl" }}
+          horizontal
+        >
+          {Array.from({ length: 1000 }).map((_, i) => {
+            return (
+              <div
+                key={i}
+                style={{
+                  width: i % 3 === 0 ? 100 : 60,
+                  height: "100%",
+                  borderRight: "solid 1px #ccc",
+                  background: "#fff",
+                }}
+              >
+                列{" "}
+                {String(i)
+                  .split("")
+                  .reduce(
+                    (acc, s) =>
+                      acc + String.fromCharCode(s.charCodeAt(0) + 0xfee0),
+                    ""
+                  )}
+              </div>
+            );
+          })}
+        </VList>
+      </div>
+    );
+  },
+};
+
 export const PaddingAndMargin: StoryObj = {
   render: () => {
     return (

@@ -235,6 +235,9 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     const isScrolling = store.$isScrolling();
     const totalSize = store.$getTotalSize();
 
+    const isNegative = scroller.$isNegative();
+    const pushKey = !isHorizontal && isNegative ? "unshift" : "push";
+
     const items: ReactElement[] = [];
 
     const renderItem = (index: number) => {
@@ -245,7 +248,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
           key={getKey(e, index)}
           _resizer={resizer.$observeItem}
           _index={index}
-          _offset={store.$getItemOffset(index)}
+          _offset={store.$getItemOffset(index, isNegative)}
           _hide={store.$isUnmeasuredItem(index)}
           _as={ItemElement as "div"}
           _children={e}
@@ -332,11 +335,11 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         mounted.add(i);
       }
       sort([...mounted]).forEach((index) => {
-        items.push(renderItem(index));
+        items[pushKey](renderItem(index));
       });
     } else {
       for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
-        items.push(renderItem(i));
+        items[pushKey](renderItem(i));
       }
     }
 

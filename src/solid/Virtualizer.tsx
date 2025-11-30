@@ -206,6 +206,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   });
   const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
   const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
+  const isNegative = createMemo(() => stateVersion() && scroller.$isNegative());
 
   onMount(() => {
     if (props.ref) {
@@ -270,6 +271,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
       }
     });
+    const pushKey = !horizontal && isNegative() ? "unshift" : "push";
     const items: T[] = [];
     const indexes: number[] = [];
 
@@ -279,13 +281,13 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         mounted.add(i);
       }
       sort([...mounted]).forEach((index) => {
-        items.push(props.data[index]!);
-        indexes.push(index);
+        items[pushKey](props.data[index]!);
+        indexes[pushKey](index);
       });
     } else {
       for (let [i, j] = range(); i <= j; i++) {
-        items.push(props.data[i]!);
-        indexes.push(i);
+        items[pushKey](props.data[i]!);
+        indexes[pushKey](i);
       }
     }
 
@@ -295,7 +297,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   const renderItem = (data: T, index: Accessor<number>) => {
     const offset = createMemo(() => {
       stateVersion();
-      return store.$getItemOffset(index());
+      return store.$getItemOffset(index(), isNegative());
     });
     const hide = createMemo(() => {
       stateVersion();
