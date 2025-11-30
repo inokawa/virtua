@@ -117,10 +117,12 @@ export const Default: StoryObj = {
       setItems((p) => [...p, createItem({ role: "user", value }), item]);
       setStreaming(true);
       setBlankSize(handle.viewportSize);
-      handle.scrollToIndex(lastItemIndex, {
-        smooth: true,
-        align: "start",
-        offset: handle.getItemSize(lastItemIndex),
+
+      requestAnimationFrame(() => {
+        handle.scrollToIndex(lastItemIndex + 1, {
+          smooth: true,
+          align: "start",
+        });
       });
 
       // emulate streaming from LLM
