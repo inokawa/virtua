@@ -38,7 +38,7 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      use: { ...devices["Desktop Chrome"], deviceScaleFactor: 1.5 },
       grepInvert: new RegExp(String.raw`${IOS_SPECS}`),
     },
     {
