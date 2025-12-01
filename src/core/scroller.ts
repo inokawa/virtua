@@ -324,31 +324,9 @@ export const createScroller = (
     $observe(viewport) {
       viewportElement = viewport;
 
-      const clean = store.$subscribe(UPDATE_SIZE_EVENT, () => {
-        // Detect overflowed direction after the initial viewport measurement
-        const viewportSize = store.$getViewportSize();
-        if (viewportSize) {
-          const prev = viewport[scrollOffsetKey];
-
-          const dummy = getCurrentDocument(viewport).createElement("div");
-          // Append element larger than the viewportSize to force overflow.
-          dummy.style.cssText = `visibility:hidden;min-${
-            isHorizontal ? "width" : "height"
-          }:${viewportSize + 9}px`;
-          viewport.appendChild(dummy);
-
-          // Set positive value to scrollTop/scrollLeft to check if the range is negative or positive.
-          // However the value can be positive value even if it is negative range (e.g. 0.6666px in Windows Chrome), so we use `< 1` here.
-          // For similar reason, the appended element's size must be larger than viewportSize + 1px, to take subpixels into account.
-          viewport[scrollOffsetKey] = 1;
-          isNegative = viewport[scrollOffsetKey] < 1;
-          viewport.removeChild(dummy);
-
-          viewport[scrollOffsetKey] = prev;
-
-          clean();
-        }
-      });
+      if (isHorizontal) {
+        isNegative = getComputedStyle(viewport).direction === "rtl";
+      }
 
       scrollObserver = createScrollObserver(
         store,

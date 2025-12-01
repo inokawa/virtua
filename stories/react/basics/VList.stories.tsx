@@ -98,7 +98,7 @@ export const Rtl: StoryObj = {
             );
           })}
         </VList>
-        <VList
+        {/* <VList
           style={{ width: "100%", height: 200, writingMode: "vertical-rl" }}
           horizontal
         >
@@ -124,7 +124,7 @@ export const Rtl: StoryObj = {
               </div>
             );
           })}
-        </VList>
+        </VList> */}
       </div>
     );
   },
