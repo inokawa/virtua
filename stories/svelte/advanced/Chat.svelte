@@ -43,7 +43,7 @@
     }
   });
 
-  // Auto-add items timer (when not streaming)
+  // Auto-add items timer
   onMount(() => {
     let timer: ReturnType<typeof setTimeout> | null = null;
 
@@ -148,11 +148,7 @@
       submit();
     }}
   >
-    <textarea
-      style="flex: 1;"
-      rows="6"
-      bind:value
-      onkeydown={handleKeyDown}
+    <textarea style="flex: 1;" rows="6" bind:value onkeydown={handleKeyDown}
     ></textarea>
     <div
       style="display: flex; flex-direction: row; gap: 8px; justify-content: flex-end;"
