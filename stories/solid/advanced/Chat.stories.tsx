@@ -21,8 +21,8 @@ const itemStyle = {
   background: "#fff",
   margin: "10px",
   padding: "10px",
-  borderRadius: "8px",
-  whiteSpace: "pre-wrap",
+  "border-radius": "8px",
+  "white-space": "pre-wrap",
 };
 
 function Item(props: { me?: boolean; children: any }) {
