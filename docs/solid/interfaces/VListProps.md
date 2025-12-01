@@ -4,7 +4,7 @@
 
 # Interface: VListProps\<T\>
 
-Defined in: [src/solid/VList.tsx:20](https://github.com/inokawa/virtua/blob/fd8fca1e616093179e57dd2902c944b35dad0f84/src/solid/VList.tsx#L20)
+Defined in: [src/solid/VList.tsx:20](https://github.com/inokawa/virtua/blob/f062d44f00ef139357d4909c2cead7e57ebe2453/src/solid/VList.tsx#L20)
 
 Props of [VList](../functions/VList.md).
 
@@ -24,7 +24,7 @@ Props of [VList](../functions/VList.md).
 
 > **children**: (`data`, `index`) => `Element`
 
-Defined in: [src/solid/Virtualizer.tsx:106](https://github.com/inokawa/virtua/blob/fd8fca1e616093179e57dd2902c944b35dad0f84/src/solid/Virtualizer.tsx#L106)
+Defined in: [src/solid/Virtualizer.tsx:106](https://github.com/inokawa/virtua/blob/f062d44f00ef139357d4909c2cead7e57ebe2453/src/solid/Virtualizer.tsx#L106)
 
 The elements renderer function.
 
@@ -52,7 +52,7 @@ The elements renderer function.
 
 > `optional` **onScroll**: (`offset`) => `void`
 
-Defined in: [src/solid/Virtualizer.tsx:159](https://github.com/inokawa/virtua/blob/fd8fca1e616093179e57dd2902c944b35dad0f84/src/solid/Virtualizer.tsx#L159)
+Defined in: [src/solid/Virtualizer.tsx:159](https://github.com/inokawa/virtua/blob/f062d44f00ef139357d4909c2cead7e57ebe2453/src/solid/Virtualizer.tsx#L159)
 
 Callback invoked whenever scroll offset changes.
 
@@ -78,7 +78,7 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 > `optional` **onScrollEnd**: () => `void`
 
-Defined in: [src/solid/Virtualizer.tsx:163](https://github.com/inokawa/virtua/blob/fd8fca1e616093179e57dd2902c944b35dad0f84/src/solid/Virtualizer.tsx#L163)
+Defined in: [src/solid/Virtualizer.tsx:163](https://github.com/inokawa/virtua/blob/f062d44f00ef139357d4909c2cead7e57ebe2453/src/solid/Virtualizer.tsx#L163)
 
 Callback invoked when scrolling stops.
 
@@ -96,7 +96,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **shift**: `boolean`
 
-Defined in: [src/solid/Virtualizer.tsx:136](https://github.com/inokawa/virtua/blob/fd8fca1e616093179e57dd2902c944b35dad0f84/src/solid/Virtualizer.tsx#L136)
+Defined in: [src/solid/Virtualizer.tsx:136](https://github.com/inokawa/virtua/blob/f062d44f00ef139357d4909c2cead7e57ebe2453/src/solid/Virtualizer.tsx#L136)
 
 While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
 
@@ -106,25 +106,11 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 ***
 
-### data
-
-> **data**: readonly `T`[]
-
-Defined in: [src/solid/Virtualizer.tsx:102](https://github.com/inokawa/virtua/blob/fd8fca1e616093179e57dd2902c944b35dad0f84/src/solid/Virtualizer.tsx#L102)
-
-The data items rendered by this component.
-
-#### Inherited from
-
-`Pick.data`
-
-***
-
 ### ref()?
 
 > `optional` **ref**: (`handle?`) => `void`
 
-Defined in: [src/solid/Virtualizer.tsx:98](https://github.com/inokawa/virtua/blob/fd8fca1e616093179e57dd2902c944b35dad0f84/src/solid/Virtualizer.tsx#L98)
+Defined in: [src/solid/Virtualizer.tsx:98](https://github.com/inokawa/virtua/blob/f062d44f00ef139357d4909c2cead7e57ebe2453/src/solid/Virtualizer.tsx#L98)
 
 Get reference to [VirtualizerHandle](VirtualizerHandle.md).
 
@@ -144,11 +130,25 @@ Get reference to [VirtualizerHandle](VirtualizerHandle.md).
 
 ***
 
+### data
+
+> **data**: readonly `T`[]
+
+Defined in: [src/solid/Virtualizer.tsx:102](https://github.com/inokawa/virtua/blob/f062d44f00ef139357d4909c2cead7e57ebe2453/src/solid/Virtualizer.tsx#L102)
+
+The data items rendered by this component.
+
+#### Inherited from
+
+`Pick.data`
+
+***
+
 ### bufferSize?
 
 > `optional` **bufferSize**: `number`
 
-Defined in: [src/solid/Virtualizer.tsx:111](https://github.com/inokawa/virtua/blob/fd8fca1e616093179e57dd2902c944b35dad0f84/src/solid/Virtualizer.tsx#L111)
+Defined in: [src/solid/Virtualizer.tsx:111](https://github.com/inokawa/virtua/blob/f062d44f00ef139357d4909c2cead7e57ebe2453/src/solid/Virtualizer.tsx#L111)
 
 Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -168,7 +168,7 @@ Extra item space in pixels to render before/after the viewport. The minimum valu
 
 > `optional` **itemSize**: `number`
 
-Defined in: [src/solid/Virtualizer.tsx:132](https://github.com/inokawa/virtua/blob/fd8fca1e616093179e57dd2902c944b35dad0f84/src/solid/Virtualizer.tsx#L132)
+Defined in: [src/solid/Virtualizer.tsx:132](https://github.com/inokawa/virtua/blob/f062d44f00ef139357d4909c2cead7e57ebe2453/src/solid/Virtualizer.tsx#L132)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -185,7 +185,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **horizontal**: `boolean`
 
-Defined in: [src/solid/Virtualizer.tsx:140](https://github.com/inokawa/virtua/blob/fd8fca1e616093179e57dd2902c944b35dad0f84/src/solid/Virtualizer.tsx#L140)
+Defined in: [src/solid/Virtualizer.tsx:140](https://github.com/inokawa/virtua/blob/f062d44f00ef139357d4909c2cead7e57ebe2453/src/solid/Virtualizer.tsx#L140)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -199,7 +199,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `optional` **keepMounted**: readonly `number`[]
 
-Defined in: [src/solid/Virtualizer.tsx:144](https://github.com/inokawa/virtua/blob/fd8fca1e616093179e57dd2902c944b35dad0f84/src/solid/Virtualizer.tsx#L144)
+Defined in: [src/solid/Virtualizer.tsx:144](https://github.com/inokawa/virtua/blob/f062d44f00ef139357d4909c2cead7e57ebe2453/src/solid/Virtualizer.tsx#L144)
 
 List of indexes that should be always mounted, even when off screen.
 
@@ -213,7 +213,7 @@ List of indexes that should be always mounted, even when off screen.
 
 > `optional` **cache**: [`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md)
 
-Defined in: [src/solid/Virtualizer.tsx:150](https://github.com/inokawa/virtua/blob/fd8fca1e616093179e57dd2902c944b35dad0f84/src/solid/Virtualizer.tsx#L150)
+Defined in: [src/solid/Virtualizer.tsx:150](https://github.com/inokawa/virtua/blob/f062d44f00ef139357d4909c2cead7e57ebe2453/src/solid/Virtualizer.tsx#L150)
 
 You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VirtualizerHandle.cache](VListHandle.md#cache).
 
@@ -229,7 +229,7 @@ You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheS
 
 > `optional` **item**: `ValidComponent`
 
-Defined in: [src/solid/Virtualizer.tsx:121](https://github.com/inokawa/virtua/blob/fd8fca1e616093179e57dd2902c944b35dad0f84/src/solid/Virtualizer.tsx#L121)
+Defined in: [src/solid/Virtualizer.tsx:121](https://github.com/inokawa/virtua/blob/f062d44f00ef139357d4909c2cead7e57ebe2453/src/solid/Virtualizer.tsx#L121)
 
 Component or element type for item element.
 
@@ -259,7 +259,7 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:689
 
 ### role?
 
-> `optional` **role**: `"article"` \| `"button"` \| `"dialog"` \| `"figure"` \| `"form"` \| `"img"` \| `"link"` \| `"main"` \| `"menu"` \| `"meter"` \| `"option"` \| `"search"` \| `"table"` \| `"none"` \| `"grid"` \| `"menuitem"` \| `"switch"` \| `"checkbox"` \| `"listbox"` \| `"radio"` \| `"region"` \| `"cell"` \| `"row"` \| `"listitem"` \| `"menubar"` \| `"progressbar"` \| `"separator"` \| `"tab"` \| `"tabpanel"` \| `"toolbar"` \| `"tooltip"` \| `"treeitem"` \| `"scrollbar"` \| `"alert"` \| `"alertdialog"` \| `"application"` \| `"banner"` \| `"columnheader"` \| `"combobox"` \| `"complementary"` \| `"contentinfo"` \| `"definition"` \| `"directory"` \| `"document"` \| `"feed"` \| `"gridcell"` \| `"group"` \| `"heading"` \| `"list"` \| `"log"` \| `"marquee"` \| `"math"` \| `"menuitemcheckbox"` \| `"menuitemradio"` \| `"navigation"` \| `"note"` \| `"presentation"` \| `"radiogroup"` \| `"rowgroup"` \| `"rowheader"` \| `"searchbox"` \| `"slider"` \| `"spinbutton"` \| `"status"` \| `"tablist"` \| `"term"` \| `"textbox"` \| `"timer"` \| `"tree"` \| `"treegrid"`
+> `optional` **role**: `"none"` \| `"grid"` \| `"table"` \| `"search"` \| `"link"` \| `"article"` \| `"button"` \| `"dialog"` \| `"figure"` \| `"form"` \| `"img"` \| `"main"` \| `"menu"` \| `"menuitem"` \| `"meter"` \| `"option"` \| `"switch"` \| `"checkbox"` \| `"listbox"` \| `"radio"` \| `"region"` \| `"cell"` \| `"row"` \| `"listitem"` \| `"menubar"` \| `"progressbar"` \| `"separator"` \| `"tab"` \| `"tabpanel"` \| `"toolbar"` \| `"tooltip"` \| `"treeitem"` \| `"scrollbar"` \| `"alert"` \| `"alertdialog"` \| `"application"` \| `"banner"` \| `"columnheader"` \| `"combobox"` \| `"complementary"` \| `"contentinfo"` \| `"definition"` \| `"directory"` \| `"document"` \| `"feed"` \| `"gridcell"` \| `"group"` \| `"heading"` \| `"list"` \| `"log"` \| `"marquee"` \| `"math"` \| `"menuitemcheckbox"` \| `"menuitemradio"` \| `"navigation"` \| `"note"` \| `"presentation"` \| `"radiogroup"` \| `"rowgroup"` \| `"rowheader"` \| `"searchbox"` \| `"slider"` \| `"spinbutton"` \| `"status"` \| `"tablist"` \| `"term"` \| `"textbox"` \| `"timer"` \| `"tree"` \| `"treegrid"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1123
 
@@ -624,7 +624,7 @@ operable.
 
 ### ~~aria-dropeffect?~~
 
-> `optional` **aria-dropeffect**: `"copy"` \| `"link"` \| `"none"` \| `"move"` \| `"execute"` \| `"popup"`
+> `optional` **aria-dropeffect**: `"copy"` \| `"none"` \| `"link"` \| `"move"` \| `"execute"` \| `"popup"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:935
 
@@ -711,7 +711,7 @@ In ARIA 1.1
 
 ### aria-haspopup?
 
-> `optional` **aria-haspopup**: `boolean` \| `"dialog"` \| `"menu"` \| `"grid"` \| `"listbox"` \| `"false"` \| `"true"` \| `"tree"`
+> `optional` **aria-haspopup**: `boolean` \| `"grid"` \| `"dialog"` \| `"menu"` \| `"listbox"` \| `"false"` \| `"true"` \| `"tree"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:963
 
@@ -1223,7 +1223,7 @@ Defines the human readable text alternative of aria-valuenow for a range widget.
 
 > `optional` **style**: `CSSProperties`
 
-Defined in: [src/solid/types.ts:7](https://github.com/inokawa/virtua/blob/fd8fca1e616093179e57dd2902c944b35dad0f84/src/solid/types.ts#L7)
+Defined in: [src/solid/types.ts:7](https://github.com/inokawa/virtua/blob/f062d44f00ef139357d4909c2cead7e57ebe2453/src/solid/types.ts#L7)
 
 #### Inherited from
 
