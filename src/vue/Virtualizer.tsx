@@ -268,7 +268,6 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
 
       const total = totalSize.value;
       const isNegative = scroller.$isNegative();
-      const pushKey = !isHorizontal && isNegative ? "unshift" : "push";
 
       const items: VNode[] = [];
 
@@ -297,11 +296,11 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
           mounted.add(i);
         }
         sort([...mounted]).forEach((index) => {
-          items[pushKey](renderItem(index));
+          items.push(renderItem(index));
         });
       } else {
         for (let [i, j] = range.value; i <= j; i++) {
-          items[pushKey](renderItem(i));
+          items.push(renderItem(i));
         }
       }
 

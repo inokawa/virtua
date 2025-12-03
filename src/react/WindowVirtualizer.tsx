@@ -201,7 +201,6 @@ export const WindowVirtualizer = forwardRef<
     const totalSize = store.$getTotalSize();
 
     const isNegative = scroller.$isNegative();
-    const pushKey = !isHorizontal && isNegative ? "unshift" : "push";
 
     const items: ReactElement[] = [];
 
@@ -262,7 +261,7 @@ export const WindowVirtualizer = forwardRef<
 
     for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
       const e = renderElement(i);
-      items[pushKey](
+      items.push(
         <ListItem
           key={getKey(e, i)}
           _resizer={resizer.$observeItem}

@@ -219,10 +219,9 @@ export const WindowVirtualizer = <T,>(
         store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
       }
     });
-    const pushKey = !horizontal && isNegative() ? "unshift" : "push";
     const items: T[] = [];
     for (let [i, j] = range(); i <= j; i++) {
-      items[pushKey](props.data[i]!);
+      items.push(props.data[i]!);
     }
     return items;
   });

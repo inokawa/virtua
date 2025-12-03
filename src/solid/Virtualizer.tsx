@@ -272,7 +272,6 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
       }
     });
-    const pushKey = !horizontal && isNegative() ? "unshift" : "push";
     const items: T[] = [];
     const indexes: number[] = [];
 
@@ -282,13 +281,13 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         mounted.add(i);
       }
       sort([...mounted]).forEach((index) => {
-        items[pushKey](props.data[index]!);
-        indexes[pushKey](index);
+        items.push(props.data[index]!);
+        indexes.push(index);
       });
     } else {
       for (let [i, j] = range(); i <= j; i++) {
-        items[pushKey](props.data[i]!);
-        indexes[pushKey](i);
+        items.push(props.data[i]!);
+        indexes.push(i);
       }
     }
 

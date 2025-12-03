@@ -70,7 +70,6 @@
 
   let indexes = $derived.by(() => {
     const [start, end] = range;
-    const pushKey = !horizontal && negative ? "unshift" : "push";
     const arr: number[] = [];
     if (keepMounted) {
       const mounted = new Set(keepMounted);
@@ -78,11 +77,11 @@
         mounted.add(i);
       }
       for (const index of sort([...mounted])) {
-        arr[pushKey](index);
+        arr.push(index);
       }
     } else {
       for (let i = start; i <= end; i++) {
-        arr[pushKey](i);
+        arr.push(i);
       }
     }
     return arr;
