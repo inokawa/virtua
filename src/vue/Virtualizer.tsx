@@ -195,16 +195,17 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       isSSR = false;
 
       // https://github.com/inokawa/virtua/issues/784
+      const container = containerRef.value!;
       const raf = requestAnimationFrame(() => {
         const assignScrollableElement = (e: HTMLElement) => {
           resizer.$observeRoot(e);
-          scroller.$observe(e);
+          scroller.$observe(container, e);
         };
         if (props.scrollRef) {
           // parent's ref doesn't exist when onMounted is called
           assignScrollableElement(props.scrollRef!);
         } else {
-          assignScrollableElement(containerRef.value!.parentElement!);
+          assignScrollableElement(container.parentElement!);
         }
       });
 

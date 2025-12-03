@@ -315,12 +315,11 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const isHorizontalScrolling = colStore.$isScrolling();
     const height = getScrollSize(rowStore);
     const width = getScrollSize(colStore);
-    const rootRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
     const onScroll = useLatestRef(onScrollProp);
     const onScrollEnd = useLatestRef(onScrollEndProp);
 
     useIsomorphicLayoutEffect(() => {
-      const root = rootRef[refKey]!;
       // store must be subscribed first because others may dispatch update on init depending on implementation
       rowStore.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
         if (sync) {
@@ -343,8 +342,11 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         onScrollEnd[refKey] && onScrollEnd[refKey]();
       });
 
-      resizer.$observeRoot(root);
-      scroller.$observe(root);
+      const container = containerRef[refKey]!;
+      const viewport = container.parentElement!;
+
+      resizer.$observeRoot(viewport);
+      scroller.$observe(container, viewport);
       return () => {
         rowStore.$dispose();
         colStore.$dispose();
@@ -444,7 +446,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
 
     return (
       <div
-        ref={useMergeRefs([rootRef, domRef])}
+        ref={domRef}
         {...attrs}
         style={{
           overflow: "auto",
@@ -455,7 +457,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         }}
       >
         <div
-          ref={innerDomRef}
+          ref={useMergeRefs([containerRef, innerDomRef])}
           style={{
             contain: "size style", // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
             overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer

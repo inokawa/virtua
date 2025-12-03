@@ -232,9 +232,10 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
       });
     }
 
-    const scrollable = props.scrollRef || containerRef!.parentElement!;
+    const container = containerRef!;
+    const scrollable = props.scrollRef || container.parentElement!;
     resizer.$observeRoot(scrollable);
-    scroller.$observe(scrollable);
+    scroller.$observe(container, scrollable);
 
     onCleanup(() => {
       if (props.ref) {
