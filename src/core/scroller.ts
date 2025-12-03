@@ -276,18 +276,12 @@ const createScrollScheduler = (
   ];
 };
 
-/**
- * @internal
- */
-export type Scroller = {
-  $observe: (viewportElement: HTMLElement) => void;
+interface Scroller<T extends HTMLElement | void> {
+  $observe: (containerElement: HTMLElement, viewport: T) => void;
   $dispose(): void;
-  $isNegative(): boolean;
-  $scrollTo: (offset: number) => void;
-  $scrollBy: (offset: number) => void;
-  $scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
   $fixScrollJump: () => void;
-};
+  $isNegative(): boolean;
+}
 
 /**
  * @internal
@@ -295,7 +289,11 @@ export type Scroller = {
 export const createScroller = (
   store: VirtualStore,
   isHorizontal: boolean
-): Scroller => {
+): Scroller<HTMLElement> & {
+  $scrollTo: (offset: number) => void;
+  $scrollBy: (offset: number) => void;
+  $scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
+} => {
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
@@ -321,7 +319,7 @@ export const createScroller = (
   );
 
   return {
-    $observe(viewport) {
+    $observe(_, viewport) {
       viewportElement = viewport;
 
       if (isHorizontal) {
@@ -418,21 +416,12 @@ export const createScroller = (
 /**
  * @internal
  */
-export type WindowScroller = {
-  $observe(containerElement: HTMLElement): void;
-  $dispose(): void;
-  $isNegative(): boolean;
-  $scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
-  $fixScrollJump: () => void;
-};
-
-/**
- * @internal
- */
 export const createWindowScroller = (
   store: VirtualStore,
   isHorizontal: boolean
-): WindowScroller => {
+): Scroller<void> & {
+  $scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
+} => {
   let containerElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
@@ -599,15 +588,11 @@ export const createWindowScroller = (
 /**
  * @internal
  */
-export type GridScroller = {
-  $observe: (viewportElement: HTMLElement) => void;
-  $dispose(): void;
-  $isNegative(): boolean;
+export interface GridScroller extends Scroller<HTMLElement> {
   $scrollTo: (offsetX?: number, offsetY?: number) => void;
   $scrollBy: (offsetX?: number, offsetY?: number) => void;
   $scrollToIndex: (indexX?: number, indexY?: number) => void;
-  $fixScrollJump: () => void;
-};
+}
 
 /**
  * @internal
@@ -619,9 +604,9 @@ export const createGridScroller = (
   const rowScroller = createScroller(rowStore, false);
   const colScroller = createScroller(colStore, true);
   return {
-    $observe(viewportElement) {
-      rowScroller.$observe(viewportElement);
-      colScroller.$observe(viewportElement);
+    $observe(container, viewport) {
+      rowScroller.$observe(container, viewport);
+      colScroller.$observe(container, viewport);
     },
     $dispose() {
       rowScroller.$dispose();

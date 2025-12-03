@@ -275,9 +275,10 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
         onScrollEnd[refKey] && onScrollEnd[refKey]();
       });
+      const container = containerRef[refKey]!;
       const assignScrollableElement = (e: HTMLElement) => {
         resizer.$observeRoot(e);
-        scroller.$observe(e);
+        scroller.$observe(container, e);
       };
       if (scrollRef) {
         // parent's ref doesn't exist when useLayoutEffect is called
@@ -288,7 +289,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
           }
         });
       } else {
-        assignScrollableElement(containerRef[refKey]!.parentElement!);
+        assignScrollableElement(container.parentElement!);
       }
 
       return () => {

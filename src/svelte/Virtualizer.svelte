@@ -89,16 +89,17 @@
   });
 
   onMount(() => {
+    const container = containerRef!;
     const assignRef = (scrollable: HTMLElement) => {
       resizer.$observeRoot(scrollable);
-      scroller.$observe(scrollable);
+      scroller.$observe(container, scrollable);
     };
     // parent's ref may not exist on mount https://github.com/inokawa/virtua/issues/603 https://github.com/inokawa/virtua/issues/690
     tick().then(() => {
       if (scrollRef) {
         assignRef(scrollRef);
       } else {
-        assignRef(containerRef!.parentElement!);
+        assignRef(container.parentElement!);
       }
     });
   });
