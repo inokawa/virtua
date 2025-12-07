@@ -3,7 +3,7 @@ import terser from "@rollup/plugin-terser";
 import { babel, getBabelOutputPlugin } from "@rollup/plugin-babel";
 import banner from "rollup-plugin-banner2";
 import copy from 'rollup-plugin-copy'
-import path from "node:path";
+import * as path from "node:path";
 import { globSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import pkg from "./package.json" with { type: "json" };
@@ -59,6 +59,7 @@ export default [
         tsconfig: "./tsconfig.json",
         outDir: ".",
         declaration: true,
+        declarationDir: path.dirname(pkg.types),
         exclude: ["**/*.{spec,stories}.*"],
         jsx: 'react-jsx',
       }),
