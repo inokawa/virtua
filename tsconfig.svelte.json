@@ -4,6 +4,5 @@
   "exclude": ["node_modules"],
   "compilerOptions": {
     "noEmit": true,
-    "verbatimModuleSyntax": true
   }
 }
