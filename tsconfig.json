@@ -22,7 +22,6 @@
     "noFallthroughCasesInSwitch": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
-    "verbatimModuleSyntax": true,
     "stripInternal": true
   },
   "include": ["src"],

@@ -3,6 +3,7 @@
   "include": ["src/svelte/**/*"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "noEmit": true
+    "noEmit": true,
+    "verbatimModuleSyntax": true
   }
 }
