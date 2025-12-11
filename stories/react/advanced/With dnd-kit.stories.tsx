@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { VList } from "../../../src";
 import React, { CSSProperties, forwardRef, useCallback, useState } from "react";
 import {

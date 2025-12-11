@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CustomItemComponentProps, VList } from "../../../src";
 import React, {
   createContext,

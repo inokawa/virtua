@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import React, { ReactNode, useLayoutEffect, useState } from "react";
 import { VList } from "../../../src";
 import { createPortal } from "react-dom";

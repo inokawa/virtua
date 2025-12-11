@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { VList } from "../../../src";
 import React, { CSSProperties, useCallback, useState } from "react";
 import { Enable, Resizable } from "re-resizable";
