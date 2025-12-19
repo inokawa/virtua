@@ -1,4 +1,4 @@
-import "../_browser-chunks/chunk-MM7DTO55.js";
+import "../_browser-chunks/chunk-A242L54C.js";
 
 // src/manager/globals/globals.ts
 var globalsNameReferenceMap = {
@@ -17,8 +17,7 @@ var globalsNameReferenceMap = {
   "storybook/internal/manager-errors": "__STORYBOOK_CORE_EVENTS_MANAGER_ERRORS__",
   "storybook/internal/router": "__STORYBOOK_ROUTER__",
   "storybook/internal/types": "__STORYBOOK_TYPES__"
-};
-var globalPackages = Object.keys(globalsNameReferenceMap);
+}, globalPackages = Object.keys(globalsNameReferenceMap);
 export {
   globalPackages,
   globalsNameReferenceMap
