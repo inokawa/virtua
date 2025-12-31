@@ -4893,7 +4893,11 @@ var TabErrorBoundary = class extends Component {
   height: "100%",
   display: "flex",
   flexDirection: "column"
-}), PreRenderAddons = ({ panels }) => Object.entries(panels).map(([k2, v2]) => react_default.createElement(StatelessTabPanel, { key: k2, name: k2, hasScrollbar: !1 }, react_default.createElement(TabErrorBoundary, { key: k2 }, v2.render({ active: !0 })))), AddonPanel2 = react_default.memo(({ panels, shortcuts, actions, selectedPanel = null, panelPosition = "right" }) => {
+});
+function renderChild(RenderProp) {
+  return react_default.createElement(RenderProp, { active: !0 });
+}
+var PreRenderAddons = ({ panels }) => Object.entries(panels).map(([k2, v2]) => react_default.createElement(StatelessTabPanel, { key: k2, name: k2, hasScrollbar: !1 }, react_default.createElement(TabErrorBoundary, { key: k2 }, renderChild(v2.render)))), AddonPanel2 = react_default.memo(({ panels, shortcuts, actions, selectedPanel = null, panelPosition = "right" }) => {
   let { isDesktop, setMobilePanelOpen } = useLayout(), emptyState = react_default.createElement(
     EmptyTabContent,
     {
