@@ -203,7 +203,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
 
       const items: VNode[] = [];
       for (let [i, j] = range.value; i <= j; i++) {
-        const e = slots.default({ item: props.data![i]!, index: i })[0]!;
+        const e = slots.default({ item: props.data![i]!, index: i });
         items.push(
           <ListItem
             key={getKey(e, i)}
