@@ -272,7 +272,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       const items: VNode[] = [];
 
       const renderItem = (i: number) => {
-        const e = slots.default({ item: props.data![i]!, index: i })[0]!;
+        const e = slots.default({ item: props.data![i]!, index: i });
         return (
           <ListItem
             key={getKey(e, i)}

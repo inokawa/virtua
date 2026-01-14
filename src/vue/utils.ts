@@ -4,8 +4,8 @@ import { type ItemsRange } from "../core/index.js";
 /**
  * @internal
  */
-export const getKey = (e: VNode, i: number): Exclude<VNode["key"], null> => {
-  const key = e.key;
+export const getKey = (e: VNode[], i: number): Exclude<VNode["key"], null> => {
+  const key = e[0]?.key;
   return key != null ? key : "_" + i;
 };
 

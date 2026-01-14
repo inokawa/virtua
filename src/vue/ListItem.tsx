@@ -27,7 +27,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
       required: true,
     },
     _store: { type: Object as PropType<VirtualStore>, required: true },
-    _children: { type: Object as PropType<VNode>, required: true },
+    _children: { type: Object as PropType<VNode[]>, required: true },
     _resizer: {
       type: Function as PropType<ItemResizeObserver>,
       required: true,
