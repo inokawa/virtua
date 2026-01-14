@@ -7,7 +7,7 @@ import { type ItemsRange } from "../core/index.js";
 export const getKey = (e: VNode[], i: number): Exclude<VNode["key"], null> => {
   const key = e[0]?.key;
 
-  if (e.length === 1 && key) {
+  if (e.length === 1 && key != null) {
     return key
   } else {
     return "_" + i
