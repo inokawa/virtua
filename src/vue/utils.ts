@@ -4,9 +4,15 @@ import { type ItemsRange } from "../core/index.js";
 /**
  * @internal
  */
-export const getKey = (e: VNode, i: number): Exclude<VNode["key"], null> => {
-  const key = e.key;
-  return key != null ? key : "_" + i;
+export const getKey = (e: VNode[], i: number): Exclude<VNode["key"], null> => {
+  // https://github.com/inokawa/virtua/pull/846
+  if (e.length === 1) {
+    const key = e[0]!.key;
+    if (key != null) {
+      return key;
+    }
+  }
+  return "_" + i;
 };
 
 /**
