@@ -70,6 +70,7 @@
 
   let indexes = $derived.by(() => {
     const [start, end] = range;
+    const len = data.length; // dependency on data.length for filtering
     const arr: number[] = [];
     if (keepMounted) {
       const mounted = new Set(keepMounted);
@@ -77,15 +78,20 @@
         mounted.add(i);
       }
       for (const index of sort([...mounted])) {
-        arr.push(index);
+        if (index >= 0 && index < len) {
+          arr.push(index);
+        }
       }
     } else {
       for (let i = start; i <= end; i++) {
-        arr.push(i);
+        if (i >= 0 && i < len) {
+          arr.push(i);
+        }
       }
     }
     return arr;
   });
+
 
   onMount(() => {
     const container = containerRef!;
