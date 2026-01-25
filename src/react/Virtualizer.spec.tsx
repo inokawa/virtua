@@ -25,7 +25,7 @@ it("should change components", async () => {
         <div>3</div>
         <div>4</div>
       </Virtualizer>
-    </div>
+    </div>,
   );
   expect(asFragment()).toMatchSnapshot();
 });

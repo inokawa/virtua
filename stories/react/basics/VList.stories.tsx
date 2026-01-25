@@ -451,7 +451,7 @@ const RestorableList = ({ id }: { id: string }) => {
     return () => {
       sessionStorage.setItem(
         cacheKey,
-        JSON.stringify([handle.scrollOffset, handle.cache])
+        JSON.stringify([handle.scrollOffset, handle.cache]),
       );
     };
   }, []);
@@ -611,7 +611,7 @@ export const InfiniteScrolling: StoryObj = {
           if (
             fetchedCountRef.current < count &&
             ref.current.findItemIndex(
-              ref.current.scrollOffset + ref.current.viewportSize
+              ref.current.scrollOffset + ref.current.viewportSize,
             ) +
               50 >
               count
@@ -732,7 +732,7 @@ export const IncreasingItems: StoryObj = {
             : [
                 ...prev,
                 ...createRows(amount, (prev[prev.length - 1]?.index ?? 0) + 1),
-              ]
+              ],
         );
       } else {
         if (prepend) {
@@ -877,7 +877,7 @@ export const SSR: StoryObj = {
   render: () => {
     const [hydrated, setHydrated] = useState(false);
     const [type, setType] = useState<"vertical" | "horizontal" | "smooth">(
-      "vertical"
+      "vertical",
     );
     const ref = useRef<HTMLDivElement>(null);
 
@@ -887,8 +887,8 @@ export const SSR: StoryObj = {
         type === "smooth"
           ? SSRAppScrollOnMount
           : type === "horizontal"
-          ? SSRAppHorizontal
-          : SSRApp;
+            ? SSRAppHorizontal
+            : SSRApp;
 
       if (!hydrated) {
         ref.current.innerHTML = renderToString(<App />);

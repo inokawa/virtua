@@ -24,7 +24,7 @@ const Item = forwardRef<HTMLDivElement, CustomItemComponentProps>(
       ref,
       style: { ...children.props.style, ...style },
     });
-  }
+  },
 );
 
 export default {
@@ -41,7 +41,7 @@ export const Default: StoryObj = {
       if (!value) return TAGS;
       const normalizedValue = value.toLowerCase();
       return TAGS.filter((t) =>
-        t.label.toLowerCase().includes(normalizedValue)
+        t.label.toLowerCase().includes(normalizedValue),
       );
     }, [value]);
 

@@ -32,7 +32,7 @@ it("should pass attributes to element", async () => {
           {rowIndex} / {colIndex}
         </div>
       )}
-    </VGrid>
+    </VGrid>,
   );
   expect(asFragment()).toMatchSnapshot();
 });
@@ -46,7 +46,7 @@ describe("grid", async () => {
             {rowIndex} / {colIndex}
           </div>
         )}
-      </VGrid>
+      </VGrid>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -59,7 +59,7 @@ describe("grid", async () => {
             {rowIndex} / {colIndex}
           </div>
         )}
-      </VGrid>
+      </VGrid>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -72,7 +72,7 @@ describe("grid", async () => {
             {rowIndex} / {colIndex}
           </div>
         )}
-      </VGrid>
+      </VGrid>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -85,7 +85,7 @@ describe("grid", async () => {
             {rowIndex} / {colIndex}
           </div>
         )}
-      </VGrid>
+      </VGrid>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -98,7 +98,7 @@ describe("grid", async () => {
             {rowIndex} / {colIndex}
           </div>
         )}
-      </VGrid>
+      </VGrid>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -110,16 +110,16 @@ describe("grid", async () => {
           rowIndex === 0
             ? "string"
             : rowIndex === 1
-            ? true
-            : rowIndex === 2
-            ? false
-            : rowIndex === 3
-            ? null
-            : rowIndex === 4
-            ? undefined
-            : 123
+              ? true
+              : rowIndex === 2
+                ? false
+                : rowIndex === 3
+                  ? null
+                  : rowIndex === 4
+                    ? undefined
+                    : 123
         }
-      </VGrid>
+      </VGrid>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -140,7 +140,7 @@ describe("grid", async () => {
             </>
           )
         }
-      </VGrid>
+      </VGrid>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -156,7 +156,7 @@ describe("grid", async () => {
             {rowIndex} / {colIndex}
           </Comp>
         )}
-      </VGrid>
+      </VGrid>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -169,7 +169,7 @@ describe("grid", async () => {
             {rowIndex} / {colIndex}
           </div>
         )}
-      </VGrid>
+      </VGrid>,
     );
     expect(asFragment()).toMatchSnapshot();
   });

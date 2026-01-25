@@ -45,7 +45,7 @@
     itemSize,
     undefined,
     cache,
-    !itemSize
+    !itemSize,
   );
   const resizer = createResizer(store, horizontal);
   const scroller = createScroller(store, horizontal);
@@ -133,7 +133,7 @@
     store.$getScrollOffset satisfies VirtualizerHandle["getScrollOffset"] as VirtualizerHandle["getScrollOffset"];
   export const getScrollSize = (() =>
     _getScrollSize(
-      store
+      store,
     )) satisfies VirtualizerHandle["getScrollSize"] as VirtualizerHandle["getScrollSize"];
   export const getViewportSize =
     store.$getViewportSize satisfies VirtualizerHandle["getViewportSize"] as VirtualizerHandle["getViewportSize"];
@@ -159,7 +159,7 @@
       width: horizontal ? totalSize + "px" : "100%",
       height: horizontal ? "100%" : totalSize + "px",
       "pointer-events": isScrolling ? "none" : undefined,
-    })
+    }),
   );
 </script>
 

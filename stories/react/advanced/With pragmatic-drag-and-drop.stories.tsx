@@ -101,7 +101,7 @@ const SortableItem = ({ id }: { id: number }) => {
         onDrop() {
           setState(idleState);
         },
-      })
+      }),
     );
   }, [id]);
 
@@ -133,7 +133,7 @@ const SortableItem = ({ id }: { id: number }) => {
       {state.type === "preview" &&
         createPortal(
           <div style={{ padding: "8px 16px", background: "#fff" }}>{id}</div>,
-          state.container
+          state.container,
         )}
     </div>
   );
@@ -143,7 +143,7 @@ export const Default: StoryObj = {
   name: "With pragmatic-drag-and-drop",
   render: () => {
     const [items, setItems] = useState(() =>
-      Array.from({ length: 1000 }, (_, i) => ({ id: i + 1 }))
+      Array.from({ length: 1000 }, (_, i) => ({ id: i + 1 })),
     );
 
     useEffect(() => {
@@ -159,14 +159,14 @@ export const Default: StoryObj = {
             }
 
             const startIndex = items.findIndex(
-              (item) => item.id === source.data.id
+              (item) => item.id === source.data.id,
             );
             if (startIndex < 0) {
               return;
             }
 
             const indexOfTarget = items.findIndex(
-              (item) => item.id === target.data.id
+              (item) => item.id === target.data.id,
             );
             if (indexOfTarget < 0) {
               return;
@@ -193,7 +193,7 @@ export const Default: StoryObj = {
         autoScrollForElements({
           canScroll: () => true,
           element: scrollContainer,
-        })
+        }),
       );
     }, [items]);
 

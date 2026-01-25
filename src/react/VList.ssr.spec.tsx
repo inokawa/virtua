@@ -23,13 +23,13 @@ describe("SSR", () => {
         {Array.from({ length: 1000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </VList>
+      </VList>,
     );
     expect(html).toMatchSnapshot();
 
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
-        .childElementCount
+        .childElementCount,
     ).toEqual(COUNT);
   });
 
@@ -47,13 +47,13 @@ describe("SSR", () => {
         {Array.from({ length: 1000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </VList>
+      </VList>,
     );
     expect(html).toMatchSnapshot();
 
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
-        .childElementCount
+        .childElementCount,
     ).toEqual(COUNT);
   });
 
@@ -71,13 +71,13 @@ describe("SSR", () => {
         {Array.from({ length: 1000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </VList>
+      </VList>,
     );
     expect(html).toMatchSnapshot();
 
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
-        .childElementCount
+        .childElementCount,
     ).toEqual(COUNT);
   });
 
@@ -96,13 +96,13 @@ describe("SSR", () => {
         {Array.from({ length: 1000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </VList>
+      </VList>,
     );
     expect(html).toMatchSnapshot();
 
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
-        .childElementCount
+        .childElementCount,
     ).toEqual(COUNT);
   });
 
@@ -121,13 +121,13 @@ describe("SSR", () => {
         {Array.from({ length: 1000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </VList>
+      </VList>,
     );
     expect(html).toMatchSnapshot();
 
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
-        .childElementCount
+        .childElementCount,
     ).toEqual(COUNT);
   });
 });

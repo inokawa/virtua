@@ -188,7 +188,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
     },
-    ref
+    ref,
   ): ReactElement => {
     Element = Element as "div";
 
@@ -208,7 +208,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         itemSize,
         ssrCount,
         cache,
-        !itemSize
+        !itemSize,
       );
       return [
         _store,
@@ -229,7 +229,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
     const [stateVersion, rerender] = useReducer(
       store.$getStateVersion,
       undefined,
-      store.$getStateVersion
+      store.$getStateVersion,
     );
 
     const isScrolling = store.$isScrolling();
@@ -302,32 +302,28 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
       scroller.$fixScrollJump();
     }, [stateVersion]);
 
-    useImperativeHandle(
-      ref,
-      () => {
-        return {
-          get cache() {
-            return store.$getCacheSnapshot();
-          },
-          get scrollOffset() {
-            return store.$getScrollOffset();
-          },
-          get scrollSize() {
-            return getScrollSize(store);
-          },
-          get viewportSize() {
-            return store.$getViewportSize();
-          },
-          findItemIndex: store.$findItemIndex,
-          getItemOffset: store.$getItemOffset,
-          getItemSize: store.$getItemSize,
-          scrollToIndex: scroller.$scrollToIndex,
-          scrollTo: scroller.$scrollTo,
-          scrollBy: scroller.$scrollBy,
-        };
-      },
-      []
-    );
+    useImperativeHandle(ref, () => {
+      return {
+        get cache() {
+          return store.$getCacheSnapshot();
+        },
+        get scrollOffset() {
+          return store.$getScrollOffset();
+        },
+        get scrollSize() {
+          return getScrollSize(store);
+        },
+        get viewportSize() {
+          return store.$getViewportSize();
+        },
+        findItemIndex: store.$findItemIndex,
+        getItemOffset: store.$getItemOffset,
+        getItemSize: store.$getItemSize,
+        scrollToIndex: scroller.$scrollToIndex,
+        scrollTo: scroller.$scrollTo,
+        scrollBy: scroller.$scrollBy,
+      };
+    }, []);
 
     if (keepMounted) {
       const mounted = new Set(keepMounted);
@@ -359,7 +355,7 @@ export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
         {items}
       </Element>
     );
-  }
+  },
 ) as <T>(
-  props: VirtualizerProps<T> & { ref?: Ref<VirtualizerHandle> }
+  props: VirtualizerProps<T> & { ref?: Ref<VirtualizerHandle> },
 ) => ReactElement;

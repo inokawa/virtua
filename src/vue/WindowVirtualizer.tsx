@@ -119,7 +119,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       props.itemSize,
       undefined,
       props.cache,
-      !props.itemSize
+      !props.itemSize,
     );
     const resizer = createWindowResizer(store, isHorizontal);
     const scroller = createWindowScroller(store, isHorizontal);
@@ -145,10 +145,10 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       return next;
     });
     const isScrolling = computed(
-      () => stateVersion.value && store.$isScrolling()
+      () => stateVersion.value && store.$isScrolling(),
     );
     const totalSize = computed(
-      () => stateVersion.value && store.$getTotalSize()
+      () => stateVersion.value && store.$getTotalSize(),
     );
 
     onMounted(() => {
@@ -167,7 +167,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       () => props.data.length,
       (count) => {
         store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
-      }
+      },
     );
 
     watch(
@@ -175,7 +175,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       () => {
         scroller.$fixScrollJump();
       },
-      { flush: "post" }
+      { flush: "post" },
     );
 
     expose({
@@ -215,7 +215,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
             _isHorizontal={isHorizontal}
             _isNegative={isNegative}
             _as={ItemElement}
-          />
+          />,
         );
       }
 

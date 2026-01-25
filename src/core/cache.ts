@@ -43,7 +43,7 @@ export const getItemSize = (cache: Cache, index: number): number => {
 export const setItemSize = (
   cache: Writeable<Cache>,
   index: number,
-  size: number
+  size: number,
 ): boolean => {
   const isInitialMeasurement = cache._sizes[index] === UNCACHED;
   cache._sizes[index] = size;
@@ -57,7 +57,7 @@ export const setItemSize = (
  */
 export const getItemOffset = (
   cache: Writeable<Cache>,
-  index: number
+  index: number,
 ): number => {
   if (!cache._length) return 0;
   if (cache._computedOffsetIndex >= index) {
@@ -90,7 +90,7 @@ export const findIndex = (
   cache: Cache,
   offset: number,
   low: number = 0,
-  high: number = cache._length - 1
+  high: number = cache._length - 1,
 ): number => {
   // Find with binary search
   let found: number = low;
@@ -113,7 +113,7 @@ export const computeRange = (
   cache: Cache,
   startOffset: number,
   endOffset: number,
-  prevStartIndex: number
+  prevStartIndex: number,
 ): ItemsRange => {
   // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
   prevStartIndex = min(prevStartIndex, cache._length - 1);
@@ -136,7 +136,7 @@ export const computeRange = (
  */
 export const estimateDefaultItemSize = (
   cache: Writeable<Cache>,
-  startIndex: number
+  startIndex: number,
 ): number => {
   let measuredCountBeforeStart = 0;
   // This function will be called after measurement so measured size array must be longer than 0
@@ -175,7 +175,7 @@ export const estimateDefaultItemSize = (
 export const initCache = (
   length: number,
   itemSize: number,
-  sizes?: readonly number[]
+  sizes?: readonly number[],
 ): Cache => {
   return {
     _defaultItemSize: itemSize,
@@ -183,7 +183,7 @@ export const initCache = (
       ? // https://github.com/inokawa/virtua/issues/441
         fill(
           sizes.slice(0, min(length, sizes.length)),
-          max(0, length - sizes.length)
+          max(0, length - sizes.length),
         )
       : fill([], length),
     _length: length,
@@ -205,7 +205,7 @@ export const takeCacheSnapshot = (cache: Cache): InternalCacheSnapshot => {
 export const updateCacheLength = (
   cache: Writeable<Cache>,
   length: number,
-  isShift?: boolean
+  isShift?: boolean,
 ): number => {
   const diff = length - cache._length;
 
@@ -228,7 +228,7 @@ export const updateCacheLength = (
     ).reduce(
       (acc, removed) =>
         acc - (removed === UNCACHED ? cache._defaultItemSize : removed),
-      0
+      0,
     );
   }
 };

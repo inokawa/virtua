@@ -49,7 +49,7 @@ export const Default: StoryObj = {
     let ref: VListHandle | undefined;
     const [activeIndex, setActiveIndex] = createSignal(0);
     const [items] = createSignal(
-      Array.from({ length: 1000 }).map((_, id) => ({ id }))
+      Array.from({ length: 1000 }).map((_, id) => ({ id })),
     );
     return (
       <StickyIndexContext.Provider value={[activeIndex, setActiveIndex]}>

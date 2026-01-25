@@ -46,8 +46,8 @@ export const Default: StoryObj = {
           id: String(i),
           name: `${faker.person.firstName()} ${faker.person.lastName()}`,
           description: faker.lorem.paragraphs(1),
-        })
-      )
+        }),
+      ),
     )[0];
 
     const ref = useRef<VListHandle>(null);

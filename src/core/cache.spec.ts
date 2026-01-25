@@ -35,24 +35,24 @@ const sizesToOffsets = (sizes: readonly number[]): number[] => {
       acc.push(acc[i]! + s);
       return acc;
     },
-    [0] as number[]
+    [0] as number[],
   );
 };
 
 const initCacheWithSizes = (
   sizes: readonly number[],
-  defaultSize: number
+  defaultSize: number,
 ): Cache => {
   return initCacheWithSizesAndOffsets(
     sizes,
     defaultSize,
-    sizesToOffsets(sizes)
+    sizesToOffsets(sizes),
   );
 };
 
 const initCacheWithSizesAndEmptyOffsets = (
   sizes: readonly number[],
-  defaultSize: number
+  defaultSize: number,
 ): Cache => {
   return initCache(sizes.length, defaultSize, sizes);
 };
@@ -60,7 +60,7 @@ const initCacheWithSizesAndEmptyOffsets = (
 const initCacheWithSizesAndOffsets = (
   sizes: readonly number[],
   defaultSize: number,
-  offsets: readonly number[]
+  offsets: readonly number[],
 ): Cache => {
   if (sizes.length + 1 !== offsets.length) {
     throw new Error("wrong offsets for sizes");
@@ -131,7 +131,7 @@ describe(setItemSize.name, () => {
       const cache = initCacheWithSizesAndOffsets(
         filledSizes,
         20,
-        [0, 10, 20, 30, 40, -1, -1, -1, -1, -1, -1]
+        [0, 10, 20, 30, 40, -1, -1, -1, -1, -1, -1],
       );
 
       setItemSize(cache, 1, 123);
@@ -147,7 +147,7 @@ describe(setItemSize.name, () => {
       const cache = initCacheWithSizesAndOffsets(
         filledSizes,
         20,
-        [0, 10, 20, 30, 40, -1, -1, -1, -1, -1, -1]
+        [0, 10, 20, 30, 40, -1, -1, -1, -1, -1, -1],
       );
 
       setItemSize(cache, 4, 123);
@@ -163,7 +163,7 @@ describe(setItemSize.name, () => {
       const cache = initCacheWithSizesAndOffsets(
         filledSizes,
         20,
-        [0, 10, 20, 30, 40, -1, -1, -1, -1, -1, -1]
+        [0, 10, 20, 30, 40, -1, -1, -1, -1, -1, -1],
       );
 
       setItemSize(cache, 5, 123);
@@ -217,7 +217,7 @@ describe(getItemOffset.name, () => {
 
     const last = filledSizes.length - 1;
     expect(getItemOffset(cache, last)).toBe(
-      sum(filledSizes) - filledSizes[last]!
+      sum(filledSizes) - filledSizes[last]!,
     );
     expect(cache._offsets).toEqual([
       0, 20, 40, 60, 80, 100, 120, 140, 160, 180, -1,
@@ -246,7 +246,7 @@ describe(getItemOffset.name, () => {
       const cache = initCacheWithSizesAndOffsets(
         filledSizes,
         30,
-        [0, 11, 22, 33, -1, -1, -1, -1, -1, -1, -1]
+        [0, 11, 22, 33, -1, -1, -1, -1, -1, -1, -1],
       );
 
       expect(getItemOffset(cache, 2)).toBe(22);
@@ -260,7 +260,7 @@ describe(getItemOffset.name, () => {
       const cache = initCacheWithSizesAndOffsets(
         filledSizes,
         30,
-        [0, 11, 22, 33, -1, -1, -1, -1, -1, -1, -1]
+        [0, 11, 22, 33, -1, -1, -1, -1, -1, -1, -1],
       );
 
       expect(getItemOffset(cache, 3)).toBe(33);
@@ -274,7 +274,7 @@ describe(getItemOffset.name, () => {
       const cache = initCacheWithSizesAndOffsets(
         filledSizes,
         30,
-        [0, 11, 22, 33, -1, -1, -1, -1, -1, -1, -1]
+        [0, 11, 22, 33, -1, -1, -1, -1, -1, -1, -1],
       );
 
       expect(getItemOffset(cache, 5)).toBe(33 + 20 * 2);
@@ -346,7 +346,7 @@ describe(findIndex.name, () => {
   it("should resolve default height", () => {
     const cache = initCacheWithSizesAndEmptyOffsets(
       range(10, () => -1),
-      25
+      25,
     );
     expect(findIndex(cache, 100)).toBe(4);
   });
@@ -354,7 +354,7 @@ describe(findIndex.name, () => {
   it("should get start if offset exceeds start", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, -Number.MAX_SAFE_INTEGER)).toBe(0);
   });
@@ -362,7 +362,7 @@ describe(findIndex.name, () => {
   it("should get start if offset is at start", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, 0)).toBe(0);
   });
@@ -370,7 +370,7 @@ describe(findIndex.name, () => {
   it("should get start if offset is at start + 1px", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, 1)).toBe(0);
   });
@@ -378,7 +378,7 @@ describe(findIndex.name, () => {
   it("should get start if offset is at start + 0.01px", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, 0.01)).toBe(0);
   });
@@ -386,7 +386,7 @@ describe(findIndex.name, () => {
   it("should get start if offset is at start - 1px", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, -1)).toBe(0);
   });
@@ -394,7 +394,7 @@ describe(findIndex.name, () => {
   it("should get start if offset is at start - 0.01px", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, -0.01)).toBe(0);
   });
@@ -402,7 +402,7 @@ describe(findIndex.name, () => {
   it("should get end if offset is at end", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, sum(cache._sizes))).toBe(cache._length - 1);
   });
@@ -410,7 +410,7 @@ describe(findIndex.name, () => {
   it("should get end if offset is at end + 1px", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, sum(cache._sizes) + 1)).toBe(cache._length - 1);
   });
@@ -418,7 +418,7 @@ describe(findIndex.name, () => {
   it("should get end if offset is at end + 0.01px", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, sum(cache._sizes) + 0.01)).toBe(cache._length - 1);
   });
@@ -426,7 +426,7 @@ describe(findIndex.name, () => {
   it("should get end if offset is at end - 1px", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, sum(cache._sizes) - 1)).toBe(cache._length - 1);
   });
@@ -434,7 +434,7 @@ describe(findIndex.name, () => {
   it("should get end if offset is at end - 0.01px", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, sum(cache._sizes) - 0.01)).toBe(cache._length - 1);
   });
@@ -442,7 +442,7 @@ describe(findIndex.name, () => {
   it("should get end if offset exceeds end", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, Number.MAX_SAFE_INTEGER)).toBe(cache._length - 1);
   });
@@ -450,7 +450,7 @@ describe(findIndex.name, () => {
   it("should get 1 if offset fits index 1", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, 20)).toBe(1);
   });
@@ -458,7 +458,7 @@ describe(findIndex.name, () => {
   it("should get 1 if offset fits index 1 + 1px", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, 21)).toBe(1);
   });
@@ -466,7 +466,7 @@ describe(findIndex.name, () => {
   it("should get 1 if offset fits index 1 + 0.01px", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, 20.01)).toBe(1);
   });
@@ -474,7 +474,7 @@ describe(findIndex.name, () => {
   it("should get 0 if offset fits index 1 - 1px", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, 19)).toBe(0);
   });
@@ -482,7 +482,7 @@ describe(findIndex.name, () => {
   it("should get 0 if offset fits index 1 - 0.01px", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, 19.99)).toBe(0);
   });
@@ -490,7 +490,7 @@ describe(findIndex.name, () => {
   it("should get 1 if offset fits index 1.5", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, 30)).toBe(1);
   });
@@ -498,7 +498,7 @@ describe(findIndex.name, () => {
   it("should get 1 if offset fits index 1.5 + 1px", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, 31)).toBe(1);
   });
@@ -506,7 +506,7 @@ describe(findIndex.name, () => {
   it("should get 1 if offset fits index 1.5 + 0.01px", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, 30.01)).toBe(1);
   });
@@ -514,7 +514,7 @@ describe(findIndex.name, () => {
   it("should get 1 if offset fits index 1.5 - 1px", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, 29)).toBe(1);
   });
@@ -522,7 +522,7 @@ describe(findIndex.name, () => {
   it("should get 1 if offset fits index 1.5 - 0.01px", () => {
     const cache = initCacheWithSizes(
       range(CACHE_LENGTH, () => 20),
-      30
+      30,
     );
     expect(findIndex(cache, 29.99)).toBe(1);
   });
@@ -530,14 +530,14 @@ describe(findIndex.name, () => {
   it("should not get items with size 0", () => {
     const CACHE_LENGTH = 20;
     const sizes = range(CACHE_LENGTH, (i) =>
-      [0, 1, CACHE_LENGTH - 2, CACHE_LENGTH - 1].includes(i) ? 20 : 0
+      [0, 1, CACHE_LENGTH - 2, CACHE_LENGTH - 1].includes(i) ? 20 : 0,
     );
     const cache = initCacheWithSizes(sizes, 30);
     expect(findIndex(cache, sum(sizes) / 2 - 0.00001)).toBe(
-      sizes.findIndex((s) => s === 0) - 1
+      sizes.findIndex((s) => s === 0) - 1,
     );
     expect(findIndex(cache, sum(sizes) / 2)).toBe(
-      sizes.findLastIndex((s) => s === 0) + 1
+      sizes.findLastIndex((s) => s === 0) + 1,
     );
   });
 });
@@ -555,12 +555,12 @@ describe(computeRange.name, () => {
         computeRange(
           initCacheWithSizes(
             range(CACHE_LENGTH, () => 20),
-            30
+            30,
           ),
           0,
           100,
-          initialIndex
-        )
+          initialIndex,
+        ),
       ).toEqual([0, 5]);
     });
 
@@ -569,19 +569,19 @@ describe(computeRange.name, () => {
         computeRange(
           initCacheWithSizes(
             range(CACHE_LENGTH, () => 20),
-            30
+            30,
           ),
           20,
           20 + 100,
-          initialIndex
-        )
+          initialIndex,
+        ),
       ).toEqual([1, 6]);
     });
 
     it("should get last if offset is at end", () => {
       const cache = initCacheWithSizes(
         range(CACHE_LENGTH, () => 20),
-        30
+        30,
       );
       const last = cache._length - 1;
       const start = sum(cache._sizes);
@@ -594,7 +594,7 @@ describe(computeRange.name, () => {
     it("should get last if offset is at end - 1", () => {
       const cache = initCacheWithSizes(
         range(CACHE_LENGTH, () => 20),
-        30
+        30,
       );
       const last = cache._length - 1;
       const start = sum(cache._sizes) - 20;
@@ -607,7 +607,7 @@ describe(computeRange.name, () => {
     it("should get last - 1 if offset is at end - 1 and more", () => {
       const cache = initCacheWithSizes(
         range(CACHE_LENGTH, () => 20),
-        30
+        30,
       );
       const last = cache._length - 1;
       const start = sum(cache._sizes) - 20 - 1;
@@ -623,19 +623,19 @@ describe(computeRange.name, () => {
         computeRange(
           initCacheWithSizes(
             range(CACHE_LENGTH, () => 20),
-            30
+            30,
           ),
           start,
           start + 100,
-          initialIndex
-        )
+          initialIndex,
+        ),
       ).toEqual([0, 0]);
     });
 
     it("should get last if offset is after end", () => {
       const cache = initCacheWithSizes(
         range(CACHE_LENGTH, () => 20),
-        30
+        30,
       );
       const last = cache._length - 1;
       const start = sum(cache._sizes) + 1000;
@@ -649,7 +649,7 @@ describe(computeRange.name, () => {
       const offset = (cache: Cache, i: number) => sum(cache._sizes.slice(0, i));
       const cache = initCacheWithSizes(
         range(CACHE_LENGTH, () => 20),
-        30
+        30,
       );
       const start = offset(cache, initialIndex);
       expect(computeRange(cache, start, start + 100, initialIndex)).toEqual([
@@ -665,7 +665,7 @@ describe(estimateDefaultItemSize.name, () => {
     it("should update with 1 entry", () => {
       const cache = initCacheWithSizes(
         range(100, () => -1),
-        30
+        30,
       );
       const indexes = [0];
       indexes.forEach((i) => setItemSize(cache, i, 50));
@@ -679,14 +679,14 @@ describe(estimateDefaultItemSize.name, () => {
       expect(getTotalSize(cache)).toBe(
         getTotalSize(init) +
           (cache._defaultItemSize - init._defaultItemSize) *
-            (100 - indexes.length)
+            (100 - indexes.length),
       );
     });
 
     it("should update with some entry", () => {
       const cache = initCacheWithSizes(
         range(100, () => -1),
-        30
+        30,
       );
       const indexes = [0, 1, 2, 3];
       indexes.forEach((i) => setItemSize(cache, i, 50));
@@ -700,14 +700,14 @@ describe(estimateDefaultItemSize.name, () => {
       expect(getTotalSize(cache)).toBe(
         getTotalSize(init) +
           (cache._defaultItemSize - init._defaultItemSize) *
-            (100 - indexes.length)
+            (100 - indexes.length),
       );
     });
 
     it("should update with some entry from outside", () => {
       const cache = initCacheWithSizes(
         range(100, () => -1),
-        30
+        30,
       );
       const indexes = [20, 21, 22, 23];
       indexes.forEach((i) => setItemSize(cache, i, 50));
@@ -721,7 +721,7 @@ describe(estimateDefaultItemSize.name, () => {
       expect(getTotalSize(cache)).toBe(
         getTotalSize(init) +
           (cache._defaultItemSize - init._defaultItemSize) *
-            (100 - indexes.length)
+            (100 - indexes.length),
       );
     });
   });
@@ -730,7 +730,7 @@ describe(estimateDefaultItemSize.name, () => {
     it("should update with 1 entry", () => {
       const cache = initCacheWithSizes(
         range(100, () => -1),
-        30
+        30,
       );
       const indexes = [92];
       indexes.forEach((i) => setItemSize(cache, i, 50));
@@ -744,14 +744,14 @@ describe(estimateDefaultItemSize.name, () => {
       expect(getTotalSize(cache)).toBe(
         getTotalSize(init) +
           (cache._defaultItemSize - init._defaultItemSize) *
-            (100 - indexes.length)
+            (100 - indexes.length),
       );
     });
 
     it("should update with some entry", () => {
       const cache = initCacheWithSizes(
         range(100, () => -1),
-        30
+        30,
       );
       const indexes = [92, 93, 94, 95];
       indexes.forEach((i) => setItemSize(cache, i, 50));
@@ -765,14 +765,14 @@ describe(estimateDefaultItemSize.name, () => {
       expect(getTotalSize(cache)).toBe(
         getTotalSize(init) +
           (cache._defaultItemSize - init._defaultItemSize) *
-            (100 - indexes.length)
+            (100 - indexes.length),
       );
     });
 
     it("should update with some entry from outside", () => {
       const cache = initCacheWithSizes(
         range(100, () => -1),
-        30
+        30,
       );
       const indexes = [20, 21, 22, 23];
       indexes.forEach((i) => setItemSize(cache, i, 50));
@@ -786,14 +786,14 @@ describe(estimateDefaultItemSize.name, () => {
       expect(getTotalSize(cache)).toBe(
         getTotalSize(init) +
           (cache._defaultItemSize - init._defaultItemSize) *
-            (100 - indexes.length)
+            (100 - indexes.length),
       );
     });
 
     it("should update with some entry from near bound", () => {
       const cache = initCacheWithSizes(
         range(100, () => -1),
-        30
+        30,
       );
       const indexes = [88, 89, 90, 91];
       indexes.forEach((i) => setItemSize(cache, i, 50));
@@ -807,7 +807,7 @@ describe(estimateDefaultItemSize.name, () => {
       expect(getTotalSize(cache)).toBe(
         getTotalSize(init) +
           (cache._defaultItemSize - init._defaultItemSize) *
-            (100 - indexes.length)
+            (100 - indexes.length),
       );
     });
   });
@@ -939,7 +939,7 @@ describe(initCache.name, () => {
     const cache = initCache(
       itemLength,
       123,
-      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
     );
     expect(cache).toMatchInlineSnapshot(`
       {
@@ -983,7 +983,7 @@ describe(takeCacheSnapshot.name, () => {
   it("smoke", () => {
     const cache = initCacheWithSizes(
       range(10, (i) => (i + 1) * 10),
-      40
+      40,
     );
     const snapshot = takeCacheSnapshot(cache);
     expect(snapshot).toMatchInlineSnapshot(`

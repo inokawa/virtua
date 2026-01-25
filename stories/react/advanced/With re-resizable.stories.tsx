@@ -51,7 +51,7 @@ export const Default: StoryObj = {
   name: "With re-resizable",
   render: () => {
     const [heights, setHeights] = useState(() =>
-      Array.from({ length: 1000 }, () => 50)
+      Array.from({ length: 1000 }, () => 50),
     );
     const onResize = useCallback((id: number, height: number) => {
       setHeights((p) => {

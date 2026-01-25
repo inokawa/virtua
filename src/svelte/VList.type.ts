@@ -8,7 +8,8 @@ import type {
  * Props of {@link VList}.
  */
 export interface VListProps<T>
-  extends Pick<
+  extends
+    Pick<
       VirtualizerProps<T>,
       | "data"
       | "getKey"

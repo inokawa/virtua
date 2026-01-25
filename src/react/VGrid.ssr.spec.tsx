@@ -30,13 +30,13 @@ describe("SSR", () => {
             {rowIndex}-{colIndex}
           </div>
         )}
-      </VGrid>
+      </VGrid>,
     );
     expect(html).toMatchSnapshot();
 
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
-        .childElementCount
+        .childElementCount,
     ).toEqual(ROW_COUNT * COL_COUNT);
   });
 
@@ -61,13 +61,13 @@ describe("SSR", () => {
             {rowIndex}-{colIndex}
           </div>
         )}
-      </VGrid>
+      </VGrid>,
     );
     expect(html).toMatchSnapshot();
 
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
-        .childElementCount
+        .childElementCount,
     ).toEqual(ROW_COUNT * COL_COUNT);
   });
 
@@ -92,13 +92,13 @@ describe("SSR", () => {
             {rowIndex}-{colIndex}
           </div>
         )}
-      </VGrid>
+      </VGrid>,
     );
     expect(html).toMatchSnapshot();
 
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
-        .childElementCount
+        .childElementCount,
     ).toEqual(ROW_COUNT * COL_COUNT);
   });
 });
