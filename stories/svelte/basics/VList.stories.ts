@@ -3,6 +3,7 @@ import { VList } from "../../../src/svelte";
 import DefaultComponent from "./Default.svelte";
 import HorizontalComponent from "./Horizontal.svelte";
 import ControlsComponent from "./Controls.svelte";
+import SSRComponent from "./SSR.svelte";
 
 export default {
   component: VList,
@@ -23,5 +24,10 @@ export const Horizontal: StoryObj = {
 export const Controls: StoryObj = {
   render: () => ({
     Component: ControlsComponent,
+  }),
+};
+export const SSR: StoryObj = {
+  render: () => ({
+    Component: SSRComponent,
   }),
 };

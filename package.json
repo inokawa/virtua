@@ -42,7 +42,7 @@
   "scripts": {
     "build": "rollup -c",
     "tsc": "tsc -p . --noEmit",
-    "test": "vitest run --project=unit --project=react --project=vue --project=solid",
+    "test": "vitest run --project=unit --project=react --project=svelte --project=vue --project=solid",
     "lint": "eslint '{src,e2e}/**/*.{js,jsx,ts,tsx}' --cache",
     "format": "prettier '**/*.{js,ts,jsx,tsx,vue,svelte}' --write --cache",
     "format:ci": "prettier '**/*.{js,ts,jsx,tsx,vue,svelte}' -l",

@@ -15,6 +15,7 @@ export interface VListProps<T>
       | "getKey"
       | "bufferSize"
       | "itemSize"
+      | "ssrCount"
       | "shift"
       | "horizontal"
       | "children"

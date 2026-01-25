@@ -10,6 +10,7 @@
     getKey,
     bufferSize,
     itemSize,
+    ssrCount,
     shift,
     horizontal,
     keepMounted,
@@ -76,6 +77,7 @@
     {getKey}
     {bufferSize}
     {itemSize}
+    {ssrCount}
     {shift}
     {horizontal}
     {keepMounted}
