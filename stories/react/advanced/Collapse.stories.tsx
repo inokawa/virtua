@@ -72,7 +72,7 @@ export const CollapseAndScroll: StoryObj = {
             }
           />
         )),
-      [items, itemCollapseState]
+      [items, itemCollapseState],
     );
 
     return (
@@ -174,7 +174,7 @@ export const CollapseAndRemove: StoryObj = {
               }
             />
           )),
-      [items, itemsHidden]
+      [items, itemsHidden],
     );
 
     return (

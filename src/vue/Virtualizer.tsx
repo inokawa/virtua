@@ -160,7 +160,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       props.itemSize,
       props.ssrCount,
       props.cache,
-      !props.itemSize
+      !props.itemSize,
     );
     const resizer = createResizer(store, isHorizontal);
     const scroller = createScroller(store, isHorizontal);
@@ -185,10 +185,10 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       return next;
     });
     const isScrolling = computed(
-      () => stateVersion.value && store.$isScrolling()
+      () => stateVersion.value && store.$isScrolling(),
     );
     const totalSize = computed(
-      () => stateVersion.value && store.$getTotalSize()
+      () => stateVersion.value && store.$getTotalSize(),
     );
 
     onMounted(() => {
@@ -223,14 +223,14 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       () => props.data.length,
       (count) => {
         store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
-      }
+      },
     );
     watch(
       () => props.startMargin,
       (value) => {
         store.$update(ACTION_START_OFFSET_CHANGE, value);
       },
-      { immediate: true }
+      { immediate: true },
     );
 
     watch(
@@ -238,7 +238,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       () => {
         scroller.$fixScrollJump();
       },
-      { flush: "post" }
+      { flush: "post" },
     );
 
     expose({

@@ -15,7 +15,8 @@ export interface VListHandle extends VirtualizerHandle {}
  * Props of {@link VList}.
  */
 export interface VListProps<T = unknown>
-  extends Pick<
+  extends
+    Pick<
       VirtualizerProps<T>,
       | "children"
       | "data"
@@ -53,7 +54,7 @@ export const VList = forwardRef<VListHandle, VListProps>(
       style,
       ...attrs
     },
-    ref
+    ref,
   ): ReactElement => {
     return (
       <div
@@ -85,5 +86,5 @@ export const VList = forwardRef<VListHandle, VListProps>(
         </Virtualizer>
       </div>
     );
-  }
+  },
 ) as <T>(props: VListProps<T> & { ref?: Ref<VListHandle> }) => ReactElement;

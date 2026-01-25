@@ -35,7 +35,7 @@ const StickyItem = forwardRef<HTMLDivElement, CustomItemComponentProps>(
         {children}
       </div>
     );
-  }
+  },
 );
 
 export const Default: StoryObj = {

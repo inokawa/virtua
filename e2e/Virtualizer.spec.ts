@@ -23,14 +23,14 @@ test("header and footer", async ({ page }) => {
   const topPadding = parseInt(
     await getStyleValue(
       scrollable.getByText("header", { exact: true }),
-      "height"
-    )
+      "height",
+    ),
   );
   const bottomPadding = parseInt(
     await getStyleValue(
       scrollable.getByText("footer", { exact: true }),
-      "height"
-    )
+      "height",
+    ),
   );
   expect(topPadding).toBeGreaterThan(10);
   expect(bottomPadding).toBeGreaterThan(10);
@@ -60,14 +60,14 @@ test("sticky header and footer", async ({ page }) => {
   const topPadding = parseInt(
     await getStyleValue(
       scrollable.getByText("header", { exact: true }),
-      "height"
-    )
+      "height",
+    ),
   );
   const bottomPadding = parseInt(
     await getStyleValue(
       scrollable.getByText("footer", { exact: true }),
-      "height"
-    )
+      "height",
+    ),
   );
   expect(topPadding).toBeGreaterThan(10);
   expect(bottomPadding).toBeGreaterThan(10);
@@ -131,10 +131,10 @@ test("overflow", async ({ page }) => {
         const rect = e.getBoundingClientRect();
         const pointed = document.elementFromPoint(
           rect.x + rect.width / 8,
-          rect.y + rect.height / 8
+          rect.y + rect.height / 8,
         );
         return e === pointed;
-      })
+      }),
     ).toBe(true);
   }
 });
@@ -286,7 +286,7 @@ test.describe("aligned to bottom", () => {
       const isScrollBarVisible = await isVerticalScrollBarVisible(component);
       const itemBottom = await relativeBottom(
         component,
-        getItems(container).last()
+        getItems(container).last(),
       );
 
       // Check if bottom is always visible and on bottom

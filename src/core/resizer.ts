@@ -45,7 +45,7 @@ interface ListResizer {
  */
 export const createResizer = (
   store: VirtualStore,
-  isHorizontal: boolean
+  isHorizontal: boolean,
 ): ListResizer => {
   let viewportElement: HTMLElement | undefined;
   const sizeKey = isHorizontal ? "width" : "height";
@@ -99,7 +99,7 @@ interface WindowListResizer {
  */
 export const createWindowResizer = (
   store: VirtualStore,
-  isHorizontal: boolean
+  isHorizontal: boolean,
 ): WindowListResizer => {
   const sizeKey = isHorizontal ? "width" : "height";
   const windowSizeKey = isHorizontal ? "innerWidth" : "innerHeight";
@@ -159,7 +159,7 @@ export const createWindowResizer = (
  */
 export const createGridResizer = (
   rowStore: VirtualStore,
-  colStore: VirtualStore
+  colStore: VirtualStore,
 ) => {
   let viewportElement: HTMLElement | undefined;
 

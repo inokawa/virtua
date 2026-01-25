@@ -50,10 +50,10 @@ test.describe("smoke", () => {
 
     // check if start is displayed
     await expect(
-      component.getByText("Column 0", { exact: true })
+      component.getByText("Column 0", { exact: true }),
     ).toBeVisible();
     await expect(
-      component.getByText("Column 50", { exact: true })
+      component.getByText("Column 50", { exact: true }),
     ).not.toBeVisible();
 
     // scroll to the end
@@ -61,10 +61,10 @@ test.describe("smoke", () => {
 
     // check if the end is displayed
     await expect(
-      component.getByText("Column 999", { exact: true })
+      component.getByText("Column 999", { exact: true }),
     ).toBeVisible();
     await expect(
-      component.getByText("Column 949", { exact: true })
+      component.getByText("Column 949", { exact: true }),
     ).not.toBeVisible();
   });
 
@@ -98,10 +98,10 @@ test.describe("smoke", () => {
 
     // check if start is displayed
     await expect(
-      component.getByText("Column 0", { exact: true })
+      component.getByText("Column 0", { exact: true }),
     ).toBeVisible();
     await expect(
-      component.getByText("Column 50", { exact: true })
+      component.getByText("Column 50", { exact: true }),
     ).not.toBeVisible();
 
     // scroll to the end
@@ -109,10 +109,10 @@ test.describe("smoke", () => {
 
     // check if the end is displayed
     await expect(
-      component.getByText("Column 999", { exact: true })
+      component.getByText("Column 999", { exact: true }),
     ).toBeVisible();
     await expect(
-      component.getByText("Column 949", { exact: true })
+      component.getByText("Column 949", { exact: true }),
     ).not.toBeVisible();
   });
 
@@ -137,7 +137,7 @@ test.describe("smoke", () => {
     const component = await getVirtualizer(page);
 
     expect(await component.evaluate((s) => document.body.scrollHeight)).toBe(
-      await component.evaluate((s) => document.body.offsetHeight)
+      await component.evaluate((s) => document.body.offsetHeight),
     );
   });
 });
@@ -188,7 +188,7 @@ test.describe("check if scroll jump compensation works", () => {
       await page.keyboard.press("ArrowUp", { delay: 10 });
       const offset = await getWindowScrollBottom(page);
       expect(offset).toBeGreaterThanOrEqual(
-        browserName === "firefox" ? prev - 1 : prev
+        browserName === "firefox" ? prev - 1 : prev,
       );
       prev = offset;
     }
@@ -201,7 +201,7 @@ test.describe("check if scroll jump compensation works", () => {
 
     // check if start is displayed
     await expect(
-      component.getByText("Column 0", { exact: true })
+      component.getByText("Column 0", { exact: true }),
     ).toBeVisible();
 
     // check if offset from start is always keeped
@@ -225,7 +225,7 @@ test.describe("check if scroll jump compensation works", () => {
 
     // check if start is displayed
     await expect(
-      component.getByText("Column 0", { exact: true })
+      component.getByText("Column 0", { exact: true }),
     ).toBeVisible();
 
     // scroll to the end
@@ -241,7 +241,7 @@ test.describe("check if scroll jump compensation works", () => {
       await page.keyboard.press("ArrowLeft", { delay: 10 });
       const offset = await getWindowScrollRight(page);
       expect(offset).toBeGreaterThanOrEqual(
-        browserName === "firefox" ? prev - 1 : prev
+        browserName === "firefox" ? prev - 1 : prev,
       );
       prev = offset;
     }
@@ -471,10 +471,10 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("650", { exact: true })
+        component.getByText("650", { exact: true }),
       ).not.toBeVisible();
       await expect(
-        component.getByText("750", { exact: true })
+        component.getByText("750", { exact: true }),
       ).not.toBeVisible();
     });
 
@@ -504,7 +504,7 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("50", { exact: true })
+        component.getByText("50", { exact: true }),
       ).not.toBeVisible();
     });
 
@@ -531,7 +531,7 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("949", { exact: true })
+        component.getByText("949", { exact: true }),
       ).not.toBeVisible();
     });
   });
@@ -561,10 +561,10 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("650", { exact: true })
+        component.getByText("650", { exact: true }),
       ).not.toBeVisible();
       await expect(
-        component.getByText("750", { exact: true })
+        component.getByText("750", { exact: true }),
       ).not.toBeVisible();
     });
 
@@ -595,7 +595,7 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("50", { exact: true })
+        component.getByText("50", { exact: true }),
       ).not.toBeVisible();
     });
 
@@ -623,7 +623,7 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("949", { exact: true })
+        component.getByText("949", { exact: true }),
       ).not.toBeVisible();
     });
   });
@@ -655,7 +655,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if this is smooth scrolling
       expect(called).toBeGreaterThanOrEqual(
         // TODO find better way to check in webkit
-        browserName === "webkit" ? 2 : 10
+        browserName === "webkit" ? 2 : 10,
       );
 
       // Check if scrolled precisely
@@ -668,10 +668,10 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("650", { exact: true })
+        component.getByText("650", { exact: true }),
       ).not.toBeVisible();
       await expect(
-        component.getByText("750", { exact: true })
+        component.getByText("750", { exact: true }),
       ).not.toBeVisible();
     });
 
@@ -702,7 +702,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if this is smooth scrolling
       expect(called).toBeGreaterThanOrEqual(
         // TODO find better way to check in webkit
-        browserName === "webkit" ? 2 : 10
+        browserName === "webkit" ? 2 : 10,
       );
 
       // Check if scrolled precisely
@@ -715,10 +715,10 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("650", { exact: true })
+        component.getByText("650", { exact: true }),
       ).not.toBeVisible();
       await expect(
-        component.getByText("750", { exact: true })
+        component.getByText("750", { exact: true }),
       ).not.toBeVisible();
     });
   });

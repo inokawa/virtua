@@ -31,11 +31,11 @@ const ScrollInput = ({ count }: { count: number }) => {
       style={{ width: "85%" }}
       onChange={(e) => {
         const scrollables = Array.from(
-          document.querySelectorAll('*[style*="overflow"]')
+          document.querySelectorAll('*[style*="overflow"]'),
         ).filter(
           (d) =>
             /(auto|scroll)/.test((d as HTMLElement).style.overflow) ||
-            /(auto|scroll)/.test((d as HTMLElement).style.overflowY)
+            /(auto|scroll)/.test((d as HTMLElement).style.overflowY),
         );
         scrollables.forEach((el) => {
           el.scrollTop = (el.scrollHeight / count) * Number(e.target.value);
@@ -111,7 +111,7 @@ const Frame = ({
             onClick={(e) => {
               const index = Number(
                 ((e.target as HTMLElement).previousSibling as HTMLInputElement)
-                  .value
+                  .value,
               );
               leftRef.current?.scrollToIndex(index);
               rightRef.current?.scrollToIndex(index);

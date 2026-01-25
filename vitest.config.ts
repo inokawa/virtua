@@ -79,10 +79,10 @@ export default defineConfig({
             process.env.STORYBOOK_VUE
               ? ".storybook/vitest.setup-vue.ts"
               : process.env.STORYBOOK_SOLID
-              ? ".storybook/vitest.setup-solid.ts"
-              : process.env.STORYBOOK_SVELTE
-              ? ".storybook/vitest.setup-svelte.ts"
-              : ".storybook/vitest.setup-react.ts",
+                ? ".storybook/vitest.setup-solid.ts"
+                : process.env.STORYBOOK_SVELTE
+                  ? ".storybook/vitest.setup-svelte.ts"
+                  : ".storybook/vitest.setup-react.ts",
           ],
         },
       },

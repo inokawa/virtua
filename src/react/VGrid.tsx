@@ -75,7 +75,7 @@ const Cell = memo(
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(
       () => resizer.$observeItem(ref[refKey]!, rowIndex, colIndex),
-      [colIndex, rowIndex]
+      [colIndex, rowIndex],
     );
 
     return (
@@ -98,7 +98,7 @@ const Cell = memo(
         {children}
       </Element>
     );
-  }
+  },
 );
 
 export type VGridItemResize = readonly [index: number, size: number];
@@ -280,7 +280,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       style,
       ...attrs
     },
-    ref
+    ref,
   ): ReactElement => {
     const [rowStore, colStore, resizer, scroller] = useStatic(() => {
       const _rowStore = createVirtualStore(rowCount, cellHeight, ssrRowCount);
@@ -303,12 +303,12 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
     const [rowStateVersion, rowRerender] = useReducer(
       rowStore.$getStateVersion,
       undefined,
-      rowStore.$getStateVersion
+      rowStore.$getStateVersion,
     );
     const [colStateVersion, colRerender] = useReducer(
       colStore.$getStateVersion,
       undefined,
-      colStore.$getStateVersion
+      colStore.$getStateVersion,
     );
 
     const isVerticalScrolling = rowStore.$isScrolling();
@@ -359,47 +359,43 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       scroller.$fixScrollJump();
     }, [rowStateVersion, colStateVersion]);
 
-    useImperativeHandle(
-      ref,
-      () => {
-        return {
-          get scrollTop() {
-            return rowStore.$getScrollOffset();
-          },
-          get scrollLeft() {
-            return colStore.$getScrollOffset();
-          },
-          get scrollHeight() {
-            return getScrollSize(rowStore);
-          },
-          get scrollWidth() {
-            return getScrollSize(colStore);
-          },
-          get viewportHeight() {
-            return rowStore.$getViewportSize();
-          },
-          get viewportWidth() {
-            return colStore.$getViewportSize();
-          },
-          findRowIndex: rowStore.$findItemIndex,
-          findColIndex: colStore.$findItemIndex,
-          getRowOffset: rowStore.$getItemOffset,
-          getColOffset: colStore.$getItemOffset,
-          getRowSize: rowStore.$getItemSize,
-          getColSize: colStore.$getItemSize,
-          resizeCols(cols) {
-            resizer.$resizeCols(cols);
-          },
-          resizeRows(rows) {
-            resizer.$resizeRows(rows);
-          },
-          scrollToIndex: scroller.$scrollToIndex,
-          scrollTo: scroller.$scrollTo,
-          scrollBy: scroller.$scrollBy,
-        };
-      },
-      []
-    );
+    useImperativeHandle(ref, () => {
+      return {
+        get scrollTop() {
+          return rowStore.$getScrollOffset();
+        },
+        get scrollLeft() {
+          return colStore.$getScrollOffset();
+        },
+        get scrollHeight() {
+          return getScrollSize(rowStore);
+        },
+        get scrollWidth() {
+          return getScrollSize(colStore);
+        },
+        get viewportHeight() {
+          return rowStore.$getViewportSize();
+        },
+        get viewportWidth() {
+          return colStore.$getViewportSize();
+        },
+        findRowIndex: rowStore.$findItemIndex,
+        findColIndex: colStore.$findItemIndex,
+        getRowOffset: rowStore.$getItemOffset,
+        getColOffset: colStore.$getItemOffset,
+        getRowSize: rowStore.$getItemSize,
+        getColSize: colStore.$getItemSize,
+        resizeCols(cols) {
+          resizer.$resizeCols(cols);
+        },
+        resizeRows(rows) {
+          resizer.$resizeRows(rows);
+        },
+        scrollToIndex: scroller.$scrollToIndex,
+        scrollTo: scroller.$scrollTo,
+        scrollBy: scroller.$scrollBy,
+      };
+    }, []);
 
     const render = useMemo(() => {
       const cache = new Map<string, ReactNode>();
@@ -408,7 +404,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         if (!e) {
           cache.set(
             genKey(rowIndex, colIndex),
-            (e = children({ rowIndex, colIndex }))
+            (e = children({ rowIndex, colIndex })),
           );
         }
         return e;
@@ -439,7 +435,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
             }
             _element={ItemElement as "div"}
             _children={render(rowIndex, colIndex)}
-          />
+          />,
         );
       }
     }
@@ -473,5 +469,5 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         </div>
       </div>
     );
-  }
+  },
 );

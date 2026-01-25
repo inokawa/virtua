@@ -156,7 +156,7 @@ export const WindowVirtualizer = forwardRef<
       onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
     },
-    ref
+    ref,
   ): ReactElement => {
     Element = Element as "div";
 
@@ -176,7 +176,7 @@ export const WindowVirtualizer = forwardRef<
         itemSize,
         ssrCount,
         cache,
-        !itemSize
+        !itemSize,
       );
 
       return [
@@ -194,7 +194,7 @@ export const WindowVirtualizer = forwardRef<
     const [stateVersion, rerender] = useReducer(
       store.$getStateVersion,
       undefined,
-      store.$getStateVersion
+      store.$getStateVersion,
     );
 
     const isScrolling = store.$isScrolling();
@@ -237,27 +237,23 @@ export const WindowVirtualizer = forwardRef<
       scroller.$fixScrollJump();
     }, [stateVersion]);
 
-    useImperativeHandle(
-      ref,
-      () => {
-        return {
-          get cache() {
-            return store.$getCacheSnapshot();
-          },
-          get scrollOffset() {
-            return store.$getScrollOffset();
-          },
-          get viewportSize() {
-            return store.$getViewportSize();
-          },
-          findItemIndex: store.$findItemIndex,
-          getItemOffset: store.$getItemOffset,
-          getItemSize: store.$getItemSize,
-          scrollToIndex: scroller.$scrollToIndex,
-        };
-      },
-      []
-    );
+    useImperativeHandle(ref, () => {
+      return {
+        get cache() {
+          return store.$getCacheSnapshot();
+        },
+        get scrollOffset() {
+          return store.$getScrollOffset();
+        },
+        get viewportSize() {
+          return store.$getViewportSize();
+        },
+        findItemIndex: store.$findItemIndex,
+        getItemOffset: store.$getItemOffset,
+        getItemSize: store.$getItemSize,
+        scrollToIndex: scroller.$scrollToIndex,
+      };
+    }, []);
 
     for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
       const e = renderElement(i);
@@ -272,7 +268,7 @@ export const WindowVirtualizer = forwardRef<
           _children={e}
           _isHorizontal={isHorizontal}
           _isSSR={isSSR[refKey]}
-        />
+        />,
       );
     }
 
@@ -292,7 +288,7 @@ export const WindowVirtualizer = forwardRef<
         {items}
       </Element>
     );
-  }
+  },
 ) as <T>(
-  props: WindowVirtualizerProps<T> & { ref?: Ref<WindowVirtualizerHandle> }
+  props: WindowVirtualizerProps<T> & { ref?: Ref<WindowVirtualizerHandle> },
 ) => ReactElement;

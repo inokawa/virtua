@@ -6,10 +6,10 @@ addons.setConfig({
   layoutCustomisations: {
     showPanel: (state, defaultValue) => {
       const tags = state.index?.[state.storyId]?.tags ?? [];
-      if (tags.includes('comparison')) {
+      if (tags.includes("comparison")) {
         return false;
       }
       return defaultValue;
     },
-  }
+  },
 });

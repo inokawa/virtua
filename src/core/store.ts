@@ -61,7 +61,7 @@ type Actions =
   | [type: typeof ACTION_VIEWPORT_RESIZE, size: number]
   | [
       type: typeof ACTION_ITEMS_LENGTH_CHANGE,
-      arg: [length: number, isShift?: boolean | undefined]
+      arg: [length: number, isShift?: boolean | undefined],
     ]
   | [type: typeof ACTION_START_OFFSET_CHANGE, offset: number]
   | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
@@ -120,7 +120,7 @@ export const createVirtualStore = (
   itemSize: number = 40,
   ssrCount: number = 0,
   cacheSnapshot?: CacheSnapshot | undefined,
-  shouldAutoEstimateItemSize: boolean = false
+  shouldAutoEstimateItemSize: boolean = false,
 ): VirtualStore => {
   let isSSR = !!ssrCount;
   let stateVersion: StateVersion = 1;
@@ -142,7 +142,7 @@ export const createVirtualStore = (
     cacheSnapshot
       ? (cacheSnapshot as unknown as InternalCacheSnapshot)[1]
       : itemSize,
-    cacheSnapshot && (cacheSnapshot as unknown as InternalCacheSnapshot)[0]
+    cacheSnapshot && (cacheSnapshot as unknown as InternalCacheSnapshot)[0],
   );
   const subscribers = new Set<[number, Subscriber]>();
   const getRelativeScrollOffset = () => scrollOffset - startSpacerSize;
@@ -220,7 +220,7 @@ export const createVirtualStore = (
 
         [startIndex, endIndex] = _prevRange = getRange(
           max(0, startOffset),
-          max(0, endOffset)
+          max(0, endOffset),
         );
         if (_frozenRange) {
           startIndex = min(startIndex, _frozenRange[0]);
@@ -330,7 +330,7 @@ export const createVirtualStore = (
         }
         case ACTION_ITEM_RESIZE: {
           const updated = payload.filter(
-            ([index, size]) => !isSizeEqual(index, size)
+            ([index, size]) => !isSizeEqual(index, size),
           );
 
           // Skip if all items are cached and not updated
@@ -355,13 +355,13 @@ export const createVirtualStore = (
                         (_scrollDirection === SCROLL_IDLE &&
                         _scrollMode === SCROLL_BY_NATIVE
                           ? 1
-                          : 0)
+                          : 0),
                     ) < getRelativeScrollOffset())
               ) {
                 acc += size - getItemSize(index);
               }
               return acc;
-            }, 0)
+            }, 0),
           );
 
           // Update item sizes
@@ -386,8 +386,8 @@ export const createVirtualStore = (
             applyJump(
               estimateDefaultItemSize(
                 cache,
-                findIndex(cache, getVisibleOffset())
-              )
+                findIndex(cache, getVisibleOffset()),
+              ),
             );
             shouldAutoEstimateItemSize = false;
           }

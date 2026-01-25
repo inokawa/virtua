@@ -37,7 +37,7 @@ const NewWindow = ({
     const externalWindow = window.open(
       "",
       "",
-      "width=400,height=400,left=200,top=200"
+      "width=400,height=400,left=200,top=200",
     );
 
     if (!externalWindow) return;

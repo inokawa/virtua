@@ -64,7 +64,7 @@ test.describe("smoke", () => {
 
     // check if the end is displayed
     await expect(
-      component.getByText("Column 999", { exact: true })
+      component.getByText("Column 999", { exact: true }),
     ).toBeVisible();
   });
 
@@ -106,7 +106,7 @@ test.describe("smoke", () => {
 
     // check if the end is displayed
     await expect(
-      component.getByText("Column 999", { exact: true })
+      component.getByText("Column 999", { exact: true }),
     ).toBeVisible();
   });
 
@@ -198,7 +198,7 @@ test.describe("smoke", () => {
     const remountedItem = await findFirstVisibleItem(remountedComponent);
     await expect(remountedItem).toHaveText(mountedItemText);
     expect(await relativeTop(remountedComponent, remountedItem)).toEqual(
-      mountedItemTop
+      mountedItemTop,
     );
   });
 });
@@ -340,7 +340,7 @@ test.describe("check if scroll jump compensation works", () => {
 
     // check if start is displayed
     await expect(
-      component.getByText("Column 0", { exact: true })
+      component.getByText("Column 0", { exact: true }),
     ).toBeVisible();
 
     // check if offset from start is always keeped
@@ -367,7 +367,7 @@ test.describe("check if scroll jump compensation works", () => {
 
     // check if start is displayed
     await expect(
-      component.getByText("Column 0", { exact: true })
+      component.getByText("Column 0", { exact: true }),
     ).toBeVisible();
 
     const windowWidth = await page.evaluate(() => window.innerWidth);
@@ -394,7 +394,7 @@ test.describe("check if scroll jump compensation works", () => {
 
     // check if start is displayed
     await expect(
-      component.getByText("Column 0", { exact: true })
+      component.getByText("Column 0", { exact: true }),
     ).toBeVisible();
 
     // scroll to the end
@@ -439,7 +439,7 @@ test.describe("check if scroll jump compensation works", () => {
       await scrollTo(
         component,
         (await getTargetItem().evaluate((e) => (e as HTMLElement).offsetTop)) +
-          marginTop
+          marginTop,
       );
       const initialItem = await findFirstVisibleItem(component);
       await expect(initialItem).toHaveText(targetText);
@@ -454,7 +454,7 @@ test.describe("check if scroll jump compensation works", () => {
         .click();
 
       await (await getTargetItem().elementHandle())!.waitForElementState(
-        "stable"
+        "stable",
       );
 
       const updatedItem = await findFirstVisibleItem(component);
@@ -475,7 +475,7 @@ test.describe("check if scroll jump compensation works", () => {
 
       const prevBottom = await relativeBottom(
         component,
-        await findLastVisibleItem(component)
+        await findLastVisibleItem(component),
       );
 
       // wait for resize completed
@@ -483,7 +483,7 @@ test.describe("check if scroll jump compensation works", () => {
 
       const bottom = await relativeBottom(
         component,
-        await findLastVisibleItem(component)
+        await findLastVisibleItem(component),
       );
 
       // check if distance from the bottom isn't changed by resizes
@@ -550,8 +550,9 @@ test.describe("check if scroll jump compensation works", () => {
       await scrollTo(
         component,
         await getTargetItem().evaluate(
-          (e) => (e as HTMLElement).offsetTop + e.getBoundingClientRect().height
-        )
+          (e) =>
+            (e as HTMLElement).offsetTop + e.getBoundingClientRect().height,
+        ),
       );
       const initialItem = await findFirstVisibleItem(component);
       const initialItemTop = await relativeTop(component, initialItem);
@@ -598,7 +599,7 @@ test.describe("check if scroll jump compensation works", () => {
     // append large item
     await textarea.clear();
     await textarea.fill(
-      "Hello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\n"
+      "Hello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\n",
     );
     await button.click();
     await (await component.elementHandle())!.waitForElementState("stable");
@@ -610,7 +611,7 @@ test.describe("check if scroll jump compensation works", () => {
       max: 1,
     });
     expect((await largeItem.boundingBox())!.height).toBeGreaterThan(
-      smallItemHeight * 10
+      smallItemHeight * 10,
     );
   });
 
@@ -627,7 +628,7 @@ test.describe("check if scroll jump compensation works", () => {
       {
         min: 0,
         max: nearlyZeroMax,
-      }
+      },
     );
 
     // check if stable after image load
@@ -638,7 +639,7 @@ test.describe("check if scroll jump compensation works", () => {
       {
         min: 0,
         max: nearlyZeroMax,
-      }
+      },
     );
 
     // scroll to top
@@ -682,7 +683,7 @@ test.describe("check if scroll jump compensation works", () => {
       {
         min: 0,
         max: nearlyZeroMax,
-      }
+      },
     );
   });
 });
@@ -713,10 +714,10 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("650", { exact: true })
+        component.getByText("650", { exact: true }),
       ).not.toBeVisible();
       await expect(
-        component.getByText("750", { exact: true })
+        component.getByText("750", { exact: true }),
       ).not.toBeVisible();
     });
 
@@ -746,7 +747,7 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("50", { exact: true })
+        component.getByText("50", { exact: true }),
       ).not.toBeVisible();
     });
 
@@ -773,7 +774,7 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("949", { exact: true })
+        component.getByText("949", { exact: true }),
       ).not.toBeVisible();
     });
   });
@@ -803,10 +804,10 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("650", { exact: true })
+        component.getByText("650", { exact: true }),
       ).not.toBeVisible();
       await expect(
-        component.getByText("750", { exact: true })
+        component.getByText("750", { exact: true }),
       ).not.toBeVisible();
     });
 
@@ -837,7 +838,7 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("50", { exact: true })
+        component.getByText("50", { exact: true }),
       ).not.toBeVisible();
     });
 
@@ -865,7 +866,7 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("949", { exact: true })
+        component.getByText("949", { exact: true }),
       ).not.toBeVisible();
     });
   });
@@ -895,7 +896,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if this is smooth scrolling
       expect(called).toBeGreaterThanOrEqual(
         // TODO find better way to check in webkit
-        browserName === "webkit" ? 2 : 10
+        browserName === "webkit" ? 2 : 10,
       );
 
       // Check if scrolled precisely
@@ -908,10 +909,10 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("650", { exact: true })
+        component.getByText("650", { exact: true }),
       ).not.toBeVisible();
       await expect(
-        component.getByText("750", { exact: true })
+        component.getByText("750", { exact: true }),
       ).not.toBeVisible();
     });
 
@@ -940,7 +941,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if this is smooth scrolling
       expect(called).toBeGreaterThanOrEqual(
         // TODO find better way to check in webkit
-        browserName === "webkit" ? 2 : 10
+        browserName === "webkit" ? 2 : 10,
       );
 
       // Check if scrolled precisely
@@ -953,10 +954,10 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("650", { exact: true })
+        component.getByText("650", { exact: true }),
       ).not.toBeVisible();
       await expect(
-        component.getByText("750", { exact: true })
+        component.getByText("750", { exact: true }),
       ).not.toBeVisible();
     });
 
@@ -991,7 +992,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if this is smooth scrolling
       expect(called).toBeGreaterThanOrEqual(
         // TODO find better way to check in webkit
-        browserName === "webkit" ? 2 : 10
+        browserName === "webkit" ? 2 : 10,
       );
 
       // Check if scrolled precisely
@@ -1004,10 +1005,10 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("250", { exact: true })
+        component.getByText("250", { exact: true }),
       ).not.toBeVisible();
       await expect(
-        component.getByText("350", { exact: true })
+        component.getByText("350", { exact: true }),
       ).not.toBeVisible();
     });
 
@@ -1043,7 +1044,7 @@ test.describe("check if scrollToIndex works", () => {
       // Check if this is smooth scrolling
       expect(called).toBeGreaterThanOrEqual(
         // TODO find better way to check in webkit
-        browserName === "webkit" ? 2 : 10
+        browserName === "webkit" ? 2 : 10,
       );
 
       // Check if scrolled precisely
@@ -1056,10 +1057,10 @@ test.describe("check if scrollToIndex works", () => {
 
       // Check if unnecessary items are not rendered
       await expect(
-        component.getByText("250", { exact: true })
+        component.getByText("250", { exact: true }),
       ).not.toBeVisible();
       await expect(
-        component.getByText("350", { exact: true })
+        component.getByText("350", { exact: true }),
       ).not.toBeVisible();
     });
 
@@ -1088,7 +1089,7 @@ test.describe("check if scrollToIndex works", () => {
 
       for (let i = 1; i <= 3; i++) {
         const initialFirstNumber = Number(
-          await (await findFirstVisibleItem(component)).textContent()
+          await (await findFirstVisibleItem(component)).textContent(),
         );
 
         // smooth scroll up
@@ -1134,7 +1135,7 @@ test.describe("check if scrollTo works", () => {
 
     expect(
       // scrollTo may not scroll to exact position with dynamic sized items
-      approxymate(await getScrollTop(component))
+      approxymate(await getScrollTop(component)),
     ).toEqual(5000);
 
     // scroll up
@@ -1144,7 +1145,7 @@ test.describe("check if scrollTo works", () => {
 
     expect(
       // scrollTo may not scroll to exact position with dynamic sized items
-      approxymate(await getScrollTop(component))
+      approxymate(await getScrollTop(component)),
     ).toEqual(1000);
   });
 });
@@ -1294,7 +1295,7 @@ test.describe("check if item shift compensation works", () => {
           {
             min: browserName === "firefox" ? -0.45 : -0.1,
             max: 0.1,
-          }
+          },
         );
         break;
       } else {
@@ -1318,7 +1319,7 @@ test.describe("check if item shift compensation works", () => {
     // check if end is displayed
     expectInRange(
       await relativeBottom(component, await findLastVisibleItem(component)),
-      { min: 0, max: 1 }
+      { min: 0, max: 1 },
     );
 
     const scrollListener = listenScrollCount(component);
@@ -1342,18 +1343,18 @@ test.describe("SSR and hydration", () => {
 
     const firstTop = await relativeTop(
       component,
-      await findFirstVisibleItem(component)
+      await findFirstVisibleItem(component),
     );
     const lastBottom = await relativeBottom(
       component,
-      await findLastVisibleItem(component)
+      await findLastVisibleItem(component),
     );
 
     // check if items are aligned correctly before hydration
     const prevItems = getItems(component);
     const firstRect = (await prevItems.nth(0).boundingBox())!;
     await expect(firstRect.y + firstRect.height).toEqual(
-      (await prevItems.nth(1).boundingBox())!.y
+      (await prevItems.nth(1).boundingBox())!.y,
     );
 
     // check if SSR suceeded
@@ -1377,10 +1378,10 @@ test.describe("SSR and hydration", () => {
     // check if hydration suceeded but state is not changed
     await expect(getItems(component)).toHaveCount(initialLength);
     expect(
-      await relativeTop(component, await findFirstVisibleItem(component))
+      await relativeTop(component, await findFirstVisibleItem(component)),
     ).toBe(firstTop);
     expect(
-      await relativeBottom(component, await findLastVisibleItem(component))
+      await relativeBottom(component, await findLastVisibleItem(component)),
     ).toBe(lastBottom);
     // check if items do not have styles for SSR
     expect(await getStyleValue(items.first(), "position")).toBe("absolute");
@@ -1400,18 +1401,18 @@ test.describe("SSR and hydration", () => {
 
     const firstTop = await relativeTop(
       component,
-      await findFirstVisibleItem(component)
+      await findFirstVisibleItem(component),
     );
     const lastBottom = await relativeBottom(
       component,
-      await findLastVisibleItem(component)
+      await findLastVisibleItem(component),
     );
 
     // check if items are aligned correctly before hydration
     const prevItems = getItems(component);
     const firstRect = (await prevItems.nth(0).boundingBox())!;
     await expect(firstRect.x + firstRect.width).toEqual(
-      (await prevItems.nth(1).boundingBox())!.x
+      (await prevItems.nth(1).boundingBox())!.x,
     );
 
     // check if SSR suceeded
@@ -1420,7 +1421,7 @@ test.describe("SSR and hydration", () => {
     expect(initialLength).toBeGreaterThanOrEqual(30);
     await expect(items.first()).toHaveText("Column 0");
     await expect(items.last()).toHaveText(
-      "Column " + String(initialLength - 1)
+      "Column " + String(initialLength - 1),
     );
 
     // check if items have styles for SSR
@@ -1438,10 +1439,10 @@ test.describe("SSR and hydration", () => {
     // check if hydration suceeded but state is not changed
     await expect(getItems(component)).toHaveCount(initialLength);
     expect(
-      await relativeTop(component, await findFirstVisibleItem(component))
+      await relativeTop(component, await findFirstVisibleItem(component)),
     ).toBe(firstTop);
     expect(
-      await relativeBottom(component, await findLastVisibleItem(component))
+      await relativeBottom(component, await findLastVisibleItem(component)),
     ).toBe(lastBottom);
     // check if items do not have styles for SSR
     expect(await getStyleValue(items.first(), "position")).toBe("absolute");
@@ -1470,7 +1471,7 @@ test.describe("SSR and hydration", () => {
     expect(called).toBeGreaterThanOrEqual(2);
 
     expect(await (await findFirstVisibleItem(component)).textContent()).toEqual(
-      "100"
+      "100",
     );
   });
 });
@@ -1478,7 +1479,7 @@ test.describe("SSR and hydration", () => {
 test.describe("emulated iOS WebKit", () => {
   const getWindowSize = (page: Page) => {
     return page.evaluate(
-      () => [window.outerWidth, window.outerHeight] as const
+      () => [window.outerWidth, window.outerHeight] as const,
     );
   };
 
@@ -1515,7 +1516,7 @@ test.describe("emulated iOS WebKit", () => {
           (await nextLastItemBeforeFlush.textContent())!;
         const nextLastItemBeforeFlushTop = await relativeTop(
           component,
-          nextLastItemBeforeFlush
+          nextLastItemBeforeFlush,
         );
         await page.waitForTimeout(300);
         const nextLastItem = await findFirstVisibleItem(component);
@@ -1523,8 +1524,8 @@ test.describe("emulated iOS WebKit", () => {
         expect(
           Math.abs(
             (await relativeTop(component, nextLastItem)) -
-              nextLastItemBeforeFlushTop
-          ) // FIXME: may not be 0 in Safari
+              nextLastItemBeforeFlushTop,
+          ), // FIXME: may not be 0 in Safari
         ).toBeLessThanOrEqual(1);
 
         const nextTop = await getScrollTop(component);

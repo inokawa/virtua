@@ -85,7 +85,7 @@ export const Default: StoryObj = {
             }
           />
         )),
-      [items]
+      [items],
     );
     const THRESHOLD = 10;
     const count = items.length;

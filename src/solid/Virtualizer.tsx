@@ -171,7 +171,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   const { itemSize, horizontal = false, cache } = props;
   props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
     { as: "div" },
-    props
+    props,
   );
 
   const store = createVirtualStore(
@@ -179,7 +179,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     itemSize,
     undefined,
     cache,
-    !itemSize
+    !itemSize,
   );
   const resizer = createResizer(store, horizontal);
   const scroller = createScroller(store, horizontal);
@@ -255,14 +255,14 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         if (value !== store.$getStartSpacerSize()) {
           store.$update(ACTION_START_OFFSET_CHANGE, value);
         }
-      }
-    )
+      },
+    ),
   );
 
   createEffect(
     on(stateVersion, () => {
       scroller.$fixScrollJump();
-    })
+    }),
   );
 
   const dataSlice = createMemo(() => {

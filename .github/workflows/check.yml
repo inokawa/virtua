@@ -25,6 +25,7 @@ jobs:
       - run: npm run test
       - run: npm run build
       - run: npm run size
+      - run: npm run format:ci
 
   e2e-react:
     timeout-minutes: 15

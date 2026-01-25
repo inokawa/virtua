@@ -53,5 +53,5 @@ export const ReactVirtualList = memo(
         </div>
       </div>
     );
-  }
+  },
 );

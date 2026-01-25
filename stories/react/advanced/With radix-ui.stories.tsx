@@ -79,14 +79,14 @@ export const _Select: StoryObj = {
           id: String(i),
           label: faker.animal.cat(),
         })),
-      []
+      [],
     );
     const [value, setValue] = useState("");
     const [open, setOpen] = useState(false);
     const ref = useRef<VirtualizerHandle>(null);
     const index = useMemo(
       () => items.findIndex((d) => d.id === value),
-      [items, value]
+      [items, value],
     );
     useLayoutEffect(() => {
       if (!open || !value) return;
@@ -98,7 +98,7 @@ export const _Select: StoryObj = {
       setTimeout(() => {
         (
           document.querySelector(
-            ".SelectItem[data-state=checked]"
+            ".SelectItem[data-state=checked]",
           ) as HTMLElement
         )?.focus({ preventScroll: true });
       });

@@ -10,7 +10,7 @@ export const { min, max, abs, floor } = Math;
 export const clamp = (
   value: number,
   minValue: number,
-  maxValue: number
+  maxValue: number,
 ): number => min(maxValue, max(minValue, value));
 
 /**

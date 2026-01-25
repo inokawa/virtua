@@ -53,7 +53,7 @@ export const Default: StoryObj = {
       me,
     });
     const [items, setItems] = createSignal<Data[]>(
-      Array.from({ length: 100 }, () => createItem())
+      Array.from({ length: 100 }, () => createItem()),
     );
     const [autoUpdating, setAutoUpdating] = createSignal(true);
     const [virtualizerHandle, setVirtualizerHandle] = createSignal<
@@ -136,7 +136,7 @@ export const Default: StoryObj = {
               const handle = virtualizerHandle();
               if (!handle) return;
               setShouldStickToBottom(
-                offset - handle.scrollSize + handle.viewportSize >= -1.5
+                offset - handle.scrollSize + handle.viewportSize >= -1.5,
               );
               if (offset < 100) {
                 setIsPrepend(true);

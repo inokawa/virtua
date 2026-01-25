@@ -1,5 +1,5 @@
 export const styleToString = (
-  obj: Record<string, string | undefined>
+  obj: Record<string, string | undefined>,
 ): string => {
   return Object.keys(obj).reduce((acc, k) => {
     const value = obj[k];

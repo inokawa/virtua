@@ -61,9 +61,9 @@ const createScrollObserver = (
   updateScrollOffset: (
     value: number,
     shift: boolean,
-    isMomentumScrolling: boolean
+    isMomentumScrolling: boolean,
   ) => void,
-  getStartOffset?: () => number
+  getStartOffset?: () => number,
 ) => {
   const now = Date.now;
 
@@ -172,13 +172,13 @@ type ScrollObserver = ReturnType<typeof createScrollObserver>;
 
 type ScheduleScrollFunction = (
   getTargetOffset: () => number,
-  smooth?: boolean
+  smooth?: boolean,
 ) => Promise<void>;
 
 const createScrollScheduler = (
   store: VirtualStore,
   initialized: () => Promise<boolean>,
-  scroll: (offset: number, smooth?: boolean) => void
+  scroll: (offset: number, smooth?: boolean) => void,
 ): [scroll: ScheduleScrollFunction, cancel: () => void] => {
   let cancelScroll: (() => void) | undefined;
 
@@ -288,7 +288,7 @@ interface Scroller<T extends HTMLElement | void> {
  */
 export const createScroller = (
   store: VirtualStore,
-  isHorizontal: boolean
+  isHorizontal: boolean,
 ): Scroller<HTMLElement> & {
   $scrollTo: (offset: number) => void;
   $scrollBy: (offset: number) => void;
@@ -315,7 +315,7 @@ export const createScroller = (
       } else {
         viewportElement![scrollOffsetKey] = offset;
       }
-    }
+    },
   );
 
   return {
@@ -349,13 +349,13 @@ export const createScroller = (
           // https://github.com/inokawa/virtua/discussions/475
           viewport[scrollOffsetKey] = normalizeScrollOffset(
             store.$getScrollOffset() + jump,
-            isNegative
+            isNegative,
           );
           if (shift) {
             // https://github.com/inokawa/virtua/issues/357
             cancelScroll();
           }
-        }
+        },
       );
 
       initialized[1](true);
@@ -402,8 +402,8 @@ export const createScroller = (
           (align === "end"
             ? store.$getItemSize(index) - store.$getViewportSize()
             : align === "center"
-            ? (store.$getItemSize(index) - store.$getViewportSize()) / 2
-            : 0)
+              ? (store.$getItemSize(index) - store.$getViewportSize()) / 2
+              : 0)
         );
       }, smooth);
     },
@@ -418,7 +418,7 @@ export const createScroller = (
  */
 export const createWindowScroller = (
   store: VirtualStore,
-  isHorizontal: boolean
+  isHorizontal: boolean,
 ): Scroller<void> & {
   $scrollToIndex: (index: number, opts?: ScrollToIndexOpts) => void;
 } => {
@@ -446,7 +446,7 @@ export const createWindowScroller = (
           [scrollToKey]: offset,
         });
       }
-    }
+    },
   );
 
   const calcOffsetToViewport = (
@@ -454,7 +454,7 @@ export const createWindowScroller = (
     viewport: HTMLElement,
     window: Window,
     isHorizontal: boolean,
-    offset: number = 0
+    offset: number = 0,
   ): number => {
     // TODO calc offset only when it changes (maybe impossible)
     const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
@@ -474,7 +474,7 @@ export const createWindowScroller = (
       viewport,
       window,
       isHorizontal,
-      offsetSum
+      offsetSum,
     );
   };
 
@@ -504,7 +504,7 @@ export const createWindowScroller = (
             window.scroll({
               [scrollToKey]: normalizeScrollOffset(
                 store.$getScrollOffset() + jump,
-                isNegative
+                isNegative,
               ),
             });
           } else {
@@ -515,7 +515,7 @@ export const createWindowScroller = (
           }
         },
         () =>
-          calcOffsetToViewport(container, document.body, window, isHorizontal)
+          calcOffsetToViewport(container, document.body, window, isHorizontal),
       );
 
       initialized[1](true);
@@ -567,7 +567,7 @@ export const createWindowScroller = (
             containerElement!,
             document.body,
             window,
-            isHorizontal
+            isHorizontal,
           ) +
           // store._getStartSpacerSize() +
           store.$getItemOffset(index) +
@@ -575,10 +575,10 @@ export const createWindowScroller = (
             ? store.$getItemSize(index) -
               (store.$getViewportSize() - getScrollbarSize())
             : align === "center"
-            ? (store.$getItemSize(index) -
-                (store.$getViewportSize() - getScrollbarSize())) /
-              2
-            : 0)
+              ? (store.$getItemSize(index) -
+                  (store.$getViewportSize() - getScrollbarSize())) /
+                2
+              : 0)
         );
       }, smooth);
     },
@@ -599,7 +599,7 @@ export interface GridScroller extends Scroller<HTMLElement> {
  */
 export const createGridScroller = (
   rowStore: VirtualStore,
-  colStore: VirtualStore
+  colStore: VirtualStore,
 ): GridScroller => {
   const rowScroller = createScroller(rowStore, false);
   const colScroller = createScroller(colStore, true);

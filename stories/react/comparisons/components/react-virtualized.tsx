@@ -24,7 +24,7 @@ export const ReactVirtualizedList = memo(
           fixedWidth: true,
           defaultHeight: 50,
         }),
-      []
+      [],
     );
     useImperativeHandle(handle, () => ({
       scrollToIndex: (i) => {
@@ -61,5 +61,5 @@ export const ReactVirtualizedList = memo(
         )}
       </AutoSizer>
     );
-  }
+  },
 );

@@ -26,5 +26,5 @@ export const ReactVirtuosoList = memo(
         itemContent={useMemo(() => (i) => <Component key={i} index={i} />, [])}
       />
     );
-  }
+  },
 );

@@ -175,7 +175,7 @@ export const Default: StoryObj = {
               >
                 {d.value}
               </UserItem>
-            )
+            ),
           )}
         </VList>
 

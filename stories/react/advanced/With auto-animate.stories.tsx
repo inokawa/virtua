@@ -65,12 +65,12 @@ const Container = forwardRef<HTMLDivElement, CustomContainerComponentProps>(
       <div
         ref={useMemo(
           () => mergeRefs([ref, animationParent]),
-          [ref, animationParent]
+          [ref, animationParent],
         )}
         {...props}
       />
     );
-  }
+  },
 );
 
 export const Default: StoryObj = {
@@ -82,7 +82,7 @@ export const Default: StoryObj = {
       data: faker.music.songName(),
     });
     const [items, setItems] = useState(() =>
-      Array.from({ length: 100 }, createItem)
+      Array.from({ length: 100 }, createItem),
     );
     const [animationParent, enable] = useAutoAnimate();
 

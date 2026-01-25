@@ -10,8 +10,8 @@ if (import.meta.env.STORYBOOK_E2E) {
     document.createTextNode(
       `* { 
         pointer-events: auto !important;
-      }`
-    )
+      }`,
+    ),
   );
   document.head.appendChild(style);
 }

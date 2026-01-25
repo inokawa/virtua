@@ -110,7 +110,7 @@ const Month = memo(
           }
         >
           {i}
-        </Day>
+        </Day>,
       );
     }
     for (let i = lastDayofMonth; i < 6; i++) {
@@ -133,7 +133,7 @@ const Month = memo(
         <div style={{ display: "flex", flexWrap: "wrap" }}>{items}</div>
       </div>
     );
-  }
+  },
 );
 
 export const Default: StoryObj = {
@@ -164,7 +164,7 @@ export const Default: StoryObj = {
         (d) =>
           d.getFullYear() === curYear &&
           d.getMonth() === curMonth &&
-          d.getDate() === curDate
+          d.getDate() === curDate,
       );
       if (index === -1) return;
       ref.current?.scrollToIndex(index);
