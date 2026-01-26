@@ -60,15 +60,12 @@ export default defineConfig({
         },
       },
       {
-        plugins: [svelte({ hot: !process.env.VITEST })],
+        plugins: [svelte()],
         test: {
           name: "svelte",
           dir: "src/svelte",
           environment: "jsdom",
           setupFiles: ["./scripts/spec-setup.ts"],
-        },
-        resolve: {
-          conditions: ["development", "browser"],
         },
       },
       {
