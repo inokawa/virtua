@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import solid from "vite-plugin-solid";
+import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { playwright } from "@vitest/browser-playwright";
 
@@ -56,6 +57,15 @@ export default defineConfig({
         },
         resolve: {
           conditions: ["development", "browser"],
+        },
+      },
+      {
+        plugins: [svelte()],
+        test: {
+          name: "svelte",
+          dir: "src/svelte",
+          environment: "jsdom",
+          setupFiles: ["./scripts/spec-setup.ts"],
         },
       },
       {

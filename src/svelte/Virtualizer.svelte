@@ -30,6 +30,7 @@
     scrollRef,
     bufferSize,
     itemSize,
+    ssrCount,
     shift = false,
     horizontal = false,
     keepMounted,
@@ -43,7 +44,7 @@
   const store = createVirtualStore(
     data.length,
     itemSize,
-    undefined,
+    ssrCount,
     cache,
     !itemSize,
   );
