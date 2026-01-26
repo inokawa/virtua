@@ -4,7 +4,7 @@
 
 # Class: WindowVirtualizer
 
-Defined in: [src/vue/WindowVirtualizer.tsx:111](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/vue/WindowVirtualizer.tsx#L111)
+Defined in: [src/vue/WindowVirtualizer.tsx:111](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/vue/WindowVirtualizer.tsx#L111)
 
 ## Properties
 
@@ -44,7 +44,7 @@ Defined in: [src/vue/WindowVirtualizer.tsx:111](https://github.com/inokawa/virtu
 
 > `readonly` **shift**: `boolean` = `Boolean`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:88](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/vue/WindowVirtualizer.tsx#L88)
+Defined in: [src/vue/WindowVirtualizer.tsx:88](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/vue/WindowVirtualizer.tsx#L88)
 
 While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
 
@@ -54,7 +54,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 > `readonly` **data**: `unknown`[]
 
-Defined in: [src/vue/WindowVirtualizer.tsx:72](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/vue/WindowVirtualizer.tsx#L72)
+Defined in: [src/vue/WindowVirtualizer.tsx:72](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/vue/WindowVirtualizer.tsx#L72)
 
 The data items rendered by this component.
 
@@ -64,7 +64,7 @@ The data items rendered by this component.
 
 > `readonly` `optional` **bufferSize**: `number` = `Number`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:77](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/vue/WindowVirtualizer.tsx#L77)
+Defined in: [src/vue/WindowVirtualizer.tsx:77](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/vue/WindowVirtualizer.tsx#L77)
 
 Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -80,7 +80,7 @@ Extra item space in pixels to render before/after the viewport. The minimum valu
 
 > `readonly` `optional` **itemSize**: `number` = `Number`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:84](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/vue/WindowVirtualizer.tsx#L84)
+Defined in: [src/vue/WindowVirtualizer.tsx:84](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/vue/WindowVirtualizer.tsx#L84)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -93,7 +93,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `readonly` **horizontal**: `boolean` = `Boolean`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:92](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/vue/WindowVirtualizer.tsx#L92)
+Defined in: [src/vue/WindowVirtualizer.tsx:92](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/vue/WindowVirtualizer.tsx#L92)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -103,7 +103,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `readonly` `optional` **cache**: [`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md)
 
-Defined in: [src/vue/WindowVirtualizer.tsx:108](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/vue/WindowVirtualizer.tsx#L108)
+Defined in: [src/vue/WindowVirtualizer.tsx:108](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/vue/WindowVirtualizer.tsx#L108)
 
 You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from WindowVirtualizerHandle.cache.
 
@@ -115,7 +115,7 @@ You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheS
 
 > `readonly` **as**: keyof `IntrinsicElementAttributes`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:97](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/vue/WindowVirtualizer.tsx#L97)
+Defined in: [src/vue/WindowVirtualizer.tsx:97](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/vue/WindowVirtualizer.tsx#L97)
 
 Component or element type for container element.
 
@@ -131,7 +131,7 @@ Component or element type for container element.
 
 > `readonly` **item**: keyof `IntrinsicElementAttributes`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:102](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/vue/WindowVirtualizer.tsx#L102)
+Defined in: [src/vue/WindowVirtualizer.tsx:102](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/vue/WindowVirtualizer.tsx#L102)
 
 Component or element type for item element.
 

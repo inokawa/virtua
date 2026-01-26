@@ -4,7 +4,7 @@
 
 # Interface: VListHandle
 
-Defined in: [src/svelte/VList.type.ts:32](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/svelte/VList.type.ts#L32)
+Defined in: [src/svelte/VList.type.ts:32](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/svelte/VList.type.ts#L32)
 
 Methods of [VList](../type-aliases/VList.md).
 
@@ -18,7 +18,7 @@ Methods of [VList](../type-aliases/VList.md).
 
 > **findItemIndex**(`offset`): `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:109](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/svelte/Virtualizer.type.ts#L109)
+Defined in: [src/svelte/Virtualizer.type.ts:109](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/svelte/Virtualizer.type.ts#L109)
 
 Find nearest item index from offset.
 
@@ -44,7 +44,7 @@ offset in pixels from the start of the scroll container
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:114](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/svelte/Virtualizer.type.ts#L114)
+Defined in: [src/svelte/Virtualizer.type.ts:114](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/svelte/Virtualizer.type.ts#L114)
 
 Get item offset from start.
 
@@ -70,7 +70,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:119](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/svelte/Virtualizer.type.ts#L119)
+Defined in: [src/svelte/Virtualizer.type.ts:119](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/svelte/Virtualizer.type.ts#L119)
 
 Get item size.
 
@@ -96,7 +96,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/svelte/Virtualizer.type.ts:125](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/svelte/Virtualizer.type.ts#L125)
+Defined in: [src/svelte/Virtualizer.type.ts:125](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/svelte/Virtualizer.type.ts#L125)
 
 Scroll to the item specified by index.
 
@@ -128,7 +128,7 @@ options
 
 > **scrollTo**(`offset`): `void`
 
-Defined in: [src/svelte/Virtualizer.type.ts:130](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/svelte/Virtualizer.type.ts#L130)
+Defined in: [src/svelte/Virtualizer.type.ts:130](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/svelte/Virtualizer.type.ts#L130)
 
 Scroll to the given offset.
 
@@ -154,7 +154,7 @@ offset from start
 
 > **scrollBy**(`offset`): `void`
 
-Defined in: [src/svelte/Virtualizer.type.ts:135](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/svelte/Virtualizer.type.ts#L135)
+Defined in: [src/svelte/Virtualizer.type.ts:135](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/svelte/Virtualizer.type.ts#L135)
 
 Scroll by the given offset.
 
@@ -180,7 +180,7 @@ offset from current position
 
 > **getCache**: () => [`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md)
 
-Defined in: [src/svelte/Virtualizer.type.ts:92](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/svelte/Virtualizer.type.ts#L92)
+Defined in: [src/svelte/Virtualizer.type.ts:92](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/svelte/Virtualizer.type.ts#L92)
 
 Get current [CacheSnapshot](../../react/interfaces/CacheSnapshot.md).
 
@@ -198,7 +198,7 @@ Get current [CacheSnapshot](../../react/interfaces/CacheSnapshot.md).
 
 > **getScrollOffset**: () => `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:96](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/svelte/Virtualizer.type.ts#L96)
+Defined in: [src/svelte/Virtualizer.type.ts:96](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/svelte/Virtualizer.type.ts#L96)
 
 Get current scrollTop, or scrollLeft if horizontal: true.
 
@@ -216,7 +216,7 @@ Get current scrollTop, or scrollLeft if horizontal: true.
 
 > **getScrollSize**: () => `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:100](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/svelte/Virtualizer.type.ts#L100)
+Defined in: [src/svelte/Virtualizer.type.ts:100](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/svelte/Virtualizer.type.ts#L100)
 
 Get current scrollHeight, or scrollWidth if horizontal: true.
 
@@ -234,7 +234,7 @@ Get current scrollHeight, or scrollWidth if horizontal: true.
 
 > **getViewportSize**: () => `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:104](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/svelte/Virtualizer.type.ts#L104)
+Defined in: [src/svelte/Virtualizer.type.ts:104](https://github.com/inokawa/virtua/blob/5341cd8c4d3a71dc1bc6bd235aa0bf16f0bf7697/src/svelte/Virtualizer.type.ts#L104)
 
 Get current offsetHeight, or offsetWidth if horizontal: true.
 
