@@ -33,6 +33,7 @@ const terserPlugin = ({ core, vue } = {}) =>
       },
     },
     format: {
+      beautify: true, // FIXME replace with prettier
       preserve_annotations: true,
     },
   });
