@@ -6,7 +6,7 @@
 
 > `const` **Virtualizer**: \<`T`\>(`props`) => `ReactElement`
 
-Defined in: [src/react/Virtualizer.tsx:172](https://github.com/inokawa/virtua/blob/d459b9be951b5905f920be6dc33995479f38a66a/src/react/Virtualizer.tsx#L172)
+Defined in: [src/react/Virtualizer.tsx:172](https://github.com/inokawa/virtua/blob/762643c18afdf1278f9d1363ad56bf06e72beed8/src/react/Virtualizer.tsx#L172)
 
 Customizable list virtualizer for advanced usage. See [VirtualizerProps](../interfaces/VirtualizerProps.md) and [VirtualizerHandle](../interfaces/VirtualizerHandle.md).
 
