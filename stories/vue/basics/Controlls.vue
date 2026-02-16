@@ -24,6 +24,11 @@ const append = () => {
     ? [...items, ...data.value]
     : [...data.value, ...items];
 };
+const pop = () => {
+  const items = [...data.value];
+  items.pop();
+  data.value = items;
+};
 </script>
 
 <template>
@@ -48,6 +53,7 @@ const append = () => {
         <input type="checkbox" v-model="prepend" />
         prepend</label
       >
+      <button @click="pop">pop</button>
     </div>
     <VList
       ref="handle"

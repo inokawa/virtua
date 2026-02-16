@@ -125,6 +125,17 @@ export const Controlls: StoryObj = {
             />
             prepend
           </label>
+          <button
+            onclick={() => {
+              setData((prev) => {
+                const items = [...prev];
+                items.pop();
+                return items;
+              });
+            }}
+          >
+            pop
+          </button>
         </div>
         <VList
           ref={(h) => {

@@ -48,6 +48,13 @@
       />
       prepend
     </label>
+    <button
+      onclick={() => {
+        const items = [...data];
+        items.pop();
+        data = items;
+      }}>pop</button
+    >
   </div>
   <VList
     bind:this={ref}
