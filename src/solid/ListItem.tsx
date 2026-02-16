@@ -30,7 +30,7 @@ export const ListItem: Component<ListItemProps> = (props) => {
   let elementRef: HTMLDivElement | undefined;
   props = mergeProps<[Partial<ListItemProps>, ListItemProps]>(
     { _as: "div" },
-    props
+    props,
   );
 
   // The index may be changed if elements are inserted to or removed from the start of props.children

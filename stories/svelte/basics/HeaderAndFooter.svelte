@@ -22,16 +22,16 @@
   </div>
   <Virtualizer {data} getKey={(_, i) => i} startMargin={headerHeight}>
     {#snippet children(item, index)}
-    <div
-      style="
+      <div
+        style="
         height: {item}px;
         background: white;
         border-bottom: solid 1px #ccc;
       "
-    >
-      {index}
-    </div>
-  {/snippet}
+      >
+        {index}
+      </div>
+    {/snippet}
   </Virtualizer>
   <div style="background-color: steelblue; height: 600px;">footer</div>
 </div>

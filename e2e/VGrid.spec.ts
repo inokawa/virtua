@@ -23,7 +23,7 @@ test.describe("smoke", () => {
 
     // check if the end is displayed
     await expect(
-      component.getByText("999 / 499", { exact: true })
+      component.getByText("999 / 499", { exact: true }),
     ).toBeVisible();
   });
 });

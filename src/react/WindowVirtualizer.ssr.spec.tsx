@@ -24,13 +24,13 @@ describe("SSR", () => {
             <div key={i}>{i}</div>
           ))}
         </WindowVirtualizer>
-      </div>
+      </div>,
     );
     expect(html).toMatchSnapshot();
 
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!
-        .firstElementChild!.childElementCount
+        .firstElementChild!.childElementCount,
     ).toEqual(COUNT);
   });
 
@@ -49,13 +49,13 @@ describe("SSR", () => {
             <div key={i}>{i}</div>
           ))}
         </WindowVirtualizer>
-      </div>
+      </div>,
     );
     expect(html).toMatchSnapshot();
 
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!
-        .firstElementChild!.childElementCount
+        .firstElementChild!.childElementCount,
     ).toEqual(COUNT);
   });
 
@@ -74,13 +74,13 @@ describe("SSR", () => {
             <div key={i}>{i}</div>
           ))}
         </WindowVirtualizer>
-      </div>
+      </div>,
     );
     expect(html).toMatchSnapshot();
 
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!
-        .firstElementChild!.childElementCount
+        .firstElementChild!.childElementCount,
     ).toEqual(COUNT);
   });
 
@@ -100,13 +100,13 @@ describe("SSR", () => {
             <div key={i}>{i}</div>
           ))}
         </WindowVirtualizer>
-      </div>
+      </div>,
     );
     expect(html).toMatchSnapshot();
 
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!
-        .firstElementChild!.childElementCount
+        .firstElementChild!.childElementCount,
     ).toEqual(COUNT);
   });
 
@@ -126,13 +126,13 @@ describe("SSR", () => {
             <div key={i}>{i}</div>
           ))}
         </WindowVirtualizer>
-      </div>
+      </div>,
     );
     expect(html).toMatchSnapshot();
 
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!
-        .firstElementChild!.childElementCount
+        .firstElementChild!.childElementCount,
     ).toEqual(COUNT);
   });
 });

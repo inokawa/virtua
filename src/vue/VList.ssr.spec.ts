@@ -19,20 +19,20 @@ describe("SSR", () => {
         components: { VList },
         template: `
         <VList :data="${JSON.stringify(
-          Array.from({ length: 1000 }).map((_, i) => i)
+          Array.from({ length: 1000 }).map((_, i) => i),
         )}" :id="'${LIST_ID}'" :ssrCount="${COUNT}" :bufferSize="${BUFFER_SIZE}" :itemSize="${ITEM_SIZE}" #default="{item}">
           <div :key="item">
             {{ item }}
           </div>
         </VList>
         `,
-      })
+      }),
     );
     expect(html).toMatchSnapshot();
 
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
-        .childElementCount
+        .childElementCount,
     ).toEqual(COUNT);
   });
 
@@ -45,20 +45,20 @@ describe("SSR", () => {
         components: { VList },
         template: `
         <VList :data="${JSON.stringify(
-          Array.from({ length: 1000 }).map((_, i) => i)
+          Array.from({ length: 1000 }).map((_, i) => i),
         )}" :id="'${LIST_ID}'" :ssrCount="${COUNT}" :bufferSize="${BUFFER_SIZE}" :itemSize="${ITEM_SIZE}" #default="{item}" :horizontal="true">
           <div :key="item">
             {{ item }}
           </div>
         </VList>
         `,
-      })
+      }),
     );
     expect(html).toMatchSnapshot();
 
     expect(
       new JSDOM(html).window.document.getElementById(LIST_ID)!.children[0]!
-        .childElementCount
+        .childElementCount,
     ).toEqual(COUNT);
   });
 });

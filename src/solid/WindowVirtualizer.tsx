@@ -123,7 +123,7 @@ export interface WindowVirtualizerProps<T> {
  * {@link Virtualizer} controlled by the window scrolling. See {@link WindowVirtualizerProps} and {@link WindowVirtualizerHandle}.
  */
 export const WindowVirtualizer = <T,>(
-  props: WindowVirtualizerProps<T>
+  props: WindowVirtualizerProps<T>,
 ): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
 
@@ -143,7 +143,7 @@ export const WindowVirtualizer = <T,>(
     itemSize,
     undefined,
     cache,
-    !itemSize
+    !itemSize,
   );
   const resizer = createWindowResizer(store, horizontal);
   const scroller = createWindowScroller(store, horizontal);
@@ -209,7 +209,7 @@ export const WindowVirtualizer = <T,>(
   createEffect(
     on(stateVersion, () => {
       scroller.$fixScrollJump();
-    })
+    }),
   );
 
   const dataSlice = createMemo<T[]>(() => {

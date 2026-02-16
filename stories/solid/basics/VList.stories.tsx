@@ -70,7 +70,7 @@ export const Controlls: StoryObj = {
     });
 
     const [data, setData] = createSignal(
-      Array.from({ length: 1000 }).map((_, i) => createItem(i))
+      Array.from({ length: 1000 }).map((_, i) => createItem(i)),
     );
 
     const [scrollOffset, setScrollOffset] = createSignal(0);
@@ -107,7 +107,7 @@ export const Controlls: StoryObj = {
             onClick={() => {
               setData((prev) => {
                 const items = Array.from({ length: 100 }).map((_, i) =>
-                  createItem(i + prev.length)
+                  createItem(i + prev.length),
                 );
                 return prepend() ? [...items, ...prev] : [...prev, ...items];
               });
@@ -125,6 +125,17 @@ export const Controlls: StoryObj = {
             />
             prepend
           </label>
+          <button
+            onclick={() => {
+              setData((prev) => {
+                const items = [...prev];
+                items.pop();
+                return items;
+              });
+            }}
+          >
+            pop
+          </button>
         </div>
         <VList
           ref={(h) => {

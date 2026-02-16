@@ -32,7 +32,7 @@ const ListItem = forwardRef<HTMLDivElement, CustomItemComponentProps>(
         {children}
       </div>
     );
-  }
+  },
 );
 
 export const Default: StoryObj = {

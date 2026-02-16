@@ -14,7 +14,7 @@ export type ScrollableLocator = Locator & { [scrollableSymbol]: never };
 
 export const getScrollable = async (page: Page): Promise<ScrollableLocator> => {
   const locator = page.locator(
-    '*[style*="overflow-y: auto"],*[style*="overflow-y:auto"],*[style*="overflow-x: auto"],*[style*="overflow-x:auto"],*[style*="overflow: auto"],*[style*="overflow:auto"]'
+    '*[style*="overflow-y: auto"],*[style*="overflow-y:auto"],*[style*="overflow-x: auto"],*[style*="overflow-x:auto"],*[style*="overflow: auto"],*[style*="overflow:auto"]',
   );
   await locator.waitFor();
   return locator as ScrollableLocator;
@@ -32,7 +32,7 @@ export const getItems = (locator: Locator) => {
 
 export const expectInRange = (
   value: number,
-  { max, min }: { min: number; max: number }
+  { max, min }: { min: number; max: number },
 ) => {
   // sometimes it may not be 0 because of sub pixel value
   expect(value).toBeGreaterThanOrEqual(min);
@@ -87,14 +87,14 @@ export const setDisplayNone = (component: Locator) => {
 
 export const getStyleValue = <T extends keyof CSSStyleDeclaration>(
   locator: Locator,
-  key: T
+  key: T,
 ) => {
   return locator.evaluate((e, key) => e.style[key], key);
 };
 
 export const getComputedStyleValue = <T extends keyof CSSStyleDeclaration>(
   locator: Locator,
-  key: T
+  key: T,
 ) => {
   return locator.evaluate((e, key) => getComputedStyle(e)[key], key);
 };
@@ -105,7 +105,7 @@ const isPointedLocator = (loc: Locator, x: number, y: number) => {
       const pointed = document.elementFromPoint(x, y);
       return !!pointed && (e === pointed || e.contains(pointed));
     },
-    [x, y]
+    [x, y],
   );
 };
 
@@ -172,26 +172,26 @@ export const isVerticalScrollBarVisible = async (e: Locator) => {
 export const scrollTo = (
   scrollable: ScrollableLocator,
   offset: number,
-  key: "Top" | "Left" = "Top"
+  key: "Top" | "Left" = "Top",
 ) => {
   return scrollable.evaluate(
     (e, [offset, key]) => {
       e[key] = offset;
     },
-    [offset, `scroll${key}`] as const
+    [offset, `scroll${key}`] as const,
   );
 };
 
 export const scrollBy = (
   scrollable: ScrollableLocator,
   offset: number,
-  key: "Top" | "Left" = "Top"
+  key: "Top" | "Left" = "Top",
 ) => {
   return scrollable.evaluate(
     (e, [offset, key]) => {
       e[key] += offset;
     },
-    [offset, `scroll${key}`] as const
+    [offset, `scroll${key}`] as const,
   );
 };
 
@@ -202,7 +202,7 @@ export const windowScrollBy = (page: Page, offset: number) => {
 };
 
 export const scrollToBottom = (
-  scrollable: ScrollableLocator
+  scrollable: ScrollableLocator,
 ): Promise<void> => {
   return scrollable.evaluate((e) => {
     return new Promise<void>((resolve) => {
@@ -260,7 +260,7 @@ export const scrollToTop = (scrollable: ScrollableLocator): Promise<void> => {
   });
 };
 export const scrollToRight = async (
-  scrollable: ScrollableLocator
+  scrollable: ScrollableLocator,
 ): Promise<void> => {
   return scrollable.evaluate((e) => {
     return new Promise<void>((resolve) => {
@@ -410,12 +410,12 @@ export const scrollWithTouch = (
     fromY: number;
     toY: number;
     momentumScroll?: boolean;
-  }
+  },
 ): Promise<void> => {
   return scrollable.evaluate(
     async (
       e,
-      { fromX, toX, fromY, toY, momentumScroll: isMomentumScrolling = false }
+      { fromX, toX, fromY, toY, momentumScroll: isMomentumScrolling = false },
     ) => {
       const diffY = fromY - toY;
       const diffX = fromX - toX;
@@ -424,7 +424,7 @@ export const scrollWithTouch = (
       const MAX_COUNT = 60;
 
       const createTouchEvent = (
-        name: "touchstart" | "touchmove" | "touchend"
+        name: "touchstart" | "touchmove" | "touchend",
       ): TouchEvent => {
         // const touchObj = new Touch({
         //   identifier: Date.now(),
@@ -474,7 +474,7 @@ export const scrollWithTouch = (
         () => {
           touchMove();
         },
-        { once: true, passive: true }
+        { once: true, passive: true },
       );
 
       let resolve: () => void;
@@ -509,13 +509,13 @@ export const scrollWithTouch = (
       touchStart();
       return new Promise<void>((r) => (resolve = r));
     },
-    target
+    target,
   );
 };
 
 export const listenScrollCount = (
   component: ScrollableLocator,
-  timeout = 2000
+  timeout = 2000,
 ): Promise<number> => {
   return component.evaluate((c, t) => {
     let timer: null | ReturnType<typeof setTimeout> = null;

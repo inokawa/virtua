@@ -33,7 +33,7 @@
     <button
       onclick={() => {
         const items = Array.from({ length: 100 }).map((_, i) =>
-          createItem(i + data.length)
+          createItem(i + data.length),
         );
         data = prepend ? [...items, ...data] : [...data, ...items];
       }}>append</button
@@ -48,6 +48,13 @@
       />
       prepend
     </label>
+    <button
+      onclick={() => {
+        const items = [...data];
+        items.pop();
+        data = items;
+      }}>pop</button
+    >
   </div>
   <VList
     bind:this={ref}

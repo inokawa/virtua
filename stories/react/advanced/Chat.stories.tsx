@@ -60,7 +60,7 @@ export const Default: StoryObj = {
       me,
     });
     const [items, setItems] = useState(() =>
-      Array.from({ length: 100 }, () => createItem())
+      Array.from({ length: 100 }, () => createItem()),
     );
     const [autoUpdating, setAutoUpdating] = useState(true);
 

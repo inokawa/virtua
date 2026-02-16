@@ -69,5 +69,5 @@ export const ListItem = memo(
         </Element>
       );
     }
-  }
+  },
 );

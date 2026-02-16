@@ -4,7 +4,7 @@ import { type Ref, useCallback } from "react";
  * @internal
  */
 export const useMergeRefs = <T>(
-  refs: readonly (Ref<T> | undefined)[]
+  refs: readonly (Ref<T> | undefined)[],
 ): Ref<T> => {
   return useCallback((instance: T | null) => {
     for (const ref of refs) {

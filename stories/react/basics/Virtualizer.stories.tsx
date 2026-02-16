@@ -277,7 +277,7 @@ export const AlignBottom: StoryObj = {
             : [
                 ...prev,
                 ...createRows(amount, (prev[prev.length - 1]?.index ?? 0) + 1),
-              ]
+              ],
         );
       } else {
         if (prepend) {
@@ -518,7 +518,7 @@ const Ul = forwardRef<HTMLUListElement, CustomContainerComponentProps>(
         {children}
       </ul>
     );
-  }
+  },
 );
 
 const Li = forwardRef<HTMLLIElement, CustomItemComponentProps>(
@@ -528,7 +528,7 @@ const Li = forwardRef<HTMLLIElement, CustomItemComponentProps>(
         {children}
       </li>
     );
-  }
+  },
 );
 
 export const UlElement: StoryObj = {
@@ -619,14 +619,14 @@ const Table = forwardRef<HTMLTableElement, CustomContainerComponentProps>(
         </tbody>
       </table>
     );
-  }
+  },
 );
 
 export const TableElement: StoryObj = {
   render: () => {
     const data = useMemo(
       () => Array.from({ length: 1000 }).map((_, i) => i),
-      []
+      [],
     );
     return (
       <div

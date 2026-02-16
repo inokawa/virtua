@@ -68,8 +68,8 @@ export const Default: StoryObj = {
                 d.id % 100 === 0
                   ? "darkgray"
                   : d.id % 10 === 0
-                  ? "smokegray"
-                  : "white",
+                    ? "smokegray"
+                    : "white",
               borderBottom: "solid 1px #ccc",
             }}
           >

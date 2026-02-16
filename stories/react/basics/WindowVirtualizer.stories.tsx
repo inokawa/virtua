@@ -180,7 +180,7 @@ export const InfiniteScrolling: StoryObj = {
             if (
               fetchedCountRef.current < count &&
               ref.current.findItemIndex(
-                ref.current.scrollOffset + ref.current.viewportSize
+                ref.current.scrollOffset + ref.current.viewportSize,
               ) +
                 50 >
                 count
@@ -301,7 +301,7 @@ export const IncreasingItems: StoryObj = {
             : [
                 ...prev,
                 ...createRows(amount, (prev[prev.length - 1]?.index ?? 0) + 1),
-              ]
+              ],
         );
       } else {
         if (prepend) {

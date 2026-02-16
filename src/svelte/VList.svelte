@@ -10,6 +10,7 @@
     getKey,
     bufferSize,
     itemSize,
+    ssrCount,
     shift,
     horizontal,
     keepMounted,
@@ -32,27 +33,27 @@
     ref.getViewportSize()) satisfies VListHandle["getViewportSize"] as VListHandle["getViewportSize"];
   export const findItemIndex = ((...args) =>
     ref.findItemIndex(
-      ...args
+      ...args,
     )) satisfies VListHandle["findItemIndex"] as VListHandle["findItemIndex"];
   export const getItemOffset = ((...args) =>
     ref.getItemOffset(
-      ...args
+      ...args,
     )) satisfies VListHandle["getItemOffset"] as VListHandle["getItemOffset"];
   export const getItemSize = ((...args) =>
     ref.getItemSize(
-      ...args
+      ...args,
     )) satisfies VListHandle["getItemSize"] as VListHandle["getItemSize"];
   export const scrollToIndex = ((...args) =>
     ref.scrollToIndex(
-      ...args
+      ...args,
     )) satisfies VListHandle["scrollToIndex"] as VListHandle["scrollToIndex"];
   export const scrollTo = ((...args) =>
     ref.scrollTo(
-      ...args
+      ...args,
     )) satisfies VListHandle["scrollTo"] as VListHandle["scrollTo"];
   export const scrollBy = ((...args) =>
     ref.scrollBy(
-      ...args
+      ...args,
     )) satisfies VListHandle["scrollBy"] as VListHandle["scrollBy"];
 
   const viewportStyle = styleToString({
@@ -76,6 +77,7 @@
     {getKey}
     {bufferSize}
     {itemSize}
+    {ssrCount}
     {shift}
     {horizontal}
     {keepMounted}

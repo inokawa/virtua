@@ -14,7 +14,7 @@ export const setupResizeJsDom = ({
 
   const createResizeObserverEntry = (
     e: HTMLElement,
-    { width, height }: { width: number; height: number }
+    { width, height }: { width: number; height: number },
   ): ResizeObserverEntry => {
     const entry: Pick<ResizeObserverEntry, "contentRect" | "target"> = {
       contentRect: new DOMRect(0, 0, width, height),

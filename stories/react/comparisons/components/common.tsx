@@ -19,7 +19,7 @@ export const SimpleItem = forwardRef<HTMLDivElement, { index: number }>(
         {i}
       </div>
     );
-  }
+  },
 );
 
 const heights = [20, 40, 80, 77, 32, 200];
@@ -37,7 +37,7 @@ export const DynamicItem = forwardRef<HTMLDivElement, { index: number }>(
         {i}
       </div>
     );
-  }
+  },
 );
 
 export const HeavyDOMItem = forwardRef<HTMLDivElement, { index: number }>(
@@ -98,7 +98,7 @@ export const HeavyDOMItem = forwardRef<HTMLDivElement, { index: number }>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 export const HeavyJsItem = forwardRef<HTMLDivElement, { index: number }>(
@@ -119,7 +119,7 @@ export const HeavyJsItem = forwardRef<HTMLDivElement, { index: number }>(
         {i}
       </div>
     );
-  }
+  },
 );
 
 export const ItemWithRenderCount = forwardRef<
@@ -167,5 +167,5 @@ export const DynamicImageItem = forwardRef<HTMLDivElement, { index: number }>(
         </div>
       </div>
     );
-  }
+  },
 );

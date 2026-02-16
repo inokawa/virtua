@@ -45,12 +45,12 @@ export const ListItem = /*#__PURE__*/ defineComponent({
     const offset = computed(
       () =>
         props._stateVersion.value &&
-        props._store.$getItemOffset(props._index, props._isNegative)
+        props._store.$getItemOffset(props._index, props._isNegative),
     );
     const hide = computed(
       () =>
         props._stateVersion.value &&
-        props._store.$isUnmeasuredItem(props._index)
+        props._store.$isUnmeasuredItem(props._index),
     );
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
@@ -61,7 +61,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
       },
       {
         flush: "post",
-      }
+      },
     );
 
     return () => {

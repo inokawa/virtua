@@ -61,7 +61,7 @@ export const ReactWindowList = memo(
     handle?: Ref<ListHandle>;
   }) => {
     const [heights, setHeights] = useState<number[]>(() =>
-      Array.from({ length: count }).map(() => 50)
+      Array.from({ length: count }).map(() => 50),
     );
     const ref = useRef<ListImperativeAPI>(null);
     const getHeight = (i: number) => heights[i];
@@ -89,9 +89,9 @@ export const ReactWindowList = memo(
               });
             },
           }),
-          [Component]
+          [Component],
         )}
       />
     );
-  }
+  },
 );

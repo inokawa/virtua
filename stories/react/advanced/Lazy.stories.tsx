@@ -45,9 +45,9 @@ export const Default: StoryObj = {
             new Promise<{ default: ComponentType }>(async (resolve) => {
               await delay(1000);
               resolve({ default: Loaded });
-            })
-        )
-      )
+            }),
+        ),
+      ),
     )[0];
 
     return (

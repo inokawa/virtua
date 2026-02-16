@@ -38,7 +38,7 @@
     itemSize,
     undefined,
     cache,
-    !itemSize
+    !itemSize,
   );
   const resizer = createWindowResizer(store, horizontal);
   const scroller = createWindowScroller(store, horizontal);
@@ -118,7 +118,7 @@
       width: horizontal ? totalSize + "px" : "100%",
       height: horizontal ? "100%" : totalSize + "px",
       "pointer-events": isScrolling ? "none" : undefined,
-    })
+    }),
   );
 </script>
 

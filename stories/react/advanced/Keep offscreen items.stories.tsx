@@ -44,7 +44,7 @@ export const AppendOnly: StoryObj = {
   render: () => {
     const data = useMemo(
       () => Array.from({ length: 1000 }).map((_, i) => i),
-      []
+      [],
     );
     const [indexes, setIndexes] = useState<number[]>([]);
     return (
@@ -145,7 +145,7 @@ export const SelectedIndex: StoryObj = {
       value: value,
     });
     const [items, setItems] = useState(() =>
-      Array.from({ length: 20 }, () => createItem())
+      Array.from({ length: 20 }, () => createItem()),
     );
     const [editingItemId, setEditingItemId] = useState<number | null>(null);
 
@@ -165,7 +165,7 @@ export const SelectedIndex: StoryObj = {
 
     const toggleEditing = useCallback((itemId: number) => {
       setEditingItemId((currentValue) =>
-        itemId === currentValue ? null : itemId
+        itemId === currentValue ? null : itemId,
       );
     }, []);
 

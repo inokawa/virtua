@@ -28,7 +28,7 @@ it("should pass attributes to element", async () => {
       style={{ background: "red" }}
     >
       <div>0</div>
-    </VList>
+    </VList>,
   );
   expect(asFragment()).toMatchSnapshot();
 });
@@ -37,7 +37,7 @@ it("should pass index to items", async () => {
   const Item = forwardRef<HTMLDivElement, CustomItemComponentProps>(
     ({ index, ...rest }, ref) => {
       return <div ref={ref} data-index={index} {...rest} />;
-    }
+    },
   );
   const { asFragment } = await render(
     <VList item={Item}>
@@ -46,7 +46,7 @@ it("should pass index to items", async () => {
       <div>2</div>
       <div>3</div>
       <div>4</div>
-    </VList>
+    </VList>,
   );
   expect(asFragment()).toMatchSnapshot();
 });
@@ -61,7 +61,7 @@ it("should render with render prop", async () => {
       {(item) => {
         return <div key={item.id}>{item.label}</div>;
       }}
-    </VList>
+    </VList>,
   );
   expect(asFragment()).toMatchSnapshot();
 });
@@ -72,7 +72,7 @@ it("should render with keepMounted", async () => {
       {Array.from({ length: 100 }).map((_, i) => (
         <div key={i}>{i}</div>
       ))}
-    </VList>
+    </VList>,
   );
   expect(asFragment()).toMatchSnapshot();
 });
@@ -87,7 +87,7 @@ describe("vertical", async () => {
     const { asFragment } = await render(
       <VList>
         <div>0</div>
-      </VList>
+      </VList>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -100,7 +100,7 @@ describe("vertical", async () => {
         <div>2</div>
         <div>3</div>
         <div>4</div>
-      </VList>
+      </VList>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -111,7 +111,7 @@ describe("vertical", async () => {
         {Array.from({ length: 100 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </VList>
+      </VList>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -122,7 +122,7 @@ describe("vertical", async () => {
         {Array.from({ length: 10000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </VList>
+      </VList>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -136,7 +136,7 @@ describe("vertical", async () => {
         {null}
         {undefined}
         {123}
-      </VList>
+      </VList>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -152,7 +152,7 @@ describe("vertical", async () => {
         <>
           <div>fragment</div>
         </>
-      </VList>
+      </VList>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -166,7 +166,7 @@ describe("vertical", async () => {
         <Comp>component</Comp>
         <Comp>component</Comp>
         <Comp>component</Comp>
-      </VList>
+      </VList>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -179,7 +179,7 @@ describe("vertical", async () => {
         <div>2</div>
         <div>3</div>
         <div>4</div>
-      </VList>
+      </VList>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -190,7 +190,7 @@ describe("horizontal", async () => {
     const { asFragment } = await render(
       <VList horizontal>
         <div>0</div>
-      </VList>
+      </VList>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -203,7 +203,7 @@ describe("horizontal", async () => {
         <div>2</div>
         <div>3</div>
         <div>4</div>
-      </VList>
+      </VList>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -214,7 +214,7 @@ describe("horizontal", async () => {
         {Array.from({ length: 100 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </VList>
+      </VList>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -225,7 +225,7 @@ describe("horizontal", async () => {
         {Array.from({ length: 10000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
-      </VList>
+      </VList>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -239,7 +239,7 @@ describe("horizontal", async () => {
         {null}
         {undefined}
         {123}
-      </VList>
+      </VList>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -255,7 +255,7 @@ describe("horizontal", async () => {
         <>
           <div>fragment</div>
         </>
-      </VList>
+      </VList>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -269,7 +269,7 @@ describe("horizontal", async () => {
         <Comp>component</Comp>
         <Comp>component</Comp>
         <Comp>component</Comp>
-      </VList>
+      </VList>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -282,7 +282,7 @@ describe("horizontal", async () => {
         <div>2</div>
         <div>3</div>
         <div>4</div>
-      </VList>
+      </VList>,
     );
     expect(asFragment()).toMatchSnapshot();
   });

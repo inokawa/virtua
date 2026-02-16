@@ -11,9 +11,9 @@ const itemProps = ({ index }: { index: number }) => {
       style: {
         ...(activeIndex.value === index
           ? {
-            position: "sticky",
-            top: 0,
-          }
+              position: "sticky",
+              top: 0,
+            }
           : {}),
         zIndex: 1,
       } as CSSProperties,
@@ -33,18 +33,28 @@ function onScroll() {
 </script>
 
 <template>
-  <VList ref="listRef" :data="data" :style="{ height: '100vh' }" #default="{ item, index }" :item-props="itemProps"
-    :keep-mounted="[activeIndex]" @scroll="onScroll">
-    <div :key="index" :style="{
-      height: item + 'px',
-      background: 'white',
-      borderBottom: 'solid 1px #ccc',
-      ...(index % 100 === 0
-        ? {
-          background: 'yellow',
-        }
-        : {}),
-    }">
+  <VList
+    ref="listRef"
+    :data="data"
+    :style="{ height: '100vh' }"
+    #default="{ item, index }"
+    :item-props="itemProps"
+    :keep-mounted="[activeIndex]"
+    @scroll="onScroll"
+  >
+    <div
+      :key="index"
+      :style="{
+        height: item + 'px',
+        background: 'white',
+        borderBottom: 'solid 1px #ccc',
+        ...(index % 100 === 0
+          ? {
+              background: 'yellow',
+            }
+          : {}),
+      }"
+    >
       {{ index }}
     </div>
   </VList>
