@@ -84,6 +84,7 @@ export default defineConfig({
             headless: true,
             provider: playwright(),
             instances: [{ browser: "chromium" }],
+            screenshotFailures: false,
           },
           setupFiles: [
             process.env.STORYBOOK_VUE
