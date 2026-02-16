@@ -70,6 +70,9 @@
   let negative = $derived(stateVersion && scroller.$isNegative());
 
   let indexes = $derived.by(() => {
+    // https://github.com/inokawa/virtua/pull/847
+    const len = data.length;
+
     const [start, end] = range;
     const arr: number[] = [];
     if (keepMounted) {
@@ -78,11 +81,15 @@
         mounted.add(i);
       }
       for (const index of sort([...mounted])) {
-        arr.push(index);
+        if (index < len) {
+          arr.push(index);
+        }
       }
     } else {
       for (let i = start; i <= end; i++) {
-        arr.push(i);
+        if (i < len) {
+          arr.push(i);
+        }
       }
     }
     return arr;
