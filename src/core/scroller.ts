@@ -168,20 +168,6 @@ const createScrollObserver = (
   };
 };
 
-// If we update scroll position while touching on iOS, the position will be reverted.
-// However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
-// That means we have no reliable way to confirm still touched or not if user touches more than once during momentum scrolling...
-// This is a hack for the suspectable situations, inspired by https://github.com/prud/ios-overflow-scroll-to-top
-const fixMomentumScroll = (viewport: HTMLElement, isHorizontal: boolean) => {
-  const overflowKey = isHorizontal ? "overflowX" : "overflowY";
-  const style = viewport.style;
-  const prev = style[overflowKey];
-  style[overflowKey] = "hidden";
-  timeout(() => {
-    style[overflowKey] = prev;
-  });
-};
-
 type ScrollObserver = ReturnType<typeof createScrollObserver>;
 
 type ScheduleScrollFunction = (
@@ -313,6 +299,7 @@ export const createScroller = (
   let initialized = createPromise<boolean>();
   let isNegative = false;
   const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
+  const overflowKey = isHorizontal ? "overflowX" : "overflowY";
 
   const [scheduleScroll, cancelScroll] = createScrollScheduler(
     store,
@@ -345,8 +332,17 @@ export const createScroller = (
         isHorizontal,
         () => normalizeScrollOffset(viewport[scrollOffsetKey], isNegative),
         (jump, shift, isMomentumScrolling) => {
+          // If we update scroll position while touching on iOS, the position will be reverted.
+          // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
+          // That means we have no reliable way to confirm still touched or not if user touches more than once during momentum scrolling...
+          // This is a hack for the suspectable situations, inspired by https://github.com/prud/ios-overflow-scroll-to-top
           if (isMomentumScrolling) {
-            fixMomentumScroll(viewport, isHorizontal);
+            const style = viewport.style;
+            const prev = style[overflowKey];
+            style[overflowKey] = "hidden";
+            timeout(() => {
+              style[overflowKey] = prev;
+            });
           }
 
           // Use absolute position not to exceed scrollable bounds
@@ -489,7 +485,6 @@ export const createWindowScroller = (
 
       const document = getCurrentDocument(container);
       const window = getCurrentWindow(document);
-      const body = document.body;
 
       if (isHorizontal) {
         // Detect RTL document
@@ -502,11 +497,7 @@ export const createWindowScroller = (
         window,
         isHorizontal,
         () => normalizeScrollOffset(window[scrollOffsetKey], isNegative),
-        (jump, shift, isMomentumScrolling) => {
-          if (isMomentumScrolling) {
-            fixMomentumScroll(body, isHorizontal);
-          }
-
+        (jump, shift) => {
           // TODO support case two window scrollers exist in the same view
           if (shift) {
             // Use absolute position not to exceed scrollable bounds
@@ -523,7 +514,8 @@ export const createWindowScroller = (
             });
           }
         },
-        () => calcOffsetToViewport(container, body, window, isHorizontal),
+        () =>
+          calcOffsetToViewport(container, document.body, window, isHorizontal),
       );
 
       initialized[1](true);
