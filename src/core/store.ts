@@ -10,7 +10,7 @@ import {
   takeCacheSnapshot,
   findIndex,
 } from "./cache.js";
-import { isIOSWebKit } from "./environment.js";
+import { isIOSWebKit, isDesktopSafari } from "./environment.js";
 import type {
   CacheSnapshot,
   InternalCacheSnapshot,
@@ -168,8 +168,9 @@ export const createVirtualStore = (
   const applyJump = (j: number) => {
     if (j) {
       if (
-        // In iOS WebKit browsers, updating scroll position will stop scrolling so it have to be deferred during scrolling.
-        (isIOSWebKit() && _scrollDirection !== SCROLL_IDLE) ||
+        // In WebKit browsers (iOS and desktop Safari), updating scroll position will stop scrolling so it have to be deferred during scrolling.
+        ((isIOSWebKit() || isDesktopSafari()) &&
+          _scrollDirection !== SCROLL_IDLE) ||
         // Before imperative smooth scrolling, we measure all items which may be visible during scrolling.
         // However, especially in Firefox, there are rare cases where items resize while scrolling, which can stop smooth scrolling.
         (_frozenRange && _scrollMode === SCROLL_BY_MANUAL_SCROLL)
