@@ -40,6 +40,17 @@ export const isIOSWebKit = /*#__PURE__*/ once((): boolean => {
 /**
  * @internal
  */
+export const isDesktopSafari = /*#__PURE__*/ once((): boolean => {
+  return (
+    !isIOSWebKit() &&
+    navigator.vendor === "Apple Computer, Inc." &&
+    !("chrome" in window)
+  );
+});
+
+/**
+ * @internal
+ */
 export const isSmoothScrollSupported = /*#__PURE__*/ once((): boolean => {
   return "scrollBehavior" in getDocumentElement(document).style;
 });
