@@ -1,0 +1,1 @@
+function o(e){if(e===void 0)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function n(e,r){return n=Object.setPrototypeOf?Object.setPrototypeOf.bind():function(t,i){return t.__proto__=i,t},n(e,r)}export{n as _,o as a};
