@@ -415,6 +415,40 @@ test.describe("check if scroll jump compensation works", () => {
     expect(prev).toBeGreaterThan(initial + min);
   });
 
+  test("resize while scrolling up", async ({ page }) => {
+    await page.goto(storyUrl("advanced-markdown--default"));
+
+    const component = await getScrollable(page);
+
+    // wait until enough contents are rendered
+    await page.waitForTimeout(3000);
+
+    await component.click();
+
+    // scroll to the end
+    await component.evaluate((e) => {
+      e.scrollTop = e.scrollHeight;
+    });
+    await page.waitForTimeout(100);
+
+    // leave the end
+    await page.keyboard.press("ArrowUp");
+    await page.waitForTimeout(100);
+
+    // check if offset from start is always keeped
+    const min = 200;
+    const initial = await getScrollTop(component);
+    let prev = initial;
+    const start = performance.now();
+    while ((performance.now() - start) / 1000 < 3) {
+      await page.keyboard.press("ArrowUp", { delay: 10 });
+      const offset = await getScrollTop(component);
+      expect(offset).toBeLessThanOrEqual(prev);
+      prev = offset;
+    }
+    expect(prev).toBeLessThan(initial + min);
+  });
+
   test("resize when its top is out of viewport", async ({ page }) => {
     await page.goto(storyUrl("advanced-collapse--collapse-and-scroll"));
     const [component, container] = await Promise.all([

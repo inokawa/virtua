@@ -11,7 +11,6 @@ import {
   relativeTop,
   scrollBy,
   isVerticalScrollBarVisible,
-  scrollToTop,
 } from "./utils";
 
 test("header and footer", async ({ page }) => {
