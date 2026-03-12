@@ -268,7 +268,7 @@ export const Default: StoryObj = {
         }}
       >
         <div style={{ height: 100 }}></div>
-        <Virtualizer>
+        <Virtualizer startMargin={100}>
           {messages.map((message) => (
             <div
               key={message.id}
