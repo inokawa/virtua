@@ -350,12 +350,12 @@ export const createVirtualStore = (
                     index < _frozenRange[0]
                   : // Otherwise we should maintain visible position
                     getItemOffset(
-                      index +
-                        // https://github.com/inokawa/virtua/issues/385
-                        (_scrollDirection === SCROLL_IDLE &&
+                      // https://github.com/inokawa/virtua/issues/385
+                      // https://github.com/inokawa/virtua/discussions/865
+                      _scrollDirection !== SCROLL_DOWN &&
                         _scrollMode === SCROLL_BY_NATIVE
-                          ? 1
-                          : 0),
+                        ? index + 1
+                        : index,
                     ) < getRelativeScrollOffset())
               ) {
                 acc += size - getItemSize(index);

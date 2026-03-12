@@ -13,9 +13,12 @@ declare const scrollableSymbol: unique symbol;
 export type ScrollableLocator = Locator & { [scrollableSymbol]: never };
 
 export const getScrollable = async (page: Page): Promise<ScrollableLocator> => {
-  const locator = page.locator(
-    '*[style*="overflow-y: auto"],*[style*="overflow-y:auto"],*[style*="overflow-x: auto"],*[style*="overflow-x:auto"],*[style*="overflow: auto"],*[style*="overflow:auto"]',
-  );
+  const locator = page
+    .locator(
+      '*[style*="overflow-y: auto"],*[style*="overflow-y:auto"],*[style*="overflow-x: auto"],*[style*="overflow-x:auto"],*[style*="overflow: auto"],*[style*="overflow:auto"]',
+    )
+    // for nested overflow
+    .first();
   await locator.waitFor();
   return locator as ScrollableLocator;
 };

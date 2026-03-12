@@ -369,7 +369,9 @@ test.describe("check if item shift compensation works", () => {
       // Check if all items are visible
       await expect(items).toHaveCount(i + initialLength);
 
-      const firstItemRectTop = await windowTop(items.first());
+      const first = items.first();
+      await first.waitFor();
+      const firstItemRectTop = await windowTop(first);
       const isScrollBarVisible = await isVerticalScrollBarVisible(page);
 
       if (isScrollBarVisible) {
