@@ -104,7 +104,7 @@
     "@vitest/coverage-v8": "^4.0.16",
     "babel-preset-solid": "^1.9.9",
     "cmdk": "^1.1.1",
-    "eslint": "^9.38.0",
+    "eslint": "^10.0.0",
     "eslint-import-resolver-typescript": "^4.3.5",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react": "^7.37.5",
