@@ -246,13 +246,13 @@ export const Default: StoryObj = {
           setMessages((prev) => [...prev, { ...m, text: "" }]);
         }
 
-        cursor = Math.min(cursor + 80, message.text.length);
+        cursor = Math.min(cursor + 100, message.text.length);
         const nextText = message.text.slice(0, cursor);
         setMessages((prev) => {
           const last = prev.at(-1)!;
           return [...prev.slice(0, -1), { ...last, text: nextText }];
         });
-      }, 20);
+      }, 100);
       return () => {
         clearInterval(timerId);
       };
@@ -268,8 +268,8 @@ export const Default: StoryObj = {
         }}
       >
         <div style={{ height: 100 }}></div>
-        <Virtualizer startMargin={100}>
-          {messages.map((message) => (
+        <Virtualizer startMargin={100} data={messages}>
+          {(message) => (
             <div
               key={message.id}
               style={{
@@ -286,7 +286,7 @@ export const Default: StoryObj = {
                 {message.text}
               </ReactMarkdown>
             </div>
-          ))}
+          )}
         </Virtualizer>
         <div style={{ height: 100 }}></div>
       </div>
