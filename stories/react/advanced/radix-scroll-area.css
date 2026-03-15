@@ -62,18 +62,10 @@
   background: var(--black-a8);
 }
 
-.Text {
-  color: var(--violet-11);
-  font-size: 15px;
-  line-height: 18px;
-  font-weight: 500;
-}
-
 .Tag {
   color: var(--mauve-12);
   font-size: 13px;
   line-height: 18px;
-  margin-top: 10px;
-  border-top: 1px solid var(--mauve-6);
-  padding-top: 10px;
+  border-bottom: 1px solid var(--mauve-6);
+  padding: 10px;
 }

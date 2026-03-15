@@ -27,13 +27,8 @@ export const _ScrollArea: StoryObj = {
     const ref = useRef<HTMLDivElement>(null);
     return (
       <ScrollArea.Root className="ScrollAreaRoot">
-        <ScrollArea.Viewport
-          ref={ref}
-          style={{ padding: "15px 20px", width: "auto" }}
-          className="ScrollAreaViewport"
-        >
+        <ScrollArea.Viewport ref={ref} className="ScrollAreaViewport">
           <Virtualizer scrollRef={ref}>
-            <div className="Text">Tags</div>
             {TAGS.map((tag) => (
               <div className="Tag" key={tag.id}>
                 {tag.label}
