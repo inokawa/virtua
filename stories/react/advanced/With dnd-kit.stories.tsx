@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { VList } from "../../../src";
-import React, { CSSProperties, useState } from "react";
+import React, { CSSProperties, useRef, useState } from "react";
+import { range } from "../common";
 import { DragDropProvider, DragOverlay } from "@dnd-kit/react";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { move } from "@dnd-kit/helpers";
@@ -35,14 +36,21 @@ const SortableItem = ({ id, index }: { id: number; index: number }) => {
 export const Default: StoryObj = {
   name: "With dnd-kit",
   render: () => {
-    const [items, setItems] = useState(() =>
-      Array.from({ length: 1000 }, (_, i) => i + 1),
-    );
+    const [items, setItems] = useState(() => range(1000, (i) => i + 1));
+    const snapshot = useRef(items);
 
     return (
       <DragDropProvider
-        onDragEnd={(event) => {
+        onDragStart={() => {
+          snapshot.current = structuredClone(items);
+        }}
+        onDragOver={(event) => {
           setItems((items) => move(items, event));
+        }}
+        onDragEnd={(event) => {
+          if (event.canceled) {
+            setItems(snapshot.current);
+          }
         }}
       >
         <VList style={{ width: 400, height: 600 }}>
