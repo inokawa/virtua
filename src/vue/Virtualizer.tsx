@@ -1,5 +1,6 @@
 /** @jsxImportSource vue */
 import {
+  h,
   ref,
   onMounted,
   defineComponent,
@@ -273,21 +274,21 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
 
       const renderItem = (i: number) => {
         const e = slots.default({ item: props.data![i]!, index: i });
-        return (
-          <ListItem
-            key={getKey(e, i)}
-            _stateVersion={stateVersion}
-            _store={store}
-            _resizer={resizer.$observeItem}
-            _index={i}
-            _children={e}
-            _isHorizontal={isHorizontal}
-            _isNegative={isNegative}
-            _isSSR={isSSR}
-            _as={ItemElement}
-            _itemProps={props.itemProps?.({ item: props.data![i]!, index: i })}
-          />
-        );
+        const key = getKey(e, i);
+        console.log('renderItem', 'index:', i, 'key:', key);
+        return h(ListItem, {
+            key: key,
+            _stateVersion: stateVersion,
+            _store: store,
+            _resizer: resizer.$observeItem,
+            _index: i,
+            _children: e,
+            _isHorizontal: isHorizontal,
+            _isNegative: isNegative,
+            _isSSR: isSSR,
+            _as: ItemElement,
+            _itemProps:props.itemProps?.({ item: props.data![i]!, index: i }),
+        });
       };
 
       if (props.keepMounted) {
@@ -304,21 +305,19 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
         }
       }
 
-      return (
-        <Element
-          ref={containerRef}
-          style={{
-            contain: "size style", // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
-            overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
-            flex: "none", // flex style can break layout
+      return h(Element, {
+          ref: containerRef,
+          style: {
+            contain: "size style",  // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
+            overflowAnchor: "none",  // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
+            flex: "none",  // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
             position: "relative",
             width: isHorizontal ? total + "px" : "100%",
             height: isHorizontal ? "100%" : total + "px",
             pointerEvents: isScrolling.value ? "none" : undefined,
-          }}
-        >
-          {items}
-        </Element>
+          },
+        },
+        items,
       );
     };
   },

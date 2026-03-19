@@ -1,5 +1,6 @@
 /** @jsxImportSource vue */
 import {
+  h,
   defineComponent,
   type ComponentOptionsMixin,
   type SlotsType,
@@ -99,33 +100,33 @@ export const VList = /*#__PURE__*/ defineComponent({
     } satisfies VListHandle);
 
     return () => {
-      return (
-        <div
-          style={{
+      return h("div", {
+          style: {
             display: horizontal ? "inline-block" : "block",
             [horizontal ? "overflowX" : "overflowY"]: "auto",
             contain: "strict",
             width: "100%",
             height: "100%",
-          }}
-        >
-          <Virtualizer
-            ref={handle}
-            data={props.data}
-            bufferSize={props.bufferSize}
-            itemSize={props.itemSize}
-            itemProps={props.itemProps}
-            shift={props.shift}
-            ssrCount={props.ssrCount}
-            horizontal={horizontal}
-            keepMounted={props.keepMounted}
-            cache={props.cache}
-            onScroll={onScroll}
-            onScrollEnd={onScrollEnd}
-          >
-            {slots}
-          </Virtualizer>
-        </div>
+          },
+        },
+        [
+          h(Virtualizer, {
+              ref: handle,
+              data: props.data,
+              bufferSize: props.bufferSize,
+              itemSize: props.itemSize,
+              itemProps: props.itemProps,
+              shift: props.shift,
+              ssrCount: props.ssrCount,
+              horizontal,
+              keepMounted: props.keepMounted,
+              cache: props.cache,
+              onScroll,
+              onScrollEnd,
+            },
+            slots,
+          ),
+        ]
       );
     };
   },

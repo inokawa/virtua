@@ -1,5 +1,6 @@
 /** @jsxImportSource vue */
 import {
+  h,
   ref,
   defineComponent,
   watch,
@@ -88,10 +89,12 @@ export const ListItem = /*#__PURE__*/ defineComponent({
         style.display = "inline-flex";
       }
 
-      return (
-        <Element ref={elementRef} style={style} {...rest}>
-          {children}
-        </Element>
+      return h(Element, {
+          ref: elementRef,
+          style,
+          ...rest,
+        },
+        children
       );
     };
   },
