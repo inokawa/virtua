@@ -274,10 +274,8 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
 
       const renderItem = (i: number) => {
         const e = slots.default({ item: props.data![i]!, index: i });
-        const key = getKey(e, i);
-        console.log('renderItem', 'index:', i, 'key:', key);
         return h(ListItem, {
-            key: key,
+            key: getKey(e, i),
             _stateVersion: stateVersion,
             _store: store,
             _resizer: resizer.$observeItem,
