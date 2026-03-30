@@ -22,7 +22,7 @@ export const isSameRange = (prev: ItemsRange, next: ItemsRange): boolean => {
   return prev[0] === next[0] && prev[1] === next[1];
 };
 
-export type ItemProps = (payload: {
-  item: any;
+export type ItemProps<T = unknown> = (payload: {
+  item: T;
   index: number;
 }) => { [key: string]: any; style?: CSSProperties; class?: string } | undefined;

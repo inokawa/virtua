@@ -6,13 +6,12 @@ import {
   onUnmounted,
   type VNode,
   watch,
-  type ComponentOptionsMixin,
-  type SlotsType,
-  type ComponentOptionsWithObjectProps,
   type ComponentObjectPropsOptions,
   type PropType,
   type NativeElements,
   computed,
+  type PublicProps,
+  type IntrinsicElementAttributes,
 } from "vue";
 import {
   UPDATE_SCROLL_END_EVENT,
@@ -28,6 +27,28 @@ import {
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
 import { getKey, isSameRange } from "./utils.js";
+
+export interface WindowVirtualizerProps<T = unknown> extends PublicProps {
+  data: T[];
+  bufferSize?: number;
+  itemSize?: number;
+  shift?: boolean;
+  horizontal?: boolean;
+  as?: keyof IntrinsicElementAttributes;
+  item?: keyof IntrinsicElementAttributes;
+  cache?: CacheSnapshot;
+  onScroll?: () => void;
+  onScrollEnd?: () => void;
+}
+
+interface WindowVirtualizerConstructor {
+  new <T = unknown>(props: WindowVirtualizerProps<T>): WindowVirtualizerInstance<T>;
+}
+
+interface WindowVirtualizerInstance<T = unknown> extends WindowVirtualizerHandle {
+  $props: WindowVirtualizerProps<T>;
+  $slots: { default: (arg: { item: T; index: number }) => VNode[] };
+}
 
 export interface WindowVirtualizerHandle {
   /**
@@ -203,7 +224,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
 
       const items: VNode[] = [];
       for (let [i, j] = range.value; i <= j; i++) {
-        const e = slots.default({ item: props.data![i]!, index: i });
+        const e = slots["default"]!({ item: props.data![i]!, index: i });
         items.push(
           <ListItem
             key={getKey(e, i)}
@@ -237,26 +258,4 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       );
     };
   },
-} as ComponentOptionsWithObjectProps<
-  typeof props,
-  void,
-  {},
-  {},
-  {},
-  ComponentOptionsMixin,
-  ComponentOptionsMixin,
-  {
-    /**
-     * Callback invoked whenever scroll offset changes.
-     */
-    scroll: () => void;
-    /**
-     * Callback invoked when scrolling stops.
-     */
-    scrollEnd: () => void;
-  },
-  string,
-  {},
-  string,
-  SlotsType<{ default: (arg: { item: any; index: number }) => VNode[] }>
->);
+}) as unknown as WindowVirtualizerConstructor;

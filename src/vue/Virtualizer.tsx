@@ -6,9 +6,7 @@ import {
   onUnmounted,
   type VNode,
   watch,
-  type ComponentOptionsMixin,
-  type SlotsType,
-  type ComponentOptionsWithObjectProps,
+  type PublicProps,
   type ComponentObjectPropsOptions,
   type PropType,
   type NativeElements,
@@ -31,6 +29,33 @@ import {
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
 import { getKey, isSameRange, type ItemProps } from "./utils.js";
+
+export interface VirtualizerProps<T = unknown> extends PublicProps {
+  data: T[];
+  bufferSize?: number;
+  itemSize?: number;
+  shift?: boolean;
+  horizontal?: boolean;
+  startMargin?: number;
+  ssrCount?: number;
+  scrollRef?: HTMLElement;
+  as?: keyof NativeElements;
+  item?: keyof NativeElements;
+  itemProps?: ItemProps<T>;
+  keepMounted?: readonly number[];
+  cache?: CacheSnapshot;
+  onScroll?: (offset: number) => void;
+  onScrollEnd?: () => void;
+}
+
+interface VirtualizerConstructor {
+  new <T = unknown>(props: VirtualizerProps<T>): VirtualizerInstance<T>;
+}
+
+interface VirtualizerInstance<T = unknown> extends VirtualizerHandle {
+  $props: VirtualizerProps<T>;
+  $slots: { default: (arg: { item: T; index: number }) => VNode[] };
+}
 
 export interface VirtualizerHandle {
   /**
@@ -272,7 +297,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       const items: VNode[] = [];
 
       const renderItem = (i: number) => {
-        const e = slots.default({ item: props.data![i]!, index: i });
+        const e = slots["default"]!({ item: props.data![i]!, index: i });
         return (
           <ListItem
             key={getKey(e, i)}
@@ -322,27 +347,4 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       );
     };
   },
-} as ComponentOptionsWithObjectProps<
-  typeof props,
-  VirtualizerHandle,
-  {},
-  {},
-  {},
-  ComponentOptionsMixin,
-  ComponentOptionsMixin,
-  {
-    /**
-     * Callback invoked whenever scroll offset changes.
-     * @param offset Current scrollTop, or scrollLeft if horizontal: true.
-     */
-    scroll: (offset: number) => void;
-    /**
-     * Callback invoked when scrolling stops.
-     */
-    scrollEnd: () => void;
-  },
-  string,
-  {},
-  string,
-  SlotsType<{ default: (arg: { item: any; index: number }) => VNode[] }>
->);
+}) as unknown as VirtualizerConstructor;

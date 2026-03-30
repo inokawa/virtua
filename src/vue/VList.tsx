@@ -1,19 +1,40 @@
 /** @jsxImportSource vue */
 import {
   defineComponent,
-  type ComponentOptionsMixin,
-  type SlotsType,
-  type ComponentOptionsWithObjectProps,
   type ComponentObjectPropsOptions,
   ref,
   type VNode,
   type PropType,
+  type PublicProps,
 } from "vue";
 import { Virtualizer, type VirtualizerHandle } from "./Virtualizer.js";
 import { type ItemProps } from "./utils.js";
 import { type CacheSnapshot } from "../core/index.js";
 
-interface VListHandle extends VirtualizerHandle {}
+export interface VListHandle extends VirtualizerHandle {}
+
+export interface VListProps<T = unknown> extends PublicProps {
+  data: T[];
+  bufferSize?: number;
+  itemSize?: number;
+  shift?: boolean;
+  horizontal?: boolean;
+  ssrCount?: number;
+  itemProps?: ItemProps<T>;
+  keepMounted?: readonly number[];
+  cache?: CacheSnapshot;
+  onScroll?: (offset: number) => void;
+  onScrollEnd?: () => void;
+}
+
+interface VListConstructor {
+  new <T = unknown>(props: VListProps<T>): VListInstance<T>;
+}
+
+interface VListInstance<T = unknown> extends VListHandle  {
+  $props: VListProps<T>;
+  $slots: { default: (arg: { item: T; index: number }) => VNode[] };
+}
 
 const props = {
   /**
@@ -129,27 +150,4 @@ export const VList = /*#__PURE__*/ defineComponent({
       );
     };
   },
-} as ComponentOptionsWithObjectProps<
-  typeof props,
-  VListHandle,
-  {},
-  {},
-  {},
-  ComponentOptionsMixin,
-  ComponentOptionsMixin,
-  {
-    /**
-     * Callback invoked whenever scroll offset changes.
-     * @param offset Current scrollTop, or scrollLeft if horizontal: true.
-     */
-    scroll: (offset: number) => void;
-    /**
-     * Callback invoked when scrolling stops.
-     */
-    scrollEnd: () => void;
-  },
-  string,
-  {},
-  string,
-  SlotsType<{ default: (arg: { item: any; index: number }) => VNode[] }>
->);
+}) as unknown as VListConstructor;
