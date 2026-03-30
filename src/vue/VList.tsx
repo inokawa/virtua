@@ -31,7 +31,7 @@ interface VListConstructor {
   new <T = unknown>(props: VListProps<T>): VListInstance<T>;
 }
 
-interface VListInstance<T = unknown> extends VListHandle  {
+interface VListInstance<T = unknown> extends VListHandle {
   $props: VListProps<T>;
   $slots: { default: (arg: { item: T; index: number }) => VNode[] };
 }

@@ -42,10 +42,14 @@ export interface WindowVirtualizerProps<T = unknown> extends PublicProps {
 }
 
 interface WindowVirtualizerConstructor {
-  new <T = unknown>(props: WindowVirtualizerProps<T>): WindowVirtualizerInstance<T>;
+  new <T = unknown>(
+    props: WindowVirtualizerProps<T>,
+  ): WindowVirtualizerInstance<T>;
 }
 
-interface WindowVirtualizerInstance<T = unknown> extends WindowVirtualizerHandle {
+interface WindowVirtualizerInstance<
+  T = unknown,
+> extends WindowVirtualizerHandle {
   $props: WindowVirtualizerProps<T>;
   $slots: { default: (arg: { item: T; index: number }) => VNode[] };
 }
