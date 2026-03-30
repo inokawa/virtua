@@ -1,69 +1,62 @@
 /** @jsxImportSource vue */
 import {
   defineComponent,
-  type ComponentOptionsMixin,
-  type SlotsType,
-  type ComponentOptionsWithObjectProps,
-  type ComponentObjectPropsOptions,
   ref,
   type VNode,
   type PropType,
+  type PublicProps,
 } from "vue";
-import { Virtualizer, type VirtualizerHandle } from "./Virtualizer.js";
+import {
+  Virtualizer,
+  VirtualizerProps,
+  type VirtualizerHandle,
+} from "./Virtualizer.js";
 import { type ItemProps } from "./utils.js";
 import { type CacheSnapshot } from "../core/index.js";
 
-interface VListHandle extends VirtualizerHandle {}
+/**
+ * Methods of {@link VList}.
+ */
+export interface VListHandle extends VirtualizerHandle {}
 
-const props = {
-  /**
-   * The data items rendered by this component.
-   */
-  data: { type: Array, required: true },
-  /**
-   * Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
-   * @defaultValue 200
-   */
-  bufferSize: Number,
-  /**
-   * Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
-   *
-   * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
-   * - If set, you can opt out estimation and use the value as initial item size.
-   */
-  itemSize: Number,
-  /**
-   * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
-   */
-  shift: Boolean,
-  /**
-   * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
-   */
-  horizontal: Boolean,
-  /**
-   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
-   */
-  ssrCount: Number,
-  /**
-   * A function that provides properties/attributes for item element
-   *
-   * **This prop will be merged into `item` prop in the future**
-   */
-  itemProps: Function as PropType<ItemProps>,
-  /**
-   * List of indexes that should be always mounted, even when off screen.
-   */
-  keepMounted: Array as PropType<readonly number[]>,
-  /**
-   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.cache}.
-   *
-   * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
-   */
-  cache: Object as PropType<CacheSnapshot>,
-} satisfies ComponentObjectPropsOptions;
+/**
+ * Props of {@link VList}.
+ */
+export interface VListProps<T = unknown>
+  extends
+    PublicProps,
+    Pick<
+      VirtualizerProps<T>,
+      | "data"
+      | "bufferSize"
+      | "itemSize"
+      | "shift"
+      | "horizontal"
+      | "cache"
+      | "ssrCount"
+      | "itemProps"
+      | "onScroll"
+      | "onScrollEnd"
+      | "keepMounted"
+    > {}
+
+interface VListInstance<T = unknown> extends VListHandle {
+  $props: VListProps<T>;
+  $slots: { default: (arg: { item: T; index: number }) => VNode[] };
+}
 
 export const VList = /*#__PURE__*/ defineComponent({
-  props: props,
+  props: {
+    data: { type: Array, required: true },
+    bufferSize: Number,
+    itemSize: Number,
+    shift: Boolean,
+    horizontal: Boolean,
+    ssrCount: Number,
+    itemProps: Function as PropType<ItemProps>,
+    keepMounted: Array as PropType<readonly number[]>,
+    cache: Object as PropType<CacheSnapshot>,
+  },
   emits: ["scroll", "scrollEnd"],
   setup(props, { emit, expose, slots }) {
     const horizontal = props.horizontal;
@@ -129,27 +122,6 @@ export const VList = /*#__PURE__*/ defineComponent({
       );
     };
   },
-} as ComponentOptionsWithObjectProps<
-  typeof props,
-  VListHandle,
-  {},
-  {},
-  {},
-  ComponentOptionsMixin,
-  ComponentOptionsMixin,
-  {
-    /**
-     * Callback invoked whenever scroll offset changes.
-     * @param offset Current scrollTop, or scrollLeft if horizontal: true.
-     */
-    scroll: (offset: number) => void;
-    /**
-     * Callback invoked when scrolling stops.
-     */
-    scrollEnd: () => void;
-  },
-  string,
-  {},
-  string,
-  SlotsType<{ default: (arg: { item: any; index: number }) => VNode[] }>
->);
+}) as unknown as {
+  new <T = unknown>(props: VListProps<T>): VListInstance<T>;
+};

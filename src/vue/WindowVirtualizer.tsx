@@ -6,13 +6,11 @@ import {
   onUnmounted,
   type VNode,
   watch,
-  type ComponentOptionsMixin,
-  type SlotsType,
-  type ComponentOptionsWithObjectProps,
-  type ComponentObjectPropsOptions,
   type PropType,
   type NativeElements,
   computed,
+  type PublicProps,
+  type IntrinsicElementAttributes,
 } from "vue";
 import {
   UPDATE_SCROLL_END_EVENT,
@@ -29,6 +27,70 @@ import {
 import { ListItem } from "./ListItem.js";
 import { getKey, isSameRange } from "./utils.js";
 
+/**
+ * Props of {@link WindowVirtualizer}.
+ */
+export interface WindowVirtualizerProps<T = unknown> extends PublicProps {
+  /**
+   * The data items rendered by this component.
+   */
+  data: T[];
+  /**
+   * Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
+   * @defaultValue 200
+   */
+  bufferSize?: number;
+  /**
+   * Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
+   *
+   * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
+   * - If set, you can opt out estimation and use the value as initial item size.
+   */
+  itemSize?: number;
+  /**
+   * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
+   */
+  shift?: boolean;
+  /**
+   * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
+   */
+  horizontal?: boolean;
+  /**
+   * Component or element type for container element.
+   * @defaultValue "div"
+   */
+  as?: keyof IntrinsicElementAttributes;
+  /**
+   * Component or element type for item element.
+   * @defaultValue "div"
+   */
+  item?: keyof IntrinsicElementAttributes;
+  /**
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.cache}.
+   *
+   * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
+   */
+  cache?: CacheSnapshot;
+  /**
+   * Callback invoked whenever scroll offset changes.
+   */
+  onScroll?: () => void;
+  /**
+   * Callback invoked when scrolling stops.
+   */
+  onScrollEnd?: () => void;
+}
+
+interface WindowVirtualizerInstance<
+  T = unknown,
+> extends WindowVirtualizerHandle {
+  $props: WindowVirtualizerProps<T>;
+  $slots: { default: (arg: { item: T; index: number }) => VNode[] };
+}
+
+/**
+ * Methods of {@link WindowVirtualizer}.
+ */
 export interface WindowVirtualizerHandle {
   /**
    * Get current {@link CacheSnapshot}.
@@ -65,51 +127,17 @@ export interface WindowVirtualizerHandle {
   scrollToIndex(index: number, opts?: ScrollToIndexOpts): void;
 }
 
-const props = {
-  /**
-   * The data items rendered by this component.
-   */
-  data: { type: Array, required: true },
-  /**
-   * Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
-   * @defaultValue 200
-   */
-  bufferSize: Number,
-  /**
-   * Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
-   *
-   * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
-   * - If set, you can opt out estimation and use the value as initial item size.
-   */
-  itemSize: Number,
-  /**
-   * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
-   */
-  shift: Boolean,
-  /**
-   * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
-   */
-  horizontal: Boolean,
-  /**
-   * Component or element type for container element.
-   * @defaultValue "div"
-   */
-  as: { type: String as PropType<keyof NativeElements>, default: "div" },
-  /**
-   * Component or element type for item element.
-   * @defaultValue "div"
-   */
-  item: { type: String as PropType<keyof NativeElements>, default: "div" },
-  /**
-   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.cache}.
-   *
-   * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
-   */
-  cache: Object as PropType<CacheSnapshot>,
-} satisfies ComponentObjectPropsOptions;
-
 export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
-  props,
+  props: {
+    data: { type: Array, required: true },
+    bufferSize: Number,
+    itemSize: Number,
+    shift: Boolean,
+    horizontal: Boolean,
+    as: { type: String as PropType<keyof NativeElements>, default: "div" },
+    item: { type: String as PropType<keyof NativeElements>, default: "div" },
+    cache: Object as PropType<CacheSnapshot>,
+  },
   emits: ["scroll", "scrollEnd"],
   setup(props, { emit, slots, expose }) {
     const isHorizontal = props.horizontal;
@@ -203,7 +231,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
 
       const items: VNode[] = [];
       for (let [i, j] = range.value; i <= j; i++) {
-        const e = slots.default({ item: props.data![i]!, index: i });
+        const e = slots["default"]!({ item: props.data![i]!, index: i });
         items.push(
           <ListItem
             key={getKey(e, i)}
@@ -237,26 +265,8 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       );
     };
   },
-} as ComponentOptionsWithObjectProps<
-  typeof props,
-  void,
-  {},
-  {},
-  {},
-  ComponentOptionsMixin,
-  ComponentOptionsMixin,
-  {
-    /**
-     * Callback invoked whenever scroll offset changes.
-     */
-    scroll: () => void;
-    /**
-     * Callback invoked when scrolling stops.
-     */
-    scrollEnd: () => void;
-  },
-  string,
-  {},
-  string,
-  SlotsType<{ default: (arg: { item: any; index: number }) => VNode[] }>
->);
+}) as unknown as {
+  new <T = unknown>(
+    props: WindowVirtualizerProps<T>,
+  ): WindowVirtualizerInstance<T>;
+};

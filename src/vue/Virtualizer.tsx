@@ -6,10 +6,7 @@ import {
   onUnmounted,
   type VNode,
   watch,
-  type ComponentOptionsMixin,
-  type SlotsType,
-  type ComponentOptionsWithObjectProps,
-  type ComponentObjectPropsOptions,
+  type PublicProps,
   type PropType,
   type NativeElements,
   computed,
@@ -32,6 +29,91 @@ import {
 import { ListItem } from "./ListItem.js";
 import { getKey, isSameRange, type ItemProps } from "./utils.js";
 
+/**
+ * Props of {@link Virtualizer}.
+ */
+export interface VirtualizerProps<T = unknown> extends PublicProps {
+  /**
+   * The data items rendered by this component.
+   */
+  data: T[];
+  /**
+   * Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
+   * @defaultValue 200
+   */
+  bufferSize?: number;
+  /**
+   * Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
+   *
+   * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
+   * - If set, you can opt out estimation and use the value as initial item size.
+   */
+  itemSize?: number;
+  /**
+   * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
+   */
+  shift?: boolean;
+  /**
+   * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
+   */
+  horizontal?: boolean;
+  /**
+   * The offset to the scrollable parent before virtualizer in pixels. If you put an element before virtualizer, you have to set its height to this prop.
+   */
+  startMargin?: number;
+  /**
+   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   */
+  ssrCount?: number;
+  /**
+   * Reference to the scrollable element. The default will get the direct parent element of virtualizer.
+   */
+  scrollRef?: HTMLElement;
+  /**
+   * Component or element type for container element.
+   * @defaultValue "div"
+   */
+  as?: keyof NativeElements;
+  /**
+   * Component or element type for item element.
+   * @defaultValue "div"
+   */
+  item?: keyof NativeElements;
+  /**
+   * A function that provides properties/attributes for item element
+   *
+   * **This prop will be merged into `item` prop in the future**
+   */
+  itemProps?: ItemProps<T>;
+  /**
+   * List of indexes that should be always mounted, even when off screen.
+   */
+  keepMounted?: readonly number[];
+  /**
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.cache}.
+   *
+   * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
+   */
+  cache?: CacheSnapshot;
+  /**
+   * Callback invoked whenever scroll offset changes.
+   * @param offset Current scrollTop, or scrollLeft if horizontal: true.
+   */
+  onScroll?: (offset: number) => void;
+  /**
+   * Callback invoked when scrolling stops.
+   */
+  onScrollEnd?: () => void;
+}
+
+interface VirtualizerInstance<T = unknown> extends VirtualizerHandle {
+  $props: VirtualizerProps<T>;
+  $slots: { default: (arg: { item: T; index: number }) => VNode[] };
+}
+
+/**
+ * Methods of {@link Virtualizer}.
+ */
 export interface VirtualizerHandle {
   /**
    * Get current {@link CacheSnapshot}.
@@ -82,73 +164,22 @@ export interface VirtualizerHandle {
   scrollBy(offset: number): void;
 }
 
-const props = {
-  /**
-   * The data items rendered by this component.
-   */
-  data: { type: Array, required: true },
-  /**
-   * Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
-   * @defaultValue 200
-   */
-  bufferSize: Number,
-  /**
-   * Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
-   *
-   * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
-   * - If set, you can opt out estimation and use the value as initial item size.
-   */
-  itemSize: Number,
-  /**
-   * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
-   */
-  shift: Boolean,
-  /**
-   * If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
-   */
-  horizontal: Boolean,
-  /**
-   * The offset to the scrollable parent before virtualizer in pixels. If you put an element before virtualizer, you have to set its height to this prop.
-   */
-  startMargin: { type: Number, default: 0 },
-  /**
-   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
-   */
-  ssrCount: Number,
-  /**
-   * Reference to the scrollable element. The default will get the direct parent element of virtualizer.
-   */
-  scrollRef: Object as PropType<HTMLElement>,
-  /**
-   * Component or element type for container element.
-   * @defaultValue "div"
-   */
-  as: { type: String as PropType<keyof NativeElements>, default: "div" },
-  /**
-   * Component or element type for item element.
-   * @defaultValue "div"
-   */
-  item: { type: String as PropType<keyof NativeElements>, default: "div" },
-  /**
-   * A function that provides properties/attributes for item element
-   *
-   * **This prop will be merged into `item` prop in the future**
-   */
-  itemProps: Function as PropType<ItemProps>,
-  /**
-   * List of indexes that should be always mounted, even when off screen.
-   */
-  keepMounted: Array as PropType<readonly number[]>,
-  /**
-   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.cache}.
-   *
-   * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
-   */
-  cache: Object as PropType<CacheSnapshot>,
-} satisfies ComponentObjectPropsOptions;
-
 export const Virtualizer = /*#__PURE__*/ defineComponent({
-  props: props,
+  props: {
+    data: { type: Array, required: true },
+    bufferSize: Number,
+    itemSize: Number,
+    shift: Boolean,
+    horizontal: Boolean,
+    startMargin: { type: Number, default: 0 },
+    ssrCount: Number,
+    scrollRef: Object as PropType<HTMLElement>,
+    as: { type: String as PropType<keyof NativeElements>, default: "div" },
+    item: { type: String as PropType<keyof NativeElements>, default: "div" },
+    itemProps: Function as PropType<ItemProps>,
+    keepMounted: Array as PropType<readonly number[]>,
+    cache: Object as PropType<CacheSnapshot>,
+  },
   emits: ["scroll", "scrollEnd"],
   setup(props, { emit, expose, slots }) {
     let isSSR = !!props.ssrCount;
@@ -272,7 +303,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       const items: VNode[] = [];
 
       const renderItem = (i: number) => {
-        const e = slots.default({ item: props.data![i]!, index: i });
+        const e = slots["default"]!({ item: props.data![i]!, index: i });
         return (
           <ListItem
             key={getKey(e, i)}
@@ -322,27 +353,6 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       );
     };
   },
-} as ComponentOptionsWithObjectProps<
-  typeof props,
-  VirtualizerHandle,
-  {},
-  {},
-  {},
-  ComponentOptionsMixin,
-  ComponentOptionsMixin,
-  {
-    /**
-     * Callback invoked whenever scroll offset changes.
-     * @param offset Current scrollTop, or scrollLeft if horizontal: true.
-     */
-    scroll: (offset: number) => void;
-    /**
-     * Callback invoked when scrolling stops.
-     */
-    scrollEnd: () => void;
-  },
-  string,
-  {},
-  string,
-  SlotsType<{ default: (arg: { item: any; index: number }) => VNode[] }>
->);
+}) as unknown as {
+  new <T = unknown>(props: VirtualizerProps<T>): VirtualizerInstance<T>;
+};
