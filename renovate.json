@@ -9,5 +9,5 @@
   ],
   "timezone": "Asia/Tokyo",
   "configMigration": true,
-  "minimumReleaseAge": "1 days"
+  "minimumReleaseAge": "3 days"
 }
