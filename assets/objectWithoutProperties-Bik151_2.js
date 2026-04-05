@@ -1,1 +1,0 @@
-import{n as e}from"./chunk-BneVvdWh.js";import{i as t,r as n}from"./extends-C5Z2dt2T.js";function r(e,t){if(e==null)return{};var r,i,a=n(e,t);if(Object.getOwnPropertySymbols){var o=Object.getOwnPropertySymbols(e);for(i=0;i<o.length;i++)r=o[i],t.indexOf(r)===-1&&{}.propertyIsEnumerable.call(e,r)&&(a[r]=e[r])}return a}var i=e((()=>{t()}));export{i as n,r as t};

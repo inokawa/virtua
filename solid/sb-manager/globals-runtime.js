@@ -58907,15 +58907,13 @@ var statusStore = createStatusStore({
 }), { fullStatusStore, getStatusStoreByTypeId, useStatusStore, universalStatusStore } = statusStore;
 
 // src/manager-api/modules/stories.ts
-var { fetch: fetch3 } = scope, STORY_INDEX_PATH = "./index.json", TAGS_FILTER = "tags-filter", STATIC_FILTER = "static-filter", getDefaultTagsFromPreset = (0, import_memoizerific7.default)(1)(
-  (presets) => {
-    let presetEntries = Object.entries(presets);
-    return {
-      included: presetEntries.filter(([, option]) => option.defaultFilterSelection === "include").map(([tag]) => tag),
-      excluded: presetEntries.filter(([, option]) => option.defaultFilterSelection === "exclude").map(([tag]) => tag)
-    };
-  }
-), computeStaticFilterFn = (tagPresets) => {
+var { fetch: fetch3 } = scope, STORY_INDEX_PATH = "./index.json", TAGS_FILTER = "tags-filter", STATIC_FILTER = "static-filter", getDefaultTagsFromPreset = (0, import_memoizerific7.default)(1)((presets) => {
+  let presetEntries = Object.entries(presets);
+  return {
+    included: presetEntries.filter(([, option]) => option.defaultFilterSelection === "include").map(([tag]) => tag),
+    excluded: presetEntries.filter(([, option]) => option.defaultFilterSelection === "exclude").map(([tag]) => tag)
+  };
+}), computeStaticFilterFn = (tagPresets) => {
   let staticExcludeTags = Object.entries(tagPresets).reduce(
     (acc, entry) => {
       let [tag, option] = entry;
@@ -60532,7 +60530,7 @@ init_dist();
 var import_memoizerific9 = __toESM(require_memoizerific(), 1), import_semver = __toESM(require_semver2(), 1);
 
 // src/manager-api/version.ts
-var version = "10.3.1";
+var version = "10.3.4";
 
 // src/manager-api/modules/versions.ts
 var { VERSIONCHECK } = scope, getVersionCheckData = (0, import_memoizerific9.default)(1)(() => {
