@@ -11,8 +11,6 @@ import {
   VirtualizerProps,
   type VirtualizerHandle,
 } from "./Virtualizer.js";
-import { type ItemProps } from "./utils.js";
-import { type CacheSnapshot } from "../core/index.js";
 
 /**
  * Methods of {@link VList}.
@@ -53,9 +51,9 @@ export const VList = /*#__PURE__*/ defineComponent({
     shift: Boolean,
     horizontal: Boolean,
     ssrCount: Number,
-    itemProps: Function as PropType<ItemProps>,
-    keepMounted: Array as PropType<readonly number[]>,
-    cache: Object as PropType<CacheSnapshot>,
+    itemProps: Function as PropType<VListProps["itemProps"]>,
+    keepMounted: Array as PropType<VListProps["keepMounted"]>,
+    cache: Object as PropType<VListProps["cache"]>,
   },
   emits: ["scroll", "scrollEnd"],
   setup(props, { emit, expose, slots }) {

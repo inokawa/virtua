@@ -10,7 +10,6 @@ import {
   type NativeElements,
   computed,
   type PublicProps,
-  type IntrinsicElementAttributes,
 } from "vue";
 import {
   UPDATE_SCROLL_END_EVENT,
@@ -59,12 +58,12 @@ export interface WindowVirtualizerProps<T = unknown> extends PublicProps {
    * Component or element type for container element.
    * @defaultValue "div"
    */
-  as?: keyof IntrinsicElementAttributes;
+  as?: keyof NativeElements;
   /**
    * Component or element type for item element.
    * @defaultValue "div"
    */
-  item?: keyof IntrinsicElementAttributes;
+  item?: keyof NativeElements;
   /**
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.cache}.
    *
@@ -134,9 +133,15 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     itemSize: Number,
     shift: Boolean,
     horizontal: Boolean,
-    as: { type: String as PropType<keyof NativeElements>, default: "div" },
-    item: { type: String as PropType<keyof NativeElements>, default: "div" },
-    cache: Object as PropType<CacheSnapshot>,
+    as: {
+      type: String as PropType<WindowVirtualizerProps["as"]>,
+      default: "div",
+    },
+    item: {
+      type: String as PropType<WindowVirtualizerProps["item"]>,
+      default: "div",
+    },
+    cache: Object as PropType<WindowVirtualizerProps["cache"]>,
   },
   emits: ["scroll", "scrollEnd"],
   setup(props, { emit, slots, expose }) {
