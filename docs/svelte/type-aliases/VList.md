@@ -6,4 +6,4 @@
 
 > **VList** = `SvelteComponent`
 
-Defined in: node\_modules/svelte/types/index.d.ts:3195
+Defined in: node\_modules/svelte/types/index.d.ts:3204

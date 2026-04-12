@@ -4,7 +4,7 @@
 
 # Interface: VListProps\<T\>
 
-Defined in: [src/solid/VList.tsx:20](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/solid/VList.tsx#L20)
+Defined in: [src/solid/VList.tsx:20](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/solid/VList.tsx#L20)
 
 Props of [VList](../functions/VList.md).
 
@@ -20,11 +20,11 @@ Props of [VList](../functions/VList.md).
 
 ## Properties
 
-### children()
+### children
 
 > **children**: (`data`, `index`) => `Element`
 
-Defined in: [src/solid/Virtualizer.tsx:106](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/solid/Virtualizer.tsx#L106)
+Defined in: [src/solid/Virtualizer.tsx:106](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/solid/Virtualizer.tsx#L106)
 
 The elements renderer function.
 
@@ -48,11 +48,11 @@ The elements renderer function.
 
 ***
 
-### onScroll()?
+### onScroll?
 
-> `optional` **onScroll**: (`offset`) => `void`
+> `optional` **onScroll?**: (`offset`) => `void`
 
-Defined in: [src/solid/Virtualizer.tsx:159](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/solid/Virtualizer.tsx#L159)
+Defined in: [src/solid/Virtualizer.tsx:159](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/solid/Virtualizer.tsx#L159)
 
 Callback invoked whenever scroll offset changes.
 
@@ -74,11 +74,11 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 ***
 
-### onScrollEnd()?
+### onScrollEnd?
 
-> `optional` **onScrollEnd**: () => `void`
+> `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/solid/Virtualizer.tsx:163](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/solid/Virtualizer.tsx#L163)
+Defined in: [src/solid/Virtualizer.tsx:163](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/solid/Virtualizer.tsx#L163)
 
 Callback invoked when scrolling stops.
 
@@ -94,9 +94,9 @@ Callback invoked when scrolling stops.
 
 ### shift?
 
-> `optional` **shift**: `boolean`
+> `optional` **shift?**: `boolean`
 
-Defined in: [src/solid/Virtualizer.tsx:136](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/solid/Virtualizer.tsx#L136)
+Defined in: [src/solid/Virtualizer.tsx:136](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/solid/Virtualizer.tsx#L136)
 
 While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
 
@@ -106,11 +106,11 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 ***
 
-### ref()?
+### ref?
 
-> `optional` **ref**: (`handle?`) => `void`
+> `optional` **ref?**: (`handle?`) => `void`
 
-Defined in: [src/solid/Virtualizer.tsx:98](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/solid/Virtualizer.tsx#L98)
+Defined in: [src/solid/Virtualizer.tsx:98](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/solid/Virtualizer.tsx#L98)
 
 Get reference to [VirtualizerHandle](VirtualizerHandle.md).
 
@@ -134,7 +134,7 @@ Get reference to [VirtualizerHandle](VirtualizerHandle.md).
 
 > **data**: readonly `T`[]
 
-Defined in: [src/solid/Virtualizer.tsx:102](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/solid/Virtualizer.tsx#L102)
+Defined in: [src/solid/Virtualizer.tsx:102](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/solid/Virtualizer.tsx#L102)
 
 The data items rendered by this component.
 
@@ -146,9 +146,9 @@ The data items rendered by this component.
 
 ### bufferSize?
 
-> `optional` **bufferSize**: `number`
+> `optional` **bufferSize?**: `number`
 
-Defined in: [src/solid/Virtualizer.tsx:111](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/solid/Virtualizer.tsx#L111)
+Defined in: [src/solid/Virtualizer.tsx:111](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/solid/Virtualizer.tsx#L111)
 
 Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -166,9 +166,9 @@ Extra item space in pixels to render before/after the viewport. The minimum valu
 
 ### itemSize?
 
-> `optional` **itemSize**: `number`
+> `optional` **itemSize?**: `number`
 
-Defined in: [src/solid/Virtualizer.tsx:132](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/solid/Virtualizer.tsx#L132)
+Defined in: [src/solid/Virtualizer.tsx:132](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/solid/Virtualizer.tsx#L132)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -183,9 +183,9 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 ### horizontal?
 
-> `optional` **horizontal**: `boolean`
+> `optional` **horizontal?**: `boolean`
 
-Defined in: [src/solid/Virtualizer.tsx:140](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/solid/Virtualizer.tsx#L140)
+Defined in: [src/solid/Virtualizer.tsx:140](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/solid/Virtualizer.tsx#L140)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -197,9 +197,9 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 ### keepMounted?
 
-> `optional` **keepMounted**: readonly `number`[]
+> `optional` **keepMounted?**: readonly `number`[]
 
-Defined in: [src/solid/Virtualizer.tsx:144](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/solid/Virtualizer.tsx#L144)
+Defined in: [src/solid/Virtualizer.tsx:144](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/solid/Virtualizer.tsx#L144)
 
 List of indexes that should be always mounted, even when off screen.
 
@@ -211,9 +211,9 @@ List of indexes that should be always mounted, even when off screen.
 
 ### cache?
 
-> `optional` **cache**: [`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md)
+> `optional` **cache?**: [`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md)
 
-Defined in: [src/solid/Virtualizer.tsx:150](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/solid/Virtualizer.tsx#L150)
+Defined in: [src/solid/Virtualizer.tsx:150](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/solid/Virtualizer.tsx#L150)
 
 You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VirtualizerHandle.cache](VListHandle.md#cache).
 
@@ -227,9 +227,9 @@ You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheS
 
 ### item?
 
-> `optional` **item**: `ValidComponent`
+> `optional` **item?**: `ValidComponent`
 
-Defined in: [src/solid/Virtualizer.tsx:121](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/solid/Virtualizer.tsx#L121)
+Defined in: [src/solid/Virtualizer.tsx:121](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/solid/Virtualizer.tsx#L121)
 
 Component or element type for item element.
 
@@ -247,7 +247,7 @@ Component or element type for item element.
 
 ### id?
 
-> `optional` **id**: `string`
+> `optional` **id?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:689
 
@@ -259,7 +259,7 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:689
 
 ### role?
 
-> `optional` **role**: `"none"` \| `"grid"` \| `"table"` \| `"search"` \| `"link"` \| `"article"` \| `"button"` \| `"dialog"` \| `"figure"` \| `"form"` \| `"img"` \| `"main"` \| `"menu"` \| `"menuitem"` \| `"meter"` \| `"option"` \| `"switch"` \| `"checkbox"` \| `"listbox"` \| `"radio"` \| `"region"` \| `"cell"` \| `"row"` \| `"listitem"` \| `"menubar"` \| `"progressbar"` \| `"separator"` \| `"tab"` \| `"tabpanel"` \| `"toolbar"` \| `"tooltip"` \| `"treeitem"` \| `"scrollbar"` \| `"alert"` \| `"alertdialog"` \| `"application"` \| `"banner"` \| `"columnheader"` \| `"combobox"` \| `"complementary"` \| `"contentinfo"` \| `"definition"` \| `"directory"` \| `"document"` \| `"feed"` \| `"gridcell"` \| `"group"` \| `"heading"` \| `"list"` \| `"log"` \| `"marquee"` \| `"math"` \| `"menuitemcheckbox"` \| `"menuitemradio"` \| `"navigation"` \| `"note"` \| `"presentation"` \| `"radiogroup"` \| `"rowgroup"` \| `"rowheader"` \| `"searchbox"` \| `"slider"` \| `"spinbutton"` \| `"status"` \| `"tablist"` \| `"term"` \| `"textbox"` \| `"timer"` \| `"tree"` \| `"treegrid"`
+> `optional` **role?**: `"none"` \| `"grid"` \| `"table"` \| `"search"` \| `"link"` \| `"article"` \| `"button"` \| `"dialog"` \| `"figure"` \| `"form"` \| `"img"` \| `"main"` \| `"menu"` \| `"menuitem"` \| `"meter"` \| `"option"` \| `"switch"` \| `"checkbox"` \| `"listbox"` \| `"radio"` \| `"region"` \| `"cell"` \| `"row"` \| `"math"` \| `"listitem"` \| `"menubar"` \| `"progressbar"` \| `"separator"` \| `"tab"` \| `"tabpanel"` \| `"toolbar"` \| `"tooltip"` \| `"treeitem"` \| `"scrollbar"` \| `"alert"` \| `"alertdialog"` \| `"application"` \| `"banner"` \| `"columnheader"` \| `"combobox"` \| `"complementary"` \| `"contentinfo"` \| `"definition"` \| `"directory"` \| `"document"` \| `"feed"` \| `"gridcell"` \| `"group"` \| `"heading"` \| `"list"` \| `"log"` \| `"marquee"` \| `"menuitemcheckbox"` \| `"menuitemradio"` \| `"navigation"` \| `"note"` \| `"presentation"` \| `"radiogroup"` \| `"rowgroup"` \| `"rowheader"` \| `"searchbox"` \| `"slider"` \| `"spinbutton"` \| `"status"` \| `"tablist"` \| `"term"` \| `"textbox"` \| `"timer"` \| `"tree"` \| `"treegrid"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1123
 
@@ -271,7 +271,7 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:1123
 
 ### tabIndex?
 
-> `optional` **tabIndex**: `string` \| `number`
+> `optional` **tabIndex?**: `string` \| `number`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:695
 
@@ -283,7 +283,7 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:695
 
 ### onKeyDown?
 
-> `optional` **onKeyDown**: `EventHandlerUnion`\<`HTMLElement`, `KeyboardEvent`, `EventHandler`\<`HTMLElement`, `KeyboardEvent`\>\>
+> `optional` **onKeyDown?**: `EventHandlerUnion`\<`HTMLElement`, `KeyboardEvent`, `EventHandler`\<`HTMLElement`, `KeyboardEvent`\>\>
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:342
 
@@ -295,7 +295,7 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:342
 
 ### onWheel?
 
-> `optional` **onWheel**: `EventHandlerUnion`\<`HTMLElement`, `WheelEvent`, `EventHandler`\<`HTMLElement`, `WheelEvent`\>\>
+> `optional` **onWheel?**: `EventHandlerUnion`\<`HTMLElement`, `WheelEvent`, `EventHandler`\<`HTMLElement`, `WheelEvent`\>\>
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:402
 
@@ -307,7 +307,7 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:402
 
 ### class?
 
-> `optional` **class**: `string`
+> `optional` **class?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:687
 
@@ -319,7 +319,7 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:687
 
 ### aria-activedescendant?
 
-> `optional` **aria-activedescendant**: `string`
+> `optional` **aria-activedescendant?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:817
 
@@ -334,7 +334,7 @@ group, or application.
 
 ### aria-atomic?
 
-> `optional` **aria-atomic**: `boolean` \| `"false"` \| `"true"`
+> `optional` **aria-atomic?**: `boolean` \| `"false"` \| `"true"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:822
 
@@ -349,7 +349,7 @@ region based on the change notifications defined by the aria-relevant attribute.
 
 ### aria-braillelabel?
 
-> `optional` **aria-braillelabel**: `string`
+> `optional` **aria-braillelabel?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:829
 
@@ -368,7 +368,7 @@ aria-label.
 
 ### aria-brailleroledescription?
 
-> `optional` **aria-brailleroledescription**: `string`
+> `optional` **aria-brailleroledescription?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:843
 
@@ -394,7 +394,7 @@ aria-roledescription.
 
 ### aria-autocomplete?
 
-> `optional` **aria-autocomplete**: `"none"` \| `"inline"` \| `"both"` \| `"list"`
+> `optional` **aria-autocomplete?**: `"none"` \| `"inline"` \| `"both"` \| `"list"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:849
 
@@ -410,7 +410,7 @@ are made.
 
 ### aria-busy?
 
-> `optional` **aria-busy**: `boolean` \| `"false"` \| `"true"`
+> `optional` **aria-busy?**: `boolean` \| `"false"` \| `"true"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:854
 
@@ -425,7 +425,7 @@ the modifications are complete before exposing them to the user.
 
 ### aria-checked?
 
-> `optional` **aria-checked**: `boolean` \| `"mixed"` \| `"false"` \| `"true"`
+> `optional` **aria-checked?**: `boolean` \| `"mixed"` \| `"false"` \| `"true"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:860
 
@@ -444,7 +444,7 @@ Indicates the current "checked" state of checkboxes, radio buttons, and other wi
 
 ### aria-colcount?
 
-> `optional` **aria-colcount**: `string` \| `number`
+> `optional` **aria-colcount?**: `string` \| `number`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:866
 
@@ -462,7 +462,7 @@ aria-colindex.
 
 ### aria-colindex?
 
-> `optional` **aria-colindex**: `string` \| `number`
+> `optional` **aria-colindex?**: `string` \| `number`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:873
 
@@ -482,7 +482,7 @@ within a table, grid, or treegrid.
 
 ### aria-colindextext?
 
-> `optional` **aria-colindextext**: `string` \| `number`
+> `optional` **aria-colindextext?**: `string` \| `number`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:875
 
@@ -496,7 +496,7 @@ Defines a human-readable text alternative of the numeric aria-colindex.
 
 ### aria-colspan?
 
-> `optional` **aria-colspan**: `string` \| `number`
+> `optional` **aria-colspan?**: `string` \| `number`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:882
 
@@ -516,7 +516,7 @@ treegrid.
 
 ### aria-controls?
 
-> `optional` **aria-controls**: `string`
+> `optional` **aria-controls?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:889
 
@@ -535,7 +535,7 @@ aria-owns.
 
 ### aria-current?
 
-> `optional` **aria-current**: `boolean` \| `"time"` \| `"page"` \| `"false"` \| `"true"` \| `"location"` \| `"step"` \| `"date"`
+> `optional` **aria-current?**: `boolean` \| `"time"` \| `"page"` \| `"false"` \| `"true"` \| `"location"` \| `"step"` \| `"date"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:894
 
@@ -550,7 +550,7 @@ elements.
 
 ### aria-describedby?
 
-> `optional` **aria-describedby**: `string`
+> `optional` **aria-describedby?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:909
 
@@ -568,7 +568,7 @@ aria-labelledby
 
 ### aria-description?
 
-> `optional` **aria-description**: `string`
+> `optional` **aria-description?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:915
 
@@ -586,7 +586,7 @@ aria-describedby
 
 ### aria-details?
 
-> `optional` **aria-details**: `string`
+> `optional` **aria-details?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:921
 
@@ -604,7 +604,7 @@ aria-describedby.
 
 ### aria-disabled?
 
-> `optional` **aria-disabled**: `boolean` \| `"false"` \| `"true"`
+> `optional` **aria-disabled?**: `boolean` \| `"false"` \| `"true"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:928
 
@@ -624,7 +624,7 @@ operable.
 
 ### ~~aria-dropeffect?~~
 
-> `optional` **aria-dropeffect**: `"copy"` \| `"none"` \| `"link"` \| `"move"` \| `"execute"` \| `"popup"`
+> `optional` **aria-dropeffect?**: `"copy"` \| `"none"` \| `"link"` \| `"move"` \| `"execute"` \| `"popup"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:935
 
@@ -643,7 +643,7 @@ In ARIA 1.1
 
 ### aria-errormessage?
 
-> `optional` **aria-errormessage**: `string`
+> `optional` **aria-errormessage?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:941
 
@@ -662,7 +662,7 @@ Identifies the element that provides an error message for the object.
 
 ### aria-expanded?
 
-> `optional` **aria-expanded**: `boolean` \| `"false"` \| `"true"`
+> `optional` **aria-expanded?**: `boolean` \| `"false"` \| `"true"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:946
 
@@ -677,7 +677,7 @@ or collapsed.
 
 ### aria-flowto?
 
-> `optional` **aria-flowto**: `string`
+> `optional` **aria-flowto?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:952
 
@@ -693,7 +693,7 @@ in document source order.
 
 ### ~~aria-grabbed?~~
 
-> `optional` **aria-grabbed**: `boolean` \| `"false"` \| `"true"`
+> `optional` **aria-grabbed?**: `boolean` \| `"false"` \| `"true"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:958
 
@@ -711,7 +711,7 @@ In ARIA 1.1
 
 ### aria-haspopup?
 
-> `optional` **aria-haspopup**: `boolean` \| `"grid"` \| `"dialog"` \| `"menu"` \| `"listbox"` \| `"false"` \| `"true"` \| `"tree"`
+> `optional` **aria-haspopup?**: `boolean` \| `"grid"` \| `"dialog"` \| `"menu"` \| `"listbox"` \| `"false"` \| `"true"` \| `"tree"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:963
 
@@ -726,7 +726,7 @@ that can be triggered by an element.
 
 ### aria-hidden?
 
-> `optional` **aria-hidden**: `boolean` \| `"false"` \| `"true"`
+> `optional` **aria-hidden?**: `boolean` \| `"false"` \| `"true"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:978
 
@@ -744,7 +744,7 @@ aria-disabled.
 
 ### aria-invalid?
 
-> `optional` **aria-invalid**: `boolean` \| `"false"` \| `"true"` \| `"grammar"` \| `"spelling"`
+> `optional` **aria-invalid?**: `boolean` \| `"false"` \| `"true"` \| `"grammar"` \| `"spelling"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:984
 
@@ -762,7 +762,7 @@ aria-errormessage.
 
 ### aria-keyshortcuts?
 
-> `optional` **aria-keyshortcuts**: `string`
+> `optional` **aria-keyshortcuts?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:989
 
@@ -777,7 +777,7 @@ element.
 
 ### aria-label?
 
-> `optional` **aria-label**: `string`
+> `optional` **aria-label?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:995
 
@@ -795,7 +795,7 @@ aria-labelledby.
 
 ### aria-labelledby?
 
-> `optional` **aria-labelledby**: `string`
+> `optional` **aria-labelledby?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1001
 
@@ -813,7 +813,7 @@ aria-describedby.
 
 ### aria-level?
 
-> `optional` **aria-level**: `string` \| `number`
+> `optional` **aria-level?**: `string` \| `number`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1003
 
@@ -827,7 +827,7 @@ Defines the hierarchical level of an element within a structure.
 
 ### aria-live?
 
-> `optional` **aria-live**: `"off"` \| `"assertive"` \| `"polite"`
+> `optional` **aria-live?**: `"off"` \| `"assertive"` \| `"polite"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1008
 
@@ -842,7 +842,7 @@ agents, assistive technologies, and user can expect from the live region.
 
 ### aria-modal?
 
-> `optional` **aria-modal**: `boolean` \| `"false"` \| `"true"`
+> `optional` **aria-modal?**: `boolean` \| `"false"` \| `"true"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1010
 
@@ -856,7 +856,7 @@ Indicates whether an element is modal when displayed.
 
 ### aria-multiline?
 
-> `optional` **aria-multiline**: `boolean` \| `"false"` \| `"true"`
+> `optional` **aria-multiline?**: `boolean` \| `"false"` \| `"true"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1012
 
@@ -870,7 +870,7 @@ Indicates whether a text box accepts multiple lines of input or only a single li
 
 ### aria-multiselectable?
 
-> `optional` **aria-multiselectable**: `boolean` \| `"false"` \| `"true"`
+> `optional` **aria-multiselectable?**: `boolean` \| `"false"` \| `"true"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1017
 
@@ -885,7 +885,7 @@ descendants.
 
 ### aria-orientation?
 
-> `optional` **aria-orientation**: `"horizontal"` \| `"vertical"`
+> `optional` **aria-orientation?**: `"horizontal"` \| `"vertical"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1019
 
@@ -899,7 +899,7 @@ Indicates whether the element's orientation is horizontal, vertical, or unknown/
 
 ### aria-owns?
 
-> `optional` **aria-owns**: `string`
+> `optional` **aria-owns?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1027
 
@@ -919,7 +919,7 @@ aria-controls.
 
 ### aria-placeholder?
 
-> `optional` **aria-placeholder**: `string`
+> `optional` **aria-placeholder?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1033
 
@@ -935,7 +935,7 @@ expected format.
 
 ### aria-posinset?
 
-> `optional` **aria-posinset**: `string` \| `number`
+> `optional` **aria-posinset?**: `string` \| `number`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1040
 
@@ -954,7 +954,7 @@ aria-setsize.
 
 ### aria-pressed?
 
-> `optional` **aria-pressed**: `boolean` \| `"mixed"` \| `"false"` \| `"true"`
+> `optional` **aria-pressed?**: `boolean` \| `"mixed"` \| `"false"` \| `"true"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1046
 
@@ -973,7 +973,7 @@ Indicates the current "pressed" state of toggle buttons.
 
 ### aria-readonly?
 
-> `optional` **aria-readonly**: `boolean` \| `"false"` \| `"true"`
+> `optional` **aria-readonly?**: `boolean` \| `"false"` \| `"true"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1052
 
@@ -991,7 +991,7 @@ aria-disabled.
 
 ### aria-relevant?
 
-> `optional` **aria-relevant**: `"text"` \| `"all"` \| `"additions"` \| `"additions removals"` \| `"additions text"` \| `"removals"` \| `"removals additions"` \| `"removals text"` \| `"text additions"` \| `"text removals"`
+> `optional` **aria-relevant?**: `"text"` \| `"all"` \| `"additions"` \| `"additions removals"` \| `"additions text"` \| `"removals"` \| `"removals additions"` \| `"removals text"` \| `"text additions"` \| `"text removals"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1059
 
@@ -1010,7 +1010,7 @@ aria-atomic.
 
 ### aria-required?
 
-> `optional` **aria-required**: `boolean` \| `"false"` \| `"true"`
+> `optional` **aria-required?**: `boolean` \| `"false"` \| `"true"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1072
 
@@ -1024,7 +1024,7 @@ Indicates that user input is required on the element before a form may be submit
 
 ### aria-roledescription?
 
-> `optional` **aria-roledescription**: `string`
+> `optional` **aria-roledescription?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1074
 
@@ -1038,7 +1038,7 @@ Defines a human-readable, author-localized description for the role of an elemen
 
 ### aria-rowcount?
 
-> `optional` **aria-rowcount**: `string` \| `number`
+> `optional` **aria-rowcount?**: `string` \| `number`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1080
 
@@ -1056,7 +1056,7 @@ aria-rowindex.
 
 ### aria-rowindex?
 
-> `optional` **aria-rowindex**: `string` \| `number`
+> `optional` **aria-rowindex?**: `string` \| `number`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1087
 
@@ -1076,7 +1076,7 @@ table, grid, or treegrid.
 
 ### aria-rowindextext?
 
-> `optional` **aria-rowindextext**: `string` \| `number`
+> `optional` **aria-rowindextext?**: `string` \| `number`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1089
 
@@ -1090,7 +1090,7 @@ Defines a human-readable text alternative of aria-rowindex.
 
 ### aria-rowspan?
 
-> `optional` **aria-rowspan**: `string` \| `number`
+> `optional` **aria-rowspan?**: `string` \| `number`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1095
 
@@ -1109,7 +1109,7 @@ Defines the number of rows spanned by a cell or gridcell within a table, grid, o
 
 ### aria-selected?
 
-> `optional` **aria-selected**: `boolean` \| `"false"` \| `"true"`
+> `optional` **aria-selected?**: `boolean` \| `"false"` \| `"true"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1101
 
@@ -1128,7 +1128,7 @@ Indicates the current "selected" state of various widgets.
 
 ### aria-setsize?
 
-> `optional` **aria-setsize**: `string` \| `number`
+> `optional` **aria-setsize?**: `string` \| `number`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1108
 
@@ -1147,7 +1147,7 @@ aria-posinset.
 
 ### aria-sort?
 
-> `optional` **aria-sort**: `"none"` \| `"ascending"` \| `"descending"` \| `"other"`
+> `optional` **aria-sort?**: `"none"` \| `"ascending"` \| `"descending"` \| `"other"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1110
 
@@ -1161,7 +1161,7 @@ Indicates if items in a table or grid are sorted in ascending or descending orde
 
 ### aria-valuemax?
 
-> `optional` **aria-valuemax**: `string` \| `number`
+> `optional` **aria-valuemax?**: `string` \| `number`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1112
 
@@ -1175,7 +1175,7 @@ Defines the maximum allowed value for a range widget.
 
 ### aria-valuemin?
 
-> `optional` **aria-valuemin**: `string` \| `number`
+> `optional` **aria-valuemin?**: `string` \| `number`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1114
 
@@ -1189,7 +1189,7 @@ Defines the minimum allowed value for a range widget.
 
 ### aria-valuenow?
 
-> `optional` **aria-valuenow**: `string` \| `number`
+> `optional` **aria-valuenow?**: `string` \| `number`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1120
 
@@ -1207,7 +1207,7 @@ aria-valuetext.
 
 ### aria-valuetext?
 
-> `optional` **aria-valuetext**: `string`
+> `optional` **aria-valuetext?**: `string`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1122
 
@@ -1221,9 +1221,9 @@ Defines the human readable text alternative of aria-valuenow for a range widget.
 
 ### style?
 
-> `optional` **style**: `CSSProperties`
+> `optional` **style?**: `CSSProperties`
 
-Defined in: [src/solid/types.ts:7](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/solid/types.ts#L7)
+Defined in: [src/solid/types.ts:7](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/solid/types.ts#L7)
 
 #### Inherited from
 

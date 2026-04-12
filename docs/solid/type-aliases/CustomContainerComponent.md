@@ -6,4 +6,4 @@
 
 > **CustomContainerComponent** = `ParentComponent`\<[`CustomContainerComponentProps`](../interfaces/CustomContainerComponentProps.md)\>
 
-Defined in: [src/solid/types.ts:15](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/solid/types.ts#L15)
+Defined in: [src/solid/types.ts:15](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/solid/types.ts#L15)

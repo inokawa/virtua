@@ -2,11 +2,13 @@
 
 ***
 
-# Variable: VList()
+# Variable: VList
 
 > `const` **VList**: \<`T`\>(`props`) => `VListInstance`\<`T`\>
 
-Defined in: [src/vue/VList.tsx:48](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/vue/VList.tsx#L48)
+Defined in: [src/vue/VList.tsx:49](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/vue/VList.tsx#L49)
+
+Virtualized list component. See [VListProps](../interfaces/VListProps.md) and [VListHandle](../interfaces/VListHandle.md).
 
 ## Parameters
 

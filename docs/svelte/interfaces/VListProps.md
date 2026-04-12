@@ -4,7 +4,7 @@
 
 # Interface: VListProps\<T\>
 
-Defined in: [src/svelte/VList.type.ts:10](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/svelte/VList.type.ts#L10)
+Defined in: [src/svelte/VList.type.ts:10](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/svelte/VList.type.ts#L10)
 
 Props of [VList](../type-aliases/VList.md).
 
@@ -24,7 +24,7 @@ Props of [VList](../type-aliases/VList.md).
 
 > **children**: `Snippet`\<\[`T`, `number`\]\>
 
-Defined in: [src/svelte/Virtualizer.type.ts:16](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/svelte/Virtualizer.type.ts#L16)
+Defined in: [src/svelte/Virtualizer.type.ts:16](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/svelte/Virtualizer.type.ts#L16)
 
 The elements renderer snippet.
 
@@ -36,9 +36,9 @@ The elements renderer snippet.
 
 ### shift?
 
-> `optional` **shift**: `boolean`
+> `optional` **shift?**: `boolean`
 
-Defined in: [src/svelte/Virtualizer.type.ts:55](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/svelte/Virtualizer.type.ts#L55)
+Defined in: [src/svelte/Virtualizer.type.ts:55](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/svelte/Virtualizer.type.ts#L55)
 
 While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
 
@@ -52,7 +52,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 > **data**: readonly `T`[]
 
-Defined in: [src/svelte/Virtualizer.type.ts:12](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/svelte/Virtualizer.type.ts#L12)
+Defined in: [src/svelte/Virtualizer.type.ts:12](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/svelte/Virtualizer.type.ts#L12)
 
 The data items rendered by this component.
 
@@ -64,9 +64,9 @@ The data items rendered by this component.
 
 ### bufferSize?
 
-> `optional` **bufferSize**: `number`
+> `optional` **bufferSize?**: `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/svelte/Virtualizer.type.ts#L36)
+Defined in: [src/svelte/Virtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/svelte/Virtualizer.type.ts#L36)
 
 Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -84,9 +84,9 @@ Extra item space in pixels to render before/after the viewport. The minimum valu
 
 ### itemSize?
 
-> `optional` **itemSize**: `number`
+> `optional` **itemSize?**: `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:47](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/svelte/Virtualizer.type.ts#L47)
+Defined in: [src/svelte/Virtualizer.type.ts:47](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/svelte/Virtualizer.type.ts#L47)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -101,9 +101,9 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 ### horizontal?
 
-> `optional` **horizontal**: `boolean`
+> `optional` **horizontal?**: `boolean`
 
-Defined in: [src/svelte/Virtualizer.type.ts:59](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/svelte/Virtualizer.type.ts#L59)
+Defined in: [src/svelte/Virtualizer.type.ts:59](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/svelte/Virtualizer.type.ts#L59)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -115,9 +115,9 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 ### keepMounted?
 
-> `optional` **keepMounted**: readonly `number`[]
+> `optional` **keepMounted?**: readonly `number`[]
 
-Defined in: [src/svelte/Virtualizer.type.ts:63](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/svelte/Virtualizer.type.ts#L63)
+Defined in: [src/svelte/Virtualizer.type.ts:63](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/svelte/Virtualizer.type.ts#L63)
 
 List of indexes that should be always mounted, even when off screen.
 
@@ -129,9 +129,9 @@ List of indexes that should be always mounted, even when off screen.
 
 ### cache?
 
-> `optional` **cache**: [`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md)
+> `optional` **cache?**: [`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md)
 
-Defined in: [src/svelte/Virtualizer.type.ts:69](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/svelte/Virtualizer.type.ts#L69)
+Defined in: [src/svelte/Virtualizer.type.ts:69](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/svelte/Virtualizer.type.ts#L69)
 
 You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VirtualizerHandle.getCache](VListHandle.md#getcache).
 
@@ -145,9 +145,9 @@ You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheS
 
 ### ssrCount?
 
-> `optional` **ssrCount**: `number`
+> `optional` **ssrCount?**: `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:51](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/svelte/Virtualizer.type.ts#L51)
+Defined in: [src/svelte/Virtualizer.type.ts:51](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/svelte/Virtualizer.type.ts#L51)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -157,11 +157,11 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 ***
 
-### onscroll()?
+### onscroll?
 
-> `optional` **onscroll**: (`offset`) => `void`
+> `optional` **onscroll?**: (`offset`) => `void`
 
-Defined in: [src/svelte/Virtualizer.type.ts:78](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/svelte/Virtualizer.type.ts#L78)
+Defined in: [src/svelte/Virtualizer.type.ts:78](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/svelte/Virtualizer.type.ts#L78)
 
 Callback invoked whenever scroll offset changes.
 
@@ -183,11 +183,11 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 ***
 
-### onscrollend()?
+### onscrollend?
 
-> `optional` **onscrollend**: () => `void`
+> `optional` **onscrollend?**: () => `void`
 
-Defined in: [src/svelte/Virtualizer.type.ts:82](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/svelte/Virtualizer.type.ts#L82)
+Defined in: [src/svelte/Virtualizer.type.ts:82](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/svelte/Virtualizer.type.ts#L82)
 
 Callback invoked when scrolling stops.
 
@@ -201,11 +201,11 @@ Callback invoked when scrolling stops.
 
 ***
 
-### getKey()?
+### getKey?
 
-> `optional` **getKey**: (`data`, `index`) => `string` \| `number`
+> `optional` **getKey?**: (`data`, `index`) => `string` \| `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:21](https://github.com/inokawa/virtua/blob/9c681e31a83b3fd8a7071755f1371bc1f6dcc04c/src/svelte/Virtualizer.type.ts#L21)
+Defined in: [src/svelte/Virtualizer.type.ts:21](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/svelte/Virtualizer.type.ts#L21)
 
 Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
 
@@ -237,7 +237,7 @@ defaultGetKey (returns index of item)
 
 ### style?
 
-> `optional` **style**: `null` \| `string`
+> `optional` **style?**: `string` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:779
 
@@ -249,7 +249,7 @@ Defined in: node\_modules/svelte/elements.d.ts:779
 
 ### id?
 
-> `optional` **id**: `null` \| `string`
+> `optional` **id?**: `string` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:773
 
@@ -261,7 +261,7 @@ Defined in: node\_modules/svelte/elements.d.ts:773
 
 ### role?
 
-> `optional` **role**: `null` \| `AriaRole`
+> `optional` **role?**: `AriaRole` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:791
 
@@ -273,7 +273,7 @@ Defined in: node\_modules/svelte/elements.d.ts:791
 
 ### class?
 
-> `optional` **class**: `null` \| `ClassValue`
+> `optional` **class?**: `ClassValue` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:756
 
@@ -285,7 +285,7 @@ Defined in: node\_modules/svelte/elements.d.ts:756
 
 ### tabindex?
 
-> `optional` **tabindex**: `null` \| `number`
+> `optional` **tabindex?**: `number` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:780
 
@@ -297,7 +297,7 @@ Defined in: node\_modules/svelte/elements.d.ts:780
 
 ### aria-activedescendant?
 
-> `optional` **aria-activedescendant**: `null` \| `string`
+> `optional` **aria-activedescendant?**: `string` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:481
 
@@ -311,7 +311,7 @@ Identifies the currently active element when DOM focus is on a composite widget,
 
 ### aria-atomic?
 
-> `optional` **aria-atomic**: `null` \| `Booleanish`
+> `optional` **aria-atomic?**: `Booleanish` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:483
 
@@ -325,7 +325,7 @@ Indicates whether assistive technologies will present all, or only parts of, the
 
 ### aria-autocomplete?
 
-> `optional` **aria-autocomplete**: `null` \| `"none"` \| `"inline"` \| `"both"` \| `"list"`
+> `optional` **aria-autocomplete?**: `"none"` \| `"inline"` \| `"both"` \| `"list"` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:488
 
@@ -340,7 +340,7 @@ presented if they are made.
 
 ### aria-busy?
 
-> `optional` **aria-busy**: `null` \| `Booleanish`
+> `optional` **aria-busy?**: `Booleanish` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:490
 
@@ -354,7 +354,7 @@ Indicates an element is being modified and that assistive technologies MAY want 
 
 ### aria-checked?
 
-> `optional` **aria-checked**: `null` \| `boolean` \| `"mixed"` \| `"false"` \| `"true"`
+> `optional` **aria-checked?**: `boolean` \| `"mixed"` \| `"false"` \| `"true"` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:495
 
@@ -373,7 +373,7 @@ Indicates the current "checked" state of checkboxes, radio buttons, and other wi
 
 ### aria-colcount?
 
-> `optional` **aria-colcount**: `null` \| `number`
+> `optional` **aria-colcount?**: `number` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:500
 
@@ -391,7 +391,7 @@ aria-colindex.
 
 ### aria-colindex?
 
-> `optional` **aria-colindex**: `null` \| `number`
+> `optional` **aria-colindex?**: `number` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:505
 
@@ -410,7 +410,7 @@ Defines an element's column index or position with respect to the total number o
 
 ### aria-colspan?
 
-> `optional` **aria-colspan**: `null` \| `number`
+> `optional` **aria-colspan?**: `number` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:510
 
@@ -429,7 +429,7 @@ Defines the number of columns spanned by a cell or gridcell within a table, grid
 
 ### aria-controls?
 
-> `optional` **aria-controls**: `null` \| `string`
+> `optional` **aria-controls?**: `string` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:515
 
@@ -447,7 +447,7 @@ aria-owns.
 
 ### aria-current?
 
-> `optional` **aria-current**: `null` \| `"time"` \| `"page"` \| `"location"` \| `"step"` \| `"date"` \| `Booleanish`
+> `optional` **aria-current?**: `"time"` \| `"page"` \| `"location"` \| `"step"` \| `"date"` \| `Booleanish` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:517
 
@@ -461,7 +461,7 @@ Indicates the element that represents the current item within a container or set
 
 ### aria-describedby?
 
-> `optional` **aria-describedby**: `null` \| `string`
+> `optional` **aria-describedby?**: `string` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:522
 
@@ -479,7 +479,7 @@ aria-labelledby
 
 ### aria-details?
 
-> `optional` **aria-details**: `null` \| `string`
+> `optional` **aria-details?**: `string` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:527
 
@@ -497,7 +497,7 @@ aria-describedby.
 
 ### aria-disabled?
 
-> `optional` **aria-disabled**: `null` \| `Booleanish`
+> `optional` **aria-disabled?**: `Booleanish` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:532
 
@@ -516,7 +516,7 @@ Indicates that the element is perceivable but disabled, so it is not editable or
 
 ### ~~aria-dropeffect?~~
 
-> `optional` **aria-dropeffect**: `null` \| `"copy"` \| `"none"` \| `"link"` \| `"move"` \| `"execute"` \| `"popup"`
+> `optional` **aria-dropeffect?**: `"copy"` \| `"none"` \| `"link"` \| `"move"` \| `"execute"` \| `"popup"` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:537
 
@@ -534,7 +534,7 @@ in ARIA 1.1
 
 ### aria-errormessage?
 
-> `optional` **aria-errormessage**: `null` \| `string`
+> `optional` **aria-errormessage?**: `string` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:542
 
@@ -553,7 +553,7 @@ Identifies the element that provides an error message for the object.
 
 ### aria-expanded?
 
-> `optional` **aria-expanded**: `null` \| `Booleanish`
+> `optional` **aria-expanded?**: `Booleanish` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:544
 
@@ -567,7 +567,7 @@ Indicates whether the element, or another grouping element it controls, is curre
 
 ### aria-flowto?
 
-> `optional` **aria-flowto**: `null` \| `string`
+> `optional` **aria-flowto?**: `string` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:549
 
@@ -582,7 +582,7 @@ allows assistive technology to override the general default of reading in docume
 
 ### ~~aria-grabbed?~~
 
-> `optional` **aria-grabbed**: `null` \| `Booleanish`
+> `optional` **aria-grabbed?**: `Booleanish` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:554
 
@@ -600,7 +600,7 @@ in ARIA 1.1
 
 ### aria-haspopup?
 
-> `optional` **aria-haspopup**: `null` \| `"grid"` \| `"dialog"` \| `"menu"` \| `"listbox"` \| `"tree"` \| `Booleanish`
+> `optional` **aria-haspopup?**: `"grid"` \| `"dialog"` \| `"menu"` \| `"listbox"` \| `"tree"` \| `Booleanish` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:556
 
@@ -614,7 +614,7 @@ Indicates the availability and type of interactive popup element, such as menu o
 
 ### aria-hidden?
 
-> `optional` **aria-hidden**: `null` \| `Booleanish`
+> `optional` **aria-hidden?**: `Booleanish` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:561
 
@@ -632,7 +632,7 @@ aria-disabled.
 
 ### aria-invalid?
 
-> `optional` **aria-invalid**: `null` \| `"grammar"` \| `"spelling"` \| `Booleanish`
+> `optional` **aria-invalid?**: `"grammar"` \| `"spelling"` \| `Booleanish` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:566
 
@@ -650,7 +650,7 @@ aria-errormessage.
 
 ### aria-keyshortcuts?
 
-> `optional` **aria-keyshortcuts**: `null` \| `string`
+> `optional` **aria-keyshortcuts?**: `string` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:568
 
@@ -664,7 +664,7 @@ Indicates keyboard shortcuts that an author has implemented to activate or give 
 
 ### aria-label?
 
-> `optional` **aria-label**: `null` \| `string`
+> `optional` **aria-label?**: `string` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:573
 
@@ -682,7 +682,7 @@ aria-labelledby.
 
 ### aria-labelledby?
 
-> `optional` **aria-labelledby**: `null` \| `string`
+> `optional` **aria-labelledby?**: `string` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:578
 
@@ -700,7 +700,7 @@ aria-describedby.
 
 ### aria-level?
 
-> `optional` **aria-level**: `null` \| `number`
+> `optional` **aria-level?**: `number` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:580
 
@@ -714,7 +714,7 @@ Defines the hierarchical level of an element within a structure.
 
 ### aria-live?
 
-> `optional` **aria-live**: `null` \| `"off"` \| `"assertive"` \| `"polite"`
+> `optional` **aria-live?**: `"off"` \| `"assertive"` \| `"polite"` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:582
 
@@ -728,7 +728,7 @@ Indicates that an element will be updated, and describes the types of updates th
 
 ### aria-modal?
 
-> `optional` **aria-modal**: `null` \| `Booleanish`
+> `optional` **aria-modal?**: `Booleanish` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:584
 
@@ -742,7 +742,7 @@ Indicates whether an element is modal when displayed.
 
 ### aria-multiline?
 
-> `optional` **aria-multiline**: `null` \| `Booleanish`
+> `optional` **aria-multiline?**: `Booleanish` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:586
 
@@ -756,7 +756,7 @@ Indicates whether a text box accepts multiple lines of input or only a single li
 
 ### aria-multiselectable?
 
-> `optional` **aria-multiselectable**: `null` \| `Booleanish`
+> `optional` **aria-multiselectable?**: `Booleanish` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:588
 
@@ -770,7 +770,7 @@ Indicates that the user may select more than one item from the current selectabl
 
 ### aria-orientation?
 
-> `optional` **aria-orientation**: `null` \| `"horizontal"` \| `"vertical"`
+> `optional` **aria-orientation?**: `"horizontal"` \| `"vertical"` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:590
 
@@ -784,7 +784,7 @@ Indicates whether the element's orientation is horizontal, vertical, or unknown/
 
 ### aria-owns?
 
-> `optional` **aria-owns**: `null` \| `string`
+> `optional` **aria-owns?**: `string` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:596
 
@@ -803,7 +803,7 @@ aria-controls.
 
 ### aria-placeholder?
 
-> `optional` **aria-placeholder**: `null` \| `string`
+> `optional` **aria-placeholder?**: `string` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:601
 
@@ -818,7 +818,7 @@ A hint could be a sample value or a brief description of the expected format.
 
 ### aria-posinset?
 
-> `optional` **aria-posinset**: `null` \| `number`
+> `optional` **aria-posinset?**: `number` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:606
 
@@ -836,7 +836,7 @@ aria-setsize.
 
 ### aria-pressed?
 
-> `optional` **aria-pressed**: `null` \| `boolean` \| `"mixed"` \| `"false"` \| `"true"`
+> `optional` **aria-pressed?**: `boolean` \| `"mixed"` \| `"false"` \| `"true"` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:611
 
@@ -855,7 +855,7 @@ Indicates the current "pressed" state of toggle buttons.
 
 ### aria-readonly?
 
-> `optional` **aria-readonly**: `null` \| `Booleanish`
+> `optional` **aria-readonly?**: `Booleanish` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:616
 
@@ -873,7 +873,7 @@ aria-disabled.
 
 ### aria-relevant?
 
-> `optional` **aria-relevant**: `null` \| `"text"` \| `"all"` \| `"additions"` \| `"additions removals"` \| `"additions text"` \| `"removals"` \| `"removals additions"` \| `"removals text"` \| `"text additions"` \| `"text removals"`
+> `optional` **aria-relevant?**: `"text"` \| `"all"` \| `"additions"` \| `"additions removals"` \| `"additions text"` \| `"removals"` \| `"removals additions"` \| `"removals text"` \| `"text additions"` \| `"text removals"` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:621
 
@@ -891,7 +891,7 @@ aria-atomic.
 
 ### aria-required?
 
-> `optional` **aria-required**: `null` \| `Booleanish`
+> `optional` **aria-required?**: `Booleanish` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:635
 
@@ -905,7 +905,7 @@ Indicates that user input is required on the element before a form may be submit
 
 ### aria-roledescription?
 
-> `optional` **aria-roledescription**: `null` \| `string`
+> `optional` **aria-roledescription?**: `string` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:637
 
@@ -919,7 +919,7 @@ Defines a human-readable, author-localized description for the role of an elemen
 
 ### aria-rowcount?
 
-> `optional` **aria-rowcount**: `null` \| `number`
+> `optional` **aria-rowcount?**: `number` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:642
 
@@ -937,7 +937,7 @@ aria-rowindex.
 
 ### aria-rowindex?
 
-> `optional` **aria-rowindex**: `null` \| `number`
+> `optional` **aria-rowindex?**: `number` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:647
 
@@ -956,7 +956,7 @@ Defines an element's row index or position with respect to the total number of r
 
 ### aria-rowspan?
 
-> `optional` **aria-rowspan**: `null` \| `number`
+> `optional` **aria-rowspan?**: `number` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:652
 
@@ -975,7 +975,7 @@ Defines the number of rows spanned by a cell or gridcell within a table, grid, o
 
 ### aria-selected?
 
-> `optional` **aria-selected**: `null` \| `Booleanish`
+> `optional` **aria-selected?**: `Booleanish` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:657
 
@@ -994,7 +994,7 @@ Indicates the current "selected" state of various widgets.
 
 ### aria-setsize?
 
-> `optional` **aria-setsize**: `null` \| `number`
+> `optional` **aria-setsize?**: `number` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:662
 
@@ -1012,7 +1012,7 @@ aria-posinset.
 
 ### aria-sort?
 
-> `optional` **aria-sort**: `null` \| `"none"` \| `"ascending"` \| `"descending"` \| `"other"`
+> `optional` **aria-sort?**: `"none"` \| `"ascending"` \| `"descending"` \| `"other"` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:664
 
@@ -1026,7 +1026,7 @@ Indicates if items in a table or grid are sorted in ascending or descending orde
 
 ### aria-valuemax?
 
-> `optional` **aria-valuemax**: `null` \| `number`
+> `optional` **aria-valuemax?**: `number` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:666
 
@@ -1040,7 +1040,7 @@ Defines the maximum allowed value for a range widget.
 
 ### aria-valuemin?
 
-> `optional` **aria-valuemin**: `null` \| `number`
+> `optional` **aria-valuemin?**: `number` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:668
 
@@ -1054,7 +1054,7 @@ Defines the minimum allowed value for a range widget.
 
 ### aria-valuenow?
 
-> `optional` **aria-valuenow**: `null` \| `number`
+> `optional` **aria-valuenow?**: `number` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:673
 
@@ -1072,7 +1072,7 @@ aria-valuetext.
 
 ### aria-valuetext?
 
-> `optional` **aria-valuetext**: `null` \| `string`
+> `optional` **aria-valuetext?**: `string` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:675
 
