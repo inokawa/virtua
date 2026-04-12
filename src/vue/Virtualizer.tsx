@@ -164,6 +164,9 @@ export interface VirtualizerHandle {
   scrollBy(offset: number): void;
 }
 
+/**
+ * Customizable list virtualizer for advanced usage. See {@link VirtualizerProps} and {@link VirtualizerHandle}.
+ */
 export const Virtualizer = /*#__PURE__*/ defineComponent({
   props: {
     data: { type: Array, required: true },

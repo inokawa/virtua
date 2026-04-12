@@ -43,6 +43,9 @@ interface VListInstance<T = unknown> extends VListHandle {
   $slots: { default: (arg: { item: T; index: number }) => VNode[] };
 }
 
+/**
+ * Virtualized list component. See {@link VListProps} and {@link VListHandle}.
+ */
 export const VList = /*#__PURE__*/ defineComponent({
   props: {
     data: { type: Array, required: true },

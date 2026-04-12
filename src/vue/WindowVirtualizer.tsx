@@ -126,6 +126,9 @@ export interface WindowVirtualizerHandle {
   scrollToIndex(index: number, opts?: ScrollToIndexOpts): void;
 }
 
+/**
+ * {@link Virtualizer} controlled by the window scrolling. See {@link WindowVirtualizerProps} and {@link WindowVirtualizerHandle}.
+ */
 export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
   props: {
     data: { type: Array, required: true },
