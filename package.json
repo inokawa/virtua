@@ -73,7 +73,7 @@
     "@emotion/styled": "^11.13.5",
     "@faker-js/faker": "^10.3.0",
     "@formkit/auto-animate": "^0.9.0",
-    "@mui/material": "^7.3.2",
+    "@mui/material": "^9.0.0",
     "@playwright/test": "^1.56.0",
     "@radix-ui/colors": "^3.0.0",
     "@radix-ui/react-icons": "^1.3.2",
