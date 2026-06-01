@@ -58,6 +58,7 @@ export default [
     plugins: [
       typescript({
         tsconfig: "./tsconfig.json",
+        rootDir: "./src",
         outDir: ".",
         declaration: true,
         declarationDir: path.dirname(pkg.types),
@@ -90,6 +91,7 @@ export default [
     plugins: [
       typescript({
         tsconfig: "./tsconfig.json",
+        rootDir: "./src",
         outDir: ".",
         // declaration: true,
         exclude: ["**/*.{spec,stories}.*"],
@@ -120,6 +122,7 @@ export default [
     plugins: [
       typescript({
         tsconfig: "./tsconfig.json",
+        rootDir: "./src",
         outDir: ".",
         // declaration: true,
         exclude: ["**/*.{spec,stories}.*"],
@@ -152,6 +155,7 @@ export default [
     plugins: [
       typescript({
         tsconfig: "./tsconfig.json",
+        rootDir: "./src",
         outDir: ".",
         // declaration: true,
         exclude: ["**/*.{spec,stories}.*"],
@@ -178,6 +182,7 @@ export default [
     plugins: [
       typescript({
         tsconfig: "./tsconfig.json",
+        rootDir: "./src",
         outDir: ".",
         // declaration: true,
         exclude: ["**/*.{spec,stories}.*"],
@@ -214,6 +219,7 @@ export default [
     plugins: [
       typescript({
         tsconfig: "./tsconfig.json",
+        rootDir: "./src",
         outDir: path.dirname(pkg.exports["./svelte"].default),
         // declaration: true,
         exclude: ["**/*.{spec,stories}.*"],
