@@ -2,8 +2,8 @@ import { it, expect, describe, afterEach } from "vitest";
 import { defineComponent, h } from "vue";
 import { cleanup } from "@testing-library/vue";
 import { VList } from "./VList.js";
-import { setupResizeJsDom } from "../../scripts/spec.js";
-import { render } from "../../scripts/spec-vue.js";
+import { setupResizeJsDom } from "../../spec/dom.js";
+import { render } from "../../spec/vue.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;

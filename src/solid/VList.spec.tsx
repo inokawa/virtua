@@ -4,9 +4,9 @@
 import { it, expect, describe, afterEach } from "vitest";
 import { cleanup } from "@solidjs/testing-library";
 import { VList } from "./VList.js";
-import { setupResizeJsDom } from "../../scripts/spec.js";
+import { setupResizeJsDom } from "../../spec/dom.js";
 import { type JSX } from "solid-js";
-import { render } from "../../scripts/spec-solid.js";
+import { render } from "../../spec/solid.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;

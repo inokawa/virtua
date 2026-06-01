@@ -3,8 +3,8 @@ import { cleanup } from "@testing-library/react";
 import { VList } from "./VList.js";
 import { forwardRef } from "react";
 import { type CustomItemComponentProps } from "./types.js";
-import { setupResizeJsDom } from "../../scripts/spec.js";
-import { render } from "../../scripts/spec-react.js";
+import { setupResizeJsDom } from "../../spec/dom.js";
+import { render } from "../../spec/react.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;

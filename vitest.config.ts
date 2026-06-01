@@ -27,7 +27,7 @@ export default defineConfig({
           name: "react",
           dir: "src/react",
           environment: "jsdom",
-          setupFiles: ["./scripts/spec-setup.ts"],
+          setupFiles: ["./spec/setup.ts"],
         },
       },
       {
@@ -38,7 +38,7 @@ export default defineConfig({
           environment: "jsdom",
           // https://github.com/testing-library/vue-testing-library/issues/296
           globals: true,
-          setupFiles: ["./scripts/spec-setup.ts"],
+          setupFiles: ["./spec/setup.ts"],
         },
       },
       {
@@ -47,7 +47,7 @@ export default defineConfig({
           name: "solid",
           dir: "src/solid",
           environment: "jsdom",
-          setupFiles: ["./scripts/spec-setup.ts"],
+          setupFiles: ["./spec/setup.ts"],
           server: {
             deps: {
               // https://github.com/solidjs/vite-plugin-solid/issues/102#issuecomment-2363242031
@@ -65,7 +65,7 @@ export default defineConfig({
           name: "svelte",
           dir: "src/svelte",
           environment: "jsdom",
-          setupFiles: ["./scripts/spec-setup.ts"],
+          setupFiles: ["./spec/setup.ts"],
         },
       },
       {
