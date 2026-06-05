@@ -28,7 +28,6 @@ import { useStatic } from "./useStatic.js";
 import { type ViewportComponentAttributes } from "./types.js";
 import { useLatestRef } from "./useLatestRef.js";
 import { flushSync } from "react-dom";
-import { useMergeRefs } from "./useMergeRefs.js";
 
 const genKey = (i: number, j: number) => `${i}-${j}`;
 
@@ -246,8 +245,6 @@ export interface VGridProps extends ViewportComponentAttributes {
   item?: keyof JSX.IntrinsicElements | CustomCellComponent;
   /** Reference to the rendered DOM element (the one that scrolls). */
   domRef?: Ref<HTMLDivElement>;
-  /** Reference to the inner rendered DOM element (the one that contains all the cells). */
-  innerDomRef?: Ref<HTMLDivElement>;
   /**
    * Callback invoked whenever scroll offset changes.
    */
@@ -274,7 +271,6 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
       ssrColCount,
       item: ItemElement = "div",
       domRef,
-      innerDomRef,
       onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
       style,
@@ -453,7 +449,7 @@ export const VGrid = forwardRef<VGridHandle, VGridProps>(
         }}
       >
         <div
-          ref={useMergeRefs([containerRef, innerDomRef])}
+          ref={containerRef}
           style={{
             contain: "size style", // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
             overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
