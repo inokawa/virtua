@@ -11,12 +11,7 @@ import {
   findIndex,
 } from "./cache.js";
 import { isIOSWebKit } from "./environment.js";
-import type {
-  CacheSnapshot,
-  InternalCacheSnapshot,
-  ItemResize,
-  ItemsRange,
-} from "./types.js";
+import type { CacheSnapshot, ItemResize, ItemsRange } from "./types.js";
 import { abs, max, min, NULL } from "./utils.js";
 
 const MAX_INT_32 = 0x7fffffff;
@@ -139,10 +134,8 @@ export const createVirtualStore = (
 
   const cache = initCache(
     elementsCount,
-    cacheSnapshot
-      ? (cacheSnapshot as unknown as InternalCacheSnapshot)[1]
-      : itemSize,
-    cacheSnapshot && (cacheSnapshot as unknown as InternalCacheSnapshot)[0],
+    (cacheSnapshot && cacheSnapshot[1]) || itemSize,
+    cacheSnapshot && cacheSnapshot[0],
   );
   const subscribers = new Set<[number, Subscriber]>();
   const getRelativeScrollOffset = () => scrollOffset - startSpacerSize;
