@@ -1,0 +1,22 @@
+import{i as e}from"./preload-helper-xPQekRTU.js";import{A as t,C as n,D as r,E as i,M as a,N as o,d as s,f as c,g as l,h as u,i as d,k as f,m as p,o as m,p as h}from"./iframe-n_JOGHOW.js";import{i as g,t as _}from"./vue-D12UWW7C.js";import{n as v,t as y}from"./_plugin-vue_export-helper-C3HqjvoV.js";var b,x=e((()=>{d(),_(),b=l({__name:`Default`,setup(e){let r=[20,40,180,77],s=Array.from({length:1e3}).map((e,t)=>r[t%4]);return(e,r)=>(n(),c(t(g),{data:t(s),style:{height:`100vh`}},{default:i(({item:e,index:t})=>[(n(),h(`div`,{key:t,style:a({height:e+`px`,background:`white`,borderBottom:`solid 1px #ccc`})},o(t),5))]),_:1},8,[`data`]))}})})),S=e((()=>{})),C,w=e((()=>{x(),x(),S(),v(),C=y(b,[[`__scopeId`,`data-v-d8f10d17`]])})),T,E,D=e((()=>{d(),_(),T={style:{padding:`10px`}},E=l({__name:`Horizontal`,setup(e){let r=[40,180,77],s=Array.from({length:1e3}).map((e,t)=>r[t%3]);return(e,r)=>(n(),h(`div`,T,[u(t(g),{data:t(s),style:{width:`100%`,height:`200px`},horizontal:``},{default:i(({item:e,index:t})=>[(n(),h(`div`,{key:t,style:a({width:e+`px`,background:`white`,borderRight:`solid 1px #ccc`})},o(t),5))]),_:1},8,[`data`])]))}})})),O=e((()=>{})),k,A=e((()=>{D(),D(),O(),v(),k=y(E,[[`__scopeId`,`data-v-964efdb8`]])})),j,M,N,P=e((()=>{d(),_(),j={style:{height:`100%`,display:`flex`,"flex-direction":`column`}},M=[`value`],N=l({__name:`Controlls`,setup(e){let c=[20,40,180,77],l=e=>({index:e,height:c[e%4]+`px`}),d=f(Array.from({length:1e3}).map((e,t)=>l(t))),_=f(0),v=f(!1),y=f(567),b=f(!1),x=f(),S=()=>{x.value?.scrollToIndex(y.value)},C=()=>{let e=Array.from({length:100}).map((e,t)=>l(t+d.value.length));d.value=b.value?[...e,...d.value]:[...d.value,...e]},w=()=>{let e=[...d.value];e.pop(),d.value=e};return(e,c)=>(n(),h(`div`,j,[s(`div`,null,`offset: `+o(_.value),1),s(`div`,null,`scrolling: `+o(v.value),1),s(`div`,null,[s(`input`,{type:`number`,value:y.value,onInput:c[0]||=e=>{y.value=Number(e.target.value)}},null,40,M),s(`button`,{onClick:S},`scrollToIndex`)]),s(`div`,null,[s(`button`,{onClick:C},`append`),s(`label`,null,[r(s(`input`,{type:`checkbox`,"onUpdate:modelValue":c[1]||=e=>b.value=e},null,512),[[m,b.value]]),c[2]||=p(` prepend`,-1)]),s(`button`,{onClick:w},`pop`)]),u(t(g),{ref_key:`handle`,ref:x,data:d.value,shift:b.value,onScroll:e=>{_.value=e,v.value=!0},onScrollEnd:()=>{v.value=!1}},{default:i(({item:e})=>[(n(),h(`div`,{key:e.index,style:a({height:e.height,background:`white`,borderBottom:`solid 1px #ccc`})},o(e.index),5))]),_:1},8,[`data`,`shift`,`onScroll`,`onScrollEnd`])]))}})})),F=e((()=>{})),I,L=e((()=>{P(),P(),F(),v(),I=y(N,[[`__scopeId`,`data-v-d8e56627`]])})),R,z,B,V,H;e((()=>{_(),w(),A(),L(),R={component:g},z={render:()=>({components:{Component:C},template:`<Component />`})},B={render:()=>({components:{Component:k},template:`<Component />`})},V={render:()=>({components:{Component:I},template:`<Component />`})},z.parameters={...z.parameters,docs:{...z.parameters?.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: DefaultComponent
+    },
+    template: "<Component />"
+  })
+}`,...z.parameters?.docs?.source}}},B.parameters={...B.parameters,docs:{...B.parameters?.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: HorizontalComponent
+    },
+    template: "<Component />"
+  })
+}`,...B.parameters?.docs?.source}}},V.parameters={...V.parameters,docs:{...V.parameters?.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: ControllsComponent
+    },
+    template: "<Component />"
+  })
+}`,...V.parameters?.docs?.source}}},H=[`Default`,`Horizontal`,`Controlls`]}))();export{V as Controlls,z as Default,B as Horizontal,H as __namedExportsOrder,R as default};
