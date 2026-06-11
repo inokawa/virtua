@@ -25,7 +25,7 @@ interface ListItemProps {
 /**
  * @internal
  */
-export const ListItem = memo(
+export const ListItem = /*#__PURE__*/ memo(
   ({
     _children: children,
     _resizer: resizer,

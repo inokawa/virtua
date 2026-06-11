@@ -56,7 +56,7 @@ interface CellProps {
   _element: "div";
 }
 
-const Cell = memo(
+const Cell = /*#__PURE__*/ memo(
   ({
     _children: children,
     _resizer: resizer,
@@ -258,7 +258,7 @@ export interface VGridProps extends ViewportComponentAttributes {
 /**
  * Virtualized grid component. See {@link VGridProps} and {@link VGridHandle}.
  */
-export const VGrid = forwardRef<VGridHandle, VGridProps>(
+export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
   (
     {
       children,
