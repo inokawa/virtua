@@ -65,9 +65,6 @@ export default [
         exclude: ["**/*.{spec,stories}.*"],
         jsx: "react-jsx",
       }),
-      getBabelOutputPlugin({
-        plugins: ["@babel/plugin-transform-react-pure-annotations"],
-      }),
       terserPlugin(),
       banner(() => '"use client";\n'),
     ],

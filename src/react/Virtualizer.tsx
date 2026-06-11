@@ -169,7 +169,10 @@ export interface VirtualizerProps<T = unknown> {
 /**
  * Customizable list virtualizer for advanced usage. See {@link VirtualizerProps} and {@link VirtualizerHandle}.
  */
-export const Virtualizer = forwardRef<VirtualizerHandle, VirtualizerProps>(
+export const Virtualizer = /*#__PURE__*/ forwardRef<
+  VirtualizerHandle,
+  VirtualizerProps
+>(
   (
     {
       children,

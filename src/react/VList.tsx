@@ -36,7 +36,7 @@ export interface VListProps<T = unknown>
 /**
  * Virtualized list component. See {@link VListProps} and {@link VListHandle}.
  */
-export const VList = forwardRef<VListHandle, VListProps>(
+export const VList = /*#__PURE__*/ forwardRef<VListHandle, VListProps>(
   (
     {
       children,
