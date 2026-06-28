@@ -364,7 +364,11 @@ export const createVirtualStore = (
                   _scrollMode === SCROLL_BY_NATIVE
                     ? // https://github.com/inokawa/virtua/issues/385
                       // https://github.com/inokawa/virtua/discussions/865
-                      itemOffset + itemSize < start
+                      // https://github.com/inokawa/virtua/issues/893
+                      // Use <= instead of < here so the item whose bottom rests
+                      // exactly on the viewport top (the row directly above an
+                      // item anchored to the top) is compensated too.
+                      itemOffset + itemSize <= start
                     : // https://github.com/inokawa/virtua/pull/868
                       itemOffset < start &&
                       itemOffset + itemSize < start + viewportSize;
