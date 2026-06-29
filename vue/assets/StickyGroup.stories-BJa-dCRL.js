@@ -1,8 +1,0 @@
-import{i as e}from"./preload-helper-xPQekRTU.js";import{A as t,C as n,E as r,M as i,N as a,f as o,g as s,i as c,k as l,p as u}from"./iframe-z67EwHsC.js";import{i as d,t as f}from"./vue-CLyjnD-R.js";import{n as p,t as m}from"./_plugin-vue_export-helper-C3HqjvoV.js";var h,g=e((()=>{c(),f(),h=s({__name:`StickyGroup`,setup(e){let s=[20,40,180,77],c=l(0),f=Array.from({length:1e3}).map((e,t)=>s[t%4]),p=({index:e})=>e%100==0?{style:{...c.value===e?{position:`sticky`,top:0}:{},zIndex:1}}:{},m=l();function h(){if(!m.value)return;let e=m.value.findItemIndex(m.value.scrollOffset);c.value=[0,100,200,300,400,500,600,700,800,900].reverse().find(t=>e>=t)}return(e,s)=>(n(),o(t(d),{ref_key:`listRef`,ref:m,data:t(f),style:{height:`100vh`},"item-props":p,"keep-mounted":[c.value],onScroll:h},{default:r(({item:e,index:t})=>[(n(),u(`div`,{key:t,style:i({height:e+`px`,background:`white`,borderBottom:`solid 1px #ccc`,...t%100==0?{background:`yellow`}:{}})},a(t),5))]),_:1},8,[`data`,`keep-mounted`]))}})})),_=e((()=>{})),v,y=e((()=>{g(),g(),_(),p(),v=m(h,[[`__scopeId`,`data-v-df151226`]])})),b,x,S;e((()=>{f(),y(),b={component:d},x={render:()=>({components:{Component:v},template:`<Component />`})},x.parameters={...x.parameters,docs:{...x.parameters?.docs,source:{originalSource:`{
-  render: () => ({
-    components: {
-      Component: StickyGroupComponent
-    },
-    template: "<Component />"
-  })
-}`,...x.parameters?.docs?.source}}},S=[`StickyGroup`]}))();export{x as StickyGroup,S as __namedExportsOrder,b as default};
