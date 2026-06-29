@@ -6,4 +6,4 @@
 
 > **VGridItemResize** = readonly \[`number`, `number`\]
 
-Defined in: [src/react/VGrid.tsx:104](https://github.com/inokawa/virtua/blob/999051328a6324a7656aeca6f86ac1a6503bfbe7/src/react/VGrid.tsx#L104)
+Defined in: [src/react/VGrid.tsx:103](https://github.com/inokawa/virtua/blob/2ed11b9cff9cb649a4e54741b6ecc77af5490f1e/src/react/VGrid.tsx#L103)
