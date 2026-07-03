@@ -1,6 +1,7 @@
 import { type Snippet } from "svelte";
 import type { SvelteHTMLElements } from "svelte/elements";
 import { type CacheSnapshot, type ScrollToIndexOpts } from "../core/index.js";
+import { type ItemProps } from "./utils.js";
 
 /**
  * Props of {@link Virtualizer}.
@@ -29,6 +30,10 @@ export interface VirtualizerProps<T> {
    * @defaultValue "div"
    */
   item?: keyof SvelteHTMLElements;
+  /**
+   * A function that provides properties/attributes for item element
+   */
+  itemProps?: ItemProps<T>;
   /**
    * Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
    * @defaultValue 200

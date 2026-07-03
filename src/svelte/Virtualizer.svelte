@@ -27,6 +27,7 @@
     getKey = defaultGetKey,
     as = "div",
     item: itemAs,
+    itemProps,
     scrollRef,
     bufferSize,
     itemSize,
@@ -187,6 +188,7 @@
       hide={stateVersion && store.$isUnmeasuredItem(index)}
       {horizontal}
       resizer={resizer.$observeItem}
+      itemProps={itemProps?.({ item, index })}
     />
   {/each}
 </svelte:element>

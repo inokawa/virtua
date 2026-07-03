@@ -1,7 +1,7 @@
 <script lang="ts" generics="T">
   import { type Snippet, onDestroy } from "svelte";
   import { type ItemResizeObserver } from "../core/index.js";
-  import { styleToString } from "./utils.js";
+  import { styleToString, type ItemAttrs } from "./utils.js";
   import type { SvelteHTMLElements } from "svelte/elements";
 
   interface Props {
@@ -13,6 +13,7 @@
     hide: boolean;
     horizontal: boolean;
     resizer: ItemResizeObserver;
+    itemProps?: ItemAttrs | undefined;
   }
 
   let {
@@ -24,6 +25,7 @@
     hide,
     horizontal,
     resizer,
+    itemProps,
   }: Props = $props();
 
   let elementRef: HTMLDivElement;
@@ -48,6 +50,7 @@
       [horizontal ? "top" : "left"]: "0px",
       [horizontal ? "left" : "top"]: offset + "px",
       visibility: hide ? "hidden" : undefined,
+      ...itemProps?.style,
     };
     if (horizontal) {
       _style["display"] = "inline-flex";
@@ -55,8 +58,15 @@
 
     return styleToString(_style);
   });
+
+  // `style` is applied separately above, the rest (e.g. `class`) is spread onto the element
+  let itemRest = $derived.by(() => {
+    if (!itemProps) return undefined;
+    const { style: _style, ...rest } = itemProps;
+    return rest;
+  });
 </script>
 
-<svelte:element this={as} bind:this={elementRef} {style}>
+<svelte:element this={as} bind:this={elementRef} {style} {...itemRest}>
   {@render children(item, index)}
 </svelte:element>
