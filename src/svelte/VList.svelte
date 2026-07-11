@@ -15,6 +15,7 @@
     horizontal,
     keepMounted,
     cache,
+    itemProps,
     children,
     onscroll,
     onscrollend,
@@ -82,6 +83,7 @@
     {horizontal}
     {keepMounted}
     {cache}
+    {itemProps}
     {onscroll}
     {onscrollend}
   />
