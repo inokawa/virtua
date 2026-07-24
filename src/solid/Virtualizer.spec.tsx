@@ -1,0 +1,56 @@
+/**
+ * @jsxImportSource solid-js
+ */
+import { it, expect, describe, afterEach } from "vitest";
+import { cleanup } from "@solidjs/testing-library";
+import { Virtualizer } from "./Virtualizer.js";
+import { setupResizeJsDom } from "../../spec/dom.js";
+import { render } from "../../spec/solid.js";
+
+const ITEM_HEIGHT = 50;
+const ITEM_WIDTH = 100;
+const VIEWPORT_HEIGHT = ITEM_HEIGHT * 10;
+
+setupResizeJsDom({
+  itemSize: { width: ITEM_WIDTH, height: ITEM_HEIGHT },
+  viewportSize: { width: ITEM_WIDTH, height: VIEWPORT_HEIGHT },
+});
+
+const range = (length: number) => Array.from({ length }).map((_, i) => i);
+
+afterEach(cleanup);
+
+it("should change components", () => {
+  const { asFragment } = render(() => (
+    <div style={{ "overflow-y": "auto" }}>
+      <Virtualizer data={range(5)} as="ul" item="li">
+        {(d) => <div>{d}</div>}
+      </Virtualizer>
+    </div>
+  ));
+  expect(asFragment()).toMatchSnapshot();
+});
+
+describe("vertical", () => {
+  it("should render 5 children", () => {
+    const { asFragment } = render(() => (
+      <div style={{ "overflow-y": "auto" }}>
+        <Virtualizer data={range(5)}>{(d) => <div>{d}</div>}</Virtualizer>
+      </div>
+    ));
+    expect(asFragment()).toMatchSnapshot();
+  });
+});
+
+describe("horizontal", () => {
+  it("should render 5 children", () => {
+    const { asFragment } = render(() => (
+      <div style={{ "overflow-x": "auto" }}>
+        <Virtualizer data={range(5)} horizontal>
+          {(d) => <div>{d}</div>}
+        </Virtualizer>
+      </div>
+    ));
+    expect(asFragment()).toMatchSnapshot();
+  });
+});
