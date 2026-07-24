@@ -67,6 +67,11 @@ export default defineConfig({
           environment: "jsdom",
           setupFiles: ["./spec/setup.ts"],
         },
+        resolve: {
+          // Resolve svelte's client (browser) build so `mount` works in jsdom.
+          // The SSR spec runs in the node environment and is unaffected.
+          conditions: ["browser"],
+        },
       },
       {
         extends: true,
