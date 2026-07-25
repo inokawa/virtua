@@ -64,5 +64,23 @@
     "path": "lib/solid/index.js",
     "import": "{ WindowVirtualizer }",
     "limit": "4 kB"
+  },
+  {
+    "name": "angular VList",
+    "path": "lib/angular/index.js",
+    "import": "{ VList }",
+    "limit": "6.2 kB"
+  },
+  {
+    "name": "angular Virtualizer",
+    "path": "lib/angular/index.js",
+    "import": "{ Virtualizer }",
+    "limit": "6.2 kB"
+  },
+  {
+    "name": "angular WindowVirtualizer",
+    "path": "lib/angular/index.js",
+    "import": "{ WindowVirtualizer }",
+    "limit": "6.2 kB"
   }
 ]

@@ -3,7 +3,8 @@
     "./src/index.ts",
     "./src/vue/index.ts",
     "./src/solid/index.ts",
-    "./src/svelte/index.ts"
+    "./src/svelte/index.ts",
+    "./src/angular/index.ts"
   ],
   "out": "docs",
   "name": "API",

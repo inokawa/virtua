@@ -8,3 +8,4 @@ node_modules
 /playwright-report/
 /playwright/.cache/
 .eslintcache
+.angular-dts
