@@ -10,3 +10,4 @@
 - [vue](vue/API.md)
 - [solid](solid/API.md)
 - [svelte](svelte/API.md)
+- [angular](angular/API.md)
