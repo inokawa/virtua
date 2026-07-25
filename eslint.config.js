@@ -1,9 +1,18 @@
+import { createRequire } from "node:module";
 import tseslint from "typescript-eslint";
 import pluginImport from "eslint-plugin-import";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginVue from "eslint-plugin-vue";
 import solid from "eslint-plugin-solid/configs/typescript";
+
+// eslint-plugin-react's `version: "detect"` crashes on eslint 10, because its version
+// detection calls the removed `context.getFilename()`. Resolve the version ourselves,
+// which keeps the same result while avoiding that code path.
+// https://github.com/jsx-eslint/eslint-plugin-react/blob/master/lib/util/version.js
+const reactVersion = createRequire(import.meta.url)(
+  "react/package.json",
+).version;
 
 const languageOptions = {
   parser: tseslint.parser,
@@ -91,7 +100,7 @@ export default [
     languageOptions,
     settings: {
       react: {
-        version: "detect",
+        version: reactVersion,
       },
     },
   })),
