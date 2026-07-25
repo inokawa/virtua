@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.angular.json",
+  "exclude": ["src/angular/**/*.spec.ts", "node_modules"],
+  "compilerOptions": {
+    // emit d.ts with ɵɵComponentDeclaration statics; js is built by vite.
+    // imported files under src/core are also emitted, so emit to a temp dir
+    // and copy only the angular subtree to lib (scripts/copy-angular-dts.js)
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "rootDir": "src",
+    "outDir": ".angular-dts"
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true,
+    "compilationMode": "partial",
+    "_experimentalAllowEmitDeclarationOnly": true
+  }
+}

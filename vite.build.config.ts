@@ -5,6 +5,7 @@ import { transformAsync } from "@babel/core";
 import dts from "vite-plugin-dts";
 import solid from "vite-plugin-solid";
 import vueJsx from "unplugin-vue-jsx/vite";
+import angular from "@analogjs/vite-plugin-angular";
 import pkg from "./package.json" with { type: "json" };
 import annotateVueVNode from "./scripts/babel-plugin-annotate-vue-vnode.js";
 
@@ -100,7 +101,8 @@ export default defineConfig(({ mode }): UserConfig => {
           dts({
             tsconfigPath: "./tsconfig.json",
             include: ["src"],
-            exclude: ["**/*.{spec,stories}.*"],
+            // angular d.ts are emitted by ngc with tsconfig.angular.build.json
+            exclude: ["**/*.{spec,stories}.*", "src/angular"],
             beforeWriteFile: (filePath, content) =>
               filePath.endsWith(`core${path.sep}index.d.ts`)
                 ? { content: "// @ts-nocheck\n" + content }
@@ -209,6 +211,33 @@ export default defineConfig(({ mode }): UserConfig => {
           minify: false,
         },
         plugins: [copySvelte("lib/svelte")],
+      };
+    case "angular":
+      return {
+        build: {
+          ...shared,
+          outDir: "lib/angular",
+          lib: {
+            entry: "src/angular/index.ts",
+            formats: ["es"],
+            fileName: () => "index.js",
+          },
+          rolldownOptions: { external },
+          minify: "terser",
+          // Only _ prefixed fields are mangled, because $ prefixed ones of the
+          // core are referenced from the templates, which are kept as strings
+          // by the partial compilation and are not mangled with them.
+          terserOptions: terserOptions({ core: true }),
+        },
+        plugins: [
+          angular({
+            tsconfig: "tsconfig.angular.json",
+            jit: false,
+            // emit linker-compatible partial-ivy declarations for publishing
+            fastCompile: true,
+            fastCompileMode: "partial",
+          }),
+        ],
       };
     default:
       throw new Error(`unknown build mode: ${mode}`);

@@ -1,7 +1,7 @@
 {
   "name": "virtua",
   "version": "0.49.3",
-  "description": "A zero-config, fast and small (~3kB) virtual list (and grid) component for React, Vue, Solid and Svelte.",
+  "description": "A zero-config, fast and small (~3kB) virtual list (and grid) component for React, Vue, Solid, Svelte and Angular.",
   "main": "lib/index.cjs",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -29,6 +29,10 @@
       "svelte": "./lib/svelte/index.js",
       "default": "./lib/svelte/index.js"
     },
+    "./angular": {
+      "types": "./lib/angular/index.d.ts",
+      "default": "./lib/angular/index.js"
+    },
     "./unstable_core": {
       "types": "./lib/core/index.d.ts",
       "require": "./lib/core/index.cjs",
@@ -40,20 +44,22 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "rimraf lib && vite build -c vite.build.config.ts -m react && vite build -c vite.build.config.ts -m vue && vite build -c vite.build.config.ts -m solid && vite build -c vite.build.config.ts -m solid-ssr && vite build -c vite.build.config.ts -m core && vite build -c vite.build.config.ts -m svelte",
+    "build": "rimraf lib && vite build -c vite.build.config.ts -m react && vite build -c vite.build.config.ts -m vue && vite build -c vite.build.config.ts -m solid && vite build -c vite.build.config.ts -m solid-ssr && vite build -c vite.build.config.ts -m core && vite build -c vite.build.config.ts -m svelte && vite build -c vite.build.config.ts -m angular && ngc -p tsconfig.angular.build.json && node scripts/copy-angular-dts.js",
     "tsc": "tsc -p . --noEmit",
-    "test": "vitest run --project=unit --project=react --project=vue --project=solid --project=svelte",
+    "test": "vitest run --project=unit --project=react --project=vue --project=solid --project=svelte --project=angular",
     "lint": "eslint '{src,e2e}/**/*.{js,jsx,ts,tsx}' --cache",
     "format": "prettier '**/*.{js,ts,jsx,tsx,vue,svelte}' --write --cache",
     "format:ci": "prettier '**/*.{js,ts,jsx,tsx,vue,svelte}' -l",
     "check:svelte": "svelte-check --tsconfig ./tsconfig.svelte.json",
+    "check:angular": "ngc -p tsconfig.angular.json --noEmit",
     "storybook": "storybook dev -p 6006",
     "storybook:rtl": "STORYBOOK_RTL=1 npm run storybook",
     "storybook:vue": "STORYBOOK_VUE=1 npm run storybook",
     "storybook:solid": "STORYBOOK_SOLID=1 npm run storybook",
     "storybook:svelte": "STORYBOOK_SVELTE=1 npm run storybook",
+    "storybook:angular": "STORYBOOK_ANGULAR=1 npm run storybook",
     "storybook:build": "storybook build",
-    "storybook:deploy": "STORYBOOK_DEPLOY=1 npm run storybook:build && STORYBOOK_VUE=1 npm run storybook:build -- -o storybook-static/vue && STORYBOOK_SOLID=1 npm run storybook:build -- -o storybook-static/solid && STORYBOOK_SVELTE=1 npm run storybook:build -- -o storybook-static/svelte",
+    "storybook:deploy": "STORYBOOK_DEPLOY=1 npm run storybook:build && STORYBOOK_VUE=1 npm run storybook:build -- -o storybook-static/vue && STORYBOOK_SOLID=1 npm run storybook:build -- -o storybook-static/solid && STORYBOOK_SVELTE=1 npm run storybook:build -- -o storybook-static/svelte && STORYBOOK_ANGULAR=1 npm run storybook:build -- -o storybook-static/angular",
     "storybook:test": "vitest run --project=storybook",
     "e2e": "npx playwright test",
     "typedoc": "typedoc",
@@ -61,6 +67,16 @@
     "prepublishOnly": "npm run typedoc && npm run build"
   },
   "devDependencies": {
+    "@analogjs/storybook-angular": "^2.6.4",
+    "@analogjs/vite-plugin-angular": "^2.6.4",
+    "@analogjs/vitest-angular": "^2.6.4",
+    "@angular/animations": "^22.0.0",
+    "@angular/common": "^22.0.0",
+    "@angular/compiler": "^22.0.0",
+    "@angular/compiler-cli": "^22.0.0",
+    "@angular/core": "^22.0.0",
+    "@angular/platform-browser": "^22.0.0",
+    "@angular/platform-server": "^22.0.0",
     "@atlaskit/pragmatic-drag-and-drop": "^1.7.9",
     "@atlaskit/pragmatic-drag-and-drop-auto-scroll": "^2.1.5",
     "@atlaskit/pragmatic-drag-and-drop-hitbox": "^1.1.0",
@@ -83,6 +99,7 @@
     "@solidjs/testing-library": "^0.8.10",
     "@storybook/addon-docs": "^10.4.0",
     "@storybook/addon-vitest": "^10.4.0",
+    "@storybook/angular": "^10.4.0",
     "@storybook/react-vite": "^10.4.0",
     "@storybook/svelte-vite": "^10.4.0",
     "@storybook/vue3-vite": "^10.4.0",
@@ -146,6 +163,8 @@
     "vue-eslint-parser": "^10.2.0"
   },
   "peerDependencies": {
+    "@angular/common": ">=20.0.0",
+    "@angular/core": ">=20.0.0",
     "react": ">=16.14.0",
     "react-dom": ">=16.14.0",
     "solid-js": ">=1.0",
@@ -153,19 +172,25 @@
     "vue": ">=3.2"
   },
   "peerDependenciesMeta": {
+    "@angular/common": {
+      "optional": true
+    },
+    "@angular/core": {
+      "optional": true
+    },
     "react": {
       "optional": true
     },
     "react-dom": {
       "optional": true
     },
-    "vue": {
-      "optional": true
-    },
     "solid-js": {
       "optional": true
     },
     "svelte": {
+      "optional": true
+    },
+    "vue": {
       "optional": true
     }
   },
@@ -179,6 +204,7 @@
     "vue",
     "solid",
     "svelte",
+    "angular",
     "ui",
     "headless",
     "list",

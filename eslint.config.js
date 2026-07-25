@@ -67,6 +67,10 @@ export default [
               target: ["./src/vue/**/*"],
               from: ["./src/!(core|vue)/**/*", "./src/core/!(index.ts)"],
             },
+            {
+              target: ["./src/angular/**/*"],
+              from: ["./src/!(core|angular)/**/*", "./src/core/!(index.ts)"],
+            },
           ],
         },
       ],

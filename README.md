@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/virtua) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/virtua) ![npm](https://img.shields.io/npm/dw/virtua) [![Best of JS](https://img.shields.io/endpoint?url=https://bestofjs-serverless.now.sh/api/project-badge?fullName=inokawa%2Fvirtua%26since=daily)](https://bestofjs.org/projects/virtua) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/inokawa/virtua) [![check](https://github.com/inokawa/virtua/actions/workflows/check.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/check.yml) [![demo](https://github.com/inokawa/virtua/actions/workflows/demo.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/demo.yml)
 
-> A zero-config, fast and small (~3kB) virtual list (and grid) component for [React](https://github.com/facebook/react), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/) and [Svelte](https://svelte.dev/).
+> A zero-config, fast and small (~3kB) virtual list (and grid) component for [React](https://github.com/facebook/react), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/), [Svelte](https://svelte.dev/) and [Angular](https://angular.dev/).
 
 ![example](./example.gif)
 
@@ -16,7 +16,7 @@ This project is a challenge to rethink virtualization. The goals are...
 - **Fast:** Natural virtual scrolling needs optimization in many aspects (eliminate frame drops by reducing CPU usage and GC, reduce [synchronous layout recalculation](https://gist.github.com/paulirish/5d52fb081b3570c81e3a), reduce visual jumps on repaint, optimize with CSS, optimize for JIT, optimize for frameworks, etc). We are trying to combine the best of them.
 - **Small:** Its bundle size should be small as much as possible to be friendly with modern web development. Currently each components are ~3kB gzipped and tree-shakeable.
 - **Flexible:** Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, RTL, mobile, infinite scrolling, scroll restoration, DnD, keyboard navigation, sticky, placeholder and more. See [live demo](#demo).
-- **Framework agnostic:** [React](https://react.dev/), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/) and [Svelte](https://svelte.dev/) are supported. We could support other frameworks in the future.
+- **Framework agnostic:** [React](https://react.dev/), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/), [Svelte](https://svelte.dev/) and [Angular](https://angular.dev/) are supported. We could support other frameworks in the future.
 
 ## Demo
 
@@ -261,7 +261,7 @@ export const App = () => {
 
   const sizes = [20, 40, 180, 77];
 
-  const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4] );
+  const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]);
 </script>
 
 <VList {data} style="height: 100vh;" getKey={(_, i) => i}>
@@ -277,6 +277,40 @@ export const App = () => {
     </div>
   {/snippet}
 </VList>
+```
+
+### Angular
+
+`@angular/core >= 20` is required. The components are zoneless-ready and work with both zone.js and [`provideZonelessChangeDetection`](https://angular.dev/api/core/provideZonelessChangeDetection).
+
+```ts
+import { Component } from "@angular/core";
+import { VList } from "virtua/angular";
+
+const sizes = [20, 40, 180, 77];
+
+@Component({
+  selector: "app-root",
+  imports: [VList],
+  template: `
+    <virtua-vlist [data]="data" [getKey]="getKey" style="height: 800px;">
+      <ng-template let-item let-index="index">
+        <div
+          [style.height.px]="item"
+          style="background: white; border-bottom: solid 1px #ccc;"
+        >
+          {{ index }}
+        </div>
+      </ng-template>
+    </virtua-vlist>
+  `,
+})
+export class App {
+  protected readonly data = Array.from({ length: 1000 }).map(
+    (_, i) => sizes[i % 4]!,
+  );
+  protected readonly getKey = (_: number, i: number) => i;
+}
 ```
 
 ### Other bindings
@@ -356,9 +390,9 @@ And do not use index of items as `key`, especially when you want to toggle `shif
 
 `viewportSize` will be calculated by ResizeObserver so it's 0 until the first measurement.
 
-#### What is `Cannot find module 'virtua/vue(solid|svelte)' or its corresponding type declarations` error?
+#### What is `Cannot find module 'virtua/vue(solid|svelte|angular)' or its corresponding type declarations` error?
 
-This package uses [exports of package.json](https://nodejs.org/api/packages.html#package-entry-points) for entry point of Vue/Solid/Svelte adapter. This field can't be resolved in TypeScript with `moduleResolution: node`. Try `moduleResolution: bundler` or `moduleResolution: nodenext` instead.
+This package uses [exports of package.json](https://nodejs.org/api/packages.html#package-entry-points) for entry point of Vue/Solid/Svelte/Angular adapter. This field can't be resolved in TypeScript with `moduleResolution: node`. Try `moduleResolution: bundler` or `moduleResolution: nodenext` instead.
 
 ## Comparison
 

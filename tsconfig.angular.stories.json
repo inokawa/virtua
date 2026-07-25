@@ -1,0 +1,4 @@
+{
+  "extends": "./tsconfig.angular.json",
+  "include": ["src/angular/**/*", "stories/angular/**/*"]
+}

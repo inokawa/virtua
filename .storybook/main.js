@@ -48,43 +48,60 @@ export default process.env.STORYBOOK_VUE
             });
           },
         }
-      : {
-          stories: ["../stories/react/**/*.stories.@(js|jsx|ts|tsx)"],
-          addons: ["@storybook/addon-docs", "@storybook/addon-vitest"],
-          framework: {
-            name: "@storybook/react-vite",
-            options: {},
-          },
-          viteFinal: async (config) => {
-            const { default: react } = await import("@vitejs/plugin-react");
-
-            return mergeConfig(config, {
-              plugins: [react()],
-              // FIXME: ✘ [ERROR] Failed to resolve entry for package "virtua". The package may have incorrect main/module/exports specified in its package.json. [plugin vite:dep-scan]
-              resolve: {
-                alias: {
-                  virtua: path.resolve(
-                    import.meta.dirname,
-                    "../node_modules/virtua",
-                  ),
-                },
-              },
-            });
-          },
-          ...(process.env.STORYBOOK_DEPLOY && {
-            refs: {
-              vue: {
-                title: "Vue",
-                url: "/virtua/vue",
-              },
-              solid: {
-                title: "Solid",
-                url: "/virtua/solid",
-              },
-              svelte: {
-                title: "Svelte",
-                url: "/virtua/svelte",
+      : process.env.STORYBOOK_ANGULAR
+        ? {
+            stories: ["../stories/angular/**/*.stories.@(js|jsx|ts|tsx)"],
+            addons: ["@storybook/addon-docs", "@storybook/addon-vitest"],
+            framework: {
+              name: "@analogjs/storybook-angular",
+              options: {
+                // the preset defaults to ./.storybook/tsconfig.json, which is
+                // not for angular only
+                tsconfig: "tsconfig.angular.stories.json",
               },
             },
-          }),
-        };
+          }
+        : {
+            stories: ["../stories/react/**/*.stories.@(js|jsx|ts|tsx)"],
+            addons: ["@storybook/addon-docs", "@storybook/addon-vitest"],
+            framework: {
+              name: "@storybook/react-vite",
+              options: {},
+            },
+            viteFinal: async (config) => {
+              const { default: react } = await import("@vitejs/plugin-react");
+
+              return mergeConfig(config, {
+                plugins: [react()],
+                // FIXME: ✘ [ERROR] Failed to resolve entry for package "virtua". The package may have incorrect main/module/exports specified in its package.json. [plugin vite:dep-scan]
+                resolve: {
+                  alias: {
+                    virtua: path.resolve(
+                      import.meta.dirname,
+                      "../node_modules/virtua",
+                    ),
+                  },
+                },
+              });
+            },
+            ...(process.env.STORYBOOK_DEPLOY && {
+              refs: {
+                vue: {
+                  title: "Vue",
+                  url: "/virtua/vue",
+                },
+                solid: {
+                  title: "Solid",
+                  url: "/virtua/solid",
+                },
+                svelte: {
+                  title: "Svelte",
+                  url: "/virtua/svelte",
+                },
+                angular: {
+                  title: "Angular",
+                  url: "/virtua/angular",
+                },
+              },
+            }),
+          };
