@@ -120,7 +120,7 @@
     "@vitest/browser-playwright": "^4.1.0",
     "@vitest/coverage-v8": "^4.1.0",
     "cmdk": "^1.1.1",
-    "eslint": "^9.38.0",
+    "eslint": "^10.0.0",
     "eslint-import-resolver-typescript": "^4.3.5",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react": "^7.37.5",
