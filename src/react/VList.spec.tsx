@@ -1,5 +1,5 @@
 import { afterEach, it, expect, describe } from "vitest";
-import { cleanup } from "@testing-library/react";
+import { cleanup, waitFor } from "@testing-library/react";
 import { VList } from "./VList.js";
 import { forwardRef } from "react";
 import { type CustomItemComponentProps } from "./types.js";
@@ -93,6 +93,20 @@ it("should not render stale indexes while data shrinks", async () => {
 
   expect(getByText("0")).toBeTruthy();
   expect(getByText("1")).toBeTruthy();
+});
+
+it("should render newly added indexes while data grows", async () => {
+  const items = Array.from({ length: 24 }, (_, index) => index);
+  const renderItem = (item: number, index: number) => (
+    <div key={index}>{item}</div>
+  );
+  const { rerender, getByText } = await render(
+    <VList data={items.slice(0, 2)}>{renderItem}</VList>,
+  );
+
+  rerender(<VList data={items}>{renderItem}</VList>);
+
+  await waitFor(() => expect(getByText("10")).toBeTruthy());
 });
 
 describe("vertical", async () => {

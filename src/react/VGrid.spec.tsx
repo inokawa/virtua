@@ -1,5 +1,5 @@
 import { afterEach, it, expect, describe } from "vitest";
-import { cleanup } from "@testing-library/react";
+import { cleanup, waitFor } from "@testing-library/react";
 import { VGrid } from "./VGrid.js";
 import { setupResizeJsDom } from "../../spec/dom.js";
 import { render } from "../../spec/react.js";
@@ -60,6 +60,29 @@ it("should not render stale indexes while dimensions shrink", async () => {
 
   expect(getByText("0-0")).toBeTruthy();
   expect(getByText("1-1")).toBeTruthy();
+});
+
+it("should render newly added cells while dimensions grow", async () => {
+  const renderCell = ({
+    rowIndex,
+    colIndex,
+  }: {
+    rowIndex: number;
+    colIndex: number;
+  }) => <div>{`${rowIndex}-${colIndex}`}</div>;
+  const { rerender, getByText } = await render(
+    <VGrid row={1} col={1}>
+      {renderCell}
+    </VGrid>,
+  );
+
+  rerender(
+    <VGrid row={4} col={4}>
+      {renderCell}
+    </VGrid>,
+  );
+
+  await waitFor(() => expect(getByText("3-3")).toBeTruthy());
 });
 
 describe("grid", async () => {
