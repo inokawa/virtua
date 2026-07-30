@@ -37,6 +37,31 @@ it("should pass attributes to element", async () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
+it("should not render stale indexes while dimensions shrink", async () => {
+  const renderCell =
+    (rowLimit: number, colLimit: number) =>
+    ({ rowIndex, colIndex }: { rowIndex: number; colIndex: number }) => {
+      if (rowIndex >= rowLimit || colIndex >= colLimit) {
+        throw new Error(`rendered stale cell ${rowIndex}-${colIndex}`);
+      }
+      return <div>{`${rowIndex}-${colIndex}`}</div>;
+    };
+  const { rerender, getByText } = await render(
+    <VGrid row={4} col={4}>
+      {renderCell(4, 4)}
+    </VGrid>,
+  );
+
+  rerender(
+    <VGrid row={2} col={2}>
+      {renderCell(2, 2)}
+    </VGrid>,
+  );
+
+  expect(getByText("0-0")).toBeTruthy();
+  expect(getByText("1-1")).toBeTruthy();
+});
+
 describe("grid", async () => {
   it("should render 0 children", async () => {
     const { asFragment } = await render(

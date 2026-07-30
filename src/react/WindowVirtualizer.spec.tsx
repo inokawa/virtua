@@ -45,6 +45,28 @@ it("should render with render prop", async () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
+it("should not render stale indexes while data shrinks", async () => {
+  const items = Array.from({ length: 24 }, (_, index) => index);
+  const renderItem = (item: number | undefined, index: number) => {
+    if (item === undefined) {
+      throw new Error(`rendered stale index ${index}`);
+    }
+    return <div key={index}>{item}</div>;
+  };
+  const { rerender, getByText } = await render(
+    <WindowVirtualizer data={items}>{renderItem}</WindowVirtualizer>,
+  );
+
+  rerender(
+    <WindowVirtualizer data={items.slice(0, 2)}>
+      {renderItem}
+    </WindowVirtualizer>,
+  );
+
+  expect(getByText("0")).toBeTruthy();
+  expect(getByText("1")).toBeTruthy();
+});
+
 describe("vertical", async () => {
   it("should render 1 children", async () => {
     const { asFragment } = await render(
