@@ -1,73 +1,47 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { VList } from "../../../src";
-import React, { CSSProperties, forwardRef, useCallback, useState } from "react";
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragOverlay,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-  useSortable,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import React, { CSSProperties, forwardRef, useRef, useState } from "react";
+import type { UniqueIdentifier } from "@dnd-kit/abstract";
+import { DragDropProvider, DragOverlay } from "@dnd-kit/react";
+import { useSortable } from "@dnd-kit/react/sortable";
+import { move } from "@dnd-kit/helpers";
 
 export default {
   component: VList,
 } as Meta;
 
-const Item = forwardRef<HTMLDivElement, { id: number; style?: CSSProperties }>(
-  ({ id, style, ...props }, ref) => {
-    return (
-      <div
-        {...props}
-        style={{
-          height: 50,
-          borderBottom: "solid 1px #ccc",
-          background: "#fff",
-          ...style,
-        }}
-        ref={ref}
-      >
-        {id}
-      </div>
-    );
-  },
-);
+const Item = forwardRef<
+  HTMLDivElement,
+  { id: UniqueIdentifier; style?: CSSProperties }
+>(({ id, style, ...props }, ref) => {
+  return (
+    <div
+      {...props}
+      style={{
+        height: 50,
+        borderBottom: "solid 1px #ccc",
+        background: "#fff",
+        ...style,
+      }}
+      ref={ref}
+    >
+      {id}
+    </div>
+  );
+});
 
-const SortableItem = (props: { id: number }) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: props.id });
+const SortableItem = (props: { id: number; index: number }) => {
+  const { ref, isDragSource } = useSortable({
+    id: props.id,
+    index: props.index,
+  });
 
   const style: CSSProperties = {
-    transform: CSS.Transform.toString(transform),
-    transition,
     cursor: "grab",
-    visibility: isDragging ? "hidden" : undefined,
+    visibility: isDragSource ? "hidden" : undefined,
   };
 
-  return (
-    <Item
-      ref={setNodeRef}
-      id={props.id}
-      style={style}
-      {...attributes}
-      {...listeners}
-    />
-  );
+  return <Item ref={ref} id={props.id} style={style} />;
 };
 
 export const Default: StoryObj = {
@@ -76,45 +50,42 @@ export const Default: StoryObj = {
     const [items, setItems] = useState(() =>
       Array.from({ length: 1000 }, (_, i) => i + 1),
     );
-    const [activeId, setActiveId] = useState<number | null>(null);
-    const sensors = useSensors(
-      useSensor(PointerSensor),
-      useSensor(KeyboardSensor, {
-        coordinateGetter: sortableKeyboardCoordinates,
-      }),
-    );
+    const itemsBeforeDrag = useRef(items);
 
     return (
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragStart={useCallback((event) => {
-          setActiveId(event.active.id);
-        }, [])}
-        onDragEnd={useCallback((event) => {
-          const { active, over } = event;
-
-          if (active.id !== over.id) {
-            setItems((items) => {
-              const oldIndex = items.indexOf(active.id);
-              const newIndex = items.indexOf(over.id);
-              return arrayMove(items, oldIndex, newIndex);
-            });
+      <DragDropProvider
+        onDragStart={() => {
+          itemsBeforeDrag.current = items;
+        }}
+        onDragOver={(event) => {
+          // Reorder the items while dragging instead of on drag end. The
+          // default optimistic sorting only moves the elements that are
+          // currently rendered, which doesn't work in a virtualized list where
+          // items outside of the viewport are unmounted.
+          setItems((items) => move(items, event));
+        }}
+        onDragEnd={(event) => {
+          if (event.canceled) {
+            setItems(itemsBeforeDrag.current);
           }
-          setActiveId(null);
-        }, [])}
+        }}
       >
-        <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          <VList style={{ width: 400, height: 600 }}>
-            {items.map((id) => (
-              <SortableItem key={id} id={id} />
-            ))}
-          </VList>
-        </SortableContext>
-        <DragOverlay>
-          {activeId != null ? <Item id={activeId} /> : null}
+        <VList style={{ width: 400, height: 600 }}>
+          {items.map((id, index) => (
+            <SortableItem key={id} id={id} index={index} />
+          ))}
+        </VList>
+        <DragOverlay
+          // The drop animation would show the row twice while it plays: the
+          // overlay flies in while the source row is already back in place.
+          // Revealing the source only after the animation instead flashes an
+          // empty row, because the overlay is hidden a frame before React
+          // rerenders. Dropping instantly avoids both.
+          dropAnimation={null}
+        >
+          {(source) => <Item id={source.id} />}
         </DragOverlay>
-      </DndContext>
+      </DragDropProvider>
     );
   },
 };
