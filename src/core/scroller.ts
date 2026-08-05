@@ -2,6 +2,7 @@ import {
   getCurrentDocument,
   getCurrentWindow,
   getDocumentElement,
+  isDesktopSafari,
   isIOSWebKit,
   isSmoothScrollSupported,
 } from "./environment.js";
@@ -336,7 +337,8 @@ export const createScroller = (
           // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
           // That means we have no reliable way to confirm still touched or not if user touches more than once during momentum scrolling...
           // This is a hack for the suspectable situations, inspired by https://github.com/prud/ios-overflow-scroll-to-top
-          if (isMomentumScrolling) {
+          // Desktop Safari also has delayed paint during scrolling, so we apply the same hack.
+          if (isMomentumScrolling || isDesktopSafari()) {
             const style = viewport.style;
             const prev = style[overflowKey];
             style[overflowKey] = "hidden";
