@@ -3,14 +3,27 @@ import { VList } from "../../../src";
 import React, { CSSProperties, useState } from "react";
 import { faker } from "@faker-js/faker";
 import {
+  columnResizingFeature,
+  columnSizingFeature,
   createColumnHelper,
+  createSortedRowModel,
   flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable,
+  rowSortingFeature,
+  sortFn_alphanumeric,
+  sortFn_text,
+  tableFeatures,
+  useTable,
   type Row as RowType,
   type SortingState,
 } from "@tanstack/react-table";
+
+const features = tableFeatures({
+  columnSizingFeature,
+  columnResizingFeature,
+  rowSortingFeature,
+  sortedRowModel: createSortedRowModel(),
+  sortFns: { alphanumeric: sortFn_alphanumeric, text: sortFn_text },
+});
 
 export default {
   component: VList,
@@ -53,9 +66,9 @@ const STATUS_COLORS: Record<Data["status"], string> = {
   single: "#8c8c8c",
 };
 
-const columnHelper = createColumnHelper<Data>();
+const columnHelper = createColumnHelper<typeof features, Data>();
 
-const columns = [
+const columns = columnHelper.columns([
   columnHelper.accessor("id", { header: "ID", size: 60 }),
   columnHelper.accessor("firstName", { header: "First Name", size: 140 }),
   columnHelper.accessor("lastName", { header: "Last Name", size: 140 }),
@@ -95,7 +108,7 @@ const columns = [
     ),
   }),
   columnHelper.accessor("visits", { header: "Visits", size: 80 }),
-];
+]);
 
 const rowStyle: CSSProperties = {
   display: "flex",
@@ -123,10 +136,10 @@ const headerCellStyle: CSSProperties = {
   userSelect: "none",
 };
 
-const Row = ({ row }: { row: RowType<Data> }) => {
+const Row = ({ row }: { row: RowType<typeof features, Data> }) => {
   return (
     <div style={rowStyle}>
-      {row.getVisibleCells().map((cell) => (
+      {row.getAllCells().map((cell) => (
         <div
           key={cell.id}
           style={{ ...cellStyle, width: cell.column.getSize() }}
@@ -143,14 +156,13 @@ export const Default: StoryObj = {
   render: () => {
     const [sorting, setSorting] = useState<SortingState>([]);
 
-    const table = useReactTable({
+    const table = useTable({
+      features,
       data,
       columns,
       state: { sorting },
       onSortingChange: setSorting,
       columnResizeMode: "onChange",
-      getCoreRowModel: getCoreRowModel(),
-      getSortedRowModel: getSortedRowModel(),
     });
 
     return (
