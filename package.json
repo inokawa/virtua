@@ -104,7 +104,7 @@
     "@storybook/svelte-vite": "^10.4.0",
     "@storybook/vue3-vite": "^10.4.0",
     "@sveltejs/vite-plugin-svelte": "^7.1.2",
-    "@tanstack/react-table": "^8.21.3",
+    "@tanstack/react-table": "^9.0.0",
     "@tanstack/react-virtual": "^3.13.24",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.3.2",
