@@ -1,6 +1,6 @@
-import { it, expect, describe, afterEach } from "vitest";
-import { cleanup } from "@testing-library/svelte";
-import { createRawSnippet } from "svelte";
+import { it, expect, describe, afterEach, vi } from "vitest";
+import { cleanup, render as renderRaw } from "@testing-library/svelte";
+import { createRawSnippet, tick } from "svelte";
 import Host from "../../spec/svelte/VirtualizerHost.svelte";
 import { setupResizeJsDom } from "../../spec/dom.js";
 import { render } from "../../spec/svelte.js";
@@ -118,5 +118,31 @@ describe("horizontal", () => {
       props: { data: range(3), horizontal: true, children: componentSnippet },
     });
     expect(container.innerHTML).toMatchSnapshot();
+  });
+});
+
+describe("unmount before tick resolves", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("should not invoke ResizeObserver callback after unmount", async () => {
+    const ResizeObserver = vi.fn();
+    vi.stubGlobal("ResizeObserver", ResizeObserver);
+
+    // Render synchronously; `tick().then(...)` is still pending
+    const result = renderRaw(Host, {
+      props: { data: range(10), children: itemSnippet },
+    });
+
+    // Unmount before the `tick()` resolves.
+    result.unmount();
+
+    // Wait for the `tick().then(...)` to resolve
+    await tick();
+
+    // The `ResizeObserver` should never have been created, since we disposed
+    // of it's wrapper before we observed any DOM nodes
+    expect(ResizeObserver).not.toHaveBeenCalled();
   });
 });

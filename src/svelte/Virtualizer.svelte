@@ -70,6 +70,8 @@
   let totalSize = $derived(stateVersion && store.$getTotalSize());
   let negative = $derived(stateVersion && scroller.$isNegative());
 
+  let componentIsMounted = false;
+
   let indexes = $derived.by(() => {
     // https://github.com/inokawa/virtua/pull/847
     const len = data.length;
@@ -97,10 +99,14 @@
   });
 
   onMount(() => {
+    componentIsMounted = true;
+
     const container = containerRef!;
     const assignRef = (scrollable: HTMLElement) => {
-      resizer.$observeRoot(scrollable);
-      scroller.$observe(container, scrollable);
+      if (componentIsMounted) {
+        resizer.$observeRoot(scrollable);
+        scroller.$observe(container, scrollable);
+      }
     };
     // parent's ref may not exist on mount https://github.com/inokawa/virtua/issues/603 https://github.com/inokawa/virtua/issues/690
     tick().then(() => {
@@ -112,6 +118,8 @@
     });
   });
   onDestroy(() => {
+    componentIsMounted = false;
+
     store.$dispose();
     resizer.$dispose();
     scroller.$dispose();
