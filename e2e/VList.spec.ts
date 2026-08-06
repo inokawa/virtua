@@ -110,26 +110,26 @@ test.describe("smoke", () => {
     ).toBeVisible();
   });
 
-  // test("horizontally scrollable (writing-mode: vertical-rl)", async ({ page }) => {
-  //   await page.goto(storyUrl("basics-vlist--rtl"));
+  test("horizontally scrollable (writing-mode: vertical-rl)", async ({ page }) => {
+    await page.goto(storyUrl("basics-vlist--rtl"));
 
-  //   const component = page.locator(
-  //     '*[style*="writing-mode"]'
-  //   ) as ScrollableLocator;
+    const component = page.locator(
+      '*[style*="writing-mode"]'
+    ) as ScrollableLocator;
 
-  //   // check if start is displayed
-  //   const first = component.getByText("列 ０", { exact: true });
-  //   await expect(first).toBeVisible();
-  //   expect(await relativeRight(component, first)).toEqual(0);
+    // check if start is displayed
+    const first = component.getByText("列 ０", { exact: true });
+    await expect(first).toBeVisible();
+    expect(await relativeRight(component, first)).toEqual(0);
 
-  //   // scroll to the end
-  //   await scrollToLeft(component);
+    // scroll to the end
+    await scrollToLeft(component);
 
-  //   // check if the end is displayed
-  //   await expect(
-  //     component.getByText("列 ９９９", { exact: true })
-  //   ).toBeVisible();
-  // });
+    // check if the end is displayed
+    await expect(
+      component.getByText("列 ９９９", { exact: true })
+    ).toBeVisible();
+  });
 
   test("display: none", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--default"));
