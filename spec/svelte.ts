@@ -1,6 +1,9 @@
 import { vi } from "vitest";
 import { render as _render } from "@testing-library/svelte";
 
+export const renderSync = (...args: Parameters<typeof _render>) =>
+  _render(...args);
+
 export const render = async (...args: Parameters<typeof _render>) => {
   const res = _render(...args);
   let same = false;
