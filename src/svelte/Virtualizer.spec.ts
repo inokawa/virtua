@@ -1,9 +1,9 @@
-import { it, expect, describe, afterEach } from "vitest";
+import { it, expect, describe, afterEach, onTestFinished, vi } from "vitest";
 import { cleanup } from "@testing-library/svelte";
-import { createRawSnippet } from "svelte";
+import { createRawSnippet, tick } from "svelte";
 import Host from "../../spec/svelte/VirtualizerHost.svelte";
 import { setupResizeJsDom } from "../../spec/dom.js";
-import { render } from "../../spec/svelte.js";
+import { render, renderSync } from "../../spec/svelte.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -119,4 +119,16 @@ describe("horizontal", () => {
     });
     expect(container.innerHTML).toMatchSnapshot();
   });
+});
+
+it("should not observe if unmounted before tick resolves", async () => {
+  const observe = vi.spyOn(global.ResizeObserver.prototype, "observe");
+  onTestFinished(() => observe.mockRestore());
+  // render without awaiting to unmount while tick() in onMount is pending
+  const { unmount } = renderSync(Host, {
+    props: { data: range(10), children: itemSnippet },
+  });
+  unmount();
+  await tick();
+  expect(observe).not.toHaveBeenCalled();
 });
