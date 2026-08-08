@@ -19,8 +19,10 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
   ACTION_START_OFFSET_CHANGE,
-  createResizer,
-  createScroller,
+  createContainerDriver,
+  scrollTo,
+  scrollBy,
+  scrollToIndex,
   type ItemsRange,
   type ScrollToIndexOpts,
   sort,
@@ -199,8 +201,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       props.cache,
       !props.itemSize,
     );
-    const resizer = createResizer(store, isHorizontal);
-    const scroller = createScroller(store, isHorizontal);
+    const driver = createContainerDriver(store, isHorizontal);
 
     const stateVersion = ref(store.$getStateVersion());
     store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
@@ -234,16 +235,8 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       // https://github.com/inokawa/virtua/issues/784
       const container = containerRef.value!;
       const raf = requestAnimationFrame(() => {
-        const assignScrollableElement = (e: HTMLElement) => {
-          resizer.$observeRoot(e);
-          scroller.$observe(container, e);
-        };
-        if (props.scrollRef) {
-          // parent's ref doesn't exist when onMounted is called
-          assignScrollableElement(props.scrollRef!);
-        } else {
-          assignScrollableElement(container.parentElement!);
-        }
+        // parent's ref doesn't exist when onMounted is called
+        driver.$observe(container, props.scrollRef);
       });
 
       onUnmounted(() => {
@@ -252,8 +245,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     });
     onUnmounted(() => {
       store.$dispose();
-      resizer.$dispose();
-      scroller.$dispose();
+      driver.$dispose();
     });
 
     watch(
@@ -273,7 +265,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     watch(
       [stateVersion],
       () => {
-        scroller.$fixScrollJump();
+        driver.$fixScrollJump();
       },
       { flush: "post" },
     );
@@ -294,9 +286,9 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       findItemIndex: store.$findItemIndex,
       getItemOffset: store.$getItemOffset,
       getItemSize: store.$getItemSize,
-      scrollToIndex: scroller.$scrollToIndex,
-      scrollTo: scroller.$scrollTo,
-      scrollBy: scroller.$scrollBy,
+      scrollToIndex: (index, opts) => scrollToIndex(driver, store, index, opts),
+      scrollTo: (offset) => scrollTo(driver, offset),
+      scrollBy: (offset) => scrollBy(driver, store, offset),
     } satisfies VirtualizerHandle);
 
     return () => {
@@ -304,7 +296,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       const ItemElement = props.item;
 
       const total = totalSize.value;
-      const isNegative = scroller.$isNegative();
+      const isNegative = driver.$isNegative();
 
       const items: VNode[] = [];
 
@@ -315,7 +307,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
             key={getKey(e, i)}
             _stateVersion={stateVersion}
             _store={store}
-            _resizer={resizer.$observeItem}
+            _resizer={driver.$observeItem}
             _index={i}
             _children={e}
             _isHorizontal={isHorizontal}

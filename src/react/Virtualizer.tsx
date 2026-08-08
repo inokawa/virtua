@@ -17,8 +17,10 @@ import {
   UPDATE_SCROLL_END_EVENT,
   getScrollSize,
   ACTION_START_OFFSET_CHANGE,
-  createScroller,
-  createResizer,
+  createContainerDriver,
+  scrollTo,
+  scrollBy,
+  scrollToIndex,
   type CacheSnapshot,
   type ScrollToIndexOpts,
   microtask,
@@ -204,7 +206,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     const onScroll = useLatestRef(onScrollProp);
     const onScrollEnd = useLatestRef(onScrollEndProp);
 
-    const [store, resizer, scroller, isHorizontal] = useStatic(() => {
+    const [store, driver, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
       const _store = createVirtualStore(
         count,
@@ -215,8 +217,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
       );
       return [
         _store,
-        createResizer(_store, _isHorizontal),
-        createScroller(_store, _isHorizontal),
+        createContainerDriver(_store, _isHorizontal),
         _isHorizontal,
       ];
     });
@@ -238,7 +239,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     const isScrolling = store.$isScrolling();
     const totalSize = store.$getTotalSize();
 
-    const isNegative = scroller.$isNegative();
+    const isNegative = driver.$isNegative();
 
     const items: ReactElement[] = [];
 
@@ -248,7 +249,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
       return (
         <ListItem
           key={getKey(e, index)}
-          _resizer={resizer.$observeItem}
+          _resizer={driver.$observeItem}
           _index={index}
           _offset={store.$getItemOffset(index, isNegative)}
           _hide={store.$isUnmeasuredItem(index)}
@@ -278,31 +279,26 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
         onScrollEnd[refKey] && onScrollEnd[refKey]();
       });
       const container = containerRef[refKey]!;
-      const assignScrollableElement = (e: HTMLElement) => {
-        resizer.$observeRoot(e);
-        scroller.$observe(container, e);
-      };
       if (scrollRef) {
         // parent's ref doesn't exist when useLayoutEffect is called
         microtask(() => {
           // https://github.com/inokawa/virtua/pull/733
           if (scrollRef[refKey]) {
-            assignScrollableElement(scrollRef[refKey]);
+            driver.$observe(container, scrollRef[refKey]);
           }
         });
       } else {
-        assignScrollableElement(container.parentElement!);
+        driver.$observe(container);
       }
 
       return () => {
         store.$dispose();
-        resizer.$dispose();
-        scroller.$dispose();
+        driver.$dispose();
       };
     }, []);
 
     useIsomorphicLayoutEffect(() => {
-      scroller.$fixScrollJump();
+      driver.$fixScrollJump();
     }, [stateVersion]);
 
     useImperativeHandle(ref, () => {
@@ -322,9 +318,10 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
         findItemIndex: store.$findItemIndex,
         getItemOffset: store.$getItemOffset,
         getItemSize: store.$getItemSize,
-        scrollToIndex: scroller.$scrollToIndex,
-        scrollTo: scroller.$scrollTo,
-        scrollBy: scroller.$scrollBy,
+        scrollToIndex: (index, opts) =>
+          scrollToIndex(driver, store, index, opts),
+        scrollTo: (offset) => scrollTo(driver, offset),
+        scrollBy: (offset) => scrollBy(driver, store, offset),
       };
     }, []);
 

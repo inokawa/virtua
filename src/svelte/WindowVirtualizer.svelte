@@ -8,8 +8,8 @@
     UPDATE_VIRTUAL_STATE,
     createVirtualStore,
     getScrollSize as _getScrollSize,
-    createWindowResizer,
-    createWindowScroller,
+    createWindowDriver,
+    scrollToIndex as _scrollToIndex,
   } from "../core/index.js";
   import { defaultGetKey, styleToString } from "./utils.js";
   import ListItem from "./ListItem.svelte";
@@ -40,8 +40,7 @@
     cache,
     !itemSize,
   );
-  const resizer = createWindowResizer(store, horizontal);
-  const scroller = createWindowScroller(store, horizontal);
+  const driver = createWindowDriver(store, horizontal);
   store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
     stateVersion = store.$getStateVersion();
   });
@@ -60,7 +59,7 @@
   let range = $derived(stateVersion && store.$getRange(bufferSize));
   let isScrolling = $derived(stateVersion && store.$isScrolling());
   let totalSize = $derived(stateVersion && store.$getTotalSize());
-  let negative = $derived(stateVersion && scroller.$isNegative());
+  let negative = $derived(stateVersion && driver.$isNegative());
 
   let indexes = $derived.by(() => {
     // https://github.com/inokawa/virtua/pull/847
@@ -77,13 +76,11 @@
   });
 
   onMount(() => {
-    resizer.$observeRoot(containerRef!);
-    scroller.$observe(containerRef!);
+    driver.$observe(containerRef!);
   });
   onDestroy(() => {
     store.$dispose();
-    resizer.$dispose();
-    scroller.$dispose();
+    driver.$dispose();
   });
 
   $effect.pre(() => {
@@ -96,7 +93,7 @@
   $effect(() => {
     if (prevStateVersion === stateVersion) return;
     prevStateVersion = stateVersion;
-    scroller.$fixScrollJump();
+    driver.$fixScrollJump();
   });
 
   export const getCache =
@@ -111,8 +108,10 @@
     store.$getItemOffset satisfies WindowVirtualizerHandle["getItemOffset"] as WindowVirtualizerHandle["getItemOffset"];
   export const getItemSize =
     store.$getItemSize satisfies WindowVirtualizerHandle["getItemSize"] as WindowVirtualizerHandle["getItemSize"];
-  export const scrollToIndex =
-    scroller.$scrollToIndex satisfies WindowVirtualizerHandle["scrollToIndex"] as WindowVirtualizerHandle["scrollToIndex"];
+  export const scrollToIndex: WindowVirtualizerHandle["scrollToIndex"] = (
+    index,
+    opts,
+  ) => _scrollToIndex(driver, store, index, opts);
 
   let containerStyle = $derived(
     styleToString({
@@ -142,7 +141,7 @@
       offset={stateVersion && store.$getItemOffset(index, negative)}
       hide={stateVersion && store.$isUnmeasuredItem(index)}
       {horizontal}
-      resizer={resizer.$observeItem}
+      resizer={driver.$observeItem}
     />
   {/each}
 </div>

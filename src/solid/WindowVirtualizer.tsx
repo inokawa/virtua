@@ -19,8 +19,8 @@ import {
   createVirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_SCROLL_EVENT,
-  createWindowResizer,
-  createWindowScroller,
+  createWindowDriver,
+  scrollToIndex,
   type ItemsRange,
   type ScrollToIndexOpts,
   type CacheSnapshot,
@@ -145,8 +145,7 @@ export const WindowVirtualizer = <T,>(
     cache,
     !itemSize,
   );
-  const resizer = createWindowResizer(store, horizontal);
-  const scroller = createWindowScroller(store, horizontal);
+  const driver = createWindowDriver(store, horizontal);
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
@@ -171,7 +170,7 @@ export const WindowVirtualizer = <T,>(
   });
   const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
   const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
-  const isNegative = createMemo(() => stateVersion() && scroller.$isNegative());
+  const isNegative = createMemo(() => stateVersion() && driver.$isNegative());
 
   onMount(() => {
     if (props.ref) {
@@ -188,12 +187,12 @@ export const WindowVirtualizer = <T,>(
         findItemIndex: store.$findItemIndex,
         getItemOffset: store.$getItemOffset,
         getItemSize: store.$getItemSize,
-        scrollToIndex: scroller.$scrollToIndex,
+        scrollToIndex: (index, opts) =>
+          scrollToIndex(driver, store, index, opts),
       });
     }
 
-    resizer.$observeRoot(containerRef!);
-    scroller.$observe(containerRef!);
+    driver.$observe(containerRef!);
 
     onCleanup(() => {
       if (props.ref) {
@@ -201,14 +200,13 @@ export const WindowVirtualizer = <T,>(
       }
 
       store.$dispose();
-      resizer.$dispose();
-      scroller.$dispose();
+      driver.$dispose();
     });
   });
 
   createEffect(
     on(stateVersion, () => {
-      scroller.$fixScrollJump();
+      driver.$fixScrollJump();
     }),
   );
 
@@ -257,7 +255,7 @@ export const WindowVirtualizer = <T,>(
           return (
             <ListItem
               _index={itemIndex()}
-              _resizer={resizer.$observeItem}
+              _resizer={driver.$observeItem}
               _offset={offset()}
               _hide={hide()}
               _children={children()}

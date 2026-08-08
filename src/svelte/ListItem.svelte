@@ -1,6 +1,6 @@
 <script lang="ts" generics="T">
   import { type Snippet, onDestroy } from "svelte";
-  import { type ItemResizeObserver } from "../core/index.js";
+  import { type Driver } from "../core/index.js";
   import { styleToString, type ItemAttrs } from "./utils.js";
   import type { SvelteHTMLElements } from "svelte/elements";
 
@@ -13,7 +13,7 @@
     hide: boolean;
     horizontal: boolean;
     isSSR?: boolean;
-    resizer: ItemResizeObserver;
+    resizer: Driver["$observeItem"];
     itemProps?: ItemAttrs | undefined;
   }
 
