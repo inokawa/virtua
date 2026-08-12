@@ -6,6 +6,7 @@ import dts from "vite-plugin-dts";
 import solid from "vite-plugin-solid";
 import vueJsx from "unplugin-vue-jsx/vite";
 import angular from "@analogjs/vite-plugin-angular";
+import { octane } from "octane/compiler/vite";
 import pkg from "./package.json" with { type: "json" };
 import annotateVueVNode from "./scripts/babel-plugin-annotate-vue-vnode.js";
 
@@ -102,7 +103,7 @@ export default defineConfig(({ mode }): UserConfig => {
             tsconfigPath: "./tsconfig.json",
             include: ["src"],
             // angular d.ts are emitted by ngc with tsconfig.angular.build.json
-            exclude: ["**/*.{spec,stories}.*", "src/angular"],
+            exclude: ["**/*.{spec,stories}.*", "src/angular", "src/octane"],
             beforeWriteFile: (filePath, content) =>
               filePath.endsWith(`core${path.sep}index.d.ts`)
                 ? { content: "// @ts-nocheck\n" + content }
@@ -239,6 +240,38 @@ export default defineConfig(({ mode }): UserConfig => {
           }),
         ],
       };
+    case "octane":
+    case "octane-ssr": {
+      const server = mode === "octane-ssr";
+      return {
+        plugins: [octane({ ssr: server })],
+        resolve: {
+          alias: server
+            ? [{ find: /^octane$/, replacement: "octane/server" }]
+            : [],
+          extensions: [".tsrx", ".ts", ".mjs", ".js", ".json"],
+        },
+        build: {
+          ...shared,
+          outDir: server ? "lib/octane/server" : "lib/octane/client",
+          lib: {
+            entry: "src/octane/index.ts",
+            formats: ["es"],
+            fileName: () => "index.js",
+          },
+          rolldownOptions: {
+            external,
+            output: {
+              banner:
+                "// octane-no-slot: compiler-assigned hook slots are already present.",
+              ...(server && { paths: { octane: "octane/server" } }),
+            },
+          },
+          minify: "terser",
+          terserOptions: terserOptions(),
+        },
+      };
+    }
     default:
       throw new Error(`unknown build mode: ${mode}`);
   }

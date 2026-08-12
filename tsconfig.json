@@ -24,6 +24,6 @@
     "allowUnusedLabels": false,
     "stripInternal": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "include": ["src", "scripts"],
+  "exclude": ["node_modules", "src/octane"]
 }

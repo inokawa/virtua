@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/virtua) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/virtua) ![npm](https://img.shields.io/npm/dw/virtua) [![Best of JS](https://img.shields.io/endpoint?url=https://bestofjs-serverless.now.sh/api/project-badge?fullName=inokawa%2Fvirtua%26since=daily)](https://bestofjs.org/projects/virtua) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/inokawa/virtua) [![check](https://github.com/inokawa/virtua/actions/workflows/check.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/check.yml) [![demo](https://github.com/inokawa/virtua/actions/workflows/demo.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/demo.yml)
 
-> A zero-config, fast and small (~3kB) virtual list (and grid) component for [React](https://github.com/facebook/react), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/), [Svelte](https://svelte.dev/) and [Angular](https://angular.dev/).
+> A zero-config, fast and small (~3kB) virtual list (and grid) component for [React](https://github.com/facebook/react), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/), [Svelte](https://svelte.dev/), [Angular](https://angular.dev/) and [Octane](https://github.com/octanejs/octane).
 
 ![example](./example.gif)
 
@@ -16,7 +16,7 @@ This project is a challenge to rethink virtualization. The goals are...
 - **Fast:** Natural virtual scrolling needs optimization in many aspects (eliminate frame drops by reducing CPU usage and GC, reduce [synchronous layout recalculation](https://gist.github.com/paulirish/5d52fb081b3570c81e3a), reduce visual jumps on repaint, optimize with CSS, optimize for JIT, optimize for frameworks, etc). We are trying to combine the best of them.
 - **Small:** Its bundle size should be small as much as possible to be friendly with modern web development. Currently each components are ~3kB gzipped and tree-shakeable.
 - **Flexible:** Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, RTL, mobile, infinite scrolling, scroll restoration, DnD, keyboard navigation, sticky, placeholder and more. See [live demo](#demo).
-- **Framework agnostic:** [React](https://react.dev/), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/), [Svelte](https://svelte.dev/) and [Angular](https://angular.dev/) are supported. We could support other frameworks in the future.
+- **Framework agnostic:** [React](https://react.dev/), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/), [Svelte](https://svelte.dev/), [Angular](https://angular.dev/) and [Octane](https://github.com/octanejs/octane) are supported. We could support other frameworks in the future.
 
 ## Demo
 
@@ -313,6 +313,33 @@ export class App {
 }
 ```
 
+### Octane
+
+`octane >= 0.1.36` is required. The Octane entry exports `VList`,
+`Virtualizer`, and `WindowVirtualizer`; the experimental grid is not yet part of
+this adapter.
+
+```tsx
+import { VList } from "virtua/octane";
+
+const data = Array.from({ length: 1000 }, (_, index) => ({
+  id: index,
+  label: `Item ${index}`,
+}));
+
+export function App() {
+  return (
+    <VList data={data} style={{ height: 800 }}>
+      {(item, index) => (
+        <div key={item.id} style={{ height: 50 }}>
+          {item.label}
+        </div>
+      )}
+    </VList>
+  );
+}
+```
+
 ### Other bindings
 
 - [vanilla-virtua](https://github.com/aabccd021/vanilla-virtua): virtua for vanilla js
@@ -390,9 +417,9 @@ And do not use index of items as `key`, especially when you want to toggle `shif
 
 `viewportSize` will be calculated by ResizeObserver so it's 0 until the first measurement.
 
-#### What is `Cannot find module 'virtua/vue(solid|svelte|angular)' or its corresponding type declarations` error?
+#### What is `Cannot find module 'virtua/vue(solid|svelte|angular|octane)' or its corresponding type declarations` error?
 
-This package uses [exports of package.json](https://nodejs.org/api/packages.html#package-entry-points) for entry point of Vue/Solid/Svelte/Angular adapter. This field can't be resolved in TypeScript with `moduleResolution: node`. Try `moduleResolution: bundler` or `moduleResolution: nodenext` instead.
+This package uses [exports of package.json](https://nodejs.org/api/packages.html#package-entry-points) for entry point of Vue/Solid/Svelte/Angular/Octane adapters. This field can't be resolved in TypeScript with `moduleResolution: node`. Try `moduleResolution: bundler` or `moduleResolution: nodenext` instead.
 
 ## Comparison
 

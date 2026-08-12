@@ -1,7 +1,7 @@
 {
   "name": "virtua",
   "version": "0.50.1",
-  "description": "A zero-config, fast and small (~3kB) virtual list (and grid) component for React, Vue, Solid, Svelte and Angular.",
+  "description": "A zero-config, fast and small (~3kB) virtual list (and grid) component for React, Vue, Solid, Svelte, Angular and Octane.",
   "main": "lib/index.cjs",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -33,6 +33,12 @@
       "types": "./lib/angular/index.d.ts",
       "default": "./lib/angular/index.js"
     },
+    "./octane": {
+      "types": "./lib/octane/index.d.ts",
+      "browser": "./lib/octane/client/index.js",
+      "node": "./lib/octane/server/index.js",
+      "default": "./lib/octane/client/index.js"
+    },
     "./unstable_core": {
       "types": "./lib/core/index.d.ts",
       "require": "./lib/core/index.cjs",
@@ -44,14 +50,15 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "rimraf lib && vite build -c vite.build.config.ts -m react && vite build -c vite.build.config.ts -m vue && vite build -c vite.build.config.ts -m solid && vite build -c vite.build.config.ts -m solid-ssr && vite build -c vite.build.config.ts -m core && vite build -c vite.build.config.ts -m svelte && vite build -c vite.build.config.ts -m angular && ngc -p tsconfig.angular.build.json && node scripts/copy-angular-dts.js",
-    "tsc": "tsc -p . --noEmit",
-    "test": "vitest run --project=unit --project=react --project=vue --project=solid --project=svelte --project=angular",
-    "lint": "eslint '{src,e2e}/**/*.{js,jsx,ts,tsx}' --cache",
+    "build": "rimraf lib && vite build -c vite.build.config.ts -m react && vite build -c vite.build.config.ts -m vue && vite build -c vite.build.config.ts -m solid && vite build -c vite.build.config.ts -m solid-ssr && vite build -c vite.build.config.ts -m core && vite build -c vite.build.config.ts -m svelte && vite build -c vite.build.config.ts -m angular && ngc -p tsconfig.angular.build.json && node scripts/copy-angular-dts.js && vite build -c vite.build.config.ts -m octane && vite build -c vite.build.config.ts -m octane-ssr && node scripts/build-octane-dts.js && node scripts/check-octane-package.js",
+    "tsc": "tsc -p . --noEmit && node scripts/build-octane-dts.js --check",
+    "test": "vitest run --project=unit --project=react --project=vue --project=solid --project=svelte --project=angular --project=octane --project=octane-ssr --project=octane-browser",
+    "lint": "eslint '{src,e2e}/**/*.{js,jsx,ts,tsx}' 'scripts/**/*.js' --cache",
     "format": "prettier '**/*.{js,ts,jsx,tsx,vue,svelte}' --write --cache",
     "format:ci": "prettier '**/*.{js,ts,jsx,tsx,vue,svelte}' -l",
     "check:svelte": "svelte-check --tsconfig ./tsconfig.svelte.json",
     "check:angular": "ngc -p tsconfig.angular.json --noEmit",
+    "check:octane": "node scripts/check-octane-package.js",
     "storybook": "storybook dev -p 6006",
     "storybook:rtl": "STORYBOOK_RTL=1 npm run storybook",
     "storybook:vue": "STORYBOOK_VUE=1 npm run storybook",
@@ -90,6 +97,7 @@
     "@faker-js/faker": "^10.3.0",
     "@formkit/auto-animate": "^0.10.0",
     "@mui/material": "^9.0.0",
+    "@octanejs/testing-library": "^0.1.33",
     "@playwright/test": "^1.56.0",
     "@radix-ui/colors": "^3.0.0",
     "@radix-ui/react-icons": "^1.3.2",
@@ -128,6 +136,7 @@
     "eslint-plugin-solid": "^0.14.5",
     "eslint-plugin-vue": "^10.10.0",
     "jsdom": "^29.0.0",
+    "octane": "^0.1.36",
     "prettier": "^3.8.3",
     "prettier-plugin-svelte": "^4.0.0",
     "re-resizable": "^6.11.2",
@@ -177,6 +186,7 @@
   "peerDependencies": {
     "@angular/common": ">=20.0.0",
     "@angular/core": ">=20.0.0",
+    "octane": ">=0.1.36",
     "react": ">=16.14.0",
     "react-dom": ">=16.14.0",
     "solid-js": ">=1.0",
@@ -188,6 +198,9 @@
       "optional": true
     },
     "@angular/core": {
+      "optional": true
+    },
+    "octane": {
       "optional": true
     },
     "react": {
@@ -217,6 +230,7 @@
     "solid",
     "svelte",
     "angular",
+    "octane",
     "ui",
     "headless",
     "list",

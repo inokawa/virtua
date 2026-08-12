@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.json",
+  "tsrx": {
+    "compiler": "octane/compiler"
+  },
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "jsxImportSource": "octane",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "types": ["node"],
+    "plugins": [
+      {
+        "name": "@tsrx/typescript-plugin"
+      }
+    ]
+  },
+  "include": ["./**/*", "../../spec/octane-fixtures.tsrx"],
+  "exclude": ["../../node_modules"]
+}

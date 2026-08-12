@@ -80,6 +80,10 @@ export default [
               target: ["./src/angular/**/*"],
               from: ["./src/!(core|angular)/**/*", "./src/core/!(index.ts)"],
             },
+            {
+              target: ["./src/octane/**/*"],
+              from: ["./src/!(core|octane)/**/*", "./src/core/!(index.ts)"],
+            },
           ],
         },
       ],

@@ -8,6 +8,7 @@ import { svelte } from "@sveltejs/vite-plugin-svelte";
 import angular from "@analogjs/vite-plugin-angular";
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { playwright } from "@vitest/browser-playwright";
+import { octane } from "octane/compiler/vite";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -72,6 +73,67 @@ export default defineConfig({
           // Resolve svelte's client (browser) build so `mount` works in jsdom.
           // The SSR spec runs in the node environment and is unaffected.
           conditions: ["browser"],
+        },
+      },
+      {
+        plugins: [octane()],
+        resolve: {
+          extensions: [".tsrx", ".ts", ".mjs", ".js", ".json"],
+        },
+        test: {
+          name: "octane",
+          dir: "src/octane",
+          include: ["**/*.spec.ts"],
+          exclude: ["**/*.ssr.spec.ts", "**/*.browser.spec.ts"],
+          environment: "jsdom",
+          setupFiles: ["./spec/setup.ts"],
+        },
+      },
+      {
+        plugins: [octane({ ssr: true })],
+        resolve: {
+          alias: [
+            {
+              find: /^octane$/,
+              replacement: path.join(
+                dirname,
+                "node_modules/octane/dist/server/index.js",
+              ),
+            },
+          ],
+          extensions: [".tsrx", ".ts", ".mjs", ".js", ".json"],
+        },
+        test: {
+          name: "octane-ssr",
+          dir: "src/octane",
+          include: ["**/*.ssr.spec.ts"],
+          environment: "node",
+        },
+      },
+      {
+        plugins: [octane()],
+        resolve: {
+          extensions: [".tsrx", ".ts", ".mjs", ".js", ".json"],
+        },
+        optimizeDeps: {
+          include: ["@testing-library/dom"],
+        },
+        test: {
+          name: "octane-browser",
+          include: ["src/octane/**/*.browser.spec.ts"],
+          onUnhandledError(error) {
+            // Chromium defers a ResizeObserver delivery while measured list styles converge.
+            return !String(error).includes(
+              "ResizeObserver loop completed with undelivered notifications",
+            );
+          },
+          browser: {
+            enabled: true,
+            headless: true,
+            provider: playwright(),
+            instances: [{ browser: "chromium" }],
+            screenshotFailures: false,
+          },
         },
       },
       {
