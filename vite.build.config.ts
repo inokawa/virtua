@@ -262,8 +262,10 @@ export default defineConfig(({ mode }): UserConfig => {
           rolldownOptions: {
             external,
             output: {
-              banner:
-                "// octane-no-slot: compiler-assigned hook slots are already present.",
+              // postBanner is applied after minification so terser does not
+              // strip the marker line comment the octane compiler looks for
+              postBanner:
+                "// octane-no-slot: compiler-assigned hook slots are already present.\n",
               ...(server && { paths: { octane: "octane/server" } }),
             },
           },

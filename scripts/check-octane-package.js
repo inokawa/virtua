@@ -44,6 +44,20 @@ assert.ok(
   (clientSource.match(/Symbol\(/g) ?? []).length >= 20,
   "Octane bundle is missing generated hook call-site slots",
 );
+// The marker line comment tells the consumer's octane compiler to skip hook
+// re-slotting of these pre-compiled bundles. It must survive minification,
+// so it is injected with postBanner (terser strips a plain banner).
+const noSlotMarker = /\/\/\s*octane-no-slot\b/;
+assert.match(
+  clientSource,
+  noSlotMarker,
+  "octane-no-slot marker is missing from the client bundle",
+);
+assert.match(
+  serverSource,
+  noSlotMarker,
+  "octane-no-slot marker is missing from the server bundle",
+);
 
 const octaneGzipSize = gzipSync(clientSource).byteLength;
 const reactGzipSize = gzipSync(readFileSync(reactEntry)).byteLength;
