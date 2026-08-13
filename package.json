@@ -1,7 +1,7 @@
 {
   "name": "virtua",
   "version": "0.50.1",
-  "description": "A zero-config, fast and small (~3kB) virtual list (and grid) component for React, Vue, Solid, Svelte, Angular and Octane.",
+  "description": "A zero-config, fast and small (~3kB) virtual list component for React, Vue, Solid, Svelte, Angular and Octane, with grid support on selected adapters.",
   "main": "lib/index.cjs",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",

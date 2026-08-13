@@ -1,4 +1,5 @@
 import { strict as assert } from "node:assert";
+import { execFileSync } from "node:child_process";
 import {
   mkdtempSync,
   readFileSync,
@@ -75,8 +76,43 @@ for (const name of ["VList", "Virtualizer", "WindowVirtualizer"]) {
   );
 }
 
-const temporaryRoot = mkdtempSync(join(projectRoot, ".octane-consumer-"));
+const temporaryRoot = mkdtempSync(join(tmpdir(), "virtua-octane-consumer-"));
 try {
+  // Reason: install the exact publishable tarball in an isolated directory so
+  // workspace links cannot hide missing files or dependency declarations.
+  const packOutput = execFileSync(
+    "npm",
+    ["pack", "--pack-destination", temporaryRoot],
+    {
+      cwd: projectRoot,
+      encoding: "utf8",
+    },
+  );
+  const tarballName = packOutput.trim().split("\n").at(-1);
+  assert.ok(tarballName, "npm pack did not return a tarball name");
+  writeFileSync(
+    join(temporaryRoot, "package.json"),
+    JSON.stringify({
+      name: "virtua-octane-consumer",
+      private: true,
+      type: "module",
+      allowScripts: { "@tsrx/core": true },
+      dependencies: {
+        octane: "^0.1.36",
+        virtua: `file:${join(temporaryRoot, tarballName)}`,
+      },
+    }),
+  );
+  execFileSync("npm", ["install", "--no-package-lock"], {
+    cwd: temporaryRoot,
+    stdio: "inherit",
+    env: Object.fromEntries(
+      Object.entries(process.env).filter(
+        ([name]) => name.toLowerCase() !== "npm_config_allow_scripts",
+      ),
+    ),
+  });
+
   const entry = join(temporaryRoot, "consumer.tsrx");
   const consumerSource = `import { VList, type VListHandle } from "virtua/octane";
 const items = [{ id: 1, label: "one" }];
@@ -105,7 +141,7 @@ export function Consumer() {
     0,
     ts.formatDiagnosticsWithColorAndContext(diagnostics, {
       getCanonicalFileName: (file) => file,
-      getCurrentDirectory: () => projectRoot,
+      getCurrentDirectory: () => temporaryRoot,
       getNewLine: () => "\n",
     }),
   );
