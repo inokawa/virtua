@@ -16,8 +16,7 @@ setupResizeJsDom({
 
 const range = (length: number) => Array.from({ length }).map((_, i) => i);
 
-// Virtualizer observes its parent element as the scrollable container, so it
-// has to be rendered inside a scrollable element.
+// Virtualizer observes its parent element as the scrollable container, so it has to be rendered inside a scrollable element.
 const ScrollContainer = defineComponent({
   inheritAttrs: false,
   setup(_, { attrs, slots }) {
