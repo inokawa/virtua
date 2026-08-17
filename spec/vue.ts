@@ -1,7 +1,7 @@
 import { vi } from "vitest";
 import { render as _render } from "@testing-library/vue";
 
-export const render = async (...args: Parameters<typeof _render>) => {
+export const render = async <T>(...args: Parameters<typeof _render<T>>) => {
   const res = _render(...args);
   let same = false;
   let prev = res.baseElement.innerHTML;
