@@ -22,3 +22,7 @@ export const render = async <T>(...args: Parameters<typeof _render<T>>) => {
   }
   return res;
 };
+
+export type SlotType<T extends abstract new (...args: any) => any> = Parameters<
+  InstanceType<T>["$slots"]["default"]
+>[0];
