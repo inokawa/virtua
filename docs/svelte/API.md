@@ -11,6 +11,7 @@
 - [VirtualizerProps](interfaces/VirtualizerProps.md)
 - [VirtualizerHandle](interfaces/VirtualizerHandle.md)
 - [WindowVirtualizerProps](interfaces/WindowVirtualizerProps.md)
+- [WindowVirtualizerHandle](interfaces/WindowVirtualizerHandle.md)
 
 ## References
 

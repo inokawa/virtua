@@ -4,7 +4,7 @@
 
 # Interface: VGridHandle
 
-Defined in: [src/react/VGrid.tsx:108](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L108)
+Defined in: [src/react/VGrid.tsx:108](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L108)
 
 Methods of [VGrid](../variables/experimental_VGrid.md).
 
@@ -14,7 +14,7 @@ Methods of [VGrid](../variables/experimental_VGrid.md).
 
 > **getRowOffset**(`index`): `number`
 
-Defined in: [src/react/VGrid.tsx:147](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L147)
+Defined in: [src/react/VGrid.tsx:147](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L147)
 
 Get row offset from start.
 
@@ -36,7 +36,7 @@ index of row
 
 > **getColOffset**(`index`): `number`
 
-Defined in: [src/react/VGrid.tsx:152](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L152)
+Defined in: [src/react/VGrid.tsx:152](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L152)
 
 Get col offset from start.
 
@@ -58,7 +58,7 @@ index of col
 
 > **getRowSize**(`index`): `number`
 
-Defined in: [src/react/VGrid.tsx:157](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L157)
+Defined in: [src/react/VGrid.tsx:157](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L157)
 
 Get row size.
 
@@ -80,7 +80,7 @@ index of row
 
 > **getColSize**(`index`): `number`
 
-Defined in: [src/react/VGrid.tsx:162](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L162)
+Defined in: [src/react/VGrid.tsx:162](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L162)
 
 Get col size.
 
@@ -102,7 +102,7 @@ index of col
 
 > **resizeCols**(`cols`): `void`
 
-Defined in: [src/react/VGrid.tsx:167](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L167)
+Defined in: [src/react/VGrid.tsx:167](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L167)
 
 Resize individual columns.
 
@@ -124,7 +124,7 @@ array of `[index, size]` to update column sizes
 
 > **resizeRows**(`rows`): `void`
 
-Defined in: [src/react/VGrid.tsx:172](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L172)
+Defined in: [src/react/VGrid.tsx:172](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L172)
 
 Resize individual rows.
 
@@ -146,7 +146,7 @@ array of `[index, size]` to update row sizes
 
 > **scrollToIndex**(`indexX?`, `indexY?`): `void`
 
-Defined in: [src/react/VGrid.tsx:178](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L178)
+Defined in: [src/react/VGrid.tsx:178](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L178)
 
 Scroll to the item specified by index.
 
@@ -174,7 +174,7 @@ vertical index of item
 
 > **scrollTo**(`offsetX?`, `offsetY?`): `void`
 
-Defined in: [src/react/VGrid.tsx:184](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L184)
+Defined in: [src/react/VGrid.tsx:184](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L184)
 
 Scroll to the given offset.
 
@@ -202,7 +202,7 @@ offset from top
 
 > **scrollBy**(`offsetX?`, `offsetY?`): `void`
 
-Defined in: [src/react/VGrid.tsx:190](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L190)
+Defined in: [src/react/VGrid.tsx:190](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L190)
 
 Scroll by the given offset.
 
@@ -230,7 +230,7 @@ vertical offset from current position
 
 > `readonly` **scrollTop**: `number`
 
-Defined in: [src/react/VGrid.tsx:112](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L112)
+Defined in: [src/react/VGrid.tsx:112](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L112)
 
 Get current scrollTop.
 
@@ -240,7 +240,7 @@ Get current scrollTop.
 
 > `readonly` **scrollLeft**: `number`
 
-Defined in: [src/react/VGrid.tsx:116](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L116)
+Defined in: [src/react/VGrid.tsx:116](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L116)
 
 Get current scrollLeft.
 
@@ -250,7 +250,7 @@ Get current scrollLeft.
 
 > `readonly` **scrollHeight**: `number`
 
-Defined in: [src/react/VGrid.tsx:120](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L120)
+Defined in: [src/react/VGrid.tsx:120](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L120)
 
 Get current scrollHeight.
 
@@ -260,7 +260,7 @@ Get current scrollHeight.
 
 > `readonly` **scrollWidth**: `number`
 
-Defined in: [src/react/VGrid.tsx:124](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L124)
+Defined in: [src/react/VGrid.tsx:124](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L124)
 
 Get current scrollWidth.
 
@@ -270,7 +270,7 @@ Get current scrollWidth.
 
 > `readonly` **viewportHeight**: `number`
 
-Defined in: [src/react/VGrid.tsx:128](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L128)
+Defined in: [src/react/VGrid.tsx:128](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L128)
 
 Get current offsetHeight.
 
@@ -280,7 +280,7 @@ Get current offsetHeight.
 
 > `readonly` **viewportWidth**: `number`
 
-Defined in: [src/react/VGrid.tsx:132](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L132)
+Defined in: [src/react/VGrid.tsx:132](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L132)
 
 Get current offsetWidth.
 
@@ -290,7 +290,7 @@ Get current offsetWidth.
 
 > **findRowIndex**: (`offset`) => `number`
 
-Defined in: [src/react/VGrid.tsx:137](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L137)
+Defined in: [src/react/VGrid.tsx:137](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L137)
 
 Find nearest row index from offset.
 
@@ -312,7 +312,7 @@ offset in pixels from the start of the scroll container
 
 > **findColIndex**: (`offset`) => `number`
 
-Defined in: [src/react/VGrid.tsx:142](https://github.com/inokawa/virtua/blob/ad645ca4fb9921adbf297457a1f43d806d57cfc8/src/react/VGrid.tsx#L142)
+Defined in: [src/react/VGrid.tsx:142](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/react/VGrid.tsx#L142)
 
 Find nearest col index from offset.
 
