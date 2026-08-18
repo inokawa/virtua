@@ -61,6 +61,8 @@
     onscrollend && onscrollend();
   });
 
+  let isSSR = $state(!!ssrCount);
+
   let containerRef: HTMLDivElement | undefined = $state();
 
   let stateVersion: StateVersion = $state(store.$getStateVersion());
@@ -97,6 +99,8 @@
   });
 
   onMount(() => {
+    isSSR = false;
+
     let unmounted = false;
     const container = containerRef!;
     // parent's ref may not exist on mount https://github.com/inokawa/virtua/issues/603 https://github.com/inokawa/virtua/issues/690
@@ -193,6 +197,7 @@
       offset={stateVersion && store.$getItemOffset(index, negative)}
       hide={stateVersion && store.$isUnmeasuredItem(index)}
       {horizontal}
+      {isSSR}
       resizer={resizer.$observeItem}
       itemProps={itemProps?.({ item, index })}
     />
