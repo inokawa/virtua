@@ -16,9 +16,11 @@ import {
   createVirtualStore,
   getScrollSize,
   UPDATE_VIRTUAL_STATE,
-  createGridScroller,
-  createGridResizer,
-  type GridResizer,
+  createContainerGridDriver,
+  type GridDriver,
+  gridScrollTo,
+  gridScrollBy,
+  gridScrollToIndex,
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
 } from "../core/index.js";
@@ -45,7 +47,7 @@ export type CustomCellComponent = React.ForwardRefExoticComponent<
 
 interface CellProps {
   _children: ReactNode;
-  _resizer: GridResizer;
+  _resizer: GridDriver["$observeItem"];
   _rowIndex: number;
   _colIndex: number;
   _top: number;
@@ -73,7 +75,7 @@ const Cell = /*#__PURE__*/ memo(
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
     useIsomorphicLayoutEffect(
-      () => resizer.$observeItem(ref[refKey]!, rowIndex, colIndex),
+      () => resizer(ref[refKey]!, rowIndex, colIndex),
       [colIndex, rowIndex],
     );
 
@@ -278,14 +280,13 @@ export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
     },
     ref,
   ): ReactElement => {
-    const [rowStore, colStore, resizer, scroller] = useStatic(() => {
+    const [rowStore, colStore, driver] = useStatic(() => {
       const _rowStore = createVirtualStore(rowCount, cellHeight, ssrRowCount);
       const _colStore = createVirtualStore(colCount, cellWidth, ssrColCount);
       return [
         _rowStore,
         _colStore,
-        createGridResizer(_rowStore, _colStore),
-        createGridScroller(_rowStore, _colStore),
+        createContainerGridDriver(_rowStore, _colStore),
       ];
     });
     // The elements length and cached items length are different just after element is added/removed.
@@ -339,20 +340,17 @@ export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
       });
 
       const container = containerRef[refKey]!;
-      const viewport = container.parentElement!;
 
-      resizer.$observeRoot(viewport);
-      scroller.$observe(container, viewport);
+      driver.$observe(container);
       return () => {
         rowStore.$dispose();
         colStore.$dispose();
-        resizer.$dispose();
-        scroller.$dispose();
+        driver.$dispose();
       };
     }, []);
 
     useIsomorphicLayoutEffect(() => {
-      scroller.$fixScrollJump();
+      driver.$fixScrollJump();
     }, [rowStateVersion, colStateVersion]);
 
     useImperativeHandle(ref, () => {
@@ -382,14 +380,16 @@ export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
         getRowSize: rowStore.$getItemSize,
         getColSize: colStore.$getItemSize,
         resizeCols(cols) {
-          resizer.$resizeCols(cols);
+          driver.$resizeCols(cols);
         },
         resizeRows(rows) {
-          resizer.$resizeRows(rows);
+          driver.$resizeRows(rows);
         },
-        scrollToIndex: scroller.$scrollToIndex,
-        scrollTo: scroller.$scrollTo,
-        scrollBy: scroller.$scrollBy,
+        scrollToIndex: (row, col) =>
+          gridScrollToIndex(driver, rowStore, colStore, row, col),
+        scrollTo: (row, col) => gridScrollTo(driver, row, col),
+        scrollBy: (row, col) =>
+          gridScrollBy(driver, rowStore, colStore, row, col),
       };
     }, []);
 
@@ -407,7 +407,7 @@ export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
       };
     }, [children]);
 
-    const isNegative = scroller.$isNegative();
+    const isNegative = driver.$isNegative();
 
     const [startRowIndex, endRowIndex] = rowStore.$getRange(bufferSize);
     const [startColIndex, endColIndex] = colStore.$getRange(bufferSize);
@@ -418,7 +418,7 @@ export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
         items.push(
           <Cell
             key={genKey(rowIndex, colIndex)}
-            _resizer={resizer}
+            _resizer={driver.$observeItem}
             _rowIndex={rowIndex}
             _colIndex={colIndex}
             _top={rowStore.$getItemOffset(rowIndex)}

@@ -25,8 +25,10 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
   ACTION_START_OFFSET_CHANGE,
-  createResizer,
-  createScroller,
+  createContainerDriver,
+  scrollTo,
+  scrollBy,
+  scrollToIndex,
   type ItemsRange,
   type ScrollToIndexOpts,
   type CacheSnapshot,
@@ -181,8 +183,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     cache,
     !itemSize,
   );
-  const resizer = createResizer(store, horizontal);
-  const scroller = createScroller(store, horizontal);
+  const driver = createContainerDriver(store, horizontal);
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
@@ -206,7 +207,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   });
   const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
   const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
-  const isNegative = createMemo(() => stateVersion() && scroller.$isNegative());
+  const isNegative = createMemo(() => stateVersion() && driver.$isNegative());
 
   onMount(() => {
     if (props.ref) {
@@ -226,16 +227,14 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         findItemIndex: store.$findItemIndex,
         getItemOffset: store.$getItemOffset,
         getItemSize: store.$getItemSize,
-        scrollToIndex: scroller.$scrollToIndex,
-        scrollTo: scroller.$scrollTo,
-        scrollBy: scroller.$scrollBy,
+        scrollToIndex: (index, opts) =>
+          scrollToIndex(driver, store, index, opts),
+        scrollTo: (offset) => scrollTo(driver, offset),
+        scrollBy: (offset) => scrollBy(driver, store, offset),
       });
     }
 
-    const container = containerRef!;
-    const scrollable = props.scrollRef || container.parentElement!;
-    resizer.$observeRoot(scrollable);
-    scroller.$observe(container, scrollable);
+    driver.$observe(containerRef!, props.scrollRef);
 
     onCleanup(() => {
       if (props.ref) {
@@ -243,8 +242,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
       }
 
       store.$dispose();
-      resizer.$dispose();
-      scroller.$dispose();
+      driver.$dispose();
     });
   });
 
@@ -261,7 +259,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
   createEffect(
     on(stateVersion, () => {
-      scroller.$fixScrollJump();
+      driver.$fixScrollJump();
     }),
   );
 
@@ -311,7 +309,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
       <ListItem
         _as={props.item}
         _index={index()}
-        _resizer={resizer.$observeItem}
+        _resizer={driver.$observeItem}
         _offset={offset()}
         _hide={hide()}
         _children={children()}

@@ -11,7 +11,7 @@ import {
   type Ref,
 } from "vue";
 import {
-  type ItemResizeObserver,
+  type Driver,
   type StateVersion,
   type VirtualStore,
 } from "../core/index.js";
@@ -29,7 +29,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
     _store: { type: Object as PropType<VirtualStore>, required: true },
     _children: { type: Object as PropType<VNode[]>, required: true },
     _resizer: {
-      type: Function as PropType<ItemResizeObserver>,
+      type: Function as PropType<Driver["$observeItem"]>,
       required: true,
     },
     _index: { type: Number, required: true },

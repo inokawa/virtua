@@ -7,13 +7,13 @@ import {
   type ReactNode,
 } from "react";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
-import { type ItemResizeObserver } from "../core/index.js";
+import { type Driver } from "../core/index.js";
 import { refKey } from "./utils.js";
 import { type CustomItemComponent } from "./types.js";
 
 interface ListItemProps {
   _children: ReactNode;
-  _resizer: ItemResizeObserver;
+  _resizer: Driver["$observeItem"];
   _index: number;
   _offset: number;
   _hide: boolean;

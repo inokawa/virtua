@@ -1,7 +1,6 @@
 /**
  * @jsxImportSource solid-js
  */
-import { type ItemResizeObserver } from "../core/index.js";
 import {
   type Component,
   type JSX,
@@ -12,10 +11,11 @@ import {
   type ValidComponent,
 } from "solid-js";
 import { Dynamic } from "solid-js/web";
+import { type Driver } from "../core/index.js";
 
 interface ListItemProps {
   _children: JSX.Element;
-  _resizer: ItemResizeObserver;
+  _resizer: Driver["$observeItem"];
   _index: number;
   _offset: number;
   _hide: boolean;

@@ -9,18 +9,25 @@ export {
   getScrollSize,
   type StateVersion,
 } from "./store.js";
+export type {
+  DriverFactory,
+  Driver,
+  GridDriverFactory,
+  GridDriver,
+} from "./driver.js";
 export {
-  createScroller,
-  createWindowScroller,
-  createGridScroller,
-} from "./scroller.js";
+  createContainerDriver,
+  createWindowDriver,
+  createContainerGridDriver,
+} from "./driver.js";
 export {
-  createResizer,
-  createWindowResizer,
-  type ItemResizeObserver,
-  createGridResizer,
-  type GridResizer,
-} from "./resizer.js";
+  scrollTo,
+  scrollBy,
+  scrollToIndex,
+  gridScrollTo,
+  gridScrollBy,
+  gridScrollToIndex,
+} from "./scroll-to.js";
 export { isBrowser } from "./environment.js";
 export { microtask, sort } from "./utils.js";
 export type { CacheSnapshot, ScrollToIndexOpts, ItemsRange } from "./types.js";

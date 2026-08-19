@@ -27,10 +27,13 @@ import {
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SCROLL_EVENT,
   UPDATE_VIRTUAL_STATE,
-  createResizer,
-  createScroller,
+  createContainerDriver,
+  type Driver,
+  scrollTo,
+  scrollBy,
+  scrollToIndex,
   createVirtualStore,
-  getScrollSize as _getScrollSize,
+  getScrollSize,
   sort,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
@@ -111,7 +114,7 @@ export interface VirtualizerHandle {
         [hide]="item.hide"
         [attrs]="item.attrs"
         [horizontal]="horizontal()"
-        [resizer]="resizer.$observeItem"
+        [resizer]="driver.$observeItem"
       >
         <ng-container
           [ngTemplateOutlet]="template()"
@@ -210,9 +213,7 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
   /** @internal */
   private _store!: ReturnType<typeof createVirtualStore>;
   /** @internal */
-  protected resizer!: ReturnType<typeof createResizer>;
-  /** @internal */
-  private _scroller!: ReturnType<typeof createScroller>;
+  protected driver!: Driver;
   /** @internal */
   private _element: HTMLElement = inject(ElementRef).nativeElement;
   /** @internal */
@@ -257,7 +258,7 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
     const data = this.data();
     const getKey = this.getKey();
     const itemProps = this.itemProps();
-    const negative = this._scroller.$isNegative();
+    const negative = this.driver.$isNegative();
     return this._indexes().map((index) => {
       const item = data[index]!;
       return {
@@ -311,23 +312,20 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
     // parent's ref may not exist on mount https://github.com/inokawa/virtua/issues/603 https://github.com/inokawa/virtua/issues/690
     afterNextRender({
       read: () => {
-        const scrollable = this.scrollRef() ?? this._element.parentElement!;
-        this.resizer.$observeRoot(scrollable);
-        this._scroller.$observe(this._element, scrollable);
+        this.driver.$observe(this._element, this.scrollRef());
       },
     });
 
     afterRenderEffect({
       read: () => {
         this._stateVersion();
-        this._scroller.$fixScrollJump();
+        this.driver.$fixScrollJump();
       },
     });
 
     inject(DestroyRef).onDestroy(() => {
       this._store?.$dispose();
-      this.resizer?.$dispose();
-      this._scroller?.$dispose();
+      this.driver?.$dispose();
     });
   }
 
@@ -340,8 +338,7 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
       this.cache(),
       !itemSize,
     ));
-    this.resizer = createResizer(store, this.horizontal());
-    this._scroller = createScroller(store, this.horizontal());
+    this.driver = createContainerDriver(store, this.horizontal());
     store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
       this._stateVersion.set(store.$getStateVersion());
       if (sync) {
@@ -366,7 +363,7 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
     return this._store.$getScrollOffset();
   }
   getScrollSize(): number {
-    return _getScrollSize(this._store);
+    return getScrollSize(this._store);
   }
   getViewportSize(): number {
     return this._store.$getViewportSize();
@@ -381,12 +378,12 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
     return this._store.$getItemSize(index);
   }
   scrollToIndex(index: number, opts?: ScrollToIndexOpts): void {
-    this._scroller.$scrollToIndex(index, opts);
+    scrollToIndex(this.driver, this._store, index, opts);
   }
   scrollTo(offset: number): void {
-    this._scroller.$scrollTo(offset);
+    scrollTo(this.driver, offset);
   }
   scrollBy(offset: number): void {
-    this._scroller.$scrollBy(offset);
+    scrollBy(this.driver, this._store, offset);
   }
 }

@@ -27,8 +27,9 @@ import {
   UPDATE_SCROLL_EVENT,
   UPDATE_VIRTUAL_STATE,
   createVirtualStore,
-  createWindowResizer,
-  createWindowScroller,
+  createWindowDriver,
+  type Driver,
+  scrollToIndex,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
 import { defaultGetKey, type ItemContext } from "./utils.js";
@@ -93,7 +94,7 @@ export interface WindowVirtualizerHandle {
         [offset]="item.offset"
         [hide]="item.hide"
         [horizontal]="horizontal()"
-        [resizer]="resizer.$observeItem"
+        [resizer]="driver.$observeItem"
       >
         <ng-container
           [ngTemplateOutlet]="template()"
@@ -161,9 +162,7 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
   /** @internal */
   private _store!: ReturnType<typeof createVirtualStore>;
   /** @internal */
-  protected resizer!: ReturnType<typeof createWindowResizer>;
-  /** @internal */
-  private _scroller!: ReturnType<typeof createWindowScroller>;
+  protected driver!: Driver;
   /** @internal */
   private _element: HTMLElement = inject(ElementRef).nativeElement;
   /** @internal */
@@ -178,7 +177,7 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
     const store = this._store;
     const data = this.data();
     const getKey = this.getKey();
-    const negative = this._scroller.$isNegative();
+    const negative = this.driver.$isNegative();
     const [start, end] = store.$getRange(this.bufferSize());
     // https://github.com/inokawa/virtua/pull/847
     const items = [];
@@ -226,22 +225,20 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
 
     afterNextRender({
       read: () => {
-        this.resizer.$observeRoot(this._element);
-        this._scroller.$observe(this._element);
+        this.driver.$observe(this._element);
       },
     });
 
     afterRenderEffect({
       read: () => {
         this._stateVersion();
-        this._scroller.$fixScrollJump();
+        this.driver.$fixScrollJump();
       },
     });
 
     inject(DestroyRef).onDestroy(() => {
       this._store?.$dispose();
-      this.resizer?.$dispose();
-      this._scroller?.$dispose();
+      this.driver?.$dispose();
     });
   }
 
@@ -254,8 +251,7 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
       this.cache(),
       !itemSize,
     ));
-    this.resizer = createWindowResizer(store, this.horizontal());
-    this._scroller = createWindowScroller(store, this.horizontal());
+    this.driver = createWindowDriver(store, this.horizontal());
     store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
       this._stateVersion.set(store.$getStateVersion());
       if (sync) {
@@ -292,6 +288,6 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
     return this._store.$getItemSize(index);
   }
   scrollToIndex(index: number, opts?: ScrollToIndexOpts): void {
-    this._scroller.$scrollToIndex(index, opts);
+    scrollToIndex(this.driver, this._store, index, opts);
   }
 }

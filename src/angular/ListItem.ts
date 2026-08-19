@@ -9,7 +9,7 @@ import {
   input,
   untracked,
 } from "@angular/core";
-import { type ItemResizeObserver } from "../core/index.js";
+import { type Driver } from "../core/index.js";
 import { type ItemProps } from "./utils.js";
 
 /**
@@ -27,7 +27,7 @@ export class ListItem {
   readonly offset = input.required<number>();
   readonly hide = input.required<boolean>();
   readonly horizontal = input.required<boolean>();
-  readonly resizer = input.required<ItemResizeObserver>();
+  readonly resizer = input.required<Driver["$observeItem"]>();
   readonly attrs = input<ReturnType<ItemProps>>();
 
   /** @internal */
