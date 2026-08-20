@@ -12,6 +12,7 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_VIRTUAL_STATE,
   createVirtualStore,
+  createListLayout,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SCROLL_EVENT,
   createWindowDriver,
@@ -169,17 +170,17 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
 
     const isSSR = useRef(!!ssrCount);
 
-    const [store, driver, isHorizontal] = useStatic(() => {
+    const [store, layout, driver, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
-      const _store = createVirtualStore(
-        count,
-        itemSize,
-        ssrCount,
-        cache,
-        !itemSize,
-      );
+      const _layout = createListLayout(count, itemSize, cache);
+      const _store = createVirtualStore(_layout, ssrCount, !itemSize);
 
-      return [_store, createWindowDriver(_store, _isHorizontal), _isHorizontal];
+      return [
+        _store,
+        _layout,
+        createWindowDriver(_store, _isHorizontal),
+        _isHorizontal,
+      ];
     });
     // The elements length and cached items length are different just after element is added/removed.
     if (count !== store.$getItemsLength()) {
@@ -232,7 +233,7 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
     useImperativeHandle(ref, () => {
       return {
         get cache() {
-          return store.$getCacheSnapshot();
+          return layout.$snapshot();
         },
         get scrollOffset() {
           return store.$getScrollOffset();

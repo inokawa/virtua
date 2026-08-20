@@ -13,6 +13,7 @@ import {
   UPDATE_SCROLL_EVENT,
   ACTION_ITEMS_LENGTH_CHANGE,
   createVirtualStore,
+  createListLayout,
   UPDATE_VIRTUAL_STATE,
   UPDATE_SCROLL_END_EVENT,
   getScrollSize,
@@ -206,17 +207,13 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     const onScroll = useLatestRef(onScrollProp);
     const onScrollEnd = useLatestRef(onScrollEndProp);
 
-    const [store, driver, isHorizontal] = useStatic(() => {
+    const [store, layout, driver, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
-      const _store = createVirtualStore(
-        count,
-        itemSize,
-        ssrCount,
-        cache,
-        !itemSize,
-      );
+      const _layout = createListLayout(count, itemSize, cache);
+      const _store = createVirtualStore(_layout, ssrCount, !itemSize);
       return [
         _store,
+        _layout,
         createContainerDriver(_store, _isHorizontal),
         _isHorizontal,
       ];
@@ -304,7 +301,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     useImperativeHandle(ref, () => {
       return {
         get cache() {
-          return store.$getCacheSnapshot();
+          return layout.$snapshot();
         },
         get scrollOffset() {
           return store.$getScrollOffset();

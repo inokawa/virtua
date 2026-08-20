@@ -22,6 +22,7 @@ import {
   UPDATE_SCROLL_END_EVENT,
   UPDATE_VIRTUAL_STATE,
   createVirtualStore,
+  createListLayout,
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
   ACTION_START_OFFSET_CHANGE,
@@ -176,13 +177,8 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     props,
   );
 
-  const store = createVirtualStore(
-    props.data.length,
-    itemSize,
-    undefined,
-    cache,
-    !itemSize,
-  );
+  const layout = createListLayout(props.data.length, itemSize, cache);
+  const store = createVirtualStore(layout, undefined, !itemSize);
   const driver = createContainerDriver(store, horizontal);
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
@@ -213,7 +209,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     if (props.ref) {
       props.ref({
         get cache() {
-          return store.$getCacheSnapshot();
+          return layout.$snapshot();
         },
         get scrollOffset() {
           return store.$getScrollOffset();

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { createListLayout } from "./layouts/list.js";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
   ACTION_VIEWPORT_RESIZE,
@@ -8,7 +9,7 @@ import {
 describe("createVirtualStore", () => {
   describe("$getRange", () => {
     it("should return valid range when viewport becomes 0 after removing all items", () => {
-      const store = createVirtualStore(10, 50);
+      const store = createVirtualStore(createListLayout(10, 50));
 
       // Viewport gets measured
       store.$update(ACTION_VIEWPORT_RESIZE, 500);

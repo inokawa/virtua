@@ -12,6 +12,7 @@
     scrollBy as _scrollBy,
     scrollToIndex as _scrollToIndex,
     createVirtualStore,
+    createListLayout,
     getScrollSize as _getScrollSize,
     sort,
   } from "../core/index.js";
@@ -44,13 +45,8 @@
     onscrollend,
   }: Props = $props();
 
-  const store = createVirtualStore(
-    data.length,
-    itemSize,
-    ssrCount,
-    cache,
-    !itemSize,
-  );
+  const layout = createListLayout(data.length, itemSize, cache);
+  const store = createVirtualStore(layout, ssrCount, !itemSize);
   const driver = createContainerDriver(store, horizontal);
   store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
     stateVersion = store.$getStateVersion();
@@ -139,7 +135,7 @@
   });
 
   export const getCache =
-    store.$getCacheSnapshot satisfies VirtualizerHandle["getCache"] as VirtualizerHandle["getCache"];
+    layout.$snapshot satisfies VirtualizerHandle["getCache"] as VirtualizerHandle["getCache"];
   export const getScrollOffset =
     store.$getScrollOffset satisfies VirtualizerHandle["getScrollOffset"] as VirtualizerHandle["getScrollOffset"];
   export const getScrollSize = (() =>
