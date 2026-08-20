@@ -12,7 +12,12 @@ import {
 } from "@angular/core";
 import { type CacheSnapshot, type ScrollToIndexOpts } from "../core/index.js";
 import { Virtualizer, type VirtualizerHandle } from "./Virtualizer.js";
-import { defaultGetKey, type ItemContext, type ItemProps } from "./utils.js";
+import {
+  ITEM_TEMPLATE,
+  defaultGetKey,
+  type ItemContext,
+  type ItemProps,
+} from "./utils.js";
 
 /**
  * Methods of {@link VList}.
@@ -28,6 +33,9 @@ export interface VListHandle extends VirtualizerHandle {}
   selector: "virtua-vlist",
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [Virtualizer],
+  viewProviders: [
+    { provide: ITEM_TEMPLATE, useFactory: () => inject(VList).template },
+  ],
   template: `
     <div
       virtuaVirtualizer
@@ -40,8 +48,7 @@ export interface VListHandle extends VirtualizerHandle {}
       [shift]="shift()"
       [horizontal]="horizontal()"
       [keepMounted]="keepMounted()"
-      [cache]="cache()"
-      [itemTemplate]="template()"
+      [cache]="cacheProp()"
       (scroll)="scroll.emit($event)"
       (scrollEnd)="scrollEnd.emit()"
     ></div>
@@ -91,11 +98,11 @@ export class VList<T> implements OnInit, VListHandle {
    */
   readonly keepMounted = input<readonly number[]>();
   /**
-   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VListHandle.getCache}.
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VListHandle.cache}.
    *
    * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
    */
-  readonly cache = input<CacheSnapshot>();
+  readonly cacheProp = input<CacheSnapshot>(undefined, { alias: "cache" });
 
   /**
    * Emitted whenever scroll offset changes. The value is current scrollTop, or scrollLeft if horizontal: true.
@@ -107,7 +114,7 @@ export class VList<T> implements OnInit, VListHandle {
   readonly scrollEnd = output<void>();
 
   /** @internal */
-  protected template =
+  readonly template =
     contentChild.required<TemplateRef<ItemContext<T>>>(TemplateRef);
   // not _ prefixed, because the mangler does not rename the property name kept
   // as a string in the partial compilation output
@@ -130,17 +137,17 @@ export class VList<T> implements OnInit, VListHandle {
     );
   }
 
-  getCache(): CacheSnapshot {
-    return this.virtualizer().getCache();
+  get cache(): CacheSnapshot {
+    return this.virtualizer().cache;
   }
-  getScrollOffset(): number {
-    return this.virtualizer().getScrollOffset();
+  get scrollOffset(): number {
+    return this.virtualizer().scrollOffset;
   }
-  getScrollSize(): number {
-    return this.virtualizer().getScrollSize();
+  get scrollSize(): number {
+    return this.virtualizer().scrollSize;
   }
-  getViewportSize(): number {
-    return this.virtualizer().getViewportSize();
+  get viewportSize(): number {
+    return this.virtualizer().viewportSize;
   }
   findItemIndex(offset: number): number {
     return this.virtualizer().findItemIndex(offset);
