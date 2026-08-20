@@ -41,15 +41,15 @@ export interface WindowVirtualizerHandle {
   /**
    * Get current {@link CacheSnapshot}.
    */
-  getCache: () => CacheSnapshot;
+  readonly cache: CacheSnapshot;
   /**
    * Get current scrollTop, or scrollLeft if horizontal: true.
    */
-  getScrollOffset: () => number;
+  readonly scrollOffset: number;
   /**
    * Get current offsetHeight, or offsetWidth if horizontal: true.
    */
-  getViewportSize: () => number;
+  readonly viewportSize: number;
   /**
    * Find nearest item index from offset.
    * @param offset offset in pixels from the start of the scroll container
@@ -139,11 +139,11 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
    */
   readonly horizontal = input(false);
   /**
-   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.getCache}.
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.cache}.
    *
    * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
    */
-  readonly cache = input<CacheSnapshot>();
+  readonly cacheProp = input<CacheSnapshot>(undefined, { alias: "cache" });
 
   /**
    * Emitted whenever scroll offset changes.
@@ -248,7 +248,7 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
       this.data().length,
       itemSize,
       undefined,
-      this.cache(),
+      this.cacheProp(),
       !itemSize,
     ));
     this.driver = createWindowDriver(store, this.horizontal());
@@ -269,13 +269,13 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
     this._stateVersion.set(store.$getStateVersion());
   }
 
-  getCache(): CacheSnapshot {
+  get cache(): CacheSnapshot {
     return this._store.$getCacheSnapshot();
   }
-  getScrollOffset(): number {
+  get scrollOffset(): number {
     return this._store.$getScrollOffset();
   }
-  getViewportSize(): number {
+  get viewportSize(): number {
     return this._store.$getViewportSize();
   }
   findItemIndex(offset: number): number {
