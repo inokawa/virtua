@@ -9,6 +9,8 @@ export {
   getScrollSize,
   type StateVersion,
 } from "./store.js";
+export type { Layout } from "./layouts/types.js";
+export { createListLayout } from "./layouts/list.js";
 export type {
   DriverFactory,
   Driver,

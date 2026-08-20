@@ -17,6 +17,7 @@ import {
   UPDATE_SCROLL_END_EVENT,
   UPDATE_VIRTUAL_STATE,
   createVirtualStore,
+  createListLayout,
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_SCROLL_EVENT,
   createWindowDriver,
@@ -138,13 +139,8 @@ export const WindowVirtualizer = <T,>(
     onScrollEnd: _onScrollEnd,
   } = props;
 
-  const store = createVirtualStore(
-    props.data.length,
-    itemSize,
-    undefined,
-    cache,
-    !itemSize,
-  );
+  const layout = createListLayout(props.data.length, itemSize, cache);
+  const store = createVirtualStore(layout, undefined, !itemSize);
   const driver = createWindowDriver(store, horizontal);
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
@@ -176,7 +172,7 @@ export const WindowVirtualizer = <T,>(
     if (props.ref) {
       props.ref({
         get cache() {
-          return store.$getCacheSnapshot();
+          return layout.$snapshot();
         },
         get scrollOffset() {
           return store.$getScrollOffset();

@@ -27,6 +27,7 @@ import {
   UPDATE_SCROLL_EVENT,
   UPDATE_VIRTUAL_STATE,
   createVirtualStore,
+  createListLayout,
   createWindowDriver,
   type Driver,
   scrollToIndex,
@@ -162,6 +163,8 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
   /** @internal */
   private _store!: ReturnType<typeof createVirtualStore>;
   /** @internal */
+  private _layout!: ReturnType<typeof createListLayout>;
+  /** @internal */
   protected driver!: Driver;
   /** @internal */
   private _element: HTMLElement = inject(ElementRef).nativeElement;
@@ -244,11 +247,14 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
 
   ngOnInit(): void {
     const itemSize = this.itemSize();
-    const store = (this._store = createVirtualStore(
+    const layout = (this._layout = createListLayout(
       this.data().length,
       itemSize,
-      undefined,
       this.cacheProp(),
+    ));
+    const store = (this._store = createVirtualStore(
+      layout,
+      undefined,
       !itemSize,
     ));
     this.driver = createWindowDriver(store, this.horizontal());
@@ -270,7 +276,7 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
   }
 
   get cache(): CacheSnapshot {
-    return this._store.$getCacheSnapshot();
+    return this._layout.$snapshot();
   }
   get scrollOffset(): number {
     return this._store.$getScrollOffset();

@@ -14,6 +14,7 @@ import React, {
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
   createVirtualStore,
+  createListLayout,
   getScrollSize,
   UPDATE_VIRTUAL_STATE,
   createContainerGridDriver,
@@ -281,8 +282,14 @@ export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
     ref,
   ): ReactElement => {
     const [rowStore, colStore, driver] = useStatic(() => {
-      const _rowStore = createVirtualStore(rowCount, cellHeight, ssrRowCount);
-      const _colStore = createVirtualStore(colCount, cellWidth, ssrColCount);
+      const _rowStore = createVirtualStore(
+        createListLayout(rowCount, cellHeight),
+        ssrRowCount,
+      );
+      const _colStore = createVirtualStore(
+        createListLayout(colCount, cellWidth),
+        ssrColCount,
+      );
       return [
         _rowStore,
         _colStore,

@@ -7,6 +7,7 @@
     UPDATE_SCROLL_EVENT,
     UPDATE_VIRTUAL_STATE,
     createVirtualStore,
+    createListLayout,
     getScrollSize as _getScrollSize,
     createWindowDriver,
     scrollToIndex as _scrollToIndex,
@@ -33,13 +34,8 @@
     onscrollend,
   }: Props = $props();
 
-  const store = createVirtualStore(
-    data.length,
-    itemSize,
-    undefined,
-    cache,
-    !itemSize,
-  );
+  const layout = createListLayout(data.length, itemSize, cache);
+  const store = createVirtualStore(layout, undefined, !itemSize);
   const driver = createWindowDriver(store, horizontal);
   store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
     stateVersion = store.$getStateVersion();
@@ -97,7 +93,7 @@
   });
 
   export const getCache =
-    store.$getCacheSnapshot satisfies WindowVirtualizerHandle["getCache"] as WindowVirtualizerHandle["getCache"];
+    layout.$snapshot satisfies WindowVirtualizerHandle["getCache"] as WindowVirtualizerHandle["getCache"];
   export const getScrollOffset =
     store.$getScrollOffset satisfies WindowVirtualizerHandle["getScrollOffset"] as WindowVirtualizerHandle["getScrollOffset"];
   export const getViewportSize =

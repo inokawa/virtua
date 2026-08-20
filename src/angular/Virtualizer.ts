@@ -33,6 +33,7 @@ import {
   scrollBy,
   scrollToIndex,
   createVirtualStore,
+  createListLayout,
   getScrollSize,
   sort,
 } from "../core/index.js";
@@ -214,6 +215,8 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
   /** @internal */
   private _store!: ReturnType<typeof createVirtualStore>;
   /** @internal */
+  private _layout!: ReturnType<typeof createListLayout>;
+  /** @internal */
   protected driver!: Driver;
   /** @internal */
   private _element: HTMLElement = inject(ElementRef).nativeElement;
@@ -332,11 +335,14 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
 
   ngOnInit(): void {
     const itemSize = this.itemSize();
-    const store = (this._store = createVirtualStore(
+    const layout = (this._layout = createListLayout(
       this.data().length,
       itemSize,
-      this.ssrCount(),
       this.cacheProp(),
+    ));
+    const store = (this._store = createVirtualStore(
+      layout,
+      this.ssrCount(),
       !itemSize,
     ));
     this.driver = createContainerDriver(store, this.horizontal());
@@ -358,7 +364,7 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
   }
 
   get cache(): CacheSnapshot {
-    return this._store.$getCacheSnapshot();
+    return this._layout.$snapshot();
   }
   get scrollOffset(): number {
     return this._store.$getScrollOffset();
