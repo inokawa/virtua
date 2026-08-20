@@ -4,7 +4,7 @@
 
 # Interface: WindowVirtualizerHandle
 
-Defined in: [src/vue/WindowVirtualizer.tsx:93](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/WindowVirtualizer.tsx#L93)
+Defined in: [src/vue/WindowVirtualizer.tsx:93](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/WindowVirtualizer.tsx#L93)
 
 Methods of [WindowVirtualizer](../variables/WindowVirtualizer.md).
 
@@ -14,7 +14,7 @@ Methods of [WindowVirtualizer](../variables/WindowVirtualizer.md).
 
 > **findItemIndex**(`offset`): `number`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:110](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/WindowVirtualizer.tsx#L110)
+Defined in: [src/vue/WindowVirtualizer.tsx:110](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/WindowVirtualizer.tsx#L110)
 
 Find nearest item index from offset.
 
@@ -36,7 +36,7 @@ offset in pixels from the start of the scroll container
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:115](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/WindowVirtualizer.tsx#L115)
+Defined in: [src/vue/WindowVirtualizer.tsx:115](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/WindowVirtualizer.tsx#L115)
 
 Get item offset from start.
 
@@ -58,7 +58,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:120](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/WindowVirtualizer.tsx#L120)
+Defined in: [src/vue/WindowVirtualizer.tsx:120](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/WindowVirtualizer.tsx#L120)
 
 Get item size.
 
@@ -80,7 +80,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:126](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/WindowVirtualizer.tsx#L126)
+Defined in: [src/vue/WindowVirtualizer.tsx:126](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/WindowVirtualizer.tsx#L126)
 
 Scroll to the item specified by index.
 
@@ -106,11 +106,11 @@ options
 
 ### cache
 
-> `readonly` **cache**: [`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md)
+> `readonly` **cache**: [`CacheSnapshot`](../../react/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/vue/WindowVirtualizer.tsx:97](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/WindowVirtualizer.tsx#L97)
+Defined in: [src/vue/WindowVirtualizer.tsx:97](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/WindowVirtualizer.tsx#L97)
 
-Get current [CacheSnapshot](../../react/interfaces/CacheSnapshot.md).
+Get current [CacheSnapshot](../../react/type-aliases/CacheSnapshot.md).
 
 ***
 
@@ -118,7 +118,7 @@ Get current [CacheSnapshot](../../react/interfaces/CacheSnapshot.md).
 
 > `readonly` **scrollOffset**: `number`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:101](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/WindowVirtualizer.tsx#L101)
+Defined in: [src/vue/WindowVirtualizer.tsx:101](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/WindowVirtualizer.tsx#L101)
 
 Get current scrollTop, or scrollLeft if horizontal: true.
 
@@ -128,6 +128,6 @@ Get current scrollTop, or scrollLeft if horizontal: true.
 
 > `readonly` **viewportSize**: `number`
 
-Defined in: [src/vue/WindowVirtualizer.tsx:105](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/WindowVirtualizer.tsx#L105)
+Defined in: [src/vue/WindowVirtualizer.tsx:105](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/WindowVirtualizer.tsx#L105)
 
 Get current offsetHeight, or offsetWidth if horizontal: true.

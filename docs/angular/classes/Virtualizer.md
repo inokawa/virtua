@@ -4,7 +4,7 @@
 
 # Class: Virtualizer\<T\>
 
-Defined in: [src/angular/Virtualizer.ts:127](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L127)
+Defined in: [src/angular/Virtualizer.ts:135](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L135)
 
 Customizable list virtualizer for advanced usage. See [VirtualizerHandle](../interfaces/VirtualizerHandle.md).
 
@@ -22,13 +22,101 @@ like `<ul virtuaVirtualizer [data]="data">`.
 - `OnInit`
 - [`VirtualizerHandle`](../interfaces/VirtualizerHandle.md)
 
+## Accessors
+
+### cache
+
+#### Get Signature
+
+> **get** **cache**(): [`CacheSnapshot`](../../react/type-aliases/CacheSnapshot.md)
+
+Defined in: [src/angular/Virtualizer.ts:360](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L360)
+
+Get current [CacheSnapshot](../../react/type-aliases/CacheSnapshot.md).
+
+##### Returns
+
+[`CacheSnapshot`](../../react/type-aliases/CacheSnapshot.md)
+
+Get current [CacheSnapshot](../../react/type-aliases/CacheSnapshot.md).
+
+#### Implementation of
+
+[`VirtualizerHandle`](../interfaces/VirtualizerHandle.md).[`cache`](../interfaces/VirtualizerHandle.md#cache)
+
+***
+
+### scrollOffset
+
+#### Get Signature
+
+> **get** **scrollOffset**(): `number`
+
+Defined in: [src/angular/Virtualizer.ts:363](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L363)
+
+Get current scrollTop, or scrollLeft if horizontal: true.
+
+##### Returns
+
+`number`
+
+Get current scrollTop, or scrollLeft if horizontal: true.
+
+#### Implementation of
+
+[`VirtualizerHandle`](../interfaces/VirtualizerHandle.md).[`scrollOffset`](../interfaces/VirtualizerHandle.md#scrolloffset)
+
+***
+
+### scrollSize
+
+#### Get Signature
+
+> **get** **scrollSize**(): `number`
+
+Defined in: [src/angular/Virtualizer.ts:366](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L366)
+
+Get current scrollHeight, or scrollWidth if horizontal: true.
+
+##### Returns
+
+`number`
+
+Get current scrollHeight, or scrollWidth if horizontal: true.
+
+#### Implementation of
+
+[`VirtualizerHandle`](../interfaces/VirtualizerHandle.md).[`scrollSize`](../interfaces/VirtualizerHandle.md#scrollsize)
+
+***
+
+### viewportSize
+
+#### Get Signature
+
+> **get** **viewportSize**(): `number`
+
+Defined in: [src/angular/Virtualizer.ts:369](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L369)
+
+Get current offsetHeight, or offsetWidth if horizontal: true.
+
+##### Returns
+
+`number`
+
+Get current offsetHeight, or offsetWidth if horizontal: true.
+
+#### Implementation of
+
+[`VirtualizerHandle`](../interfaces/VirtualizerHandle.md).[`viewportSize`](../interfaces/VirtualizerHandle.md#viewportsize)
+
 ## Constructors
 
 ### Constructor
 
 > **new Virtualizer**\<`T`\>(): `Virtualizer`\<`T`\>
 
-Defined in: [src/angular/Virtualizer.ts:291](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L291)
+Defined in: [src/angular/Virtualizer.ts:293](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L293)
 
 #### Returns
 
@@ -40,7 +128,7 @@ Defined in: [src/angular/Virtualizer.ts:291](https://github.com/inokawa/virtua/b
 
 > **ngOnInit**(): `void`
 
-Defined in: [src/angular/Virtualizer.ts:334](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L334)
+Defined in: [src/angular/Virtualizer.ts:333](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L333)
 
 A callback method that is invoked immediately after the
 default change detector has checked the directive's
@@ -58,83 +146,11 @@ It is invoked only once when the directive is instantiated.
 
 ***
 
-### getCache()
-
-> **getCache**(): [`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md)
-
-Defined in: [src/angular/Virtualizer.ts:362](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L362)
-
-Get current [CacheSnapshot](../../react/interfaces/CacheSnapshot.md).
-
-#### Returns
-
-[`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md)
-
-#### Implementation of
-
-[`VirtualizerHandle`](../interfaces/VirtualizerHandle.md).[`getCache`](../interfaces/VirtualizerHandle.md#getcache)
-
-***
-
-### getScrollOffset()
-
-> **getScrollOffset**(): `number`
-
-Defined in: [src/angular/Virtualizer.ts:365](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L365)
-
-Get current scrollTop, or scrollLeft if horizontal: true.
-
-#### Returns
-
-`number`
-
-#### Implementation of
-
-[`VirtualizerHandle`](../interfaces/VirtualizerHandle.md).[`getScrollOffset`](../interfaces/VirtualizerHandle.md#getscrolloffset)
-
-***
-
-### getScrollSize()
-
-> **getScrollSize**(): `number`
-
-Defined in: [src/angular/Virtualizer.ts:368](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L368)
-
-Get current scrollHeight, or scrollWidth if horizontal: true.
-
-#### Returns
-
-`number`
-
-#### Implementation of
-
-[`VirtualizerHandle`](../interfaces/VirtualizerHandle.md).[`getScrollSize`](../interfaces/VirtualizerHandle.md#getscrollsize)
-
-***
-
-### getViewportSize()
-
-> **getViewportSize**(): `number`
-
-Defined in: [src/angular/Virtualizer.ts:371](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L371)
-
-Get current offsetHeight, or offsetWidth if horizontal: true.
-
-#### Returns
-
-`number`
-
-#### Implementation of
-
-[`VirtualizerHandle`](../interfaces/VirtualizerHandle.md).[`getViewportSize`](../interfaces/VirtualizerHandle.md#getviewportsize)
-
-***
-
 ### findItemIndex()
 
 > **findItemIndex**(`offset`): `number`
 
-Defined in: [src/angular/Virtualizer.ts:374](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L374)
+Defined in: [src/angular/Virtualizer.ts:372](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L372)
 
 Find nearest item index from offset.
 
@@ -160,7 +176,7 @@ offset in pixels from the start of the scroll container
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/angular/Virtualizer.ts:377](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L377)
+Defined in: [src/angular/Virtualizer.ts:375](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L375)
 
 Get item offset from start.
 
@@ -186,7 +202,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/angular/Virtualizer.ts:380](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L380)
+Defined in: [src/angular/Virtualizer.ts:378](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L378)
 
 Get item size.
 
@@ -212,7 +228,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/angular/Virtualizer.ts:383](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L383)
+Defined in: [src/angular/Virtualizer.ts:381](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L381)
 
 Scroll to the item specified by index.
 
@@ -244,7 +260,7 @@ options
 
 > **scrollTo**(`offset`): `void`
 
-Defined in: [src/angular/Virtualizer.ts:386](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L386)
+Defined in: [src/angular/Virtualizer.ts:384](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L384)
 
 Scroll to the given offset.
 
@@ -270,7 +286,7 @@ offset from start
 
 > **scrollBy**(`offset`): `void`
 
-Defined in: [src/angular/Virtualizer.ts:389](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L389)
+Defined in: [src/angular/Virtualizer.ts:387](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L387)
 
 Scroll by the given offset.
 
@@ -296,7 +312,7 @@ offset from current position
 
 > `readonly` **data**: `InputSignal`\<readonly `T`[]\>
 
-Defined in: [src/angular/Virtualizer.ts:131](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L131)
+Defined in: [src/angular/Virtualizer.ts:139](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L139)
 
 The data items rendered by this component.
 
@@ -306,7 +322,7 @@ The data items rendered by this component.
 
 > `readonly` **getKey**: `InputSignal`\<(`data`, `index`) => `string` \| `number`\>
 
-Defined in: [src/angular/Virtualizer.ts:136](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L136)
+Defined in: [src/angular/Virtualizer.ts:144](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L144)
 
 Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
 
@@ -322,7 +338,7 @@ defaultGetKey (returns index of item)
 
 > `readonly` **itemProps**: `InputSignal`\<`ItemProps`\<`T`\> \| `undefined`\>
 
-Defined in: [src/angular/Virtualizer.ts:141](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L141)
+Defined in: [src/angular/Virtualizer.ts:149](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L149)
 
 A function that provides properties/attributes for item element
 
@@ -332,7 +348,7 @@ A function that provides properties/attributes for item element
 
 > `readonly` **bufferSize**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/Virtualizer.ts:146](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L146)
+Defined in: [src/angular/Virtualizer.ts:154](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L154)
 
 Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -348,7 +364,7 @@ Extra item space in pixels to render before/after the viewport. The minimum valu
 
 > `readonly` **scrollRef**: `InputSignal`\<`HTMLElement` \| `undefined`\>
 
-Defined in: [src/angular/Virtualizer.ts:150](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L150)
+Defined in: [src/angular/Virtualizer.ts:158](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L158)
 
 Reference to the scrollable element. The default will get the direct parent element of virtualizer.
 
@@ -358,7 +374,7 @@ Reference to the scrollable element. The default will get the direct parent elem
 
 > `readonly` **itemSize**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/Virtualizer.ts:157](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L157)
+Defined in: [src/angular/Virtualizer.ts:165](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L165)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -371,7 +387,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `readonly` **ssrCount**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/Virtualizer.ts:161](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L161)
+Defined in: [src/angular/Virtualizer.ts:169](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L169)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -381,7 +397,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `readonly` **shift**: `InputSignal`\<`boolean`\>
 
-Defined in: [src/angular/Virtualizer.ts:165](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L165)
+Defined in: [src/angular/Virtualizer.ts:173](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L173)
 
 While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
 
@@ -391,7 +407,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 > `readonly` **horizontal**: `InputSignal`\<`boolean`\>
 
-Defined in: [src/angular/Virtualizer.ts:169](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L169)
+Defined in: [src/angular/Virtualizer.ts:177](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L177)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -401,19 +417,19 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `readonly` **keepMounted**: `InputSignal`\<readonly `number`[] \| `undefined`\>
 
-Defined in: [src/angular/Virtualizer.ts:173](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L173)
+Defined in: [src/angular/Virtualizer.ts:181](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L181)
 
 List of indexes that should be always mounted, even when off screen.
 
 ***
 
-### cache
+### cacheProp
 
-> `readonly` **cache**: `InputSignal`\<[`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md) \| `undefined`\>
+> `readonly` **cacheProp**: `InputSignal`\<[`CacheSnapshot`](../../react/type-aliases/CacheSnapshot.md) \| `undefined`\>
 
-Defined in: [src/angular/Virtualizer.ts:179](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L179)
+Defined in: [src/angular/Virtualizer.ts:187](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L187)
 
-You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VirtualizerHandle.getCache](../interfaces/VListHandle.md#getcache).
+You can restore cache by passing a [CacheSnapshot](../../react/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VirtualizerHandle.cache](../interfaces/VListHandle.md#cache).
 
 **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
 
@@ -423,7 +439,7 @@ You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheS
 
 > `readonly` **startMargin**: `InputSignal`\<`number`\>
 
-Defined in: [src/angular/Virtualizer.ts:183](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L183)
+Defined in: [src/angular/Virtualizer.ts:191](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L191)
 
 The offset to the scrollable parent before virtualizer in pixels. If you put an element before virtualizer, you have to set its height to this prop.
 
@@ -433,7 +449,7 @@ The offset to the scrollable parent before virtualizer in pixels. If you put an 
 
 > `readonly` **scroll**: `OutputEmitterRef`\<`number`\>
 
-Defined in: [src/angular/Virtualizer.ts:188](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L188)
+Defined in: [src/angular/Virtualizer.ts:196](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L196)
 
 Emitted whenever scroll offset changes. The value is current scrollTop, or scrollLeft if horizontal: true.
 
@@ -443,6 +459,6 @@ Emitted whenever scroll offset changes. The value is current scrollTop, or scrol
 
 > `readonly` **scrollEnd**: `OutputEmitterRef`\<`void`\>
 
-Defined in: [src/angular/Virtualizer.ts:192](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/Virtualizer.ts#L192)
+Defined in: [src/angular/Virtualizer.ts:200](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/Virtualizer.ts#L200)
 
 Emitted when scrolling stops.

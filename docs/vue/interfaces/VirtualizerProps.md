@@ -4,7 +4,7 @@
 
 # Interface: VirtualizerProps\<T\>
 
-Defined in: [src/vue/Virtualizer.tsx:35](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/Virtualizer.tsx#L35)
+Defined in: [src/vue/Virtualizer.tsx:37](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/Virtualizer.tsx#L37)
 
 Props of [Virtualizer](../variables/Virtualizer.md).
 
@@ -24,7 +24,7 @@ Props of [Virtualizer](../variables/Virtualizer.md).
 
 > **data**: `T`[]
 
-Defined in: [src/vue/Virtualizer.tsx:39](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/Virtualizer.tsx#L39)
+Defined in: [src/vue/Virtualizer.tsx:41](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/Virtualizer.tsx#L41)
 
 The data items rendered by this component.
 
@@ -34,7 +34,7 @@ The data items rendered by this component.
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/vue/Virtualizer.tsx:44](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/Virtualizer.tsx#L44)
+Defined in: [src/vue/Virtualizer.tsx:46](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/Virtualizer.tsx#L46)
 
 Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -50,7 +50,7 @@ Extra item space in pixels to render before/after the viewport. The minimum valu
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/vue/Virtualizer.tsx:51](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/Virtualizer.tsx#L51)
+Defined in: [src/vue/Virtualizer.tsx:53](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/Virtualizer.tsx#L53)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -63,7 +63,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **shift?**: `boolean`
 
-Defined in: [src/vue/Virtualizer.tsx:55](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/Virtualizer.tsx#L55)
+Defined in: [src/vue/Virtualizer.tsx:57](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/Virtualizer.tsx#L57)
 
 While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
 
@@ -73,7 +73,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 > `optional` **horizontal?**: `boolean`
 
-Defined in: [src/vue/Virtualizer.tsx:59](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/Virtualizer.tsx#L59)
+Defined in: [src/vue/Virtualizer.tsx:61](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/Virtualizer.tsx#L61)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -83,7 +83,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `optional` **startMargin?**: `number`
 
-Defined in: [src/vue/Virtualizer.tsx:63](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/Virtualizer.tsx#L63)
+Defined in: [src/vue/Virtualizer.tsx:65](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/Virtualizer.tsx#L65)
 
 The offset to the scrollable parent before virtualizer in pixels. If you put an element before virtualizer, you have to set its height to this prop.
 
@@ -93,7 +93,7 @@ The offset to the scrollable parent before virtualizer in pixels. If you put an 
 
 > `optional` **ssrCount?**: `number`
 
-Defined in: [src/vue/Virtualizer.tsx:67](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/Virtualizer.tsx#L67)
+Defined in: [src/vue/Virtualizer.tsx:69](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/Virtualizer.tsx#L69)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -103,7 +103,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `optional` **scrollRef?**: `HTMLElement`
 
-Defined in: [src/vue/Virtualizer.tsx:71](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/Virtualizer.tsx#L71)
+Defined in: [src/vue/Virtualizer.tsx:73](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/Virtualizer.tsx#L73)
 
 Reference to the scrollable element. The default will get the direct parent element of virtualizer.
 
@@ -113,7 +113,7 @@ Reference to the scrollable element. The default will get the direct parent elem
 
 > `optional` **as?**: keyof IntrinsicElementAttributes
 
-Defined in: [src/vue/Virtualizer.tsx:76](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/Virtualizer.tsx#L76)
+Defined in: [src/vue/Virtualizer.tsx:78](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/Virtualizer.tsx#L78)
 
 Component or element type for container element.
 
@@ -129,7 +129,7 @@ Component or element type for container element.
 
 > `optional` **item?**: keyof IntrinsicElementAttributes
 
-Defined in: [src/vue/Virtualizer.tsx:81](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/Virtualizer.tsx#L81)
+Defined in: [src/vue/Virtualizer.tsx:83](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/Virtualizer.tsx#L83)
 
 Component or element type for item element.
 
@@ -145,7 +145,7 @@ Component or element type for item element.
 
 > `optional` **itemProps?**: `ItemProps`\<`T`\>
 
-Defined in: [src/vue/Virtualizer.tsx:87](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/Virtualizer.tsx#L87)
+Defined in: [src/vue/Virtualizer.tsx:89](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/Virtualizer.tsx#L89)
 
 A function that provides properties/attributes for item element
 
@@ -157,7 +157,7 @@ A function that provides properties/attributes for item element
 
 > `optional` **keepMounted?**: readonly `number`[]
 
-Defined in: [src/vue/Virtualizer.tsx:91](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/Virtualizer.tsx#L91)
+Defined in: [src/vue/Virtualizer.tsx:93](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/Virtualizer.tsx#L93)
 
 List of indexes that should be always mounted, even when off screen.
 
@@ -165,11 +165,11 @@ List of indexes that should be always mounted, even when off screen.
 
 ### cache?
 
-> `optional` **cache?**: [`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md)
+> `optional` **cache?**: [`CacheSnapshot`](../../react/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/vue/Virtualizer.tsx:97](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/Virtualizer.tsx#L97)
+Defined in: [src/vue/Virtualizer.tsx:99](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/Virtualizer.tsx#L99)
 
-You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VirtualizerHandle.cache](VListHandle.md#cache).
+You can restore cache by passing a [CacheSnapshot](../../react/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VirtualizerHandle.cache](VListHandle.md#cache).
 
 **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
 
@@ -179,7 +179,7 @@ You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheS
 
 > `optional` **onScroll?**: (`offset`) => `void`
 
-Defined in: [src/vue/Virtualizer.tsx:102](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/Virtualizer.tsx#L102)
+Defined in: [src/vue/Virtualizer.tsx:104](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/Virtualizer.tsx#L104)
 
 Callback invoked whenever scroll offset changes.
 
@@ -201,7 +201,7 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/vue/Virtualizer.tsx:106](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/vue/Virtualizer.tsx#L106)
+Defined in: [src/vue/Virtualizer.tsx:108](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/vue/Virtualizer.tsx#L108)
 
 Callback invoked when scrolling stops.
 

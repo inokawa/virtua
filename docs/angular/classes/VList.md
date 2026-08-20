@@ -4,7 +4,7 @@
 
 # Class: VList\<T\>
 
-Defined in: [src/angular/VList.ts:50](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L50)
+Defined in: [src/angular/VList.ts:57](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L57)
 
 Virtualized list component. See [VListHandle](../interfaces/VListHandle.md).
 
@@ -20,6 +20,94 @@ The host element is the scrollable viewport of the list.
 
 - `OnInit`
 - [`VListHandle`](../interfaces/VListHandle.md)
+
+## Accessors
+
+### cache
+
+#### Get Signature
+
+> **get** **cache**(): [`CacheSnapshot`](../../react/type-aliases/CacheSnapshot.md)
+
+Defined in: [src/angular/VList.ts:140](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L140)
+
+Get current [CacheSnapshot](../../react/type-aliases/CacheSnapshot.md).
+
+##### Returns
+
+[`CacheSnapshot`](../../react/type-aliases/CacheSnapshot.md)
+
+Get current [CacheSnapshot](../../react/type-aliases/CacheSnapshot.md).
+
+#### Implementation of
+
+[`VListHandle`](../interfaces/VListHandle.md).[`cache`](../interfaces/VListHandle.md#cache)
+
+***
+
+### scrollOffset
+
+#### Get Signature
+
+> **get** **scrollOffset**(): `number`
+
+Defined in: [src/angular/VList.ts:143](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L143)
+
+Get current scrollTop, or scrollLeft if horizontal: true.
+
+##### Returns
+
+`number`
+
+Get current scrollTop, or scrollLeft if horizontal: true.
+
+#### Implementation of
+
+[`VListHandle`](../interfaces/VListHandle.md).[`scrollOffset`](../interfaces/VListHandle.md#scrolloffset)
+
+***
+
+### scrollSize
+
+#### Get Signature
+
+> **get** **scrollSize**(): `number`
+
+Defined in: [src/angular/VList.ts:146](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L146)
+
+Get current scrollHeight, or scrollWidth if horizontal: true.
+
+##### Returns
+
+`number`
+
+Get current scrollHeight, or scrollWidth if horizontal: true.
+
+#### Implementation of
+
+[`VListHandle`](../interfaces/VListHandle.md).[`scrollSize`](../interfaces/VListHandle.md#scrollsize)
+
+***
+
+### viewportSize
+
+#### Get Signature
+
+> **get** **viewportSize**(): `number`
+
+Defined in: [src/angular/VList.ts:149](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L149)
+
+Get current offsetHeight, or offsetWidth if horizontal: true.
+
+##### Returns
+
+`number`
+
+Get current offsetHeight, or offsetWidth if horizontal: true.
+
+#### Implementation of
+
+[`VListHandle`](../interfaces/VListHandle.md).[`viewportSize`](../interfaces/VListHandle.md#viewportsize)
 
 ## Constructors
 
@@ -37,7 +125,7 @@ The host element is the scrollable viewport of the list.
 
 > **ngOnInit**(): `void`
 
-Defined in: [src/angular/VList.ts:119](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L119)
+Defined in: [src/angular/VList.ts:126](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L126)
 
 A callback method that is invoked immediately after the
 default change detector has checked the directive's
@@ -55,83 +143,11 @@ It is invoked only once when the directive is instantiated.
 
 ***
 
-### getCache()
-
-> **getCache**(): [`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md)
-
-Defined in: [src/angular/VList.ts:133](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L133)
-
-Get current [CacheSnapshot](../../react/interfaces/CacheSnapshot.md).
-
-#### Returns
-
-[`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md)
-
-#### Implementation of
-
-[`VListHandle`](../interfaces/VListHandle.md).[`getCache`](../interfaces/VListHandle.md#getcache)
-
-***
-
-### getScrollOffset()
-
-> **getScrollOffset**(): `number`
-
-Defined in: [src/angular/VList.ts:136](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L136)
-
-Get current scrollTop, or scrollLeft if horizontal: true.
-
-#### Returns
-
-`number`
-
-#### Implementation of
-
-[`VListHandle`](../interfaces/VListHandle.md).[`getScrollOffset`](../interfaces/VListHandle.md#getscrolloffset)
-
-***
-
-### getScrollSize()
-
-> **getScrollSize**(): `number`
-
-Defined in: [src/angular/VList.ts:139](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L139)
-
-Get current scrollHeight, or scrollWidth if horizontal: true.
-
-#### Returns
-
-`number`
-
-#### Implementation of
-
-[`VListHandle`](../interfaces/VListHandle.md).[`getScrollSize`](../interfaces/VListHandle.md#getscrollsize)
-
-***
-
-### getViewportSize()
-
-> **getViewportSize**(): `number`
-
-Defined in: [src/angular/VList.ts:142](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L142)
-
-Get current offsetHeight, or offsetWidth if horizontal: true.
-
-#### Returns
-
-`number`
-
-#### Implementation of
-
-[`VListHandle`](../interfaces/VListHandle.md).[`getViewportSize`](../interfaces/VListHandle.md#getviewportsize)
-
-***
-
 ### findItemIndex()
 
 > **findItemIndex**(`offset`): `number`
 
-Defined in: [src/angular/VList.ts:145](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L145)
+Defined in: [src/angular/VList.ts:152](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L152)
 
 Find nearest item index from offset.
 
@@ -157,7 +173,7 @@ offset in pixels from the start of the scroll container
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/angular/VList.ts:148](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L148)
+Defined in: [src/angular/VList.ts:155](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L155)
 
 Get item offset from start.
 
@@ -183,7 +199,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/angular/VList.ts:151](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L151)
+Defined in: [src/angular/VList.ts:158](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L158)
 
 Get item size.
 
@@ -209,7 +225,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/angular/VList.ts:154](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L154)
+Defined in: [src/angular/VList.ts:161](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L161)
 
 Scroll to the item specified by index.
 
@@ -241,7 +257,7 @@ options
 
 > **scrollTo**(`offset`): `void`
 
-Defined in: [src/angular/VList.ts:157](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L157)
+Defined in: [src/angular/VList.ts:164](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L164)
 
 Scroll to the given offset.
 
@@ -267,7 +283,7 @@ offset from start
 
 > **scrollBy**(`offset`): `void`
 
-Defined in: [src/angular/VList.ts:160](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L160)
+Defined in: [src/angular/VList.ts:167](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L167)
 
 Scroll by the given offset.
 
@@ -293,7 +309,7 @@ offset from current position
 
 > `readonly` **data**: `InputSignal`\<readonly `T`[]\>
 
-Defined in: [src/angular/VList.ts:54](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L54)
+Defined in: [src/angular/VList.ts:61](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L61)
 
 The data items rendered by this component.
 
@@ -303,7 +319,7 @@ The data items rendered by this component.
 
 > `readonly` **getKey**: `InputSignal`\<(`data`, `index`) => `string` \| `number`\>
 
-Defined in: [src/angular/VList.ts:59](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L59)
+Defined in: [src/angular/VList.ts:66](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L66)
 
 Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
 
@@ -319,7 +335,7 @@ defaultGetKey (returns index of item)
 
 > `readonly` **itemProps**: `InputSignal`\<`ItemProps`\<`T`\> \| `undefined`\>
 
-Defined in: [src/angular/VList.ts:64](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L64)
+Defined in: [src/angular/VList.ts:71](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L71)
 
 A function that provides properties/attributes for item element
 
@@ -329,7 +345,7 @@ A function that provides properties/attributes for item element
 
 > `readonly` **bufferSize**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/VList.ts:69](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L69)
+Defined in: [src/angular/VList.ts:76](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L76)
 
 Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -345,7 +361,7 @@ Extra item space in pixels to render before/after the viewport. The minimum valu
 
 > `readonly` **itemSize**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/VList.ts:76](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L76)
+Defined in: [src/angular/VList.ts:83](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L83)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -358,7 +374,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `readonly` **ssrCount**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/VList.ts:80](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L80)
+Defined in: [src/angular/VList.ts:87](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L87)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -368,7 +384,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `readonly` **shift**: `InputSignal`\<`boolean`\>
 
-Defined in: [src/angular/VList.ts:84](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L84)
+Defined in: [src/angular/VList.ts:91](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L91)
 
 While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
 
@@ -378,7 +394,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 > `readonly` **horizontal**: `InputSignal`\<`boolean`\>
 
-Defined in: [src/angular/VList.ts:88](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L88)
+Defined in: [src/angular/VList.ts:95](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L95)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -388,19 +404,19 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `readonly` **keepMounted**: `InputSignal`\<readonly `number`[] \| `undefined`\>
 
-Defined in: [src/angular/VList.ts:92](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L92)
+Defined in: [src/angular/VList.ts:99](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L99)
 
 List of indexes that should be always mounted, even when off screen.
 
 ***
 
-### cache
+### cacheProp
 
-> `readonly` **cache**: `InputSignal`\<[`CacheSnapshot`](../../react/interfaces/CacheSnapshot.md) \| `undefined`\>
+> `readonly` **cacheProp**: `InputSignal`\<[`CacheSnapshot`](../../react/type-aliases/CacheSnapshot.md) \| `undefined`\>
 
-Defined in: [src/angular/VList.ts:98](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L98)
+Defined in: [src/angular/VList.ts:105](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L105)
 
-You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VListHandle.getCache](../interfaces/VListHandle.md#getcache).
+You can restore cache by passing a [CacheSnapshot](../../react/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VListHandle.cache](../interfaces/VListHandle.md#cache).
 
 **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
 
@@ -410,7 +426,7 @@ You can restore cache by passing a [CacheSnapshot](../../react/interfaces/CacheS
 
 > `readonly` **scroll**: `OutputEmitterRef`\<`number`\>
 
-Defined in: [src/angular/VList.ts:103](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L103)
+Defined in: [src/angular/VList.ts:110](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L110)
 
 Emitted whenever scroll offset changes. The value is current scrollTop, or scrollLeft if horizontal: true.
 
@@ -420,6 +436,6 @@ Emitted whenever scroll offset changes. The value is current scrollTop, or scrol
 
 > `readonly` **scrollEnd**: `OutputEmitterRef`\<`void`\>
 
-Defined in: [src/angular/VList.ts:107](https://github.com/inokawa/virtua/blob/517c6bb928165336184c109922faf0ad789d1367/src/angular/VList.ts#L107)
+Defined in: [src/angular/VList.ts:114](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/VList.ts#L114)
 
 Emitted when scrolling stops.
