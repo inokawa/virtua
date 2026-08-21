@@ -252,11 +252,7 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
       itemSize,
       this.cacheProp(),
     ));
-    const store = (this._store = createVirtualStore(
-      layout,
-      undefined,
-      !itemSize,
-    ));
+    const store = (this._store = createVirtualStore(layout));
     this.driver = createWindowDriver(store, this.horizontal());
     store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
       this._stateVersion.set(store.$getStateVersion());

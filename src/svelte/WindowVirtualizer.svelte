@@ -35,7 +35,7 @@
   }: Props = $props();
 
   const layout = createListLayout(data.length, itemSize, cache);
-  const store = createVirtualStore(layout, undefined, !itemSize);
+  const store = createVirtualStore(layout);
   const driver = createWindowDriver(store, horizontal);
   store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
     stateVersion = store.$getStateVersion();

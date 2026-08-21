@@ -112,8 +112,8 @@ export const createVirtualStore = (
     $estimateDefaultSize: estimateDefaultSize,
   }: Layout,
   ssrCount: number = 0,
-  shouldAutoEstimateItemSize: boolean = false,
 ): VirtualStore => {
+  let shouldAutoEstimateItemSize = !!estimateDefaultSize;
   let isSSR = !!ssrCount;
   let stateVersion: StateVersion = 1;
   let viewportSize = 0;
@@ -372,7 +372,7 @@ export const createVirtualStore = (
             // If the total size is lower than the viewport, the item may be a empty state
             _totalMeasuredSize > viewportSize
           ) {
-            applyJump(estimateDefaultSize(findIndex(getVisibleOffset())));
+            applyJump(estimateDefaultSize!(findIndex(getVisibleOffset())));
             shouldAutoEstimateItemSize = false;
           }
 

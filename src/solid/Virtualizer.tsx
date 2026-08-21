@@ -178,7 +178,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   );
 
   const layout = createListLayout(props.data.length, itemSize, cache);
-  const store = createVirtualStore(layout, undefined, !itemSize);
+  const store = createVirtualStore(layout);
   const driver = createContainerDriver(store, horizontal);
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());

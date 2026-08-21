@@ -156,7 +156,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       props.itemSize,
       props.cache,
     );
-    const store = createVirtualStore(layout, undefined, !props.itemSize);
+    const store = createVirtualStore(layout);
     const driver = createWindowDriver(store, isHorizontal);
 
     const stateVersion = ref(store.$getStateVersion());

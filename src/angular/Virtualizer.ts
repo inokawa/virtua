@@ -340,11 +340,7 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
       itemSize,
       this.cacheProp(),
     ));
-    const store = (this._store = createVirtualStore(
-      layout,
-      this.ssrCount(),
-      !itemSize,
-    ));
+    const store = (this._store = createVirtualStore(layout, this.ssrCount()));
     this.driver = createContainerDriver(store, this.horizontal());
     store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
       this._stateVersion.set(store.$getStateVersion());
