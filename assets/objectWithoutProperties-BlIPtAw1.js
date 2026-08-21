@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{r as t}from"./extends-Br4Cg6VO.js";function n(e,n){if(e==null)return{};var r,i,a=t(e,n);if(Object.getOwnPropertySymbols){var o=Object.getOwnPropertySymbols(e);for(i=0;i<o.length;i++)r=o[i],n.indexOf(r)===-1&&{}.propertyIsEnumerable.call(e,r)&&(a[r]=e[r])}return a}function r(){return(r=e((()=>{})))()}export{r as n,n as t};
