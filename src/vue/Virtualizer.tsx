@@ -200,7 +200,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       props.itemSize,
       props.cache,
     );
-    const store = createVirtualStore(layout, props.ssrCount, !props.itemSize);
+    const store = createVirtualStore(layout, props.ssrCount);
     const driver = createContainerDriver(store, isHorizontal);
 
     const stateVersion = ref(store.$getStateVersion());

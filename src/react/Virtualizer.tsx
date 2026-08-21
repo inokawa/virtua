@@ -210,7 +210,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     const [store, layout, driver, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
       const _layout = createListLayout(count, itemSize, cache);
-      const _store = createVirtualStore(_layout, ssrCount, !itemSize);
+      const _store = createVirtualStore(_layout, ssrCount);
       return [
         _store,
         _layout,

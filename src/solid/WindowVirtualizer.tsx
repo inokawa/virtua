@@ -140,7 +140,7 @@ export const WindowVirtualizer = <T,>(
   } = props;
 
   const layout = createListLayout(props.data.length, itemSize, cache);
-  const store = createVirtualStore(layout, undefined, !itemSize);
+  const store = createVirtualStore(layout);
   const driver = createWindowDriver(store, horizontal);
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());

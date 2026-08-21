@@ -13,5 +13,5 @@ export interface Layout {
   $getTotalSize(): number;
   $getLength(): number;
   $setLength(length: number, isShift?: boolean): number;
-  $estimateDefaultSize(startIndex: number): number;
+  $estimateDefaultSize?(startIndex: number): number;
 }

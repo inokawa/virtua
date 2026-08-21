@@ -602,10 +602,9 @@ describe("getTotalSize", () => {
 
 describe("estimateDefaultSize", () => {
   const setup = (indexes: readonly number[]) => {
-    const layout = initLayoutWithSizes(
-      range(100, () => -1),
-      30,
-    );
+    const sizes = range(100, () => -1);
+    const layout = createListLayout(sizes.length, undefined, [sizes, 30]);
+    layout.$getTotalSize();
     indexes.forEach((i) => layout.$setItemSize(i, 50));
     return [
       layout,
@@ -621,7 +620,7 @@ describe("estimateDefaultSize", () => {
       const [layout, initialSizes, initialDefaultSize, initialTotalSize] =
         setup(indexes);
 
-      const diff = layout.$estimateDefaultSize(0);
+      const diff = layout.$estimateDefaultSize!(0);
       expect(defaultSizeOf(layout)).toBe(50);
       expect(sizesOf(layout)).toEqual(initialSizes);
       expect(diff).toBe(0);
@@ -636,7 +635,7 @@ describe("estimateDefaultSize", () => {
       const [layout, initialSizes, initialDefaultSize, initialTotalSize] =
         setup(indexes);
 
-      const diff = layout.$estimateDefaultSize(0);
+      const diff = layout.$estimateDefaultSize!(0);
       expect(defaultSizeOf(layout)).toBe(50);
       expect(sizesOf(layout)).toEqual(initialSizes);
       expect(diff).toBe(0);
@@ -651,7 +650,7 @@ describe("estimateDefaultSize", () => {
       const [layout, initialSizes, initialDefaultSize, initialTotalSize] =
         setup(indexes);
 
-      const diff = layout.$estimateDefaultSize(0);
+      const diff = layout.$estimateDefaultSize!(0);
       expect(defaultSizeOf(layout)).toBe(50);
       expect(sizesOf(layout)).toEqual(initialSizes);
       expect(diff).toBe(0);
@@ -668,7 +667,7 @@ describe("estimateDefaultSize", () => {
       const [layout, initialSizes, initialDefaultSize, initialTotalSize] =
         setup(indexes);
 
-      const diff = layout.$estimateDefaultSize(layout.$getLength() - 10);
+      const diff = layout.$estimateDefaultSize!(layout.$getLength() - 10);
       expect(defaultSizeOf(layout)).toBe(50);
       expect(sizesOf(layout)).toEqual(initialSizes);
       expect(diff).toBe((50 - 30) * 90);
@@ -683,7 +682,7 @@ describe("estimateDefaultSize", () => {
       const [layout, initialSizes, initialDefaultSize, initialTotalSize] =
         setup(indexes);
 
-      const diff = layout.$estimateDefaultSize(layout.$getLength() - 10);
+      const diff = layout.$estimateDefaultSize!(layout.$getLength() - 10);
       expect(defaultSizeOf(layout)).toBe(50);
       expect(sizesOf(layout)).toEqual(initialSizes);
       expect(diff).toBe((50 - 30) * 90);
@@ -698,7 +697,7 @@ describe("estimateDefaultSize", () => {
       const [layout, initialSizes, initialDefaultSize, initialTotalSize] =
         setup(indexes);
 
-      const diff = layout.$estimateDefaultSize(layout.$getLength() - 10);
+      const diff = layout.$estimateDefaultSize!(layout.$getLength() - 10);
       expect(defaultSizeOf(layout)).toBe(50);
       expect(sizesOf(layout)).toEqual(initialSizes);
       expect(diff).toBe((50 - 30) * (90 - 4));
@@ -713,7 +712,7 @@ describe("estimateDefaultSize", () => {
       const [layout, initialSizes, initialDefaultSize, initialTotalSize] =
         setup(indexes);
 
-      const diff = layout.$estimateDefaultSize(layout.$getLength() - 10);
+      const diff = layout.$estimateDefaultSize!(layout.$getLength() - 10);
       expect(defaultSizeOf(layout)).toBe(50);
       expect(sizesOf(layout)).toEqual(initialSizes);
       expect(diff).toBe((50 - 30) * (90 - 2));

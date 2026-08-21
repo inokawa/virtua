@@ -23,12 +23,10 @@ export interface ListLayout extends Layout {
  */
 export const createListLayout = (
   length: number,
-  defaultItemSize: number = 40,
+  itemSize?: number | undefined,
   snapshot?: CacheSnapshot | undefined,
 ): ListLayout => {
-  if (snapshot && snapshot[1]) {
-    defaultItemSize = snapshot[1];
-  }
+  let defaultItemSize = (snapshot && snapshot[1]) || itemSize || 40;
 
   let computedOffsetIndex = -1;
   let prevStartIndex = 0;
@@ -136,37 +134,41 @@ export const createListLayout = (
         );
       }
     },
-    $estimateDefaultSize: (startIndex) => {
-      let measuredCountBeforeStart = 0;
-      // This function will be called after measurement so measured size array must be longer than 0
-      const measuredSizes: number[] = [];
-      sizes.forEach((s, i) => {
-        if (s !== UNCACHED) {
-          measuredSizes.push(s);
-          if (i < startIndex) {
-            measuredCountBeforeStart++;
-          }
-        }
-      });
+    $estimateDefaultSize: itemSize
+      ? undefined
+      : (startIndex) => {
+          let measuredCountBeforeStart = 0;
+          // This function will be called after measurement so measured size array must be longer than 0
+          const measuredSizes: number[] = [];
+          sizes.forEach((s, i) => {
+            if (s !== UNCACHED) {
+              measuredSizes.push(s);
+              if (i < startIndex) {
+                measuredCountBeforeStart++;
+              }
+            }
+          });
 
-      // Discard cache for now
-      computedOffsetIndex = -1;
+          // Discard cache for now
+          computedOffsetIndex = -1;
 
-      // Calculate median
-      const sorted = sort(measuredSizes);
-      const len = sorted.length;
-      const mid = (len / 2) | 0;
-      const median =
-        len % 2 === 0 ? (sorted[mid - 1]! + sorted[mid]!) / 2 : sorted[mid]!;
+          // Calculate median
+          const sorted = sort(measuredSizes);
+          const len = sorted.length;
+          const mid = (len / 2) | 0;
+          const median =
+            len % 2 === 0
+              ? (sorted[mid - 1]! + sorted[mid]!) / 2
+              : sorted[mid]!;
 
-      const prevDefaultItemSize = defaultItemSize;
+          const prevDefaultItemSize = defaultItemSize;
 
-      // Calculate diff of unmeasured items before start
-      return (
-        ((defaultItemSize = median) - prevDefaultItemSize) *
-        max(startIndex - measuredCountBeforeStart, 0)
-      );
-    },
+          // Calculate diff of unmeasured items before start
+          return (
+            ((defaultItemSize = median) - prevDefaultItemSize) *
+            max(startIndex - measuredCountBeforeStart, 0)
+          );
+        },
     $snapshot: () => [sizes.slice(), defaultItemSize],
   };
 };
