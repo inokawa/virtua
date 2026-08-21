@@ -182,11 +182,6 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
         _isHorizontal,
       ];
     });
-    // The elements length and cached items length are different just after element is added/removed.
-    if (count !== store.$getItemsLength()) {
-      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
-    }
-
     const [stateVersion, rerender] = useReducer(
       store.$getStateVersion,
       undefined,
@@ -226,6 +221,14 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
       };
     }, []);
 
+    // Props must update the store after the render is committed. Updating it
+    // during render leaves the cache mutated when a concurrent render aborts.
+    useIsomorphicLayoutEffect(() => {
+      if (count !== store.$getItemsLength()) {
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
+      }
+    }, [count, shift, store]);
+
     useIsomorphicLayoutEffect(() => {
       driver.$fixScrollJump();
     }, [stateVersion]);
@@ -249,7 +252,9 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
       };
     }, []);
 
-    for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
+    const [rangeStart, rangeEnd] = store.$getRange(bufferSize);
+    const lastIndex = Math.min(rangeEnd, count - 1);
+    for (let i = rangeStart; i <= lastIndex; i++) {
       const e = renderElement(i);
       items.push(
         <ListItem

@@ -219,14 +219,6 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
       ];
     });
 
-    // The elements length and cached items length are different just after element is added/removed.
-    if (count !== store.$getItemsLength()) {
-      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
-    }
-    if (startMargin !== store.$getStartSpacerSize()) {
-      store.$update(ACTION_START_OFFSET_CHANGE, startMargin);
-    }
-
     const [stateVersion, rerender] = useReducer(
       store.$getStateVersion,
       undefined,
@@ -294,6 +286,20 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
       };
     }, []);
 
+    // Props must update the store after the render is committed. Updating it
+    // during render leaves the cache mutated when a concurrent render aborts.
+    useIsomorphicLayoutEffect(() => {
+      if (count !== store.$getItemsLength()) {
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
+      }
+    }, [count, shift, store]);
+
+    useIsomorphicLayoutEffect(() => {
+      if (startMargin !== store.$getStartSpacerSize()) {
+        store.$update(ACTION_START_OFFSET_CHANGE, startMargin);
+      }
+    }, [startMargin, store]);
+
     useIsomorphicLayoutEffect(() => {
       driver.$fixScrollJump();
     }, [stateVersion]);
@@ -328,10 +334,14 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
         mounted.add(i);
       }
       sort([...mounted]).forEach((index) => {
-        items.push(renderItem(index));
+        if (index >= 0 && index < count) {
+          items.push(renderItem(index));
+        }
       });
     } else {
-      for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
+      const [rangeStart, rangeEnd] = store.$getRange(bufferSize);
+      const lastIndex = Math.min(rangeEnd, count - 1);
+      for (let i = rangeStart; i <= lastIndex; i++) {
         items.push(renderItem(i));
       }
     }

@@ -296,14 +296,6 @@ export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
         createContainerGridDriver(_rowStore, _colStore),
       ];
     });
-    // The elements length and cached items length are different just after element is added/removed.
-    if (rowCount !== rowStore.$getItemsLength()) {
-      rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [rowCount]);
-    }
-    if (colCount !== colStore.$getItemsLength()) {
-      colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colCount]);
-    }
-
     const [rowStateVersion, rowRerender] = useReducer(
       rowStore.$getStateVersion,
       undefined,
@@ -355,6 +347,17 @@ export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
         driver.$dispose();
       };
     }, []);
+
+    // Props must update the stores after the render is committed. Updating
+    // them during render leaves their caches mutated when a render aborts.
+    useIsomorphicLayoutEffect(() => {
+      if (rowCount !== rowStore.$getItemsLength()) {
+        rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [rowCount]);
+      }
+      if (colCount !== colStore.$getItemsLength()) {
+        colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colCount]);
+      }
+    }, [colCount, colStore, rowCount, rowStore]);
 
     useIsomorphicLayoutEffect(() => {
       driver.$fixScrollJump();
@@ -418,10 +421,12 @@ export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
 
     const [startRowIndex, endRowIndex] = rowStore.$getRange(bufferSize);
     const [startColIndex, endColIndex] = colStore.$getRange(bufferSize);
+    const lastRowIndex = Math.min(endRowIndex, rowCount - 1);
+    const lastColIndex = Math.min(endColIndex, colCount - 1);
 
     const items: ReactElement[] = [];
-    for (let rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++) {
-      for (let colIndex = startColIndex; colIndex <= endColIndex; colIndex++) {
+    for (let rowIndex = startRowIndex; rowIndex <= lastRowIndex; rowIndex++) {
+      for (let colIndex = startColIndex; colIndex <= lastColIndex; colIndex++) {
         items.push(
           <Cell
             key={genKey(rowIndex, colIndex)}
