@@ -48,6 +48,10 @@ export interface WindowVirtualizerProps<T = unknown> extends PublicProps {
    */
   itemSize?: number;
   /**
+   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   */
+  ssrCount?: number;
+  /**
    * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
   shift?: boolean;
@@ -135,6 +139,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     data: { type: Array, required: true },
     bufferSize: Number,
     itemSize: Number,
+    ssrCount: Number,
     shift: Boolean,
     horizontal: Boolean,
     as: {
@@ -149,6 +154,8 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
   },
   emits: ["scroll", "scrollEnd"],
   setup(props, { emit, slots, expose }) {
+    let isSSR = !!props.ssrCount;
+
     const isHorizontal = props.horizontal;
     const containerRef = ref<HTMLDivElement>();
     const layout = createListLayout(
@@ -156,7 +163,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       props.itemSize,
       props.cache,
     );
-    const store = createVirtualStore(layout);
+    const store = createVirtualStore(layout, props.ssrCount);
     const driver = createWindowDriver(store, isHorizontal);
 
     const stateVersion = ref(store.$getStateVersion());
@@ -187,6 +194,8 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     );
 
     onMounted(() => {
+      isSSR = false;
+
       const el = containerRef.value;
       if (!el) return;
       driver.$observe(el);
@@ -247,6 +256,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
             _children={e}
             _isHorizontal={isHorizontal}
             _isNegative={isNegative}
+            _isSSR={isSSR}
             _as={ItemElement}
           />,
         );

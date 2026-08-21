@@ -20,6 +20,7 @@ interface ListItemProps {
   _offset: number;
   _hide: boolean;
   _isHorizontal: boolean;
+  _isSSR?: boolean;
   _as?: ValidComponent;
 }
 
@@ -41,13 +42,15 @@ export const ListItem: Component<ListItemProps> = (props) => {
 
   const style = createMemo(() => {
     const isHorizontal = props._isHorizontal;
+    const hide = props._hide;
+    const isSSR = props._isSSR;
     const style: JSX.CSSProperties = {
       contain: "layout style",
-      position: "absolute",
+      position: hide && isSSR ? undefined : "absolute",
       [isHorizontal ? "height" : "width"]: "100%",
       [isHorizontal ? "top" : "left"]: "0px",
       [isHorizontal ? "left" : "top"]: props._offset + "px",
-      visibility: props._hide ? "hidden" : undefined,
+      visibility: !hide || isSSR ? undefined : "hidden",
     };
     if (isHorizontal) {
       style.display = "inline-flex";

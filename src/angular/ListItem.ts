@@ -27,19 +27,22 @@ export class ListItem {
   readonly offset = input.required<number>();
   readonly hide = input.required<boolean>();
   readonly horizontal = input.required<boolean>();
+  readonly isSSR = input(false);
   readonly resizer = input.required<Driver["$observeItem"]>();
   readonly attrs = input<ReturnType<ItemProps>>();
 
   /** @internal */
   protected style = computed(() => {
     const horizontal = this.horizontal();
+    const hide = this.hide();
+    const isSSR = this.isSSR();
     const style: Record<string, string | undefined> = {
       contain: "layout style",
-      position: "absolute",
+      position: hide && isSSR ? undefined : "absolute",
       [horizontal ? "height" : "width"]: "100%",
       [horizontal ? "top" : "left"]: "0px",
       [horizontal ? "left" : "top"]: this.offset() + "px",
-      visibility: this.hide() ? "hidden" : undefined,
+      visibility: !hide || isSSR ? undefined : "hidden",
       ...this.attrs()?.style,
     };
     if (horizontal) {
