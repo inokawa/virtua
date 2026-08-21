@@ -41,24 +41,17 @@ type Data = {
   visits: number;
 };
 
-const data: Data[] = Array.from(
-  { length: 1000 },
-  (_, i): Data => ({
-    id: i,
-    firstName: faker.person.firstName(),
-    lastName: faker.person.lastName(),
-    age: faker.number.int({ min: 18, max: 80 }),
-    email: faker.internet.email(),
-    city: faker.location.city(),
-    status: faker.helpers.arrayElement([
-      "relationship",
-      "complicated",
-      "single",
-    ]),
-    progress: faker.number.int({ min: 0, max: 100 }),
-    visits: faker.number.int({ min: 0, max: 1000 }),
-  }),
-);
+const data: Data[] = Array.from({ length: 1000 }, (_, i): Data => ({
+  id: i,
+  firstName: faker.person.firstName(),
+  lastName: faker.person.lastName(),
+  age: faker.number.int({ min: 18, max: 80 }),
+  email: faker.internet.email(),
+  city: faker.location.city(),
+  status: faker.helpers.arrayElement(["relationship", "complicated", "single"]),
+  progress: faker.number.int({ min: 0, max: 100 }),
+  visits: faker.number.int({ min: 0, max: 1000 }),
+}));
 
 const STATUS_COLORS: Record<Data["status"], string> = {
   relationship: "#3ba55d",
