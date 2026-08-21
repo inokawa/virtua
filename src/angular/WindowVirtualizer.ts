@@ -95,6 +95,7 @@ export interface WindowVirtualizerHandle {
         [offset]="item.offset"
         [hide]="item.hide"
         [horizontal]="horizontal()"
+        [isSSR]="isSSR()"
         [resizer]="driver.$observeItem"
       >
         <ng-container
@@ -131,6 +132,10 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
    * - If set, you can opt out estimation and use the value as initial item size.
    */
   readonly itemSize = input<number>();
+  /**
+   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   */
+  readonly ssrCount = input<number>();
   /**
    * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
@@ -173,6 +178,8 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
 
   /** @internal */
   private _stateVersion = signal<StateVersion>(undefined!);
+  /** @internal */
+  protected isSSR = signal(false);
 
   /** @internal */
   protected items = computed(() => {
@@ -228,6 +235,7 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
 
     afterNextRender({
       read: () => {
+        this.isSSR.set(false);
         this.driver.$observe(this._element);
       },
     });
@@ -247,12 +255,14 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
 
   ngOnInit(): void {
     const itemSize = this.itemSize();
+    const ssrCount = this.ssrCount();
+    this.isSSR.set(!!ssrCount);
     const layout = (this._layout = createListLayout(
       this.data().length,
       itemSize,
       this.cacheProp(),
     ));
-    const store = (this._store = createVirtualStore(layout));
+    const store = (this._store = createVirtualStore(layout, ssrCount));
     this.driver = createWindowDriver(store, this.horizontal());
     store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
       this._stateVersion.set(store.$getStateVersion());

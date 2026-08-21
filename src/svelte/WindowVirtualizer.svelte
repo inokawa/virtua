@@ -26,6 +26,7 @@
     getKey = defaultGetKey,
     bufferSize,
     itemSize,
+    ssrCount,
     shift = false,
     horizontal = false,
     cache,
@@ -35,7 +36,7 @@
   }: Props = $props();
 
   const layout = createListLayout(data.length, itemSize, cache);
-  const store = createVirtualStore(layout);
+  const store = createVirtualStore(layout, ssrCount);
   const driver = createWindowDriver(store, horizontal);
   store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
     stateVersion = store.$getStateVersion();
@@ -47,6 +48,8 @@
   store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
     onscrollend && onscrollend();
   });
+
+  let isSSR = $state(!!ssrCount);
 
   let containerRef: HTMLDivElement | undefined = $state();
 
@@ -72,6 +75,8 @@
   });
 
   onMount(() => {
+    isSSR = false;
+
     driver.$observe(containerRef!);
   });
   onDestroy(() => {
@@ -137,6 +142,7 @@
       offset={stateVersion && store.$getItemOffset(index, negative)}
       hide={stateVersion && store.$isUnmeasuredItem(index)}
       {horizontal}
+      {isSSR}
       resizer={driver.$observeItem}
     />
   {/each}

@@ -134,6 +134,10 @@ export interface VirtualizerProps<T> {
    */
   itemSize?: number;
   /**
+   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   */
+  ssrCount?: number;
+  /**
    * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
   shift?: boolean;
@@ -171,14 +175,16 @@ export interface VirtualizerProps<T> {
  */
 export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const { itemSize, horizontal = false, cache } = props;
+  const { itemSize, horizontal = false, cache, ssrCount } = props;
   props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
     { as: "div" },
     props,
   );
 
+  const [isSSR, setIsSSR] = createSignal(!!ssrCount);
+
   const layout = createListLayout(props.data.length, itemSize, cache);
-  const store = createVirtualStore(layout);
+  const store = createVirtualStore(layout, ssrCount);
   const driver = createContainerDriver(store, horizontal);
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
@@ -206,6 +212,8 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   const isNegative = createMemo(() => stateVersion() && driver.$isNegative());
 
   onMount(() => {
+    setIsSSR(false);
+
     if (props.ref) {
       props.ref({
         get cache() {
@@ -310,6 +318,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         _hide={hide()}
         _children={children()}
         _isHorizontal={horizontal}
+        _isSSR={isSSR()}
       />
     );
   };

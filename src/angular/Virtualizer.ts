@@ -120,6 +120,7 @@ export interface VirtualizerHandle {
         [hide]="item.hide"
         [attrs]="item.attrs"
         [horizontal]="horizontal()"
+        [isSSR]="isSSR()"
         [resizer]="driver.$observeItem"
       >
         <ng-container
@@ -225,6 +226,8 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
 
   /** @internal */
   private _stateVersion = signal<StateVersion>(undefined!);
+  /** @internal */
+  protected isSSR = signal(false);
 
   /** @internal */
   private _indexes = computed(() => {
@@ -316,6 +319,7 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
     // parent's ref may not exist on mount https://github.com/inokawa/virtua/issues/603 https://github.com/inokawa/virtua/issues/690
     afterNextRender({
       read: () => {
+        this.isSSR.set(false);
         this.driver.$observe(this._element, this.scrollRef());
       },
     });
@@ -335,12 +339,14 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
 
   ngOnInit(): void {
     const itemSize = this.itemSize();
+    const ssrCount = this.ssrCount();
+    this.isSSR.set(!!ssrCount);
     const layout = (this._layout = createListLayout(
       this.data().length,
       itemSize,
       this.cacheProp(),
     ));
-    const store = (this._store = createVirtualStore(layout, this.ssrCount()));
+    const store = (this._store = createVirtualStore(layout, ssrCount));
     this.driver = createContainerDriver(store, this.horizontal());
     store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
       this._stateVersion.set(store.$getStateVersion());
