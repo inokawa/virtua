@@ -9,9 +9,7 @@ const SCROLL_IDLE = 0;
 const SCROLL_DOWN = 1;
 const SCROLL_UP = 2;
 type ScrollDirection =
-  | typeof SCROLL_IDLE
-  | typeof SCROLL_DOWN
-  | typeof SCROLL_UP;
+  typeof SCROLL_IDLE | typeof SCROLL_DOWN | typeof SCROLL_UP;
 
 const SCROLL_BY_NATIVE = 0;
 const SCROLL_BY_MANUAL_SCROLL = 1;
@@ -71,7 +69,7 @@ type Subscriber = (sync?: boolean) => void;
 
 /** @internal */
 export type StateVersion =
-  number & {} /* hack for typescript to pretend as not falsy */;
+  number & {}; /* hack for typescript to pretend as not falsy */
 
 /**
  * @internal
