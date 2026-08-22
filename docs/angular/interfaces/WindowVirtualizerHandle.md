@@ -4,7 +4,7 @@
 
 # Interface: WindowVirtualizerHandle
 
-Defined in: [src/angular/WindowVirtualizer.ts:40](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/WindowVirtualizer.ts#L40)
+Defined in: [src/angular/WindowVirtualizer.ts:41](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L41)
 
 Methods of [WindowVirtualizer](../classes/WindowVirtualizer.md).
 
@@ -14,7 +14,7 @@ Methods of [WindowVirtualizer](../classes/WindowVirtualizer.md).
 
 > **findItemIndex**(`offset`): `number`
 
-Defined in: [src/angular/WindowVirtualizer.ts:57](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/WindowVirtualizer.ts#L57)
+Defined in: [src/angular/WindowVirtualizer.ts:58](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L58)
 
 Find nearest item index from offset.
 
@@ -36,7 +36,7 @@ offset in pixels from the start of the scroll container
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/angular/WindowVirtualizer.ts:62](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/WindowVirtualizer.ts#L62)
+Defined in: [src/angular/WindowVirtualizer.ts:63](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L63)
 
 Get item offset from start.
 
@@ -58,7 +58,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/angular/WindowVirtualizer.ts:67](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/WindowVirtualizer.ts#L67)
+Defined in: [src/angular/WindowVirtualizer.ts:68](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L68)
 
 Get item size.
 
@@ -80,7 +80,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/angular/WindowVirtualizer.ts:73](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/WindowVirtualizer.ts#L73)
+Defined in: [src/angular/WindowVirtualizer.ts:74](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L74)
 
 Scroll to the item specified by index.
 
@@ -108,7 +108,7 @@ options
 
 > `readonly` **cache**: [`CacheSnapshot`](../../react/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/angular/WindowVirtualizer.ts:44](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/WindowVirtualizer.ts#L44)
+Defined in: [src/angular/WindowVirtualizer.ts:45](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L45)
 
 Get current [CacheSnapshot](../../react/type-aliases/CacheSnapshot.md).
 
@@ -118,7 +118,7 @@ Get current [CacheSnapshot](../../react/type-aliases/CacheSnapshot.md).
 
 > `readonly` **scrollOffset**: `number`
 
-Defined in: [src/angular/WindowVirtualizer.ts:48](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/WindowVirtualizer.ts#L48)
+Defined in: [src/angular/WindowVirtualizer.ts:49](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L49)
 
 Get current scrollTop, or scrollLeft if horizontal: true.
 
@@ -128,6 +128,6 @@ Get current scrollTop, or scrollLeft if horizontal: true.
 
 > `readonly` **viewportSize**: `number`
 
-Defined in: [src/angular/WindowVirtualizer.ts:52](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/angular/WindowVirtualizer.ts#L52)
+Defined in: [src/angular/WindowVirtualizer.ts:53](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L53)
 
 Get current offsetHeight, or offsetWidth if horizontal: true.

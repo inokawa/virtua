@@ -6,4 +6,4 @@
 
 > **ScrollToIndexAlign** = `"start"` \| `"center"` \| `"end"` \| `"nearest"`
 
-Defined in: [src/core/types.ts:13](https://github.com/inokawa/virtua/blob/329107ea3e5e2d221e21ecfae4c3d369be29aa07/src/core/types.ts#L13)
+Defined in: [src/core/types.ts:13](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/core/types.ts#L13)
