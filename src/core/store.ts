@@ -176,12 +176,8 @@ export const createVirtualStore = (
         if (!shouldAutoEstimateItemSize) {
           bufferSize = max(0, bufferSize);
 
-          if (_scrollDirection !== SCROLL_DOWN) {
-            startOffset -= bufferSize;
-          }
-          if (_scrollDirection !== SCROLL_UP) {
-            endOffset += bufferSize;
-          }
+          startOffset -= bufferSize;
+          endOffset += bufferSize;
         }
 
         [startIndex, endIndex] = _prevRange = getRange(
