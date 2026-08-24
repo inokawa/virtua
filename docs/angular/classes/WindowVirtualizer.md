@@ -4,7 +4,7 @@
 
 # Class: WindowVirtualizer\<T\>
 
-Defined in: [src/angular/WindowVirtualizer.ts:112](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L112)
+Defined in: [src/angular/WindowVirtualizer.ts:112](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L112)
 
 [Virtualizer](Virtualizer.md) controlled by the window scrolling. See [WindowVirtualizerHandle](../interfaces/WindowVirtualizerHandle.md).
 
@@ -30,7 +30,7 @@ like `<ul virtuaWindowVirtualizer [data]="data">`.
 
 > **get** **cache**(): [`CacheSnapshot`](../../react/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/angular/WindowVirtualizer.ts:284](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L284)
+Defined in: [src/angular/WindowVirtualizer.ts:284](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L284)
 
 Get current [CacheSnapshot](../../react/type-aliases/CacheSnapshot.md).
 
@@ -52,7 +52,7 @@ Get current [CacheSnapshot](../../react/type-aliases/CacheSnapshot.md).
 
 > **get** **scrollOffset**(): `number`
 
-Defined in: [src/angular/WindowVirtualizer.ts:287](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L287)
+Defined in: [src/angular/WindowVirtualizer.ts:287](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L287)
 
 Get current scrollTop, or scrollLeft if horizontal: true.
 
@@ -74,7 +74,7 @@ Get current scrollTop, or scrollLeft if horizontal: true.
 
 > **get** **viewportSize**(): `number`
 
-Defined in: [src/angular/WindowVirtualizer.ts:290](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L290)
+Defined in: [src/angular/WindowVirtualizer.ts:290](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L290)
 
 Get current offsetHeight, or offsetWidth if horizontal: true.
 
@@ -94,7 +94,7 @@ Get current offsetHeight, or offsetWidth if horizontal: true.
 
 > **new WindowVirtualizer**\<`T`\>(): `WindowVirtualizer`\<`T`\>
 
-Defined in: [src/angular/WindowVirtualizer.ts:224](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L224)
+Defined in: [src/angular/WindowVirtualizer.ts:224](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L224)
 
 #### Returns
 
@@ -106,7 +106,7 @@ Defined in: [src/angular/WindowVirtualizer.ts:224](https://github.com/inokawa/vi
 
 > **ngOnInit**(): `void`
 
-Defined in: [src/angular/WindowVirtualizer.ts:256](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L256)
+Defined in: [src/angular/WindowVirtualizer.ts:256](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L256)
 
 A callback method that is invoked immediately after the
 default change detector has checked the directive's
@@ -128,7 +128,7 @@ It is invoked only once when the directive is instantiated.
 
 > **findItemIndex**(`offset`): `number`
 
-Defined in: [src/angular/WindowVirtualizer.ts:293](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L293)
+Defined in: [src/angular/WindowVirtualizer.ts:293](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L293)
 
 Find nearest item index from offset.
 
@@ -154,7 +154,7 @@ offset in pixels from the start of the scroll container
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/angular/WindowVirtualizer.ts:296](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L296)
+Defined in: [src/angular/WindowVirtualizer.ts:296](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L296)
 
 Get item offset from start.
 
@@ -180,7 +180,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/angular/WindowVirtualizer.ts:299](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L299)
+Defined in: [src/angular/WindowVirtualizer.ts:299](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L299)
 
 Get item size.
 
@@ -206,7 +206,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/angular/WindowVirtualizer.ts:302](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L302)
+Defined in: [src/angular/WindowVirtualizer.ts:302](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L302)
 
 Scroll to the item specified by index.
 
@@ -238,7 +238,7 @@ options
 
 > `readonly` **data**: `InputSignal`\<readonly `T`[]\>
 
-Defined in: [src/angular/WindowVirtualizer.ts:116](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L116)
+Defined in: [src/angular/WindowVirtualizer.ts:116](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L116)
 
 The data items rendered by this component.
 
@@ -248,7 +248,7 @@ The data items rendered by this component.
 
 > `readonly` **getKey**: `InputSignal`\<(`data`, `index`) => `string` \| `number`\>
 
-Defined in: [src/angular/WindowVirtualizer.ts:121](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L121)
+Defined in: [src/angular/WindowVirtualizer.ts:121](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L121)
 
 Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
 
@@ -264,7 +264,7 @@ defaultGetKey (returns index of item)
 
 > `readonly` **bufferSize**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/WindowVirtualizer.ts:127](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L127)
+Defined in: [src/angular/WindowVirtualizer.ts:127](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L127)
 
 Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -280,7 +280,7 @@ Extra item space in pixels to render before/after the viewport. The minimum valu
 
 > `readonly` **itemSize**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/WindowVirtualizer.ts:134](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L134)
+Defined in: [src/angular/WindowVirtualizer.ts:134](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L134)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -293,7 +293,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `readonly` **ssrCount**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/WindowVirtualizer.ts:138](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L138)
+Defined in: [src/angular/WindowVirtualizer.ts:138](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L138)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -303,7 +303,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `readonly` **shift**: `InputSignal`\<`boolean`\>
 
-Defined in: [src/angular/WindowVirtualizer.ts:142](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L142)
+Defined in: [src/angular/WindowVirtualizer.ts:142](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L142)
 
 While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
 
@@ -313,7 +313,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 > `readonly` **horizontal**: `InputSignal`\<`boolean`\>
 
-Defined in: [src/angular/WindowVirtualizer.ts:146](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L146)
+Defined in: [src/angular/WindowVirtualizer.ts:146](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L146)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -323,7 +323,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `readonly` **cacheProp**: `InputSignal`\<[`CacheSnapshot`](../../react/type-aliases/CacheSnapshot.md) \| `undefined`\>
 
-Defined in: [src/angular/WindowVirtualizer.ts:152](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L152)
+Defined in: [src/angular/WindowVirtualizer.ts:152](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L152)
 
 You can restore cache by passing a [CacheSnapshot](../../react/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [WindowVirtualizerHandle.cache](../interfaces/WindowVirtualizerHandle.md#cache).
 
@@ -335,7 +335,7 @@ You can restore cache by passing a [CacheSnapshot](../../react/type-aliases/Cach
 
 > `readonly` **scroll**: `OutputEmitterRef`\<`void`\>
 
-Defined in: [src/angular/WindowVirtualizer.ts:158](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L158)
+Defined in: [src/angular/WindowVirtualizer.ts:158](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L158)
 
 Emitted whenever scroll offset changes.
 
@@ -345,6 +345,6 @@ Emitted whenever scroll offset changes.
 
 > `readonly` **scrollEnd**: `OutputEmitterRef`\<`void`\>
 
-Defined in: [src/angular/WindowVirtualizer.ts:162](https://github.com/inokawa/virtua/blob/e93e426489b1c24a6cec4a0c3c999edcebe352fd/src/angular/WindowVirtualizer.ts#L162)
+Defined in: [src/angular/WindowVirtualizer.ts:162](https://github.com/inokawa/virtua/blob/db45242c520cde38c38f994dbae0ae7f5538323a/src/angular/WindowVirtualizer.ts#L162)
 
 Emitted when scrolling stops.
