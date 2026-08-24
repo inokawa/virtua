@@ -738,4 +738,17 @@ describe("estimateDefaultSize", () => {
       );
     });
   });
+
+  it("should calculate excluding zero-height entries", () => {
+    const layout = initLayout(100, 30);
+    layout.$setItemSize(0, 0);
+    layout.$setItemSize(1, 0);
+    layout.$setItemSize(2, 0);
+    layout.$setItemSize(3, 50);
+    layout.$setItemSize(4, 0);
+
+    layout.$estimateDefaultSize!(0);
+    const [, defaultSize] = layout.$snapshot();
+    expect(defaultSize).toBe(50);
+  });
 });

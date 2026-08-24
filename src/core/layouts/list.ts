@@ -142,7 +142,10 @@ export const createListLayout = (
           const measuredSizes: number[] = [];
           sizes.forEach((s, i) => {
             if (s !== UNCACHED) {
-              measuredSizes.push(s);
+              // https://github.com/inokawa/virtua/issues/907
+              if (s) {
+                measuredSizes.push(s);
+              }
               if (i < startIndex) {
                 measuredCountBeforeStart++;
               }
