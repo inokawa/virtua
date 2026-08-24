@@ -599,8 +599,8 @@ describe("getTotalSize", () => {
 });
 
 describe("estimateDefaultSize", () => {
-  const initLayout = (defaultItemSize: number) => {
-    const sizes = range(100, () => -1);
+  const initLayout = (length: number, defaultItemSize: number) => {
+    const sizes = range(length, () => -1);
     const layout = createListLayout(sizes.length, undefined, [
       sizes,
       defaultItemSize,
@@ -612,7 +612,7 @@ describe("estimateDefaultSize", () => {
   describe("start", () => {
     it("should update with 1 entry", () => {
       const indexes = [0];
-      const layout = initLayout(30);
+      const layout = initLayout(100, 30);
       indexes.forEach((i) => layout.$setItemSize(i, 50));
       const [initialSizes, initialDefaultSize] = layout.$snapshot();
       const initialTotalSize = layout.$getTotalSize();
@@ -630,7 +630,7 @@ describe("estimateDefaultSize", () => {
 
     it("should update with some entry", () => {
       const indexes = [0, 1, 2, 3];
-      const layout = initLayout(30);
+      const layout = initLayout(100, 30);
       indexes.forEach((i) => layout.$setItemSize(i, 50));
       const [initialSizes, initialDefaultSize] = layout.$snapshot();
       const initialTotalSize = layout.$getTotalSize();
@@ -648,7 +648,7 @@ describe("estimateDefaultSize", () => {
 
     it("should update with some entry from outside", () => {
       const indexes = [20, 21, 22, 23];
-      const layout = initLayout(30);
+      const layout = initLayout(100, 30);
       indexes.forEach((i) => layout.$setItemSize(i, 50));
       const [initialSizes, initialDefaultSize] = layout.$snapshot();
       const initialTotalSize = layout.$getTotalSize();
@@ -668,7 +668,7 @@ describe("estimateDefaultSize", () => {
   describe("end", () => {
     it("should update with 1 entry", () => {
       const indexes = [92];
-      const layout = initLayout(30);
+      const layout = initLayout(100, 30);
       indexes.forEach((i) => layout.$setItemSize(i, 50));
       const [initialSizes, initialDefaultSize] = layout.$snapshot();
       const initialTotalSize = layout.$getTotalSize();
@@ -686,7 +686,7 @@ describe("estimateDefaultSize", () => {
 
     it("should update with some entry", () => {
       const indexes = [92, 93, 94, 95];
-      const layout = initLayout(30);
+      const layout = initLayout(100, 30);
       indexes.forEach((i) => layout.$setItemSize(i, 50));
       const [initialSizes, initialDefaultSize] = layout.$snapshot();
       const initialTotalSize = layout.$getTotalSize();
@@ -704,7 +704,7 @@ describe("estimateDefaultSize", () => {
 
     it("should update with some entry from outside", () => {
       const indexes = [20, 21, 22, 23];
-      const layout = initLayout(30);
+      const layout = initLayout(100, 30);
       indexes.forEach((i) => layout.$setItemSize(i, 50));
       const [initialSizes, initialDefaultSize] = layout.$snapshot();
       const initialTotalSize = layout.$getTotalSize();
@@ -722,7 +722,7 @@ describe("estimateDefaultSize", () => {
 
     it("should update with some entry from near bound", () => {
       const indexes = [88, 89, 90, 91];
-      const layout = initLayout(30);
+      const layout = initLayout(100, 30);
       indexes.forEach((i) => layout.$setItemSize(i, 50));
       const [initialSizes, initialDefaultSize] = layout.$snapshot();
       const initialTotalSize = layout.$getTotalSize();
