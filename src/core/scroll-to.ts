@@ -3,16 +3,10 @@ import { type ScrollToIndexOpts } from "./types.js";
 import { clamp, NULL } from "./utils.js";
 import { type Driver, type GridDriver } from "./driver.js";
 
-/**
- * @internal
- */
 export const scrollTo = (driver: Driver, offset: number) => {
   driver.$scroll(() => offset);
 };
 
-/**
- * @internal
- */
 export const scrollBy = (
   driver: Driver,
   store: VirtualStore,
@@ -21,9 +15,6 @@ export const scrollBy = (
   scrollTo(driver, offset + store.$getScrollOffset());
 };
 
-/**
- * @internal
- */
 export const scrollToIndex = (
   driver: Driver,
   store: VirtualStore,
@@ -63,9 +54,6 @@ export const scrollToIndex = (
   }, smooth);
 };
 
-/**
- * @internal
- */
 export const gridScrollTo = (
   driver: GridDriver,
   row?: number,
@@ -79,9 +67,6 @@ export const gridScrollTo = (
   }
 };
 
-/**
- * @internal
- */
 export const gridScrollBy = (
   driver: GridDriver,
   rowStore: VirtualStore,
@@ -99,9 +84,6 @@ export const gridScrollBy = (
   }
 };
 
-/**
- * @internal
- */
 export const gridScrollToIndex = (
   driver: GridDriver,
   rowStore: VirtualStore,

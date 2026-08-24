@@ -1,6 +1,4 @@
-/** @internal */
 export type ItemResize = Readonly<[index: number, size: number]>;
-/** @internal */
 export type ItemsRange = Readonly<[startIndex: number, endIndex: number]>;
 
 /**

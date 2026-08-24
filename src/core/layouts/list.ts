@@ -11,16 +11,10 @@ const fill = (array: number[], length: number, prepend?: boolean): number[] => {
   return array;
 };
 
-/**
- * @internal
- */
 export interface ListLayout extends Layout {
   $snapshot(): CacheSnapshot;
 }
 
-/**
- * @internal
- */
 export const createListLayout = (
   length: number,
   itemSize?: number | undefined,
