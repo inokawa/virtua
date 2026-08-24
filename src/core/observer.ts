@@ -9,7 +9,7 @@ import {
   ACTION_SCROLL_END,
   ACTION_START_OFFSET_CHANGE,
 } from "./store.js";
-import { NULL, timeout } from "./utils.js";
+import { timeout } from "./utils.js";
 
 /**
  * @internal
@@ -34,25 +34,6 @@ export const createResizeObserver = (cb: ResizeObserverCallback) => {
       ro && ro.disconnect();
     },
   };
-};
-
-const debounce = <T extends () => void>(fn: T, ms: number) => {
-  let id: ReturnType<typeof setTimeout> | undefined | null;
-
-  const cancel = () => {
-    if (id != NULL) {
-      clearTimeout(id);
-    }
-  };
-  const debouncedFn = () => {
-    cancel();
-    id = timeout(() => {
-      id = NULL;
-      fn();
-    }, ms);
-  };
-  debouncedFn._cancel = cancel;
-  return debouncedFn;
 };
 
 /**
@@ -89,27 +70,35 @@ export const createScrollObserver = (
   ) => void,
   getStartOffset?: () => number,
 ) => {
-  const now = Date.now;
-
   let lastScrollTime = 0;
   let wheeling = false;
   let touching = false;
   let justTouchEnded = false;
   let stillMomentumScrolling = false;
 
-  const onScrollEnd = debounce(() => {
+  let scrollEndTimer: ReturnType<typeof timeout> | undefined;
+
+  const now = Date.now;
+
+  // Debounce scroll end detection
+  const cancelTimeout = clearTimeout;
+  const onScrollEnd = () => {
     if (wheeling || touching) {
       wheeling = false;
 
       // Wait while wheeling or touching
-      onScrollEnd();
+      scheduleScrollEnd();
       return;
     }
 
     justTouchEnded = false;
 
     store.$update(ACTION_SCROLL_END);
-  }, 150);
+  };
+  const scheduleScrollEnd = () => {
+    cancelTimeout(scrollEndTimer);
+    scrollEndTimer = timeout(onScrollEnd, 150);
+  };
 
   const onScroll = () => {
     lastScrollTime = now();
@@ -123,7 +112,7 @@ export const createScrollObserver = (
     }
     store.$update(ACTION_SCROLL, getScrollOffset());
 
-    onScrollEnd();
+    scheduleScrollEnd();
   };
 
   // Infer scroll state also from wheel events
@@ -175,7 +164,7 @@ export const createScrollObserver = (
       viewport.removeEventListener("wheel", onWheel);
       viewport.removeEventListener("touchstart", onTouchStart);
       viewport.removeEventListener("touchend", onTouchEnd);
-      onScrollEnd._cancel();
+      cancelTimeout(scrollEndTimer);
     },
     _fixScrollJump: () => {
       const [jump, shift] = store._flushJump();
