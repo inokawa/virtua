@@ -15,8 +15,6 @@ const sum = (values: readonly number[]): number => {
 
 const sizesOf = (layout: ListLayout) => layout.$snapshot()[0];
 
-const defaultSizeOf = (layout: ListLayout) => layout.$snapshot()[1]!;
-
 const initLayoutWithSizesAndEmptyOffsets = (
   sizes: readonly number[],
   defaultSize: number,
@@ -613,51 +611,51 @@ describe("estimateDefaultSize", () => {
     it("should update with 1 entry", () => {
       const indexes = [0];
       const layout = initLayout(indexes);
-      const initialSizes = sizesOf(layout);
-      const initialDefaultSize = defaultSizeOf(layout);
+      const [initialSizes, initialDefaultSize] = layout.$snapshot();
       const initialTotalSize = layout.$getTotalSize();
 
       const diff = layout.$estimateDefaultSize!(0);
-      expect(defaultSizeOf(layout)).toBe(50);
-      expect(sizesOf(layout)).toEqual(initialSizes);
+      const [sizes, defaultSize] = layout.$snapshot();
+      expect(defaultSize).toBe(50);
+      expect(sizes).toEqual(initialSizes);
       expect(diff).toBe(0);
       expect(layout.$getTotalSize()).toBe(
         initialTotalSize +
-          (defaultSizeOf(layout) - initialDefaultSize) * (100 - indexes.length),
+          (defaultSize! - initialDefaultSize!) * (100 - indexes.length),
       );
     });
 
     it("should update with some entry", () => {
       const indexes = [0, 1, 2, 3];
       const layout = initLayout(indexes);
-      const initialSizes = sizesOf(layout);
-      const initialDefaultSize = defaultSizeOf(layout);
+      const [initialSizes, initialDefaultSize] = layout.$snapshot();
       const initialTotalSize = layout.$getTotalSize();
 
       const diff = layout.$estimateDefaultSize!(0);
-      expect(defaultSizeOf(layout)).toBe(50);
-      expect(sizesOf(layout)).toEqual(initialSizes);
+      const [sizes, defaultSize] = layout.$snapshot();
+      expect(defaultSize).toBe(50);
+      expect(sizes).toEqual(initialSizes);
       expect(diff).toBe(0);
       expect(layout.$getTotalSize()).toBe(
         initialTotalSize +
-          (defaultSizeOf(layout) - initialDefaultSize) * (100 - indexes.length),
+          (defaultSize! - initialDefaultSize!) * (100 - indexes.length),
       );
     });
 
     it("should update with some entry from outside", () => {
       const indexes = [20, 21, 22, 23];
       const layout = initLayout(indexes);
-      const initialSizes = sizesOf(layout);
-      const initialDefaultSize = defaultSizeOf(layout);
+      const [initialSizes, initialDefaultSize] = layout.$snapshot();
       const initialTotalSize = layout.$getTotalSize();
 
       const diff = layout.$estimateDefaultSize!(0);
-      expect(defaultSizeOf(layout)).toBe(50);
-      expect(sizesOf(layout)).toEqual(initialSizes);
+      const [sizes, defaultSize] = layout.$snapshot();
+      expect(defaultSize!).toBe(50);
+      expect(sizes).toEqual(initialSizes);
       expect(diff).toBe(0);
       expect(layout.$getTotalSize()).toBe(
         initialTotalSize +
-          (defaultSizeOf(layout) - initialDefaultSize) * (100 - indexes.length),
+          (defaultSize! - initialDefaultSize!) * (100 - indexes.length),
       );
     });
   });
@@ -666,68 +664,68 @@ describe("estimateDefaultSize", () => {
     it("should update with 1 entry", () => {
       const indexes = [92];
       const layout = initLayout(indexes);
-      const initialSizes = sizesOf(layout);
-      const initialDefaultSize = defaultSizeOf(layout);
+      const [initialSizes, initialDefaultSize] = layout.$snapshot();
       const initialTotalSize = layout.$getTotalSize();
 
       const diff = layout.$estimateDefaultSize!(layout.$getLength() - 10);
-      expect(defaultSizeOf(layout)).toBe(50);
-      expect(sizesOf(layout)).toEqual(initialSizes);
+      const [sizes, defaultSize] = layout.$snapshot();
+      expect(defaultSize).toBe(50);
+      expect(sizes).toEqual(initialSizes);
       expect(diff).toBe((50 - 30) * 90);
       expect(layout.$getTotalSize()).toBe(
         initialTotalSize +
-          (defaultSizeOf(layout) - initialDefaultSize) * (100 - indexes.length),
+          (defaultSize! - initialDefaultSize!) * (100 - indexes.length),
       );
     });
 
     it("should update with some entry", () => {
       const indexes = [92, 93, 94, 95];
       const layout = initLayout(indexes);
-      const initialSizes = sizesOf(layout);
-      const initialDefaultSize = defaultSizeOf(layout);
+      const [initialSizes, initialDefaultSize] = layout.$snapshot();
       const initialTotalSize = layout.$getTotalSize();
 
       const diff = layout.$estimateDefaultSize!(layout.$getLength() - 10);
-      expect(defaultSizeOf(layout)).toBe(50);
-      expect(sizesOf(layout)).toEqual(initialSizes);
+      const [sizes, defaultSize] = layout.$snapshot();
+      expect(defaultSize).toBe(50);
+      expect(sizes).toEqual(initialSizes);
       expect(diff).toBe((50 - 30) * 90);
       expect(layout.$getTotalSize()).toBe(
         initialTotalSize +
-          (defaultSizeOf(layout) - initialDefaultSize) * (100 - indexes.length),
+          (defaultSize! - initialDefaultSize!) * (100 - indexes.length),
       );
     });
 
     it("should update with some entry from outside", () => {
       const indexes = [20, 21, 22, 23];
       const layout = initLayout(indexes);
-      const initialSizes = sizesOf(layout);
-      const initialDefaultSize = defaultSizeOf(layout);
+      const [initialSizes, initialDefaultSize] = layout.$snapshot();
       const initialTotalSize = layout.$getTotalSize();
 
       const diff = layout.$estimateDefaultSize!(layout.$getLength() - 10);
-      expect(defaultSizeOf(layout)).toBe(50);
-      expect(sizesOf(layout)).toEqual(initialSizes);
+      const [sizes, defaultSize] = layout.$snapshot();
+      expect(defaultSize!).toBe(50);
+      expect(sizes).toEqual(initialSizes);
       expect(diff).toBe((50 - 30) * (90 - 4));
       expect(layout.$getTotalSize()).toBe(
         initialTotalSize +
-          (defaultSizeOf(layout) - initialDefaultSize) * (100 - indexes.length),
+          (defaultSize! - initialDefaultSize!) * (100 - indexes.length),
       );
     });
 
     it("should update with some entry from near bound", () => {
       const indexes = [88, 89, 90, 91];
       const layout = initLayout(indexes);
-      const initialSizes = sizesOf(layout);
-      const initialDefaultSize = defaultSizeOf(layout);
+      const [initialSizes, initialDefaultSize] = layout.$snapshot();
       const initialTotalSize = layout.$getTotalSize();
 
       const diff = layout.$estimateDefaultSize!(layout.$getLength() - 10);
-      expect(defaultSizeOf(layout)).toBe(50);
-      expect(sizesOf(layout)).toEqual(initialSizes);
+      const [sizes, defaultSize] = layout.$snapshot();
+      expect(defaultSize!).toBe(50);
+      expect(sizes).toEqual(initialSizes);
       expect(diff).toBe((50 - 30) * (90 - 2));
       expect(layout.$getTotalSize()).toBe(
         initialTotalSize +
-          (defaultSizeOf(layout) - initialDefaultSize) * (100 - indexes.length),
+          (defaultSize! - initialDefaultSize!) * (100 - indexes.length),
       );
     });
   });
