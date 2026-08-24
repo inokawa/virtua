@@ -601,24 +601,21 @@ describe("getTotalSize", () => {
 });
 
 describe("estimateDefaultSize", () => {
-  const setup = (indexes: readonly number[]) => {
+  const initLayout = (indexes: readonly number[]) => {
     const sizes = range(100, () => -1);
     const layout = createListLayout(sizes.length, undefined, [sizes, 30]);
     layout.$getTotalSize();
     indexes.forEach((i) => layout.$setItemSize(i, 50));
-    return [
-      layout,
-      sizesOf(layout),
-      defaultSizeOf(layout),
-      layout.$getTotalSize(),
-    ] as const;
+    return layout;
   };
 
   describe("start", () => {
     it("should update with 1 entry", () => {
       const indexes = [0];
-      const [layout, initialSizes, initialDefaultSize, initialTotalSize] =
-        setup(indexes);
+      const layout = initLayout(indexes);
+      const initialSizes = sizesOf(layout);
+      const initialDefaultSize = defaultSizeOf(layout);
+      const initialTotalSize = layout.$getTotalSize();
 
       const diff = layout.$estimateDefaultSize!(0);
       expect(defaultSizeOf(layout)).toBe(50);
@@ -632,8 +629,10 @@ describe("estimateDefaultSize", () => {
 
     it("should update with some entry", () => {
       const indexes = [0, 1, 2, 3];
-      const [layout, initialSizes, initialDefaultSize, initialTotalSize] =
-        setup(indexes);
+      const layout = initLayout(indexes);
+      const initialSizes = sizesOf(layout);
+      const initialDefaultSize = defaultSizeOf(layout);
+      const initialTotalSize = layout.$getTotalSize();
 
       const diff = layout.$estimateDefaultSize!(0);
       expect(defaultSizeOf(layout)).toBe(50);
@@ -647,8 +646,10 @@ describe("estimateDefaultSize", () => {
 
     it("should update with some entry from outside", () => {
       const indexes = [20, 21, 22, 23];
-      const [layout, initialSizes, initialDefaultSize, initialTotalSize] =
-        setup(indexes);
+      const layout = initLayout(indexes);
+      const initialSizes = sizesOf(layout);
+      const initialDefaultSize = defaultSizeOf(layout);
+      const initialTotalSize = layout.$getTotalSize();
 
       const diff = layout.$estimateDefaultSize!(0);
       expect(defaultSizeOf(layout)).toBe(50);
@@ -664,8 +665,10 @@ describe("estimateDefaultSize", () => {
   describe("end", () => {
     it("should update with 1 entry", () => {
       const indexes = [92];
-      const [layout, initialSizes, initialDefaultSize, initialTotalSize] =
-        setup(indexes);
+      const layout = initLayout(indexes);
+      const initialSizes = sizesOf(layout);
+      const initialDefaultSize = defaultSizeOf(layout);
+      const initialTotalSize = layout.$getTotalSize();
 
       const diff = layout.$estimateDefaultSize!(layout.$getLength() - 10);
       expect(defaultSizeOf(layout)).toBe(50);
@@ -679,8 +682,10 @@ describe("estimateDefaultSize", () => {
 
     it("should update with some entry", () => {
       const indexes = [92, 93, 94, 95];
-      const [layout, initialSizes, initialDefaultSize, initialTotalSize] =
-        setup(indexes);
+      const layout = initLayout(indexes);
+      const initialSizes = sizesOf(layout);
+      const initialDefaultSize = defaultSizeOf(layout);
+      const initialTotalSize = layout.$getTotalSize();
 
       const diff = layout.$estimateDefaultSize!(layout.$getLength() - 10);
       expect(defaultSizeOf(layout)).toBe(50);
@@ -694,8 +699,10 @@ describe("estimateDefaultSize", () => {
 
     it("should update with some entry from outside", () => {
       const indexes = [20, 21, 22, 23];
-      const [layout, initialSizes, initialDefaultSize, initialTotalSize] =
-        setup(indexes);
+      const layout = initLayout(indexes);
+      const initialSizes = sizesOf(layout);
+      const initialDefaultSize = defaultSizeOf(layout);
+      const initialTotalSize = layout.$getTotalSize();
 
       const diff = layout.$estimateDefaultSize!(layout.$getLength() - 10);
       expect(defaultSizeOf(layout)).toBe(50);
@@ -709,8 +716,10 @@ describe("estimateDefaultSize", () => {
 
     it("should update with some entry from near bound", () => {
       const indexes = [88, 89, 90, 91];
-      const [layout, initialSizes, initialDefaultSize, initialTotalSize] =
-        setup(indexes);
+      const layout = initLayout(indexes);
+      const initialSizes = sizesOf(layout);
+      const initialDefaultSize = defaultSizeOf(layout);
+      const initialTotalSize = layout.$getTotalSize();
 
       const diff = layout.$estimateDefaultSize!(layout.$getLength() - 10);
       expect(defaultSizeOf(layout)).toBe(50);
