@@ -327,7 +327,7 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
     afterRenderEffect({
       read: () => {
         this._stateVersion();
-        this.driver.$fixScrollJump();
+        this.driver.$effect();
       },
     });
 

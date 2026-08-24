@@ -295,7 +295,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     }, []);
 
     useIsomorphicLayoutEffect(() => {
-      driver.$fixScrollJump();
+      driver.$effect();
     }, [stateVersion]);
 
     useImperativeHandle(ref, () => {

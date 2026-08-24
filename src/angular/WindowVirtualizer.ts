@@ -243,7 +243,7 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
     afterRenderEffect({
       read: () => {
         this._stateVersion();
-        this.driver.$fixScrollJump();
+        this.driver.$effect();
       },
     });
 

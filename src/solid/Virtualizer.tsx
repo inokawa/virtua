@@ -263,7 +263,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
   createEffect(
     on(stateVersion, () => {
-      driver.$fixScrollJump();
+      driver.$effect();
     }),
   );
 

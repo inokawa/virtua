@@ -265,7 +265,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     watch(
       [stateVersion],
       () => {
-        driver.$fixScrollJump();
+        driver.$effect();
       },
       { flush: "post" },
     );

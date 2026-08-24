@@ -135,8 +135,8 @@ export interface Driver {
   $dispose(): void;
   $observeItem(el: HTMLElement, index: number): () => void;
   $isNegative(): boolean;
-  $scheduleScroll(getTargetOffset: () => number, smooth?: boolean): void;
-  $fixScrollJump(): void;
+  $scroll(getTargetOffset: () => number, smooth?: boolean): void;
+  $effect(): void;
   $getBaseOffset(): number;
   $getScrollbarSize(): number;
 }
@@ -259,8 +259,8 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
       };
     },
     $isNegative: () => isNegative,
-    $scheduleScroll: scheduleScroll,
-    $fixScrollJump() {
+    $scroll: scheduleScroll,
+    $effect() {
       scrollObserver && scrollObserver._fixScrollJump();
     },
     $getBaseOffset: store.$getStartSpacerSize,
@@ -424,8 +424,8 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
       };
     },
     $isNegative: () => isNegative,
-    $scheduleScroll: scheduleScroll,
-    $fixScrollJump() {
+    $scroll: scheduleScroll,
+    $effect() {
       scrollObserver && scrollObserver._fixScrollJump();
     },
     $getBaseOffset() {
@@ -458,10 +458,9 @@ export type GridDriver = {
   $resizeRows(rows: ItemResize[]): void;
   $resizeCols(cols: ItemResize[]): void;
   $isNegative(): boolean;
-  $scheduleScrollX(getTargetOffset: () => number, smooth?: boolean): void;
-  $scheduleScrollY(getTargetOffset: () => number, smooth?: boolean): void;
-  $fixScrollJump(): void;
-  $getBaseOffset(isHorizontal: boolean): number;
+  $scrollX(getTargetOffset: () => number, smooth?: boolean): void;
+  $scrollY(getTargetOffset: () => number, smooth?: boolean): void;
+  $effect(): void;
 };
 
 /**
@@ -690,13 +689,11 @@ export const createContainerGridDriver: GridDriverFactory = (
       colStore.$update(ACTION_ITEM_RESIZE, cols);
     },
     $isNegative: () => isNegative,
-    $scheduleScrollX: scheduleScrollX,
-    $scheduleScrollY: scheduleScrollY,
-    $fixScrollJump() {
+    $scrollX: scheduleScrollX,
+    $scrollY: scheduleScrollY,
+    $effect() {
       rowScrollObserver && rowScrollObserver._fixScrollJump();
       colScrollObserver && colScrollObserver._fixScrollJump();
     },
-    $getBaseOffset: (isHorizontal) =>
-      (isHorizontal ? colStore : rowStore).$getStartSpacerSize(),
   };
 };
