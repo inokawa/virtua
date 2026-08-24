@@ -357,7 +357,7 @@ export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
     }, []);
 
     useIsomorphicLayoutEffect(() => {
-      driver.$fixScrollJump();
+      driver.$effect();
     }, [rowStateVersion, colStateVersion]);
 
     useImperativeHandle(ref, () => {

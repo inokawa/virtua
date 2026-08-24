@@ -211,7 +211,7 @@ export const WindowVirtualizer = <T,>(
 
   createEffect(
     on(stateVersion, () => {
-      driver.$fixScrollJump();
+      driver.$effect();
     }),
   );
 

@@ -215,7 +215,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     watch(
       [stateVersion],
       () => {
-        driver.$fixScrollJump();
+        driver.$effect();
       },
       { flush: "post" },
     );

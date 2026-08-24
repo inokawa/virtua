@@ -94,7 +94,7 @@
   $effect(() => {
     if (prevStateVersion === stateVersion) return;
     prevStateVersion = stateVersion;
-    driver.$fixScrollJump();
+    driver.$effect();
   });
 
   export const getCache =

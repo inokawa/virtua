@@ -7,7 +7,7 @@ import { type Driver, type GridDriver } from "./driver.js";
  * @internal
  */
 export const scrollTo = (driver: Driver, offset: number) => {
-  driver.$scheduleScroll(() => offset);
+  driver.$scroll(() => offset);
 };
 
 /**
@@ -49,7 +49,7 @@ export const scrollToIndex = (
     }
   }
 
-  driver.$scheduleScroll(() => {
+  driver.$scroll(() => {
     return (
       offset +
       driver.$getBaseOffset() +
@@ -75,10 +75,10 @@ export const gridScrollTo = (
   col?: number,
 ) => {
   if (row != NULL) {
-    driver.$scheduleScrollY(() => row);
+    driver.$scrollY(() => row);
   }
   if (col != NULL) {
-    driver.$scheduleScrollX(() => col);
+    driver.$scrollX(() => col);
   }
 };
 
@@ -94,11 +94,11 @@ export const gridScrollBy = (
 ) => {
   if (row != NULL) {
     const target = row + rowStore.$getScrollOffset();
-    driver.$scheduleScrollY(() => target);
+    driver.$scrollY(() => target);
   }
   if (col != NULL) {
     const target = col + colStore.$getScrollOffset();
-    driver.$scheduleScrollX(() => target);
+    driver.$scrollX(() => target);
   }
 };
 
@@ -114,14 +114,10 @@ export const gridScrollToIndex = (
 ) => {
   if (row != NULL) {
     const index = clamp(row, 0, rowStore.$getItemsLength() - 1);
-    driver.$scheduleScrollY(
-      () => driver.$getBaseOffset(false) + rowStore.$getItemOffset(index),
-    );
+    driver.$scrollY(() => rowStore.$getItemOffset(index));
   }
   if (col != NULL) {
     const index = clamp(col, 0, colStore.$getItemsLength() - 1);
-    driver.$scheduleScrollX(
-      () => driver.$getBaseOffset(true) + colStore.$getItemOffset(index),
-    );
+    driver.$scrollX(() => colStore.$getItemOffset(index));
   }
 };
