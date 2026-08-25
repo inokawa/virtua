@@ -24,6 +24,10 @@ export const sort = <T extends number>(arr: readonly T[]): T[] => {
  * @internal
  */
 export const timeout = setTimeout;
+/**
+ * @internal
+ */
+export const cancelTimeout = clearTimeout;
 
 /**
  * @internal
