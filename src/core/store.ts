@@ -335,9 +335,7 @@ export const createVirtualStore = (
                     ? // https://github.com/inokawa/virtua/issues/385
                       // https://github.com/inokawa/virtua/discussions/865
                       // https://github.com/inokawa/virtua/issues/893
-                      // Use "<=" instead of "<" here so the item whose bottom rests
-                      // exactly on the viewport top (the row directly above an
-                      // item anchored to the top) is compensated too.
+                      // Use "<=" instead of "<" here so the item whose bottom rests exactly on the viewport top (the row directly above an item anchored to the top) is compensated too.
                       itemOffset + itemSize <= start
                     : // https://github.com/inokawa/virtua/pull/868
                       itemOffset < start &&
