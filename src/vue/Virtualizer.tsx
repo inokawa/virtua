@@ -296,7 +296,6 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       const ItemElement = props.item;
 
       const total = totalSize.value;
-      const isNegative = driver.$isNegative();
 
       const items: VNode[] = [];
 
@@ -311,7 +310,6 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
             _index={i}
             _children={e}
             _isHorizontal={isHorizontal}
-            _isNegative={isNegative}
             _isSSR={isSSR}
             _as={ItemElement}
             _itemProps={props.itemProps?.({ item: props.data![i]!, index: i })}

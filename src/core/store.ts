@@ -80,7 +80,7 @@ export type VirtualStore = {
   $getRange(bufferSize?: number): ItemsRange;
   $findItemIndex(offset: number): number;
   $isUnmeasuredItem(index: number): boolean;
-  $getItemOffset(index: number, fromEnd?: boolean): number;
+  $getItemOffset(index: number): number;
   $getItemSize(index: number): number;
   $getItemsLength(): number;
   $getScrollOffset(): number;
@@ -130,12 +130,8 @@ export const createVirtualStore = (
   const subscribers = new Set<[number, Subscriber]>();
   const getRelativeScrollOffset = () => scrollOffset - startSpacerSize;
   const getVisibleOffset = () => getRelativeScrollOffset() + pendingJump + jump;
-  const getItemOffset = (index: number, fromEnd?: boolean): number => {
-    const offset = getOffset(index) - pendingJump;
-    if (fromEnd) {
-      return getTotalSize() - offset - getItemSize(index);
-    }
-    return offset;
+  const getItemOffset = (index: number): number => {
+    return getOffset(index) - pendingJump;
   };
 
   const applyJump = (j: number) => {

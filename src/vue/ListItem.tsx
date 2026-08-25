@@ -35,7 +35,6 @@ export const ListItem = /*#__PURE__*/ defineComponent({
     _index: { type: Number, required: true },
     _isHorizontal: { type: Boolean },
     _isSSR: { type: Boolean },
-    _isNegative: { type: Boolean },
     _as: { type: String as PropType<keyof NativeElements>, required: true },
     _itemProps: Object as PropType<ReturnType<ItemProps>>,
   },
@@ -44,8 +43,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
 
     const offset = computed(
       () =>
-        props._stateVersion.value &&
-        props._store.$getItemOffset(props._index, props._isNegative),
+        props._stateVersion.value && props._store.$getItemOffset(props._index),
     );
     const hide = computed(
       () =>
@@ -80,7 +78,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
         position: isHide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
         [isHorizontal ? "top" : "left"]: "0px",
-        [isHorizontal ? "left" : "top"]: offset.value + "px",
+        [isHorizontal ? "insetInlineStart" : "top"]: offset.value + "px",
         visibility: !isHide || isSSR ? undefined : "hidden",
         ...styleProp,
       };

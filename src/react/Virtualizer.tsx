@@ -236,8 +236,6 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     const isScrolling = store.$isScrolling();
     const totalSize = store.$getTotalSize();
 
-    const isNegative = driver.$isNegative();
-
     const items: ReactElement[] = [];
 
     const renderItem = (index: number) => {
@@ -248,7 +246,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
           key={getKey(e, index)}
           _resizer={driver.$observeItem}
           _index={index}
-          _offset={store.$getItemOffset(index, isNegative)}
+          _offset={store.$getItemOffset(index)}
           _hide={store.$isUnmeasuredItem(index)}
           _as={ItemElement as "div"}
           _children={e}

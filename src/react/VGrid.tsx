@@ -89,7 +89,7 @@ const Cell = /*#__PURE__*/ memo(
             display: "grid",
             position: "absolute",
             top: top,
-            left: left,
+            insetInlineStart: left,
             visibility: hide ? "hidden" : undefined,
             minHeight: height,
             minWidth: width,
@@ -414,8 +414,6 @@ export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
       };
     }, [children]);
 
-    const isNegative = driver.$isNegative();
-
     const [startRowIndex, endRowIndex] = rowStore.$getRange(bufferSize);
     const [startColIndex, endColIndex] = colStore.$getRange(bufferSize);
 
@@ -429,7 +427,7 @@ export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
             _rowIndex={rowIndex}
             _colIndex={colIndex}
             _top={rowStore.$getItemOffset(rowIndex)}
-            _left={colStore.$getItemOffset(colIndex, isNegative)}
+            _left={colStore.$getItemOffset(colIndex)}
             _height={rowStore.$getItemSize(rowIndex)}
             _width={colStore.$getItemSize(colIndex)}
             _hide={

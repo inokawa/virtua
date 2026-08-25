@@ -47,7 +47,7 @@ export const ListItem = /*#__PURE__*/ memo(
         position: hide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
         [isHorizontal ? "top" : "left"]: 0,
-        [isHorizontal ? "left" : "top"]: offset,
+        [isHorizontal ? "insetInlineStart" : "top"]: offset,
         visibility: !hide || isSSR ? undefined : "hidden",
       };
       if (isHorizontal) {

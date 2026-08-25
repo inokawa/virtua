@@ -173,7 +173,6 @@ export const WindowVirtualizer = <T,>(
   });
   const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
   const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
-  const isNegative = createMemo(() => stateVersion() && driver.$isNegative());
 
   onMount(() => {
     setIsSSR(false);
@@ -247,7 +246,7 @@ export const WindowVirtualizer = <T,>(
           const itemIndex = createMemo(() => range()[0] + index());
           const offset = createMemo(() => {
             stateVersion();
-            return store.$getItemOffset(itemIndex(), isNegative());
+            return store.$getItemOffset(itemIndex());
           });
           const hide = createMemo(() => {
             stateVersion();

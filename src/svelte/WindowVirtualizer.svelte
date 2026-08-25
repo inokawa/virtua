@@ -58,7 +58,6 @@
   let range = $derived(stateVersion && store.$getRange(bufferSize));
   let isScrolling = $derived(stateVersion && store.$isScrolling());
   let totalSize = $derived(stateVersion && store.$getTotalSize());
-  let negative = $derived(stateVersion && driver.$isNegative());
 
   let indexes = $derived.by(() => {
     // https://github.com/inokawa/virtua/pull/847
@@ -139,7 +138,7 @@
       {item}
       {index}
       as="div"
-      offset={stateVersion && store.$getItemOffset(index, negative)}
+      offset={stateVersion && store.$getItemOffset(index)}
       hide={stateVersion && store.$isUnmeasuredItem(index)}
       {horizontal}
       {isSSR}

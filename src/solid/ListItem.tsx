@@ -49,7 +49,7 @@ export const ListItem: Component<ListItemProps> = (props) => {
       position: hide && isSSR ? undefined : "absolute",
       [isHorizontal ? "height" : "width"]: "100%",
       [isHorizontal ? "top" : "left"]: "0px",
-      [isHorizontal ? "left" : "top"]: props._offset + "px",
+      [isHorizontal ? "inset-inline-start" : "top"]: props._offset + "px",
       visibility: !hide || isSSR ? undefined : "hidden",
     };
     if (isHorizontal) {

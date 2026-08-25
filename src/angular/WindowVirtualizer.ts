@@ -187,7 +187,6 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
     const store = this._store;
     const data = this.data();
     const getKey = this.getKey();
-    const negative = this.driver.$isNegative();
     const [start, end] = store.$getRange(this.bufferSize());
     // https://github.com/inokawa/virtua/pull/847
     const items = [];
@@ -197,7 +196,7 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
         key: getKey(item, index),
         index,
         data: item,
-        offset: store.$getItemOffset(index, negative),
+        offset: store.$getItemOffset(index),
         hide: store.$isUnmeasuredItem(index),
       });
     }

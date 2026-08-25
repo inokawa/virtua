@@ -196,8 +196,6 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
     const isScrolling = store.$isScrolling();
     const totalSize = store.$getTotalSize();
 
-    const isNegative = driver.$isNegative();
-
     const items: ReactElement[] = [];
 
     useIsomorphicLayoutEffect(() => {
@@ -256,7 +254,7 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
           key={getKey(e, i)}
           _resizer={driver.$observeItem}
           _index={i}
-          _offset={store.$getItemOffset(i, isNegative)}
+          _offset={store.$getItemOffset(i)}
           _hide={store.$isUnmeasuredItem(i)}
           _as={ItemElement as "div"}
           _children={e}

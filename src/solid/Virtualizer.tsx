@@ -209,7 +209,6 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   });
   const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
   const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
-  const isNegative = createMemo(() => stateVersion() && driver.$isNegative());
 
   onMount(() => {
     setIsSSR(false);
@@ -299,7 +298,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   const renderItem = (data: T, index: Accessor<number>) => {
     const offset = createMemo(() => {
       stateVersion();
-      return store.$getItemOffset(index(), isNegative());
+      return store.$getItemOffset(index());
     });
     const hide = createMemo(() => {
       stateVersion();
