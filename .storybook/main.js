@@ -2,7 +2,7 @@ import { mergeConfig } from "vite";
 import * as path from "node:path";
 
 /** @type { import('@storybook/react-vite').StorybookConfig } */
-export default process.env.STORYBOOK_VUE
+const config = process.env.STORYBOOK_VUE
   ? {
       stories: ["../stories/vue/**/*.stories.@(js|jsx|ts|tsx)"],
       addons: ["@storybook/addon-docs", "@storybook/addon-vitest"],
@@ -105,3 +105,12 @@ export default process.env.STORYBOOK_VUE
               },
             }),
           };
+
+/** @type { import('@storybook/react-vite').StorybookConfig } */
+export default {
+  ...config,
+  features: {
+    // It observes document.body with a new ResizeObserver on every DOM mutation and fires ResizeObserver error in stories
+    highlight: false,
+  },
+};
