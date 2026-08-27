@@ -100,8 +100,11 @@ export interface VirtualizerProps<T = unknown> {
    * Elements rendered by this component.
    *
    * You can also pass a function and set {@link VirtualizerProps.data} to create elements lazily.
+   *
+   * The offscreen flag will be true if the item is kept mounted by {@link VirtualizerProps.keepMounted} but is out of view.
    */
-  children: ReactNode | ((data: T, index: number) => ReactElement);
+  children:
+    ReactNode | ((data: T, index: number, offscreen?: boolean) => ReactElement);
   /**
    * The data items rendered by this component. If you set a function to {@link VirtualizerProps.children}, you have to set this prop.
    */
@@ -240,8 +243,8 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
 
     const items: ReactElement[] = [];
 
-    const renderItem = (index: number) => {
-      const e = renderElement(index);
+    const renderItem = (index: number, offscreen?: boolean) => {
+      const e = renderElement(index, offscreen);
 
       return (
         <ListItem
@@ -324,11 +327,12 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
 
     if (keepMounted) {
       const mounted = new Set(keepMounted);
-      for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
+      const [startIndex, endIndex] = store.$getRange(bufferSize);
+      for (let i = startIndex; i <= endIndex; i++) {
         mounted.add(i);
       }
       sort([...mounted]).forEach((index) => {
-        items.push(renderItem(index));
+        items.push(renderItem(index, index < startIndex || index > endIndex));
       });
     } else {
       for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
