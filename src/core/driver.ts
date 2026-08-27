@@ -13,7 +13,14 @@ import {
   type ScrollObserver,
 } from "./observer.js";
 import { type ItemResize } from "./types.js";
-import { createPromise, max, microtask, NULL, timeout } from "./utils.js";
+import {
+  cancelTimeout,
+  createPromise,
+  max,
+  microtask,
+  NULL,
+  timeout,
+} from "./utils.js";
 import {
   getCurrentDocument,
   getCurrentWindow,
@@ -49,76 +56,74 @@ const createScrollScheduler = (
         cancelScroll();
       }
 
-      const waitForMeasurement = (): [Promise<boolean>, () => void] => {
-        // Wait for the scroll destination items to be measured.
-        // The measurement will be done asynchronously and the timing is not predictable so we use promise.
-        const [promise, resolve] = createPromise<boolean>();
-        cancelScroll = () => {
-          resolve(false);
-        };
+      let stopped: boolean | undefined;
+      let timerId: ReturnType<typeof timeout> | undefined;
+      let unsubscribe: (() => void) | undefined;
+
+      const isSmooth = smooth && isSmoothScrollSupported();
+
+      // Stopping is kept as a state, not delivered as an event, so it can never be missed by a race with measurement
+      // https://github.com/inokawa/virtua/issues/715
+      const stop = (cancelScroll = () => {
+        stopped = true;
+        cancelTimeout(timerId);
+        unsubscribe && unsubscribe();
+      });
+
+      // The scroll destination is not fixed until the items on the way are measured and the timing is not predictable
+      const onMeasured = () => {
+        if (stopped) {
+          return;
+        }
 
         // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
         // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
         // https://github.com/inokawa/virtua/issues/450
         if (store.$getViewportSize()) {
-          // Cancel when items around scroll destination completely measured
-          timeout(cancelScroll, 150);
+          // Stop when items around scroll destination completely measured
+          cancelTimeout(timerId);
+          timerId = timeout(stop, 150);
         }
-        return [
-          promise,
-          store.$subscribe(UPDATE_SIZE_EVENT, () => {
-            resolve(true);
-          }),
-        ];
-      };
 
-      if (smooth && isSmoothScrollSupported()) {
-        store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
-
-        // https://github.com/inokawa/virtua/issues/590
-        microtask(async () => {
-          while (true) {
-            let done = true;
-            for (let [i, end] = store.$getRange(); i <= end; i++) {
-              if (store.$isUnmeasuredItem(i)) {
-                done = false;
-                break;
-              }
-            }
-            if (done) {
-              break;
-            }
-            const [promise, unsubscribe] = waitForMeasurement();
-
-            try {
-              if (!(await promise)) {
-                // canceled
-                return;
-              }
-            } finally {
-              unsubscribe();
-            }
-          }
-
-          store.$update(ACTION_MANUAL_SCROLL);
-          scroll(getTargetOffset(), smooth);
-        });
-      } else {
-        while (true) {
-          const [promise, unsubscribe] = waitForMeasurement();
-
-          try {
-            store.$update(ACTION_MANUAL_SCROLL);
-            scroll(getTargetOffset());
-
-            if (!(await promise)) {
-              // canceled or finished
+        if (isSmooth) {
+          // Smooth scrolling can be started only once, so wait for all the items on the way to be measured.
+          for (let [i, end] = store.$getRange(0); i <= end; i++) {
+            if (store.$isUnmeasuredItem(i)) {
               return;
             }
-          } finally {
-            unsubscribe();
           }
+          stop();
         }
+
+        store.$update(ACTION_MANUAL_SCROLL);
+        scroll(getTargetOffset(), isSmooth);
+      };
+
+      const start = () => {
+        if (stopped) {
+          return;
+        }
+        // Batch the measurements in the same task to scroll only once
+        let queued: boolean | undefined;
+        unsubscribe = store.$subscribe(UPDATE_SIZE_EVENT, () => {
+          if (queued) {
+            return;
+          }
+          queued = true;
+          microtask(() => {
+            queued = false;
+            onMeasured();
+          });
+        });
+        onMeasured();
+      };
+
+      if (isSmooth) {
+        store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
+        // https://github.com/inokawa/virtua/issues/590
+        microtask(start);
+      } else {
+        start();
       }
     },
     () => {

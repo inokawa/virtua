@@ -9,7 +9,7 @@ import {
   ACTION_SCROLL_END,
   ACTION_START_OFFSET_CHANGE,
 } from "./store.js";
-import { timeout } from "./utils.js";
+import { cancelTimeout, timeout } from "./utils.js";
 
 /**
  * @internal
@@ -81,7 +81,6 @@ export const createScrollObserver = (
   const now = Date.now;
 
   // Debounce scroll end detection
-  const cancelTimeout = clearTimeout;
   const onScrollEnd = () => {
     if (wheeling || touching) {
       wheeling = false;
