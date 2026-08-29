@@ -1,6 +1,5 @@
-import { it, expect, describe, afterEach } from "vitest";
+import { it, expect, describe } from "vitest";
 import { defineComponent, h } from "vue";
-import { cleanup } from "@testing-library/vue";
 import { Virtualizer } from "./Virtualizer.js";
 import { setupResizeJsDom } from "../../spec/dom.js";
 import { render, SlotType } from "../../spec/vue.js";
@@ -26,8 +25,6 @@ const ScrollContainer = defineComponent({
       ]);
   },
 });
-
-afterEach(cleanup);
 
 it("should change components", async () => {
   const wrapper = await render(ScrollContainer, {

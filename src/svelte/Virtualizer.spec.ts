@@ -1,5 +1,4 @@
-import { it, expect, describe, afterEach, onTestFinished, vi } from "vitest";
-import { cleanup } from "@testing-library/svelte";
+import { it, expect, describe, onTestFinished, vi } from "vitest";
 import { createRawSnippet, tick } from "svelte";
 import Virtualizer from "./Virtualizer.svelte";
 import { setupResizeJsDom } from "../../spec/dom.js";
@@ -30,8 +29,6 @@ const host = () => {
   target.style.overflow = "auto";
   return { target, anchor: target.appendChild(document.createComment("")) };
 };
-
-afterEach(cleanup);
 
 it("should change components", async () => {
   const { container } = await render(Virtualizer, {

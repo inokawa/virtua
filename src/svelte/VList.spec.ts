@@ -1,5 +1,4 @@
-import { it, expect, describe, afterEach } from "vitest";
-import { cleanup } from "@testing-library/svelte";
+import { it, expect, describe } from "vitest";
 import { createRawSnippet } from "svelte";
 import VList from "./VList.svelte";
 import { setupResizeJsDom } from "../../spec/dom.js";
@@ -26,8 +25,6 @@ const itemSnippet = createRawSnippet<[number, number]>((item) => ({
 const componentSnippet = createRawSnippet<[number, number]>((item) => ({
   render: () => `<div><div>${item()}</div></div>`,
 }));
-
-afterEach(cleanup);
 
 it("should pass attributes to element", async () => {
   const { container } = await render(VList, {

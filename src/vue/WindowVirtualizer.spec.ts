@@ -1,6 +1,5 @@
-import { it, expect, describe, afterEach } from "vitest";
+import { it, expect, describe } from "vitest";
 import { defineComponent, h } from "vue";
-import { cleanup } from "@testing-library/vue";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
 import { setupResizeJsDom } from "../../spec/dom.js";
 import { render, SlotType } from "../../spec/vue.js";
@@ -10,8 +9,6 @@ setupResizeJsDom({
 });
 
 const range = (length: number) => Array.from({ length }).map((_, i) => i);
-
-afterEach(cleanup);
 
 it("should pass attributes to element", async () => {
   const wrapper = await render(WindowVirtualizer<number>, {

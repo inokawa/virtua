@@ -1,5 +1,4 @@
-import { afterEach, it, expect, describe } from "vitest";
-import { cleanup } from "@testing-library/react";
+import { it, expect, describe } from "vitest";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
 import { forwardRef } from "react";
 import { type CustomItemComponentProps } from "./types.js";
@@ -9,8 +8,6 @@ import { render } from "../../spec/react.js";
 setupResizeJsDom({
   itemSize: { width: 100, height: 50 },
 });
-
-afterEach(cleanup);
 
 it("should pass index to items", async () => {
   const Item = forwardRef<HTMLDivElement, CustomItemComponentProps>(

@@ -1,5 +1,4 @@
-import { afterEach, it, expect, describe } from "vitest";
-import { cleanup } from "@testing-library/react";
+import { it, expect, describe } from "vitest";
 import { VGrid } from "./VGrid.js";
 import { setupResizeJsDom } from "../../spec/dom.js";
 import { render } from "../../spec/react.js";
@@ -12,8 +11,6 @@ setupResizeJsDom({
   itemSize: { width: ITEM_WIDTH, height: ITEM_HEIGHT },
   viewportSize: { width: ITEM_WIDTH, height: VIEWPORT_HEIGHT },
 });
-
-afterEach(cleanup);
 
 it("should pass attributes to element", async () => {
   const { asFragment } = await render(

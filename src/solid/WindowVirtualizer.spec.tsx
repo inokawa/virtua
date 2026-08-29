@@ -1,8 +1,7 @@
 /**
  * @jsxImportSource solid-js
  */
-import { it, expect, describe, afterEach } from "vitest";
-import { cleanup } from "@solidjs/testing-library";
+import { it, expect, describe } from "vitest";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
 import { setupResizeJsDom } from "../../spec/dom.js";
 import { type JSX } from "solid-js";
@@ -13,8 +12,6 @@ setupResizeJsDom({
 });
 
 const range = (length: number) => Array.from({ length }).map((_, i) => i);
-
-afterEach(cleanup);
 
 describe("vertical", () => {
   it("should render 0 children", () => {
