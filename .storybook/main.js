@@ -5,7 +5,7 @@ import * as path from "node:path";
 const config = process.env.STORYBOOK_VUE
   ? {
       stories: ["../stories/vue/**/*.stories.@(js|jsx|ts|tsx)"],
-      addons: ["@storybook/addon-docs", "@storybook/addon-vitest"],
+      addons: ["@storybook/addon-docs"],
       framework: {
         name: "@storybook/vue3-vite",
         options: {},
@@ -22,7 +22,7 @@ const config = process.env.STORYBOOK_VUE
   : process.env.STORYBOOK_SOLID
     ? {
         stories: ["../stories/solid/**/*.stories.@(js|jsx|ts|tsx)"],
-        addons: ["@storybook/addon-docs", "@storybook/addon-vitest"],
+        addons: ["@storybook/addon-docs"],
         framework: {
           name: "storybook-solidjs-vite",
           options: {},
@@ -31,7 +31,7 @@ const config = process.env.STORYBOOK_VUE
     : process.env.STORYBOOK_SVELTE
       ? {
           stories: ["../stories/svelte/**/*.stories.@(js|jsx|ts|tsx)"],
-          addons: ["@storybook/addon-docs", "@storybook/addon-vitest"],
+          addons: ["@storybook/addon-docs"],
           framework: {
             name: "@storybook/svelte-vite",
             options: {
@@ -51,7 +51,7 @@ const config = process.env.STORYBOOK_VUE
       : process.env.STORYBOOK_ANGULAR
         ? {
             stories: ["../stories/angular/**/*.stories.@(js|jsx|ts|tsx)"],
-            addons: ["@storybook/addon-docs", "@storybook/addon-vitest"],
+            addons: ["@storybook/addon-docs"],
             framework: {
               name: "@analogjs/storybook-angular",
               options: {
@@ -63,7 +63,7 @@ const config = process.env.STORYBOOK_VUE
           }
         : {
             stories: ["../stories/react/**/*.stories.@(js|jsx|ts|tsx)"],
-            addons: ["@storybook/addon-docs", "@storybook/addon-vitest"],
+            addons: ["@storybook/addon-docs"],
             framework: {
               name: "@storybook/react-vite",
               options: {},

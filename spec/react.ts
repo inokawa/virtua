@@ -1,7 +1,8 @@
-import { vi } from "vitest";
-import { render as _render } from "@testing-library/react";
+import { vi, onTestFinished } from "vitest";
+import { render as _render, cleanup } from "@testing-library/react";
 
 export const render = async (...args: Parameters<typeof _render>) => {
+  onTestFinished(cleanup);
   const res = _render(...args);
   let same = false;
   let prev = res.baseElement.innerHTML;

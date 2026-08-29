@@ -1,8 +1,7 @@
 /**
  * @jsxImportSource solid-js
  */
-import { it, expect, describe, afterEach } from "vitest";
-import { cleanup } from "@solidjs/testing-library";
+import { it, expect, describe } from "vitest";
 import { Virtualizer } from "./Virtualizer.js";
 import { setupResizeJsDom } from "../../spec/dom.js";
 import { render } from "../../spec/solid.js";
@@ -17,8 +16,6 @@ setupResizeJsDom({
 });
 
 const range = (length: number) => Array.from({ length }).map((_, i) => i);
-
-afterEach(cleanup);
 
 it("should change components", () => {
   const { asFragment } = render(() => (

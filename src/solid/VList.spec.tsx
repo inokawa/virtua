@@ -1,8 +1,7 @@
 /**
  * @jsxImportSource solid-js
  */
-import { it, expect, describe, afterEach } from "vitest";
-import { cleanup } from "@solidjs/testing-library";
+import { it, expect, describe } from "vitest";
 import { VList } from "./VList.js";
 import { setupResizeJsDom } from "../../spec/dom.js";
 import { type JSX } from "solid-js";
@@ -18,8 +17,6 @@ setupResizeJsDom({
 });
 
 const range = (length: number) => Array.from({ length }).map((_, i) => i);
-
-afterEach(cleanup);
 
 it("should pass attributes to element", () => {
   const { asFragment } = render(() => (
