@@ -67,11 +67,11 @@ export interface WindowVirtualizerHandle {
    */
   getCache: () => CacheSnapshot;
   /**
-   * Get current scrollTop, or scrollLeft if horizontal: true.
+   * Get current scrollTop, or scrollLeft if horizontal: true. Always positive even in RTL.
    */
   getScrollOffset: () => number;
   /**
-   * Get current offsetHeight, or offsetWidth if horizontal: true.
+   * Get current clientHeight of the document, or clientWidth if horizontal: true.
    */
   getViewportSize: () => number;
   /**
