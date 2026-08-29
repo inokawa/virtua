@@ -1,0 +1,1 @@
+import{t as e}from"./iframe-NGCX7t7-.js";e();
