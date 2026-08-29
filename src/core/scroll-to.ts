@@ -55,12 +55,9 @@ export const scrollToIndex = (
       driver.$getBaseOffset() +
       store.$getItemOffset(index) +
       (align === "end"
-        ? store.$getItemSize(index) -
-          (store.$getViewportSize() - driver.$getScrollbarSize())
+        ? store.$getItemSize(index) - store.$getViewportSize()
         : align === "center"
-          ? (store.$getItemSize(index) -
-              (store.$getViewportSize() - driver.$getScrollbarSize())) /
-            2
+          ? (store.$getItemSize(index) - store.$getViewportSize()) / 2
           : 0)
     );
   }, smooth);
