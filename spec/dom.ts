@@ -12,6 +12,15 @@ export const setupResizeJsDom = ({
     },
   });
 
+  Object.defineProperty(document, "scrollingElement", {
+    get: () => document.documentElement,
+    configurable: true,
+  });
+  Object.defineProperties(document.documentElement, {
+    clientWidth: { get: () => window.innerWidth, configurable: true },
+    clientHeight: { get: () => window.innerHeight, configurable: true },
+  });
+
   const createResizeObserverEntry = (
     e: HTMLElement,
     { width, height }: { width: number; height: number },

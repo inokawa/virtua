@@ -8,12 +8,6 @@ export const isBrowser = typeof window !== "undefined";
 /**
  * @internal
  */
-export const getDocumentElement = (doc: Document): HTMLElement =>
-  doc.documentElement;
-
-/**
- * @internal
- */
 export const getCurrentDocument = (node: HTMLElement): Document =>
   node.ownerDocument;
 
@@ -41,5 +35,5 @@ export const isIOSWebKit = /*#__PURE__*/ once((): boolean => {
  * @internal
  */
 export const isSmoothScrollSupported = /*#__PURE__*/ once((): boolean => {
-  return "scrollBehavior" in getDocumentElement(document).style;
+  return "scrollBehavior" in document.documentElement.style;
 });

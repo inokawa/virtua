@@ -24,7 +24,6 @@ import {
 import {
   getCurrentDocument,
   getCurrentWindow,
-  getDocumentElement,
   isSmoothScrollSupported,
 } from "./environment.js";
 
@@ -143,7 +142,6 @@ export interface Driver {
   $scroll(getTargetOffset: () => number, smooth?: boolean): void;
   $effect(): void;
   $getBaseOffset(): number;
-  $getScrollbarSize(): number;
 }
 
 /**
@@ -269,7 +267,6 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
       scrollObserver && scrollObserver._fixScrollJump();
     },
     $getBaseOffset: store.$getStartSpacerSize,
-    $getScrollbarSize: () => 0,
   };
 };
 
@@ -277,30 +274,28 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
  * @internal
  */
 export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
-  let containerElement: HTMLElement | undefined;
+  let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let cleanupOnWindowResize: (() => void) | undefined;
+  let getBaseOffset: (() => number) | undefined;
+  let onViewportResize: (() => void) | undefined;
   let initialized = createPromise<boolean>();
   let isNegative = false;
-  const scrollToKey = isHorizontal ? "left" : "top";
+  const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
 
-  const [scheduleScroll] = createScrollScheduler(
+  const [scheduleScroll, cancelScroll] = createScrollScheduler(
     store,
     () => initialized[0],
     (offset, smooth) => {
       offset = normalizeScrollOffset(offset, isNegative);
 
-      const window = getCurrentWindow(getCurrentDocument(containerElement!));
-
       if (smooth) {
-        window.scroll({
-          [scrollToKey]: offset,
+        viewportElement!.scrollTo({
+          [isHorizontal ? "left" : "top"]: offset,
           behavior: "smooth",
         });
       } else {
-        window.scroll({
-          [scrollToKey]: offset,
-        });
+        viewportElement![scrollOffsetKey] = offset;
       }
     },
   );
@@ -311,6 +306,12 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
   const resizeObserver = createResizeObserver((entries) => {
     const resizes: ItemResize[] = [];
     for (const { target, contentRect } of entries) {
+      if (target === viewportElement) {
+        // Scrollbar appearance/disappearance changes client size without firing window resize events
+        onViewportResize && onViewportResize();
+        continue;
+      }
+
       // Skip zero-sized rects that may be observed under `display: none` style
       if (!(target as HTMLElement).offsetParent) continue;
 
@@ -328,7 +329,7 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
   const calcOffsetToViewport = (
     node: HTMLElement,
     viewport: HTMLElement,
-    window: Window,
+    until: HTMLElement,
     isHorizontal: boolean,
     offset: number = 0,
   ): number => {
@@ -337,18 +338,18 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
     const offsetSum =
       offset +
       (isHorizontal && isNegative
-        ? window.innerWidth - node[offsetKey] - node.offsetWidth
+        ? viewport.clientWidth - node[offsetKey] - node.offsetWidth
         : node[offsetKey]);
 
     const parent = node.offsetParent;
-    if (node === viewport || !parent) {
+    if (node === until || !parent) {
       return offsetSum;
     }
 
     return calcOffsetToViewport(
       parent as HTMLElement,
       viewport,
-      window,
+      until,
       isHorizontal,
       offsetSum,
     );
@@ -356,22 +357,30 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
 
   return {
     $observe(container) {
-      containerElement = container;
-      const scrollOffsetKey = isHorizontal ? "scrollX" : "scrollY";
-
       const document = getCurrentDocument(container);
       const window = getCurrentWindow(document);
+      const viewport = (viewportElement =
+        document.scrollingElement! as HTMLElement);
 
-      const onWindowResize = () => {
+      const baseOffset = (getBaseOffset = () => {
+        return calcOffsetToViewport(
+          container,
+          viewport,
+          document.body,
+          isHorizontal,
+        );
+      });
+
+      const onWindowResize = (onViewportResize = () => {
         store.$update(
           ACTION_VIEWPORT_RESIZE,
-          window[isHorizontal ? "innerWidth" : "innerHeight"],
+          viewport[isHorizontal ? "clientWidth" : "clientHeight"],
         );
-      };
+      });
       window.addEventListener("resize", onWindowResize);
 
       // https://github.com/inokawa/virtua/issues/792
-      microtask(onWindowResize);
+      resizeObserver._observe(viewport);
 
       cleanupOnWindowResize = () => {
         window.removeEventListener("resize", onWindowResize);
@@ -379,34 +388,28 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
 
       if (isHorizontal) {
         // Detect RTL document
-        isNegative =
-          getComputedStyle(getDocumentElement(document)).direction === "rtl";
+        isNegative = getComputedStyle(viewport).direction === "rtl";
       }
 
       scrollObserver = createScrollObserver(
         store,
         window,
         isHorizontal,
-        () => normalizeScrollOffset(window[scrollOffsetKey], isNegative),
+        () => normalizeScrollOffset(viewport[scrollOffsetKey], isNegative),
         (jump, shift) => {
           // TODO support case two window scrollers exist in the same view
+          // Use absolute position not to exceed scrollable bounds
+          // https://github.com/inokawa/virtua/discussions/475
+          viewport[scrollOffsetKey] = normalizeScrollOffset(
+            store.$getScrollOffset() + jump,
+            isNegative,
+          );
           if (shift) {
-            // Use absolute position not to exceed scrollable bounds
-            window.scroll({
-              [scrollToKey]: normalizeScrollOffset(
-                store.$getScrollOffset() + jump,
-                isNegative,
-              ),
-            });
-          } else {
-            // Use window.scrollBy here, which causes less layout shift for some reason.
-            window.scrollBy({
-              [scrollToKey]: normalizeScrollOffset(jump, isNegative),
-            });
+            // https://github.com/inokawa/virtua/issues/357
+            cancelScroll();
           }
         },
-        () =>
-          calcOffsetToViewport(container, document.body, window, isHorizontal),
+        baseOffset,
       );
 
       initialized[1](true);
@@ -415,7 +418,7 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
       cleanupOnWindowResize && cleanupOnWindowResize();
       resizeObserver._dispose();
       scrollObserver && scrollObserver._dispose();
-      containerElement = undefined;
+      viewportElement = undefined;
       initialized[1](false);
       // https://github.com/inokawa/virtua/pull/765
       initialized = createPromise();
@@ -434,21 +437,8 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
       scrollObserver && scrollObserver._fixScrollJump();
     },
     $getBaseOffset() {
-      const document = getCurrentDocument(containerElement!);
       // Calculate target scroll position including container's offset from document
-      return calcOffsetToViewport(
-        containerElement!,
-        document.body,
-        getCurrentWindow(document),
-        isHorizontal,
-      );
-    },
-    $getScrollbarSize() {
-      const html = getDocumentElement(getCurrentDocument(containerElement!));
-      return (
-        store.$getViewportSize() -
-        (isHorizontal ? html.clientWidth : html.clientHeight)
-      );
+      return getBaseOffset!();
     },
   };
 };
