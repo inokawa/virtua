@@ -96,7 +96,7 @@ export interface VirtualizerHandle {
    */
   getCache: () => CacheSnapshot;
   /**
-   * Get current scrollTop, or scrollLeft if horizontal: true.
+   * Get current scrollTop, or scrollLeft if horizontal: true. Always positive even in RTL.
    */
   getScrollOffset: () => number;
   /**
@@ -104,7 +104,7 @@ export interface VirtualizerHandle {
    */
   getScrollSize: () => number;
   /**
-   * Get current offsetHeight, or offsetWidth if horizontal: true.
+   * Get current clientHeight, or clientWidth if horizontal: true.
    */
   getViewportSize: () => number;
   /**

@@ -114,7 +114,7 @@ export interface VGridHandle {
    */
   readonly scrollTop: number;
   /**
-   * Get current scrollLeft.
+   * Get current scrollLeft. Always positive even in RTL.
    */
   readonly scrollLeft: number;
   /**
@@ -126,11 +126,11 @@ export interface VGridHandle {
    */
   readonly scrollWidth: number;
   /**
-   * Get current offsetHeight.
+   * Get current clientHeight.
    */
   readonly viewportHeight: number;
   /**
-   * Get current offsetWidth.
+   * Get current clientWidth.
    */
   readonly viewportWidth: number;
   /**
