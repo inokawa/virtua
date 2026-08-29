@@ -265,14 +265,13 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
     const data = this.data();
     const getKey = this.getKey();
     const itemProps = this.itemProps();
-    const negative = this.driver.$isNegative();
     return this._indexes().map((index) => {
       const item = data[index]!;
       return {
         key: getKey(item, index),
         index,
         data: item,
-        offset: store.$getItemOffset(index, negative),
+        offset: store.$getItemOffset(index),
         hide: store.$isUnmeasuredItem(index),
         attrs: itemProps?.({ item, index }),
       };

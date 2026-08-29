@@ -138,7 +138,6 @@ export interface Driver {
   $observe(containerElement: HTMLElement, viewport?: HTMLElement): void;
   $dispose(): void;
   $observeItem(el: HTMLElement, index: number): () => void;
-  $isNegative(): boolean;
   $scroll(getTargetOffset: () => number, smooth?: boolean): void;
   $effect(): void;
   $getBaseOffset(): number;
@@ -261,7 +260,6 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
         resizeObserver._unobserve(el);
       };
     },
-    $isNegative: () => isNegative,
     $scroll: scheduleScroll,
     $effect() {
       scrollObserver && scrollObserver._fixScrollJump();
@@ -431,7 +429,6 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
         resizeObserver._unobserve(el);
       };
     },
-    $isNegative: () => isNegative,
     $scroll: scheduleScroll,
     $effect() {
       scrollObserver && scrollObserver._fixScrollJump();
@@ -452,7 +449,6 @@ export type GridDriver = {
   $observeItem(el: HTMLElement, rowIndex: number, colIndex: number): () => void;
   $resizeRows(rows: ItemResize[]): void;
   $resizeCols(cols: ItemResize[]): void;
-  $isNegative(): boolean;
   $scrollX(getTargetOffset: () => number, smooth?: boolean): void;
   $scrollY(getTargetOffset: () => number, smooth?: boolean): void;
   $effect(): void;
@@ -683,7 +679,6 @@ export const createContainerGridDriver: GridDriverFactory = (
       }
       colStore.$update(ACTION_ITEM_RESIZE, cols);
     },
-    $isNegative: () => isNegative,
     $scrollX: scheduleScrollX,
     $scrollY: scheduleScrollY,
     $effect() {

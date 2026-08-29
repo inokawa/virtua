@@ -50,7 +50,7 @@
       position: hide && isSSR ? undefined : "absolute",
       [horizontal ? "height" : "width"]: "100%",
       [horizontal ? "top" : "left"]: "0px",
-      [horizontal ? "left" : "top"]: offset + "px",
+      [horizontal ? "inset-inline-start" : "top"]: offset + "px",
       visibility: !hide || isSSR ? undefined : "hidden",
       ...itemProps?.style,
     };

@@ -9,7 +9,7 @@ exports[`horizontal > should render 0 children 1`] = `
 exports[`horizontal > should render 1 children 1`] = `
 "<div style="overflow: auto;">
   <div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 100%;">
-    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; display: inline-flex;">
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 0px; display: inline-flex;">
       <div>0</div>
     </div>
   </div>
@@ -19,16 +19,16 @@ exports[`horizontal > should render 1 children 1`] = `
 exports[`horizontal > should render 5 children 1`] = `
 "<div style="overflow: auto;">
   <div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 500px; height: 100%;">
-    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; display: inline-flex;">
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 0px; display: inline-flex;">
       <div>0</div>
     </div>
-    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; display: inline-flex;">
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 100px; display: inline-flex;">
       <div>1</div>
     </div>
-    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 200px; display: inline-flex;">
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 200px; display: inline-flex;">
       <div>2</div>
     </div>
-    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 300px; display: inline-flex;">
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 300px; display: inline-flex;">
       <div>3</div>
     </div>
   </div>
@@ -38,16 +38,16 @@ exports[`horizontal > should render 5 children 1`] = `
 exports[`horizontal > should render 100 children 1`] = `
 "<div style="overflow: auto;">
   <div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 100%;">
-    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; display: inline-flex;">
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 0px; display: inline-flex;">
       <div>0</div>
     </div>
-    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; display: inline-flex;">
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 100px; display: inline-flex;">
       <div>1</div>
     </div>
-    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 200px; display: inline-flex;">
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 200px; display: inline-flex;">
       <div>2</div>
     </div>
-    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 300px; display: inline-flex;">
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 300px; display: inline-flex;">
       <div>3</div>
     </div>
   </div>
@@ -57,16 +57,16 @@ exports[`horizontal > should render 100 children 1`] = `
 exports[`horizontal > should render 10000 children 1`] = `
 "<div style="overflow: auto;">
   <div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 1000000px; height: 100%;">
-    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; display: inline-flex;">
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 0px; display: inline-flex;">
       <div>0</div>
     </div>
-    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; display: inline-flex;">
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 100px; display: inline-flex;">
       <div>1</div>
     </div>
-    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 200px; display: inline-flex;">
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 200px; display: inline-flex;">
       <div>2</div>
     </div>
-    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 300px; display: inline-flex;">
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 300px; display: inline-flex;">
       <div>3</div>
     </div>
   </div>
@@ -76,13 +76,13 @@ exports[`horizontal > should render 10000 children 1`] = `
 exports[`horizontal > should render component 1`] = `
 "<div style="overflow: auto;">
   <div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 300px; height: 100%;">
-    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 0px; display: inline-flex;">
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 0px; display: inline-flex;">
       <div>0</div>
     </div>
-    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 100px; display: inline-flex;">
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 100px; display: inline-flex;">
       <div>1</div>
     </div>
-    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; left: 200px; display: inline-flex;">
+    <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 200px; display: inline-flex;">
       <div>2</div>
     </div>
   </div>

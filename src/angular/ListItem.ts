@@ -41,7 +41,7 @@ export class ListItem {
       position: hide && isSSR ? undefined : "absolute",
       [horizontal ? "height" : "width"]: "100%",
       [horizontal ? "top" : "left"]: "0px",
-      [horizontal ? "left" : "top"]: this.offset() + "px",
+      [horizontal ? "inset-inline-start" : "top"]: this.offset() + "px",
       visibility: !hide || isSSR ? undefined : "hidden",
       ...this.attrs()?.style,
     };

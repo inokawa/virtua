@@ -241,7 +241,6 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       const ItemElement = props.item;
 
       const total = totalSize.value;
-      const isNegative = driver.$isNegative();
 
       const items: VNode[] = [];
       for (let [i, j] = range.value; i <= j; i++) {
@@ -255,7 +254,6 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
             _index={i}
             _children={e}
             _isHorizontal={isHorizontal}
-            _isNegative={isNegative}
             _isSSR={isSSR}
             _as={ItemElement}
           />,
