@@ -30,10 +30,3 @@ export const isIOSWebKit = /*#__PURE__*/ once((): boolean => {
   // https://stackoverflow.com/questions/57776001/how-to-detect-ipad-pro-as-ipad-using-javascript
   return navigator.platform === "MacIntel" && navigator.maxTouchPoints > 0;
 });
-
-/**
- * @internal
- */
-export const isSmoothScrollSupported = /*#__PURE__*/ once((): boolean => {
-  return "scrollBehavior" in document.documentElement.style;
-});

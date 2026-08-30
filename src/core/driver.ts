@@ -21,11 +21,7 @@ import {
   NULL,
   timeout,
 } from "./utils.js";
-import {
-  getCurrentDocument,
-  getCurrentWindow,
-  isSmoothScrollSupported,
-} from "./environment.js";
+import { getCurrentDocument, getCurrentWindow } from "./environment.js";
 
 type ScheduleScrollFunction = (
   getTargetOffset: () => number,
@@ -59,8 +55,6 @@ const createScrollScheduler = (
       let timerId: ReturnType<typeof timeout> | undefined;
       let unsubscribe: (() => void) | undefined;
 
-      const isSmooth = smooth && isSmoothScrollSupported();
-
       // Stopping is kept as a state, not delivered as an event, so it can never be missed by a race with measurement
       // https://github.com/inokawa/virtua/issues/715
       const stop = (cancelScroll = () => {
@@ -84,7 +78,7 @@ const createScrollScheduler = (
           timerId = timeout(stop, 150);
         }
 
-        if (isSmooth) {
+        if (smooth) {
           // Smooth scrolling can be started only once, so wait for all the items on the way to be measured.
           for (let [i, end] = store.$getRange(0); i <= end; i++) {
             if (store.$isUnmeasuredItem(i)) {
@@ -95,7 +89,7 @@ const createScrollScheduler = (
         }
 
         store.$update(ACTION_MANUAL_SCROLL);
-        scroll(getTargetOffset(), isSmooth);
+        scroll(getTargetOffset(), smooth);
       };
 
       const start = () => {
@@ -117,7 +111,7 @@ const createScrollScheduler = (
         onMeasured();
       };
 
-      if (isSmooth) {
+      if (smooth) {
         store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
         // https://github.com/inokawa/virtua/issues/590
         microtask(start);
