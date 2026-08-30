@@ -154,22 +154,17 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
   let initialized = createPromise<boolean>();
   let isNegative = false;
   const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
+  const scrollToKey = isHorizontal ? "left" : "top";
   const overflowKey = isHorizontal ? "overflowX" : "overflowY";
 
   const [scheduleScroll, cancelScroll] = createScrollScheduler(
     store,
     () => initialized[0],
     (offset, smooth) => {
-      offset = normalizeScrollOffset(offset, isNegative);
-
-      if (smooth) {
-        viewportElement!.scrollTo({
-          [isHorizontal ? "left" : "top"]: offset,
-          behavior: "smooth",
-        });
-      } else {
-        viewportElement![scrollOffsetKey] = offset;
-      }
+      viewportElement!.scrollTo({
+        [scrollToKey]: normalizeScrollOffset(offset, isNegative),
+        behavior: smooth ? "smooth" : "instant",
+      });
     },
   );
 
@@ -226,10 +221,13 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
 
           // Use absolute position not to exceed scrollable bounds
           // https://github.com/inokawa/virtua/discussions/475
-          viewport[scrollOffsetKey] = normalizeScrollOffset(
-            store.$getScrollOffset() + jump,
-            isNegative,
-          );
+          viewport.scrollTo({
+            [scrollToKey]: normalizeScrollOffset(
+              store.$getScrollOffset() + jump,
+              isNegative,
+            ),
+            behavior: "instant",
+          });
           if (shift) {
             // https://github.com/inokawa/virtua/issues/357
             cancelScroll();
@@ -274,21 +272,16 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
   let initialized = createPromise<boolean>();
   let isNegative = false;
   const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
+  const scrollToKey = isHorizontal ? "left" : "top";
 
   const [scheduleScroll, cancelScroll] = createScrollScheduler(
     store,
     () => initialized[0],
     (offset, smooth) => {
-      offset = normalizeScrollOffset(offset, isNegative);
-
-      if (smooth) {
-        viewportElement!.scrollTo({
-          [isHorizontal ? "left" : "top"]: offset,
-          behavior: "smooth",
-        });
-      } else {
-        viewportElement![scrollOffsetKey] = offset;
-      }
+      viewportElement!.scrollTo({
+        [scrollToKey]: normalizeScrollOffset(offset, isNegative),
+        behavior: smooth ? "smooth" : "instant",
+      });
     },
   );
 
@@ -392,10 +385,13 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
           // TODO support case two window scrollers exist in the same view
           // Use absolute position not to exceed scrollable bounds
           // https://github.com/inokawa/virtua/discussions/475
-          viewport[scrollOffsetKey] = normalizeScrollOffset(
-            store.$getScrollOffset() + jump,
-            isNegative,
-          );
+          viewport.scrollTo({
+            [scrollToKey]: normalizeScrollOffset(
+              store.$getScrollOffset() + jump,
+              isNegative,
+            ),
+            behavior: "instant",
+          });
           if (shift) {
             // https://github.com/inokawa/virtua/issues/357
             cancelScroll();
@@ -473,24 +469,20 @@ export const createContainerGridDriver: GridDriverFactory = (
     colStore,
     () => initialized[0],
     (offset, smooth) => {
-      const opts: ScrollToOptions = {
+      viewportElement!.scrollTo({
         left: normalizeScrollOffset(offset, isNegative),
-      };
-      if (smooth) {
-        opts.behavior = "smooth";
-      }
-      viewportElement!.scrollTo(opts);
+        behavior: smooth ? "smooth" : "instant",
+      });
     },
   );
   const [scheduleScrollY, cancelScrollY] = createScrollScheduler(
     rowStore,
     () => initialized[0],
     (offset, smooth) => {
-      const opts: ScrollToOptions = { top: offset };
-      if (smooth) {
-        opts.behavior = "smooth";
-      }
-      viewportElement!.scrollTo(opts);
+      viewportElement!.scrollTo({
+        top: offset,
+        behavior: smooth ? "smooth" : "instant",
+      });
     },
   );
 
@@ -615,10 +607,13 @@ export const createContainerGridDriver: GridDriverFactory = (
 
         // Use absolute position not to exceed scrollable bounds
         // https://github.com/inokawa/virtua/discussions/475
-        viewport[scrollOffsetKey] = normalizeScrollOffset(
-          store.$getScrollOffset() + jump,
-          negative,
-        );
+        viewport.scrollTo({
+          [isHorizontal ? "left" : "top"]: normalizeScrollOffset(
+            store.$getScrollOffset() + jump,
+            negative,
+          ),
+          behavior: "instant",
+        });
         if (shift) {
           // https://github.com/inokawa/virtua/issues/357
           cancelScroll();
