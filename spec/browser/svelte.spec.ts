@@ -7,8 +7,6 @@ import {
 } from "../../src/svelte/index.js";
 import { expectVirtualized } from "./utils.js";
 
-const items = Array.from({ length: 1000 }, (_, i) => i);
-
 const itemSnippet = createRawSnippet<[number, number]>((item) => ({
   render: () => `<div>item-${item()}</div>`,
 }));
@@ -34,7 +32,7 @@ const render = (
 
 it("VList", async () => {
   const container = render(VList, {
-    data: items,
+    data: Array.from({ length: 1000 }, (_, i) => i),
     style: "height: 400px;",
     children: itemSnippet,
   });
@@ -44,7 +42,7 @@ it("VList", async () => {
 it("Virtualizer", async () => {
   const container = render(
     Virtualizer,
-    { data: items, children: itemSnippet },
+    { data: Array.from({ length: 1000 }, (_, i) => i), children: itemSnippet },
     "height: 400px; overflow-y: auto;",
   );
   await expectVirtualized(container, "item-0", "item-999");
@@ -52,7 +50,7 @@ it("Virtualizer", async () => {
 
 it("WindowVirtualizer", async () => {
   const container = render(WindowVirtualizer, {
-    data: items,
+    data: Array.from({ length: 1000 }, (_, i) => i),
     children: itemSnippet,
   });
   await expectVirtualized(

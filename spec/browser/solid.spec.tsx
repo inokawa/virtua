@@ -11,8 +11,6 @@ import {
 } from "../../src/solid/index.js";
 import { expectVirtualized } from "./utils.js";
 
-const items = Array.from({ length: 1000 }, (_, i) => i);
-
 const render = (node: () => JSX.Element) => {
   const container = document.body.appendChild(document.createElement("div"));
   onTestFinished(() => {
@@ -27,7 +25,10 @@ const render = (node: () => JSX.Element) => {
 
 it("VList", async () => {
   const container = render(() => (
-    <VList data={items} style={{ height: "400px" }}>
+    <VList
+      data={Array.from({ length: 1000 }, (_, i) => i)}
+      style={{ height: "400px" }}
+    >
       {(d) => <div>item-{d}</div>}
     </VList>
   ));
@@ -37,7 +38,9 @@ it("VList", async () => {
 it("Virtualizer", async () => {
   const container = render(() => (
     <div style={{ height: "400px", "overflow-y": "auto" }}>
-      <Virtualizer data={items}>{(d) => <div>item-{d}</div>}</Virtualizer>
+      <Virtualizer data={Array.from({ length: 1000 }, (_, i) => i)}>
+        {(d) => <div>item-{d}</div>}
+      </Virtualizer>
     </div>
   ));
   await expectVirtualized(container, "item-0", "item-999");
@@ -45,7 +48,7 @@ it("Virtualizer", async () => {
 
 it("WindowVirtualizer", async () => {
   const container = render(() => (
-    <WindowVirtualizer data={items}>
+    <WindowVirtualizer data={Array.from({ length: 1000 }, (_, i) => i)}>
       {(d) => <div>item-{d}</div>}
     </WindowVirtualizer>
   ));

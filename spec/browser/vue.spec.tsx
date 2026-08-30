@@ -4,8 +4,6 @@ import { createApp, type VNode } from "vue";
 import { VList, Virtualizer, WindowVirtualizer } from "../../src/vue/index.js";
 import { expectVirtualized } from "./utils.js";
 
-const items = Array.from({ length: 1000 }, (_, i) => i);
-
 const itemSlot = {
   default: ({ item }: { item: number }) => <div>item-{item}</div>,
 };
@@ -25,7 +23,10 @@ const render = (node: VNode) => {
 
 it("VList", async () => {
   const container = render(
-    <VList data={items} style={{ height: "400px" }}>
+    <VList
+      data={Array.from({ length: 1000 }, (_, i) => i)}
+      style={{ height: "400px" }}
+    >
       {itemSlot}
     </VList>,
   );
@@ -35,7 +36,9 @@ it("VList", async () => {
 it("Virtualizer", async () => {
   const container = render(
     <div style={{ height: "400px", overflowY: "auto" }}>
-      <Virtualizer data={items}>{itemSlot}</Virtualizer>
+      <Virtualizer data={Array.from({ length: 1000 }, (_, i) => i)}>
+        {itemSlot}
+      </Virtualizer>
     </div>,
   );
   await expectVirtualized(container, "item-0", "item-999");
@@ -43,7 +46,9 @@ it("Virtualizer", async () => {
 
 it("WindowVirtualizer", async () => {
   const container = render(
-    <WindowVirtualizer data={items}>{itemSlot}</WindowVirtualizer>,
+    <WindowVirtualizer data={Array.from({ length: 1000 }, (_, i) => i)}>
+      {itemSlot}
+    </WindowVirtualizer>,
   );
   await expectVirtualized(
     container,

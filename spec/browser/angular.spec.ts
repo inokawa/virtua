@@ -8,8 +8,6 @@ import {
 } from "../../src/angular/index.js";
 import { expectVirtualized } from "./utils.js";
 
-const items = Array.from({ length: 1000 }, (_, i) => i);
-
 @Component({
   selector: "smoke-vlist",
   imports: [VList],
@@ -22,7 +20,7 @@ const items = Array.from({ length: 1000 }, (_, i) => i);
   `,
 })
 class VListHost {
-  readonly data = items;
+  readonly data = Array.from({ length: 1000 }, (_, i) => i);
 }
 
 @Component({
@@ -39,7 +37,7 @@ class VListHost {
   `,
 })
 class VirtualizerHost {
-  readonly data = items;
+  readonly data = Array.from({ length: 1000 }, (_, i) => i);
 }
 
 @Component({
@@ -54,7 +52,7 @@ class VirtualizerHost {
   `,
 })
 class WindowVirtualizerHost {
-  readonly data = items;
+  readonly data = Array.from({ length: 1000 }, (_, i) => i);
 }
 
 const render = (host: Type<unknown>) => {

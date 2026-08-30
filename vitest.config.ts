@@ -93,32 +93,32 @@ export default defineConfig({
       {
         plugins: [react()],
         test: {
-          name: "smoke-react",
-          include: ["spec/smoke/react.spec.tsx"],
+          name: "browser-react",
+          include: ["spec/browser/react.spec.tsx"],
           browser: smokeBrowser(),
         },
       },
       {
         plugins: [vueJsx()],
         test: {
-          name: "smoke-vue",
-          include: ["spec/smoke/vue.spec.tsx"],
+          name: "browser-vue",
+          include: ["spec/browser/vue.spec.tsx"],
           browser: smokeBrowser(),
         },
       },
       {
         plugins: [solid()],
         test: {
-          name: "smoke-solid",
-          include: ["spec/smoke/solid.spec.tsx"],
+          name: "browser-solid",
+          include: ["spec/browser/solid.spec.tsx"],
           browser: smokeBrowser(),
         },
       },
       {
         plugins: [svelte()],
         test: {
-          name: "smoke-svelte",
-          include: ["spec/smoke/svelte.spec.ts"],
+          name: "browser-svelte",
+          include: ["spec/browser/svelte.spec.ts"],
           browser: smokeBrowser(),
         },
       },
@@ -126,12 +126,12 @@ export default defineConfig({
         plugins: [
           angular({
             tsconfig: "tsconfig.angular.json",
-            include: ["/spec/smoke/angular.spec.ts"],
+            include: ["/spec/browser/angular.spec.ts"],
           }),
         ],
         test: {
-          name: "smoke-angular",
-          include: ["spec/smoke/angular.spec.ts"],
+          name: "browser-angular",
+          include: ["spec/browser/angular.spec.ts"],
           setupFiles: ["./spec/setup.angular.ts"],
           browser: smokeBrowser(),
         },

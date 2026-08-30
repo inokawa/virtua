@@ -9,8 +9,6 @@ import {
 } from "../../src/react/index.js";
 import { expectVirtualized } from "./utils.js";
 
-const items = Array.from({ length: 1000 }, (_, i) => i);
-
 const render = (node: ReactNode) => {
   const container = document.body.appendChild(document.createElement("div"));
   onTestFinished(() => {
@@ -26,7 +24,10 @@ const render = (node: ReactNode) => {
 
 it("VList", async () => {
   const container = render(
-    <VList data={items} style={{ height: 400 }}>
+    <VList
+      data={Array.from({ length: 1000 }, (_, i) => i)}
+      style={{ height: 400 }}
+    >
       {(d) => <div key={d}>item-{d}</div>}
     </VList>,
   );
@@ -36,7 +37,7 @@ it("VList", async () => {
 it("Virtualizer", async () => {
   const container = render(
     <div style={{ height: 400, overflowY: "auto" }}>
-      <Virtualizer data={items}>
+      <Virtualizer data={Array.from({ length: 1000 }, (_, i) => i)}>
         {(d) => <div key={d}>item-{d}</div>}
       </Virtualizer>
     </div>,
@@ -46,7 +47,7 @@ it("Virtualizer", async () => {
 
 it("WindowVirtualizer", async () => {
   const container = render(
-    <WindowVirtualizer data={items}>
+    <WindowVirtualizer data={Array.from({ length: 1000 }, (_, i) => i)}>
       {(d) => <div key={d}>item-{d}</div>}
     </WindowVirtualizer>,
   );
