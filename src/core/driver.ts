@@ -152,7 +152,7 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
-  let isNegative = false;
+  let isRtl = false;
   const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const scrollToKey = isHorizontal ? "left" : "top";
   const overflowKey = isHorizontal ? "overflowX" : "overflowY";
@@ -162,7 +162,7 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
     () => initialized[0],
     (offset, smooth) => {
       viewportElement!.scrollTo({
-        [scrollToKey]: normalizeScrollOffset(offset, isNegative),
+        [scrollToKey]: normalizeScrollOffset(offset, isRtl),
         behavior: smooth ? "smooth" : "instant",
       });
     },
@@ -197,14 +197,14 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
       resizeObserver._observe((viewportElement = viewport));
 
       if (isHorizontal) {
-        isNegative = getComputedStyle(viewport).direction === "rtl";
+        isRtl = getComputedStyle(viewport).direction === "rtl";
       }
 
       scrollObserver = createScrollObserver(
         store,
         viewport,
         isHorizontal,
-        () => normalizeScrollOffset(viewport[scrollOffsetKey], isNegative),
+        () => normalizeScrollOffset(viewport[scrollOffsetKey], isRtl),
         (jump, shift, isMomentumScrolling) => {
           // If we update scroll position while touching on iOS, the position will be reverted.
           // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
@@ -224,7 +224,7 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
           viewport.scrollTo({
             [scrollToKey]: normalizeScrollOffset(
               store.$getScrollOffset() + jump,
-              isNegative,
+              isRtl,
             ),
             behavior: "instant",
           });
@@ -270,7 +270,7 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
   let getBaseOffset: (() => number) | undefined;
   let onViewportResize: (() => void) | undefined;
   let initialized = createPromise<boolean>();
-  let isNegative = false;
+  let isRtl = false;
   const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const scrollToKey = isHorizontal ? "left" : "top";
 
@@ -279,7 +279,7 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
     () => initialized[0],
     (offset, smooth) => {
       viewportElement!.scrollTo({
-        [scrollToKey]: normalizeScrollOffset(offset, isNegative),
+        [scrollToKey]: normalizeScrollOffset(offset, isRtl),
         behavior: smooth ? "smooth" : "instant",
       });
     },
@@ -322,7 +322,7 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
     const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
     const offsetSum =
       offset +
-      (isHorizontal && isNegative
+      (isRtl
         ? viewport.clientWidth - node[offsetKey] - node.offsetWidth
         : node[offsetKey]);
 
@@ -373,14 +373,14 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
 
       if (isHorizontal) {
         // Detect RTL document
-        isNegative = getComputedStyle(viewport).direction === "rtl";
+        isRtl = getComputedStyle(viewport).direction === "rtl";
       }
 
       scrollObserver = createScrollObserver(
         store,
         window,
         isHorizontal,
-        () => normalizeScrollOffset(viewport[scrollOffsetKey], isNegative),
+        () => normalizeScrollOffset(viewport[scrollOffsetKey], isRtl),
         (jump, shift) => {
           // TODO support case two window scrollers exist in the same view
           // Use absolute position not to exceed scrollable bounds
@@ -388,7 +388,7 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
           viewport.scrollTo({
             [scrollToKey]: normalizeScrollOffset(
               store.$getScrollOffset() + jump,
-              isNegative,
+              isRtl,
             ),
             behavior: "instant",
           });
@@ -463,14 +463,14 @@ export const createContainerGridDriver: GridDriverFactory = (
   let rowScrollObserver: ScrollObserver | undefined;
   let colScrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
-  let isNegative = false;
+  let isRtl = false;
 
   const [scheduleScrollX, cancelScrollX] = createScrollScheduler(
     colStore,
     () => initialized[0],
     (offset, smooth) => {
       viewportElement!.scrollTo({
-        left: normalizeScrollOffset(offset, isNegative),
+        left: normalizeScrollOffset(offset, isRtl),
         behavior: smooth ? "smooth" : "instant",
       });
     },
@@ -584,13 +584,13 @@ export const createContainerGridDriver: GridDriverFactory = (
     const viewport = viewportElement!;
     const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
     const overflowKey = isHorizontal ? "overflowX" : "overflowY";
-    const negative = isHorizontal && isNegative;
+    const rtl = isHorizontal && isRtl;
 
     return createScrollObserver(
       store,
       viewport,
       isHorizontal,
-      () => normalizeScrollOffset(viewport[scrollOffsetKey], negative),
+      () => normalizeScrollOffset(viewport[scrollOffsetKey], rtl),
       (jump, shift, isMomentumScrolling) => {
         // If we update scroll position while touching on iOS, the position will be reverted.
         // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
@@ -610,7 +610,7 @@ export const createContainerGridDriver: GridDriverFactory = (
         viewport.scrollTo({
           [isHorizontal ? "left" : "top"]: normalizeScrollOffset(
             store.$getScrollOffset() + jump,
-            negative,
+            rtl,
           ),
           behavior: "instant",
         });
@@ -627,7 +627,7 @@ export const createContainerGridDriver: GridDriverFactory = (
       resizeObserver._observe((viewportElement = viewport));
 
       // Detect RTL document
-      isNegative = getComputedStyle(viewport).direction === "rtl";
+      isRtl = getComputedStyle(viewport).direction === "rtl";
 
       rowScrollObserver = observeAxisScroll(rowStore, false, cancelScrollY);
       colScrollObserver = observeAxisScroll(colStore, true, cancelScrollX);
