@@ -6,6 +6,6 @@
 
 > `const` **experimental\_VGrid**: `ForwardRefExoticComponent`\<[`VGridProps`](../interfaces/VGridProps.md) & `RefAttributes`\<[`VGridHandle`](../interfaces/VGridHandle.md)\>\>
 
-Defined in: [src/react/VGrid.tsx:264](https://github.com/inokawa/virtua/blob/b7002d7c35b5fa4eb682193a59bc5bbee0a17049/src/react/VGrid.tsx#L264)
+Defined in: [src/react/VGrid.tsx:264](https://github.com/inokawa/virtua/blob/4a6e216e9675c139ab0ea2110d5a95aa08068d24/src/react/VGrid.tsx#L264)
 
 Virtualized grid component. See [VGridProps](../interfaces/VGridProps.md) and [VGridHandle](../interfaces/VGridHandle.md).
