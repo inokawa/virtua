@@ -415,6 +415,35 @@ test.describe("check if scroll jump compensation works", () => {
     expect(prev).toBeGreaterThan(initial + min);
   });
 
+  test("fast scrolling into unmeasured area does not lose scroll position", async ({
+    page,
+  }) => {
+    await page.goto(storyUrl("basics-vlist--default"));
+    const component = await getScrollable(page);
+
+    // check if start is displayed
+    await expect(component.getByText("0", { exact: true })).toBeVisible();
+
+    // scroll fast with large delta and check if the scrolled position is not rolled back, ignoring the expected compensation of estimated sizes
+    const lost = await component.evaluate(async (e) => {
+      let lost = 0;
+      let pos = 0;
+      for (let i = 0; i < 25; i++) {
+        if (i > 0) {
+          const rollback = pos - e.scrollTop;
+          if (rollback > 200) {
+            lost += rollback;
+          }
+        }
+        pos += 1500;
+        e.scrollTop = pos;
+        await new Promise(requestAnimationFrame);
+      }
+      return lost;
+    });
+    expect(lost).toBe(0);
+  });
+
   test("resize while scrolling up", async ({ page }) => {
     await page.goto(storyUrl("advanced-markdown--default"));
 
