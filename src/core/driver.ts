@@ -219,15 +219,28 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
             });
           }
 
-          // Use absolute position not to exceed scrollable bounds
-          // https://github.com/inokawa/virtua/discussions/475
-          viewport.scrollTo({
-            [scrollToKey]: normalizeScrollOffset(
-              store.$getScrollOffset() + jump,
-              isRtl,
-            ),
-            behavior: "instant",
-          });
+          const target = store.$getScrollOffset() + jump;
+          if (
+            target <= 0 ||
+            target >=
+              store.$getStartSpacerSize() +
+                store.$getTotalSize() -
+                store.$getViewportSize()
+          ) {
+            // Use absolute position at the edges not to exceed scrollable bounds
+            // https://github.com/inokawa/virtua/discussions/475
+            viewport.scrollTo({
+              [scrollToKey]: normalizeScrollOffset(target, isRtl),
+              behavior: "instant",
+            });
+          } else {
+            // Use relative position not to overwrite concurrent scrolling
+            // https://github.com/inokawa/virtua/issues/898
+            viewport.scrollBy({
+              [scrollToKey]: normalizeScrollOffset(jump, isRtl),
+              behavior: "instant",
+            });
+          }
           if (shift) {
             // https://github.com/inokawa/virtua/issues/357
             cancelScroll();
@@ -383,15 +396,28 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
         () => normalizeScrollOffset(viewport[scrollOffsetKey], isRtl),
         (jump, shift) => {
           // TODO support case two window scrollers exist in the same view
-          // Use absolute position not to exceed scrollable bounds
-          // https://github.com/inokawa/virtua/discussions/475
-          viewport.scrollTo({
-            [scrollToKey]: normalizeScrollOffset(
-              store.$getScrollOffset() + jump,
-              isRtl,
-            ),
-            behavior: "instant",
-          });
+          const target = store.$getScrollOffset() + jump;
+          if (
+            target <= 0 ||
+            target >=
+              store.$getStartSpacerSize() +
+                store.$getTotalSize() -
+                store.$getViewportSize()
+          ) {
+            // Use absolute position at the edges not to exceed scrollable bounds
+            // https://github.com/inokawa/virtua/discussions/475
+            viewport.scrollTo({
+              [scrollToKey]: normalizeScrollOffset(target, isRtl),
+              behavior: "instant",
+            });
+          } else {
+            // Use relative position not to overwrite concurrent scrolling
+            // https://github.com/inokawa/virtua/issues/898
+            viewport.scrollBy({
+              [scrollToKey]: normalizeScrollOffset(jump, isRtl),
+              behavior: "instant",
+            });
+          }
           if (shift) {
             // https://github.com/inokawa/virtua/issues/357
             cancelScroll();
@@ -605,15 +631,28 @@ export const createContainerGridDriver: GridDriverFactory = (
           });
         }
 
-        // Use absolute position not to exceed scrollable bounds
-        // https://github.com/inokawa/virtua/discussions/475
-        viewport.scrollTo({
-          [isHorizontal ? "left" : "top"]: normalizeScrollOffset(
-            store.$getScrollOffset() + jump,
-            rtl,
-          ),
-          behavior: "instant",
-        });
+        const target = store.$getScrollOffset() + jump;
+        if (
+          target <= 0 ||
+          target >=
+            store.$getStartSpacerSize() +
+              store.$getTotalSize() -
+              store.$getViewportSize()
+        ) {
+          // Use absolute position at the edges not to exceed scrollable bounds
+          // https://github.com/inokawa/virtua/discussions/475
+          viewport.scrollTo({
+            [isHorizontal ? "left" : "top"]: normalizeScrollOffset(target, rtl),
+            behavior: "instant",
+          });
+        } else {
+          // Use relative position not to overwrite concurrent scrolling
+          // https://github.com/inokawa/virtua/issues/898
+          viewport.scrollBy({
+            [isHorizontal ? "left" : "top"]: normalizeScrollOffset(jump, rtl),
+            behavior: "instant",
+          });
+        }
         if (shift) {
           // https://github.com/inokawa/virtua/issues/357
           cancelScroll();
