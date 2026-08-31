@@ -7,13 +7,13 @@ import {
   type ReactNode,
 } from "react";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
-import { type ItemResizeObserver } from "../core/index.js";
+import { type Driver } from "../core/index.js";
 import { refKey } from "./utils.js";
 import { type CustomItemComponent } from "./types.js";
 
 interface ListItemProps {
   _children: ReactNode;
-  _resizer: ItemResizeObserver;
+  _resizer: Driver["$observeItem"];
   _index: number;
   _offset: number;
   _hide: boolean;
@@ -47,7 +47,7 @@ export const ListItem = /*#__PURE__*/ memo(
         position: hide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
         [isHorizontal ? "top" : "left"]: 0,
-        [isHorizontal ? "left" : "top"]: offset,
+        [isHorizontal ? "insetInlineStart" : "top"]: offset,
         visibility: !hide || isSSR ? undefined : "hidden",
       };
       if (isHorizontal) {

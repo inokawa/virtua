@@ -2,10 +2,10 @@ import { mergeConfig } from "vite";
 import * as path from "node:path";
 
 /** @type { import('@storybook/react-vite').StorybookConfig } */
-export default process.env.STORYBOOK_VUE
+const config = process.env.STORYBOOK_VUE
   ? {
       stories: ["../stories/vue/**/*.stories.@(js|jsx|ts|tsx)"],
-      addons: ["@storybook/addon-docs", "@storybook/addon-vitest"],
+      addons: ["@storybook/addon-docs"],
       framework: {
         name: "@storybook/vue3-vite",
         options: {},
@@ -22,7 +22,7 @@ export default process.env.STORYBOOK_VUE
   : process.env.STORYBOOK_SOLID
     ? {
         stories: ["../stories/solid/**/*.stories.@(js|jsx|ts|tsx)"],
-        addons: ["@storybook/addon-docs", "@storybook/addon-vitest"],
+        addons: ["@storybook/addon-docs"],
         framework: {
           name: "storybook-solidjs-vite",
           options: {},
@@ -31,7 +31,7 @@ export default process.env.STORYBOOK_VUE
     : process.env.STORYBOOK_SVELTE
       ? {
           stories: ["../stories/svelte/**/*.stories.@(js|jsx|ts|tsx)"],
-          addons: ["@storybook/addon-docs", "@storybook/addon-vitest"],
+          addons: ["@storybook/addon-docs"],
           framework: {
             name: "@storybook/svelte-vite",
             options: {
@@ -51,7 +51,7 @@ export default process.env.STORYBOOK_VUE
       : process.env.STORYBOOK_ANGULAR
         ? {
             stories: ["../stories/angular/**/*.stories.@(js|jsx|ts|tsx)"],
-            addons: ["@storybook/addon-docs", "@storybook/addon-vitest"],
+            addons: ["@storybook/addon-docs"],
             framework: {
               name: "@analogjs/storybook-angular",
               options: {
@@ -63,7 +63,7 @@ export default process.env.STORYBOOK_VUE
           }
         : {
             stories: ["../stories/react/**/*.stories.@(js|jsx|ts|tsx)"],
-            addons: ["@storybook/addon-docs", "@storybook/addon-vitest"],
+            addons: ["@storybook/addon-docs"],
             framework: {
               name: "@storybook/react-vite",
               options: {},
@@ -105,3 +105,12 @@ export default process.env.STORYBOOK_VUE
               },
             }),
           };
+
+/** @type { import('@storybook/react-vite').StorybookConfig } */
+export default {
+  ...config,
+  features: {
+    // It observes document.body with a new ResizeObserver on every DOM mutation and fires ResizeObserver error in stories
+    highlight: false,
+  },
+};

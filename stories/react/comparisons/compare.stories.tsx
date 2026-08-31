@@ -46,10 +46,7 @@ const ScrollInput = ({ count }: { count: number }) => {
 };
 
 type LibraryName =
-  | "react-virtualized"
-  | "react-window"
-  | "react-virtuoso"
-  | "react-virtual";
+  "react-virtualized" | "react-window" | "react-virtuoso" | "react-virtual";
 
 const getList = (name: LibraryName) => {
   switch (name) {

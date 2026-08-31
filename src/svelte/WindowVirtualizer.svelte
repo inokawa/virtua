@@ -7,9 +7,10 @@
     UPDATE_SCROLL_EVENT,
     UPDATE_VIRTUAL_STATE,
     createVirtualStore,
+    createListLayout,
     getScrollSize as _getScrollSize,
-    createWindowResizer,
-    createWindowScroller,
+    createWindowDriver,
+    scrollToIndex as _scrollToIndex,
   } from "../core/index.js";
   import { defaultGetKey, styleToString } from "./utils.js";
   import ListItem from "./ListItem.svelte";
@@ -25,6 +26,7 @@
     getKey = defaultGetKey,
     bufferSize,
     itemSize,
+    ssrCount,
     shift = false,
     horizontal = false,
     cache,
@@ -33,15 +35,9 @@
     onscrollend,
   }: Props = $props();
 
-  const store = createVirtualStore(
-    data.length,
-    itemSize,
-    undefined,
-    cache,
-    !itemSize,
-  );
-  const resizer = createWindowResizer(store, horizontal);
-  const scroller = createWindowScroller(store, horizontal);
+  const layout = createListLayout(data.length, itemSize, cache);
+  const store = createVirtualStore(layout, ssrCount);
+  const driver = createWindowDriver(store, horizontal);
   store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
     stateVersion = store.$getStateVersion();
   });
@@ -53,6 +49,8 @@
     onscrollend && onscrollend();
   });
 
+  let isSSR = $state(!!ssrCount);
+
   let containerRef: HTMLDivElement | undefined = $state();
 
   let stateVersion: StateVersion = $state(store.$getStateVersion());
@@ -60,7 +58,6 @@
   let range = $derived(stateVersion && store.$getRange(bufferSize));
   let isScrolling = $derived(stateVersion && store.$isScrolling());
   let totalSize = $derived(stateVersion && store.$getTotalSize());
-  let negative = $derived(stateVersion && scroller.$isNegative());
 
   let indexes = $derived.by(() => {
     // https://github.com/inokawa/virtua/pull/847
@@ -77,13 +74,13 @@
   });
 
   onMount(() => {
-    resizer.$observeRoot(containerRef!);
-    scroller.$observe(containerRef!);
+    isSSR = false;
+
+    driver.$observe(containerRef!);
   });
   onDestroy(() => {
     store.$dispose();
-    resizer.$dispose();
-    scroller.$dispose();
+    driver.$dispose();
   });
 
   $effect.pre(() => {
@@ -96,11 +93,11 @@
   $effect(() => {
     if (prevStateVersion === stateVersion) return;
     prevStateVersion = stateVersion;
-    scroller.$fixScrollJump();
+    driver.$effect();
   });
 
   export const getCache =
-    store.$getCacheSnapshot satisfies WindowVirtualizerHandle["getCache"] as WindowVirtualizerHandle["getCache"];
+    layout.$snapshot satisfies WindowVirtualizerHandle["getCache"] as WindowVirtualizerHandle["getCache"];
   export const getScrollOffset =
     store.$getScrollOffset satisfies WindowVirtualizerHandle["getScrollOffset"] as WindowVirtualizerHandle["getScrollOffset"];
   export const getViewportSize =
@@ -111,8 +108,10 @@
     store.$getItemOffset satisfies WindowVirtualizerHandle["getItemOffset"] as WindowVirtualizerHandle["getItemOffset"];
   export const getItemSize =
     store.$getItemSize satisfies WindowVirtualizerHandle["getItemSize"] as WindowVirtualizerHandle["getItemSize"];
-  export const scrollToIndex =
-    scroller.$scrollToIndex satisfies WindowVirtualizerHandle["scrollToIndex"] as WindowVirtualizerHandle["scrollToIndex"];
+  export const scrollToIndex: WindowVirtualizerHandle["scrollToIndex"] = (
+    index,
+    opts,
+  ) => _scrollToIndex(driver, store, index, opts);
 
   let containerStyle = $derived(
     styleToString({
@@ -139,10 +138,11 @@
       {item}
       {index}
       as="div"
-      offset={stateVersion && store.$getItemOffset(index, negative)}
+      offset={stateVersion && store.$getItemOffset(index)}
       hide={stateVersion && store.$isUnmeasuredItem(index)}
       {horizontal}
-      resizer={resizer.$observeItem}
+      {isSSR}
+      resizer={driver.$observeItem}
     />
   {/each}
 </div>

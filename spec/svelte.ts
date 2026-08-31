@@ -1,7 +1,13 @@
-import { vi } from "vitest";
-import { render as _render } from "@testing-library/svelte";
+import { vi, onTestFinished } from "vitest";
+import { render as _render, cleanup } from "@testing-library/svelte";
+
+export const renderSync = (...args: Parameters<typeof _render>) => {
+  onTestFinished(cleanup);
+  return _render(...args);
+};
 
 export const render = async (...args: Parameters<typeof _render>) => {
+  onTestFinished(cleanup);
   const res = _render(...args);
   let same = false;
   let prev = res.baseElement.innerHTML;

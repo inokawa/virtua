@@ -17,10 +17,11 @@ import {
   UPDATE_SCROLL_END_EVENT,
   UPDATE_VIRTUAL_STATE,
   createVirtualStore,
+  createListLayout,
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_SCROLL_EVENT,
-  createWindowResizer,
-  createWindowScroller,
+  createWindowDriver,
+  scrollToIndex,
   type ItemsRange,
   type ScrollToIndexOpts,
   type CacheSnapshot,
@@ -37,11 +38,11 @@ export interface WindowVirtualizerHandle {
    */
   readonly cache: CacheSnapshot;
   /**
-   * Get current scrollTop, or scrollLeft if horizontal: true.
+   * Get current scrollTop, or scrollLeft if horizontal: true. Always positive even in RTL.
    */
   readonly scrollOffset: number;
   /**
-   * Get current offsetHeight, or offsetWidth if horizontal: true.
+   * Get current clientHeight of the document, or clientWidth if horizontal: true.
    */
   readonly viewportSize: number;
   /**
@@ -96,6 +97,10 @@ export interface WindowVirtualizerProps<T> {
    */
   itemSize?: number;
   /**
+   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   */
+  ssrCount?: number;
+  /**
    * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
   shift?: boolean;
@@ -132,21 +137,18 @@ export const WindowVirtualizer = <T,>(
     data: _data,
     children: _children,
     itemSize,
+    ssrCount,
     shift: _shift,
     horizontal = false,
     cache,
     onScrollEnd: _onScrollEnd,
   } = props;
 
-  const store = createVirtualStore(
-    props.data.length,
-    itemSize,
-    undefined,
-    cache,
-    !itemSize,
-  );
-  const resizer = createWindowResizer(store, horizontal);
-  const scroller = createWindowScroller(store, horizontal);
+  const [isSSR, setIsSSR] = createSignal(!!ssrCount);
+
+  const layout = createListLayout(props.data.length, itemSize, cache);
+  const store = createVirtualStore(layout, ssrCount);
+  const driver = createWindowDriver(store, horizontal);
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
@@ -171,13 +173,14 @@ export const WindowVirtualizer = <T,>(
   });
   const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
   const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
-  const isNegative = createMemo(() => stateVersion() && scroller.$isNegative());
 
   onMount(() => {
+    setIsSSR(false);
+
     if (props.ref) {
       props.ref({
         get cache() {
-          return store.$getCacheSnapshot();
+          return layout.$snapshot();
         },
         get scrollOffset() {
           return store.$getScrollOffset();
@@ -188,12 +191,12 @@ export const WindowVirtualizer = <T,>(
         findItemIndex: store.$findItemIndex,
         getItemOffset: store.$getItemOffset,
         getItemSize: store.$getItemSize,
-        scrollToIndex: scroller.$scrollToIndex,
+        scrollToIndex: (index, opts) =>
+          scrollToIndex(driver, store, index, opts),
       });
     }
 
-    resizer.$observeRoot(containerRef!);
-    scroller.$observe(containerRef!);
+    driver.$observe(containerRef!);
 
     onCleanup(() => {
       if (props.ref) {
@@ -201,14 +204,13 @@ export const WindowVirtualizer = <T,>(
       }
 
       store.$dispose();
-      resizer.$dispose();
-      scroller.$dispose();
+      driver.$dispose();
     });
   });
 
   createEffect(
     on(stateVersion, () => {
-      scroller.$fixScrollJump();
+      driver.$effect();
     }),
   );
 
@@ -244,7 +246,7 @@ export const WindowVirtualizer = <T,>(
           const itemIndex = createMemo(() => range()[0] + index());
           const offset = createMemo(() => {
             stateVersion();
-            return store.$getItemOffset(itemIndex(), isNegative());
+            return store.$getItemOffset(itemIndex());
           });
           const hide = createMemo(() => {
             stateVersion();
@@ -257,11 +259,12 @@ export const WindowVirtualizer = <T,>(
           return (
             <ListItem
               _index={itemIndex()}
-              _resizer={resizer.$observeItem}
+              _resizer={driver.$observeItem}
               _offset={offset()}
               _hide={hide()}
               _children={children()}
               _isHorizontal={horizontal}
+              _isSSR={isSSR()}
             />
           );
         }}

@@ -28,7 +28,12 @@ https://inokawa.github.io/virtua/
 npm install virtua
 ```
 
-If you use this lib in [legacy browsers which does not have ResizeObserver](https://caniuse.com/?search=resizeobserver), you should use [polyfill](https://github.com/juggle/resize-observer#switching-between-native-and-polyfilled-versions).
+If you want to support legacy browsers, you need polyfills.
+
+- [ResizeObserver](https://caniuse.com/?search=resizeobserver) is always required (e.g. [@juggle/resize-observer](https://github.com/juggle/resize-observer#switching-between-native-and-polyfilled-versions)).
+- [Scroll methods on elements](https://caniuse.com/element-scroll-methods) are always required (e.g. [element-scroll-polyfill](https://github.com/idmadj/element-scroll-polyfill)).
+- [CSS scroll-behavior](https://caniuse.com/?search=scroll-behavior) is required only if you call `scrollToIndex` with `smooth: true` (e.g. [scroll-behavior-polyfill](https://github.com/wessberg/scroll-behavior-polyfill)).
+- [CSS inset-inline-start](https://caniuse.com/mdn-css_properties_inset-inline-start) is required only if you set `horizontal: true`. It cannot be polyfilled so use `virtua@<=0.50` instead.
 
 ## Getting started
 

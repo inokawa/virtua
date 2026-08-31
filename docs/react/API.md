@@ -8,7 +8,6 @@
 
 - [CustomContainerComponentProps](interfaces/CustomContainerComponentProps.md)
 - [CustomItemComponentProps](interfaces/CustomItemComponentProps.md)
-- [CacheSnapshot](interfaces/CacheSnapshot.md)
 - [ScrollToIndexOpts](interfaces/ScrollToIndexOpts.md)
 - [VListProps](interfaces/VListProps.md)
 - [VListHandle](interfaces/VListHandle.md)
@@ -25,6 +24,7 @@
 - [ViewportComponentAttributes](type-aliases/ViewportComponentAttributes.md)
 - [CustomContainerComponent](type-aliases/CustomContainerComponent.md)
 - [CustomItemComponent](type-aliases/CustomItemComponent.md)
+- [CacheSnapshot](type-aliases/CacheSnapshot.md)
 - [ScrollToIndexAlign](type-aliases/ScrollToIndexAlign.md)
 - [VGridItemResize](type-aliases/VGridItemResize.md)
 - [CustomCellComponent](type-aliases/CustomCellComponent.md)

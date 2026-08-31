@@ -22,11 +22,14 @@ import {
   UPDATE_SCROLL_END_EVENT,
   UPDATE_VIRTUAL_STATE,
   createVirtualStore,
+  createListLayout,
   ACTION_ITEMS_LENGTH_CHANGE,
   getScrollSize,
   ACTION_START_OFFSET_CHANGE,
-  createResizer,
-  createScroller,
+  createContainerDriver,
+  scrollTo,
+  scrollBy,
+  scrollToIndex,
   type ItemsRange,
   type ScrollToIndexOpts,
   type CacheSnapshot,
@@ -44,7 +47,7 @@ export interface VirtualizerHandle {
    */
   readonly cache: CacheSnapshot;
   /**
-   * Get current scrollTop, or scrollLeft if horizontal: true.
+   * Get current scrollTop, or scrollLeft if horizontal: true. Always positive even in RTL.
    */
   readonly scrollOffset: number;
   /**
@@ -52,7 +55,7 @@ export interface VirtualizerHandle {
    */
   readonly scrollSize: number;
   /**
-   * Get current offsetHeight, or offsetWidth if horizontal: true.
+   * Get current clientHeight, or clientWidth if horizontal: true.
    */
   readonly viewportSize: number;
   /**
@@ -131,6 +134,10 @@ export interface VirtualizerProps<T> {
    */
   itemSize?: number;
   /**
+   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   */
+  ssrCount?: number;
+  /**
    * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
   shift?: boolean;
@@ -168,21 +175,17 @@ export interface VirtualizerProps<T> {
  */
 export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const { itemSize, horizontal = false, cache } = props;
+  const { itemSize, horizontal = false, cache, ssrCount } = props;
   props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
     { as: "div" },
     props,
   );
 
-  const store = createVirtualStore(
-    props.data.length,
-    itemSize,
-    undefined,
-    cache,
-    !itemSize,
-  );
-  const resizer = createResizer(store, horizontal);
-  const scroller = createScroller(store, horizontal);
+  const [isSSR, setIsSSR] = createSignal(!!ssrCount);
+
+  const layout = createListLayout(props.data.length, itemSize, cache);
+  const store = createVirtualStore(layout, ssrCount);
+  const driver = createContainerDriver(store, horizontal);
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
@@ -206,13 +209,14 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   });
   const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
   const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
-  const isNegative = createMemo(() => stateVersion() && scroller.$isNegative());
 
   onMount(() => {
+    setIsSSR(false);
+
     if (props.ref) {
       props.ref({
         get cache() {
-          return store.$getCacheSnapshot();
+          return layout.$snapshot();
         },
         get scrollOffset() {
           return store.$getScrollOffset();
@@ -226,16 +230,14 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         findItemIndex: store.$findItemIndex,
         getItemOffset: store.$getItemOffset,
         getItemSize: store.$getItemSize,
-        scrollToIndex: scroller.$scrollToIndex,
-        scrollTo: scroller.$scrollTo,
-        scrollBy: scroller.$scrollBy,
+        scrollToIndex: (index, opts) =>
+          scrollToIndex(driver, store, index, opts),
+        scrollTo: (offset) => scrollTo(driver, offset),
+        scrollBy: (offset) => scrollBy(driver, store, offset),
       });
     }
 
-    const container = containerRef!;
-    const scrollable = props.scrollRef || container.parentElement!;
-    resizer.$observeRoot(scrollable);
-    scroller.$observe(container, scrollable);
+    driver.$observe(containerRef!, props.scrollRef);
 
     onCleanup(() => {
       if (props.ref) {
@@ -243,8 +245,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
       }
 
       store.$dispose();
-      resizer.$dispose();
-      scroller.$dispose();
+      driver.$dispose();
     });
   });
 
@@ -261,7 +262,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
   createEffect(
     on(stateVersion, () => {
-      scroller.$fixScrollJump();
+      driver.$effect();
     }),
   );
 
@@ -297,7 +298,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   const renderItem = (data: T, index: Accessor<number>) => {
     const offset = createMemo(() => {
       stateVersion();
-      return store.$getItemOffset(index(), isNegative());
+      return store.$getItemOffset(index());
     });
     const hide = createMemo(() => {
       stateVersion();
@@ -311,11 +312,12 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
       <ListItem
         _as={props.item}
         _index={index()}
-        _resizer={resizer.$observeItem}
+        _resizer={driver.$observeItem}
         _offset={offset()}
         _hide={hide()}
         _children={children()}
         _isHorizontal={horizontal}
+        _isSSR={isSSR()}
       />
     );
   };

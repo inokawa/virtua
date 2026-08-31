@@ -7,9 +7,12 @@
     UPDATE_SCROLL_END_EVENT,
     UPDATE_SCROLL_EVENT,
     UPDATE_VIRTUAL_STATE,
-    createResizer,
-    createScroller,
+    createContainerDriver,
+    scrollTo as _scrollTo,
+    scrollBy as _scrollBy,
+    scrollToIndex as _scrollToIndex,
     createVirtualStore,
+    createListLayout,
     getScrollSize as _getScrollSize,
     sort,
   } from "../core/index.js";
@@ -42,15 +45,9 @@
     onscrollend,
   }: Props = $props();
 
-  const store = createVirtualStore(
-    data.length,
-    itemSize,
-    ssrCount,
-    cache,
-    !itemSize,
-  );
-  const resizer = createResizer(store, horizontal);
-  const scroller = createScroller(store, horizontal);
+  const layout = createListLayout(data.length, itemSize, cache);
+  const store = createVirtualStore(layout, ssrCount);
+  const driver = createContainerDriver(store, horizontal);
   store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
     stateVersion = store.$getStateVersion();
   });
@@ -61,6 +58,8 @@
     onscrollend && onscrollend();
   });
 
+  let isSSR = $state(!!ssrCount);
+
   let containerRef: HTMLDivElement | undefined = $state();
 
   let stateVersion: StateVersion = $state(store.$getStateVersion());
@@ -68,7 +67,6 @@
   let range = $derived(stateVersion && store.$getRange(bufferSize));
   let isScrolling = $derived(stateVersion && store.$isScrolling());
   let totalSize = $derived(stateVersion && store.$getTotalSize());
-  let negative = $derived(stateVersion && scroller.$isNegative());
 
   let indexes = $derived.by(() => {
     // https://github.com/inokawa/virtua/pull/847
@@ -97,24 +95,23 @@
   });
 
   onMount(() => {
+    isSSR = false;
+
+    let unmounted = false;
     const container = containerRef!;
-    const assignRef = (scrollable: HTMLElement) => {
-      resizer.$observeRoot(scrollable);
-      scroller.$observe(container, scrollable);
-    };
     // parent's ref may not exist on mount https://github.com/inokawa/virtua/issues/603 https://github.com/inokawa/virtua/issues/690
     tick().then(() => {
-      if (scrollRef) {
-        assignRef(scrollRef);
-      } else {
-        assignRef(container.parentElement!);
-      }
+      // https://github.com/inokawa/virtua/pull/914
+      if (unmounted) return;
+      driver.$observe(container, scrollRef);
     });
+    return () => {
+      unmounted = true;
+    };
   });
   onDestroy(() => {
     store.$dispose();
-    resizer.$dispose();
-    scroller.$dispose();
+    driver.$dispose();
   });
 
   $effect.pre(() => {
@@ -133,11 +130,11 @@
   $effect(() => {
     if (prevStateVersion === stateVersion) return;
     prevStateVersion = stateVersion;
-    scroller.$fixScrollJump();
+    driver.$effect();
   });
 
   export const getCache =
-    store.$getCacheSnapshot satisfies VirtualizerHandle["getCache"] as VirtualizerHandle["getCache"];
+    layout.$snapshot satisfies VirtualizerHandle["getCache"] as VirtualizerHandle["getCache"];
   export const getScrollOffset =
     store.$getScrollOffset satisfies VirtualizerHandle["getScrollOffset"] as VirtualizerHandle["getScrollOffset"];
   export const getScrollSize = (() =>
@@ -152,12 +149,14 @@
     store.$getItemOffset satisfies VirtualizerHandle["getItemOffset"] as VirtualizerHandle["getItemOffset"];
   export const getItemSize =
     store.$getItemSize satisfies VirtualizerHandle["getItemSize"] as VirtualizerHandle["getItemSize"];
-  export const scrollToIndex =
-    scroller.$scrollToIndex satisfies VirtualizerHandle["scrollToIndex"] as VirtualizerHandle["scrollToIndex"];
-  export const scrollTo =
-    scroller.$scrollTo satisfies VirtualizerHandle["scrollTo"] as VirtualizerHandle["scrollTo"];
-  export const scrollBy =
-    scroller.$scrollBy satisfies VirtualizerHandle["scrollBy"] as VirtualizerHandle["scrollBy"];
+  export const scrollToIndex: VirtualizerHandle["scrollToIndex"] = (
+    index,
+    opts,
+  ) => _scrollToIndex(driver, store, index, opts);
+  export const scrollTo: VirtualizerHandle["scrollTo"] = (offset) =>
+    _scrollTo(driver, offset);
+  export const scrollBy: VirtualizerHandle["scrollBy"] = (offset) =>
+    _scrollBy(driver, store, offset);
 
   let containerStyle = $derived(
     styleToString({
@@ -184,10 +183,11 @@
       {item}
       {index}
       as={itemAs}
-      offset={stateVersion && store.$getItemOffset(index, negative)}
+      offset={stateVersion && store.$getItemOffset(index)}
       hide={stateVersion && store.$isUnmeasuredItem(index)}
       {horizontal}
-      resizer={resizer.$observeItem}
+      {isSSR}
+      resizer={driver.$observeItem}
       itemProps={itemProps?.({ item, index })}
     />
   {/each}

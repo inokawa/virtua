@@ -1,7 +1,6 @@
 /**
  * @jsxImportSource solid-js
  */
-import { type ItemResizeObserver } from "../core/index.js";
 import {
   type Component,
   type JSX,
@@ -12,14 +11,16 @@ import {
   type ValidComponent,
 } from "solid-js";
 import { Dynamic } from "solid-js/web";
+import { type Driver } from "../core/index.js";
 
 interface ListItemProps {
   _children: JSX.Element;
-  _resizer: ItemResizeObserver;
+  _resizer: Driver["$observeItem"];
   _index: number;
   _offset: number;
   _hide: boolean;
   _isHorizontal: boolean;
+  _isSSR?: boolean;
   _as?: ValidComponent;
 }
 
@@ -41,13 +42,15 @@ export const ListItem: Component<ListItemProps> = (props) => {
 
   const style = createMemo(() => {
     const isHorizontal = props._isHorizontal;
+    const hide = props._hide;
+    const isSSR = props._isSSR;
     const style: JSX.CSSProperties = {
       contain: "layout style",
-      position: "absolute",
+      position: hide && isSSR ? undefined : "absolute",
       [isHorizontal ? "height" : "width"]: "100%",
       [isHorizontal ? "top" : "left"]: "0px",
-      [isHorizontal ? "left" : "top"]: props._offset + "px",
-      visibility: props._hide ? "hidden" : undefined,
+      [isHorizontal ? "inset-inline-start" : "top"]: props._offset + "px",
+      visibility: !hide || isSSR ? undefined : "hidden",
     };
     if (isHorizontal) {
       style.display = "inline-flex";

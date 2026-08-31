@@ -1,6 +1,6 @@
 <script lang="ts" generics="T">
   import { type Snippet, onDestroy } from "svelte";
-  import { type ItemResizeObserver } from "../core/index.js";
+  import { type Driver } from "../core/index.js";
   import { styleToString, type ItemAttrs } from "./utils.js";
   import type { SvelteHTMLElements } from "svelte/elements";
 
@@ -12,7 +12,8 @@
     offset: number;
     hide: boolean;
     horizontal: boolean;
-    resizer: ItemResizeObserver;
+    isSSR?: boolean;
+    resizer: Driver["$observeItem"];
     itemProps?: ItemAttrs | undefined;
   }
 
@@ -24,6 +25,7 @@
     offset,
     hide,
     horizontal,
+    isSSR,
     resizer,
     itemProps,
   }: Props = $props();
@@ -45,11 +47,11 @@
   let style: string = $derived.by(() => {
     const _style: Record<string, string | undefined> = {
       contain: "layout style",
-      position: "absolute",
+      position: hide && isSSR ? undefined : "absolute",
       [horizontal ? "height" : "width"]: "100%",
       [horizontal ? "top" : "left"]: "0px",
-      [horizontal ? "left" : "top"]: offset + "px",
-      visibility: hide ? "hidden" : undefined,
+      [horizontal ? "inset-inline-start" : "top"]: offset + "px",
+      visibility: !hide || isSSR ? undefined : "hidden",
       ...itemProps?.style,
     };
     if (horizontal) {

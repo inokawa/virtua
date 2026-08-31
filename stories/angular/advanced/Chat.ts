@@ -150,7 +150,7 @@ export class ChatDemo {
     if (!ref) return;
 
     this.shouldStickToBottom.set(
-      offset - ref.getScrollSize() + ref.getViewportSize() >= -1.5,
+      offset - ref.scrollSize + ref.viewportSize >= -1.5,
     );
 
     if (offset < 100) {

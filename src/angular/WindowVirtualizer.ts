@@ -27,8 +27,10 @@ import {
   UPDATE_SCROLL_EVENT,
   UPDATE_VIRTUAL_STATE,
   createVirtualStore,
-  createWindowResizer,
-  createWindowScroller,
+  createListLayout,
+  createWindowDriver,
+  type Driver,
+  scrollToIndex,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
 import { defaultGetKey, type ItemContext } from "./utils.js";
@@ -40,15 +42,15 @@ export interface WindowVirtualizerHandle {
   /**
    * Get current {@link CacheSnapshot}.
    */
-  getCache: () => CacheSnapshot;
+  readonly cache: CacheSnapshot;
   /**
-   * Get current scrollTop, or scrollLeft if horizontal: true.
+   * Get current scrollTop, or scrollLeft if horizontal: true. Always positive even in RTL.
    */
-  getScrollOffset: () => number;
+  readonly scrollOffset: number;
   /**
-   * Get current offsetHeight, or offsetWidth if horizontal: true.
+   * Get current clientHeight of the document, or clientWidth if horizontal: true.
    */
-  getViewportSize: () => number;
+  readonly viewportSize: number;
   /**
    * Find nearest item index from offset.
    * @param offset offset in pixels from the start of the scroll container
@@ -93,7 +95,8 @@ export interface WindowVirtualizerHandle {
         [offset]="item.offset"
         [hide]="item.hide"
         [horizontal]="horizontal()"
-        [resizer]="resizer.$observeItem"
+        [isSSR]="isSSR()"
+        [resizer]="driver.$observeItem"
       >
         <ng-container
           [ngTemplateOutlet]="template()"
@@ -130,6 +133,10 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
    */
   readonly itemSize = input<number>();
   /**
+   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   */
+  readonly ssrCount = input<number>();
+  /**
    * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
   readonly shift = input(false);
@@ -138,11 +145,11 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
    */
   readonly horizontal = input(false);
   /**
-   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.getCache}.
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowVirtualizerHandle.cache}.
    *
    * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
    */
-  readonly cache = input<CacheSnapshot>();
+  readonly cacheProp = input<CacheSnapshot>(undefined, { alias: "cache" });
 
   /**
    * Emitted whenever scroll offset changes.
@@ -161,9 +168,9 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
   /** @internal */
   private _store!: ReturnType<typeof createVirtualStore>;
   /** @internal */
-  protected resizer!: ReturnType<typeof createWindowResizer>;
+  private _layout!: ReturnType<typeof createListLayout>;
   /** @internal */
-  private _scroller!: ReturnType<typeof createWindowScroller>;
+  protected driver!: Driver;
   /** @internal */
   private _element: HTMLElement = inject(ElementRef).nativeElement;
   /** @internal */
@@ -171,6 +178,8 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
 
   /** @internal */
   private _stateVersion = signal<StateVersion>(undefined!);
+  /** @internal */
+  protected isSSR = signal(false);
 
   /** @internal */
   protected items = computed(() => {
@@ -178,7 +187,6 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
     const store = this._store;
     const data = this.data();
     const getKey = this.getKey();
-    const negative = this._scroller.$isNegative();
     const [start, end] = store.$getRange(this.bufferSize());
     // https://github.com/inokawa/virtua/pull/847
     const items = [];
@@ -188,7 +196,7 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
         key: getKey(item, index),
         index,
         data: item,
-        offset: store.$getItemOffset(index, negative),
+        offset: store.$getItemOffset(index),
         hide: store.$isUnmeasuredItem(index),
       });
     }
@@ -226,36 +234,35 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
 
     afterNextRender({
       read: () => {
-        this.resizer.$observeRoot(this._element);
-        this._scroller.$observe(this._element);
+        this.isSSR.set(false);
+        this.driver.$observe(this._element);
       },
     });
 
     afterRenderEffect({
       read: () => {
         this._stateVersion();
-        this._scroller.$fixScrollJump();
+        this.driver.$effect();
       },
     });
 
     inject(DestroyRef).onDestroy(() => {
       this._store?.$dispose();
-      this.resizer?.$dispose();
-      this._scroller?.$dispose();
+      this.driver?.$dispose();
     });
   }
 
   ngOnInit(): void {
     const itemSize = this.itemSize();
-    const store = (this._store = createVirtualStore(
+    const ssrCount = this.ssrCount();
+    this.isSSR.set(!!ssrCount);
+    const layout = (this._layout = createListLayout(
       this.data().length,
       itemSize,
-      undefined,
-      this.cache(),
-      !itemSize,
+      this.cacheProp(),
     ));
-    this.resizer = createWindowResizer(store, this.horizontal());
-    this._scroller = createWindowScroller(store, this.horizontal());
+    const store = (this._store = createVirtualStore(layout, ssrCount));
+    this.driver = createWindowDriver(store, this.horizontal());
     store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
       this._stateVersion.set(store.$getStateVersion());
       if (sync) {
@@ -273,13 +280,13 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
     this._stateVersion.set(store.$getStateVersion());
   }
 
-  getCache(): CacheSnapshot {
-    return this._store.$getCacheSnapshot();
+  get cache(): CacheSnapshot {
+    return this._layout.$snapshot();
   }
-  getScrollOffset(): number {
+  get scrollOffset(): number {
     return this._store.$getScrollOffset();
   }
-  getViewportSize(): number {
+  get viewportSize(): number {
     return this._store.$getViewportSize();
   }
   findItemIndex(offset: number): number {
@@ -292,6 +299,6 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
     return this._store.$getItemSize(index);
   }
   scrollToIndex(index: number, opts?: ScrollToIndexOpts): void {
-    this._scroller.$scrollToIndex(index, opts);
+    scrollToIndex(this.driver, this._store, index, opts);
   }
 }

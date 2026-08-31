@@ -27,14 +27,23 @@ import {
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SCROLL_EVENT,
   UPDATE_VIRTUAL_STATE,
-  createResizer,
-  createScroller,
+  createContainerDriver,
+  type Driver,
+  scrollTo,
+  scrollBy,
+  scrollToIndex,
   createVirtualStore,
-  getScrollSize as _getScrollSize,
+  createListLayout,
+  getScrollSize,
   sort,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
-import { defaultGetKey, type ItemContext, type ItemProps } from "./utils.js";
+import {
+  ITEM_TEMPLATE,
+  defaultGetKey,
+  type ItemContext,
+  type ItemProps,
+} from "./utils.js";
 
 /**
  * Methods of {@link Virtualizer}.
@@ -43,19 +52,19 @@ export interface VirtualizerHandle {
   /**
    * Get current {@link CacheSnapshot}.
    */
-  getCache: () => CacheSnapshot;
+  readonly cache: CacheSnapshot;
   /**
-   * Get current scrollTop, or scrollLeft if horizontal: true.
+   * Get current scrollTop, or scrollLeft if horizontal: true. Always positive even in RTL.
    */
-  getScrollOffset: () => number;
+  readonly scrollOffset: number;
   /**
    * Get current scrollHeight, or scrollWidth if horizontal: true.
    */
-  getScrollSize: () => number;
+  readonly scrollSize: number;
   /**
-   * Get current offsetHeight, or offsetWidth if horizontal: true.
+   * Get current clientHeight, or clientWidth if horizontal: true.
    */
-  getViewportSize: () => number;
+  readonly viewportSize: number;
   /**
    * Find nearest item index from offset.
    * @param offset offset in pixels from the start of the scroll container
@@ -111,7 +120,8 @@ export interface VirtualizerHandle {
         [hide]="item.hide"
         [attrs]="item.attrs"
         [horizontal]="horizontal()"
-        [resizer]="resizer.$observeItem"
+        [isSSR]="isSSR()"
+        [resizer]="driver.$observeItem"
       >
         <ng-container
           [ngTemplateOutlet]="template()"
@@ -172,11 +182,11 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
    */
   readonly keepMounted = input<readonly number[]>();
   /**
-   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.getCache}.
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VirtualizerHandle.cache}.
    *
    * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
    */
-  readonly cache = input<CacheSnapshot>();
+  readonly cacheProp = input<CacheSnapshot>(undefined, { alias: "cache" });
   /**
    * The offset to the scrollable parent before virtualizer in pixels. If you put an element before virtualizer, you have to set its height to this prop.
    */
@@ -191,28 +201,24 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
    */
   readonly scrollEnd = output<void>();
 
-  /**
-   * Item template forwarded by {@link VList}, which can't pass its own content
-   * through `ng-content` because content queries don't cross projection.
-   * @internal
-   */
-  readonly itemTemplate = input<TemplateRef<ItemContext<T>>>();
   // not _ prefixed, because the mangler does not rename the property name kept
   // as a string in the partial compilation output
   /** @internal */
   private contentTemplate =
     contentChild<TemplateRef<ItemContext<T>>>(TemplateRef);
   /** @internal */
+  private _hostTemplate = inject(ITEM_TEMPLATE, { optional: true });
+  /** @internal */
   protected template = computed(
-    () => (this.itemTemplate() ?? this.contentTemplate())!,
+    () => (this._hostTemplate?.() ?? this.contentTemplate())!,
   );
 
   /** @internal */
   private _store!: ReturnType<typeof createVirtualStore>;
   /** @internal */
-  protected resizer!: ReturnType<typeof createResizer>;
+  private _layout!: ReturnType<typeof createListLayout>;
   /** @internal */
-  private _scroller!: ReturnType<typeof createScroller>;
+  protected driver!: Driver;
   /** @internal */
   private _element: HTMLElement = inject(ElementRef).nativeElement;
   /** @internal */
@@ -220,6 +226,8 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
 
   /** @internal */
   private _stateVersion = signal<StateVersion>(undefined!);
+  /** @internal */
+  protected isSSR = signal(false);
 
   /** @internal */
   private _indexes = computed(() => {
@@ -257,14 +265,13 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
     const data = this.data();
     const getKey = this.getKey();
     const itemProps = this.itemProps();
-    const negative = this._scroller.$isNegative();
     return this._indexes().map((index) => {
       const item = data[index]!;
       return {
         key: getKey(item, index),
         index,
         data: item,
-        offset: store.$getItemOffset(index, negative),
+        offset: store.$getItemOffset(index),
         hide: store.$isUnmeasuredItem(index),
         attrs: itemProps?.({ item, index }),
       };
@@ -311,37 +318,35 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
     // parent's ref may not exist on mount https://github.com/inokawa/virtua/issues/603 https://github.com/inokawa/virtua/issues/690
     afterNextRender({
       read: () => {
-        const scrollable = this.scrollRef() ?? this._element.parentElement!;
-        this.resizer.$observeRoot(scrollable);
-        this._scroller.$observe(this._element, scrollable);
+        this.isSSR.set(false);
+        this.driver.$observe(this._element, this.scrollRef());
       },
     });
 
     afterRenderEffect({
       read: () => {
         this._stateVersion();
-        this._scroller.$fixScrollJump();
+        this.driver.$effect();
       },
     });
 
     inject(DestroyRef).onDestroy(() => {
       this._store?.$dispose();
-      this.resizer?.$dispose();
-      this._scroller?.$dispose();
+      this.driver?.$dispose();
     });
   }
 
   ngOnInit(): void {
     const itemSize = this.itemSize();
-    const store = (this._store = createVirtualStore(
+    const ssrCount = this.ssrCount();
+    this.isSSR.set(!!ssrCount);
+    const layout = (this._layout = createListLayout(
       this.data().length,
       itemSize,
-      this.ssrCount(),
-      this.cache(),
-      !itemSize,
+      this.cacheProp(),
     ));
-    this.resizer = createResizer(store, this.horizontal());
-    this._scroller = createScroller(store, this.horizontal());
+    const store = (this._store = createVirtualStore(layout, ssrCount));
+    this.driver = createContainerDriver(store, this.horizontal());
     store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
       this._stateVersion.set(store.$getStateVersion());
       if (sync) {
@@ -359,16 +364,16 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
     this._stateVersion.set(store.$getStateVersion());
   }
 
-  getCache(): CacheSnapshot {
-    return this._store.$getCacheSnapshot();
+  get cache(): CacheSnapshot {
+    return this._layout.$snapshot();
   }
-  getScrollOffset(): number {
+  get scrollOffset(): number {
     return this._store.$getScrollOffset();
   }
-  getScrollSize(): number {
-    return _getScrollSize(this._store);
+  get scrollSize(): number {
+    return getScrollSize(this._store);
   }
-  getViewportSize(): number {
+  get viewportSize(): number {
     return this._store.$getViewportSize();
   }
   findItemIndex(offset: number): number {
@@ -381,12 +386,12 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
     return this._store.$getItemSize(index);
   }
   scrollToIndex(index: number, opts?: ScrollToIndexOpts): void {
-    this._scroller.$scrollToIndex(index, opts);
+    scrollToIndex(this.driver, this._store, index, opts);
   }
   scrollTo(offset: number): void {
-    this._scroller.$scrollTo(offset);
+    scrollTo(this.driver, offset);
   }
   scrollBy(offset: number): void {
-    this._scroller.$scrollBy(offset);
+    scrollBy(this.driver, this._store, offset);
   }
 }

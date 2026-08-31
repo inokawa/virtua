@@ -1,5 +1,5 @@
-import { afterEach, it, expect, describe } from "vitest";
-import { cleanup, waitFor } from "@testing-library/react";
+import { it, expect, describe } from "vitest";
+import { waitFor } from "@testing-library/react";
 import { VList } from "./VList.js";
 import { forwardRef } from "react";
 import { type CustomItemComponentProps } from "./types.js";
@@ -14,8 +14,6 @@ setupResizeJsDom({
   itemSize: { width: ITEM_WIDTH, height: ITEM_HEIGHT },
   viewportSize: { width: ITEM_WIDTH, height: VIEWPORT_HEIGHT },
 });
-
-afterEach(cleanup);
 
 it("should pass attributes to element", async () => {
   const { asFragment } = await render(

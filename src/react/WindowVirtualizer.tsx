@@ -12,10 +12,11 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_VIRTUAL_STATE,
   createVirtualStore,
+  createListLayout,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SCROLL_EVENT,
-  createWindowScroller,
-  createWindowResizer,
+  createWindowDriver,
+  scrollToIndex,
   type CacheSnapshot,
   type ScrollToIndexOpts,
 } from "../core/index.js";
@@ -40,11 +41,11 @@ export interface WindowVirtualizerHandle {
    */
   readonly cache: CacheSnapshot;
   /**
-   * Get current scrollTop, or scrollLeft if horizontal: true.
+   * Get current scrollTop, or scrollLeft if horizontal: true. Always positive even in RTL.
    */
   readonly scrollOffset: number;
   /**
-   * Get current offsetHeight, or offsetWidth if horizontal: true.
+   * Get current clientHeight of the document, or clientWidth if horizontal: true.
    */
   readonly viewportSize: number;
   /**
@@ -169,20 +170,15 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
 
     const isSSR = useRef(!!ssrCount);
 
-    const [store, resizer, scroller, isHorizontal] = useStatic(() => {
+    const [store, layout, driver, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
-      const _store = createVirtualStore(
-        count,
-        itemSize,
-        ssrCount,
-        cache,
-        !itemSize,
-      );
+      const _layout = createListLayout(count, itemSize, cache);
+      const _store = createVirtualStore(_layout, ssrCount);
 
       return [
         _store,
-        createWindowResizer(_store, _isHorizontal),
-        createWindowScroller(_store, _isHorizontal),
+        _layout,
+        createWindowDriver(_store, _isHorizontal),
         _isHorizontal,
       ];
     });
@@ -194,8 +190,6 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
 
     const isScrolling = store.$isScrolling();
     const totalSize = store.$getTotalSize();
-
-    const isNegative = scroller.$isNegative();
 
     const items: ReactElement[] = [];
 
@@ -218,13 +212,10 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
         onScrollEnd[refKey] && onScrollEnd[refKey]();
       });
 
-      const el = containerRef[refKey]!;
-      resizer.$observeRoot(el);
-      scroller.$observe(el);
+      driver.$observe(containerRef[refKey]!);
       return () => {
         store.$dispose();
-        resizer.$dispose();
-        scroller.$dispose();
+        driver.$dispose();
       };
     }, []);
 
@@ -237,13 +228,13 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
     }, [count, shift, store]);
 
     useIsomorphicLayoutEffect(() => {
-      scroller.$fixScrollJump();
+      driver.$effect();
     }, [stateVersion]);
 
     useImperativeHandle(ref, () => {
       return {
         get cache() {
-          return store.$getCacheSnapshot();
+          return layout.$snapshot();
         },
         get scrollOffset() {
           return store.$getScrollOffset();
@@ -254,7 +245,8 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
         findItemIndex: store.$findItemIndex,
         getItemOffset: store.$getItemOffset,
         getItemSize: store.$getItemSize,
-        scrollToIndex: scroller.$scrollToIndex,
+        scrollToIndex: (index, opts) =>
+          scrollToIndex(driver, store, index, opts),
       };
     }, []);
 
@@ -265,9 +257,9 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
       items.push(
         <ListItem
           key={getKey(e, i)}
-          _resizer={resizer.$observeItem}
+          _resizer={driver.$observeItem}
           _index={i}
-          _offset={store.$getItemOffset(i, isNegative)}
+          _offset={store.$getItemOffset(i)}
           _hide={store.$isUnmeasuredItem(i)}
           _as={ItemElement as "div"}
           _children={e}

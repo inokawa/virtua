@@ -15,10 +15,11 @@ import {
   UPDATE_SCROLL_END_EVENT,
   UPDATE_VIRTUAL_STATE,
   createVirtualStore,
+  createListLayout,
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_SCROLL_EVENT,
-  createWindowResizer,
-  createWindowScroller,
+  createWindowDriver,
+  scrollToIndex,
   type ItemsRange,
   type ScrollToIndexOpts,
   type CacheSnapshot,
@@ -46,6 +47,10 @@ export interface WindowVirtualizerProps<T = unknown> extends PublicProps {
    * - If set, you can opt out estimation and use the value as initial item size.
    */
   itemSize?: number;
+  /**
+   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   */
+  ssrCount?: number;
   /**
    * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
    */
@@ -96,11 +101,11 @@ export interface WindowVirtualizerHandle {
    */
   readonly cache: CacheSnapshot;
   /**
-   * Get current scrollTop, or scrollLeft if horizontal: true.
+   * Get current scrollTop, or scrollLeft if horizontal: true. Always positive even in RTL.
    */
   readonly scrollOffset: number;
   /**
-   * Get current offsetHeight, or offsetWidth if horizontal: true.
+   * Get current clientHeight of the document, or clientWidth if horizontal: true.
    */
   readonly viewportSize: number;
   /**
@@ -134,6 +139,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     data: { type: Array, required: true },
     bufferSize: Number,
     itemSize: Number,
+    ssrCount: Number,
     shift: Boolean,
     horizontal: Boolean,
     as: {
@@ -148,17 +154,17 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
   },
   emits: ["scroll", "scrollEnd"],
   setup(props, { emit, slots, expose }) {
+    let isSSR = !!props.ssrCount;
+
     const isHorizontal = props.horizontal;
     const containerRef = ref<HTMLDivElement>();
-    const store = createVirtualStore(
+    const layout = createListLayout(
       props.data.length,
       props.itemSize,
-      undefined,
       props.cache,
-      !props.itemSize,
     );
-    const resizer = createWindowResizer(store, isHorizontal);
-    const scroller = createWindowScroller(store, isHorizontal);
+    const store = createVirtualStore(layout, props.ssrCount);
+    const driver = createWindowDriver(store, isHorizontal);
 
     const stateVersion = ref(store.$getStateVersion());
     store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
@@ -188,15 +194,15 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     );
 
     onMounted(() => {
+      isSSR = false;
+
       const el = containerRef.value;
       if (!el) return;
-      resizer.$observeRoot(el);
-      scroller.$observe(el);
+      driver.$observe(el);
     });
     onUnmounted(() => {
       store.$dispose();
-      resizer.$dispose();
-      scroller.$dispose();
+      driver.$dispose();
     });
 
     watch(
@@ -209,14 +215,14 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     watch(
       [stateVersion],
       () => {
-        scroller.$fixScrollJump();
+        driver.$effect();
       },
       { flush: "post" },
     );
 
     expose({
       get cache() {
-        return store.$getCacheSnapshot();
+        return layout.$snapshot();
       },
       get scrollOffset() {
         return store.$getScrollOffset();
@@ -227,7 +233,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       findItemIndex: store.$findItemIndex,
       getItemOffset: store.$getItemOffset,
       getItemSize: store.$getItemSize,
-      scrollToIndex: scroller.$scrollToIndex,
+      scrollToIndex: (index, opts) => scrollToIndex(driver, store, index, opts),
     } satisfies WindowVirtualizerHandle);
 
     return () => {
@@ -235,7 +241,6 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
       const ItemElement = props.item;
 
       const total = totalSize.value;
-      const isNegative = scroller.$isNegative();
 
       const items: VNode[] = [];
       for (let [i, j] = range.value; i <= j; i++) {
@@ -245,11 +250,11 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
             key={getKey(e, i)}
             _stateVersion={stateVersion}
             _store={store}
-            _resizer={resizer.$observeItem}
+            _resizer={driver.$observeItem}
             _index={i}
             _children={e}
             _isHorizontal={isHorizontal}
-            _isNegative={isNegative}
+            _isSSR={isSSR}
             _as={ItemElement}
           />,
         );

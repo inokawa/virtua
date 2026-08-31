@@ -1,3 +1,5 @@
+import { InjectionToken, type Signal, type TemplateRef } from "@angular/core";
+
 export const defaultGetKey = (_data: unknown, i: number) => "_" + i;
 
 /**
@@ -18,3 +20,10 @@ export type ItemContext<T> = {
   $implicit: T;
   index: number;
 };
+
+/**
+ * @internal
+ */
+export const ITEM_TEMPLATE = new InjectionToken<
+  Signal<TemplateRef<ItemContext<any>>>
+>("virtua-item-template");

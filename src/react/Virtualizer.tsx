@@ -13,12 +13,15 @@ import {
   UPDATE_SCROLL_EVENT,
   ACTION_ITEMS_LENGTH_CHANGE,
   createVirtualStore,
+  createListLayout,
   UPDATE_VIRTUAL_STATE,
   UPDATE_SCROLL_END_EVENT,
   getScrollSize,
   ACTION_START_OFFSET_CHANGE,
-  createScroller,
-  createResizer,
+  createContainerDriver,
+  scrollTo,
+  scrollBy,
+  scrollToIndex,
   type CacheSnapshot,
   type ScrollToIndexOpts,
   microtask,
@@ -45,7 +48,7 @@ export interface VirtualizerHandle {
    */
   readonly cache: CacheSnapshot;
   /**
-   * Get current scrollTop, or scrollLeft if horizontal: true.
+   * Get current scrollTop, or scrollLeft if horizontal: true. Always positive even in RTL.
    */
   readonly scrollOffset: number;
   /**
@@ -53,7 +56,7 @@ export interface VirtualizerHandle {
    */
   readonly scrollSize: number;
   /**
-   * Get current offsetHeight, or offsetWidth if horizontal: true.
+   * Get current clientHeight, or clientWidth if horizontal: true.
    */
   readonly viewportSize: number;
   /**
@@ -204,19 +207,14 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     const onScroll = useLatestRef(onScrollProp);
     const onScrollEnd = useLatestRef(onScrollEndProp);
 
-    const [store, resizer, scroller, isHorizontal] = useStatic(() => {
+    const [store, layout, driver, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
-      const _store = createVirtualStore(
-        count,
-        itemSize,
-        ssrCount,
-        cache,
-        !itemSize,
-      );
+      const _layout = createListLayout(count, itemSize, cache);
+      const _store = createVirtualStore(_layout, ssrCount);
       return [
         _store,
-        createResizer(_store, _isHorizontal),
-        createScroller(_store, _isHorizontal),
+        _layout,
+        createContainerDriver(_store, _isHorizontal),
         _isHorizontal,
       ];
     });
@@ -230,8 +228,6 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     const isScrolling = store.$isScrolling();
     const totalSize = store.$getTotalSize();
 
-    const isNegative = scroller.$isNegative();
-
     const items: ReactElement[] = [];
 
     const renderItem = (index: number) => {
@@ -240,9 +236,9 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
       return (
         <ListItem
           key={getKey(e, index)}
-          _resizer={resizer.$observeItem}
+          _resizer={driver.$observeItem}
           _index={index}
-          _offset={store.$getItemOffset(index, isNegative)}
+          _offset={store.$getItemOffset(index)}
           _hide={store.$isUnmeasuredItem(index)}
           _as={ItemElement as "div"}
           _children={e}
@@ -270,26 +266,21 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
         onScrollEnd[refKey] && onScrollEnd[refKey]();
       });
       const container = containerRef[refKey]!;
-      const assignScrollableElement = (e: HTMLElement) => {
-        resizer.$observeRoot(e);
-        scroller.$observe(container, e);
-      };
       if (scrollRef) {
         // parent's ref doesn't exist when useLayoutEffect is called
         microtask(() => {
           // https://github.com/inokawa/virtua/pull/733
           if (scrollRef[refKey]) {
-            assignScrollableElement(scrollRef[refKey]);
+            driver.$observe(container, scrollRef[refKey]);
           }
         });
       } else {
-        assignScrollableElement(container.parentElement!);
+        driver.$observe(container);
       }
 
       return () => {
         store.$dispose();
-        resizer.$dispose();
-        scroller.$dispose();
+        driver.$dispose();
       };
     }, []);
 
@@ -308,13 +299,13 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     }, [startMargin, store]);
 
     useIsomorphicLayoutEffect(() => {
-      scroller.$fixScrollJump();
+      driver.$effect();
     }, [stateVersion]);
 
     useImperativeHandle(ref, () => {
       return {
         get cache() {
-          return store.$getCacheSnapshot();
+          return layout.$snapshot();
         },
         get scrollOffset() {
           return store.$getScrollOffset();
@@ -328,9 +319,10 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
         findItemIndex: store.$findItemIndex,
         getItemOffset: store.$getItemOffset,
         getItemSize: store.$getItemSize,
-        scrollToIndex: scroller.$scrollToIndex,
-        scrollTo: scroller.$scrollTo,
-        scrollBy: scroller.$scrollBy,
+        scrollToIndex: (index, opts) =>
+          scrollToIndex(driver, store, index, opts),
+        scrollTo: (offset) => scrollTo(driver, offset),
+        scrollBy: (offset) => scrollBy(driver, store, offset),
       };
     }, []);
 

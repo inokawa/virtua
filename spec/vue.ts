@@ -1,7 +1,8 @@
-import { vi } from "vitest";
-import { render as _render } from "@testing-library/vue";
+import { vi, onTestFinished } from "vitest";
+import { render as _render, cleanup } from "@testing-library/vue";
 
-export const render = async (...args: Parameters<typeof _render>) => {
+export const render = async <T>(...args: Parameters<typeof _render<T>>) => {
+  onTestFinished(cleanup);
   const res = _render(...args);
   let same = false;
   let prev = res.baseElement.innerHTML;
@@ -22,3 +23,7 @@ export const render = async (...args: Parameters<typeof _render>) => {
   }
   return res;
 };
+
+export type SlotType<T extends abstract new (...args: any) => any> = Parameters<
+  InstanceType<T>["$slots"]["default"]
+>[0];

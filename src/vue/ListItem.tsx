@@ -11,7 +11,7 @@ import {
   type Ref,
 } from "vue";
 import {
-  type ItemResizeObserver,
+  type Driver,
   type StateVersion,
   type VirtualStore,
 } from "../core/index.js";
@@ -29,13 +29,12 @@ export const ListItem = /*#__PURE__*/ defineComponent({
     _store: { type: Object as PropType<VirtualStore>, required: true },
     _children: { type: Object as PropType<VNode[]>, required: true },
     _resizer: {
-      type: Function as PropType<ItemResizeObserver>,
+      type: Function as PropType<Driver["$observeItem"]>,
       required: true,
     },
     _index: { type: Number, required: true },
     _isHorizontal: { type: Boolean },
     _isSSR: { type: Boolean },
-    _isNegative: { type: Boolean },
     _as: { type: String as PropType<keyof NativeElements>, required: true },
     _itemProps: Object as PropType<ReturnType<ItemProps>>,
   },
@@ -44,8 +43,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
 
     const offset = computed(
       () =>
-        props._stateVersion.value &&
-        props._store.$getItemOffset(props._index, props._isNegative),
+        props._stateVersion.value && props._store.$getItemOffset(props._index),
     );
     const hide = computed(
       () =>
@@ -80,7 +78,7 @@ export const ListItem = /*#__PURE__*/ defineComponent({
         position: isHide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
         [isHorizontal ? "top" : "left"]: "0px",
-        [isHorizontal ? "left" : "top"]: offset.value + "px",
+        [isHorizontal ? "insetInlineStart" : "top"]: offset.value + "px",
         visibility: !isHide || isSSR ? undefined : "hidden",
         ...styleProp,
       };

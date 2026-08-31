@@ -1,9 +1,8 @@
-import { it, expect, describe, afterEach } from "vitest";
+import { it, expect, describe } from "vitest";
 import { defineComponent, h } from "vue";
-import { cleanup } from "@testing-library/vue";
 import { Virtualizer } from "./Virtualizer.js";
 import { setupResizeJsDom } from "../../spec/dom.js";
-import { render } from "../../spec/vue.js";
+import { render, SlotType } from "../../spec/vue.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -16,8 +15,7 @@ setupResizeJsDom({
 
 const range = (length: number) => Array.from({ length }).map((_, i) => i);
 
-// Virtualizer observes its parent element as the scrollable container, so it
-// has to be rendered inside a scrollable element.
+// Virtualizer observes its parent element as the scrollable container, so it has to be rendered inside a scrollable element.
 const ScrollContainer = defineComponent({
   inheritAttrs: false,
   setup(_, { attrs, slots }) {
@@ -28,8 +26,6 @@ const ScrollContainer = defineComponent({
   },
 });
 
-afterEach(cleanup);
-
 it("should change components", async () => {
   const wrapper = await render(ScrollContainer, {
     attrs: {
@@ -37,7 +33,10 @@ it("should change components", async () => {
       as: "ul",
       item: "li",
     },
-    slots: { default: ({ item: data }: any) => h("div", { key: data }, data) },
+    slots: {
+      default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
+        h("div", { key: data }, data),
+    },
   });
   expect(wrapper.html()).toMatchSnapshot();
 });
@@ -49,7 +48,8 @@ describe("vertical", async () => {
         data: [],
       },
       slots: {
-        default: ({ item: data }: any) => h("div", { key: data }, data),
+        default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
+          h("div", { key: data }, data),
       },
     });
     expect(wrapper.html()).toMatchSnapshot();
@@ -61,7 +61,8 @@ describe("vertical", async () => {
         data: range(1),
       },
       slots: {
-        default: ({ item: data }: any) => h("div", { key: data }, data),
+        default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
+          h("div", { key: data }, data),
       },
     });
     expect(wrapper.html()).toMatchSnapshot();
@@ -73,7 +74,8 @@ describe("vertical", async () => {
         data: range(5),
       },
       slots: {
-        default: ({ item: data }: any) => h("div", { key: data }, data),
+        default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
+          h("div", { key: data }, data),
       },
     });
     expect(wrapper.html()).toMatchSnapshot();
@@ -85,7 +87,8 @@ describe("vertical", async () => {
         data: range(100),
       },
       slots: {
-        default: ({ item: data }: any) => h("div", { key: data }, data),
+        default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
+          h("div", { key: data }, data),
       },
     });
     expect(wrapper.html()).toMatchSnapshot();
@@ -97,7 +100,8 @@ describe("vertical", async () => {
         data: range(10000),
       },
       slots: {
-        default: ({ item: data }: any) => h("div", { key: data }, data),
+        default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
+          h("div", { key: data }, data),
       },
     });
     expect(wrapper.html()).toMatchSnapshot();
@@ -116,7 +120,10 @@ describe("vertical", async () => {
       attrs: {
         data: range(3),
       },
-      slots: { default: ({ item: data }: any) => h(Comp, { key: data, data }) },
+      slots: {
+        default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
+          h(Comp, { key: data, data }),
+      },
     });
     expect(wrapper.html()).toMatchSnapshot();
   });
@@ -130,7 +137,8 @@ describe("horizontal", async () => {
         horizontal: true,
       },
       slots: {
-        default: ({ item: data }: any) => h("div", { key: data }, data),
+        default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
+          h("div", { key: data }, data),
       },
     });
     expect(wrapper.html()).toMatchSnapshot();
@@ -143,7 +151,8 @@ describe("horizontal", async () => {
         horizontal: true,
       },
       slots: {
-        default: ({ item: data }: any) => h("div", { key: data }, data),
+        default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
+          h("div", { key: data }, data),
       },
     });
     expect(wrapper.html()).toMatchSnapshot();
@@ -156,7 +165,8 @@ describe("horizontal", async () => {
         horizontal: true,
       },
       slots: {
-        default: ({ item: data }: any) => h("div", { key: data }, data),
+        default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
+          h("div", { key: data }, data),
       },
     });
     expect(wrapper.html()).toMatchSnapshot();
@@ -169,7 +179,8 @@ describe("horizontal", async () => {
         horizontal: true,
       },
       slots: {
-        default: ({ item: data }: any) => h("div", { key: data }, data),
+        default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
+          h("div", { key: data }, data),
       },
     });
     expect(wrapper.html()).toMatchSnapshot();
@@ -182,7 +193,8 @@ describe("horizontal", async () => {
         horizontal: true,
       },
       slots: {
-        default: ({ item: data }: any) => h("div", { key: data }, data),
+        default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
+          h("div", { key: data }, data),
       },
     });
     expect(wrapper.html()).toMatchSnapshot();
@@ -202,7 +214,10 @@ describe("horizontal", async () => {
         data: range(3),
         horizontal: true,
       },
-      slots: { default: ({ item: data }: any) => h(Comp, { key: data, data }) },
+      slots: {
+        default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
+          h(Comp, { key: data, data }),
+      },
     });
     expect(wrapper.html()).toMatchSnapshot();
   });

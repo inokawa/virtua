@@ -9,4 +9,7 @@ export type {
   VirtualizerHandle,
 } from "./Virtualizer.type.js";
 export { default as WindowVirtualizer } from "./WindowVirtualizer.svelte";
-export type { WindowVirtualizerProps } from "./WindowVirtualizer.type.js";
+export type {
+  WindowVirtualizerProps,
+  WindowVirtualizerHandle,
+} from "./WindowVirtualizer.type.js";

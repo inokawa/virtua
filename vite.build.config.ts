@@ -1,13 +1,11 @@
-import { defineConfig, type Plugin, type UserConfig } from "vite";
+import { defineConfig, type Plugin, type UserConfig, Visitor } from "vite";
 import * as path from "node:path";
 import { globSync, cpSync, mkdirSync } from "node:fs";
-import { transformAsync } from "@babel/core";
 import dts from "vite-plugin-dts";
 import solid from "vite-plugin-solid";
-import vueJsx from "unplugin-vue-jsx/vite";
+import vueJsx from "@vitejs/plugin-vue-jsx";
 import angular from "@analogjs/vite-plugin-angular";
 import pkg from "./package.json" with { type: "json" };
-import annotateVueVNode from "./scripts/babel-plugin-annotate-vue-vnode.js";
 
 type BuildOptions = NonNullable<UserConfig["build"]>;
 type TerserOptions = NonNullable<BuildOptions["terserOptions"]>;
@@ -42,17 +40,36 @@ const terserOptions = ({
   },
 });
 
-// annotate argument of createVNode for terser; renderChunk runs before vite:terser
-const annotateVue = (): Plugin => ({
+// annotate dynamicProps of createVNode for terser; renderChunk runs before vite:terser.
+const annotateVueVNode = (): Plugin => ({
   name: "annotate-vue-vnode",
-  async renderChunk(code) {
-    const res = await transformAsync(code, {
-      babelrc: false,
-      configFile: false,
-      sourceMaps: true,
-      plugins: [annotateVueVNode],
-    });
-    return { code: res!.code!, map: res!.map };
+  renderChunk(code, _chunk, _opts, meta) {
+    // Requires experimental.nativeMagicString for meta.magicString
+    const s = meta.magicString!;
+    new Visitor({
+      CallExpression: (node) => {
+        // matches aliased `_createVNode` in esm and `(0, vue.createVNode)` in cjs
+        const callee = code.slice(node.callee.start, node.callee.end);
+        if (!/(^|[.\s])_?createVNode$/.test(callee)) return;
+        const dynamicProps = node.arguments[4];
+        if (dynamicProps?.type !== "ArrayExpression") return;
+        for (const el of dynamicProps.elements) {
+          if (
+            el?.type === "Literal" &&
+            typeof el.value === "string" &&
+            el.value.startsWith("_")
+          ) {
+            s.appendLeft(el.start, "/*#__KEY__*/");
+          }
+        }
+      },
+    }).visit(this.parse(code));
+    if (!s.hasChanged()) return null;
+    // the default map of `s` is line-level and barely survives the terser pass
+    return {
+      code: s.toString(),
+      map: s.generateMap({ hires: true }).toString(),
+    };
   },
 });
 
@@ -121,11 +138,14 @@ export default defineConfig(({ mode }): UserConfig => {
             formats: ["es", "cjs"],
             fileName: cjsEsFileName,
           },
-          rolldownOptions: { external },
+          rolldownOptions: {
+            external,
+            experimental: { nativeMagicString: true },
+          },
           minify: "terser",
           terserOptions: terserOptions({ vue: true }),
         },
-        plugins: [vueJsx({ optimize: true }), annotateVue()],
+        plugins: [vueJsx({ optimize: true }), annotateVueVNode()],
       };
     case "solid":
       return {

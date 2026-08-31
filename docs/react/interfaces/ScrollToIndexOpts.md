@@ -4,7 +4,7 @@
 
 # Interface: ScrollToIndexOpts
 
-Defined in: [src/core/types.ts:21](https://github.com/inokawa/virtua/blob/3d5ac6d6aeae344ebb61ba2774de6c1fe13b1269/src/core/types.ts#L21)
+Defined in: [src/core/types.ts:15](https://github.com/inokawa/virtua/blob/b7002d7c35b5fa4eb682193a59bc5bbee0a17049/src/core/types.ts#L15)
 
 ## Properties
 
@@ -12,7 +12,7 @@ Defined in: [src/core/types.ts:21](https://github.com/inokawa/virtua/blob/3d5ac6
 
 > `optional` **align?**: [`ScrollToIndexAlign`](../type-aliases/ScrollToIndexAlign.md)
 
-Defined in: [src/core/types.ts:32](https://github.com/inokawa/virtua/blob/3d5ac6d6aeae344ebb61ba2774de6c1fe13b1269/src/core/types.ts#L32)
+Defined in: [src/core/types.ts:26](https://github.com/inokawa/virtua/blob/b7002d7c35b5fa4eb682193a59bc5bbee0a17049/src/core/types.ts#L26)
 
 Alignment of item.
 
@@ -33,7 +33,7 @@ Alignment of item.
 
 > `optional` **smooth?**: `boolean`
 
-Defined in: [src/core/types.ts:38](https://github.com/inokawa/virtua/blob/3d5ac6d6aeae344ebb61ba2774de6c1fe13b1269/src/core/types.ts#L38)
+Defined in: [src/core/types.ts:32](https://github.com/inokawa/virtua/blob/b7002d7c35b5fa4eb682193a59bc5bbee0a17049/src/core/types.ts#L32)
 
 If true, scrolling animates smoothly with [`behavior: smooth` of scrollTo](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTo#behavior).
 
@@ -45,7 +45,7 @@ If true, scrolling animates smoothly with [`behavior: smooth` of scrollTo](https
 
 > `optional` **offset?**: `number`
 
-Defined in: [src/core/types.ts:43](https://github.com/inokawa/virtua/blob/3d5ac6d6aeae344ebb61ba2774de6c1fe13b1269/src/core/types.ts#L43)
+Defined in: [src/core/types.ts:37](https://github.com/inokawa/virtua/blob/b7002d7c35b5fa4eb682193a59bc5bbee0a17049/src/core/types.ts#L37)
 
 Additional offset from the scrolled position.
 

@@ -1,15 +1,18 @@
 import { defineConfig } from "vitest/config";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import solid from "vite-plugin-solid";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import angular from "@analogjs/vite-plugin-angular";
-import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { playwright } from "@vitest/browser-playwright";
 
-const dirname = path.dirname(fileURLToPath(import.meta.url));
+const smokeBrowser = () => ({
+  enabled: true,
+  headless: true,
+  provider: playwright(),
+  instances: [{ browser: "chromium" as const }],
+  screenshotFailures: false,
+});
 
 export default defineConfig({
   test: {
@@ -88,41 +91,49 @@ export default defineConfig({
         },
       },
       {
-        extends: true,
+        plugins: [react()],
+        test: {
+          name: "browser-react",
+          include: ["spec/browser/react.spec.tsx"],
+          browser: smokeBrowser(),
+        },
+      },
+      {
+        plugins: [vueJsx()],
+        test: {
+          name: "browser-vue",
+          include: ["spec/browser/vue.spec.tsx"],
+          browser: smokeBrowser(),
+        },
+      },
+      {
+        plugins: [solid()],
+        test: {
+          name: "browser-solid",
+          include: ["spec/browser/solid.spec.tsx"],
+          browser: smokeBrowser(),
+        },
+      },
+      {
+        plugins: [svelte()],
+        test: {
+          name: "browser-svelte",
+          include: ["spec/browser/svelte.spec.ts"],
+          browser: smokeBrowser(),
+        },
+      },
+      {
         plugins: [
-          // The plugin will run tests for the stories defined in your Storybook config
-          // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
-          storybookTest({
-            configDir: path.join(dirname, ".storybook"),
+          angular({
+            tsconfig: "tsconfig.angular.json",
+            include: ["/spec/browser/angular.spec.ts"],
           }),
         ],
-        optimizeDeps: {
-          // FIXME: SyntaxError: The requested module '/node_modules/aria-query/lib/index.js' does not provide an export named 'elementRoles'
-          // Since storybook 10.5, its dep scan misses @testing-library/dom and
-          // the cjs named exports of aria-query break in the browser. Prebundle
-          // it explicitly, and remove this once storybook finds it again.
-          include: ["@testing-library/dom"],
-        },
         test: {
-          name: "storybook",
-          browser: {
-            enabled: true,
-            headless: true,
-            provider: playwright(),
-            instances: [{ browser: "chromium" }],
-            screenshotFailures: false,
-          },
-          setupFiles: [
-            process.env.STORYBOOK_VUE
-              ? ".storybook/vitest.setup-vue.ts"
-              : process.env.STORYBOOK_SOLID
-                ? ".storybook/vitest.setup-solid.ts"
-                : process.env.STORYBOOK_SVELTE
-                  ? ".storybook/vitest.setup-svelte.ts"
-                  : process.env.STORYBOOK_ANGULAR
-                    ? ".storybook/vitest.setup-angular.ts"
-                    : ".storybook/vitest.setup-react.ts",
-          ],
+          name: "browser-angular",
+          include: ["spec/browser/angular.spec.ts"],
+          setupFiles: ["./spec/setup.angular.ts"],
+          browser: smokeBrowser(),
         },
       },
     ],
