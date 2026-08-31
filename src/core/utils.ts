@@ -49,18 +49,3 @@ export const createPromise = <T = void>(): [Promise<T>, (arg: T) => void] => {
   });
   return [promise, resolve!];
 };
-
-/**
- * @internal
- */
-export const once = <T>(fn: () => T): (() => T) => {
-  let cache: T;
-
-  return () => {
-    if (fn) {
-      cache = fn();
-      fn = undefined!;
-    }
-    return cache;
-  };
-};
