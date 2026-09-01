@@ -91,24 +91,11 @@ export const relativeRight = async (parent: Locator, child: Locator) => {
   return pX + pWidth - (cX + cWidth);
 };
 
-export const setDisplayNone = (component: Locator) => {
-  return component.evaluate((s) => {
-    s.style.display = "none";
-  });
-};
-
 export const getStyleValue = <T extends keyof CSSStyleDeclaration>(
   locator: Locator,
   key: T,
 ) => {
   return locator.evaluate((e, key) => e.style[key], key);
-};
-
-export const getComputedStyleValue = <T extends keyof CSSStyleDeclaration>(
-  locator: Locator,
-  key: T,
-) => {
-  return locator.evaluate((e, key) => getComputedStyle(e)[key], key);
 };
 
 const isPointedLocator = (loc: Locator, x: number, y: number) => {

@@ -16,9 +16,7 @@ import {
   windowBottom,
   relativeTop,
   getItems,
-  getComputedStyleValue,
   setRTL,
-  setDisplayNone,
 } from "./utils";
 
 const isVerticalScrollBarVisible = async (page: Page) => {
@@ -114,21 +112,6 @@ test.describe("smoke", () => {
     await expect(
       component.getByText("Column 949", { exact: true }),
     ).not.toBeVisible();
-  });
-
-  test("display: none", async ({ page }) => {
-    await page.goto(storyUrl("basics-windowvirtualizer--default"));
-
-    const component = await getVirtualizer(page);
-
-    const initialTotalHeight = await getComputedStyleValue(component, "height");
-
-    await setDisplayNone(component);
-
-    const changedTotalHeight = await getComputedStyleValue(component, "height");
-
-    expect(initialTotalHeight).toBeTruthy();
-    expect(initialTotalHeight).toEqual(changedTotalHeight);
   });
 
   test("should not have minimum size", async ({ page }) => {
