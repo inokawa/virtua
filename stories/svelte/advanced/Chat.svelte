@@ -27,6 +27,9 @@
   let ref: VirtualizerHandle;
   let shouldStickToBottom = $state(true);
   let isPrepend = $state(false);
+  let fetching = $state(false);
+
+  const spinnerHeight = 48;
 
   // Reset isPrepend after each update
   $effect(() => {
@@ -63,15 +66,19 @@
     };
   });
 
-  const handleScroll = (offset: number) => {
+  const handleScroll = async (offset: number) => {
     if (!ref) return;
 
     shouldStickToBottom =
-      offset - ref.getScrollSize() + ref.getViewportSize() >= -1.5;
+      offset - spinnerHeight - ref.getScrollSize() + ref.getViewportSize() >=
+      -1.5;
 
-    if (offset < 100) {
+    if (offset < spinnerHeight + 100 && !fetching) {
+      fetching = true;
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       isPrepend = true;
       items = [...Array.from({ length: 100 }, () => createItem()), ...items];
+      fetching = false;
     }
   };
 
@@ -82,10 +89,6 @@
     shouldStickToBottom = true;
     items = [...items, createItem({ value, me: true })];
     value = "";
-  };
-
-  const jumpToTop = () => {
-    ref?.scrollTo(0);
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -116,10 +119,14 @@
       flex-grow: 1
     "
     ></div>
+    <div class="spinner" style:visibility={fetching ? "visible" : "hidden"}>
+      <span class="loader"></span>
+    </div>
     <Virtualizer
       bind:this={ref}
       data={items}
       shift={isPrepend}
+      startMargin={spinnerHeight}
       getKey={(d) => d.id}
       onscroll={handleScroll}
     >
@@ -153,8 +160,32 @@
     <div
       style="display: flex; flex-direction: row; gap: 8px; justify-content: flex-end;"
     >
-      <button type="button" onclick={jumpToTop}> jump to top </button>
       <button type="submit" {disabled}> submit </button>
     </div>
   </form>
 </div>
+
+<style>
+  .spinner {
+    flex: none;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .loader {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 3px solid #ccc;
+    border-top-color: transparent;
+    animation: rotate 1s linear infinite;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>

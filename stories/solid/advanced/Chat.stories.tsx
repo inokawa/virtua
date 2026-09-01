@@ -25,6 +25,42 @@ const itemStyle = {
   "white-space": "pre-wrap",
 };
 
+const spinnerHeight = 48;
+
+function Spinner(props: { visible: boolean }) {
+  return (
+    <>
+      <div
+        style={{
+          flex: "none",
+          visibility: props.visible ? "visible" : "hidden",
+          height: `${spinnerHeight}px`,
+          display: "flex",
+          "align-items": "center",
+          "justify-content": "center",
+        }}
+      >
+        <span class="loader" />
+      </div>
+      <style>
+        {`
+      .loader {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 3px solid #ccc;
+        border-top-color: transparent;
+        animation: rotate 1s linear infinite;
+      }
+
+      @keyframes rotate {
+        100% {transform: rotate(360deg)}
+      }`}
+      </style>
+    </>
+  );
+}
+
 function Item(props: { me?: boolean; children: any }) {
   return (
     <div
@@ -55,13 +91,13 @@ export const Default: StoryObj = {
     const [items, setItems] = createSignal<Data[]>(
       Array.from({ length: 100 }, () => createItem()),
     );
-    const [autoUpdating, setAutoUpdating] = createSignal(true);
     const [virtualizerHandle, setVirtualizerHandle] = createSignal<
       VirtualizerHandle | undefined
     >();
     const [isPrepend, setIsPrepend] = createSignal(false);
     const [shouldStickToBottom, setShouldStickToBottom] = createSignal(true);
     const [value, setValue] = createSignal("Hello world!");
+    const [fetching, setFetching] = createSignal(false);
 
     createEffect(() => {
       items();
@@ -87,7 +123,7 @@ export const Default: StoryObj = {
           setTimer();
         }, 5000);
       };
-      if (autoUpdating()) setTimer();
+      setTimer();
       onCleanup(() => {
         canceled = true;
         if (timer) clearTimeout(timer);
@@ -128,22 +164,31 @@ export const Default: StoryObj = {
               "flex-grow": 1,
             }}
           />
+          <Spinner visible={fetching()} />
           <Virtualizer
             ref={setVirtualizerHandle}
             data={items()}
             shift={isPrepend()}
-            onScroll={(offset) => {
+            startMargin={spinnerHeight}
+            onScroll={async (offset) => {
               const handle = virtualizerHandle();
               if (!handle) return;
               setShouldStickToBottom(
-                offset - handle.scrollSize + handle.viewportSize >= -1.5,
+                offset -
+                  spinnerHeight -
+                  handle.scrollSize +
+                  handle.viewportSize >=
+                  -1.5,
               );
-              if (offset < 100) {
+              if (offset < spinnerHeight + 100 && !fetching()) {
+                setFetching(true);
+                await new Promise((resolve) => setTimeout(resolve, 1000));
                 setIsPrepend(true);
                 setItems((prev) => [
                   ...Array.from({ length: 100 }, () => createItem()),
                   ...prev,
                 ]);
+                setFetching(false);
               }
             }}
           >
@@ -182,23 +227,6 @@ export const Default: StoryObj = {
               "justify-content": "flex-end",
             }}
           >
-            <label>
-              <input
-                type="checkbox"
-                checked={autoUpdating()}
-                onChange={() => setAutoUpdating((prev) => !prev)}
-              />
-              auto update
-            </label>
-            <button
-              type="button"
-              onClick={() => {
-                const handle = virtualizerHandle();
-                handle?.scrollTo(0);
-              }}
-            >
-              jump to top
-            </button>
             <button type="submit" disabled={disabled()}>
               submit
             </button>

@@ -24,6 +24,9 @@ const value = ref("Hello world!");
 const handleRef = ref<InstanceType<typeof Virtualizer>>();
 const shouldStickToBottom = ref(true);
 const isPrepend = ref(false);
+const fetching = ref(false);
+
+const spinnerHeight = 48;
 
 // Reset isPrepend after each update
 watch(
@@ -68,16 +71,23 @@ onMounted(() => {
   });
 });
 
-const handleScroll = (offset: number) => {
+const handleScroll = async (offset: number) => {
   if (!handleRef.value) return;
   shouldStickToBottom.value =
-    offset - handleRef.value.scrollSize + handleRef.value.viewportSize >= -1.5;
-  if (offset < 100) {
+    offset -
+      spinnerHeight -
+      handleRef.value.scrollSize +
+      handleRef.value.viewportSize >=
+    -1.5;
+  if (offset < spinnerHeight + 100 && !fetching.value) {
+    fetching.value = true;
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     isPrepend.value = true;
     items.value = [
       ...Array.from({ length: 100 }, () => createItem()),
       ...items.value,
     ];
+    fetching.value = false;
   }
 };
 
@@ -88,10 +98,6 @@ const submit = () => {
   shouldStickToBottom.value = true;
   items.value = [...items.value, createItem({ value: value.value, me: true })];
   value.value = "";
-};
-
-const jumpToTop = () => {
-  handleRef.value?.scrollTo(0);
 };
 
 const handleKeyDown = (e: KeyboardEvent) => {
@@ -123,10 +129,17 @@ const handleKeyDown = (e: KeyboardEvent) => {
           flex-grow: 1;
         "
       ></div>
+      <div
+        class="spinner"
+        :style="{ visibility: fetching ? 'visible' : 'hidden' }"
+      >
+        <span class="loader"></span>
+      </div>
       <Virtualizer
         ref="handleRef"
         :data="items"
         :shift="isPrepend"
+        :start-margin="spinnerHeight"
         @scroll="handleScroll"
       >
         <template #default="{ item }" :key="item.id">
@@ -179,9 +192,33 @@ const handleKeyDown = (e: KeyboardEvent) => {
           justify-content: flex-end;
         "
       >
-        <button type="button" @click="jumpToTop">jump to top</button>
         <button type="submit" :disabled="disabled">submit</button>
       </div>
     </form>
   </div>
 </template>
+
+<style>
+.spinner {
+  flex: none;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 3px solid #ccc;
+  border-top-color: transparent;
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
