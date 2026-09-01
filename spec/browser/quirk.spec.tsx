@@ -7,18 +7,273 @@ import {
   type ReactNode,
 } from "react";
 import { createRoot } from "react-dom/client";
-import { Virtualizer, type VirtualizerHandle } from "../../src/react/index.js";
+import {
+  Virtualizer,
+  VirtualizerHandle,
+  WindowVirtualizer,
+} from "../../src/react/index.js";
+import { expectVirtualized } from "./utils.js";
 
-const render = (node: ReactNode) => {
-  const container = document.body.appendChild(document.createElement("div"));
+const items = Array.from({ length: 1000 }, (_, i) => i);
+
+const render = (node: ReactNode, doc: Document = document) => {
+  const container = doc.body.appendChild(doc.createElement("div"));
   onTestFinished(() => {
     container.remove();
+    doc.scrollingElement!.scrollTop = 0;
+    doc.scrollingElement!.scrollLeft = 0;
   });
   const root = createRoot(container);
   root.render(node);
   onTestFinished(() => root.unmount());
   return container;
 };
+
+const waitForMount = async (container: Element) => {
+  await expect
+    .poll(() => container.textContent, { timeout: 5000 })
+    .toContain("item-0");
+  expect(container.textContent).not.toContain("item-999");
+};
+
+const waitForStableHeight = async (spacer: HTMLElement): Promise<string> => {
+  let prev: string | undefined;
+  await expect
+    .poll(() => {
+      const height = spacer.style.height;
+      const isStable = !!height && height === prev;
+      prev = height;
+      return isStable;
+    })
+    .toBe(true);
+  return prev!;
+};
+
+const getSpacer = (container: Element) =>
+  container.querySelector('*[style*="flex: 0 0 auto"]') as HTMLElement;
+
+// Items must be placed in layout size, not in visual size of getBoundingClientRect or rounded size of offsetHeight
+const expectItemDistance = (spacer: HTMLElement, size: number) => {
+  const tops = Array.from(spacer.children, (e) =>
+    parseFloat((e as HTMLElement).style.top),
+  ).sort((a, b) => a - b);
+  expect(tops.length).toBeGreaterThan(1);
+  for (let i = 1; i < tops.length; i++) {
+    expect(tops[i]! - tops[i - 1]!).toBeCloseTo(size);
+  }
+};
+
+const waitForZeroSizeNotification = (target: Element) => {
+  return new Promise<void>((resolve) => {
+    const observer = new ResizeObserver((entries) => {
+      if (entries.some((entry) => entry.contentRect.height === 0)) {
+        observer.disconnect();
+        resolve();
+      }
+    });
+    observer.observe(target);
+  });
+};
+
+it("display: none (Virtualizer)", async () => {
+  const container = render(
+    <div style={{ height: 400, overflowY: "auto" }}>
+      <Virtualizer data={items}>
+        {(d) => (
+          <div key={d} style={{ height: 30 }}>
+            item-{d}
+          </div>
+        )}
+      </Virtualizer>
+    </div>,
+  );
+  await waitForMount(container);
+
+  const scroller = container.firstElementChild as HTMLElement;
+  const spacer = scroller.firstElementChild as HTMLElement;
+  const initialHeight = await waitForStableHeight(spacer);
+
+  container.style.display = "none";
+  await waitForZeroSizeNotification(spacer);
+  // let pending resize notifications propagate
+  await new Promise((resolve) => setTimeout(resolve, 100));
+
+  expect(spacer.style.height).toEqual(initialHeight);
+});
+
+it("display: none (WindowVirtualizer)", async () => {
+  const container = render(
+    <WindowVirtualizer data={items}>
+      {(d) => (
+        <div key={d} style={{ height: 30 }}>
+          item-{d}
+        </div>
+      )}
+    </WindowVirtualizer>,
+  );
+  await waitForMount(container);
+
+  const spacer = container.firstElementChild as HTMLElement;
+  const initialHeight = await waitForStableHeight(spacer);
+
+  container.style.display = "none";
+  await waitForZeroSizeNotification(spacer);
+  // let pending resize notifications propagate
+  await new Promise((resolve) => setTimeout(resolve, 100));
+
+  expect(spacer.style.height).toEqual(initialHeight);
+});
+
+it("flex parent", async () => {
+  const container = render(
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: 400,
+        overflowY: "auto",
+      }}
+    >
+      <Virtualizer data={items}>
+        {(d) => (
+          <div key={d} style={{ height: 30 }}>
+            item-{d}
+          </div>
+        )}
+      </Virtualizer>
+    </div>,
+  );
+  await expectVirtualized(container, "item-0", "item-999");
+});
+
+it("new window", async () => {
+  const newWindow = window.open("", "", "width=400,height=400");
+  expect(newWindow).toBeTruthy();
+  onTestFinished(() => newWindow!.close());
+
+  // Firefox may initialize the popup document asynchronously
+  await expect
+    .poll(() => newWindow!.document.readyState, { timeout: 5000 })
+    .toBe("complete");
+
+  const container = render(
+    <div style={{ height: 400, overflowY: "auto" }}>
+      <Virtualizer data={items}>
+        {(d) => (
+          <div key={d} style={{ height: 30 }}>
+            item-{d}
+          </div>
+        )}
+      </Virtualizer>
+    </div>,
+    newWindow!.document,
+  );
+  await expectVirtualized(container, "item-0", "item-999");
+});
+
+it("iframe", async () => {
+  const iframe = document.body.appendChild(document.createElement("iframe"));
+  iframe.width = "400";
+  iframe.height = "400";
+  onTestFinished(() => iframe.remove());
+
+  const container = render(
+    <div style={{ height: 400, overflowY: "auto" }}>
+      <Virtualizer data={items}>
+        {(d) => (
+          <div key={d} style={{ height: 30 }}>
+            item-{d}
+          </div>
+        )}
+      </Virtualizer>
+    </div>,
+    iframe.contentDocument!,
+  );
+  await expectVirtualized(container, "item-0", "item-999");
+});
+
+it("shadow DOM", async () => {
+  const host = document.body.appendChild(document.createElement("div"));
+  onTestFinished(() => host.remove());
+  const container = host
+    .attachShadow({ mode: "open" })
+    .appendChild(document.createElement("div"));
+  const root = createRoot(container);
+  root.render(
+    <div style={{ height: 400, overflowY: "auto" }}>
+      <Virtualizer data={items}>
+        {(d) => (
+          <div key={d} style={{ height: 30 }}>
+            item-{d}
+          </div>
+        )}
+      </Virtualizer>
+    </div>,
+  );
+  onTestFinished(() => root.unmount());
+  await expectVirtualized(container, "item-0", "item-999");
+});
+
+it("transform: scale", async () => {
+  const container = render(
+    <div style={{ transform: "scale(0.5)", transformOrigin: "0 0" }}>
+      <div style={{ height: 400, overflowY: "auto" }}>
+        <Virtualizer data={items}>
+          {(d) => (
+            <div key={d} style={{ height: 30 }}>
+              item-{d}
+            </div>
+          )}
+        </Virtualizer>
+      </div>
+    </div>,
+  );
+  await expectVirtualized(container, "item-0", "item-999");
+
+  const spacer = getSpacer(container);
+  await waitForStableHeight(spacer);
+  expectItemDistance(spacer, 30);
+});
+
+it("zoom", async () => {
+  const container = render(
+    <div style={{ zoom: 1.5 }}>
+      <div style={{ height: 400, overflowY: "auto" }}>
+        <Virtualizer data={items}>
+          {(d) => (
+            <div key={d} style={{ height: 30 }}>
+              item-{d}
+            </div>
+          )}
+        </Virtualizer>
+      </div>
+    </div>,
+  );
+  await expectVirtualized(container, "item-0", "item-999");
+
+  const spacer = getSpacer(container);
+  await waitForStableHeight(spacer);
+  expectItemDistance(spacer, 30);
+});
+
+it("fractional item size", async () => {
+  const container = render(
+    <div style={{ height: 400, overflowY: "auto" }}>
+      <Virtualizer data={items}>
+        {(d) => (
+          <div key={d} style={{ height: 30.5 }}>
+            item-{d}
+          </div>
+        )}
+      </Virtualizer>
+    </div>,
+  );
+  await expectVirtualized(container, "item-0", "item-999");
+
+  const spacer = getSpacer(container);
+  await waitForStableHeight(spacer);
+  expectItemDistance(spacer, 30.5);
+});
 
 it("prepending cancels imperative scroll", async () => {
   let id = 0;
@@ -64,7 +319,7 @@ it("prepending cancels imperative scroll", async () => {
   };
 
   const container = render(<Component />);
-  await expect.poll(() => container.textContent).toContain("item-0");
+  await waitForMount(container);
 
   // scroll to end
   const scroller = container.firstElementChild!;

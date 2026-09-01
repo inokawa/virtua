@@ -22,9 +22,7 @@ import {
   relativeBottom,
   relativeLeft,
   getItems,
-  getComputedStyleValue,
   setRTL,
-  setDisplayNone,
   getStyleValue,
   findFirstVisibleItem,
   findLastVisibleItem,
@@ -131,43 +129,6 @@ test.describe("smoke", () => {
   //     component.getByText("列 ９９９", { exact: true })
   //   ).toBeVisible();
   // });
-
-  test("display: none", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--default"));
-
-    const component = await getVirtualizer(page);
-
-    const initialTotalHeight = await getComputedStyleValue(component, "height");
-
-    await setDisplayNone(component);
-
-    const changedTotalHeight = await getComputedStyleValue(component, "height");
-
-    expect(initialTotalHeight).toBeTruthy();
-    expect(initialTotalHeight).toEqual(changedTotalHeight);
-  });
-
-  test("new window", async ({ page, context }) => {
-    await page.goto(storyUrl("advanced-newwindow--default"));
-
-    // open new window
-    const newPagePromise = context.waitForEvent("page");
-    await page.getByRole("button", { name: "open window" }).click();
-    const newPage = await newPagePromise;
-
-    const component = await getScrollable(newPage);
-
-    // check if start is displayed
-    const first = component.getByText("0", { exact: true });
-    await expect(first).toBeVisible();
-    expect(await relativeTop(component, first)).toEqual(0);
-
-    // scroll to the end
-    await scrollToBottom(component);
-
-    // check if the end is displayed
-    await expect(component.getByText("999", { exact: true })).toBeVisible();
-  });
 
   test("scroll restoration", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--scroll-restoration"));
