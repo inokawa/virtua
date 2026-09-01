@@ -1,0 +1,1 @@
+.spinner{flex:none;justify-content:center;align-items:center;height:48px;display:flex}.loader{border:3px solid #ccc;border-top-color:#0000;border-radius:50%;width:24px;height:24px;animation:1s linear infinite rotate}@keyframes rotate{to{transform:rotate(360deg)}}
