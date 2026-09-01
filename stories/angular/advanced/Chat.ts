@@ -54,9 +54,16 @@ const createItem = ({
           "
         ></div>
         <div
+          class="spinner"
+          [style.visibility]="fetching() ? 'visible' : 'hidden'"
+        >
+          <span class="loader"></span>
+        </div>
+        <div
           virtuaVirtualizer
           [data]="items()"
           [shift]="isPrepend()"
+          [startMargin]="spinnerHeight"
           [getKey]="getKey"
           (scroll)="onScroll($event)"
         >
@@ -91,12 +98,37 @@ const createItem = ({
         <div
           style="display: flex; flex-direction: row; gap: 8px; justify-content: flex-end;"
         >
-          <button type="button" (click)="jumpToTop()">jump to top</button>
           <button type="submit" [disabled]="!value().length">submit</button>
         </div>
       </form>
     </div>
   `,
+  styles: [
+    `
+      .spinner {
+        flex: none;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .loader {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 3px solid #ccc;
+        border-top-color: transparent;
+        animation: rotate 1s linear infinite;
+      }
+
+      @keyframes rotate {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    `,
+  ],
 })
 export class ChatDemo {
   private readonly ref = viewChild(Virtualizer);
@@ -107,6 +139,9 @@ export class ChatDemo {
   protected readonly value = signal("Hello world!");
   protected readonly isPrepend = signal(false);
   private readonly shouldStickToBottom = signal(true);
+  protected readonly fetching = signal(false);
+
+  protected readonly spinnerHeight = 48;
 
   protected readonly getKey = (d: Data) => d.id;
 
@@ -145,20 +180,23 @@ export class ChatDemo {
     });
   }
 
-  protected onScroll(offset: number): void {
+  protected async onScroll(offset: number): Promise<void> {
     const ref = this.ref();
     if (!ref) return;
 
     this.shouldStickToBottom.set(
-      offset - ref.scrollSize + ref.viewportSize >= -1.5,
+      offset - this.spinnerHeight - ref.scrollSize + ref.viewportSize >= -1.5,
     );
 
-    if (offset < 100) {
+    if (offset < this.spinnerHeight + 100 && !this.fetching()) {
+      this.fetching.set(true);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       this.isPrepend.set(true);
       this.items.set([
         ...Array.from({ length: 100 }, () => createItem()),
         ...this.items(),
       ]);
+      this.fetching.set(false);
     }
   }
 
@@ -177,10 +215,6 @@ export class ChatDemo {
       this.submit();
       e.preventDefault();
     }
-  }
-
-  protected jumpToTop(): void {
-    this.ref()?.scrollTo(0);
   }
 
   private submit(): void {

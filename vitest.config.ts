@@ -6,11 +6,11 @@ import { svelte } from "@sveltejs/vite-plugin-svelte";
 import angular from "@analogjs/vite-plugin-angular";
 import { playwright } from "@vitest/browser-playwright";
 
-const smokeBrowser = () => ({
+const testBrowser = (...browsers: ("chromium" | "firefox" | "webkit")[]) => ({
   enabled: true,
   headless: true,
   provider: playwright(),
-  instances: [{ browser: "chromium" as const }],
+  instances: browsers.map((browser) => ({ browser })),
   screenshotFailures: false,
 });
 
@@ -95,7 +95,7 @@ export default defineConfig({
         test: {
           name: "browser-react",
           include: ["spec/browser/react.spec.tsx"],
-          browser: smokeBrowser(),
+          browser: testBrowser("chromium"),
         },
       },
       {
@@ -103,7 +103,7 @@ export default defineConfig({
         test: {
           name: "browser-vue",
           include: ["spec/browser/vue.spec.tsx"],
-          browser: smokeBrowser(),
+          browser: testBrowser("chromium"),
         },
       },
       {
@@ -111,7 +111,7 @@ export default defineConfig({
         test: {
           name: "browser-solid",
           include: ["spec/browser/solid.spec.tsx"],
-          browser: smokeBrowser(),
+          browser: testBrowser("chromium"),
         },
       },
       {
@@ -119,7 +119,7 @@ export default defineConfig({
         test: {
           name: "browser-svelte",
           include: ["spec/browser/svelte.spec.ts"],
-          browser: smokeBrowser(),
+          browser: testBrowser("chromium"),
         },
       },
       {
@@ -133,7 +133,15 @@ export default defineConfig({
           name: "browser-angular",
           include: ["spec/browser/angular.spec.ts"],
           setupFiles: ["./spec/setup.angular.ts"],
-          browser: smokeBrowser(),
+          browser: testBrowser("chromium"),
+        },
+      },
+      {
+        plugins: [react()],
+        test: {
+          name: "browser-quirk",
+          include: ["spec/browser/quirk.spec.tsx"],
+          browser: testBrowser("chromium", "firefox", "webkit"),
         },
       },
     ],

@@ -14,6 +14,7 @@ import {
   scrollToLeft,
   getVirtualizer,
   getScrollable,
+  clearTimer,
   scrollTo,
   listenScrollCount,
   relativeRight,
@@ -642,7 +643,7 @@ test.describe("check if scroll jump compensation works", () => {
     const initialItemText = (await initialItem.textContent())!;
     expectInRange(initialItemBottom, { min: 0, max: 1 });
 
-    await page.getByRole("checkbox", { name: "auto update" }).click();
+    await clearTimer(page);
 
     const button = page.getByRole("button", { name: "submit" });
     const textarea = page.getByRole("textbox")!;
@@ -1372,29 +1373,6 @@ test.describe("check if item shift compensation works", () => {
     }
 
     expect(i).toBeGreaterThanOrEqual(8);
-  });
-
-  test("check if prepending cancels imperative scroll", async ({ page }) => {
-    await page.goto(storyUrl("advanced-chat--default"));
-    await page.getByRole("checkbox", { name: "auto update" }).click();
-
-    const component = await getScrollable(page);
-    // check if end is displayed
-    expectInRange(
-      await relativeBottom(component, await findLastVisibleItem(component)),
-      { min: 0, max: 1 },
-    );
-
-    const scrollListener = listenScrollCount(component);
-
-    const button = page.getByRole("button", { name: "jump to top" });
-
-    // scroll to top
-    await button.click();
-
-    // check if imperative scrolling doesn't cause infinite loop
-    const scrollCount = await scrollListener;
-    expect(scrollCount).toBeLessThanOrEqual(4);
   });
 });
 

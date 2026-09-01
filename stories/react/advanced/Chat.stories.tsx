@@ -9,6 +9,7 @@ import React, {
   useState,
 } from "react";
 import { faker } from "@faker-js/faker";
+import { delay } from "../common";
 
 export default {
   component: Virtualizer,
@@ -27,6 +28,42 @@ const itemStyle: CSSProperties = {
   padding: 10,
   borderRadius: 8,
   whiteSpace: "pre-wrap",
+};
+
+const spinnerHeight = 48;
+
+const Spinner = ({ visible }: { visible: boolean }) => {
+  return (
+    <>
+      <div
+        style={{
+          flex: "none",
+          visibility: visible ? "visible" : "hidden",
+          height: spinnerHeight,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <span className="loader" />
+      </div>
+      <style>
+        {`
+      .loader {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 3px solid #ccc;
+        border-top-color: transparent;
+        animation: rotate 1s linear infinite;
+      }
+
+      @keyframes rotate {
+        100% {transform: rotate(360deg)}
+      }`}
+      </style>
+    </>
+  );
 };
 
 const Item = ({ me, children }: { me?: boolean; children: ReactNode }) => {
@@ -62,12 +99,12 @@ export const Default: StoryObj = {
     const [items, setItems] = useState(() =>
       Array.from({ length: 100 }, () => createItem()),
     );
-    const [autoUpdating, setAutoUpdating] = useState(true);
 
     const ref = useRef<VirtualizerHandle>(null);
 
     const isPrepend = useRef(false);
     const shouldStickToBottom = useRef(true);
+    const [fetching, setFetching] = useState(false);
 
     const [value, setValue] = useState("Hello world!");
 
@@ -85,7 +122,6 @@ export const Default: StoryObj = {
     }, [items]);
 
     useEffect(() => {
-      if (!autoUpdating) return;
       let canceled = false;
       let timer: ReturnType<typeof setTimeout> | null = null;
       const setTimer = () => {
@@ -102,7 +138,7 @@ export const Default: StoryObj = {
           clearTimeout(timer);
         }
       };
-    }, [autoUpdating]);
+    }, []);
 
     const disabled = !value.length;
     const submit = () => {
@@ -138,22 +174,30 @@ export const Default: StoryObj = {
               flexGrow: 1,
             }}
           />
+          <Spinner visible={fetching} />
           <Virtualizer
             ref={ref}
             shift={isPrepend.current}
-            onScroll={(offset) => {
+            startMargin={spinnerHeight}
+            onScroll={async (offset) => {
               if (!ref.current) return;
               shouldStickToBottom.current =
-                offset - ref.current.scrollSize + ref.current.viewportSize >=
+                offset -
+                  spinnerHeight -
+                  ref.current.scrollSize +
+                  ref.current.viewportSize >=
                 // FIXME: The sum may not be 0 because of sub-pixel value when browser's window.devicePixelRatio has decimal value
                 -1.5;
 
-              if (offset < 100) {
+              if (offset < spinnerHeight + 100 && !fetching) {
+                setFetching(true);
+                await delay(1000);
                 isPrepend.current = true;
                 setItems((p) => [
                   ...Array.from({ length: 100 }, () => createItem()),
                   ...p,
                 ]);
+                setFetching(false);
               }
             }}
           >
@@ -194,24 +238,6 @@ export const Default: StoryObj = {
               justifyContent: "flex-end",
             }}
           >
-            <label>
-              <input
-                type="checkbox"
-                checked={autoUpdating}
-                onChange={() => {
-                  setAutoUpdating((prev) => !prev);
-                }}
-              />
-              auto update
-            </label>
-            <button
-              type="button"
-              onClick={() => {
-                ref.current?.scrollTo(0);
-              }}
-            >
-              jump to top
-            </button>
             <button type="submit" disabled={disabled}>
               submit
             </button>
