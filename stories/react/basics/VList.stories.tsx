@@ -372,6 +372,55 @@ export const RenderProp: StoryObj = {
   },
 };
 
+export const ScrollSnap: StoryObj = {
+  render: () => {
+    const color = ["skyblue", "orange", "pink"];
+
+    return (
+      <div style={{ padding: 10 }}>
+        <VList
+          style={{
+            width: "100%",
+            height: 300,
+            scrollSnapType: "x mandatory",
+          }}
+          horizontal
+        >
+          {Array.from({ length: 1000 }).map((_, i) => {
+            return (
+              <div
+                key={i}
+                style={{
+                  scrollSnapAlign: "center",
+                  width: 300,
+                  borderRight: "solid 1px #ccc",
+                  background: "#fff",
+                  padding: 16,
+                  display: "flex",
+                }}
+              >
+                <div
+                  style={{
+                    flex: 1,
+                    color: "#fff",
+                    background: color[i % 3],
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    fontSize: 32,
+                  }}
+                >
+                  {i}
+                </div>
+              </div>
+            );
+          })}
+        </VList>
+      </div>
+    );
+  },
+};
+
 export const Keyboard: StoryObj = {
   render: () => {
     const ref = useRef<VListHandle>(null);
