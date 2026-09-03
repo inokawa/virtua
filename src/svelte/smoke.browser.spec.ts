@@ -1,19 +1,17 @@
 import { it, onTestFinished } from "vitest";
 import { mount, unmount, createRawSnippet, type Component } from "svelte";
-import {
-  VList,
-  Virtualizer,
-  WindowVirtualizer,
-} from "../../src/svelte/index.js";
-import { expectVirtualized } from "./utils.js";
+import VList from "./VList.svelte";
+import Virtualizer from "./Virtualizer.svelte";
+import WindowVirtualizer from "./WindowVirtualizer.svelte";
+import { expectVirtualized } from "../../spec/browser.js";
 
 const itemSnippet = createRawSnippet<[number, number]>((item) => ({
   render: () => `<div>item-${item()}</div>`,
 }));
 
-const render = (
-  component: Component<any>,
-  props: Record<string, unknown>,
+const render = <P extends Record<string, unknown>>(
+  component: Component<P, any>,
+  props: P,
   style?: string,
 ) => {
   const container = document.body.appendChild(document.createElement("div"));

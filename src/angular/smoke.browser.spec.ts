@@ -1,12 +1,10 @@
 import { it, onTestFinished } from "vitest";
 import { Component, type Type } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
-import {
-  VList,
-  Virtualizer,
-  WindowVirtualizer,
-} from "../../src/angular/index.js";
-import { expectVirtualized } from "./utils.js";
+import { VList } from "./VList.js";
+import { Virtualizer } from "./Virtualizer.js";
+import { WindowVirtualizer } from "./WindowVirtualizer.js";
+import { expectVirtualized } from "../../spec/browser.js";
 
 @Component({
   selector: "smoke-vlist",

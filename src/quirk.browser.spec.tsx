@@ -7,12 +7,9 @@ import {
   type ReactNode,
 } from "react";
 import { createRoot } from "react-dom/client";
-import {
-  Virtualizer,
-  VirtualizerHandle,
-  WindowVirtualizer,
-} from "../../src/react/index.js";
-import { expectVirtualized } from "./utils.js";
+import { Virtualizer, type VirtualizerHandle } from "./react/Virtualizer.js";
+import { WindowVirtualizer } from "./react/WindowVirtualizer.js";
+import { expectVirtualized } from "../spec/browser.js";
 
 const items = Array.from({ length: 1000 }, (_, i) => i);
 

@@ -29,7 +29,7 @@ export default defineConfig({
         plugins: [react()],
         test: {
           name: "react",
-          dir: "src/react",
+          include: ["src/react/**/!(*.browser).spec.tsx"],
           environment: "jsdom",
           setupFiles: ["./spec/setup.ts"],
         },
@@ -38,7 +38,7 @@ export default defineConfig({
         plugins: [vueJsx()],
         test: {
           name: "vue",
-          dir: "src/vue",
+          include: ["src/vue/**/!(*.browser).spec.ts"],
           environment: "jsdom",
           // https://github.com/testing-library/vue-testing-library/issues/296
           globals: true,
@@ -49,7 +49,7 @@ export default defineConfig({
         plugins: [solid()],
         test: {
           name: "solid",
-          dir: "src/solid",
+          include: ["src/solid/**/!(*.browser).spec.tsx"],
           environment: "jsdom",
           setupFiles: ["./spec/setup.ts"],
           server: {
@@ -67,7 +67,7 @@ export default defineConfig({
         plugins: [svelte()],
         test: {
           name: "svelte",
-          dir: "src/svelte",
+          include: ["src/svelte/**/!(*.browser).spec.ts"],
           environment: "jsdom",
           setupFiles: ["./spec/setup.ts"],
         },
@@ -81,7 +81,7 @@ export default defineConfig({
         plugins: [angular({ tsconfig: "tsconfig.angular.json" })],
         test: {
           name: "angular",
-          dir: "src/angular",
+          include: ["src/angular/**/!(*.browser).spec.ts"],
           environment: "jsdom",
           setupFiles: ["./spec/setup.ts", "./spec/setup.angular.ts"],
           // @analogjs/vite-plugin-angular defaults to vmThreads, whose cjs/esm
@@ -94,7 +94,7 @@ export default defineConfig({
         plugins: [react()],
         test: {
           name: "browser-react",
-          include: ["spec/browser/react.spec.tsx"],
+          include: ["src/react/*.browser.spec.tsx"],
           browser: testBrowser("chromium"),
         },
       },
@@ -102,7 +102,7 @@ export default defineConfig({
         plugins: [vueJsx()],
         test: {
           name: "browser-vue",
-          include: ["spec/browser/vue.spec.tsx"],
+          include: ["src/vue/*.browser.spec.tsx"],
           browser: testBrowser("chromium"),
         },
       },
@@ -110,7 +110,7 @@ export default defineConfig({
         plugins: [solid()],
         test: {
           name: "browser-solid",
-          include: ["spec/browser/solid.spec.tsx"],
+          include: ["src/solid/*.browser.spec.tsx"],
           browser: testBrowser("chromium"),
         },
       },
@@ -118,20 +118,15 @@ export default defineConfig({
         plugins: [svelte()],
         test: {
           name: "browser-svelte",
-          include: ["spec/browser/svelte.spec.ts"],
+          include: ["src/svelte/*.browser.spec.ts"],
           browser: testBrowser("chromium"),
         },
       },
       {
-        plugins: [
-          angular({
-            tsconfig: "tsconfig.angular.json",
-            include: ["/spec/browser/angular.spec.ts"],
-          }),
-        ],
+        plugins: [angular({ tsconfig: "tsconfig.angular.json" })],
         test: {
           name: "browser-angular",
-          include: ["spec/browser/angular.spec.ts"],
+          include: ["src/angular/*.browser.spec.ts"],
           setupFiles: ["./spec/setup.angular.ts"],
           browser: testBrowser("chromium"),
         },
@@ -140,7 +135,7 @@ export default defineConfig({
         plugins: [react()],
         test: {
           name: "browser-quirk",
-          include: ["spec/browser/quirk.spec.tsx"],
+          include: ["src/*.browser.spec.tsx"],
           browser: testBrowser("chromium", "firefox", "webkit"),
         },
       },

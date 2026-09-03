@@ -4,12 +4,10 @@
 import { it, onTestFinished } from "vitest";
 import { render as renderTo } from "solid-js/web";
 import { type JSX } from "solid-js";
-import {
-  VList,
-  Virtualizer,
-  WindowVirtualizer,
-} from "../../src/solid/index.js";
-import { expectVirtualized } from "./utils.js";
+import { VList } from "./VList.js";
+import { Virtualizer } from "./Virtualizer.js";
+import { WindowVirtualizer } from "./WindowVirtualizer.js";
+import { expectVirtualized } from "../../spec/browser.js";
 
 const render = (node: () => JSX.Element) => {
   const container = document.body.appendChild(document.createElement("div"));
