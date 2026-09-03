@@ -125,8 +125,8 @@ it("display: none (WindowVirtualizer)", async () => {
 });
 
 it("hidden document does not cancel imperative scroll", async () => {
-  const ref = createRef<VirtualizerHandle>();
   const Component = () => {
+    const ref = useRef<VirtualizerHandle>(null);
     useLayoutEffect(() => {
       ref.current!.scrollToIndex(items.length - 1, { align: "end" });
     }, []);
