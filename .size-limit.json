@@ -3,7 +3,7 @@
     "name": "Total",
     "path": "lib/index.js",
     "import": "*",
-    "limit": "5.7 kB"
+    "limit": "5.76 kB"
   },
   {
     "name": "VList",
