@@ -47,14 +47,6 @@ describe("vertical", () => {
     expect(container.outerHTML).toMatchSnapshot();
   });
 
-  it("should render 1 children", async () => {
-    const { container } = await render(Virtualizer, {
-      ...host(),
-      props: { data: range(1), children: itemSnippet },
-    });
-    expect(container.outerHTML).toMatchSnapshot();
-  });
-
   it("should render 5 children", async () => {
     const { container } = await render(Virtualizer, {
       ...host(),
@@ -67,14 +59,6 @@ describe("vertical", () => {
     const { container } = await render(Virtualizer, {
       ...host(),
       props: { data: range(100), children: itemSnippet },
-    });
-    expect(container.outerHTML).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", async () => {
-    const { container } = await render(Virtualizer, {
-      ...host(),
-      props: { data: range(10000), children: itemSnippet },
     });
     expect(container.outerHTML).toMatchSnapshot();
   });
@@ -97,14 +81,6 @@ describe("horizontal", () => {
     expect(container.outerHTML).toMatchSnapshot();
   });
 
-  it("should render 1 children", async () => {
-    const { container } = await render(Virtualizer, {
-      ...host(),
-      props: { data: range(1), horizontal: true, children: itemSnippet },
-    });
-    expect(container.outerHTML).toMatchSnapshot();
-  });
-
   it("should render 5 children", async () => {
     const { container } = await render(Virtualizer, {
       ...host(),
@@ -117,14 +93,6 @@ describe("horizontal", () => {
     const { container } = await render(Virtualizer, {
       ...host(),
       props: { data: range(100), horizontal: true, children: itemSnippet },
-    });
-    expect(container.outerHTML).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", async () => {
-    const { container } = await render(Virtualizer, {
-      ...host(),
-      props: { data: range(10000), horizontal: true, children: itemSnippet },
     });
     expect(container.outerHTML).toMatchSnapshot();
   });

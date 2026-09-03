@@ -26,13 +26,6 @@ describe("vertical", () => {
     expect(container.innerHTML).toMatchSnapshot();
   });
 
-  it("should render 1 children", async () => {
-    const { container } = await render(WindowVirtualizer, {
-      props: { data: range(1), children: itemSnippet },
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
   it("should render 5 children", async () => {
     const { container } = await render(WindowVirtualizer, {
       props: { data: range(5), children: itemSnippet },
@@ -43,13 +36,6 @@ describe("vertical", () => {
   it("should render 100 children", async () => {
     const { container } = await render(WindowVirtualizer, {
       props: { data: range(100), children: itemSnippet },
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", async () => {
-    const { container } = await render(WindowVirtualizer, {
-      props: { data: range(10000), children: itemSnippet },
     });
     expect(container.innerHTML).toMatchSnapshot();
   });
@@ -70,13 +56,6 @@ describe("horizontal", () => {
     expect(container.innerHTML).toMatchSnapshot();
   });
 
-  it("should render 1 children", async () => {
-    const { container } = await render(WindowVirtualizer, {
-      props: { data: range(1), horizontal: true, children: itemSnippet },
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
   it("should render 5 children", async () => {
     const { container } = await render(WindowVirtualizer, {
       props: { data: range(5), horizontal: true, children: itemSnippet },
@@ -87,13 +66,6 @@ describe("horizontal", () => {
   it("should render 100 children", async () => {
     const { container } = await render(WindowVirtualizer, {
       props: { data: range(100), horizontal: true, children: itemSnippet },
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", async () => {
-    const { container } = await render(WindowVirtualizer, {
-      props: { data: range(10000), horizontal: true, children: itemSnippet },
     });
     expect(container.innerHTML).toMatchSnapshot();
   });

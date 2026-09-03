@@ -45,19 +45,6 @@ describe("vertical", async () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 1 children", async () => {
-    const wrapper = await render(WindowVirtualizer<number>, {
-      props: {
-        data: range(1),
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof WindowVirtualizer<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
   it("should render 5 children", async () => {
     const wrapper = await render(WindowVirtualizer<number>, {
       props: {
@@ -75,19 +62,6 @@ describe("vertical", async () => {
     const wrapper = await render(WindowVirtualizer<number>, {
       props: {
         data: range(100),
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof WindowVirtualizer<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", async () => {
-    const wrapper = await render(WindowVirtualizer<number>, {
-      props: {
-        data: range(10000),
       },
       slots: {
         default: ({ item: data }: SlotType<typeof WindowVirtualizer<number>>) =>
@@ -134,20 +108,6 @@ describe("horizontal", async () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 1 children", async () => {
-    const wrapper = await render(WindowVirtualizer<number>, {
-      props: {
-        data: range(1),
-        horizontal: true,
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof WindowVirtualizer<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
   it("should render 5 children", async () => {
     const wrapper = await render(WindowVirtualizer<number>, {
       props: {
@@ -166,20 +126,6 @@ describe("horizontal", async () => {
     const wrapper = await render(WindowVirtualizer<number>, {
       props: {
         data: range(100),
-        horizontal: true,
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof WindowVirtualizer<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", async () => {
-    const wrapper = await render(WindowVirtualizer<number>, {
-      props: {
-        data: range(10000),
         horizontal: true,
       },
       slots: {

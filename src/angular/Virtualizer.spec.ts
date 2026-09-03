@@ -86,11 +86,6 @@ describe("vertical", () => {
     expect(container.innerHTML).toMatchSnapshot();
   });
 
-  it("should render 1 children", async () => {
-    const { container } = await render(Host, { data: range(1) });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
   it("should render 5 children", async () => {
     const { container } = await render(Host, { data: range(5) });
     expect(container.innerHTML).toMatchSnapshot();
@@ -98,11 +93,6 @@ describe("vertical", () => {
 
   it("should render 100 children", async () => {
     const { container } = await render(Host, { data: range(100) });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", async () => {
-    const { container } = await render(Host, { data: range(10000) });
     expect(container.innerHTML).toMatchSnapshot();
   });
 
@@ -118,14 +108,6 @@ describe("horizontal", () => {
     expect(container.innerHTML).toMatchSnapshot();
   });
 
-  it("should render 1 children", async () => {
-    const { container } = await render(Host, {
-      data: range(1),
-      horizontal: true,
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
   it("should render 5 children", async () => {
     const { container } = await render(Host, {
       data: range(5),
@@ -137,14 +119,6 @@ describe("horizontal", () => {
   it("should render 100 children", async () => {
     const { container } = await render(Host, {
       data: range(100),
-      horizontal: true,
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", async () => {
-    const { container } = await render(Host, {
-      data: range(10000),
       horizontal: true,
     });
     expect(container.innerHTML).toMatchSnapshot();

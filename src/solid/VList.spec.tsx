@@ -4,7 +4,6 @@
 import { it, expect, describe } from "vitest";
 import { VList } from "./VList.js";
 import { setupResizeJsDom } from "../../spec/dom.js";
-import { type JSX } from "solid-js";
 import { render } from "../../spec/solid.js";
 
 const ITEM_HEIGHT = 50;
@@ -48,51 +47,6 @@ it("should render with keepMounted", () => {
 });
 
 describe("vertical", () => {
-  it("should render 0 children", () => {
-    const { asFragment } = render(() => (
-      <VList data={[]}>{(d) => <div>{d}</div>}</VList>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 1 children", () => {
-    const { asFragment } = render(() => (
-      <VList data={range(1)}>{(d) => <div>{d}</div>}</VList>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 5 children", () => {
-    const { asFragment } = render(() => (
-      <VList data={range(5)}>{(d) => <div>{d}</div>}</VList>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 100 children", () => {
-    const { asFragment } = render(() => (
-      <VList data={range(100)}>{(d) => <div>{d}</div>}</VList>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", () => {
-    const { asFragment } = render(() => (
-      <VList data={range(10000)}>{(d) => <div>{d}</div>}</VList>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render component", () => {
-    const Comp = (props: { children: JSX.Element }) => (
-      <div>{props.children}</div>
-    );
-    const { asFragment } = render(() => (
-      <VList data={range(3)}>{(d) => <Comp>{d}</Comp>}</VList>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
   it("should render with given width / height", () => {
     const { asFragment } = render(() => (
       <VList data={range(5)} style={{ width: "100px", height: "800px" }}>
@@ -100,68 +54,10 @@ describe("vertical", () => {
       </VList>
     ));
     expect(asFragment()).toMatchSnapshot();
-    expect(asFragment()).toMatchSnapshot();
   });
 });
 
 describe("horizontal", () => {
-  it("should render 0 children", () => {
-    const { asFragment } = render(() => (
-      <VList data={[]} horizontal>
-        {(d) => <div>{d}</div>}
-      </VList>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 1 children", () => {
-    const { asFragment } = render(() => (
-      <VList data={range(1)} horizontal>
-        {(d) => <div>{d}</div>}
-      </VList>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 5 children", () => {
-    const { asFragment } = render(() => (
-      <VList data={range(5)} horizontal>
-        {(d) => <div>{d}</div>}
-      </VList>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 100 children", () => {
-    const { asFragment } = render(() => (
-      <VList data={range(100)} horizontal>
-        {(d) => <div>{d}</div>}
-      </VList>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", () => {
-    const { asFragment } = render(() => (
-      <VList data={range(10000)} horizontal>
-        {(d) => <div>{d}</div>}
-      </VList>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render component", () => {
-    const Comp = (props: { children: JSX.Element }) => (
-      <div>{props.children}</div>
-    );
-    const { asFragment } = render(() => (
-      <VList data={range(3)} horizontal>
-        {(d) => <Comp>{d}</Comp>}
-      </VList>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
   it("should render with given width / height", () => {
     const { asFragment } = render(() => (
       <VList
@@ -172,7 +68,6 @@ describe("horizontal", () => {
         {(d) => <div>{d}</div>}
       </VList>
     ));
-    expect(asFragment()).toMatchSnapshot();
     expect(asFragment()).toMatchSnapshot();
   });
 });

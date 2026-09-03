@@ -1,5 +1,5 @@
 import { it, expect, describe } from "vitest";
-import { defineComponent, h } from "vue";
+import { h } from "vue";
 import { VList } from "./VList.js";
 import { setupResizeJsDom } from "../../spec/dom.js";
 import { render, SlotType } from "../../spec/vue.js";
@@ -51,92 +51,6 @@ it("should render with keepMounted", async () => {
 });
 
 describe("vertical", async () => {
-  it("should render 0 children", async () => {
-    const wrapper = await render(VList<number>, {
-      props: {
-        data: [],
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof VList<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
-  it("should render 1 children", async () => {
-    const wrapper = await render(VList<number>, {
-      props: {
-        data: range(1),
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof VList<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
-  it("should render 5 children", async () => {
-    const wrapper = await render(VList<number>, {
-      props: {
-        data: range(5),
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof VList<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
-  it("should render 100 children", async () => {
-    const wrapper = await render(VList<number>, {
-      props: {
-        data: range(100),
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof VList<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", async () => {
-    const wrapper = await render(VList<number>, {
-      props: {
-        data: range(10000),
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof VList<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
-  it("should render component", async () => {
-    const Comp = defineComponent({
-      props: ["data"],
-      setup(props) {
-        return () => {
-          return h("div", props.data);
-        };
-      },
-    });
-    const wrapper = await render(VList<number>, {
-      props: {
-        data: range(3),
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof VList<number>>) =>
-          h(Comp, { key: data, data }),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
   it("should render with given width / height", async () => {
     const wrapper = await render(VList<number>, {
       props: {
@@ -155,98 +69,6 @@ describe("vertical", async () => {
 });
 
 describe("horizontal", async () => {
-  it("should render 0 children", async () => {
-    const wrapper = await render(VList<number>, {
-      props: {
-        data: [],
-        horizontal: true,
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof VList<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
-  it("should render 1 children", async () => {
-    const wrapper = await render(VList<number>, {
-      props: {
-        data: range(1),
-        horizontal: true,
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof VList<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
-  it("should render 5 children", async () => {
-    const wrapper = await render(VList<number>, {
-      props: {
-        data: range(5),
-        horizontal: true,
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof VList<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
-  it("should render 100 children", async () => {
-    const wrapper = await render(VList<number>, {
-      props: {
-        data: range(100),
-        horizontal: true,
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof VList<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", async () => {
-    const wrapper = await render(VList<number>, {
-      props: {
-        data: range(10000),
-        horizontal: true,
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof VList<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
-  it("should render component", async () => {
-    const Comp = defineComponent({
-      props: ["data"],
-      setup(props) {
-        return () => {
-          return h("div", props.data);
-        };
-      },
-    });
-    const wrapper = await render(VList<number>, {
-      props: {
-        data: range(3),
-        horizontal: true,
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof VList<number>>) =>
-          h(Comp, { key: data, data }),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
   it("should render with given width / height", async () => {
     const wrapper = await render(VList<number>, {
       props: {

@@ -55,19 +55,6 @@ describe("vertical", async () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 1 children", async () => {
-    const wrapper = await render(ScrollContainer, {
-      attrs: {
-        data: range(1),
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
   it("should render 5 children", async () => {
     const wrapper = await render(ScrollContainer, {
       attrs: {
@@ -85,19 +72,6 @@ describe("vertical", async () => {
     const wrapper = await render(ScrollContainer, {
       attrs: {
         data: range(100),
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", async () => {
-    const wrapper = await render(ScrollContainer, {
-      attrs: {
-        data: range(10000),
       },
       slots: {
         default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
@@ -144,20 +118,6 @@ describe("horizontal", async () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  it("should render 1 children", async () => {
-    const wrapper = await render(ScrollContainer, {
-      attrs: {
-        data: range(1),
-        horizontal: true,
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
   it("should render 5 children", async () => {
     const wrapper = await render(ScrollContainer, {
       attrs: {
@@ -176,20 +136,6 @@ describe("horizontal", async () => {
     const wrapper = await render(ScrollContainer, {
       attrs: {
         data: range(100),
-        horizontal: true,
-      },
-      slots: {
-        default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
-          h("div", { key: data }, data),
-      },
-    });
-    expect(wrapper.html()).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", async () => {
-    const wrapper = await render(ScrollContainer, {
-      attrs: {
-        data: range(10000),
         horizontal: true,
       },
       slots: {

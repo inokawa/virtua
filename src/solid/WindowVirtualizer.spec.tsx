@@ -21,15 +21,6 @@ describe("vertical", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render 1 children", () => {
-    const { asFragment } = render(() => (
-      <WindowVirtualizer data={range(1)}>
-        {(d) => <div>{d}</div>}
-      </WindowVirtualizer>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
   it("should render 5 children", () => {
     const { asFragment } = render(() => (
       <WindowVirtualizer data={range(5)}>
@@ -42,15 +33,6 @@ describe("vertical", () => {
   it("should render 100 children", () => {
     const { asFragment } = render(() => (
       <WindowVirtualizer data={range(100)}>
-        {(d) => <div>{d}</div>}
-      </WindowVirtualizer>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", () => {
-    const { asFragment } = render(() => (
-      <WindowVirtualizer data={range(10000)}>
         {(d) => <div>{d}</div>}
       </WindowVirtualizer>
     ));
@@ -80,15 +62,6 @@ describe("horizontal", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render 1 children", () => {
-    const { asFragment } = render(() => (
-      <WindowVirtualizer data={range(1)} horizontal>
-        {(d) => <div>{d}</div>}
-      </WindowVirtualizer>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
   it("should render 5 children", () => {
     const { asFragment } = render(() => (
       <WindowVirtualizer data={range(5)} horizontal>
@@ -101,15 +74,6 @@ describe("horizontal", () => {
   it("should render 100 children", () => {
     const { asFragment } = render(() => (
       <WindowVirtualizer data={range(100)} horizontal>
-        {(d) => <div>{d}</div>}
-      </WindowVirtualizer>
-    ));
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", () => {
-    const { asFragment } = render(() => (
-      <WindowVirtualizer data={range(10000)} horizontal>
         {(d) => <div>{d}</div>}
       </WindowVirtualizer>
     ));

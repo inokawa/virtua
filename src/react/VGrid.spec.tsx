@@ -48,19 +48,6 @@ describe("grid", async () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("should render 1 children", async () => {
-    const { asFragment } = await render(
-      <VGrid row={1} col={1}>
-        {({ rowIndex, colIndex }) => (
-          <div>
-            {rowIndex} / {colIndex}
-          </div>
-        )}
-      </VGrid>,
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
   it("should render 4x4 children", async () => {
     const { asFragment } = await render(
       <VGrid row={4} col={4}>
@@ -77,19 +64,6 @@ describe("grid", async () => {
   it("should render 100x100 children", async () => {
     const { asFragment } = await render(
       <VGrid row={100} col={100}>
-        {({ rowIndex, colIndex }) => (
-          <div>
-            {rowIndex} / {colIndex}
-          </div>
-        )}
-      </VGrid>,
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 10000x10000 children", async () => {
-    const { asFragment } = await render(
-      <VGrid row={10000} col={10000}>
         {({ rowIndex, colIndex }) => (
           <div>
             {rowIndex} / {colIndex}

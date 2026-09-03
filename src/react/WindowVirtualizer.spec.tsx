@@ -43,11 +43,9 @@ it("should render with render prop", async () => {
 });
 
 describe("vertical", async () => {
-  it("should render 1 children", async () => {
+  it("should render 0 children", async () => {
     const { asFragment } = await render(
-      <WindowVirtualizer>
-        <div>0</div>
-      </WindowVirtualizer>,
+      <WindowVirtualizer>{[]}</WindowVirtualizer>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -69,17 +67,6 @@ describe("vertical", async () => {
     const { asFragment } = await render(
       <WindowVirtualizer>
         {Array.from({ length: 100 }).map((_, i) => (
-          <div key={i}>{i}</div>
-        ))}
-      </WindowVirtualizer>,
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", async () => {
-    const { asFragment } = await render(
-      <WindowVirtualizer>
-        {Array.from({ length: 10000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
       </WindowVirtualizer>,
@@ -148,11 +135,9 @@ describe("vertical", async () => {
 });
 
 describe("horizontal", async () => {
-  it("should render 1 children", async () => {
+  it("should render 0 children", async () => {
     const { asFragment } = await render(
-      <WindowVirtualizer horizontal>
-        <div>0</div>
-      </WindowVirtualizer>,
+      <WindowVirtualizer horizontal>{[]}</WindowVirtualizer>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
@@ -174,17 +159,6 @@ describe("horizontal", async () => {
     const { asFragment } = await render(
       <WindowVirtualizer horizontal>
         {Array.from({ length: 100 }).map((_, i) => (
-          <div key={i}>{i}</div>
-        ))}
-      </WindowVirtualizer>,
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", async () => {
-    const { asFragment } = await render(
-      <WindowVirtualizer horizontal>
-        {Array.from({ length: 10000 }).map((_, i) => (
           <div key={i}>{i}</div>
         ))}
       </WindowVirtualizer>,

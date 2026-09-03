@@ -4,6 +4,7 @@
 import { it, expect, describe } from "vitest";
 import { Virtualizer } from "./Virtualizer.js";
 import { setupResizeJsDom } from "../../spec/dom.js";
+import { type JSX } from "solid-js";
 import { render } from "../../spec/solid.js";
 
 const ITEM_HEIGHT = 50;
@@ -29,6 +30,15 @@ it("should change components", () => {
 });
 
 describe("vertical", () => {
+  it("should render 0 children", () => {
+    const { asFragment } = render(() => (
+      <div style={{ "overflow-y": "auto" }}>
+        <Virtualizer data={[]}>{(d) => <div>{d}</div>}</Virtualizer>
+      </div>
+    ));
+    expect(asFragment()).toMatchSnapshot();
+  });
+
   it("should render 5 children", () => {
     const { asFragment } = render(() => (
       <div style={{ "overflow-y": "auto" }}>
@@ -37,14 +47,71 @@ describe("vertical", () => {
     ));
     expect(asFragment()).toMatchSnapshot();
   });
+
+  it("should render 100 children", () => {
+    const { asFragment } = render(() => (
+      <div style={{ "overflow-y": "auto" }}>
+        <Virtualizer data={range(100)}>{(d) => <div>{d}</div>}</Virtualizer>
+      </div>
+    ));
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render component", () => {
+    const Comp = (props: { children: JSX.Element }) => (
+      <div>{props.children}</div>
+    );
+    const { asFragment } = render(() => (
+      <div style={{ "overflow-y": "auto" }}>
+        <Virtualizer data={range(3)}>{(d) => <Comp>{d}</Comp>}</Virtualizer>
+      </div>
+    ));
+    expect(asFragment()).toMatchSnapshot();
+  });
 });
 
 describe("horizontal", () => {
+  it("should render 0 children", () => {
+    const { asFragment } = render(() => (
+      <div style={{ "overflow-x": "auto" }}>
+        <Virtualizer data={[]} horizontal>
+          {(d) => <div>{d}</div>}
+        </Virtualizer>
+      </div>
+    ));
+    expect(asFragment()).toMatchSnapshot();
+  });
+
   it("should render 5 children", () => {
     const { asFragment } = render(() => (
       <div style={{ "overflow-x": "auto" }}>
         <Virtualizer data={range(5)} horizontal>
           {(d) => <div>{d}</div>}
+        </Virtualizer>
+      </div>
+    ));
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render 100 children", () => {
+    const { asFragment } = render(() => (
+      <div style={{ "overflow-x": "auto" }}>
+        <Virtualizer data={range(100)} horizontal>
+          {(d) => <div>{d}</div>}
+        </Virtualizer>
+      </div>
+    ));
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("should render component", () => {
+    const Comp = (props: { children: JSX.Element }) => (
+      <div>{props.children}</div>
+    );
+    const { asFragment } = render(() => (
+      <div style={{ "overflow-x": "auto" }}>
+        <Virtualizer data={range(3)} horizontal>
+          {(d) => <Comp>{d}</Comp>}
         </Virtualizer>
       </div>
     ));

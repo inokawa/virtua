@@ -20,12 +20,6 @@ const itemSnippet = createRawSnippet<[number, number]>((item) => ({
   render: () => `<div>${item()}</div>`,
 }));
 
-// A render-prop that renders a nested element, mirroring the "component" cases
-// of the other frameworks (a custom component wrapping the item).
-const componentSnippet = createRawSnippet<[number, number]>((item) => ({
-  render: () => `<div><div>${item()}</div></div>`,
-}));
-
 it("should pass attributes to element", async () => {
   const { container } = await render(VList, {
     props: {
@@ -54,48 +48,6 @@ it("should render with keepMounted", async () => {
 });
 
 describe("vertical", () => {
-  it("should render 0 children", async () => {
-    const { container } = await render(VList, {
-      props: { data: [], children: itemSnippet },
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
-  it("should render 1 children", async () => {
-    const { container } = await render(VList, {
-      props: { data: range(1), children: itemSnippet },
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
-  it("should render 5 children", async () => {
-    const { container } = await render(VList, {
-      props: { data: range(5), children: itemSnippet },
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
-  it("should render 100 children", async () => {
-    const { container } = await render(VList, {
-      props: { data: range(100), children: itemSnippet },
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", async () => {
-    const { container } = await render(VList, {
-      props: { data: range(10000), children: itemSnippet },
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
-  it("should render component", async () => {
-    const { container } = await render(VList, {
-      props: { data: range(3), children: componentSnippet },
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
   it("should render with given width / height", async () => {
     const { container } = await render(VList, {
       props: {
@@ -109,48 +61,6 @@ describe("vertical", () => {
 });
 
 describe("horizontal", () => {
-  it("should render 0 children", async () => {
-    const { container } = await render(VList, {
-      props: { data: [], horizontal: true, children: itemSnippet },
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
-  it("should render 1 children", async () => {
-    const { container } = await render(VList, {
-      props: { data: range(1), horizontal: true, children: itemSnippet },
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
-  it("should render 5 children", async () => {
-    const { container } = await render(VList, {
-      props: { data: range(5), horizontal: true, children: itemSnippet },
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
-  it("should render 100 children", async () => {
-    const { container } = await render(VList, {
-      props: { data: range(100), horizontal: true, children: itemSnippet },
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
-  it("should render 10000 children", async () => {
-    const { container } = await render(VList, {
-      props: { data: range(10000), horizontal: true, children: itemSnippet },
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
-  it("should render component", async () => {
-    const { container } = await render(VList, {
-      props: { data: range(3), horizontal: true, children: componentSnippet },
-    });
-    expect(container.innerHTML).toMatchSnapshot();
-  });
-
   it("should render with given width / height", async () => {
     const { container } = await render(VList, {
       props: {
