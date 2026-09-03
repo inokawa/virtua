@@ -41,6 +41,20 @@ it("should change components", async () => {
   expect(wrapper.html()).toMatchSnapshot();
 });
 
+it("should render with keepMounted", async () => {
+  const wrapper = await render(ScrollContainer, {
+    attrs: {
+      data: range(100),
+      keepMounted: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
+    },
+    slots: {
+      default: ({ item: data }: SlotType<typeof Virtualizer<number>>) =>
+        h("div", { key: data }, data),
+    },
+  });
+  expect(wrapper.html()).toMatchSnapshot();
+});
+
 describe("vertical", async () => {
   it("should render 0 children", async () => {
     const wrapper = await render(ScrollContainer, {

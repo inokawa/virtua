@@ -66,6 +66,19 @@ it("should render with render prop", async () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
+it("should render with keepMounted", async () => {
+  const { asFragment } = await render(
+    <div style={{ overflowY: "auto" }}>
+      <Virtualizer keepMounted={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90]}>
+        {Array.from({ length: 100 }).map((_, i) => (
+          <div key={i}>{i}</div>
+        ))}
+      </Virtualizer>
+    </div>,
+  );
+  expect(asFragment()).toMatchSnapshot();
+});
+
 describe("vertical", async () => {
   it("should render 0 children", async () => {
     const { asFragment } = await render(

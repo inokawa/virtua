@@ -22,7 +22,12 @@ const range = (length: number) => Array.from({ length }).map((_, i) => i);
   imports: [Virtualizer],
   template: `
     <div style="overflow: auto;">
-      <div virtuaVirtualizer [data]="data()" [horizontal]="horizontal()">
+      <div
+        virtuaVirtualizer
+        [data]="data()"
+        [horizontal]="horizontal()"
+        [keepMounted]="keepMounted()"
+      >
         <ng-template let-item let-index="index"
           ><div>{{ item }}</div></ng-template
         >
@@ -33,6 +38,7 @@ const range = (length: number) => Array.from({ length }).map((_, i) => i);
 class Host {
   readonly data = input.required<number[]>();
   readonly horizontal = input(false);
+  readonly keepMounted = input<number[] | undefined>(undefined);
 }
 
 // A host that renders a nested element, mirroring the "component" cases
@@ -77,6 +83,14 @@ class UlHost {
 
 it("should change container element", async () => {
   const { container } = await render(UlHost, { data: range(5) });
+  expect(container.innerHTML).toMatchSnapshot();
+});
+
+it("should render with keepMounted", async () => {
+  const { container } = await render(Host, {
+    data: range(100),
+    keepMounted: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
+  });
   expect(container.innerHTML).toMatchSnapshot();
 });
 

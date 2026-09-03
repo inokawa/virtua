@@ -38,6 +38,18 @@ it("should change components", async () => {
   expect(container.outerHTML).toMatchSnapshot();
 });
 
+it("should render with keepMounted", async () => {
+  const { container } = await render(Virtualizer, {
+    ...host(),
+    props: {
+      data: range(100),
+      keepMounted: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
+      children: itemSnippet,
+    },
+  });
+  expect(container.outerHTML).toMatchSnapshot();
+});
+
 describe("vertical", () => {
   it("should render 0 children", async () => {
     const { container } = await render(Virtualizer, {

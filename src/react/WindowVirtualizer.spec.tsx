@@ -9,6 +9,19 @@ setupResizeJsDom({
   itemSize: { width: 100, height: 50 },
 });
 
+it("should change components", async () => {
+  const { asFragment } = await render(
+    <WindowVirtualizer as="ul" item="li">
+      <div>0</div>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+    </WindowVirtualizer>,
+  );
+  expect(asFragment()).toMatchSnapshot();
+});
+
 it("should pass index to items", async () => {
   const Item = forwardRef<HTMLDivElement, CustomItemComponentProps>(
     ({ index, ...rest }, ref) => {

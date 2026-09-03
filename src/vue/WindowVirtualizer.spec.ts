@@ -10,18 +10,12 @@ setupResizeJsDom({
 
 const range = (length: number) => Array.from({ length }).map((_, i) => i);
 
-it("should pass attributes to element", async () => {
+it("should change components", async () => {
   const wrapper = await render(WindowVirtualizer<number>, {
     props: {
-      data: range(1),
-    },
-    attrs: {
-      id: "id",
-      className: "class",
-      "tab-index": 0,
-      role: "list",
-      "aria-label": "test",
-      style: { background: "red" },
+      data: range(5),
+      as: "ul",
+      item: "li",
     },
     slots: {
       default: ({ item: data }: SlotType<typeof WindowVirtualizer<number>>) =>

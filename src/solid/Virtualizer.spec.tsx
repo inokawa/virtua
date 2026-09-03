@@ -29,6 +29,20 @@ it("should change components", () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
+it("should render with keepMounted", () => {
+  const { asFragment } = render(() => (
+    <div style={{ "overflow-y": "auto" }}>
+      <Virtualizer
+        data={range(100)}
+        keepMounted={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90]}
+      >
+        {(d) => <div>{d}</div>}
+      </Virtualizer>
+    </div>
+  ));
+  expect(asFragment()).toMatchSnapshot();
+});
+
 describe("vertical", () => {
   it("should render 0 children", () => {
     const { asFragment } = render(() => (

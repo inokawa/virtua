@@ -17,39 +17,18 @@ setupResizeJsDom({
 
 const range = (length: number) => Array.from({ length }).map((_, i) => i);
 
-it("should pass attributes to element", () => {
-  const { asFragment } = render(() => (
-    <VList
-      data={range(1)}
-      id="id"
-      class="class"
-      tab-index={0}
-      role="list"
-      aria-label="test"
-      style={{ background: "red" }}
-    >
-      {(d) => <div>{d}</div>}
-    </VList>
-  ));
-  expect(asFragment()).toMatchSnapshot();
-});
-
-it("should render with keepMounted", () => {
-  const { asFragment } = render(() => (
-    <VList
-      data={range(100)}
-      keepMounted={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90]}
-    >
-      {(d) => <div>{d}</div>}
-    </VList>
-  ));
-  expect(asFragment()).toMatchSnapshot();
-});
-
 describe("vertical", () => {
-  it("should render with given width / height", () => {
+  it("should pass attributes to element", () => {
     const { asFragment } = render(() => (
-      <VList data={range(5)} style={{ width: "100px", height: "800px" }}>
+      <VList
+        data={range(1)}
+        id="id"
+        class="class"
+        tab-index={0}
+        role="list"
+        aria-label="test"
+        style={{ background: "red", width: "100px", height: "800px" }}
+      >
         {(d) => <div>{d}</div>}
       </VList>
     ));
@@ -58,12 +37,17 @@ describe("vertical", () => {
 });
 
 describe("horizontal", () => {
-  it("should render with given width / height", () => {
+  it("should pass attributes to element", () => {
     const { asFragment } = render(() => (
       <VList
-        data={range(5)}
-        style={{ width: "100px", height: "800px" }}
+        data={range(1)}
         horizontal
+        id="id"
+        class="class"
+        tab-index={0}
+        role="list"
+        aria-label="test"
+        style={{ background: "red", width: "100px", height: "800px" }}
       >
         {(d) => <div>{d}</div>}
       </VList>

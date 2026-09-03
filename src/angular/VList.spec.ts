@@ -16,38 +16,18 @@ setupResizeJsDom({
 const range = (length: number) => Array.from({ length }).map((_, i) => i);
 
 @Component({
-  selector: "test-host",
-  imports: [VList],
-  template: `
-    <virtua-vlist
-      [data]="data()"
-      [horizontal]="horizontal()"
-      [keepMounted]="keepMounted()"
-    >
-      <ng-template let-item let-index="index"
-        ><div>{{ item }}</div></ng-template
-      >
-    </virtua-vlist>
-  `,
-})
-class Host {
-  readonly data = input.required<number[]>();
-  readonly horizontal = input(false);
-  readonly keepMounted = input<number[] | undefined>(undefined);
-}
-
-@Component({
   selector: "test-host-attrs",
   imports: [VList],
   template: `
     <virtua-vlist
       [data]="data()"
+      [horizontal]="horizontal()"
       id="id"
       class="class"
       tabindex="0"
       role="list"
       aria-label="test"
-      style="background: red;"
+      style="background: red; width: 100px; height: 800px;"
     >
       <ng-template let-item let-index="index"
         ><div>{{ item }}</div></ng-template
@@ -57,52 +37,20 @@ class Host {
 })
 class AttrsHost {
   readonly data = input.required<number[]>();
-}
-
-@Component({
-  selector: "test-host-sized",
-  imports: [VList],
-  template: `
-    <virtua-vlist
-      [data]="data()"
-      [horizontal]="horizontal()"
-      style="width: 100px; height: 800px;"
-    >
-      <ng-template let-item let-index="index"
-        ><div>{{ item }}</div></ng-template
-      >
-    </virtua-vlist>
-  `,
-})
-class SizedHost {
-  readonly data = input.required<number[]>();
   readonly horizontal = input(false);
 }
 
-it("should pass attributes to element", async () => {
-  const { container } = await render(AttrsHost, { data: range(1) });
-  expect(container.innerHTML).toMatchSnapshot();
-});
-
-it("should render with keepMounted", async () => {
-  const { container } = await render(Host, {
-    data: range(100),
-    keepMounted: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90],
-  });
-  expect(container.innerHTML).toMatchSnapshot();
-});
-
 describe("vertical", () => {
-  it("should render with given width / height", async () => {
-    const { container } = await render(SizedHost, { data: range(5) });
+  it("should pass attributes to element", async () => {
+    const { container } = await render(AttrsHost, { data: range(1) });
     expect(container.innerHTML).toMatchSnapshot();
   });
 });
 
 describe("horizontal", () => {
-  it("should render with given width / height", async () => {
-    const { container } = await render(SizedHost, {
-      data: range(5),
+  it("should pass attributes to element", async () => {
+    const { container } = await render(AttrsHost, {
+      data: range(1),
       horizontal: true,
     });
     expect(container.innerHTML).toMatchSnapshot();
