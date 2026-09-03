@@ -124,6 +124,44 @@ it("display: none (WindowVirtualizer)", async () => {
   expect(spacer.style.height).toEqual(initialHeight);
 });
 
+it("hidden document does not cancel imperative scroll", async () => {
+  const ref = createRef<VirtualizerHandle>();
+  const Component = () => {
+    useLayoutEffect(() => {
+      ref.current!.scrollToIndex(items.length - 1, { align: "end" });
+    }, []);
+
+    // Emulates hidden document
+    return (
+      <div style={{ contentVisibility: "hidden" }}>
+        <div style={{ height: 400, overflowY: "auto" }}>
+          <Virtualizer ref={ref} data={items}>
+            {(d) => (
+              <div key={d} style={{ height: 60 }}>
+                item-{d}
+              </div>
+            )}
+          </Virtualizer>
+        </div>
+      </div>
+    );
+  };
+  const container = render(<Component />);
+
+  // Scheduled scroll gives up 150ms after the last resize
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  const hidden = container.firstElementChild as HTMLElement;
+  const scroller = hidden.firstElementChild as HTMLElement;
+  const bottom = items.length * 60 - 400;
+  expect(scroller.checkVisibility()).toBe(false);
+  // The estimated size must be smaller than the actual one, or a canceled scroll is also clamped to the bottom
+  expect(scroller.scrollTop).toBeLessThan(bottom);
+
+  hidden.style.contentVisibility = "";
+
+  await expect.poll(() => scroller.scrollTop, { timeout: 5000 }).toBe(bottom);
+});
+
 it("flex parent", async () => {
   const container = render(
     <div
@@ -216,16 +254,21 @@ it("shadow DOM", async () => {
 
 it("transform: scale", async () => {
   const container = render(
-    <div style={{ transform: "scale(0.5)", transformOrigin: "0 0" }}>
-      <div style={{ height: 400, overflowY: "auto" }}>
-        <Virtualizer data={items}>
-          {(d) => (
-            <div key={d} style={{ height: 30 }}>
-              item-{d}
-            </div>
-          )}
-        </Virtualizer>
-      </div>
+    <div
+      style={{
+        transform: "scale(0.5)",
+        transformOrigin: "0 0",
+        height: 400,
+        overflowY: "auto",
+      }}
+    >
+      <Virtualizer data={items}>
+        {(d) => (
+          <div key={d} style={{ height: 30 }}>
+            item-{d}
+          </div>
+        )}
+      </Virtualizer>
     </div>,
   );
   await expectVirtualized(container, "item-0", "item-999");
@@ -237,16 +280,14 @@ it("transform: scale", async () => {
 
 it("zoom", async () => {
   const container = render(
-    <div style={{ zoom: 1.5 }}>
-      <div style={{ height: 400, overflowY: "auto" }}>
-        <Virtualizer data={items}>
-          {(d) => (
-            <div key={d} style={{ height: 30 }}>
-              item-{d}
-            </div>
-          )}
-        </Virtualizer>
-      </div>
+    <div style={{ zoom: 1.5, height: 400, overflowY: "auto" }}>
+      <Virtualizer data={items}>
+        {(d) => (
+          <div key={d} style={{ height: 30 }}>
+            item-{d}
+          </div>
+        )}
+      </Virtualizer>
     </div>,
   );
   await expectVirtualized(container, "item-0", "item-999");
