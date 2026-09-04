@@ -4,7 +4,7 @@ import { createApp, type VNode } from "vue";
 import { VList } from "./VList.js";
 import { Virtualizer } from "./Virtualizer.js";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
-import { expectVirtualized } from "../../spec/browser.js";
+import { expectVirtualizedAndScrollable } from "../../spec/browser.js";
 
 const itemSlot = {
   default: ({ item }: { item: number }) => <div>item-{item}</div>,
@@ -32,7 +32,7 @@ it("VList", async () => {
       {itemSlot}
     </VList>,
   );
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 });
 
 it("Virtualizer", async () => {
@@ -43,7 +43,7 @@ it("Virtualizer", async () => {
       </Virtualizer>
     </div>,
   );
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 });
 
 it("WindowVirtualizer", async () => {
@@ -52,7 +52,7 @@ it("WindowVirtualizer", async () => {
       {itemSlot}
     </WindowVirtualizer>,
   );
-  await expectVirtualized(
+  await expectVirtualizedAndScrollable(
     container,
     "item-0",
     "item-999",

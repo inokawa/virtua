@@ -12,7 +12,11 @@ import {
   type VirtualizerHandle,
   WindowVirtualizer,
 } from "./react/index.js";
-import { expectVirtualized, getVirtualizer } from "../spec/browser.js";
+import {
+  expectVirtualized,
+  expectVirtualizedAndScrollable,
+  getVirtualizer,
+} from "../spec/browser.js";
 
 const items = Array.from({ length: 1000 }, (_, i) => i);
 
@@ -27,13 +31,6 @@ const render = (node: ReactNode, doc: Document = document) => {
   root.render(node);
   onTestFinished(() => root.unmount());
   return container;
-};
-
-const waitForMount = async (container: Element) => {
-  await expect
-    .poll(() => container.textContent, { timeout: 5000 })
-    .toContain("item-0");
-  expect(container.textContent).not.toContain("item-999");
 };
 
 const waitForStableHeight = async (
@@ -86,7 +83,7 @@ it("display: none (Virtualizer)", async () => {
       </Virtualizer>
     </div>,
   );
-  await waitForMount(container);
+  await expectVirtualized(container, "item-0", "item-999");
 
   const virtualizer = getVirtualizer(container);
   const initialHeight = await waitForStableHeight(virtualizer);
@@ -109,7 +106,7 @@ it("display: none (WindowVirtualizer)", async () => {
       )}
     </WindowVirtualizer>,
   );
-  await waitForMount(container);
+  await expectVirtualized(container, "item-0", "item-999");
 
   const virtualizer = getVirtualizer(container);
   const initialHeight = await waitForStableHeight(virtualizer);
@@ -179,7 +176,7 @@ it("flex parent", async () => {
       </Virtualizer>
     </div>,
   );
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 });
 
 it("new window", async () => {
@@ -204,7 +201,7 @@ it("new window", async () => {
     </div>,
     newWindow!.document,
   );
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 });
 
 it("iframe", async () => {
@@ -225,7 +222,7 @@ it("iframe", async () => {
     </div>,
     iframe.contentDocument!,
   );
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 });
 
 it("shadow DOM", async () => {
@@ -247,7 +244,7 @@ it("shadow DOM", async () => {
     </div>,
   );
   onTestFinished(() => root.unmount());
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 });
 
 it("transform: scale", async () => {
@@ -269,7 +266,7 @@ it("transform: scale", async () => {
       </Virtualizer>
     </div>,
   );
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 
   const virtualizer = getVirtualizer(container);
   await waitForStableHeight(virtualizer);
@@ -288,7 +285,7 @@ it("zoom", async () => {
       </Virtualizer>
     </div>,
   );
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 
   const virtualizer = getVirtualizer(container);
   await waitForStableHeight(virtualizer);
@@ -307,7 +304,7 @@ it("fractional item size", async () => {
       </Virtualizer>
     </div>,
   );
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 
   const virtualizer = getVirtualizer(container);
   await waitForStableHeight(virtualizer);
@@ -358,7 +355,7 @@ it("prepending cancels imperative scroll", async () => {
   };
 
   const container = render(<Component />);
-  await waitForMount(container);
+  await expectVirtualized(container, "item-0", "item-999");
 
   // scroll to end
   const scroller = getVirtualizer(container).parentElement!;

@@ -7,12 +7,20 @@ export const expectVirtualized = async (
   container: Element,
   first: string,
   last: string,
-  getScroller: () => Element = () => getVirtualizer(container).parentElement!,
 ) => {
   await expect
     .poll(() => container.textContent, { timeout: 5000 })
     .toContain(first);
   expect(container.textContent).not.toContain(last);
+};
+
+export const expectVirtualizedAndScrollable = async (
+  container: Element,
+  first: string,
+  last: string,
+  getScroller: () => Element = () => getVirtualizer(container).parentElement!,
+) => {
+  await expectVirtualized(container, first, last);
   const scroller = getScroller();
   await expect
     .poll(

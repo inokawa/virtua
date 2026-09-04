@@ -3,7 +3,7 @@ import { mount, unmount, createRawSnippet, type Component } from "svelte";
 import VList from "./VList.svelte";
 import Virtualizer from "./Virtualizer.svelte";
 import WindowVirtualizer from "./WindowVirtualizer.svelte";
-import { expectVirtualized } from "../../spec/browser.js";
+import { expectVirtualizedAndScrollable } from "../../spec/browser.js";
 
 const itemSnippet = createRawSnippet<[number, number]>((item) => ({
   render: () => `<div>item-${item()}</div>`,
@@ -34,7 +34,7 @@ it("VList", async () => {
     style: "height: 400px;",
     children: itemSnippet,
   });
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 });
 
 it("Virtualizer", async () => {
@@ -43,7 +43,7 @@ it("Virtualizer", async () => {
     { data: Array.from({ length: 1000 }, (_, i) => i), children: itemSnippet },
     "height: 400px; overflow-y: auto;",
   );
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 });
 
 it("WindowVirtualizer", async () => {
@@ -51,7 +51,7 @@ it("WindowVirtualizer", async () => {
     data: Array.from({ length: 1000 }, (_, i) => i),
     children: itemSnippet,
   });
-  await expectVirtualized(
+  await expectVirtualizedAndScrollable(
     container,
     "item-0",
     "item-999",

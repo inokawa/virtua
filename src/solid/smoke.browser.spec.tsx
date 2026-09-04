@@ -7,7 +7,7 @@ import { type JSX } from "solid-js";
 import { VList } from "./VList.js";
 import { Virtualizer } from "./Virtualizer.js";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
-import { expectVirtualized } from "../../spec/browser.js";
+import { expectVirtualizedAndScrollable } from "../../spec/browser.js";
 
 const render = (node: () => JSX.Element) => {
   const container = document.body.appendChild(document.createElement("div"));
@@ -30,7 +30,7 @@ it("VList", async () => {
       {(d) => <div>item-{d}</div>}
     </VList>
   ));
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 });
 
 it("Virtualizer", async () => {
@@ -41,7 +41,7 @@ it("Virtualizer", async () => {
       </Virtualizer>
     </div>
   ));
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 });
 
 it("WindowVirtualizer", async () => {
@@ -50,7 +50,7 @@ it("WindowVirtualizer", async () => {
       {(d) => <div>item-{d}</div>}
     </WindowVirtualizer>
   ));
-  await expectVirtualized(
+  await expectVirtualizedAndScrollable(
     container,
     "item-0",
     "item-999",

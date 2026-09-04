@@ -5,7 +5,7 @@ import { VList } from "./VList.js";
 import { Virtualizer } from "./Virtualizer.js";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
 import { VGrid } from "./VGrid.js";
-import { expectVirtualized } from "../../spec/browser.js";
+import { expectVirtualizedAndScrollable } from "../../spec/browser.js";
 
 const render = (node: ReactNode) => {
   const container = document.body.appendChild(document.createElement("div"));
@@ -29,7 +29,7 @@ it("VList", async () => {
       {(d) => <div key={d}>item-{d}</div>}
     </VList>,
   );
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 });
 
 it("Virtualizer", async () => {
@@ -40,7 +40,7 @@ it("Virtualizer", async () => {
       </Virtualizer>
     </div>,
   );
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 });
 
 it("WindowVirtualizer", async () => {
@@ -49,7 +49,7 @@ it("WindowVirtualizer", async () => {
       {(d) => <div key={d}>item-{d}</div>}
     </WindowVirtualizer>,
   );
-  await expectVirtualized(
+  await expectVirtualizedAndScrollable(
     container,
     "item-0",
     "item-999",
@@ -67,5 +67,5 @@ it("VGrid", async () => {
       )}
     </VGrid>,
   );
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 });

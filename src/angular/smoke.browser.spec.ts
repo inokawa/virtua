@@ -4,7 +4,7 @@ import { TestBed } from "@angular/core/testing";
 import { VList } from "./VList.js";
 import { Virtualizer } from "./Virtualizer.js";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
-import { expectVirtualized } from "../../spec/browser.js";
+import { expectVirtualizedAndScrollable } from "../../spec/browser.js";
 
 @Component({
   selector: "smoke-vlist",
@@ -66,17 +66,17 @@ const render = (host: Type<unknown>) => {
 
 it("VList", async () => {
   const container = render(VListHost);
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 });
 
 it("Virtualizer", async () => {
   const container = render(VirtualizerHost);
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 });
 
 it("WindowVirtualizer", async () => {
   const container = render(WindowVirtualizerHost);
-  await expectVirtualized(
+  await expectVirtualizedAndScrollable(
     container,
     "item-0",
     "item-999",
