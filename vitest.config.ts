@@ -46,7 +46,8 @@ export default defineConfig({
         },
       },
       {
-        plugins: [solid()],
+        // ssr: true stops the plugin from forcing the browser condition, so the SSR spec resolves solid-js's server build. JSX generation follows the environment, so the jsdom specs are unaffected.
+        plugins: [solid({ ssr: true })],
         test: {
           name: "solid",
           include: ["src/solid/**/!(*.browser).spec.tsx"],
@@ -72,8 +73,7 @@ export default defineConfig({
           setupFiles: ["./spec/setup.ts"],
         },
         resolve: {
-          // Resolve svelte's client (browser) build so `mount` works in jsdom.
-          // The SSR spec runs in the node environment and is unaffected.
+          // Resolve svelte's client build so `mount` works in jsdom. The SSR spec runs in the node environment and is unaffected.
           conditions: ["browser"],
         },
       },
@@ -84,9 +84,7 @@ export default defineConfig({
           include: ["src/angular/**/!(*.browser).spec.ts"],
           environment: "jsdom",
           setupFiles: ["./spec/setup.ts", "./spec/setup.angular.ts"],
-          // @analogjs/vite-plugin-angular defaults to vmThreads, whose cjs/esm
-          // interop can't load jsdom in the SSR spec. It's only needed for
-          // zone.js/fakeAsync, and these tests are zoneless.
+          // The plugin's default vmThreads can't load jsdom in the SSR spec, and is only needed for zone.js/fakeAsync, which these zoneless tests don't use.
           pool: "threads",
         },
       },
