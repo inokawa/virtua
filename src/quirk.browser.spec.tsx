@@ -12,7 +12,7 @@ import {
   type VirtualizerHandle,
   WindowVirtualizer,
 } from "./react/index.js";
-import { expectVirtualized } from "../spec/browser.js";
+import { expectVirtualized, getVirtualizer } from "../spec/browser.js";
 
 const items = Array.from({ length: 1000 }, (_, i) => i);
 
@@ -36,11 +36,13 @@ const waitForMount = async (container: Element) => {
   expect(container.textContent).not.toContain("item-999");
 };
 
-const waitForStableHeight = async (spacer: HTMLElement): Promise<string> => {
+const waitForStableHeight = async (
+  virtualizer: HTMLElement,
+): Promise<string> => {
   let prev: string | undefined;
   await expect
     .poll(() => {
-      const height = spacer.style.height;
+      const height = virtualizer.style.height;
       const isStable = !!height && height === prev;
       prev = height;
       return isStable;
@@ -49,12 +51,9 @@ const waitForStableHeight = async (spacer: HTMLElement): Promise<string> => {
   return prev!;
 };
 
-const getSpacer = (container: Element) =>
-  container.querySelector('*[style*="flex: 0 0 auto"]') as HTMLElement;
-
 // Items must be placed in layout size, not in visual size of getBoundingClientRect or rounded size of offsetHeight
-const expectItemDistance = (spacer: HTMLElement, size: number) => {
-  const tops = Array.from(spacer.children, (e) =>
+const expectItemDistance = (virtualizer: HTMLElement, size: number) => {
+  const tops = Array.from(virtualizer.children, (e) =>
     parseFloat((e as HTMLElement).style.top),
   ).sort((a, b) => a - b);
   expect(tops.length).toBeGreaterThan(1);
@@ -89,16 +88,15 @@ it("display: none (Virtualizer)", async () => {
   );
   await waitForMount(container);
 
-  const scroller = container.firstElementChild as HTMLElement;
-  const spacer = scroller.firstElementChild as HTMLElement;
-  const initialHeight = await waitForStableHeight(spacer);
+  const virtualizer = getVirtualizer(container);
+  const initialHeight = await waitForStableHeight(virtualizer);
 
   container.style.display = "none";
-  await waitForZeroSizeNotification(spacer);
+  await waitForZeroSizeNotification(virtualizer);
   // let pending resize notifications propagate
   await new Promise((resolve) => setTimeout(resolve, 100));
 
-  expect(spacer.style.height).toEqual(initialHeight);
+  expect(virtualizer.style.height).toEqual(initialHeight);
 });
 
 it("display: none (WindowVirtualizer)", async () => {
@@ -113,15 +111,15 @@ it("display: none (WindowVirtualizer)", async () => {
   );
   await waitForMount(container);
 
-  const spacer = container.firstElementChild as HTMLElement;
-  const initialHeight = await waitForStableHeight(spacer);
+  const virtualizer = getVirtualizer(container);
+  const initialHeight = await waitForStableHeight(virtualizer);
 
   container.style.display = "none";
-  await waitForZeroSizeNotification(spacer);
+  await waitForZeroSizeNotification(virtualizer);
   // let pending resize notifications propagate
   await new Promise((resolve) => setTimeout(resolve, 100));
 
-  expect(spacer.style.height).toEqual(initialHeight);
+  expect(virtualizer.style.height).toEqual(initialHeight);
 });
 
 it("hidden document does not cancel imperative scroll", async () => {
@@ -151,7 +149,7 @@ it("hidden document does not cancel imperative scroll", async () => {
   // Scheduled scroll gives up 150ms after the last resize
   await new Promise((resolve) => setTimeout(resolve, 400));
   const hidden = container.firstElementChild as HTMLElement;
-  const scroller = hidden.firstElementChild as HTMLElement;
+  const scroller = getVirtualizer(container).parentElement!;
   const bottom = items.length * 60 - 400;
   expect(scroller.checkVisibility()).toBe(false);
   // The estimated size must be smaller than the actual one, or a canceled scroll is also clamped to the bottom
@@ -273,9 +271,9 @@ it("transform: scale", async () => {
   );
   await expectVirtualized(container, "item-0", "item-999");
 
-  const spacer = getSpacer(container);
-  await waitForStableHeight(spacer);
-  expectItemDistance(spacer, 30);
+  const virtualizer = getVirtualizer(container);
+  await waitForStableHeight(virtualizer);
+  expectItemDistance(virtualizer, 30);
 });
 
 it("zoom", async () => {
@@ -292,9 +290,9 @@ it("zoom", async () => {
   );
   await expectVirtualized(container, "item-0", "item-999");
 
-  const spacer = getSpacer(container);
-  await waitForStableHeight(spacer);
-  expectItemDistance(spacer, 30);
+  const virtualizer = getVirtualizer(container);
+  await waitForStableHeight(virtualizer);
+  expectItemDistance(virtualizer, 30);
 });
 
 it("fractional item size", async () => {
@@ -311,9 +309,9 @@ it("fractional item size", async () => {
   );
   await expectVirtualized(container, "item-0", "item-999");
 
-  const spacer = getSpacer(container);
-  await waitForStableHeight(spacer);
-  expectItemDistance(spacer, 30.5);
+  const virtualizer = getVirtualizer(container);
+  await waitForStableHeight(virtualizer);
+  expectItemDistance(virtualizer, 30.5);
 });
 
 it("prepending cancels imperative scroll", async () => {
@@ -363,7 +361,7 @@ it("prepending cancels imperative scroll", async () => {
   await waitForMount(container);
 
   // scroll to end
-  const scroller = container.firstElementChild!;
+  const scroller = getVirtualizer(container).parentElement!;
   scroller.scrollTop = scroller.scrollHeight;
   await expect.poll(() => scrollEnded).toBe(true);
   scrollEnded = false;
