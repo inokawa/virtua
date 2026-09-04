@@ -1,8 +1,5 @@
 import type { ItemsRange } from "../types.js";
 
-/**
- * @internal
- */
 export interface Layout {
   $getRange(startOffset: number, endOffset: number): ItemsRange;
   $findIndex(offset: number): number;

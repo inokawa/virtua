@@ -13,9 +13,6 @@ export const clamp = (
   maxValue: number,
 ): number => min(maxValue, max(minValue, value));
 
-/**
- * @internal
- */
 export const sort = <T extends number>(arr: readonly T[]): T[] => {
   return [...arr].sort((a, b) => a - b);
 };
@@ -29,9 +26,6 @@ export const timeout = setTimeout;
  */
 export const cancelTimeout = clearTimeout;
 
-/**
- * @internal
- */
 export const microtask: (fn: () => void) => void =
   typeof queueMicrotask === "function"
     ? queueMicrotask

@@ -125,9 +125,6 @@ const createScrollScheduler = (
   ];
 };
 
-/**
- * @internal
- */
 export interface Driver {
   $observe(containerElement: HTMLElement, viewport?: HTMLElement): void;
   $dispose(): void;
@@ -137,17 +134,11 @@ export interface Driver {
   $getBaseOffset(): number;
 }
 
-/**
- * @internal
- */
 export type DriverFactory = (
   store: VirtualStore,
   isHorizontal: boolean,
 ) => Driver;
 
-/**
- * @internal
- */
 export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
@@ -273,9 +264,6 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
   };
 };
 
-/**
- * @internal
- */
 export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
@@ -456,9 +444,6 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
   };
 };
 
-/**
- * @internal
- */
 export type GridDriver = {
   $observe(containerElement: HTMLElement, viewport?: HTMLElement): void;
   $dispose(): void;
@@ -470,17 +455,11 @@ export type GridDriver = {
   $effect(): void;
 };
 
-/**
- * @internal
- */
 export type GridDriverFactory = (
   rowStore: VirtualStore,
   colStore: VirtualStore,
 ) => GridDriver;
 
-/**
- * @internal
- */
 export const createContainerGridDriver: GridDriverFactory = (
   rowStore,
   colStore,

@@ -120,10 +120,6 @@ export default defineConfig(({ mode }): UserConfig => {
             include: ["src"],
             // angular d.ts are emitted by ngc with tsconfig.angular.build.json
             exclude: ["**/*.{spec,stories}.*", "src/angular"],
-            beforeWriteFile: (filePath, content) =>
-              filePath.endsWith(`core${path.sep}index.d.ts`)
-                ? { content: "// @ts-nocheck\n" + content }
-                : undefined,
           }),
         ],
       };

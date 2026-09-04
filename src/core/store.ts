@@ -19,21 +19,13 @@ type ScrollMode =
   | typeof SCROLL_BY_MANUAL_SCROLL
   | typeof SCROLL_BY_SHIFT;
 
-/** @internal */
 export const ACTION_SCROLL = 1;
-/** @internal */
 export const ACTION_SCROLL_END = 2;
-/** @internal */
 export const ACTION_ITEM_RESIZE = 3;
-/** @internal */
 export const ACTION_VIEWPORT_RESIZE = 4;
-/** @internal */
 export const ACTION_ITEMS_LENGTH_CHANGE = 5;
-/** @internal */
 export const ACTION_START_OFFSET_CHANGE = 6;
-/** @internal */
 export const ACTION_MANUAL_SCROLL = 7;
-/** @internal */
 export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 8;
 
 type Actions =
@@ -49,31 +41,20 @@ type Actions =
   | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
   | [type: typeof ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, offset: number];
 
-/** @internal */
 export const UPDATE_VIRTUAL_STATE = 0b0001;
-/** @internal */
 export const UPDATE_SIZE_EVENT = 0b0010;
-/** @internal */
 export const UPDATE_SCROLL_EVENT = 0b0100;
-/** @internal */
 export const UPDATE_SCROLL_END_EVENT = 0b1000;
 
-/**
- * @internal
- */
 export const getScrollSize = (store: VirtualStore): number => {
   return max(store.$getTotalSize(), store.$getViewportSize());
 };
 
 type Subscriber = (sync?: boolean) => void;
 
-/** @internal */
 export type StateVersion =
   number & {}; /* hack for typescript to pretend as not falsy */
 
-/**
- * @internal
- */
 export type VirtualStore = {
   $dispose(): void;
   $getStateVersion(): StateVersion;
@@ -88,14 +69,12 @@ export type VirtualStore = {
   $getViewportSize(): number;
   $getStartSpacerSize(): number;
   $getTotalSize(): number;
+  /** @internal */
   _flushJump(): [number, boolean];
   $subscribe(target: number, cb: Subscriber): () => void;
   $update(...action: Actions): void;
 };
 
-/**
- * @internal
- */
 export const createVirtualStore = (
   {
     $getRange: getRange,
