@@ -8,8 +8,11 @@ import {
   type VirtualStore,
   ACTION_SCROLL_END,
   ACTION_START_OFFSET_CHANGE,
+  ACTION_MANUAL_SCROLL,
+  ACTION_BEFORE_MANUAL_SMOOTH_SCROLL,
+  UPDATE_SIZE_EVENT,
 } from "./store.js";
-import { cancelTimeout, timeout } from "./utils.js";
+import { cancelTimeout, microtask, timeout } from "./utils.js";
 
 /**
  * @internal
@@ -37,37 +40,15 @@ export const createResizeObserver = (cb: ResizeObserverCallback) => {
 };
 
 /**
- * scrollTop/scrollLeft can be negative value under certain styles.
- * - direction: rtl https://github.com/othree/jquery.rtl-scroll-type
- * - writing-mode   https://people.igalia.com/fwang/scrollable-elements-in-non-default-writing-modes/
- * - flex-direction: column-reverse/row-reverse
- *
- * top/left bottom/right
- * 0        100          spec compliant bottom/right overflow, or possibly top/left overflow in Chrome earlier than v85
- * -100     0            spec compliant top/left overflow
- * https://drafts.csswg.org/cssom-view/#scroll-an-element
- * @internal
- */
-export const normalizeScrollOffset = (
-  offset: number,
-  isNegative: boolean,
-): number => {
-  return isNegative ? -offset : offset;
-};
-
-/**
  * @internal
  */
 export const createScrollObserver = (
   store: VirtualStore,
   viewport: HTMLElement | Window,
+  scroller: HTMLElement,
   isHorizontal: boolean,
-  getScrollOffset: () => number,
-  updateScrollOffset: (
-    value: number,
-    shift: boolean,
-    isMomentumScrolling: boolean,
-  ) => void,
+  isRtl: boolean,
+  onMomentumJump?: (() => void) | null,
   getStartOffset?: () => number,
 ) => {
   let lastScrollTime = 0;
@@ -75,10 +56,40 @@ export const createScrollObserver = (
   let touching = false;
   let justTouchEnded = false;
   let stillMomentumScrolling = false;
+  let cancelScroll: (() => void) | undefined;
 
   let scrollEndTimer: ReturnType<typeof timeout> | undefined;
 
   const now = Date.now;
+  const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
+  const scrollToKey = isHorizontal ? "left" : "top";
+
+  /**
+   * scrollTop/scrollLeft can be negative value under certain styles.
+   * - direction: rtl https://github.com/othree/jquery.rtl-scroll-type
+   * - writing-mode   https://people.igalia.com/fwang/scrollable-elements-in-non-default-writing-modes/
+   * - flex-direction: column-reverse/row-reverse
+   *
+   * top/left bottom/right
+   * 0        100          spec compliant bottom/right overflow, or possibly top/left overflow in Chrome earlier than v85
+   * -100     0            spec compliant top/left overflow
+   * https://drafts.csswg.org/cssom-view/#scroll-an-element
+   */
+  const normalizeScrollOffset = (offset: number): number => {
+    return isRtl ? -offset : offset;
+  };
+
+  const getScrollOffset = () =>
+    normalizeScrollOffset(scroller[scrollOffsetKey]);
+
+  // The given offset will be clamped by browser
+  // https://drafts.csswg.org/cssom-view/#dom-element-scrolltop
+  const scrollTo = (offset: number, smooth?: boolean) => {
+    scroller.scrollTo({
+      [scrollToKey]: normalizeScrollOffset(offset),
+      behavior: smooth ? "smooth" : "instant",
+    });
+  };
 
   // Debounce scroll end detection
   const onScrollEnd = () => {
@@ -168,13 +179,115 @@ export const createScrollObserver = (
     _fixScrollJump: () => {
       const [jump, shift] = store._flushJump();
       if (!jump) return;
-      updateScrollOffset(jump, shift, stillMomentumScrolling);
+
+      if (stillMomentumScrolling && onMomentumJump) {
+        onMomentumJump();
+      }
       stillMomentumScrolling = false;
 
-      if (shift && store.$getViewportSize() > store.$getTotalSize()) {
-        // In this case applying jump may not cause scroll.
-        // Current logic expects scroll event occurs after applying jump so we dispatch it manually.
-        store.$update(ACTION_SCROLL, getScrollOffset());
+      const target = store.$getScrollOffset() + jump;
+      if (
+        target <= 0 ||
+        target >=
+          store.$getStartSpacerSize() +
+            store.$getTotalSize() -
+            store.$getViewportSize()
+      ) {
+        // Use absolute position at the edges not to exceed scrollable bounds
+        // https://github.com/inokawa/virtua/discussions/475
+        scrollTo(target);
+      } else {
+        // Use relative position not to overwrite concurrent scrolling
+        // https://github.com/inokawa/virtua/issues/898
+        scroller.scrollBy({
+          [scrollToKey]: normalizeScrollOffset(jump),
+          behavior: "instant",
+        });
+      }
+
+      if (shift) {
+        // https://github.com/inokawa/virtua/issues/357
+        cancelScroll && cancelScroll();
+
+        if (store.$getViewportSize() > store.$getTotalSize()) {
+          // In this case applying jump may not cause scroll.
+          // Current logic expects scroll event occurs after applying jump so we dispatch it manually.
+          store.$update(ACTION_SCROLL, getScrollOffset());
+        }
+      }
+    },
+    _scroll: (getTargetOffset: () => number, smooth?: boolean) => {
+      if (cancelScroll) {
+        // Cancel waiting scrollTo
+        cancelScroll();
+      }
+
+      let stopped: boolean | undefined;
+      let timerId: ReturnType<typeof timeout> | undefined;
+      let unsubscribe: (() => void) | undefined;
+
+      // Stopping is kept as a state, not delivered as an event, so it can never be missed by a race with measurement
+      // https://github.com/inokawa/virtua/issues/715
+      const stop = (cancelScroll = () => {
+        stopped = true;
+        cancelTimeout(timerId);
+        unsubscribe && unsubscribe();
+      });
+
+      // The scroll destination is not fixed until the items on the way are measured and the timing is not predictable
+      const onMeasured = () => {
+        if (stopped) {
+          return;
+        }
+
+        // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
+        // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
+        // https://github.com/inokawa/virtua/issues/450
+        if (store.$getViewportSize()) {
+          // Stop when items around scroll destination completely measured
+          cancelTimeout(timerId);
+          timerId = timeout(stop, 150);
+        }
+
+        if (smooth) {
+          // Smooth scrolling can be started only once, so wait for all the items on the way to be measured.
+          for (let [i, end] = store.$getRange(0); i <= end; i++) {
+            if (store.$isUnmeasuredItem(i)) {
+              return;
+            }
+          }
+          stop();
+        }
+
+        store.$update(ACTION_MANUAL_SCROLL);
+        scrollTo(getTargetOffset(), smooth);
+      };
+
+      const start = () => {
+        if (stopped) {
+          return;
+        }
+        // Batch the measurements in the same task to scroll only once
+        let queued: boolean | undefined;
+        unsubscribe = store.$subscribe(UPDATE_SIZE_EVENT, () => {
+          if (queued) {
+            return;
+          }
+          queued = true;
+          microtask(() => {
+            queued = false;
+            onMeasured();
+          });
+        });
+        onMeasured();
+      };
+
+      if (smooth) {
+        store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
+        // https://github.com/inokawa/virtua/issues/590
+        microtask(start);
+      } else {
+        start();
       }
     },
   };
