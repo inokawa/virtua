@@ -39,7 +39,6 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
-  const overflowKey = isHorizontal ? "overflowX" : "overflowY";
 
   const sizeKey = isHorizontal ? "width" : "height";
   const mountedIndexes = new WeakMap<Element, number>();
@@ -76,6 +75,7 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
         isHorizontal,
         isHorizontal && getComputedStyle(viewport).direction === "rtl",
         () => {
+          const overflowKey = isHorizontal ? "overflowX" : "overflowY";
           // If we update scroll position while touching on iOS, the position will be reverted.
           // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
           // That means we have no reliable way to confirm still touched or not if user touches more than once during momentum scrolling...
