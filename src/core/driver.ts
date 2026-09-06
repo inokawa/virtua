@@ -1,7 +1,4 @@
 import {
-  UPDATE_SIZE_EVENT,
-  ACTION_MANUAL_SCROLL,
-  ACTION_BEFORE_MANUAL_SMOOTH_SCROLL,
   ACTION_ITEM_RESIZE,
   ACTION_VIEWPORT_RESIZE,
   type VirtualStore,
@@ -9,121 +6,11 @@ import {
 import {
   createResizeObserver,
   createScrollObserver,
-  normalizeScrollOffset,
   type ScrollObserver,
 } from "./observer.js";
 import { type ItemResize } from "./types.js";
-import {
-  cancelTimeout,
-  createPromise,
-  max,
-  microtask,
-  NULL,
-  timeout,
-} from "./utils.js";
+import { createPromise, max, NULL, timeout } from "./utils.js";
 import { getCurrentDocument, getCurrentWindow } from "./environment.js";
-
-type ScheduleScrollFunction = (
-  getTargetOffset: () => number,
-  smooth?: boolean,
-) => Promise<void>;
-
-const createScrollScheduler = (
-  store: VirtualStore,
-  initialized: () => Promise<boolean>,
-  scroll: (offset: number, smooth?: boolean) => void,
-): [scroll: ScheduleScrollFunction, cancel: () => void] => {
-  let cancelScroll: (() => void) | undefined;
-
-  // The given offset will be clamped by browser
-  // https://drafts.csswg.org/cssom-view/#dom-element-scrolltop
-  return [
-    async (getTargetOffset, smooth) => {
-      // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
-      // https://github.com/inokawa/virtua/pull/733
-      // https://github.com/inokawa/virtua/pull/750
-      if (!(await initialized())) {
-        return;
-      }
-
-      if (cancelScroll) {
-        // Cancel waiting scrollTo
-        cancelScroll();
-      }
-
-      let stopped: boolean | undefined;
-      let timerId: ReturnType<typeof timeout> | undefined;
-      let unsubscribe: (() => void) | undefined;
-
-      // Stopping is kept as a state, not delivered as an event, so it can never be missed by a race with measurement
-      // https://github.com/inokawa/virtua/issues/715
-      const stop = (cancelScroll = () => {
-        stopped = true;
-        cancelTimeout(timerId);
-        unsubscribe && unsubscribe();
-      });
-
-      // The scroll destination is not fixed until the items on the way are measured and the timing is not predictable
-      const onMeasured = () => {
-        if (stopped) {
-          return;
-        }
-
-        // Resize event may not happen when the window/tab is not visible, or during browser back in Safari.
-        // We have to wait for the initial measurement to avoid failing imperative scroll on mount.
-        // https://github.com/inokawa/virtua/issues/450
-        if (store.$getViewportSize()) {
-          // Stop when items around scroll destination completely measured
-          cancelTimeout(timerId);
-          timerId = timeout(stop, 150);
-        }
-
-        if (smooth) {
-          // Smooth scrolling can be started only once, so wait for all the items on the way to be measured.
-          for (let [i, end] = store.$getRange(0); i <= end; i++) {
-            if (store.$isUnmeasuredItem(i)) {
-              return;
-            }
-          }
-          stop();
-        }
-
-        store.$update(ACTION_MANUAL_SCROLL);
-        scroll(getTargetOffset(), smooth);
-      };
-
-      const start = () => {
-        if (stopped) {
-          return;
-        }
-        // Batch the measurements in the same task to scroll only once
-        let queued: boolean | undefined;
-        unsubscribe = store.$subscribe(UPDATE_SIZE_EVENT, () => {
-          if (queued) {
-            return;
-          }
-          queued = true;
-          microtask(() => {
-            queued = false;
-            onMeasured();
-          });
-        });
-        onMeasured();
-      };
-
-      if (smooth) {
-        store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
-        // https://github.com/inokawa/virtua/issues/590
-        microtask(start);
-      } else {
-        start();
-      }
-    },
-    () => {
-      cancelScroll && cancelScroll();
-    },
-  ];
-};
 
 /**
  * @internal
@@ -152,21 +39,7 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
-  let isRtl = false;
-  const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
-  const scrollToKey = isHorizontal ? "left" : "top";
   const overflowKey = isHorizontal ? "overflowX" : "overflowY";
-
-  const [scheduleScroll, cancelScroll] = createScrollScheduler(
-    store,
-    () => initialized[0],
-    (offset, smooth) => {
-      viewportElement!.scrollTo({
-        [scrollToKey]: normalizeScrollOffset(offset, isRtl),
-        behavior: smooth ? "smooth" : "instant",
-      });
-    },
-  );
 
   const sizeKey = isHorizontal ? "width" : "height";
   const mountedIndexes = new WeakMap<Element, number>();
@@ -196,55 +69,23 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
     $observe(containerElement, viewport = containerElement.parentElement!) {
       resizeObserver._observe((viewportElement = viewport));
 
-      if (isHorizontal) {
-        isRtl = getComputedStyle(viewport).direction === "rtl";
-      }
-
       scrollObserver = createScrollObserver(
         store,
         viewport,
+        viewport,
         isHorizontal,
-        () => normalizeScrollOffset(viewport[scrollOffsetKey], isRtl),
-        (jump, shift, isMomentumScrolling) => {
+        isHorizontal && getComputedStyle(viewport).direction === "rtl",
+        () => {
           // If we update scroll position while touching on iOS, the position will be reverted.
           // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
           // That means we have no reliable way to confirm still touched or not if user touches more than once during momentum scrolling...
           // This is a hack for the suspectable situations, inspired by https://github.com/prud/ios-overflow-scroll-to-top
-          if (isMomentumScrolling) {
-            const style = viewport.style;
-            const prev = style[overflowKey];
-            style[overflowKey] = "hidden";
-            timeout(() => {
-              style[overflowKey] = prev;
-            });
-          }
-
-          const target = store.$getScrollOffset() + jump;
-          if (
-            target <= 0 ||
-            target >=
-              store.$getStartSpacerSize() +
-                store.$getTotalSize() -
-                store.$getViewportSize()
-          ) {
-            // Use absolute position at the edges not to exceed scrollable bounds
-            // https://github.com/inokawa/virtua/discussions/475
-            viewport.scrollTo({
-              [scrollToKey]: normalizeScrollOffset(target, isRtl),
-              behavior: "instant",
-            });
-          } else {
-            // Use relative position not to overwrite concurrent scrolling
-            // https://github.com/inokawa/virtua/issues/898
-            viewport.scrollBy({
-              [scrollToKey]: normalizeScrollOffset(jump, isRtl),
-              behavior: "instant",
-            });
-          }
-          if (shift) {
-            // https://github.com/inokawa/virtua/issues/357
-            cancelScroll();
-          }
+          const style = viewport.style;
+          const prev = style[overflowKey];
+          style[overflowKey] = "hidden";
+          timeout(() => {
+            style[overflowKey] = prev;
+          });
         },
       );
 
@@ -265,7 +106,14 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
         resizeObserver._unobserve(el);
       };
     },
-    $scroll: scheduleScroll,
+    async $scroll(getTargetOffset, smooth) {
+      // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
+      // https://github.com/inokawa/virtua/pull/733
+      // https://github.com/inokawa/virtua/pull/750
+      if (await initialized[0]) {
+        scrollObserver!._scroll(getTargetOffset, smooth);
+      }
+    },
     $effect() {
       scrollObserver && scrollObserver._fixScrollJump();
     },
@@ -283,20 +131,6 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
   let getBaseOffset: (() => number) | undefined;
   let onViewportResize: (() => void) | undefined;
   let initialized = createPromise<boolean>();
-  let isRtl = false;
-  const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
-  const scrollToKey = isHorizontal ? "left" : "top";
-
-  const [scheduleScroll, cancelScroll] = createScrollScheduler(
-    store,
-    () => initialized[0],
-    (offset, smooth) => {
-      viewportElement!.scrollTo({
-        [scrollToKey]: normalizeScrollOffset(offset, isRtl),
-        behavior: smooth ? "smooth" : "instant",
-      });
-    },
-  );
 
   const sizeKey = isHorizontal ? "width" : "height";
   const mountedIndexes = new WeakMap<Element, number>();
@@ -324,41 +158,44 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
     }
   });
 
-  const calcOffsetToViewport = (
-    node: HTMLElement,
-    viewport: HTMLElement,
-    until: HTMLElement,
-    isHorizontal: boolean,
-    offset: number = 0,
-  ): number => {
-    // TODO calc offset only when it changes (maybe impossible)
-    const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
-    const offsetSum =
-      offset +
-      (isRtl
-        ? viewport.clientWidth - node[offsetKey] - node.offsetWidth
-        : node[offsetKey]);
-
-    const parent = node.offsetParent;
-    if (node === until || !parent) {
-      return offsetSum;
-    }
-
-    return calcOffsetToViewport(
-      parent as HTMLElement,
-      viewport,
-      until,
-      isHorizontal,
-      offsetSum,
-    );
-  };
-
   return {
     $observe(container) {
       const document = getCurrentDocument(container);
       const window = getCurrentWindow(document);
       const viewport = (viewportElement =
         document.scrollingElement! as HTMLElement);
+      // Detect RTL document
+      const isRtl =
+        isHorizontal && getComputedStyle(viewport).direction === "rtl";
+
+      const calcOffsetToViewport = (
+        node: HTMLElement,
+        viewport: HTMLElement,
+        until: HTMLElement,
+        isHorizontal: boolean,
+        offset: number = 0,
+      ): number => {
+        // TODO calc offset only when it changes (maybe impossible)
+        const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
+        const offsetSum =
+          offset +
+          (isRtl
+            ? viewport.clientWidth - node[offsetKey] - node.offsetWidth
+            : node[offsetKey]);
+
+        const parent = node.offsetParent;
+        if (node === until || !parent) {
+          return offsetSum;
+        }
+
+        return calcOffsetToViewport(
+          parent as HTMLElement,
+          viewport,
+          until,
+          isHorizontal,
+          offsetSum,
+        );
+      };
 
       const baseOffset = (getBaseOffset = () => {
         return calcOffsetToViewport(
@@ -384,45 +221,14 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
         window.removeEventListener("resize", onWindowResize);
       };
 
-      if (isHorizontal) {
-        // Detect RTL document
-        isRtl = getComputedStyle(viewport).direction === "rtl";
-      }
-
+      // TODO support case two window scrollers exist in the same view
       scrollObserver = createScrollObserver(
         store,
         window,
+        viewport,
         isHorizontal,
-        () => normalizeScrollOffset(viewport[scrollOffsetKey], isRtl),
-        (jump, shift) => {
-          // TODO support case two window scrollers exist in the same view
-          const target = store.$getScrollOffset() + jump;
-          if (
-            target <= 0 ||
-            target >=
-              store.$getStartSpacerSize() +
-                store.$getTotalSize() -
-                store.$getViewportSize()
-          ) {
-            // Use absolute position at the edges not to exceed scrollable bounds
-            // https://github.com/inokawa/virtua/discussions/475
-            viewport.scrollTo({
-              [scrollToKey]: normalizeScrollOffset(target, isRtl),
-              behavior: "instant",
-            });
-          } else {
-            // Use relative position not to overwrite concurrent scrolling
-            // https://github.com/inokawa/virtua/issues/898
-            viewport.scrollBy({
-              [scrollToKey]: normalizeScrollOffset(jump, isRtl),
-              behavior: "instant",
-            });
-          }
-          if (shift) {
-            // https://github.com/inokawa/virtua/issues/357
-            cancelScroll();
-          }
-        },
+        isRtl,
+        NULL,
         baseOffset,
       );
 
@@ -445,7 +251,14 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
         resizeObserver._unobserve(el);
       };
     },
-    $scroll: scheduleScroll,
+    async $scroll(getTargetOffset, smooth) {
+      // Wait for element assign. The element may be undefined if scroll is scheduled on mount.
+      // https://github.com/inokawa/virtua/pull/733
+      // https://github.com/inokawa/virtua/pull/750
+      if (await initialized[0]) {
+        scrollObserver!._scroll(getTargetOffset, smooth);
+      }
+    },
     $effect() {
       scrollObserver && scrollObserver._fixScrollJump();
     },
@@ -489,28 +302,6 @@ export const createContainerGridDriver: GridDriverFactory = (
   let rowScrollObserver: ScrollObserver | undefined;
   let colScrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
-  let isRtl = false;
-
-  const [scheduleScrollX, cancelScrollX] = createScrollScheduler(
-    colStore,
-    () => initialized[0],
-    (offset, smooth) => {
-      viewportElement!.scrollTo({
-        left: normalizeScrollOffset(offset, isRtl),
-        behavior: smooth ? "smooth" : "instant",
-      });
-    },
-  );
-  const [scheduleScrollY, cancelScrollY] = createScrollScheduler(
-    rowStore,
-    () => initialized[0],
-    (offset, smooth) => {
-      viewportElement!.scrollTo({
-        top: offset,
-        behavior: smooth ? "smooth" : "instant",
-      });
-    },
-  );
 
   const mountedIndexes = new WeakMap<
     Element,
@@ -602,74 +393,42 @@ export const createContainerGridDriver: GridDriverFactory = (
     }
   });
 
-  const observeAxisScroll = (
-    store: VirtualStore,
-    isHorizontal: boolean,
-    cancelScroll: () => void,
-  ) => {
-    const viewport = viewportElement!;
-    const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
-    const overflowKey = isHorizontal ? "overflowX" : "overflowY";
-    const rtl = isHorizontal && isRtl;
-
-    return createScrollObserver(
-      store,
-      viewport,
-      isHorizontal,
-      () => normalizeScrollOffset(viewport[scrollOffsetKey], rtl),
-      (jump, shift, isMomentumScrolling) => {
-        // If we update scroll position while touching on iOS, the position will be reverted.
-        // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
-        // That means we have no reliable way to confirm still touched or not if user touches more than once during momentum scrolling...
-        // This is a hack for the suspectable situations, inspired by https://github.com/prud/ios-overflow-scroll-to-top
-        if (isMomentumScrolling) {
-          const style = viewport.style;
-          const prev = style[overflowKey];
-          style[overflowKey] = "hidden";
-          timeout(() => {
-            style[overflowKey] = prev;
-          });
-        }
-
-        const target = store.$getScrollOffset() + jump;
-        if (
-          target <= 0 ||
-          target >=
-            store.$getStartSpacerSize() +
-              store.$getTotalSize() -
-              store.$getViewportSize()
-        ) {
-          // Use absolute position at the edges not to exceed scrollable bounds
-          // https://github.com/inokawa/virtua/discussions/475
-          viewport.scrollTo({
-            [isHorizontal ? "left" : "top"]: normalizeScrollOffset(target, rtl),
-            behavior: "instant",
-          });
-        } else {
-          // Use relative position not to overwrite concurrent scrolling
-          // https://github.com/inokawa/virtua/issues/898
-          viewport.scrollBy({
-            [isHorizontal ? "left" : "top"]: normalizeScrollOffset(jump, rtl),
-            behavior: "instant",
-          });
-        }
-        if (shift) {
-          // https://github.com/inokawa/virtua/issues/357
-          cancelScroll();
-        }
-      },
-    );
-  };
-
   return {
     $observe(containerElement, viewport = containerElement.parentElement!) {
       resizeObserver._observe((viewportElement = viewport));
 
       // Detect RTL document
-      isRtl = getComputedStyle(viewport).direction === "rtl";
+      const isRtl = getComputedStyle(viewport).direction === "rtl";
 
-      rowScrollObserver = observeAxisScroll(rowStore, false, cancelScrollY);
-      colScrollObserver = observeAxisScroll(colStore, true, cancelScrollX);
+      const hackOverflow = (overflowKey: "overflowX" | "overflowY") => () => {
+        // If we update scroll position while touching on iOS, the position will be reverted.
+        // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
+        // That means we have no reliable way to confirm still touched or not if user touches more than once during momentum scrolling...
+        // This is a hack for the suspectable situations, inspired by https://github.com/prud/ios-overflow-scroll-to-top
+        const style = viewport.style;
+        const prev = style[overflowKey];
+        style[overflowKey] = "hidden";
+        timeout(() => {
+          style[overflowKey] = prev;
+        });
+      };
+
+      rowScrollObserver = createScrollObserver(
+        rowStore,
+        viewport,
+        viewport,
+        false,
+        false,
+        hackOverflow("overflowY"),
+      );
+      colScrollObserver = createScrollObserver(
+        colStore,
+        viewport,
+        viewport,
+        true,
+        isRtl,
+        hackOverflow("overflowX"),
+      );
 
       initialized[1](true);
     },
@@ -707,8 +466,16 @@ export const createContainerGridDriver: GridDriverFactory = (
       }
       colStore.$update(ACTION_ITEM_RESIZE, cols);
     },
-    $scrollX: scheduleScrollX,
-    $scrollY: scheduleScrollY,
+    async $scrollX(getTargetOffset, smooth) {
+      if (await initialized[0]) {
+        colScrollObserver!._scroll(getTargetOffset, smooth);
+      }
+    },
+    async $scrollY(getTargetOffset, smooth) {
+      if (await initialized[0]) {
+        rowScrollObserver!._scroll(getTargetOffset, smooth);
+      }
+    },
     $effect() {
       rowScrollObserver && rowScrollObserver._fixScrollJump();
       colScrollObserver && colScrollObserver._fixScrollJump();
