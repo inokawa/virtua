@@ -370,3 +370,41 @@ it("prepending cancels imperative scroll", async () => {
   await expect.poll(() => scrollEnded).toBe(true);
   expect(prependCount).toBe(1);
 });
+
+it("ResizeObserver loop completed with undelivered notifications", async () => {
+  // The error is dispatched as an ErrorEvent on window, not as an unhandled error
+  let errorCount = 0;
+  const onError = (e: ErrorEvent) => {
+    if (e.message.includes("ResizeObserver loop")) {
+      errorCount++;
+    }
+  };
+  window.addEventListener("error", onError);
+  onTestFinished(() => window.removeEventListener("error", onError));
+
+  const container = render(
+    <div style={{ height: 400, overflowY: "auto" }}>
+      <Virtualizer data={items}>
+        {(d) => (
+          // Vary item sizes so that measuring them for the first time updates the store
+          <div key={d} style={{ height: 20 + (d % 4) * 20 }}>
+            item-{d}
+          </div>
+        )}
+      </Virtualizer>
+    </div>,
+  );
+  await expectVirtualized(container, "item-0", "item-999");
+
+  const scroller = getVirtualizer(container).parentElement!;
+  for (let i = 0; i < 10; i++) {
+    scroller.scrollTop += 4000;
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+  for (let i = 0; i < 10; i++) {
+    scroller.scrollTop -= 4000;
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+
+  expect(errorCount).toBe(0);
+});
