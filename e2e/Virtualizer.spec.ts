@@ -212,7 +212,6 @@ test.describe("aligned to bottom", () => {
     let i = 0;
     while (true) {
       i++;
-      await valueInput.clear();
       await valueInput.fill(String(i));
 
       // preprend
@@ -265,7 +264,6 @@ test.describe("aligned to bottom", () => {
     const updateButton = page.getByRole("button", { name: "update" });
 
     // preprend many
-    await valueInput.clear();
     await valueInput.fill("50");
     await increaseRadio.click();
     await updateButton.click();
@@ -274,7 +272,6 @@ test.describe("aligned to bottom", () => {
     await scrollToBottom(component);
 
     // remove many
-    await valueInput.clear();
     await valueInput.fill("1");
     await decreaseRadio.click();
     let i = 0;

@@ -340,7 +340,6 @@ test.describe("check if item shift compensation works", () => {
     let i = 0;
     while (true) {
       i++;
-      await valueInput.clear();
       await valueInput.fill(String(i));
 
       // preprend
@@ -392,7 +391,6 @@ test.describe("check if item shift compensation works", () => {
     const container = await getVirtualizer(page);
 
     // preprend many
-    await valueInput.clear();
     await valueInput.fill("50");
     await increaseRadio.click();
     await updateButton.click();
@@ -401,7 +399,6 @@ test.describe("check if item shift compensation works", () => {
     await windowScrollToBottom(page);
 
     // remove many
-    await valueInput.clear();
     await valueInput.fill("1");
     await decreaseRadio.click();
     let i = 0;
@@ -445,7 +442,6 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      await input.clear();
       await input.fill("700");
       await button.click();
 
@@ -472,13 +468,11 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      await input.clear();
       await input.fill("500");
       await button.click();
 
       await expect(component.getByText("500", { exact: true })).toBeVisible();
 
-      await input.clear();
       await input.fill("0");
       await button.click();
 
@@ -502,7 +496,6 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      await input.clear();
       await input.fill("999");
       await button.click();
 
@@ -532,7 +525,6 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      await input.clear();
       await input.fill("700");
       await button.click();
 
@@ -563,13 +555,11 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      await input.clear();
       await input.fill("500");
       await button.click();
 
       await expect(component.getByText("500", { exact: true })).toBeVisible();
 
-      await input.clear();
       await input.fill("0");
       await button.click();
 
@@ -594,7 +584,6 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      await input.clear();
       await input.fill("999");
       await button.click();
 
@@ -629,7 +618,6 @@ test.describe("check if scrollToIndex works", () => {
 
       const scrollListener = listenScrollCount(window);
 
-      await input.clear();
       await input.fill("700");
       await button.click();
 
@@ -676,7 +664,6 @@ test.describe("check if scrollToIndex works", () => {
 
       const scrollListener = listenScrollCount(window);
 
-      await input.clear();
       await input.fill("700");
       await button.click();
 

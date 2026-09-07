@@ -622,7 +622,6 @@ test.describe("check if scroll jump compensation works", () => {
     const smallItemHeight = (await smallItem.boundingBox())!.height;
 
     // append large item
-    await textarea.clear();
     await textarea.fill(
       "Hello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\nHello\n",
     );
@@ -728,7 +727,6 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      await input.clear();
       await input.fill("700");
       await button.click();
 
@@ -755,13 +753,11 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      await input.clear();
       await input.fill("500");
       await button.click();
 
       await expect(component.getByText("500", { exact: true })).toBeVisible();
 
-      await input.clear();
       await input.fill("0");
       await button.click();
 
@@ -785,7 +781,6 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      await input.clear();
       await input.fill("999");
       await button.click();
 
@@ -815,7 +810,6 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      await input.clear();
       await input.fill("700");
       await button.click();
 
@@ -846,13 +840,11 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      await input.clear();
       await input.fill("500");
       await button.click();
 
       await expect(component.getByText("500", { exact: true })).toBeVisible();
 
-      await input.clear();
       await input.fill("0");
       await button.click();
 
@@ -877,7 +869,6 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      await input.clear();
       await input.fill("999");
       await button.click();
 
@@ -910,7 +901,6 @@ test.describe("check if scrollToIndex works", () => {
 
       const scrollListener = listenScrollCount(component);
 
-      await input.clear();
       await input.fill("700");
       await button.click();
 
@@ -955,7 +945,6 @@ test.describe("check if scrollToIndex works", () => {
 
       const scrollListener = listenScrollCount(component);
 
-      await input.clear();
       await input.fill("700");
       await button.click();
 
@@ -996,7 +985,6 @@ test.describe("check if scrollToIndex works", () => {
       const input = page.getByRole("spinbutton").first();
 
       // scroll to the bottom
-      await input.clear();
       await input.fill("999");
       await button.click();
       await expect(component.getByText("999", { exact: true })).toBeVisible();
@@ -1006,7 +994,6 @@ test.describe("check if scrollToIndex works", () => {
 
       const scrollListener = listenScrollCount(component);
 
-      await input.clear();
       await input.fill("300");
       await button.click();
 
@@ -1047,7 +1034,6 @@ test.describe("check if scrollToIndex works", () => {
       const input = page.getByRole("spinbutton").first();
 
       // scroll to the bottom
-      await input.clear();
       await input.fill("999");
       await button.click();
       await expect(component.getByText("999", { exact: true })).toBeVisible();
@@ -1058,7 +1044,6 @@ test.describe("check if scrollToIndex works", () => {
 
       const scrollListener = listenScrollCount(component);
 
-      await input.clear();
       await input.fill("300");
       await button.click();
 
@@ -1099,7 +1084,6 @@ test.describe("check if scrollToIndex works", () => {
       const input = page.getByRole("spinbutton").first();
 
       // scroll to the bottom
-      await input.clear();
       await input.fill("999");
       await button.click();
       const initialLastItem = component.getByText("999", { exact: true });
@@ -1121,7 +1105,6 @@ test.describe("check if scrollToIndex works", () => {
         const scrollListener = listenScrollCount(component);
 
         const targetItemText = String(initialFirstNumber);
-        await input.clear();
         await input.fill(targetItemText);
         await button.click();
 
@@ -1154,7 +1137,6 @@ test.describe("check if scrollTo works", () => {
     const input = page.getByRole("spinbutton").nth(1);
 
     // scroll down
-    await input.clear();
     await input.fill("5000");
     await button.click();
 
@@ -1164,7 +1146,6 @@ test.describe("check if scrollTo works", () => {
     ).toEqual(5000);
 
     // scroll up
-    await input.clear();
     await input.fill("1000");
     await button.click();
 
@@ -1192,14 +1173,12 @@ test.describe("check if scrollBy works", () => {
     const input = page.getByRole("spinbutton").nth(1);
 
     // scroll down
-    await input.clear();
     await input.fill("1234");
     await button.click();
 
     expect(await getScrollTop(component)).toEqual(1234);
 
     // scroll up
-    await input.clear();
     await input.fill("-234");
     await button.click();
 
@@ -1298,7 +1277,6 @@ test.describe("check if item shift compensation works", () => {
     let i = 0;
     while (true) {
       i++;
-      await valueInput.clear();
       await valueInput.fill(String(i));
 
       // preprend
