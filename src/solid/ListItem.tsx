@@ -61,7 +61,7 @@ export const ListItem: Component<ListItemProps> = (props) => {
   return (
     <Dynamic
       component={props._as}
-      index={props._index}
+      index={typeof props._as === "string" ? undefined : props._index}
       ref={elementRef}
       style={style()}
     >
