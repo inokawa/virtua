@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { VList, VListHandle } from "../../../src";
 import React, {
   CSSProperties,
+  memo,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -76,6 +77,110 @@ export const AppendOnly: StoryObj = {
           )}
         </VList>
       </div>
+    );
+  },
+};
+
+type Message = {
+  user: string;
+  time: string;
+  text: string;
+};
+
+const MessageItem = memo(
+  ({
+    message: { user, time, text },
+    offscreen,
+  }: {
+    message: Message;
+    offscreen?: boolean;
+  }) => {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useLayoutEffect(() => {
+      const e = ref.current!;
+      if (!offscreen) {
+        e.removeAttribute("hidden");
+        return;
+      }
+      // Skip rendering its contents but keep them findable by find-in-page.
+      // https://github.com/facebook/react/issues/24740
+      e.setAttribute("hidden", "until-found");
+      // The browser reveals the found item to show its contents. Keep them invisible not to flash the plain text before the rich one is rendered.
+      const onBeforeMatch = () => {
+        e.style.visibility = "hidden";
+      };
+      e.addEventListener("beforematch", onBeforeMatch);
+      return () => {
+        e.removeEventListener("beforematch", onBeforeMatch);
+        e.style.visibility = "";
+      };
+    }, [offscreen]);
+
+    return (
+      <div
+        ref={ref}
+        style={{
+          display: "flex",
+          gap: 10,
+          padding: 10,
+          borderBottom: "solid 1px #ccc",
+          background: "#fff",
+          // Keep the height of the last rendered contents while hidden
+          containIntrinsicSize: "auto 60px",
+        }}
+      >
+        {offscreen ? (
+          `${user} ${time} ${text}`
+        ) : (
+          <>
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                flexShrink: 0,
+                borderRadius: "50%",
+                background: "#e0e7ff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {user[0]}
+            </div>
+            <div>
+              <div style={{ display: "flex", gap: 8, alignItems: "baseline" }}>
+                <b>{user}</b>
+                <small style={{ color: "#888" }}>{time}</small>
+              </div>
+              <div>{text}</div>
+            </div>
+          </>
+        )}
+      </div>
+    );
+  },
+);
+
+export const CtrlF: StoryObj = {
+  name: "Ctrl+F",
+  render: () => {
+    const data = useMemo<Message[]>(
+      () =>
+        Array.from({ length: 1000 }, () => ({
+          user: faker.person.firstName(),
+          time: faker.date.recent().toLocaleTimeString(),
+          text: faker.lorem.sentence(),
+        })),
+      [],
+    );
+    const indexes = useMemo(() => data.map((_, i) => i), [data]);
+    return (
+      <VList data={data} keepMounted={indexes} style={{ height: "100vh" }}>
+        {(d, i, offscreen) => (
+          <MessageItem key={i} message={d} offscreen={offscreen} />
+        )}
+      </VList>
     );
   },
 };
