@@ -4,7 +4,6 @@ import {
   defineComponent,
   watch,
   type StyleValue,
-  type PropType,
   type VNode,
   type NativeElements,
   computed,
@@ -17,28 +16,24 @@ import {
 } from "../core/index.js";
 import { type ItemProps } from "./utils.js";
 
+interface ListItemProps {
+  _stateVersion: Ref<StateVersion>;
+  _store: VirtualStore;
+  _slot: (arg: { item: unknown; index: number }) => VNode[];
+  _item: unknown;
+  _resizer: Driver["$observeItem"];
+  _index: number;
+  _isHorizontal: boolean;
+  _isSSR: boolean;
+  _as: keyof NativeElements;
+  _itemProps?: ItemProps;
+}
+
 /**
  * @internal
  */
-export const ListItem = /*#__PURE__*/ defineComponent({
-  props: {
-    _stateVersion: {
-      type: Object as PropType<Ref<StateVersion>>,
-      required: true,
-    },
-    _store: { type: Object as PropType<VirtualStore>, required: true },
-    _children: { type: Object as PropType<VNode[]>, required: true },
-    _resizer: {
-      type: Function as PropType<Driver["$observeItem"]>,
-      required: true,
-    },
-    _index: { type: Number, required: true },
-    _isHorizontal: { type: Boolean },
-    _isSSR: { type: Boolean },
-    _as: { type: String as PropType<keyof NativeElements>, required: true },
-    _itemProps: Object as PropType<ReturnType<ItemProps>>,
-  },
-  setup(props) {
+export const ListItem = /*#__PURE__*/ defineComponent(
+  (props: ListItemProps) => {
     const elementRef = ref<HTMLDivElement>();
 
     const offset = computed(
@@ -49,6 +44,9 @@ export const ListItem = /*#__PURE__*/ defineComponent({
       () =>
         props._stateVersion.value &&
         props._store.$isUnmeasuredItem(props._index),
+    );
+    const children = computed(() =>
+      props._slot({ item: props._item, index: props._index }),
     );
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
@@ -64,14 +62,16 @@ export const ListItem = /*#__PURE__*/ defineComponent({
 
     return () => {
       const {
-        _children: children,
         _isHorizontal: isHorizontal,
         _isSSR: isSSR,
         _as: Element,
+        _index: index,
+        _item: item,
       } = props;
       const isHide = hide.value;
 
-      const { style: styleProp, ...rest } = props._itemProps ?? {};
+      const { style: styleProp, ...rest } =
+        props._itemProps?.({ item, index }) || {};
 
       const style: StyleValue = {
         contain: "layout style",
@@ -88,9 +88,24 @@ export const ListItem = /*#__PURE__*/ defineComponent({
 
       return (
         <Element ref={elementRef} style={style} {...rest}>
-          {children}
+          {children.value}
         </Element>
       );
     };
   },
-});
+  {
+    // Required to split props from attrs. Object form keeps the keys manglable.
+    props: {
+      _stateVersion: null,
+      _store: null,
+      _slot: null,
+      _item: null,
+      _resizer: null,
+      _index: null,
+      _isHorizontal: null,
+      _isSSR: null,
+      _as: null,
+      _itemProps: null,
+    } satisfies Record<keyof ListItemProps, null>,
+  },
+);

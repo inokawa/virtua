@@ -308,11 +308,12 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
             _store={store}
             _resizer={driver.$observeItem}
             _index={i}
-            _children={e}
+            _slot={slots["default"]!}
+            _item={props.data![i]!}
             _isHorizontal={isHorizontal}
             _isSSR={isSSR}
             _as={ItemElement}
-            _itemProps={props.itemProps?.({ item: props.data![i]!, index: i })}
+            _itemProps={props.itemProps}
           />
         );
       };
