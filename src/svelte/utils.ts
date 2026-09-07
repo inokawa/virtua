@@ -1,3 +1,5 @@
+import type { ItemsRange } from "../core/index.js";
+
 export const styleToString = (
   obj: Record<string, string | undefined>,
 ): string => {
@@ -8,6 +10,10 @@ export const styleToString = (
     }
     return acc + `${k}:${value};`;
   }, "");
+};
+
+export const isSameRange = (prev: ItemsRange, next: ItemsRange): boolean => {
+  return prev[0] === next[0] && prev[1] === next[1];
 };
 
 export const defaultGetKey = (_data: unknown, i: number) => "_" + i;
