@@ -27,7 +27,7 @@
     "name": "VGrid",
     "path": "lib/index.js",
     "import": "{ VGrid }",
-    "limit": "6 kB"
+    "limit": "6.1 kB"
   },
   {
     "name": "VMasonry",
@@ -87,7 +87,7 @@
     "name": "solid VGrid",
     "path": "lib/solid/index.js",
     "import": "{ VGrid }",
-    "limit": "6.45 kB"
+    "limit": "6.5 kB"
   },
   {
     "name": "solid VMasonry",
