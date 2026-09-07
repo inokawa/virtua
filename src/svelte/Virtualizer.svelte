@@ -3,6 +3,7 @@
   import {
     ACTION_ITEMS_LENGTH_CHANGE,
     ACTION_START_OFFSET_CHANGE,
+    type ItemsRange,
     type StateVersion,
     UPDATE_SCROLL_END_EVENT,
     UPDATE_SCROLL_EVENT,
@@ -16,7 +17,7 @@
     getScrollSize as _getScrollSize,
     sort,
   } from "../core/index.js";
-  import { defaultGetKey, styleToString } from "./utils.js";
+  import { defaultGetKey, isSameRange, styleToString } from "./utils.js";
   import ListItem from "./ListItem.svelte";
   import type {
     VirtualizerHandle,
@@ -64,7 +65,15 @@
 
   let stateVersion: StateVersion = $state(store.$getStateVersion());
 
-  let range = $derived(stateVersion && store.$getRange(bufferSize));
+  let prevRange: ItemsRange | undefined;
+  let range = $derived.by(() => {
+    stateVersion;
+    const next = store.$getRange(bufferSize);
+    if (prevRange && isSameRange(prevRange, next)) {
+      return prevRange;
+    }
+    return (prevRange = next);
+  });
   let isScrolling = $derived(stateVersion && store.$isScrolling());
   let totalSize = $derived(stateVersion && store.$getTotalSize());
 
