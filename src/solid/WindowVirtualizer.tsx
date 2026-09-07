@@ -9,7 +9,6 @@ import {
   createMemo,
   type JSX,
   type Accessor,
-  on,
   For,
   untrack,
 } from "solid-js";
@@ -208,11 +207,12 @@ export const WindowVirtualizer = <T,>(
     });
   });
 
-  createEffect(
-    on(stateVersion, () => {
+  createEffect(() => {
+    stateVersion();
+    untrack(() => {
       driver.$effect();
-    }),
-  );
+    });
+  });
 
   const dataSlice = createMemo<T[]>(() => {
     const count = props.data.length;

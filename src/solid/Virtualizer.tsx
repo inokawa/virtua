@@ -8,8 +8,6 @@ import {
   createSignal,
   createMemo,
   type JSX,
-  on,
-  createComputed,
   type ValidComponent,
   mergeProps,
   For,
@@ -249,22 +247,20 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     });
   });
 
-  createComputed(
-    on(
-      () => props.startMargin || 0,
-      (value) => {
-        if (value !== store.$getStartSpacerSize()) {
-          store.$update(ACTION_START_OFFSET_CHANGE, value);
-        }
-      },
-    ),
-  );
+  // eslint-disable-next-line solid/reactivity
+  createMemo(() => {
+    const value = props.startMargin || 0;
+    if (value !== store.$getStartSpacerSize()) {
+      store.$update(ACTION_START_OFFSET_CHANGE, value);
+    }
+  });
 
-  createEffect(
-    on(stateVersion, () => {
+  createEffect(() => {
+    stateVersion();
+    untrack(() => {
       driver.$effect();
-    }),
-  );
+    });
+  });
 
   const dataSlice = createMemo(() => {
     const count = props.data.length;
