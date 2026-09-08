@@ -78,7 +78,6 @@
   let totalSize = $derived(stateVersion && store.$getTotalSize());
 
   let indexes = $derived.by(() => {
-    // https://github.com/inokawa/virtua/pull/847
     const len = data.length;
 
     const [start, end] = range;
@@ -95,6 +94,8 @@
       }
     } else {
       for (let i = start; i <= end; i++) {
+        // Guard for experimental.async: true, which runs the each block before $effect.pre
+        // https://github.com/inokawa/virtua/pull/847
         if (i < len) {
           arr.push(i);
         }

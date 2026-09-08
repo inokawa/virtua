@@ -319,12 +319,15 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       };
 
       if (props.keepMounted) {
+        const len = props.data.length;
         const mounted = new Set(props.keepMounted);
         for (let [i, j] = range.value; i <= j; i++) {
           mounted.add(i);
         }
         sort([...mounted]).forEach((index) => {
-          items.push(renderItem(index));
+          if (index < len) {
+            items.push(renderItem(index));
+          }
         });
       } else {
         for (let [i, j] = range.value; i <= j; i++) {

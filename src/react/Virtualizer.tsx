@@ -326,7 +326,9 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
         mounted.add(i);
       }
       sort([...mounted]).forEach((index) => {
-        items.push(renderItem(index));
+        if (index < count) {
+          items.push(renderItem(index));
+        }
       });
     } else {
       for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {

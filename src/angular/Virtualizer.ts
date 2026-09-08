@@ -232,7 +232,6 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
   /** @internal */
   private _indexes = computed(() => {
     this._stateVersion(); // the store is not a signal, so depend on its version
-    // https://github.com/inokawa/virtua/pull/847
     const len = this.data().length;
 
     const [start, end] = this._store.$getRange(this.bufferSize());
@@ -250,9 +249,7 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
       }
     } else {
       for (let i = start; i <= end; i++) {
-        if (i < len) {
-          arr.push(i);
-        }
+        arr.push(i);
       }
     }
     return arr;

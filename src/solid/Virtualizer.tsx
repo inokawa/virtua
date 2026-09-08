@@ -282,8 +282,10 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         mounted.add(i);
       }
       sort([...mounted]).forEach((index) => {
-        items.push(props.data[index]!);
-        indexes.push(index);
+        if (index < count) {
+          items.push(props.data[index]!);
+          indexes.push(index);
+        }
       });
     } else {
       for (let [i, j] = range(); i <= j; i++) {
