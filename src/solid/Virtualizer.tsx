@@ -16,7 +16,7 @@ import {
   type Accessor,
   untrack,
 } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { Dynamic, isServer } from "solid-js/web";
 import {
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
@@ -98,7 +98,7 @@ export interface VirtualizerProps<T> {
   /**
    * Get reference to {@link VirtualizerHandle}.
    */
-  ref?: (handle?: VirtualizerHandle) => void;
+  ref?: VirtualizerHandle | ((handle?: VirtualizerHandle) => void);
   /**
    * The data items rendered by this component.
    */
@@ -210,40 +210,38 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
   const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
 
+  // eslint-disable-next-line solid/reactivity
+  const ref = props.ref as Exclude<typeof props.ref, VirtualizerHandle>;
+  if (!isServer && ref) {
+    ref({
+      get cache() {
+        return layout.$snapshot();
+      },
+      get scrollOffset() {
+        return store.$getScrollOffset();
+      },
+      get scrollSize() {
+        return getScrollSize(store);
+      },
+      get viewportSize() {
+        return store.$getViewportSize();
+      },
+      findItemIndex: store.$findItemIndex,
+      getItemOffset: store.$getItemOffset,
+      getItemSize: store.$getItemSize,
+      scrollToIndex: (index, opts) => scrollToIndex(driver, store, index, opts),
+      scrollTo: (offset) => scrollTo(driver, offset),
+      scrollBy: (offset) => scrollBy(driver, store, offset),
+    });
+    onCleanup(() => ref());
+  }
+
   onMount(() => {
     setIsSSR(false);
-
-    if (props.ref) {
-      props.ref({
-        get cache() {
-          return layout.$snapshot();
-        },
-        get scrollOffset() {
-          return store.$getScrollOffset();
-        },
-        get scrollSize() {
-          return getScrollSize(store);
-        },
-        get viewportSize() {
-          return store.$getViewportSize();
-        },
-        findItemIndex: store.$findItemIndex,
-        getItemOffset: store.$getItemOffset,
-        getItemSize: store.$getItemSize,
-        scrollToIndex: (index, opts) =>
-          scrollToIndex(driver, store, index, opts),
-        scrollTo: (offset) => scrollTo(driver, offset),
-        scrollBy: (offset) => scrollBy(driver, store, offset),
-      });
-    }
 
     driver.$observe(containerRef!, props.scrollRef);
 
     onCleanup(() => {
-      if (props.ref) {
-        props.ref();
-      }
-
       store.$dispose();
       driver.$dispose();
     });
