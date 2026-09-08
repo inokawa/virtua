@@ -238,7 +238,6 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
       cleanupOnWindowResize && cleanupOnWindowResize();
       resizeObserver._dispose();
       scrollObserver && scrollObserver._dispose();
-      viewportElement = undefined;
       initialized[1](false);
       // https://github.com/inokawa/virtua/pull/765
       initialized = createPromise();
