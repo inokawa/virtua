@@ -13,6 +13,7 @@ import {
   For,
   untrack,
 } from "solid-js";
+import { isServer } from "solid-js/web";
 import {
   UPDATE_SCROLL_END_EVENT,
   UPDATE_VIRTUAL_STATE,
@@ -75,7 +76,7 @@ export interface WindowVirtualizerProps<T> {
   /**
    * Get reference to {@link WindowVirtualizerHandle}.
    */
-  ref?: (handle?: WindowVirtualizerHandle) => void;
+  ref?: WindowVirtualizerHandle | ((handle?: WindowVirtualizerHandle) => void);
   /**
    * The data items rendered by this component.
    */
@@ -174,35 +175,33 @@ export const WindowVirtualizer = <T,>(
   const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
   const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
 
+  // eslint-disable-next-line solid/reactivity
+  const ref = props.ref as Exclude<typeof props.ref, WindowVirtualizerHandle>;
+  if (!isServer && ref) {
+    ref({
+      get cache() {
+        return layout.$snapshot();
+      },
+      get scrollOffset() {
+        return store.$getScrollOffset();
+      },
+      get viewportSize() {
+        return store.$getViewportSize();
+      },
+      findItemIndex: store.$findItemIndex,
+      getItemOffset: store.$getItemOffset,
+      getItemSize: store.$getItemSize,
+      scrollToIndex: (index, opts) => scrollToIndex(driver, store, index, opts),
+    });
+    onCleanup(() => ref());
+  }
+
   onMount(() => {
     setIsSSR(false);
-
-    if (props.ref) {
-      props.ref({
-        get cache() {
-          return layout.$snapshot();
-        },
-        get scrollOffset() {
-          return store.$getScrollOffset();
-        },
-        get viewportSize() {
-          return store.$getViewportSize();
-        },
-        findItemIndex: store.$findItemIndex,
-        getItemOffset: store.$getItemOffset,
-        getItemSize: store.$getItemSize,
-        scrollToIndex: (index, opts) =>
-          scrollToIndex(driver, store, index, opts),
-      });
-    }
 
     driver.$observe(containerRef!);
 
     onCleanup(() => {
-      if (props.ref) {
-        props.ref();
-      }
-
       store.$dispose();
       driver.$dispose();
     });

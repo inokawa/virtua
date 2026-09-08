@@ -138,9 +138,7 @@ export const Controlls: StoryObj = {
           </button>
         </div>
         <VList
-          ref={(h) => {
-            handle = h;
-          }}
+          ref={handle}
           data={data()}
           shift={prepend()}
           style={{ height: "100vh" }}

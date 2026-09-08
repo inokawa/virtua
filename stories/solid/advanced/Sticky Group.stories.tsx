@@ -54,7 +54,7 @@ export const Default: StoryObj = {
     return (
       <StickyIndexContext.Provider value={[activeIndex, setActiveIndex]}>
         <VList
-          ref={(handle) => (ref = handle)}
+          ref={ref}
           data={items()}
           item={StickyItem}
           keepMounted={[activeIndex()]}

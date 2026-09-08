@@ -91,9 +91,7 @@ export const Default: StoryObj = {
     const [items, setItems] = createSignal<Data[]>(
       Array.from({ length: 100 }, () => createItem()),
     );
-    const [virtualizerHandle, setVirtualizerHandle] = createSignal<
-      VirtualizerHandle | undefined
-    >();
+    let virtualizerHandle: VirtualizerHandle | undefined;
     const [isPrepend, setIsPrepend] = createSignal(false);
     const [shouldStickToBottom, setShouldStickToBottom] = createSignal(true);
     const [value, setValue] = createSignal("Hello world!");
@@ -105,11 +103,9 @@ export const Default: StoryObj = {
     });
 
     createEffect(() => {
-      const handle = virtualizerHandle();
-      if (!handle) return;
       const lastItemIndex = items().length - 1;
       if (shouldStickToBottom()) {
-        handle.scrollToIndex(lastItemIndex, { align: "end" });
+        virtualizerHandle?.scrollToIndex(lastItemIndex, { align: "end" });
       }
     });
 
@@ -166,12 +162,12 @@ export const Default: StoryObj = {
           />
           <Spinner visible={fetching()} />
           <Virtualizer
-            ref={setVirtualizerHandle}
+            ref={virtualizerHandle}
             data={items()}
             shift={isPrepend()}
             startMargin={spinnerHeight}
             onScroll={async (offset) => {
-              const handle = virtualizerHandle();
+              const handle = virtualizerHandle;
               if (!handle) return;
               setShouldStickToBottom(
                 offset -
