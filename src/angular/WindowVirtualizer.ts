@@ -188,9 +188,8 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
     const data = this.data();
     const getKey = this.getKey();
     const [start, end] = store.$getRange(this.bufferSize());
-    // https://github.com/inokawa/virtua/pull/847
     const items = [];
-    for (let index = start; index <= end && index < data.length; index++) {
+    for (let index = start; index <= end; index++) {
       const item = data[index]!;
       items.push({
         key: getKey(item, index),
