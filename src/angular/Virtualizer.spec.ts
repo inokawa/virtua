@@ -81,7 +81,7 @@ class UlHost {
   readonly data = input.required<number[]>();
 }
 
-it("should change container element", async () => {
+it("should change components", async () => {
   const { container } = await render(UlHost, { data: range(5) });
   expect(container.innerHTML).toMatchSnapshot();
 });
