@@ -132,7 +132,7 @@ export default defineConfig({
       {
         plugins: [react()],
         test: {
-          name: "browser-quirk",
+          name: "browser-core",
           include: ["src/*.browser.spec.tsx"],
           browser: testBrowser("chromium", "firefox", "webkit"),
         },
