@@ -79,7 +79,7 @@ it("display: none (Virtualizer)", async () => {
   );
   await expectVirtualized(container, "item-0", "item-999");
 
-  const virtualizer = getVirtualizer(container);
+  const virtualizer = await getVirtualizer(container);
   const initialHeight = await waitForStableHeight(virtualizer);
 
   container.style.display = "none";
@@ -102,7 +102,7 @@ it("display: none (WindowVirtualizer)", async () => {
   );
   await expectVirtualized(container, "item-0", "item-999");
 
-  const virtualizer = getVirtualizer(container);
+  const virtualizer = await getVirtualizer(container);
   const initialHeight = await waitForStableHeight(virtualizer);
 
   container.style.display = "none";
@@ -140,7 +140,7 @@ it("hidden document does not cancel imperative scroll", async () => {
   // Scheduled scroll gives up 150ms after the last resize
   await new Promise((resolve) => setTimeout(resolve, 400));
   const hidden = container.firstElementChild as HTMLElement;
-  const scroller = getVirtualizer(container).parentElement!;
+  const scroller = (await getVirtualizer(container)).parentElement!;
   const bottom = items.length * 60 - 400;
   expect(scroller.checkVisibility()).toBe(false);
   // The estimated size must be smaller than the actual one, or a canceled scroll is also clamped to the bottom
@@ -262,7 +262,7 @@ it("transform: scale", async () => {
   );
   await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 
-  const virtualizer = getVirtualizer(container);
+  const virtualizer = await getVirtualizer(container);
   await waitForStableHeight(virtualizer);
   expectItemDistance(virtualizer, 30);
 });
@@ -281,7 +281,7 @@ it("zoom", async () => {
   );
   await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 
-  const virtualizer = getVirtualizer(container);
+  const virtualizer = await getVirtualizer(container);
   await waitForStableHeight(virtualizer);
   expectItemDistance(virtualizer, 30);
 });
@@ -300,7 +300,7 @@ it("fractional item size", async () => {
   );
   await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 
-  const virtualizer = getVirtualizer(container);
+  const virtualizer = await getVirtualizer(container);
   await waitForStableHeight(virtualizer);
   expectItemDistance(virtualizer, 30.5);
 });

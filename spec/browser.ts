@@ -1,7 +1,11 @@
 import { expect } from "vitest";
 
-export const getVirtualizer = (container: Element) =>
-  container.querySelector('*[style*="flex: 0 0 auto"]') as HTMLElement;
+const VIRTUALIZER = '*[style*="flex: 0 0 auto"]';
+
+export const getVirtualizer = async (container: Element) => {
+  await expect.poll(() => container.querySelector(VIRTUALIZER)).not.toBeNull();
+  return container.querySelector<HTMLElement>(VIRTUALIZER)!;
+};
 
 export const expectVirtualized = async (
   container: Element,
@@ -18,10 +22,11 @@ export const expectVirtualizedAndScrollable = async (
   container: Element,
   first: string,
   last: string,
-  getScroller: () => Element = () => getVirtualizer(container).parentElement!,
+  getScroller: () => Element | Promise<Element> = async () =>
+    (await getVirtualizer(container)).parentElement!,
 ) => {
   await expectVirtualized(container, first, last);
-  const scroller = getScroller();
+  const scroller = await getScroller();
   await expect
     .poll(
       () => {

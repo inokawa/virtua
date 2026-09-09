@@ -42,8 +42,7 @@ describe("jump write", () => {
 
   it("fast scrolling into unmeasured area does not lose scroll position", async () => {
     const container = render(<List />);
-    await expect.poll(() => getVirtualizer(container)).toBeTruthy();
-    const list = getVirtualizer(container);
+    const list = await getVirtualizer(container);
     const scroller = list.parentElement!;
 
     // check if start is displayed
@@ -115,7 +114,7 @@ describe("shift compensation", () => {
     await expectVirtualized(container, "item-0", "item-999");
 
     // scroll to end
-    const scroller = getVirtualizer(container).parentElement!;
+    const scroller = (await getVirtualizer(container)).parentElement!;
     scroller.scrollTop = scroller.scrollHeight;
     await expect.poll(() => scrollEnded).toBe(true);
     scrollEnded = false;
