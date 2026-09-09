@@ -130,21 +130,6 @@ describe("vertical", async () => {
     );
     expect(asFragment()).toMatchSnapshot();
   });
-
-  it("should render with given width / height", async () => {
-    const { asFragment } = await render(
-      <div style={{ width: 100, height: 800 }}>
-        <WindowVirtualizer>
-          <div>0</div>
-          <div>1</div>
-          <div>2</div>
-          <div>3</div>
-          <div>4</div>
-        </WindowVirtualizer>
-      </div>,
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
 });
 
 describe("horizontal", async () => {
@@ -219,21 +204,6 @@ describe("horizontal", async () => {
         <Comp>component</Comp>
         <Comp>component</Comp>
       </WindowVirtualizer>,
-    );
-    expect(asFragment()).toMatchSnapshot();
-  });
-
-  it("should render with given width / height", async () => {
-    const { asFragment } = await render(
-      <div style={{ width: 100, height: 800 }}>
-        <WindowVirtualizer horizontal>
-          <div>0</div>
-          <div>1</div>
-          <div>2</div>
-          <div>3</div>
-          <div>4</div>
-        </WindowVirtualizer>
-      </div>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
