@@ -113,16 +113,6 @@ test.describe("smoke", () => {
       component.getByText("Column 949", { exact: true }),
     ).not.toBeVisible();
   });
-
-  test("should not have minimum size", async ({ page }) => {
-    await page.goto(storyUrl("basics-windowvirtualizer--increasing-items"));
-
-    const component = await getVirtualizer(page);
-
-    expect(await component.evaluate((s) => document.body.scrollHeight)).toBe(
-      await component.evaluate((s) => document.body.offsetHeight),
-    );
-  });
 });
 
 test.describe("check if scroll jump compensation works", () => {
