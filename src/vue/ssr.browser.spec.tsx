@@ -1,0 +1,66 @@
+/** @jsxImportSource vue */
+import { expect, it, onTestFinished } from "vitest";
+import { commands } from "vitest/browser";
+import { createSSRApp } from "vue";
+import { List } from "../../spec/ssr/vue.js";
+import {
+  expectHydrated,
+  getVirtualizer,
+  mountSsr,
+} from "../../spec/browser/index.js";
+
+it("should render nothing", async () => {
+  const COUNT = 0;
+  const ITEM_SIZE = 100;
+  const html = await commands.ssrRender({
+    ssrCount: COUNT,
+    itemSize: ITEM_SIZE,
+  });
+  expect(html).toMatchSnapshot();
+
+  const container = mountSsr(html);
+  expect((await getVirtualizer(container)).childElementCount).toEqual(COUNT);
+});
+
+it("should render and hydrate items in vertical mode", async () => {
+  const COUNT = 10;
+  const ITEM_SIZE = 100;
+  const html = await commands.ssrRender({
+    ssrCount: COUNT,
+    itemSize: ITEM_SIZE,
+  });
+  expect(html).toMatchSnapshot();
+
+  const container = mountSsr(html);
+  expect((await getVirtualizer(container)).childElementCount).toEqual(COUNT);
+
+  await expectHydrated(container, COUNT, () => {
+    const app = createSSRApp({
+      render: () => <List ssrCount={COUNT} itemSize={ITEM_SIZE} />,
+    });
+    app.mount(container);
+    onTestFinished(() => app.unmount());
+  });
+});
+
+it("should render and hydrate items in horizontal mode", async () => {
+  const COUNT = 10;
+  const ITEM_SIZE = 100;
+  const html = await commands.ssrRender({
+    ssrCount: COUNT,
+    itemSize: ITEM_SIZE,
+    horizontal: true,
+  });
+  expect(html).toMatchSnapshot();
+
+  const container = mountSsr(html);
+  expect((await getVirtualizer(container)).childElementCount).toEqual(COUNT);
+
+  await expectHydrated(container, COUNT, () => {
+    const app = createSSRApp({
+      render: () => <List ssrCount={COUNT} itemSize={ITEM_SIZE} horizontal />,
+    });
+    app.mount(container);
+    onTestFinished(() => app.unmount());
+  });
+});

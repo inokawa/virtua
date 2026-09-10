@@ -119,7 +119,7 @@ describe("horizontal", () => {
 });
 
 it("should not observe if unmounted before tick resolves", async () => {
-  const observe = vi.spyOn(global.ResizeObserver.prototype, "observe");
+  const observe = vi.spyOn(globalThis.ResizeObserver.prototype, "observe");
   onTestFinished(() => observe.mockRestore());
   // render without awaiting to unmount while tick() in onMount is pending
   const { unmount } = renderSync(Virtualizer, {
