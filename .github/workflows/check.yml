@@ -42,7 +42,7 @@ jobs:
       - run: npm ci
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      - name: Smoke test rendering
+      - name: Run Vitest browser mode tests
         run: npm run test:browser
       - name: Run Playwright tests
         run: npm run e2e
