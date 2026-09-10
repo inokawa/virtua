@@ -8,21 +8,19 @@ describe("jump write", () => {
   const ITEM_COUNT = 1000;
   const HEIGHTS = [20, 40, 80, 77];
 
-  // itemSize is not given and the sizes vary, so scrolling far ahead lands in an area sized by estimation
-  const List = () => (
-    <div style={{ height: "100vh", overflowY: "auto" }}>
-      <Virtualizer>
-        {Array.from({ length: ITEM_COUNT }, (_, i) => (
-          <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
-            {i}
-          </div>
-        ))}
-      </Virtualizer>
-    </div>
-  );
-
   it("fast scrolling into unmeasured area does not lose scroll position", async () => {
-    const container = render(<List />);
+    // itemSize is not given and the sizes vary, so scrolling far ahead lands in an area sized by estimation
+    const container = render(
+      <div style={{ height: "100vh", overflowY: "auto" }}>
+        <Virtualizer>
+          {Array.from({ length: ITEM_COUNT }, (_, i) => (
+            <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
+              {i}
+            </div>
+          ))}
+        </Virtualizer>
+      </div>,
+    );
     const list = await getVirtualizer(container);
     const scroller = list.parentElement!;
 
