@@ -19,8 +19,7 @@ const LIST_ID = "list-id";
 
 const config = {
   ssrCount: 0,
-  itemSize: 40,
-  bufferSize: 160,
+  itemSize: 100,
   horizontal: false,
 };
 
@@ -32,7 +31,6 @@ const config = {
       id="list-id"
       [data]="data"
       [ssrCount]="config.ssrCount"
-      [bufferSize]="config.bufferSize"
       [itemSize]="config.itemSize"
       [horizontal]="config.horizontal"
     >
@@ -72,11 +70,10 @@ const countItems = (html: string): number =>
 describe("SSR", () => {
   it("should render nothing", async () => {
     const COUNT = 0;
-    const ITEM_SIZE = 40;
+    const ITEM_SIZE = 100;
     const html = await render({
       ssrCount: COUNT,
       itemSize: ITEM_SIZE,
-      bufferSize: ITEM_SIZE * 4,
       horizontal: false,
     });
     expect(html).toMatchSnapshot();
@@ -85,11 +82,10 @@ describe("SSR", () => {
 
   it("should render items with ssrCount in vertical mode", async () => {
     const COUNT = 10;
-    const ITEM_SIZE = 40;
+    const ITEM_SIZE = 100;
     const html = await render({
       ssrCount: COUNT,
       itemSize: ITEM_SIZE,
-      bufferSize: ITEM_SIZE * 4,
       horizontal: false,
     });
     expect(html).toMatchSnapshot();
@@ -98,11 +94,10 @@ describe("SSR", () => {
 
   it("should render items with ssrCount in horizontal mode", async () => {
     const COUNT = 5;
-    const ITEM_SIZE = 40;
+    const ITEM_SIZE = 100;
     const html = await render({
       ssrCount: COUNT,
       itemSize: ITEM_SIZE,
-      bufferSize: ITEM_SIZE * 4,
       horizontal: true,
     });
     expect(html).toMatchSnapshot();

@@ -12,15 +12,14 @@ const LIST_ID = "list-id";
 describe("SSR", () => {
   it("should render items with renderToString and vertical", async () => {
     const COUNT = 10;
-    const ITEM_SIZE = 40;
-    const BUFFER_SIZE = ITEM_SIZE * 4;
+    const ITEM_SIZE = 100;
     const html = await renderToString(
       createSSRApp({
         components: { VList },
         template: `
         <VList :data="${JSON.stringify(
           Array.from({ length: 1000 }).map((_, i) => i),
-        )}" :id="'${LIST_ID}'" :ssrCount="${COUNT}" :bufferSize="${BUFFER_SIZE}" :itemSize="${ITEM_SIZE}" #default="{item}">
+        )}" :id="'${LIST_ID}'" :ssrCount="${COUNT}" :itemSize="${ITEM_SIZE}" #default="{item}">
           <div :key="item">
             {{ item }}
           </div>
@@ -38,15 +37,14 @@ describe("SSR", () => {
 
   it("should render items with renderToString and horizontal", async () => {
     const COUNT = 10;
-    const ITEM_SIZE = 40;
-    const BUFFER_SIZE = ITEM_SIZE * 4;
+    const ITEM_SIZE = 100;
     const html = await renderToString(
       createSSRApp({
         components: { VList },
         template: `
         <VList :data="${JSON.stringify(
           Array.from({ length: 1000 }).map((_, i) => i),
-        )}" :id="'${LIST_ID}'" :ssrCount="${COUNT}" :bufferSize="${BUFFER_SIZE}" :itemSize="${ITEM_SIZE}" #default="{item}" :horizontal="true">
+        )}" :id="'${LIST_ID}'" :ssrCount="${COUNT}" :itemSize="${ITEM_SIZE}" #default="{item}" :horizontal="true">
           <div :key="item">
             {{ item }}
           </div>
