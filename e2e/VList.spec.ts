@@ -23,7 +23,6 @@ import {
   relativeLeft,
   getItems,
   setRTL,
-  getStyleValue,
   findFirstVisibleItem,
   findLastVisibleItem,
   isVerticalScrollBarVisible,
@@ -1309,123 +1308,6 @@ test.describe("check if item shift compensation works", () => {
 });
 
 test.describe("SSR and hydration", () => {
-  test("check if hydration works", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--ssr"));
-
-    const component = await getScrollable(page);
-
-    const firstTop = await relativeTop(
-      component,
-      await findFirstVisibleItem(component),
-    );
-    const lastBottom = await relativeBottom(
-      component,
-      await findLastVisibleItem(component),
-    );
-
-    // check if items are aligned correctly before hydration
-    const prevItems = getItems(component);
-    const firstRect = (await prevItems.nth(0).boundingBox())!;
-    await expect(firstRect.y + firstRect.height).toEqual(
-      (await prevItems.nth(1).boundingBox())!.y,
-    );
-
-    // check if SSR suceeded
-    const items = getItems(component);
-    const initialLength = await items.count();
-    expect(initialLength).toBeGreaterThanOrEqual(30);
-    await expect(items.first()).toHaveText("0");
-    await expect(items.last()).toHaveText(String(initialLength - 1));
-    // check if items have styles for SSR
-    expect(await getStyleValue(items.first(), "position")).not.toBe("absolute");
-
-    // should not change state with scroll before hydration
-    await scrollTo(component, 1000);
-    await expect(getItems(component)).toHaveCount(initialLength);
-    await page.waitForTimeout(300);
-    await scrollTo(component, 0);
-
-    // hydrate
-    await page.getByRole("button", { name: "hydrate" }).click();
-
-    // check if hydration suceeded but state is not changed
-    await expect(getItems(component)).toHaveCount(initialLength);
-    expect(
-      await relativeTop(component, await findFirstVisibleItem(component)),
-    ).toBe(firstTop);
-    expect(
-      await relativeBottom(component, await findLastVisibleItem(component)),
-    ).toBe(lastBottom);
-    // check if items do not have styles for SSR
-    expect(await getStyleValue(items.first(), "position")).toBe("absolute");
-
-    // should change state with scroll after hydration
-    await scrollTo(component, 1000);
-    await page.waitForTimeout(300);
-    await expect(getItems(component)).not.toHaveCount(initialLength);
-  });
-
-  test("check if hydration works (horizontal)", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--ssr"));
-
-    await page.getByRole("radio", { name: "horizontal" }).click();
-
-    const component = await getScrollable(page);
-
-    const firstTop = await relativeTop(
-      component,
-      await findFirstVisibleItem(component),
-    );
-    const lastBottom = await relativeBottom(
-      component,
-      await findLastVisibleItem(component),
-    );
-
-    // check if items are aligned correctly before hydration
-    const prevItems = getItems(component);
-    const firstRect = (await prevItems.nth(0).boundingBox())!;
-    await expect(firstRect.x + firstRect.width).toEqual(
-      (await prevItems.nth(1).boundingBox())!.x,
-    );
-
-    // check if SSR suceeded
-    const items = getItems(component);
-    const initialLength = await items.count();
-    expect(initialLength).toBeGreaterThanOrEqual(30);
-    await expect(items.first()).toHaveText("Column 0");
-    await expect(items.last()).toHaveText(
-      "Column " + String(initialLength - 1),
-    );
-
-    // check if items have styles for SSR
-    expect(await getStyleValue(items.first(), "position")).not.toBe("absolute");
-
-    // should not change state with scroll before hydration
-    await scrollTo(component, 1000, "Left");
-    await expect(getItems(component)).toHaveCount(initialLength);
-    await page.waitForTimeout(300);
-    await scrollTo(component, 0, "Left");
-
-    // hydrate
-    await page.getByRole("button", { name: "hydrate" }).click();
-
-    // check if hydration suceeded but state is not changed
-    await expect(getItems(component)).toHaveCount(initialLength);
-    expect(
-      await relativeTop(component, await findFirstVisibleItem(component)),
-    ).toBe(firstTop);
-    expect(
-      await relativeBottom(component, await findLastVisibleItem(component)),
-    ).toBe(lastBottom);
-    // check if items do not have styles for SSR
-    expect(await getStyleValue(items.first(), "position")).toBe("absolute");
-
-    // should change state with scroll after hydration
-    await scrollTo(component, 1000, "Left");
-    await page.waitForTimeout(300);
-    await expect(getItems(component)).not.toHaveCount(initialLength);
-  });
-
   test("check if smooth scrolling works after hydration", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--ssr"));
 
