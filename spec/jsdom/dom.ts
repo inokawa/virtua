@@ -6,7 +6,7 @@ export const setupResizeJsDom = ({
   viewportSize?: { width: number; height: number };
 }) => {
   // https://github.com/jsdom/jsdom/issues/1261#issuecomment-362928131
-  Object.defineProperty(global.HTMLElement.prototype, "offsetParent", {
+  Object.defineProperty(globalThis.HTMLElement.prototype, "offsetParent", {
     get() {
       return this.parentNode;
     },
@@ -32,7 +32,7 @@ export const setupResizeJsDom = ({
     return entry as any;
   };
 
-  global.ResizeObserver = class {
+  globalThis.ResizeObserver = class {
     private flushing = false;
     private queues: ResizeObserverEntry[] = [];
     private callback: ResizeObserverCallback;

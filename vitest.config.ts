@@ -5,6 +5,16 @@ import solid from "vite-plugin-solid";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import angular from "@analogjs/vite-plugin-angular";
 import { playwright } from "@vitest/browser-playwright";
+import type { BrowserCommandContext } from "vitest/node";
+import type { SsrProps } from "./spec/browser/index.js";
+
+type SsrEntry = { render: (props: SsrProps) => string | Promise<string> };
+
+// Renders on the node side of vite, where the components can be compiled for the server
+const ssrCommands = (entry: string) => ({
+  ssrRender: async ({ project }: BrowserCommandContext, props: SsrProps) =>
+    (await project.import<SsrEntry>(entry)).render(props),
+});
 
 const testBrowser = (...browsers: ("chromium" | "firefox" | "webkit")[]) => ({
   enabled: true,
@@ -46,8 +56,7 @@ export default defineConfig({
         },
       },
       {
-        // ssr: true stops the plugin from forcing the browser condition, so the SSR spec resolves solid-js's server build. JSX generation follows the environment, so the jsdom specs are unaffected.
-        plugins: [solid({ ssr: true })],
+        plugins: [solid()],
         test: {
           name: "solid",
           include: ["src/solid/**/!(*.browser).spec.tsx"],
@@ -73,7 +82,7 @@ export default defineConfig({
           setupFiles: ["./spec/jsdom/setup.ts"],
         },
         resolve: {
-          // Resolve svelte's client build so `mount` works in jsdom. The SSR spec runs in the node environment and is unaffected.
+          // Resolve svelte's client build so `mount` works in jsdom
           conditions: ["browser"],
         },
       },
@@ -84,8 +93,6 @@ export default defineConfig({
           include: ["src/angular/**/!(*.browser).spec.ts"],
           environment: "jsdom",
           setupFiles: ["./spec/jsdom/setup.ts", "./spec/setup.angular.ts"],
-          // The plugin's default vmThreads can't load jsdom in the SSR spec, and is only needed for zone.js/fakeAsync, which these zoneless tests don't use.
-          pool: "threads",
         },
       },
       {
@@ -101,7 +108,10 @@ export default defineConfig({
         test: {
           name: "browser-react",
           include: ["src/react/*.browser.spec.tsx"],
-          browser: testBrowser("chromium"),
+          browser: {
+            ...testBrowser("chromium"),
+            commands: ssrCommands("/spec/ssr/react.tsx"),
+          },
         },
       },
       {
@@ -109,15 +119,22 @@ export default defineConfig({
         test: {
           name: "browser-vue",
           include: ["src/vue/*.browser.spec.tsx"],
-          browser: testBrowser("chromium"),
+          browser: {
+            ...testBrowser("chromium"),
+            commands: ssrCommands("/spec/ssr/vue.tsx"),
+          },
         },
       },
       {
-        plugins: [solid()],
+        // ssr:true also makes the client build hydratable
+        plugins: [solid({ ssr: true })],
         test: {
           name: "browser-solid",
           include: ["src/solid/*.browser.spec.tsx"],
-          browser: testBrowser("chromium"),
+          browser: {
+            ...testBrowser("chromium"),
+            commands: ssrCommands("/spec/ssr/solid.tsx"),
+          },
         },
       },
       {
@@ -125,7 +142,10 @@ export default defineConfig({
         test: {
           name: "browser-svelte",
           include: ["src/svelte/*.browser.spec.ts"],
-          browser: testBrowser("chromium"),
+          browser: {
+            ...testBrowser("chromium"),
+            commands: ssrCommands("/spec/ssr/svelte.svelte"),
+          },
         },
       },
       {
@@ -134,7 +154,10 @@ export default defineConfig({
           name: "browser-angular",
           include: ["src/angular/*.browser.spec.ts"],
           setupFiles: ["./spec/setup.angular.ts"],
-          browser: testBrowser("chromium"),
+          browser: {
+            ...testBrowser("chromium"),
+            commands: ssrCommands("/spec/ssr/angular.ts"),
+          },
         },
       },
     ],
