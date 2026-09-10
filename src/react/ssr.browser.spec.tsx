@@ -1,12 +1,15 @@
-import { expect, it, onTestFinished } from "vitest";
+import { afterEach, expect, it, onTestFinished } from "vitest";
 import { commands } from "vitest/browser";
 import { hydrateRoot } from "react-dom/client";
 import { List } from "../../spec/ssr/react.js";
 import {
+  cleanupScroll,
   expectHydrated,
   getVirtualizer,
   mountSsr,
 } from "../../spec/browser/index.js";
+
+afterEach(cleanupScroll);
 
 it("should render nothing", async () => {
   const COUNT = 0;

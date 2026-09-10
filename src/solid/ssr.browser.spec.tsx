@@ -1,15 +1,18 @@
 /**
  * @jsxImportSource solid-js
  */
-import { expect, it, onTestFinished } from "vitest";
+import { afterEach, expect, it, onTestFinished } from "vitest";
 import { commands } from "vitest/browser";
 import { hydrate } from "solid-js/web";
 import { List } from "../../spec/ssr/solid.jsx";
 import {
+  cleanupScroll,
   expectHydrated,
   getVirtualizer,
   mountSsr,
 } from "../../spec/browser/index.js";
+
+afterEach(cleanupScroll);
 
 // solid needs its hydration script, which is inert when set with innerHTML
 const runHydrationScript = (container: Element) => {

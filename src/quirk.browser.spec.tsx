@@ -1,4 +1,11 @@
-import { describe, expect, it, onTestFinished, type TestContext } from "vitest";
+import {
+  afterEach,
+  describe,
+  expect,
+  it,
+  onTestFinished,
+  type TestContext,
+} from "vitest";
 import { render } from "../spec/browser/react.js";
 import { createRef, useLayoutEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
@@ -9,10 +16,13 @@ import {
   type WindowVirtualizerHandle,
 } from "./react/index.js";
 import {
+  cleanupScroll,
   expectVirtualized,
   expectVirtualizedAndScrollable,
   getVirtualizer,
 } from "../spec/browser/index.js";
+
+afterEach(cleanupScroll);
 
 const items = Array.from({ length: 1000 }, (_, i) => i);
 

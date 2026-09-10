@@ -1,4 +1,4 @@
-import { expect, it, onTestFinished } from "vitest";
+import { afterEach, expect, it, onTestFinished } from "vitest";
 import { commands } from "vitest/browser";
 import { provideZonelessChangeDetection } from "@angular/core";
 import {
@@ -7,11 +7,14 @@ import {
 } from "@angular/platform-browser";
 import { SSR_PROPS, SsrVListHost } from "../../spec/ssr/angular.js";
 import {
+  cleanupScroll,
   expectHydrated,
   getVirtualizer,
   mountSsr,
 } from "../../spec/browser/index.js";
 import type { SsrProps } from "../../spec/browser/index.js";
+
+afterEach(cleanupScroll);
 
 // angular verifies the marker comment it emitted against the document
 const moveMarkerToHead = (container: Element) => {

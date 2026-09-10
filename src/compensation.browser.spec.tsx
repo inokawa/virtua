@@ -1,8 +1,14 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import { render } from "../spec/browser/react.js";
 import { createRef, useLayoutEffect, useRef, useState } from "react";
 import { Virtualizer, type VirtualizerHandle } from "./react/index.js";
-import { expectVirtualized, getVirtualizer } from "../spec/browser/index.js";
+import {
+  cleanupScroll,
+  expectVirtualized,
+  getVirtualizer,
+} from "../spec/browser/index.js";
+
+afterEach(cleanupScroll);
 
 describe("jump write", () => {
   const ITEM_COUNT = 1000;

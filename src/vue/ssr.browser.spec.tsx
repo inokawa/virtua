@@ -1,13 +1,16 @@
 /** @jsxImportSource vue */
-import { expect, it, onTestFinished } from "vitest";
+import { afterEach, expect, it, onTestFinished } from "vitest";
 import { commands } from "vitest/browser";
 import { createSSRApp } from "vue";
 import { List } from "../../spec/ssr/vue.js";
 import {
+  cleanupScroll,
   expectHydrated,
   getVirtualizer,
   mountSsr,
 } from "../../spec/browser/index.js";
+
+afterEach(cleanupScroll);
 
 it("should render nothing", async () => {
   const COUNT = 0;

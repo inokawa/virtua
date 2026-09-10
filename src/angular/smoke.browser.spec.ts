@@ -1,10 +1,15 @@
-import { it } from "vitest";
+import { afterEach, it } from "vitest";
 import { render } from "../../spec/browser/angular.js";
 import { Component } from "@angular/core";
 import { VList } from "./VList.js";
 import { Virtualizer } from "./Virtualizer.js";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
-import { expectVirtualizedAndScrollable } from "../../spec/browser/index.js";
+import {
+  cleanupScroll,
+  expectVirtualizedAndScrollable,
+} from "../../spec/browser/index.js";
+
+afterEach(cleanupScroll);
 
 @Component({
   selector: "smoke-vlist",

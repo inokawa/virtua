@@ -14,6 +14,12 @@ declare module "vitest/internal/browser" {
   }
 }
 
+// A test which scrolls the window leaves the document at that offset, and the next one would start from there
+export const cleanupScroll = () => {
+  document.scrollingElement!.scrollTop = 0;
+  document.scrollingElement!.scrollLeft = 0;
+};
+
 export const createContainer = (doc: Document): HTMLElement => {
   const container = doc.body.appendChild(doc.createElement("div"));
   onTestFinished(() => container.remove());
