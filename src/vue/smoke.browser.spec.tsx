@@ -6,10 +6,6 @@ import { Virtualizer } from "./Virtualizer.js";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
 import { expectVirtualizedAndScrollable } from "../../spec/browser.js";
 
-const itemSlot = {
-  default: ({ item }: { item: number }) => <div>item-{item}</div>,
-};
-
 const render = (node: VNode) => {
   const container = document.body.appendChild(document.createElement("div"));
   onTestFinished(() => {
@@ -29,7 +25,9 @@ it("VList", async () => {
       data={Array.from({ length: 1000 }, (_, i) => i)}
       style={{ height: "400px" }}
     >
-      {itemSlot}
+      {{
+        default: ({ item }: { item: number }) => <div>item-{item}</div>,
+      }}
     </VList>,
   );
   await expectVirtualizedAndScrollable(container, "item-0", "item-999");
@@ -39,7 +37,9 @@ it("Virtualizer", async () => {
   const container = render(
     <div style={{ height: "400px", overflowY: "auto" }}>
       <Virtualizer data={Array.from({ length: 1000 }, (_, i) => i)}>
-        {itemSlot}
+        {{
+          default: ({ item }: { item: number }) => <div>item-{item}</div>,
+        }}
       </Virtualizer>
     </div>,
   );
@@ -49,7 +49,9 @@ it("Virtualizer", async () => {
 it("WindowVirtualizer", async () => {
   const container = render(
     <WindowVirtualizer data={Array.from({ length: 1000 }, (_, i) => i)}>
-      {itemSlot}
+      {{
+        default: ({ item }: { item: number }) => <div>item-{item}</div>,
+      }}
     </WindowVirtualizer>,
   );
   await expectVirtualizedAndScrollable(

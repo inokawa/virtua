@@ -91,6 +91,14 @@ export default defineConfig({
       {
         plugins: [react()],
         test: {
+          name: "browser-core",
+          include: ["src/*.browser.spec.tsx"],
+          browser: testBrowser("chromium", "firefox", "webkit"),
+        },
+      },
+      {
+        plugins: [react()],
+        test: {
           name: "browser-react",
           include: ["src/react/*.browser.spec.tsx"],
           browser: testBrowser("chromium"),
@@ -127,14 +135,6 @@ export default defineConfig({
           include: ["src/angular/*.browser.spec.ts"],
           setupFiles: ["./spec/setup.angular.ts"],
           browser: testBrowser("chromium"),
-        },
-      },
-      {
-        plugins: [react()],
-        test: {
-          name: "browser-core",
-          include: ["src/*.browser.spec.tsx"],
-          browser: testBrowser("chromium", "firefox", "webkit"),
         },
       },
     ],
