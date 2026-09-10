@@ -59,6 +59,7 @@ export const expectVirtualizedAndScrollable = async (
       { timeout: 5000 },
     )
     .toContain(last);
+  expect(container.textContent).not.toContain(first);
 };
 
 export const mountSsr = (html: string): HTMLElement => {
@@ -88,5 +89,5 @@ export const expectHydrated = async (
     expect(container.contains(node)).toBe(true);
   }
 
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
 };
