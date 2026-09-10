@@ -1,8 +1,8 @@
 import { it, expect, describe } from "vitest";
 import { defineComponent, h } from "vue";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
-import { setupResizeJsDom } from "../../spec/dom.js";
-import { render, SlotType } from "../../spec/vue.js";
+import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
+import { render, SlotType } from "../../spec/jsdom/vue.js";
 
 setupResizeJsDom({
   itemSize: { width: 100, height: 50 },

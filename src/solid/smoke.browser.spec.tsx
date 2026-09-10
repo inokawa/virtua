@@ -1,25 +1,12 @@
 /**
  * @jsxImportSource solid-js
  */
-import { it, onTestFinished } from "vitest";
-import { render as renderTo } from "solid-js/web";
-import { type JSX } from "solid-js";
+import { it } from "vitest";
+import { render } from "../../spec/browser/solid.js";
 import { VList } from "./VList.js";
 import { Virtualizer } from "./Virtualizer.js";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
-import { expectVirtualizedAndScrollable } from "../../spec/browser.js";
-
-const render = (node: () => JSX.Element) => {
-  const container = document.body.appendChild(document.createElement("div"));
-  onTestFinished(() => {
-    container.remove();
-    document.scrollingElement!.scrollTop = 0;
-    document.scrollingElement!.scrollLeft = 0;
-  });
-  const dispose = renderTo(node, container);
-  onTestFinished(dispose);
-  return container;
-};
+import { expectVirtualizedAndScrollable } from "../../spec/browser/index.js";
 
 it("VList", async () => {
   const container = render(() => (

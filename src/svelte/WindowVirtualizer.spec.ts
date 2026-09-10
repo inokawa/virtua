@@ -1,8 +1,8 @@
 import { it, expect, describe } from "vitest";
 import { createRawSnippet } from "svelte";
 import WindowVirtualizer from "./WindowVirtualizer.svelte";
-import { setupResizeJsDom } from "../../spec/dom.js";
-import { render } from "../../spec/svelte.js";
+import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
+import { render } from "../../spec/jsdom/svelte.js";
 
 setupResizeJsDom({
   itemSize: { width: 100, height: 50 },

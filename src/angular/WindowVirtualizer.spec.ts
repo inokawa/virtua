@@ -1,8 +1,8 @@
 import { it, expect, describe } from "vitest";
 import { Component, input } from "@angular/core";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
-import { setupResizeJsDom } from "../../spec/dom.js";
-import { render } from "../../spec/angular.js";
+import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
+import { render } from "../../spec/jsdom/angular.js";
 
 setupResizeJsDom({
   itemSize: { width: 100, height: 50 },

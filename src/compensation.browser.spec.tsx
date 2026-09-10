@@ -1,27 +1,8 @@
-import { describe, expect, it, onTestFinished } from "vitest";
-import {
-  createRef,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type ReactNode,
-} from "react";
-import { createRoot } from "react-dom/client";
+import { describe, expect, it } from "vitest";
+import { render } from "../spec/browser/react.js";
+import { createRef, useLayoutEffect, useRef, useState } from "react";
 import { Virtualizer, type VirtualizerHandle } from "./react/index.js";
-import { expectVirtualized, getVirtualizer } from "../spec/browser.js";
-
-const render = (node: ReactNode, doc: Document = document) => {
-  const container = doc.body.appendChild(doc.createElement("div"));
-  onTestFinished(() => {
-    container.remove();
-    doc.scrollingElement!.scrollTop = 0;
-    doc.scrollingElement!.scrollLeft = 0;
-  });
-  const root = createRoot(container);
-  root.render(node);
-  onTestFinished(() => root.unmount());
-  return container;
-};
+import { expectVirtualized, getVirtualizer } from "../spec/browser/index.js";
 
 describe("jump write", () => {
   const ITEM_COUNT = 1000;

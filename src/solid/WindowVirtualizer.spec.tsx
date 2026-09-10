@@ -3,9 +3,9 @@
  */
 import { it, expect, describe } from "vitest";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
-import { setupResizeJsDom } from "../../spec/dom.js";
+import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { type JSX } from "solid-js";
-import { render } from "../../spec/solid.js";
+import { render } from "../../spec/jsdom/solid.js";
 
 setupResizeJsDom({
   itemSize: { width: 100, height: 50 },

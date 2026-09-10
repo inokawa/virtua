@@ -1,23 +1,10 @@
 /** @jsxImportSource vue */
-import { it, onTestFinished } from "vitest";
-import { createApp, type VNode } from "vue";
+import { it } from "vitest";
+import { render } from "../../spec/browser/vue.js";
 import { VList } from "./VList.js";
 import { Virtualizer } from "./Virtualizer.js";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
-import { expectVirtualizedAndScrollable } from "../../spec/browser.js";
-
-const render = (node: VNode) => {
-  const container = document.body.appendChild(document.createElement("div"));
-  onTestFinished(() => {
-    container.remove();
-    document.scrollingElement!.scrollTop = 0;
-    document.scrollingElement!.scrollLeft = 0;
-  });
-  const app = createApp({ render: () => node });
-  app.mount(container);
-  onTestFinished(() => app.unmount());
-  return container;
-};
+import { expectVirtualizedAndScrollable } from "../../spec/browser/index.js";
 
 it("VList", async () => {
   const container = render(

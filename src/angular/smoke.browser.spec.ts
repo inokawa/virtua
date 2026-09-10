@@ -1,10 +1,10 @@
-import { it, onTestFinished } from "vitest";
-import { Component, type Type } from "@angular/core";
-import { TestBed } from "@angular/core/testing";
+import { it } from "vitest";
+import { render } from "../../spec/browser/angular.js";
+import { Component } from "@angular/core";
 import { VList } from "./VList.js";
 import { Virtualizer } from "./Virtualizer.js";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
-import { expectVirtualizedAndScrollable } from "../../spec/browser.js";
+import { expectVirtualizedAndScrollable } from "../../spec/browser/index.js";
 
 @Component({
   selector: "smoke-vlist",
@@ -52,17 +52,6 @@ class VirtualizerHost {
 class WindowVirtualizerHost {
   readonly data = Array.from({ length: 1000 }, (_, i) => i);
 }
-
-const render = (host: Type<unknown>) => {
-  const fixture = TestBed.createComponent(host);
-  onTestFinished(() => {
-    fixture.destroy();
-    document.scrollingElement!.scrollTop = 0;
-    document.scrollingElement!.scrollLeft = 0;
-  });
-  fixture.autoDetectChanges();
-  return fixture.nativeElement as HTMLElement;
-};
 
 it("VList", async () => {
   const container = render(VListHost);

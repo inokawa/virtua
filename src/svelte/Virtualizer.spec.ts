@@ -1,8 +1,8 @@
 import { it, expect, describe, onTestFinished, vi } from "vitest";
 import { createRawSnippet, tick } from "svelte";
 import Virtualizer from "./Virtualizer.svelte";
-import { setupResizeJsDom } from "../../spec/dom.js";
-import { render, renderSync } from "../../spec/svelte.js";
+import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
+import { render, renderSync } from "../../spec/jsdom/svelte.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;

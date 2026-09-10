@@ -2,8 +2,8 @@ import { it, expect, describe } from "vitest";
 import { Virtualizer } from "./Virtualizer.js";
 import { forwardRef } from "react";
 import { type CustomItemComponentProps } from "./types.js";
-import { setupResizeJsDom } from "../../spec/dom.js";
-import { render } from "../../spec/react.js";
+import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
+import { render } from "../../spec/jsdom/react.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;

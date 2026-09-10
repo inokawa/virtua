@@ -31,7 +31,7 @@ export default defineConfig({
           name: "react",
           include: ["src/react/**/!(*.browser).spec.tsx"],
           environment: "jsdom",
-          setupFiles: ["./spec/setup.ts"],
+          setupFiles: ["./spec/jsdom/setup.ts"],
         },
       },
       {
@@ -42,7 +42,7 @@ export default defineConfig({
           environment: "jsdom",
           // https://github.com/testing-library/vue-testing-library/issues/296
           globals: true,
-          setupFiles: ["./spec/setup.ts"],
+          setupFiles: ["./spec/jsdom/setup.ts"],
         },
       },
       {
@@ -52,7 +52,7 @@ export default defineConfig({
           name: "solid",
           include: ["src/solid/**/!(*.browser).spec.tsx"],
           environment: "jsdom",
-          setupFiles: ["./spec/setup.ts"],
+          setupFiles: ["./spec/jsdom/setup.ts"],
           server: {
             deps: {
               // https://github.com/solidjs/vite-plugin-solid/issues/102#issuecomment-2363242031
@@ -70,7 +70,7 @@ export default defineConfig({
           name: "svelte",
           include: ["src/svelte/**/!(*.browser).spec.ts"],
           environment: "jsdom",
-          setupFiles: ["./spec/setup.ts"],
+          setupFiles: ["./spec/jsdom/setup.ts"],
         },
         resolve: {
           // Resolve svelte's client build so `mount` works in jsdom. The SSR spec runs in the node environment and is unaffected.
@@ -83,7 +83,7 @@ export default defineConfig({
           name: "angular",
           include: ["src/angular/**/!(*.browser).spec.ts"],
           environment: "jsdom",
-          setupFiles: ["./spec/setup.ts", "./spec/setup.angular.ts"],
+          setupFiles: ["./spec/jsdom/setup.ts", "./spec/setup.angular.ts"],
           // The plugin's default vmThreads can't load jsdom in the SSR spec, and is only needed for zone.js/fakeAsync, which these zoneless tests don't use.
           pool: "threads",
         },

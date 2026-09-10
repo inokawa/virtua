@@ -1,5 +1,6 @@
 import { describe, expect, it, onTestFinished, type TestContext } from "vitest";
-import { createRef, useLayoutEffect, useRef, type ReactNode } from "react";
+import { render } from "../spec/browser/react.js";
+import { createRef, useLayoutEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import {
   Virtualizer,
@@ -11,22 +12,9 @@ import {
   expectVirtualized,
   expectVirtualizedAndScrollable,
   getVirtualizer,
-} from "../spec/browser.js";
+} from "../spec/browser/index.js";
 
 const items = Array.from({ length: 1000 }, (_, i) => i);
-
-const render = (node: ReactNode, doc: Document = document) => {
-  const container = doc.body.appendChild(doc.createElement("div"));
-  onTestFinished(() => {
-    container.remove();
-    doc.scrollingElement!.scrollTop = 0;
-    doc.scrollingElement!.scrollLeft = 0;
-  });
-  const root = createRoot(container);
-  root.render(node);
-  onTestFinished(() => root.unmount());
-  return container;
-};
 
 const waitForStableHeight = async (
   virtualizer: HTMLElement,

@@ -1,32 +1,14 @@
-import { it, onTestFinished } from "vitest";
-import { mount, unmount, createRawSnippet, type Component } from "svelte";
+import { it } from "vitest";
+import { createRawSnippet } from "svelte";
+import { render } from "../../spec/browser/svelte.js";
 import VList from "./VList.svelte";
 import Virtualizer from "./Virtualizer.svelte";
 import WindowVirtualizer from "./WindowVirtualizer.svelte";
-import { expectVirtualizedAndScrollable } from "../../spec/browser.js";
+import { expectVirtualizedAndScrollable } from "../../spec/browser/index.js";
 
 const itemSnippet = createRawSnippet<[number, number]>((item) => ({
   render: () => `<div>item-${item()}</div>`,
 }));
-
-const render = <P extends Record<string, unknown>>(
-  component: Component<P, any>,
-  props: P,
-  style?: string,
-) => {
-  const container = document.body.appendChild(document.createElement("div"));
-  if (style) {
-    container.style.cssText = style;
-  }
-  onTestFinished(() => {
-    container.remove();
-    document.scrollingElement!.scrollTop = 0;
-    document.scrollingElement!.scrollLeft = 0;
-  });
-  const app = mount(component, { target: container, props });
-  onTestFinished(() => unmount(app));
-  return container;
-};
 
 it("VList", async () => {
   const container = render(VList, {

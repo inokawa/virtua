@@ -1,24 +1,10 @@
-import { it, onTestFinished } from "vitest";
-import { type ReactNode } from "react";
-import { createRoot } from "react-dom/client";
+import { it } from "vitest";
+import { render } from "../../spec/browser/react.js";
 import { VList } from "./VList.js";
 import { Virtualizer } from "./Virtualizer.js";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
 import { VGrid } from "./VGrid.js";
-import { expectVirtualizedAndScrollable } from "../../spec/browser.js";
-
-const render = (node: ReactNode) => {
-  const container = document.body.appendChild(document.createElement("div"));
-  onTestFinished(() => {
-    container.remove();
-    document.scrollingElement!.scrollTop = 0;
-    document.scrollingElement!.scrollLeft = 0;
-  });
-  const root = createRoot(container);
-  root.render(node);
-  onTestFinished(() => root.unmount());
-  return container;
-};
+import { expectVirtualizedAndScrollable } from "../../spec/browser/index.js";
 
 it("VList", async () => {
   const container = render(

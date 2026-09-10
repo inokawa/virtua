@@ -1,8 +1,8 @@
 import { it, expect, describe } from "vitest";
 import { createRawSnippet } from "svelte";
 import VList from "./VList.svelte";
-import { setupResizeJsDom } from "../../spec/dom.js";
-import { render } from "../../spec/svelte.js";
+import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
+import { render } from "../../spec/jsdom/svelte.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;

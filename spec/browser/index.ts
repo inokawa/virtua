@@ -1,4 +1,4 @@
-import { expect } from "vitest";
+import { expect, onTestFinished } from "vitest";
 
 const VIRTUALIZER = '*[style*="flex: 0 0 auto"]';
 
@@ -37,4 +37,10 @@ export const expectVirtualizedAndScrollable = async (
       { timeout: 5000 },
     )
     .toContain(last);
+};
+
+export const createContainer = (doc: Document) => {
+  const container = doc.body.appendChild(doc.createElement("div"));
+  onTestFinished(() => container.remove());
+  return container;
 };

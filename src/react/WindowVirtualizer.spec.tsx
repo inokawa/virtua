@@ -2,8 +2,8 @@ import { it, expect, describe } from "vitest";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
 import { forwardRef } from "react";
 import { type CustomItemComponentProps } from "./types.js";
-import { setupResizeJsDom } from "../../spec/dom.js";
-import { render } from "../../spec/react.js";
+import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
+import { render } from "../../spec/jsdom/react.js";
 
 setupResizeJsDom({
   itemSize: { width: 100, height: 50 },

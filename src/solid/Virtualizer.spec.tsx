@@ -3,9 +3,9 @@
  */
 import { it, expect, describe } from "vitest";
 import { Virtualizer } from "./Virtualizer.js";
-import { setupResizeJsDom } from "../../spec/dom.js";
+import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { type JSX } from "solid-js";
-import { render } from "../../spec/solid.js";
+import { render } from "../../spec/jsdom/solid.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
