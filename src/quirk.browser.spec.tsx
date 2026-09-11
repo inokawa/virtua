@@ -10,6 +10,7 @@ import { render } from "../spec/browser/react.js";
 import { createRef, useLayoutEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import {
+  experimental_VGrid as VGrid,
   Virtualizer,
   type VirtualizerHandle,
   WindowVirtualizer,
@@ -108,6 +109,51 @@ it("display: none (WindowVirtualizer)", async () => {
   await new Promise((resolve) => setTimeout(resolve, 100));
 
   expect(container.style.height).toEqual(initialHeight);
+});
+
+it("position: fixed viewport (Virtualizer)", async () => {
+  const root = render(
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: 400,
+        height: 400,
+        overflowY: "auto",
+      }}
+    >
+      <Virtualizer data={items}>
+        {(d) => (
+          <div key={d} style={{ height: 40 }}>
+            item-{d}
+          </div>
+        )}
+      </Virtualizer>
+    </div>,
+  );
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
+it("position: fixed viewport (VGrid)", async () => {
+  const root = render(
+    <VGrid
+      row={100}
+      col={100}
+      style={{ position: "fixed", top: 0, left: 0, width: 400, height: 400 }}
+    >
+      {({ rowIndex, colIndex }) => (
+        <div style={{ width: 100, height: 40 }}>
+          row-{rowIndex}/column-{colIndex}
+        </div>
+      )}
+    </VGrid>,
+  );
+  await expectVirtualizedAndScrollable(
+    root,
+    "row-0/column-0",
+    "row-99/column-99",
+  );
 });
 
 it("hidden document does not cancel imperative scroll", async () => {
