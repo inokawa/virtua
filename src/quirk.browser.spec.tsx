@@ -17,6 +17,7 @@ import {
 } from "./react/index.js";
 import {
   cleanupScroll,
+  createDomRoot,
   expectVirtualized,
   expectVirtualizedAndScrollable,
   getVirtualizer,
@@ -217,8 +218,7 @@ it("iframe", async () => {
 });
 
 it("shadow DOM", async () => {
-  const host = document.body.appendChild(document.createElement("div"));
-  onTestFinished(() => host.remove());
+  const host = createDomRoot(document);
   const root = host
     .attachShadow({ mode: "open" })
     .appendChild(document.createElement("div"));

@@ -20,7 +20,7 @@ export const cleanupScroll = () => {
   document.scrollingElement!.scrollLeft = 0;
 };
 
-export const createRoot = (doc: Document): HTMLElement => {
+export const createDomRoot = (doc: Document): HTMLElement => {
   const root = doc.body.appendChild(doc.createElement("div"));
   onTestFinished(() => root.remove());
   return root;
@@ -83,7 +83,7 @@ export const expectVirtualizedAndScrollable = async (
 };
 
 export const mountSsr = (html: string): HTMLElement => {
-  const root = createRoot(document);
+  const root = createDomRoot(document);
   root.innerHTML = html;
   return root;
 };

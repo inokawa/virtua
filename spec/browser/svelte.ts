@@ -1,13 +1,13 @@
 import { onTestFinished } from "vitest";
 import { mount, unmount, type Component } from "svelte";
-import { createRoot } from "./index.js";
+import { createDomRoot } from "./index.js";
 
 export const render = <P extends Record<string, unknown>>(
   component: Component<P, any>,
   props: P,
   style?: string,
 ) => {
-  const root = createRoot(document);
+  const root = createDomRoot(document);
   if (style) {
     root.style.cssText = style;
   }
