@@ -41,7 +41,11 @@ export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 9;
 type Actions =
   | [type: typeof ACTION_SCROLL, offset: number]
   | [type: typeof ACTION_SCROLL_END, dummy?: void]
-  | [type: typeof ACTION_ITEM_RESIZE, resizes: readonly ItemResize[]]
+  | [
+      type: typeof ACTION_ITEM_RESIZE,
+      resizes: readonly ItemResize[],
+      isReindex?: boolean,
+    ]
   | [type: typeof ACTION_VIEWPORT_RESIZE, size: number]
   | [
       type: typeof ACTION_ITEMS_LENGTH_CHANGE,
@@ -180,11 +184,14 @@ export const createVirtualStore = (
     }
   };
 
-  const getAnchorIndex = (): number => {
+  const getAnchorIndex = (isReindex?: boolean): number => {
     const length = getLength();
     if (_scrollMode === SCROLL_BY_SHIFT) {
       // Keep distance from end during shifting
       return length;
+    }
+    if (isReindex) {
+      return 0;
     }
     if (_frozenRange && _scrollMode === SCROLL_BY_MANUAL_SCROLL) {
       // https://github.com/inokawa/virtua/issues/380
@@ -350,7 +357,7 @@ export const createVirtualStore = (
         case ACTION_ITEM_RESIZE: {
           // Skip if all items are cached and not updated
           if (payload.length) {
-            const anchorIndex = getAnchorIndex();
+            const anchorIndex = getAnchorIndex(payload2);
             const anchorOffset = getItemOffset(anchorIndex);
             setItemSizes(payload, viewportSize);
             // Calculate jump by resize to minimize janks in appearance

@@ -57,13 +57,13 @@
     "name": "vue VGrid",
     "path": "lib/vue/index.js",
     "import": "{ VGrid }",
-    "limit": "6.1 kB"
+    "limit": "6.15 kB"
   },
   {
     "name": "vue VMasonry",
     "path": "lib/vue/index.js",
     "import": "{ VMasonry }",
-    "limit": "3.75 kB"
+    "limit": "3.8 kB"
   },
   {
     "name": "solid VList",
@@ -93,7 +93,7 @@
     "name": "solid VMasonry",
     "path": "lib/solid/index.js",
     "import": "{ VMasonry }",
-    "limit": "3.9 kB"
+    "limit": "3.95 kB"
   },
   {
     "name": "angular",
