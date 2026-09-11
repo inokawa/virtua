@@ -6,7 +6,7 @@
 
 > `const` **VList**: \<`T`\>(`props`) => `ReactElement`
 
-Defined in: [src/react/VList.tsx:39](https://github.com/inokawa/virtua/blob/7844681858692a81f37c01f8b57bd8e5e4d30fbd/src/react/VList.tsx#L39)
+Defined in: [src/react/VList.tsx:39](https://github.com/inokawa/virtua/blob/1b83b98ac0cb439da47c9a595a56aba452ce673c/src/react/VList.tsx#L39)
 
 Virtualized list component. See [VListProps](../interfaces/VListProps.md) and [VListHandle](../interfaces/VListHandle.md).
 
