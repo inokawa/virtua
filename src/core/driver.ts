@@ -40,21 +40,24 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
   let scrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
 
-  const sizeKey = isHorizontal ? "width" : "height";
   const mountedIndexes = new WeakMap<Element, number>();
 
   const resizeObserver = createResizeObserver((entries) => {
     const resizes: ItemResize[] = [];
-    for (const { target, contentRect } of entries) {
-      // Skip zero-sized rects that may be observed under `display: none` style
-      if (!(target as HTMLElement).offsetParent) continue;
-
+    for (const {
+      target,
+      contentRect: { width, height },
+    } of entries) {
       if (target === viewportElement) {
-        store.$update(ACTION_VIEWPORT_RESIZE, contentRect[sizeKey]);
-      } else {
+        // https://github.com/inokawa/virtua/issues/964
+        if (width || height) {
+          store.$update(ACTION_VIEWPORT_RESIZE, isHorizontal ? width : height);
+        }
+        // Skip zero-sized rects that may be observed under `display: none` style
+      } else if ((target as HTMLElement).offsetParent) {
         const index = mountedIndexes.get(target);
         if (index != NULL) {
-          resizes.push([index, contentRect[sizeKey]]);
+          resizes.push([index, isHorizontal ? width : height]);
         }
       }
     }
@@ -132,24 +135,23 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
   let onViewportResize: (() => void) | undefined;
   let initialized = createPromise<boolean>();
 
-  const sizeKey = isHorizontal ? "width" : "height";
   const mountedIndexes = new WeakMap<Element, number>();
 
   const resizeObserver = createResizeObserver((entries) => {
     const resizes: ItemResize[] = [];
-    for (const { target, contentRect } of entries) {
+    for (const {
+      target,
+      contentRect: { width, height },
+    } of entries) {
       if (target === viewportElement) {
         // Scrollbar appearance/disappearance changes client size without firing window resize events
         onViewportResize && onViewportResize();
-        continue;
-      }
-
-      // Skip zero-sized rects that may be observed under `display: none` style
-      if (!(target as HTMLElement).offsetParent) continue;
-
-      const index = mountedIndexes.get(target);
-      if (index != NULL) {
-        resizes.push([index, contentRect[sizeKey]]);
+        // Skip zero-sized rects that may be observed under `display: none` style
+      } else if ((target as HTMLElement).offsetParent) {
+        const index = mountedIndexes.get(target);
+        if (index != NULL) {
+          resizes.push([index, isHorizontal ? width : height]);
+        }
       }
     }
 
@@ -321,13 +323,14 @@ export const createContainerGridDriver: GridDriverFactory = (
       target,
       contentRect: { width, height },
     } of entries) {
-      // Skip zero-sized rects that may be observed under `display: none` style
-      if (!(target as HTMLElement).offsetParent) continue;
-
       if (target === viewportElement) {
-        rowStore.$update(ACTION_VIEWPORT_RESIZE, height);
-        colStore.$update(ACTION_VIEWPORT_RESIZE, width);
-      } else {
+        // https://github.com/inokawa/virtua/issues/964
+        if (width || height) {
+          rowStore.$update(ACTION_VIEWPORT_RESIZE, height);
+          colStore.$update(ACTION_VIEWPORT_RESIZE, width);
+        }
+        // Skip zero-sized rects that may be observed under `display: none` style
+      } else if ((target as HTMLElement).offsetParent) {
         const cell = mountedIndexes.get(target);
         if (cell) {
           const [rowIndex, colIndex] = cell;
