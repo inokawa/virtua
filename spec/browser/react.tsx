@@ -1,12 +1,12 @@
 import { onTestFinished } from "vitest";
 import { type ReactNode } from "react";
-import { createRoot } from "react-dom/client";
-import { createContainer } from "./index.js";
+import { createRoot as createReactRoot } from "react-dom/client";
+import { createRoot } from "./index.js";
 
 export const render = (node: ReactNode, doc: Document = document) => {
-  const container = createContainer(doc);
-  const root = createRoot(container);
-  root.render(node);
-  onTestFinished(() => root.unmount());
-  return container;
+  const root = createRoot(doc);
+  const reactRoot = createReactRoot(root);
+  reactRoot.render(node);
+  onTestFinished(() => reactRoot.unmount());
+  return root;
 };

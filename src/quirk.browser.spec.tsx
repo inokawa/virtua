@@ -26,13 +26,11 @@ afterEach(cleanupScroll);
 
 const items = Array.from({ length: 1000 }, (_, i) => i);
 
-const waitForStableHeight = async (
-  virtualizer: HTMLElement,
-): Promise<string> => {
+const waitForStableHeight = async (container: HTMLElement): Promise<string> => {
   let prev: string | undefined;
   await expect
     .poll(() => {
-      const height = virtualizer.style.height;
+      const height = container.style.height;
       const isStable = !!height && height === prev;
       prev = height;
       return isStable;
@@ -42,8 +40,8 @@ const waitForStableHeight = async (
 };
 
 // Items must be placed in layout size, not in visual size of getBoundingClientRect or rounded size of offsetHeight
-const expectItemDistance = (virtualizer: HTMLElement, size: number) => {
-  const tops = Array.from(virtualizer.children, (e) =>
+const expectItemDistance = (container: HTMLElement, size: number) => {
+  const tops = Array.from(container.children, (e) =>
     parseFloat((e as HTMLElement).style.top),
   ).sort((a, b) => a - b);
   expect(tops.length).toBeGreaterThan(1);
@@ -65,7 +63,7 @@ const waitForZeroSizeNotification = (target: Element) => {
 };
 
 it("display: none (Virtualizer)", async () => {
-  const container = render(
+  const root = render(
     <div style={{ height: 400, overflowY: "auto" }}>
       <Virtualizer data={items}>
         {(d) => (
@@ -76,21 +74,21 @@ it("display: none (Virtualizer)", async () => {
       </Virtualizer>
     </div>,
   );
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualized(root, "item-0", "item-999");
 
-  const virtualizer = await getVirtualizer(container);
-  const initialHeight = await waitForStableHeight(virtualizer);
+  const { container } = await getVirtualizer(root);
+  const initialHeight = await waitForStableHeight(container);
 
-  container.style.display = "none";
-  await waitForZeroSizeNotification(virtualizer);
+  root.style.display = "none";
+  await waitForZeroSizeNotification(container);
   // let pending resize notifications propagate
   await new Promise((resolve) => setTimeout(resolve, 100));
 
-  expect(virtualizer.style.height).toEqual(initialHeight);
+  expect(container.style.height).toEqual(initialHeight);
 });
 
 it("display: none (WindowVirtualizer)", async () => {
-  const container = render(
+  const root = render(
     <WindowVirtualizer data={items}>
       {(d) => (
         <div key={d} style={{ height: 30 }}>
@@ -99,17 +97,17 @@ it("display: none (WindowVirtualizer)", async () => {
       )}
     </WindowVirtualizer>,
   );
-  await expectVirtualized(container, "item-0", "item-999");
+  await expectVirtualized(root, "item-0", "item-999");
 
-  const virtualizer = await getVirtualizer(container);
-  const initialHeight = await waitForStableHeight(virtualizer);
+  const { container } = await getVirtualizer(root);
+  const initialHeight = await waitForStableHeight(container);
 
-  container.style.display = "none";
-  await waitForZeroSizeNotification(virtualizer);
+  root.style.display = "none";
+  await waitForZeroSizeNotification(container);
   // let pending resize notifications propagate
   await new Promise((resolve) => setTimeout(resolve, 100));
 
-  expect(virtualizer.style.height).toEqual(initialHeight);
+  expect(container.style.height).toEqual(initialHeight);
 });
 
 it("hidden document does not cancel imperative scroll", async () => {
@@ -134,24 +132,24 @@ it("hidden document does not cancel imperative scroll", async () => {
       </div>
     );
   };
-  const container = render(<Component />);
+  const root = render(<Component />);
 
   // Scheduled scroll gives up 150ms after the last resize
   await new Promise((resolve) => setTimeout(resolve, 400));
-  const hidden = container.firstElementChild as HTMLElement;
-  const scroller = (await getVirtualizer(container)).parentElement!;
+  const hidden = root.firstElementChild as HTMLElement;
+  const { viewport } = await getVirtualizer(root);
   const bottom = items.length * 60 - 400;
-  expect(scroller.checkVisibility()).toBe(false);
+  expect(viewport.checkVisibility()).toBe(false);
   // The estimated size must be smaller than the actual one, or a canceled scroll is also clamped to the bottom
-  expect(scroller.scrollTop).toBeLessThan(bottom);
+  expect(viewport.scrollTop).toBeLessThan(bottom);
 
   hidden.style.contentVisibility = "";
 
-  await expect.poll(() => scroller.scrollTop, { timeout: 5000 }).toBe(bottom);
+  await expect.poll(() => viewport.scrollTop, { timeout: 5000 }).toBe(bottom);
 });
 
 it("flex parent", async () => {
-  const container = render(
+  const root = render(
     <div
       style={{
         display: "flex",
@@ -169,7 +167,7 @@ it("flex parent", async () => {
       </Virtualizer>
     </div>,
   );
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
 it("new window", async () => {
@@ -182,7 +180,7 @@ it("new window", async () => {
     .poll(() => newWindow!.document.readyState, { timeout: 5000 })
     .toBe("complete");
 
-  const container = render(
+  const root = render(
     <div style={{ height: 400, overflowY: "auto" }}>
       <Virtualizer data={items}>
         {(d) => (
@@ -194,7 +192,7 @@ it("new window", async () => {
     </div>,
     newWindow!.document,
   );
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
 it("iframe", async () => {
@@ -203,7 +201,7 @@ it("iframe", async () => {
   iframe.height = "400";
   onTestFinished(() => iframe.remove());
 
-  const container = render(
+  const root = render(
     <div style={{ height: 400, overflowY: "auto" }}>
       <Virtualizer data={items}>
         {(d) => (
@@ -215,17 +213,17 @@ it("iframe", async () => {
     </div>,
     iframe.contentDocument!,
   );
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
 it("shadow DOM", async () => {
   const host = document.body.appendChild(document.createElement("div"));
   onTestFinished(() => host.remove());
-  const container = host
+  const root = host
     .attachShadow({ mode: "open" })
     .appendChild(document.createElement("div"));
-  const root = createRoot(container);
-  root.render(
+  const reactRoot = createRoot(root);
+  reactRoot.render(
     <div style={{ height: 400, overflowY: "auto" }}>
       <Virtualizer data={items}>
         {(d) => (
@@ -236,12 +234,12 @@ it("shadow DOM", async () => {
       </Virtualizer>
     </div>,
   );
-  onTestFinished(() => root.unmount());
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  onTestFinished(() => reactRoot.unmount());
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
 it("transform: scale", async () => {
-  const container = render(
+  const root = render(
     <div
       style={{
         transform: "scale(0.5)",
@@ -259,15 +257,15 @@ it("transform: scale", async () => {
       </Virtualizer>
     </div>,
   );
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 
-  const virtualizer = await getVirtualizer(container);
-  await waitForStableHeight(virtualizer);
-  expectItemDistance(virtualizer, 30);
+  const { container } = await getVirtualizer(root);
+  await waitForStableHeight(container);
+  expectItemDistance(container, 30);
 });
 
 it("zoom", async () => {
-  const container = render(
+  const root = render(
     <div style={{ zoom: 1.5, height: 400, overflowY: "auto" }}>
       <Virtualizer data={items}>
         {(d) => (
@@ -278,15 +276,15 @@ it("zoom", async () => {
       </Virtualizer>
     </div>,
   );
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 
-  const virtualizer = await getVirtualizer(container);
-  await waitForStableHeight(virtualizer);
-  expectItemDistance(virtualizer, 30);
+  const { container } = await getVirtualizer(root);
+  await waitForStableHeight(container);
+  expectItemDistance(container, 30);
 });
 
 it("fractional item size", async () => {
-  const container = render(
+  const root = render(
     <div style={{ height: 400, overflowY: "auto" }}>
       <Virtualizer data={items}>
         {(d) => (
@@ -297,11 +295,11 @@ it("fractional item size", async () => {
       </Virtualizer>
     </div>,
   );
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 
-  const virtualizer = await getVirtualizer(container);
-  await waitForStableHeight(virtualizer);
-  expectItemDistance(virtualizer, 30.5);
+  const { container } = await getVirtualizer(root);
+  await waitForStableHeight(container);
+  expectItemDistance(container, 30.5);
 });
 
 describe("scrollbar", () => {
@@ -324,13 +322,13 @@ describe("scrollbar", () => {
     return size;
   };
 
-  const getItem = (virtualizer: HTMLElement, label: string) =>
-    Array.from(virtualizer.children).find((e) => e.textContent === label);
+  const getItem = (container: HTMLElement, label: string) =>
+    Array.from(container.children).find((e) => e.textContent === label);
 
   it("scrollToIndex with align: end excludes scrollbar size (Virtualizer)", async (ctx) => {
     const scrollbarSize = setupClassicScrollbar(ctx);
     const ref = createRef<VirtualizerHandle>();
-    const container = render(
+    const root = render(
       <div
         className="classic-scrollbar"
         style={{ height: 400, overflowY: "auto", overflowX: "scroll" }}
@@ -344,20 +342,19 @@ describe("scrollbar", () => {
         </Virtualizer>
       </div>,
     );
-    await expectVirtualized(container, "item-0", "item-999");
+    await expectVirtualized(root, "item-0", "item-999");
 
-    const virtualizer = await getVirtualizer(container);
-    const scroller = virtualizer.parentElement!;
-    expect(scroller.clientHeight).toBe(400 - scrollbarSize);
+    const { viewport, container } = await getVirtualizer(root);
+    expect(viewport.clientHeight).toBe(400 - scrollbarSize);
 
     ref.current!.scrollToIndex(500, { align: "end" });
     await expect
       .poll(
-        () => getItem(virtualizer, "item-500")?.getBoundingClientRect().bottom,
+        () => getItem(container, "item-500")?.getBoundingClientRect().bottom,
         { timeout: 5000 },
       )
       .toBeCloseTo(
-        scroller.getBoundingClientRect().top + scroller.clientHeight,
+        viewport.getBoundingClientRect().top + viewport.clientHeight,
       );
   });
 
@@ -373,7 +370,7 @@ describe("scrollbar", () => {
     });
 
     const ref = createRef<WindowVirtualizerHandle>();
-    const container = render(
+    const root = render(
       <WindowVirtualizer ref={ref} data={items}>
         {(d) => (
           <div key={d} style={{ height: 30 }}>
@@ -382,16 +379,15 @@ describe("scrollbar", () => {
         )}
       </WindowVirtualizer>,
     );
-    await expectVirtualized(container, "item-0", "item-999");
+    await expectVirtualized(root, "item-0", "item-999");
 
-    const virtualizer = await getVirtualizer(container);
-    const viewport = document.scrollingElement as HTMLElement;
+    const { viewport, container } = await getVirtualizer(root);
     expect(viewport.clientHeight).toBe(window.innerHeight - scrollbarSize);
 
     ref.current!.scrollToIndex(500, { align: "end" });
     await expect
       .poll(
-        () => getItem(virtualizer, "item-500")?.getBoundingClientRect().bottom,
+        () => getItem(container, "item-500")?.getBoundingClientRect().bottom,
         { timeout: 5000 },
       )
       .toBeCloseTo(viewport.clientHeight);

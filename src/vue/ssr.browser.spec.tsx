@@ -21,8 +21,9 @@ it("should render nothing", async () => {
   });
   expect(html).toMatchSnapshot();
 
-  const container = mountSsr(html);
-  expect((await getVirtualizer(container)).childElementCount).toEqual(COUNT);
+  const root = mountSsr(html);
+  const { container } = await getVirtualizer(root);
+  expect(container.childElementCount).toEqual(COUNT);
 });
 
 it("should render and hydrate items in vertical mode", async () => {
@@ -34,14 +35,15 @@ it("should render and hydrate items in vertical mode", async () => {
   });
   expect(html).toMatchSnapshot();
 
-  const container = mountSsr(html);
-  expect((await getVirtualizer(container)).childElementCount).toEqual(COUNT);
+  const root = mountSsr(html);
+  const { container } = await getVirtualizer(root);
+  expect(container.childElementCount).toEqual(COUNT);
 
-  await expectHydrated(container, COUNT, () => {
+  await expectHydrated(root, COUNT, () => {
     const app = createSSRApp({
       render: () => <List ssrCount={COUNT} itemSize={ITEM_SIZE} />,
     });
-    app.mount(container);
+    app.mount(root);
     onTestFinished(() => app.unmount());
   });
 });
@@ -56,14 +58,15 @@ it("should render and hydrate items in horizontal mode", async () => {
   });
   expect(html).toMatchSnapshot();
 
-  const container = mountSsr(html);
-  expect((await getVirtualizer(container)).childElementCount).toEqual(COUNT);
+  const root = mountSsr(html);
+  const { container } = await getVirtualizer(root);
+  expect(container.childElementCount).toEqual(COUNT);
 
-  await expectHydrated(container, COUNT, () => {
+  await expectHydrated(root, COUNT, () => {
     const app = createSSRApp({
       render: () => <List ssrCount={COUNT} itemSize={ITEM_SIZE} horizontal />,
     });
-    app.mount(container);
+    app.mount(root);
     onTestFinished(() => app.unmount());
   });
 });

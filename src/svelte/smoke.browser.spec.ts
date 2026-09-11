@@ -16,32 +16,27 @@ const itemSnippet = createRawSnippet<[number, number]>((item) => ({
 }));
 
 it("VList", async () => {
-  const container = render(VList, {
+  const root = render(VList, {
     data: Array.from({ length: 1000 }, (_, i) => i),
     style: "height: 400px;",
     children: itemSnippet,
   });
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
 it("Virtualizer", async () => {
-  const container = render(
+  const root = render(
     Virtualizer,
     { data: Array.from({ length: 1000 }, (_, i) => i), children: itemSnippet },
     "height: 400px; overflow-y: auto;",
   );
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
 it("WindowVirtualizer", async () => {
-  const container = render(WindowVirtualizer, {
+  const root = render(WindowVirtualizer, {
     data: Array.from({ length: 1000 }, (_, i) => i),
     children: itemSnippet,
   });
-  await expectVirtualizedAndScrollable(
-    container,
-    "item-0",
-    "item-999",
-    () => document.scrollingElement!,
-  );
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });

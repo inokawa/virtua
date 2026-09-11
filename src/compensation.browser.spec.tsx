@@ -16,7 +16,7 @@ describe("jump write", () => {
 
   it("fast scrolling into unmeasured area does not lose scroll position", async () => {
     // itemSize is not given and the sizes vary, so scrolling far ahead lands in an area sized by estimation
-    const container = render(
+    const root = render(
       <div style={{ height: "100vh", overflowY: "auto" }}>
         <Virtualizer>
           {Array.from({ length: ITEM_COUNT }, (_, i) => (
@@ -27,24 +27,23 @@ describe("jump write", () => {
         </Virtualizer>
       </div>,
     );
-    const list = await getVirtualizer(container);
-    const scroller = list.parentElement!;
+    const { viewport, container } = await getVirtualizer(root);
 
     // check if start is displayed
-    await expect.poll(() => list.firstElementChild?.textContent).toBe("0");
+    await expect.poll(() => container.firstElementChild?.textContent).toBe("0");
 
     // scroll fast with large delta and check if the scrolled position is not rolled back, ignoring the expected compensation of estimated sizes
     let lost = 0;
     let pos = 0;
     for (let i = 0; i < 25; i++) {
       if (i > 0) {
-        const rollback = pos - scroller.scrollTop;
+        const rollback = pos - viewport.scrollTop;
         if (rollback > 1) {
           lost += rollback;
         }
       }
       pos += 1500;
-      scroller.scrollTop = pos;
+      viewport.scrollTop = pos;
       await new Promise(requestAnimationFrame);
     }
     expect(lost).toBe(0);
@@ -95,12 +94,12 @@ describe("shift compensation", () => {
       );
     };
 
-    const container = render(<Component />);
-    await expectVirtualized(container, "item-0", "item-999");
+    const root = render(<Component />);
+    await expectVirtualized(root, "item-0", "item-999");
 
     // scroll to end
-    const scroller = (await getVirtualizer(container)).parentElement!;
-    scroller.scrollTop = scroller.scrollHeight;
+    const { viewport } = await getVirtualizer(root);
+    viewport.scrollTop = viewport.scrollHeight;
     await expect.poll(() => scrollEnded).toBe(true);
     scrollEnded = false;
 

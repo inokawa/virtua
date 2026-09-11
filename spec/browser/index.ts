@@ -20,80 +20,92 @@ export const cleanupScroll = () => {
   document.scrollingElement!.scrollLeft = 0;
 };
 
-export const createContainer = (doc: Document): HTMLElement => {
-  const container = doc.body.appendChild(doc.createElement("div"));
-  onTestFinished(() => container.remove());
-  return container;
+export const createRoot = (doc: Document): HTMLElement => {
+  const root = doc.body.appendChild(doc.createElement("div"));
+  onTestFinished(() => root.remove());
+  return root;
 };
 
 // The browser serializes flex: none as flex: 0 0 auto, and each server renderer spells it its own way
 const VIRTUALIZER =
   '*[style*="flex: 0 0 auto"],*[style*="flex:none"],*[style*="flex: none"]';
 
-export const getVirtualizer = async (container: Element) => {
-  await expect.poll(() => container.querySelector(VIRTUALIZER)).not.toBeNull();
-  return container.querySelector<HTMLElement>(VIRTUALIZER)!;
+const getViewport = (container: Element): HTMLElement => {
+  const { body, scrollingElement } = container.ownerDocument;
+  let viewport = container.parentElement;
+  while (viewport && viewport !== body) {
+    const style = getComputedStyle(viewport);
+    if (
+      /auto|scroll|hidden/.test(
+        style.overflow + style.overflowX + style.overflowY,
+      )
+    ) {
+      return viewport;
+    }
+    viewport = viewport.parentElement;
+  }
+  return scrollingElement as HTMLElement;
+};
+
+export const getVirtualizer = async (root: Element) => {
+  await expect.poll(() => root.querySelector(VIRTUALIZER)).not.toBeNull();
+  const container = root.querySelector<HTMLElement>(VIRTUALIZER)!;
+  return { viewport: getViewport(container), container };
 };
 
 export const expectVirtualized = async (
-  container: Element,
+  root: Element,
   first: string,
   last: string,
 ) => {
-  await expect
-    .poll(() => container.textContent, { timeout: 5000 })
-    .toContain(first);
-  expect(container.textContent).not.toContain(last);
+  await expect.poll(() => root.textContent, { timeout: 5000 }).toContain(first);
+  expect(root.textContent).not.toContain(last);
 };
 
 export const expectVirtualizedAndScrollable = async (
-  container: Element,
+  root: Element,
   first: string,
   last: string,
-  getScroller: () => Element | Promise<Element> = async () =>
-    (await getVirtualizer(container)).parentElement!,
 ) => {
-  await expectVirtualized(container, first, last);
-  const scroller = await getScroller();
+  await expectVirtualized(root, first, last);
+  const { viewport } = await getVirtualizer(root);
   await expect
     .poll(
       () => {
-        scroller.scrollTop = scroller.scrollHeight;
-        scroller.scrollLeft = scroller.scrollWidth;
-        return container.textContent;
+        viewport.scrollTop = viewport.scrollHeight;
+        viewport.scrollLeft = viewport.scrollWidth;
+        return root.textContent;
       },
       { timeout: 5000 },
     )
     .toContain(last);
-  expect(container.textContent).not.toContain(first);
+  expect(root.textContent).not.toContain(first);
 };
 
 export const mountSsr = (html: string): HTMLElement => {
-  const container = createContainer(document);
-  container.innerHTML = html;
-  return container;
+  const root = createRoot(document);
+  root.innerHTML = html;
+  return root;
 };
 
 export const expectHydrated = async (
-  container: Element,
+  root: Element,
   ssrCount: number,
   hydrate: () => void,
 ) => {
-  expect(container.textContent).toContain(`item-${ssrCount - 1}`);
-  expect(container.textContent).not.toContain(`item-${ssrCount}`);
-  const ssrHtml = container.innerHTML;
-  const ssrNodes = [...container.querySelectorAll("*")];
+  expect(root.textContent).toContain(`item-${ssrCount - 1}`);
+  expect(root.textContent).not.toContain(`item-${ssrCount}`);
+  const ssrHtml = root.innerHTML;
+  const ssrNodes = [...root.querySelectorAll("*")];
 
   hydrate();
 
   // The client rewrites the markup because the server could only estimate the item sizes
-  await expect
-    .poll(() => container.innerHTML, { timeout: 5000 })
-    .not.toBe(ssrHtml);
+  await expect.poll(() => root.innerHTML, { timeout: 5000 }).not.toBe(ssrHtml);
   // ...in place, without recreating the elements
   for (const node of ssrNodes) {
-    expect(container.contains(node)).toBe(true);
+    expect(root.contains(node)).toBe(true);
   }
 
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 };

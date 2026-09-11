@@ -12,7 +12,7 @@ import {
 afterEach(cleanupScroll);
 
 it("VList", async () => {
-  const container = render(
+  const root = render(
     <VList
       data={Array.from({ length: 1000 }, (_, i) => i)}
       style={{ height: 400 }}
@@ -20,36 +20,31 @@ it("VList", async () => {
       {(d) => <div key={d}>item-{d}</div>}
     </VList>,
   );
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
 it("Virtualizer", async () => {
-  const container = render(
+  const root = render(
     <div style={{ height: 400, overflowY: "auto" }}>
       <Virtualizer data={Array.from({ length: 1000 }, (_, i) => i)}>
         {(d) => <div key={d}>item-{d}</div>}
       </Virtualizer>
     </div>,
   );
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
 it("WindowVirtualizer", async () => {
-  const container = render(
+  const root = render(
     <WindowVirtualizer data={Array.from({ length: 1000 }, (_, i) => i)}>
       {(d) => <div key={d}>item-{d}</div>}
     </WindowVirtualizer>,
   );
-  await expectVirtualizedAndScrollable(
-    container,
-    "item-0",
-    "item-999",
-    () => document.scrollingElement!,
-  );
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
 it("VGrid", async () => {
-  const container = render(
+  const root = render(
     <VGrid row={1000} col={1000} style={{ height: 400, width: 400 }}>
       {({ rowIndex, colIndex }) => (
         <div>
@@ -58,5 +53,5 @@ it("VGrid", async () => {
       )}
     </VGrid>,
   );
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });

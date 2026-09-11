@@ -59,21 +59,16 @@ class WindowVirtualizerHost {
 }
 
 it("VList", async () => {
-  const container = render(VListHost);
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  const root = render(VListHost);
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
 it("Virtualizer", async () => {
-  const container = render(VirtualizerHost);
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  const root = render(VirtualizerHost);
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
 it("WindowVirtualizer", async () => {
-  const container = render(WindowVirtualizerHost);
-  await expectVirtualizedAndScrollable(
-    container,
-    "item-0",
-    "item-999",
-    () => document.scrollingElement!,
-  );
+  const root = render(WindowVirtualizerHost);
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });

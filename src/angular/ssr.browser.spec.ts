@@ -17,8 +17,8 @@ import type { SsrProps } from "../../spec/browser/index.js";
 afterEach(cleanupScroll);
 
 // angular verifies the marker comment it emitted against the document
-const moveMarkerToHead = (container: Element) => {
-  const marker = document.head.appendChild(container.firstChild!);
+const moveMarkerToHead = (root: Element) => {
+  const marker = document.head.appendChild(root.firstChild!);
   onTestFinished(() => marker.remove());
 };
 
@@ -42,8 +42,9 @@ it("should render nothing", async () => {
   });
   expect(html).toMatchSnapshot();
 
-  const container = mountSsr(html);
-  expect((await getVirtualizer(container)).childElementCount).toEqual(COUNT);
+  const root = mountSsr(html);
+  const { container } = await getVirtualizer(root);
+  expect(container.childElementCount).toEqual(COUNT);
 });
 
 it("should render and hydrate items in vertical mode", async () => {
@@ -55,11 +56,12 @@ it("should render and hydrate items in vertical mode", async () => {
   });
   expect(html).toMatchSnapshot();
 
-  const container = mountSsr(html);
-  moveMarkerToHead(container);
-  expect((await getVirtualizer(container)).childElementCount).toEqual(COUNT);
+  const root = mountSsr(html);
+  moveMarkerToHead(root);
+  const { container } = await getVirtualizer(root);
+  expect(container.childElementCount).toEqual(COUNT);
 
-  await expectHydrated(container, COUNT, () =>
+  await expectHydrated(root, COUNT, () =>
     bootstrap({ ssrCount: COUNT, itemSize: ITEM_SIZE }),
   );
 });
@@ -74,11 +76,12 @@ it("should render and hydrate items in horizontal mode", async () => {
   });
   expect(html).toMatchSnapshot();
 
-  const container = mountSsr(html);
-  moveMarkerToHead(container);
-  expect((await getVirtualizer(container)).childElementCount).toEqual(COUNT);
+  const root = mountSsr(html);
+  moveMarkerToHead(root);
+  const { container } = await getVirtualizer(root);
+  expect(container.childElementCount).toEqual(COUNT);
 
-  await expectHydrated(container, COUNT, () =>
+  await expectHydrated(root, COUNT, () =>
     bootstrap({ ssrCount: COUNT, itemSize: ITEM_SIZE, horizontal: true }),
   );
 });

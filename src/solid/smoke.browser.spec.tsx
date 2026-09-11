@@ -14,7 +14,7 @@ import {
 afterEach(cleanupScroll);
 
 it("VList", async () => {
-  const container = render(() => (
+  const root = render(() => (
     <VList
       data={Array.from({ length: 1000 }, (_, i) => i)}
       style={{ height: "400px" }}
@@ -22,30 +22,25 @@ it("VList", async () => {
       {(d) => <div>item-{d}</div>}
     </VList>
   ));
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
 it("Virtualizer", async () => {
-  const container = render(() => (
+  const root = render(() => (
     <div style={{ height: "400px", "overflow-y": "auto" }}>
       <Virtualizer data={Array.from({ length: 1000 }, (_, i) => i)}>
         {(d) => <div>item-{d}</div>}
       </Virtualizer>
     </div>
   ));
-  await expectVirtualizedAndScrollable(container, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
 it("WindowVirtualizer", async () => {
-  const container = render(() => (
+  const root = render(() => (
     <WindowVirtualizer data={Array.from({ length: 1000 }, (_, i) => i)}>
       {(d) => <div>item-{d}</div>}
     </WindowVirtualizer>
   ));
-  await expectVirtualizedAndScrollable(
-    container,
-    "item-0",
-    "item-999",
-    () => document.scrollingElement!,
-  );
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });

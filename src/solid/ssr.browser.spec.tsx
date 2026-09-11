@@ -15,8 +15,8 @@ import {
 afterEach(cleanupScroll);
 
 // solid needs its hydration script, which is inert when set with innerHTML
-const runHydrationScript = (container: Element) => {
-  new Function(container.querySelector("script")!.textContent!)();
+const runHydrationScript = (root: Element) => {
+  new Function(root.querySelector("script")!.textContent!)();
 };
 
 it("should render nothing", async () => {
@@ -28,8 +28,9 @@ it("should render nothing", async () => {
   });
   expect(html).toMatchSnapshot();
 
-  const container = mountSsr(html);
-  expect((await getVirtualizer(container)).childElementCount).toEqual(COUNT);
+  const root = mountSsr(html);
+  const { container } = await getVirtualizer(root);
+  expect(container.childElementCount).toEqual(COUNT);
 });
 
 it("should render and hydrate items in vertical mode", async () => {
@@ -41,14 +42,15 @@ it("should render and hydrate items in vertical mode", async () => {
   });
   expect(html).toMatchSnapshot();
 
-  const container = mountSsr(html);
-  runHydrationScript(container);
-  expect((await getVirtualizer(container)).childElementCount).toEqual(COUNT);
+  const root = mountSsr(html);
+  runHydrationScript(root);
+  const { container } = await getVirtualizer(root);
+  expect(container.childElementCount).toEqual(COUNT);
 
-  await expectHydrated(container, COUNT, () => {
+  await expectHydrated(root, COUNT, () => {
     const dispose = hydrate(
       () => <List ssrCount={COUNT} itemSize={ITEM_SIZE} />,
-      container,
+      root,
     );
     onTestFinished(dispose);
   });
@@ -64,14 +66,15 @@ it("should render and hydrate items in horizontal mode", async () => {
   });
   expect(html).toMatchSnapshot();
 
-  const container = mountSsr(html);
-  runHydrationScript(container);
-  expect((await getVirtualizer(container)).childElementCount).toEqual(COUNT);
+  const root = mountSsr(html);
+  runHydrationScript(root);
+  const { container } = await getVirtualizer(root);
+  expect(container.childElementCount).toEqual(COUNT);
 
-  await expectHydrated(container, COUNT, () => {
+  await expectHydrated(root, COUNT, () => {
     const dispose = hydrate(
       () => <List ssrCount={COUNT} itemSize={ITEM_SIZE} horizontal />,
-      container,
+      root,
     );
     onTestFinished(dispose);
   });
