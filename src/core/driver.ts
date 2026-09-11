@@ -46,8 +46,12 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
   const resizeObserver = createResizeObserver((entries) => {
     const resizes: ItemResize[] = [];
     for (const { target, contentRect } of entries) {
-      // Skip zero-sized rects that may be observed under `display: none` style
-      if (!(target as HTMLElement).offsetParent) continue;
+      // Fixed-position elements can have a null offsetParent while visible.
+      if (
+        !(target as HTMLElement).offsetParent &&
+        !target.getClientRects().length
+      )
+        continue;
 
       if (target === viewportElement) {
         store.$update(ACTION_VIEWPORT_RESIZE, contentRect[sizeKey]);
@@ -144,8 +148,12 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
         continue;
       }
 
-      // Skip zero-sized rects that may be observed under `display: none` style
-      if (!(target as HTMLElement).offsetParent) continue;
+      // Fixed-position elements can have a null offsetParent while visible.
+      if (
+        !(target as HTMLElement).offsetParent &&
+        !target.getClientRects().length
+      )
+        continue;
 
       const index = mountedIndexes.get(target);
       if (index != NULL) {
@@ -321,8 +329,12 @@ export const createContainerGridDriver: GridDriverFactory = (
       target,
       contentRect: { width, height },
     } of entries) {
-      // Skip zero-sized rects that may be observed under `display: none` style
-      if (!(target as HTMLElement).offsetParent) continue;
+      // Fixed-position elements can have a null offsetParent while visible.
+      if (
+        !(target as HTMLElement).offsetParent &&
+        !target.getClientRects().length
+      )
+        continue;
 
       if (target === viewportElement) {
         rowStore.$update(ACTION_VIEWPORT_RESIZE, height);
