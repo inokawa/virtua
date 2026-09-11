@@ -197,10 +197,9 @@ it("new window", async () => {
 });
 
 it("iframe", async () => {
-  const iframe = document.body.appendChild(document.createElement("iframe"));
+  const iframe = createDomRoot(document, "iframe");
   iframe.width = "400";
   iframe.height = "400";
-  onTestFinished(() => iframe.remove());
 
   const root = render(
     <div style={{ height: 400, overflowY: "auto" }}>

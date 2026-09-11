@@ -20,8 +20,11 @@ export const cleanupScroll = () => {
   document.scrollingElement!.scrollLeft = 0;
 };
 
-export const createDomRoot = (doc: Document): HTMLElement => {
-  const root = doc.body.appendChild(doc.createElement("div"));
+export const createDomRoot = <T extends keyof HTMLElementTagNameMap = "div">(
+  doc: Document,
+  name: T = "div" as T,
+): HTMLElementTagNameMap[T] => {
+  const root = doc.body.appendChild(doc.createElement(name));
   onTestFinished(() => root.remove());
   return root;
 };
