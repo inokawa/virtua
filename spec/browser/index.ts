@@ -27,7 +27,6 @@ export const createRoot = (doc: Document): HTMLElement => {
 };
 
 // These waits finish within a frame or two, so the default 50ms interval dominates them.
-// Measured here: the slowest of them takes 829ms, so a failure does not need to wait longer than this
 const POLL = { timeout: 2000, interval: 10 };
 
 // The browser serializes flex: none as flex: 0 0 auto, and each server renderer spells it its own way
