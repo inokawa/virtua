@@ -1,4 +1,5 @@
 import { expect, onTestFinished } from "vitest";
+import { server } from "@vitest/browser/context";
 
 // Only what the tests vary crosses the command boundary
 export type SsrProps = {
@@ -29,9 +30,6 @@ export const createDomRoot = <T extends keyof HTMLElementTagNameMap = "div">(
   return root;
 };
 
-// These waits finish within a frame or two, so the default 50ms interval dominates them.
-const POLL = { timeout: 2000, interval: 10 };
-
 // The browser serializes flex: none as flex: 0 0 auto, and each server renderer spells it its own way
 const VIRTUALIZER =
   '*[style*="flex: 0 0 auto"],*[style*="flex:none"],*[style*="flex: none"]';
@@ -54,17 +52,31 @@ const getViewport = (container: Element): HTMLElement => {
 };
 
 export const getVirtualizer = async (root: Element) => {
-  await expect.poll(() => root.querySelector(VIRTUALIZER), POLL).not.toBeNull();
+  await expect.poll(() => root.querySelector(VIRTUALIZER)).not.toBeNull();
   const container = root.querySelector<HTMLElement>(VIRTUALIZER)!;
   return { viewport: getViewport(container), container };
 };
+
+export const getItem = (container: HTMLElement, text: string) =>
+  Array.from(container.children).find((e) => e.textContent === text);
+
+// Firefox rounds a scroll position to a device pixel, and the tester scales its iframe so that is not a whole CSS pixel
+const SUBPIXEL = server.browser === "firefox" ? 1 : 0;
+
+export const expectPosition = (getPosition: () => number, position: number) =>
+  expect
+    .poll(getPosition)
+    .toSatisfy(
+      (value: number) => Math.abs(value - position) <= SUBPIXEL,
+      `to be ${position}`,
+    );
 
 export const expectVirtualized = async (
   root: Element,
   first: string,
   last: string,
 ) => {
-  await expect.poll(() => root.textContent, POLL).toContain(first);
+  await expect.poll(() => root.textContent).toContain(first);
   expect(root.textContent).not.toContain(last);
 };
 
@@ -80,7 +92,7 @@ export const expectVirtualizedAndScrollable = async (
       viewport.scrollTop = viewport.scrollHeight;
       viewport.scrollLeft = viewport.scrollWidth;
       return root.textContent;
-    }, POLL)
+    })
     .toContain(last);
   expect(root.textContent).not.toContain(first);
 };
@@ -104,7 +116,7 @@ export const expectHydrated = async (
   hydrate();
 
   // The client rewrites the markup because the server could only estimate the item sizes
-  await expect.poll(() => root.innerHTML, POLL).not.toBe(ssrHtml);
+  await expect.poll(() => root.innerHTML).not.toBe(ssrHtml);
   // ...in place, without recreating the elements
   for (const node of ssrNodes) {
     expect(root.contains(node)).toBe(true);

@@ -16,6 +16,9 @@ const ssrCommands = (entry: string) => ({
     (await project.import<SsrEntry>(entry)).render(props),
 });
 
+// These waits finish within a frame or two, so the default 50ms interval dominates them.
+const browserPoll = { poll: { timeout: 2000, interval: 10 } };
+
 const testBrowser = (...browsers: ("chromium" | "firefox" | "webkit")[]) => ({
   enabled: true,
   headless: true,
@@ -99,6 +102,7 @@ export default defineConfig({
         plugins: [react()],
         test: {
           name: "browser-core",
+          expect: browserPoll,
           include: ["src/*.browser.spec.tsx"],
           browser: testBrowser("chromium", "firefox", "webkit"),
         },
@@ -107,6 +111,7 @@ export default defineConfig({
         plugins: [react()],
         test: {
           name: "browser-react",
+          expect: browserPoll,
           include: ["src/react/*.browser.spec.tsx"],
           browser: {
             ...testBrowser("chromium"),
@@ -118,6 +123,7 @@ export default defineConfig({
         plugins: [vueJsx()],
         test: {
           name: "browser-vue",
+          expect: browserPoll,
           include: ["src/vue/*.browser.spec.tsx"],
           browser: {
             ...testBrowser("chromium"),
@@ -130,6 +136,7 @@ export default defineConfig({
         plugins: [solid({ ssr: true })],
         test: {
           name: "browser-solid",
+          expect: browserPoll,
           include: ["src/solid/*.browser.spec.tsx"],
           browser: {
             ...testBrowser("chromium"),
@@ -141,6 +148,7 @@ export default defineConfig({
         plugins: [svelte()],
         test: {
           name: "browser-svelte",
+          expect: browserPoll,
           include: ["src/svelte/*.browser.spec.ts"],
           browser: {
             ...testBrowser("chromium"),
@@ -152,6 +160,7 @@ export default defineConfig({
         plugins: [angular({ tsconfig: "tsconfig.angular.json" })],
         test: {
           name: "browser-angular",
+          expect: browserPoll,
           include: ["src/angular/*.browser.spec.ts"],
           setupFiles: ["./spec/setup.angular.ts"],
           browser: {
