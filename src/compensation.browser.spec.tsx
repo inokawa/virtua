@@ -30,7 +30,7 @@ describe("jump write", () => {
     const { viewport, container } = await getVirtualizer(root);
 
     // check if start is displayed
-    await expect.poll(() => container.firstElementChild?.textContent).toBe("0");
+    await expect.poll(() => container.firstElementChild!.textContent).toBe("0");
 
     // scroll fast with large delta and check if the scrolled position is not rolled back, ignoring the expected compensation of estimated sizes
     let lost = 0;

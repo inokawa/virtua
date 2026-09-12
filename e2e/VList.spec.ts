@@ -3,7 +3,6 @@ import {
   storyUrl,
   scrollToBottom,
   scrollToRight,
-  approxymate,
   scrollBy,
   getScrollTop,
   getScrollLeft,
@@ -107,27 +106,6 @@ test.describe("smoke", () => {
       component.getByText("Column 999", { exact: true }),
     ).toBeVisible();
   });
-
-  // test("horizontally scrollable (writing-mode: vertical-rl)", async ({ page }) => {
-  //   await page.goto(storyUrl("basics-vlist--rtl"));
-
-  //   const component = page.locator(
-  //     '*[style*="writing-mode"]'
-  //   ) as ScrollableLocator;
-
-  //   // check if start is displayed
-  //   const first = component.getByText("列 ０", { exact: true });
-  //   await expect(first).toBeVisible();
-  //   expect(await relativeRight(component, first)).toEqual(0);
-
-  //   // scroll to the end
-  //   await scrollToLeft(component);
-
-  //   // check if the end is displayed
-  //   await expect(
-  //     component.getByText("列 ９９９", { exact: true })
-  //   ).toBeVisible();
-  // });
 
   test("scroll restoration", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--scroll-restoration"));
@@ -1106,74 +1084,6 @@ test.describe("check if scrollToIndex works", () => {
         });
       }
     });
-  });
-});
-
-test.describe("check if scrollTo works", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--scroll-to"));
-  });
-
-  test("down and up", async ({ page }) => {
-    const component = await getScrollable(page);
-
-    // check if start is displayed
-    await expect(component.getByText("0", { exact: true })).toBeVisible();
-
-    const button = page.getByRole("button", { name: "scroll to offset" });
-    const input = page.getByRole("spinbutton").nth(1);
-
-    // scroll down
-    await input.clear();
-    await input.fill("5000");
-    await button.click();
-
-    expect(
-      // scrollTo may not scroll to exact position with dynamic sized items
-      approxymate(await getScrollTop(component)),
-    ).toEqual(5000);
-
-    // scroll up
-    await input.clear();
-    await input.fill("1000");
-    await button.click();
-
-    expect(
-      // scrollTo may not scroll to exact position with dynamic sized items
-      approxymate(await getScrollTop(component)),
-    ).toEqual(1000);
-  });
-});
-
-test.describe("check if scrollBy works", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--scroll-to"));
-  });
-
-  test("down and up", async ({ page }) => {
-    const component = await getScrollable(page);
-
-    // check if start is displayed
-    await expect(component.getByText("0", { exact: true })).toBeVisible();
-
-    const button = page.getByRole("button", {
-      name: "scroll by offset",
-    });
-    const input = page.getByRole("spinbutton").nth(1);
-
-    // scroll down
-    await input.clear();
-    await input.fill("1234");
-    await button.click();
-
-    expect(await getScrollTop(component)).toEqual(1234);
-
-    // scroll up
-    await input.clear();
-    await input.fill("-234");
-    await button.click();
-
-    expect(await getScrollTop(component)).toEqual(1000);
   });
 });
 

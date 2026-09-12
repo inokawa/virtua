@@ -42,8 +42,6 @@ export const expectInRange = (
   expect(value).toBeLessThanOrEqual(max);
 };
 
-export const approxymate = (v: number): number => Math.round(v / 100) * 100;
-
 export const clearTimer = async (page: Page) => {
   await page.evaluate(() => {
     // stop all timer
