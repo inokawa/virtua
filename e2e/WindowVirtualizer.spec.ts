@@ -11,13 +11,15 @@ import {
   getWindowScrollRight,
   expectInRange,
   windowScrollBy,
-  listenScrollCount,
+  listenScrollEnd,
   windowTop,
   windowBottom,
   relativeTop,
   getItems,
   setRTL,
 } from "./utils";
+
+const SMOOTH_SCROLL_MS = 100;
 
 const isVerticalScrollBarVisible = async (page: Page) => {
   return page.evaluate(() => document.body.scrollHeight > window.innerHeight);
@@ -617,7 +619,7 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      const scrollListener = listenScrollCount(window);
+      const scrollListener = listenScrollEnd(window);
 
       await input.clear();
       await input.fill("700");
@@ -625,13 +627,10 @@ test.describe("check if scrollToIndex works", () => {
 
       await page.waitForTimeout(300);
 
-      const called = await scrollListener;
+      const elapsed = await scrollListener;
 
       // Check if this is smooth scrolling
-      expect(called).toBeGreaterThanOrEqual(
-        // TODO find better way to check in webkit
-        browserName === "webkit" ? 2 : 10,
-      );
+      expect(elapsed).toBeGreaterThan(SMOOTH_SCROLL_MS);
 
       // Check if scrolled precisely
       const firstItem = component.getByText("700", { exact: true });
@@ -664,7 +663,7 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      const scrollListener = listenScrollCount(window);
+      const scrollListener = listenScrollEnd(window);
 
       await input.clear();
       await input.fill("700");
@@ -672,13 +671,10 @@ test.describe("check if scrollToIndex works", () => {
 
       await page.waitForTimeout(300);
 
-      const called = await scrollListener;
+      const elapsed = await scrollListener;
 
       // Check if this is smooth scrolling
-      expect(called).toBeGreaterThanOrEqual(
-        // TODO find better way to check in webkit
-        browserName === "webkit" ? 2 : 10,
-      );
+      expect(elapsed).toBeGreaterThan(SMOOTH_SCROLL_MS);
 
       // Check if scrolled precisely
       const lastItem = component.getByText("700", { exact: true });

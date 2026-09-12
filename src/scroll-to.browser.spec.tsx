@@ -123,16 +123,19 @@ describe("scrollbar", () => {
     );
     await expectVirtualized(root, "item-0", "item-999");
 
-    const { viewport, container } = await getVirtualizer(root);
-    expect(viewport.clientHeight).toBe(400 - scrollbarSize);
+    // The horizontal scrollbar sits inside the border box of the viewport
+    const visibleSize = 400 - scrollbarSize;
 
-    const contentBottom =
-      viewport.getBoundingClientRect().top + viewport.clientHeight;
+    const { viewport, container } = await getVirtualizer(root);
+    // The viewport is measured through ResizeObserver, so the size arrives after the render
+    await expect.poll(() => ref.current!.viewportSize).toBe(visibleSize);
 
     ref.current!.scrollToIndex(500, { align: "end" });
     await expectPosition(
-      () => getItem(container, "item-500")!.getBoundingClientRect().bottom,
-      contentBottom,
+      () =>
+        getItem(container, "item-500")!.getBoundingClientRect().bottom -
+        viewport.getBoundingClientRect().top,
+      visibleSize,
     );
   });
 
@@ -159,16 +162,17 @@ describe("scrollbar", () => {
     );
     await expectVirtualized(root, "item-0", "item-999");
 
-    const { viewport, container } = await getVirtualizer(root);
-    expect(viewport.clientHeight).toBe(window.innerHeight - scrollbarSize);
+    // The horizontal scrollbar sits inside the window, which always starts at 0
+    const visibleSize = window.innerHeight - scrollbarSize;
 
-    // The window viewport always starts at 0, unlike the rect of the element which scrolls
-    const contentBottom = viewport.clientHeight;
+    const { container } = await getVirtualizer(root);
+    // The viewport is measured through ResizeObserver, so the size arrives after the render
+    await expect.poll(() => ref.current!.viewportSize).toBe(visibleSize);
 
     ref.current!.scrollToIndex(500, { align: "end" });
     await expectPosition(
       () => getItem(container, "item-500")!.getBoundingClientRect().bottom,
-      contentBottom,
+      visibleSize,
     );
   });
 });
