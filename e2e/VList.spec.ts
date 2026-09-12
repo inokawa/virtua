@@ -15,7 +15,7 @@ import {
   getScrollable,
   clearTimer,
   scrollTo,
-  listenScrollCount,
+  listenScrollEnd,
   relativeRight,
   relativeTop,
   relativeBottom,
@@ -27,6 +27,8 @@ import {
   isVerticalScrollBarVisible,
   ScrollableLocator,
 } from "./utils";
+
+const SMOOTH_SCROLL_MS = 100;
 
 test.describe("smoke", () => {
   test("vertically scrollable", async ({ page }) => {
@@ -507,10 +509,12 @@ test.describe("check if scroll jump compensation works", () => {
       await expect(initialItem).not.toHaveText(targetText);
 
       await page.waitForTimeout(200);
-      const scrollListener = listenScrollCount(component, 1000);
+      const scrollListener = listenScrollEnd(component, 1000);
       await getResizeAndScrollButton().click();
-      const called = await scrollListener;
-      expect(called).toBeGreaterThanOrEqual(2);
+      const elapsed = await scrollListener;
+
+      // Check if this is smooth scrolling
+      expect(elapsed).toBeGreaterThan(SMOOTH_SCROLL_MS);
       const updatedItem = await findFirstVisibleItem(component);
       expect(await relativeTop(component, updatedItem)).toEqual(0);
       await expect(updatedItem).toHaveText(targetText);
@@ -533,10 +537,12 @@ test.describe("check if scroll jump compensation works", () => {
       await expect(initialItem).not.toHaveText(targetText);
 
       await page.waitForTimeout(200);
-      const scrollListener = listenScrollCount(component, 1000);
+      const scrollListener = listenScrollEnd(component, 1000);
       await getResizeAndScrollButton().click();
-      const called = await scrollListener;
-      expect(called).toBeGreaterThanOrEqual(2);
+      const elapsed = await scrollListener;
+
+      // Check if this is smooth scrolling
+      expect(elapsed).toBeGreaterThan(SMOOTH_SCROLL_MS);
       const updatedItem = await findFirstVisibleItem(component);
       expect(await relativeTop(component, updatedItem)).toEqual(0);
       await expect(updatedItem).toHaveText(targetText);
@@ -856,7 +862,7 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      const scrollListener = listenScrollCount(component);
+      const scrollListener = listenScrollEnd(component);
 
       await input.clear();
       await input.fill("700");
@@ -864,13 +870,10 @@ test.describe("check if scrollToIndex works", () => {
 
       await page.waitForTimeout(100);
 
-      const called = await scrollListener;
+      const elapsed = await scrollListener;
 
       // Check if this is smooth scrolling
-      expect(called).toBeGreaterThanOrEqual(
-        // TODO find better way to check in webkit
-        browserName === "webkit" ? 2 : 10,
-      );
+      expect(elapsed).toBeGreaterThan(SMOOTH_SCROLL_MS);
 
       // Check if scrolled precisely
       const firstItem = component.getByText("700", { exact: true });
@@ -901,7 +904,7 @@ test.describe("check if scrollToIndex works", () => {
       const button = page.getByRole("button", { name: "scroll to index" });
       const input = page.getByRole("spinbutton").first();
 
-      const scrollListener = listenScrollCount(component);
+      const scrollListener = listenScrollEnd(component);
 
       await input.clear();
       await input.fill("700");
@@ -909,13 +912,10 @@ test.describe("check if scrollToIndex works", () => {
 
       await page.waitForTimeout(100);
 
-      const called = await scrollListener;
+      const elapsed = await scrollListener;
 
       // Check if this is smooth scrolling
-      expect(called).toBeGreaterThanOrEqual(
-        // TODO find better way to check in webkit
-        browserName === "webkit" ? 2 : 10,
-      );
+      expect(elapsed).toBeGreaterThan(SMOOTH_SCROLL_MS);
 
       // Check if scrolled precisely
       const lastItem = component.getByText("700", { exact: true });
@@ -952,7 +952,7 @@ test.describe("check if scrollToIndex works", () => {
       // smooth scroll up
       await page.getByRole("checkbox", { name: "smooth" }).click();
 
-      const scrollListener = listenScrollCount(component);
+      const scrollListener = listenScrollEnd(component);
 
       await input.clear();
       await input.fill("300");
@@ -960,13 +960,10 @@ test.describe("check if scrollToIndex works", () => {
 
       await page.waitForTimeout(100);
 
-      const called = await scrollListener;
+      const elapsed = await scrollListener;
 
       // Check if this is smooth scrolling
-      expect(called).toBeGreaterThanOrEqual(
-        // TODO find better way to check in webkit
-        browserName === "webkit" ? 2 : 10,
-      );
+      expect(elapsed).toBeGreaterThan(SMOOTH_SCROLL_MS);
 
       // Check if scrolled precisely
       const firstItem = component.getByText("300", { exact: true });
@@ -1004,7 +1001,7 @@ test.describe("check if scrollToIndex works", () => {
       await page.getByRole("radio", { name: "end" }).click();
       await page.getByRole("checkbox", { name: "smooth" }).click();
 
-      const scrollListener = listenScrollCount(component);
+      const scrollListener = listenScrollEnd(component);
 
       await input.clear();
       await input.fill("300");
@@ -1012,13 +1009,10 @@ test.describe("check if scrollToIndex works", () => {
 
       await page.waitForTimeout(100);
 
-      const called = await scrollListener;
+      const elapsed = await scrollListener;
 
       // Check if this is smooth scrolling
-      expect(called).toBeGreaterThanOrEqual(
-        // TODO find better way to check in webkit
-        browserName === "webkit" ? 2 : 10,
-      );
+      expect(elapsed).toBeGreaterThan(SMOOTH_SCROLL_MS);
 
       // Check if scrolled precisely
       const lastItem = component.getByText("300", { exact: true });
@@ -1066,7 +1060,7 @@ test.describe("check if scrollToIndex works", () => {
         );
 
         // smooth scroll up
-        const scrollListener = listenScrollCount(component);
+        const scrollListener = listenScrollEnd(component);
 
         const targetItemText = String(initialFirstNumber);
         await input.clear();
@@ -1226,14 +1220,16 @@ test.describe("SSR and hydration", () => {
 
     const component = await getScrollable(page);
 
-    const scrollListener = listenScrollCount(component);
+    const scrollListener = listenScrollEnd(component);
 
     // hydrate
     await page.getByRole("button", { name: "hydrate" }).click();
 
     await page.waitForTimeout(100);
-    const called = await scrollListener;
-    expect(called).toBeGreaterThanOrEqual(2);
+    const elapsed = await scrollListener;
+
+    // Check if this is smooth scrolling
+    expect(elapsed).toBeGreaterThan(SMOOTH_SCROLL_MS);
 
     expect(await (await findFirstVisibleItem(component)).textContent()).toEqual(
       "100",

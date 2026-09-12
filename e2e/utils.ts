@@ -510,26 +510,27 @@ export const scrollWithTouch = (
   );
 };
 
-export const listenScrollCount = (
+export const listenScrollEnd = (
   component: ScrollableLocator,
   timeout = 2000,
 ): Promise<number> => {
   return component.evaluate((c, t) => {
+    const start = performance.now();
     let timer: null | ReturnType<typeof setTimeout> = null;
-    let called = 0;
+    let elapsed = 0;
 
     return new Promise<number>((resolve) => {
       const cb = () => {
-        called++;
+        elapsed = performance.now() - start;
         if (timer !== null) {
           clearTimeout(timer);
         }
         timer = setTimeout(() => {
-          c.removeEventListener("scroll", cb);
-          resolve(called);
+          c.removeEventListener("scrollend", cb);
+          resolve(elapsed);
         }, t);
       };
-      c.addEventListener("scroll", cb);
+      c.addEventListener("scrollend", cb);
     });
   }, timeout);
 };
