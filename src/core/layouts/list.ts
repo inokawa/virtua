@@ -156,13 +156,13 @@ export const createListLayout = (
           computedOffsetIndex = -1;
 
           // Calculate median
-          const sorted = sort(measuredSizes);
-          const len = sorted.length;
+          sort(measuredSizes);
+          const len = measuredSizes.length;
           const mid = (len / 2) | 0;
           const median =
             len % 2 === 0
-              ? (sorted[mid - 1]! + sorted[mid]!) / 2
-              : sorted[mid]!;
+              ? (measuredSizes[mid - 1]! + measuredSizes[mid]!) / 2
+              : measuredSizes[mid]!;
 
           const prevDefaultItemSize = defaultItemSize;
 
