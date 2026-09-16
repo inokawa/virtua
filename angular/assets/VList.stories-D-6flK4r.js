@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{b as t,kt as n,m as r,o as i,u as a}from"./core-CaGIugRR.js";import{n as o,t as s}from"./VList-CgKN0ngD.js";var c,l,u,d;function f(){return(f=e((()=>{a(),o(),c=function(e,t,n,r,i,a){function o(e){if(e!==void 0&&typeof e!=`function`)throw TypeError(`Function expected`);return e}for(var s=r.kind,c=s===`getter`?`get`:s===`setter`?`set`:`value`,l=!t&&e?r.static?e:e.prototype:null,u=t||(l?Object.getOwnPropertyDescriptor(l,r.name):{}),d,f=!1,p=n.length-1;p>=0;p--){var m={};for(var h in r)m[h]=h===`access`?{}:r[h];for(var h in r.access)m.access[h]=r.access[h];m.addInitializer=function(e){if(f)throw TypeError(`Cannot add initializers after decoration has completed`);a.push(o(e||null))};var g=(0,n[p])(s===`accessor`?{get:u.get,set:u.set}:u[c],m);if(s===`accessor`){if(g===void 0)continue;if(typeof g!=`object`||!g)throw TypeError(`Object expected`);(d=o(g.get))&&(u.get=d),(d=o(g.set))&&(u.set=d),(d=o(g.init))&&i.unshift(d)}else(d=o(g))&&(s===`field`?i.unshift(d):u[c]=d)}l&&Object.defineProperty(l,r.name,u),f=!0},l=function(e,t,n){for(var r=arguments.length>2,i=0;i<t.length;i++)n=r?t[i].call(e,n):t[i].call(e);return r?n:void 0},u=[20,40,180,77],d=(()=>{let e=[t({selector:`story-default`,imports:[s],template:`
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{b as t,kt as n,m as r,o as i,u as a}from"./core-CaGIugRR.js";import{n as o,t as s}from"./VList-4UBse6Ig.js";var c,l,u,d;function f(){return(f=e((()=>{a(),o(),c=function(e,t,n,r,i,a){function o(e){if(e!==void 0&&typeof e!=`function`)throw TypeError(`Function expected`);return e}for(var s=r.kind,c=s===`getter`?`get`:s===`setter`?`set`:`value`,l=!t&&e?r.static?e:e.prototype:null,u=t||(l?Object.getOwnPropertyDescriptor(l,r.name):{}),d,f=!1,p=n.length-1;p>=0;p--){var m={};for(var h in r)m[h]=h===`access`?{}:r[h];for(var h in r.access)m.access[h]=r.access[h];m.addInitializer=function(e){if(f)throw TypeError(`Cannot add initializers after decoration has completed`);a.push(o(e||null))};var g=(0,n[p])(s===`accessor`?{get:u.get,set:u.set}:u[c],m);if(s===`accessor`){if(g===void 0)continue;if(typeof g!=`object`||!g)throw TypeError(`Object expected`);(d=o(g.get))&&(u.get=d),(d=o(g.set))&&(u.set=d),(d=o(g.init))&&i.unshift(d)}else(d=o(g))&&(s===`field`?i.unshift(d):u[c]=d)}l&&Object.defineProperty(l,r.name,u),f=!0},l=function(e,t,n){for(var r=arguments.length>2,i=0;i<t.length;i++)n=r?t[i].call(e,n):t[i].call(e);return r?n:void 0},u=[20,40,180,77],d=(()=>{let e=[t({selector:`story-default`,imports:[s],template:`
     <virtua-vlist [data]="data" [getKey]="getKey" style="height: 100vh;">
       <ng-template let-item let-index="index">
         <div
@@ -57,8 +57,8 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{b as t,kt as n,m as r,
         [data]="data()"
         [shift]="prepend()"
         [getKey]="getKey"
-        (scroll)="onScroll($event)"
-        (scrollEnd)="scrolling.set(false)"
+        (scrolled)="onScroll($event)"
+        (scrollEnded)="scrolling.set(false)"
       >
         <ng-template let-item>
           <div

@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{Ot as t,_ as n,b as r,kt as i,m as a,o,pt as s,s as c,u as l}from"./core-CaGIugRR.js";import{n as u,t as d}from"./Virtualizer-DdtH-5CR.js";import{n as f,t as p}from"./VList-CgKN0ngD.js";var m;function h(){return(h=e((()=>{m=`
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{Ot as t,_ as n,b as r,kt as i,m as a,o,pt as s,s as c,u as l}from"./core-CaGIugRR.js";import{n as u,t as d}from"./Virtualizer-CzeM0NSJ.js";import{n as f,t as p}from"./VList-4UBse6Ig.js";var m;function h(){return(h=e((()=>{m=`
       .spinner {
         flex: none;
         height: 48px;
@@ -69,7 +69,7 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{Ot as t,_ as n,b as r,
           [shift]="isPrepend()"
           [startMargin]="spinnerHeight"
           [getKey]="getKey"
-          (scroll)="onScroll($event)"
+          (scrolled)="onScroll($event)"
         >
           <ng-template let-item>
             @if (item.me === true) {
