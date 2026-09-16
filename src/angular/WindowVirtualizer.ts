@@ -155,11 +155,11 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
    * Emitted whenever scroll offset changes.
    */
   // https://github.com/inokawa/virtua/discussions/580
-  readonly scroll = output<void>();
+  readonly scrolled = output<void>();
   /**
    * Emitted when scrolling stops.
    */
-  readonly scrollEnd = output<void>();
+  readonly scrollEnded = output<void>();
 
   /** @internal */
   protected template =
@@ -271,10 +271,10 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
       }
     });
     store.$subscribe(UPDATE_SCROLL_EVENT, () => {
-      this.scroll.emit();
+      this.scrolled.emit();
     });
     store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
-      this.scrollEnd.emit();
+      this.scrollEnded.emit();
     });
     this._stateVersion.set(store.$getStateVersion());
   }

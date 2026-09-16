@@ -49,8 +49,8 @@ export interface VListHandle extends VirtualizerHandle {}
       [horizontal]="horizontal()"
       [keepMounted]="keepMounted()"
       [cache]="cacheProp()"
-      (scroll)="scroll.emit($event)"
-      (scrollEnd)="scrollEnd.emit()"
+      (scrolled)="scrolled.emit($event)"
+      (scrollEnded)="scrollEnded.emit()"
     ></div>
   `,
 })
@@ -107,11 +107,11 @@ export class VList<T> implements OnInit, VListHandle {
   /**
    * Emitted whenever scroll offset changes. The value is current scrollTop, or scrollLeft if horizontal: true.
    */
-  readonly scroll = output<number>();
+  readonly scrolled = output<number>();
   /**
    * Emitted when scrolling stops.
    */
-  readonly scrollEnd = output<void>();
+  readonly scrollEnded = output<void>();
 
   /** @internal */
   readonly template =

@@ -65,7 +65,7 @@ const createItem = ({
           [shift]="isPrepend()"
           [startMargin]="spinnerHeight"
           [getKey]="getKey"
-          (scroll)="onScroll($event)"
+          (scrolled)="onScroll($event)"
         >
           <ng-template let-item>
             @if (item.me === true) {

@@ -13,7 +13,7 @@ const stickyIndexes = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900];
       [getKey]="getKey"
       [itemProps]="itemProps"
       [keepMounted]="[activeIndex()]"
-      (scroll)="onScroll($event)"
+      (scrolled)="onScroll($event)"
       style="height: 100vh;"
     >
       <ng-template let-item let-index="index">

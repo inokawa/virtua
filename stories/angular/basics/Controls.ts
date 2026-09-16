@@ -39,8 +39,8 @@ type Data = ReturnType<typeof createItem>;
         [data]="data()"
         [shift]="prepend()"
         [getKey]="getKey"
-        (scroll)="onScroll($event)"
-        (scrollEnd)="scrolling.set(false)"
+        (scrolled)="onScroll($event)"
+        (scrollEnded)="scrolling.set(false)"
       >
         <ng-template let-item>
           <div
