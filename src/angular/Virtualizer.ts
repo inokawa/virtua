@@ -195,11 +195,11 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
   /**
    * Emitted whenever scroll offset changes. The value is current scrollTop, or scrollLeft if horizontal: true.
    */
-  readonly scroll = output<number>();
+  readonly scrolled = output<number>();
   /**
    * Emitted when scrolling stops.
    */
-  readonly scrollEnd = output<void>();
+  readonly scrollEnded = output<void>();
 
   // not _ prefixed, because the mangler does not rename the property name kept
   // as a string in the partial compilation output
@@ -353,10 +353,10 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
       }
     });
     store.$subscribe(UPDATE_SCROLL_EVENT, () => {
-      this.scroll.emit(store.$getScrollOffset());
+      this.scrolled.emit(store.$getScrollOffset());
     });
     store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
-      this.scrollEnd.emit();
+      this.scrollEnded.emit();
     });
     this._stateVersion.set(store.$getStateVersion());
   }
