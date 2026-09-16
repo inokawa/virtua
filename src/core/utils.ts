@@ -16,8 +16,8 @@ export const clamp = (
 /**
  * @internal
  */
-export const sort = <T extends number>(arr: readonly T[]): T[] => {
-  return [...arr].sort((a, b) => a - b);
+export const sort = <T extends number>(arr: T[]): T[] => {
+  return arr.sort((a, b) => a - b);
 };
 
 /**
