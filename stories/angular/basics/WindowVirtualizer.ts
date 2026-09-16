@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { WindowVirtualizer } from "../../../src/angular";
 
-const sizes = [20, 40, 180, 77];
+const sizes = [20, 40, 80, 77];
 
 @Component({
   selector: "story-window-virtualizer",

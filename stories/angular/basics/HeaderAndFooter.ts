@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { Virtualizer } from "../../../src/angular";
 
-const sizes = [20, 40, 180, 77];
+const sizes = [20, 40, 80, 77];
 
 @Component({
   selector: "story-header-and-footer",
