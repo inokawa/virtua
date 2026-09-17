@@ -24,6 +24,6 @@ export type ItemContext<T> = {
 /**
  * @internal
  */
-export const ITEM_TEMPLATE = new InjectionToken<
+export const ITEM_TEMPLATE = /*#__PURE__*/ new InjectionToken<
   Signal<TemplateRef<ItemContext<any>>>
 >("virtua-item-template");

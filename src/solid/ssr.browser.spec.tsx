@@ -4,9 +4,10 @@
 import { afterEach, expect, it, onTestFinished } from "vitest";
 import { commands } from "vitest/browser";
 import { hydrate } from "solid-js/web";
-import { List } from "../../spec/ssr/solid.jsx";
+import { Grid, List } from "../../spec/ssr/solid.jsx";
 import {
   cleanupScroll,
+  expectGridHydrated,
   expectHydrated,
   getVirtualizer,
   mountSsr,
@@ -76,6 +77,19 @@ it("should render and hydrate items in horizontal mode", async () => {
       () => <List ssrCount={COUNT} itemSize={ITEM_SIZE} horizontal />,
       root,
     );
+    onTestFinished(dispose);
+  });
+});
+
+it("should render no cells and hydrate a grid", async () => {
+  const html = await commands.ssrRenderGrid();
+  expect(html).toMatchSnapshot();
+
+  const root = mountSsr(html);
+  runHydrationScript(root);
+
+  await expectGridHydrated(root, () => {
+    const dispose = hydrate(() => <Grid />, root);
     onTestFinished(dispose);
   });
 });

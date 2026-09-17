@@ -3,7 +3,7 @@ import { render } from "../spec/browser/react.js";
 import { useLayoutEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import {
-  experimental_VGrid as VGrid,
+  VGrid,
   Virtualizer,
   type VirtualizerHandle,
   WindowVirtualizer,
@@ -131,12 +131,14 @@ it("position: fixed viewport (Virtualizer)", async () => {
 it("position: fixed viewport (VGrid)", async () => {
   const root = render(
     <VGrid
-      row={100}
-      col={100}
+      rows={100}
+      rowHeight={40}
+      cols={100}
+      colWidth={100}
       style={{ position: "fixed", top: 0, left: 0, width: 400, height: 400 }}
     >
-      {({ rowIndex, colIndex }) => (
-        <div style={{ width: 100, height: 40 }}>
+      {(rowIndex, colIndex) => (
+        <div>
           row-{rowIndex}/column-{colIndex}
         </div>
       )}

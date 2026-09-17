@@ -1,7 +1,14 @@
 import { type VirtualStore } from "./store.js";
-import { type ScrollToIndexOpts } from "./types.js";
+import { type ScrollToIndexAlign, type ScrollToIndexOpts } from "./types.js";
 import { clamp, NULL } from "./utils.js";
 import { type Driver, type GridDriver } from "./driver.js";
+import {
+  getPinnedStart,
+  getTrailStart,
+  type VGridPinned,
+  type VGridScrollOffset,
+  type VGridScrollToIndexOpts,
+} from "./grid.js";
 
 /**
  * @internal
@@ -68,14 +75,13 @@ export const scrollToIndex = (
  */
 export const gridScrollTo = (
   driver: GridDriver,
-  row?: number,
-  col?: number,
+  { vertical, horizontal }: VGridScrollOffset,
 ) => {
-  if (row != NULL) {
-    driver.$scrollY(() => row);
+  if (vertical != NULL) {
+    driver.$scroll(false, () => vertical);
   }
-  if (col != NULL) {
-    driver.$scrollX(() => col);
+  if (horizontal != NULL) {
+    driver.$scroll(true, () => horizontal);
   }
 };
 
@@ -86,17 +92,68 @@ export const gridScrollBy = (
   driver: GridDriver,
   rowStore: VirtualStore,
   colStore: VirtualStore,
-  row?: number,
-  col?: number,
+  { vertical, horizontal }: VGridScrollOffset,
 ) => {
-  if (row != NULL) {
-    const target = row + rowStore.$getScrollOffset();
-    driver.$scrollY(() => target);
+  if (vertical != NULL) {
+    const offset = vertical + rowStore.$getScrollOffset();
+    driver.$scroll(false, () => offset);
   }
-  if (col != NULL) {
-    const target = col + colStore.$getScrollOffset();
-    driver.$scrollX(() => target);
+  if (horizontal != NULL) {
+    const offset = horizontal + colStore.$getScrollOffset();
+    driver.$scroll(true, () => offset);
   }
+};
+
+const scrollGridAxisToIndex = (
+  driver: GridDriver,
+  isHorizontal: boolean,
+  store: VirtualStore,
+  pinned: VGridPinned | undefined,
+  index: number,
+  align: ScrollToIndexAlign | undefined,
+) => {
+  const count = store.$getItemsLength();
+  const pinnedStart = getPinnedStart(pinned, count);
+  const trailStart = getTrailStart(pinned, count, pinnedStart);
+  index = clamp(index, 0, count - 1);
+  // Read when scrolling, as the pinned items may be measured after the call. The offsets from the first item exclude the jump deferred during scrolling.
+  const getInsets = (): [start: number, end: number] => [
+    store.$getItemOffset(pinnedStart) - store.$getItemOffset(0),
+    store.$getItemOffset(count) - store.$getItemOffset(trailStart),
+  ];
+
+  if (align === "nearest") {
+    if (index < pinnedStart || index >= trailStart) {
+      // A pinned item is always visible
+      return;
+    }
+    const [insetStart, insetEnd] = getInsets();
+    const itemOffset = store.$getItemOffset(index);
+    const scrollOffset = store.$getScrollOffset();
+    if (itemOffset < scrollOffset + insetStart) {
+      align = "start";
+    } else if (
+      itemOffset + store.$getItemSize(index) >
+      scrollOffset + store.$getViewportSize() - insetEnd
+    ) {
+      align = "end";
+    } else {
+      return;
+    }
+  }
+
+  driver.$scroll(isHorizontal, () => {
+    const [insetStart, insetEnd] = getInsets();
+    const rest = store.$getItemSize(index) - store.$getViewportSize();
+    return (
+      store.$getItemOffset(index) +
+      (align === "end"
+        ? rest + insetEnd
+        : align === "center"
+          ? (rest + insetEnd - insetStart) / 2
+          : -insetStart)
+    );
+  });
 };
 
 /**
@@ -106,15 +163,29 @@ export const gridScrollToIndex = (
   driver: GridDriver,
   rowStore: VirtualStore,
   colStore: VirtualStore,
-  row?: number,
-  col?: number,
+  pinnedRows: VGridPinned | undefined,
+  pinnedCols: VGridPinned | undefined,
+  { rowIndex, colIndex, rowAlign, colAlign }: VGridScrollToIndexOpts,
 ) => {
-  if (row != NULL) {
-    const index = clamp(row, 0, rowStore.$getItemsLength() - 1);
-    driver.$scrollY(() => rowStore.$getItemOffset(index));
+  // TODO support smooth scroll, removed because scrolling both axes smoothly freezes their ranges and the page
+  if (rowIndex != NULL) {
+    scrollGridAxisToIndex(
+      driver,
+      false,
+      rowStore,
+      pinnedRows,
+      rowIndex,
+      rowAlign,
+    );
   }
-  if (col != NULL) {
-    const index = clamp(col, 0, colStore.$getItemsLength() - 1);
-    driver.$scrollX(() => colStore.$getItemOffset(index));
+  if (colIndex != NULL) {
+    scrollGridAxisToIndex(
+      driver,
+      true,
+      colStore,
+      pinnedCols,
+      colIndex,
+      colAlign,
+    );
   }
 };

@@ -1,109 +1,45 @@
-import React, {
-  type JSX,
-  memo,
-  useRef,
-  useMemo,
-  type CSSProperties,
+import {
   type ReactElement,
-  forwardRef,
   type ReactNode,
+  type Ref,
+  forwardRef,
+  memo,
   useImperativeHandle,
   useReducer,
-  type Ref,
+  useRef,
 } from "react";
 import {
-  ACTION_ITEMS_LENGTH_CHANGE,
-  createVirtualStore,
-  createListLayout,
-  getScrollSize,
+  UPDATE_SCROLL_END_EVENT,
+  UPDATE_SCROLL_EVENT,
   UPDATE_VIRTUAL_STATE,
   createContainerGridDriver,
-  type GridDriver,
-  gridScrollTo,
+  createGridLayout,
+  createVirtualStore,
+  type VGridAxis,
+  type VGridCell,
+  type VGridPinned,
+  type VGridSize,
+  type VGridSpan,
+  getAxisItem,
+  getScrollSize,
   gridScrollBy,
+  gridScrollTo,
   gridScrollToIndex,
-  UPDATE_SCROLL_EVENT,
-  UPDATE_SCROLL_END_EVENT,
+  updateGridAxis,
+  type GridDriver,
+  type VGridScrollOffset,
+  type VGridScrollToIndexOpts,
+  createGridPlan,
+  type GridCellState,
+  type GridRowGroupState,
+  type GridRowState,
 } from "../core/index.js";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
 import { refKey } from "./utils.js";
 import { useStatic } from "./useStatic.js";
-import { type ViewportComponentAttributes } from "./types.js";
 import { useLatestRef } from "./useLatestRef.js";
 import { flushSync } from "react-dom";
-
-const genKey = (i: number, j: number) => `${i}-${j}`;
-
-/**
- * Props of customized cell component for {@link VGrid}.
- */
-export interface CustomCellComponentProps {
-  style: CSSProperties;
-  children: ReactNode;
-}
-
-export type CustomCellComponent = React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<CustomCellComponentProps> & React.RefAttributes<any>
->;
-
-interface CellProps {
-  _children: ReactNode;
-  _resizer: GridDriver["$observeItem"];
-  _rowIndex: number;
-  _colIndex: number;
-  _top: number;
-  _left: number;
-  _height: number;
-  _width: number;
-  _hide: boolean;
-  _element: "div";
-}
-
-const Cell = /*#__PURE__*/ memo(
-  ({
-    _children: children,
-    _resizer: resizer,
-    _rowIndex: rowIndex,
-    _colIndex: colIndex,
-    _top: top,
-    _left: left,
-    _height: height,
-    _width: width,
-    _hide: hide,
-    _element: Element,
-  }: CellProps): ReactElement => {
-    const ref = useRef<HTMLDivElement>(null);
-
-    // The index may be changed if elements are inserted to or removed from the start of props.children
-    useIsomorphicLayoutEffect(
-      () => resizer(ref[refKey]!, rowIndex, colIndex),
-      [colIndex, rowIndex],
-    );
-
-    return (
-      <Element
-        ref={ref}
-        style={useMemo((): CSSProperties => {
-          const style: CSSProperties = {
-            contain: "layout style",
-            display: "grid",
-            position: "absolute",
-            top: top,
-            insetInlineStart: left,
-            visibility: hide ? "hidden" : undefined,
-            minHeight: height,
-            minWidth: width,
-          };
-          return style;
-        }, [top, left, width, height, hide])}
-      >
-        {children}
-      </Element>
-    );
-  },
-);
-
-export type VGridItemResize = readonly [index: number, size: number];
+import { type ViewportComponentAttributes } from "./types.js";
 
 /**
  * Methods of {@link VGrid}.
@@ -112,11 +48,11 @@ export interface VGridHandle {
   /**
    * Get current scrollTop.
    */
-  readonly scrollTop: number;
+  readonly verticalScrollOffset: number;
   /**
    * Get current scrollLeft. Always positive even in RTL.
    */
-  readonly scrollLeft: number;
+  readonly horizontalScrollOffset: number;
   /**
    * Get current scrollHeight.
    */
@@ -135,220 +71,386 @@ export interface VGridHandle {
   readonly viewportWidth: number;
   /**
    * Find nearest row index from offset.
+   * @param offset offset in pixels from the top of the scroll container
+   */
+  findRowIndex(offset: number): number;
+  /**
+   * Find nearest column index from offset.
    * @param offset offset in pixels from the start of the scroll container
    */
-  findRowIndex: (offset: number) => number;
+  findColIndex(offset: number): number;
   /**
-   * Find nearest col index from offset.
-   * @param offset offset in pixels from the start of the scroll container
-   */
-  findColIndex: (offset: number) => number;
-  /**
-   * Get row offset from start.
+   * Get offset of the row from the top.
    * @param index index of row
    */
   getRowOffset(index: number): number;
   /**
-   * Get col offset from start.
-   * @param index index of col
+   * Get offset of the column from the start.
+   * @param index index of column
    */
   getColOffset(index: number): number;
   /**
-   * Get row size.
+   * Get size of the row.
    * @param index index of row
    */
   getRowSize(index: number): number;
   /**
-   * Get col size.
-   * @param index index of col
+   * Get size of the column.
+   * @param index index of column
    */
   getColSize(index: number): number;
   /**
-   * Resize individual columns.
-   * @param cols array of `[index, size]` to update column sizes
+   * Scroll to the cell specified by the indexes. The cell is not hidden behind the pinned cells.
+   * @param opts the indexes of the cell and the options. See {@link VGridScrollToIndexOpts}.
    */
-  resizeCols(cols: VGridItemResize[]): void;
+  scrollToIndex(opts: VGridScrollToIndexOpts): void;
   /**
-   * Resize individual rows.
-   * @param rows array of `[index, size]` to update row sizes
+   * Scroll to the given offsets from the top/start of the scroll container.
+   * @param offset the offsets. See {@link VGridScrollOffset}.
    */
-  resizeRows(rows: VGridItemResize[]): void;
+  scrollTo(offset: VGridScrollOffset): void;
   /**
-   * Scroll to the item specified by index.
-   * @param indexX horizontal index of item
-   * @param indexY vertical index of item
+   * Scroll by the given offsets from the current position.
+   * @param offset the offsets. See {@link VGridScrollOffset}.
    */
-  scrollToIndex(indexX?: number, indexY?: number): void;
-  /**
-   * Scroll to the given offset.
-   * @param offsetX offset from left
-   * @param offsetY offset from top
-   */
-  scrollTo(offsetX?: number, offsetY?: number): void;
-  /**
-   * Scroll by the given offset.
-   * @param offsetX horizontal offset from current position
-   * @param offsetY vertical offset from current position
-   */
-  scrollBy(offsetX?: number, offsetY?: number): void;
+  scrollBy(offset: VGridScrollOffset): void;
 }
 
 /**
  * Props of {@link VGrid}.
  */
-export interface VGridProps extends ViewportComponentAttributes {
+export interface VGridProps<R = number, C = number> extends Omit<
+  ViewportComponentAttributes,
+  "role"
+> {
   /**
-   * A function to create elements rendered by this component.
+   * A function to create cell elements rendered by this component.
+   * @param row the item of {@link VGridProps.rows} at the row of the cell, or the row index if {@link VGridProps.rows} is a number
+   * @param col the item of {@link VGridProps.cols} at the column of the cell, or the column index if {@link VGridProps.cols} is a number
+   * @param cell the row index and the column index of the cell
    */
-  children: (arg: {
-    /**
-     * row index of cell
-     */
-    rowIndex: number;
-    /**
-     * column index of cell
-     */
-    colIndex: number;
-  }) => ReactNode;
+  children: (row: R, col: C, cell: Readonly<VGridCell>) => ReactNode;
   /**
-   * Total row length of grid.
+   * The rows of the grid. See {@link VGridAxis} for the accepted values.
    */
-  row: number;
+  rows: VGridAxis<R>;
   /**
-   * Total column length of grid.
+   * The columns of the grid. See {@link VGridAxis} for the accepted values.
    */
-  col: number;
+  cols: VGridAxis<C>;
   /**
-   * Cell height hint for unmeasured items. It's recommended to specify this prop if item sizes are fixed and known, or much larger than the defaultValue. It will help to reduce scroll jump when items are measured.
-   * @defaultValue 40
+   * The heights of the rows. See {@link VGridSize} for the accepted values.
    */
-  cellHeight?: number;
+  rowHeight: NoInfer<VGridSize<R>>;
   /**
-   * Cell width hint for unmeasured items. It's recommended to specify this prop if item sizes are fixed and known, or much larger than the defaultValue. It will help to reduce scroll jump when items are measured.
-   * @defaultValue 100
+   * The widths of the columns. See {@link VGridSize} for the accepted values.
    */
-  cellWidth?: number;
+  colWidth: NoInfer<VGridSize<C>>;
   /**
-   * Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
+   * The number of rows pinned to the edges of the viewport. See {@link VGridPinned} for the accepted values.
+   *
+   * **The pinned cells are rendered over the other cells, so give them an opaque background.**
+   * @defaultValue 0
+   */
+  pinnedRows?: VGridPinned;
+  /**
+   * The number of columns pinned to the edges of the viewport. See {@link VGridPinned} for the accepted values.
+   *
+   * **The pinned cells are rendered over the other cells, so give them an opaque background.**
+   * @defaultValue 0
+   */
+  pinnedCols?: VGridPinned;
+  /**
+   * Cells merged over multiple rows and/or columns. See {@link VGridSpan} for the accepted values.
+   *
+   * The cell at the origin is stretched over the merged area, and the other cells in it are not rendered. Spans must not overlap each other or cross the boundary of the pinned rows/columns. A spanning cell is not measured for `"auto"` sizes on the axes it spans, and doesn't enlarge those tracks.
+   */
+  spans?: readonly VGridSpan[];
+  /**
+   * List of cells that should be always mounted, even when off screen.
+   */
+  keepMounted?: readonly VGridCell[];
+  /**
+   * Extra space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank cells in fast scrolling.
    * @defaultValue 200
    */
   bufferSize?: number;
   /**
-   * A prop for SSR. If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size until hydrated.
+   * The gap between the rows and the columns in pixels, which is not included in the sizes. Must not be changed after mount.
+   * @defaultValue 0
    */
-  ssrRowCount?: number;
+  gap?: number;
   /**
-   * A prop for SSR. If set, the specified amount of cols will be mounted in the initial rendering regardless of the container size until hydrated.
+   * Indexes of the rows whose cells are column headers (`role="columnheader"`).
+   * @defaultValue the rows pinned to the start by {@link VGridProps.pinnedRows}
    */
-  ssrColCount?: number;
+  ariaColumnHeader?: readonly number[];
   /**
-   * Component or element type for cell element. This component will get {@link CustomCellComponentProps} as props.
-   * @defaultValue "div"
+   * Indexes of the columns whose cells are row headers (`role="rowheader"`).
    */
-  item?: keyof JSX.IntrinsicElements | CustomCellComponent;
-  /** Reference to the rendered DOM element (the one that scrolls). */
-  domRef?: Ref<HTMLDivElement>;
+  ariaRowHeader?: readonly number[];
   /**
-   * Callback invoked whenever scroll offset changes.
+   * The header cell of the sorted column or row, and the sort order (`aria-sort`).
    */
-  onScroll?: (offset: number) => void;
+  ariaSort?: VGridCell & { order: "ascending" | "descending" | "other" };
+  /**
+   * Callback invoked whenever the vertical scroll offset changes.
+   * @param offset Current scrollTop.
+   */
+  onVerticalScroll?: (offset: number) => void;
+  /**
+   * Callback invoked whenever the horizontal scroll offset changes.
+   * @param offset Current scrollLeft. Always positive even in RTL.
+   */
+  onHorizontalScroll?: (offset: number) => void;
   /**
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
 }
 
+interface GridCellProps {
+  _state: GridCellState;
+  _children: (
+    row: unknown,
+    col: unknown,
+    cell: Readonly<VGridCell>,
+  ) => ReactNode;
+  _row: unknown;
+  _col: unknown;
+  _rowIndex: number;
+  _resizer: GridDriver["$observeItem"];
+}
+
+const GridCell = /*#__PURE__*/ memo(
+  ({
+    _state: {
+      $col: colIndex,
+      $rowSpan: rowSpan,
+      $colSpan: colSpan,
+      $measureRow: measureRowIndex,
+      $measureCol: measureColIndex,
+      $role: role,
+      $sort: sort,
+      $style: style,
+    },
+    _children: children,
+    _row: row,
+    _col: col,
+    _rowIndex: rowIndex,
+    _resizer: resizer,
+  }: GridCellProps): ReactElement => {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useIsomorphicLayoutEffect(() => {
+      if (measureRowIndex == null && measureColIndex == null) return;
+      return resizer(ref[refKey]!, measureRowIndex, measureColIndex);
+    }, [measureRowIndex, measureColIndex, resizer]);
+
+    return (
+      <div
+        ref={ref}
+        role={role}
+        aria-colindex={colIndex + 1}
+        aria-rowspan={rowSpan}
+        aria-colspan={colSpan}
+        aria-sort={sort}
+        style={style}
+      >
+        {children(row, col, { rowIndex, colIndex })}
+      </div>
+    );
+  },
+);
+
+interface GridRowProps {
+  _state: GridRowState;
+  _children: (
+    row: unknown,
+    col: unknown,
+    cell: Readonly<VGridCell>,
+  ) => ReactNode;
+  _row: unknown;
+  _cols: VGridAxis<unknown>;
+  _resizer: GridDriver["$observeItem"];
+}
+
+const GridRow = /*#__PURE__*/ memo(
+  ({
+    _state: { $row: rowIndex, $cells: cells, $style: style },
+    _children: children,
+    _row: row,
+    _cols: cols,
+    _resizer: resizer,
+  }: GridRowProps): ReactElement => (
+    <div role="row" aria-rowindex={rowIndex + 1} style={style}>
+      {cells.map((cell) => (
+        <GridCell
+          key={cell.$col}
+          _state={cell}
+          _children={children}
+          _row={row}
+          _col={getAxisItem(cols, cell.$col)}
+          _rowIndex={rowIndex}
+          _resizer={resizer}
+        />
+      ))}
+    </div>
+  ),
+);
+
+interface GridRowGroupProps {
+  _state: GridRowGroupState;
+  _children: (
+    row: unknown,
+    col: unknown,
+    cell: Readonly<VGridCell>,
+  ) => ReactNode;
+  _rows: VGridAxis<unknown>;
+  _cols: VGridAxis<unknown>;
+  _resizer: GridDriver["$observeItem"];
+}
+
+const GridRowGroup = ({
+  _state: { $rows: rowStates, $style: style },
+  _children: children,
+  _rows: rows,
+  _cols: cols,
+  _resizer: resizer,
+}: GridRowGroupProps): ReactElement => (
+  // https://www.w3.org/TR/wai-aria-1.2/#rowgroup
+  <div role="rowgroup" style={style}>
+    {rowStates.map((state) => (
+      <GridRow
+        key={state.$row}
+        _state={state}
+        _children={children}
+        _row={getAxisItem(rows, state.$row)}
+        _cols={cols}
+        _resizer={resizer}
+      />
+    ))}
+  </div>
+);
+
 /**
- * Virtualized grid component. See {@link VGridProps} and {@link VGridHandle}.
+ * Virtualized grid component for tabular data. See {@link VGridProps} and {@link VGridHandle}.
  */
-export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
+export const VGrid = /*#__PURE__*/ forwardRef<
+  VGridHandle,
+  VGridProps<unknown, unknown>
+>(
   (
     {
       children,
-      row: rowCount,
-      col: colCount,
-      cellHeight = 40,
-      cellWidth = 100,
+      rows,
+      cols,
+      rowHeight,
+      colWidth,
+      pinnedRows,
+      pinnedCols,
+      spans,
+      keepMounted,
       bufferSize,
-      ssrRowCount,
-      ssrColCount,
-      item: ItemElement = "div",
-      domRef,
-      onScroll: onScrollProp,
+      gap = 0,
+      ariaColumnHeader,
+      ariaRowHeader,
+      ariaSort,
+      onVerticalScroll: onVerticalScrollProp,
+      onHorizontalScroll: onHorizontalScrollProp,
       onScrollEnd: onScrollEndProp,
       style,
       ...attrs
     },
     ref,
   ): ReactElement => {
-    const [rowStore, colStore, driver] = useStatic(() => {
-      const _rowStore = createVirtualStore(
-        createListLayout(rowCount, cellHeight),
-        ssrRowCount,
-      );
-      const _colStore = createVirtualStore(
-        createListLayout(colCount, cellWidth),
-        ssrColCount,
-      );
+    const containerRef = useRef<HTMLDivElement>(null);
+    const onVerticalScroll = useLatestRef(onVerticalScrollProp);
+    const onHorizontalScroll = useLatestRef(onHorizontalScrollProp);
+    const onScrollEnd = useLatestRef(onScrollEndProp);
+    const [rowStore, colStore, rowLayout, colLayout, driver] = useStatic(() => {
+      const _rowLayout = createGridLayout(rows, rowHeight, gap);
+      const _colLayout = createGridLayout(cols, colWidth, gap);
+      const _rowStore = createVirtualStore(_rowLayout);
+      const _colStore = createVirtualStore(_colLayout);
       return [
         _rowStore,
         _colStore,
+        _rowLayout,
+        _colLayout,
         createContainerGridDriver(_rowStore, _colStore),
       ];
     });
-    // The elements length and cached items length are different just after element is added/removed.
-    if (rowCount !== rowStore.$getItemsLength()) {
-      rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [rowCount]);
-    }
-    if (colCount !== colStore.$getItemsLength()) {
-      colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colCount]);
-    }
 
-    const [rowStateVersion, rowRerender] = useReducer(
-      rowStore.$getStateVersion,
+    // These never request a synchronous update, so they are safe here.
+    updateGridAxis(rowStore, rowLayout, rows, rowHeight);
+    updateGridAxis(colStore, colLayout, cols, colWidth);
+
+    const getStateVersion = () =>
+      rowStore.$getStateVersion() + colStore.$getStateVersion();
+    const [stateVersion, rerender] = useReducer(
+      getStateVersion,
       undefined,
-      rowStore.$getStateVersion,
-    );
-    const [colStateVersion, colRerender] = useReducer(
-      colStore.$getStateVersion,
-      undefined,
-      colStore.$getStateVersion,
+      getStateVersion,
     );
 
-    const isVerticalScrolling = rowStore.$isScrolling();
-    const isHorizontalScrolling = colStore.$isScrolling();
-    const height = getScrollSize(rowStore);
-    const width = getScrollSize(colStore);
-    const containerRef = useRef<HTMLDivElement>(null);
-    const onScroll = useLatestRef(onScrollProp);
-    const onScrollEnd = useLatestRef(onScrollEndProp);
+    const isScrolling = rowStore.$isScrolling() || colStore.$isScrolling();
+    // A jump deferred during scrolling shifts the tracks, as it shifts the items of the lists.
+    const marginTop = rowStore.$getItemOffset(0);
+    const marginInlineStart = colStore.$getItemOffset(0);
+
+    const rowCount = rowStore.$getItemsLength();
+    const colCount = colStore.$getItemsLength();
+    const plan = createGridPlan(
+      rowLayout,
+      colLayout,
+      rowStore.$getRange(bufferSize),
+      colStore.$getRange(bufferSize),
+      pinnedRows,
+      pinnedCols,
+      spans,
+      keepMounted,
+      ariaColumnHeader,
+      ariaRowHeader,
+      ariaSort,
+    );
+    const pinnedRowsRef = useLatestRef(pinnedRows);
+    const pinnedColsRef = useLatestRef(pinnedCols);
 
     useIsomorphicLayoutEffect(() => {
+      const onUpdate = (sync?: boolean) => {
+        if (sync) {
+          flushSync(rerender);
+        } else {
+          rerender();
+        }
+      };
       // store must be subscribed first because others may dispatch update on init depending on implementation
-      rowStore.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
-        if (sync) {
-          flushSync(rowRerender);
-        } else {
-          rowRerender();
-        }
-      });
-      colStore.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
-        if (sync) {
-          flushSync(colRerender);
-        } else {
-          colRerender();
-        }
-      });
+      rowStore.$subscribe(UPDATE_VIRTUAL_STATE, onUpdate);
+      colStore.$subscribe(UPDATE_VIRTUAL_STATE, onUpdate);
+
+      // Both stores observe both axes, so the end is notified once after both have ended.
+      let scrolled = false;
       rowStore.$subscribe(UPDATE_SCROLL_EVENT, () => {
-        onScroll[refKey] && onScroll[refKey](rowStore.$getScrollOffset());
+        scrolled = true;
+        onVerticalScroll[refKey] &&
+          onVerticalScroll[refKey](rowStore.$getScrollOffset());
       });
-      rowStore.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
-        onScrollEnd[refKey] && onScrollEnd[refKey]();
+      colStore.$subscribe(UPDATE_SCROLL_EVENT, () => {
+        scrolled = true;
+        onHorizontalScroll[refKey] &&
+          onHorizontalScroll[refKey](colStore.$getScrollOffset());
       });
+      const notifyScrollEnd = () => {
+        if (scrolled && !rowStore.$isScrolling() && !colStore.$isScrolling()) {
+          scrolled = false;
+          onScrollEnd[refKey] && onScrollEnd[refKey]();
+        }
+      };
+      rowStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
+      colStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
 
-      const container = containerRef[refKey]!;
-
-      driver.$observe(container);
+      driver.$observe(containerRef[refKey]!);
       return () => {
         rowStore.$dispose();
         colStore.$dispose();
@@ -358,14 +460,14 @@ export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
 
     useIsomorphicLayoutEffect(() => {
       driver.$effect();
-    }, [rowStateVersion, colStateVersion]);
+    }, [stateVersion]);
 
     useImperativeHandle(ref, () => {
       return {
-        get scrollTop() {
+        get verticalScrollOffset() {
           return rowStore.$getScrollOffset();
         },
-        get scrollLeft() {
+        get horizontalScrollOffset() {
           return colStore.$getScrollOffset();
         },
         get scrollHeight() {
@@ -386,64 +488,28 @@ export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
         getColOffset: colStore.$getItemOffset,
         getRowSize: rowStore.$getItemSize,
         getColSize: colStore.$getItemSize,
-        resizeCols(cols) {
-          driver.$resizeCols(cols);
-        },
-        resizeRows(rows) {
-          driver.$resizeRows(rows);
-        },
-        scrollToIndex: (row, col) =>
-          gridScrollToIndex(driver, rowStore, colStore, row, col),
-        scrollTo: (row, col) => gridScrollTo(driver, row, col),
-        scrollBy: (row, col) =>
-          gridScrollBy(driver, rowStore, colStore, row, col),
+        scrollToIndex: (opts) =>
+          gridScrollToIndex(
+            driver,
+            rowStore,
+            colStore,
+            pinnedRowsRef[refKey],
+            pinnedColsRef[refKey],
+            opts,
+          ),
+        scrollTo: (offset) => gridScrollTo(driver, offset),
+        scrollBy: (offset) => gridScrollBy(driver, rowStore, colStore, offset),
       };
     }, []);
 
-    const render = useMemo(() => {
-      const cache = new Map<string, ReactNode>();
-      return (rowIndex: number, colIndex: number) => {
-        let e: ReactNode | undefined = cache.get(genKey(rowIndex, colIndex));
-        if (!e) {
-          cache.set(
-            genKey(rowIndex, colIndex),
-            (e = children({ rowIndex, colIndex })),
-          );
-        }
-        return e;
-      };
-    }, [children]);
-
-    const [startRowIndex, endRowIndex] = rowStore.$getRange(bufferSize);
-    const [startColIndex, endColIndex] = colStore.$getRange(bufferSize);
-
-    const items: ReactElement[] = [];
-    for (let rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++) {
-      for (let colIndex = startColIndex; colIndex <= endColIndex; colIndex++) {
-        items.push(
-          <Cell
-            key={genKey(rowIndex, colIndex)}
-            _resizer={driver.$observeItem}
-            _rowIndex={rowIndex}
-            _colIndex={colIndex}
-            _top={rowStore.$getItemOffset(rowIndex)}
-            _left={colStore.$getItemOffset(colIndex)}
-            _height={rowStore.$getItemSize(rowIndex)}
-            _width={colStore.$getItemSize(colIndex)}
-            _hide={
-              rowStore.$isUnmeasuredItem(rowIndex) ||
-              colStore.$isUnmeasuredItem(colIndex)
-            }
-            _element={ItemElement as "div"}
-            _children={render(rowIndex, colIndex)}
-          />,
-        );
-      }
-    }
-
     return (
       <div
-        ref={domRef}
+        // https://www.w3.org/WAI/ARIA/apg/patterns/table/
+        // https://www.w3.org/TR/wai-aria-1.2/#table
+        // https://www.w3.org/TR/wai-aria-1.2/#aria-rowcount
+        role="table"
+        aria-rowcount={rowCount}
+        aria-colcount={colCount}
         {...attrs}
         style={{
           overflow: "auto",
@@ -459,16 +525,42 @@ export const VGrid = /*#__PURE__*/ forwardRef<VGridHandle, VGridProps>(
             contain: "size style", // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
             overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
             flex: "none", // flex style can break layout
-            position: "relative",
-            width: width,
-            height: height,
-            pointerEvents:
-              isVerticalScrolling || isHorizontalScrolling ? "none" : undefined,
+            display: "grid",
+            gridTemplateRows: plan.$rowTemplate,
+            gridTemplateColumns: plan.$colTemplate,
+            gap,
+            marginTop,
+            marginInlineStart,
+            // The width is left to the viewport, so the auto columns fill it as the columns of a table.
+            height: getScrollSize(rowStore) - marginTop,
+            pointerEvents: isScrolling ? "none" : undefined,
           }}
         >
-          {items}
+          {plan.$groups.map((state) =>
+            "$rows" in state ? (
+              <GridRowGroup
+                key={state.$key}
+                _state={state}
+                _children={children}
+                _rows={rows}
+                _cols={cols}
+                _resizer={driver.$observeItem}
+              />
+            ) : (
+              <GridRow
+                key={state.$row}
+                _state={state}
+                _children={children}
+                _row={getAxisItem(rows, state.$row)}
+                _cols={cols}
+                _resizer={driver.$observeItem}
+              />
+            ),
+          )}
         </div>
       </div>
     );
   },
-);
+) as <R = number, C = number>(
+  props: VGridProps<R, C> & { ref?: Ref<VGridHandle> },
+) => ReactElement;

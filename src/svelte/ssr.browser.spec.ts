@@ -2,8 +2,10 @@ import { afterEach, expect, it, onTestFinished } from "vitest";
 import { commands } from "vitest/browser";
 import { hydrate, unmount } from "svelte";
 import VListHost from "../../spec/ssr/svelte.svelte";
+import VGridHost from "../../spec/ssr/svelte-grid.svelte";
 import {
   cleanupScroll,
+  expectGridHydrated,
   expectHydrated,
   getVirtualizer,
   mountSsr,
@@ -66,6 +68,18 @@ it("should render and hydrate items in horizontal mode", async () => {
       target: root,
       props: { ssrCount: COUNT, itemSize: ITEM_SIZE, horizontal: true },
     });
+    onTestFinished(() => unmount(app));
+  });
+});
+
+it("should render no cells and hydrate a grid", async () => {
+  const html = await commands.ssrRenderGrid();
+  expect(html).toMatchSnapshot();
+
+  const root = mountSsr(html);
+
+  await expectGridHydrated(root, () => {
+    const app = hydrate(VGridHost, { target: root });
     onTestFinished(() => unmount(app));
   });
 });

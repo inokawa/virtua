@@ -10,6 +10,7 @@ import {
   cleanupScroll,
   expectVirtualizedAndScrollable,
 } from "../../spec/browser/index.js";
+import { VGrid } from "./VGrid.js";
 
 afterEach(cleanupScroll);
 
@@ -41,6 +42,25 @@ it("WindowVirtualizer", async () => {
     <WindowVirtualizer data={Array.from({ length: 1000 }, (_, i) => i)}>
       {(d) => <div>item-{d}</div>}
     </WindowVirtualizer>
+  ));
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
+it("VGrid", async () => {
+  const root = render(() => (
+    <VGrid
+      rows={1000}
+      rowHeight={40}
+      cols={1000}
+      colWidth={100}
+      style={{ height: "400px", width: "400px" }}
+    >
+      {(rowIndex, colIndex) => (
+        <div>
+          item-{rowIndex}/item-{colIndex}
+        </div>
+      )}
+    </VGrid>
   ));
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });

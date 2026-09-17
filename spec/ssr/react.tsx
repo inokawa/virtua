@@ -1,4 +1,4 @@
-import { VList } from "../../src/react/index.js";
+import { VGrid, VList } from "../../src/react/index.js";
 import type { SsrProps } from "../browser/index.js";
 import { renderToString } from "react-dom/server";
 
@@ -15,3 +15,17 @@ export const List = (props: SsrProps) => (
 );
 
 export const render = (props: SsrProps) => renderToString(<List {...props} />);
+
+export const Grid = () => (
+  <VGrid
+    rows={1000}
+    rowHeight={40}
+    cols={1000}
+    colWidth={100}
+    style={{ width: 400, height: 400 }}
+  >
+    {(rowIndex, colIndex) => <div>{`item-${rowIndex}/item-${colIndex}`}</div>}
+  </VGrid>
+);
+
+export const renderGrid = () => renderToString(<Grid />);

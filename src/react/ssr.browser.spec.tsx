@@ -1,9 +1,10 @@
 import { afterEach, expect, it, onTestFinished } from "vitest";
 import { commands } from "vitest/browser";
 import { hydrateRoot } from "react-dom/client";
-import { List } from "../../spec/ssr/react.js";
+import { Grid, List } from "../../spec/ssr/react.js";
 import {
   cleanupScroll,
+  expectGridHydrated,
   expectHydrated,
   getVirtualizer,
   mountSsr,
@@ -66,6 +67,18 @@ it("should render and hydrate items in horizontal mode", async () => {
       root,
       <List ssrCount={COUNT} itemSize={ITEM_SIZE} horizontal />,
     );
+    onTestFinished(() => reactRoot.unmount());
+  });
+});
+
+it("should render no cells and hydrate a grid", async () => {
+  const html = await commands.ssrRenderGrid();
+  expect(html).toMatchSnapshot();
+
+  const root = mountSsr(html);
+
+  await expectGridHydrated(root, () => {
+    const reactRoot = hydrateRoot(root, <Grid />);
     onTestFinished(() => reactRoot.unmount());
   });
 });

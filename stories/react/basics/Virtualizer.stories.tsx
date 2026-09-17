@@ -1,12 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import React, {
-  Fragment,
-  forwardRef,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import {
   CustomContainerComponentProps,
   CustomItemComponentProps,
@@ -558,100 +551,6 @@ export const UlElement: StoryObj = {
             {Array.from({ length: 1000 }).map((_, i) => i)}
           </Virtualizer>
         </div>
-      </div>
-    );
-  },
-};
-
-const COLUMN_WIDTHS = [100, 200, 300, 100, 200, 300, 100, 300, 400, 200];
-
-const TABLE_HEADER_HEIGHT = 30;
-
-const Table = forwardRef<HTMLTableElement, CustomContainerComponentProps>(
-  ({ children, style }, ref) => {
-    return (
-      <table
-        ref={ref}
-        style={{
-          height: style?.height,
-          position: "relative",
-          tableLayout: "fixed",
-          borderCollapse: "collapse",
-          whiteSpace: "nowrap",
-        }}
-        border={1}
-      >
-        <thead
-          style={{
-            position: "sticky",
-            top: 0,
-            zIndex: 1,
-            height: TABLE_HEADER_HEIGHT,
-            minHeight: TABLE_HEADER_HEIGHT,
-            maxHeight: TABLE_HEADER_HEIGHT,
-          }}
-        >
-          <tr>
-            {COLUMN_WIDTHS.map((width, i) => (
-              <th
-                key={i}
-                style={{
-                  color: "white",
-                  background: "darkgray",
-                  minWidth: width,
-                }}
-              >
-                {i}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody
-          style={{
-            ...style,
-            contain: undefined,
-            position: "absolute",
-            top: TABLE_HEADER_HEIGHT,
-            left: 0,
-          }}
-        >
-          {children}
-        </tbody>
-      </table>
-    );
-  },
-);
-
-export const TableElement: StoryObj = {
-  render: () => {
-    const data = useMemo(
-      () => Array.from({ length: 1000 }).map((_, i) => i),
-      [],
-    );
-    return (
-      <div
-        style={{
-          width: "100%",
-          height: "75%",
-          overflow: "auto",
-        }}
-      >
-        <Virtualizer
-          data={data}
-          as={Table}
-          item="tr"
-          startMargin={TABLE_HEADER_HEIGHT}
-        >
-          {(i) => (
-            <Fragment key={i}>
-              {COLUMN_WIDTHS.map((width, j) => (
-                <td key={j} style={{ minWidth: width, background: "#fff" }}>
-                  {i}, {j}
-                </td>
-              ))}
-            </Fragment>
-          )}
-        </Virtualizer>
       </div>
     );
   },

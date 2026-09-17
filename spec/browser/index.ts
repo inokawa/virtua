@@ -12,6 +12,7 @@ declare module "vitest/internal/browser" {
   interface BrowserCommands {
     // Defined in vitest.config.ts, because only the node side can compile for the server
     ssrRender: (props: SsrProps) => Promise<string>;
+    ssrRenderGrid: () => Promise<string>;
   }
 }
 
@@ -97,6 +98,180 @@ export const expectVirtualizedAndScrollable = async (
   expect(root.textContent).not.toContain(first);
 };
 
+export type GridAxisGeometry = {
+  count: number;
+  size: (index: number) => number;
+  pinned?: { start?: number; end?: number };
+};
+
+// The positions come from the declared sizes, independently of how the grid lays them out
+const resolveGridAxisGeometry = (
+  { count, size, pinned = {} }: GridAxisGeometry,
+  gap: number,
+  scroll: number,
+  client: number,
+) => {
+  const offsets = [0];
+  for (let i = 0; i < count; i++) {
+    offsets.push(offsets[i]! + size(i) + gap);
+  }
+  const total = count ? offsets[count]! - gap : 0;
+  const pinnedStart = Math.min(Math.max(pinned.start || 0, 0), count);
+  const trailStart =
+    count - Math.min(Math.max(pinned.end || 0, 0), count - pinnedStart);
+  const place = (index: number, span: number): [number, number] => {
+    const offset = offsets[index]!;
+    const position =
+      index < pinnedStart
+        ? offset
+        : index >= trailStart
+          ? Math.min(offset - scroll, client - total + offset)
+          : offset - scroll;
+    return [position, offsets[index + span]! - offset - gap];
+  };
+  const visible: number[] = [];
+  for (let i = 0; i < count; i++) {
+    const [position, length] = place(i, 1);
+    if (position < client && position + length > 0) {
+      visible.push(i);
+    }
+  }
+  return [place, visible] as const;
+};
+
+export type GridSpanGeometry = {
+  rowIndex: number;
+  colIndex: number;
+  rowSpan?: number;
+  colSpan?: number;
+};
+
+const getGridGeometryErrors = (
+  viewport: HTMLElement,
+  container: HTMLElement,
+  rows: GridAxisGeometry,
+  cols: GridAxisGeometry,
+  gap: number,
+  spans: readonly GridSpanGeometry[],
+): string[] => {
+  const errors: string[] = [];
+  const spanned = new Map<string, readonly [string, number, number]>();
+  for (const { rowIndex, colIndex, rowSpan = 1, colSpan = 1 } of spans) {
+    const rowTo = Math.min(rowIndex + rowSpan, rows.count);
+    const colTo = Math.min(colIndex + colSpan, cols.count);
+    if (rowTo - rowIndex < 2 && colTo - colIndex < 2) {
+      continue;
+    }
+    const area = [
+      rowIndex + "/" + colIndex,
+      rowTo - rowIndex,
+      colTo - colIndex,
+    ] as const;
+    for (let r = rowIndex; r < rowTo; r++) {
+      for (let c = colIndex; c < colTo; c++) {
+        spanned.set(r + "/" + c, area);
+      }
+    }
+  }
+  const [placeRow, visibleRows] = resolveGridAxisGeometry(
+    rows,
+    gap,
+    viewport.scrollTop,
+    viewport.clientHeight,
+  );
+  const rtl = getComputedStyle(viewport).direction === "rtl";
+  const [placeCol, visibleCols] = resolveGridAxisGeometry(
+    cols,
+    gap,
+    Math.abs(viewport.scrollLeft),
+    viewport.clientWidth,
+  );
+  const rect = viewport.getBoundingClientRect();
+  const top = rect.top + viewport.clientTop;
+  const left = rect.left + viewport.clientLeft;
+  const right = rect.right - viewport.clientLeft;
+  const covered = new Set<string>();
+  let prevRow = -1;
+  for (const row of container.querySelectorAll('[role="row"]')) {
+    const rowIndex = Number(row.getAttribute("aria-rowindex")) - 1;
+    if (rowIndex <= prevRow) {
+      errors.push(`row ${rowIndex}: after row ${prevRow}`);
+    }
+    prevRow = rowIndex;
+    let prevCol = -1;
+    for (const cell of row.children) {
+      const colIndex = Number(cell.getAttribute("aria-colindex")) - 1;
+      const name = `cell ${rowIndex}/${colIndex}`;
+      if (colIndex <= prevCol) {
+        errors.push(`${name}: after column ${prevCol}`);
+      }
+      prevCol = colIndex;
+      const rowSpan = Number(cell.getAttribute("aria-rowspan") || 1);
+      const colSpan = Number(cell.getAttribute("aria-colspan") || 1);
+      const area = spanned.get(rowIndex + "/" + colIndex);
+      if (area) {
+        if (area[0] !== rowIndex + "/" + colIndex) {
+          errors.push(`${name}: under the span at ${area[0]}`);
+        } else if (area[1] !== rowSpan || area[2] !== colSpan) {
+          errors.push(
+            `${name}: spans ${rowSpan}x${colSpan}, expected ${area[1]}x${area[2]}`,
+          );
+        }
+      }
+      const [expectedTop, expectedHeight] = placeRow(rowIndex, rowSpan);
+      const [expectedLeft, expectedWidth] = placeCol(colIndex, colSpan);
+      const actual = cell.getBoundingClientRect();
+      for (const [key, value, expected] of [
+        ["top", actual.top - top, expectedTop],
+        [
+          "start",
+          rtl ? right - actual.right : actual.left - left,
+          expectedLeft,
+        ],
+        ["height", actual.height, expectedHeight],
+        ["width", actual.width, expectedWidth],
+      ] as const) {
+        // Firefox rounds positions to device pixels
+        if (Math.abs(value - expected) > 1) {
+          errors.push(`${name}: ${key} ${value}, expected ${expected}`);
+        }
+      }
+      for (let r = rowIndex; r < rowIndex + rowSpan; r++) {
+        for (let c = colIndex; c < colIndex + colSpan; c++) {
+          const key = r + "/" + c;
+          if (covered.has(key)) {
+            errors.push(`${name}: overlaps ${key}`);
+          }
+          covered.add(key);
+        }
+      }
+    }
+  }
+  for (const r of visibleRows) {
+    for (const c of visibleCols) {
+      if (!covered.has(r + "/" + c)) {
+        errors.push(`cell ${r}/${c}: not rendered`);
+      }
+    }
+  }
+  return errors;
+};
+
+export const expectGridGeometry = async (
+  root: Element,
+  rows: GridAxisGeometry,
+  cols: GridAxisGeometry,
+  gap = 0,
+  spans: readonly GridSpanGeometry[] = [],
+) => {
+  const { viewport, container } = await getVirtualizer(root);
+  await expect
+    .poll(() =>
+      getGridGeometryErrors(viewport, container, rows, cols, gap, spans),
+    )
+    .toEqual([]);
+};
+
 export const mountSsr = (html: string): HTMLElement => {
   const root = createDomRoot(document);
   root.innerHTML = html;
@@ -123,4 +298,25 @@ export const expectHydrated = async (
   }
 
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+};
+
+export const expectGridHydrated = async (
+  root: Element,
+  hydrate: () => void,
+) => {
+  const { container } = await getVirtualizer(root);
+  expect(container.childElementCount).toEqual(0);
+  const ssrNodes = [...root.querySelectorAll("*")];
+
+  hydrate();
+
+  await expectVirtualized(root, "item-0/item-0", "item-999/item-999");
+  for (const node of ssrNodes) {
+    expect(root.contains(node)).toBe(true);
+  }
+  await expectVirtualizedAndScrollable(
+    root,
+    "item-0/item-0",
+    "item-999/item-999",
+  );
 };
