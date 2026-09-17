@@ -126,7 +126,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-solid": "^0.16.0",
     "eslint-plugin-vue": "^10.10.0",
-    "jsdom": "^30.0.0",
+    "jsdom": "^30.1.0",
     "prettier": "^3.9.3",
     "prettier-plugin-svelte": "^4.1.1",
     "re-resizable": "^6.11.2",
