@@ -250,6 +250,21 @@ export default defineConfig(({ mode }): UserConfig => {
           terserOptions: terserOptions({ core: true }),
         },
         plugins: [
+          {
+            name: "check-queries",
+            generateBundle(_, bundle) {
+              for (const chunk of Object.values(bundle)) {
+                if (
+                  chunk.type === "chunk" &&
+                  /propertyName:\s*"_/.test(chunk.code)
+                ) {
+                  this.error(
+                    "A query field must not be _ prefixed, because its name is kept as a string and the field is mangled.",
+                  );
+                }
+              }
+            },
+          },
           angular({
             tsconfig: "tsconfig.angular.json",
             jit: false,

@@ -7,12 +7,7 @@ export type {
   WindowVirtualizerProps,
   WindowVirtualizerHandle,
 } from "./WindowVirtualizer.js";
-export { VGrid as experimental_VGrid } from "./VGrid.js";
-export type {
-  VGridItemResize,
-  VGridProps,
-  VGridHandle,
-  CustomCellComponent,
-  CustomCellComponentProps,
-} from "./VGrid.js";
+export { VGrid } from "./VGrid.js";
+export type { VGridProps, VGridHandle } from "./VGrid.js";
+export type { VGridSpan } from "../core/index.js";
 export type * from "./types.js";

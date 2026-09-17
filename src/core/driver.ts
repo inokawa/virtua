@@ -9,7 +9,7 @@ import {
   type ScrollObserver,
 } from "./observer.js";
 import { type ItemResize } from "./types.js";
-import { createPromise, max, NULL, timeout } from "./utils.js";
+import { createPromise, NULL, timeout } from "./utils.js";
 import { getCurrentDocument, getCurrentWindow } from "./environment.js";
 
 /**
@@ -274,51 +274,35 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
  * @internal
  */
 export type GridDriver = {
-  $observe(containerElement: HTMLElement, viewport?: HTMLElement): void;
+  $scroll(isHorizontal: boolean, getTargetOffset: () => number): void;
+  $observe(containerElement: HTMLElement): void;
   $dispose(): void;
-  $observeItem(el: HTMLElement, rowIndex: number, colIndex: number): () => void;
-  $resizeRows(rows: ItemResize[]): void;
-  $resizeCols(cols: ItemResize[]): void;
-  $scrollX(getTargetOffset: () => number, smooth?: boolean): void;
-  $scrollY(getTargetOffset: () => number, smooth?: boolean): void;
+  $observeItem(
+    el: HTMLElement,
+    rowIndex: number | undefined,
+    colIndex: number | undefined,
+  ): () => void;
   $effect(): void;
 };
 
 /**
  * @internal
  */
-export type GridDriverFactory = (
+export const createContainerGridDriver = (
   rowStore: VirtualStore,
   colStore: VirtualStore,
-) => GridDriver;
-
-/**
- * @internal
- */
-export const createContainerGridDriver: GridDriverFactory = (
-  rowStore,
-  colStore,
 ): GridDriver => {
   let viewportElement: HTMLElement | undefined;
   let rowScrollObserver: ScrollObserver | undefined;
   let colScrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
 
-  const mountedIndexes = new WeakMap<
-    Element,
-    [rowIndex: number, colIndex: number]
-  >();
-
-  type CellSize = [height: number, width: number];
-  const maybeCachedRowIndexes = new Set<number>();
-  const maybeCachedColIndexes = new Set<number>();
-  const sizeCache = new Map<string, CellSize>();
-  const getKey = (rowIndex: number, colIndex: number): string =>
-    `${rowIndex}-${colIndex}`;
+  const mountedRowIndexes = new WeakMap<Element, number>();
+  const mountedColIndexes = new WeakMap<Element, number>();
 
   const resizeObserver = createResizeObserver((entries) => {
-    const resizedRows = new Set<number>();
-    const resizedCols = new Set<number>();
+    const rowResizes: ItemResize[] = [];
+    const colResizes: ItemResize[] = [];
     for (const {
       target,
       contentRect: { width, height },
@@ -331,106 +315,63 @@ export const createContainerGridDriver: GridDriverFactory = (
         }
         // Skip zero-sized rects that may be observed under `display: none` style
       } else if ((target as HTMLElement).offsetParent) {
-        const cell = mountedIndexes.get(target);
-        if (cell) {
-          const [rowIndex, colIndex] = cell;
-          const key = getKey(rowIndex, colIndex);
-          const prevSize = sizeCache.get(key);
-          let rowResized: boolean | undefined;
-          let colResized: boolean | undefined;
-          if (!prevSize) {
-            rowResized = colResized = true;
-          } else {
-            if (prevSize[0] !== height) {
-              rowResized = true;
-            }
-            if (prevSize[1] !== width) {
-              colResized = true;
-            }
-          }
-          if (rowResized) {
-            resizedRows.add(rowIndex);
-          }
-          if (colResized) {
-            resizedCols.add(colIndex);
-          }
-          if (rowResized || colResized) {
-            sizeCache.set(key, [height, width]);
-          }
+        const rowIndex = mountedRowIndexes.get(target);
+        const colIndex = mountedColIndexes.get(target);
+        if (rowIndex != NULL) {
+          rowResizes.push([rowIndex, height]);
+        }
+        if (colIndex != NULL) {
+          colResizes.push([colIndex, width]);
         }
       }
     }
 
-    if (resizedRows.size) {
-      const heightResizes: ItemResize[] = [];
-      resizedRows.forEach((rowIndex) => {
-        let maxHeight = 0;
-        maybeCachedColIndexes.forEach((colIndex) => {
-          const size = sizeCache.get(getKey(rowIndex, colIndex));
-          if (size) {
-            maxHeight = max(maxHeight, size[0]);
-          }
-        });
-        if (maxHeight) {
-          heightResizes.push([rowIndex, maxHeight]);
-        }
-      });
-      rowStore.$update(ACTION_ITEM_RESIZE, heightResizes);
+    if (rowResizes.length) {
+      rowStore.$update(ACTION_ITEM_RESIZE, rowResizes);
     }
-    if (resizedCols.size) {
-      const widthResizes: ItemResize[] = [];
-      resizedCols.forEach((colIndex) => {
-        let maxWidth = 0;
-        maybeCachedRowIndexes.forEach((rowIndex) => {
-          const size = sizeCache.get(getKey(rowIndex, colIndex));
-          if (size) {
-            maxWidth = max(maxWidth, size[1]);
-          }
-        });
-        if (maxWidth) {
-          widthResizes.push([colIndex, maxWidth]);
-        }
-      });
-      colStore.$update(ACTION_ITEM_RESIZE, widthResizes);
+    if (colResizes.length) {
+      colStore.$update(ACTION_ITEM_RESIZE, colResizes);
     }
   });
 
   return {
-    $observe(containerElement, viewport = containerElement.parentElement!) {
-      resizeObserver._observe((viewportElement = viewport));
+    async $scroll(isHorizontal, getTargetOffset) {
+      // Wait for element assign. The element may be undefined if scroll is scheduled on mount.
+      // https://github.com/inokawa/virtua/pull/733
+      // https://github.com/inokawa/virtua/pull/750
+      if (await initialized[0]) {
+        (isHorizontal ? colScrollObserver : rowScrollObserver)!._scroll(
+          getTargetOffset,
+        );
+      }
+    },
+    $observe(containerElement) {
+      const viewport = (viewportElement = containerElement.parentElement!);
+      resizeObserver._observe(viewport);
 
-      // Detect RTL document
-      const isRtl = getComputedStyle(viewport).direction === "rtl";
-
-      const hackOverflow = (overflowKey: "overflowX" | "overflowY") => () => {
-        // If we update scroll position while touching on iOS, the position will be reverted.
-        // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
-        // That means we have no reliable way to confirm still touched or not if user touches more than once during momentum scrolling...
-        // This is a hack for the suspectable situations, inspired by https://github.com/prud/ios-overflow-scroll-to-top
-        const style = viewport.style;
-        const prev = style[overflowKey];
-        style[overflowKey] = "hidden";
-        timeout(() => {
-          style[overflowKey] = prev;
-        });
-      };
-
-      rowScrollObserver = createScrollObserver(
-        rowStore,
-        viewport,
-        viewport,
-        false,
-        false,
-        hackOverflow("overflowY"),
-      );
-      colScrollObserver = createScrollObserver(
-        colStore,
-        viewport,
-        viewport,
-        true,
-        isRtl,
-        hackOverflow("overflowX"),
-      );
+      const observe = (store: VirtualStore, isHorizontal: boolean) =>
+        createScrollObserver(
+          store,
+          viewport,
+          viewport,
+          isHorizontal,
+          isHorizontal && getComputedStyle(viewport).direction === "rtl",
+          () => {
+            const overflowKey = isHorizontal ? "overflowX" : "overflowY";
+            // If we update scroll position while touching on iOS, the position will be reverted.
+            // However iOS WebKit fires touch events only once at the beginning of momentum scrolling.
+            // That means we have no reliable way to confirm still touched or not if user touches more than once during momentum scrolling...
+            // This is a hack for the suspectable situations, inspired by https://github.com/prud/ios-overflow-scroll-to-top
+            const style = viewport.style;
+            const prev = style[overflowKey];
+            style[overflowKey] = "hidden";
+            timeout(() => {
+              style[overflowKey] = prev;
+            });
+          },
+        );
+      rowScrollObserver = observe(rowStore, false);
+      colScrollObserver = observe(colStore, true);
 
       initialized[1](true);
     },
@@ -443,40 +384,19 @@ export const createContainerGridDriver: GridDriverFactory = (
       initialized = createPromise();
     },
     $observeItem(el, rowIndex, colIndex) {
-      mountedIndexes.set(el, [rowIndex, colIndex]);
-      maybeCachedRowIndexes.add(rowIndex);
-      maybeCachedColIndexes.add(colIndex);
+      // An undefined index skips reporting the size of that axis, for cells whose row/column size is given instead of measured.
+      if (rowIndex != NULL) {
+        mountedRowIndexes.set(el, rowIndex);
+      }
+      if (colIndex != NULL) {
+        mountedColIndexes.set(el, colIndex);
+      }
       resizeObserver._observe(el);
       return () => {
-        mountedIndexes.delete(el);
+        mountedRowIndexes.delete(el);
+        mountedColIndexes.delete(el);
         resizeObserver._unobserve(el);
       };
-    },
-    $resizeRows(rows) {
-      for (const [r] of rows) {
-        for (let c = 0; c < colStore.$getItemsLength(); c++) {
-          sizeCache.delete(getKey(r, c));
-        }
-      }
-      rowStore.$update(ACTION_ITEM_RESIZE, rows);
-    },
-    $resizeCols(cols) {
-      for (const [c] of cols) {
-        for (let r = 0; r < rowStore.$getItemsLength(); r++) {
-          sizeCache.delete(getKey(r, c));
-        }
-      }
-      colStore.$update(ACTION_ITEM_RESIZE, cols);
-    },
-    async $scrollX(getTargetOffset, smooth) {
-      if (await initialized[0]) {
-        colScrollObserver!._scroll(getTargetOffset, smooth);
-      }
-    },
-    async $scrollY(getTargetOffset, smooth) {
-      if (await initialized[0]) {
-        rowScrollObserver!._scroll(getTargetOffset, smooth);
-      }
     },
     $effect() {
       rowScrollObserver && rowScrollObserver._fixScrollJump();

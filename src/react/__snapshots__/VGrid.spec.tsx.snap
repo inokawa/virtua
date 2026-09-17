@@ -1,135 +1,966 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`grid > should render 0 children 1`] = `
+exports[`should pass attributes to element 1`] = `
 <DocumentFragment>
   <div
+    aria-colcount="100"
+    aria-label="test"
+    aria-rowcount="100"
+    class="class"
+    id="id"
+    role="table"
+    style="overflow: auto; contain: strict; width: 100%; height: 100%; background: red;"
+    tabindex="0"
+  >
+    <div
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2] 40px [l3] 40px [l4] 40px [l5] 40px [l6] 40px [l7] 40px [l8] 40px [l9] 40px [l10] 40px [l11] 40px [l12] 40px [l13] 40px [l14] 40px [l15] 40px [l16] 40px [l17] 40px [l18] minmax(3280px,auto) [l100]; grid-template-columns: [l0] 100px [l1] 100px [l2] 100px [l3] 100px [l4] minmax(9600px,auto) [l100]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 4000px;"
+    >
+      <div
+        aria-rowindex="1"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l0/l1;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            0 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            0 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            0 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            0 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="2"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l1/l2;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            1 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            1 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            1 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            1 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="3"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l2/l3;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            2 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            2 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            2 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            2 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="4"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l3/l4;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            3 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            3 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            3 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            3 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="5"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l4/l5;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            4 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            4 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            4 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            4 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="6"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l5/l6;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            5 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            5 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            5 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            5 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="7"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l6/l7;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            6 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            6 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            6 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            6 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="8"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l7/l8;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            7 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            7 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            7 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            7 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="9"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l8/l9;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            8 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            8 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            8 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            8 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="10"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l9/l10;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            9 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            9 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            9 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            9 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="11"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l10/l11;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            10 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            10 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            10 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            10 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="12"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l11/l12;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            11 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            11 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            11 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            11 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="13"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l12/l13;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            12 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            12 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            12 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            12 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="14"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l13/l14;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            13 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            13 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            13 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            13 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="15"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l14/l15;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            14 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            14 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            14 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            14 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="16"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l15/l16;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            15 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            15 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            15 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            15 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="17"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l16/l17;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            16 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            16 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            16 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            16 / 3
+          </div>
+        </div>
+      </div>
+      <div
+        aria-rowindex="18"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l17/l18;"
+      >
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            17 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            17 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            17 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            17 / 3
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`should render 0 children 1`] = `
+<DocumentFragment>
+  <div
+    aria-colcount="0"
+    aria-rowcount="0"
+    role="table"
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 500px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 500px;"
     />
   </div>
 </DocumentFragment>
 `;
 
-exports[`grid > should render 4x4 children 1`] = `
+exports[`should render 4x4 children 1`] = `
 <DocumentFragment>
   <div
+    aria-colcount="4"
+    aria-label="grid"
+    aria-rowcount="4"
+    role="table"
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 400px; height: 500px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2] 40px [l3] 40px [l4]; grid-template-columns: [l0] 100px [l1] 100px [l2] 100px [l3] 100px [l4]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 500px;"
     >
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
+        role="rowgroup"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l0/l1; position: sticky; top: 0px; z-index: 3;"
       >
-        <div>
-          0 / 0
+        <div
+          aria-rowindex="1"
+          role="row"
+          style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l0/l1;"
+        >
+          <div
+            aria-colindex="1"
+            role="columnheader"
+            style="contain: layout style; display: grid; grid-area: 1/l0; inset-inline-start: 0px; position: sticky; z-index: 2;"
+          >
+            <div>
+              aw 0 / 0
+            </div>
+          </div>
+          <div
+            aria-colindex="2"
+            aria-sort="ascending"
+            role="columnheader"
+            style="contain: layout style; display: grid; grid-area: 1/l1;"
+          >
+            <div>
+              ax 0 / 1
+            </div>
+          </div>
+          <div
+            aria-colindex="3"
+            role="columnheader"
+            style="contain: layout style; display: grid; grid-area: 1/l2;"
+          >
+            <div>
+              ay 0 / 2
+            </div>
+          </div>
+          <div
+            aria-colindex="4"
+            role="columnheader"
+            style="contain: layout style; display: grid; grid-area: 1/l3;"
+          >
+            <div>
+              az 0 / 3
+            </div>
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="2"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l1/l2;"
       >
-        <div>
-          0 / 1
+        <div
+          aria-colindex="1"
+          role="rowheader"
+          style="contain: layout style; display: grid; grid-area: 1/l0; inset-inline-start: 0px; position: sticky; z-index: 2;"
+        >
+          <div>
+            bw 1 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          aria-colspan="2"
+          aria-rowspan="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1/l2/l3; width: 0px; min-width: 100%;"
+        >
+          <div>
+            bx 1 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            bz 1 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="3"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l2/l4;"
       >
-        <div>
-          0 / 2
+        <div
+          aria-colindex="1"
+          aria-colspan="1"
+          aria-rowspan="2"
+          role="rowheader"
+          style="contain: layout style; display: grid; grid-area: 1/l0/l4/l1; height: 0px; min-height: 100%; z-index: 2; inset-inline-start: 0px; position: sticky;"
+        >
+          <div>
+            cw 2 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            cx 2 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            cy 2 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            cz 2 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="4"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l3/l4;"
       >
-        <div>
-          0 / 3
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            dx 3 / 1
+          </div>
         </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 0
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            dy 3 / 2
+          </div>
         </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 3
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            dz 3 / 3
+          </div>
         </div>
       </div>
     </div>
@@ -137,432 +968,771 @@ exports[`grid > should render 4x4 children 1`] = `
 </DocumentFragment>
 `;
 
-exports[`grid > should render 100x100 children 1`] = `
+exports[`should render component 1`] = `
 <DocumentFragment>
   <div
+    aria-colcount="100"
+    aria-rowcount="100"
+    role="table"
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 4180px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2] 40px [l3] 40px [l4] 40px [l5] 40px [l6] 40px [l7] 40px [l8] 40px [l9] 40px [l10] 40px [l11] 40px [l12] 40px [l13] 40px [l14] 40px [l15] 40px [l16] 40px [l17] 40px [l18] minmax(3280px,auto) [l100]; grid-template-columns: [l0] 100px [l1] 100px [l2] 100px [l3] 100px [l4] minmax(9600px,auto) [l100]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 4000px;"
     >
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="1"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l0/l1;"
       >
-        <div>
-          0 / 0
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            0 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            0 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            0 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            0 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="2"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l1/l2;"
       >
-        <div>
-          0 / 1
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            1 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            1 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            1 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            1 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="3"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l2/l3;"
       >
-        <div>
-          0 / 2
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            2 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            2 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            2 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            2 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="4"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l3/l4;"
       >
-        <div>
-          0 / 3
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            3 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            3 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            3 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            3 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="5"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l4/l5;"
       >
-        <div>
-          1 / 0
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            4 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            4 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            4 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            4 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="6"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l5/l6;"
       >
-        <div>
-          1 / 1
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            5 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            5 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            5 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            5 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="7"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l6/l7;"
       >
-        <div>
-          1 / 2
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            6 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            6 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            6 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            6 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="8"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l7/l8;"
       >
-        <div>
-          1 / 3
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            7 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            7 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            7 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            7 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="9"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l8/l9;"
       >
-        <div>
-          2 / 0
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            8 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            8 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            8 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            8 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="10"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l9/l10;"
       >
-        <div>
-          2 / 1
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            9 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            9 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            9 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            9 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="11"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l10/l11;"
       >
-        <div>
-          2 / 2
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            10 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            10 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            10 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            10 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="12"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l11/l12;"
       >
-        <div>
-          2 / 3
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            11 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            11 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            11 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            11 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="13"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l12/l13;"
       >
-        <div>
-          3 / 0
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            12 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            12 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            12 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            12 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="14"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l13/l14;"
       >
-        <div>
-          3 / 1
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            13 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            13 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            13 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            13 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="15"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l14/l15;"
       >
-        <div>
-          3 / 2
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            14 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            14 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            14 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            14 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="16"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l15/l16;"
       >
-        <div>
-          3 / 3
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            15 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            15 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            15 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            15 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="17"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l16/l17;"
       >
-        <div>
-          4 / 0
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            16 / 0
+          </div>
+        </div>
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            16 / 1
+          </div>
+        </div>
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            16 / 2
+          </div>
+        </div>
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            16 / 3
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="18"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l17/l18;"
       >
-        <div>
-          4 / 1
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            17 / 0
+          </div>
         </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          4 / 2
+        <div
+          aria-colindex="2"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l1;"
+        >
+          <div>
+            17 / 1
+          </div>
         </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          4 / 3
+        <div
+          aria-colindex="3"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l2;"
+        >
+          <div>
+            17 / 2
+          </div>
         </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          5 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          5 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          5 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          5 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          6 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          6 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          6 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          6 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          7 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          7 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          7 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          7 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          8 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          8 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          8 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          8 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          9 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          9 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          9 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          9 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          10 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          10 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          10 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          10 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          11 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          11 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          11 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          11 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          12 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          12 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          12 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          12 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          13 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          13 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          13 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          13 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          14 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          14 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          14 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          14 / 3
+        <div
+          aria-colindex="4"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l3;"
+        >
+          <div>
+            17 / 3
+          </div>
         </div>
       </div>
     </div>
@@ -570,432 +1740,51 @@ exports[`grid > should render 100x100 children 1`] = `
 </DocumentFragment>
 `;
 
-exports[`grid > should render component 1`] = `
+exports[`should render fragments 1`] = `
 <DocumentFragment>
   <div
+    aria-colcount="1"
+    aria-rowcount="2"
+    role="table"
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 4180px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2]; grid-template-columns: [l0] 100px [l1]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 500px;"
     >
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="1"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l0/l1;"
       >
-        <div>
-          0 / 0
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            fragment
+          </div>
+          <div>
+            fragment
+          </div>
+          <div>
+            fragment
+          </div>
         </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="2"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l1/l2;"
       >
-        <div>
-          0 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          0 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          0 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          4 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          4 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          4 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          4 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          5 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          5 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          5 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          5 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          6 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          6 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          6 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          6 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          7 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          7 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          7 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          7 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          8 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          8 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          8 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          8 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          9 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          9 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          9 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          9 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          10 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          10 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          10 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          10 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          11 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          11 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          11 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          11 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          12 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          12 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          12 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          12 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          13 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          13 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          13 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          13 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          14 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          14 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          14 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          14 / 3
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          <div>
+            fragment
+          </div>
         </div>
       </div>
     </div>
@@ -1003,630 +1792,85 @@ exports[`grid > should render component 1`] = `
 </DocumentFragment>
 `;
 
-exports[`grid > should render fragments 1`] = `
+exports[`should render non elements 1`] = `
 <DocumentFragment>
   <div
+    aria-colcount="1"
+    aria-rowcount="6"
+    role="table"
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 500px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2] 40px [l3] 40px [l4] 40px [l5] 40px [l6]; grid-template-columns: [l0] 100px [l1]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 500px;"
     >
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="1"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l0/l1;"
       >
-        <div>
-          fragment
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          string
         </div>
-        <div>
-          fragment
-        </div>
-        <div>
-          fragment
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          fragment
-        </div>
-      </div>
-    </div>
-  </div>
-</DocumentFragment>
-`;
-
-exports[`grid > should render non elements 1`] = `
-<DocumentFragment>
-  <div
-    style="overflow: auto; contain: strict; width: 100%; height: 100%;"
-  >
-    <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 500px;"
-    >
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        string
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      />
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      />
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      />
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      />
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        123
-      </div>
-    </div>
-  </div>
-</DocumentFragment>
-`;
-
-exports[`grid > should render with given width / height 1`] = `
-<DocumentFragment>
-  <div
-    style="overflow: auto; contain: strict; width: 100px; height: 100px;"
-  >
-    <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 400px; height: 500px;"
-    >
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          0 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          0 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          0 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          0 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 3
-        </div>
-      </div>
-    </div>
-  </div>
-</DocumentFragment>
-`;
-
-exports[`should pass attributes to element 1`] = `
-<DocumentFragment>
-  <div
-    aria-label="test"
-    class="class"
-    id="id"
-    role="list"
-    style="overflow: auto; contain: strict; width: 100%; height: 100%; background: red;"
-    tabindex="0"
-  >
-    <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 10000px; height: 4180px;"
-    >
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          0 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          0 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          0 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 0px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          0 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 50px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          1 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 100px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          2 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 150px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          3 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          4 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          4 / 1
-        </div>
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="2"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l1/l2;"
       >
-        <div>
-          4 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 200px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          4 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          5 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          5 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          5 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 250px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          5 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          6 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          6 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          6 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 300px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          6 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          7 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          7 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          7 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 350px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          7 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          8 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          8 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          8 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 400px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          8 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          9 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          9 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          9 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 450px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          9 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          10 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          10 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          10 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 500px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          10 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          11 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          11 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          11 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 550px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          11 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          12 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          12 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          12 / 2
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 600px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          12 / 3
-        </div>
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        />
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="3"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l2/l3;"
       >
-        <div>
-          13 / 0
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          13 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          13 / 2
-        </div>
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        />
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 650px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="4"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l3/l4;"
       >
-        <div>
-          13 / 3
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; inset-inline-start: 0px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          14 / 0
-        </div>
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        />
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; inset-inline-start: 100px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="5"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l4/l5;"
       >
-        <div>
-          14 / 1
-        </div>
-      </div>
-      <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; inset-inline-start: 200px; min-height: 50px; min-width: 100px;"
-      >
-        <div>
-          14 / 2
-        </div>
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        />
       </div>
       <div
-        style="contain: layout style; display: grid; position: absolute; top: 700px; inset-inline-start: 300px; min-height: 50px; min-width: 100px;"
+        aria-rowindex="6"
+        role="row"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l5/l6;"
       >
-        <div>
-          14 / 3
+        <div
+          aria-colindex="1"
+          role="cell"
+          style="contain: layout style; display: grid; grid-area: 1/l0;"
+        >
+          123
         </div>
       </div>
     </div>

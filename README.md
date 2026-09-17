@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/virtua) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/virtua) ![npm](https://img.shields.io/npm/dw/virtua) [![Best of JS](https://img.shields.io/endpoint?url=https://bestofjs-serverless.now.sh/api/project-badge?fullName=inokawa%2Fvirtua%26since=daily)](https://bestofjs.org/projects/virtua) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/inokawa/virtua) [![check](https://github.com/inokawa/virtua/actions/workflows/check.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/check.yml) [![demo](https://github.com/inokawa/virtua/actions/workflows/demo.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/demo.yml)
 
-> A zero-config, fast and small (~3kB) virtual list (and grid) component for [React](https://github.com/facebook/react), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/), [Svelte](https://svelte.dev/) and [Angular](https://angular.dev/).
+> A zero-config, fast and small virtual list and grid component for [React](https://github.com/facebook/react), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/), [Svelte](https://svelte.dev/) and [Angular](https://angular.dev/).
 
 ![example](./example.gif)
 
@@ -14,7 +14,7 @@ This project is a challenge to rethink virtualization. The goals are...
 
 - **Zero-config virtualization:** This library is designed to give the best performance without configuration. It also handles common hard things in the real world (dynamic size measurement, scroll position adjustment while reverse scrolling and imperative scrolling, iOS support, etc).
 - **Fast:** Natural virtual scrolling needs optimization in many aspects (eliminate frame drops by reducing CPU usage and GC, reduce [synchronous layout recalculation](https://gist.github.com/paulirish/5d52fb081b3570c81e3a), reduce visual jumps on repaint, optimize with CSS, optimize for JIT, optimize for frameworks, etc). We are trying to combine the best of them.
-- **Small:** Its bundle size should be small as much as possible to be friendly with modern web development. Currently each components are ~3kB gzipped and tree-shakeable.
+- **Small:** Its bundle size should be small as much as possible to be friendly with modern web development. Currently components start from ~3kB gzipped and are tree-shakeable.
 - **Flexible:** Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, RTL, mobile, infinite scrolling, scroll restoration, DnD, keyboard navigation, sticky, placeholder and more. See [live demo](#demo).
 - **Framework agnostic:** [React](https://react.dev/), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/), [Svelte](https://svelte.dev/) and [Angular](https://angular.dev/) are supported. We could support other frameworks in the future.
 
@@ -34,6 +34,7 @@ If you want to support legacy browsers, you need polyfills.
 - [Scroll methods on elements](https://caniuse.com/element-scroll-methods) are always required (e.g. [element-scroll-polyfill](https://github.com/idmadj/element-scroll-polyfill)).
 - [CSS scroll-behavior](https://caniuse.com/?search=scroll-behavior) is required only if you call `scrollToIndex` with `smooth: true` (e.g. [scroll-behavior-polyfill](https://github.com/wessberg/scroll-behavior-polyfill)).
 - [CSS inset-inline-start](https://caniuse.com/mdn-css_properties_inset-inline-start) is required only if you set `horizontal: true`. It cannot be polyfilled so use `virtua@<=0.50` instead.
+- [CSS subgrid](https://caniuse.com/css-subgrid) is required for VGrid.
 
 ## Getting started
 
@@ -174,24 +175,47 @@ export const App = () => {
 };
 ```
 
-#### Vertical and horizontal scroll
+#### Tabular data
 
 ```tsx
-import { experimental_VGrid as VGrid } from "virtua";
+import { VGrid } from "virtua";
+
+const columns = [
+  { key: "id", width: 80 },
+  { key: "name", width: 200 },
+  { key: "email", width: 300 },
+  { key: "age", width: 80 },
+  { key: "joined", width: 160 },
+  { key: "bio", width: 480 },
+] as const;
+
+const rows = Array.from({ length: 10000 }, (_, i) => ({
+  id: i,
+  name: `User ${i}`,
+  email: `user${i}@example.com`,
+  age: 20 + (i % 50),
+  joined: new Date(2020, 0, 1 + i).toDateString(),
+  bio: `Hello, I'm user ${i}.`,
+}));
 
 export const App = () => {
   return (
-    <VGrid style={{ height: 800 }} row={1000} col={500}>
-      {({ rowIndex, colIndex }) => (
+    <VGrid
+      style={{ height: 800, border: "solid 1px gray" }}
+      rows={rows}
+      rowHeight={40}
+      cols={columns}
+      colWidth="width"
+    >
+      {(row, col) => (
         <div
           style={{
-            width: ((colIndex % 3) + 1) * 100,
             background: "white",
-            borderLeft: colIndex !== 0 ? "solid 1px gray" : undefined,
-            borderTop: rowIndex !== 0 ? "solid 1px gray" : undefined,
+            borderRight: "solid 1px gray",
+            borderBottom: "solid 1px gray",
           }}
         >
-          {rowIndex} / {colIndex}
+          {row[col.key]}
         </div>
       )}
     </VGrid>
@@ -409,8 +433,9 @@ This package uses [exports of package.json](https://nodejs.org/api/packages.html
 | Vertical scroll                                                                                                                                                | ✅                                                                                                               | ✅                                                                                                                               | ✅                                                                                                                           | ✅                                                                                                                                                                     | 🟠 (needs customization)                                                                                                                           |
 | Horizontal scroll                                                                                                                                              | ✅                                                                                                               | ✅                                                                                                                               | ✅                                                                                                                           | ✅                                                                                                                                                                     | 🟠 (needs customization)                                                                                                                           |
 | Horizontal scroll in RTL direction                                                                                                                             | ✅                                                                                                               | ❌                                                                                                                               | ✅                                                                                                                           | ❌                                                                                                                                                                     | 🟠 (isRtl)                                                                                                                                         |
-| Grid (Virtualization for two dimension)                                                                                                                        | 🟠 (experimental_VGrid)                                                                                          | ❌                                                                                                                               | ✅ ([Grid](https://react-window.vercel.app/grid/grid))                                                                       | ✅ ([Grid](https://github.com/bvaughn/react-virtualized/blob/master/docs/Grid.md))                                                                                     | 🟠 (needs customization)                                                                                                                           |
-| Table                                                                                                                                                          | 🟠 (needs customization)                                                                                         | ✅ (TableVirtuoso)                                                                                                               | 🟠 ([Supported](https://react-window.vercel.app/list/tabular-data))                                                          | 🟠 ([Table](https://github.com/bvaughn/react-virtualized/blob/master/docs/Table.md) but it's built with div)                                                           | 🟠 (needs customization)                                                                                                                           |
+| Grid (Virtualization for two dimensions)                                                                                                                       | ✅ (VGrid)                                                                                                       | ❌                                                                                                                               | ✅ ([Grid](https://react-window.vercel.app/grid/grid))                                                                       | ✅ ([Grid](https://github.com/bvaughn/react-virtualized/blob/master/docs/Grid.md))                                                                                     | 🟠 (needs customization)                                                                                                                           |
+| Tabular data (Columns with headers)                                                                                                                            | ✅ (VGrid)                                                                                                       | ✅ (TableVirtuoso)                                                                                                               | 🟠 ([Supported](https://react-window.vercel.app/list/tabular-data))                                                          | ✅ ([Table](https://github.com/bvaughn/react-virtualized/blob/master/docs/Table.md))                                                                                   | 🟠 (needs customization)                                                                                                                           |
+| HTML table element                                                                                                                                             | 🟠 (needs customization)                                                                                         | ✅ (TableVirtuoso)                                                                                                               | ❌                                                                                                                           | ❌                                                                                                                                                                     | 🟠 (needs customization)                                                                                                                           |
 | Masonry                                                                                                                                                        | ❌                                                                                                               | ✅ (VirtuosoMasonry)                                                                                                             | ❌                                                                                                                           | ✅ ([Masonry](https://github.com/bvaughn/react-virtualized/blob/master/docs/Masonry.md))                                                                               | 🟠 (needs customization)                                                                                                                           |
 | Window scroller                                                                                                                                                | ✅ (WindowVirtualizer)                                                                                           | ✅                                                                                                                               | ❌                                                                                                                           | ✅ ([WindowScroller](https://github.com/bvaughn/react-virtualized/blob/master/docs/WindowScroller.md))                                                                 | ✅ (useWindowVirtualizer)                                                                                                                          |
 | Dynamic list size                                                                                                                                              | ✅                                                                                                               | ✅                                                                                                                               | ✅                                                                                                                           | 🟠 (needs [AutoSizer](https://github.com/bvaughn/react-virtualized/blob/master/docs/AutoSizer.md))                                                                     | ✅                                                                                                                                                 |

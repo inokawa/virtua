@@ -2,9 +2,10 @@
 import { afterEach, expect, it, onTestFinished } from "vitest";
 import { commands } from "vitest/browser";
 import { createSSRApp } from "vue";
-import { List } from "../../spec/ssr/vue.js";
+import { Grid, List } from "../../spec/ssr/vue.js";
 import {
   cleanupScroll,
+  expectGridHydrated,
   expectHydrated,
   getVirtualizer,
   mountSsr,
@@ -66,6 +67,19 @@ it("should render and hydrate items in horizontal mode", async () => {
     const app = createSSRApp({
       render: () => <List ssrCount={COUNT} itemSize={ITEM_SIZE} horizontal />,
     });
+    app.mount(root);
+    onTestFinished(() => app.unmount());
+  });
+});
+
+it("should render no cells and hydrate a grid", async () => {
+  const html = await commands.ssrRenderGrid();
+  expect(html).toMatchSnapshot();
+
+  const root = mountSsr(html);
+
+  await expectGridHydrated(root, () => {
+    const app = createSSRApp({ render: () => <Grid /> });
     app.mount(root);
     onTestFinished(() => app.unmount());
   });

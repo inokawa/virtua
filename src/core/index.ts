@@ -11,12 +11,29 @@ export {
 } from "./store.js";
 export type { Layout } from "./layouts/types.js";
 export { createListLayout } from "./layouts/list.js";
-export type {
-  DriverFactory,
-  Driver,
-  GridDriverFactory,
-  GridDriver,
-} from "./driver.js";
+export {
+  createGridLayout,
+  getAxisLength,
+  getAxisItem,
+  type GridLayout,
+  type VGridAxis,
+  type VGridTrackSize,
+  type VGridSize,
+} from "./layouts/grid.js";
+export {
+  createGridPlan,
+  updateGridAxis,
+  type GridRowState,
+  type GridCellState,
+  type GridRowGroupState,
+  gridStyleToString,
+  type VGridPinned,
+  type VGridCell,
+  type VGridSpan,
+  type VGridScrollToIndexOpts,
+  type VGridScrollOffset,
+} from "./grid.js";
+export type { DriverFactory, Driver, GridDriver } from "./driver.js";
 export {
   createContainerDriver,
   createWindowDriver,

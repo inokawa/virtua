@@ -45,8 +45,14 @@ it("WindowVirtualizer", async () => {
 
 it("VGrid", async () => {
   const root = render(
-    <VGrid row={1000} col={1000} style={{ height: 400, width: 400 }}>
-      {({ rowIndex, colIndex }) => (
+    <VGrid
+      rows={1000}
+      rowHeight={40}
+      cols={1000}
+      colWidth={100}
+      style={{ height: 400, width: 400 }}
+    >
+      {(rowIndex, colIndex) => (
         <div>
           item-{rowIndex}/item-{colIndex}
         </div>

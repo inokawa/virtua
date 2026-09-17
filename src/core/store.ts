@@ -35,6 +35,8 @@ export const ACTION_START_OFFSET_CHANGE = 6;
 export const ACTION_MANUAL_SCROLL = 7;
 /** @internal */
 export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 8;
+/** @internal */
+export const ACTION_RELAYOUT = 9;
 
 type Actions =
   | [type: typeof ACTION_SCROLL, offset: number]
@@ -47,7 +49,8 @@ type Actions =
     ]
   | [type: typeof ACTION_START_OFFSET_CHANGE, offset: number]
   | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
-  | [type: typeof ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, offset: number];
+  | [type: typeof ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, offset: number]
+  | [type: typeof ACTION_RELAYOUT, jump: number];
 
 /** @internal */
 export const UPDATE_VIRTUAL_STATE = 0b0001;
@@ -408,6 +411,12 @@ export const createVirtualStore = (
         }
         case ACTION_MANUAL_SCROLL: {
           _scrollMode = SCROLL_BY_MANUAL_SCROLL;
+          break;
+        }
+        case ACTION_RELAYOUT: {
+          // It never requests a synchronous update, so it's safe to dispatch during render.
+          applyJump(payload);
+          mutated = UPDATE_VIRTUAL_STATE + UPDATE_SIZE_EVENT;
           break;
         }
         case ACTION_BEFORE_MANUAL_SMOOTH_SCROLL: {
