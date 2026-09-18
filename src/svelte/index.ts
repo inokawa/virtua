@@ -15,4 +15,4 @@ export type {
 } from "./WindowVirtualizer.type.js";
 export { default as VGrid } from "./VGrid.svelte";
 export type { VGridProps, VGridHandle } from "./VGrid.type.js";
-export type { VGridSpan } from "../core/index.js";
+export type { VGridSize, VGridSpan } from "../core/index.js";

@@ -1,8 +1,8 @@
-import { afterEach, expect, it, onTestFinished } from "vitest";
+import { afterEach, describe, expect, it, onTestFinished } from "vitest";
 import { server } from "@vitest/browser/context";
-import { useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import { render } from "../spec/browser/react.js";
-import { VGrid, type VGridHandle, type VGridProps } from "./react/index.js";
+import { VGrid, type VGridHandle } from "./react/index.js";
 import {
   cleanupScroll,
   expectGridGeometry,
@@ -56,8 +56,10 @@ const Grid = ({
     rowHeight={ROW_HEIGHT}
     cols={COLS}
     colWidth={COL_WIDTH}
-    pinnedRows={pinned ? { start: 1, end: 1 } : undefined}
-    pinnedCols={pinned ? { start: 2, end: 1 } : undefined}
+    headerRows={pinned ? 1 : 0}
+    footerRows={pinned ? 1 : 0}
+    headerCols={pinned ? 2 : 0}
+    footerCols={pinned ? 1 : 0}
     style={{ height: VIEWPORT, width: VIEWPORT }}
   >
     {(rowIndex, colIndex) => (
@@ -70,7 +72,7 @@ const Grid = ({
 
 it("scrollable in both axes (RTL)", async () => {
   setRTL();
-  const ref = { current: null as VGridHandle | null };
+  const ref = createRef<VGridHandle>();
   const root = render(<Grid handle={ref} />);
   const { viewport, container } = await getVirtualizer(root);
 
@@ -85,7 +87,7 @@ it("scrollable in both axes (RTL)", async () => {
 });
 
 it("auto sizes follow the content of the cells", async () => {
-  const ref = { current: null as VGridHandle | null };
+  const ref = createRef<VGridHandle>();
   const Auto = () => {
     const [tall, setTall] = useState(false);
     return (
@@ -182,8 +184,8 @@ it("spans cover their cells across the unrendered tracks", async () => {
       rowHeight="height"
       cols={colItems}
       colWidth="width"
-      pinnedRows={1}
-      pinnedCols={{ end: 1 }}
+      headerRows={1}
+      footerCols={1}
       spans={spans}
       keepMounted={[{ rowIndex: 150, colIndex: 80 }]}
       style={{ height: VIEWPORT, width: VIEWPORT }}
@@ -221,7 +223,7 @@ it("spans cover their cells across the unrendered tracks", async () => {
 });
 
 it("scrollToIndex keeps the cell out of the pinned blocks", async () => {
-  const ref = { current: null as VGridHandle | null };
+  const ref = createRef<VGridHandle>();
   const root = render(<Grid handle={ref} pinned />);
   const { viewport, container } = await getVirtualizer(root);
   await expect.poll(() => cell(container, "0 / 0")).toBeTruthy();
@@ -302,7 +304,7 @@ it("scrollToIndex keeps the cell out of the pinned blocks", async () => {
 
 it("scrollToIndex aligns the cell next to the gap before the pinned blocks", async () => {
   const GAP = 10;
-  const ref = { current: null as VGridHandle | null };
+  const ref = createRef<VGridHandle>();
   const root = render(
     <VGrid
       ref={ref}
@@ -311,7 +313,8 @@ it("scrollToIndex aligns the cell next to the gap before the pinned blocks", asy
       cols={COLS}
       colWidth={COL_WIDTH}
       gap={GAP}
-      pinnedRows={{ start: 1, end: 1 }}
+      headerRows={1}
+      footerRows={1}
       style={{ height: VIEWPORT, width: VIEWPORT }}
     >
       {(rowIndex, colIndex) => (
@@ -344,7 +347,7 @@ it("scrollToIndex aligns the cell next to the gap before the pinned blocks", asy
 });
 
 it("scrollToIndex on mount keeps the cell out of the pinned rows measured later", async () => {
-  const ref = { current: null as VGridHandle | null };
+  const ref = createRef<VGridHandle>();
   const Mount = () => {
     useEffect(() => {
       ref.current!.scrollToIndex({ rowIndex: 100 });
@@ -356,7 +359,7 @@ it("scrollToIndex on mount keeps the cell out of the pinned rows measured later"
         rowHeight="auto"
         cols={3}
         colWidth={COL_WIDTH}
-        pinnedRows={1}
+        headerRows={1}
         style={{ height: VIEWPORT, width: VIEWPORT }}
       >
         {(rowIndex, colIndex) => (
@@ -379,7 +382,7 @@ it("scrollToIndex on mount keeps the cell out of the pinned rows measured later"
 });
 
 it("scrollTo and scrollBy move only the given axes", async () => {
-  const ref = { current: null as VGridHandle | null };
+  const ref = createRef<VGridHandle>();
   const root = render(<Grid handle={ref} />);
   const { viewport, container } = await getVirtualizer(root);
   await expect.poll(() => cell(container, "0 / 0")).toBeTruthy();
@@ -652,7 +655,7 @@ it("the header cells under the spans stay covered while the other spans render t
       rowHeight={ROW_HEIGHT}
       cols={COLS}
       colWidth={COL_WIDTH}
-      pinnedRows={2}
+      headerRows={2}
       spans={spans}
       style={{ height: VIEWPORT, width: VIEWPORT }}
     >
@@ -673,15 +676,14 @@ it("the header cells under the spans stay covered while the other spans render t
   await expectGridGeometry(root, rows, cols, 0, spans);
 });
 
-it("the given headers are rendered with the cells scrolled away from them", async () => {
+it("the section header is rendered with the cells scrolled away from it", async () => {
   const root = render(
     <VGrid
       rows={ROWS}
       rowHeight={ROW_HEIGHT}
       cols={COLS}
       colWidth={COL_WIDTH}
-      ariaColumnHeader={[0]}
-      ariaRowHeader={[1]}
+      sectionRows={[0]}
       style={{ height: VIEWPORT, width: VIEWPORT }}
     >
       {(rowIndex, colIndex) => (
@@ -691,18 +693,19 @@ it("the given headers are rendered with the cells scrolled away from them", asyn
       )}
     </VGrid>,
   );
-  const { viewport } = await getVirtualizer(root);
+  const { viewport, container } = await getVirtualizer(root);
   viewport.scrollTop = ROW_HEIGHT * 500;
   viewport.scrollLeft = COL_WIDTH * 200;
+  // the header row out of the pinned rows heads the section of all the rows
   await expectGridGeometry(
     root,
-    { count: ROWS, size: () => ROW_HEIGHT },
+    { count: ROWS, size: () => ROW_HEIGHT, headers: [0] },
     { count: COLS, size: () => COL_WIDTH },
   );
 
-  // the headers are rendered out of the viewport
+  // the header is rendered out of the viewport, with its row header out of the columns too
   expect(root.textContent).toContain("0 / 200");
-  expect(root.textContent).toContain("500 / 1");
+  expect(cell(container, "0 / 0")).toBeTruthy();
 });
 
 it("cells follow the changed counts", async () => {
@@ -722,8 +725,10 @@ it("cells follow the changed counts", async () => {
           rowHeight={ROW_HEIGHT}
           cols={colCount!}
           colWidth={COL_WIDTH}
-          pinnedRows={{ start: 1, end: 1 }}
-          pinnedCols={{ start: 1, end: 1 }}
+          headerRows={1}
+          footerRows={1}
+          headerCols={1}
+          footerCols={1}
           spans={spans}
           // out of the grid while it's shrunk
           keepMounted={[{ rowIndex: 900, colIndex: 400 }]}
@@ -901,7 +906,7 @@ it("auto columns share the space left in the viewport", async () => {
         rowHeight={ROW_HEIGHT}
         cols={columns}
         colWidth="width"
-        pinnedRows={1}
+        headerRows={1}
         style={{ height: VIEWPORT, width: viewport }}
       >
         {(rowIndex, _, { colIndex }) => (
@@ -965,34 +970,268 @@ it("a row spanning the auto columns fills the viewport without the cells measuri
     .toBeCloseTo(viewport.clientWidth, 0);
 });
 
+for (const gap of [0, 8]) {
+  it(`the section headers stick under the pinned rows and are pushed out at the ends of their sections (gap: ${gap})`, async () => {
+    const SECTION_ROWS = 60;
+    const SECTION_COLS = 6;
+    // the section at 5 has no rows but its header, as a collapsed group
+    const headers = [0, 5, 6, 20, 40];
+    // the label in the pinned column, and the rest of the row merged
+    const spans = headers.slice(1).map((rowIndex) => ({
+      rowIndex,
+      colIndex: 1,
+      colSpan: SECTION_COLS - 1,
+    }));
+    const ref = createRef<VGridHandle>();
+    const root = render(
+      <VGrid
+        ref={ref}
+        rows={SECTION_ROWS}
+        rowHeight={ROW_HEIGHT}
+        cols={SECTION_COLS}
+        colWidth={COL_WIDTH}
+        gap={gap}
+        headerRows={1}
+        sectionRows={headers.slice(1)}
+        footerRows={1}
+        headerCols={1}
+        spans={spans}
+        style={{ height: VIEWPORT, width: VIEWPORT }}
+      >
+        {(rowIndex, colIndex) => (
+          <div style={{ background: "white" }}>
+            {rowIndex === 22 && colIndex === 2 ? (
+              <button>
+                {rowIndex} / {colIndex}
+              </button>
+            ) : (
+              `${rowIndex} / ${colIndex}`
+            )}
+          </div>
+        )}
+      </VGrid>,
+    );
+    const { viewport, container } = await getVirtualizer(root);
+    const rows = {
+      count: SECTION_ROWS,
+      size: () => ROW_HEIGHT,
+      pinned: { start: 1, end: 1 },
+      headers: headers.slice(1),
+    };
+    const cols = {
+      count: SECTION_COLS,
+      size: () => COL_WIDTH,
+      pinned: { start: 1 },
+    };
+    const step = ROW_HEIGHT + gap;
+    // the position of the first row after the pinned row, with the gap
+    const stuckTop = ROW_HEIGHT + gap;
+    await expectGridGeometry(root, rows, cols, gap, spans);
+
+    // in the middle of a section, its header sticks under the pinned row and is painted over the cells scrolled under it
+    viewport.scrollTop = step * 10;
+    await expectGridGeometry(root, rows, cols, gap, spans);
+    // the header of the empty section before it is scrolled away, which the geometry checks
+    const header = cell(container, "6 / 1");
+    expect(relativeTop(viewport, header)).toBeCloseTo(stuckTop, 0);
+    await expect
+      .poll(() => getComputedStyle(container).pointerEvents)
+      .toBe("auto");
+    const rect = header.getBoundingClientRect();
+    expect(
+      header.contains(
+        document.elementFromPoint(
+          rect.left + rect.width / 2,
+          rect.top + rect.height / 2,
+        ),
+      ),
+    ).toBe(true);
+    // the header is not scrolled away when a control below it takes the focus
+    viewport.scrollTop = step * 21;
+    await expect.poll(() => root.querySelector("button")).toBeTruthy();
+    root.querySelector("button")!.focus();
+    await new Promise((r) => setTimeout(r, 50));
+    expect(viewport.scrollTop).toBe(step * 21);
+    await expectGridGeometry(root, rows, cols, gap, spans);
+
+    // at the end of a section, its header is pushed out by the end of its section, and the next one is not stuck yet
+    viewport.scrollTop = step * 20 - ROW_HEIGHT * 1.5;
+    await expectGridGeometry(root, rows, cols, gap, spans);
+    expect(relativeTop(viewport, cell(container, "6 / 1"))).toBeLessThan(
+      stuckTop,
+    );
+    expect(relativeTop(viewport, cell(container, "20 / 1"))).toBeGreaterThan(
+      stuckTop,
+    );
+
+    // the header of a section rendered for a scroll far below stays with its section
+    scrollToEnd(viewport);
+    await expectGridGeometry(root, rows, cols, gap, spans);
+    expect(root.textContent).toContain("40 / 1");
+    expect(root.textContent).not.toContain("20 / 1");
+  });
+}
+
+describe("scrollToIndex with sections", () => {
+  const GAP = 8;
+  const mount = async () => {
+    const ref = createRef<VGridHandle>();
+    const root = render(
+      <VGrid
+        ref={ref}
+        rows={60}
+        rowHeight={ROW_HEIGHT}
+        cols={3}
+        colWidth={COL_WIDTH}
+        gap={GAP}
+        headerRows={1}
+        // the section at 5 has no rows but its header
+        sectionRows={[5, 6, 20, 40]}
+        footerRows={1}
+        style={{ height: VIEWPORT, width: VIEWPORT }}
+      >
+        {(rowIndex, colIndex) => (
+          <div style={{ background: "white" }}>
+            {rowIndex} / {colIndex}
+          </div>
+        )}
+      </VGrid>,
+    );
+    const { viewport, container } = await getVirtualizer(root);
+    await expect.poll(() => cell(container, "0 / 0")).toBeTruthy();
+    // NaN until the row is rendered
+    const top = (rowIndex: number) => {
+      const c = cell(container, rowIndex + " / 0");
+      return c ? relativeTop(viewport, c) : NaN;
+    };
+    const bottom = (rowIndex: number) => {
+      const c = cell(container, rowIndex + " / 0");
+      return c ? relativeTop(viewport, c) + c.offsetHeight : NaN;
+    };
+    // nearest reads the position which the scroll event gives
+    const settle = () =>
+      expect
+        .poll(() => ref.current!.verticalScrollOffset)
+        .toBe(viewport.scrollTop);
+    return { handle: ref.current!, viewport, top, bottom, settle };
+  };
+
+  describe("align start", () => {
+    it("a row is below the header of its section", async () => {
+      const { handle, top, bottom } = await mount();
+      handle.scrollToIndex({ rowIndex: 30 });
+      await expectPosition(() => top(30) - bottom(20), GAP);
+      // which sticks under the pinned row
+      await expectPosition(() => top(20) - bottom(0), GAP);
+    });
+
+    it("a section header is where it sticks", async () => {
+      const { handle, top, bottom } = await mount();
+      handle.scrollToIndex({ rowIndex: 20 });
+      await expectPosition(() => top(20) - bottom(0), GAP);
+    });
+
+    it("the header of a section without rows is below the pinned row", async () => {
+      const { handle, top, bottom } = await mount();
+      handle.scrollToIndex({ rowIndex: 5 });
+      await expectPosition(() => top(5) - bottom(0), GAP);
+    });
+  });
+
+  describe("align center", () => {
+    it("a row is centered between the section header and the rows pinned to the end", async () => {
+      const { handle, top, bottom } = await mount();
+      handle.scrollToIndex({ rowIndex: 30, rowAlign: "center" });
+      await expectPosition(
+        () => top(30) - bottom(20) - (top(59) - bottom(30)),
+        0,
+      );
+    });
+  });
+
+  describe("align end", () => {
+    it("a row is above the rows pinned to the end", async () => {
+      const { handle, top, bottom } = await mount();
+      handle.scrollToIndex({ rowIndex: 30, rowAlign: "end" });
+      await expectPosition(() => top(59) - bottom(30), GAP);
+    });
+  });
+
+  describe("align nearest", () => {
+    it("a visible row is not scrolled to", async () => {
+      const { handle, viewport, top, bottom, settle } = await mount();
+      handle.scrollToIndex({ rowIndex: 30 });
+      await expectPosition(() => top(30) - bottom(20), GAP);
+      await settle();
+      const scrollTop = viewport.scrollTop;
+      handle.scrollToIndex({ rowIndex: 33, rowAlign: "nearest" });
+      await new Promise((r) => setTimeout(r, 100));
+      expect(viewport.scrollTop).toBe(scrollTop);
+    });
+
+    it("a row under the section header is scrolled to the start", async () => {
+      const { handle, viewport, top, bottom, settle } = await mount();
+      handle.scrollToIndex({ rowIndex: 32 });
+      await expectPosition(() => top(32) - bottom(20), GAP);
+      await settle();
+      handle.scrollToIndex({ rowIndex: 31, rowAlign: "nearest" });
+      await expectPosition(() => top(31) - bottom(20), GAP);
+      expect(viewport.scrollTop).toBeGreaterThan(0);
+    });
+
+    it("a row below the viewport is scrolled to the end", async () => {
+      const { handle, top, bottom } = await mount();
+      handle.scrollToIndex({ rowIndex: 45, rowAlign: "nearest" });
+      await expectPosition(() => top(59) - bottom(45), GAP);
+    });
+
+    it("a section header is not scrolled to while it sticks", async () => {
+      const { handle, viewport, top, bottom, settle } = await mount();
+      handle.scrollToIndex({ rowIndex: 25 });
+      await expectPosition(() => top(20) - bottom(0), GAP);
+      await settle();
+      const scrollTop = viewport.scrollTop;
+      handle.scrollToIndex({ rowIndex: 20, rowAlign: "nearest" });
+      await new Promise((r) => setTimeout(r, 100));
+      expect(viewport.scrollTop).toBe(scrollTop);
+    });
+
+    it("a section header pushed out by the next section is scrolled to the start", async () => {
+      const { handle, top, bottom, settle } = await mount();
+      handle.scrollToIndex({ rowIndex: 45 });
+      await expectPosition(() => top(45) - bottom(40), GAP);
+      await settle();
+      handle.scrollToIndex({ rowIndex: 20, rowAlign: "nearest" });
+      await expectPosition(() => top(20) - bottom(0), GAP);
+    });
+  });
+});
+
 {
   const MATRIX_ROWS = 60;
   const MATRIX_COLS = 30;
   const rowSize = (rowIndex: number) => 30 + (rowIndex % 3) * 10;
   const colSize = (colIndex: number) => 80 + (colIndex % 2) * 40;
-  const PINNED: {
-    label: string;
-    rows: VGridProps["pinnedRows"];
-    cols: VGridProps["pinnedCols"];
-  }[] = [
-    { label: "both", rows: { start: 2, end: 1 }, cols: { start: 1, end: 1 } },
-    { label: "start", rows: 2, cols: 1 },
-    { label: "end", rows: { end: 1 }, cols: { end: 1 } },
+  type Pinned = { header?: number; footer?: number; sections?: number[] };
+  const PINNED: { label: string; rows: Pinned; cols: Pinned }[] = [
+    {
+      label: "both",
+      rows: { header: 2, footer: 1 },
+      cols: { header: 1, footer: 1 },
+    },
+    { label: "start", rows: { header: 2 }, cols: { header: 1 } },
+    { label: "end", rows: { footer: 1 }, cols: { footer: 1 } },
+    {
+      label: "both with sections",
+      rows: { header: 2, sections: [9, 30], footer: 1 },
+      cols: { header: 1, footer: 1 },
+    },
   ];
-  const isPinned = (
-    pinned: VGridProps["pinnedRows"],
-    index: number,
-    count: number,
-  ) =>
-    typeof pinned === "number"
-      ? index < pinned
-      : !!pinned &&
-        (index < (pinned.start || 0) || index >= count - (pinned.end || 0));
-  // The spans must not cross the pinned tracks
-  const spansOf = (
-    rows: VGridProps["pinnedRows"],
-    cols: VGridProps["pinnedCols"],
-  ) => {
+  const isPinned = (pinned: Pinned | undefined, index: number, count: number) =>
+    !!pinned &&
+    (index < (pinned.header || 0) || index >= count - (pinned.footer || 0));
+  // The spans must not cross the pinned tracks or the sections
+  const spansOf = (rows: Pinned, cols: Pinned) => {
     const spans: {
       rowIndex: number;
       colIndex: number;
@@ -1021,6 +1260,10 @@ it("a row spanning the auto columns fills the viewport without the cells measuri
       // a label spanning the rows in the column pinned to the end
       spans.push({ rowIndex: 20, colIndex: MATRIX_COLS - 1, rowSpan: 3 });
     }
+    for (const rowIndex of rows.sections || []) {
+      // the label in the first column, and a group of the columns after it
+      spans.push({ rowIndex, colIndex: 1, colSpan: 3 });
+    }
     return spans;
   };
   // the cells with a control, in each of the pinned and the other regions
@@ -1028,6 +1271,7 @@ it("a row spanning the auto columns fills the viewport without the cells measuri
     [1, 2],
     [8, 2],
     [9, 0],
+    [9, 4],
     [15, MATRIX_COLS - 1],
     [MATRIX_ROWS - 1, 0],
   ] as const;
@@ -1041,7 +1285,7 @@ it("a row spanning the auto columns fills the viewport without the cells measuri
               setRTL();
             }
             const spans = spansOf(pinnedRows, pinnedCols);
-            const ref = { current: null as VGridHandle | null };
+            const ref = createRef<VGridHandle>();
             const root = render(
               <VGrid
                 ref={ref}
@@ -1050,8 +1294,11 @@ it("a row spanning the auto columns fills the viewport without the cells measuri
                 cols={MATRIX_COLS}
                 colWidth={auto ? "auto" : COL_WIDTH}
                 gap={gap}
-                pinnedRows={pinnedRows}
-                pinnedCols={pinnedCols}
+                headerRows={pinnedRows.header}
+                sectionRows={pinnedRows.sections}
+                footerRows={pinnedRows.footer}
+                headerCols={pinnedCols.header}
+                footerCols={pinnedCols.footer}
                 spans={spans}
                 style={{ height: VIEWPORT, width: VIEWPORT }}
               >
@@ -1095,18 +1342,13 @@ it("a row spanning the auto columns fills the viewport without the cells measuri
             const rows = {
               count: MATRIX_ROWS,
               size: auto ? rowSize : () => ROW_HEIGHT,
-              pinned:
-                typeof pinnedRows === "number"
-                  ? { start: pinnedRows }
-                  : pinnedRows,
+              pinned: { start: pinnedRows.header, end: pinnedRows.footer },
+              headers: pinnedRows.sections,
             };
             const cols = {
               count: MATRIX_COLS,
               size: auto ? colSize : () => COL_WIDTH,
-              pinned:
-                typeof pinnedCols === "number"
-                  ? { start: pinnedCols }
-                  : pinnedCols,
+              pinned: { start: pinnedCols.header, end: pinnedCols.footer },
             };
             const total = (count: number, size: (i: number) => number) =>
               Array.from({ length: count }, (_, i) => size(i)).reduce(
@@ -1117,7 +1359,7 @@ it("a row spanning the auto columns fills the viewport without the cells measuri
             const scrollHeight = total(MATRIX_ROWS, rows.size);
             const scrollWidth = total(MATRIX_COLS, cols.size);
 
-            // The paint order declared: the pinned rows over the others, and in them the pinned cells over the spanning cells over the others.
+            // The paint order declared: the pinned rows over the section headers over the others, and in them the pinned cells over the spanning cells over the others.
             // https://drafts.csswg.org/css-grid-2/#z-order
             // the content box of the viewport, which the scrollbar is at the start of in RTL
             const contentBox = () => {
@@ -1148,7 +1390,11 @@ it("a row spanning the auto columns fills the viewport without the cells measuri
                   cell,
                   rect: cell.getBoundingClientRect(),
                   priority:
-                    (isPinned(pinnedRows, rowIndex, MATRIX_ROWS) ? 8 : 0) +
+                    (isPinned(pinnedRows, rowIndex, MATRIX_ROWS)
+                      ? 8
+                      : (pinnedRows.sections || []).includes(rowIndex)
+                        ? 4
+                        : 0) +
                     (isPinned(pinnedCols, colIndex, MATRIX_COLS)
                       ? 2
                       : rowSpan > 1

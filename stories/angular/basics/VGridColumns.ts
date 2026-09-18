@@ -27,13 +27,13 @@ const data = Array.from({ length: 1000 }).map((_, i) => ({
       [rowHeight]="30"
       [cols]="columns"
       colWidth="width"
-      [pinnedRows]="1"
-      style="height: 100vh; box-sizing: border-box; border: solid 1px black;"
+      [headerRows]="1"
+      style="height: 100vh; box-sizing: border-box; border: solid 1px black; background: white;"
     >
       <ng-template let-row="row" let-col="col">
         <div
           style="padding: 4px; border-right: solid 1px black; border-bottom: solid 1px black; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
-          [style.background]="row === null ? 'burlywood' : 'white'"
+          [style.background]="row === null ? 'burlywood' : null"
         >
           {{ row === null ? col.key : row[col.key] }}
         </div>

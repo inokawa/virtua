@@ -26,14 +26,13 @@
   rowHeight={30}
   cols={columns}
   colWidth="width"
-  pinnedRows={1}
-  style="height: 100vh; box-sizing: border-box; border: solid 1px black;"
+  headerRows={1}
+  style="height: 100vh; box-sizing: border-box; border: solid 1px black; background: white;"
 >
   {#snippet children(row, col)}
     <div
-      style="background: {row === null
-        ? 'burlywood'
-        : 'white'}; padding: 4px; border-right: solid 1px black; border-bottom: solid 1px black; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+      style="padding: 4px; border-right: solid 1px black; border-bottom: solid 1px black; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+      style:background={row === null ? "burlywood" : undefined}
     >
       {row === null ? col.key : row[col.key]}
     </div>

@@ -57,11 +57,11 @@
     rowHeight={80}
     cols={LENGTH}
     colWidth={160}
-    style="flex: 1; box-sizing: border-box; border: solid 1px gray;"
+    style="flex: 1; box-sizing: border-box; border: solid 1px gray; background: white;"
   >
     {#snippet children(r, c)}
       <div
-        style="background: white; padding: 4px; border-right: solid 1px gray; border-bottom: solid 1px gray;"
+        style="padding: 4px; border-right: solid 1px gray; border-bottom: solid 1px gray;"
       >
         {r} / {c}
       </div>

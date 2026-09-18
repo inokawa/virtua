@@ -60,12 +60,16 @@ const randomize = () => {
       :rowHeight="80"
       :cols="LENGTH"
       :colWidth="160"
-      :style="{ flex: 1, boxSizing: 'border-box', border: 'solid 1px gray' }"
+      :style="{
+        flex: 1,
+        boxSizing: 'border-box',
+        border: 'solid 1px gray',
+        background: 'white',
+      }"
       #default="{ row: r, col: c }"
     >
       <div
         :style="{
-          background: 'white',
           padding: '4px',
           borderRight: 'solid 1px gray',
           borderBottom: 'solid 1px gray',

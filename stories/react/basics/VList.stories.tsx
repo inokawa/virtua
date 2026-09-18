@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import React, {
-  forwardRef,
   startTransition,
   useEffect,
   useLayoutEffect,

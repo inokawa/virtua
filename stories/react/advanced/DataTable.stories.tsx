@@ -85,8 +85,6 @@ const SUMMARY = { edge: "summary" } as const;
 type Row = Person | typeof HEADER | typeof SUMMARY;
 const ROWS: Row[] = [HEADER, ...people, SUMMARY];
 const PINNED_COLS = 3;
-// the names identify the rows
-const NAME_COL = 2;
 
 const cellStyle: CSSProperties = {
   display: "flex",
@@ -146,9 +144,9 @@ export const DataTable: StoryObj = {
           rowHeight={36}
           cols={COLUMNS}
           colWidth="width"
-          pinnedRows={{ start: 1, end: 1 }}
-          pinnedCols={{ start: PINNED_COLS }}
-          ariaRowHeader={[NAME_COL]}
+          headerRows={1}
+          footerRows={1}
+          headerCols={PINNED_COLS}
         >
           {(row, column, { colIndex }) => {
             const isEdge = "edge" in row;

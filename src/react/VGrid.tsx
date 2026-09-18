@@ -17,7 +17,6 @@ import {
   createVirtualStore,
   type VGridAxis,
   type VGridCell,
-  type VGridPinned,
   type VGridSize,
   type VGridSpan,
   getAxisItem,
@@ -100,7 +99,7 @@ export interface VGridHandle {
    */
   getColSize(index: number): number;
   /**
-   * Scroll to the cell specified by the indexes. The cell is not hidden behind the pinned cells.
+   * Scroll to the cell specified by the indexes. The cell is not hidden behind the rows and the columns sticking over it.
    * @param opts the indexes of the cell and the options. See {@link VGridScrollToIndexOpts}.
    */
   scrollToIndex(opts: VGridScrollToIndexOpts): void;
@@ -147,23 +146,43 @@ export interface VGridProps<R = number, C = number> extends Omit<
    */
   colWidth: NoInfer<VGridSize<C>>;
   /**
-   * The number of rows pinned to the edges of the viewport. See {@link VGridPinned} for the accepted values.
+   * The number of the leading rows pinned to the start, which are the column headers (`role="columnheader"`).
    *
    * **The pinned cells are rendered over the other cells, so give them an opaque background.**
    * @defaultValue 0
    */
-  pinnedRows?: VGridPinned;
+  headerRows?: number;
   /**
-   * The number of columns pinned to the edges of the viewport. See {@link VGridPinned} for the accepted values.
+   * Indexes of the rows which start sections. A section lasts until the next section row or the footer rows, and its first row sticks below the header rows while the section is scrolled through.
+   *
+   * **The section rows are rendered over the other cells while they stick, so give them an opaque background.**
+   */
+  sectionRows?: readonly number[];
+  /**
+   * The number of the trailing rows pinned to the end.
    *
    * **The pinned cells are rendered over the other cells, so give them an opaque background.**
    * @defaultValue 0
    */
-  pinnedCols?: VGridPinned;
+  footerRows?: number;
+  /**
+   * The number of the leading columns pinned to the start, the last of which is the row header (`role="rowheader"`).
+   *
+   * **The pinned cells are rendered over the other cells, so give them an opaque background.**
+   * @defaultValue 0
+   */
+  headerCols?: number;
+  /**
+   * The number of the trailing columns pinned to the end.
+   *
+   * **The pinned cells are rendered over the other cells, so give them an opaque background.**
+   * @defaultValue 0
+   */
+  footerCols?: number;
   /**
    * Cells merged over multiple rows and/or columns. See {@link VGridSpan} for the accepted values.
    *
-   * The cell at the origin is stretched over the merged area, and the other cells in it are not rendered. Spans must not overlap each other or cross the boundary of the pinned rows/columns. A spanning cell is not measured for `"auto"` sizes on the axes it spans, and doesn't enlarge those tracks.
+   * The cell at the origin is stretched over the merged area, and the other cells in it are not rendered. Spans must not overlap each other or cross the boundaries of the pinned rows/columns or the sections. A spanning cell is not measured for `"auto"` sizes on the axes it spans, and doesn't enlarge those tracks.
    */
   spans?: readonly VGridSpan[];
   /**
@@ -180,15 +199,6 @@ export interface VGridProps<R = number, C = number> extends Omit<
    * @defaultValue 0
    */
   gap?: number;
-  /**
-   * Indexes of the rows whose cells are column headers (`role="columnheader"`).
-   * @defaultValue the rows pinned to the start by {@link VGridProps.pinnedRows}
-   */
-  ariaColumnHeader?: readonly number[];
-  /**
-   * Indexes of the columns whose cells are row headers (`role="rowheader"`).
-   */
-  ariaRowHeader?: readonly number[];
   /**
    * The header cell of the sorted column or row, and the sort order (`aria-sort`).
    */
@@ -347,14 +357,15 @@ export const VGrid = /*#__PURE__*/ forwardRef<
       cols,
       rowHeight,
       colWidth,
-      pinnedRows,
-      pinnedCols,
+      headerRows,
+      sectionRows,
+      footerRows,
+      headerCols,
+      footerCols,
       spans,
       keepMounted,
       bufferSize,
       gap = 0,
-      ariaColumnHeader,
-      ariaRowHeader,
       ariaSort,
       onVerticalScroll: onVerticalScrollProp,
       onHorizontalScroll: onHorizontalScrollProp,
@@ -406,16 +417,20 @@ export const VGrid = /*#__PURE__*/ forwardRef<
       colLayout,
       rowStore.$getRange(bufferSize),
       colStore.$getRange(bufferSize),
-      pinnedRows,
-      pinnedCols,
+      headerRows,
+      sectionRows,
+      footerRows,
+      headerCols,
+      footerCols,
       spans,
       keepMounted,
-      ariaColumnHeader,
-      ariaRowHeader,
       ariaSort,
     );
-    const pinnedRowsRef = useLatestRef(pinnedRows);
-    const pinnedColsRef = useLatestRef(pinnedCols);
+    const headerRowsRef = useLatestRef(headerRows);
+    const sectionRowsRef = useLatestRef(sectionRows);
+    const footerRowsRef = useLatestRef(footerRows);
+    const headerColsRef = useLatestRef(headerCols);
+    const footerColsRef = useLatestRef(footerCols);
 
     useIsomorphicLayoutEffect(() => {
       const onUpdate = (sync?: boolean) => {
@@ -493,8 +508,11 @@ export const VGrid = /*#__PURE__*/ forwardRef<
             driver,
             rowStore,
             colStore,
-            pinnedRowsRef[refKey],
-            pinnedColsRef[refKey],
+            headerRowsRef[refKey],
+            sectionRowsRef[refKey],
+            footerRowsRef[refKey],
+            headerColsRef[refKey],
+            footerColsRef[refKey],
             opts,
           ),
         scrollTo: (offset) => gridScrollTo(driver, offset),

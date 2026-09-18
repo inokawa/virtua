@@ -13,4 +13,4 @@ export type {
 export type * from "./types.js";
 export { VGrid } from "./VGrid.js";
 export type { VGridProps, VGridHandle } from "./VGrid.js";
-export type { VGridSpan } from "../core/index.js";
+export type { VGridSize, VGridSpan } from "../core/index.js";

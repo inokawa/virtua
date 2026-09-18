@@ -3,12 +3,6 @@ import { createListLayout } from "./list.js";
 import type { Layout } from "./types.js";
 import { clamp, floor, NULL } from "../utils.js";
 
-/**
- * Size of a row or column in pixels.
- *
- * - A number is used as is, and never measured.
- * - `"auto"` fits the largest rendered cell. The auto columns also share the space left in the viewport, as the columns of a table.
- */
 export type VGridTrackSize = number | "auto";
 
 /**
@@ -19,9 +13,6 @@ export type VGridTrackSize = number | "auto";
  */
 export type VGridAxis<T = number> = number | readonly T[];
 
-/**
- * The keys of the item whose values are sizes. See {@link VGridSize}.
- */
 export type VGridSizeKey<T> = [T] extends [object]
   ? {
       [K in keyof T]-?: K extends string
@@ -33,10 +24,11 @@ export type VGridSizeKey<T> = [T] extends [object]
   : never;
 
 /**
- * The sizes of the rows or the columns. See {@link VGridTrackSize} for the accepted sizes.
+ * The sizes of the rows or the columns in pixels.
  *
- * - A size applies to every row/column.
- * - A key reads the size from the item of each row/column, and a missing size is `"auto"`.
+ * - A number is used as is, and never measured.
+ * - `"auto"` fits the largest rendered cell. The auto columns also share the space left in the viewport, as the columns of a table.
+ * - A key reads the size, a number or `"auto"`, from the item of each row/column, and a missing size is `"auto"`.
  *
  * The form of the size, a number, `"auto"` or a key, must not be changed after mount. To switch it, remount the grid.
  */

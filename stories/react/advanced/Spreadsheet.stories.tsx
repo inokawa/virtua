@@ -244,11 +244,10 @@ export const Spreadsheet: StoryObj = {
             rowHeight={26}
             cols={cols}
             colWidth="width"
-            pinnedRows={1}
-            pinnedCols={1}
+            headerRows={1}
+            headerCols={1}
             // the headers of the focused cell are rendered by the grid
             keepMounted={[{ rowIndex: active[0] + 1, colIndex: active[1] + 1 }]}
-            ariaRowHeader={[0]}
           >
             {(rowIndex, col, { colIndex }) => {
               const r = rowIndex - 1;
