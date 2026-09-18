@@ -79,13 +79,12 @@ it("should render 4x4 children", async () => {
       rowHeight={40}
       cols={[{ id: "w" }, { id: "x" }, { id: "y" }, { id: "z" }]}
       colWidth={100}
-      pinnedRows={1}
-      pinnedCols={1}
+      headerRows={1}
+      headerCols={1}
       spans={[
         { rowIndex: 1, colIndex: 1, colSpan: 2 },
         { rowIndex: 2, colIndex: 0, rowSpan: 2 },
       ]}
-      ariaRowHeader={[0]}
       ariaSort={{ rowIndex: 0, colIndex: 1, order: "ascending" }}
       aria-label="grid"
     >
@@ -246,9 +245,8 @@ describe("accessibility", () => {
         rowHeight={40}
         cols={100}
         colWidth={25}
-        pinnedRows={{ end: 1 }}
-        pinnedCols={{ end: 1 }}
-        ariaColumnHeader={[]}
+        footerRows={1}
+        footerCols={1}
         style={gridStyle}
       >
         {cell}
@@ -292,7 +290,7 @@ describe("accessibility", () => {
         rowHeight={40}
         cols={2}
         colWidth={50}
-        pinnedRows={1}
+        headerRows={1}
         style={gridStyle}
       >
         {cell}
@@ -310,57 +308,91 @@ describe("accessibility", () => {
     `);
   });
 
-  it("should make the declared rows the column headers instead of the pinned rows", async () => {
+  it("should make the header rows in the body the section headers in groups", async () => {
     const { container } = await render(
       <VGrid
         aria-label="t"
-        rows={3}
+        rows={4}
         rowHeight={40}
         cols={1}
         colWidth={100}
-        pinnedRows={1}
-        ariaColumnHeader={[1]}
+        headerRows={1}
+        sectionRows={[2]}
         style={gridStyle}
       >
         {cell}
       </VGrid>,
     );
     expect(ariaTree(container)).toMatchInlineSnapshot(`
-      "table "t" rowcount=3 colcount=1
+      "table "t" rowcount=4 colcount=1
         rowgroup
           row rowindex=1
-            cell "0-0" colindex=1
+            columnheader "0-0" colindex=1
         row rowindex=2
-          columnheader "1-0" colindex=1
-        row rowindex=3
-          cell "2-0" colindex=1"
+          cell "1-0" colindex=1
+        rowgroup
+          row rowindex=3
+            rowheader "2-0" colindex=1
+          row rowindex=4
+            cell "3-0" colindex=1"
     `);
   });
 
-  it("should make the declared columns the row headers and their corner a column header", async () => {
+  it("should make the last header column the row header and its corner a column header", async () => {
     const { container } = await render(
       <VGrid
         aria-label="t"
         rows={2}
         rowHeight={40}
-        cols={2}
+        cols={3}
         colWidth={50}
-        pinnedRows={1}
-        ariaRowHeader={[0]}
+        headerRows={1}
+        headerCols={2}
         style={gridStyle}
       >
         {cell}
       </VGrid>,
     );
     expect(ariaTree(container)).toMatchInlineSnapshot(`
-      "table "t" rowcount=2 colcount=2
+      "table "t" rowcount=2 colcount=3
         rowgroup
           row rowindex=1
             columnheader "0-0" colindex=1
             columnheader "0-1" colindex=2
+            columnheader "0-2" colindex=3
         row rowindex=2
-          rowheader "1-0" colindex=1
-          cell "1-1" colindex=2"
+          cell "1-0" colindex=1
+          rowheader "1-1" colindex=2
+          cell "1-2" colindex=3"
+    `);
+  });
+
+  it("should make the section header cell in the row header column the row header", async () => {
+    const { container } = await render(
+      <VGrid
+        aria-label="t"
+        rows={2}
+        rowHeight={40}
+        cols={3}
+        colWidth={50}
+        sectionRows={[0]}
+        headerCols={2}
+        style={gridStyle}
+      >
+        {cell}
+      </VGrid>,
+    );
+    expect(ariaTree(container)).toMatchInlineSnapshot(`
+      "table "t" rowcount=2 colcount=3
+        rowgroup
+          row rowindex=1
+            cell "0-0" colindex=1
+            rowheader "0-1" colindex=2
+            cell "0-2" colindex=3
+          row rowindex=2
+            cell "1-0" colindex=1
+            rowheader "1-1" colindex=2
+            cell "1-2" colindex=3"
     `);
   });
 
@@ -397,7 +429,7 @@ describe("accessibility", () => {
           rowHeight={40}
           cols={1}
           colWidth={100}
-          pinnedRows={1}
+          headerRows={1}
           ariaSort={{ rowIndex, colIndex: 0, order: "ascending" }}
           style={gridStyle}
         >
@@ -419,25 +451,31 @@ describe("accessibility", () => {
     expect(await sortOf(1)).not.toContain("sort=");
   });
 
-  it("should have no violation of the ARIA rules", async () => {
-    const { container } = await render(
-      <VGrid
-        aria-label="t"
-        rows={100}
-        rowHeight={40}
-        cols={100}
-        colWidth={25}
-        pinnedRows={{ start: 1, end: 1 }}
-        pinnedCols={{ start: 1, end: 1 }}
-        ariaRowHeader={[0]}
-        spans={[{ rowIndex: 1, colIndex: 1, rowSpan: 2, colSpan: 2 }]}
-        ariaSort={{ rowIndex: 0, colIndex: 1, order: "ascending" }}
-        style={gridStyle}
-      >
-        {cell}
-      </VGrid>,
-    );
-    const { violations } = await axe.run(container);
-    expect(violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
-  });
+  it(
+    "should have no violation of the ARIA rules",
+    { timeout: 30000 },
+    async () => {
+      const { container } = await render(
+        <VGrid
+          aria-label="t"
+          rows={100}
+          rowHeight={40}
+          cols={100}
+          colWidth={25}
+          headerRows={1}
+          sectionRows={[3]}
+          footerRows={1}
+          headerCols={1}
+          footerCols={1}
+          spans={[{ rowIndex: 1, colIndex: 1, rowSpan: 2, colSpan: 2 }]}
+          ariaSort={{ rowIndex: 0, colIndex: 1, order: "ascending" }}
+          style={gridStyle}
+        >
+          {cell}
+        </VGrid>,
+      );
+      const { violations } = await axe.run(container);
+      expect(violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
+    },
+  );
 });

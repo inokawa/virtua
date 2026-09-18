@@ -27,23 +27,24 @@ const rows = [null, ...data];
     :rowHeight="30"
     :cols="columns"
     colWidth="width"
-    :pinnedRows="1"
+    :headerRows="1"
     :style="{
       height: '100vh',
       boxSizing: 'border-box',
       border: 'solid 1px black',
+      background: 'white',
     }"
     #default="{ row, col }"
   >
     <div
       :style="{
-        background: row === null ? 'burlywood' : 'white',
         padding: '4px',
         borderRight: 'solid 1px black',
         borderBottom: 'solid 1px black',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
+        background: row === null ? 'burlywood' : undefined,
       }"
     >
       {{ row === null ? col.key : row[col.key] }}

@@ -1,14 +1,74 @@
 import { type VirtualStore } from "./store.js";
-import { type ScrollToIndexAlign, type ScrollToIndexOpts } from "./types.js";
-import { clamp, NULL } from "./utils.js";
+import { clamp, EMPTY, max, min, NULL } from "./utils.js";
 import { type Driver, type GridDriver } from "./driver.js";
-import {
-  getPinnedStart,
-  getTrailStart,
-  type VGridPinned,
-  type VGridScrollOffset,
-  type VGridScrollToIndexOpts,
-} from "./grid.js";
+import { getSection, getSectionStarts, getTrailStart } from "./grid.js";
+
+/**
+ * Alignment of item in the viewport.
+ *
+ * - `start`: Align the item to the start.
+ * - `center`: Align the item to the center.
+ * - `end`: Align the item to the end.
+ * - `nearest`: If the item is already completely visible, don't scroll. Otherwise scroll until it becomes visible. That is similar behavior to [`nearest` option of scrollIntoView](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView).
+ */
+export type ScrollToIndexAlign = "start" | "center" | "end" | "nearest";
+
+export interface ScrollToIndexOpts {
+  /**
+   * Alignment of item in the viewport. See {@link ScrollToIndexAlign} for the values.
+   * @defaultValue "start"
+   */
+  align?: ScrollToIndexAlign;
+  /**
+   * If true, scrolling animates smoothly with [`behavior: smooth` of scrollTo](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTo#behavior).
+   *
+   * **Using smooth scrolling over many items can kill performance benefit of virtual scroll. Do not overuse it.**
+   */
+  smooth?: boolean;
+  /**
+   * Additional offset from the scrolled position.
+   * @defaultValue 0
+   */
+  offset?: number;
+}
+
+/**
+ * The cell to scroll to and the options of the scroll. The axis whose index is omitted is not scrolled.
+ */
+export interface VGridScrollToIndexOpts {
+  /**
+   * The row index of the cell.
+   */
+  rowIndex?: number;
+  /**
+   * The column index of the cell.
+   */
+  colIndex?: number;
+  /**
+   * Alignment of the cell in the viewport, excluding the rows sticking over it. See {@link ScrollToIndexAlign} for the values.
+   * @defaultValue "start"
+   */
+  rowAlign?: ScrollToIndexAlign;
+  /**
+   * Alignment of the cell in the viewport, excluding the columns sticking over it. See {@link ScrollToIndexAlign} for the values.
+   * @defaultValue "start"
+   */
+  colAlign?: ScrollToIndexAlign;
+}
+
+/**
+ * The scroll offsets of the grid in pixels. The axis whose offset is omitted is not scrolled.
+ */
+export interface VGridScrollOffset {
+  /**
+   * The vertical offset.
+   */
+  vertical?: number;
+  /**
+   * The horizontal offset.
+   */
+  horizontal?: number;
+}
 
 /**
  * @internal
@@ -106,19 +166,30 @@ export const gridScrollBy = (
 
 const scrollGridAxisToIndex = (
   driver: GridDriver,
-  isHorizontal: boolean,
   store: VirtualStore,
-  pinned: VGridPinned | undefined,
+  header: number,
+  sections: readonly number[],
+  footer: number,
   index: number,
   align: ScrollToIndexAlign | undefined,
+  isHorizontal: boolean,
 ) => {
   const count = store.$getItemsLength();
-  const pinnedStart = getPinnedStart(pinned, count);
-  const trailStart = getTrailStart(pinned, count, pinnedStart);
+  const pinnedStart = min(header, count);
+  const trailStart = getTrailStart(footer, count, pinnedStart);
   index = clamp(index, 0, count - 1);
+  const starts = getSectionStarts(sections, pinnedStart, trailStart);
+  const section = getSection(starts, index, trailStart);
+  const sectionHeader = section < 0 ? -1 : starts[section]!;
   // Read when scrolling, as the pinned items may be measured after the call. The offsets from the first item exclude the jump deferred during scrolling.
+  // The header of the section of the item sticks under the pinned items, so the item is below it unless it's the header itself.
   const getInsets = (): [start: number, end: number] => [
-    store.$getItemOffset(pinnedStart) - store.$getItemOffset(0),
+    store.$getItemOffset(pinnedStart) -
+      store.$getItemOffset(0) +
+      (sectionHeader < 0 || sectionHeader === index
+        ? 0
+        : store.$getItemOffset(sectionHeader + 1) -
+          store.$getItemOffset(sectionHeader)),
     store.$getItemOffset(count) - store.$getItemOffset(trailStart),
   ];
 
@@ -128,12 +199,27 @@ const scrollGridAxisToIndex = (
       return;
     }
     const [insetStart, insetEnd] = getInsets();
-    const itemOffset = store.$getItemOffset(index);
     const scrollOffset = store.$getScrollOffset();
+    const itemSize = store.$getItemSize(index);
+    let itemOffset = store.$getItemOffset(index);
+    if (sectionHeader === index) {
+      // A section header is where it sticks, until the end of its section pushes it out
+      const lastIndex =
+        (section + 1 < starts.length ? starts[section + 1]! : trailStart) - 1;
+      itemOffset = max(
+        itemOffset,
+        min(
+          scrollOffset + insetStart,
+          store.$getItemOffset(lastIndex) +
+            store.$getItemSize(lastIndex) -
+            itemSize,
+        ),
+      );
+    }
     if (itemOffset < scrollOffset + insetStart) {
       align = "start";
     } else if (
-      itemOffset + store.$getItemSize(index) >
+      itemOffset + itemSize >
       scrollOffset + store.$getViewportSize() - insetEnd
     ) {
       align = "end";
@@ -163,29 +249,36 @@ export const gridScrollToIndex = (
   driver: GridDriver,
   rowStore: VirtualStore,
   colStore: VirtualStore,
-  pinnedRows: VGridPinned | undefined,
-  pinnedCols: VGridPinned | undefined,
+  headerRows = 0,
+  sectionRows: readonly number[] = EMPTY,
+  footerRows = 0,
+  headerCols = 0,
+  footerCols = 0,
   { rowIndex, colIndex, rowAlign, colAlign }: VGridScrollToIndexOpts,
 ) => {
   // TODO support smooth scroll, removed because scrolling both axes smoothly freezes their ranges and the page
   if (rowIndex != NULL) {
     scrollGridAxisToIndex(
       driver,
-      false,
       rowStore,
-      pinnedRows,
+      headerRows,
+      sectionRows,
+      footerRows,
       rowIndex,
       rowAlign,
+      false,
     );
   }
   if (colIndex != NULL) {
     scrollGridAxisToIndex(
       driver,
-      true,
       colStore,
-      pinnedCols,
+      headerCols,
+      EMPTY,
+      footerCols,
       colIndex,
       colAlign,
+      true,
     );
   }
 };

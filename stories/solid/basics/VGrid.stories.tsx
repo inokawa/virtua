@@ -21,12 +21,12 @@ export const Default: StoryObj = {
         height: "100vh",
         "box-sizing": "border-box",
         border: "solid 1px gray",
+        background: "white",
       }}
     >
       {(rowIndex, colIndex) => (
         <div
           style={{
-            background: "white",
             padding: "4px",
             "border-right": "solid 1px gray",
             "border-bottom": "solid 1px gray",
@@ -43,39 +43,44 @@ export const Pinned: StoryObj = {
   render: () => {
     const ROWS = 1000;
     const COLS = 500;
-    const PINNED_ROWS = { start: 1, end: 1 };
-    const PINNED_COLS = { start: 2, end: 1 };
+    const PINNED_ROWS = { header: 1, footer: 1 };
+    const PINNED_COLS = { header: 2, footer: 1 };
     return (
       <VGrid
         rows={ROWS}
         rowHeight={40}
         cols={COLS}
         colWidth={100}
-        pinnedRows={PINNED_ROWS}
-        pinnedCols={PINNED_COLS}
+        headerRows={PINNED_ROWS.header}
+        footerRows={PINNED_ROWS.footer}
+        headerCols={PINNED_COLS.header}
+        footerCols={PINNED_COLS.footer}
         style={{
           height: "100vh",
           "box-sizing": "border-box",
           border: "solid 1px gray",
+          background: "white",
         }}
       >
         {(rowIndex, colIndex) => {
           const isPinnedRow =
-            rowIndex < PINNED_ROWS.start || rowIndex >= ROWS - PINNED_ROWS.end;
+            rowIndex < PINNED_ROWS.header ||
+            rowIndex >= ROWS - PINNED_ROWS.footer;
           const isPinnedCol =
-            colIndex < PINNED_COLS.start || colIndex >= COLS - PINNED_COLS.end;
+            colIndex < PINNED_COLS.header ||
+            colIndex >= COLS - PINNED_COLS.footer;
           return (
             <div
               style={{
+                padding: "4px",
+                "border-right": "solid 1px gray",
+                "border-bottom": "solid 1px gray",
                 background: isPinnedRow
                   ? "darkgray"
                   : isPinnedCol
                     ? "lightgray"
-                    : "white",
+                    : undefined,
                 color: isPinnedRow ? "white" : undefined,
-                padding: "4px",
-                "border-right": "solid 1px gray",
-                "border-bottom": "solid 1px gray",
               }}
             >
               {rowIndex} / {colIndex}
@@ -112,23 +117,24 @@ export const Columns: StoryObj = {
         rowHeight={30}
         cols={columns}
         colWidth="width"
-        pinnedRows={1}
+        headerRows={1}
         style={{
           height: "100vh",
           "box-sizing": "border-box",
           border: "solid 1px black",
+          background: "white",
         }}
       >
         {(row, column) => (
           <div
             style={{
-              background: row === null ? "burlywood" : "white",
               padding: "4px",
               "border-right": "solid 1px black",
               "border-bottom": "solid 1px black",
               overflow: "hidden",
               "text-overflow": "ellipsis",
               "white-space": "nowrap",
+              background: row === null ? "burlywood" : undefined,
             }}
           >
             {row === null ? column.key : row[column.key]}
@@ -235,12 +241,12 @@ export const ScrollTo: StoryObj = {
             flex: 1,
             "box-sizing": "border-box",
             border: "solid 1px gray",
+            background: "white",
           }}
         >
           {(rowIndex, colIndex) => (
             <div
               style={{
-                background: "white",
                 padding: "4px",
                 "border-right": "solid 1px gray",
                 "border-bottom": "solid 1px gray",

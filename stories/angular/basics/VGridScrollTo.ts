@@ -74,11 +74,11 @@ const LENGTH = 1000;
         [rowHeight]="80"
         [cols]="length"
         [colWidth]="160"
-        style="flex: 1; box-sizing: border-box; border: solid 1px gray;"
+        style="flex: 1; box-sizing: border-box; border: solid 1px gray; background: white;"
       >
         <ng-template let-rowIndex="row" let-colIndex="col">
           <div
-            style="background: white; padding: 4px; border-right: solid 1px gray; border-bottom: solid 1px gray;"
+            style="padding: 4px; border-right: solid 1px gray; border-bottom: solid 1px gray;"
           >
             {{ rowIndex }} / {{ colIndex }}
           </div>

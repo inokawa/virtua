@@ -287,7 +287,7 @@ export const Default: StoryObj = {
             width: header.column.getSize(),
           }))}
           colWidth="width"
-          pinnedRows={headerGroups.length}
+          headerRows={headerGroups.length}
           spans={spans}
           ariaSort={ariaSort}
         >

@@ -1099,7 +1099,7 @@ exports[`should render 4x4 cells 1`] = `
       <!---->
       <div
         role="rowgroup"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l0/l1; position: sticky; top: 0px; z-index: 3;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l0/l1; position: sticky; top: 0px; z-index: 4;"
       >
         <!---->
         <div

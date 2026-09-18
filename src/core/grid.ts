@@ -9,15 +9,8 @@ import {
   ACTION_RELAYOUT,
   type VirtualStore,
 } from "./store.js";
-import { type ItemsRange, type ScrollToIndexAlign } from "./types.js";
-import { max, min, NULL, sort } from "./utils.js";
-
-/**
- * The number of rows or columns pinned to the edges of the viewport.
- *
- * A number pins that many leading rows/columns, and an object pins `start` at the start edge and `end` at the end edge.
- */
-export type VGridPinned = number | { start?: number; end?: number };
+import { type ItemsRange } from "./types.js";
+import { EMPTY, max, min, NULL, sort } from "./utils.js";
 
 /**
  * A cell position in the grid.
@@ -52,50 +45,6 @@ export interface VGridSpan extends VGridCell {
 }
 
 /**
- * The cell to scroll to and the options of the scroll. The axis whose index is omitted is not scrolled.
- */
-export interface VGridScrollToIndexOpts {
-  /**
-   * The row index of the cell.
-   */
-  rowIndex?: number;
-  /**
-   * The column index of the cell.
-   */
-  colIndex?: number;
-  /**
-   * Alignment of the cell in the area between the pinned rows.
-   *
-   * - `start`: Align the cell to the start of the area.
-   * - `center`: Align the cell to the center of the area.
-   * - `end`: Align the cell to the end of the area.
-   * - `nearest`: If the cell is already completely visible, don't scroll. Otherwise scroll until it becomes visible. That is similar behavior to [`nearest` option of scrollIntoView](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView).
-   *
-   * @defaultValue "start"
-   */
-  rowAlign?: ScrollToIndexAlign;
-  /**
-   * Alignment of the cell in the area between the pinned columns. See {@link VGridScrollToIndexOpts.rowAlign} for the values.
-   * @defaultValue "start"
-   */
-  colAlign?: ScrollToIndexAlign;
-}
-
-/**
- * The scroll offsets of the grid in pixels. The axis whose offset is omitted is not scrolled.
- */
-export interface VGridScrollOffset {
-  /**
-   * The vertical offset.
-   */
-  vertical?: number;
-  /**
-   * The horizontal offset.
-   */
-  horizontal?: number;
-}
-
-/**
  * @internal
  */
 export const updateGridAxis = (
@@ -122,58 +71,11 @@ export const updateGridAxis = (
   }
 };
 
-const EMPTY: readonly never[] = [];
 // The states of the previous plan of each grid, keyed by its row layout which is created once
 const rowStatesCache = /*#__PURE__*/ new WeakMap<
   GridLayout,
   ReadonlyMap<number, GridRowState>
 >();
-
-/**
- * @internal
- */
-export const getPinnedStart = (
-  pinned: VGridPinned | undefined,
-  count: number,
-): number =>
-  min(
-    (typeof pinned === "number" ? pinned : pinned && pinned.start) || 0,
-    count,
-  );
-
-/**
- * @internal
- */
-export const getTrailStart = (
-  pinned: VGridPinned | undefined,
-  count: number,
-  pinnedStart: number,
-): number =>
-  count -
-  min(
-    (typeof pinned !== "number" && pinned && pinned.end) || 0,
-    count - pinnedStart,
-  );
-
-type SpanArea = readonly [
-  row: number,
-  col: number,
-  rowTo: number,
-  colTo: number,
-];
-
-const hasIndexIn = (
-  indexes: readonly number[],
-  from: number,
-  to: number,
-): boolean => {
-  for (const i of indexes) {
-    if (i >= from && i < to) {
-      return true;
-    }
-  }
-  return false;
-};
 
 const hasTrackIn = (
   extras: readonly number[],
@@ -183,13 +85,87 @@ const hasTrackIn = (
   start: number,
   end: number,
   trailStart: number,
-): boolean =>
-  from < pinnedStart ||
-  max(from, start) < min(to, end + 1) ||
-  trailStart < to ||
-  hasIndexIn(extras, from, to);
+): boolean => {
+  if (
+    from < pinnedStart ||
+    max(from, start) < min(to, end + 1) ||
+    trailStart < to
+  ) {
+    return true;
+  }
+  for (const i of extras) {
+    if (i >= from && i < to) {
+      return true;
+    }
+  }
+  return false;
+};
 
-// The rendered tracks in order, whose extras are sorted.
+/**
+ * @internal
+ */
+export const getTrailStart = (
+  footer: number,
+  count: number,
+  pinnedStart: number,
+): number => count - min(footer, count - pinnedStart);
+
+/**
+ * The sections start at the section rows between the pinned rows.
+ * @internal
+ */
+export const getSectionStarts = (
+  sectionRows: readonly number[],
+  pinnedStart: number,
+  trailStart: number,
+): number[] => {
+  const starts: number[] = [];
+  for (const rowIndex of sort(sectionRows.slice())) {
+    if (rowIndex >= pinnedStart && rowIndex < trailStart) {
+      starts.push(rowIndex);
+    }
+  }
+  return starts;
+};
+
+/**
+ * The section of the row, or -1. The last section ends at the rows pinned to the end.
+ * @internal
+ */
+export const getSection = (
+  starts: readonly number[],
+  rowIndex: number,
+  trailStart: number,
+): number => {
+  if (rowIndex >= trailStart) {
+    return -1;
+  }
+  let lo = 0;
+  let hi = starts.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (starts[mid]! <= rowIndex) {
+      lo = mid + 1;
+    } else {
+      hi = mid;
+    }
+  }
+  return lo - 1;
+};
+
+const addSectionHeader = (
+  extras: number[],
+  sectionStarts: readonly number[],
+  rowIndex: number,
+  trailStart: number,
+): void => {
+  const section = getSection(sectionStarts, rowIndex, trailStart);
+  if (section >= 0) {
+    extras.push(sectionStarts[section]!);
+  }
+};
+
+// The rendered tracks in order: the pinned tracks, the range, and the sorted extras which may repeat or fall in them.
 const getTrackIndexes = (
   extras: readonly number[],
   count: number,
@@ -202,21 +178,25 @@ const getTrackIndexes = (
   for (let i = 0; i < pinnedStart; i++) {
     indexes.push(i);
   }
-  // The extras are out of the pinned tracks and the range, so they are before or after the range.
   const extrasLength = extras.length;
   let e = 0;
-  for (; e < extrasLength; e++) {
+  let last = -1;
+  for (; e < extrasLength && extras[e]! < start; e++) {
     const i = extras[e]!;
-    if (i > end) {
-      break;
+    if (i !== last && i >= pinnedStart) {
+      indexes.push(i);
+      last = i;
     }
-    indexes.push(i);
   }
   for (let i = start; i <= end; i++) {
     indexes.push(i);
   }
   for (; e < extrasLength; e++) {
-    indexes.push(extras[e]!);
+    const i = extras[e]!;
+    if (i !== last && i > end && i < trailStart) {
+      indexes.push(i);
+      last = i;
+    }
   }
   for (let i = trailStart; i < count; i++) {
     indexes.push(i);
@@ -224,20 +204,22 @@ const getTrackIndexes = (
   return indexes;
 };
 
-// An index out of the grid is after the start of the tracks pinned to the end, so it's taken as rendered and never added.
-const addTrack = (
-  extras: number[],
-  index: number,
-  pinnedStart: number,
-  start: number,
-  end: number,
-  trailStart: number,
-): void => {
-  if (
-    !hasTrackIn(extras, index, index + 1, pinnedStart, start, end, trailStart)
-  ) {
-    extras.push(index);
+const getSpanRowEnd = (span: Readonly<VGridSpan>, rowCount: number): number =>
+  min(span.rowIndex + (span.rowSpan || 1), rowCount);
+const getSpanColEnd = (span: Readonly<VGridSpan>, colCount: number): number =>
+  min(span.colIndex + (span.colSpan || 1), colCount);
+
+const isKept = (
+  kept: readonly Readonly<VGridCell>[],
+  rowIndex: number,
+  colIndex: number,
+): boolean => {
+  for (const cell of kept) {
+    if (cell.rowIndex === rowIndex && cell.colIndex === colIndex) {
+      return true;
+    }
   }
+  return false;
 };
 
 const getEndInset = (layout: GridLayout, index: number): number =>
@@ -266,35 +248,35 @@ const getTemplate = (
     const cut = sortedCuts[c];
     if (cut != NULL && cut <= line) {
       c++;
-      continue;
-    }
-    let to: number;
-    let size: string;
-    if (index === line) {
-      to = line + 1;
-      // The cells in the rows size the max-content tracks of the container.
-      // https://drafts.csswg.org/css-grid-2/#subgrid-item-contribution
-      // An auto track without a cell measuring it keeps the size of the layout as the min, as the spanning cells don't give the size.
-      size =
-        measured[i] == NULL
-          ? layout.$getItemSize(line) + "px"
-          : measured[i]
-            ? measuredSize
-            : "minmax(" + layout.$getItemSize(line) + "px,auto)";
-      i++;
     } else {
-      // The tracks without rendered cells are merged until the next rendered track or the end of a span.
-      to = cut == NULL || (index != NULL && index < cut) ? index! : cut;
-      // A fixed track this large makes WebKit misplace the cells after one of them is focused, so the size is given as the min.
-      size =
-        "minmax(" +
-        (layout.$getItemOffset(to - 1) +
-          layout.$getItemSize(to - 1) -
-          layout.$getItemOffset(line)) +
-        "px,auto)";
+      let to: number;
+      let size: string;
+      if (index === line) {
+        to = line + 1;
+        // The cells in the rows size the max-content tracks of the container.
+        // https://drafts.csswg.org/css-grid-2/#subgrid-item-contribution
+        // An auto track without a cell measuring it keeps the size of the layout as the min, as the spanning cells don't give the size.
+        size =
+          measured[i] == NULL
+            ? layout.$getItemSize(line) + "px"
+            : measured[i]
+              ? measuredSize
+              : "minmax(" + layout.$getItemSize(line) + "px,auto)";
+        i++;
+      } else {
+        // The tracks without rendered cells are merged until the next rendered track or the end of a span.
+        to = cut == NULL || (index != NULL && index < cut) ? index! : cut;
+        // A fixed track this large makes WebKit misplace the cells after one of them is focused, so the size is given as the min.
+        size =
+          "minmax(" +
+          (layout.$getItemOffset(to - 1) +
+            layout.$getItemSize(to - 1) -
+            layout.$getItemOffset(line)) +
+          "px,auto)";
+      }
+      template += " " + size + " [l" + to + "]";
+      line = to;
     }
-    template += " " + size + " [l" + to + "]";
-    line = to;
   }
   // The tracks after the last rendered one extend the scrollable overflow to the end, as the container is not sized on the inline axis.
   // https://drafts.csswg.org/css-overflow-3/#scrollable-overflow-region
@@ -353,171 +335,119 @@ export const createGridPlan = (
   colLayout: Readonly<GridLayout>,
   rowRange: Readonly<ItemsRange>,
   colRange: Readonly<ItemsRange>,
-  pinnedRows: Readonly<VGridPinned> | undefined,
-  pinnedCols: Readonly<VGridPinned> | undefined,
+  headerRows = 0,
+  sectionRows: readonly number[] = EMPTY,
+  footerRows = 0,
+  headerCols = 0,
+  footerCols = 0,
   spans: readonly Readonly<VGridSpan>[] = EMPTY,
   kept: readonly Readonly<VGridCell>[] = EMPTY,
-  // undefined means the rows pinned to the start, which are rendered anyway
-  columnHeaderRows?: readonly number[],
-  rowHeaderCols: readonly number[] = EMPTY,
   sortedCell?: Readonly<GridSort>,
 ): GridPlan => {
   const rowCount = rowLayout.$getLength();
   const colCount = colLayout.$getLength();
-  const rowPinnedStart = getPinnedStart(pinnedRows, rowCount);
-  const rowTrailStart = getTrailStart(pinnedRows, rowCount, rowPinnedStart);
-  const colPinnedStart = getPinnedStart(pinnedCols, colCount);
-  const colTrailStart = getTrailStart(pinnedCols, colCount, colPinnedStart);
+  const rowPinnedStart = min(headerRows, rowCount);
+  const rowTrailStart = getTrailStart(footerRows, rowCount, rowPinnedStart);
+  const colPinnedStart = min(headerCols, colCount);
+  const colTrailStart = getTrailStart(footerCols, colCount, colPinnedStart);
   const rowRangeStart = max(rowRange[0], rowPinnedStart);
   const rowRangeEnd = min(rowRange[1], rowTrailStart - 1);
   const colRangeStart = max(colRange[0], colPinnedStart);
   const colRangeEnd = min(colRange[1], colTrailStart - 1);
-  const keptKeys = new Set<number>();
-  const extraRows: number[] = [];
-  const extraCols: number[] = [];
-  // The spans over the cells rendered for the ranges, the kept cells and the headers.
-  const laid: SpanArea[] = [];
+  const sectionStarts = getSectionStarts(
+    sectionRows,
+    rowPinnedStart,
+    rowTrailStart,
+  );
+  // The header column next to the body labels the rows
+  const rowHeaderCol = max(colPinnedStart - 1, 0);
 
-  for (const { rowIndex, colIndex } of kept) {
-    // A kept cell may be left out of the grid after the rows or the columns are removed.
-    if (rowIndex >= rowCount || colIndex >= colCount) {
-      continue;
-    }
-    addTrack(
-      extraRows,
-      rowIndex,
-      rowPinnedStart,
-      rowRangeStart,
-      rowRangeEnd,
-      rowTrailStart,
-    );
-    addTrack(
-      extraCols,
-      colIndex,
-      colPinnedStart,
-      colRangeStart,
-      colRangeEnd,
-      colTrailStart,
-    );
-    keptKeys.add(rowIndex * colCount + colIndex);
-  }
   // The headers label the cells, so they are rendered even out of the ranges.
   // https://www.w3.org/TR/wai-aria-1.2/#columnheader
   // https://www.w3.org/TR/wai-aria-1.2/#rowheader
-  if (columnHeaderRows) {
-    for (const rowIndex of columnHeaderRows) {
-      addTrack(
-        extraRows,
-        rowIndex,
-        rowPinnedStart,
-        rowRangeStart,
-        rowRangeEnd,
-        rowTrailStart,
-      );
+  const extraRows: number[] = [];
+  const extraCols: number[] = [];
+  for (const { rowIndex, colIndex } of kept) {
+    // A kept cell may be left out of the grid after the rows or the columns are removed.
+    if (rowIndex < rowCount && colIndex < colCount) {
+      extraRows.push(rowIndex);
+      addSectionHeader(extraRows, sectionStarts, rowIndex, rowTrailStart);
+      extraCols.push(colIndex);
     }
   }
-  for (const colIndex of rowHeaderCols) {
-    addTrack(
-      extraCols,
-      colIndex,
-      colPinnedStart,
-      colRangeStart,
-      colRangeEnd,
-      colTrailStart,
-    );
+  const sectionLength = sectionStarts.length;
+  if (sectionLength) {
+    addSectionHeader(extraRows, sectionStarts, rowRangeStart, rowTrailStart);
+    extraCols.push(rowHeaderCol);
   }
-  // The spans only over the headers, which are also rendered at the origins of the other spans.
-  let overHeaders: SpanArea[] = [];
-  for (const span of spans) {
-    const row = span.rowIndex;
-    const col = span.colIndex;
+  // The spans laid over the rendered tracks, by their indexes. The spans only over the headers wait for the headers rendered for the origins of the laid spans, until no span is laid.
+  const laid: number[] = [];
+  let waiting: number[] = [];
+  for (let i = 0; i < spans.length; i++) {
+    const span = spans[i]!;
     // A span may be left out of the grid after the rows or the columns are removed.
-    if (row >= rowCount || col >= colCount) {
-      continue;
-    }
-    const rowTo = min(row + (span.rowSpan || 1), rowCount);
-    const colTo = min(col + (span.colSpan || 1), colCount);
-    if (rowTo - row < 2 && colTo - col < 2) {
-      continue;
-    }
-    const hasRowTrack = hasTrackIn(
-      extraRows,
-      row,
-      rowTo,
-      rowPinnedStart,
-      rowRangeStart,
-      rowRangeEnd,
-      rowTrailStart,
-    );
     if (
-      hasRowTrack &&
-      hasTrackIn(
-        extraCols,
-        col,
-        colTo,
-        colPinnedStart,
-        colRangeStart,
-        colRangeEnd,
-        colTrailStart,
-      )
+      span.rowIndex < rowCount &&
+      span.colIndex < colCount &&
+      (getSpanRowEnd(span, rowCount) - span.rowIndex > 1 ||
+        getSpanColEnd(span, colCount) - span.colIndex > 1)
     ) {
-      laid.push([row, col, rowTo, colTo]);
-    } else if (
-      hasRowTrack
-        ? columnHeaderRows
-          ? hasIndexIn(columnHeaderRows, row, rowTo)
-          : row < rowPinnedStart
-        : hasIndexIn(rowHeaderCols, col, colTo)
-    ) {
-      overHeaders.push([row, col, rowTo, colTo]);
+      waiting.push(i);
     }
   }
-  // The origins are rendered, and the spans over the headers rendered for them are laid until no span is laid.
-  for (let laidIndex = 0; laidIndex < laid.length;) {
-    for (; laidIndex < laid.length; laidIndex++) {
-      const [row, col] = laid[laidIndex]!;
-      addTrack(
-        extraRows,
-        row,
-        rowPinnedStart,
-        rowRangeStart,
-        rowRangeEnd,
-        rowTrailStart,
-      );
-      addTrack(
-        extraCols,
-        col,
-        colPinnedStart,
-        colRangeStart,
-        colRangeEnd,
-        colTrailStart,
-      );
+  for (let l = 0; ;) {
+    const rest: number[] = [];
+    for (const i of waiting) {
+      const span = spans[i]!;
+      const row = span.rowIndex;
+      const col = span.colIndex;
+      const rowTo = getSpanRowEnd(span, rowCount);
+      if (
+        hasTrackIn(
+          extraRows,
+          row,
+          rowTo,
+          rowPinnedStart,
+          rowRangeStart,
+          rowRangeEnd,
+          rowTrailStart,
+        )
+      ) {
+        if (
+          hasTrackIn(
+            extraCols,
+            col,
+            getSpanColEnd(span, colCount),
+            colPinnedStart,
+            colRangeStart,
+            colRangeEnd,
+            colTrailStart,
+          )
+        ) {
+          laid.push(i);
+        } else {
+          const section = getSection(sectionStarts, rowTo - 1, rowTrailStart);
+          if (
+            row < rowPinnedStart ||
+            (section >= 0 && sectionStarts[section]! >= row)
+          ) {
+            rest.push(i);
+          }
+        }
+      } else if (col < colPinnedStart) {
+        rest.push(i);
+      }
     }
-    const rest: SpanArea[] = [];
-    for (const area of overHeaders) {
-      (hasTrackIn(
-        extraRows,
-        area[0],
-        area[2],
-        rowPinnedStart,
-        rowRangeStart,
-        rowRangeEnd,
-        rowTrailStart,
-      ) &&
-      hasTrackIn(
-        extraCols,
-        area[1],
-        area[3],
-        colPinnedStart,
-        colRangeStart,
-        colRangeEnd,
-        colTrailStart,
-      )
-        ? laid
-        : rest
-      ).push(area);
+    waiting = rest;
+    if (l === laid.length) {
+      break;
     }
-    overHeaders = rest;
+    for (; l < laid.length; l++) {
+      const span = spans[laid[l]!]!;
+      extraRows.push(span.rowIndex);
+      addSectionHeader(extraRows, sectionStarts, span.rowIndex, rowTrailStart);
+      extraCols.push(span.colIndex);
+    }
   }
   // The tracks are all known now.
   sort(extraRows);
@@ -540,16 +470,18 @@ export const createGridPlan = (
   );
   const colLength = cols.length;
 
-  // The spans of the cells: the numbers of the rows and the columns at the origins, and null at the covered cells.
-  const spanCells = new Map<
-    number,
-    readonly [rowSpan: number, colSpan: number] | null
-  >();
+  // The spans of the cells: the index in the spans at the origins, and -1 at the covered cells.
+  const spanCells = new Map<number, number>();
+  // The lines at the ends of the spans and the sections are in the templates, as a missing named line is found in the implicit grid.
+  // https://drafts.csswg.org/css-grid-2/#grid-placement-int
   const rowCuts: number[] = [];
   const colCuts: number[] = [];
-  for (const [row, col, rowTo, colTo] of laid) {
-    // The lines at the ends of the spans are in the templates, as a missing named line is found in the implicit grid.
-    // https://drafts.csswg.org/css-grid-2/#grid-placement-int
+  for (const i of laid) {
+    const span = spans[i]!;
+    const row = span.rowIndex;
+    const col = span.colIndex;
+    const rowTo = getSpanRowEnd(span, rowCount);
+    const colTo = getSpanColEnd(span, colCount);
     rowCuts.push(rowTo);
     colCuts.push(colTo);
     // The columns are in order, so the covered ones start at the column of the span.
@@ -568,57 +500,78 @@ export const createGridPlan = (
           if (c >= colTo) {
             break;
           }
-          spanCells.set(rowKey + c, NULL);
+          spanCells.set(rowKey + c, -1);
         }
       }
     }
-    spanCells.set(row * colCount + col, [rowTo - row, colTo - col]);
+    spanCells.set(row * colCount + col, i);
   }
-  sort(rowCuts);
-  sort(colCuts);
 
   // A track is measured by its first rendered cell which doesn't span over the other tracks, and is undefined if its size is given.
   const measuredCols: (boolean | undefined)[] = [];
-  const extraColFlags: boolean[] = [];
-  const rowHeaderColFlags: boolean[] = [];
-  const stickyStarts: (number | undefined)[] = [];
-  const stickyEnds: (number | undefined)[] = [];
   for (const colIndex of cols) {
-    const startPinned = colIndex < colPinnedStart;
-    const endPinned = colIndex >= colTrailStart;
     measuredCols.push(colLayout.$isMeasurable(colIndex) ? false : undefined);
-    extraColFlags.push(
-      !startPinned &&
-        !endPinned &&
-        (colIndex < colRangeStart || colIndex > colRangeEnd),
-    );
-    rowHeaderColFlags.push(rowHeaderCols.includes(colIndex));
-    stickyStarts.push(
-      startPinned ? colLayout.$getItemOffset(colIndex) : undefined,
-    );
-    // A sticky box keeps its edges in the scrollport, so the end inset is from the end of the track.
-    // https://drafts.csswg.org/css-position-3/#stickypos-insets
-    // https://wpt.fyi/results/css/css-position/sticky/position-sticky-grid.html
-    stickyEnds.push(endPinned ? getEndInset(colLayout, colIndex) : undefined);
   }
-
-  // TODO optimize: the rows and the columns out of the ranges are crossed with each other, which is quadratic for many cells kept far away from each other.
-  const startRows: GridRowState[] = [];
-  // The rows which are not pinned are not grouped, as Firefox on macOS keeps the stale columns of the table when the rows in a group change.
-  const groups: (GridRowGroupState | GridRowState)[] = [];
-  const endRows: GridRowState[] = [];
   const measuredRows: (boolean | undefined)[] = [];
+  // The section headers stick where the first row after the pinned rows is laid.
+  const stickyTop = rowLayout.$getItemOffset(rowPinnedStart);
+
+  // The rows out of the pinned rows and the sections are not grouped, as Firefox on macOS keeps the stale columns of the table when the rows in a group change.
+  const groups: (GridRowGroupState | GridRowState)[] = [];
+  let groupKey = -1;
+  let groupRows: (GridRowGroupState | GridRowState)[] = groups;
   const prev = rowStatesCache.get(rowLayout);
   const rowStates = new Map<number, GridRowState>();
+  // TODO optimize: the rows and the columns out of the ranges are crossed with each other, which is quadratic for many cells kept far away from each other.
   for (const rowIndex of rowIndexes) {
     const pinnedTop = rowIndex < rowPinnedStart;
     const pinnedBottom = rowIndex >= rowTrailStart;
     const pinned = pinnedTop || pinnedBottom;
     const rowExtra =
       !pinned && (rowIndex < rowRangeStart || rowIndex > rowRangeEnd);
-    const isHeaderRow = columnHeaderRows
-      ? columnHeaderRows.includes(rowIndex)
-      : pinnedTop;
+    const section = getSection(sectionStarts, rowIndex, rowTrailStart);
+    // The first row of the group of the row, or -1
+    const groupStart = pinnedTop
+      ? 0
+      : pinnedBottom
+        ? rowTrailStart
+        : section < 0
+          ? -1
+          : sectionStarts[section]!;
+    if (groupStart !== groupKey) {
+      groupKey = groupStart;
+      if (groupStart < 0) {
+        groupRows = groups;
+      } else {
+        const groupEnd = pinnedTop
+          ? rowPinnedStart
+          : pinnedBottom
+            ? rowCount
+            : // A section ends at the next section which may not be rendered, or at the rows pinned to the end
+              section + 1 < sectionLength
+              ? sectionStarts[section + 1]!
+              : rowTrailStart;
+        rowCuts.push(groupEnd);
+        const rows: GridRowState[] = [];
+        groups.push({
+          // The rows pinned to the end keep the key while the rows before them are added or removed
+          $key: pinnedTop ? -1 : pinnedBottom ? -2 : -3 - groupStart,
+          $rows: rows,
+          // The pinned rows at each edge are sticky together over the section headers and the cells of the other rows, so the cells spanning over them are stacked over the next rows as in the other rows.
+          $style: getBoxStyle(
+            groupStart,
+            groupEnd,
+            pinned ? 0 : undefined,
+            pinnedBottom ? "bottom" : "top",
+            4,
+          ),
+        });
+        groupRows = rows;
+      }
+    }
+    const isSectionHeaderRow =
+      section >= 0 && rowIndex === sectionStarts[section];
+    const rowTop = isSectionHeaderRow ? stickyTop : undefined;
     const rowKey = rowIndex * colCount;
     const prevRow = prev && prev.get(rowIndex);
     const prevCells = prevRow && prevRow.$cells;
@@ -630,26 +583,39 @@ export const createGridPlan = (
     let changed = false;
     for (let k = 0; k < colLength; k++) {
       const colIndex = cols[k]!;
-      const key = rowKey + colIndex;
-      const span = spanCells.get(key);
+      const startPinned = colIndex < colPinnedStart;
+      const endPinned = colIndex >= colTrailStart;
+      const colExtra =
+        !startPinned &&
+        !endPinned &&
+        (colIndex < colRangeStart || colIndex > colRangeEnd);
+      const laidIndex = spanCells.get(rowKey + colIndex);
       if (
-        span === NULL ||
-        (!span &&
-          (rowExtra || extraColFlags[k]) &&
-          !isHeaderRow &&
-          !rowHeaderColFlags[k] &&
-          !keptKeys.has(key))
+        laidIndex === -1 ||
+        (laidIndex == NULL &&
+          (rowExtra || colExtra) &&
+          !pinnedTop &&
+          !isSectionHeaderRow &&
+          !startPinned &&
+          !isKept(kept, rowIndex, colIndex))
       ) {
         continue;
       }
       let rowSpan: number | undefined;
       let colSpan: number | undefined;
-      let stickyEnd = stickyEnds[k];
+      // A sticky box keeps its edges in the scrollport, so the end inset is from the end of the track.
+      // https://drafts.csswg.org/css-position-3/#stickypos-insets
+      // https://wpt.fyi/results/css/css-position/sticky/position-sticky-grid.html
+      const stickyStart = startPinned
+        ? colLayout.$getItemOffset(colIndex)
+        : undefined;
+      let stickyEnd = endPinned ? getEndInset(colLayout, colIndex) : undefined;
       let measureRowIndex: number | undefined;
       let measureColIndex: number | undefined;
-      if (span) {
-        rowSpan = span[0];
-        colSpan = span[1];
+      if (laidIndex != NULL) {
+        const span = spans[laidIndex]!;
+        rowSpan = getSpanRowEnd(span, rowCount) - rowIndex;
+        colSpan = getSpanColEnd(span, colCount) - colIndex;
         rowEnd = max(rowEnd, rowIndex + rowSpan);
         // The end inset of a span is from its last column.
         if (stickyEnd != NULL) {
@@ -664,10 +630,9 @@ export const createGridPlan = (
         measureColIndex = colIndex;
         measuredCols[k] = true;
       }
-      const stickyStart = stickyStarts[k];
-      const role: GridRole = isHeaderRow
+      const role: GridRole = pinnedTop
         ? "columnheader"
-        : rowHeaderColFlags[k]
+        : colIndex === rowHeaderCol && (startPinned || isSectionHeaderRow)
           ? "rowheader"
           : "cell";
       // aria-sort is allowed only on the headers
@@ -751,13 +716,13 @@ export const createGridPlan = (
           $col: colIndex,
           $rowSpan: rowSpan,
           $colSpan: colSpan,
-          $start: stickyStart,
-          $end: stickyEnd,
           $measureRow: measureRowIndex,
           $measureCol: measureColIndex,
           $role: role,
           $sort: sortOrder,
           $style: style,
+          $start: stickyStart,
+          $end: stickyEnd,
         };
         changed = true;
       }
@@ -770,53 +735,38 @@ export const createGridPlan = (
     }
     // A column rendered anew has no previous cell and marks the row changed, so the lengths tell the columns are the same.
     // A change of the span end changes a cell, so the row end is not compared.
-    const row: GridRowState =
-      prevRow && !changed && prevCells!.length === rowCells.length
-        ? prevRow
-        : {
-            $row: rowIndex,
-            $cells: rowCells,
-            $style: {
-              display: "grid",
-              gridTemplateRows: "subgrid",
-              gridTemplateColumns: "subgrid",
-              gridColumn: "1/-1",
-              // A subgrid clamps its items to its tracks, so the row spans to the end of its cells.
-              // https://drafts.csswg.org/css-grid-2/#subgrid-implicit
-              gridRow: "l" + rowIndex + "/l" + rowEnd,
-            },
-          };
+    let row: GridRowState;
+    if (
+      prevRow &&
+      !changed &&
+      prevCells!.length === rowCells.length &&
+      prevRow.$top === rowTop
+    ) {
+      row = prevRow;
+    } else {
+      row = {
+        $row: rowIndex,
+        $cells: rowCells,
+        // A subgrid clamps its items to its tracks, so the row spans to the end of its cells.
+        // https://drafts.csswg.org/css-grid-2/#subgrid-implicit
+        // A section header sticks in the box of its section over the sticky and spanning cells of the other rows, so it's pushed out at the end of the section.
+        // https://drafts.csswg.org/css-position-3/#stickypos-insets
+        $style: getBoxStyle(rowIndex, rowEnd, rowTop, "top", 3),
+        $top: rowTop,
+      };
+    }
     rowStates.set(rowIndex, row);
-    (pinnedTop ? startRows : pinnedBottom ? endRows : groups).push(row);
+    groupRows.push(row);
   }
 
   rowStatesCache.set(rowLayout, rowStates);
-
-  // The pinned rows at each edge are sticky together, so the cells spanning over them are stacked over the next rows as in the other rows.
-  if (startRows.length) {
-    groups.unshift({
-      $key: -1,
-      $rows: startRows,
-      $style: getPinnedGroupStyle("l0/l" + rowPinnedStart, "top"),
-    });
-  }
-  if (endRows.length) {
-    groups.push({
-      $key: -2,
-      $rows: endRows,
-      $style: getPinnedGroupStyle(
-        "l" + rowTrailStart + "/l" + rowCount,
-        "bottom",
-      ),
-    });
-  }
 
   return {
     $rowTemplate: getTemplate(
       rowLayout,
       rowIndexes,
       measuredRows,
-      rowCuts,
+      sort(rowCuts),
       "max-content",
       rowCount,
     ),
@@ -826,7 +776,7 @@ export const createGridPlan = (
       colLayout,
       cols,
       measuredCols,
-      colCuts,
+      sort(colCuts),
       "minmax(max-content,auto)",
       colCount,
     ),
@@ -834,20 +784,38 @@ export const createGridPlan = (
   };
 };
 
-const getPinnedGroupStyle = (
-  gridRow: string,
+// The box of a row or a group of the rows between the lines, which sticks at the inset from the edge if given
+const getBoxStyle = (
+  from: number,
+  to: number,
+  inset: number | undefined,
   edge: "top" | "bottom",
-): GridStyle => ({
-  display: "grid",
-  gridTemplateRows: "subgrid",
-  gridTemplateColumns: "subgrid",
-  gridColumn: "1/-1",
-  gridRow,
-  position: "sticky",
-  [edge]: "0px",
-  // Over the sticky and spanning cells of the other rows
-  zIndex: 3,
-});
+  zIndex: number,
+): GridStyle => {
+  const style: {
+    display: string;
+    gridTemplateRows: string;
+    gridTemplateColumns: string;
+    gridColumn: string;
+    gridRow: string;
+    position?: string;
+    top?: string;
+    bottom?: string;
+    zIndex?: number;
+  } = {
+    display: "grid",
+    gridTemplateRows: "subgrid",
+    gridTemplateColumns: "subgrid",
+    gridColumn: "1/-1",
+    gridRow: "l" + from + "/l" + to,
+  };
+  if (inset != NULL) {
+    style.position = "sticky";
+    style[edge] = inset + "px";
+    style.zIndex = zIndex;
+  }
+  return style;
+};
 
 /**
  * @internal
@@ -856,13 +824,14 @@ export interface GridCellState {
   readonly $col: number;
   readonly $rowSpan: number | undefined;
   readonly $colSpan: number | undefined;
-  readonly $start: number | undefined;
-  readonly $end: number | undefined;
   readonly $measureRow: number | undefined;
   readonly $measureCol: number | undefined;
   readonly $role: GridRole;
   readonly $sort: GridSort["order"] | undefined;
   readonly $style: GridStyle;
+  // The fields below are not rendered. They are in the style, and compared with the next plan to keep the state.
+  readonly $start: number | undefined;
+  readonly $end: number | undefined;
 }
 
 /**
@@ -872,6 +841,8 @@ export interface GridRowState {
   readonly $row: number;
   readonly $cells: readonly GridCellState[];
   readonly $style: GridStyle;
+  // The fields below are not rendered. They are in the style, and compared with the next plan to keep the state.
+  readonly $top: number | undefined;
 }
 
 /**

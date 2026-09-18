@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import React, { CSSProperties, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { VGrid, VGridHandle, VGridSpan } from "../../../src";
 import { faker } from "@faker-js/faker";
 import { Spinner, delay } from "../common";
@@ -8,31 +8,29 @@ export default {
   component: VGrid,
 } as Meta;
 
-const gridStyle: CSSProperties = {
-  height: "100vh",
-  boxSizing: "border-box",
-  border: "solid 1px gray",
-};
-
-const cellStyle: CSSProperties = {
-  background: "white",
-  padding: 4,
-  borderRight: "solid 1px gray",
-  borderBottom: "solid 1px gray",
-};
-
 export const Default: StoryObj = {
   render: () => {
     return (
       <VGrid
-        style={gridStyle}
+        style={{
+          height: "100vh",
+          boxSizing: "border-box",
+          border: "solid 1px gray",
+          background: "white",
+        }}
         rows={1000}
         rowHeight={40}
         cols={500}
         colWidth={100}
       >
         {(rowIndex, colIndex) => (
-          <div style={cellStyle}>
+          <div
+            style={{
+              padding: 4,
+              borderRight: "solid 1px gray",
+              borderBottom: "solid 1px gray",
+            }}
+          >
             {rowIndex} / {colIndex}
           </div>
         )}
@@ -45,32 +43,43 @@ export const Pinned: StoryObj = {
   render: () => {
     const ROWS = 1000;
     const COLS = 500;
-    const PINNED_ROWS = { start: 1, end: 1 };
-    const PINNED_COLS = { start: 2, end: 1 };
+    const PINNED_ROWS = { header: 1, footer: 1 };
+    const PINNED_COLS = { header: 2, footer: 1 };
     return (
       <VGrid
-        style={gridStyle}
+        style={{
+          height: "100vh",
+          boxSizing: "border-box",
+          border: "solid 1px gray",
+          background: "white",
+        }}
         rows={ROWS}
         rowHeight={40}
         cols={COLS}
         colWidth={100}
-        pinnedRows={PINNED_ROWS}
-        pinnedCols={PINNED_COLS}
+        headerRows={PINNED_ROWS.header}
+        footerRows={PINNED_ROWS.footer}
+        headerCols={PINNED_COLS.header}
+        footerCols={PINNED_COLS.footer}
       >
         {(rowIndex, colIndex) => {
           const isPinnedRow =
-            rowIndex < PINNED_ROWS.start || rowIndex >= ROWS - PINNED_ROWS.end;
+            rowIndex < PINNED_ROWS.header ||
+            rowIndex >= ROWS - PINNED_ROWS.footer;
           const isPinnedCol =
-            colIndex < PINNED_COLS.start || colIndex >= COLS - PINNED_COLS.end;
+            colIndex < PINNED_COLS.header ||
+            colIndex >= COLS - PINNED_COLS.footer;
           return (
             <div
               style={{
-                ...cellStyle,
+                padding: 4,
+                borderRight: "solid 1px gray",
+                borderBottom: "solid 1px gray",
                 background: isPinnedRow
                   ? "darkgray"
                   : isPinnedCol
                     ? "lightgray"
-                    : "white",
+                    : undefined,
                 color: isPinnedRow ? "white" : undefined,
               }}
             >
@@ -109,13 +118,18 @@ export const Spans: StoryObj = {
 
     return (
       <VGrid
-        style={gridStyle}
+        style={{
+          height: "100vh",
+          boxSizing: "border-box",
+          border: "solid 1px gray",
+          background: "white",
+        }}
         rows={ROWS}
         rowHeight={40}
         cols={COLS}
         colWidth={100}
-        pinnedRows={2}
-        pinnedCols={1}
+        headerRows={2}
+        headerCols={1}
         spans={spans}
       >
         {(rowIndex, colIndex) => {
@@ -124,12 +138,14 @@ export const Spans: StoryObj = {
           return (
             <div
               style={{
-                ...cellStyle,
+                padding: 4,
+                borderRight: "solid 1px gray",
+                borderBottom: "solid 1px gray",
                 background: isHeader
                   ? "darkgray"
                   : isLabel
                     ? "lightgray"
-                    : "white",
+                    : undefined,
                 color: isHeader ? "white" : undefined,
               }}
             >
@@ -150,7 +166,12 @@ export const Gap: StoryObj = {
   render: () => {
     return (
       <VGrid
-        style={{ ...gridStyle, background: "#ddd" }}
+        style={{
+          height: "100vh",
+          boxSizing: "border-box",
+          border: "solid 1px gray",
+          background: "#ddd",
+        }}
         rows={1000}
         rowHeight={40}
         cols={500}
@@ -193,23 +214,28 @@ export const Columns: StoryObj = {
     );
     return (
       <VGrid
-        style={{ ...gridStyle, border: "solid 1px black" }}
+        style={{
+          height: "100vh",
+          boxSizing: "border-box",
+          border: "solid 1px black",
+          background: "white",
+        }}
         rows={rows}
         rowHeight={30}
         cols={columns}
         colWidth="width"
-        pinnedRows={1}
+        headerRows={1}
       >
         {(row, column) => (
           <div
             style={{
-              background: row === null ? "burlywood" : "white",
               padding: 4,
               borderRight: "solid 1px black",
               borderBottom: "solid 1px black",
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
+              background: row === null ? "burlywood" : undefined,
             }}
           >
             {row === null ? column.key : row[column.key]}
@@ -220,29 +246,117 @@ export const Columns: StoryObj = {
   },
 };
 
+const SECTIONS = Array.from({ length: 26 }, (_, i) => {
+  const letter = String.fromCharCode(65 + i);
+  return {
+    label: letter,
+    data: Array.from({ length: 5 + ((i * 7) % 20) }, (_, j) => ({
+      name: `${letter}${j}`,
+      value: (i * 31 + j * 17) % 100,
+    })),
+  };
+});
+const SECTION_COLS = [
+  { key: "name", width: 200 },
+  { key: "value", width: 200 },
+  { key: "note", width: "auto" },
+] as const;
+const HEADER = { header: true } as const;
+const groupedRows = [
+  HEADER,
+  ...SECTIONS.flatMap((section) => [section, ...section.data]),
+];
+const sectionStarts = groupedRows.flatMap((row, i) =>
+  "data" in row ? [i] : [],
+);
+
+export const Sections: StoryObj = {
+  render: () => {
+    return (
+      <VGrid
+        style={{
+          height: "100vh",
+          boxSizing: "border-box",
+          border: "solid 1px gray",
+          background: "white",
+        }}
+        rows={groupedRows}
+        rowHeight={40}
+        cols={SECTION_COLS}
+        colWidth="width"
+        headerRows={1}
+        sectionRows={sectionStarts}
+        spans={sectionStarts.map((rowIndex) => ({
+          rowIndex,
+          colIndex: 0,
+          colSpan: 3,
+        }))}
+      >
+        {(row, column) => (
+          <div
+            style={{
+              padding: 4,
+              borderRight: "solid 1px gray",
+              borderBottom: "solid 1px gray",
+              background:
+                "header" in row
+                  ? "burlywood"
+                  : "data" in row
+                    ? "#eee"
+                    : undefined,
+              fontWeight: "header" in row || "data" in row ? "bold" : undefined,
+            }}
+          >
+            {"header" in row
+              ? column.key
+              : "data" in row
+                ? `${row.label} (${row.data.length})`
+                : column.key === "note"
+                  ? "-"
+                  : row[column.key]}
+          </div>
+        )}
+      </VGrid>
+    );
+  },
+};
+
+const PHRASES = Array.from({ length: 64 }, () =>
+  faker.lorem.words({ min: 1, max: 24 }),
+);
+const hash = (n: number) => {
+  n = Math.imul(n ^ (n >>> 16), 0x45d9f3b);
+  n = Math.imul(n ^ (n >>> 16), 0x45d9f3b);
+  return (n ^ (n >>> 16)) >>> 0;
+};
+
 export const AutoSize: StoryObj = {
   render: () => {
     return (
       <VGrid
-        style={gridStyle}
+        style={{
+          height: "100vh",
+          boxSizing: "border-box",
+          border: "solid 1px gray",
+          background: "white",
+        }}
         rows={1000}
         rowHeight="auto"
         cols={500}
-        colWidth="auto"
+        colWidth={200}
       >
         {(rowIndex, colIndex) => (
-          <div style={cellStyle}>
+          <div
+            style={{
+              padding: 4,
+              borderRight: "solid 1px gray",
+              borderBottom: "solid 1px gray",
+            }}
+          >
             <div>
               {rowIndex} / {colIndex}
             </div>
-            {Array.from({ length: (rowIndex % 8) + 1 }, (_, i) => (
-              <div key={i}>
-                {Array.from(
-                  { length: (colIndex % 4) + 1 },
-                  () => "Hello world!",
-                ).join(" ")}
-              </div>
-            ))}
+            {PHRASES[hash(rowIndex * 500 + colIndex) % PHRASES.length]}
           </div>
         )}
       </VGrid>
@@ -269,20 +383,27 @@ export const Resizable: StoryObj = {
           reset widths
         </button>
         <VGrid
-          style={{ flex: 1, boxSizing: "border-box", border: "solid 1px gray" }}
+          style={{
+            flex: 1,
+            boxSizing: "border-box",
+            border: "solid 1px gray",
+            background: "white",
+          }}
           rows={1000}
           rowHeight={40}
           cols={columns}
           colWidth="width"
-          pinnedRows={1}
+          headerRows={1}
         >
           {(rowIndex, column, { colIndex }) => (
             <div
               style={{
-                ...cellStyle,
+                padding: 4,
+                borderRight: "solid 1px gray",
+                borderBottom: "solid 1px gray",
                 position: "relative",
-                background: rowIndex === 0 ? "lightgray" : "white",
                 overflow: "hidden",
+                background: rowIndex === 0 ? "lightgray" : undefined,
                 userSelect: rowIndex === 0 ? "none" : undefined,
               }}
             >
@@ -412,14 +533,25 @@ export const ScrollTo: StoryObj = {
         </div>
         <VGrid
           ref={ref}
-          style={{ flex: 1, boxSizing: "border-box", border: "solid 1px gray" }}
+          style={{
+            flex: 1,
+            boxSizing: "border-box",
+            border: "solid 1px gray",
+            background: "white",
+          }}
           rows={LENGTH}
           rowHeight={80}
           cols={LENGTH}
           colWidth={160}
         >
           {(rowIndex, colIndex) => (
-            <div style={cellStyle}>
+            <div
+              style={{
+                padding: 4,
+                borderRight: "solid 1px gray",
+                borderBottom: "solid 1px gray",
+              }}
+            >
               {rowIndex} / {colIndex}
             </div>
           )}
@@ -443,7 +575,12 @@ export const InfiniteScrolling: StoryObj = {
     return (
       <VGrid
         ref={ref}
-        style={gridStyle}
+        style={{
+          height: "100vh",
+          boxSizing: "border-box",
+          border: "solid 1px gray",
+          background: "white",
+        }}
         // the last row is the loading indicator
         rows={rowCount + (fetching ? 1 : 0)}
         rowHeight={ROW_HEIGHT}
@@ -481,7 +618,13 @@ export const InfiniteScrolling: StoryObj = {
               }}
             />
           ) : (
-            <div style={cellStyle}>
+            <div
+              style={{
+                padding: 4,
+                borderRight: "solid 1px gray",
+                borderBottom: "solid 1px gray",
+              }}
+            >
               {rowIndex} / {colIndex}
             </div>
           )
@@ -519,7 +662,12 @@ export const MasterDetail: StoryObj = {
 
     return (
       <VGrid
-        style={gridStyle}
+        style={{
+          height: "100vh",
+          boxSizing: "border-box",
+          border: "solid 1px gray",
+          background: "white",
+        }}
         rows={displayRows}
         rowHeight="height"
         cols={COLS}
@@ -537,7 +685,7 @@ export const MasterDetail: StoryObj = {
           if (colIndex === 0) {
             const isExpanded = expanded.has(index);
             return (
-              <div style={{ ...cellStyle, borderRight: undefined }}>
+              <div style={{ padding: 4, borderBottom: "solid 1px gray" }}>
                 <button
                   style={{
                     border: "none",
@@ -563,7 +711,13 @@ export const MasterDetail: StoryObj = {
             );
           }
           return (
-            <div style={cellStyle}>
+            <div
+              style={{
+                padding: 4,
+                borderRight: "solid 1px gray",
+                borderBottom: "solid 1px gray",
+              }}
+            >
               {index} / {colIndex}
             </div>
           );

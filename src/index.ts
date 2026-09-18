@@ -1,9 +1,9 @@
 /**
  * @module react
  */
+export type { CacheSnapshot } from "./core/types.js";
 export type {
-  CacheSnapshot,
   ScrollToIndexAlign,
   ScrollToIndexOpts,
-} from "./core/types.js";
+} from "./core/scroll-to.js";
 export * from "./react/index.js";

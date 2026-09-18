@@ -30,14 +30,15 @@
     cols,
     rowHeight,
     colWidth,
-    pinnedRows,
-    pinnedCols,
+    headerRows,
+    sectionRows,
+    footerRows,
+    headerCols,
+    footerCols,
     spans,
     keepMounted,
     bufferSize,
     gap = 0,
-    ariaColumnHeader,
-    ariaRowHeader,
     ariaSort,
     onverticalscroll,
     onhorizontalscroll,
@@ -97,12 +98,13 @@
       colLayout,
       rowStore.$getRange(bufferSize),
       colStore.$getRange(bufferSize),
-      pinnedRows,
-      pinnedCols,
+      headerRows,
+      sectionRows,
+      footerRows,
+      headerCols,
+      footerCols,
       spans,
       keepMounted,
-      ariaColumnHeader,
-      ariaRowHeader,
       ariaSort,
     );
   });
@@ -149,7 +151,17 @@
   export const getRowSize: VGridHandle["getRowSize"] = rowStore.$getItemSize;
   export const getColSize: VGridHandle["getColSize"] = colStore.$getItemSize;
   export const scrollToIndex: VGridHandle["scrollToIndex"] = (opts) =>
-    gridScrollToIndex(driver, rowStore, colStore, pinnedRows, pinnedCols, opts);
+    gridScrollToIndex(
+      driver,
+      rowStore,
+      colStore,
+      headerRows,
+      sectionRows,
+      footerRows,
+      headerCols,
+      footerCols,
+      opts,
+    );
   export const scrollTo: VGridHandle["scrollTo"] = (offset) =>
     gridScrollTo(driver, offset);
   export const scrollBy: VGridHandle["scrollBy"] = (offset) =>

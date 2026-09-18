@@ -201,7 +201,7 @@ const rows = Array.from({ length: 10000 }, (_, i) => ({
 export const App = () => {
   return (
     <VGrid
-      style={{ height: 800, border: "solid 1px gray" }}
+      style={{ height: 800, border: "solid 1px gray", background: "white" }}
       rows={rows}
       rowHeight={40}
       cols={columns}
@@ -210,7 +210,6 @@ export const App = () => {
       {(row, col) => (
         <div
           style={{
-            background: "white",
             borderRight: "solid 1px gray",
             borderBottom: "solid 1px gray",
           }}

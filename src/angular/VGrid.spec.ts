@@ -78,10 +78,9 @@ it("should override aria-rowcount and aria-colcount by attributes", async () => 
       [rowHeight]="40"
       [cols]="cols"
       [colWidth]="100"
-      [pinnedRows]="1"
-      [pinnedCols]="1"
+      [headerRows]="1"
+      [headerCols]="1"
       [spans]="spans"
-      [ariaRowHeader]="ariaRowHeader"
       [ariaSort]="ariaSort"
     >
       <ng-template let-row="row" let-col="col" let-cell="cell"
@@ -99,7 +98,6 @@ class Host {
     { rowIndex: 1, colIndex: 1, colSpan: 2 },
     { rowIndex: 2, colIndex: 0, rowSpan: 2 },
   ];
-  readonly ariaRowHeader = [0];
   readonly ariaSort = {
     rowIndex: 0,
     colIndex: 1,

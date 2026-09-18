@@ -27,11 +27,8 @@ export {
   type GridCellState,
   type GridRowGroupState,
   gridStyleToString,
-  type VGridPinned,
   type VGridCell,
   type VGridSpan,
-  type VGridScrollToIndexOpts,
-  type VGridScrollOffset,
 } from "./grid.js";
 export type { DriverFactory, Driver, GridDriver } from "./driver.js";
 export {
@@ -46,7 +43,10 @@ export {
   gridScrollTo,
   gridScrollBy,
   gridScrollToIndex,
+  type ScrollToIndexOpts,
+  type VGridScrollToIndexOpts,
+  type VGridScrollOffset,
 } from "./scroll-to.js";
 export { isBrowser } from "./environment.js";
 export { microtask, sort } from "./utils.js";
-export type { CacheSnapshot, ScrollToIndexOpts, ItemsRange } from "./types.js";
+export type { CacheSnapshot, ItemsRange } from "./types.js";

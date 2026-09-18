@@ -1,6 +1,11 @@
 /** @internal */
 export const NULL = null;
 
+/**
+ * @internal
+ */
+export const EMPTY: readonly never[] = [];
+
 /** @internal */
 export const { min, max, abs, floor } = Math;
 

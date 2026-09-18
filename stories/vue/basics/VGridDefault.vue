@@ -12,12 +12,12 @@ import { VGrid } from "../../../src/vue";
       height: '100vh',
       boxSizing: 'border-box',
       border: 'solid 1px gray',
+      background: 'white',
     }"
     #default="{ row: rowIndex, col: colIndex }"
   >
     <div
       :style="{
-        background: 'white',
         padding: '4px',
         borderRight: 'solid 1px gray',
         borderBottom: 'solid 1px gray',

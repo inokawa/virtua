@@ -102,11 +102,13 @@ export type GridAxisGeometry = {
   count: number;
   size: (index: number) => number;
   pinned?: { start?: number; end?: number };
+  // The section headers between the pinned tracks, sorted
+  headers?: readonly number[];
 };
 
 // The positions come from the declared sizes, independently of how the grid lays them out
 const resolveGridAxisGeometry = (
-  { count, size, pinned = {} }: GridAxisGeometry,
+  { count, size, pinned = {}, headers = [] }: GridAxisGeometry,
   gap: number,
   scroll: number,
   client: number,
@@ -119,14 +121,26 @@ const resolveGridAxisGeometry = (
   const pinnedStart = Math.min(Math.max(pinned.start || 0, 0), count);
   const trailStart =
     count - Math.min(Math.max(pinned.end || 0, 0), count - pinnedStart);
+  const pinnedEnd = offsets[pinnedStart]!;
   const place = (index: number, span: number): [number, number] => {
     const offset = offsets[index]!;
-    const position =
+    let position =
       index < pinnedStart
         ? offset
         : index >= trailStart
           ? Math.min(offset - scroll, client - total + offset)
           : offset - scroll;
+    if (headers.includes(index)) {
+      // A section header sticks under the pinned tracks until the end of its section
+      let sectionEnd = index + 1;
+      while (sectionEnd < trailStart && !headers.includes(sectionEnd)) {
+        sectionEnd++;
+      }
+      position = Math.max(
+        position,
+        Math.min(pinnedEnd, offsets[sectionEnd]! - gap - scroll - size(index)),
+      );
+    }
     return [position, offsets[index + span]! - offset - gap];
   };
   const visible: number[] = [];

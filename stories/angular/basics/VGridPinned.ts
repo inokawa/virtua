@@ -3,8 +3,8 @@ import { VGrid } from "../../../src/angular";
 
 const ROWS = 1000;
 const COLS = 500;
-const PINNED_ROWS = { start: 1, end: 1 };
-const PINNED_COLS = { start: 2, end: 1 };
+const PINNED_ROWS = { header: 1, footer: 1 };
+const PINNED_COLS = { header: 2, footer: 1 };
 
 @Component({
   selector: "story-vgrid-pinned",
@@ -15,9 +15,11 @@ const PINNED_COLS = { start: 2, end: 1 };
       [rowHeight]="40"
       [cols]="cols"
       [colWidth]="100"
-      [pinnedRows]="pinnedRows"
-      [pinnedCols]="pinnedCols"
-      style="height: 100vh; box-sizing: border-box; border: solid 1px gray;"
+      [headerRows]="pinnedRows.header"
+      [footerRows]="pinnedRows.footer"
+      [headerCols]="pinnedCols.header"
+      [footerCols]="pinnedCols.footer"
+      style="height: 100vh; box-sizing: border-box; border: solid 1px gray; background: white;"
     >
       <ng-template let-rowIndex="row" let-colIndex="col">
         <div
@@ -27,7 +29,7 @@ const PINNED_COLS = { start: 2, end: 1 };
               ? 'darkgray'
               : isPinnedCol(colIndex)
                 ? 'lightgray'
-                : 'white'
+                : null
           "
           [style.color]="isPinnedRow(rowIndex) ? 'white' : null"
         >
@@ -43,9 +45,13 @@ export class VGridPinnedDemo {
   protected readonly pinnedRows = PINNED_ROWS;
   protected readonly pinnedCols = PINNED_COLS;
   protected isPinnedRow(rowIndex: number): boolean {
-    return rowIndex < PINNED_ROWS.start || rowIndex >= ROWS - PINNED_ROWS.end;
+    return (
+      rowIndex < PINNED_ROWS.header || rowIndex >= ROWS - PINNED_ROWS.footer
+    );
   }
   protected isPinnedCol(colIndex: number): boolean {
-    return colIndex < PINNED_COLS.start || colIndex >= COLS - PINNED_COLS.end;
+    return (
+      colIndex < PINNED_COLS.header || colIndex >= COLS - PINNED_COLS.footer
+    );
   }
 }

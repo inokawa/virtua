@@ -32,7 +32,6 @@ import {
   type StateVersion,
   type VGridAxis,
   type VGridCell,
-  type VGridPinned,
   type VGridSize,
   type VGridSpan,
   type VirtualStore,
@@ -110,7 +109,7 @@ export interface VGridHandle {
    */
   getColSize(index: number): number;
   /**
-   * Scroll to the cell specified by the indexes. The cell is not hidden behind the pinned cells.
+   * Scroll to the cell specified by the indexes. The cell is not hidden behind the rows and the columns sticking over it.
    * @param opts the indexes of the cell and the options. See {@link VGridScrollToIndexOpts}.
    */
   scrollToIndex(opts: VGridScrollToIndexOpts): void;
@@ -326,23 +325,43 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
    */
   readonly colWidth = input.required<NoInfer<VGridSize<C>>>();
   /**
-   * The number of rows pinned to the edges of the viewport. See {@link VGridPinned} for the accepted values.
+   * The number of the leading rows pinned to the start, which are the column headers (`role="columnheader"`).
    *
    * **The pinned cells are rendered over the other cells, so give them an opaque background.**
    * @defaultValue 0
    */
-  readonly pinnedRows = input<VGridPinned>();
+  readonly headerRows = input<number>();
   /**
-   * The number of columns pinned to the edges of the viewport. See {@link VGridPinned} for the accepted values.
+   * Indexes of the rows which start sections. A section lasts until the next section row or the footer rows, and its first row sticks below the header rows while the section is scrolled through.
+   *
+   * **The section rows are rendered over the other cells while they stick, so give them an opaque background.**
+   */
+  readonly sectionRows = input<readonly number[]>();
+  /**
+   * The number of the trailing rows pinned to the end.
    *
    * **The pinned cells are rendered over the other cells, so give them an opaque background.**
    * @defaultValue 0
    */
-  readonly pinnedCols = input<VGridPinned>();
+  readonly footerRows = input<number>();
+  /**
+   * The number of the leading columns pinned to the start, the last of which is the row header (`role="rowheader"`).
+   *
+   * **The pinned cells are rendered over the other cells, so give them an opaque background.**
+   * @defaultValue 0
+   */
+  readonly headerCols = input<number>();
+  /**
+   * The number of the trailing columns pinned to the end.
+   *
+   * **The pinned cells are rendered over the other cells, so give them an opaque background.**
+   * @defaultValue 0
+   */
+  readonly footerCols = input<number>();
   /**
    * Cells merged over multiple rows and/or columns. See {@link VGridSpan} for the accepted values.
    *
-   * The cell at the origin is stretched over the merged area, and the other cells in it are not rendered. Spans must not overlap each other or cross the boundary of the pinned rows/columns. A spanning cell is not measured for `"auto"` sizes on the axes it spans, and doesn't enlarge those tracks.
+   * The cell at the origin is stretched over the merged area, and the other cells in it are not rendered. Spans must not overlap each other or cross the boundaries of the pinned rows/columns or the sections. A spanning cell is not measured for `"auto"` sizes on the axes it spans, and doesn't enlarge those tracks.
    */
   readonly spans = input<readonly VGridSpan[]>();
   /**
@@ -359,15 +378,6 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
    * @defaultValue 0
    */
   readonly gap = input(0);
-  /**
-   * Indexes of the rows whose cells are column headers (`role="columnheader"`).
-   * @defaultValue the rows pinned to the start by {@link VGrid.pinnedRows}
-   */
-  readonly ariaColumnHeader = input<readonly number[]>();
-  /**
-   * Indexes of the columns whose cells are row headers (`role="rowheader"`).
-   */
-  readonly ariaRowHeader = input<readonly number[]>();
   /**
    * The header cell of the sorted column or row, and the sort order (`aria-sort`).
    */
@@ -439,12 +449,13 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
       this._colLayout,
       this._rowStore.$getRange(this.bufferSize()),
       this._colStore.$getRange(this.bufferSize()),
-      this.pinnedRows(),
-      this.pinnedCols(),
+      this.headerRows(),
+      this.sectionRows(),
+      this.footerRows(),
+      this.headerCols(),
+      this.footerCols(),
       this.spans(),
       this.keepMounted(),
-      this.ariaColumnHeader(),
-      this.ariaRowHeader(),
       this.ariaSort(),
     );
   });
@@ -614,8 +625,11 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
       this.driver,
       this._rowStore,
       this._colStore,
-      this.pinnedRows(),
-      this.pinnedCols(),
+      this.headerRows(),
+      this.sectionRows(),
+      this.footerRows(),
+      this.headerCols(),
+      this.footerCols(),
       opts,
     );
   }

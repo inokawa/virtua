@@ -10,11 +10,11 @@ import { VGrid } from "../../../src/angular";
       [rowHeight]="40"
       [cols]="500"
       [colWidth]="100"
-      style="height: 100vh; box-sizing: border-box; border: solid 1px gray;"
+      style="height: 100vh; box-sizing: border-box; border: solid 1px gray; background: white;"
     >
       <ng-template let-rowIndex="row" let-colIndex="col">
         <div
-          style="background: white; padding: 4px; border-right: solid 1px gray; border-bottom: solid 1px gray;"
+          style="padding: 4px; border-right: solid 1px gray; border-bottom: solid 1px gray;"
         >
           {{ rowIndex }} / {{ colIndex }}
         </div>
