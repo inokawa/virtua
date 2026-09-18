@@ -248,10 +248,11 @@ const getTemplate = (
         // The cells in the rows size the max-content tracks of the container.
         // https://drafts.csswg.org/css-grid-2/#subgrid-item-contribution
         // An auto track without a cell measuring it keeps the size of the layout as the min, as the spanning cells don't give the size.
+        const m = measured[i];
         size =
-          measured[i] == NULL
+          m == NULL
             ? layout.$getItemSize(line) + "px"
-            : measured[i]
+            : m
               ? measuredSize
               : "minmax(" + layout.$getItemSize(line) + "px,auto)";
         i++;
@@ -390,10 +391,10 @@ export const createGridPlan = (
   for (let l = 0, laidLength = -1; laidLength !== laid.length;) {
     laidLength = laid.length;
     for (; l < laidLength; l++) {
-      const span = spans[laid[l]!]!;
-      extraRows.push(span.rowIndex);
-      addSectionHeader(extraRows, sectionStarts, span.rowIndex, rowTrailStart);
-      extraCols.push(span.colIndex);
+      const { rowIndex, colIndex } = spans[laid[l]!]!;
+      extraRows.push(rowIndex);
+      addSectionHeader(extraRows, sectionStarts, rowIndex, rowTrailStart);
+      extraCols.push(colIndex);
     }
     const rest: number[] = [];
     for (const i of waiting) {
@@ -555,8 +556,7 @@ export const createGridPlan = (
         groupRows = rows;
       }
     }
-    const isSectionHeaderRow =
-      section >= 0 && rowIndex === sectionStarts[section];
+    const isSectionHeaderRow = section >= 0 && rowIndex === groupStart;
     const rowTop = isSectionHeaderRow ? stickyTop : NULL;
     const rowKey = rowIndex * colCount;
     const prevRow = prev && prev.get(rowIndex);
@@ -623,10 +623,10 @@ export const createGridPlan = (
       // aria-sort is allowed only on the headers
       // https://www.w3.org/TR/wai-aria-1.2/#aria-sort
       const sortOrder =
+        role !== "cell" &&
         sortedCell &&
         sortedCell.rowIndex === rowIndex &&
-        sortedCell.colIndex === colIndex &&
-        role !== "cell"
+        sortedCell.colIndex === colIndex
           ? sortedCell.order
           : undefined;
       let cell: GridCellState | undefined;
