@@ -697,12 +697,12 @@ export const createGridPlan = (
           style.width = "0px";
           style.minWidth = "100%";
         }
-        if (stickyStart != NULL) {
-          style.insetInlineStart = stickyStart + "px";
-        } else if (stickyEnd != NULL) {
-          style.insetInlineEnd = stickyEnd + "px";
-        }
         if (startPinned || endPinned) {
+          if (startPinned) {
+            style.insetInlineStart = stickyStart + "px";
+          } else {
+            style.insetInlineEnd = stickyEnd + "px";
+          }
           style.position = "sticky";
           // Over the spanning cells, which may be painted later
           style.zIndex = 2;
@@ -730,26 +730,22 @@ export const createGridPlan = (
     }
     // A column rendered anew has no previous cell and marks the row changed, so the lengths tell the columns are the same.
     // A change of the span end changes a cell, so the row end is not compared.
-    let row: GridRowState;
-    if (
+    const row: GridRowState =
       prevRow &&
       !changed &&
       prevCells!.length === rowCells.length &&
       prevRow.$top === rowTop
-    ) {
-      row = prevRow;
-    } else {
-      row = {
-        $row: rowIndex,
-        $cells: rowCells,
-        // A subgrid clamps its items to its tracks, so the row spans to the end of its cells.
-        // https://drafts.csswg.org/css-grid-2/#subgrid-implicit
-        // A section header sticks in the box of its section over the sticky and spanning cells of the other rows, so it's pushed out at the end of the section.
-        // https://drafts.csswg.org/css-position-3/#stickypos-insets
-        $style: getBoxStyle(rowIndex, rowEnd, rowTop, "top", 3),
-        $top: rowTop,
-      };
-    }
+        ? prevRow
+        : {
+            $row: rowIndex,
+            $cells: rowCells,
+            // A subgrid clamps its items to its tracks, so the row spans to the end of its cells.
+            // https://drafts.csswg.org/css-grid-2/#subgrid-implicit
+            // A section header sticks in the box of its section over the sticky and spanning cells of the other rows, so it's pushed out at the end of the section.
+            // https://drafts.csswg.org/css-position-3/#stickypos-insets
+            $style: getBoxStyle(rowIndex, rowEnd, rowTop, "top", 3),
+            $top: rowTop,
+          };
     rowStates.set(rowIndex, row);
     groupRows.push(row);
   }
