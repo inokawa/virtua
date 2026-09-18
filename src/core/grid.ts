@@ -467,22 +467,17 @@ export const createGridPlan = (
   const rowCuts: number[] = [];
   const colCuts: number[] = [];
   for (const span of laid) {
-    const row = span.rowIndex;
-    const col = span.colIndex;
     const rowTo = getSpanRowEnd(span, rowCount);
     const colTo = getSpanColEnd(span, colCount);
     rowCuts.push(rowTo);
     colCuts.push(colTo);
     // The tracks are in order, so the covered ones start at the origin of the span.
-    let rowStart = 0;
-    while (rowIndexes[rowStart]! < row) {
-      rowStart++;
-    }
-    let colStart = 0;
-    while (cols[colStart]! < col) {
-      colStart++;
-    }
-    for (let j = rowStart; j < rowLength && rowIndexes[j]! < rowTo; j++) {
+    const colStart = cols.indexOf(span.colIndex);
+    for (
+      let j = rowIndexes.indexOf(span.rowIndex);
+      j < rowLength && rowIndexes[j]! < rowTo;
+      j++
+    ) {
       const rowKey = rowIndexes[j]! * colCount;
       for (let k = colStart; k < colLength && cols[k]! < colTo; k++) {
         spanCells.set(rowKey + cols[k]!, span);
