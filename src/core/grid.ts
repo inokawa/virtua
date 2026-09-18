@@ -102,15 +102,6 @@ const hasTrackIn = (
 };
 
 /**
- * @internal
- */
-export const getTrailStart = (
-  footer: number,
-  count: number,
-  pinnedStart: number,
-): number => count - min(footer, count - pinnedStart);
-
-/**
  * The sections start at the section rows between the pinned rows.
  * @internal
  */
@@ -180,10 +171,10 @@ const getTrackIndexes = (
   }
   const extrasLength = extras.length;
   let e = 0;
-  let last = -1;
+  let last = pinnedStart - 1;
   for (; e < extrasLength && extras[e]! < start; e++) {
     const i = extras[e]!;
-    if (i !== last && i >= pinnedStart) {
+    if (i > last) {
       indexes.push(i);
       last = i;
     }
@@ -191,9 +182,10 @@ const getTrackIndexes = (
   for (let i = start; i <= end; i++) {
     indexes.push(i);
   }
-  for (; e < extrasLength; e++) {
+  last = max(last, end);
+  for (; e < extrasLength && extras[e]! < trailStart; e++) {
     const i = extras[e]!;
-    if (i !== last && i > end && i < trailStart) {
+    if (i > last) {
       indexes.push(i);
       last = i;
     }
@@ -347,9 +339,9 @@ export const createGridPlan = (
   const rowCount = rowLayout.$getLength();
   const colCount = colLayout.$getLength();
   const rowPinnedStart = min(headerRows, rowCount);
-  const rowTrailStart = getTrailStart(footerRows, rowCount, rowPinnedStart);
+  const rowTrailStart = max(rowCount - footerRows, rowPinnedStart);
   const colPinnedStart = min(headerCols, colCount);
-  const colTrailStart = getTrailStart(footerCols, colCount, colPinnedStart);
+  const colTrailStart = max(colCount - footerCols, colPinnedStart);
   const rowRangeStart = max(rowRange[0], rowPinnedStart);
   const rowRangeEnd = min(rowRange[1], rowTrailStart - 1);
   const colRangeStart = max(colRange[0], colPinnedStart);
@@ -466,6 +458,7 @@ export const createGridPlan = (
     colRangeEnd,
     colTrailStart,
   );
+  const rowLength = rowIndexes.length;
   const colLength = cols.length;
 
   // The spans of the cells: the index in the spans at the origins, and -1 at the covered cells.
@@ -482,20 +475,19 @@ export const createGridPlan = (
     const colTo = getSpanColEnd(span, colCount);
     rowCuts.push(rowTo);
     colCuts.push(colTo);
-    // The columns are in order, so the covered ones start at the column of the span.
+    // The tracks are in order, so the covered ones start at the origin of the span.
+    let rowStart = 0;
+    while (rowIndexes[rowStart]! < row) {
+      rowStart++;
+    }
     let colStart = 0;
     while (cols[colStart]! < col) {
       colStart++;
     }
-    for (const r of rowIndexes) {
-      if (r >= rowTo) {
-        break;
-      }
-      if (r >= row) {
-        const rowKey = r * colCount;
-        for (let k = colStart; k < colLength && cols[k]! < colTo; k++) {
-          spanCells.set(rowKey + cols[k]!, -1);
-        }
+    for (let j = rowStart; j < rowLength && rowIndexes[j]! < rowTo; j++) {
+      const rowKey = rowIndexes[j]! * colCount;
+      for (let k = colStart; k < colLength && cols[k]! < colTo; k++) {
+        spanCells.set(rowKey + cols[k]!, -1);
       }
     }
     spanCells.set(row * colCount + col, i);

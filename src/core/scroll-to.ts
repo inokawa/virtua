@@ -1,7 +1,7 @@
 import { type VirtualStore } from "./store.js";
 import { clamp, EMPTY, max, min, NULL } from "./utils.js";
 import { type Driver, type GridDriver } from "./driver.js";
-import { getSection, getSectionStarts, getTrailStart } from "./grid.js";
+import { getSection, getSectionStarts } from "./grid.js";
 
 /**
  * Alignment of item in the viewport.
@@ -176,7 +176,7 @@ const scrollGridAxisToIndex = (
 ) => {
   const count = store.$getItemsLength();
   const pinnedStart = min(header, count);
-  const trailStart = getTrailStart(footer, count, pinnedStart);
+  const trailStart = max(count - footer, pinnedStart);
   index = clamp(index, 0, count - 1);
   const starts = getSectionStarts(sections, pinnedStart, trailStart);
   const section = getSection(starts, index, trailStart);
