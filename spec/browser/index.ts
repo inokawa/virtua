@@ -98,7 +98,7 @@ export const expectVirtualizedAndScrollable = async (
   expect(root.textContent).not.toContain(first);
 };
 
-export type GridAxisGeometry = {
+type GridAxisGeometry = {
   count: number;
   size: (index: number) => number;
   pinned?: { start?: number; end?: number };

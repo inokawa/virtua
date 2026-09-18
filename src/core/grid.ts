@@ -120,12 +120,12 @@ export const getSectionStarts = (
   trailStart: number,
 ): number[] => {
   const starts: number[] = [];
-  for (const rowIndex of sort(sectionRows.slice())) {
+  for (const rowIndex of sectionRows) {
     if (rowIndex >= pinnedStart && rowIndex < trailStart) {
       starts.push(rowIndex);
     }
   }
-  return starts;
+  return sort(starts);
 };
 
 /**
@@ -230,7 +230,7 @@ const getEndInset = (layout: GridLayout, index: number): number =>
 const getTemplate = (
   layout: GridLayout,
   indexes: readonly number[],
-  measured: readonly (boolean | undefined)[],
+  measured: readonly (boolean | null)[],
   sortedCuts: readonly number[],
   measuredSize: string,
   count: number,
@@ -395,7 +395,14 @@ export const createGridPlan = (
       waiting.push(i);
     }
   }
-  for (let l = 0; ;) {
+  for (let l = 0, laidLength = -1; laidLength !== laid.length;) {
+    laidLength = laid.length;
+    for (; l < laidLength; l++) {
+      const span = spans[laid[l]!]!;
+      extraRows.push(span.rowIndex);
+      addSectionHeader(extraRows, sectionStarts, span.rowIndex, rowTrailStart);
+      extraCols.push(span.colIndex);
+    }
     const rest: number[] = [];
     for (const i of waiting) {
       const span = spans[i]!;
@@ -439,15 +446,6 @@ export const createGridPlan = (
       }
     }
     waiting = rest;
-    if (l === laid.length) {
-      break;
-    }
-    for (; l < laid.length; l++) {
-      const span = spans[laid[l]!]!;
-      extraRows.push(span.rowIndex);
-      addSectionHeader(extraRows, sectionStarts, span.rowIndex, rowTrailStart);
-      extraCols.push(span.colIndex);
-    }
   }
   // The tracks are all known now.
   sort(extraRows);
@@ -495,24 +493,20 @@ export const createGridPlan = (
       }
       if (r >= row) {
         const rowKey = r * colCount;
-        for (let k = colStart; k < colLength; k++) {
-          const c = cols[k]!;
-          if (c >= colTo) {
-            break;
-          }
-          spanCells.set(rowKey + c, -1);
+        for (let k = colStart; k < colLength && cols[k]! < colTo; k++) {
+          spanCells.set(rowKey + cols[k]!, -1);
         }
       }
     }
     spanCells.set(row * colCount + col, i);
   }
 
-  // A track is measured by its first rendered cell which doesn't span over the other tracks, and is undefined if its size is given.
-  const measuredCols: (boolean | undefined)[] = [];
+  // A track is measured by its first rendered cell which doesn't span over the other tracks, and is null if its size is given.
+  const measuredCols: (boolean | null)[] = [];
   for (const colIndex of cols) {
-    measuredCols.push(colLayout.$isMeasurable(colIndex) ? false : undefined);
+    measuredCols.push(colLayout.$isMeasurable(colIndex) ? false : NULL);
   }
-  const measuredRows: (boolean | undefined)[] = [];
+  const measuredRows: (boolean | null)[] = [];
   // The section headers stick where the first row after the pinned rows is laid.
   const stickyTop = rowLayout.$getItemOffset(rowPinnedStart);
 
@@ -561,7 +555,7 @@ export const createGridPlan = (
           $style: getBoxStyle(
             groupStart,
             groupEnd,
-            pinned ? 0 : undefined,
+            pinned ? 0 : NULL,
             pinnedBottom ? "bottom" : "top",
             4,
           ),
@@ -571,14 +565,14 @@ export const createGridPlan = (
     }
     const isSectionHeaderRow =
       section >= 0 && rowIndex === sectionStarts[section];
-    const rowTop = isSectionHeaderRow ? stickyTop : undefined;
+    const rowTop = isSectionHeaderRow ? stickyTop : NULL;
     const rowKey = rowIndex * colCount;
     const prevRow = prev && prev.get(rowIndex);
     const prevCells = prevRow && prevRow.$cells;
     const rowCells: GridCellState[] = [];
     // The cells are in the order of the columns, so the previous cell of a column is found by walking them once.
     let p = 0;
-    let measuredRow = rowLayout.$isMeasurable(rowIndex) ? false : undefined;
+    let measuredRow = rowLayout.$isMeasurable(rowIndex) ? false : NULL;
     let rowEnd = rowIndex + 1;
     let changed = false;
     for (let k = 0; k < colLength; k++) {
@@ -603,13 +597,6 @@ export const createGridPlan = (
       }
       let rowSpan: number | undefined;
       let colSpan: number | undefined;
-      // A sticky box keeps its edges in the scrollport, so the end inset is from the end of the track.
-      // https://drafts.csswg.org/css-position-3/#stickypos-insets
-      // https://wpt.fyi/results/css/css-position/sticky/position-sticky-grid.html
-      const stickyStart = startPinned
-        ? colLayout.$getItemOffset(colIndex)
-        : undefined;
-      let stickyEnd = endPinned ? getEndInset(colLayout, colIndex) : undefined;
       let measureRowIndex: number | undefined;
       let measureColIndex: number | undefined;
       if (laidIndex != NULL) {
@@ -617,11 +604,17 @@ export const createGridPlan = (
         rowSpan = getSpanRowEnd(span, rowCount) - rowIndex;
         colSpan = getSpanColEnd(span, colCount) - colIndex;
         rowEnd = max(rowEnd, rowIndex + rowSpan);
-        // The end inset of a span is from its last column.
-        if (stickyEnd != NULL) {
-          stickyEnd = getEndInset(colLayout, colIndex + colSpan - 1);
-        }
       }
+      // A sticky box keeps its edges in the scrollport, so the end inset is from the end of the track.
+      // https://drafts.csswg.org/css-position-3/#stickypos-insets
+      // https://wpt.fyi/results/css/css-position/sticky/position-sticky-grid.html
+      const stickyStart = startPinned
+        ? colLayout.$getItemOffset(colIndex)
+        : NULL;
+      // The end inset of a span is from its last column.
+      const stickyEnd = endPinned
+        ? getEndInset(colLayout, colIndex + (colSpan || 1) - 1)
+        : NULL;
       if (measuredRow === false && (!rowSpan || rowSpan < 2)) {
         measureRowIndex = rowIndex;
         measuredRow = true;
@@ -649,7 +642,9 @@ export const createGridPlan = (
         while (p < prevCells.length && prevCells[p]!.$col < colIndex) {
           p++;
         }
-        cell = prevCells[p];
+        if (p < prevCells.length) {
+          cell = prevCells[p];
+        }
       }
       if (
         !cell ||
@@ -707,7 +702,7 @@ export const createGridPlan = (
         } else if (stickyEnd != NULL) {
           style.insetInlineEnd = stickyEnd + "px";
         }
-        if (stickyStart != NULL || stickyEnd != NULL) {
+        if (startPinned || endPinned) {
           style.position = "sticky";
           // Over the spanning cells, which may be painted later
           style.zIndex = 2;
@@ -788,7 +783,7 @@ export const createGridPlan = (
 const getBoxStyle = (
   from: number,
   to: number,
-  inset: number | undefined,
+  inset: number | null,
   edge: "top" | "bottom",
   zIndex: number,
 ): GridStyle => {
@@ -830,8 +825,8 @@ export interface GridCellState {
   readonly $sort: GridSort["order"] | undefined;
   readonly $style: GridStyle;
   // The fields below are not rendered. They are in the style, and compared with the next plan to keep the state.
-  readonly $start: number | undefined;
-  readonly $end: number | undefined;
+  readonly $start: number | null;
+  readonly $end: number | null;
 }
 
 /**
@@ -842,7 +837,7 @@ export interface GridRowState {
   readonly $cells: readonly GridCellState[];
   readonly $style: GridStyle;
   // The fields below are not rendered. They are in the style, and compared with the next plan to keep the state.
-  readonly $top: number | undefined;
+  readonly $top: number | null;
 }
 
 /**
