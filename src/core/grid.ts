@@ -578,15 +578,13 @@ export const createGridPlan = (
       ) {
         continue;
       }
-      let rowSpan: number | undefined;
-      let colSpan: number | undefined;
+      const rowTo = span ? getSpanRowEnd(span, rowCount) : rowIndex + 1;
+      const colTo = span ? getSpanColEnd(span, colCount) : colIndex + 1;
+      const rowSpan = span ? rowTo - rowIndex : undefined;
+      const colSpan = span ? colTo - colIndex : undefined;
       let measureRowIndex: number | undefined;
       let measureColIndex: number | undefined;
-      if (span) {
-        rowSpan = getSpanRowEnd(span, rowCount) - rowIndex;
-        colSpan = getSpanColEnd(span, colCount) - colIndex;
-        rowEnd = max(rowEnd, rowIndex + rowSpan);
-      }
+      rowEnd = max(rowEnd, rowTo);
       // A sticky box keeps its edges in the scrollport, so the end inset is from the end of the track.
       // https://drafts.csswg.org/css-position-3/#stickypos-insets
       // https://wpt.fyi/results/css/css-position/sticky/position-sticky-grid.html
@@ -594,14 +592,12 @@ export const createGridPlan = (
         ? colLayout.$getItemOffset(colIndex)
         : NULL;
       // The end inset of a span is from its last column.
-      const stickyEnd = endPinned
-        ? getEndInset(colLayout, colIndex + (colSpan || 1) - 1)
-        : NULL;
-      if (measuredRow === false && (!rowSpan || rowSpan < 2)) {
+      const stickyEnd = endPinned ? getEndInset(colLayout, colTo - 1) : NULL;
+      if (measuredRow === false && rowTo - rowIndex < 2) {
         measureRowIndex = rowIndex;
         measuredRow = true;
       }
-      if (measuredCols[k] === false && (!colSpan || colSpan < 2)) {
+      if (measuredCols[k] === false && colTo - colIndex < 2) {
         measureColIndex = colIndex;
         measuredCols[k] = true;
       }
@@ -656,26 +652,21 @@ export const createGridPlan = (
           contain: "layout style",
           display: "grid",
           // A span ends at the named line instead of the number of tracks, because the unrendered rows/columns are merged into one track.
-          gridArea: rowSpan
-            ? "1/l" +
-              colIndex +
-              "/l" +
-              (rowIndex + rowSpan) +
-              "/l" +
-              (colIndex + colSpan!)
+          gridArea: span
+            ? "1/l" + colIndex + "/l" + rowTo + "/l" + colTo
             : "1/l" + colIndex,
         };
         // A spanning cell fills the tracks it spans without giving their sizes.
         // https://drafts.csswg.org/css-sizing-3/#cyclic-percentage-contribution
         // https://drafts.csswg.org/css-grid-2/#min-size-contribution
-        if (rowSpan && rowSpan > 1) {
+        if (rowTo - rowIndex > 1) {
           style.height = "0px";
           style.minHeight = "100%";
           // Over the rows it spans over, which are painted later
           // https://drafts.csswg.org/css-grid-2/#z-order
           style.zIndex = 1;
         }
-        if (colSpan && colSpan > 1) {
+        if (colTo - colIndex > 1) {
           style.width = "0px";
           style.minWidth = "100%";
         }
