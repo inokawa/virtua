@@ -470,13 +470,13 @@ export const createGridPlan = (
     // The tracks are in order, so the covered ones start at the origin of the span.
     const colStart = cols.indexOf(span.colIndex);
     for (
-      let j = rowIndexes.indexOf(span.rowIndex);
-      j < rowLength && rowIndexes[j]! < rowTo;
-      j++
+      let i = rowIndexes.indexOf(span.rowIndex);
+      i < rowLength && rowIndexes[i]! < rowTo;
+      i++
     ) {
-      const rowKey = rowIndexes[j]! * colCount;
-      for (let k = colStart; k < colLength && cols[k]! < colTo; k++) {
-        spanCells.set(rowKey + cols[k]!, span);
+      const rowKey = rowIndexes[i]! * colCount;
+      for (let j = colStart; j < colLength && cols[j]! < colTo; j++) {
+        spanCells.set(rowKey + cols[j]!, span);
       }
     }
   }
@@ -551,8 +551,8 @@ export const createGridPlan = (
     let measuredRow = rowLayout.$isMeasurable(rowIndex) ? false : NULL;
     let rowEnd = rowIndex + 1;
     let changed = false;
-    for (let k = 0; k < colLength; k++) {
-      const colIndex = cols[k]!;
+    for (let i = 0; i < colLength; i++) {
+      const colIndex = cols[i]!;
       const startPinned = colIndex < colPinnedStart;
       const endPinned = colIndex >= colTrailStart;
       const colExtra =
@@ -594,9 +594,9 @@ export const createGridPlan = (
         measureRowIndex = rowIndex;
         measuredRow = true;
       }
-      if (measuredCols[k] === false && colTo - colIndex < 2) {
+      if (measuredCols[i] === false && colTo - colIndex < 2) {
         measureColIndex = colIndex;
-        measuredCols[k] = true;
+        measuredCols[i] = true;
       }
       const role: GridRole = pinnedTop
         ? "columnheader"
