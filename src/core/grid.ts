@@ -1,8 +1,8 @@
 import {
   getAxisLength,
   type GridLayout,
-  type VGridAxis,
-  type VGridTrackSize,
+  type GridAxis,
+  type GridTrackSize,
 } from "./layouts/grid.js";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
@@ -15,7 +15,7 @@ import { clamp, EMPTY, max, min, NULL, sort } from "./utils.js";
 /**
  * A cell position in the grid.
  */
-export interface VGridCell {
+export interface GridCell {
   /**
    * The row index of the cell.
    */
@@ -29,9 +29,9 @@ export interface VGridCell {
 /**
  * A cell merged over multiple rows and/or columns in the grid.
  *
- * {@link VGridCell.rowIndex} and {@link VGridCell.colIndex} point to the origin cell (top row, start column) of the merged area.
+ * {@link GridCell.rowIndex} and {@link GridCell.colIndex} point to the origin cell (top row, start column) of the merged area.
  */
-export interface VGridSpan extends VGridCell {
+export interface GridSpan extends GridCell {
   /**
    * The number of rows the cell spans.
    * @defaultValue 1
@@ -50,8 +50,8 @@ export interface VGridSpan extends VGridCell {
 export const updateGridAxis = (
   store: VirtualStore,
   layout: GridLayout,
-  axis: VGridAxis<unknown>,
-  size: VGridTrackSize | string,
+  axis: GridAxis<unknown>,
+  size: GridTrackSize | string,
   mutable?: boolean,
 ) => {
   const length = getAxisLength(axis);
@@ -196,9 +196,9 @@ const getTrackIndexes = (
   return indexes;
 };
 
-const getSpanRowEnd = (span: Readonly<VGridSpan>, rowCount: number): number =>
+const getSpanRowEnd = (span: Readonly<GridSpan>, rowCount: number): number =>
   min(span.rowIndex + (span.rowSpan || 1), rowCount);
-const getSpanColEnd = (span: Readonly<VGridSpan>, colCount: number): number =>
+const getSpanColEnd = (span: Readonly<GridSpan>, colCount: number): number =>
   min(span.colIndex + (span.colSpan || 1), colCount);
 
 const getTemplate = (
@@ -268,7 +268,7 @@ const getTemplate = (
 
 type GridRole = "cell" | "columnheader" | "rowheader";
 
-type GridSort = VGridCell & {
+type GridSort = GridCell & {
   order: "ascending" | "descending" | "other";
 };
 
@@ -315,8 +315,8 @@ export const createGridPlan = (
   footerRows = 0,
   headerCols = 0,
   footerCols = 0,
-  spans: readonly Readonly<VGridSpan>[] = EMPTY,
-  kept: readonly Readonly<VGridCell>[] = EMPTY,
+  spans: readonly Readonly<GridSpan>[] = EMPTY,
+  kept: readonly Readonly<GridCell>[] = EMPTY,
   sortedCell?: Readonly<GridSort>,
 ): GridPlan => {
   const rowCount = rowLayout.$getLength();
@@ -343,7 +343,7 @@ export const createGridPlan = (
   const extraRows: number[] = [];
   const extraCols: number[] = [];
   // The cells rendered even out of the ranges, which render their rows, the headers of their sections and their columns. A kept cell is a span over itself.
-  const extraCells: Readonly<VGridSpan>[] = [];
+  const extraCells: Readonly<GridSpan>[] = [];
   for (const cell of kept) {
     // A kept cell may be left out of the grid after the rows or the columns are removed.
     if (cell.rowIndex < rowCount && cell.colIndex < colCount) {
@@ -365,7 +365,7 @@ export const createGridPlan = (
       addSectionHeader(extraRows, sectionStarts, rowIndex, rowTrailStart);
       extraCols.push(colIndex);
     }
-    const rest: Readonly<VGridSpan>[] = [];
+    const rest: Readonly<GridSpan>[] = [];
     for (const span of waiting) {
       const row = span.rowIndex;
       const col = span.colIndex;
@@ -439,7 +439,7 @@ export const createGridPlan = (
   const colLength = cols.length;
 
   // The spans over the cells, whose origins are the cells at their positions
-  const spanCells = new Map<number, Readonly<VGridSpan>>();
+  const spanCells = new Map<number, Readonly<GridSpan>>();
   // The lines at the ends of the spans and the sections are in the templates, as a missing named line is found in the implicit grid.
   // https://drafts.csswg.org/css-grid-2/#grid-placement-int
   const rowCuts: number[] = [];

@@ -3,7 +3,7 @@ import { createListLayout } from "./list.js";
 import type { Layout } from "./types.js";
 import { clamp, floor, NULL } from "../utils.js";
 
-export type VGridTrackSize = number | "auto";
+export type GridTrackSize = number | "auto";
 
 /**
  * The rows or the columns of the grid.
@@ -11,12 +11,12 @@ export type VGridTrackSize = number | "auto";
  * - If a number is set, the grid has that many rows/columns, and the cells receive their indexes.
  * - If an array is set, the grid has one row/column per item, and the cells receive the items.
  */
-export type VGridAxis<T = number> = number | readonly T[];
+export type GridAxis<T = number> = number | readonly T[];
 
-export type VGridSizeKey<T> = [T] extends [object]
+export type GridSizeKey<T> = [T] extends [object]
   ? {
       [K in keyof T]-?: K extends string
-        ? T[K] extends VGridTrackSize | null | undefined
+        ? T[K] extends GridTrackSize | null | undefined
           ? K
           : never
         : never;
@@ -32,18 +32,18 @@ export type VGridSizeKey<T> = [T] extends [object]
  *
  * The form of the size, a number, `"auto"` or a key, must not be changed after mount. To switch it, remount the grid.
  */
-export type VGridSize<T = number> = VGridTrackSize | VGridSizeKey<T>;
+export type GridSize<T = number> = GridTrackSize | GridSizeKey<T>;
 
 /**
  * @internal
  */
-export const getAxisLength = (axis: VGridAxis<unknown>): number =>
+export const getAxisLength = (axis: GridAxis<unknown>): number =>
   typeof axis === "number" ? axis : axis.length;
 
 /**
  * @internal
  */
-export const getAxisItem = <T>(axis: VGridAxis<T>, index: number): T =>
+export const getAxisItem = <T>(axis: GridAxis<T>, index: number): T =>
   typeof axis === "number" ? (index as T) : axis[index]!;
 
 /**
@@ -52,8 +52,8 @@ export const getAxisItem = <T>(axis: VGridAxis<T>, index: number): T =>
 export interface GridLayout extends Layout {
   $isMeasurable(index: number): boolean;
   $setAxis(
-    axis: VGridAxis<unknown>,
-    size: VGridTrackSize | string,
+    axis: GridAxis<unknown>,
+    size: GridTrackSize | string,
     scrollOffset: number,
     mutable?: boolean,
   ): number | undefined;
@@ -63,8 +63,8 @@ export interface GridLayout extends Layout {
  * @internal
  */
 export const createGridLayout = (
-  axis: VGridAxis<unknown>,
-  size: VGridTrackSize | string,
+  axis: GridAxis<unknown>,
+  size: GridTrackSize | string,
   gap = 0,
 ): GridLayout => {
   if (typeof size === "number") {
@@ -106,8 +106,8 @@ export const createGridLayout = (
     };
   }
   const isAuto = size === "auto";
-  let currentAxis: VGridAxis<unknown> | undefined;
-  let currentSize: VGridTrackSize | string = size;
+  let currentAxis: GridAxis<unknown> | undefined;
+  let currentSize: GridTrackSize | string = size;
   const length = getAxisLength(axis);
 
   // Whether each item was auto when the axis was set, as the items may be mutated after that.
@@ -163,7 +163,7 @@ export const createGridLayout = (
         // An item which isn't an object, such as a placeholder of a header row, has no size.
         const itemSize =
           item !== NULL && typeof item === "object"
-            ? (item as Record<string, VGridTrackSize | null | undefined>)[
+            ? (item as Record<string, GridTrackSize | null | undefined>)[
                 nextSize as string
               ]
             : NULL;

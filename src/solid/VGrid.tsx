@@ -30,11 +30,11 @@ import {
   gridScrollToIndex,
   updateGridAxis,
   type GridDriver,
-  type VGridScrollToIndexOpts,
-  type VGridAxis,
-  type VGridCell,
-  type VGridSize,
-  type VGridSpan,
+  type GridScrollToIndexOpts,
+  type GridAxis,
+  type GridCell as GridCellType,
+  type GridSize,
+  type GridSpan,
   createGridPlan,
   type GridCellState,
   type GridRowGroupState,
@@ -103,9 +103,9 @@ export interface VGridHandle {
   getColSize(index: number): number;
   /**
    * Scroll to the cell specified by the indexes. The cell is not hidden behind the rows and the columns sticking over it.
-   * @param opts the indexes of the cell and the options. See {@link VGridScrollToIndexOpts}.
+   * @param opts the indexes of the cell and the options. See {@link GridScrollToIndexOpts}.
    */
-  scrollToIndex(opts: VGridScrollToIndexOpts): void;
+  scrollToIndex(opts: GridScrollToIndexOpts): void;
   /**
    * Scroll to the given offsets from the top/start of the scroll container.
    * @param offset the offsets. The axis whose offset is omitted is not scrolled.
@@ -135,23 +135,23 @@ export interface VGridProps<R = number, C = number> extends Omit<
    * @param col the item of {@link VGridProps.cols} at the column of the cell, or the column index if {@link VGridProps.cols} is a number
    * @param cell the row index and the column index of the cell
    */
-  children: (row: R, col: C, cell: Readonly<VGridCell>) => JSX.Element;
+  children: (row: R, col: C, cell: Readonly<GridCellType>) => JSX.Element;
   /**
-   * The rows of the grid. See {@link VGridAxis} for the accepted values.
+   * The rows of the grid. See {@link GridAxis} for the accepted values.
    */
-  rows: VGridAxis<R>;
+  rows: GridAxis<R>;
   /**
-   * The columns of the grid. See {@link VGridAxis} for the accepted values.
+   * The columns of the grid. See {@link GridAxis} for the accepted values.
    */
-  cols: VGridAxis<C>;
+  cols: GridAxis<C>;
   /**
-   * The heights of the rows. See {@link VGridSize} for the accepted values.
+   * The heights of the rows. See {@link GridSize} for the accepted values.
    */
-  rowHeight: NoInfer<VGridSize<R>>;
+  rowHeight: NoInfer<GridSize<R>>;
   /**
-   * The widths of the columns. See {@link VGridSize} for the accepted values.
+   * The widths of the columns. See {@link GridSize} for the accepted values.
    */
-  colWidth: NoInfer<VGridSize<C>>;
+  colWidth: NoInfer<GridSize<C>>;
   /**
    * The number of the leading rows pinned to the start, which are the column headers (`role="columnheader"`).
    *
@@ -187,15 +187,15 @@ export interface VGridProps<R = number, C = number> extends Omit<
    */
   footerCols?: number;
   /**
-   * Cells merged over multiple rows and/or columns. See {@link VGridSpan} for the accepted values.
+   * Cells merged over multiple rows and/or columns. See {@link GridSpan} for the accepted values.
    *
    * The cell at the origin is stretched over the merged area, and the other cells in it are not rendered. Spans must not overlap each other or cross the boundaries of the pinned rows/columns or the sections. A spanning cell is not measured for `"auto"` sizes on the axes it spans, and doesn't enlarge those tracks.
    */
-  spans?: readonly VGridSpan[];
+  spans?: readonly GridSpan[];
   /**
    * List of cells that should be always mounted, even when off screen.
    */
-  keepMounted?: readonly VGridCell[];
+  keepMounted?: readonly GridCellType[];
   /**
    * Extra space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank cells in fast scrolling.
    * @defaultValue 200
@@ -209,7 +209,7 @@ export interface VGridProps<R = number, C = number> extends Omit<
   /**
    * The header cell of the sorted column or row, and the sort order (`aria-sort`).
    */
-  ariaSort?: VGridCell & { order: "ascending" | "descending" | "other" };
+  ariaSort?: GridCellType & { order: "ascending" | "descending" | "other" };
   /**
    * Callback invoked whenever the vertical scroll offset changes.
    * @param offset Current scrollTop.
@@ -228,7 +228,7 @@ export interface VGridProps<R = number, C = number> extends Omit<
 
 interface GridCellProps<R, C> {
   _state: GridCellState;
-  _children: (row: R, col: C, cell: Readonly<VGridCell>) => JSX.Element;
+  _children: (row: R, col: C, cell: Readonly<GridCellType>) => JSX.Element;
   _row: R;
   _col: C;
   _rowIndex: number;
@@ -283,9 +283,9 @@ const GridCell = <R, C>(props: GridCellProps<R, C>): JSX.Element => {
 
 interface GridRowProps<R, C> {
   _state: GridRowState;
-  _children: (row: R, col: C, cell: Readonly<VGridCell>) => JSX.Element;
+  _children: (row: R, col: C, cell: Readonly<GridCellType>) => JSX.Element;
   _row: R;
-  _cols: VGridAxis<C>;
+  _cols: GridAxis<C>;
   _resizer: GridDriver["$observeItem"];
 }
 
@@ -315,9 +315,9 @@ const GridRow = <R, C>(props: GridRowProps<R, C>): JSX.Element => {
 
 interface GridRowGroupProps<R, C> {
   _state: GridRowGroupState;
-  _children: (row: R, col: C, cell: Readonly<VGridCell>) => JSX.Element;
-  _rows: VGridAxis<R>;
-  _cols: VGridAxis<C>;
+  _children: (row: R, col: C, cell: Readonly<GridCellType>) => JSX.Element;
+  _rows: GridAxis<R>;
+  _cols: GridAxis<C>;
   _resizer: GridDriver["$observeItem"];
 }
 

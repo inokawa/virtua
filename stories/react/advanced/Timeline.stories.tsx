@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { VGrid, VGridHandle, VGridSpan } from "../../../src";
+import { VGrid, VGridHandle, GridSpan } from "../../../src";
 import React, { CSSProperties, useEffect, useRef } from "react";
 import { faker } from "@faker-js/faker";
 
@@ -49,7 +49,7 @@ const COLS: Col[] = [
 
 // the events of each person don't overlap, so each is a merged cell
 const events = new Map<number, Event>();
-const eventSpans: VGridSpan[] = [];
+const eventSpans: GridSpan[] = [];
 people.forEach((_, i) => {
   const rowIndex = i + HEADER_ROWS;
   for (
@@ -66,14 +66,14 @@ people.forEach((_, i) => {
     day += length;
   }
 });
-const monthSpans: VGridSpan[] = [];
+const monthSpans: GridSpan[] = [];
 for (let day = 0; day < DAYS;) {
   const date = new Date(FIRST_DAY.getTime() + day * DAY_MS);
   const length = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
   monthSpans.push({ rowIndex: 0, colIndex: day + 1, colSpan: length });
   day += length;
 }
-const SPANS: VGridSpan[] = [
+const SPANS: GridSpan[] = [
   // the corner over the header rows
   { rowIndex: 0, colIndex: 0, rowSpan: HEADER_ROWS },
   ...monthSpans,

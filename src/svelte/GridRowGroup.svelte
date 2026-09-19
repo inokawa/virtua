@@ -5,17 +5,17 @@
     getAxisLength,
     type GridDriver,
     type GridRowGroupState,
-    type VGridAxis,
-    type VGridCell,
+    type GridAxis,
+    type GridCell,
     gridStyleToString,
   } from "../core/index.js";
   import GridRow from "./GridRow.svelte";
 
   interface Props {
     state: GridRowGroupState;
-    children: Snippet<[row: R, col: C, cell: Readonly<VGridCell>]>;
-    rows: VGridAxis<R>;
-    cols: VGridAxis<C>;
+    children: Snippet<[row: R, col: C, cell: Readonly<GridCell>]>;
+    rows: GridAxis<R>;
+    cols: GridAxis<C>;
     resizer: GridDriver["$observeItem"];
   }
 

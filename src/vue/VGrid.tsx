@@ -26,12 +26,12 @@ import {
   gridScrollToIndex,
   updateGridAxis,
   type GridDriver,
-  type VGridScrollToIndexOpts,
-  type VGridAxis,
-  type VGridCell,
-  type VGridSize,
-  type VGridTrackSize,
-  type VGridSpan,
+  type GridScrollToIndexOpts,
+  type GridAxis,
+  type GridCell as GridCellType,
+  type GridSize,
+  type GridTrackSize,
+  type GridSpan,
   createGridPlan,
   type GridCellState,
   type GridRowGroupState,
@@ -43,21 +43,21 @@ import {
  */
 export interface VGridProps<R = number, C = number> extends PublicProps {
   /**
-   * The rows of the grid. See {@link VGridAxis} for the accepted values.
+   * The rows of the grid. See {@link GridAxis} for the accepted values.
    */
-  rows: VGridAxis<R>;
+  rows: GridAxis<R>;
   /**
-   * The columns of the grid. See {@link VGridAxis} for the accepted values.
+   * The columns of the grid. See {@link GridAxis} for the accepted values.
    */
-  cols: VGridAxis<C>;
+  cols: GridAxis<C>;
   /**
-   * The heights of the rows. See {@link VGridSize} for the accepted values.
+   * The heights of the rows. See {@link GridSize} for the accepted values.
    */
-  rowHeight: NoInfer<VGridSize<R>>;
+  rowHeight: NoInfer<GridSize<R>>;
   /**
-   * The widths of the columns. See {@link VGridSize} for the accepted values.
+   * The widths of the columns. See {@link GridSize} for the accepted values.
    */
-  colWidth: NoInfer<VGridSize<C>>;
+  colWidth: NoInfer<GridSize<C>>;
   /**
    * The number of the leading rows pinned to the start, which are the column headers (`role="columnheader"`).
    *
@@ -93,15 +93,15 @@ export interface VGridProps<R = number, C = number> extends PublicProps {
    */
   footerCols?: number;
   /**
-   * Cells merged over multiple rows and/or columns. See {@link VGridSpan} for the accepted values.
+   * Cells merged over multiple rows and/or columns. See {@link GridSpan} for the accepted values.
    *
    * The cell at the origin is stretched over the merged area, and the other cells in it are not rendered. Spans must not overlap each other or cross the boundaries of the pinned rows/columns or the sections. A spanning cell is not measured for `"auto"` sizes on the axes it spans, and doesn't enlarge those tracks.
    */
-  spans?: readonly VGridSpan[];
+  spans?: readonly GridSpan[];
   /**
    * List of cells that should be always mounted, even when off screen.
    */
-  keepMounted?: readonly VGridCell[];
+  keepMounted?: readonly GridCellType[];
   /**
    * Extra space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank cells in fast scrolling.
    * @defaultValue 200
@@ -115,7 +115,7 @@ export interface VGridProps<R = number, C = number> extends PublicProps {
   /**
    * The header cell of the sorted column or row, and the sort order (`aria-sort`).
    */
-  ariaSort?: VGridCell & { order: "ascending" | "descending" | "other" };
+  ariaSort?: GridCellType & { order: "ascending" | "descending" | "other" };
   /**
    * Callback invoked whenever the vertical scroll offset changes.
    * @param offset Current scrollTop.
@@ -192,9 +192,9 @@ export interface VGridHandle {
   getColSize(index: number): number;
   /**
    * Scroll to the cell specified by the indexes. The cell is not hidden behind the rows and the columns sticking over it.
-   * @param opts the indexes of the cell and the options. See {@link VGridScrollToIndexOpts}.
+   * @param opts the indexes of the cell and the options. See {@link GridScrollToIndexOpts}.
    */
-  scrollToIndex(opts: VGridScrollToIndexOpts): void;
+  scrollToIndex(opts: GridScrollToIndexOpts): void;
   /**
    * Scroll to the given offsets from the top/start of the scroll container.
    * @param offset the offsets. The axis whose offset is omitted is not scrolled.
@@ -210,7 +210,7 @@ export interface VGridHandle {
 interface VGridInstance<R = number, C = number> extends VGridHandle {
   $props: VGridProps<R, C>;
   $slots: {
-    default: (arg: { row: R; col: C; cell: Readonly<VGridCell> }) => VNode[];
+    default: (arg: { row: R; col: C; cell: Readonly<GridCellType> }) => VNode[];
   };
 }
 
@@ -219,7 +219,7 @@ interface GridCellProps {
   _slot: (arg: {
     row: unknown;
     col: unknown;
-    cell: Readonly<VGridCell>;
+    cell: Readonly<GridCellType>;
   }) => VNode[];
   _row: unknown;
   _col: unknown;
@@ -290,10 +290,10 @@ interface GridRowProps {
   _slot: (arg: {
     row: unknown;
     col: unknown;
-    cell: Readonly<VGridCell>;
+    cell: Readonly<GridCellType>;
   }) => VNode[];
   _row: unknown;
-  _cols: VGridAxis<unknown>;
+  _cols: GridAxis<unknown>;
   _resizer: GridDriver["$observeItem"];
 }
 
@@ -339,10 +339,10 @@ interface GridRowGroupProps {
   _slot: (props: {
     row: unknown;
     col: unknown;
-    cell: Readonly<VGridCell>;
+    cell: Readonly<GridCellType>;
   }) => VNode[];
-  _rows: VGridAxis<unknown>;
-  _cols: VGridAxis<unknown>;
+  _rows: GridAxis<unknown>;
+  _cols: GridAxis<unknown>;
   _resizer: GridDriver["$observeItem"];
 }
 
@@ -385,19 +385,19 @@ const GridRowGroup = /*#__PURE__*/ defineComponent(
 export const VGrid = /*#__PURE__*/ defineComponent({
   props: {
     rows: {
-      type: [Number, Array] as PropType<VGridAxis<unknown>>,
+      type: [Number, Array] as PropType<GridAxis<unknown>>,
       required: true,
     },
     cols: {
-      type: [Number, Array] as PropType<VGridAxis<unknown>>,
+      type: [Number, Array] as PropType<GridAxis<unknown>>,
       required: true,
     },
     rowHeight: {
-      type: [Number, String] as PropType<VGridTrackSize | string>,
+      type: [Number, String] as PropType<GridTrackSize | string>,
       required: true,
     },
     colWidth: {
-      type: [Number, String] as PropType<VGridTrackSize | string>,
+      type: [Number, String] as PropType<GridTrackSize | string>,
       required: true,
     },
     headerRows: Number,
