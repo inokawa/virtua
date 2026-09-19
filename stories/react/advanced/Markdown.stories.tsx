@@ -265,6 +265,7 @@ export const Default: StoryObj = {
           overflowY: "auto",
           overflowAnchor: "none",
           maxWidth: 400,
+          background: "#fbfbfb",
         }}
       >
         <div style={{ height: 100 }}></div>
@@ -276,7 +277,8 @@ export const Default: StoryObj = {
                 background: "white",
                 padding: "1rem",
                 margin: "1rem",
-                borderRadius: "1rem",
+                borderRadius: 8,
+                boxShadow: "0 0 0 1px #ccc",
               }}
             >
               <ReactMarkdown

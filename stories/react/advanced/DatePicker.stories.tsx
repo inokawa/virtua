@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { VList, VListHandle } from "../../../src";
 import React, {
+  CSSProperties,
   ReactElement,
   ReactNode,
   memo,
@@ -30,19 +31,47 @@ const months = [
   "December",
 ];
 
+const LINE = "#e2e3e3";
+const weekStyle: CSSProperties = {
+  display: "grid",
+  gridTemplateColumns: "repeat(7, 1fr)",
+  justifyItems: "center",
+};
+const buttonStyle: CSSProperties = {
+  padding: "4px 12px",
+  border: "solid 1px #dadce0",
+  borderRadius: 4,
+  background: "#fff",
+  font: "inherit",
+  cursor: "pointer",
+};
+
 const Day = ({
   children,
   isToday,
+  isWeekend,
+  column,
 }: {
-  children?: ReactNode;
-  isToday?: boolean;
+  children: ReactNode;
+  isToday: boolean;
+  isWeekend: boolean;
+  column?: number;
 }) => {
   return (
     <div
       style={{
-        background: isToday ? "skyblue" : undefined,
-        width: "calc(100% / 7)",
-        height: 40,
+        // The first day starts at its day of the week, and the rest follow
+        gridColumnStart: column,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 32,
+        height: 32,
+        margin: "4px 0",
+        borderRadius: "50%",
+        background: isToday ? "#1a73e8" : undefined,
+        color: isToday ? "#fff" : isWeekend ? "#9aa0a6" : undefined,
+        fontWeight: isToday ? 700 : undefined,
       }}
     >
       {children}
@@ -83,54 +112,45 @@ const Month = memo(
     date: Date;
     now: readonly [number, number, number];
   }) => {
-    const [year, month, firstDayofMonth, lastDateofMonth, lastDayofMonth] =
-      useMemo(() => {
-        const d = getLastDateOfMonth(date);
-        return [
-          date.getFullYear(),
-          date.getMonth(),
-          getFirstDateOfMonth(date).getDay(),
-          d.getDate(),
-          d.getDay(),
-        ] as const;
-      }, [date]);
+    const [year, month, firstDayofMonth, lastDateofMonth] = useMemo(() => {
+      return [
+        date.getFullYear(),
+        date.getMonth(),
+        getFirstDateOfMonth(date).getDay(),
+        getLastDateOfMonth(date).getDate(),
+      ] as const;
+    }, [date]);
 
     const items: ReactElement[] = [];
-    for (let i = firstDayofMonth; i > 0; i--) {
-      items.push(<Day key={`prev_${i}`} />);
-    }
     for (let i = 1; i <= lastDateofMonth; i++) {
+      const day = (firstDayofMonth + i - 1) % 7;
       items.push(
         <Day
           key={i}
-          isToday={
-            curDate === i && curMonth === month && curYear === year
-              ? true
-              : false
-          }
+          isToday={curDate === i && curMonth === month && curYear === year}
+          isWeekend={day === 0 || day === 6}
+          column={i === 1 ? firstDayofMonth + 1 : undefined}
         >
           {i}
         </Day>,
       );
     }
-    for (let i = lastDayofMonth; i < 6; i++) {
-      items.push(<Day key={`next_${i}`} />);
-    }
 
+    // The height depends on the number of the weeks in the month
     return (
-      <div style={{ borderBottom: "solid 1px #ddd" }}>
+      <div style={{ borderBottom: "solid 1px " + LINE }}>
         <div
           style={{
             position: "sticky",
             top: 0,
-            borderBottom: "solid 1px #ddd",
-            background: "white",
+            padding: "8px 16px",
+            background: "#fff",
+            fontWeight: 500,
           }}
         >
-          <div>{year}</div>
-          <div>{months[month]}</div>
+          {months[month]} {year}
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap" }}>{items}</div>
+        <div style={{ ...weekStyle, padding: "0 8px 8px" }}>{items}</div>
       </div>
     );
   },
@@ -175,38 +195,46 @@ export const Default: StoryObj = {
     }, []);
 
     return (
-      <div>
-        <div style={{ marginBottom: 4 }}>
-          <button style={{ marginLeft: 4 }} onClick={scrollToThisMonth}>
-            today
+      <div
+        style={{
+          width: 360,
+          height: "90vh",
+          maxHeight: 560,
+          display: "flex",
+          flexDirection: "column",
+          border: "solid 1px #dadce0",
+          borderRadius: 8,
+          overflow: "hidden",
+          background: "#fff",
+          fontFamily: "system-ui, sans-serif",
+          fontSize: 14,
+          color: "#3c4043",
+        }}
+      >
+        <div style={{ padding: 8, borderBottom: "solid 1px #dadce0" }}>
+          <button style={buttonStyle} onClick={scrollToThisMonth}>
+            Today
           </button>
         </div>
         <div
           style={{
-            width: "800px",
-            height: "90vh",
-            background: "#fff",
-            display: "flex",
-            flexDirection: "column",
+            ...weekStyle,
+            padding: "6px 8px",
+            borderBottom: "solid 1px " + LINE,
+            background: "#f8f9fa",
+            color: "#5f6368",
+            fontSize: 12,
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              borderBottom: "solid 1px #ddd",
-            }}
-          >
-            {DAY_OF_WEEKS.map((d) => (
-              <div style={{ flex: 1 }}>{d}</div>
-            ))}
-          </div>
-          <VList ref={ref} style={{ flex: 1 }}>
-            {items.map((d, i) => (
-              <Month key={i} date={d} now={now} />
-            ))}
-          </VList>
+          {DAY_OF_WEEKS.map((d) => (
+            <div key={d}>{d}</div>
+          ))}
         </div>
+        <VList ref={ref} style={{ flex: 1 }}>
+          {items.map((d, i) => (
+            <Month key={i} date={d} now={now} />
+          ))}
+        </VList>
       </div>
     );
   },
