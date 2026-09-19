@@ -365,6 +365,34 @@ describe("keepMounted", () => {
     expect(states.get(1)!.$cells.map((c) => c.$col)).toEqual([2, 3, 4]);
   });
 
+  it("should render a kept cell pinned to the end once while the ranges are in the pinned end", () => {
+    const plan = createGridPlan(
+      createGridLayout(8, 40),
+      createGridLayout(8, 100),
+      [7, 7],
+      [7, 7],
+      undefined,
+      undefined,
+      2,
+      undefined,
+      2,
+      undefined,
+      [{ rowIndex: 6, colIndex: 6 }],
+    );
+    expect(renderedCells(rowStates(plan))).toEqual([
+      "6/6",
+      "6/7",
+      "7/6",
+      "7/7",
+    ]);
+    expect(plan.$rowTemplate).toBe(
+      "[l0] minmax(240px,auto) [l6] 40px [l7] 40px [l8]",
+    );
+    expect(plan.$colTemplate).toBe(
+      "[l0] minmax(600px,auto) [l6] 100px [l7] 100px [l8]",
+    );
+  });
+
   it("should ignore the kept cells out of the grid", () => {
     const states = rowStates(
       createGridPlan(

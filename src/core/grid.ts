@@ -10,7 +10,7 @@ import {
   type VirtualStore,
 } from "./store.js";
 import { type ItemsRange } from "./types.js";
-import { EMPTY, max, min, NULL, sort } from "./utils.js";
+import { clamp, EMPTY, max, min, NULL, sort } from "./utils.js";
 
 /**
  * A cell position in the grid.
@@ -182,7 +182,7 @@ const getTrackIndexes = (
   for (let i = start; i <= end; i++) {
     indexes.push(i);
   }
-  last = max(last, end);
+  last = end;
   for (; e < extrasLength && extras[e]! < trailStart; e++) {
     const i = extras[e]!;
     if (i > last) {
@@ -338,9 +338,9 @@ export const createGridPlan = (
   const rowTrailStart = max(rowCount - footerRows, rowPinnedStart);
   const colPinnedStart = min(headerCols, colCount);
   const colTrailStart = max(colCount - footerCols, colPinnedStart);
-  const rowRangeStart = max(rowRange[0], rowPinnedStart);
+  const rowRangeStart = clamp(rowRange[0], rowPinnedStart, rowTrailStart);
   const rowRangeEnd = min(rowRange[1], rowTrailStart - 1);
-  const colRangeStart = max(colRange[0], colPinnedStart);
+  const colRangeStart = clamp(colRange[0], colPinnedStart, colTrailStart);
   const colRangeEnd = min(colRange[1], colTrailStart - 1);
   const sectionStarts = getSectionStarts(
     sectionRows,
