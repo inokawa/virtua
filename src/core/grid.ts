@@ -288,7 +288,7 @@ type GridSort = VGridCell & {
 /**
  * The inline style of an element of the grid, whose keys are the property names in camelCase and whose lengths are in px.
  */
-type GridStyle = Readonly<Record<string, string | number | undefined>>;
+type GridStyle = Readonly<Record<string, string | number>>;
 
 /**
  * @internal
@@ -296,11 +296,11 @@ type GridStyle = Readonly<Record<string, string | number | undefined>>;
 export const gridStyleToString = (style: GridStyle): string => {
   let css = "";
   for (const key in style) {
-    const value = style[key];
-    if (value != NULL) {
-      css +=
-        key.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase()) + ":" + value + ";";
-    }
+    css +=
+      key.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase()) +
+      ":" +
+      style[key] +
+      ";";
   }
   return css;
 };
@@ -633,19 +633,7 @@ export const createGridPlan = (
         cell.$role !== role ||
         cell.$sort !== sortOrder
       ) {
-        const style: {
-          contain: string;
-          display: string;
-          gridArea: string;
-          height?: string;
-          minHeight?: string;
-          width?: string;
-          minWidth?: string;
-          zIndex?: number;
-          position?: string;
-          insetInlineStart?: string;
-          insetInlineEnd?: string;
-        } = {
+        const style: Record<string, string | number> = {
           contain: "layout style",
           display: "grid",
           // A span ends at the named line instead of the number of tracks, because the unrendered rows/columns are merged into one track.
@@ -657,25 +645,25 @@ export const createGridPlan = (
         // https://drafts.csswg.org/css-sizing-3/#cyclic-percentage-contribution
         // https://drafts.csswg.org/css-grid-2/#min-size-contribution
         if (rowTo - rowIndex > 1) {
-          style.height = "0px";
-          style.minHeight = "100%";
+          style["height"] = "0px";
+          style["minHeight"] = "100%";
           // Over the rows it spans over, which are painted later
           // https://drafts.csswg.org/css-grid-2/#z-order
-          style.zIndex = 1;
+          style["zIndex"] = 1;
         }
         if (colTo - colIndex > 1) {
-          style.width = "0px";
-          style.minWidth = "100%";
+          style["width"] = "0px";
+          style["minWidth"] = "100%";
         }
         if (startPinned || endPinned) {
           if (startPinned) {
-            style.insetInlineStart = stickyStart + "px";
+            style["insetInlineStart"] = stickyStart + "px";
           } else {
-            style.insetInlineEnd = stickyEnd + "px";
+            style["insetInlineEnd"] = stickyEnd + "px";
           }
-          style.position = "sticky";
+          style["position"] = "sticky";
           // Over the spanning cells, which may be painted later
-          style.zIndex = 2;
+          style["zIndex"] = 2;
         }
         cell = {
           $col: colIndex,
@@ -753,17 +741,7 @@ const getBoxStyle = (
   edge: "top" | "bottom",
   zIndex: number,
 ): GridStyle => {
-  const style: {
-    display: string;
-    gridTemplateRows: string;
-    gridTemplateColumns: string;
-    gridColumn: string;
-    gridRow: string;
-    position?: string;
-    top?: string;
-    bottom?: string;
-    zIndex?: number;
-  } = {
+  const style: Record<string, string | number> = {
     display: "grid",
     gridTemplateRows: "subgrid",
     gridTemplateColumns: "subgrid",
@@ -771,9 +749,9 @@ const getBoxStyle = (
     gridRow: "l" + from + "/l" + to,
   };
   if (inset != NULL) {
-    style.position = "sticky";
+    style["position"] = "sticky";
     style[edge] = inset + "px";
-    style.zIndex = zIndex;
+    style["zIndex"] = zIndex;
   }
   return style;
 };
