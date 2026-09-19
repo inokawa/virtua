@@ -1,6 +1,5 @@
 import type { Snippet } from "svelte";
 import type {
-  VGridScrollOffset,
   VGridScrollToIndexOpts,
   VGridAxis,
   VGridCell,
@@ -178,12 +177,12 @@ export interface VGridHandle {
   scrollToIndex(opts: VGridScrollToIndexOpts): void;
   /**
    * Scroll to the given offsets from the top/start of the scroll container.
-   * @param offset the offsets. See {@link VGridScrollOffset}.
+   * @param offset the offsets. The axis whose offset is omitted is not scrolled.
    */
-  scrollTo(offset: VGridScrollOffset): void;
+  scrollTo(offset: { vertical?: number; horizontal?: number }): void;
   /**
    * Scroll by the given offsets from the current position.
-   * @param offset the offsets. See {@link VGridScrollOffset}.
+   * @param offset the offsets. The axis whose offset is omitted is not scrolled.
    */
-  scrollBy(offset: VGridScrollOffset): void;
+  scrollBy(offset: { vertical?: number; horizontal?: number }): void;
 }

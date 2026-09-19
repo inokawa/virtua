@@ -57,20 +57,6 @@ export interface VGridScrollToIndexOpts {
 }
 
 /**
- * The scroll offsets of the grid in pixels. The axis whose offset is omitted is not scrolled.
- */
-export interface VGridScrollOffset {
-  /**
-   * The vertical offset.
-   */
-  vertical?: number;
-  /**
-   * The horizontal offset.
-   */
-  horizontal?: number;
-}
-
-/**
  * @internal
  */
 export const scrollTo = (driver: Driver, offset: number) => {
@@ -135,7 +121,8 @@ export const scrollToIndex = (
  */
 export const gridScrollTo = (
   driver: GridDriver,
-  { vertical, horizontal }: VGridScrollOffset,
+  vertical: number | undefined,
+  horizontal: number | undefined,
 ) => {
   if (vertical != NULL) {
     driver.$scroll(false, () => vertical);
@@ -152,7 +139,8 @@ export const gridScrollBy = (
   driver: GridDriver,
   rowStore: VirtualStore,
   colStore: VirtualStore,
-  { vertical, horizontal }: VGridScrollOffset,
+  vertical: number | undefined,
+  horizontal: number | undefined,
 ) => {
   if (vertical != NULL) {
     const offset = vertical + rowStore.$getScrollOffset();

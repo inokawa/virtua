@@ -27,7 +27,6 @@ import {
   type GridLayout,
   type GridRowGroupState,
   type GridRowState,
-  type VGridScrollOffset,
   type VGridScrollToIndexOpts,
   type StateVersion,
   type VGridAxis,
@@ -115,14 +114,14 @@ export interface VGridHandle {
   scrollToIndex(opts: VGridScrollToIndexOpts): void;
   /**
    * Scroll to the given offsets from the top/start of the scroll container.
-   * @param offset the offsets. See {@link VGridScrollOffset}.
+   * @param offset the offsets. The axis whose offset is omitted is not scrolled.
    */
-  scrollTo(offset: VGridScrollOffset): void;
+  scrollTo(offset: { vertical?: number; horizontal?: number }): void;
   /**
    * Scroll by the given offsets from the current position.
-   * @param offset the offsets. See {@link VGridScrollOffset}.
+   * @param offset the offsets. The axis whose offset is omitted is not scrolled.
    */
-  scrollBy(offset: VGridScrollOffset): void;
+  scrollBy(offset: { vertical?: number; horizontal?: number }): void;
 }
 
 /**
@@ -633,10 +632,28 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
       opts,
     );
   }
-  scrollTo(offset: VGridScrollOffset): void {
-    gridScrollTo(this.driver, offset);
+  scrollTo({
+    vertical,
+    horizontal,
+  }: {
+    vertical?: number;
+    horizontal?: number;
+  }): void {
+    gridScrollTo(this.driver, vertical, horizontal);
   }
-  scrollBy(offset: VGridScrollOffset): void {
-    gridScrollBy(this.driver, this._rowStore, this._colStore, offset);
+  scrollBy({
+    vertical,
+    horizontal,
+  }: {
+    vertical?: number;
+    horizontal?: number;
+  }): void {
+    gridScrollBy(
+      this.driver,
+      this._rowStore,
+      this._colStore,
+      vertical,
+      horizontal,
+    );
   }
 }

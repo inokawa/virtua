@@ -45,7 +45,6 @@ export {
   gridScrollToIndex,
   type ScrollToIndexOpts,
   type VGridScrollToIndexOpts,
-  type VGridScrollOffset,
 } from "./scroll-to.js";
 export { isBrowser } from "./environment.js";
 export { microtask, sort } from "./utils.js";

@@ -30,7 +30,6 @@ import {
   gridScrollToIndex,
   updateGridAxis,
   type GridDriver,
-  type VGridScrollOffset,
   type VGridScrollToIndexOpts,
   type VGridAxis,
   type VGridCell,
@@ -109,14 +108,14 @@ export interface VGridHandle {
   scrollToIndex(opts: VGridScrollToIndexOpts): void;
   /**
    * Scroll to the given offsets from the top/start of the scroll container.
-   * @param offset the offsets. See {@link VGridScrollOffset}.
+   * @param offset the offsets. The axis whose offset is omitted is not scrolled.
    */
-  scrollTo(offset: VGridScrollOffset): void;
+  scrollTo(offset: { vertical?: number; horizontal?: number }): void;
   /**
    * Scroll by the given offsets from the current position.
-   * @param offset the offsets. See {@link VGridScrollOffset}.
+   * @param offset the offsets. The axis whose offset is omitted is not scrolled.
    */
-  scrollBy(offset: VGridScrollOffset): void;
+  scrollBy(offset: { vertical?: number; horizontal?: number }): void;
 }
 
 /**
@@ -512,8 +511,10 @@ export const VGrid = <R = number, C = number>(
           props.footerCols,
           opts,
         ),
-      scrollTo: (offset) => gridScrollTo(driver, offset),
-      scrollBy: (offset) => gridScrollBy(driver, rowStore, colStore, offset),
+      scrollTo: ({ vertical, horizontal }) =>
+        gridScrollTo(driver, vertical, horizontal),
+      scrollBy: ({ vertical, horizontal }) =>
+        gridScrollBy(driver, rowStore, colStore, vertical, horizontal),
     });
     onCleanup(() => ref());
   }

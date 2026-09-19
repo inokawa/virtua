@@ -162,10 +162,10 @@
       footerCols,
       opts,
     );
-  export const scrollTo: VGridHandle["scrollTo"] = (offset) =>
-    gridScrollTo(driver, offset);
-  export const scrollBy: VGridHandle["scrollBy"] = (offset) =>
-    gridScrollBy(driver, rowStore, colStore, offset);
+  export const scrollTo: VGridHandle["scrollTo"] = ({ vertical, horizontal }) =>
+    gridScrollTo(driver, vertical, horizontal);
+  export const scrollBy: VGridHandle["scrollBy"] = ({ vertical, horizontal }) =>
+    gridScrollBy(driver, rowStore, colStore, vertical, horizontal);
 
   const viewportStyle = styleToString({
     overflow: "auto",
