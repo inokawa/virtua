@@ -426,11 +426,19 @@ export const VGrid = /*#__PURE__*/ forwardRef<
       keepMounted,
       ariaSort,
     );
-    const headerRowsRef = useLatestRef(headerRows);
-    const sectionRowsRef = useLatestRef(sectionRows);
-    const footerRowsRef = useLatestRef(footerRows);
-    const headerColsRef = useLatestRef(headerCols);
-    const footerColsRef = useLatestRef(footerCols);
+    const scrollToIndex = useLatestRef((opts: VGridScrollToIndexOpts) =>
+      gridScrollToIndex(
+        driver,
+        rowStore,
+        colStore,
+        headerRows,
+        sectionRows,
+        footerRows,
+        headerCols,
+        footerCols,
+        opts,
+      ),
+    );
 
     useIsomorphicLayoutEffect(() => {
       const onUpdate = (sync?: boolean) => {
@@ -503,18 +511,7 @@ export const VGrid = /*#__PURE__*/ forwardRef<
         getColOffset: colStore.$getItemOffset,
         getRowSize: rowStore.$getItemSize,
         getColSize: colStore.$getItemSize,
-        scrollToIndex: (opts) =>
-          gridScrollToIndex(
-            driver,
-            rowStore,
-            colStore,
-            headerRowsRef[refKey],
-            sectionRowsRef[refKey],
-            footerRowsRef[refKey],
-            headerColsRef[refKey],
-            footerColsRef[refKey],
-            opts,
-          ),
+        scrollToIndex: (opts) => scrollToIndex[refKey](opts),
         scrollTo: (offset) => gridScrollTo(driver, offset),
         scrollBy: (offset) => gridScrollBy(driver, rowStore, colStore, offset),
       };
