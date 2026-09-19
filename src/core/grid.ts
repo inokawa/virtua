@@ -482,9 +482,8 @@ export const createGridPlan = (
   for (const rowIndex of rowIndexes) {
     const pinnedTop = rowIndex < rowPinnedStart;
     const pinnedBottom = rowIndex >= rowTrailStart;
-    const pinned = pinnedTop || pinnedBottom;
-    const rowExtra =
-      !pinned && (rowIndex < rowRangeStart || rowIndex > rowRangeEnd);
+    const rowInRangeOrPinnedToEnd =
+      pinnedBottom || (rowIndex >= rowRangeStart && rowIndex <= rowRangeEnd);
     const section = getSection(sectionStarts, rowIndex, rowTrailStart);
     // The first row of the group of the row, or -1
     const groupStart = pinnedTop
@@ -514,7 +513,7 @@ export const createGridPlan = (
         $style: getBoxStyle(
           groupStart,
           groupEnd,
-          pinned ? 0 : NULL,
+          pinnedTop || pinnedBottom ? 0 : NULL,
           pinnedBottom ? "bottom" : "top",
           4,
         ),
@@ -538,15 +537,13 @@ export const createGridPlan = (
       const colIndex = cols[i]!;
       const startPinned = colIndex < colPinnedStart;
       const endPinned = colIndex >= colTrailStart;
-      const colExtra =
-        !startPinned &&
-        !endPinned &&
-        (colIndex < colRangeStart || colIndex > colRangeEnd);
+      const colInRangeOrPinnedToEnd =
+        endPinned || (colIndex >= colRangeStart && colIndex <= colRangeEnd);
       const span = spanCells.get(rowKey + colIndex);
       if (
         span
           ? span.rowIndex !== rowIndex || span.colIndex !== colIndex
-          : (rowExtra || colExtra) &&
+          : !(rowInRangeOrPinnedToEnd && colInRangeOrPinnedToEnd) &&
             !pinnedTop &&
             !isSectionHeaderRow &&
             !startPinned
