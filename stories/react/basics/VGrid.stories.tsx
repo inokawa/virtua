@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import React, { useMemo, useRef, useState } from "react";
-import { VGrid, VGridHandle, VGridSpan } from "../../../src";
+import { VGrid, VGridHandle, GridSpan } from "../../../src";
 import { faker } from "@faker-js/faker";
 import { Spinner, delay } from "../common";
 
@@ -100,7 +100,7 @@ export const Spans: StoryObj = {
     const GROUP_ROWS = 8;
     const spans = useMemo(() => {
       // corner over the two header rows
-      const spans: VGridSpan[] = [{ rowIndex: 0, colIndex: 0, rowSpan: 2 }];
+      const spans: GridSpan[] = [{ rowIndex: 0, colIndex: 0, rowSpan: 2 }];
       // grouped header row
       for (let c = 1; c < COLS; c += GROUP_COLS) {
         spans.push({ rowIndex: 0, colIndex: c, colSpan: GROUP_COLS });
@@ -645,7 +645,7 @@ export const MasterDetail: StoryObj = {
         isDetail?: boolean;
         height: number;
       }[] = [];
-      const spans: VGridSpan[] = [];
+      const spans: GridSpan[] = [];
       for (let i = 0; i < ROWS; i++) {
         displayRows.push({ index: i, height: 40 });
         if (expanded.has(i)) {

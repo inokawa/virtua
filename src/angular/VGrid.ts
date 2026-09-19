@@ -27,12 +27,12 @@ import {
   type GridLayout,
   type GridRowGroupState,
   type GridRowState,
-  type VGridScrollToIndexOpts,
+  type GridScrollToIndexOpts,
   type StateVersion,
-  type VGridAxis,
-  type VGridCell,
-  type VGridSize,
-  type VGridSpan,
+  type GridAxis,
+  type GridCell as GridCellType,
+  type GridSize,
+  type GridSpan,
   type VirtualStore,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SCROLL_EVENT,
@@ -109,9 +109,9 @@ export interface VGridHandle {
   getColSize(index: number): number;
   /**
    * Scroll to the cell specified by the indexes. The cell is not hidden behind the rows and the columns sticking over it.
-   * @param opts the indexes of the cell and the options. See {@link VGridScrollToIndexOpts}.
+   * @param opts the indexes of the cell and the options. See {@link GridScrollToIndexOpts}.
    */
-  scrollToIndex(opts: VGridScrollToIndexOpts): void;
+  scrollToIndex(opts: GridScrollToIndexOpts): void;
   /**
    * Scroll to the given offsets from the top/start of the scroll container.
    * @param offset the offsets. The axis whose offset is omitted is not scrolled.
@@ -143,7 +143,7 @@ export type CellContext<R = number, C = number> = {
   /**
    * The row index and the column index of the cell.
    */
-  cell: Readonly<VGridCell>;
+  cell: Readonly<GridCellType>;
 };
 
 @Directive({
@@ -216,7 +216,7 @@ export class GridRow<R, C> {
   readonly state = input.required<GridRowState>();
   readonly template = input.required<TemplateRef<CellContext<R, C>>>();
   readonly row = input.required<R>();
-  readonly cols = input.required<VGridAxis<C>>();
+  readonly cols = input.required<GridAxis<C>>();
   readonly resizer = input.required<GridDriver["$observeItem"]>();
 
   /** @internal */
@@ -250,8 +250,8 @@ export class GridRow<R, C> {
 export class GridRowGroup<R, C> {
   readonly state = input.required<GridRowGroupState>();
   readonly template = input.required<TemplateRef<CellContext<R, C>>>();
-  readonly rows = input.required<VGridAxis<R>>();
-  readonly cols = input.required<VGridAxis<C>>();
+  readonly rows = input.required<GridAxis<R>>();
+  readonly cols = input.required<GridAxis<C>>();
   readonly resizer = input.required<GridDriver["$observeItem"]>();
 
   /** @internal */
@@ -308,21 +308,21 @@ export class GridRowGroup<R, C> {
 })
 export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
   /**
-   * The rows of the grid. See {@link VGridAxis} for the accepted values.
+   * The rows of the grid. See {@link GridAxis} for the accepted values.
    */
-  readonly rows = input.required<VGridAxis<R>>();
+  readonly rows = input.required<GridAxis<R>>();
   /**
-   * The columns of the grid. See {@link VGridAxis} for the accepted values.
+   * The columns of the grid. See {@link GridAxis} for the accepted values.
    */
-  readonly cols = input.required<VGridAxis<C>>();
+  readonly cols = input.required<GridAxis<C>>();
   /**
-   * The heights of the rows. See {@link VGridSize} for the accepted values.
+   * The heights of the rows. See {@link GridSize} for the accepted values.
    */
-  readonly rowHeight = input.required<NoInfer<VGridSize<R>>>();
+  readonly rowHeight = input.required<NoInfer<GridSize<R>>>();
   /**
-   * The widths of the columns. See {@link VGridSize} for the accepted values.
+   * The widths of the columns. See {@link GridSize} for the accepted values.
    */
-  readonly colWidth = input.required<NoInfer<VGridSize<C>>>();
+  readonly colWidth = input.required<NoInfer<GridSize<C>>>();
   /**
    * The number of the leading rows pinned to the start, which are the column headers (`role="columnheader"`).
    *
@@ -358,15 +358,15 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
    */
   readonly footerCols = input<number>();
   /**
-   * Cells merged over multiple rows and/or columns. See {@link VGridSpan} for the accepted values.
+   * Cells merged over multiple rows and/or columns. See {@link GridSpan} for the accepted values.
    *
    * The cell at the origin is stretched over the merged area, and the other cells in it are not rendered. Spans must not overlap each other or cross the boundaries of the pinned rows/columns or the sections. A spanning cell is not measured for `"auto"` sizes on the axes it spans, and doesn't enlarge those tracks.
    */
-  readonly spans = input<readonly VGridSpan[]>();
+  readonly spans = input<readonly GridSpan[]>();
   /**
    * List of cells that should be always mounted, even when off screen.
    */
-  readonly keepMounted = input<readonly VGridCell[]>();
+  readonly keepMounted = input<readonly GridCellType[]>();
   /**
    * Extra space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank cells in fast scrolling.
    * @defaultValue 200
@@ -381,7 +381,7 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
    * The header cell of the sorted column or row, and the sort order (`aria-sort`).
    */
   readonly ariaSort = input<
-    VGridCell & { order: "ascending" | "descending" | "other" }
+    GridCellType & { order: "ascending" | "descending" | "other" }
   >();
 
   /**
@@ -619,7 +619,7 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
   getColSize(index: number): number {
     return this._colStore.$getItemSize(index);
   }
-  scrollToIndex(opts: VGridScrollToIndexOpts): void {
+  scrollToIndex(opts: GridScrollToIndexOpts): void {
     gridScrollToIndex(
       this.driver,
       this._rowStore,

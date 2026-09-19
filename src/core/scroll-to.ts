@@ -35,7 +35,7 @@ export interface ScrollToIndexOpts {
 /**
  * The cell to scroll to and the options of the scroll. The axis whose index is omitted is not scrolled.
  */
-export interface VGridScrollToIndexOpts {
+export interface GridScrollToIndexOpts {
   /**
    * The row index of the cell.
    */
@@ -242,7 +242,7 @@ export const gridScrollToIndex = (
   footerRows = 0,
   headerCols = 0,
   footerCols = 0,
-  { rowIndex, colIndex, rowAlign, colAlign }: VGridScrollToIndexOpts,
+  { rowIndex, colIndex, rowAlign, colAlign }: GridScrollToIndexOpts,
 ) => {
   // TODO support smooth scroll, removed because scrolling both axes smoothly freezes their ranges and the page
   if (rowIndex != NULL) {

@@ -16,9 +16,9 @@ export {
   getAxisLength,
   getAxisItem,
   type GridLayout,
-  type VGridAxis,
-  type VGridTrackSize,
-  type VGridSize,
+  type GridAxis,
+  type GridTrackSize,
+  type GridSize,
 } from "./layouts/grid.js";
 export {
   createGridPlan,
@@ -27,10 +27,10 @@ export {
   type GridCellState,
   type GridRowGroupState,
   gridStyleToString,
-  type VGridCell,
-  type VGridSpan,
+  type GridCell,
+  type GridSpan,
 } from "./grid.js";
-export type { DriverFactory, Driver, GridDriver } from "./driver.js";
+export type { Driver, GridDriver } from "./driver.js";
 export {
   createContainerDriver,
   createWindowDriver,
@@ -44,7 +44,7 @@ export {
   gridScrollBy,
   gridScrollToIndex,
   type ScrollToIndexOpts,
-  type VGridScrollToIndexOpts,
+  type GridScrollToIndexOpts,
 } from "./scroll-to.js";
 export { isBrowser } from "./environment.js";
 export { microtask, sort } from "./utils.js";

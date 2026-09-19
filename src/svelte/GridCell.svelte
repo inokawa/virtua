@@ -3,13 +3,13 @@
   import {
     type GridCellState,
     type GridDriver,
-    type VGridCell,
+    type GridCell,
     gridStyleToString,
   } from "../core/index.js";
 
   interface Props {
     state: GridCellState;
-    children: Snippet<[row: R, col: C, cell: Readonly<VGridCell>]>;
+    children: Snippet<[row: R, col: C, cell: Readonly<GridCell>]>;
     row: R;
     col: C;
     rowIndex: number;

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { VGrid, type VGridProps, type VGridSpan } from "../../../src";
+import { VGrid, type VGridProps, type GridSpan } from "../../../src";
 import React, { CSSProperties } from "react";
 import { faker } from "@faker-js/faker";
 import {
@@ -215,7 +215,7 @@ export const Default: StoryObj = {
     const headerGroups = table.getHeaderGroups();
     const leafHeaders = headerGroups[headerGroups.length - 1]!.headers;
     // the header rows hold their headers at the column indexes they span
-    const spans: VGridSpan[] = [];
+    const spans: GridSpan[] = [];
     let ariaSort: VGridProps["ariaSort"];
     const headerRows = headerGroups.map((headerGroup, rowIndex) => {
       const headers: (typeof leafHeaders)[number][] = [];

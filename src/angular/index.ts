@@ -8,4 +8,4 @@ export {
   type WindowVirtualizerHandle,
 } from "./WindowVirtualizer.js";
 export { VGrid, type VGridHandle } from "./VGrid.js";
-export type { VGridSize, VGridSpan } from "../core/index.js";
+export type { GridSize, GridSpan } from "../core/index.js";
