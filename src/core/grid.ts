@@ -214,11 +214,6 @@ const isKept = (
   return false;
 };
 
-const getEndInset = (layout: GridLayout, index: number): number =>
-  layout.$getTotalSize() -
-  layout.$getItemOffset(index) -
-  layout.$getItemSize(index);
-
 const getTemplate = (
   layout: GridLayout,
   indexes: readonly number[],
@@ -360,12 +355,12 @@ export const createGridPlan = (
   // https://www.w3.org/TR/wai-aria-1.2/#rowheader
   const extraRows: number[] = [];
   const extraCols: number[] = [];
-  for (const { rowIndex, colIndex } of kept) {
+  // The cells rendered out of the ranges, which render their rows, the headers of their sections and their columns
+  const extraCells: Readonly<VGridCell>[] = [];
+  for (const cell of kept) {
     // A kept cell may be left out of the grid after the rows or the columns are removed.
-    if (rowIndex < rowCount && colIndex < colCount) {
-      extraRows.push(rowIndex);
-      addSectionHeader(extraRows, sectionStarts, rowIndex, rowTrailStart);
-      extraCols.push(colIndex);
+    if (cell.rowIndex < rowCount && cell.colIndex < colCount) {
+      extraCells.push(cell);
     }
   }
   const sectionLength = sectionStarts.length;
@@ -389,8 +384,8 @@ export const createGridPlan = (
   }
   for (let l = 0, laidLength = -1; laidLength !== laid.length;) {
     laidLength = laid.length;
-    for (; l < laidLength; l++) {
-      const { rowIndex, colIndex } = laid[l]!;
+    for (; l < extraCells.length; l++) {
+      const { rowIndex, colIndex } = extraCells[l]!;
       extraRows.push(rowIndex);
       addSectionHeader(extraRows, sectionStarts, rowIndex, rowTrailStart);
       extraCols.push(colIndex);
@@ -423,6 +418,7 @@ export const createGridPlan = (
           )
         ) {
           laid.push(span);
+          extraCells.push(span);
         } else {
           const section = getSection(sectionStarts, rowTo - 1, rowTrailStart);
           if (
@@ -496,7 +492,6 @@ export const createGridPlan = (
 
   // The rows out of the pinned rows and the sections are not grouped, as Firefox on macOS keeps the stale columns of the table when the rows in a group change.
   const groups: (GridRowGroupState | GridRowState)[] = [];
-  let groupKey = -1;
   let groupRows: (GridRowGroupState | GridRowState)[] = groups;
   const prev = rowStatesCache.get(rowLayout);
   const rowStates = new Map<number, GridRowState>();
@@ -516,36 +511,34 @@ export const createGridPlan = (
         : section < 0
           ? -1
           : sectionStarts[section]!;
-    if (groupStart !== groupKey) {
-      groupKey = groupStart;
-      if (groupStart < 0) {
-        groupRows = groups;
-      } else {
-        const groupEnd = pinnedTop
-          ? rowPinnedStart
-          : pinnedBottom
-            ? rowCount
-            : // A section ends at the next section which may not be rendered, or at the rows pinned to the end
-              section + 1 < sectionLength
-              ? sectionStarts[section + 1]!
-              : rowTrailStart;
-        rowCuts.push(groupEnd);
-        const rows: GridRowState[] = [];
-        groups.push({
-          // The rows pinned to the end keep the key while the rows before them are added or removed
-          $key: pinnedTop ? -1 : pinnedBottom ? -2 : -3 - groupStart,
-          $rows: rows,
-          // The pinned rows at each edge are sticky together over the section headers and the cells of the other rows, so the cells spanning over them are stacked over the next rows as in the other rows.
-          $style: getBoxStyle(
-            groupStart,
-            groupEnd,
-            pinned ? 0 : NULL,
-            pinnedBottom ? "bottom" : "top",
-            4,
-          ),
-        });
-        groupRows = rows;
-      }
+    // A group starts at its first row, which is rendered whenever the other rows of the group are.
+    if (rowIndex === groupStart) {
+      const groupEnd = pinnedTop
+        ? rowPinnedStart
+        : pinnedBottom
+          ? rowCount
+          : // A section ends at the next section which may not be rendered, or at the rows pinned to the end
+            section + 1 < sectionLength
+            ? sectionStarts[section + 1]!
+            : rowTrailStart;
+      rowCuts.push(groupEnd);
+      const rows: GridRowState[] = [];
+      groups.push({
+        // The rows pinned to the end keep the key while the rows before them are added or removed
+        $key: pinnedTop ? -1 : pinnedBottom ? -2 : -3 - groupStart,
+        $rows: rows,
+        // The pinned rows at each edge are sticky together over the section headers and the cells of the other rows, so the cells spanning over them are stacked over the next rows as in the other rows.
+        $style: getBoxStyle(
+          groupStart,
+          groupEnd,
+          pinned ? 0 : NULL,
+          pinnedBottom ? "bottom" : "top",
+          4,
+        ),
+      });
+      groupRows = rows;
+    } else if (groupStart < 0) {
+      groupRows = groups;
     }
     const isSectionHeaderRow = section >= 0 && rowIndex === groupStart;
     const rowTop = isSectionHeaderRow ? stickyTop : NULL;
@@ -592,7 +585,11 @@ export const createGridPlan = (
         ? colLayout.$getItemOffset(colIndex)
         : NULL;
       // The end inset of a span is from its last column.
-      const stickyEnd = endPinned ? getEndInset(colLayout, colTo - 1) : NULL;
+      const stickyEnd = endPinned
+        ? colLayout.$getTotalSize() -
+          colLayout.$getItemOffset(colTo - 1) -
+          colLayout.$getItemSize(colTo - 1)
+        : NULL;
       if (measuredRow === false && rowTo - rowIndex < 2) {
         measureRowIndex = rowIndex;
         measuredRow = true;
