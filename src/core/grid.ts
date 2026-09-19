@@ -676,7 +676,7 @@ export const createGridPlan = (
     const row: GridRowState =
       prevRow &&
       !changed &&
-      prevCells!.length === rowCells.length &&
+      prevRow.$cells.length === rowCells.length &&
       prevRow.$top === rowTop
         ? prevRow
         : {

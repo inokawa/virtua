@@ -81,6 +81,6 @@
     "name": "angular",
     "path": "lib/angular/index.js",
     "import": "*",
-    "limit": "10.4 kB"
+    "limit": "10.42 kB"
   }
 ]

@@ -169,14 +169,13 @@ export const createGridLayout = (
             : NULL;
         const isAutoItem = typeof itemSize !== "number";
         // An item which was auto keeps its measured size.
-        if (isAutoItem && autos[i]) {
-          continue;
-        }
-        autos[i] = isAutoItem;
-        const target = isAutoItem ? UNCACHED : itemSize + gap;
-        if (!inner.$isSizeEqual(i, target)) {
-          inner.$setItemSize(i, target);
-          changed = true;
+        if (!isAutoItem || !autos[i]) {
+          autos[i] = isAutoItem;
+          const target = isAutoItem ? UNCACHED : itemSize + gap;
+          if (!inner.$isSizeEqual(i, target)) {
+            inner.$setItemSize(i, target);
+            changed = true;
+          }
         }
       }
       if (!changed) {
