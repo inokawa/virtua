@@ -342,8 +342,8 @@ export const createGridPlan = (
   // https://www.w3.org/TR/wai-aria-1.2/#rowheader
   const extraRows: number[] = [];
   const extraCols: number[] = [];
-  // The cells rendered even out of the ranges, which render their rows, the headers of their sections and their columns
-  const extraCells: Readonly<VGridCell>[] = [];
+  // The cells rendered even out of the ranges, which render their rows, the headers of their sections and their columns. A kept cell is a span over itself.
+  const extraCells: Readonly<VGridSpan>[] = [];
   for (const cell of kept) {
     // A kept cell may be left out of the grid after the rows or the columns are removed.
     if (cell.rowIndex < rowCount && cell.colIndex < colCount) {
@@ -355,11 +355,10 @@ export const createGridPlan = (
     addSectionHeader(extraRows, sectionStarts, rowRangeStart, rowTrailStart);
     extraCols.push(rowHeaderCol);
   }
-  // The spans laid over the rendered tracks. The spans only over the headers wait for the headers rendered for the origins of the laid spans, until no span is laid.
-  const laid: Readonly<VGridSpan>[] = [];
+  // The spans over the rendered tracks are laid. The spans only over the headers wait for the headers rendered for the origins of the laid spans, until no span is laid.
   let waiting = spans;
-  for (let l = 0, laidLength = -1; laidLength !== laid.length;) {
-    laidLength = laid.length;
+  let l = 0;
+  do {
     for (; l < extraCells.length; l++) {
       const { rowIndex, colIndex } = extraCells[l]!;
       extraRows.push(rowIndex);
@@ -400,7 +399,6 @@ export const createGridPlan = (
               colTrailStart,
             )
           ) {
-            laid.push(span);
             extraCells.push(span);
           } else {
             const section = getSection(sectionStarts, rowTo - 1, rowTrailStart);
@@ -417,7 +415,7 @@ export const createGridPlan = (
       }
     }
     waiting = rest;
-  }
+  } while (l < extraCells.length);
   // The tracks are all known now.
   sort(extraRows);
   sort(extraCols);
@@ -446,11 +444,8 @@ export const createGridPlan = (
   // https://drafts.csswg.org/css-grid-2/#grid-placement-int
   const rowCuts: number[] = [];
   const colCuts: number[] = [];
-  // A kept cell is a span over itself, unless it's under a laid span.
-  for (const cell of extraCells) {
-    spanCells.set(cell.rowIndex * colCount + cell.colIndex, cell);
-  }
-  for (const span of laid) {
+  // The kept cells are before the spans, so a span is over the kept cells under it.
+  for (const span of extraCells) {
     const rowTo = getSpanRowEnd(span, rowCount);
     const colTo = getSpanColEnd(span, colCount);
     rowCuts.push(rowTo);
