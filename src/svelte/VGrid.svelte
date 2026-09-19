@@ -221,7 +221,8 @@
           resizer={driver.$observeItem}
         />
       {:else}
-        <!-- Guard for experimental.async: true, like the rows in the groups -->
+        <!-- Guard for experimental.async: true, which runs the each block before $effect.pre -->
+        <!-- https://github.com/inokawa/virtua/pull/847 -->
         {#if state.$row < getAxisLength(rows)}
           <GridRow
             {state}

@@ -26,7 +26,8 @@
 
 <div role="row" aria-rowindex={state.$row + 1} {style}>
   {#each state.$cells as cell (cell.$col)}
-    <!-- Guard for experimental.async: true, like the rows -->
+    <!-- Guard for experimental.async: true, which runs the each block before $effect.pre -->
+    <!-- https://github.com/inokawa/virtua/pull/847 -->
     {#if cell.$col < getAxisLength(cols)}
       <GridCell
         state={cell}
