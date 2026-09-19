@@ -141,31 +141,25 @@ export const createGridLayout = (
         typeof requestedSize === "number" || requestedSize === "auto"
           ? currentSize
           : requestedSize;
-      const prevAxis = currentAxis;
-      const prevSize = currentSize;
-      const prevLength = autos.length;
       const length = inner.$getLength();
+      // The items of the same axis are the same, unless they may be mutated in place.
+      if (
+        !mutable &&
+        nextAxis === currentAxis &&
+        nextSize === currentSize &&
+        length === autos.length
+      ) {
+        return;
+      }
       currentAxis = nextAxis;
       currentSize = nextSize;
       autos.length = length;
-      const isSame = !mutable && nextSize === prevSize;
-      if (isSame && nextAxis === prevAxis && length <= prevLength) {
-        return;
-      }
 
       const anchorIndex = inner.$findIndex(scrollOffset);
       const prevOffset = inner.$getItemOffset(anchorIndex);
       let changed: boolean | undefined;
       for (let i = 0; i < length; i++) {
         const item = (nextAxis as readonly unknown[])[i];
-        // An item whose reference is unchanged keeps its size, unless it may be mutated in place.
-        if (
-          isSame &&
-          i < prevLength &&
-          item === (prevAxis as readonly unknown[])[i]
-        ) {
-          continue;
-        }
         // An item which isn't an object, such as a placeholder of a header row, has no size.
         const itemSize =
           item !== NULL && typeof item === "object"
@@ -173,13 +167,13 @@ export const createGridLayout = (
                 nextSize as string
               ]
             : NULL;
-        const s = itemSize == NULL ? "auto" : itemSize;
+        const isAutoItem = typeof itemSize !== "number";
         // An item which was auto keeps its measured size.
-        if (s === "auto" && autos[i]) {
+        if (isAutoItem && autos[i]) {
           continue;
         }
-        autos[i] = s === "auto";
-        const target = typeof s === "number" ? s + gap : UNCACHED;
+        autos[i] = isAutoItem;
+        const target = isAutoItem ? UNCACHED : itemSize + gap;
         if (!inner.$isSizeEqual(i, target)) {
           inner.$setItemSize(i, target);
           changed = true;

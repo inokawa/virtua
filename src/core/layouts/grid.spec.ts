@@ -69,7 +69,7 @@ describe("setAxis with keys", () => {
     expect(layout.$isMeasurable(0)).toBe(false);
   });
 
-  it("should visit only the replaced items", () => {
+  it("should update an item replaced in a copy of the axis", () => {
     const list = items(100, 200, 300);
     const layout = createGridLayout(list, "s");
     layout.$getTotalSize();
@@ -77,10 +77,9 @@ describe("setAxis with keys", () => {
     next[1] = { s: 250 };
     expect(layout.$setAxis(next, "s", 0)).toBe(0);
     expect(layout.$getItemSize(1)).toBe(250);
-    // an item mutated in place is not a new value, so it's not read again
-    next[2]!.s = 999;
+    expect(layout.$getTotalSize()).toBe(100 + 250 + 300);
+    // a copy without a change needs no relayout
     expect(layout.$setAxis(next.slice(), "s", 0)).toBe(undefined);
-    expect(layout.$getItemSize(2)).toBe(300);
   });
 
   it("should read the items mutated in place when the axis is mutable", () => {
