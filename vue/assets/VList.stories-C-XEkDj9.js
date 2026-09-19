@@ -1,0 +1,22 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{A as t,C as n,D as r,E as i,M as a,N as o,a as s,d as c,f as l,g as u,h as d,k as f,m as p,p as m,s as h}from"./iframe-DuZkAHX4.js";import{n as g,t as _}from"./VList-BPhve_Tj.js";import{n as v,t as y}from"./_plugin-vue_export-helper-BqBa3wPr.js";var b;function x(){return(x=e((()=>{s(),g(),b=u({__name:`Default`,setup(e){let r=[20,40,180,77],s=Array.from({length:1e3}).map((e,t)=>r[t%4]);return(e,r)=>(n(),l(t(_),{data:t(s),style:{height:`100vh`}},{default:i(({item:e,index:t})=>[(n(),m(`div`,{key:t,style:a({height:e+`px`,background:`white`,borderBottom:`solid 1px #ccc`})},o(t),5))]),_:1},8,[`data`]))}})})))()}var S;function C(){return(C=e((()=>{x(),v(),S=y(b,[[`__scopeId`,`data-v-53d4a97b`]]),b.__docgenInfo=Object.assign({displayName:b.name??b.__name},{exportName:`default`,displayName:`Default`,description:``,tags:{},sourceFiles:[`/home/runner/work/virtua/virtua/stories/vue/basics/Default.vue`]})})))()}var w,T;function E(){return(E=e((()=>{s(),g(),w={style:{padding:`10px`}},T=u({__name:`Horizontal`,setup(e){let r=[40,180,77],s=Array.from({length:1e3}).map((e,t)=>r[t%3]);return(e,r)=>(n(),m(`div`,w,[d(t(_),{data:t(s),style:{width:`100%`,height:`200px`},horizontal:``},{default:i(({item:e,index:t})=>[(n(),m(`div`,{key:t,style:a({width:e+`px`,background:`white`,borderRight:`solid 1px #ccc`})},o(t),5))]),_:1},8,[`data`])]))}})})))()}var D;function O(){return(O=e((()=>{E(),v(),D=y(T,[[`__scopeId`,`data-v-4877777c`]]),T.__docgenInfo=Object.assign({displayName:T.name??T.__name},{exportName:`default`,displayName:`Horizontal`,description:``,tags:{},sourceFiles:[`/home/runner/work/virtua/virtua/stories/vue/basics/Horizontal.vue`]})})))()}var k,A,j;function M(){return(M=e((()=>{s(),g(),k={style:{height:`100%`,display:`flex`,"flex-direction":`column`}},A=[`value`],j=u({__name:`Controlls`,setup(e){let s=[20,40,180,77],l=e=>({index:e,height:s[e%4]+`px`}),u=f(Array.from({length:1e3}).map((e,t)=>l(t))),g=f(0),v=f(!1),y=f(567),b=f(!1),x=f(),S=()=>{x.value?.scrollToIndex(y.value)},C=()=>{let e=Array.from({length:100}).map((e,t)=>l(t+u.value.length));u.value=b.value?[...e,...u.value]:[...u.value,...e]},w=()=>{let e=[...u.value];e.pop(),u.value=e};return(e,s)=>(n(),m(`div`,k,[c(`div`,null,`offset: `+o(g.value),1),c(`div`,null,`scrolling: `+o(v.value),1),c(`div`,null,[c(`input`,{type:`number`,value:y.value,onInput:s[0]||=e=>{y.value=Number(e.target.value)}},null,40,A),c(`button`,{onClick:S},`scrollToIndex`)]),c(`div`,null,[c(`button`,{onClick:C},`append`),c(`label`,null,[r(c(`input`,{type:`checkbox`,"onUpdate:modelValue":s[1]||=e=>b.value=e},null,512),[[h,b.value]]),s[2]||=p(` prepend`,-1)]),c(`button`,{onClick:w},`pop`)]),d(t(_),{ref_key:`handle`,ref:x,data:u.value,shift:b.value,onScroll:e=>{g.value=e,v.value=!0},onScrollEnd:()=>{v.value=!1}},{default:i(({item:e})=>[(n(),m(`div`,{key:e.index,style:a({height:e.height,background:`white`,borderBottom:`solid 1px #ccc`})},o(e.index),5))]),_:1},8,[`data`,`shift`,`onScroll`,`onScrollEnd`])]))}})})))()}var N;function P(){return(P=e((()=>{M(),v(),N=y(j,[[`__scopeId`,`data-v-5f4be524`]]),j.__docgenInfo=Object.assign({displayName:j.name??j.__name},{exportName:`default`,displayName:`Controlls`,description:``,tags:{},sourceFiles:[`/home/runner/work/virtua/virtua/stories/vue/basics/Controlls.vue`]})})))()}var F,I,L,R,z;function B(){return(B=e((()=>{g(),C(),O(),P(),F={component:_},I={render:()=>({components:{Component:S},template:`<Component />`})},L={render:()=>({components:{Component:D},template:`<Component />`})},R={render:()=>({components:{Component:N},template:`<Component />`})},I.parameters={...I.parameters,docs:{...I.parameters?.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: DefaultComponent
+    },
+    template: "<Component />"
+  })
+}`,...I.parameters?.docs?.source}}},L.parameters={...L.parameters,docs:{...L.parameters?.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: HorizontalComponent
+    },
+    template: "<Component />"
+  })
+}`,...L.parameters?.docs?.source}}},R.parameters={...R.parameters,docs:{...R.parameters?.docs,source:{originalSource:`{
+  render: () => ({
+    components: {
+      Component: ControllsComponent
+    },
+    template: "<Component />"
+  })
+}`,...R.parameters?.docs?.source}}},z=[`Default`,`Horizontal`,`Controlls`]})))()}B();export{R as Controlls,I as Default,L as Horizontal,z as __namedExportsOrder,F as default};
