@@ -555,7 +555,9 @@ export const createGridPlan = (
       }
       const rowTo = span ? getSpanRowEnd(span, rowCount) : rowIndex + 1;
       const colTo = span ? getSpanColEnd(span, colCount) : colIndex + 1;
-      const spanning = rowTo - rowIndex > 1 || colTo - colIndex > 1;
+      const spansRows = rowTo - rowIndex > 1;
+      const spansCols = colTo - colIndex > 1;
+      const spanning = spansRows || spansCols;
       const rowSpan = spanning ? rowTo - rowIndex : undefined;
       const colSpan = spanning ? colTo - colIndex : undefined;
       let measureRowIndex: number | undefined;
@@ -573,11 +575,11 @@ export const createGridPlan = (
           colLayout.$getItemOffset(colTo - 1) -
           colLayout.$getItemSize(colTo - 1)
         : NULL;
-      if (measuredRow === false && rowTo - rowIndex < 2) {
+      if (measuredRow === false && !spansRows) {
         measureRowIndex = rowIndex;
         measuredRow = true;
       }
-      if (measuredCols[i] === false && colTo - colIndex < 2) {
+      if (measuredCols[i] === false && !spansCols) {
         measureColIndex = colIndex;
         measuredCols[i] = true;
       }
@@ -627,14 +629,14 @@ export const createGridPlan = (
         // A spanning cell fills the tracks it spans without giving their sizes.
         // https://drafts.csswg.org/css-sizing-3/#cyclic-percentage-contribution
         // https://drafts.csswg.org/css-grid-2/#min-size-contribution
-        if (rowTo - rowIndex > 1) {
+        if (spansRows) {
           style["height"] = "0px";
           style["minHeight"] = "100%";
           // Over the rows it spans over, which are painted later
           // https://drafts.csswg.org/css-grid-2/#z-order
           style["zIndex"] = 1;
         }
-        if (colTo - colIndex > 1) {
+        if (spansCols) {
           style["width"] = "0px";
           style["minWidth"] = "100%";
         }
