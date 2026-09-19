@@ -6,6 +6,7 @@
 
 ## Modules
 
+- [core](core/API.md)
 - [react](react/API.md)
 - [vue](vue/API.md)
 - [solid](solid/API.md)
