@@ -201,19 +201,6 @@ const getSpanRowEnd = (span: Readonly<VGridSpan>, rowCount: number): number =>
 const getSpanColEnd = (span: Readonly<VGridSpan>, colCount: number): number =>
   min(span.colIndex + (span.colSpan || 1), colCount);
 
-const isKept = (
-  kept: readonly Readonly<VGridCell>[],
-  rowIndex: number,
-  colIndex: number,
-): boolean => {
-  for (const cell of kept) {
-    if (cell.rowIndex === rowIndex && cell.colIndex === colIndex) {
-      return true;
-    }
-  }
-  return false;
-};
-
 const getTemplate = (
   layout: GridLayout,
   indexes: readonly number[],
@@ -370,18 +357,7 @@ export const createGridPlan = (
   }
   // The spans laid over the rendered tracks. The spans only over the headers wait for the headers rendered for the origins of the laid spans, until no span is laid.
   const laid: Readonly<VGridSpan>[] = [];
-  let waiting: Readonly<VGridSpan>[] = [];
-  for (const span of spans) {
-    // A span may be left out of the grid after the rows or the columns are removed.
-    if (
-      span.rowIndex < rowCount &&
-      span.colIndex < colCount &&
-      (getSpanRowEnd(span, rowCount) - span.rowIndex > 1 ||
-        getSpanColEnd(span, colCount) - span.colIndex > 1)
-    ) {
-      waiting.push(span);
-    }
-  }
+  let waiting = spans;
   for (let l = 0, laidLength = -1; laidLength !== laid.length;) {
     laidLength = laid.length;
     for (; l < extraCells.length; l++) {
@@ -395,41 +371,49 @@ export const createGridPlan = (
       const row = span.rowIndex;
       const col = span.colIndex;
       const rowTo = getSpanRowEnd(span, rowCount);
+      const colTo = getSpanColEnd(span, colCount);
+      // A span may be left out of the grid after the rows or the columns are removed.
       if (
-        hasTrackIn(
-          extraRows,
-          row,
-          rowTo,
-          rowPinnedStart,
-          rowRangeStart,
-          rowRangeEnd,
-          rowTrailStart,
-        )
+        row < rowCount &&
+        col < colCount &&
+        (rowTo - row > 1 || colTo - col > 1)
       ) {
         if (
           hasTrackIn(
-            extraCols,
-            col,
-            getSpanColEnd(span, colCount),
-            colPinnedStart,
-            colRangeStart,
-            colRangeEnd,
-            colTrailStart,
+            extraRows,
+            row,
+            rowTo,
+            rowPinnedStart,
+            rowRangeStart,
+            rowRangeEnd,
+            rowTrailStart,
           )
         ) {
-          laid.push(span);
-          extraCells.push(span);
-        } else {
-          const section = getSection(sectionStarts, rowTo - 1, rowTrailStart);
           if (
-            row < rowPinnedStart ||
-            (section >= 0 && sectionStarts[section]! >= row)
+            hasTrackIn(
+              extraCols,
+              col,
+              colTo,
+              colPinnedStart,
+              colRangeStart,
+              colRangeEnd,
+              colTrailStart,
+            )
           ) {
-            rest.push(span);
+            laid.push(span);
+            extraCells.push(span);
+          } else {
+            const section = getSection(sectionStarts, rowTo - 1, rowTrailStart);
+            if (
+              row < rowPinnedStart ||
+              (section >= 0 && sectionStarts[section]! >= row)
+            ) {
+              rest.push(span);
+            }
           }
+        } else if (col < colPinnedStart) {
+          rest.push(span);
         }
-      } else if (col < colPinnedStart) {
-        rest.push(span);
       }
     }
     waiting = rest;
@@ -462,6 +446,10 @@ export const createGridPlan = (
   // https://drafts.csswg.org/css-grid-2/#grid-placement-int
   const rowCuts: number[] = [];
   const colCuts: number[] = [];
+  // A kept cell is a span over itself, unless it's under a laid span.
+  for (const cell of extraCells) {
+    spanCells.set(cell.rowIndex * colCount + cell.colIndex, cell);
+  }
   for (const span of laid) {
     const rowTo = getSpanRowEnd(span, rowCount);
     const colTo = getSpanColEnd(span, colCount);
@@ -566,15 +554,15 @@ export const createGridPlan = (
           : (rowExtra || colExtra) &&
             !pinnedTop &&
             !isSectionHeaderRow &&
-            !startPinned &&
-            !isKept(kept, rowIndex, colIndex)
+            !startPinned
       ) {
         continue;
       }
       const rowTo = span ? getSpanRowEnd(span, rowCount) : rowIndex + 1;
       const colTo = span ? getSpanColEnd(span, colCount) : colIndex + 1;
-      const rowSpan = span ? rowTo - rowIndex : undefined;
-      const colSpan = span ? colTo - colIndex : undefined;
+      const spanning = rowTo - rowIndex > 1 || colTo - colIndex > 1;
+      const rowSpan = spanning ? rowTo - rowIndex : undefined;
+      const colSpan = spanning ? colTo - colIndex : undefined;
       let measureRowIndex: number | undefined;
       let measureColIndex: number | undefined;
       rowEnd = max(rowEnd, rowTo);
@@ -637,7 +625,7 @@ export const createGridPlan = (
           contain: "layout style",
           display: "grid",
           // A span ends at the named line instead of the number of tracks, because the unrendered rows/columns are merged into one track.
-          gridArea: span
+          gridArea: spanning
             ? "1/l" + colIndex + "/l" + rowTo + "/l" + colTo
             : "1/l" + colIndex,
         };
