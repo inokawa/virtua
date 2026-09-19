@@ -1,1 +1,0 @@
-import{t as e}from"./iframe-Cw4Z-scp.js";e();
