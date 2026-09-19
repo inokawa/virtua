@@ -231,9 +231,9 @@ const getTemplate = (
   let i = 0;
   let c = 0;
   while (i < indexesLength || c < cutsLength) {
-    const index = indexes[i];
-    const cut = sortedCuts[c];
-    if (cut != NULL && cut <= line) {
+    const index = i < indexesLength ? indexes[i]! : count;
+    const cut = c < cutsLength ? sortedCuts[c]! : count;
+    if (cut <= line) {
       c++;
     } else {
       let to: number;
@@ -253,7 +253,7 @@ const getTemplate = (
         i++;
       } else {
         // The tracks without rendered cells are merged until the next rendered track or the end of a span.
-        to = cut == NULL || (index != NULL && index < cut) ? index! : cut;
+        to = min(index, cut);
         // A fixed track this large makes WebKit misplace the cells after one of them is focused, so the size is given as the min.
         size =
           "minmax(" +
@@ -355,7 +355,7 @@ export const createGridPlan = (
   // https://www.w3.org/TR/wai-aria-1.2/#rowheader
   const extraRows: number[] = [];
   const extraCols: number[] = [];
-  // The cells rendered out of the ranges, which render their rows, the headers of their sections and their columns
+  // The cells rendered even out of the ranges, which render their rows, the headers of their sections and their columns
   const extraCells: Readonly<VGridCell>[] = [];
   for (const cell of kept) {
     // A kept cell may be left out of the grid after the rows or the columns are removed.
