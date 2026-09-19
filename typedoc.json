@@ -1,5 +1,6 @@
 {
   "entryPoints": [
+    "./src/core/index.ts",
     "./src/index.ts",
     "./src/vue/index.ts",
     "./src/solid/index.ts",
