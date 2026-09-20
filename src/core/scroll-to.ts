@@ -1,7 +1,7 @@
 import { type VirtualStore } from "./store.js";
 import { clamp, EMPTY, max, min, NULL } from "./utils.js";
 import { type Driver, type GridDriver } from "./driver.js";
-import { getSection, getSectionStarts } from "./grid.js";
+import { getSectionIndex, getSectionStarts } from "./grid.js";
 
 /**
  * Alignment of item in the viewport.
@@ -167,7 +167,7 @@ const scrollGridAxisToIndex = (
   const trailStart = max(count - footer, pinnedStart);
   index = clamp(index, 0, count - 1);
   const starts = getSectionStarts(sections, pinnedStart, trailStart);
-  const section = getSection(starts, index, trailStart);
+  const section = getSectionIndex(starts, index, trailStart);
   const sectionHeader = section < 0 ? -1 : starts[section]!;
   // Read when scrolling, as the pinned items may be measured after the call. The offsets from the first item exclude the jump deferred during scrolling.
   // The header of the section of the item sticks under the pinned items, so the item is below it unless it's the header itself.

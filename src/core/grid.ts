@@ -120,10 +120,10 @@ export const getSectionStarts = (
 };
 
 /**
- * The section of the row, or -1. The last section ends at the rows pinned to the end.
+ * The index of the section of the row, or -1. The last section ends at the rows pinned to the end.
  * @internal
  */
-export const getSection = (
+export const getSectionIndex = (
   starts: readonly number[],
   rowIndex: number,
   trailStart: number,
@@ -150,7 +150,7 @@ const addSectionHeader = (
   rowIndex: number,
   trailStart: number,
 ): void => {
-  const section = getSection(sectionStarts, rowIndex, trailStart);
+  const section = getSectionIndex(sectionStarts, rowIndex, trailStart);
   if (section >= 0) {
     extras.push(sectionStarts[section]!);
   }
@@ -392,7 +392,11 @@ export const createGridPlan = (
           ) {
             extraCells.push(span);
           } else {
-            const section = getSection(sectionStarts, rowTo - 1, rowTrailStart);
+            const section = getSectionIndex(
+              sectionStarts,
+              rowTo - 1,
+              rowTrailStart,
+            );
             if (
               row < rowPinnedStart ||
               (section >= 0 && sectionStarts[section]! >= row)
@@ -418,7 +422,7 @@ export const createGridPlan = (
     rowRangeEnd,
     rowTrailStart,
   );
-  const cols = getTrackIndexes(
+  const colIndexes = getTrackIndexes(
     extraCols,
     colCount,
     colPinnedStart,
@@ -426,8 +430,8 @@ export const createGridPlan = (
     colRangeEnd,
     colTrailStart,
   );
-  const rowLength = rowIndexes.length;
-  const colLength = cols.length;
+  const rowIndexesLength = rowIndexes.length;
+  const colIndexesLength = colIndexes.length;
 
   // The spans over the cells, whose origins are the cells at their positions
   const spanCells = new Map<number, Readonly<GridSpan>>();
@@ -442,22 +446,26 @@ export const createGridPlan = (
     rowCuts.push(rowTo);
     colCuts.push(colTo);
     // The tracks are in order, so the covered ones start at the origin of the span.
-    const colStart = cols.indexOf(span.colIndex);
+    const colStart = colIndexes.indexOf(span.colIndex);
     for (
       let i = rowIndexes.indexOf(span.rowIndex);
-      i < rowLength && rowIndexes[i]! < rowTo;
+      i < rowIndexesLength && rowIndexes[i]! < rowTo;
       i++
     ) {
       const rowKey = rowIndexes[i]! * colCount;
-      for (let j = colStart; j < colLength && cols[j]! < colTo; j++) {
-        spanCells.set(rowKey + cols[j]!, span);
+      for (
+        let j = colStart;
+        j < colIndexesLength && colIndexes[j]! < colTo;
+        j++
+      ) {
+        spanCells.set(rowKey + colIndexes[j]!, span);
       }
     }
   }
 
   // A track is measured by its first rendered cell which doesn't span over the other tracks, and is null if its size is given.
   const measuredCols: (boolean | null)[] = [];
-  for (const colIndex of cols) {
+  for (const colIndex of colIndexes) {
     measuredCols.push(colLayout.$isMeasurable(colIndex) ? false : NULL);
   }
   const measuredRows: (boolean | null)[] = [];
@@ -471,24 +479,24 @@ export const createGridPlan = (
   const rowStates = new Map<number, GridRowState>();
   // TODO optimize: the rows and the columns out of the ranges are crossed with each other, which is quadratic for many cells kept far away from each other.
   for (const rowIndex of rowIndexes) {
-    const pinnedTop = rowIndex < rowPinnedStart;
-    const pinnedBottom = rowIndex >= rowTrailStart;
-    const rowInRangeOrPinnedToEnd =
-      pinnedBottom || (rowIndex >= rowRangeStart && rowIndex <= rowRangeEnd);
-    const section = getSection(sectionStarts, rowIndex, rowTrailStart);
+    const isPinnedTop = rowIndex < rowPinnedStart;
+    const isPinnedBottom = rowIndex >= rowTrailStart;
+    const isRowInRangeOrPinnedToEnd =
+      isPinnedBottom || (rowIndex >= rowRangeStart && rowIndex <= rowRangeEnd);
+    const section = getSectionIndex(sectionStarts, rowIndex, rowTrailStart);
     // The first row of the group of the row, or -1
-    const groupStart = pinnedTop
+    const groupStart = isPinnedTop
       ? 0
-      : pinnedBottom
+      : isPinnedBottom
         ? rowTrailStart
         : section < 0
           ? -1
           : sectionStarts[section]!;
     // A group starts at its first row, which is rendered whenever the other rows of the group are.
     if (rowIndex === groupStart) {
-      const groupEnd = pinnedTop
+      const groupEnd = isPinnedTop
         ? rowPinnedStart
-        : pinnedBottom
+        : isPinnedBottom
           ? rowCount
           : // A section ends at the next section which may not be rendered, or at the rows pinned to the end
             section + 1 < sectionLength
@@ -498,14 +506,14 @@ export const createGridPlan = (
       const rows: GridRowState[] = [];
       groups.push({
         // The rows pinned to the end keep the key while the rows before them are added or removed
-        $key: pinnedTop ? -1 : pinnedBottom ? -2 : -3 - groupStart,
+        $key: isPinnedTop ? -1 : isPinnedBottom ? -2 : -3 - groupStart,
         $rows: rows,
         // The pinned rows at each edge are sticky together over the section headers and the cells of the other rows, so the cells spanning over them are stacked over the next rows as in the other rows.
         $style: getBoxStyle(
           groupStart,
           groupEnd,
-          pinnedTop || pinnedBottom ? 0 : NULL,
-          pinnedBottom ? "bottom" : "top",
+          isPinnedTop || isPinnedBottom ? 0 : NULL,
+          isPinnedBottom ? "bottom" : "top",
           4,
         ),
       });
@@ -523,62 +531,62 @@ export const createGridPlan = (
     let p = 0;
     let measuredRow = rowLayout.$isMeasurable(rowIndex) ? false : NULL;
     let rowEnd = rowIndex + 1;
-    let changed = false;
-    for (let i = 0; i < colLength; i++) {
-      const colIndex = cols[i]!;
-      const startPinned = colIndex < colPinnedStart;
-      const endPinned = colIndex >= colTrailStart;
-      const colInRangeOrPinnedToEnd =
-        endPinned || (colIndex >= colRangeStart && colIndex <= colRangeEnd);
+    let hasChanged = false;
+    for (let i = 0; i < colIndexesLength; i++) {
+      const colIndex = colIndexes[i]!;
+      const isPinnedStart = colIndex < colPinnedStart;
+      const isPinnedEnd = colIndex >= colTrailStart;
+      const isColInRangeOrPinnedToEnd =
+        isPinnedEnd || (colIndex >= colRangeStart && colIndex <= colRangeEnd);
       const span = spanCells.get(rowKey + colIndex);
       if (
         span
           ? span.rowIndex === rowIndex && span.colIndex === colIndex
-          : (rowInRangeOrPinnedToEnd && colInRangeOrPinnedToEnd) ||
-            pinnedTop ||
+          : (isRowInRangeOrPinnedToEnd && isColInRangeOrPinnedToEnd) ||
+            isPinnedTop ||
             isSectionHeaderRow ||
-            startPinned
+            isPinnedStart
       ) {
         const rowTo = span ? getSpanRowEnd(span, rowCount) : rowIndex + 1;
         const colTo = span ? getSpanColEnd(span, colCount) : colIndex + 1;
         const rowSpan = rowTo - rowIndex;
         const colSpan = colTo - colIndex;
-        const spansRows = rowSpan > 1;
-        const spansCols = colSpan > 1;
-        const spanning = spansRows || spansCols;
+        const isSpanningRows = rowSpan > 1;
+        const isSpanningCols = colSpan > 1;
+        const isSpanning = isSpanningRows || isSpanningCols;
         let measureRowIndex: number | undefined;
         let measureColIndex: number | undefined;
         rowEnd = max(rowEnd, rowTo);
         // A sticky box keeps its edges in the scrollport, so the end inset is from the end of the track.
         // https://drafts.csswg.org/css-position-3/#stickypos-insets
         // https://wpt.fyi/results/css/css-position/sticky/position-sticky-grid.html
-        const stickyStart = startPinned
+        const stickyStart = isPinnedStart
           ? colLayout.$getItemOffset(colIndex)
           : NULL;
         // The end inset of a span is from its last column.
-        const stickyEnd = endPinned
+        const stickyEnd = isPinnedEnd
           ? colLayout.$getTotalSize() -
             colLayout.$getItemOffset(colTo - 1) -
             colLayout.$getItemSize(colTo - 1)
           : NULL;
-        if (measuredRow === false && !spansRows) {
+        if (measuredRow === false && !isSpanningRows) {
           measureRowIndex = rowIndex;
           measuredRow = true;
         }
-        if (measuredCols[i] === false && !spansCols) {
+        if (measuredCols[i] === false && !isSpanningCols) {
           measureColIndex = colIndex;
           measuredCols[i] = true;
         }
-        const role: GridCellRole = pinnedTop
+        const role: GridCellRole = isPinnedTop
           ? "columnheader"
-          : colIndex === rowHeaderCol && (startPinned || isSectionHeaderRow)
+          : colIndex === rowHeaderCol && (isPinnedStart || isSectionHeaderRow)
             ? "rowheader"
             : "cell";
         // A merged cell gives both spans, 1 on the axis it doesn't span
         // https://www.w3.org/TR/wai-aria-1.2/#aria-rowspan
         // https://www.w3.org/TR/wai-aria-1.2/#aria-colspan
-        const ariaRowSpan = spanning ? rowSpan : undefined;
-        const ariaColSpan = spanning ? colSpan : undefined;
+        const ariaRowSpan = isSpanning ? rowSpan : undefined;
+        const ariaColSpan = isSpanning ? colSpan : undefined;
         // aria-sort is allowed only on the headers
         // https://www.w3.org/TR/wai-aria-1.2/#aria-sort
         const ariaSort =
@@ -610,7 +618,7 @@ export const createGridPlan = (
           cell.$sort !== ariaSort
         ) {
           let gridArea = "1/l" + colIndex;
-          if (spanning) {
+          if (isSpanning) {
             // A span ends at the named line instead of the number of tracks, because the unrendered rows/columns are merged into one track.
             gridArea += "/l" + rowTo + "/l" + colTo;
           }
@@ -622,19 +630,19 @@ export const createGridPlan = (
           // A spanning cell fills the tracks it spans without giving their sizes.
           // https://drafts.csswg.org/css-sizing-3/#cyclic-percentage-contribution
           // https://drafts.csswg.org/css-grid-2/#min-size-contribution
-          if (spansRows) {
+          if (isSpanningRows) {
             style["height"] = "0px";
             style["minHeight"] = "100%";
             // Over the rows it spans over, which are painted later
             // https://drafts.csswg.org/css-grid-2/#z-order
             style["zIndex"] = 1;
           }
-          if (spansCols) {
+          if (isSpanningCols) {
             style["width"] = "0px";
             style["minWidth"] = "100%";
           }
-          if (startPinned || endPinned) {
-            if (startPinned) {
+          if (isPinnedStart || isPinnedEnd) {
+            if (isPinnedStart) {
               style["insetInlineStart"] = stickyStart + "px";
             } else {
               style["insetInlineEnd"] = stickyEnd + "px";
@@ -655,7 +663,7 @@ export const createGridPlan = (
             $start: stickyStart,
             $end: stickyEnd,
           };
-          changed = true;
+          hasChanged = true;
         }
         rowCells.push(cell);
       }
@@ -667,7 +675,7 @@ export const createGridPlan = (
       // A change of the span end changes a cell, so the row end is not compared.
       const row: GridRowState =
         prevRow &&
-        !changed &&
+        !hasChanged &&
         prevRow.$cells.length === rowCells.length &&
         prevRow.$top === rowTop
           ? prevRow
@@ -699,7 +707,7 @@ export const createGridPlan = (
     ),
     $colTemplate: getTemplate(
       colLayout,
-      cols,
+      colIndexes,
       measuredCols,
       sort(colCuts),
       // The auto columns share the space left in the viewport, as the columns of a table.
