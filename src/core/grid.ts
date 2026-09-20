@@ -156,6 +156,24 @@ const addSectionHeader = (
   }
 };
 
+const addExtras = (
+  indexes: number[],
+  extras: readonly number[],
+  e: number,
+  bound: number,
+  lastRendered: number,
+): number => {
+  const extrasLength = extras.length;
+  for (; e < extrasLength && extras[e]! < bound; e++) {
+    const i = extras[e]!;
+    if (i > lastRendered) {
+      indexes.push(i);
+      lastRendered = i;
+    }
+  }
+  return e;
+};
+
 // The rendered tracks in order: the pinned tracks, the range, and the sorted extras which may repeat or fall in them.
 const getTrackIndexes = (
   extras: readonly number[],
@@ -169,27 +187,11 @@ const getTrackIndexes = (
   for (let i = 0; i < pinnedStart; i++) {
     indexes.push(i);
   }
-  const extrasLength = extras.length;
-  let e = 0;
-  let last = pinnedStart - 1;
-  for (; e < extrasLength && extras[e]! < start; e++) {
-    const i = extras[e]!;
-    if (i > last) {
-      indexes.push(i);
-      last = i;
-    }
-  }
+  const e = addExtras(indexes, extras, 0, start, pinnedStart - 1);
   for (let i = start; i <= end; i++) {
     indexes.push(i);
   }
-  last = end;
-  for (; e < extrasLength && extras[e]! < trailStart; e++) {
-    const i = extras[e]!;
-    if (i > last) {
-      indexes.push(i);
-      last = i;
-    }
-  }
+  addExtras(indexes, extras, e, trailStart, end);
   for (let i = trailStart; i < count; i++) {
     indexes.push(i);
   }
@@ -217,10 +219,9 @@ const getTemplate = (
   let line = 0;
   let i = 0;
   let c = 0;
-  // The tracks after the last rendered one are merged into the last track, which extends the scrollable overflow to the end, as the container is not sized on the inline axis.
+  // The tracks after the last rendered one extend the scrollable overflow to the end, as the container is not sized on the inline axis.
   // https://drafts.csswg.org/css-overflow-3/#scrollable-overflow-region
   while (line < count) {
-    // The cuts in the tracks already laid are dropped.
     while (c < cutsLength && sortedCuts[c]! <= line) {
       c++;
     }
@@ -664,7 +665,7 @@ export const createGridPlan = (
         rowCells.push(cell);
       }
     }
-    // Aligned with rowIndexes for the template, so it's pushed before the rows without cells are skipped.
+    // Aligned with rows for the template, so it's pushed before the rows without cells are skipped.
     measuredRows.push(measuredRow);
     if (rowCells.length) {
       // A column rendered anew has no previous cell and marks the row changed, so the lengths tell the columns are the same.
