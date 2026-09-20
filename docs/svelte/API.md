@@ -35,15 +35,15 @@ Renames and re-exports [VList](variables/VList.md)
 
 ***
 
-### VGridSize
+### GridSize
 
-Re-exports [VGridSize](../core/type-aliases/VGridSize.md)
+Re-exports [GridSize](../core/type-aliases/GridSize.md)
 
 ***
 
-### VGridSpan
+### GridSpan
 
-Re-exports [VGridSpan](../core/interfaces/VGridSpan.md)
+Re-exports [GridSpan](../core/interfaces/GridSpan.md)
 
 ## Type Aliases
 

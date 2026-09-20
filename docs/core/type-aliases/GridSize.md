@@ -2,11 +2,11 @@
 
 ***
 
-# Type Alias: VGridSize\<T\>
+# Type Alias: GridSize\<T\>
 
-> **VGridSize**\<`T`\> = [`VGridTrackSize`](VGridTrackSize.md) \| `VGridSizeKey`\<`T`\>
+> **GridSize**\<`T`\> = [`GridTrackSize`](GridTrackSize.md) \| `GridSizeKey`\<`T`\>
 
-Defined in: [src/core/layouts/grid.ts:35](https://github.com/inokawa/virtua/blob/98128f6af2bcee92d634e81a236794faecf5c1dd/src/core/layouts/grid.ts#L35)
+Defined in: [src/core/layouts/grid.ts:38](https://github.com/inokawa/virtua/blob/9f196281641a5d909a4821151d7b15da70842c65/src/core/layouts/grid.ts#L38)
 
 The sizes of the rows or the columns in pixels.
 

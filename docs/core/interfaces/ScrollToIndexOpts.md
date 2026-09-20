@@ -4,7 +4,7 @@
 
 # Interface: ScrollToIndexOpts
 
-Defined in: [src/core/scroll-to.ts:16](https://github.com/inokawa/virtua/blob/98128f6af2bcee92d634e81a236794faecf5c1dd/src/core/scroll-to.ts#L16)
+Defined in: [src/core/scroll-to.ts:16](https://github.com/inokawa/virtua/blob/9f196281641a5d909a4821151d7b15da70842c65/src/core/scroll-to.ts#L16)
 
 ## Properties
 
@@ -12,7 +12,7 @@ Defined in: [src/core/scroll-to.ts:16](https://github.com/inokawa/virtua/blob/98
 
 > `optional` **align?**: [`ScrollToIndexAlign`](../../react/type-aliases/ScrollToIndexAlign.md)
 
-Defined in: [src/core/scroll-to.ts:21](https://github.com/inokawa/virtua/blob/98128f6af2bcee92d634e81a236794faecf5c1dd/src/core/scroll-to.ts#L21)
+Defined in: [src/core/scroll-to.ts:21](https://github.com/inokawa/virtua/blob/9f196281641a5d909a4821151d7b15da70842c65/src/core/scroll-to.ts#L21)
 
 Alignment of item in the viewport. See [ScrollToIndexAlign](../../react/type-aliases/ScrollToIndexAlign.md) for the values.
 
@@ -28,7 +28,7 @@ Alignment of item in the viewport. See [ScrollToIndexAlign](../../react/type-ali
 
 > `optional` **smooth?**: `boolean`
 
-Defined in: [src/core/scroll-to.ts:27](https://github.com/inokawa/virtua/blob/98128f6af2bcee92d634e81a236794faecf5c1dd/src/core/scroll-to.ts#L27)
+Defined in: [src/core/scroll-to.ts:27](https://github.com/inokawa/virtua/blob/9f196281641a5d909a4821151d7b15da70842c65/src/core/scroll-to.ts#L27)
 
 If true, scrolling animates smoothly with [`behavior: smooth` of scrollTo](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTo#behavior).
 
@@ -40,7 +40,7 @@ If true, scrolling animates smoothly with [`behavior: smooth` of scrollTo](https
 
 > `optional` **offset?**: `number`
 
-Defined in: [src/core/scroll-to.ts:32](https://github.com/inokawa/virtua/blob/98128f6af2bcee92d634e81a236794faecf5c1dd/src/core/scroll-to.ts#L32)
+Defined in: [src/core/scroll-to.ts:32](https://github.com/inokawa/virtua/blob/9f196281641a5d909a4821151d7b15da70842c65/src/core/scroll-to.ts#L32)
 
 Additional offset from the scrolled position.
 

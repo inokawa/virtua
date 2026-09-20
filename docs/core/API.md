@@ -6,14 +6,14 @@
 
 ## Interfaces
 
-- [VGridCell](interfaces/VGridCell.md)
-- [VGridSpan](interfaces/VGridSpan.md)
+- [GridCell](interfaces/GridCell.md)
+- [GridSpan](interfaces/GridSpan.md)
 - [ScrollToIndexOpts](interfaces/ScrollToIndexOpts.md)
-- [VGridScrollToIndexOpts](interfaces/VGridScrollToIndexOpts.md)
+- [GridScrollToIndexOpts](interfaces/GridScrollToIndexOpts.md)
 
 ## Type Aliases
 
-- [VGridAxis](type-aliases/VGridAxis.md)
-- [VGridTrackSize](type-aliases/VGridTrackSize.md)
-- [VGridSize](type-aliases/VGridSize.md)
+- [GridAxis](type-aliases/GridAxis.md)
+- [GridTrackSize](type-aliases/GridTrackSize.md)
+- [GridSize](type-aliases/GridSize.md)
 - [CacheSnapshot](type-aliases/CacheSnapshot.md)
