@@ -217,51 +217,43 @@ const getTemplate = (
   let line = 0;
   let i = 0;
   let c = 0;
-  while (i < indexesLength || c < cutsLength) {
+  // The tracks after the last rendered one are merged into the last track, which extends the scrollable overflow to the end, as the container is not sized on the inline axis.
+  // https://drafts.csswg.org/css-overflow-3/#scrollable-overflow-region
+  while (line < count) {
+    // The cuts in the tracks already laid are dropped.
+    while (c < cutsLength && sortedCuts[c]! <= line) {
+      c++;
+    }
     const index = i < indexesLength ? indexes[i]! : count;
     const cut = c < cutsLength ? sortedCuts[c]! : count;
-    if (cut <= line) {
-      c++;
+    let to: number;
+    let size: string;
+    if (index === line) {
+      to = line + 1;
+      // The cells in the rows size the max-content tracks of the container.
+      // https://drafts.csswg.org/css-grid-2/#subgrid-item-contribution
+      // An auto track without a cell measuring it keeps the size of the layout as the min, as the spanning cells don't give the size.
+      const m = measured[i];
+      size =
+        m == NULL
+          ? layout.$getItemSize(line) + "px"
+          : m
+            ? measuredSize
+            : "minmax(" + layout.$getItemSize(line) + "px,auto)";
+      i++;
     } else {
-      let to: number;
-      let size: string;
-      if (index === line) {
-        to = line + 1;
-        // The cells in the rows size the max-content tracks of the container.
-        // https://drafts.csswg.org/css-grid-2/#subgrid-item-contribution
-        // An auto track without a cell measuring it keeps the size of the layout as the min, as the spanning cells don't give the size.
-        const m = measured[i];
-        size =
-          m == NULL
-            ? layout.$getItemSize(line) + "px"
-            : m
-              ? measuredSize
-              : "minmax(" + layout.$getItemSize(line) + "px,auto)";
-        i++;
-      } else {
-        // The tracks without rendered cells are merged until the next rendered track or the end of a span.
-        to = min(index, cut);
-        // A fixed track this large makes WebKit misplace the cells after one of them is focused, so the size is given as the min.
-        size =
-          "minmax(" +
-          (layout.$getItemOffset(to - 1) +
-            layout.$getItemSize(to - 1) -
-            layout.$getItemOffset(line)) +
-          "px,auto)";
-      }
-      template += " " + size + " [l" + to + "]";
-      line = to;
+      // The tracks without rendered cells are merged until the next rendered track or the end of a span.
+      to = min(index, cut);
+      // The last track ends at the total size the container is sized by, which may be rounded differently from the end of the track.
+      const end =
+        to < count || c < cutsLength
+          ? layout.$getItemOffset(to - 1) + layout.$getItemSize(to - 1)
+          : layout.$getTotalSize();
+      // A fixed track this large makes WebKit misplace the cells after one of them is focused, so the size is given as the min.
+      size = "minmax(" + (end - layout.$getItemOffset(line)) + "px,auto)";
     }
-  }
-  // The tracks after the last rendered one extend the scrollable overflow to the end, as the container is not sized on the inline axis.
-  // https://drafts.csswg.org/css-overflow-3/#scrollable-overflow-region
-  if (line < count) {
-    template +=
-      " minmax(" +
-      (layout.$getTotalSize() - layout.$getItemOffset(line)) +
-      "px,auto) [l" +
-      count +
-      "]";
+    template += " " + size + " [l" + to + "]";
+    line = to;
   }
   return template;
 };
