@@ -541,8 +541,10 @@ export const createGridPlan = (
       ) {
         const rowTo = span ? getSpanRowEnd(span, rowCount) : rowIndex + 1;
         const colTo = span ? getSpanColEnd(span, colCount) : colIndex + 1;
-        const spansRows = rowTo - rowIndex > 1;
-        const spansCols = colTo - colIndex > 1;
+        const rowSpan = rowTo - rowIndex;
+        const colSpan = colTo - colIndex;
+        const spansRows = rowSpan > 1;
+        const spansCols = colSpan > 1;
         const spanning = spansRows || spansCols;
         let measureRowIndex: number | undefined;
         let measureColIndex: number | undefined;
@@ -575,8 +577,8 @@ export const createGridPlan = (
         // A merged cell gives both spans, 1 on the axis it doesn't span
         // https://www.w3.org/TR/wai-aria-1.2/#aria-rowspan
         // https://www.w3.org/TR/wai-aria-1.2/#aria-colspan
-        const ariaRowSpan = spanning ? rowTo - rowIndex : undefined;
-        const ariaColSpan = spanning ? colTo - colIndex : undefined;
+        const ariaRowSpan = spanning ? rowSpan : undefined;
+        const ariaColSpan = spanning ? colSpan : undefined;
         // aria-sort is allowed only on the headers
         // https://www.w3.org/TR/wai-aria-1.2/#aria-sort
         const ariaSort =
