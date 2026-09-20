@@ -318,11 +318,11 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
   /**
    * The heights of the rows. See {@link GridSize} for the accepted values.
    */
-  readonly rowHeight = input.required<NoInfer<GridSize<R>>>();
+  readonly rowHeight = input.required<GridSize<R>>();
   /**
    * The widths of the columns. See {@link GridSize} for the accepted values.
    */
-  readonly colWidth = input.required<NoInfer<GridSize<C>>>();
+  readonly colWidth = input.required<GridSize<C>>();
   /**
    * The number of the leading rows pinned to the start, which are the column headers (`role="columnheader"`).
    *
