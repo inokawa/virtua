@@ -1,1 +1,0 @@
-import{t as e}from"./iframe-Bwp12P2t.js";e();
