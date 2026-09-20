@@ -13,14 +13,17 @@ export type GridTrackSize = number | "auto";
  */
 export type GridAxis<T = number> = number | readonly T[];
 
+type GridSizeFields<T> = {
+  [
+    K in Extract<keyof T, string> as T[K] extends
+      GridTrackSize | null | undefined
+      ? K
+      : never
+  ]: 0;
+};
+
 export type GridSizeKey<T> = [T] extends [object]
-  ? {
-      [K in keyof T]-?: K extends string
-        ? T[K] extends GridTrackSize | null | undefined
-          ? K
-          : never
-        : never;
-    }[keyof T]
+  ? keyof GridSizeFields<T>
   : never;
 
 /**

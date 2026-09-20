@@ -53,11 +53,11 @@ export interface VGridProps<R = number, C = number> extends PublicProps {
   /**
    * The heights of the rows. See {@link GridSize} for the accepted values.
    */
-  rowHeight: NoInfer<GridSize<R>>;
+  rowHeight: GridSize<R>;
   /**
    * The widths of the columns. See {@link GridSize} for the accepted values.
    */
-  colWidth: NoInfer<GridSize<C>>;
+  colWidth: GridSize<C>;
   /**
    * The number of the leading rows pinned to the start, which are the column headers (`role="columnheader"`).
    *
