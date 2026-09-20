@@ -310,12 +310,12 @@ export const createGridPlan = (
   kept: readonly Readonly<GridCell>[] = EMPTY,
   sortedCell?: Readonly<GridSort>,
 ): GridPlan => {
-  const rowCount = rowLayout.$getLength();
-  const colCount = colLayout.$getLength();
-  const rowPinnedStart = min(headerRows, rowCount);
-  const rowTrailStart = max(rowCount - footerRows, rowPinnedStart);
-  const colPinnedStart = min(headerCols, colCount);
-  const colTrailStart = max(colCount - footerCols, colPinnedStart);
+  const totalRowCount = rowLayout.$getLength();
+  const totalColCount = colLayout.$getLength();
+  const rowPinnedStart = min(headerRows, totalRowCount);
+  const rowTrailStart = max(totalRowCount - footerRows, rowPinnedStart);
+  const colPinnedStart = min(headerCols, totalColCount);
+  const colTrailStart = max(totalColCount - footerCols, colPinnedStart);
   const rowRangeStart = clamp(rowRange[0], rowPinnedStart, rowTrailStart);
   const rowRangeEnd = min(rowRange[1], rowTrailStart - 1);
   const colRangeStart = clamp(colRange[0], colPinnedStart, colTrailStart);
@@ -337,7 +337,7 @@ export const createGridPlan = (
   const extraCells: Readonly<GridSpan>[] = [];
   for (const cell of kept) {
     // A kept cell may be left out of the grid after the rows or the columns are removed.
-    if (cell.rowIndex < rowCount && cell.colIndex < colCount) {
+    if (cell.rowIndex < totalRowCount && cell.colIndex < totalColCount) {
       extraCells.push(cell);
     }
   }
@@ -360,12 +360,12 @@ export const createGridPlan = (
     for (const span of waiting) {
       const row = span.rowIndex;
       const col = span.colIndex;
-      const rowTo = getSpanRowEnd(span, rowCount);
-      const colTo = getSpanColEnd(span, colCount);
+      const rowTo = getSpanRowEnd(span, totalRowCount);
+      const colTo = getSpanColEnd(span, totalColCount);
       // A span may be left out of the grid after the rows or the columns are removed.
       if (
-        row < rowCount &&
-        col < colCount &&
+        row < totalRowCount &&
+        col < totalColCount &&
         (rowTo - row > 1 || colTo - col > 1)
       ) {
         if (
@@ -414,24 +414,24 @@ export const createGridPlan = (
   // The tracks are all known now.
   sort(extraRows);
   sort(extraCols);
-  const rowIndexes = getTrackIndexes(
+  const rows = getTrackIndexes(
     extraRows,
-    rowCount,
+    totalRowCount,
     rowPinnedStart,
     rowRangeStart,
     rowRangeEnd,
     rowTrailStart,
   );
-  const colIndexes = getTrackIndexes(
+  const cols = getTrackIndexes(
     extraCols,
-    colCount,
+    totalColCount,
     colPinnedStart,
     colRangeStart,
     colRangeEnd,
     colTrailStart,
   );
-  const rowIndexesLength = rowIndexes.length;
-  const colIndexesLength = colIndexes.length;
+  const rowsLength = rows.length;
+  const colsLength = cols.length;
 
   // The spans over the cells, whose origins are the cells at their positions
   const spanCells = new Map<number, Readonly<GridSpan>>();
@@ -441,31 +441,27 @@ export const createGridPlan = (
   const colCuts: number[] = [];
   // The kept cells are before the spans, so a span is over the kept cells under it.
   for (const span of extraCells) {
-    const rowTo = getSpanRowEnd(span, rowCount);
-    const colTo = getSpanColEnd(span, colCount);
+    const rowTo = getSpanRowEnd(span, totalRowCount);
+    const colTo = getSpanColEnd(span, totalColCount);
     rowCuts.push(rowTo);
     colCuts.push(colTo);
     // The tracks are in order, so the covered ones start at the origin of the span.
-    const colStart = colIndexes.indexOf(span.colIndex);
+    const colStart = cols.indexOf(span.colIndex);
     for (
-      let i = rowIndexes.indexOf(span.rowIndex);
-      i < rowIndexesLength && rowIndexes[i]! < rowTo;
+      let i = rows.indexOf(span.rowIndex);
+      i < rowsLength && rows[i]! < rowTo;
       i++
     ) {
-      const rowKey = rowIndexes[i]! * colCount;
-      for (
-        let j = colStart;
-        j < colIndexesLength && colIndexes[j]! < colTo;
-        j++
-      ) {
-        spanCells.set(rowKey + colIndexes[j]!, span);
+      const rowKey = rows[i]! * totalColCount;
+      for (let j = colStart; j < colsLength && cols[j]! < colTo; j++) {
+        spanCells.set(rowKey + cols[j]!, span);
       }
     }
   }
 
   // A track is measured by its first rendered cell which doesn't span over the other tracks, and is null if its size is given.
   const measuredCols: (boolean | null)[] = [];
-  for (const colIndex of colIndexes) {
+  for (const colIndex of cols) {
     measuredCols.push(colLayout.$isMeasurable(colIndex) ? false : NULL);
   }
   const measuredRows: (boolean | null)[] = [];
@@ -478,7 +474,7 @@ export const createGridPlan = (
   const prev = rowStatesCache.get(rowLayout);
   const rowStates = new Map<number, GridRowState>();
   // TODO optimize: the rows and the columns out of the ranges are crossed with each other, which is quadratic for many cells kept far away from each other.
-  for (const rowIndex of rowIndexes) {
+  for (const rowIndex of rows) {
     const isPinnedTop = rowIndex < rowPinnedStart;
     const isPinnedBottom = rowIndex >= rowTrailStart;
     const isRowInRangeOrPinnedToEnd =
@@ -497,17 +493,17 @@ export const createGridPlan = (
       const groupEnd = isPinnedTop
         ? rowPinnedStart
         : isPinnedBottom
-          ? rowCount
+          ? totalRowCount
           : // A section ends at the next section which may not be rendered, or at the rows pinned to the end
             section + 1 < sectionLength
             ? sectionStarts[section + 1]!
             : rowTrailStart;
       rowCuts.push(groupEnd);
-      const rows: GridRowState[] = [];
+      const groupedRows: GridRowState[] = [];
       groups.push({
         // The rows pinned to the end keep the key while the rows before them are added or removed
         $key: isPinnedTop ? -1 : isPinnedBottom ? -2 : -3 - groupStart,
-        $rows: rows,
+        $rows: groupedRows,
         // The pinned rows at each edge are sticky together over the section headers and the cells of the other rows, so the cells spanning over them are stacked over the next rows as in the other rows.
         $style: getBoxStyle(
           groupStart,
@@ -517,13 +513,13 @@ export const createGridPlan = (
           4,
         ),
       });
-      groupRows = rows;
+      groupRows = groupedRows;
     } else if (groupStart < 0) {
       groupRows = groups;
     }
     const isSectionHeaderRow = section >= 0 && rowIndex === groupStart;
     const rowTop = isSectionHeaderRow ? stickyTop : NULL;
-    const rowKey = rowIndex * colCount;
+    const rowKey = rowIndex * totalColCount;
     const prevRow = prev && prev.get(rowIndex);
     const prevCells = prevRow && prevRow.$cells;
     const rowCells: GridCellState[] = [];
@@ -532,8 +528,8 @@ export const createGridPlan = (
     let measuredRow = rowLayout.$isMeasurable(rowIndex) ? false : NULL;
     let rowEnd = rowIndex + 1;
     let hasChanged = false;
-    for (let i = 0; i < colIndexesLength; i++) {
-      const colIndex = colIndexes[i]!;
+    for (let i = 0; i < colsLength; i++) {
+      const colIndex = cols[i]!;
       const isPinnedStart = colIndex < colPinnedStart;
       const isPinnedEnd = colIndex >= colTrailStart;
       const isColInRangeOrPinnedToEnd =
@@ -547,8 +543,8 @@ export const createGridPlan = (
             isSectionHeaderRow ||
             isPinnedStart
       ) {
-        const rowTo = span ? getSpanRowEnd(span, rowCount) : rowIndex + 1;
-        const colTo = span ? getSpanColEnd(span, colCount) : colIndex + 1;
+        const rowTo = span ? getSpanRowEnd(span, totalRowCount) : rowIndex + 1;
+        const colTo = span ? getSpanColEnd(span, totalColCount) : colIndex + 1;
         const rowSpan = rowTo - rowIndex;
         const colSpan = colTo - colIndex;
         const isSpanningRows = rowSpan > 1;
@@ -699,21 +695,21 @@ export const createGridPlan = (
   return {
     $rowTemplate: getTemplate(
       rowLayout,
-      rowIndexes,
+      rows,
       measuredRows,
       sort(rowCuts),
       "max-content",
-      rowCount,
+      totalRowCount,
     ),
     $colTemplate: getTemplate(
       colLayout,
-      colIndexes,
+      cols,
       measuredCols,
       sort(colCuts),
       // The auto columns share the space left in the viewport, as the columns of a table.
       // https://drafts.csswg.org/css-grid-2/#algo-stretch
       "minmax(max-content,auto)",
-      colCount,
+      totalColCount,
     ),
     $groups: groups,
   };
