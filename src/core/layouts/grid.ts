@@ -68,7 +68,7 @@ export interface GridLayout extends Layout {
 export const createGridLayout = (
   axis: GridAxis<unknown>,
   size: GridTrackSize | string,
-  gap = 0,
+  gap: number = 0,
 ): GridLayout => {
   if (typeof size === "number") {
     let length = getAxisLength(axis);
