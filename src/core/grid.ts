@@ -544,8 +544,6 @@ export const createGridPlan = (
         const spansRows = rowTo - rowIndex > 1;
         const spansCols = colTo - colIndex > 1;
         const spanning = spansRows || spansCols;
-        const rowSpan = spanning ? rowTo - rowIndex : undefined;
-        const colSpan = spanning ? colTo - colIndex : undefined;
         let measureRowIndex: number | undefined;
         let measureColIndex: number | undefined;
         rowEnd = max(rowEnd, rowTo);
@@ -574,9 +572,14 @@ export const createGridPlan = (
           : colIndex === rowHeaderCol && (startPinned || isSectionHeaderRow)
             ? "rowheader"
             : "cell";
+        // A merged cell gives both spans, 1 on the axis it doesn't span
+        // https://www.w3.org/TR/wai-aria-1.2/#aria-rowspan
+        // https://www.w3.org/TR/wai-aria-1.2/#aria-colspan
+        const ariaRowSpan = spanning ? rowTo - rowIndex : undefined;
+        const ariaColSpan = spanning ? colTo - colIndex : undefined;
         // aria-sort is allowed only on the headers
         // https://www.w3.org/TR/wai-aria-1.2/#aria-sort
-        const sortOrder =
+        const ariaSort =
           role !== "cell" &&
           sortedCell &&
           sortedCell.rowIndex === rowIndex &&
@@ -595,22 +598,24 @@ export const createGridPlan = (
         }
         if (
           !cell ||
-          cell.$rowSpan !== rowSpan ||
-          cell.$colSpan !== colSpan ||
+          cell.$rowSpan !== ariaRowSpan ||
+          cell.$colSpan !== ariaColSpan ||
           cell.$start !== stickyStart ||
           cell.$end !== stickyEnd ||
           cell.$measureRow !== measureRowIndex ||
           cell.$measureCol !== measureColIndex ||
           cell.$role !== role ||
-          cell.$sort !== sortOrder
+          cell.$sort !== ariaSort
         ) {
+          let gridArea = "1/l" + colIndex;
+          if (spanning) {
+            // A span ends at the named line instead of the number of tracks, because the unrendered rows/columns are merged into one track.
+            gridArea += "/l" + rowTo + "/l" + colTo;
+          }
           const style: Record<string, string | number> = {
             contain: "layout style",
             display: "grid",
-            // A span ends at the named line instead of the number of tracks, because the unrendered rows/columns are merged into one track.
-            gridArea: spanning
-              ? "1/l" + colIndex + "/l" + rowTo + "/l" + colTo
-              : "1/l" + colIndex,
+            gridArea,
           };
           // A spanning cell fills the tracks it spans without giving their sizes.
           // https://drafts.csswg.org/css-sizing-3/#cyclic-percentage-contribution
@@ -638,12 +643,12 @@ export const createGridPlan = (
           }
           cell = {
             $col: colIndex,
-            $rowSpan: rowSpan,
-            $colSpan: colSpan,
+            $rowSpan: ariaRowSpan,
+            $colSpan: ariaColSpan,
             $measureRow: measureRowIndex,
             $measureCol: measureColIndex,
             $role: role,
-            $sort: sortOrder,
+            $sort: ariaSort,
             $style: style,
             $start: stickyStart,
             $end: stickyEnd,
