@@ -266,7 +266,7 @@ const getTemplate = (
   return template;
 };
 
-type GridRole = "cell" | "columnheader" | "rowheader";
+type GridCellRole = "cell" | "columnheader" | "rowheader";
 
 type GridSort = GridCell & {
   order: "ascending" | "descending" | "other";
@@ -542,152 +542,150 @@ export const createGridPlan = (
       const span = spanCells.get(rowKey + colIndex);
       if (
         span
-          ? span.rowIndex !== rowIndex || span.colIndex !== colIndex
-          : !(rowInRangeOrPinnedToEnd && colInRangeOrPinnedToEnd) &&
-            !pinnedTop &&
-            !isSectionHeaderRow &&
-            !startPinned
+          ? span.rowIndex === rowIndex && span.colIndex === colIndex
+          : (rowInRangeOrPinnedToEnd && colInRangeOrPinnedToEnd) ||
+            pinnedTop ||
+            isSectionHeaderRow ||
+            startPinned
       ) {
-        continue;
-      }
-      const rowTo = span ? getSpanRowEnd(span, rowCount) : rowIndex + 1;
-      const colTo = span ? getSpanColEnd(span, colCount) : colIndex + 1;
-      const spansRows = rowTo - rowIndex > 1;
-      const spansCols = colTo - colIndex > 1;
-      const spanning = spansRows || spansCols;
-      const rowSpan = spanning ? rowTo - rowIndex : undefined;
-      const colSpan = spanning ? colTo - colIndex : undefined;
-      let measureRowIndex: number | undefined;
-      let measureColIndex: number | undefined;
-      rowEnd = max(rowEnd, rowTo);
-      // A sticky box keeps its edges in the scrollport, so the end inset is from the end of the track.
-      // https://drafts.csswg.org/css-position-3/#stickypos-insets
-      // https://wpt.fyi/results/css/css-position/sticky/position-sticky-grid.html
-      const stickyStart = startPinned
-        ? colLayout.$getItemOffset(colIndex)
-        : NULL;
-      // The end inset of a span is from its last column.
-      const stickyEnd = endPinned
-        ? colLayout.$getTotalSize() -
-          colLayout.$getItemOffset(colTo - 1) -
-          colLayout.$getItemSize(colTo - 1)
-        : NULL;
-      if (measuredRow === false && !spansRows) {
-        measureRowIndex = rowIndex;
-        measuredRow = true;
-      }
-      if (measuredCols[i] === false && !spansCols) {
-        measureColIndex = colIndex;
-        measuredCols[i] = true;
-      }
-      const role: GridRole = pinnedTop
-        ? "columnheader"
-        : colIndex === rowHeaderCol && (startPinned || isSectionHeaderRow)
-          ? "rowheader"
-          : "cell";
-      // aria-sort is allowed only on the headers
-      // https://www.w3.org/TR/wai-aria-1.2/#aria-sort
-      const sortOrder =
-        role !== "cell" &&
-        sortedCell &&
-        sortedCell.rowIndex === rowIndex &&
-        sortedCell.colIndex === colIndex
-          ? sortedCell.order
-          : undefined;
-      let cell: GridCellState | undefined;
-      if (prevCells) {
-        while (p < prevCells.length && prevCells[p]!.$col < colIndex) {
-          p++;
+        const rowTo = span ? getSpanRowEnd(span, rowCount) : rowIndex + 1;
+        const colTo = span ? getSpanColEnd(span, colCount) : colIndex + 1;
+        const spansRows = rowTo - rowIndex > 1;
+        const spansCols = colTo - colIndex > 1;
+        const spanning = spansRows || spansCols;
+        const rowSpan = spanning ? rowTo - rowIndex : undefined;
+        const colSpan = spanning ? colTo - colIndex : undefined;
+        let measureRowIndex: number | undefined;
+        let measureColIndex: number | undefined;
+        rowEnd = max(rowEnd, rowTo);
+        // A sticky box keeps its edges in the scrollport, so the end inset is from the end of the track.
+        // https://drafts.csswg.org/css-position-3/#stickypos-insets
+        // https://wpt.fyi/results/css/css-position/sticky/position-sticky-grid.html
+        const stickyStart = startPinned
+          ? colLayout.$getItemOffset(colIndex)
+          : NULL;
+        // The end inset of a span is from its last column.
+        const stickyEnd = endPinned
+          ? colLayout.$getTotalSize() -
+            colLayout.$getItemOffset(colTo - 1) -
+            colLayout.$getItemSize(colTo - 1)
+          : NULL;
+        if (measuredRow === false && !spansRows) {
+          measureRowIndex = rowIndex;
+          measuredRow = true;
         }
-        if (p < prevCells.length) {
-          cell = prevCells[p];
+        if (measuredCols[i] === false && !spansCols) {
+          measureColIndex = colIndex;
+          measuredCols[i] = true;
         }
-      }
-      if (
-        !cell ||
-        cell.$col !== colIndex ||
-        cell.$rowSpan !== rowSpan ||
-        cell.$colSpan !== colSpan ||
-        cell.$start !== stickyStart ||
-        cell.$end !== stickyEnd ||
-        cell.$measureRow !== measureRowIndex ||
-        cell.$measureCol !== measureColIndex ||
-        cell.$role !== role ||
-        cell.$sort !== sortOrder
-      ) {
-        const style: Record<string, string | number> = {
-          contain: "layout style",
-          display: "grid",
-          // A span ends at the named line instead of the number of tracks, because the unrendered rows/columns are merged into one track.
-          gridArea: spanning
-            ? "1/l" + colIndex + "/l" + rowTo + "/l" + colTo
-            : "1/l" + colIndex,
-        };
-        // A spanning cell fills the tracks it spans without giving their sizes.
-        // https://drafts.csswg.org/css-sizing-3/#cyclic-percentage-contribution
-        // https://drafts.csswg.org/css-grid-2/#min-size-contribution
-        if (spansRows) {
-          style["height"] = "0px";
-          style["minHeight"] = "100%";
-          // Over the rows it spans over, which are painted later
-          // https://drafts.csswg.org/css-grid-2/#z-order
-          style["zIndex"] = 1;
-        }
-        if (spansCols) {
-          style["width"] = "0px";
-          style["minWidth"] = "100%";
-        }
-        if (startPinned || endPinned) {
-          if (startPinned) {
-            style["insetInlineStart"] = stickyStart + "px";
-          } else {
-            style["insetInlineEnd"] = stickyEnd + "px";
+        const role: GridCellRole = pinnedTop
+          ? "columnheader"
+          : colIndex === rowHeaderCol && (startPinned || isSectionHeaderRow)
+            ? "rowheader"
+            : "cell";
+        // aria-sort is allowed only on the headers
+        // https://www.w3.org/TR/wai-aria-1.2/#aria-sort
+        const sortOrder =
+          role !== "cell" &&
+          sortedCell &&
+          sortedCell.rowIndex === rowIndex &&
+          sortedCell.colIndex === colIndex
+            ? sortedCell.order
+            : undefined;
+        let cell: GridCellState | undefined;
+        if (prevCells) {
+          while (p < prevCells.length && prevCells[p]!.$col < colIndex) {
+            p++;
           }
-          style["position"] = "sticky";
-          // Over the spanning cells, which may be painted later
-          style["zIndex"] = 2;
+          if (p < prevCells.length) {
+            cell = prevCells[p];
+          }
         }
-        cell = {
-          $col: colIndex,
-          $rowSpan: rowSpan,
-          $colSpan: colSpan,
-          $measureRow: measureRowIndex,
-          $measureCol: measureColIndex,
-          $role: role,
-          $sort: sortOrder,
-          $style: style,
-          $start: stickyStart,
-          $end: stickyEnd,
-        };
-        changed = true;
+        if (
+          !cell ||
+          cell.$col !== colIndex ||
+          cell.$rowSpan !== rowSpan ||
+          cell.$colSpan !== colSpan ||
+          cell.$start !== stickyStart ||
+          cell.$end !== stickyEnd ||
+          cell.$measureRow !== measureRowIndex ||
+          cell.$measureCol !== measureColIndex ||
+          cell.$role !== role ||
+          cell.$sort !== sortOrder
+        ) {
+          const style: Record<string, string | number> = {
+            contain: "layout style",
+            display: "grid",
+            // A span ends at the named line instead of the number of tracks, because the unrendered rows/columns are merged into one track.
+            gridArea: spanning
+              ? "1/l" + colIndex + "/l" + rowTo + "/l" + colTo
+              : "1/l" + colIndex,
+          };
+          // A spanning cell fills the tracks it spans without giving their sizes.
+          // https://drafts.csswg.org/css-sizing-3/#cyclic-percentage-contribution
+          // https://drafts.csswg.org/css-grid-2/#min-size-contribution
+          if (spansRows) {
+            style["height"] = "0px";
+            style["minHeight"] = "100%";
+            // Over the rows it spans over, which are painted later
+            // https://drafts.csswg.org/css-grid-2/#z-order
+            style["zIndex"] = 1;
+          }
+          if (spansCols) {
+            style["width"] = "0px";
+            style["minWidth"] = "100%";
+          }
+          if (startPinned || endPinned) {
+            if (startPinned) {
+              style["insetInlineStart"] = stickyStart + "px";
+            } else {
+              style["insetInlineEnd"] = stickyEnd + "px";
+            }
+            style["position"] = "sticky";
+            // Over the spanning cells, which may be painted later
+            style["zIndex"] = 2;
+          }
+          cell = {
+            $col: colIndex,
+            $rowSpan: rowSpan,
+            $colSpan: colSpan,
+            $measureRow: measureRowIndex,
+            $measureCol: measureColIndex,
+            $role: role,
+            $sort: sortOrder,
+            $style: style,
+            $start: stickyStart,
+            $end: stickyEnd,
+          };
+          changed = true;
+        }
+        rowCells.push(cell);
       }
-      rowCells.push(cell);
     }
     // Aligned with rowIndexes for the template, so it's pushed before the rows without cells are skipped.
     measuredRows.push(measuredRow);
-    if (!rowCells.length) {
-      continue;
+    if (rowCells.length) {
+      // A column rendered anew has no previous cell and marks the row changed, so the lengths tell the columns are the same.
+      // A change of the span end changes a cell, so the row end is not compared.
+      const row: GridRowState =
+        prevRow &&
+        !changed &&
+        prevRow.$cells.length === rowCells.length &&
+        prevRow.$top === rowTop
+          ? prevRow
+          : {
+              $row: rowIndex,
+              $cells: rowCells,
+              // A subgrid clamps its items to its tracks, so the row spans to the end of its cells.
+              // https://drafts.csswg.org/css-grid-2/#subgrid-implicit
+              // A section header sticks in the box of its section over the sticky and spanning cells of the other rows, so it's pushed out at the end of the section.
+              // https://drafts.csswg.org/css-position-3/#stickypos-insets
+              $style: getBoxStyle(rowIndex, rowEnd, rowTop, "top", 3),
+              $top: rowTop,
+            };
+      rowStates.set(rowIndex, row);
+      groupRows.push(row);
     }
-    // A column rendered anew has no previous cell and marks the row changed, so the lengths tell the columns are the same.
-    // A change of the span end changes a cell, so the row end is not compared.
-    const row: GridRowState =
-      prevRow &&
-      !changed &&
-      prevRow.$cells.length === rowCells.length &&
-      prevRow.$top === rowTop
-        ? prevRow
-        : {
-            $row: rowIndex,
-            $cells: rowCells,
-            // A subgrid clamps its items to its tracks, so the row spans to the end of its cells.
-            // https://drafts.csswg.org/css-grid-2/#subgrid-implicit
-            // A section header sticks in the box of its section over the sticky and spanning cells of the other rows, so it's pushed out at the end of the section.
-            // https://drafts.csswg.org/css-position-3/#stickypos-insets
-            $style: getBoxStyle(rowIndex, rowEnd, rowTop, "top", 3),
-            $top: rowTop,
-          };
-    rowStates.set(rowIndex, row);
-    groupRows.push(row);
   }
 
   rowStatesCache.set(rowLayout, rowStates);
@@ -747,7 +745,7 @@ export interface GridCellState {
   readonly $colSpan: number | undefined;
   readonly $measureRow: number | undefined;
   readonly $measureCol: number | undefined;
-  readonly $role: GridRole;
+  readonly $role: GridCellRole;
   readonly $sort: GridSort["order"] | undefined;
   readonly $style: GridStyle;
   // The fields below are not rendered. They are in the style, and compared with the next plan to keep the state.
