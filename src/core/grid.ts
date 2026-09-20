@@ -225,7 +225,6 @@ const getTemplate = (
       c++;
     }
     const index = i < indexesLength ? indexes[i]! : count;
-    const cut = c < cutsLength ? sortedCuts[c]! : count;
     let to: number;
     let size: string;
     if (index === line) {
@@ -243,14 +242,14 @@ const getTemplate = (
       i++;
     } else {
       // The tracks without rendered cells are merged until the next rendered track or the end of a span.
-      to = min(index, cut);
-      // The last track ends at the total size the container is sized by, which may be rounded differently from the end of the track.
-      const end =
-        to < count || c < cutsLength
-          ? layout.$getItemOffset(to - 1) + layout.$getItemSize(to - 1)
-          : layout.$getTotalSize();
+      to = min(index, c < cutsLength ? sortedCuts[c]! : count);
       // A fixed track this large makes WebKit misplace the cells after one of them is focused, so the size is given as the min.
-      size = "minmax(" + (end - layout.$getItemOffset(line)) + "px,auto)";
+      size =
+        "minmax(" +
+        (layout.$getItemOffset(to - 1) +
+          layout.$getItemSize(to - 1) -
+          layout.$getItemOffset(line)) +
+        "px,auto)";
     }
     template += " " + size + " [l" + to + "]";
     line = to;
@@ -586,16 +585,16 @@ export const createGridPlan = (
             : undefined;
         let cell: GridCellState | undefined;
         if (prevCells) {
-          while (p < prevCells.length && prevCells[p]!.$col < colIndex) {
+          const prevCellsLength = prevCells.length;
+          while (p < prevCellsLength && prevCells[p]!.$col < colIndex) {
             p++;
           }
-          if (p < prevCells.length) {
+          if (p < prevCellsLength && prevCells[p]!.$col === colIndex) {
             cell = prevCells[p];
           }
         }
         if (
           !cell ||
-          cell.$col !== colIndex ||
           cell.$rowSpan !== rowSpan ||
           cell.$colSpan !== colSpan ||
           cell.$start !== stickyStart ||
@@ -691,13 +690,13 @@ export const createGridPlan = (
       "max-content",
       rowCount,
     ),
-    // The auto columns share the space left in the viewport, as the columns of a table.
-    // https://drafts.csswg.org/css-grid-2/#algo-stretch
     $colTemplate: getTemplate(
       colLayout,
       cols,
       measuredCols,
       sort(colCuts),
+      // The auto columns share the space left in the viewport, as the columns of a table.
+      // https://drafts.csswg.org/css-grid-2/#algo-stretch
       "minmax(max-content,auto)",
       colCount,
     ),
