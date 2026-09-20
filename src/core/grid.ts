@@ -465,7 +465,7 @@ export const createGridPlan = (
   }
   const measuredRows: (boolean | null)[] = [];
   // The section headers stick where the first row after the pinned rows is laid.
-  const stickyTop = rowLayout.$getItemOffset(rowPinnedStart);
+  const sectionHeaderTop = rowLayout.$getItemOffset(rowPinnedStart);
 
   // The rows out of the pinned rows and the sections are not grouped, as Firefox on macOS keeps the stale columns of the table when the rows in a group change.
   const groups: (GridRowGroupState | GridRowState)[] = [];
@@ -474,24 +474,24 @@ export const createGridPlan = (
   const rowStates = new Map<number, GridRowState>();
   // TODO optimize: the rows and the columns out of the ranges are crossed with each other, which is quadratic for many cells kept far away from each other.
   for (const rowIndex of rows) {
-    const isPinnedTop = rowIndex < rowPinnedStart;
-    const isPinnedBottom = rowIndex >= rowTrailStart;
+    const isRowPinnedStart = rowIndex < rowPinnedStart;
+    const isRowPinnedEnd = rowIndex >= rowTrailStart;
     const isRowInRangeOrPinnedToEnd =
-      isPinnedBottom || (rowIndex >= rowRangeStart && rowIndex <= rowRangeEnd);
+      isRowPinnedEnd || (rowIndex >= rowRangeStart && rowIndex <= rowRangeEnd);
     const section = getSectionIndex(sectionStarts, rowIndex, rowTrailStart);
     // The first row of the group of the row, or -1
-    const groupStart = isPinnedTop
+    const groupStart = isRowPinnedStart
       ? 0
-      : isPinnedBottom
+      : isRowPinnedEnd
         ? rowTrailStart
         : section < 0
           ? -1
           : sectionStarts[section]!;
     // A group starts at its first row, which is rendered whenever the other rows of the group are.
     if (rowIndex === groupStart) {
-      const groupEnd = isPinnedTop
+      const groupEnd = isRowPinnedStart
         ? rowPinnedStart
-        : isPinnedBottom
+        : isRowPinnedEnd
           ? totalRowCount
           : // A section ends at the next section which may not be rendered, or at the rows pinned to the end
             section + 1 < sectionLength
@@ -501,14 +501,14 @@ export const createGridPlan = (
       const groupedRows: GridRowState[] = [];
       groups.push({
         // The rows pinned to the end keep the key while the rows before them are added or removed
-        $key: isPinnedTop ? -1 : isPinnedBottom ? -2 : -3 - groupStart,
+        $key: isRowPinnedStart ? -1 : isRowPinnedEnd ? -2 : -3 - groupStart,
         $rows: groupedRows,
         // The pinned rows at each edge are sticky together over the section headers and the cells of the other rows, so the cells spanning over them are stacked over the next rows as in the other rows.
         $style: getBoxStyle(
           groupStart,
           groupEnd,
-          isPinnedTop || isPinnedBottom ? 0 : NULL,
-          isPinnedBottom ? "bottom" : "top",
+          isRowPinnedStart || isRowPinnedEnd ? 0 : NULL,
+          isRowPinnedEnd ? "bottom" : "top",
           4,
         ),
       });
@@ -517,7 +517,7 @@ export const createGridPlan = (
       groupRows = groups;
     }
     const isSectionHeaderRow = section >= 0 && rowIndex === groupStart;
-    const rowTop = isSectionHeaderRow ? stickyTop : NULL;
+    const rowTop = isSectionHeaderRow ? sectionHeaderTop : NULL;
     const rowKey = rowIndex * totalColCount;
     const prevRow = prev && prev.get(rowIndex);
     const prevCells = prevRow && prevRow.$cells;
@@ -529,18 +529,19 @@ export const createGridPlan = (
     let hasChanged = false;
     for (let i = 0; i < colsLength; i++) {
       const colIndex = cols[i]!;
-      const isPinnedStart = colIndex < colPinnedStart;
-      const isPinnedEnd = colIndex >= colTrailStart;
+      const isColPinnedStart = colIndex < colPinnedStart;
+      const isColPinnedEnd = colIndex >= colTrailStart;
       const isColInRangeOrPinnedToEnd =
-        isPinnedEnd || (colIndex >= colRangeStart && colIndex <= colRangeEnd);
+        isColPinnedEnd ||
+        (colIndex >= colRangeStart && colIndex <= colRangeEnd);
       const span = spanCells.get(rowKey + colIndex);
       if (
         span
           ? span.rowIndex === rowIndex && span.colIndex === colIndex
           : (isRowInRangeOrPinnedToEnd && isColInRangeOrPinnedToEnd) ||
-            isPinnedTop ||
+            isRowPinnedStart ||
             isSectionHeaderRow ||
-            isPinnedStart
+            isColPinnedStart
       ) {
         const rowTo = span ? getSpanRowEnd(span, totalRowCount) : rowIndex + 1;
         const colTo = span ? getSpanColEnd(span, totalColCount) : colIndex + 1;
@@ -555,11 +556,11 @@ export const createGridPlan = (
         // A sticky box keeps its edges in the scrollport, so the end inset is from the end of the track.
         // https://drafts.csswg.org/css-position-3/#stickypos-insets
         // https://wpt.fyi/results/css/css-position/sticky/position-sticky-grid.html
-        const stickyStart = isPinnedStart
+        const stickyStart = isColPinnedStart
           ? colLayout.$getItemOffset(colIndex)
           : NULL;
         // The end inset of a span is from its last column.
-        const stickyEnd = isPinnedEnd
+        const stickyEnd = isColPinnedEnd
           ? colLayout.$getTotalSize() -
             colLayout.$getItemOffset(colTo - 1) -
             colLayout.$getItemSize(colTo - 1)
@@ -572,9 +573,10 @@ export const createGridPlan = (
           measureColIndex = colIndex;
           measuredCols[i] = true;
         }
-        const role: GridCellRole = isPinnedTop
+        const role: GridCellRole = isRowPinnedStart
           ? "columnheader"
-          : colIndex === rowHeaderCol && (isPinnedStart || isSectionHeaderRow)
+          : colIndex === rowHeaderCol &&
+              (isColPinnedStart || isSectionHeaderRow)
             ? "rowheader"
             : "cell";
         // A merged cell gives both spans, 1 on the axis it doesn't span
@@ -636,9 +638,9 @@ export const createGridPlan = (
             style["width"] = "0px";
             style["minWidth"] = "100%";
           }
-          if (isPinnedStart || isPinnedEnd) {
-            style[isPinnedStart ? "insetInlineStart" : "insetInlineEnd"] =
-              (isPinnedStart ? stickyStart : stickyEnd) + "px";
+          if (isColPinnedStart || isColPinnedEnd) {
+            style[isColPinnedStart ? "insetInlineStart" : "insetInlineEnd"] =
+              (isColPinnedStart ? stickyStart : stickyEnd) + "px";
             style["position"] = "sticky";
             // Over the spanning cells, which may be painted later
             style["zIndex"] = 2;
