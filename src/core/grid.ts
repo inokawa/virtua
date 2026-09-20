@@ -369,41 +369,39 @@ export const createGridPlan = (
         col < totalColCount &&
         (rowTo - row > 1 || colTo - col > 1)
       ) {
+        const hasRenderedRow = hasTrackIn(
+          extraRows,
+          row,
+          rowTo,
+          rowPinnedStart,
+          rowRangeStart,
+          rowRangeEnd,
+          rowTrailStart,
+        );
         if (
+          hasRenderedRow &&
           hasTrackIn(
-            extraRows,
-            row,
-            rowTo,
-            rowPinnedStart,
-            rowRangeStart,
-            rowRangeEnd,
-            rowTrailStart,
+            extraCols,
+            col,
+            colTo,
+            colPinnedStart,
+            colRangeStart,
+            colRangeEnd,
+            colTrailStart,
           )
         ) {
+          extraCells.push(span);
+        } else if (hasRenderedRow) {
+          const section = getSectionIndex(
+            sectionStarts,
+            rowTo - 1,
+            rowTrailStart,
+          );
           if (
-            hasTrackIn(
-              extraCols,
-              col,
-              colTo,
-              colPinnedStart,
-              colRangeStart,
-              colRangeEnd,
-              colTrailStart,
-            )
+            row < rowPinnedStart ||
+            (section >= 0 && sectionStarts[section]! >= row)
           ) {
-            extraCells.push(span);
-          } else {
-            const section = getSectionIndex(
-              sectionStarts,
-              rowTo - 1,
-              rowTrailStart,
-            );
-            if (
-              row < rowPinnedStart ||
-              (section >= 0 && sectionStarts[section]! >= row)
-            ) {
-              rest.push(span);
-            }
+            rest.push(span);
           }
         } else if (col < colPinnedStart) {
           rest.push(span);
@@ -639,11 +637,8 @@ export const createGridPlan = (
             style["minWidth"] = "100%";
           }
           if (isPinnedStart || isPinnedEnd) {
-            if (isPinnedStart) {
-              style["insetInlineStart"] = stickyStart + "px";
-            } else {
-              style["insetInlineEnd"] = stickyEnd + "px";
-            }
+            style[isPinnedStart ? "insetInlineStart" : "insetInlineEnd"] =
+              (isPinnedStart ? stickyStart : stickyEnd) + "px";
             style["position"] = "sticky";
             // Over the spanning cells, which may be painted later
             style["zIndex"] = 2;
