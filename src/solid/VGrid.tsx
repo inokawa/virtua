@@ -411,10 +411,26 @@ export const VGrid = <R = number, C = number>(
 
   // The sizes read from the items are tracked, so the items mutated in place are followed.
   createComputed(() => {
-    updateGridAxis(rowStore, rowLayout, props.rows, props.rowHeight, true);
+    updateGridAxis(
+      rowStore,
+      rowLayout,
+      props.rows,
+      props.rowHeight,
+      props.headerRows,
+      props.footerRows,
+      true,
+    );
   });
   createComputed(() => {
-    updateGridAxis(colStore, colLayout, props.cols, props.colWidth, true);
+    updateGridAxis(
+      colStore,
+      colLayout,
+      props.cols,
+      props.colWidth,
+      props.headerCols,
+      props.footerCols,
+      true,
+    );
   });
 
   const rowCount = createMemo(
@@ -430,11 +446,7 @@ export const VGrid = <R = number, C = number>(
       colLayout,
       rowStore.$getRange(props.bufferSize),
       colStore.$getRange(props.bufferSize),
-      props.headerRows,
       props.sectionRows,
-      props.footerRows,
-      props.headerCols,
-      props.footerCols,
       props.spans,
       props.keepMounted,
       props.ariaSort,
@@ -504,11 +516,9 @@ export const VGrid = <R = number, C = number>(
           driver,
           rowStore,
           colStore,
-          props.headerRows,
+          rowLayout,
+          colLayout,
           props.sectionRows,
-          props.footerRows,
-          props.headerCols,
-          props.footerCols,
           opts,
         ),
       scrollTo: ({ vertical, horizontal }) =>

@@ -452,10 +452,26 @@ export const VGrid = /*#__PURE__*/ defineComponent({
 
     // The sizes read from the items are tracked, so the items mutated in place are followed.
     watchEffect(() => {
-      updateGridAxis(rowStore, rowLayout, props.rows, props.rowHeight, true);
+      updateGridAxis(
+        rowStore,
+        rowLayout,
+        props.rows,
+        props.rowHeight,
+        props.headerRows,
+        props.footerRows,
+        true,
+      );
     });
     watchEffect(() => {
-      updateGridAxis(colStore, colLayout, props.cols, props.colWidth, true);
+      updateGridAxis(
+        colStore,
+        colLayout,
+        props.cols,
+        props.colWidth,
+        props.headerCols,
+        props.footerCols,
+        true,
+      );
     });
 
     const rowCount = computed(
@@ -471,11 +487,7 @@ export const VGrid = /*#__PURE__*/ defineComponent({
         colLayout,
         rowStore.$getRange(props.bufferSize),
         colStore.$getRange(props.bufferSize),
-        props.headerRows,
         props.sectionRows,
-        props.footerRows,
-        props.headerCols,
-        props.footerCols,
         props.spans,
         props.keepMounted,
         props.ariaSort,
@@ -534,11 +546,9 @@ export const VGrid = /*#__PURE__*/ defineComponent({
           driver,
           rowStore,
           colStore,
-          props.headerRows,
+          rowLayout,
+          colLayout,
           props.sectionRows,
-          props.footerRows,
-          props.headerCols,
-          props.footerCols,
           opts,
         ),
       scrollTo: ({ vertical, horizontal }) =>

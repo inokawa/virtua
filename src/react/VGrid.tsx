@@ -393,8 +393,15 @@ export const VGrid = /*#__PURE__*/ forwardRef<
     });
 
     // These never request a synchronous update, so they are safe here.
-    updateGridAxis(rowStore, rowLayout, rows, rowHeight);
-    updateGridAxis(colStore, colLayout, cols, colWidth);
+    updateGridAxis(
+      rowStore,
+      rowLayout,
+      rows,
+      rowHeight,
+      headerRows,
+      footerRows,
+    );
+    updateGridAxis(colStore, colLayout, cols, colWidth, headerCols, footerCols);
 
     const getStateVersion = () =>
       rowStore.$getStateVersion() + colStore.$getStateVersion();
@@ -416,11 +423,7 @@ export const VGrid = /*#__PURE__*/ forwardRef<
       colLayout,
       rowStore.$getRange(bufferSize),
       colStore.$getRange(bufferSize),
-      headerRows,
       sectionRows,
-      footerRows,
-      headerCols,
-      footerCols,
       spans,
       keepMounted,
       ariaSort,
@@ -430,11 +433,9 @@ export const VGrid = /*#__PURE__*/ forwardRef<
         driver,
         rowStore,
         colStore,
-        headerRows,
+        rowLayout,
+        colLayout,
         sectionRows,
-        footerRows,
-        headerCols,
-        footerCols,
         opts,
       ),
     );

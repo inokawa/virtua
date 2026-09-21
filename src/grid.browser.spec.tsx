@@ -1310,17 +1310,17 @@ describe("scrollToIndex with sections", () => {
                     ([r, c]) => r === rowIndex && c === colIndex,
                   );
                   return (
-                    // the spanning cells are smaller than their tracks, so they don't overflow the other cells
+                    // a cell is smaller than the tracks it spans and as large as the track it doesn't, so every track keeps its size while the other cells are out of the range
                     <div
                       style={{
                         background: "white",
                         height: auto
-                          ? span
+                          ? span && span.rowSpan
                             ? 20
                             : rowSize(rowIndex)
                           : undefined,
                         width: auto
-                          ? span
+                          ? span && span.colSpan
                             ? 40
                             : colSize(colIndex)
                           : undefined,
@@ -1538,11 +1538,16 @@ describe("scrollToIndex with sections", () => {
               (!pass || unmeasuredRows().length || unmeasuredCols().length);
               pass++
             ) {
-              const settle = async (text: string) => {
-                await expect.poll(() => cell(container, text)).toBeTruthy();
-                // the cells are measured after they are painted
+              // The track of the other axis is not waited for, as the pinned tracks shrink the range of both.
+              const settle = async (selector: string) => {
+                await expect
+                  .poll(() => container.querySelector(selector))
+                  .toBeTruthy();
+                // the cells around it are measured after they are painted
                 await new Promise((r) => setTimeout(r, 100));
               };
+              const settleRow = (rowIndex: number) =>
+                settle(`[role="row"][aria-rowindex="${rowIndex + 1}"]`);
               // by half the viewport, so that every track is rendered in a step
               for (
                 let top = 0;
@@ -1550,9 +1555,12 @@ describe("scrollToIndex with sections", () => {
                 top += VIEWPORT / 2
               ) {
                 viewport.scrollTop = top;
-                // a cell near the position, in the column not covered by the spans, and never the pinned end which is always rendered
-                await settle(
-                  `${Math.min(MATRIX_ROWS - 2, Math.round(top / 40))} / 5`,
+                // a row in the middle of the viewport, which the pinned rows never cover
+                await settleRow(
+                  Math.min(
+                    MATRIX_ROWS - 2,
+                    ref.current!.findRowIndex(top + VIEWPORT / 2),
+                  ),
                 );
               }
               viewport.scrollTop = 0;
@@ -1563,12 +1571,12 @@ describe("scrollToIndex with sections", () => {
               ) {
                 viewport.scrollLeft = rtl ? -start : start;
                 await settle(
-                  `8 / ${Math.min(MATRIX_COLS - 2, Math.round(start / 100))}`,
+                  `[aria-colindex="${Math.min(MATRIX_COLS - 2, ref.current!.findColIndex(start + VIEWPORT / 2)) + 1}"]`,
                 );
               }
               viewport.scrollTop = 0;
               viewport.scrollLeft = 0;
-              await settle("0 / 5");
+              await settleRow(0);
             }
             await check();
             for (const [top, start] of [

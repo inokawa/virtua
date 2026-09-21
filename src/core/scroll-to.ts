@@ -2,6 +2,7 @@ import { type VirtualStore } from "./store.js";
 import { clamp, EMPTY, max, min, NULL } from "./utils.js";
 import { type Driver, type GridDriver } from "./driver.js";
 import { getSectionIndex, getSectionStarts } from "./grid.js";
+import { type GridLayout } from "./layouts/grid.js";
 
 /**
  * Alignment of item in the viewport.
@@ -155,39 +156,38 @@ export const gridScrollBy = (
 const scrollGridAxisToIndex = (
   driver: GridDriver,
   store: VirtualStore,
-  header: number,
+  layout: GridLayout,
   sections: readonly number[],
-  footer: number,
   index: number,
   align: ScrollToIndexAlign | undefined,
   isHorizontal: boolean,
 ) => {
   const count = store.$getItemsLength();
-  const pinnedStart = min(header, count);
-  const trailStart = max(count - footer, pinnedStart);
+  const pinnedStart = layout.$getPinnedStart();
+  const trailStart = layout.$getTrailStart();
   index = clamp(index, 0, count - 1);
   const starts = getSectionStarts(sections, pinnedStart, trailStart);
   const section = getSectionIndex(starts, index, trailStart);
   const sectionHeader = section < 0 ? -1 : starts[section]!;
-  // Read when scrolling, as the pinned items may be measured after the call. The offsets from the first item exclude the jump deferred during scrolling.
+  // Read when scrolling, as the pinned items may be measured after the call.
   // The header of the section of the item sticks under the pinned items, so the item is below it unless it's the header itself.
-  const getInsets = (): [start: number, end: number] => [
-    store.$getItemOffset(pinnedStart) -
-      store.$getItemOffset(0) +
-      (sectionHeader < 0 || sectionHeader === index
-        ? 0
-        : store.$getItemOffset(sectionHeader + 1) -
-          store.$getItemOffset(sectionHeader)),
-    store.$getItemOffset(count) - store.$getItemOffset(trailStart),
-  ];
+  const getInsetStart = (): number =>
+    layout.$getItemOffset(pinnedStart) +
+    (sectionHeader < 0 || sectionHeader === index
+      ? 0
+      : store.$getItemOffset(sectionHeader + 1) -
+        store.$getItemOffset(sectionHeader));
+  const getInsetEnd = (): number =>
+    layout.$getItemOffset(count) - layout.$getItemOffset(trailStart);
 
   if (align === "nearest") {
     if (index < pinnedStart || index >= trailStart) {
       // A pinned item is always visible
       return;
     }
-    const [insetStart, insetEnd] = getInsets();
-    const scrollOffset = store.$getScrollOffset();
+    const insetStart = getInsetStart();
+    const scrollOffset = store.$getScrollOffset() + insetStart;
+    const viewportSize = store.$getViewportSize() - insetStart - getInsetEnd();
     const itemSize = store.$getItemSize(index);
     let itemOffset = store.$getItemOffset(index);
     if (sectionHeader === index) {
@@ -197,19 +197,16 @@ const scrollGridAxisToIndex = (
       itemOffset = max(
         itemOffset,
         min(
-          scrollOffset + insetStart,
+          scrollOffset,
           store.$getItemOffset(lastIndex) +
             store.$getItemSize(lastIndex) -
             itemSize,
         ),
       );
     }
-    if (itemOffset < scrollOffset + insetStart) {
+    if (itemOffset < scrollOffset) {
       align = "start";
-    } else if (
-      itemOffset + itemSize >
-      scrollOffset + store.$getViewportSize() - insetEnd
-    ) {
+    } else if (itemOffset + itemSize > scrollOffset + viewportSize) {
       align = "end";
     } else {
       return;
@@ -217,15 +214,14 @@ const scrollGridAxisToIndex = (
   }
 
   driver.$scroll(isHorizontal, () => {
-    const [insetStart, insetEnd] = getInsets();
-    const rest = store.$getItemSize(index) - store.$getViewportSize();
+    const insetStart = getInsetStart();
+    const rest =
+      store.$getItemSize(index) -
+      (store.$getViewportSize() - insetStart - getInsetEnd());
     return (
-      store.$getItemOffset(index) +
-      (align === "end"
-        ? rest + insetEnd
-        : align === "center"
-          ? (rest + insetEnd - insetStart) / 2
-          : -insetStart)
+      store.$getItemOffset(index) -
+      insetStart +
+      (align === "end" ? rest : align === "center" ? rest / 2 : 0)
     );
   });
 };
@@ -237,11 +233,9 @@ export const gridScrollToIndex = (
   driver: GridDriver,
   rowStore: VirtualStore,
   colStore: VirtualStore,
-  headerRows = 0,
+  rowLayout: GridLayout,
+  colLayout: GridLayout,
   sectionRows: readonly number[] = EMPTY,
-  footerRows = 0,
-  headerCols = 0,
-  footerCols = 0,
   { rowIndex, colIndex, rowAlign, colAlign }: GridScrollToIndexOpts,
 ) => {
   // TODO support smooth scroll, removed because scrolling both axes smoothly freezes their ranges and the page
@@ -249,9 +243,8 @@ export const gridScrollToIndex = (
     scrollGridAxisToIndex(
       driver,
       rowStore,
-      headerRows,
+      rowLayout,
       sectionRows,
-      footerRows,
       rowIndex,
       rowAlign,
       false,
@@ -261,9 +254,8 @@ export const gridScrollToIndex = (
     scrollGridAxisToIndex(
       driver,
       colStore,
-      headerCols,
+      colLayout,
       EMPTY,
-      footerCols,
       colIndex,
       colAlign,
       true,
