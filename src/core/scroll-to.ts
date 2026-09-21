@@ -175,8 +175,8 @@ const scrollGridAxisToIndex = (
     layout.$getItemOffset(pinnedStart) +
     (sectionHeader < 0 || sectionHeader === index
       ? 0
-      : store.$getItemOffset(sectionHeader + 1) -
-        store.$getItemOffset(sectionHeader));
+      : layout.$getItemOffset(sectionHeader + 1) -
+        layout.$getItemOffset(sectionHeader));
   const getInsetEnd = (): number =>
     layout.$getItemOffset(count) - layout.$getItemOffset(trailStart);
 

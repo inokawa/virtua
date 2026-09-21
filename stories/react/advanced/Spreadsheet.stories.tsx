@@ -246,8 +246,12 @@ export const Spreadsheet: StoryObj = {
             colWidth="width"
             headerRows={1}
             headerCols={1}
-            // the headers of the focused cell are rendered by the grid
-            keepMounted={[{ rowIndex: active[0] + 1, colIndex: active[1] + 1 }]}
+            // The headers naming the focused cell are kept with it, as the grid doesn't render the headers out of the viewport.
+            keepMounted={[
+              { rowIndex: active[0] + 1, colIndex: active[1] + 1 },
+              { rowIndex: 0, colIndex: active[1] + 1 },
+              { rowIndex: active[0] + 1, colIndex: 0 },
+            ]}
           >
             {(rowIndex, col, { colIndex }) => {
               const r = rowIndex - 1;

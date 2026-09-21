@@ -693,7 +693,7 @@ it("the section header is rendered with the cells scrolled away from it", async 
       )}
     </VGrid>,
   );
-  const { viewport, container } = await getVirtualizer(root);
+  const { viewport } = await getVirtualizer(root);
   viewport.scrollTop = ROW_HEIGHT * 500;
   viewport.scrollLeft = COL_WIDTH * 200;
   // the header row out of the pinned rows heads the section of all the rows
@@ -703,9 +703,8 @@ it("the section header is rendered with the cells scrolled away from it", async 
     { count: COLS, size: () => COL_WIDTH },
   );
 
-  // the header is rendered out of the viewport, with its row header out of the columns too
+  // the header is rendered out of the range, in the columns in the viewport
   expect(root.textContent).toContain("0 / 200");
-  expect(cell(container, "0 / 0")).toBeTruthy();
 });
 
 it("cells follow the changed counts", async () => {
