@@ -52,9 +52,12 @@ export const updateGridAxis = (
   layout: GridLayout,
   axis: GridAxis<unknown>,
   size: GridTrackSize | string,
+  header?: number,
+  footer?: number,
   mutable?: boolean,
 ) => {
   const length = getAxisLength(axis);
+  layout.$setPinned(header, footer);
   if (length !== store.$getItemsLength()) {
     store.$update(ACTION_ITEMS_LENGTH_CHANGE, [length]);
   }
@@ -302,21 +305,17 @@ export const createGridPlan = (
   colLayout: Readonly<GridLayout>,
   rowRange: Readonly<ItemsRange>,
   colRange: Readonly<ItemsRange>,
-  headerRows: number = 0,
   sectionRows: readonly number[] = EMPTY,
-  footerRows: number = 0,
-  headerCols: number = 0,
-  footerCols: number = 0,
   spans: readonly Readonly<GridSpan>[] = EMPTY,
   kept: readonly Readonly<GridCell>[] = EMPTY,
   sortedCell?: Readonly<GridSort>,
 ): GridPlan => {
   const totalRowCount = rowLayout.$getLength();
   const totalColCount = colLayout.$getLength();
-  const rowPinnedStart = min(headerRows, totalRowCount);
-  const rowTrailStart = max(totalRowCount - footerRows, rowPinnedStart);
-  const colPinnedStart = min(headerCols, totalColCount);
-  const colTrailStart = max(totalColCount - footerCols, colPinnedStart);
+  const rowPinnedStart = rowLayout.$getPinnedStart();
+  const rowTrailStart = rowLayout.$getTrailStart();
+  const colPinnedStart = colLayout.$getPinnedStart();
+  const colTrailStart = colLayout.$getTrailStart();
   const rowRangeStart = clamp(rowRange[0], rowPinnedStart, rowTrailStart);
   const rowRangeEnd = min(rowRange[1], rowTrailStart - 1);
   const colRangeStart = clamp(colRange[0], colPinnedStart, colTrailStart);

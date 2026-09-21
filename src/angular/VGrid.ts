@@ -448,11 +448,7 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
       this._colLayout,
       this._rowStore.$getRange(this.bufferSize()),
       this._colStore.$getRange(this.bufferSize()),
-      this.headerRows(),
       this.sectionRows(),
-      this.footerRows(),
-      this.headerCols(),
-      this.footerCols(),
       this.spans(),
       this.keepMounted(),
       this.ariaSort(),
@@ -498,10 +494,28 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
       const cols = this.cols();
       const rowHeight = this.rowHeight();
       const colWidth = this.colWidth();
+      const headerRows = this.headerRows();
+      const footerRows = this.footerRows();
+      const headerCols = this.headerCols();
+      const footerCols = this.footerCols();
       if (!this._rowStore) return;
       untracked(() => {
-        updateGridAxis(this._rowStore, this._rowLayout, rows, rowHeight);
-        updateGridAxis(this._colStore, this._colLayout, cols, colWidth);
+        updateGridAxis(
+          this._rowStore,
+          this._rowLayout,
+          rows,
+          rowHeight,
+          headerRows,
+          footerRows,
+        );
+        updateGridAxis(
+          this._colStore,
+          this._colLayout,
+          cols,
+          colWidth,
+          headerCols,
+          footerCols,
+        );
       });
     });
 
@@ -624,11 +638,9 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
       this.driver,
       this._rowStore,
       this._colStore,
-      this.headerRows(),
+      this._rowLayout,
+      this._colLayout,
       this.sectionRows(),
-      this.footerRows(),
-      this.headerCols(),
-      this.footerCols(),
       opts,
     );
   }

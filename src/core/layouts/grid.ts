@@ -1,7 +1,8 @@
 import { UNCACHED } from "../cache.js";
 import { createListLayout } from "./list.js";
 import type { Layout } from "./types.js";
-import { clamp, floor, NULL } from "../utils.js";
+import type { ItemsRange } from "../types.js";
+import { clamp, floor, max, min, NULL } from "../utils.js";
 
 export type GridTrackSize = number | "auto";
 
@@ -54,6 +55,9 @@ export const getAxisItem = <T>(axis: GridAxis<T>, index: number): T =>
  */
 export interface GridLayout extends Layout {
   $isMeasurable(index: number): boolean;
+  $setPinned(header?: number, footer?: number): void;
+  $getPinnedStart(): number;
+  $getTrailStart(): number;
   $setAxis(
     axis: GridAxis<unknown>,
     size: GridTrackSize | string,
@@ -70,6 +74,34 @@ export const createGridLayout = (
   size: GridTrackSize | string,
   gap: number = 0,
 ): GridLayout => {
+  let header = 0;
+  let footer = 0;
+  const setPinned = (nextHeader: number = 0, nextFooter: number = 0) => {
+    header = nextHeader;
+    footer = nextFooter;
+  };
+  const getPinnedStart = (length: number): number => min(header, length);
+  const getTrailStart = (length: number): number =>
+    max(length - footer, getPinnedStart(length));
+  const pinRange = (
+    getRange: Layout["$getRange"],
+    getOffset: Layout["$getItemOffset"],
+    length: number,
+    startOffset: number,
+    endOffset: number,
+  ): ItemsRange => {
+    // The tracks pinned to the edges stick over the viewport, so the tracks behind them are never seen and the range covers only the tracks between them.
+    const insetStart = getOffset(getPinnedStart(length));
+    const insetEnd = getOffset(length) - getOffset(getTrailStart(length));
+    // The bands of the pinned tracks don't cover the gaps after them, so the gap the insets include is given back.
+    const start = startOffset + (insetStart ? insetStart - gap : 0);
+    return getRange(
+      start,
+      // The range covers one track if the pinned tracks are thicker than the viewport.
+      max(start, endOffset - (insetEnd ? insetEnd - gap : 0)),
+    );
+  };
+
   if (typeof size === "number") {
     let length = getAxisLength(axis);
     let itemSize = size;
@@ -78,14 +110,16 @@ export const createGridLayout = (
       itemSize + gap
         ? clamp(floor(offset / (itemSize + gap)), 0, length - 1)
         : 0;
-
+    const getItemOffset = (index: number): number => index * (itemSize + gap);
+    const findRange: Layout["$getRange"] = (startOffset, endOffset) => [
+      findIndex(startOffset),
+      findIndex(endOffset),
+    ];
     return {
-      $getRange: (startOffset, endOffset) => [
-        findIndex(startOffset),
-        findIndex(endOffset),
-      ],
+      $getRange: (startOffset, endOffset) =>
+        pinRange(findRange, getItemOffset, length, startOffset, endOffset),
       $findIndex: findIndex,
-      $getItemOffset: (index) => index * (itemSize + gap),
+      $getItemOffset: getItemOffset,
       $getItemSize: () => itemSize,
       // The cells of a uniform axis are not measured
       $setItemSize: () => false,
@@ -98,6 +132,9 @@ export const createGridLayout = (
         return 0;
       },
       $isMeasurable: () => false,
+      $setPinned: setPinned,
+      $getPinnedStart: () => getPinnedStart(length),
+      $getTrailStart: () => getTrailStart(length),
       $setAxis: (_axis, nextSize, scrollOffset) => {
         if (typeof nextSize !== "number" || nextSize === itemSize) {
           return;
@@ -120,9 +157,15 @@ export const createGridLayout = (
   const inner = createListLayout(length, undefined, [[], 40 + gap]);
 
   const isMeasurable = (index: number): boolean => isAuto || !!autos[index];
-
   const layout: GridLayout = {
-    $getRange: inner.$getRange,
+    $getRange: (startOffset, endOffset) =>
+      pinRange(
+        inner.$getRange,
+        inner.$getItemOffset,
+        inner.$getLength(),
+        startOffset,
+        endOffset,
+      ),
     $findIndex: inner.$findIndex,
     $getItemOffset: inner.$getItemOffset,
     $getItemSize: (index) => inner.$getItemSize(index) - gap,
@@ -135,6 +178,9 @@ export const createGridLayout = (
     $setLength: inner.$setLength,
     $estimateDefaultSize: isAuto ? inner.$estimateDefaultSize : undefined,
     $isMeasurable: isMeasurable,
+    $setPinned: setPinned,
+    $getPinnedStart: () => getPinnedStart(inner.$getLength()),
+    $getTrailStart: () => getTrailStart(inner.$getLength()),
     $setAxis: (nextAxis, requestedSize, scrollOffset, mutable) => {
       if (isAuto) {
         return;

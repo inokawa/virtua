@@ -84,10 +84,26 @@
 
   // The sizes read from the items are tracked, so the items mutated in place are followed.
   $effect.pre(() => {
-    updateGridAxis(rowStore, rowLayout, rows, rowHeight, true);
+    updateGridAxis(
+      rowStore,
+      rowLayout,
+      rows,
+      rowHeight,
+      headerRows,
+      footerRows,
+      true,
+    );
   });
   $effect.pre(() => {
-    updateGridAxis(colStore, colLayout, cols, colWidth, true);
+    updateGridAxis(
+      colStore,
+      colLayout,
+      cols,
+      colWidth,
+      headerCols,
+      footerCols,
+      true,
+    );
   });
   let rowCount = $derived(stateVersion && rowStore.$getItemsLength());
   let colCount = $derived(stateVersion && colStore.$getItemsLength());
@@ -98,11 +114,7 @@
       colLayout,
       rowStore.$getRange(bufferSize),
       colStore.$getRange(bufferSize),
-      headerRows,
       sectionRows,
-      footerRows,
-      headerCols,
-      footerCols,
       spans,
       keepMounted,
       ariaSort,
@@ -155,11 +167,9 @@
       driver,
       rowStore,
       colStore,
-      headerRows,
+      rowLayout,
+      colLayout,
       sectionRows,
-      footerRows,
-      headerCols,
-      footerCols,
       opts,
     );
   export const scrollTo: VGridHandle["scrollTo"] = ({ vertical, horizontal }) =>

@@ -203,6 +203,55 @@ describe("uniform size", () => {
   });
 });
 
+describe("setPinned", () => {
+  it("should cover the whole range until the tracks are pinned", () => {
+    const layout = createGridLayout(10, 40);
+    expect(layout.$getRange(0, 100)).toEqual([0, 2]);
+    layout.$setPinned();
+    expect(layout.$getRange(0, 100)).toEqual([0, 2]);
+  });
+
+  it("should drop the tracks hidden behind the pinned ones", () => {
+    const layout = createGridLayout(10, 40);
+    layout.$setPinned(2, 1);
+    // the pinned tracks take 80px at the start and 40px at the end of the 220px viewport
+    expect(layout.$getRange(0, 220)).toEqual([2, 4]);
+    expect(layout.$getRange(100, 300)).toEqual([4, 6]);
+  });
+
+  it("should keep the tracks visible in the gap after the pinned ones", () => {
+    const layout = createGridLayout(5, 40, 10);
+    layout.$setPinned(0, 1);
+    // the band of the pinned track takes 40px, not the 50px its offset includes, so the track at 100px is still visible
+    expect(layout.$getRange(0, 145)).toEqual([0, 2]);
+  });
+
+  it("should shrink the range of a measured axis", () => {
+    const layout = createGridLayout(items(100, 200, 300, 400), "s");
+    layout.$setPinned(1, 1);
+    expect(layout.$getRange(0, 700)).toEqual([1, 2]);
+  });
+
+  it("should not invert the range when the pinned tracks are thicker than the viewport", () => {
+    const layout = createGridLayout(10, 40);
+    layout.$setPinned(5, 5);
+    expect(layout.$getRange(0, 100)).toEqual([5, 5]);
+  });
+
+  it("should clamp the counts to the length", () => {
+    const layout = createGridLayout(3, 40);
+    layout.$setPinned(10, 10);
+    expect(layout.$getRange(0, 100)).toEqual([2, 2]);
+  });
+
+  it("should not move the index found from an offset", () => {
+    const layout = createGridLayout(10, 40);
+    layout.$setPinned(2, 1);
+    expect(layout.$findIndex(0)).toBe(0);
+    expect(layout.$findIndex(200)).toBe(5);
+  });
+});
+
 describe("isMeasurable", () => {
   it("should report only the auto items of a key axis", () => {
     const layout = createGridLayout(items(100, "auto"), "s");

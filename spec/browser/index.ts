@@ -143,10 +143,18 @@ const resolveGridAxisGeometry = (
     }
     return [position, offsets[index + span]! - offset - gap];
   };
+  // The bands of the pinned tracks are painted over the scrollport, and don't cover the gaps after them.
+  const headSize = pinnedStart ? pinnedEnd - gap : 0;
+  const tailSize = trailStart < count ? total - offsets[trailStart]! : 0;
   const visible: number[] = [];
   for (let i = 0; i < count; i++) {
     const [position, length] = place(i, 1);
-    if (position < client && position + length > 0) {
+    // A track hidden behind the pinned ones is not rendered. The section headers don't shrink the range, so they are not taken into account.
+    const [from, to] =
+      i < pinnedStart || i >= trailStart
+        ? [0, client]
+        : [headSize, client - tailSize];
+    if (position < to && position + length > from) {
       visible.push(i);
     }
   }

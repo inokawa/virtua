@@ -22,18 +22,12 @@ const cell = (
 
 describe("rendered cells", () => {
   it("should render the cells in the ranges and the pinned ones", () => {
+    const rowLayout = createGridLayout(10, 40);
+    rowLayout.$setPinned(1, 1);
+    const colLayout = createGridLayout(5, 100);
+    colLayout.$setPinned(1, 1);
     const states = rowStates(
-      createGridPlan(
-        createGridLayout(10, 40),
-        createGridLayout(5, 100),
-        [3, 4],
-        [2, 2],
-        1,
-        undefined,
-        1,
-        1,
-        1,
-      ),
+      createGridPlan(rowLayout, colLayout, [3, 4], [2, 2]),
     );
     expect(renderedCells(states)).toEqual([
       "0/0",
@@ -52,30 +46,28 @@ describe("rendered cells", () => {
   });
 
   it("should group only the rows pinned to each edge", () => {
+    const rowLayout = createGridLayout(10, 40);
+    rowLayout.$setPinned(1, 1);
     const plan = createGridPlan(
-      createGridLayout(10, 40),
+      rowLayout,
       createGridLayout(5, 100),
       [3, 4],
       [0, 4],
-      1,
-      undefined,
-      1,
     );
     expect(
       plan.$groups.map((g) =>
         "$rows" in g ? [g.$key, g.$rows.map((r) => r.$row)] : g.$row,
       ),
     ).toEqual([[-1, [0]], 3, 4, [-2, [9]]]);
+    const rowLayout2 = createGridLayout(20, 40);
+    rowLayout2.$setPinned(1, 1);
     // the groups keep their keys while the rows are added
     expect(
       createGridPlan(
-        createGridLayout(20, 40),
+        rowLayout2,
         createGridLayout(5, 100),
         [3, 4],
         [0, 4],
-        1,
-        undefined,
-        1,
       ).$groups.map((g) => ("$rows" in g ? g.$key : g.$row)),
     ).toEqual([-1, 3, 4, -2]);
     expect(
@@ -89,34 +81,23 @@ describe("rendered cells", () => {
   });
 
   it("should render every cell once when the pinned counts exceed the grid", () => {
+    const rowLayout = createGridLayout(2, 40);
+    rowLayout.$setPinned(5);
+    const colLayout = createGridLayout(2, 100);
+    colLayout.$setPinned(5);
     const states = rowStates(
-      createGridPlan(
-        createGridLayout(2, 40),
-        createGridLayout(2, 100),
-        [0, 1],
-        [0, 1],
-        5,
-        undefined,
-        undefined,
-        5,
-      ),
+      createGridPlan(rowLayout, colLayout, [0, 1], [0, 1]),
     );
     expect(renderedCells(states)).toEqual(["0/0", "0/1", "1/0", "1/1"]);
   });
 
   it("should clamp the pinned end to the rest of the pinned start", () => {
+    const rowLayout = createGridLayout(3, 40);
+    rowLayout.$setPinned(2, 2);
+    const colLayout = createGridLayout(3, 100);
+    colLayout.$setPinned(2, 2);
     const states = rowStates(
-      createGridPlan(
-        createGridLayout(3, 40),
-        createGridLayout(3, 100),
-        [0, 2],
-        [0, 2],
-        2,
-        undefined,
-        2,
-        2,
-        2,
-      ),
+      createGridPlan(rowLayout, colLayout, [0, 2], [0, 2]),
     );
     expect(renderedCells(states)).toEqual([
       "0/0",
@@ -155,17 +136,12 @@ describe("rendered cells", () => {
   });
 
   it("should render only the pinned cells before the viewport is measured", () => {
+    const rowLayout = createGridLayout(10, 40);
+    rowLayout.$setPinned(1);
+    const colLayout = createGridLayout(5, 100);
+    colLayout.$setPinned(1);
     const states = rowStates(
-      createGridPlan(
-        createGridLayout(10, 40),
-        createGridLayout(5, 100),
-        [0, -1],
-        [0, -1],
-        1,
-        undefined,
-        undefined,
-        1,
-      ),
+      createGridPlan(rowLayout, colLayout, [0, -1], [0, -1]),
     );
     expect(renderedCells(states)).toEqual(["0/0"]);
   });
@@ -179,10 +155,6 @@ describe("spans", () => {
         createGridLayout(5, 100),
         [0, 3],
         [0, 4],
-        undefined,
-        undefined,
-        undefined,
-        undefined,
         undefined,
         [{ rowIndex: 1, colIndex: 1, rowSpan: 2, colSpan: 3 }],
       ),
@@ -202,10 +174,6 @@ describe("spans", () => {
         createGridLayout(20, 100),
         [50, 51],
         [10, 12],
-        undefined,
-        undefined,
-        undefined,
-        undefined,
         undefined,
         [
           { rowIndex: 45, colIndex: 12, rowSpan: 10 },
@@ -227,10 +195,6 @@ describe("spans", () => {
         [50, 51],
         [0, 4],
         undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
         [
           { rowIndex: 10, colIndex: 0, rowSpan: 5 },
           { rowIndex: 70, colIndex: 0, rowSpan: 5 },
@@ -249,10 +213,6 @@ describe("spans", () => {
         [0, 4],
         [0, 4],
         undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
         [
           { rowIndex: 0, colIndex: 0 },
           { rowIndex: 0, colIndex: 10, colSpan: 2 },
@@ -269,22 +229,15 @@ describe("spans", () => {
   });
 
   it("should ignore the spans left out of the grid", () => {
+    const rowLayout = createGridLayout(5, 40);
+    rowLayout.$setPinned(undefined, 1);
+    const colLayout = createGridLayout(5, 100);
+    colLayout.$setPinned(undefined, 1);
     const states = rowStates(
-      createGridPlan(
-        createGridLayout(5, 40),
-        createGridLayout(5, 100),
-        [0, 4],
-        [0, 4],
-        undefined,
-        undefined,
-        1,
-        undefined,
-        1,
-        [
-          { rowIndex: 0, colIndex: 10, rowSpan: 3 },
-          { rowIndex: 10, colIndex: 0, colSpan: 3 },
-        ],
-      ),
+      createGridPlan(rowLayout, colLayout, [0, 4], [0, 4], undefined, [
+        { rowIndex: 0, colIndex: 10, rowSpan: 3 },
+        { rowIndex: 10, colIndex: 0, colSpan: 3 },
+      ]),
     );
     expect(renderedCells(states)).toHaveLength(25);
     for (const [, { $cells }] of states) {
@@ -303,10 +256,6 @@ describe("spans", () => {
         [0, 4],
         [0, 1],
         undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
         [{ rowIndex: 1, colIndex: 0, rowSpan: 2, colSpan: 2 }],
       ),
     );
@@ -322,10 +271,6 @@ describe("keepMounted", () => {
         createGridLayout(100, 100),
         [0, 1],
         [0, 1],
-        undefined,
-        undefined,
-        undefined,
-        undefined,
         undefined,
         undefined,
         [
@@ -354,10 +299,6 @@ describe("keepMounted", () => {
         [0, 2],
         [0, 4],
         undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
         [{ rowIndex: 0, colIndex: 0, rowSpan: 2, colSpan: 2 }],
         [{ rowIndex: 1, colIndex: 1 }],
       ),
@@ -366,16 +307,16 @@ describe("keepMounted", () => {
   });
 
   it("should render a kept cell pinned to the end once while the ranges are in the pinned end", () => {
+    const rowLayout = createGridLayout(8, 40);
+    rowLayout.$setPinned(undefined, 2);
+    const colLayout = createGridLayout(8, 100);
+    colLayout.$setPinned(undefined, 2);
     const plan = createGridPlan(
-      createGridLayout(8, 40),
-      createGridLayout(8, 100),
+      rowLayout,
+      colLayout,
       [7, 7],
       [7, 7],
       undefined,
-      undefined,
-      2,
-      undefined,
-      2,
       undefined,
       [{ rowIndex: 6, colIndex: 6 }],
     );
@@ -402,10 +343,6 @@ describe("keepMounted", () => {
         [0, 1],
         undefined,
         undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
         [{ rowIndex: 0, colIndex: 1000 }],
       ),
     );
@@ -415,16 +352,16 @@ describe("keepMounted", () => {
 
 describe("headers", () => {
   it("should render the headers of every rendered cell", () => {
+    const rowLayout = createGridLayout(100, 40);
+    rowLayout.$setPinned(1);
+    const colLayout = createGridLayout(50, 100);
+    colLayout.$setPinned(1);
     const states = rowStates(
       createGridPlan(
-        createGridLayout(100, 40),
-        createGridLayout(50, 100),
+        rowLayout,
+        colLayout,
         [10, 11],
         [30, 31],
-        1,
-        undefined,
-        undefined,
-        1,
         undefined,
         undefined,
         [{ rowIndex: 80, colIndex: 40 }],
@@ -449,17 +386,12 @@ describe("headers", () => {
 
 describe("roles", () => {
   it("should make the pinned rows the column headers and the last pinned column the row header", () => {
+    const rowLayout = createGridLayout(5, 40);
+    rowLayout.$setPinned(1, 1);
+    const colLayout = createGridLayout(3, 100);
+    colLayout.$setPinned(2);
     const states = rowStates(
-      createGridPlan(
-        createGridLayout(5, 40),
-        createGridLayout(3, 100),
-        [0, 4],
-        [0, 2],
-        1,
-        undefined,
-        1,
-        2,
-      ),
+      createGridPlan(rowLayout, colLayout, [0, 4], [0, 2]),
     );
     // the column header wins over the row header at the corner
     expect(cell(states, 0, 0).$role).toBe("columnheader");
@@ -474,16 +406,16 @@ describe("roles", () => {
   });
 
   it("should sort only the given header cell", () => {
+    const rowLayout = createGridLayout(5, 40);
+    rowLayout.$setPinned(1);
+    const colLayout = createGridLayout(3, 100);
+    colLayout.$setPinned(1);
     const states = rowStates(
       createGridPlan(
-        createGridLayout(5, 40),
-        createGridLayout(3, 100),
+        rowLayout,
+        colLayout,
         [0, 4],
         [0, 2],
-        1,
-        undefined,
-        undefined,
-        1,
         undefined,
         undefined,
         undefined,
@@ -493,19 +425,19 @@ describe("roles", () => {
     expect(cell(states, 0, 1).$sort).toBe("ascending");
     expect(cell(states, 0, 0).$sort).toBe(undefined);
     expect(cell(states, 1, 1).$sort).toBe(undefined);
+    const rowLayout2 = createGridLayout(5, 40);
+    rowLayout2.$setPinned(1);
+    const colLayout2 = createGridLayout(3, 100);
+    colLayout2.$setPinned(1);
     // a row header is sorted too, and a cell which is not a header is not
     expect(
       cell(
         rowStates(
           createGridPlan(
-            createGridLayout(5, 40),
-            createGridLayout(3, 100),
+            rowLayout2,
+            colLayout2,
             [0, 4],
             [0, 2],
-            1,
-            undefined,
-            undefined,
-            1,
             undefined,
             undefined,
             undefined,
@@ -516,18 +448,18 @@ describe("roles", () => {
         0,
       ).$sort,
     ).toBe("descending");
+    const rowLayout3 = createGridLayout(5, 40);
+    rowLayout3.$setPinned(1);
+    const colLayout3 = createGridLayout(3, 100);
+    colLayout3.$setPinned(1);
     expect(
       cell(
         rowStates(
           createGridPlan(
-            createGridLayout(5, 40),
-            createGridLayout(3, 100),
+            rowLayout3,
+            colLayout3,
             [0, 4],
             [0, 2],
-            1,
-            undefined,
-            undefined,
-            1,
             undefined,
             undefined,
             undefined,
@@ -550,10 +482,6 @@ describe("measurement", () => {
         [0, 4],
         [0, 2],
         undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
         [{ rowIndex: 1, colIndex: 0, rowSpan: 2 }],
       ),
     );
@@ -572,10 +500,6 @@ describe("measurement", () => {
         createGridLayout(3, "auto"),
         [0, 4],
         [0, 2],
-        undefined,
-        undefined,
-        undefined,
-        undefined,
         undefined,
         [{ rowIndex: 0, colIndex: 1, colSpan: 2 }],
       ),
@@ -604,10 +528,13 @@ describe("measurement", () => {
 });
 
 describe("previous states", () => {
+  // The layouts are shared between the cases, so each of them sets the pinned tracks.
   const rows = createGridLayout(100, 40);
   const cols = createGridLayout(10, "auto");
 
   it("should keep the states whose values are unchanged", () => {
+    rows.$setPinned();
+    cols.$setPinned();
     const prev = rowStates(createGridPlan(rows, cols, [0, 3], [0, 4]));
     const next = rowStates(createGridPlan(rows, cols, [0, 3], [0, 4]));
     for (const [rowIndex, row] of next) {
@@ -616,6 +543,8 @@ describe("previous states", () => {
   });
 
   it("should keep the rows rendered in both ranges", () => {
+    rows.$setPinned();
+    cols.$setPinned();
     const prev = rowStates(createGridPlan(rows, cols, [0, 3], [0, 4]));
     const next = rowStates(createGridPlan(rows, cols, [1, 4], [0, 4]));
     // the columns move their measurement from the removed first row
@@ -625,20 +554,13 @@ describe("previous states", () => {
   });
 
   it("should replace only the rows affected by a span", () => {
+    rows.$setPinned();
+    cols.$setPinned();
     const prev = rowStates(createGridPlan(rows, cols, [0, 3], [0, 4]));
     const next = rowStates(
-      createGridPlan(
-        rows,
-        cols,
-        [0, 3],
-        [0, 4],
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        [{ rowIndex: 2, colIndex: 0, colSpan: 2 }],
-      ),
+      createGridPlan(rows, cols, [0, 3], [0, 4], undefined, [
+        { rowIndex: 2, colIndex: 0, colSpan: 2 },
+      ]),
     );
     expect(next.get(1)).toBe(prev.get(1));
     expect(next.get(2)).not.toBe(prev.get(2));
@@ -647,6 +569,8 @@ describe("previous states", () => {
   });
 
   it("should replace only the header cells whose sort changed", () => {
+    rows.$setPinned(1);
+    cols.$setPinned();
     const sorted = (colIndex: number) =>
       rowStates(
         createGridPlan(
@@ -654,10 +578,6 @@ describe("previous states", () => {
           cols,
           [0, 3],
           [0, 4],
-          1,
-          undefined,
-          undefined,
-          undefined,
           undefined,
           undefined,
           undefined,
@@ -676,17 +596,15 @@ describe("previous states", () => {
 
 describe("spans starting out of the ranges", () => {
   it("should span the headers rendered out of the ranges", () => {
+    const colLayout = createGridLayout(50, 100);
+    colLayout.$setPinned(1);
     const states = rowStates(
       createGridPlan(
         createGridLayout(100, 40),
-        createGridLayout(50, 100),
+        colLayout,
         [50, 51],
         [30, 32],
-        undefined,
         [0],
-        undefined,
-        1,
-        undefined,
         [
           { rowIndex: 0, colIndex: 30, colSpan: 3 },
           { rowIndex: 40, colIndex: 0, rowSpan: 20 },
@@ -712,10 +630,6 @@ describe("spans starting out of the ranges", () => {
         [50, 51],
         [10, 12],
         undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
         [
           { rowIndex: 80, colIndex: 0, colSpan: 3 },
           { rowIndex: 45, colIndex: 12, rowSpan: 10 },
@@ -732,16 +646,14 @@ describe("spans starting out of the ranges", () => {
   });
 
   it("should span the cells rendered for the origin of the other span", () => {
+    const rowLayout = createGridLayout(3, 40);
+    rowLayout.$setPinned(2);
     const states = rowStates(
       createGridPlan(
-        createGridLayout(3, 40),
+        rowLayout,
         createGridLayout(9, 100),
         [0, 2],
         [5, 8],
-        2,
-        undefined,
-        undefined,
-        undefined,
         undefined,
         [
           { rowIndex: 0, colIndex: 0, rowSpan: 2 },
@@ -755,16 +667,14 @@ describe("spans starting out of the ranges", () => {
   });
 
   it("should cover the header rendered at the origin of the other span by the span laid before", () => {
+    const rowLayout = createGridLayout(5, 40);
+    rowLayout.$setPinned(1);
     const states = rowStates(
       createGridPlan(
-        createGridLayout(5, 40),
+        rowLayout,
         createGridLayout(9, 100),
         [0, 4],
         [5, 8],
-        1,
-        undefined,
-        undefined,
-        undefined,
         undefined,
         [
           { rowIndex: 0, colIndex: 0, colSpan: 9 },
@@ -778,16 +688,14 @@ describe("spans starting out of the ranges", () => {
   });
 
   it("should not render a span over the body only at the origin of the other span", () => {
+    const rowLayout = createGridLayout(5, 40);
+    rowLayout.$setPinned(1);
     const states = rowStates(
       createGridPlan(
-        createGridLayout(5, 40),
+        rowLayout,
         createGridLayout(9, 100),
         [0, 4],
         [5, 8],
-        1,
-        undefined,
-        undefined,
-        undefined,
         undefined,
         [
           { rowIndex: 2, colIndex: 3, colSpan: 3 },
@@ -806,10 +714,6 @@ describe("spans starting out of the ranges", () => {
         [0, 5],
         [0, 4],
         undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
         [{ rowIndex: 98, colIndex: 0, rowSpan: 5 }],
       ),
     );
@@ -818,6 +722,7 @@ describe("spans starting out of the ranges", () => {
 });
 
 describe("sections", () => {
+  // The layouts are shared between the cases, so each of them sets the pinned tracks.
   const rows = createGridLayout(30, 40);
   const cols = createGridLayout(10, 100);
   const groupOf = (plan: GridPlan, key: number) => {
@@ -826,7 +731,9 @@ describe("sections", () => {
   };
 
   it("should group the rows of the sections and stick their headers under the pinned rows", () => {
-    const plan = createGridPlan(rows, cols, [6, 8], [0, 2], 1, [5, 15]);
+    rows.$setPinned(1);
+    cols.$setPinned();
+    const plan = createGridPlan(rows, cols, [6, 8], [0, 2], [5, 15]);
     const states = rowStates(plan);
     expect([...states.keys()]).toEqual([0, 5, 6, 7, 8]);
     expect(plan.$groups.map((g) => ("$rows" in g ? g.$key : g.$row))).toEqual([
@@ -849,16 +756,18 @@ describe("sections", () => {
   });
 
   it("should make the cell of a section header in the row header column the row header", () => {
-    const states = rowStates(
-      createGridPlan(rows, cols, [6, 8], [0, 2], 1, [5], undefined, 2),
-    );
+    rows.$setPinned(1);
+    cols.$setPinned(2);
+    const states = rowStates(createGridPlan(rows, cols, [6, 8], [0, 2], [5]));
     expect(cell(states, 5, 0).$role).toBe("cell");
     expect(cell(states, 5, 1).$role).toBe("rowheader");
     expect(cell(states, 6, 1).$role).toBe("rowheader");
   });
 
   it("should keep the rows before the first section out of the groups", () => {
-    const plan = createGridPlan(rows, cols, [3, 6], [0, 2], undefined, [5]);
+    rows.$setPinned();
+    cols.$setPinned();
+    const plan = createGridPlan(rows, cols, [3, 6], [0, 2], [5]);
     expect(plan.$groups.map((g) => ("$rows" in g ? g.$key : g.$row))).toEqual([
       3, 4, -8,
     ]);
@@ -866,20 +775,12 @@ describe("sections", () => {
   });
 
   it("should render the section header of a kept cell with its first cell", () => {
+    rows.$setPinned();
+    cols.$setPinned();
     const states = rowStates(
-      createGridPlan(
-        rows,
-        cols,
-        [1, 2],
-        [5, 8],
-        undefined,
-        [15],
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        [{ rowIndex: 20, colIndex: 6 }],
-      ),
+      createGridPlan(rows, cols, [1, 2], [5, 8], [15], undefined, [
+        { rowIndex: 20, colIndex: 6 },
+      ]),
     );
     expect(renderedCells(states)).toEqual([
       "1/5",
@@ -901,15 +802,9 @@ describe("sections", () => {
   });
 
   it("should end the sections at the rows pinned to the end", () => {
-    const plan = createGridPlan(
-      rows,
-      cols,
-      [26, 28],
-      [0, 2],
-      undefined,
-      [25],
-      1,
-    );
+    rows.$setPinned(undefined, 1);
+    cols.$setPinned();
+    const plan = createGridPlan(rows, cols, [26, 28], [0, 2], [25]);
     expect(groupOf(plan, -28)!.$style["gridRow"]).toBe("l25/l29");
     expect(groupOf(plan, -28)!.$rows.map((r) => r.$row)).toEqual([
       25, 26, 27, 28,
@@ -917,17 +812,15 @@ describe("sections", () => {
   });
 
   it("should not render the last section header for the cells pinned to the end", () => {
+    rows.$setPinned(undefined, 1);
+    cols.$setPinned();
     const states = rowStates(
       createGridPlan(
         rows,
         cols,
         [1, 2],
         [0, 2],
-        undefined,
         [15],
-        1,
-        undefined,
-        undefined,
         [{ rowIndex: 29, colIndex: 0, colSpan: 2 }],
         [{ rowIndex: 29, colIndex: 5 }],
       ),
@@ -936,9 +829,11 @@ describe("sections", () => {
   });
 
   it("should replace the header row when it starts sticking", () => {
+    rows.$setPinned();
+    cols.$setPinned();
     const plain = rowStates(createGridPlan(rows, cols, [4, 6], [0, 2]));
     const sectioned = rowStates(
-      createGridPlan(rows, cols, [4, 6], [0, 2], undefined, [5]),
+      createGridPlan(rows, cols, [4, 6], [0, 2], [5]),
     );
     expect(sectioned.get(4)).toBe(plain.get(4));
     expect(sectioned.get(5)).not.toBe(plain.get(5));
@@ -946,15 +841,9 @@ describe("sections", () => {
   });
 
   it("should take the section rows in the body in order", () => {
-    const plan = createGridPlan(
-      rows,
-      cols,
-      [0, 29],
-      [0, 2],
-      1,
-      [25, 5, 0, 29],
-      1,
-    );
+    rows.$setPinned(1, 1);
+    cols.$setPinned();
+    const plan = createGridPlan(rows, cols, [0, 29], [0, 2], [25, 5, 0, 29]);
     expect(plan.$groups.map((g) => ("$rows" in g ? g.$key : g.$row))).toEqual([
       -1, 1, 2, 3, 4, -8, -28, -2,
     ]);
@@ -963,15 +852,14 @@ describe("sections", () => {
   });
 
   it("should make the consecutive section rows the sections of their own", () => {
+    const colLayout = createGridLayout(3, 100);
+    colLayout.$setPinned(1);
     const plan = createGridPlan(
       createGridLayout(100, 40),
-      createGridLayout(3, 100),
+      colLayout,
       [50, 51],
       [1, 2],
-      undefined,
       [0, 1, 1],
-      undefined,
-      1,
     );
     const states = rowStates(plan);
     // the header of the section at 0 is not rendered for the rows of the section at 1
@@ -991,11 +879,7 @@ describe("sections", () => {
       createGridLayout(3, 100),
       [55, 56],
       [0, 2],
-      undefined,
       sections,
-      undefined,
-      undefined,
-      undefined,
       undefined,
       [{ rowIndex: 500, colIndex: 0 }],
     );
