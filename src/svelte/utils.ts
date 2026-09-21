@@ -18,9 +18,6 @@ export const isSameRange = (prev: ItemsRange, next: ItemsRange): boolean => {
 
 export const defaultGetKey = (_data: unknown, i: number) => "_" + i;
 
-/**
- * @internal
- */
 export type ItemAttrs = {
   [key: string]: any;
   style?: Record<string, string | undefined>;
