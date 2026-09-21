@@ -6,4 +6,4 @@
 
 > **GridTrackSize** = `number` \| `"auto"`
 
-Defined in: [src/core/layouts/grid.ts:6](https://github.com/inokawa/virtua/blob/9f196281641a5d909a4821151d7b15da70842c65/src/core/layouts/grid.ts#L6)
+Defined in: [src/core/layouts/grid.ts:7](https://github.com/inokawa/virtua/blob/6e1d827fca052a14dd7ad0e8ee61a0863827345f/src/core/layouts/grid.ts#L7)
