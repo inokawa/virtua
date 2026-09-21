@@ -6,7 +6,7 @@
 
 > **GridAxis**\<`T`\> = `number` \| readonly `T`[]
 
-Defined in: [src/core/layouts/grid.ts:15](https://github.com/inokawa/virtua/blob/6e1d827fca052a14dd7ad0e8ee61a0863827345f/src/core/layouts/grid.ts#L15)
+Defined in: [src/core/layouts/grid.ts:15](https://github.com/inokawa/virtua/blob/0bbc9b0af5fcd1d7a0f9d2733e888d4f63efa9f9/src/core/layouts/grid.ts#L15)
 
 The rows or the columns of the grid.
 
