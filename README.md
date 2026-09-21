@@ -4,7 +4,7 @@
 
 > A zero-config, fast and small virtual list and grid component for [React](https://github.com/facebook/react), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/), [Svelte](https://svelte.dev/) and [Angular](https://angular.dev/).
 
-![example](./example.gif)
+![list example](./example.gif) ![grid example](./example2.gif)
 
 If you want to check the difference with the alternatives right away, [see comparison section](#comparison).
 
