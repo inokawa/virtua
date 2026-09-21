@@ -80,29 +80,15 @@ const rowStatesCache = /*#__PURE__*/ new WeakMap<
   ReadonlyMap<number, GridRowState>
 >();
 
-const hasTrackIn = (
-  extras: readonly number[],
+const hasVisibleTrack = (
   from: number,
   to: number,
   pinnedStart: number,
   start: number,
   end: number,
   trailStart: number,
-): boolean => {
-  if (
-    from < pinnedStart ||
-    max(from, start) < min(to, end + 1) ||
-    trailStart < to
-  ) {
-    return true;
-  }
-  for (const i of extras) {
-    if (i >= from && i < to) {
-      return true;
-    }
-  }
-  return false;
-};
+): boolean =>
+  from < pinnedStart || max(from, start) < min(to, end + 1) || trailStart < to;
 
 /**
  * The sections start at the section rows between the pinned rows.
@@ -145,18 +131,6 @@ export const getSectionIndex = (
     }
   }
   return lo - 1;
-};
-
-const addSectionHeader = (
-  extras: number[],
-  sectionStarts: readonly number[],
-  rowIndex: number,
-  trailStart: number,
-): void => {
-  const section = getSectionIndex(sectionStarts, rowIndex, trailStart);
-  if (section >= 0) {
-    extras.push(sectionStarts[section]!);
-  }
 };
 
 const addExtras = (
@@ -328,9 +302,6 @@ export const createGridPlan = (
   // The header column next to the body labels the rows
   const rowHeaderCol = max(colPinnedStart - 1, 0);
 
-  // The headers label the cells, so they are rendered even out of the ranges.
-  // https://www.w3.org/TR/wai-aria-1.2/#columnheader
-  // https://www.w3.org/TR/wai-aria-1.2/#rowheader
   const extraRows: number[] = [];
   const extraCols: number[] = [];
   // The cells rendered even out of the ranges, which render their rows, the headers of their sections and their columns. A kept cell is a span over itself.
@@ -341,74 +312,70 @@ export const createGridPlan = (
       extraCells.push(cell);
     }
   }
+  const keptLength = extraCells.length;
   const sectionLength = sectionStarts.length;
-  if (sectionLength) {
-    addSectionHeader(extraRows, sectionStarts, rowRangeStart, rowTrailStart);
-    extraCols.push(rowHeaderCol);
+  // The header of the section of the first row in the range may be sticking under the pinned rows, so it's taken as seen.
+  const firstSection = getSectionIndex(
+    sectionStarts,
+    rowRangeStart,
+    rowTrailStart,
+  );
+  const firstSectionStart =
+    firstSection < 0 ? -1 : sectionStarts[firstSection]!;
+  if (firstSectionStart >= 0) {
+    extraRows.push(firstSectionStart);
   }
-  // The spans over the rendered tracks are laid. The spans only over the headers wait for the headers rendered for the origins of the laid spans, until no span is laid.
-  let waiting = spans;
-  let l = 0;
-  do {
-    for (; l < extraCells.length; l++) {
-      const { rowIndex, colIndex } = extraCells[l]!;
-      extraRows.push(rowIndex);
-      addSectionHeader(extraRows, sectionStarts, rowIndex, rowTrailStart);
-      extraCols.push(colIndex);
-    }
-    const rest: Readonly<GridSpan>[] = [];
-    for (const span of waiting) {
-      const row = span.rowIndex;
-      const col = span.colIndex;
-      const rowTo = getSpanRowEnd(span, totalRowCount);
-      const colTo = getSpanColEnd(span, totalColCount);
-      // A span may be left out of the grid after the rows or the columns are removed.
-      if (
-        row < totalRowCount &&
-        col < totalColCount &&
-        (rowTo - row > 1 || colTo - col > 1)
-      ) {
-        const hasRenderedRow = hasTrackIn(
-          extraRows,
+  // A kept cell under a span is rendered as the span, so the span is laid although it may not be seen.
+  for (const span of spans) {
+    const row = span.rowIndex;
+    const col = span.colIndex;
+    const rowTo = getSpanRowEnd(span, totalRowCount);
+    const colTo = getSpanColEnd(span, totalColCount);
+    // A span may be left out of the grid after the rows or the columns are removed.
+    if (
+      row < totalRowCount &&
+      col < totalColCount &&
+      (rowTo - row > 1 || colTo - col > 1)
+    ) {
+      let isLaid =
+        (hasVisibleTrack(
           row,
           rowTo,
           rowPinnedStart,
           rowRangeStart,
           rowRangeEnd,
           rowTrailStart,
+        ) ||
+          (firstSectionStart >= row && firstSectionStart < rowTo)) &&
+        hasVisibleTrack(
+          col,
+          colTo,
+          colPinnedStart,
+          colRangeStart,
+          colRangeEnd,
+          colTrailStart,
         );
-        if (
-          hasRenderedRow &&
-          hasTrackIn(
-            extraCols,
-            col,
-            colTo,
-            colPinnedStart,
-            colRangeStart,
-            colRangeEnd,
-            colTrailStart,
-          )
-        ) {
-          extraCells.push(span);
-        } else if (hasRenderedRow) {
-          const section = getSectionIndex(
-            sectionStarts,
-            rowTo - 1,
-            rowTrailStart,
-          );
-          if (
-            row < rowPinnedStart ||
-            (section >= 0 && sectionStarts[section]! >= row)
-          ) {
-            rest.push(span);
-          }
-        } else if (col < colPinnedStart) {
-          rest.push(span);
-        }
+      for (let k = 0; !isLaid && k < keptLength; k++) {
+        const { rowIndex, colIndex } = extraCells[k]!;
+        isLaid =
+          rowIndex >= row &&
+          rowIndex < rowTo &&
+          colIndex >= col &&
+          colIndex < colTo;
+      }
+      if (isLaid) {
+        extraCells.push(span);
       }
     }
-    waiting = rest;
-  } while (l < extraCells.length);
+  }
+  for (const { rowIndex, colIndex } of extraCells) {
+    const section = getSectionIndex(sectionStarts, rowIndex, rowTrailStart);
+    extraRows.push(rowIndex);
+    if (section >= 0) {
+      extraRows.push(sectionStarts[section]!);
+    }
+    extraCols.push(colIndex);
+  }
   // The tracks are all known now.
   sort(extraRows);
   sort(extraCols);
@@ -475,8 +442,6 @@ export const createGridPlan = (
   for (const rowIndex of rows) {
     const isRowPinnedStart = rowIndex < rowPinnedStart;
     const isRowPinnedEnd = rowIndex >= rowTrailStart;
-    const isRowInRangeOrPinnedToEnd =
-      isRowPinnedEnd || (rowIndex >= rowRangeStart && rowIndex <= rowRangeEnd);
     const section = getSectionIndex(sectionStarts, rowIndex, rowTrailStart);
     // The first row of the group of the row, or -1
     const groupStart = isRowPinnedStart
@@ -516,6 +481,11 @@ export const createGridPlan = (
       groupRows = groups;
     }
     const isSectionHeaderRow = section >= 0 && rowIndex === groupStart;
+    const isRowVisible =
+      isRowPinnedStart ||
+      isRowPinnedEnd ||
+      rowIndex === firstSectionStart ||
+      (rowIndex >= rowRangeStart && rowIndex <= rowRangeEnd);
     const rowTop = isSectionHeaderRow ? sectionHeaderTop : NULL;
     const rowKey = rowIndex * totalColCount;
     const prevRow = prev && prev.get(rowIndex);
@@ -530,17 +500,16 @@ export const createGridPlan = (
       const colIndex = cols[i]!;
       const isColPinnedStart = colIndex < colPinnedStart;
       const isColPinnedEnd = colIndex >= colTrailStart;
-      const isColInRangeOrPinnedToEnd =
+      const isColVisible =
+        isColPinnedStart ||
         isColPinnedEnd ||
         (colIndex >= colRangeStart && colIndex <= colRangeEnd);
       const span = spanCells.get(rowKey + colIndex);
+      // The headers aren't rendered either unless they're seen or kept.
       if (
         span
           ? span.rowIndex === rowIndex && span.colIndex === colIndex
-          : (isRowInRangeOrPinnedToEnd && isColInRangeOrPinnedToEnd) ||
-            isRowPinnedStart ||
-            isSectionHeaderRow ||
-            isColPinnedStart
+          : isRowVisible && isColVisible
       ) {
         const rowTo = span ? getSpanRowEnd(span, totalRowCount) : rowIndex + 1;
         const colTo = span ? getSpanColEnd(span, totalColCount) : colIndex + 1;
@@ -572,6 +541,8 @@ export const createGridPlan = (
           measureColIndex = colIndex;
           measuredCols[i] = true;
         }
+        // https://www.w3.org/TR/wai-aria-1.2/#columnheader
+        // https://www.w3.org/TR/wai-aria-1.2/#rowheader
         const role: GridCellRole = isRowPinnedStart
           ? "columnheader"
           : colIndex === rowHeaderCol &&

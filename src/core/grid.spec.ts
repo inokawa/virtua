@@ -351,11 +351,11 @@ describe("keepMounted", () => {
 });
 
 describe("headers", () => {
-  it("should render the headers of every rendered cell", () => {
+  it("should render a kept cell out of the ranges without its headers and the pinned cells", () => {
     const rowLayout = createGridLayout(100, 40);
     rowLayout.$setPinned(1);
     const colLayout = createGridLayout(50, 100);
-    colLayout.$setPinned(1);
+    colLayout.$setPinned(2);
     const states = rowStates(
       createGridPlan(
         rowLayout,
@@ -369,16 +369,17 @@ describe("headers", () => {
     );
     expect(renderedCells(states)).toEqual([
       "0/0",
+      "0/1",
       "0/30",
       "0/31",
-      "0/40",
       "10/0",
+      "10/1",
       "10/30",
       "10/31",
       "11/0",
+      "11/1",
       "11/30",
       "11/31",
-      "80/0",
       "80/40",
     ]);
   });
@@ -645,7 +646,7 @@ describe("spans starting out of the ranges", () => {
     expect(renderedCells(states)).not.toContain("47/12");
   });
 
-  it("should span the cells rendered for the origin of the other span", () => {
+  it("should not render the headers over a column rendered only for the origin of a span", () => {
     const rowLayout = createGridLayout(3, 40);
     rowLayout.$setPinned(2);
     const states = rowStates(
@@ -661,8 +662,8 @@ describe("spans starting out of the ranges", () => {
         ],
       ),
     );
-    expect(cell(states, 0, 0).$rowSpan).toBe(2);
     expect(cell(states, 2, 0).$colSpan).toBe(9);
+    expect(renderedCells(states)).not.toContain("0/0");
     expect(renderedCells(states)).not.toContain("1/0");
   });
 
@@ -774,14 +775,13 @@ describe("sections", () => {
     expect(groupOf(plan, -8)!.$style["gridRow"]).toBe("l5/l30");
   });
 
-  it("should render the section header of a kept cell with its first cell", () => {
+  it("should render the section of a kept cell without its header", () => {
     rows.$setPinned();
     cols.$setPinned();
-    const states = rowStates(
-      createGridPlan(rows, cols, [1, 2], [5, 8], [15], undefined, [
-        { rowIndex: 20, colIndex: 6 },
-      ]),
-    );
+    const plan = createGridPlan(rows, cols, [1, 2], [5, 8], [15], undefined, [
+      { rowIndex: 20, colIndex: 6 },
+    ]);
+    const states = rowStates(plan);
     expect(renderedCells(states)).toEqual([
       "1/5",
       "1/6",
@@ -791,14 +791,33 @@ describe("sections", () => {
       "2/6",
       "2/7",
       "2/8",
-      "15/0",
-      "15/5",
-      "15/6",
-      "15/7",
-      "15/8",
       "20/6",
     ]);
-    expect(cell(states, 15, 0).$role).toBe("rowheader");
+    // the box of the section starts at its header, which has no cell
+    expect(groupOf(plan, -18)!.$style["gridRow"]).toBe("l15/l30");
+    expect(groupOf(plan, -18)!.$rows.map((r) => r.$row)).toEqual([20]);
+    expect(plan.$rowTemplate).toContain("[l15]");
+  });
+
+  it("should render the columns in the range in the section header sticking over them", () => {
+    rows.$setPinned(1);
+    cols.$setPinned();
+    const states = rowStates(
+      createGridPlan(rows, cols, [7, 8], [5, 6], [5], undefined, [
+        { rowIndex: 20, colIndex: 8 },
+      ]),
+    );
+    expect(renderedCells(states)).toEqual([
+      "0/5",
+      "0/6",
+      "5/5",
+      "5/6",
+      "7/5",
+      "7/6",
+      "8/5",
+      "8/6",
+      "20/8",
+    ]);
   });
 
   it("should end the sections at the rows pinned to the end", () => {
