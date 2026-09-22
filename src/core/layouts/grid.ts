@@ -120,7 +120,7 @@ export const createGridLayout = (
       findIndex(startOffset),
       findIndex(endOffset),
     ];
-    const layout: GridLayout<number | null> = {
+    return {
       $getRange: (startOffset, endOffset) =>
         pinRange(findRange, getItemOffset, length, startOffset, endOffset),
       $findIndex: findIndex,
@@ -142,7 +142,7 @@ export const createGridLayout = (
       $getTrailStart: () => getTrailStart(length),
       $getSizes: (_axis, nextSize) =>
         typeof nextSize === "number" ? nextSize : NULL,
-      $setAxis: (nextSize, scrollOffset) => {
+      $setAxis: (nextSize: number | null, scrollOffset) => {
         if (nextSize == NULL || nextSize === itemSize) {
           return;
         }
@@ -151,7 +151,6 @@ export const createGridLayout = (
         return jump;
       },
     };
-    return layout;
   }
   const isAuto = size === "auto";
   let currentSizes: GridAxisSizes | null = NULL;
@@ -166,7 +165,7 @@ export const createGridLayout = (
   ]);
 
   const isMeasurable = (index: number): boolean => isAuto || !!autos[index];
-  const layout: GridLayout<GridAxisSizes | null> = {
+  return {
     $getRange: (startOffset, endOffset) =>
       pinRange(
         inner.$getRange,
@@ -202,7 +201,7 @@ export const createGridLayout = (
                 ]
               : NULL,
           ),
-    $setAxis: (nextSizes, scrollOffset) => {
+    $setAxis: (nextSizes: GridAxisSizes | null, scrollOffset) => {
       if (!nextSizes) {
         return;
       }
@@ -236,5 +235,4 @@ export const createGridLayout = (
       return inner.$getItemOffset(anchorIndex) - prevOffset;
     },
   };
-  return layout;
 };
