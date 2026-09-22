@@ -3,7 +3,7 @@
     "name": "Total",
     "path": "lib/index.js",
     "import": "*",
-    "limit": "8.2 kB"
+    "limit": "8.3 kB"
   },
   {
     "name": "VList",
@@ -27,7 +27,7 @@
     "name": "VGrid",
     "path": "lib/index.js",
     "import": "{ VGrid }",
-    "limit": "6.55 kB"
+    "limit": "6.3 kB"
   },
   {
     "name": "vue VList",
@@ -51,7 +51,7 @@
     "name": "vue VGrid",
     "path": "lib/vue/index.js",
     "import": "{ VGrid }",
-    "limit": "6.55 kB"
+    "limit": "6.3 kB"
   },
   {
     "name": "solid VList",
@@ -75,12 +75,12 @@
     "name": "solid VGrid",
     "path": "lib/solid/index.js",
     "import": "{ VGrid }",
-    "limit": "7 kB"
+    "limit": "6.75 kB"
   },
   {
     "name": "angular",
     "path": "lib/angular/index.js",
     "import": "*",
-    "limit": "10.6 kB"
+    "limit": "10.65 kB"
   }
 ]

@@ -47,11 +47,11 @@ export interface GridSpan extends GridCell {
 /**
  * @internal
  */
-export const updateGridAxis = <S extends GridAxisSizes | number | null>(
+export const updateGridAxis = (
   store: VirtualStore,
-  layout: GridLayout<S>,
+  layout: GridLayout,
   axis: GridAxis<unknown>,
-  sizes: S,
+  sizes: GridAxisSizes | number | null,
   header?: number,
   footer?: number,
 ) => {
