@@ -15,7 +15,7 @@ This project is a challenge to rethink virtualization. The goals are...
 - **Zero-config virtualization:** This library is designed to give the best performance without configuration. It also handles common hard things in the real world (dynamic size measurement, scroll position adjustment while reverse scrolling and imperative scrolling, iOS support, etc).
 - **Fast:** Natural virtual scrolling needs optimization in many aspects (eliminate frame drops by reducing CPU usage and GC, reduce [synchronous layout recalculation](https://gist.github.com/paulirish/5d52fb081b3570c81e3a), reduce visual jumps on repaint, optimize with CSS, optimize for JIT, optimize for frameworks, etc). We are trying to combine the best of them.
 - **Small:** Its bundle size should be small as much as possible to be friendly with modern web development. Currently components start from ~3kB gzipped and are tree-shakeable.
-- **Flexible:** Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, RTL, mobile, infinite scrolling, scroll restoration, DnD, keyboard navigation, sticky, placeholder and more. See [live demo](#demo).
+- **Flexible:** Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, table, RTL, mobile, infinite scrolling, scroll restoration, DnD, keyboard navigation, sticky and more. See [live demo](#demo).
 - **Framework agnostic:** [React](https://react.dev/), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/), [Svelte](https://svelte.dev/) and [Angular](https://angular.dev/) are supported. We could support other frameworks in the future.
 
 ## Demo
