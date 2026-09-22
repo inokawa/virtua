@@ -6,182 +6,6 @@ type Item = { s?: number | "auto" };
 const items = (...sizes: (number | "auto" | undefined)[]): Item[] =>
   sizes.map((s) => (s === undefined ? {} : { s }));
 
-describe("sizes", () => {
-  it("should seed the sizes the items hold at the key", () => {
-    const layout = createGridLayout(items(100, 200, "auto"), "s");
-    layout.$setAxis(layout.$getSizes(items(100, 200, "auto"), "s"), 0);
-    expect(layout.$getLength()).toBe(3);
-    expect(layout.$getItemSize(0)).toBe(100);
-    expect(layout.$getItemSize(1)).toBe(200);
-    // an unmeasured "auto" item falls back to the default size
-    expect(layout.$getItemSize(2)).toBe(40);
-    expect(layout.$getTotalSize()).toBe(100 + 200 + 40);
-  });
-});
-
-describe("isSizeEqual", () => {
-  it("should compare the sizes of the items", () => {
-    const layout = createGridLayout(items(100, "auto", 200), "s");
-    layout.$setAxis(layout.$getSizes(items(100, "auto", 200), "s"), 0);
-    expect(layout.$isSizeEqual(0, 100)).toBe(true);
-    expect(layout.$isSizeEqual(0, 50)).toBe(false);
-    layout.$setItemSize(1, 123);
-    expect(layout.$isSizeEqual(1, 123)).toBe(true);
-    expect(layout.$getItemSize(1)).toBe(123);
-  });
-});
-
-describe("setAxis with keys", () => {
-  it("should update the changed items", () => {
-    const layout = createGridLayout(items(100, 200), "s");
-    layout.$setAxis(layout.$getSizes(items(100, 200), "s"), 0);
-    layout.$getTotalSize();
-    layout.$setAxis(layout.$getSizes(items(100, 300), "s"), 0);
-    expect(layout.$getItemSize(1)).toBe(300);
-    expect(layout.$getTotalSize()).toBe(100 + 300);
-  });
-
-  it("should return the jump which keeps the visible position", () => {
-    const layout = createGridLayout(items(100, 200, 300), "s");
-    layout.$setAxis(layout.$getSizes(items(100, 200, 300), "s"), 0);
-    layout.$getTotalSize();
-    // scrolled below the changed items: the anchor item moves by their diff
-    expect(
-      layout.$setAxis(layout.$getSizes(items(150, 250, 300), "s"), 550),
-    ).toBe(50 + 50);
-    // scrolled to the top: nothing above the anchor moves
-    expect(
-      layout.$setAxis(layout.$getSizes(items(100, 200, 300), "s"), 0),
-    ).toBe(0);
-  });
-
-  it("should revert an item changed to auto into measurement", () => {
-    const layout = createGridLayout(items(100, 200), "s");
-    layout.$setAxis(layout.$getSizes(items(100, 200), "s"), 0);
-    layout.$setAxis(layout.$getSizes(items(100, "auto"), "s"), 0);
-    expect(layout.$getItemSize(1)).toBe(40);
-    expect(layout.$isMeasurable(1)).toBe(true);
-  });
-
-  it("should keep the measured size of an item which stays auto", () => {
-    const layout = createGridLayout(items("auto", 100), "s");
-    layout.$setAxis(layout.$getSizes(items("auto", 100), "s"), 0);
-    layout.$setItemSize(0, 123);
-    layout.$setAxis(layout.$getSizes(items("auto", 200), "s"), 0);
-    expect(layout.$getItemSize(0)).toBe(123);
-  });
-
-  it("should overwrite the measured size of an item changed to a number", () => {
-    const layout = createGridLayout(items("auto", 100), "s");
-    layout.$setAxis(layout.$getSizes(items("auto", 100), "s"), 0);
-    layout.$setItemSize(0, 123);
-    layout.$setAxis(layout.$getSizes(items(50, 100), "s"), 0);
-    expect(layout.$getItemSize(0)).toBe(50);
-    expect(layout.$isMeasurable(0)).toBe(false);
-  });
-
-  it("should update an item replaced in a copy of the axis", () => {
-    const list = items(100, 200, 300);
-    const layout = createGridLayout(list, "s");
-    layout.$setAxis(layout.$getSizes(list, "s"), 0);
-    layout.$getTotalSize();
-    const next = list.slice();
-    next[1] = { s: 250 };
-    expect(layout.$setAxis(layout.$getSizes(next, "s"), 0)).toBe(0);
-    expect(layout.$getItemSize(1)).toBe(250);
-    expect(layout.$getTotalSize()).toBe(100 + 250 + 300);
-    // a copy without a change needs no relayout
-    expect(layout.$setAxis(layout.$getSizes(next.slice(), "s"), 0)).toBe(
-      undefined,
-    );
-  });
-
-  it("should read the items mutated in place when the sizes are made again", () => {
-    const list = items(100, "auto", 300);
-    const layout = createGridLayout(list, "s");
-    layout.$setAxis(layout.$getSizes(list, "s"), 0);
-    layout.$setItemSize(1, 123);
-    list[0]!.s = 150;
-    list[1] = { s: "auto" };
-    list[2]!.s = "auto";
-    expect(layout.$setAxis(layout.$getSizes(list, "s"), 0)).toBe(0);
-    expect(layout.$getItemSize(0)).toBe(150);
-    // an item which stays auto keeps its measured size
-    expect(layout.$getItemSize(1)).toBe(123);
-    expect(layout.$getItemSize(2)).toBe(40);
-    expect(layout.$isMeasurable(0)).toBe(false);
-    expect(layout.$isMeasurable(2)).toBe(true);
-  });
-
-  it("should switch the key", () => {
-    const layout = createGridLayout([{ a: 100, b: 200 }], "a");
-    layout.$setAxis(layout.$getSizes([{ a: 100, b: 200 }], "a"), 0);
-    layout.$getTotalSize();
-    expect(
-      layout.$setAxis(layout.$getSizes([{ a: 100, b: 200 }], "b"), 0),
-    ).toBe(0);
-    expect(layout.$getItemSize(0)).toBe(200);
-  });
-});
-
-describe("setAxis with a uniform size", () => {
-  it("should resize every item on a uniform size change", () => {
-    const layout = createGridLayout(10, 40);
-    layout.$getTotalSize();
-    // 200 / 40 = 5 items are above the anchor
-    expect(layout.$setAxis(layout.$getSizes(10, 50), 200)).toBe(10 * 5);
-    expect(layout.$getItemSize(0)).toBe(50);
-    expect(layout.$getTotalSize()).toBe(500);
-  });
-});
-
-describe("setAxis change detection", () => {
-  it("should return undefined when nothing changed", () => {
-    const list = items(100, 200);
-    const layout = createGridLayout(list, "s");
-    layout.$setAxis(layout.$getSizes(list, "s"), 0);
-    expect(layout.$setAxis(layout.$getSizes(list, "s"), 0)).toBe(undefined);
-    expect(layout.$setAxis(layout.$getSizes(items(100, 200), "s"), 0)).toBe(
-      undefined,
-    );
-    expect(layout.$setAxis(layout.$getSizes(items(100, 300), "s"), 0)).toBe(0);
-  });
-
-  it("should ignore the items when the size is uniform", () => {
-    const layout = createGridLayout(2, 40);
-    expect(layout.$setAxis(layout.$getSizes(2, 40), 0)).toBe(undefined);
-    expect(layout.$getItemSize(0)).toBe(40);
-  });
-
-  it("should ignore a size of another form", () => {
-    const fixed = createGridLayout(10, 40);
-    expect(fixed.$setAxis(fixed.$getSizes(10, "auto"), 0)).toBe(undefined);
-    expect(fixed.$getItemSize(0)).toBe(40);
-
-    const keyed = createGridLayout(items(100, 200), "s");
-    keyed.$setAxis(keyed.$getSizes(items(100, 200), "s"), 0);
-    expect(keyed.$setAxis(keyed.$getSizes(items(100, 200), "auto"), 0)).toBe(
-      undefined,
-    );
-    expect(keyed.$setAxis(keyed.$getSizes(items(100, 200), 50), 0)).toBe(
-      undefined,
-    );
-    expect(keyed.$getItemSize(1)).toBe(200);
-
-    const auto = createGridLayout(10, "auto");
-    auto.$setItemSize(0, 123);
-    expect(auto.$setAxis(auto.$getSizes(items(100), "s"), 0)).toBe(undefined);
-    expect(auto.$getItemSize(0)).toBe(123);
-  });
-
-  it("should ignore the axis when every size is auto", () => {
-    const layout = createGridLayout(10, "auto");
-    layout.$setItemSize(0, 123);
-    expect(layout.$setAxis(layout.$getSizes(10, "auto"), 0)).toBe(undefined);
-    expect(layout.$getItemSize(0)).toBe(123);
-  });
-});
-
 describe("setLength", () => {
   it("should grow with default sizes until the axis is set", () => {
     const layout = createGridLayout(items(100, 200), "s");
@@ -202,16 +26,54 @@ describe("setLength", () => {
     expect(layout.$setAxis(layout.$getSizes(5, 100), 0)).toBe(undefined);
     expect(layout.$getTotalSize()).toBe(500);
   });
-});
 
-describe("auto mode", () => {
-  it("should report every item as measurable", () => {
-    const layout = createGridLayout(10, "auto");
-    expect(layout.$isMeasurable(0)).toBe(true);
-    layout.$setItemSize(0, 123);
-    expect(layout.$getItemSize(0)).toBe(123);
+  it("should measure the auto items added before the first measurement", () => {
+    const layout = createGridLayout(2, "auto");
+    layout.$getTotalSize();
+    layout.$setLength(4);
+    layout.$setItemSize(3, 100);
+    expect(layout.$getItemSize(3)).toBe(100);
+    expect(layout.$getItemOffset(3)).toBe(40 * 3);
+    expect(layout.$getTotalSize()).toBe(40 * 3 + 100);
   });
 
+  it("should measure the auto items added after every item was removed", () => {
+    const layout = createGridLayout(2, "auto");
+    layout.$setItemSize(1, 100);
+    layout.$getTotalSize();
+    layout.$setLength(0);
+    expect(layout.$getTotalSize()).toBe(0);
+    layout.$setLength(3);
+    expect(layout.$getTotalSize()).toBe(40 * 3);
+    layout.$setItemSize(1, 100);
+    expect(layout.$getItemOffset(2)).toBe(40 + 100);
+    expect(layout.$getTotalSize()).toBe(40 * 2 + 100);
+  });
+
+  it("should forget the auto items removed in place", () => {
+    const list = items(100, "auto");
+    const layout = createGridLayout(list, "s");
+    layout.$setAxis(layout.$getSizes(list, "s"), 0);
+    list.pop();
+    layout.$setLength(1);
+    layout.$setAxis(layout.$getSizes(list, "s"), 0);
+    list.push({ s: 50 });
+    layout.$setLength(2);
+    layout.$setAxis(layout.$getSizes(list, "s"), 0);
+    expect(layout.$isMeasurable(1)).toBe(false);
+  });
+});
+
+describe("setItemSize", () => {
+  it("should ignore the measurements of the items with sizes", () => {
+    const layout = createGridLayout(items(100, "auto"), "s");
+    layout.$setAxis(layout.$getSizes(items(100, "auto"), "s"), 0);
+    layout.$setItemSize(0, 55);
+    expect(layout.$getItemSize(0)).toBe(100);
+  });
+});
+
+describe("estimateDefaultSize", () => {
   it("should not estimate the default size unless the whole axis is auto", () => {
     expect(createGridLayout(10, "auto").$estimateDefaultSize).toBeTruthy();
     expect(createGridLayout(10, 40).$estimateDefaultSize).toBeUndefined();
@@ -221,12 +83,335 @@ describe("auto mode", () => {
   });
 });
 
+describe("isSizeEqual", () => {
+  it("should compare the sizes of the items", () => {
+    const layout = createGridLayout(items(100, "auto", 200), "s");
+    layout.$setAxis(layout.$getSizes(items(100, "auto", 200), "s"), 0);
+    expect(layout.$isSizeEqual(0, 100)).toBe(true);
+    expect(layout.$isSizeEqual(0, 50)).toBe(false);
+    layout.$setItemSize(1, 123);
+    expect(layout.$isSizeEqual(1, 123)).toBe(true);
+    expect(layout.$getItemSize(1)).toBe(123);
+  });
+});
+
+describe("setAxis", () => {
+  describe("with keys", () => {
+    it("should seed the sizes the items hold at the key", () => {
+      const layout = createGridLayout(items(100, 200, "auto"), "s");
+      layout.$setAxis(layout.$getSizes(items(100, 200, "auto"), "s"), 0);
+      expect(layout.$getLength()).toBe(3);
+      expect(layout.$getItemSize(0)).toBe(100);
+      expect(layout.$getItemSize(1)).toBe(200);
+      // an unmeasured "auto" item falls back to the default size
+      expect(layout.$getItemSize(2)).toBe(40);
+      expect(layout.$getTotalSize()).toBe(100 + 200 + 40);
+    });
+
+    it("should update the changed items", () => {
+      const layout = createGridLayout(items(100, 200), "s");
+      layout.$setAxis(layout.$getSizes(items(100, 200), "s"), 0);
+      layout.$getTotalSize();
+      layout.$setAxis(layout.$getSizes(items(100, 300), "s"), 0);
+      expect(layout.$getItemSize(1)).toBe(300);
+      expect(layout.$getTotalSize()).toBe(100 + 300);
+    });
+
+    it("should return the jump which keeps the visible position", () => {
+      const layout = createGridLayout(items(100, 200, 300), "s");
+      layout.$setAxis(layout.$getSizes(items(100, 200, 300), "s"), 0);
+      layout.$getTotalSize();
+      // scrolled below the changed items: the anchor item moves by their diff
+      expect(
+        layout.$setAxis(layout.$getSizes(items(150, 250, 300), "s"), 550),
+      ).toBe(50 + 50);
+      // scrolled to the top: nothing above the anchor moves
+      expect(
+        layout.$setAxis(layout.$getSizes(items(100, 200, 300), "s"), 0),
+      ).toBe(0);
+    });
+
+    it("should revert an item changed to auto into measurement", () => {
+      const layout = createGridLayout(items(100, 200), "s");
+      layout.$setAxis(layout.$getSizes(items(100, 200), "s"), 0);
+      layout.$setAxis(layout.$getSizes(items(100, "auto"), "s"), 0);
+      expect(layout.$getItemSize(1)).toBe(40);
+      expect(layout.$isMeasurable(1)).toBe(true);
+    });
+
+    it("should keep the measured size of an item which stays auto", () => {
+      const layout = createGridLayout(items("auto", 100), "s");
+      layout.$setAxis(layout.$getSizes(items("auto", 100), "s"), 0);
+      layout.$setItemSize(0, 123);
+      layout.$setAxis(layout.$getSizes(items("auto", 200), "s"), 0);
+      expect(layout.$getItemSize(0)).toBe(123);
+    });
+
+    it("should overwrite the measured size of an item changed to a number", () => {
+      const layout = createGridLayout(items("auto", 100), "s");
+      layout.$setAxis(layout.$getSizes(items("auto", 100), "s"), 0);
+      layout.$setItemSize(0, 123);
+      layout.$setAxis(layout.$getSizes(items(50, 100), "s"), 0);
+      expect(layout.$getItemSize(0)).toBe(50);
+      expect(layout.$isMeasurable(0)).toBe(false);
+    });
+
+    it("should update an item replaced in a copy of the axis", () => {
+      const list = items(100, 200, 300);
+      const layout = createGridLayout(list, "s");
+      layout.$setAxis(layout.$getSizes(list, "s"), 0);
+      layout.$getTotalSize();
+      const next = list.slice();
+      next[1] = { s: 250 };
+      expect(layout.$setAxis(layout.$getSizes(next, "s"), 0)).toBe(0);
+      expect(layout.$getItemSize(1)).toBe(250);
+      expect(layout.$getTotalSize()).toBe(100 + 250 + 300);
+      // a copy without a change needs no relayout
+      expect(layout.$setAxis(layout.$getSizes(next.slice(), "s"), 0)).toBe(
+        undefined,
+      );
+    });
+
+    it("should read the items mutated in place when the sizes are made again", () => {
+      const list = items(100, "auto", 300);
+      const layout = createGridLayout(list, "s");
+      layout.$setAxis(layout.$getSizes(list, "s"), 0);
+      layout.$setItemSize(1, 123);
+      list[0]!.s = 150;
+      list[1] = { s: "auto" };
+      list[2]!.s = "auto";
+      expect(layout.$setAxis(layout.$getSizes(list, "s"), 0)).toBe(0);
+      expect(layout.$getItemSize(0)).toBe(150);
+      // an item which stays auto keeps its measured size
+      expect(layout.$getItemSize(1)).toBe(123);
+      expect(layout.$getItemSize(2)).toBe(40);
+      expect(layout.$isMeasurable(0)).toBe(false);
+      expect(layout.$isMeasurable(2)).toBe(true);
+    });
+
+    it("should switch the key", () => {
+      const layout = createGridLayout([{ a: 100, b: 200 }], "a");
+      layout.$setAxis(layout.$getSizes([{ a: 100, b: 200 }], "a"), 0);
+      layout.$getTotalSize();
+      expect(
+        layout.$setAxis(layout.$getSizes([{ a: 100, b: 200 }], "b"), 0),
+      ).toBe(0);
+      expect(layout.$getItemSize(0)).toBe(200);
+    });
+  });
+
+  describe("with a uniform size", () => {
+    it("should resize every item on a uniform size change", () => {
+      const layout = createGridLayout(10, 40);
+      layout.$getTotalSize();
+      // 200 / 40 = 5 items are above the anchor
+      expect(layout.$setAxis(layout.$getSizes(10, 50), 200)).toBe(10 * 5);
+      expect(layout.$getItemSize(0)).toBe(50);
+      expect(layout.$getTotalSize()).toBe(500);
+    });
+  });
+
+  describe("change detection", () => {
+    it("should return undefined when nothing changed", () => {
+      const list = items(100, 200);
+      const layout = createGridLayout(list, "s");
+      layout.$setAxis(layout.$getSizes(list, "s"), 0);
+      expect(layout.$setAxis(layout.$getSizes(list, "s"), 0)).toBe(undefined);
+      expect(layout.$setAxis(layout.$getSizes(items(100, 200), "s"), 0)).toBe(
+        undefined,
+      );
+      expect(layout.$setAxis(layout.$getSizes(items(100, 300), "s"), 0)).toBe(
+        0,
+      );
+    });
+
+    it("should ignore the items when the size is uniform", () => {
+      const layout = createGridLayout(2, 40);
+      expect(layout.$setAxis(layout.$getSizes(2, 40), 0)).toBe(undefined);
+      expect(layout.$getItemSize(0)).toBe(40);
+    });
+
+    it("should ignore a size of another form", () => {
+      const fixed = createGridLayout(10, 40);
+      expect(fixed.$setAxis(fixed.$getSizes(10, "auto"), 0)).toBe(undefined);
+      expect(fixed.$getItemSize(0)).toBe(40);
+
+      const keyed = createGridLayout(items(100, 200), "s");
+      keyed.$setAxis(keyed.$getSizes(items(100, 200), "s"), 0);
+      expect(keyed.$setAxis(keyed.$getSizes(items(100, 200), "auto"), 0)).toBe(
+        undefined,
+      );
+      expect(keyed.$setAxis(keyed.$getSizes(items(100, 200), 50), 0)).toBe(
+        undefined,
+      );
+      expect(keyed.$getItemSize(1)).toBe(200);
+
+      const auto = createGridLayout(10, "auto");
+      auto.$setItemSize(0, 123);
+      expect(auto.$setAxis(auto.$getSizes(items(100), "s"), 0)).toBe(undefined);
+      expect(auto.$getItemSize(0)).toBe(123);
+    });
+
+    it("should ignore the axis when every size is auto", () => {
+      const layout = createGridLayout(10, "auto");
+      layout.$setItemSize(0, 123);
+      expect(layout.$setAxis(layout.$getSizes(10, "auto"), 0)).toBe(undefined);
+      expect(layout.$getItemSize(0)).toBe(123);
+    });
+  });
+});
+
+describe("isMeasurable", () => {
+  it("should report every item as measurable", () => {
+    const layout = createGridLayout(10, "auto");
+    expect(layout.$isMeasurable(0)).toBe(true);
+    layout.$setItemSize(0, 123);
+    expect(layout.$getItemSize(0)).toBe(123);
+  });
+
+  it("should report only the auto items of a key axis", () => {
+    const layout = createGridLayout(items(100, "auto"), "s");
+    layout.$setAxis(layout.$getSizes(items(100, "auto"), "s"), 0);
+    expect(layout.$isMeasurable(0)).toBe(false);
+    expect(layout.$isMeasurable(1)).toBe(true);
+  });
+
+  it("should measure the items without a size", () => {
+    const layout = createGridLayout([{ s: 100 }, {}, { s: null }], "s");
+    layout.$setAxis(layout.$getSizes([{ s: 100 }, {}, { s: null }], "s"), 0);
+    expect(layout.$isMeasurable(0)).toBe(false);
+    expect(layout.$isMeasurable(1)).toBe(true);
+    expect(layout.$isMeasurable(2)).toBe(true);
+  });
+
+  it("should report whether the items of the axis are measured", () => {
+    expect(createGridLayout(10, 40).$isMeasurable(0)).toBe(false);
+    expect(createGridLayout(10, "auto").$isMeasurable(0)).toBe(true);
+    const list = items(100, 200);
+    const layout = createGridLayout(list, "s");
+    layout.$setAxis(layout.$getSizes(list, "s"), 0);
+    expect(layout.$isMeasurable(1)).toBe(false);
+    layout.$setAxis(layout.$getSizes(items(100, "auto"), "s"), 0);
+    expect(layout.$isMeasurable(1)).toBe(true);
+  });
+
+  it("should report nothing for a fixed uniform axis", () => {
+    const layout = createGridLayout(10, 50);
+    expect(layout.$isMeasurable(0)).toBe(false);
+    expect(layout.$getItemSize(0)).toBe(50);
+  });
+});
+
 describe("uniform size", () => {
-  it("should not return NaN when the size and the gap are 0", () => {
-    const layout = createGridLayout(10, 0);
-    expect(layout.$findIndex(0)).toBe(0);
-    expect(layout.$getRange(0, 100)).toEqual([0, 0]);
-    expect(layout.$getTotalSize()).toBe(0);
+  const CACHE_LENGTH = 10;
+  const init = () => createGridLayout(CACHE_LENGTH, 20);
+
+  describe("getRange", () => {
+    it("should get start if offset is at start", () => {
+      expect(init().$getRange(0, 100)).toEqual([0, 5]);
+    });
+
+    it("should get start + 1 if offset is at start + 1", () => {
+      expect(init().$getRange(20, 20 + 100)).toEqual([1, 6]);
+    });
+
+    it("should get last if offset is at end", () => {
+      const layout = init();
+      const last = layout.$getLength() - 1;
+      const start = 20 * CACHE_LENGTH;
+      expect(layout.$getRange(start, start + 100)).toEqual([last, last]);
+    });
+
+    it("should get last if offset is at end - 1", () => {
+      const layout = init();
+      const last = layout.$getLength() - 1;
+      const start = 20 * CACHE_LENGTH - 20;
+      expect(layout.$getRange(start, start + 100)).toEqual([last, last]);
+    });
+
+    it("should get last - 1 if offset is at end - 1 and more", () => {
+      const layout = init();
+      const last = layout.$getLength() - 1;
+      const start = 20 * CACHE_LENGTH - 20 - 1;
+      expect(layout.$getRange(start, start + 100)).toEqual([last - 1, last]);
+    });
+
+    it("should get start if offset is before start", () => {
+      const start = -1000;
+      expect(init().$getRange(start, start + 100)).toEqual([0, 0]);
+    });
+
+    it("should get last if offset is after end", () => {
+      const layout = init();
+      const last = layout.$getLength() - 1;
+      const start = 20 * CACHE_LENGTH + 1000;
+      expect(layout.$getRange(start, start + 100)).toEqual([last, last]);
+    });
+
+    it("should not return NaN when the size and the gap are 0", () => {
+      const layout = createGridLayout(10, 0);
+      expect(layout.$findIndex(0)).toBe(0);
+      expect(layout.$getRange(0, 100)).toEqual([0, 0]);
+      expect(layout.$getTotalSize()).toBe(0);
+    });
+  });
+
+  describe("findIndex", () => {
+    it("should find the item at the offset", () => {
+      const layout = init();
+      expect(layout.$findIndex(0)).toBe(0);
+      expect(layout.$findIndex(19)).toBe(0);
+      expect(layout.$findIndex(20)).toBe(1);
+      expect(layout.$findIndex(20 * CACHE_LENGTH - 1)).toBe(CACHE_LENGTH - 1);
+    });
+
+    it("should clamp the offset out of the items", () => {
+      const layout = init();
+      expect(layout.$findIndex(-1000)).toBe(0);
+      expect(layout.$findIndex(20 * CACHE_LENGTH + 1000)).toBe(
+        CACHE_LENGTH - 1,
+      );
+    });
+  });
+
+  describe("getItemOffset", () => {
+    it("should get 0 if index is at start", () => {
+      expect(init().$getItemOffset(0)).toBe(0);
+    });
+
+    it("should get 1 item if index is at start", () => {
+      expect(init().$getItemOffset(1)).toBe(20);
+    });
+
+    it("should get total - 1 item if index is at last", () => {
+      expect(init().$getItemOffset(CACHE_LENGTH - 1)).toBe(
+        20 * CACHE_LENGTH - 20,
+      );
+    });
+
+    it("should return 0 if cache length is 0", () => {
+      const layout = createGridLayout(0, 20);
+      expect(layout.$getItemOffset(0)).toBe(0);
+    });
+  });
+
+  describe("getTotalSize", () => {
+    it("should be the size of the items", () => {
+      expect(init().$getTotalSize()).toBe(20 * CACHE_LENGTH);
+    });
+
+    it("should return 0 if sizes length is 0", () => {
+      expect(createGridLayout(0, 20).$getTotalSize()).toBe(0);
+    });
+  });
+
+  describe("setItemSize", () => {
+    it("should ignore the measurements", () => {
+      const layout = init();
+      expect(layout.$setItemSize(0, 123)).toBe(false);
+      expect(layout.$getItemSize(0)).toBe(20);
+      expect(layout.$getItemOffset(1)).toBe(20);
+    });
   });
 });
 
@@ -280,40 +465,6 @@ describe("setPinned", () => {
   });
 });
 
-describe("isMeasurable", () => {
-  it("should report only the auto items of a key axis", () => {
-    const layout = createGridLayout(items(100, "auto"), "s");
-    layout.$setAxis(layout.$getSizes(items(100, "auto"), "s"), 0);
-    expect(layout.$isMeasurable(0)).toBe(false);
-    expect(layout.$isMeasurable(1)).toBe(true);
-  });
-
-  it("should measure the items without a size", () => {
-    const layout = createGridLayout([{ s: 100 }, {}, { s: null }], "s");
-    layout.$setAxis(layout.$getSizes([{ s: 100 }, {}, { s: null }], "s"), 0);
-    expect(layout.$isMeasurable(0)).toBe(false);
-    expect(layout.$isMeasurable(1)).toBe(true);
-    expect(layout.$isMeasurable(2)).toBe(true);
-  });
-
-  it("should report whether the items of the axis are measured", () => {
-    expect(createGridLayout(10, 40).$isMeasurable(0)).toBe(false);
-    expect(createGridLayout(10, "auto").$isMeasurable(0)).toBe(true);
-    const list = items(100, 200);
-    const layout = createGridLayout(list, "s");
-    layout.$setAxis(layout.$getSizes(list, "s"), 0);
-    expect(layout.$isMeasurable(1)).toBe(false);
-    layout.$setAxis(layout.$getSizes(items(100, "auto"), "s"), 0);
-    expect(layout.$isMeasurable(1)).toBe(true);
-  });
-
-  it("should report nothing for a fixed uniform axis", () => {
-    const layout = createGridLayout(10, 50);
-    expect(layout.$isMeasurable(0)).toBe(false);
-    expect(layout.$getItemSize(0)).toBe(50);
-  });
-});
-
 describe("gap", () => {
   it("should put the gap after every track but the last", () => {
     const layout = createGridLayout(3, 40, 2);
@@ -338,32 +489,10 @@ describe("gap", () => {
   it("should be empty without tracks", () => {
     expect(createGridLayout(0, 40, 2).$getTotalSize()).toBe(0);
   });
-});
 
-describe("edge cases", () => {
   it("should not let the gap shrink the default size", () => {
     const layout = createGridLayout(10, "auto", 50);
     expect(layout.$getItemSize(0)).toBe(40);
     expect(layout.$getItemOffset(1)).toBe(90);
-  });
-
-  it("should ignore the measurements of the items with sizes", () => {
-    const layout = createGridLayout(items(100, "auto"), "s");
-    layout.$setAxis(layout.$getSizes(items(100, "auto"), "s"), 0);
-    layout.$setItemSize(0, 55);
-    expect(layout.$getItemSize(0)).toBe(100);
-  });
-
-  it("should forget the auto items removed in place", () => {
-    const list = items(100, "auto");
-    const layout = createGridLayout(list, "s");
-    layout.$setAxis(layout.$getSizes(list, "s"), 0);
-    list.pop();
-    layout.$setLength(1);
-    layout.$setAxis(layout.$getSizes(list, "s"), 0);
-    list.push({ s: 50 });
-    layout.$setLength(2);
-    layout.$setAxis(layout.$getSizes(list, "s"), 0);
-    expect(layout.$isMeasurable(1)).toBe(false);
   });
 });
