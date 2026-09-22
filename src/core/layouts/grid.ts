@@ -51,19 +51,24 @@ export const getAxisItem = <T>(axis: GridAxis<T>, index: number): T =>
   typeof axis === "number" ? (index as T) : axis[index]!;
 
 /**
+ * The sizes the items hold at the key.
  * @internal
  */
-export interface GridLayout extends Layout {
+export type GridAxisSizes = readonly (GridTrackSize | null | undefined)[];
+
+/**
+ * @internal
+ */
+export interface GridLayout<
+  S extends GridAxisSizes | number | null = GridAxisSizes | number | null,
+> extends Layout {
   $isMeasurable(index: number): boolean;
   $setPinned(header?: number, footer?: number): void;
   $getPinnedStart(): number;
   $getTrailStart(): number;
-  $setAxis(
-    axis: GridAxis<unknown>,
-    size: GridTrackSize | string,
-    scrollOffset: number,
-    mutable?: boolean,
-  ): number | undefined;
+  // The sizes the layout takes from the axis, which are read only by the layout
+  $getSizes(axis: GridAxis<unknown>, size: GridTrackSize | string): S;
+  $setAxis(sizes: S, scrollOffset: number): number | undefined;
 }
 
 /**
@@ -115,7 +120,7 @@ export const createGridLayout = (
       findIndex(startOffset),
       findIndex(endOffset),
     ];
-    return {
+    const layout: GridLayout<number | null> = {
       $getRange: (startOffset, endOffset) =>
         pinRange(findRange, getItemOffset, length, startOffset, endOffset),
       $findIndex: findIndex,
@@ -135,8 +140,10 @@ export const createGridLayout = (
       $setPinned: setPinned,
       $getPinnedStart: () => getPinnedStart(length),
       $getTrailStart: () => getTrailStart(length),
-      $setAxis: (_axis, nextSize, scrollOffset) => {
-        if (typeof nextSize !== "number" || nextSize === itemSize) {
+      $getSizes: (_axis, nextSize) =>
+        typeof nextSize === "number" ? nextSize : NULL,
+      $setAxis: (nextSize, scrollOffset) => {
+        if (nextSize == NULL || nextSize === itemSize) {
           return;
         }
         const jump = findIndex(scrollOffset) * (nextSize - itemSize);
@@ -144,20 +151,22 @@ export const createGridLayout = (
         return jump;
       },
     };
+    return layout;
   }
   const isAuto = size === "auto";
-  let currentAxis: GridAxis<unknown> | undefined;
-  let currentSize: GridTrackSize | string = size;
-  const length = getAxisLength(axis);
+  let currentSizes: GridAxisSizes | null = NULL;
 
   // Whether each item was auto when the axis was set, as the items may be mutated after that.
   const autos: boolean[] = [];
   // The sizes inside include the gap after the track, and so does the default size.
   // The default size is given as a snapshot, because a size given to the layout would fix it and drop the estimation.
-  const inner = createListLayout(length, undefined, [[], 40 + gap]);
+  const inner = createListLayout(getAxisLength(axis), undefined, [
+    [],
+    40 + gap,
+  ]);
 
   const isMeasurable = (index: number): boolean => isAuto || !!autos[index];
-  const layout: GridLayout = {
+  const layout: GridLayout<GridAxisSizes | null> = {
     $getRange: (startOffset, endOffset) =>
       pinRange(
         inner.$getRange,
@@ -181,41 +190,35 @@ export const createGridLayout = (
     $setPinned: setPinned,
     $getPinnedStart: () => getPinnedStart(inner.$getLength()),
     $getTrailStart: () => getTrailStart(inner.$getLength()),
-    $setAxis: (nextAxis, requestedSize, scrollOffset, mutable) => {
-      if (isAuto) {
+    // The form of the size is fixed at mount, so a size of another form is ignored.
+    $getSizes: (nextAxis, nextSize) =>
+      isAuto || typeof nextSize !== "string" || nextSize === "auto"
+        ? NULL
+        : (nextAxis as readonly unknown[]).map((item) =>
+            // An item may not have the key, such as a placeholder of a header row.
+            item != NULL
+              ? (item as Record<string, GridTrackSize | null | undefined>)[
+                  nextSize
+                ]
+              : NULL,
+          ),
+    $setAxis: (nextSizes, scrollOffset) => {
+      if (!nextSizes) {
         return;
       }
-      // The form of the size is fixed at mount, so a size of another form is ignored.
-      const nextSize =
-        typeof requestedSize === "number" || requestedSize === "auto"
-          ? currentSize
-          : requestedSize;
       const length = inner.$getLength();
-      // The items of the same axis are the same, unless they may be mutated in place.
-      if (
-        !mutable &&
-        nextAxis === currentAxis &&
-        nextSize === currentSize &&
-        length === autos.length
-      ) {
+      // The sizes are made again when the items change, so the same sizes are the same.
+      if (nextSizes === currentSizes && length === autos.length) {
         return;
       }
-      currentAxis = nextAxis;
-      currentSize = nextSize;
+      currentSizes = nextSizes;
       autos.length = length;
 
       const anchorIndex = inner.$findIndex(scrollOffset);
       const prevOffset = inner.$getItemOffset(anchorIndex);
       let changed: boolean | undefined;
       for (let i = 0; i < length; i++) {
-        const item = (nextAxis as readonly unknown[])[i];
-        // An item which isn't an object, such as a placeholder of a header row, has no size.
-        const itemSize =
-          item !== NULL && typeof item === "object"
-            ? (item as Record<string, GridTrackSize | null | undefined>)[
-                nextSize as string
-              ]
-            : NULL;
+        const itemSize = nextSizes[i];
         const isAutoItem = typeof itemSize !== "number";
         // An item which was auto keeps its measured size.
         if (!isAutoItem || !autos[i]) {
@@ -233,6 +236,5 @@ export const createGridLayout = (
       return inner.$getItemOffset(anchorIndex) - prevOffset;
     },
   };
-  layout.$setAxis(axis, size, 0);
   return layout;
 };
