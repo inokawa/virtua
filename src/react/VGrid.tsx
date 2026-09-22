@@ -5,6 +5,7 @@ import {
   forwardRef,
   memo,
   useImperativeHandle,
+  useMemo,
   useReducer,
   useRef,
 } from "react";
@@ -28,6 +29,7 @@ import {
   type GridDriver,
   type GridScrollToIndexOpts,
   createGridPlan,
+  createGridSpanIndex,
   type GridCellState,
   type GridRowGroupState,
   type GridRowState,
@@ -392,16 +394,19 @@ export const VGrid = /*#__PURE__*/ forwardRef<
       ];
     });
 
-    // These never request a synchronous update, so they are safe here.
-    updateGridAxis(
-      rowStore,
-      rowLayout,
-      rows,
-      rowHeight,
-      headerRows,
-      footerRows,
+    const rowSizes = useMemo(
+      () => rowLayout.$getSizes(rows, rowHeight),
+      [rows, rowHeight],
     );
-    updateGridAxis(colStore, colLayout, cols, colWidth, headerCols, footerCols);
+    const colSizes = useMemo(
+      () => colLayout.$getSizes(cols, colWidth),
+      [cols, colWidth],
+    );
+    const spanIndex = useMemo(() => createGridSpanIndex(spans), [spans]);
+
+    // These never request a synchronous update, so they are safe here.
+    updateGridAxis(rowStore, rowLayout, rows, rowSizes, headerRows, footerRows);
+    updateGridAxis(colStore, colLayout, cols, colSizes, headerCols, footerCols);
 
     const getStateVersion = () =>
       rowStore.$getStateVersion() + colStore.$getStateVersion();
@@ -423,8 +428,8 @@ export const VGrid = /*#__PURE__*/ forwardRef<
       colLayout,
       rowStore.$getRange(bufferSize),
       colStore.$getRange(bufferSize),
+      spanIndex,
       sectionRows,
-      spans,
       keepMounted,
       ariaSort,
     );

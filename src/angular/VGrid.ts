@@ -40,6 +40,7 @@ import {
   createContainerGridDriver,
   createGridLayout,
   createGridPlan,
+  createGridSpanIndex,
   createVirtualStore,
   getAxisItem,
   getScrollSize,
@@ -439,6 +440,14 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
     () => this._stateVersion() && this._colStore.$getItemsLength(),
   );
 
+  private _rowSizes = computed(() =>
+    this._rowLayout.$getSizes(this.rows(), this.rowHeight()),
+  );
+  private _colSizes = computed(() =>
+    this._colLayout.$getSizes(this.cols(), this.colWidth()),
+  );
+  private _spanIndex = computed(() => createGridSpanIndex(this.spans()));
+
   /** @internal */
   protected plan = computed(() => {
     // the stores are not signals, so depend on their version
@@ -448,8 +457,8 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
       this._colLayout,
       this._rowStore.$getRange(this.bufferSize()),
       this._colStore.$getRange(this.bufferSize()),
+      this._spanIndex(),
       this.sectionRows(),
-      this.spans(),
       this.keepMounted(),
       this.ariaSort(),
     );
@@ -492,19 +501,19 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
     effect(() => {
       const rows = this.rows();
       const cols = this.cols();
-      const rowHeight = this.rowHeight();
-      const colWidth = this.colWidth();
       const headerRows = this.headerRows();
       const footerRows = this.footerRows();
       const headerCols = this.headerCols();
       const footerCols = this.footerCols();
       if (!this._rowStore) return;
+      const rowSizes = this._rowSizes();
+      const colSizes = this._colSizes();
       untracked(() => {
         updateGridAxis(
           this._rowStore,
           this._rowLayout,
           rows,
-          rowHeight,
+          rowSizes,
           headerRows,
           footerRows,
         );
@@ -512,7 +521,7 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
           this._colStore,
           this._colLayout,
           cols,
-          colWidth,
+          colSizes,
           headerCols,
           footerCols,
         );

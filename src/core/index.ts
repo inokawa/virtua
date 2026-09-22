@@ -22,6 +22,7 @@ export {
 } from "./layouts/grid.js";
 export {
   createGridPlan,
+  createGridSpanIndex,
   updateGridAxis,
   type GridRowState,
   type GridCellState,

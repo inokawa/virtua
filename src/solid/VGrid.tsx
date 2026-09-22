@@ -36,6 +36,7 @@ import {
   type GridSize,
   type GridSpan,
   createGridPlan,
+  createGridSpanIndex,
   type GridCellState,
   type GridRowGroupState,
   type GridRowState,
@@ -377,6 +378,13 @@ export const VGrid = <R = number, C = number>(
 
   const rowLayout = createGridLayout(rows, rowHeight, gap);
   const colLayout = createGridLayout(cols, colWidth, gap);
+  const rowSizes = createMemo(() =>
+    rowLayout.$getSizes(props.rows, props.rowHeight),
+  );
+  const colSizes = createMemo(() =>
+    colLayout.$getSizes(props.cols, props.colWidth),
+  );
+  const spanIndex = createMemo(() => createGridSpanIndex(props.spans));
   const rowStore = createVirtualStore(rowLayout);
   const colStore = createVirtualStore(colLayout);
   const driver = createContainerGridDriver(rowStore, colStore);
@@ -409,16 +417,14 @@ export const VGrid = <R = number, C = number>(
   rowStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
   colStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
 
-  // The sizes read from the items are tracked, so the items mutated in place are followed.
   createComputed(() => {
     updateGridAxis(
       rowStore,
       rowLayout,
       props.rows,
-      props.rowHeight,
+      rowSizes(),
       props.headerRows,
       props.footerRows,
-      true,
     );
   });
   createComputed(() => {
@@ -426,10 +432,9 @@ export const VGrid = <R = number, C = number>(
       colStore,
       colLayout,
       props.cols,
-      props.colWidth,
+      colSizes(),
       props.headerCols,
       props.footerCols,
-      true,
     );
   });
 
@@ -446,8 +451,8 @@ export const VGrid = <R = number, C = number>(
       colLayout,
       rowStore.$getRange(props.bufferSize),
       colStore.$getRange(props.bufferSize),
+      spanIndex(),
       props.sectionRows,
-      props.spans,
       props.keepMounted,
       props.ariaSort,
     );

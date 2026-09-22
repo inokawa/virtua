@@ -1,6 +1,13 @@
 import { describe, it, expect } from "vitest";
 import { createGridLayout } from "./layouts/grid.js";
-import { createGridPlan, type GridPlan, type GridRowState } from "./grid.js";
+import {
+  createGridPlan,
+  createGridSpanIndex,
+  type GridPlan,
+  type GridRowState,
+} from "./grid.js";
+
+const NO_SPANS = createGridSpanIndex();
 
 const rowStates = (plan: GridPlan): ReadonlyMap<number, GridRowState> =>
   new Map(
@@ -27,7 +34,7 @@ describe("rendered cells", () => {
     const colLayout = createGridLayout(5, 100);
     colLayout.$setPinned(1, 1);
     const states = rowStates(
-      createGridPlan(rowLayout, colLayout, [3, 4], [2, 2]),
+      createGridPlan(rowLayout, colLayout, [3, 4], [2, 2], NO_SPANS),
     );
     expect(renderedCells(states)).toEqual([
       "0/0",
@@ -53,6 +60,7 @@ describe("rendered cells", () => {
       createGridLayout(5, 100),
       [3, 4],
       [0, 4],
+      NO_SPANS,
     );
     expect(
       plan.$groups.map((g) =>
@@ -68,6 +76,7 @@ describe("rendered cells", () => {
         createGridLayout(5, 100),
         [3, 4],
         [0, 4],
+        NO_SPANS,
       ).$groups.map((g) => ("$rows" in g ? g.$key : g.$row)),
     ).toEqual([-1, 3, 4, -2]);
     expect(
@@ -76,6 +85,7 @@ describe("rendered cells", () => {
         createGridLayout(5, 100),
         [3, 4],
         [0, 4],
+        NO_SPANS,
       ).$groups.some((g) => "$rows" in g),
     ).toBe(false);
   });
@@ -86,7 +96,7 @@ describe("rendered cells", () => {
     const colLayout = createGridLayout(2, 100);
     colLayout.$setPinned(5);
     const states = rowStates(
-      createGridPlan(rowLayout, colLayout, [0, 1], [0, 1]),
+      createGridPlan(rowLayout, colLayout, [0, 1], [0, 1], NO_SPANS),
     );
     expect(renderedCells(states)).toEqual(["0/0", "0/1", "1/0", "1/1"]);
   });
@@ -97,7 +107,7 @@ describe("rendered cells", () => {
     const colLayout = createGridLayout(3, 100);
     colLayout.$setPinned(2, 2);
     const states = rowStates(
-      createGridPlan(rowLayout, colLayout, [0, 2], [0, 2]),
+      createGridPlan(rowLayout, colLayout, [0, 2], [0, 2], NO_SPANS),
     );
     expect(renderedCells(states)).toEqual([
       "0/0",
@@ -120,6 +130,7 @@ describe("rendered cells", () => {
           createGridLayout(5, 100),
           [0, -1],
           [0, 4],
+          NO_SPANS,
         ),
       ).size,
     ).toBe(0);
@@ -130,6 +141,7 @@ describe("rendered cells", () => {
           createGridLayout(0, 100),
           [0, 4],
           [0, -1],
+          NO_SPANS,
         ),
       ).size,
     ).toBe(0);
@@ -141,7 +153,7 @@ describe("rendered cells", () => {
     const colLayout = createGridLayout(5, 100);
     colLayout.$setPinned(1);
     const states = rowStates(
-      createGridPlan(rowLayout, colLayout, [0, -1], [0, -1]),
+      createGridPlan(rowLayout, colLayout, [0, -1], [0, -1], NO_SPANS),
     );
     expect(renderedCells(states)).toEqual(["0/0"]);
   });
@@ -155,8 +167,9 @@ describe("spans", () => {
         createGridLayout(5, 100),
         [0, 3],
         [0, 4],
-        undefined,
-        [{ rowIndex: 1, colIndex: 1, rowSpan: 2, colSpan: 3 }],
+        createGridSpanIndex([
+          { rowIndex: 1, colIndex: 1, rowSpan: 2, colSpan: 3 },
+        ]),
       ),
     );
     expect(states.get(1)!.$cells.map((c) => c.$col)).toEqual([0, 1, 4]);
@@ -174,11 +187,10 @@ describe("spans", () => {
         createGridLayout(20, 100),
         [50, 51],
         [10, 12],
-        undefined,
-        [
+        createGridSpanIndex([
           { rowIndex: 45, colIndex: 12, rowSpan: 10 },
           { rowIndex: 50, colIndex: 8, colSpan: 4 },
-        ],
+        ]),
       ),
     );
     expect([...states.keys()]).toEqual([45, 50, 51]);
@@ -194,11 +206,10 @@ describe("spans", () => {
         createGridLayout(5, 100),
         [50, 51],
         [0, 4],
-        undefined,
-        [
+        createGridSpanIndex([
           { rowIndex: 10, colIndex: 0, rowSpan: 5 },
           { rowIndex: 70, colIndex: 0, rowSpan: 5 },
-        ],
+        ]),
       ),
     );
     expect([...states.keys()]).toEqual([50, 51]);
@@ -212,12 +223,11 @@ describe("spans", () => {
         createGridLayout(5, 100),
         [0, 4],
         [0, 4],
-        undefined,
-        [
+        createGridSpanIndex([
           { rowIndex: 0, colIndex: 0 },
           { rowIndex: 0, colIndex: 10, colSpan: 2 },
           { rowIndex: 3, colIndex: 3, rowSpan: 10, colSpan: 10 },
-        ],
+        ]),
       ),
     );
     expect(cell(states, 0, 0).$rowSpan).toBe(undefined);
@@ -234,10 +244,16 @@ describe("spans", () => {
     const colLayout = createGridLayout(5, 100);
     colLayout.$setPinned(undefined, 1);
     const states = rowStates(
-      createGridPlan(rowLayout, colLayout, [0, 4], [0, 4], undefined, [
-        { rowIndex: 0, colIndex: 10, rowSpan: 3 },
-        { rowIndex: 10, colIndex: 0, colSpan: 3 },
-      ]),
+      createGridPlan(
+        rowLayout,
+        colLayout,
+        [0, 4],
+        [0, 4],
+        createGridSpanIndex([
+          { rowIndex: 0, colIndex: 10, rowSpan: 3 },
+          { rowIndex: 10, colIndex: 0, colSpan: 3 },
+        ]),
+      ),
     );
     expect(renderedCells(states)).toHaveLength(25);
     for (const [, { $cells }] of states) {
@@ -255,8 +271,9 @@ describe("spans", () => {
         createGridLayout(2, 100),
         [0, 4],
         [0, 1],
-        undefined,
-        [{ rowIndex: 1, colIndex: 0, rowSpan: 2, colSpan: 2 }],
+        createGridSpanIndex([
+          { rowIndex: 1, colIndex: 0, rowSpan: 2, colSpan: 2 },
+        ]),
       ),
     );
     expect([...states.keys()]).toEqual([0, 1, 3, 4]);
@@ -271,7 +288,7 @@ describe("keepMounted", () => {
         createGridLayout(100, 100),
         [0, 1],
         [0, 1],
-        undefined,
+        NO_SPANS,
         undefined,
         [
           { rowIndex: 50, colIndex: 0 },
@@ -298,8 +315,10 @@ describe("keepMounted", () => {
         createGridLayout(5, 100),
         [0, 2],
         [0, 4],
+        createGridSpanIndex([
+          { rowIndex: 0, colIndex: 0, rowSpan: 2, colSpan: 2 },
+        ]),
         undefined,
-        [{ rowIndex: 0, colIndex: 0, rowSpan: 2, colSpan: 2 }],
         [{ rowIndex: 1, colIndex: 1 }],
       ),
     );
@@ -316,7 +335,7 @@ describe("keepMounted", () => {
       colLayout,
       [7, 7],
       [7, 7],
-      undefined,
+      NO_SPANS,
       undefined,
       [{ rowIndex: 6, colIndex: 6 }],
     );
@@ -341,7 +360,7 @@ describe("keepMounted", () => {
         createGridLayout(100, 100),
         [0, 1],
         [0, 1],
-        undefined,
+        NO_SPANS,
         undefined,
         [{ rowIndex: 0, colIndex: 1000 }],
       ),
@@ -362,7 +381,7 @@ describe("headers", () => {
         colLayout,
         [10, 11],
         [30, 31],
-        undefined,
+        NO_SPANS,
         undefined,
         [{ rowIndex: 80, colIndex: 40 }],
       ),
@@ -392,7 +411,7 @@ describe("roles", () => {
     const colLayout = createGridLayout(3, 100);
     colLayout.$setPinned(2);
     const states = rowStates(
-      createGridPlan(rowLayout, colLayout, [0, 4], [0, 2]),
+      createGridPlan(rowLayout, colLayout, [0, 4], [0, 2], NO_SPANS),
     );
     // the column header wins over the row header at the corner
     expect(cell(states, 0, 0).$role).toBe("columnheader");
@@ -417,7 +436,7 @@ describe("roles", () => {
         colLayout,
         [0, 4],
         [0, 2],
-        undefined,
+        NO_SPANS,
         undefined,
         undefined,
         { rowIndex: 0, colIndex: 1, order: "ascending" },
@@ -439,7 +458,7 @@ describe("roles", () => {
             colLayout2,
             [0, 4],
             [0, 2],
-            undefined,
+            NO_SPANS,
             undefined,
             undefined,
             { rowIndex: 2, colIndex: 0, order: "descending" },
@@ -461,7 +480,7 @@ describe("roles", () => {
             colLayout3,
             [0, 4],
             [0, 2],
-            undefined,
+            NO_SPANS,
             undefined,
             undefined,
             { rowIndex: 2, colIndex: 1, order: "other" },
@@ -482,8 +501,7 @@ describe("measurement", () => {
         createGridLayout(3, 100),
         [0, 4],
         [0, 2],
-        undefined,
-        [{ rowIndex: 1, colIndex: 0, rowSpan: 2 }],
+        createGridSpanIndex([{ rowIndex: 1, colIndex: 0, rowSpan: 2 }]),
       ),
     );
     expect(cell(states, 0, 0).$measureRow).toBe(0);
@@ -501,8 +519,7 @@ describe("measurement", () => {
         createGridLayout(3, "auto"),
         [0, 4],
         [0, 2],
-        undefined,
-        [{ rowIndex: 0, colIndex: 1, colSpan: 2 }],
+        createGridSpanIndex([{ rowIndex: 0, colIndex: 1, colSpan: 2 }]),
       ),
     );
     expect(cell(states, 0, 0).$measureCol).toBe(0);
@@ -514,12 +531,16 @@ describe("measurement", () => {
   });
 
   it("should measure only the auto tracks of a key axis", () => {
+    const rows = [{ h: 30 }, { h: undefined }, { h: "auto" }];
+    const rowLayout = createGridLayout(rows, "h");
+    rowLayout.$setAxis(rowLayout.$getSizes(rows, "h"), 0);
     const states = rowStates(
       createGridPlan(
-        createGridLayout([{ h: 30 }, { h: undefined }, { h: "auto" }], "h"),
+        rowLayout,
         createGridLayout(2, 100),
         [0, 2],
         [0, 1],
+        NO_SPANS,
       ),
     );
     expect(cell(states, 0, 0).$measureRow).toBe(undefined);
@@ -536,8 +557,12 @@ describe("previous states", () => {
   it("should keep the states whose values are unchanged", () => {
     rows.$setPinned();
     cols.$setPinned();
-    const prev = rowStates(createGridPlan(rows, cols, [0, 3], [0, 4]));
-    const next = rowStates(createGridPlan(rows, cols, [0, 3], [0, 4]));
+    const prev = rowStates(
+      createGridPlan(rows, cols, [0, 3], [0, 4], NO_SPANS),
+    );
+    const next = rowStates(
+      createGridPlan(rows, cols, [0, 3], [0, 4], NO_SPANS),
+    );
     for (const [rowIndex, row] of next) {
       expect(row).toBe(prev.get(rowIndex));
     }
@@ -546,8 +571,12 @@ describe("previous states", () => {
   it("should keep the rows rendered in both ranges", () => {
     rows.$setPinned();
     cols.$setPinned();
-    const prev = rowStates(createGridPlan(rows, cols, [0, 3], [0, 4]));
-    const next = rowStates(createGridPlan(rows, cols, [1, 4], [0, 4]));
+    const prev = rowStates(
+      createGridPlan(rows, cols, [0, 3], [0, 4], NO_SPANS),
+    );
+    const next = rowStates(
+      createGridPlan(rows, cols, [1, 4], [0, 4], NO_SPANS),
+    );
     // the columns move their measurement from the removed first row
     expect(next.get(1)).not.toBe(prev.get(1));
     expect(next.get(2)).toBe(prev.get(2));
@@ -557,11 +586,17 @@ describe("previous states", () => {
   it("should replace only the rows affected by a span", () => {
     rows.$setPinned();
     cols.$setPinned();
-    const prev = rowStates(createGridPlan(rows, cols, [0, 3], [0, 4]));
+    const prev = rowStates(
+      createGridPlan(rows, cols, [0, 3], [0, 4], NO_SPANS),
+    );
     const next = rowStates(
-      createGridPlan(rows, cols, [0, 3], [0, 4], undefined, [
-        { rowIndex: 2, colIndex: 0, colSpan: 2 },
-      ]),
+      createGridPlan(
+        rows,
+        cols,
+        [0, 3],
+        [0, 4],
+        createGridSpanIndex([{ rowIndex: 2, colIndex: 0, colSpan: 2 }]),
+      ),
     );
     expect(next.get(1)).toBe(prev.get(1));
     expect(next.get(2)).not.toBe(prev.get(2));
@@ -579,7 +614,7 @@ describe("previous states", () => {
           cols,
           [0, 3],
           [0, 4],
-          undefined,
+          NO_SPANS,
           undefined,
           undefined,
           { rowIndex: 0, colIndex, order: "ascending" },
@@ -605,11 +640,11 @@ describe("spans starting out of the ranges", () => {
         colLayout,
         [50, 51],
         [30, 32],
-        [0],
-        [
+        createGridSpanIndex([
           { rowIndex: 0, colIndex: 30, colSpan: 3 },
           { rowIndex: 40, colIndex: 0, rowSpan: 20 },
-        ],
+        ]),
+        [0],
       ),
     );
     // the header row is rendered for the rendered columns, with the span over them
@@ -630,11 +665,11 @@ describe("spans starting out of the ranges", () => {
         createGridLayout(20, 100),
         [50, 51],
         [10, 12],
-        undefined,
-        [
+        createGridSpanIndex([
           { rowIndex: 80, colIndex: 0, colSpan: 3 },
           { rowIndex: 45, colIndex: 12, rowSpan: 10 },
-        ],
+        ]),
+        undefined,
         [
           { rowIndex: 80, colIndex: 0 },
           { rowIndex: 47, colIndex: 12 },
@@ -655,11 +690,10 @@ describe("spans starting out of the ranges", () => {
         createGridLayout(9, 100),
         [0, 2],
         [5, 8],
-        undefined,
-        [
+        createGridSpanIndex([
           { rowIndex: 0, colIndex: 0, rowSpan: 2 },
           { rowIndex: 2, colIndex: 0, colSpan: 9 },
-        ],
+        ]),
       ),
     );
     expect(cell(states, 2, 0).$colSpan).toBe(9);
@@ -676,11 +710,10 @@ describe("spans starting out of the ranges", () => {
         createGridLayout(9, 100),
         [0, 4],
         [5, 8],
-        undefined,
-        [
+        createGridSpanIndex([
           { rowIndex: 0, colIndex: 0, colSpan: 9 },
           { rowIndex: 2, colIndex: 3, colSpan: 3 },
-        ],
+        ]),
       ),
     );
     expect(cell(states, 0, 0).$colSpan).toBe(9);
@@ -697,11 +730,10 @@ describe("spans starting out of the ranges", () => {
         createGridLayout(9, 100),
         [0, 4],
         [5, 8],
-        undefined,
-        [
+        createGridSpanIndex([
           { rowIndex: 2, colIndex: 3, colSpan: 3 },
           { rowIndex: 3, colIndex: 3, colSpan: 2 },
-        ],
+        ]),
       ),
     );
     expect(renderedCells(states)).not.toContain("3/3");
@@ -714,8 +746,7 @@ describe("spans starting out of the ranges", () => {
         createGridLayout(5, 100),
         [0, 5],
         [0, 4],
-        undefined,
-        [{ rowIndex: 98, colIndex: 0, rowSpan: 5 }],
+        createGridSpanIndex([{ rowIndex: 98, colIndex: 0, rowSpan: 5 }]),
       ),
     );
     expect([...states.keys()]).not.toContain(98);
@@ -734,7 +765,7 @@ describe("sections", () => {
   it("should group the rows of the sections and stick their headers under the pinned rows", () => {
     rows.$setPinned(1);
     cols.$setPinned();
-    const plan = createGridPlan(rows, cols, [6, 8], [0, 2], [5, 15]);
+    const plan = createGridPlan(rows, cols, [6, 8], [0, 2], NO_SPANS, [5, 15]);
     const states = rowStates(plan);
     expect([...states.keys()]).toEqual([0, 5, 6, 7, 8]);
     expect(plan.$groups.map((g) => ("$rows" in g ? g.$key : g.$row))).toEqual([
@@ -759,7 +790,9 @@ describe("sections", () => {
   it("should make the cell of a section header in the row header column the row header", () => {
     rows.$setPinned(1);
     cols.$setPinned(2);
-    const states = rowStates(createGridPlan(rows, cols, [6, 8], [0, 2], [5]));
+    const states = rowStates(
+      createGridPlan(rows, cols, [6, 8], [0, 2], NO_SPANS, [5]),
+    );
     expect(cell(states, 5, 0).$role).toBe("cell");
     expect(cell(states, 5, 1).$role).toBe("rowheader");
     expect(cell(states, 6, 1).$role).toBe("rowheader");
@@ -768,7 +801,7 @@ describe("sections", () => {
   it("should keep the rows before the first section out of the groups", () => {
     rows.$setPinned();
     cols.$setPinned();
-    const plan = createGridPlan(rows, cols, [3, 6], [0, 2], [5]);
+    const plan = createGridPlan(rows, cols, [3, 6], [0, 2], NO_SPANS, [5]);
     expect(plan.$groups.map((g) => ("$rows" in g ? g.$key : g.$row))).toEqual([
       3, 4, -8,
     ]);
@@ -778,9 +811,15 @@ describe("sections", () => {
   it("should render the section of a kept cell without its header", () => {
     rows.$setPinned();
     cols.$setPinned();
-    const plan = createGridPlan(rows, cols, [1, 2], [5, 8], [15], undefined, [
-      { rowIndex: 20, colIndex: 6 },
-    ]);
+    const plan = createGridPlan(
+      rows,
+      cols,
+      [1, 2],
+      [5, 8],
+      NO_SPANS,
+      [15],
+      [{ rowIndex: 20, colIndex: 6 }],
+    );
     const states = rowStates(plan);
     expect(renderedCells(states)).toEqual([
       "1/5",
@@ -803,9 +842,15 @@ describe("sections", () => {
     rows.$setPinned(1);
     cols.$setPinned();
     const states = rowStates(
-      createGridPlan(rows, cols, [7, 8], [5, 6], [5], undefined, [
-        { rowIndex: 20, colIndex: 8 },
-      ]),
+      createGridPlan(
+        rows,
+        cols,
+        [7, 8],
+        [5, 6],
+        NO_SPANS,
+        [5],
+        [{ rowIndex: 20, colIndex: 8 }],
+      ),
     );
     expect(renderedCells(states)).toEqual([
       "0/5",
@@ -823,7 +868,7 @@ describe("sections", () => {
   it("should end the sections at the rows pinned to the end", () => {
     rows.$setPinned(undefined, 1);
     cols.$setPinned();
-    const plan = createGridPlan(rows, cols, [26, 28], [0, 2], [25]);
+    const plan = createGridPlan(rows, cols, [26, 28], [0, 2], NO_SPANS, [25]);
     expect(groupOf(plan, -28)!.$style["gridRow"]).toBe("l25/l29");
     expect(groupOf(plan, -28)!.$rows.map((r) => r.$row)).toEqual([
       25, 26, 27, 28,
@@ -839,8 +884,8 @@ describe("sections", () => {
         cols,
         [1, 2],
         [0, 2],
+        createGridSpanIndex([{ rowIndex: 29, colIndex: 0, colSpan: 2 }]),
         [15],
-        [{ rowIndex: 29, colIndex: 0, colSpan: 2 }],
         [{ rowIndex: 29, colIndex: 5 }],
       ),
     );
@@ -850,9 +895,11 @@ describe("sections", () => {
   it("should replace the header row when it starts sticking", () => {
     rows.$setPinned();
     cols.$setPinned();
-    const plain = rowStates(createGridPlan(rows, cols, [4, 6], [0, 2]));
+    const plain = rowStates(
+      createGridPlan(rows, cols, [4, 6], [0, 2], NO_SPANS),
+    );
     const sectioned = rowStates(
-      createGridPlan(rows, cols, [4, 6], [0, 2], [5]),
+      createGridPlan(rows, cols, [4, 6], [0, 2], NO_SPANS, [5]),
     );
     expect(sectioned.get(4)).toBe(plain.get(4));
     expect(sectioned.get(5)).not.toBe(plain.get(5));
@@ -862,7 +909,14 @@ describe("sections", () => {
   it("should take the section rows in the body in order", () => {
     rows.$setPinned(1, 1);
     cols.$setPinned();
-    const plan = createGridPlan(rows, cols, [0, 29], [0, 2], [25, 5, 0, 29]);
+    const plan = createGridPlan(
+      rows,
+      cols,
+      [0, 29],
+      [0, 2],
+      NO_SPANS,
+      [25, 5, 0, 29],
+    );
     expect(plan.$groups.map((g) => ("$rows" in g ? g.$key : g.$row))).toEqual([
       -1, 1, 2, 3, 4, -8, -28, -2,
     ]);
@@ -878,6 +932,7 @@ describe("sections", () => {
       colLayout,
       [50, 51],
       [1, 2],
+      NO_SPANS,
       [0, 1, 1],
     );
     const states = rowStates(plan);
@@ -898,8 +953,8 @@ describe("sections", () => {
       createGridLayout(3, 100),
       [55, 56],
       [0, 2],
+      NO_SPANS,
       sections,
-      undefined,
       [{ rowIndex: 500, colIndex: 0 }],
     );
     expect([...rowStates(plan).keys()]).toEqual([50, 55, 56, 500]);

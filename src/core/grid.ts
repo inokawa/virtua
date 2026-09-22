@@ -2,7 +2,7 @@ import {
   getAxisLength,
   type GridLayout,
   type GridAxis,
-  type GridTrackSize,
+  type GridAxisSizes,
 } from "./layouts/grid.js";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
@@ -47,14 +47,13 @@ export interface GridSpan extends GridCell {
 /**
  * @internal
  */
-export const updateGridAxis = (
+export const updateGridAxis = <S extends GridAxisSizes | number | null>(
   store: VirtualStore,
-  layout: GridLayout,
+  layout: GridLayout<S>,
   axis: GridAxis<unknown>,
-  size: GridTrackSize | string,
+  sizes: S,
   header?: number,
   footer?: number,
-  mutable?: boolean,
 ) => {
   const length = getAxisLength(axis);
   layout.$setPinned(header, footer);
@@ -63,10 +62,8 @@ export const updateGridAxis = (
   }
   // The tracks are shifted by the jump deferred during scrolling, which the layout doesn't include.
   const jump = layout.$setAxis(
-    axis,
-    size,
+    sizes,
     store.$getScrollOffset() - store.$getItemOffset(0),
-    mutable,
   );
   // undefined means nothing changed, and 0 means the tracks changed without a jump.
   if (jump != NULL) {
@@ -80,15 +77,29 @@ const rowStatesCache = /*#__PURE__*/ new WeakMap<
   ReadonlyMap<number, GridRowState>
 >();
 
-const hasVisibleTrack = (
-  from: number,
-  to: number,
-  pinnedStart: number,
-  start: number,
-  end: number,
-  trailStart: number,
-): boolean =>
-  from < pinnedStart || max(from, start) < min(to, end + 1) || trailStart < to;
+// The spans at each of the rows they cover
+type GridSpanIndex = ReadonlyMap<number, readonly Readonly<GridSpan>[]>;
+
+/**
+ * @internal
+ */
+export const createGridSpanIndex = (
+  spans: readonly Readonly<GridSpan>[] = EMPTY,
+): GridSpanIndex => {
+  const index = new Map<number, Readonly<GridSpan>[]>();
+  for (const span of spans) {
+    const rowTo = span.rowIndex + (span.rowSpan || 1);
+    for (let rowIndex = span.rowIndex; rowIndex < rowTo; rowIndex++) {
+      const rowSpans = index.get(rowIndex);
+      if (rowSpans) {
+        rowSpans.push(span);
+      } else {
+        index.set(rowIndex, [span]);
+      }
+    }
+  }
+  return index;
+};
 
 /**
  * The sections start at the section rows between the pinned rows.
@@ -275,12 +286,12 @@ export interface GridPlan {
  * @internal
  */
 export const createGridPlan = (
-  rowLayout: Readonly<GridLayout>,
-  colLayout: Readonly<GridLayout>,
-  rowRange: Readonly<ItemsRange>,
-  colRange: Readonly<ItemsRange>,
+  rowLayout: GridLayout,
+  colLayout: GridLayout,
+  [rowRangeStart, rowRangeEnd]: ItemsRange,
+  [colRangeStart, colRangeEnd]: ItemsRange,
+  spanIndex: GridSpanIndex,
   sectionRows: readonly number[] = EMPTY,
-  spans: readonly Readonly<GridSpan>[] = EMPTY,
   kept: readonly Readonly<GridCell>[] = EMPTY,
   sortedCell?: Readonly<GridSort>,
 ): GridPlan => {
@@ -290,10 +301,12 @@ export const createGridPlan = (
   const rowTrailStart = rowLayout.$getTrailStart();
   const colPinnedStart = colLayout.$getPinnedStart();
   const colTrailStart = colLayout.$getTrailStart();
-  const rowRangeStart = clamp(rowRange[0], rowPinnedStart, rowTrailStart);
-  const rowRangeEnd = min(rowRange[1], rowTrailStart - 1);
-  const colRangeStart = clamp(colRange[0], colPinnedStart, colTrailStart);
-  const colRangeEnd = min(colRange[1], colTrailStart - 1);
+
+  rowRangeStart = clamp(rowRangeStart, rowPinnedStart, rowTrailStart);
+  rowRangeEnd = min(rowRangeEnd, rowTrailStart - 1);
+  colRangeStart = clamp(colRangeStart, colPinnedStart, colTrailStart);
+  colRangeEnd = min(colRangeEnd, colTrailStart - 1);
+
   const sectionStarts = getSectionStarts(
     sectionRows,
     rowPinnedStart,
@@ -310,10 +323,10 @@ export const createGridPlan = (
     // A kept cell may be left out of the grid after the rows or the columns are removed.
     if (cell.rowIndex < totalRowCount && cell.colIndex < totalColCount) {
       extraCells.push(cell);
+      extraRows.push(cell.rowIndex);
     }
   }
   const keptLength = extraCells.length;
-  const sectionLength = sectionStarts.length;
   // The header of the section of the first row in the range may be sticking under the pinned rows, so it's taken as seen.
   const firstSection = getSectionIndex(
     sectionStarts,
@@ -325,46 +338,46 @@ export const createGridPlan = (
   if (firstSectionStart >= 0) {
     extraRows.push(firstSectionStart);
   }
-  // A kept cell under a span is rendered as the span, so the span is laid although it may not be seen.
-  for (const span of spans) {
-    const row = span.rowIndex;
-    const col = span.colIndex;
-    const rowTo = getSpanRowEnd(span, totalRowCount);
-    const colTo = getSpanColEnd(span, totalColCount);
-    // A span may be left out of the grid after the rows or the columns are removed.
-    if (
-      row < totalRowCount &&
-      col < totalColCount &&
-      (rowTo - row > 1 || colTo - col > 1)
-    ) {
-      let isLaid =
-        (hasVisibleTrack(
-          row,
-          rowTo,
-          rowPinnedStart,
-          rowRangeStart,
-          rowRangeEnd,
-          rowTrailStart,
-        ) ||
-          (firstSectionStart >= row && firstSectionStart < rowTo)) &&
-        hasVisibleTrack(
-          col,
-          colTo,
-          colPinnedStart,
-          colRangeStart,
-          colRangeEnd,
-          colTrailStart,
-        );
-      for (let k = 0; !isLaid && k < keptLength; k++) {
-        const { rowIndex, colIndex } = extraCells[k]!;
-        isLaid =
-          rowIndex >= row &&
-          rowIndex < rowTo &&
-          colIndex >= col &&
-          colIndex < colTo;
-      }
-      if (isLaid) {
-        extraCells.push(span);
+  // The spans are found at the rows rendered before them.
+  const seenRows = getTrackIndexes(
+    sort(extraRows),
+    totalRowCount,
+    rowPinnedStart,
+    rowRangeStart,
+    rowRangeEnd,
+    rowTrailStart,
+  );
+  for (let s = 0; s < seenRows.length; s++) {
+    for (const span of spanIndex.get(seenRows[s]!) || EMPTY) {
+      const { rowIndex, colIndex } = span;
+      const rowTo = getSpanRowEnd(span, totalRowCount);
+      const colTo = getSpanColEnd(span, totalColCount);
+      // A span is found at each of the seen rows it covers, so it's taken at the first of them. It may be left out of the grid after the columns are removed.
+      if (
+        (s < 1 || seenRows[s - 1]! < rowIndex) &&
+        colIndex < totalColCount &&
+        (rowTo - rowIndex > 1 || colTo - colIndex > 1)
+      ) {
+        // A span is laid if one of its cells is rendered: in a visible row and a visible column, or a kept cell.
+        let isLaid =
+          (rowIndex < rowPinnedStart ||
+            max(rowIndex, rowRangeStart) < min(rowTo, rowRangeEnd + 1) ||
+            rowTrailStart < rowTo ||
+            (firstSectionStart >= rowIndex && firstSectionStart < rowTo)) &&
+          (colIndex < colPinnedStart ||
+            max(colIndex, colRangeStart) < min(colTo, colRangeEnd + 1) ||
+            colTrailStart < colTo);
+        for (let k = 0; !isLaid && k < keptLength; k++) {
+          const cell = extraCells[k]!;
+          isLaid =
+            cell.rowIndex >= rowIndex &&
+            cell.rowIndex < rowTo &&
+            cell.colIndex >= colIndex &&
+            cell.colIndex < colTo;
+        }
+        if (isLaid) {
+          extraCells.push(span);
+        }
       }
     }
   }
@@ -458,7 +471,7 @@ export const createGridPlan = (
         : isRowPinnedEnd
           ? totalRowCount
           : // A section ends at the next section which may not be rendered, or at the rows pinned to the end
-            section + 1 < sectionLength
+            section + 1 < sectionStarts.length
             ? sectionStarts[section + 1]!
             : rowTrailStart;
       rowCuts.push(groupEnd);
@@ -527,11 +540,9 @@ export const createGridPlan = (
         const stickyStart = isColPinnedStart
           ? colLayout.$getItemOffset(colIndex)
           : NULL;
-        // The end inset of a span is from its last column.
         const stickyEnd = isColPinnedEnd
-          ? colLayout.$getTotalSize() -
-            colLayout.$getItemOffset(colTo - 1) -
-            colLayout.$getItemSize(colTo - 1)
+          ? colLayout.$getItemOffset(totalColCount) -
+            colLayout.$getItemOffset(colTo)
           : NULL;
         if (measuredRow === false && !isSpanningRows) {
           measureRowIndex = rowIndex;

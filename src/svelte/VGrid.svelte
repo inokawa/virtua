@@ -8,6 +8,7 @@
     createContainerGridDriver,
     createGridLayout,
     createGridPlan,
+    createGridSpanIndex,
     createVirtualStore,
     getAxisItem,
     getAxisLength,
@@ -48,6 +49,9 @@
 
   const rowLayout = createGridLayout(rows, rowHeight, gap);
   const colLayout = createGridLayout(cols, colWidth, gap);
+  let rowSizes = $derived(rowLayout.$getSizes(rows, rowHeight));
+  let colSizes = $derived(colLayout.$getSizes(cols, colWidth));
+  let spanIndex = $derived(createGridSpanIndex(spans));
   const rowStore = createVirtualStore(rowLayout);
   const colStore = createVirtualStore(colLayout);
   const driver = createContainerGridDriver(rowStore, colStore);
@@ -82,28 +86,11 @@
   rowStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
   colStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
 
-  // The sizes read from the items are tracked, so the items mutated in place are followed.
   $effect.pre(() => {
-    updateGridAxis(
-      rowStore,
-      rowLayout,
-      rows,
-      rowHeight,
-      headerRows,
-      footerRows,
-      true,
-    );
+    updateGridAxis(rowStore, rowLayout, rows, rowSizes, headerRows, footerRows);
   });
   $effect.pre(() => {
-    updateGridAxis(
-      colStore,
-      colLayout,
-      cols,
-      colWidth,
-      headerCols,
-      footerCols,
-      true,
-    );
+    updateGridAxis(colStore, colLayout, cols, colSizes, headerCols, footerCols);
   });
   let rowCount = $derived(stateVersion && rowStore.$getItemsLength());
   let colCount = $derived(stateVersion && colStore.$getItemsLength());
@@ -114,8 +101,8 @@
       colLayout,
       rowStore.$getRange(bufferSize),
       colStore.$getRange(bufferSize),
+      spanIndex,
       sectionRows,
-      spans,
       keepMounted,
       ariaSort,
     );
