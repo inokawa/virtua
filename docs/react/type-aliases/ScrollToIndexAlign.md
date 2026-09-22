@@ -6,7 +6,7 @@
 
 > **ScrollToIndexAlign** = `"start"` \| `"center"` \| `"end"` \| `"nearest"`
 
-Defined in: [src/core/scroll-to.ts:15](https://github.com/inokawa/virtua/blob/53a86201788dd26097bd4fcf48f3a759950cb78c/src/core/scroll-to.ts#L15)
+Defined in: [src/core/scroll-to.ts:15](https://github.com/inokawa/virtua/blob/93318cc12ea63472268ab80ad4573f25f56694a8/src/core/scroll-to.ts#L15)
 
 Alignment of item in the viewport.
 
