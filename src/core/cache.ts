@@ -4,6 +4,21 @@ import { clamp, floor } from "./utils.js";
 export const UNCACHED = -1;
 
 /**
+ * @internal
+ */
+export const fill = (
+  array: number[],
+  length: number,
+  prepend?: boolean,
+): number[] => {
+  const key = prepend ? "unshift" : "push";
+  for (let i = 0; i < length; i++) {
+    array[key](UNCACHED);
+  }
+  return array;
+};
+
+/**
  * Finds the index of an item in the cache whose computed offset is closest to the specified offset.
  *
  * @internal

@@ -1,16 +1,7 @@
-import { UNCACHED, findIndex } from "../cache.js";
+import { UNCACHED, fill, findIndex } from "../cache.js";
 import type { Layout } from "./types.js";
 import type { CacheSnapshot } from "../types.js";
 import { max, min, sort } from "../utils.js";
-
-const fill = (array: number[], length: number, prepend?: boolean): number[] => {
-  const key = prepend ? "unshift" : "push";
-  for (let i = 0; i < length; i++) {
-    array[key](UNCACHED);
-  }
-  return array;
-};
-
 /**
  * @internal
  */
