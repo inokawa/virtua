@@ -1,0 +1,166 @@
+{
+  "v": 0,
+  "components": {
+    "basics-vlist": {
+      "id": "basics-vlist",
+      "name": "VList",
+      "path": "./stories/solid/basics/VList.stories.tsx",
+      "stories": [
+        {
+          "id": "basics-vlist--default",
+          "name": "Default",
+          "snippet": "const Default = () => {\n  const sizes = [20, 40, 80, 77];\n  const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]);\n\n  return (\n    <VList data={data} style={{ height: \"100vh\" }}>\n      {(d, i) => (\n        <div\n          style={{\n            height: d + \"px\",\n            \"border-bottom\": \"solid 1px #ccc\",\n            background: \"#fff\",\n          }}\n        >\n          {i()}\n        </div>\n      )}\n    </VList>\n  );\n};",
+          "description": ""
+        },
+        {
+          "id": "basics-vlist--horizontal",
+          "name": "Horizontal",
+          "snippet": "const Horizontal = () => {\n  const sizes = [40, 180, 77];\n  const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 3]);\n\n  return (\n    <div style={{ padding: \"10px\" }}>\n      <VList\n        data={data}\n        style={{ width: \"100%\", height: \"200px\" }}\n        horizontal\n      >\n        {(d, i) => (\n          <div\n            style={{\n              width: d + \"px\",\n              \"border-right\": \"solid 1px #ccc\",\n              background: \"#fff\",\n            }}\n          >\n            {i()}\n          </div>\n        )}\n      </VList>\n    </div>\n  );\n};",
+          "description": ""
+        },
+        {
+          "id": "basics-vlist--controlls",
+          "name": "Controlls",
+          "snippet": "const Controlls = () => {\n  const heights = [20, 40, 180, 77];\n  const createItem = (i: number) => ({\n    index: i,\n    height: heights[i % 4],\n  });\n\n  const [data, setData] = createSignal(\n    Array.from({ length: 1000 }).map((_, i) => createItem(i)),\n  );\n\n  const [scrollOffset, setScrollOffset] = createSignal(0);\n  const [scrolling, setScrolling] = createSignal(false);\n  const [scrollTarget, setScrollTarget] = createSignal(567);\n  const [prepend, setPrepend] = createSignal(false);\n\n  let handle: VListHandle | undefined;\n\n  return (\n    <div\n      style={{ height: \"100%\", display: \"flex\", \"flex-direction\": \"column\" }}\n    >\n      <div>offset: {scrollOffset()}</div>\n      <div>scrolling: {String(scrolling())}</div>\n      <div>\n        <input\n          type=\"number\"\n          value={scrollTarget()}\n          onInput={(e) => {\n            setScrollTarget(Number((e.target as HTMLInputElement).value));\n          }}\n        />\n        <button\n          onClick={() => {\n            handle?.scrollToIndex(scrollTarget());\n          }}\n        >\n          scrollToIndex\n        </button>\n      </div>\n      <div>\n        <button\n          onClick={() => {\n            setData((prev) => {\n              const items = Array.from({ length: 100 }).map((_, i) =>\n                createItem(i + prev.length),\n              );\n              return prepend() ? [...items, ...prev] : [...prev, ...items];\n            });\n          }}\n        >\n          append\n        </button>\n        <label>\n          <input\n            type=\"checkbox\"\n            checked={prepend()}\n            onchange={() => {\n              setPrepend((prev) => !prev);\n            }}\n          />\n          prepend\n        </label>\n        <button\n          onclick={() => {\n            setData((prev) => {\n              const items = [...prev];\n              items.pop();\n              return items;\n            });\n          }}\n        >\n          pop\n        </button>\n      </div>\n      <VList\n        ref={handle}\n        data={data()}\n        shift={prepend()}\n        style={{ height: \"100vh\" }}\n        onScroll={(offset) => {\n          setScrollOffset(offset);\n          setScrolling(true);\n        }}\n        onScrollEnd={() => {\n          setScrolling(false);\n        }}\n      >\n        {(d) => (\n          <div\n            style={{\n              height: d.height + \"px\",\n              \"border-bottom\": \"solid 1px #ccc\",\n              background: \"#fff\",\n            }}\n          >\n            {d.index}\n          </div>\n        )}\n      </VList>\n    </div>\n  );\n};",
+          "description": ""
+        }
+      ],
+      "import": "import { VList } from \"../../../src/solid\";",
+      "jsDocTags": {},
+      "subcomponents": {},
+      "error": {
+        "name": "No component import found",
+        "message": "No component file found for the \"VList\" component."
+      }
+    },
+    "basics-virtualizer": {
+      "id": "basics-virtualizer",
+      "name": "Virtualizer",
+      "path": "./stories/solid/basics/Virtualizer.stories.tsx",
+      "stories": [
+        {
+          "id": "basics-virtualizer--header-and-footer",
+          "name": "Header And Footer",
+          "snippet": "const HeaderAndFooter = () => {\n  const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]!);\n  const headerHeight = 400;\n  return (\n    <div\n      style={{\n        width: \"100%\",\n        height: \"100vh\",\n        \"overflow-y\": \"auto\",\n        // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer\n        \"overflow-anchor\": \"none\",\n      }}\n    >\n      <div\n        style={{\n          \"background-color\": \"burlywood\",\n          height: headerHeight + \"px\",\n        }}\n      >\n        header\n      </div>\n      <Virtualizer data={data} startMargin={headerHeight}>\n        {(item, index) => (\n          <div\n            style={{\n              height: item + \"px\",\n              background: \"white\",\n              \"border-bottom\": \"solid 1px #ccc\",\n            }}\n          >\n            {index()}\n          </div>\n        )}\n      </Virtualizer>\n      <div style={{ \"background-color\": \"steelblue\", height: \"600px\" }}>\n        footer\n      </div>\n    </div>\n  );\n};",
+          "description": ""
+        },
+        {
+          "id": "basics-virtualizer--nested",
+          "name": "Nested",
+          "snippet": "const Nested = () => {\n  const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]!);\n  const outerPadding = 40;\n  const innerPadding = 60;\n  let scrollRef: HTMLDivElement | undefined;\n  return (\n    <div\n      ref={scrollRef}\n      style={{\n        width: \"100%\",\n        height: \"100vh\",\n        \"overflow-y\": \"auto\",\n        // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer\n        \"overflow-anchor\": \"none\",\n      }}\n    >\n      <div\n        style={{\n          \"background-color\": \"burlywood\",\n          padding: outerPadding + \"px\",\n        }}\n      >\n        <div\n          style={{\n            \"background-color\": \"steelblue\",\n            padding: innerPadding + \"px\",\n          }}\n        >\n          <Virtualizer\n            data={data}\n            scrollRef={scrollRef}\n            startMargin={outerPadding + innerPadding}\n          >\n            {(item, index) => (\n              <div\n                style={{\n                  height: item + \"px\",\n                  background: \"white\",\n                  \"border-bottom\": \"solid 1px #ccc\",\n                }}\n              >\n                {index()}\n              </div>\n            )}\n          </Virtualizer>\n        </div>\n      </div>\n    </div>\n  );\n};",
+          "description": ""
+        }
+      ],
+      "import": "import { Virtualizer } from \"../../../src/solid\";",
+      "jsDocTags": {},
+      "subcomponents": {},
+      "error": {
+        "name": "No component import found",
+        "message": "No component file found for the \"Virtualizer\" component."
+      }
+    },
+    "basics-windowvirtualizer": {
+      "id": "basics-windowvirtualizer",
+      "name": "WindowVirtualizer",
+      "path": "./stories/solid/basics/WindowVirtualizer.stories.tsx",
+      "stories": [
+        {
+          "id": "basics-windowvirtualizer--default",
+          "name": "Default",
+          "snippet": "const Default = () => {\n  const sizes = [20, 40, 80, 77];\n  const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]);\n\n  return (\n    <div style={{ padding: \"200px 100px\" }}>\n      <div style={{ border: \"solid 1px gray\" }}>\n        <WindowVirtualizer data={data}>\n          {(d, i) => (\n            <div\n              style={{\n                height: d + \"px\",\n                \"border-bottom\": \"solid 1px #ccc\",\n                background: \"#fff\",\n              }}\n            >\n              {i()}\n            </div>\n          )}\n        </WindowVirtualizer>\n      </div>\n    </div>\n  );\n};",
+          "description": ""
+        }
+      ],
+      "import": "import { WindowVirtualizer } from \"../../../src/solid\";",
+      "jsDocTags": {},
+      "subcomponents": {},
+      "error": {
+        "name": "No component import found",
+        "message": "No component file found for the \"WindowVirtualizer\" component."
+      }
+    },
+    "basics-vgrid": {
+      "id": "basics-vgrid",
+      "name": "VGrid",
+      "path": "./stories/solid/basics/VGrid.stories.tsx",
+      "stories": [
+        {
+          "id": "basics-vgrid--default",
+          "name": "Default",
+          "snippet": "const Default = () => (\n  <VGrid\n    rows={1000}\n    rowHeight={40}\n    cols={500}\n    colWidth={100}\n    style={{\n      height: \"100vh\",\n      \"box-sizing\": \"border-box\",\n      border: \"solid 1px gray\",\n      background: \"white\",\n    }}\n  >\n    {(rowIndex, colIndex) => (\n      <div\n        style={{\n          padding: \"4px\",\n          \"border-right\": \"solid 1px gray\",\n          \"border-bottom\": \"solid 1px gray\",\n        }}\n      >\n        {rowIndex} / {colIndex}\n      </div>\n    )}\n  </VGrid>\n);",
+          "description": ""
+        },
+        {
+          "id": "basics-vgrid--pinned",
+          "name": "Pinned",
+          "snippet": "const Pinned = () => {\n  const ROWS = 1000;\n  const COLS = 500;\n  const PINNED_ROWS = { header: 1, footer: 1 };\n  const PINNED_COLS = { header: 2, footer: 1 };\n  return (\n    <VGrid\n      rows={ROWS}\n      rowHeight={40}\n      cols={COLS}\n      colWidth={100}\n      headerRows={PINNED_ROWS.header}\n      footerRows={PINNED_ROWS.footer}\n      headerCols={PINNED_COLS.header}\n      footerCols={PINNED_COLS.footer}\n      style={{\n        height: \"100vh\",\n        \"box-sizing\": \"border-box\",\n        border: \"solid 1px gray\",\n        background: \"white\",\n      }}\n    >\n      {(rowIndex, colIndex) => {\n        const isPinnedRow =\n          rowIndex < PINNED_ROWS.header ||\n          rowIndex >= ROWS - PINNED_ROWS.footer;\n        const isPinnedCol =\n          colIndex < PINNED_COLS.header ||\n          colIndex >= COLS - PINNED_COLS.footer;\n        return (\n          <div\n            style={{\n              padding: \"4px\",\n              \"border-right\": \"solid 1px gray\",\n              \"border-bottom\": \"solid 1px gray\",\n              background: isPinnedRow\n                ? \"darkgray\"\n                : isPinnedCol\n                  ? \"lightgray\"\n                  : undefined,\n              color: isPinnedRow ? \"white\" : undefined,\n            }}\n          >\n            {rowIndex} / {colIndex}\n          </div>\n        );\n      }}\n    </VGrid>\n  );\n};",
+          "description": ""
+        },
+        {
+          "id": "basics-vgrid--columns",
+          "name": "Columns",
+          "snippet": "const Columns = () => {\n  // fixed widths and content-fit (auto) widths can be mixed\n  const columns = [\n    { key: \"id\", width: 60 },\n    { key: \"username\", width: 200 },\n    { key: \"email\", width: \"auto\" },\n    { key: \"company\", width: \"auto\" },\n    { key: \"domain\", width: 200 },\n  ] as const;\n  const data = Array.from({ length: 1000 }).map((_, i) => ({\n    id: i,\n    username: faker.person.fullName(),\n    email: faker.internet.email(),\n    company: faker.company.name(),\n    domain: faker.internet.domainName(),\n  }));\n  // the header row has no data\n  const rows = [null, ...data];\n  return (\n    <VGrid\n      rows={rows}\n      rowHeight={30}\n      cols={columns}\n      colWidth=\"width\"\n      headerRows={1}\n      style={{\n        height: \"100vh\",\n        \"box-sizing\": \"border-box\",\n        border: \"solid 1px black\",\n        background: \"white\",\n      }}\n    >\n      {(row, column) => (\n        <div\n          style={{\n            padding: \"4px\",\n            \"border-right\": \"solid 1px black\",\n            \"border-bottom\": \"solid 1px black\",\n            overflow: \"hidden\",\n            \"text-overflow\": \"ellipsis\",\n            \"white-space\": \"nowrap\",\n            background: row === null ? \"burlywood\" : undefined,\n          }}\n        >\n          {row === null ? column.key : row[column.key]}\n        </div>\n      )}\n    </VGrid>\n  );\n};",
+          "description": ""
+        },
+        {
+          "id": "basics-vgrid--scroll-to",
+          "name": "Scroll To",
+          "snippet": "const ScrollTo = () => {\n  const LENGTH = 1000;\n  const [rowIndex, setRowIndex] = createSignal(567);\n  const [colIndex, setColIndex] = createSignal(567);\n  const [vertical, setVertical] = createSignal(1000);\n  const [horizontal, setHorizontal] = createSignal(1000);\n  let handle: VGridHandle | undefined;\n  return (\n    <div\n      style={{ height: \"100vh\", display: \"flex\", \"flex-direction\": \"column\" }}\n    >\n      <div>\n        <label>\n          col\n          <input\n            type=\"number\"\n            value={colIndex()}\n            onInput={(e) => setColIndex(Number(e.currentTarget.value))}\n          />\n        </label>\n        <label>\n          row\n          <input\n            type=\"number\"\n            value={rowIndex()}\n            onInput={(e) => setRowIndex(Number(e.currentTarget.value))}\n          />\n        </label>\n        <button\n          onClick={() => {\n            handle?.scrollToIndex({\n              rowIndex: rowIndex(),\n              colIndex: colIndex(),\n            });\n          }}\n        >\n          scroll to index\n        </button>\n        <button\n          onClick={() => {\n            setColIndex(Math.floor(LENGTH * Math.random()));\n            setRowIndex(Math.floor(LENGTH * Math.random()));\n          }}\n        >\n          randomize\n        </button>\n      </div>\n      <div>\n        <label>\n          x\n          <input\n            type=\"number\"\n            value={horizontal()}\n            onInput={(e) => setHorizontal(Number(e.currentTarget.value))}\n          />\n        </label>\n        <label>\n          y\n          <input\n            type=\"number\"\n            value={vertical()}\n            onInput={(e) => setVertical(Number(e.currentTarget.value))}\n          />\n        </label>\n        <button\n          onClick={() => {\n            handle?.scrollTo({\n              vertical: vertical(),\n              horizontal: horizontal(),\n            });\n          }}\n        >\n          scroll to offset\n        </button>\n        <button\n          onClick={() => {\n            handle?.scrollBy({\n              vertical: vertical(),\n              horizontal: horizontal(),\n            });\n          }}\n        >\n          scroll by offset\n        </button>\n      </div>\n      <VGrid\n        ref={handle}\n        rows={LENGTH}\n        rowHeight={80}\n        cols={LENGTH}\n        colWidth={160}\n        style={{\n          flex: 1,\n          \"box-sizing\": \"border-box\",\n          border: \"solid 1px gray\",\n          background: \"white\",\n        }}\n      >\n        {(rowIndex, colIndex) => (\n          <div\n            style={{\n              padding: \"4px\",\n              \"border-right\": \"solid 1px gray\",\n              \"border-bottom\": \"solid 1px gray\",\n            }}\n          >\n            {rowIndex} / {colIndex}\n          </div>\n        )}\n      </VGrid>\n    </div>\n  );\n};",
+          "description": ""
+        }
+      ],
+      "import": "import { VGrid } from \"../../../src/solid\";",
+      "jsDocTags": {},
+      "subcomponents": {},
+      "error": {
+        "name": "No component import found",
+        "message": "No component file found for the \"VGrid\" component."
+      }
+    },
+    "advanced-chat": {
+      "id": "advanced-chat",
+      "name": "Virtualizer",
+      "path": "./stories/solid/advanced/Chat.stories.tsx",
+      "stories": [
+        {
+          "id": "advanced-chat--default",
+          "name": "Chat",
+          "snippet": "const Default = () => {\n  let id = 0;\n  const createItem = ({\n    value = faker.lorem.paragraphs(1),\n    me,\n  }: { value?: string; me?: boolean } = {}): Data => ({\n    id: id++,\n    value,\n    me,\n  });\n  const [items, setItems] = createSignal<Data[]>(\n    Array.from({ length: 100 }, () => createItem()),\n  );\n  let virtualizerHandle: VirtualizerHandle | undefined;\n  const [isPrepend, setIsPrepend] = createSignal(false);\n  const [shouldStickToBottom, setShouldStickToBottom] = createSignal(true);\n  const [value, setValue] = createSignal(\"Hello world!\");\n  const [fetching, setFetching] = createSignal(false);\n\n  createEffect(() => {\n    items();\n    setIsPrepend(false);\n  });\n\n  createEffect(() => {\n    const lastItemIndex = items().length - 1;\n    if (shouldStickToBottom()) {\n      virtualizerHandle?.scrollToIndex(lastItemIndex, { align: \"end\" });\n    }\n  });\n\n  onMount(() => {\n    let canceled = false;\n    let timer: ReturnType<typeof setTimeout> | null = null;\n    const setTimer = () => {\n      timer = setTimeout(() => {\n        if (canceled) return;\n        setItems((prev) => [...prev, createItem()]);\n        setTimer();\n      }, 5000);\n    };\n    setTimer();\n    onCleanup(() => {\n      canceled = true;\n      if (timer) clearTimeout(timer);\n    });\n  });\n\n  const disabled = () => !value().length;\n  const submit = () => {\n    if (disabled()) return;\n    setShouldStickToBottom(true);\n    setItems((prev) => [...prev, createItem({ value: value(), me: true })]);\n    setValue(\"\");\n  };\n\n  return (\n    <div\n      style={{\n        width: \"100vw\",\n        height: \"100vh\",\n        display: \"flex\",\n        \"flex-direction\": \"column\",\n      }}\n    >\n      <div\n        style={{\n          \"overflow-y\": \"auto\",\n          flex: 1,\n          // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer\n          \"overflow-anchor\": \"none\",\n          // flex style for spacer\n          display: \"flex\",\n          \"flex-direction\": \"column\",\n        }}\n      >\n        <div\n          style={{\n            // spacer to align virtualizer to the bottom when all items are visible in the viewport\n            \"flex-grow\": 1,\n          }}\n        />\n        <Spinner visible={fetching()} />\n        <Virtualizer\n          ref={virtualizerHandle}\n          data={items()}\n          shift={isPrepend()}\n          startMargin={spinnerHeight}\n          onScroll={async (offset) => {\n            const handle = virtualizerHandle;\n            if (!handle) return;\n            setShouldStickToBottom(\n              offset -\n                spinnerHeight -\n                handle.scrollSize +\n                handle.viewportSize >=\n                -1.5,\n            );\n            if (offset < spinnerHeight + 100 && !fetching()) {\n              setFetching(true);\n              await new Promise((resolve) => setTimeout(resolve, 1000));\n              setIsPrepend(true);\n              setItems((prev) => [\n                ...Array.from({ length: 100 }, () => createItem()),\n                ...prev,\n              ]);\n              setFetching(false);\n            }\n          }}\n        >\n          {(d) => <Item me={d.me}>{d.value}</Item>}\n        </Virtualizer>\n      </div>\n      <form\n        style={{\n          display: \"flex\",\n          \"flex-direction\": \"column\",\n          margin: \"10px\",\n        }}\n        onSubmit={(e) => {\n          e.preventDefault();\n          e.stopPropagation();\n          submit();\n        }}\n      >\n        <textarea\n          style={{ flex: 1 }}\n          rows={6}\n          value={value()}\n          onInput={(e) => setValue(e.currentTarget.value)}\n          onKeyDown={(e) => {\n            if (e.code === \"Enter\" && (e.ctrlKey || e.metaKey)) {\n              submit();\n              e.preventDefault();\n            }\n          }}\n        />\n        <div\n          style={{\n            display: \"flex\",\n            \"flex-direction\": \"row\",\n            gap: \"8px\",\n            \"justify-content\": \"flex-end\",\n          }}\n        >\n          <button type=\"submit\" disabled={disabled()}>\n            submit\n          </button>\n        </div>\n      </form>\n    </div>\n  );\n};",
+          "description": ""
+        }
+      ],
+      "import": "import { Virtualizer } from \"../../../src/solid\";",
+      "jsDocTags": {},
+      "subcomponents": {},
+      "error": {
+        "name": "No component import found",
+        "message": "No component file found for the \"Virtualizer\" component."
+      }
+    },
+    "advanced-sticky-group": {
+      "id": "advanced-sticky-group",
+      "name": "VList",
+      "path": "./stories/solid/advanced/Sticky Group.stories.tsx",
+      "stories": [
+        {
+          "id": "advanced-sticky-group--default",
+          "name": "Sticky Group",
+          "snippet": "const Default = () => {\n  let ref: VListHandle | undefined;\n  const [activeIndex, setActiveIndex] = createSignal(0);\n  const [items] = createSignal(\n    Array.from({ length: 1000 }).map((_, id) => ({ id })),\n  );\n  return (\n    <StickyIndexContext.Provider value={[activeIndex, setActiveIndex]}>\n      <VList\n        ref={ref}\n        data={items()}\n        item={StickyItem}\n        keepMounted={[activeIndex()]}\n        onScroll={() => {\n          if (!ref) return;\n          const start = ref.findItemIndex(ref.scrollOffset);\n          const activeStickyIndex = [...stickyIndexes]\n            .reverse()\n            .find((index) => start >= index)!;\n          setActiveIndex(activeStickyIndex);\n        }}\n      >\n        {(data, index) => {\n          const isSticky = () => stickyIndexes.has(index());\n          return (\n            <div\n              style={{\n                height: (isSticky() ? stickyItemHeight : 80) + \"px\",\n                \"border-bottom\": \"solid 1px #ccc\",\n                background: isSticky() ? \"#B8C1C8\" : \"#fff\",\n                color: isSticky() ? \"#fff\" : undefined,\n                \"padding-right\": \"4px\",\n                \"padding-left\": \"4px\",\n              }}\n            >\n              {data.id}\n            </div>\n          );\n        }}\n      </VList>\n    </StickyIndexContext.Provider>\n  );\n};",
+          "description": ""
+        }
+      ],
+      "import": "import { VList } from \"../../../src/solid\";",
+      "jsDocTags": {},
+      "subcomponents": {},
+      "error": {
+        "name": "No component import found",
+        "message": "No component file found for the \"VList\" component."
+      }
+    }
+  },
+  "meta": {
+    "docgen": "react-component-meta",
+    "durationMs": 93,
+    "engine": "solid-component-meta"
+  }
+}
