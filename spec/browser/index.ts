@@ -1,5 +1,5 @@
 import { expect, onTestFinished } from "vitest";
-import { server } from "@vitest/browser/context";
+import { server } from "vitest/browser";
 
 // Only what the tests vary crosses the command boundary
 export type SsrProps = {

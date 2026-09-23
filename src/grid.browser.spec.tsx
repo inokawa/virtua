@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, onTestFinished } from "vitest";
-import { server } from "@vitest/browser/context";
+import { server } from "vitest/browser";
 import { createRef, useEffect, useState } from "react";
 import { render } from "../spec/browser/react.js";
 import { VGrid, type VGridHandle } from "./react/index.js";
