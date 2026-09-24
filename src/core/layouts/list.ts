@@ -20,6 +20,8 @@ export const createListLayout = (
   let defaultItemSize = (snapshot && snapshot[1]) || itemSize || 40;
 
   let computedOffsetIndex = -1;
+  let _totalMeasuredSize = 0;
+  let shouldAutoEstimateItemSize = !itemSize;
   let prevStartIndex = 0;
 
   const restoredSizes = snapshot && snapshot[0];
@@ -91,14 +93,66 @@ export const createListLayout = (
     $findIndex: (offset) => findIndex(getOffset, length, offset),
     $getItemOffset: getOffset,
     $getItemSize: getSize,
-    $setItemSize: (index, size) => {
-      const isInitialMeasurement = sizes[index] === UNCACHED;
-      sizes[index] = size;
-      // mark as dirty
-      computedOffsetIndex = min(index, computedOffsetIndex);
-      return isInitialMeasurement;
-    },
     $isSizeEqual: (index, size = UNCACHED) => sizes[index] === size,
+    $resize: (resizes, shouldKeep, scrollOffset, viewportSize) => {
+      let jump = resizes.reduce(
+        (acc, [index, size]) =>
+          shouldKeep(index) ? acc + (size - getSize(index)) : acc,
+        0,
+      );
+      // Update item sizes
+      for (const [index, size] of resizes) {
+        _totalMeasuredSize +=
+          sizes[index] === UNCACHED ? size : size - getSize(index);
+        sizes[index] = size;
+        // mark as dirty
+        computedOffsetIndex = min(index, computedOffsetIndex);
+      }
+      // Estimate initial item size from measured sizes
+      if (
+        shouldAutoEstimateItemSize &&
+        viewportSize &&
+        // If the total size is lower than the viewport, the item may be a empty state
+        _totalMeasuredSize > viewportSize
+      ) {
+        let measuredCountBeforeStart = 0;
+        const startIndex = findIndex(getOffset, length, scrollOffset + jump);
+        // This function will be called after measurement so measured size array must be longer than 0
+        const measuredSizes: number[] = [];
+        sizes.forEach((s, i) => {
+          if (s !== UNCACHED) {
+            // https://github.com/inokawa/virtua/issues/907
+            if (s) {
+              measuredSizes.push(s);
+            }
+            if (i < startIndex) {
+              measuredCountBeforeStart++;
+            }
+          }
+        });
+
+        // Discard cache for now
+        computedOffsetIndex = -1;
+
+        // Calculate median
+        sort(measuredSizes);
+        const len = measuredSizes.length;
+        const mid = (len / 2) | 0;
+        const median =
+          len % 2 === 0
+            ? (measuredSizes[mid - 1]! + measuredSizes[mid]!) / 2
+            : measuredSizes[mid]!;
+
+        const prevDefaultItemSize = defaultItemSize;
+
+        // Calculate diff of unmeasured items before start
+        jump +=
+          ((defaultItemSize = median) - prevDefaultItemSize) *
+          max(startIndex - measuredCountBeforeStart, 0);
+        shouldAutoEstimateItemSize = false;
+      }
+      return jump;
+    },
     $getTotalSize: () => getOffset(length),
     $getLength: () => length,
     $setLength: (nextLength, isShift) => {
@@ -125,44 +179,7 @@ export const createListLayout = (
         );
       }
     },
-    $estimateDefaultSize: itemSize
-      ? undefined
-      : (startIndex) => {
-          let measuredCountBeforeStart = 0;
-          // This function will be called after measurement so measured size array must be longer than 0
-          const measuredSizes: number[] = [];
-          sizes.forEach((s, i) => {
-            if (s !== UNCACHED) {
-              // https://github.com/inokawa/virtua/issues/907
-              if (s) {
-                measuredSizes.push(s);
-              }
-              if (i < startIndex) {
-                measuredCountBeforeStart++;
-              }
-            }
-          });
-
-          // Discard cache for now
-          computedOffsetIndex = -1;
-
-          // Calculate median
-          sort(measuredSizes);
-          const len = measuredSizes.length;
-          const mid = (len / 2) | 0;
-          const median =
-            len % 2 === 0
-              ? (measuredSizes[mid - 1]! + measuredSizes[mid]!) / 2
-              : measuredSizes[mid]!;
-
-          const prevDefaultItemSize = defaultItemSize;
-
-          // Calculate diff of unmeasured items before start
-          return (
-            ((defaultItemSize = median) - prevDefaultItemSize) *
-            max(startIndex - measuredCountBeforeStart, 0)
-          );
-        },
+    $isEstimating: () => shouldAutoEstimateItemSize,
     $snapshot: () => [sizes.slice(), defaultItemSize],
   };
 };
