@@ -1,0 +1,38 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`should pass attributes to element 1`] = `
+<DocumentFragment>
+  <div
+    aria-label="test"
+    class="class"
+    id="id"
+    role="list"
+    style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%; background: red;"
+    tabindex="0"
+  >
+    <div
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 50px;"
+    >
+      <div
+        style="contain: layout style; position: absolute; top: 0px; inset-inline-start: 0%; width: 50%;"
+      >
+        <div>
+          0
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`should render 0 children 1`] = `
+<DocumentFragment>
+  <div
+    style="display: block; overflow-y: auto; contain: strict; width: 100%; height: 100%;"
+  >
+    <div
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100%; height: 0px;"
+    />
+  </div>
+</DocumentFragment>
+`;

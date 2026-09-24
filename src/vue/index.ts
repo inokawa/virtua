@@ -13,3 +13,5 @@ export type {
 export { VGrid } from "./VGrid.js";
 export type { VGridProps, VGridHandle } from "./VGrid.js";
 export type { GridSize, GridSpan } from "../core/index.js";
+export { VMasonry } from "./VMasonry.js";
+export type { VMasonryProps, VMasonryHandle } from "./VMasonry.js";

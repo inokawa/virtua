@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`should pass attributes to element 1`] = `"<virtua-vmasonry id="id" tabindex="0" role="list" aria-label="test" class="class" style="display:block;overflow-y:auto;contain:strict;width:100%;height:100%;background: red;"><div style="contain: size style; flex: 0 0 auto; height: 50px; overflow-anchor: none; position: relative; width: 100%;"><div virtuamasonryitem="" style="contain: layout style; inset-inline-start: 0%; position: absolute; top: 0px; width: 50%;"><div>0</div><!--ng-container--></div><!--container--></div></virtua-vmasonry>"`;
+
+exports[`should render 0 children 1`] = `"<virtua-vmasonry id="id" tabindex="0" role="list" aria-label="test" class="class" style="display:block;overflow-y:auto;contain:strict;width:100%;height:100%;background: red;"><div style="contain: size style; flex: 0 0 auto; height: 0px; overflow-anchor: none; position: relative; width: 100%;"><!--container--></div></virtua-vmasonry>"`;

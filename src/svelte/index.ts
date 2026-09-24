@@ -16,3 +16,5 @@ export type {
 export { default as VGrid } from "./VGrid.svelte";
 export type { VGridProps, VGridHandle } from "./VGrid.type.js";
 export type { GridSize, GridSpan } from "../core/index.js";
+export { default as VMasonry } from "./VMasonry.svelte";
+export type { VMasonryProps, VMasonryHandle } from "./VMasonry.type.js";

@@ -3,7 +3,7 @@
     "name": "Total",
     "path": "lib/index.js",
     "import": "*",
-    "limit": "7.9 kB"
+    "limit": "9 kB"
   },
   {
     "name": "VList",
@@ -30,6 +30,12 @@
     "limit": "6 kB"
   },
   {
+    "name": "VMasonry",
+    "path": "lib/index.js",
+    "import": "{ VMasonry }",
+    "limit": "3.7 kB"
+  },
+  {
     "name": "vue VList",
     "path": "lib/vue/index.js",
     "import": "{ VList }",
@@ -52,6 +58,12 @@
     "path": "lib/vue/index.js",
     "import": "{ VGrid }",
     "limit": "6.1 kB"
+  },
+  {
+    "name": "vue VMasonry",
+    "path": "lib/vue/index.js",
+    "import": "{ VMasonry }",
+    "limit": "3.7 kB"
   },
   {
     "name": "solid VList",
@@ -78,9 +90,15 @@
     "limit": "6.4 kB"
   },
   {
+    "name": "solid VMasonry",
+    "path": "lib/solid/index.js",
+    "import": "{ VMasonry }",
+    "limit": "3.9 kB"
+  },
+  {
     "name": "angular",
     "path": "lib/angular/index.js",
     "import": "*",
-    "limit": "10.1 kB"
+    "limit": "11.4 kB"
   }
 ]

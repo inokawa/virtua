@@ -9,6 +9,7 @@ import {
   expectVirtualizedAndScrollable,
 } from "../../spec/browser/index.js";
 import { range } from "../../spec/utils.js";
+import { VMasonry } from "./VMasonry.js";
 
 afterEach(cleanupScroll);
 
@@ -89,4 +90,13 @@ it("VGrid", async () => {
     </VGrid>,
   );
   await expectVirtualizedAndScrollable(root, "row-0/col-0", "row-999/col-999");
+});
+
+it("VMasonry", async () => {
+  const root = render(
+    <VMasonry lanes={2} data={range(1000)} style={{ height: 400 }}>
+      {(d) => <div key={d}>item-{d}</div>}
+    </VMasonry>,
+  );
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
