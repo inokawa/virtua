@@ -1,5 +1,6 @@
 export {
   ACTION_ITEMS_LENGTH_CHANGE,
+  ACTION_RELAYOUT,
   ACTION_START_OFFSET_CHANGE,
   UPDATE_VIRTUAL_STATE,
   UPDATE_SCROLL_END_EVENT,
@@ -17,13 +18,13 @@ export {
   getAxisItem,
   type GridLayout,
   type GridAxis,
+  type GridAxisSizes,
   type GridTrackSize,
   type GridSize,
 } from "./layouts/grid.js";
 export {
   createGridPlan,
   createGridSpanIndex,
-  updateGridAxis,
   type GridRowState,
   type GridCellState,
   type GridRowGroupState,

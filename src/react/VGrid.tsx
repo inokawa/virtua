@@ -10,6 +10,8 @@ import {
   useRef,
 } from "react";
 import {
+  ACTION_ITEMS_LENGTH_CHANGE,
+  ACTION_RELAYOUT,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SCROLL_EVENT,
   UPDATE_VIRTUAL_STATE,
@@ -21,11 +23,11 @@ import {
   type GridSize,
   type GridSpan,
   getAxisItem,
+  getAxisLength,
   getScrollSize,
   gridScrollBy,
   gridScrollTo,
   gridScrollToIndex,
-  updateGridAxis,
   type GridDriver,
   type GridScrollToIndexOpts,
   createGridPlan,
@@ -405,8 +407,18 @@ export const VGrid = /*#__PURE__*/ forwardRef<
     const spanIndex = useMemo(() => createGridSpanIndex(spans), [spans]);
 
     // These never request a synchronous update, so they are safe here.
-    updateGridAxis(rowStore, rowLayout, rows, rowSizes, headerRows, footerRows);
-    updateGridAxis(colStore, colLayout, cols, colSizes, headerCols, footerCols);
+    rowLayout.$setPinned(headerRows, footerRows);
+    colLayout.$setPinned(headerCols, footerCols);
+    const rowLength = getAxisLength(rows);
+    const colLength = getAxisLength(cols);
+    if (rowLength !== rowStore.$getItemsLength()) {
+      rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [rowLength]);
+    }
+    if (colLength !== colStore.$getItemsLength()) {
+      colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colLength]);
+    }
+    rowStore.$update(ACTION_RELAYOUT, rowSizes);
+    colStore.$update(ACTION_RELAYOUT, colSizes);
 
     const getStateVersion = () =>
       rowStore.$getStateVersion() + colStore.$getStateVersion();

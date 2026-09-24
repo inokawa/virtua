@@ -50,8 +50,8 @@ describe("initialize", () => {
   });
 
   it("should not estimate the default size with the item size", () => {
-    expect(createListLayout(10, 23).$estimateDefaultSize).toBeUndefined();
-    expect(createListLayout(10).$estimateDefaultSize).toBeTruthy();
+    expect(createListLayout(10, 23).$isEstimating()).toBe(false);
+    expect(createListLayout(10).$isEstimating()).toBe(true);
   });
 
   it("should restore the sizes and the default size from the snapshot", () => {
@@ -142,8 +142,8 @@ describe("initialize", () => {
 describe("snapshot", () => {
   it("should return the measured sizes and the default size", () => {
     const layout = createListLayout(4, 40);
-    layout.$setItemSize(1, 10);
-    layout.$setItemSize(2, 20);
+    layout.$resize([[1, 10]], () => false, 0, 0);
+    layout.$resize([[2, 20]], () => false, 0, 0);
     expect(layout.$snapshot()).toEqual([[-1, 10, 20, -1], 40]);
   });
 

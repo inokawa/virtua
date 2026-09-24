@@ -3,7 +3,7 @@
     "name": "Total",
     "path": "lib/index.js",
     "import": "*",
-    "limit": "8.3 kB"
+    "limit": "8.4 kB"
   },
   {
     "name": "VList",
@@ -81,6 +81,6 @@
     "name": "angular",
     "path": "lib/angular/index.js",
     "import": "*",
-    "limit": "10.65 kB"
+    "limit": "10.7 kB"
   }
 ]

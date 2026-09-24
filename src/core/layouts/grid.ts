@@ -57,7 +57,7 @@ export type GridAxisSizes = readonly (GridTrackSize | null | undefined)[];
 /**
  * @internal
  */
-export interface GridLayout extends Layout {
+export interface GridLayout extends Layout<GridAxisSizes | number | null> {
   $isMeasurable(index: number): boolean;
   $setPinned(header?: number, footer?: number): void;
   $getPinnedStart(): number;
@@ -67,10 +67,6 @@ export interface GridLayout extends Layout {
     axis: GridAxis<unknown>,
     size: GridTrackSize | string,
   ): GridAxisSizes | number | null;
-  $setAxis(
-    sizes: GridAxisSizes | number | null,
-    scrollOffset: number,
-  ): number | undefined;
 }
 
 /**
@@ -88,6 +84,8 @@ export const createGridLayout = (
   let defaultItemSize = (isUniform ? size : 40) + gap;
 
   let computedOffsetIndex = -1;
+  let _totalMeasuredSize = 0;
+  let shouldAutoEstimateItemSize = isAuto;
   let header = 0;
   let footer = 0;
   let currentSizes: GridAxisSizes | null = NULL;
@@ -155,6 +153,9 @@ export const createGridLayout = (
   const getPinnedStart = (): number => min(header, length);
   const getTrailStart = (): number => max(length - footer, getPinnedStart());
 
+  const getItemSize = (index: number): number =>
+    (sizes.length ? getSize(index) : defaultItemSize) - gap;
+
   return {
     $getRange: (startOffset, endOffset) => {
       // The tracks pinned to the edges stick over the viewport, so the tracks behind them are never seen and the range covers only the tracks between them.
@@ -170,20 +171,76 @@ export const createGridLayout = (
     },
     $findIndex: find,
     $getItemOffset: getOffset,
-    $getItemSize: (index) =>
-      (sizes.length ? getSize(index) : defaultItemSize) - gap,
-    // A measurement may come for an item given a size after it's rendered.
-    $setItemSize: (index, size) => {
-      if (!isMeasurable(index)) {
-        return false;
+    $getItemSize: getItemSize,
+    $resize: (resizes, shouldKeep, scrollOffset, viewportSize) => {
+      let jump = resizes.reduce(
+        (acc, [index, size]) =>
+          isMeasurable(index) && shouldKeep(index)
+            ? acc + (size - getItemSize(index))
+            : acc,
+        0,
+      );
+      // Update item sizes
+      for (const [index, size] of resizes) {
+        // A measurement may come for an item given a size after it's rendered.
+        if (isMeasurable(index)) {
+          materialize();
+          _totalMeasuredSize +=
+            sizes[index] === UNCACHED ? size : size - getItemSize(index);
+          setSize(index, size + gap);
+        }
       }
-      materialize();
-      const isInitialMeasurement = sizes[index] === UNCACHED;
-      setSize(index, size + gap);
-      return isInitialMeasurement;
+      // Estimate initial item size from measured sizes
+      if (
+        shouldAutoEstimateItemSize &&
+        viewportSize &&
+        // If the total size is lower than the viewport, the item may be a empty state
+        _totalMeasuredSize > viewportSize
+      ) {
+        let measuredCountBeforeStart = 0;
+        const startIndex = find(scrollOffset + jump);
+        // This function will be called after measurement so measured size array must be longer than 0
+        const measuredSizes: number[] = [];
+        sizes.forEach((s, i) => {
+          if (s !== UNCACHED) {
+            // https://github.com/inokawa/virtua/issues/907
+            if (s) {
+              measuredSizes.push(s);
+            }
+            if (i < startIndex) {
+              measuredCountBeforeStart++;
+            }
+          }
+        });
+
+        // Discard cache for now
+        computedOffsetIndex = -1;
+
+        // Calculate median
+        sort(measuredSizes);
+        const len = measuredSizes.length;
+        const mid = (len / 2) | 0;
+        const median =
+          len % 2 === 0
+            ? (measuredSizes[mid - 1]! + measuredSizes[mid]!) / 2
+            : measuredSizes[mid]!;
+
+        const prevDefaultItemSize = defaultItemSize;
+
+        // Calculate diff of unmeasured items before start
+        jump +=
+          ((defaultItemSize = median) - prevDefaultItemSize) *
+          max(startIndex - measuredCountBeforeStart, 0);
+        shouldAutoEstimateItemSize = false;
+      }
+      return jump;
     },
-    $isSizeEqual: (index, size) =>
-      (sizes.length ? sizes[index] : UNCACHED) === size! + gap,
+    $isSizeEqual: (index, size = UNCACHED) => {
+      const cachedSize = sizes.length ? sizes[index] : UNCACHED;
+      return size === UNCACHED
+        ? isMeasurable(index) && cachedSize === UNCACHED
+        : cachedSize === size + gap;
+    },
     $getTotalSize: () => (length ? getOffset(length) - gap : 0),
     $getLength: () => length,
     $setLength: (nextLength) => {
@@ -204,44 +261,7 @@ export const createGridLayout = (
       // The grid doesn't shift the items
       return 0;
     },
-    $estimateDefaultSize: isAuto
-      ? (startIndex) => {
-          let measuredCountBeforeStart = 0;
-          // This function will be called after measurement so measured size array must be longer than 0
-          const measuredSizes: number[] = [];
-          sizes.forEach((s, i) => {
-            if (s !== UNCACHED) {
-              // https://github.com/inokawa/virtua/issues/907
-              if (s) {
-                measuredSizes.push(s);
-              }
-              if (i < startIndex) {
-                measuredCountBeforeStart++;
-              }
-            }
-          });
-
-          // Discard cache for now
-          computedOffsetIndex = -1;
-
-          // Calculate median
-          sort(measuredSizes);
-          const len = measuredSizes.length;
-          const mid = (len / 2) | 0;
-          const median =
-            len % 2 === 0
-              ? (measuredSizes[mid - 1]! + measuredSizes[mid]!) / 2
-              : measuredSizes[mid]!;
-
-          const prevDefaultItemSize = defaultItemSize;
-
-          // Calculate diff of unmeasured items before start
-          return (
-            ((defaultItemSize = median) - prevDefaultItemSize) *
-            max(startIndex - measuredCountBeforeStart, 0)
-          );
-        }
-      : undefined,
+    $isEstimating: () => shouldAutoEstimateItemSize,
     $isMeasurable: isMeasurable,
     $setPinned: (nextHeader = 0, nextFooter = 0) => {
       header = nextHeader;
@@ -265,7 +285,7 @@ export const createGridLayout = (
                   ]
                 : NULL,
             ),
-    $setAxis: (nextSizes, scrollOffset) => {
+    $relayout: (nextSizes, scrollOffset) => {
       if (nextSizes == NULL) {
         return;
       }

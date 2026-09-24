@@ -30,10 +30,13 @@ import {
   type GridScrollToIndexOpts,
   type StateVersion,
   type GridAxis,
+  type GridAxisSizes,
   type GridCell as GridCellType,
   type GridSize,
   type GridSpan,
   type VirtualStore,
+  ACTION_ITEMS_LENGTH_CHANGE,
+  ACTION_RELAYOUT,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SCROLL_EVENT,
   UPDATE_VIRTUAL_STATE,
@@ -43,11 +46,11 @@ import {
   createGridSpanIndex,
   createVirtualStore,
   getAxisItem,
+  getAxisLength,
   getScrollSize,
   gridScrollBy,
   gridScrollTo,
   gridScrollToIndex,
-  updateGridAxis,
 } from "../core/index.js";
 
 /**
@@ -407,9 +410,9 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
   private container = viewChild.required<ElementRef<HTMLElement>>("container");
 
   /** @internal */
-  private _rowStore!: VirtualStore;
+  private _rowStore!: VirtualStore<GridAxisSizes | number | null>;
   /** @internal */
-  private _colStore!: VirtualStore;
+  private _colStore!: VirtualStore<GridAxisSizes | number | null>;
   /** @internal */
   private _rowLayout!: GridLayout;
   /** @internal */
@@ -509,22 +512,18 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
       const rowSizes = this._rowSizes();
       const colSizes = this._colSizes();
       untracked(() => {
-        updateGridAxis(
-          this._rowStore,
-          this._rowLayout,
-          rows,
-          rowSizes,
-          headerRows,
-          footerRows,
-        );
-        updateGridAxis(
-          this._colStore,
-          this._colLayout,
-          cols,
-          colSizes,
-          headerCols,
-          footerCols,
-        );
+        this._rowLayout.$setPinned(headerRows, footerRows);
+        this._colLayout.$setPinned(headerCols, footerCols);
+        const rowLength = getAxisLength(rows);
+        const colLength = getAxisLength(cols);
+        if (rowLength !== this._rowStore.$getItemsLength()) {
+          this._rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [rowLength]);
+        }
+        if (colLength !== this._colStore.$getItemsLength()) {
+          this._colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colLength]);
+        }
+        this._rowStore.$update(ACTION_RELAYOUT, rowSizes);
+        this._colStore.$update(ACTION_RELAYOUT, colSizes);
       });
     });
 

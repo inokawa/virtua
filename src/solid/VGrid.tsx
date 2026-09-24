@@ -17,6 +17,8 @@ import {
 } from "solid-js";
 import { isServer } from "solid-js/web";
 import {
+  ACTION_ITEMS_LENGTH_CHANGE,
+  ACTION_RELAYOUT,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SCROLL_EVENT,
   UPDATE_VIRTUAL_STATE,
@@ -24,11 +26,11 @@ import {
   createGridLayout,
   createVirtualStore,
   getAxisItem,
+  getAxisLength,
   getScrollSize,
   gridScrollBy,
   gridScrollTo,
   gridScrollToIndex,
-  updateGridAxis,
   type GridDriver,
   type GridScrollToIndexOpts,
   type GridAxis,
@@ -418,24 +420,18 @@ export const VGrid = <R = number, C = number>(
   colStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
 
   createComputed(() => {
-    updateGridAxis(
-      rowStore,
-      rowLayout,
-      props.rows,
-      rowSizes(),
-      props.headerRows,
-      props.footerRows,
-    );
-  });
-  createComputed(() => {
-    updateGridAxis(
-      colStore,
-      colLayout,
-      props.cols,
-      colSizes(),
-      props.headerCols,
-      props.footerCols,
-    );
+    rowLayout.$setPinned(props.headerRows, props.footerRows);
+    colLayout.$setPinned(props.headerCols, props.footerCols);
+    const rowLength = getAxisLength(props.rows);
+    const colLength = getAxisLength(props.cols);
+    if (rowLength !== rowStore.$getItemsLength()) {
+      rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [rowLength]);
+    }
+    if (colLength !== colStore.$getItemsLength()) {
+      colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colLength]);
+    }
+    rowStore.$update(ACTION_RELAYOUT, rowSizes());
+    colStore.$update(ACTION_RELAYOUT, colSizes());
   });
 
   const rowCount = createMemo(

@@ -1,14 +1,4 @@
-import {
-  getAxisLength,
-  type GridLayout,
-  type GridAxis,
-  type GridAxisSizes,
-} from "./layouts/grid.js";
-import {
-  ACTION_ITEMS_LENGTH_CHANGE,
-  ACTION_RELAYOUT,
-  type VirtualStore,
-} from "./store.js";
+import { type GridLayout } from "./layouts/grid.js";
 import { type ItemsRange } from "./types.js";
 import { clamp, EMPTY, max, min, NULL, sort } from "./utils.js";
 
@@ -43,33 +33,6 @@ export interface GridSpan extends GridCell {
    */
   colSpan?: number;
 }
-
-/**
- * @internal
- */
-export const updateGridAxis = (
-  store: VirtualStore,
-  layout: GridLayout,
-  axis: GridAxis<unknown>,
-  sizes: GridAxisSizes | number | null,
-  header?: number,
-  footer?: number,
-) => {
-  const length = getAxisLength(axis);
-  layout.$setPinned(header, footer);
-  if (length !== store.$getItemsLength()) {
-    store.$update(ACTION_ITEMS_LENGTH_CHANGE, [length]);
-  }
-  // The tracks are shifted by the jump deferred during scrolling, which the layout doesn't include.
-  const jump = layout.$setAxis(
-    sizes,
-    store.$getScrollOffset() - store.$getItemOffset(0),
-  );
-  // undefined means nothing changed, and 0 means the tracks changed without a jump.
-  if (jump != NULL) {
-    store.$update(ACTION_RELAYOUT, jump);
-  }
-};
 
 // The states of the previous plan of each grid, keyed by its row layout which is created once
 const rowStatesCache = /*#__PURE__*/ new WeakMap<

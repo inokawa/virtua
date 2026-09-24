@@ -2,6 +2,8 @@
   import { onMount, onDestroy } from "svelte";
   import {
     type StateVersion,
+    ACTION_ITEMS_LENGTH_CHANGE,
+    ACTION_RELAYOUT,
     UPDATE_SCROLL_END_EVENT,
     UPDATE_SCROLL_EVENT,
     UPDATE_VIRTUAL_STATE,
@@ -16,7 +18,6 @@
     gridScrollBy,
     gridScrollTo,
     gridScrollToIndex,
-    updateGridAxis,
   } from "../core/index.js";
   import { styleToString } from "./utils.js";
   import GridRow from "./GridRow.svelte";
@@ -87,10 +88,18 @@
   colStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
 
   $effect.pre(() => {
-    updateGridAxis(rowStore, rowLayout, rows, rowSizes, headerRows, footerRows);
-  });
-  $effect.pre(() => {
-    updateGridAxis(colStore, colLayout, cols, colSizes, headerCols, footerCols);
+    rowLayout.$setPinned(headerRows, footerRows);
+    colLayout.$setPinned(headerCols, footerCols);
+    const rowLength = getAxisLength(rows);
+    const colLength = getAxisLength(cols);
+    if (rowLength !== rowStore.$getItemsLength()) {
+      rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [rowLength]);
+    }
+    if (colLength !== colStore.$getItemsLength()) {
+      colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colLength]);
+    }
+    rowStore.$update(ACTION_RELAYOUT, rowSizes);
+    colStore.$update(ACTION_RELAYOUT, colSizes);
   });
   let rowCount = $derived(stateVersion && rowStore.$getItemsLength());
   let colCount = $derived(stateVersion && colStore.$getItemsLength());
