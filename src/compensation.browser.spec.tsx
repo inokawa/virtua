@@ -9,12 +9,17 @@ import {
   useRef,
   useState,
 } from "react";
-import { Virtualizer, type VirtualizerHandle } from "./react/index.js";
+import {
+  Virtualizer,
+  type VirtualizerHandle,
+  WindowVirtualizer,
+} from "./react/index.js";
 import {
   cleanupScroll,
   expectPosition,
   expectVirtualized,
   findFirstVisibleItem,
+  findLastVisibleItem,
   getItem,
   getVirtualizer,
   relativeBottom,
@@ -26,6 +31,41 @@ import {
 import { delay, nextFrame, range } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
+
+// Wait until the scroll has ended and nothing changes for a few frames.
+// A scroll may have just happened before the wait, so the wait counts from its start too
+const settle = async (viewport: HTMLElement, container: HTMLElement) => {
+  let lastScrollTime = performance.now();
+  const onScroll = () => {
+    lastScrollTime = performance.now();
+  };
+  // The window dispatches its scroll events to the document
+  const target = viewport === document.scrollingElement ? document : viewport;
+  target.addEventListener("scroll", onScroll);
+  const snapshot = () =>
+    JSON.stringify([
+      viewport.scrollTop,
+      viewport.scrollHeight,
+      Array.from(container.children as HTMLCollectionOf<HTMLElement>).map(
+        (el) => [el.textContent, el.offsetTop, el.offsetHeight],
+      ),
+    ]);
+  let prev = snapshot();
+  let stable = 0;
+  let settled = false;
+  // Give up after about 10 seconds
+  for (let i = 0; i < 600 && !settled; i++) {
+    await nextFrame();
+    const next = snapshot();
+    stable = next === prev ? stable + 1 : 0;
+    prev = next;
+    // A single unchanged frame can fall in the middle of a multi frame correction, so a few in a row are required.
+    // The store keeps the scrolling state until 150ms after the last scroll event
+    settled = stable >= 3 && performance.now() - lastScrollTime > 200;
+  }
+  target.removeEventListener("scroll", onScroll);
+  expect(settled).toBe(true);
+};
 
 describe("jump write", () => {
   it("fast scrolling into unmeasured area does not lose scroll position", async () => {
@@ -111,39 +151,6 @@ describe("jump write", () => {
 });
 
 describe("resize jump compensation", () => {
-  // Wait until the scroll has ended and nothing changes for a few frames.
-  // A scroll may have just happened before the wait, so the wait counts from its start too
-  const settle = async (viewport: HTMLElement, container: HTMLElement) => {
-    let lastScrollTime = performance.now();
-    const onScroll = () => {
-      lastScrollTime = performance.now();
-    };
-    viewport.addEventListener("scroll", onScroll);
-    const snapshot = () =>
-      JSON.stringify([
-        viewport.scrollTop,
-        viewport.scrollHeight,
-        Array.from(container.children as HTMLCollectionOf<HTMLElement>).map(
-          (el) => [el.textContent, el.offsetTop, el.offsetHeight],
-        ),
-      ]);
-    let prev = snapshot();
-    let stable = 0;
-    let settled = false;
-    // Give up after about 10 seconds
-    for (let i = 0; i < 600 && !settled; i++) {
-      await nextFrame();
-      const next = snapshot();
-      stable = next === prev ? stable + 1 : 0;
-      prev = next;
-      // A single unchanged frame can fall in the middle of a multi frame correction, so a few in a row are required.
-      // The store keeps the scrolling state until 150ms after the last scroll event
-      settled = stable >= 3 && performance.now() - lastScrollTime > 200;
-    }
-    viewport.removeEventListener("scroll", onScroll);
-    expect(settled).toBe(true);
-  };
-
   it("horizontal start -> end (RTL)", async () => {
     setRTL();
     const VIEWPORT_WIDTH = 400;
@@ -774,6 +781,406 @@ describe("resize jump compensation", () => {
 });
 
 describe("shift compensation", () => {
+  const HEIGHTS = [20, 40, 80, 77];
+  // The ids of the prepended items are negative, and at() takes a negative remainder from the end
+  const heightOf = (id: number) => HEIGHTS.at(id % HEIGHTS.length)!;
+  const VIEWPORT_SIZE = 800;
+
+  // alignBottom keeps the list at the bottom with a flex spacer while the items don't fill the viewport
+  const List = ({
+    items,
+    shift,
+    alignBottom,
+  }: {
+    items: number[];
+    shift?: boolean;
+    alignBottom?: boolean;
+  }) => (
+    <div
+      style={{
+        height: VIEWPORT_SIZE,
+        overflowY: "auto",
+        ...(alignBottom && {
+          display: "flex",
+          flexDirection: "column",
+          // opt out browser's scroll anchoring on the spacer because it will conflict to scroll anchoring of virtualizer
+          overflowAnchor: "none",
+        }),
+      }}
+    >
+      {alignBottom && <div style={{ flexGrow: 1 }} />}
+      <Virtualizer data={items} shift={shift}>
+        {(id) => (
+          <div key={id} style={{ height: heightOf(id) }}>
+            item-{id}
+          </div>
+        )}
+      </Virtualizer>
+    </div>
+  );
+
+  const isScrollable = (viewport: HTMLElement) =>
+    viewport.scrollHeight > viewport.clientHeight;
+
+  it("keep end at mid when add to/remove from end", async () => {
+    const COUNT = 4;
+    let items = range(84);
+    const root = render(<List items={items} />);
+    const { viewport, container } = await getVirtualizer(root);
+    await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+    // fill list and move to mid
+    viewport.scrollTop += 400;
+    await settle(viewport, container);
+    const item = findFirstVisibleItem(container, viewport)!;
+    expect(item.textContent).not.toBe("item-0");
+    const top = relativeTop(viewport, item);
+
+    // add
+    items = [...items, ...range(COUNT, (i) => items.length + i)];
+    rerender(root, <List items={items} />);
+    await settle(viewport, container);
+    // check if visible item is keeped
+    expect(relativeTop(viewport, item)).toBe(top);
+
+    // remove
+    items = items.slice(0, -COUNT);
+    rerender(root, <List items={items} />);
+    await settle(viewport, container);
+    // check if visible item is keeped
+    expect(relativeTop(viewport, item)).toBe(top);
+  });
+
+  it("keep start at mid when add to/remove from start", async () => {
+    const COUNT = 4;
+    let items = range(84);
+    const root = render(<List items={items} />);
+    const { viewport, container } = await getVirtualizer(root);
+    await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+    // fill list and move to mid
+    viewport.scrollTop += 800;
+    await settle(viewport, container);
+    const item = findFirstVisibleItem(container, viewport)!;
+    expect(item.textContent).not.toBe("item-0");
+    const top = relativeTop(viewport, item);
+
+    // add
+    items = [...range(COUNT, (i) => i - COUNT), ...items];
+    rerender(root, <List items={items} shift />);
+    await settle(viewport, container);
+    // check if visible item is keeped
+    expect(relativeTop(viewport, item)).toBe(top);
+
+    // remove
+    items = items.slice(COUNT);
+    rerender(root, <List items={items} shift />);
+    await settle(viewport, container);
+    // check if visible item is keeped
+    expect(relativeTop(viewport, item)).toBe(top);
+  });
+
+  it("prepending when total height is lower than viewport height", async () => {
+    const INITIAL = range(4);
+    const root = render(<List items={INITIAL} />);
+    const { viewport, container } = await getVirtualizer(root);
+    await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+    let i = 0;
+    while (true) {
+      i++;
+      // prepend
+      rerender(
+        root,
+        <List items={[...range(i, (j) => j - i), ...INITIAL]} shift />,
+      );
+      // Check if all items are visible
+      await expect
+        .poll(() => container.childElementCount)
+        .toBe(INITIAL.length + i);
+      await settle(viewport, container);
+
+      if (isScrollable(viewport)) {
+        // Check if sticked to bottom
+        await expectPosition(
+          () =>
+            relativeBottom(viewport, findLastVisibleItem(container, viewport)!),
+          0,
+        );
+        break;
+      }
+      // Check if top is always visible and on top
+      expect(relativeTop(viewport, container.firstElementChild!)).toBe(0);
+
+      // remove
+      rerender(root, <List items={INITIAL} shift />);
+      await expect.poll(() => container.childElementCount).toBe(INITIAL.length);
+    }
+
+    expect(i).toBeGreaterThanOrEqual(8);
+  });
+
+  describe("aligned to bottom", () => {
+    it("prepending when total height is lower than viewport height", async () => {
+      const INITIAL = range(4);
+      const root = render(<List items={INITIAL} alignBottom />);
+      const { viewport, container } = await getVirtualizer(root);
+      await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+      let i = 0;
+      while (true) {
+        i++;
+        // prepend
+        rerender(
+          root,
+          <List
+            items={[...range(i, (j) => j - i), ...INITIAL]}
+            alignBottom
+            shift
+          />,
+        );
+        // Check if all items are visible
+        await expect
+          .poll(() => container.childElementCount)
+          .toBe(INITIAL.length + i);
+        await settle(viewport, container);
+
+        if (isScrollable(viewport)) {
+          // Check if sticked to bottom
+          await expectPosition(
+            () =>
+              relativeBottom(
+                viewport,
+                findLastVisibleItem(container, viewport)!,
+              ),
+            0,
+          );
+          break;
+        }
+        // Check if bottom is always visible and on bottom
+        await expectPosition(
+          () =>
+            relativeBottom(viewport, findLastVisibleItem(container, viewport)!),
+          0,
+        );
+
+        // remove
+        rerender(root, <List items={INITIAL} alignBottom shift />);
+        await expect
+          .poll(() => container.childElementCount)
+          .toBe(INITIAL.length);
+      }
+
+      expect(i).toBeGreaterThanOrEqual(8);
+    });
+
+    it("stick to bottom even if many items are removed from top", async () => {
+      let items = range(4);
+      const root = render(<List items={items} alignBottom />);
+      const { viewport, container } = await getVirtualizer(root);
+      await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+      // prepend many
+      items = [...range(50, (i) => i - 50), ...items];
+      rerender(root, <List items={items} alignBottom shift />);
+
+      // scroll to bottom
+      await expect
+        .poll(() => {
+          scrollToEnd(viewport);
+          return getItem(container, "item-3");
+        })
+        .toBeDefined();
+      await settle(viewport, container);
+
+      // remove many
+      let i = 0;
+      while (true) {
+        i++;
+        items = items.slice(1);
+        rerender(root, <List items={items} alignBottom shift />);
+        await settle(viewport, container);
+
+        // Check if bottom is always visible and on bottom
+        await expectPosition(
+          () =>
+            relativeBottom(viewport, findLastVisibleItem(container, viewport)!),
+          0,
+        );
+
+        if (!isScrollable(viewport)) {
+          break;
+        }
+      }
+
+      expect(i).toBeGreaterThanOrEqual(30);
+    });
+  });
+
+  describe("WindowVirtualizer", () => {
+    const WindowList = ({
+      items,
+      shift,
+    }: {
+      items: number[];
+      shift?: boolean;
+    }) => (
+      <WindowVirtualizer data={items} shift={shift}>
+        {(id) => (
+          <div key={id} style={{ height: heightOf(id) }}>
+            item-{id}
+          </div>
+        )}
+      </WindowVirtualizer>
+    );
+
+    it("keep end at mid when add to/remove from end", async () => {
+      const COUNT = 4;
+      let items = range(84);
+      const root = render(<WindowList items={items} />);
+      const { viewport, container } = await getVirtualizer(root);
+      await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+      // fill list and move to mid
+      window.scrollBy(0, 400);
+      await settle(viewport, container);
+      const item = findFirstVisibleItem(container, viewport)!;
+      expect(item.textContent).not.toBe("item-0");
+      const top = relativeTop(viewport, item);
+
+      // add
+      items = [...items, ...range(COUNT, (i) => items.length + i)];
+      rerender(root, <WindowList items={items} />);
+      await settle(viewport, container);
+      // check if visible item is keeped
+      expect(relativeTop(viewport, item)).toBe(top);
+
+      // remove
+      items = items.slice(0, -COUNT);
+      rerender(root, <WindowList items={items} />);
+      await settle(viewport, container);
+      // check if visible item is keeped
+      expect(relativeTop(viewport, item)).toBe(top);
+    });
+
+    it("keep start at mid when add to/remove from start", async () => {
+      const COUNT = 4;
+      let items = range(84);
+      const root = render(<WindowList items={items} />);
+      const { viewport, container } = await getVirtualizer(root);
+      await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+      // fill list and move to mid
+      window.scrollBy(0, 800);
+      await settle(viewport, container);
+      const item = findFirstVisibleItem(container, viewport)!;
+      expect(item.textContent).not.toBe("item-0");
+      const top = relativeTop(viewport, item);
+
+      // add
+      items = [...range(COUNT, (i) => i - COUNT), ...items];
+      rerender(root, <WindowList items={items} shift />);
+      await settle(viewport, container);
+      // check if visible item is keeped
+      expect(relativeTop(viewport, item)).toBe(top);
+
+      // remove
+      items = items.slice(COUNT);
+      rerender(root, <WindowList items={items} shift />);
+      await settle(viewport, container);
+      // check if visible item is keeped
+      expect(relativeTop(viewport, item)).toBe(top);
+    });
+
+    it("prepending when total height is lower than viewport height", async () => {
+      const INITIAL = range(4);
+      const root = render(<WindowList items={INITIAL} />);
+      const { viewport, container } = await getVirtualizer(root);
+      await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+      let i = 0;
+      while (true) {
+        i++;
+        // prepend
+        rerender(
+          root,
+          <WindowList items={[...range(i, (j) => j - i), ...INITIAL]} shift />,
+        );
+        // Check if all items are visible
+        await expect
+          .poll(() => container.childElementCount)
+          .toBe(INITIAL.length + i);
+        await settle(viewport, container);
+
+        if (isScrollable(viewport)) {
+          // Check if sticked to bottom
+          await expectPosition(
+            () =>
+              relativeBottom(
+                viewport,
+                findLastVisibleItem(container, viewport)!,
+              ),
+            0,
+          );
+          break;
+        }
+        // Check if top is always visible and on top
+        expect(relativeTop(viewport, container.firstElementChild!)).toBe(0);
+
+        // remove
+        rerender(root, <WindowList items={INITIAL} shift />);
+        await expect
+          .poll(() => container.childElementCount)
+          .toBe(INITIAL.length);
+      }
+
+      expect(i).toBeGreaterThanOrEqual(8);
+    });
+
+    it("stick to bottom even if many items are removed from top", async () => {
+      let items = range(4);
+      const root = render(<WindowList items={items} />);
+      const { viewport, container } = await getVirtualizer(root);
+      await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+      // prepend many
+      items = [...range(50, (i) => i - 50), ...items];
+      rerender(root, <WindowList items={items} shift />);
+
+      // scroll to bottom
+      await expect
+        .poll(() => {
+          scrollToEnd(viewport);
+          return getItem(container, "item-3");
+        })
+        .toBeDefined();
+      await settle(viewport, container);
+
+      // remove many
+      let i = 0;
+      while (true) {
+        i++;
+        items = items.slice(1);
+        rerender(root, <WindowList items={items} shift />);
+        await settle(viewport, container);
+
+        // Nothing aligns the list to the bottom of the window once it fits in
+        if (!isScrollable(viewport)) {
+          break;
+        }
+
+        // Check if bottom is always visible and on bottom
+        await expectPosition(
+          () =>
+            relativeBottom(viewport, findLastVisibleItem(container, viewport)!),
+          0,
+        );
+      }
+
+      expect(i).toBeGreaterThanOrEqual(30);
+    });
+  });
+
   it("prepending cancels imperative scroll", async () => {
     let id = 0;
     const createItems = (count: number) => range(count, () => id++);

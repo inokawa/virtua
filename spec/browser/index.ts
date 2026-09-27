@@ -115,6 +115,16 @@ export const findFirstVisibleItem = (
   );
 };
 
+export const findLastVisibleItem = (
+  container: HTMLElement,
+  viewport: HTMLElement,
+) => {
+  const { bottom } = getViewportRect(viewport);
+  return Array.from(container.children)
+    .reverse()
+    .find((item) => item.getBoundingClientRect().top < bottom - 1);
+};
+
 export const relativeTop = (viewport: HTMLElement, item: Element) =>
   item.getBoundingClientRect().top - getViewportRect(viewport).top;
 

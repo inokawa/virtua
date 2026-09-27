@@ -36,30 +36,10 @@ export const expectInRange = (
   expect(value).toBeLessThanOrEqual(max);
 };
 
-export const windowTop = async (child: Locator) => {
-  return (await child.boundingBox())!.y;
-};
-
-export const windowBottom = async (child: Locator) => {
-  const rect = (await child.boundingBox())!;
-
-  return (
-    rect.y +
-    rect.height -
-    (0 + (await child.evaluate(() => window.innerHeight)))
-  );
-};
-
 export const relativeTop = async (parent: Locator, child: Locator) => {
   const p = (await parent.boundingBox())!.y;
   const c = (await child.boundingBox())!.y;
   return c - p;
-};
-
-export const relativeBottom = async (parent: Locator, child: Locator) => {
-  const { y: pY, height: pHeight } = (await parent.boundingBox())!;
-  const { y: cY, height: cHeight } = (await child.boundingBox())!;
-  return pY + pHeight - (cY + cHeight);
 };
 
 const isPointedLocator = (loc: Locator, x: number, y: number) => {
@@ -78,18 +58,6 @@ export const findFirstVisibleItem = async (scrollable: ScrollableLocator) => {
   for (let i = 0; i < all.length; i++) {
     const loc = all[i];
     if (await isPointedLocator(loc, x + 2, y + 2)) {
-      return loc;
-    }
-  }
-  throw new Error("locator not found");
-};
-
-export const findLastVisibleItem = async (scrollable: ScrollableLocator) => {
-  const { x, y, height } = (await scrollable.boundingBox())!;
-  const all = await getItems(scrollable).all();
-  for (let i = all.length - 1; i >= 0; i--) {
-    const loc = all[i];
-    if (await isPointedLocator(loc, x + 2, y + height - 2)) {
       return loc;
     }
   }
@@ -126,29 +94,6 @@ export const getWindowScrollLeft = (page: Page) => {
 
 export const getWindowScrollRight = (page: Page) => {
   return page.evaluate(() => document.body.scrollWidth - window.scrollX);
-};
-
-export const isVerticalScrollBarVisible = async (e: Locator) => {
-  return e.evaluate((e) => e.scrollHeight > (e as HTMLElement).offsetHeight);
-};
-
-export const scrollBy = (
-  scrollable: ScrollableLocator,
-  offset: number,
-  key: "Top" | "Left" = "Top",
-) => {
-  return scrollable.evaluate(
-    (e, [offset, key]) => {
-      e[key] += offset;
-    },
-    [offset, `scroll${key}`] as const,
-  );
-};
-
-export const windowScrollBy = (page: Page, offset: number) => {
-  return page.evaluate((offset) => {
-    window.scrollBy(0, offset);
-  }, offset);
 };
 
 export const scrollToBottom = (
