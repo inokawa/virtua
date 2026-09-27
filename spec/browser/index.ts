@@ -79,9 +79,13 @@ export const getItem = (container: HTMLElement, text: string) =>
 // Firefox rounds a scroll position to a device pixel, and the tester scales its iframe so that is not a whole CSS pixel
 export const SUBPIXEL = server.browser === "firefox" ? 1 : 0;
 
-export const expectPosition = (getPosition: () => number, position: number) =>
+export const expectPosition = (
+  getPosition: () => number,
+  position: number,
+  timeout?: number,
+) =>
   expect
-    .poll(getPosition)
+    .poll(getPosition, { timeout })
     .toSatisfy(
       (value: number) => Math.abs(value - position) <= SUBPIXEL,
       `to be ${position}`,
@@ -122,6 +126,41 @@ export const relativeRight = (viewport: HTMLElement, item: Element) =>
 
 export const relativeBottom = (viewport: HTMLElement, item: Element) =>
   getViewportRect(viewport).bottom - item.getBoundingClientRect().bottom;
+
+// A smooth scroll passes through the offsets between where it starts and where it ends, while an instant one lands near the end at once.
+// The frames between them are not always observed under load, so a scroll which took a while to end counts as smooth too
+type ScrollRecord = { offsets: number[]; start: number; end: number };
+
+export const recordScroll = (target: EventTarget): ScrollRecord => {
+  const read = () =>
+    target === window
+      ? document.scrollingElement!.scrollTop
+      : (target as HTMLElement).scrollTop;
+  const start = performance.now();
+  const record: ScrollRecord = { offsets: [read()], start, end: start };
+  const onScroll = () => {
+    record.offsets.push(read());
+    record.end = performance.now();
+  };
+  target.addEventListener("scroll", onScroll);
+  // The window outlives the test
+  onTestFinished(() => target.removeEventListener("scroll", onScroll));
+  return record;
+};
+
+const SMOOTH_SCROLL_MS = 100;
+
+export const expectSmooth = ({ offsets, start, end }: ScrollRecord) => {
+  const from = offsets[0]!;
+  const to = offsets[offsets.length - 1]!;
+  const margin = Math.abs(to - from) / 4;
+  expect(
+    offsets.some(
+      (offset) =>
+        Math.abs(offset - from) > margin && Math.abs(offset - to) > margin,
+    ) || end - start > SMOOTH_SCROLL_MS,
+  ).toBe(true);
+};
 
 export const expectVirtualized = async (
   root: Element,
