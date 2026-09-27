@@ -181,9 +181,9 @@ describe("resize jump compensation", () => {
     const MIN_PROGRESS = 200;
     const initial = viewport.scrollTop;
     let prev = initial;
-    for (let i = 0; i < 100; i++) {
-      // scroll in small steps like keyboard scrolling does
-      viewport.scrollBy({ top: 40 });
+    for (let i = 0; i < 200; i++) {
+      // scroll in steps smaller than the errors of the estimated sizes like keyboard scrolling does, so a wrong compensation moves the offset back
+      viewport.scrollBy({ top: 10 });
       await nextFrame();
       const next = viewport.scrollTop;
       expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);
@@ -226,9 +226,9 @@ describe("resize jump compensation", () => {
     const read = () => viewport.scrollHeight - viewport.scrollTop;
     const initial = read();
     let prev = initial;
-    for (let i = 0; i < 100; i++) {
-      // scroll in small steps like keyboard scrolling does
-      viewport.scrollBy({ top: -40 });
+    for (let i = 0; i < 200; i++) {
+      // scroll in steps smaller than the errors of the estimated sizes like keyboard scrolling does, so a wrong compensation moves the offset back
+      viewport.scrollBy({ top: -10 });
       await nextFrame();
       const next = read();
       expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);
@@ -258,9 +258,9 @@ describe("resize jump compensation", () => {
     const MIN_PROGRESS = 200;
     const initial = viewport.scrollLeft;
     let prev = initial;
-    for (let i = 0; i < 100; i++) {
-      // scroll in small steps like keyboard scrolling does
-      viewport.scrollBy({ left: 40 });
+    for (let i = 0; i < 200; i++) {
+      // scroll in steps smaller than the errors of the estimated sizes like keyboard scrolling does, so a wrong compensation moves the offset back
+      viewport.scrollBy({ left: 10 });
       await nextFrame();
       const next = viewport.scrollLeft;
       expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);
@@ -338,9 +338,9 @@ describe("resize jump compensation", () => {
     const read = () => viewport.scrollWidth - viewport.scrollLeft;
     const initial = read();
     let prev = initial;
-    for (let i = 0; i < 100; i++) {
-      // scroll in small steps like keyboard scrolling does
-      viewport.scrollBy({ left: -40 });
+    for (let i = 0; i < 200; i++) {
+      // scroll in steps smaller than the errors of the estimated sizes like keyboard scrolling does, so a wrong compensation moves the offset back
+      viewport.scrollBy({ left: -10 });
       await nextFrame();
       const next = read();
       expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);
@@ -370,9 +370,9 @@ describe("resize jump compensation", () => {
       const MIN_PROGRESS = 200;
       const initial = viewport.scrollTop;
       let prev = initial;
-      for (let i = 0; i < 100; i++) {
-        // scroll in small steps like keyboard scrolling does
-        viewport.scrollBy({ top: 40 });
+      for (let i = 0; i < 200; i++) {
+        // scroll in steps smaller than the errors of the estimated sizes like keyboard scrolling does, so a wrong compensation moves the offset back
+        viewport.scrollBy({ top: 10 });
         await nextFrame();
         const next = viewport.scrollTop;
         expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);
@@ -413,9 +413,9 @@ describe("resize jump compensation", () => {
       const read = () => viewport.scrollHeight - viewport.scrollTop;
       const initial = read();
       let prev = initial;
-      for (let i = 0; i < 100; i++) {
-        // scroll in small steps like keyboard scrolling does
-        viewport.scrollBy({ top: -40 });
+      for (let i = 0; i < 200; i++) {
+        // scroll in steps smaller than the errors of the estimated sizes like keyboard scrolling does, so a wrong compensation moves the offset back
+        viewport.scrollBy({ top: -10 });
         await nextFrame();
         const next = read();
         expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);
@@ -445,9 +445,9 @@ describe("resize jump compensation", () => {
       const MIN_PROGRESS = 200;
       const initial = viewport.scrollLeft;
       let prev = initial;
-      for (let i = 0; i < 100; i++) {
-        // scroll in small steps like keyboard scrolling does
-        viewport.scrollBy({ left: 40 });
+      for (let i = 0; i < 200; i++) {
+        // scroll in steps smaller than the errors of the estimated sizes like keyboard scrolling does, so a wrong compensation moves the offset back
+        viewport.scrollBy({ left: 10 });
         await nextFrame();
         const next = viewport.scrollLeft;
         expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);
@@ -489,9 +489,9 @@ describe("resize jump compensation", () => {
       const read = () => viewport.scrollWidth - viewport.scrollLeft;
       const initial = read();
       let prev = initial;
-      for (let i = 0; i < 100; i++) {
-        // scroll in small steps like keyboard scrolling does
-        viewport.scrollBy({ left: -40 });
+      for (let i = 0; i < 200; i++) {
+        // scroll in steps smaller than the errors of the estimated sizes like keyboard scrolling does, so a wrong compensation moves the offset back
+        viewport.scrollBy({ left: -10 });
         await nextFrame();
         const next = read();
         expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);

@@ -160,6 +160,9 @@ export const recordScroll = (target: EventTarget): ScrollRecord => {
 
 const SMOOTH_SCROLL_MS = 100;
 
+// A long smooth scroll animates for longer than the default poll timeout
+export const SMOOTH_TIMEOUT = 10000;
+
 export const expectSmooth = ({ offsets, start, end }: ScrollRecord) => {
   const from = offsets[0]!;
   const to = offsets[offsets.length - 1]!;
