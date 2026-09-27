@@ -185,17 +185,17 @@ export const createScrollObserver = (
       }
       stillMomentumScrolling = false;
 
-      const target = store.$getScrollOffset() + jump;
-      if (
-        target <= 0 ||
-        target >=
-          store.$getStartSpacerSize() +
-            store.$getTotalSize() -
-            store.$getViewportSize()
-      ) {
+      const from = store.$getScrollOffset();
+      const to = from + jump;
+      const end =
+        store.$getStartSpacerSize() +
+        store.$getTotalSize() -
+        store.$getViewportSize();
+      if (to <= 0 || to >= end || from >= end) {
         // Use absolute position at the edges not to exceed scrollable bounds
         // https://github.com/inokawa/virtua/discussions/475
-        scrollTo(target);
+        // https://github.com/inokawa/virtua/issues/983
+        scrollTo(to);
       } else {
         // Use relative position not to overwrite concurrent scrolling
         // https://github.com/inokawa/virtua/issues/898

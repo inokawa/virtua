@@ -1,9 +1,17 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { render } from "../spec/browser/react.js";
-import { createRef, useLayoutEffect, useRef, useState } from "react";
+import {
+  createRef,
+  type Ref,
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { Virtualizer, type VirtualizerHandle } from "./react/index.js";
 import {
   cleanupScroll,
+  expectPosition,
   expectVirtualized,
   getVirtualizer,
 } from "../spec/browser/index.js";
@@ -47,6 +55,46 @@ describe("jump write", () => {
       await new Promise(requestAnimationFrame);
     }
     expect(lost).toBe(0);
+  });
+
+  it("writes absolute position if the offset exceeds the end shrunk by the items above", async () => {
+    type Handle = { setHeight: (height: number) => void };
+    const ref = createRef<Handle>();
+    const handle = createRef<VirtualizerHandle>();
+    const Component = ({
+      ref,
+      handle,
+    }: {
+      ref: Ref<Handle>;
+      handle: Ref<VirtualizerHandle>;
+    }) => {
+      const [height, setHeight] = useState(100);
+      useImperativeHandle(ref, () => ({ setHeight }), []);
+      return (
+        <div style={{ height: 400, overflowY: "auto" }}>
+          <Virtualizer ref={handle} itemSize={100} keepMounted={[14]}>
+            {Array.from({ length: 20 }, (_, i) => (
+              <div key={i} style={{ height: i === 14 ? height : 100 }}>
+                {i}
+              </div>
+            ))}
+          </Virtualizer>
+        </div>
+      );
+    };
+    const root = render(<Component ref={ref} handle={handle} />);
+    const { viewport } = await getVirtualizer(root);
+
+    // Between the end after the shrink below and the end before it
+    await expect
+      .poll(() => {
+        viewport.scrollTop = 1580;
+        return handle.current!.scrollOffset;
+      })
+      .toBe(1580);
+
+    ref.current!.setHeight(50);
+    await expectPosition(() => viewport.scrollTop, 1530);
   });
 });
 
