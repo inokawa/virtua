@@ -45,9 +45,17 @@ const settle = async (viewport: HTMLElement, container: HTMLElement) => {
   const snapshot = () =>
     JSON.stringify([
       viewport.scrollTop,
+      viewport.scrollLeft,
       viewport.scrollHeight,
+      viewport.scrollWidth,
       Array.from(container.children as HTMLCollectionOf<HTMLElement>).map(
-        (el) => [el.textContent, el.offsetTop, el.offsetHeight],
+        (el) => [
+          el.textContent,
+          el.offsetTop,
+          el.offsetLeft,
+          el.offsetHeight,
+          el.offsetWidth,
+        ],
       ),
     ]);
   let prev = snapshot();
@@ -151,6 +159,116 @@ describe("jump write", () => {
 });
 
 describe("resize jump compensation", () => {
+  it("vertical start -> end", async () => {
+    const HEIGHTS = [20, 40, 80, 77];
+    const root = render(
+      <div style={{ height: 400, overflowY: "auto" }}>
+        <Virtualizer data={range(1000)}>
+          {(i) => (
+            <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
+              item-{i}
+            </div>
+          )}
+        </Virtualizer>
+      </div>,
+    );
+    const { viewport, container } = await getVirtualizer(root);
+
+    // check if start is displayed
+    await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+    // check if offset from start is always keeped
+    const MIN_PROGRESS = 200;
+    const initial = viewport.scrollTop;
+    let prev = initial;
+    for (let i = 0; i < 100; i++) {
+      // scroll in small steps like keyboard scrolling does
+      viewport.scrollBy({ top: 40 });
+      await nextFrame();
+      const next = viewport.scrollTop;
+      expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);
+      prev = next;
+    }
+    expect(prev).toBeGreaterThan(initial + MIN_PROGRESS);
+  });
+
+  it("vertical end -> start", async () => {
+    const ITEM_COUNT = 1000;
+    const HEIGHTS = [20, 40, 80, 77];
+    const root = render(
+      <div style={{ height: 400, overflowY: "auto" }}>
+        <Virtualizer data={range(ITEM_COUNT)}>
+          {(i) => (
+            <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
+              item-{i}
+            </div>
+          )}
+        </Virtualizer>
+      </div>,
+    );
+    const { viewport, container } = await getVirtualizer(root);
+
+    // check if start is displayed
+    await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+    // scroll to the end
+    await expect
+      .poll(() => {
+        scrollToEnd(viewport);
+        return getItem(container, `item-${ITEM_COUNT - 1}`);
+      })
+      .toBeDefined();
+    await settle(viewport, container);
+
+    // check if offset from end is always keeped
+    const MIN_PROGRESS = 200;
+    // The offset from the end grows as the offset from the start shrinks
+    const read = () => viewport.scrollHeight - viewport.scrollTop;
+    const initial = read();
+    let prev = initial;
+    for (let i = 0; i < 100; i++) {
+      // scroll in small steps like keyboard scrolling does
+      viewport.scrollBy({ top: -40 });
+      await nextFrame();
+      const next = read();
+      expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);
+      prev = next;
+    }
+    expect(prev).toBeGreaterThan(initial + MIN_PROGRESS);
+  });
+
+  it("horizontal start -> end", async () => {
+    const root = render(
+      <div style={{ width: 400, height: 200, overflowX: "auto" }}>
+        <Virtualizer data={range(1000)} horizontal>
+          {(i) => (
+            <div key={i} style={{ width: i % 3 === 0 ? 100 : 60 }}>
+              item-{i}
+            </div>
+          )}
+        </Virtualizer>
+      </div>,
+    );
+    const { viewport, container } = await getVirtualizer(root);
+
+    // check if start is displayed
+    await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+    // check if offset from start is always keeped
+    const MIN_PROGRESS = 200;
+    const initial = viewport.scrollLeft;
+    let prev = initial;
+    for (let i = 0; i < 100; i++) {
+      // scroll in small steps like keyboard scrolling does
+      viewport.scrollBy({ left: 40 });
+      await nextFrame();
+      const next = viewport.scrollLeft;
+      expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);
+      prev = next;
+    }
+    expect(prev).toBeGreaterThan(initial + MIN_PROGRESS);
+  });
+
   it("horizontal start -> end (RTL)", async () => {
     setRTL();
     const VIEWPORT_WIDTH = 400;
@@ -185,6 +303,202 @@ describe("resize jump compensation", () => {
       prev = next;
     }
     expect(prev).toBeGreaterThan(initial + MIN_PROGRESS);
+  });
+
+  it("horizontal end -> start", async () => {
+    const ITEM_COUNT = 1000;
+    const root = render(
+      <div style={{ width: 400, height: 200, overflowX: "auto" }}>
+        <Virtualizer data={range(ITEM_COUNT)} horizontal>
+          {(i) => (
+            <div key={i} style={{ width: i % 3 === 0 ? 100 : 60 }}>
+              item-{i}
+            </div>
+          )}
+        </Virtualizer>
+      </div>,
+    );
+    const { viewport, container } = await getVirtualizer(root);
+
+    // check if start is displayed
+    await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+    // scroll to the end
+    await expect
+      .poll(() => {
+        scrollToEnd(viewport);
+        return getItem(container, `item-${ITEM_COUNT - 1}`);
+      })
+      .toBeDefined();
+    await settle(viewport, container);
+
+    // check if offset from end is always keeped
+    const MIN_PROGRESS = 200;
+    // The offset from the end grows as the offset from the start shrinks
+    const read = () => viewport.scrollWidth - viewport.scrollLeft;
+    const initial = read();
+    let prev = initial;
+    for (let i = 0; i < 100; i++) {
+      // scroll in small steps like keyboard scrolling does
+      viewport.scrollBy({ left: -40 });
+      await nextFrame();
+      const next = read();
+      expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);
+      prev = next;
+    }
+    expect(prev).toBeGreaterThan(initial + MIN_PROGRESS);
+  });
+
+  describe("WindowVirtualizer", () => {
+    it("vertical start -> end", async () => {
+      const HEIGHTS = [20, 40, 80, 77];
+      const root = render(
+        <WindowVirtualizer data={range(1000)}>
+          {(i) => (
+            <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
+              item-{i}
+            </div>
+          )}
+        </WindowVirtualizer>,
+      );
+      const { viewport, container } = await getVirtualizer(root);
+
+      // check if start is displayed
+      await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+      // check if offset from start is always keeped
+      const MIN_PROGRESS = 200;
+      const initial = viewport.scrollTop;
+      let prev = initial;
+      for (let i = 0; i < 100; i++) {
+        // scroll in small steps like keyboard scrolling does
+        viewport.scrollBy({ top: 40 });
+        await nextFrame();
+        const next = viewport.scrollTop;
+        expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);
+        prev = next;
+      }
+      expect(prev).toBeGreaterThan(initial + MIN_PROGRESS);
+    });
+
+    it("vertical end -> start", async () => {
+      const ITEM_COUNT = 1000;
+      const HEIGHTS = [20, 40, 80, 77];
+      const root = render(
+        <WindowVirtualizer data={range(ITEM_COUNT)}>
+          {(i) => (
+            <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
+              item-{i}
+            </div>
+          )}
+        </WindowVirtualizer>,
+      );
+      const { viewport, container } = await getVirtualizer(root);
+
+      // check if start is displayed
+      await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+      // scroll to the end
+      await expect
+        .poll(() => {
+          scrollToEnd(viewport);
+          return getItem(container, `item-${ITEM_COUNT - 1}`);
+        })
+        .toBeDefined();
+      await settle(viewport, container);
+
+      // check if offset from end is always keeped
+      const MIN_PROGRESS = 200;
+      // The offset from the end grows as the offset from the start shrinks
+      const read = () => viewport.scrollHeight - viewport.scrollTop;
+      const initial = read();
+      let prev = initial;
+      for (let i = 0; i < 100; i++) {
+        // scroll in small steps like keyboard scrolling does
+        viewport.scrollBy({ top: -40 });
+        await nextFrame();
+        const next = read();
+        expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);
+        prev = next;
+      }
+      expect(prev).toBeGreaterThan(initial + MIN_PROGRESS);
+    });
+
+    it("horizontal start -> end", async () => {
+      const root = render(
+        <div style={{ display: "inline-block", height: 400 }}>
+          <WindowVirtualizer data={range(1000)} horizontal>
+            {(i) => (
+              <div key={i} style={{ width: i % 3 === 0 ? 100 : 60 }}>
+                item-{i}
+              </div>
+            )}
+          </WindowVirtualizer>
+        </div>,
+      );
+      const { viewport, container } = await getVirtualizer(root);
+
+      // check if start is displayed
+      await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+      // check if offset from start is always keeped
+      const MIN_PROGRESS = 200;
+      const initial = viewport.scrollLeft;
+      let prev = initial;
+      for (let i = 0; i < 100; i++) {
+        // scroll in small steps like keyboard scrolling does
+        viewport.scrollBy({ left: 40 });
+        await nextFrame();
+        const next = viewport.scrollLeft;
+        expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);
+        prev = next;
+      }
+      expect(prev).toBeGreaterThan(initial + MIN_PROGRESS);
+    });
+
+    it("horizontal end -> start", async () => {
+      const ITEM_COUNT = 1000;
+      const root = render(
+        <div style={{ display: "inline-block", height: 400 }}>
+          <WindowVirtualizer data={range(ITEM_COUNT)} horizontal>
+            {(i) => (
+              <div key={i} style={{ width: i % 3 === 0 ? 100 : 60 }}>
+                item-{i}
+              </div>
+            )}
+          </WindowVirtualizer>
+        </div>,
+      );
+      const { viewport, container } = await getVirtualizer(root);
+
+      // check if start is displayed
+      await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+      // scroll to the end
+      await expect
+        .poll(() => {
+          scrollToEnd(viewport);
+          return getItem(container, `item-${ITEM_COUNT - 1}`);
+        })
+        .toBeDefined();
+      await settle(viewport, container);
+
+      // check if offset from end is always keeped
+      const MIN_PROGRESS = 200;
+      // The offset from the end grows as the offset from the start shrinks
+      const read = () => viewport.scrollWidth - viewport.scrollLeft;
+      const initial = read();
+      let prev = initial;
+      for (let i = 0; i < 100; i++) {
+        // scroll in small steps like keyboard scrolling does
+        viewport.scrollBy({ left: -40 });
+        await nextFrame();
+        const next = read();
+        expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);
+        prev = next;
+      }
+      expect(prev).toBeGreaterThan(initial + MIN_PROGRESS);
+    });
   });
 
   describe("by item position", () => {
