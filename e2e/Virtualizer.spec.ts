@@ -7,32 +7,8 @@ import {
   getVirtualizer,
   getItems,
   relativeBottom,
-  relativeTop,
-  scrollBy,
   isVerticalScrollBarVisible,
 } from "./utils";
-
-test("sticky items", async ({ page }) => {
-  await page.goto(storyUrl("advanced-sticky-group--default"));
-
-  const component = await getScrollable(page);
-
-  // check if start is displayed
-  const first = component.getByText("0", { exact: true });
-  await expect(first).toBeVisible();
-  expect(await relativeTop(component, first)).toEqual(0);
-
-  // scroll
-  const itemHeight = (await component
-    .getByText("1", { exact: true })
-    .boundingBox())!.height;
-  await scrollBy(component, itemHeight * 50);
-  await expect(component.getByText("1", { exact: true })).not.toBeVisible();
-
-  // check if the sticky header is still on top
-  await expect(first).toBeVisible();
-  expect(await relativeTop(component, first)).toEqual(0);
-});
 
 test.describe("aligned to bottom", () => {
   test("reverse", async ({ page }) => {

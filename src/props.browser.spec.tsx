@@ -1,10 +1,22 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { createRef, useLayoutEffect, type RefObject } from "react";
+import {
+  createContext,
+  createRef,
+  use,
+  useLayoutEffect,
+  useState,
+  type RefObject,
+} from "react";
 import { render, rerender } from "../spec/browser/react.js";
-import { Virtualizer, type VirtualizerHandle } from "./react/index.js";
+import {
+  type CustomItemComponentProps,
+  Virtualizer,
+  type VirtualizerHandle,
+} from "./react/index.js";
 import type { CacheSnapshot } from "./core/index.js";
 import {
   cleanupScroll,
+  expectPosition,
   findFirstVisibleItem,
   getItem,
   getVirtualizer,
@@ -92,5 +104,86 @@ describe("cache", () => {
     )!;
     expect(restored.textContent).toBe(text);
     expect(relativeTop(remounted.viewport, restored)).toBe(top);
+  });
+});
+
+describe("keepMounted", () => {
+  it("keeps the sticky header mounted while its group is scrolled", async () => {
+    const STICKY_SIZE = 40;
+    const ITEM_SIZE = 80;
+    const stickyIndexes = new Set([
+      0, 100, 200, 300, 400, 500, 600, 700, 800, 900,
+    ]);
+    const StickyIndexContext = createContext(-1);
+    // The active header sticks to the top of the viewport, and stays mounted while its group is scrolled
+    const StickyItem = ({
+      children,
+      style,
+      index,
+      ref,
+    }: CustomItemComponentProps) => {
+      const activeIndex = use(StickyIndexContext);
+      return (
+        <div
+          ref={ref}
+          style={{
+            ...style,
+            ...(activeIndex === index && { position: "sticky", top: 0 }),
+          }}
+        >
+          {children}
+        </div>
+      );
+    };
+    const handle = createRef<VirtualizerHandle>();
+    const Component = () => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      return (
+        <StickyIndexContext value={activeIndex}>
+          <div style={{ height: 400, overflowY: "auto" }}>
+            <Virtualizer
+              ref={handle}
+              item={StickyItem}
+              keepMounted={[activeIndex]}
+              onScroll={() => {
+                const start = handle.current!.findItemIndex(
+                  handle.current!.scrollOffset,
+                );
+                setActiveIndex(
+                  [...stickyIndexes].reverse().find((index) => start >= index)!,
+                );
+              }}
+            >
+              {range(1000, (i) => (
+                <div
+                  key={i}
+                  style={{
+                    height: stickyIndexes.has(i) ? STICKY_SIZE : ITEM_SIZE,
+                  }}
+                >
+                  item-{i}
+                </div>
+              ))}
+            </Virtualizer>
+          </div>
+        </StickyIndexContext>
+      );
+    };
+    const root = render(<Component />);
+    const { viewport, container } = await getVirtualizer(root);
+
+    // check if start is displayed
+    await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+    expect(relativeTop(viewport, getItem(container, "item-0")!)).toBe(0);
+
+    // scroll
+    viewport.scrollTop += ITEM_SIZE * 50;
+    await expect.poll(() => getItem(container, "item-1")).toBeUndefined();
+
+    // check if the sticky header is still on top
+    await expectPosition(
+      () => relativeTop(viewport, getItem(container, "item-0")!),
+      0,
+    );
   });
 });
