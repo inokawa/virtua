@@ -25,7 +25,7 @@ export const Grid = () => (
     colWidth={100}
     style={{ width: 400, height: 400 }}
   >
-    {(rowIndex, colIndex) => <div>{`item-${rowIndex}/item-${colIndex}`}</div>}
+    {(rowIndex, colIndex) => <div>{`row-${rowIndex}/col-${colIndex}`}</div>}
   </VGrid>
 );
 

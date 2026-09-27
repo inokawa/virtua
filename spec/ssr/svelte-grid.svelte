@@ -11,6 +11,6 @@
   style="width: 400px; height: 400px;"
 >
   {#snippet children(_row: number, _col: number, cell: GridCell)}
-    <div>item-{cell.rowIndex}/item-{cell.colIndex}</div>
+    <div>row-{cell.rowIndex}/col-{cell.colIndex}</div>
   {/snippet}
 </VGrid>

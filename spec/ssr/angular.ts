@@ -54,9 +54,7 @@ export class SsrVListHost {
       style="width: 400px; height: 400px"
     >
       <ng-template let-cell="cell"
-        ><div>
-          item-{{ cell.rowIndex }}/item-{{ cell.colIndex }}
-        </div></ng-template
+        ><div>row-{{ cell.rowIndex }}/col-{{ cell.colIndex }}</div></ng-template
       >
     </virtua-vgrid>
   `,

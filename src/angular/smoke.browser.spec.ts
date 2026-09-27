@@ -29,6 +29,25 @@ class VListHost {
 }
 
 @Component({
+  selector: "smoke-vlist-horizontal",
+  imports: [VList],
+  template: `
+    <virtua-vlist
+      [data]="data"
+      [horizontal]="true"
+      style="width: 400px; height: 200px"
+    >
+      <ng-template let-item
+        ><div>item-{{ item }}</div></ng-template
+      >
+    </virtua-vlist>
+  `,
+})
+class VListHorizontalHost {
+  readonly data = range(1000);
+}
+
+@Component({
   selector: "smoke-virtualizer",
   imports: [Virtualizer],
   template: `
@@ -42,6 +61,23 @@ class VListHost {
   `,
 })
 class VirtualizerHost {
+  readonly data = range(1000);
+}
+
+@Component({
+  selector: "smoke-virtualizer-horizontal",
+  imports: [Virtualizer],
+  template: `
+    <div style="width: 400px; height: 200px; overflow-x: auto">
+      <div virtuaVirtualizer [data]="data" [horizontal]="true">
+        <ng-template let-item
+          ><div>item-{{ item }}</div></ng-template
+        >
+      </div>
+    </div>
+  `,
+})
+class VirtualizerHorizontalHost {
   readonly data = range(1000);
 }
 
@@ -61,6 +97,23 @@ class WindowVirtualizerHost {
 }
 
 @Component({
+  selector: "smoke-window-virtualizer-horizontal",
+  imports: [WindowVirtualizer],
+  template: `
+    <div style="display: inline-block; height: 200px">
+      <virtua-window-virtualizer [data]="data" [horizontal]="true">
+        <ng-template let-item
+          ><div>item-{{ item }}</div></ng-template
+        >
+      </virtua-window-virtualizer>
+    </div>
+  `,
+})
+class WindowVirtualizerHorizontalHost {
+  readonly data = range(1000);
+}
+
+@Component({
   selector: "smoke-vgrid",
   imports: [VGrid],
   template: `
@@ -72,7 +125,7 @@ class WindowVirtualizerHost {
       style="height: 400px; width: 400px"
     >
       <ng-template let-rowIndex="row" let-colIndex="col"
-        ><div>item-{{ rowIndex }}/item-{{ colIndex }}</div></ng-template
+        ><div>row-{{ rowIndex }}/col-{{ colIndex }}</div></ng-template
       >
     </virtua-vgrid>
   `,
@@ -84,8 +137,18 @@ it("VList", async () => {
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
+it("VList (horizontal)", async () => {
+  const root = render(VListHorizontalHost);
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
 it("Virtualizer", async () => {
   const root = render(VirtualizerHost);
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
+it("Virtualizer (horizontal)", async () => {
+  const root = render(VirtualizerHorizontalHost);
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
@@ -94,7 +157,12 @@ it("WindowVirtualizer", async () => {
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
+it("WindowVirtualizer (horizontal)", async () => {
+  const root = render(WindowVirtualizerHorizontalHost);
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
 it("VGrid", async () => {
   const root = render(VGridHost);
-  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "row-0/col-0", "row-999/col-999");
 });

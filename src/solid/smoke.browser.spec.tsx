@@ -24,10 +24,34 @@ it("VList", async () => {
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
+it("VList (horizontal)", async () => {
+  const root = render(() => (
+    <VList
+      data={range(1000)}
+      horizontal
+      style={{ width: "400px", height: "200px" }}
+    >
+      {(d) => <div>item-{d}</div>}
+    </VList>
+  ));
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
 it("Virtualizer", async () => {
   const root = render(() => (
     <div style={{ height: "400px", "overflow-y": "auto" }}>
       <Virtualizer data={range(1000)}>{(d) => <div>item-{d}</div>}</Virtualizer>
+    </div>
+  ));
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
+it("Virtualizer (horizontal)", async () => {
+  const root = render(() => (
+    <div style={{ width: "400px", height: "200px", "overflow-x": "auto" }}>
+      <Virtualizer data={range(1000)} horizontal>
+        {(d) => <div>item-{d}</div>}
+      </Virtualizer>
     </div>
   ));
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
@@ -38,6 +62,17 @@ it("WindowVirtualizer", async () => {
     <WindowVirtualizer data={range(1000)}>
       {(d) => <div>item-{d}</div>}
     </WindowVirtualizer>
+  ));
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
+it("WindowVirtualizer (horizontal)", async () => {
+  const root = render(() => (
+    <div style={{ display: "inline-block", height: "200px" }}>
+      <WindowVirtualizer data={range(1000)} horizontal>
+        {(d) => <div>item-{d}</div>}
+      </WindowVirtualizer>
+    </div>
   ));
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
@@ -53,10 +88,10 @@ it("VGrid", async () => {
     >
       {(rowIndex, colIndex) => (
         <div>
-          item-{rowIndex}/item-{colIndex}
+          row-{rowIndex}/col-{colIndex}
         </div>
       )}
     </VGrid>
   ));
-  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "row-0/col-0", "row-999/col-999");
 });

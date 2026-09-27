@@ -103,8 +103,10 @@ export const expectVirtualizedAndScrollable = async (
   first: string,
   last: string,
 ) => {
+  // check if start is displayed
   await expectVirtualized(root, first, last);
   const { viewport } = await getVirtualizer(root);
+  // scroll to the end, and check if the end is displayed
   await expect
     .poll(() => {
       viewport.scrollTop = viewport.scrollHeight;
@@ -349,13 +351,9 @@ export const expectGridHydrated = async (
 
   hydrate();
 
-  await expectVirtualized(root, "item-0/item-0", "item-999/item-999");
+  await expectVirtualized(root, "row-0/col-0", "row-999/col-999");
   for (const node of ssrNodes) {
     expect(root.contains(node)).toBe(true);
   }
-  await expectVirtualizedAndScrollable(
-    root,
-    "item-0/item-0",
-    "item-999/item-999",
-  );
+  await expectVirtualizedAndScrollable(root, "row-0/col-0", "row-999/col-999");
 };

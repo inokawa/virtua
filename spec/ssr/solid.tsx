@@ -30,7 +30,7 @@ export const Grid = () => (
     style={{ width: "400px", height: "400px" }}
   >
     {(_row, _col, { rowIndex, colIndex }) => (
-      <div>{`item-${rowIndex}/item-${colIndex}`}</div>
+      <div>{`row-${rowIndex}/col-${colIndex}`}</div>
     )}
   </VGrid>
 );

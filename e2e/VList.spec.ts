@@ -19,7 +19,6 @@ import {
   relativeRight,
   relativeTop,
   relativeBottom,
-  relativeLeft,
   getItems,
   setRTL,
   findFirstVisibleItem,
@@ -31,42 +30,6 @@ import {
 const SMOOTH_SCROLL_MS = 100;
 
 test.describe("smoke", () => {
-  test("vertically scrollable", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--default"));
-
-    const component = await getScrollable(page);
-
-    // check if start is displayed
-    const first = component.getByText("0", { exact: true });
-    await expect(first).toBeVisible();
-    expect(await relativeTop(component, first)).toEqual(0);
-
-    // scroll to the end
-    await scrollToBottom(component);
-
-    // check if the end is displayed
-    await expect(component.getByText("999", { exact: true })).toBeVisible();
-  });
-
-  test("horizontally scrollable", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--horizontal"));
-
-    const component = await getScrollable(page);
-
-    // check if start is displayed
-    const first = component.getByText("Column 0", { exact: true });
-    await expect(first).toBeVisible();
-    expect(await relativeLeft(component, first)).toEqual(0);
-
-    // scroll to the end
-    await scrollToRight(component);
-
-    // check if the end is displayed
-    await expect(
-      component.getByText("Column 999", { exact: true }),
-    ).toBeVisible();
-  });
-
   test("vertically scrollable (RTL)", async ({ page }) => {
     await page.goto(storyUrl("basics-vlist--default"), {
       waitUntil: "domcontentloaded",

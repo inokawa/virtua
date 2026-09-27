@@ -21,10 +21,30 @@ it("VList", async () => {
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
+it("VList (horizontal)", async () => {
+  const root = render(
+    <VList data={range(1000)} horizontal style={{ width: 400, height: 200 }}>
+      {(d) => <div key={d}>item-{d}</div>}
+    </VList>,
+  );
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
 it("Virtualizer", async () => {
   const root = render(
     <div style={{ height: 400, overflowY: "auto" }}>
       <Virtualizer data={range(1000)}>
+        {(d) => <div key={d}>item-{d}</div>}
+      </Virtualizer>
+    </div>,
+  );
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
+it("Virtualizer (horizontal)", async () => {
+  const root = render(
+    <div style={{ width: 400, height: 200, overflowX: "auto" }}>
+      <Virtualizer data={range(1000)} horizontal>
         {(d) => <div key={d}>item-{d}</div>}
       </Virtualizer>
     </div>,
@@ -41,6 +61,17 @@ it("WindowVirtualizer", async () => {
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
+it("WindowVirtualizer (horizontal)", async () => {
+  const root = render(
+    <div style={{ display: "inline-block", height: 200 }}>
+      <WindowVirtualizer data={range(1000)} horizontal>
+        {(d) => <div key={d}>item-{d}</div>}
+      </WindowVirtualizer>
+    </div>,
+  );
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
 it("VGrid", async () => {
   const root = render(
     <VGrid
@@ -52,10 +83,10 @@ it("VGrid", async () => {
     >
       {(rowIndex, colIndex) => (
         <div>
-          item-{rowIndex}/item-{colIndex}
+          row-{rowIndex}/col-{colIndex}
         </div>
       )}
     </VGrid>,
   );
-  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "row-0/col-0", "row-999/col-999");
 });

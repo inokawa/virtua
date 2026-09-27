@@ -195,16 +195,12 @@ it("position: fixed viewport (VGrid)", async () => {
     >
       {(rowIndex, colIndex) => (
         <div>
-          row-{rowIndex}/column-{colIndex}
+          row-{rowIndex}/col-{colIndex}
         </div>
       )}
     </VGrid>,
   );
-  await expectVirtualizedAndScrollable(
-    root,
-    "row-0/column-0",
-    "row-99/column-99",
-  );
+  await expectVirtualizedAndScrollable(root, "row-0/col-0", "row-99/col-99");
 });
 
 it("hidden document does not cancel imperative scroll", async () => {
