@@ -1,0 +1,1 @@
+import{t as e}from"./iframe-BuGGiB4i.js";e();
