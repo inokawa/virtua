@@ -1,6 +1,12 @@
 import { afterEach, describe, expect, it, onTestFinished } from "vitest";
 import { server } from "vitest/browser";
-import { createRef, useEffect, useState } from "react";
+import {
+  createRef,
+  type Ref,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import { render } from "../spec/browser/react.js";
 import { VGrid, type VGridHandle } from "./react/index.js";
 import {
@@ -892,13 +898,15 @@ it("auto columns share the space left in the viewport", async () => {
     { width: "auto" },
     { width: 100 },
   ] as const;
-  let setViewport: (width: number) => void;
-  let setContent: (width: number) => void;
-  const Fill = () => {
-    const [viewport, _setViewport] = useState(600);
-    const [content, _setContent] = useState(80);
-    setViewport = _setViewport;
-    setContent = _setContent;
+  type Handle = {
+    setViewport: (width: number) => void;
+    setContent: (width: number) => void;
+  };
+  const ref = createRef<Handle>();
+  const Fill = ({ ref }: { ref: Ref<Handle> }) => {
+    const [viewport, setViewport] = useState(600);
+    const [content, setContent] = useState(80);
+    useImperativeHandle(ref, () => ({ setViewport, setContent }), []);
     return (
       <VGrid
         rows={ROWS}
@@ -922,7 +930,7 @@ it("auto columns share the space left in the viewport", async () => {
       </VGrid>
     );
   };
-  const root = render(<Fill />);
+  const root = render(<Fill ref={ref} />);
   const { viewport, container } = await getVirtualizer(root);
   const width = (text: string) =>
     cell(container, text).getBoundingClientRect().width;
@@ -934,18 +942,18 @@ it("auto columns share the space left in the viewport", async () => {
   expect(viewport.scrollWidth).toBe(600);
 
   // the columns overflow the narrowed viewport at their content widths
-  setViewport!(300);
+  ref.current!.setViewport(300);
   await expect.poll(() => width("1 / 1")).toBeCloseTo(80, 0);
   expect(viewport.scrollWidth).toBe(320);
 
-  setViewport!(600);
+  ref.current!.setViewport(600);
   await expect.poll(() => width("1 / 1")).toBeCloseTo(220, 0);
 
   // the grown content overflows, and the shrunk content shares the space again
-  setContent!(300);
+  ref.current!.setContent(300);
   await expect.poll(() => width("1 / 1")).toBeCloseTo(300, 0);
   expect(viewport.scrollWidth).toBe(760);
-  setContent!(80);
+  ref.current!.setContent(80);
   await expect.poll(() => width("1 / 1")).toBeCloseTo(220, 0);
   expect(viewport.scrollWidth).toBe(600);
 });
