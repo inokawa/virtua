@@ -4,7 +4,7 @@
 
 # Interface: VGridProps\<R, C\>
 
-Defined in: [src/react/VGrid.tsx:122](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L122)
+Defined in: [src/react/VGrid.tsx:124](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L124)
 
 Props of [VGrid](../variables/VGrid.md).
 
@@ -28,7 +28,7 @@ Props of [VGrid](../variables/VGrid.md).
 
 > **children**: (`row`, `col`, `cell`) => `ReactNode`
 
-Defined in: [src/react/VGrid.tsx:132](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L132)
+Defined in: [src/react/VGrid.tsx:134](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L134)
 
 A function to create cell elements rendered by this component.
 
@@ -62,7 +62,7 @@ the row index and the column index of the cell
 
 > **rows**: [`GridAxis`](../../core/type-aliases/GridAxis.md)\<`R`\>
 
-Defined in: [src/react/VGrid.tsx:136](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L136)
+Defined in: [src/react/VGrid.tsx:138](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L138)
 
 The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -72,7 +72,7 @@ The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for th
 
 > **cols**: [`GridAxis`](../../core/type-aliases/GridAxis.md)\<`C`\>
 
-Defined in: [src/react/VGrid.tsx:140](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L140)
+Defined in: [src/react/VGrid.tsx:142](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L142)
 
 The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -82,7 +82,7 @@ The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for
 
 > **rowHeight**: [`GridSize`](../../core/type-aliases/GridSize.md)\<`R`\>
 
-Defined in: [src/react/VGrid.tsx:144](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L144)
+Defined in: [src/react/VGrid.tsx:146](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L146)
 
 The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -92,7 +92,7 @@ The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for
 
 > **colWidth**: [`GridSize`](../../core/type-aliases/GridSize.md)\<`C`\>
 
-Defined in: [src/react/VGrid.tsx:148](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L148)
+Defined in: [src/react/VGrid.tsx:150](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L150)
 
 The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -102,7 +102,7 @@ The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) f
 
 > `optional` **headerRows?**: `number`
 
-Defined in: [src/react/VGrid.tsx:155](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L155)
+Defined in: [src/react/VGrid.tsx:157](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L157)
 
 The number of the leading rows pinned to the start, which are the column headers (`role="columnheader"`).
 
@@ -120,7 +120,7 @@ The number of the leading rows pinned to the start, which are the column headers
 
 > `optional` **sectionRows?**: readonly `number`[]
 
-Defined in: [src/react/VGrid.tsx:161](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L161)
+Defined in: [src/react/VGrid.tsx:163](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L163)
 
 Indexes of the rows which start sections. A section lasts until the next section row or the footer rows, and its first row sticks below the header rows while the section is scrolled through.
 
@@ -132,7 +132,7 @@ Indexes of the rows which start sections. A section lasts until the next section
 
 > `optional` **footerRows?**: `number`
 
-Defined in: [src/react/VGrid.tsx:168](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L168)
+Defined in: [src/react/VGrid.tsx:170](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L170)
 
 The number of the trailing rows pinned to the end.
 
@@ -150,7 +150,7 @@ The number of the trailing rows pinned to the end.
 
 > `optional` **headerCols?**: `number`
 
-Defined in: [src/react/VGrid.tsx:175](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L175)
+Defined in: [src/react/VGrid.tsx:177](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L177)
 
 The number of the leading columns pinned to the start, the last of which is the row header (`role="rowheader"`).
 
@@ -168,7 +168,7 @@ The number of the leading columns pinned to the start, the last of which is the 
 
 > `optional` **footerCols?**: `number`
 
-Defined in: [src/react/VGrid.tsx:182](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L182)
+Defined in: [src/react/VGrid.tsx:184](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L184)
 
 The number of the trailing columns pinned to the end.
 
@@ -186,7 +186,7 @@ The number of the trailing columns pinned to the end.
 
 > `optional` **spans?**: readonly [`GridSpan`](../../core/interfaces/GridSpan.md)[]
 
-Defined in: [src/react/VGrid.tsx:188](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L188)
+Defined in: [src/react/VGrid.tsx:190](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L190)
 
 Cells merged over multiple rows and/or columns. See [GridSpan](../../core/interfaces/GridSpan.md) for the accepted values.
 
@@ -198,7 +198,7 @@ The cell at the origin is stretched over the merged area, and the other cells in
 
 > `optional` **keepMounted?**: readonly [`GridCell`](../../core/interfaces/GridCell.md)[]
 
-Defined in: [src/react/VGrid.tsx:192](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L192)
+Defined in: [src/react/VGrid.tsx:194](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L194)
 
 List of cells that should be always mounted, even when off screen.
 
@@ -208,7 +208,7 @@ List of cells that should be always mounted, even when off screen.
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/react/VGrid.tsx:197](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L197)
+Defined in: [src/react/VGrid.tsx:199](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L199)
 
 Extra space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank cells in fast scrolling.
 
@@ -224,7 +224,7 @@ Extra space in pixels to render before/after the viewport. The minimum value is 
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/react/VGrid.tsx:202](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L202)
+Defined in: [src/react/VGrid.tsx:204](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L204)
 
 The gap between the rows and the columns in pixels, which is not included in the sizes. Must not be changed after mount.
 
@@ -240,7 +240,7 @@ The gap between the rows and the columns in pixels, which is not included in the
 
 > `optional` **ariaSort?**: [`GridCell`](../../core/interfaces/GridCell.md) & `object`
 
-Defined in: [src/react/VGrid.tsx:206](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L206)
+Defined in: [src/react/VGrid.tsx:208](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L208)
 
 The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
@@ -256,7 +256,7 @@ The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
 > `optional` **onVerticalScroll?**: (`offset`) => `void`
 
-Defined in: [src/react/VGrid.tsx:211](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L211)
+Defined in: [src/react/VGrid.tsx:213](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L213)
 
 Callback invoked whenever the vertical scroll offset changes.
 
@@ -278,7 +278,7 @@ Current scrollTop.
 
 > `optional` **onHorizontalScroll?**: (`offset`) => `void`
 
-Defined in: [src/react/VGrid.tsx:216](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L216)
+Defined in: [src/react/VGrid.tsx:218](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L218)
 
 Callback invoked whenever the horizontal scroll offset changes.
 
@@ -300,7 +300,7 @@ Current scrollLeft. Always positive even in RTL.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/react/VGrid.tsx:220](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L220)
+Defined in: [src/react/VGrid.tsx:222](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L222)
 
 Callback invoked when scrolling stops.
 
@@ -314,7 +314,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **style?**: `CSSProperties`
 
-Defined in: node\_modules/@types/react/index.d.ts:2808
+Defined in: node\_modules/@types/react/index.d.ts:2902
 
 #### Inherited from
 
@@ -326,7 +326,7 @@ Defined in: node\_modules/@types/react/index.d.ts:2808
 
 > `optional` **aria-rowindex?**: `number`
 
-Defined in: node\_modules/@types/react/index.d.ts:2676
+Defined in: node\_modules/@types/react/index.d.ts:2770
 
 Defines an element's row index or position with respect to the total number of rows within a table, grid, or treegrid.
 
@@ -345,7 +345,7 @@ Defines an element's row index or position with respect to the total number of r
 
 > `optional` **aria-colindex?**: `number`
 
-Defined in: node\_modules/@types/react/index.d.ts:2525
+Defined in: node\_modules/@types/react/index.d.ts:2619
 
 Defines an element's column index or position with respect to the total number of columns within a table, grid, or treegrid.
 
@@ -364,7 +364,7 @@ Defines an element's column index or position with respect to the total number o
 
 > `optional` **aria-rowspan?**: `number`
 
-Defined in: node\_modules/@types/react/index.d.ts:2686
+Defined in: node\_modules/@types/react/index.d.ts:2780
 
 Defines the number of rows spanned by a cell or gridcell within a table, grid, or treegrid.
 
@@ -383,7 +383,7 @@ Defines the number of rows spanned by a cell or gridcell within a table, grid, o
 
 > `optional` **aria-colspan?**: `number`
 
-Defined in: node\_modules/@types/react/index.d.ts:2535
+Defined in: node\_modules/@types/react/index.d.ts:2629
 
 Defines the number of columns spanned by a cell or gridcell within a table, grid, or treegrid.
 
@@ -402,7 +402,7 @@ Defines the number of columns spanned by a cell or gridcell within a table, grid
 
 > `optional` **className?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2796
+Defined in: node\_modules/@types/react/index.d.ts:2890
 
 #### Inherited from
 
@@ -414,7 +414,7 @@ Defined in: node\_modules/@types/react/index.d.ts:2796
 
 > `optional` **id?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2803
+Defined in: node\_modules/@types/react/index.d.ts:2897
 
 #### Inherited from
 
@@ -426,7 +426,7 @@ Defined in: node\_modules/@types/react/index.d.ts:2803
 
 > `optional` **tabIndex?**: `number`
 
-Defined in: node\_modules/@types/react/index.d.ts:2809
+Defined in: node\_modules/@types/react/index.d.ts:2903
 
 #### Inherited from
 
@@ -438,7 +438,7 @@ Defined in: node\_modules/@types/react/index.d.ts:2809
 
 > `optional` **onKeyDown?**: `KeyboardEventHandler`\<`HTMLElement`\>
 
-Defined in: node\_modules/@types/react/index.d.ts:2317
+Defined in: node\_modules/@types/react/index.d.ts:2411
 
 #### Inherited from
 
@@ -450,7 +450,7 @@ Defined in: node\_modules/@types/react/index.d.ts:2317
 
 > `optional` **onWheel?**: `WheelEventHandler`\<`HTMLElement`\>
 
-Defined in: node\_modules/@types/react/index.d.ts:2451
+Defined in: node\_modules/@types/react/index.d.ts:2545
 
 #### Inherited from
 
@@ -462,7 +462,7 @@ Defined in: node\_modules/@types/react/index.d.ts:2451
 
 > `optional` **aria-activedescendant?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2491
+Defined in: node\_modules/@types/react/index.d.ts:2585
 
 Identifies the currently active element when DOM focus is on a composite widget, textbox, group, or application.
 
@@ -476,7 +476,7 @@ Identifies the currently active element when DOM focus is on a composite widget,
 
 > `optional` **aria-atomic?**: `Booleanish`
 
-Defined in: node\_modules/@types/react/index.d.ts:2493
+Defined in: node\_modules/@types/react/index.d.ts:2587
 
 Indicates whether assistive technologies will present all, or only parts of, the changed region based on the change notifications defined by the aria-relevant attribute.
 
@@ -490,7 +490,7 @@ Indicates whether assistive technologies will present all, or only parts of, the
 
 > `optional` **aria-autocomplete?**: `"none"` \| `"inline"` \| `"both"` \| `"list"`
 
-Defined in: node\_modules/@types/react/index.d.ts:2498
+Defined in: node\_modules/@types/react/index.d.ts:2592
 
 Indicates whether inputting text could trigger display of one or more predictions of the user's intended value for an input and specifies how predictions would be
 presented if they are made.
@@ -505,7 +505,7 @@ presented if they are made.
 
 > `optional` **aria-braillelabel?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2504
+Defined in: node\_modules/@types/react/index.d.ts:2598
 
 Defines a string value that labels the current element, which is intended to be converted into Braille.
 
@@ -523,7 +523,7 @@ aria-label.
 
 > `optional` **aria-brailleroledescription?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2509
+Defined in: node\_modules/@types/react/index.d.ts:2603
 
 Defines a human-readable, author-localized abbreviated description for the role of an element, which is intended to be converted into Braille.
 
@@ -541,7 +541,7 @@ aria-roledescription.
 
 > `optional` **aria-busy?**: `Booleanish`
 
-Defined in: node\_modules/@types/react/index.d.ts:2510
+Defined in: node\_modules/@types/react/index.d.ts:2604
 
 #### Inherited from
 
@@ -553,7 +553,7 @@ Defined in: node\_modules/@types/react/index.d.ts:2510
 
 > `optional` **aria-checked?**: `boolean` \| `"true"` \| `"false"` \| `"mixed"`
 
-Defined in: node\_modules/@types/react/index.d.ts:2515
+Defined in: node\_modules/@types/react/index.d.ts:2609
 
 Indicates the current "checked" state of checkboxes, radio buttons, and other widgets.
 
@@ -572,7 +572,7 @@ Indicates the current "checked" state of checkboxes, radio buttons, and other wi
 
 > `optional` **aria-colcount?**: `number`
 
-Defined in: node\_modules/@types/react/index.d.ts:2520
+Defined in: node\_modules/@types/react/index.d.ts:2614
 
 Defines the total number of columns in a table, grid, or treegrid.
 
@@ -590,7 +590,7 @@ aria-colindex.
 
 > `optional` **aria-colindextext?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2530
+Defined in: node\_modules/@types/react/index.d.ts:2624
 
 Defines a human readable text alternative of aria-colindex.
 
@@ -608,7 +608,7 @@ aria-rowindextext.
 
 > `optional` **aria-controls?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2540
+Defined in: node\_modules/@types/react/index.d.ts:2634
 
 Identifies the element (or elements) whose contents or presence are controlled by the current element.
 
@@ -626,7 +626,7 @@ aria-owns.
 
 > `optional` **aria-current?**: `boolean` \| `"time"` \| `"true"` \| `"false"` \| `"page"` \| `"step"` \| `"location"` \| `"date"`
 
-Defined in: node\_modules/@types/react/index.d.ts:2542
+Defined in: node\_modules/@types/react/index.d.ts:2636
 
 Indicates the element that represents the current item within a container or set of related elements.
 
@@ -640,7 +640,7 @@ Indicates the element that represents the current item within a container or set
 
 > `optional` **aria-describedby?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2547
+Defined in: node\_modules/@types/react/index.d.ts:2641
 
 Identifies the element (or elements) that describes the object.
 
@@ -658,7 +658,7 @@ aria-labelledby
 
 > `optional` **aria-description?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2552
+Defined in: node\_modules/@types/react/index.d.ts:2646
 
 Defines a string value that describes or annotates the current element.
 
@@ -676,7 +676,7 @@ related aria-describedby.
 
 > `optional` **aria-details?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2557
+Defined in: node\_modules/@types/react/index.d.ts:2651
 
 Identifies the element that provides a detailed, extended description for the object.
 
@@ -694,7 +694,7 @@ aria-describedby.
 
 > `optional` **aria-disabled?**: `Booleanish`
 
-Defined in: node\_modules/@types/react/index.d.ts:2562
+Defined in: node\_modules/@types/react/index.d.ts:2656
 
 Indicates that the element is perceivable but disabled, so it is not editable or otherwise operable.
 
@@ -713,7 +713,7 @@ Indicates that the element is perceivable but disabled, so it is not editable or
 
 > `optional` **aria-dropeffect?**: `"link"` \| `"copy"` \| `"none"` \| `"move"` \| `"execute"` \| `"popup"`
 
-Defined in: node\_modules/@types/react/index.d.ts:2567
+Defined in: node\_modules/@types/react/index.d.ts:2661
 
 Indicates what functions can be performed when a dragged object is released on the drop target.
 
@@ -731,7 +731,7 @@ in ARIA 1.1
 
 > `optional` **aria-errormessage?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2572
+Defined in: node\_modules/@types/react/index.d.ts:2666
 
 Identifies the element that provides an error message for the object.
 
@@ -750,7 +750,7 @@ Identifies the element that provides an error message for the object.
 
 > `optional` **aria-expanded?**: `Booleanish`
 
-Defined in: node\_modules/@types/react/index.d.ts:2574
+Defined in: node\_modules/@types/react/index.d.ts:2668
 
 Indicates whether the element, or another grouping element it controls, is currently expanded or collapsed.
 
@@ -764,7 +764,7 @@ Indicates whether the element, or another grouping element it controls, is curre
 
 > `optional` **aria-flowto?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2579
+Defined in: node\_modules/@types/react/index.d.ts:2673
 
 Identifies the next element (or elements) in an alternate reading order of content which, at the user's discretion,
 allows assistive technology to override the general default of reading in document source order.
@@ -779,7 +779,7 @@ allows assistive technology to override the general default of reading in docume
 
 > `optional` **aria-grabbed?**: `Booleanish`
 
-Defined in: node\_modules/@types/react/index.d.ts:2584
+Defined in: node\_modules/@types/react/index.d.ts:2678
 
 Indicates an element's "grabbed" state in a drag-and-drop operation.
 
@@ -797,7 +797,7 @@ in ARIA 1.1
 
 > `optional` **aria-haspopup?**: `boolean` \| `"dialog"` \| `"menu"` \| `"true"` \| `"false"` \| `"grid"` \| `"listbox"` \| `"tree"`
 
-Defined in: node\_modules/@types/react/index.d.ts:2586
+Defined in: node\_modules/@types/react/index.d.ts:2680
 
 Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by an element.
 
@@ -811,7 +811,7 @@ Indicates the availability and type of interactive popup element, such as menu o
 
 > `optional` **aria-hidden?**: `Booleanish`
 
-Defined in: node\_modules/@types/react/index.d.ts:2591
+Defined in: node\_modules/@types/react/index.d.ts:2685
 
 Indicates whether the element is exposed to an accessibility API.
 
@@ -829,7 +829,7 @@ aria-disabled.
 
 > `optional` **aria-invalid?**: `boolean` \| `"true"` \| `"false"` \| `"grammar"` \| `"spelling"`
 
-Defined in: node\_modules/@types/react/index.d.ts:2596
+Defined in: node\_modules/@types/react/index.d.ts:2690
 
 Indicates the entered value does not conform to the format expected by the application.
 
@@ -847,7 +847,7 @@ aria-errormessage.
 
 > `optional` **aria-keyshortcuts?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2598
+Defined in: node\_modules/@types/react/index.d.ts:2692
 
 Indicates keyboard shortcuts that an author has implemented to activate or give focus to an element.
 
@@ -861,7 +861,7 @@ Indicates keyboard shortcuts that an author has implemented to activate or give 
 
 > `optional` **aria-label?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2603
+Defined in: node\_modules/@types/react/index.d.ts:2697
 
 Defines a string value that labels the current element.
 
@@ -879,7 +879,7 @@ aria-labelledby.
 
 > `optional` **aria-labelledby?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2608
+Defined in: node\_modules/@types/react/index.d.ts:2702
 
 Identifies the element (or elements) that labels the current element.
 
@@ -897,7 +897,7 @@ aria-describedby.
 
 > `optional` **aria-level?**: `number`
 
-Defined in: node\_modules/@types/react/index.d.ts:2610
+Defined in: node\_modules/@types/react/index.d.ts:2704
 
 Defines the hierarchical level of an element within a structure.
 
@@ -911,7 +911,7 @@ Defines the hierarchical level of an element within a structure.
 
 > `optional` **aria-live?**: `"off"` \| `"assertive"` \| `"polite"`
 
-Defined in: node\_modules/@types/react/index.d.ts:2612
+Defined in: node\_modules/@types/react/index.d.ts:2706
 
 Indicates that an element will be updated, and describes the types of updates the user agents, assistive technologies, and user can expect from the live region.
 
@@ -925,7 +925,7 @@ Indicates that an element will be updated, and describes the types of updates th
 
 > `optional` **aria-modal?**: `Booleanish`
 
-Defined in: node\_modules/@types/react/index.d.ts:2614
+Defined in: node\_modules/@types/react/index.d.ts:2708
 
 Indicates whether an element is modal when displayed.
 
@@ -939,7 +939,7 @@ Indicates whether an element is modal when displayed.
 
 > `optional` **aria-multiline?**: `Booleanish`
 
-Defined in: node\_modules/@types/react/index.d.ts:2616
+Defined in: node\_modules/@types/react/index.d.ts:2710
 
 Indicates whether a text box accepts multiple lines of input or only a single line.
 
@@ -953,7 +953,7 @@ Indicates whether a text box accepts multiple lines of input or only a single li
 
 > `optional` **aria-multiselectable?**: `Booleanish`
 
-Defined in: node\_modules/@types/react/index.d.ts:2618
+Defined in: node\_modules/@types/react/index.d.ts:2712
 
 Indicates that the user may select more than one item from the current selectable descendants.
 
@@ -967,7 +967,7 @@ Indicates that the user may select more than one item from the current selectabl
 
 > `optional` **aria-orientation?**: `"horizontal"` \| `"vertical"`
 
-Defined in: node\_modules/@types/react/index.d.ts:2620
+Defined in: node\_modules/@types/react/index.d.ts:2714
 
 Indicates whether the element's orientation is horizontal, vertical, or unknown/ambiguous.
 
@@ -981,7 +981,7 @@ Indicates whether the element's orientation is horizontal, vertical, or unknown/
 
 > `optional` **aria-owns?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2626
+Defined in: node\_modules/@types/react/index.d.ts:2720
 
 Identifies an element (or elements) in order to define a visual, functional, or contextual parent/child relationship
 between DOM elements where the DOM hierarchy cannot be used to represent the relationship.
@@ -1000,7 +1000,7 @@ aria-controls.
 
 > `optional` **aria-placeholder?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2631
+Defined in: node\_modules/@types/react/index.d.ts:2725
 
 Defines a short hint (a word or short phrase) intended to aid the user with data entry when the control has no value.
 A hint could be a sample value or a brief description of the expected format.
@@ -1015,7 +1015,7 @@ A hint could be a sample value or a brief description of the expected format.
 
 > `optional` **aria-posinset?**: `number`
 
-Defined in: node\_modules/@types/react/index.d.ts:2636
+Defined in: node\_modules/@types/react/index.d.ts:2730
 
 Defines an element's number or position in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.
 
@@ -1033,7 +1033,7 @@ aria-setsize.
 
 > `optional` **aria-pressed?**: `boolean` \| `"true"` \| `"false"` \| `"mixed"`
 
-Defined in: node\_modules/@types/react/index.d.ts:2641
+Defined in: node\_modules/@types/react/index.d.ts:2735
 
 Indicates the current "pressed" state of toggle buttons.
 
@@ -1052,7 +1052,7 @@ Indicates the current "pressed" state of toggle buttons.
 
 > `optional` **aria-readonly?**: `Booleanish`
 
-Defined in: node\_modules/@types/react/index.d.ts:2646
+Defined in: node\_modules/@types/react/index.d.ts:2740
 
 Indicates that the element is not editable, but is otherwise operable.
 
@@ -1070,7 +1070,7 @@ aria-disabled.
 
 > `optional` **aria-relevant?**: `"text"` \| `"all"` \| `"additions"` \| `"additions removals"` \| `"additions text"` \| `"removals"` \| `"removals additions"` \| `"removals text"` \| `"text additions"` \| `"text removals"`
 
-Defined in: node\_modules/@types/react/index.d.ts:2651
+Defined in: node\_modules/@types/react/index.d.ts:2745
 
 Indicates what notifications the user agent will trigger when the accessibility tree within a live region is modified.
 
@@ -1088,7 +1088,7 @@ aria-atomic.
 
 > `optional` **aria-required?**: `Booleanish`
 
-Defined in: node\_modules/@types/react/index.d.ts:2664
+Defined in: node\_modules/@types/react/index.d.ts:2758
 
 Indicates that user input is required on the element before a form may be submitted.
 
@@ -1102,7 +1102,7 @@ Indicates that user input is required on the element before a form may be submit
 
 > `optional` **aria-roledescription?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2666
+Defined in: node\_modules/@types/react/index.d.ts:2760
 
 Defines a human-readable, author-localized description for the role of an element.
 
@@ -1116,7 +1116,7 @@ Defines a human-readable, author-localized description for the role of an elemen
 
 > `optional` **aria-rowcount?**: `number`
 
-Defined in: node\_modules/@types/react/index.d.ts:2671
+Defined in: node\_modules/@types/react/index.d.ts:2765
 
 Defines the total number of rows in a table, grid, or treegrid.
 
@@ -1134,7 +1134,7 @@ aria-rowindex.
 
 > `optional` **aria-rowindextext?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2681
+Defined in: node\_modules/@types/react/index.d.ts:2775
 
 Defines a human readable text alternative of aria-rowindex.
 
@@ -1152,7 +1152,7 @@ aria-colindextext.
 
 > `optional` **aria-selected?**: `Booleanish`
 
-Defined in: node\_modules/@types/react/index.d.ts:2691
+Defined in: node\_modules/@types/react/index.d.ts:2785
 
 Indicates the current "selected" state of various widgets.
 
@@ -1171,7 +1171,7 @@ Indicates the current "selected" state of various widgets.
 
 > `optional` **aria-setsize?**: `number`
 
-Defined in: node\_modules/@types/react/index.d.ts:2696
+Defined in: node\_modules/@types/react/index.d.ts:2790
 
 Defines the number of items in the current set of listitems or treeitems. Not required if all elements in the set are present in the DOM.
 
@@ -1189,7 +1189,7 @@ aria-posinset.
 
 > `optional` **aria-sort?**: `"ascending"` \| `"descending"` \| `"other"` \| `"none"`
 
-Defined in: node\_modules/@types/react/index.d.ts:2698
+Defined in: node\_modules/@types/react/index.d.ts:2792
 
 Indicates if items in a table or grid are sorted in ascending or descending order.
 
@@ -1203,7 +1203,7 @@ Indicates if items in a table or grid are sorted in ascending or descending orde
 
 > `optional` **aria-valuemax?**: `number`
 
-Defined in: node\_modules/@types/react/index.d.ts:2700
+Defined in: node\_modules/@types/react/index.d.ts:2794
 
 Defines the maximum allowed value for a range widget.
 
@@ -1217,7 +1217,7 @@ Defines the maximum allowed value for a range widget.
 
 > `optional` **aria-valuemin?**: `number`
 
-Defined in: node\_modules/@types/react/index.d.ts:2702
+Defined in: node\_modules/@types/react/index.d.ts:2796
 
 Defines the minimum allowed value for a range widget.
 
@@ -1231,7 +1231,7 @@ Defines the minimum allowed value for a range widget.
 
 > `optional` **aria-valuenow?**: `number`
 
-Defined in: node\_modules/@types/react/index.d.ts:2707
+Defined in: node\_modules/@types/react/index.d.ts:2801
 
 Defines the current value for a range widget.
 
@@ -1249,7 +1249,7 @@ aria-valuetext.
 
 > `optional` **aria-valuetext?**: `string`
 
-Defined in: node\_modules/@types/react/index.d.ts:2709
+Defined in: node\_modules/@types/react/index.d.ts:2803
 
 Defines the human readable text alternative of aria-valuenow for a range widget.
 

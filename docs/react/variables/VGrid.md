@@ -6,7 +6,7 @@
 
 > `const` **VGrid**: \<`R`, `C`\>(`props`) => `ReactElement`
 
-Defined in: [src/react/VGrid.tsx:350](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/react/VGrid.tsx#L350)
+Defined in: [src/react/VGrid.tsx:352](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/react/VGrid.tsx#L352)
 
 Virtualized grid component for tabular data. See [VGridProps](../interfaces/VGridProps.md) and [VGridHandle](../interfaces/VGridHandle.md).
 

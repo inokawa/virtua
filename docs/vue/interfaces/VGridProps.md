@@ -4,7 +4,7 @@
 
 # Interface: VGridProps\<R, C\>
 
-Defined in: [src/vue/VGrid.tsx:45](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L45)
+Defined in: [src/vue/VGrid.tsx:47](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L47)
 
 Props of [VGrid](../variables/VGrid.md).
 
@@ -28,7 +28,7 @@ Props of [VGrid](../variables/VGrid.md).
 
 > **rows**: [`GridAxis`](../../core/type-aliases/GridAxis.md)\<`R`\>
 
-Defined in: [src/vue/VGrid.tsx:49](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L49)
+Defined in: [src/vue/VGrid.tsx:51](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L51)
 
 The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -38,7 +38,7 @@ The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for th
 
 > **cols**: [`GridAxis`](../../core/type-aliases/GridAxis.md)\<`C`\>
 
-Defined in: [src/vue/VGrid.tsx:53](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L53)
+Defined in: [src/vue/VGrid.tsx:55](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L55)
 
 The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -48,7 +48,7 @@ The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for
 
 > **rowHeight**: [`GridSize`](../../core/type-aliases/GridSize.md)\<`R`\>
 
-Defined in: [src/vue/VGrid.tsx:57](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L57)
+Defined in: [src/vue/VGrid.tsx:59](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L59)
 
 The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -58,7 +58,7 @@ The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for
 
 > **colWidth**: [`GridSize`](../../core/type-aliases/GridSize.md)\<`C`\>
 
-Defined in: [src/vue/VGrid.tsx:61](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L61)
+Defined in: [src/vue/VGrid.tsx:63](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L63)
 
 The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -68,7 +68,7 @@ The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) f
 
 > `optional` **headerRows?**: `number`
 
-Defined in: [src/vue/VGrid.tsx:68](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L68)
+Defined in: [src/vue/VGrid.tsx:70](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L70)
 
 The number of the leading rows pinned to the start, which are the column headers (`role="columnheader"`).
 
@@ -86,7 +86,7 @@ The number of the leading rows pinned to the start, which are the column headers
 
 > `optional` **sectionRows?**: readonly `number`[]
 
-Defined in: [src/vue/VGrid.tsx:74](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L74)
+Defined in: [src/vue/VGrid.tsx:76](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L76)
 
 Indexes of the rows which start sections. A section lasts until the next section row or the footer rows, and its first row sticks below the header rows while the section is scrolled through.
 
@@ -98,7 +98,7 @@ Indexes of the rows which start sections. A section lasts until the next section
 
 > `optional` **footerRows?**: `number`
 
-Defined in: [src/vue/VGrid.tsx:81](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L81)
+Defined in: [src/vue/VGrid.tsx:83](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L83)
 
 The number of the trailing rows pinned to the end.
 
@@ -116,7 +116,7 @@ The number of the trailing rows pinned to the end.
 
 > `optional` **headerCols?**: `number`
 
-Defined in: [src/vue/VGrid.tsx:88](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L88)
+Defined in: [src/vue/VGrid.tsx:90](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L90)
 
 The number of the leading columns pinned to the start, the last of which is the row header (`role="rowheader"`).
 
@@ -134,7 +134,7 @@ The number of the leading columns pinned to the start, the last of which is the 
 
 > `optional` **footerCols?**: `number`
 
-Defined in: [src/vue/VGrid.tsx:95](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L95)
+Defined in: [src/vue/VGrid.tsx:97](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L97)
 
 The number of the trailing columns pinned to the end.
 
@@ -152,7 +152,7 @@ The number of the trailing columns pinned to the end.
 
 > `optional` **spans?**: readonly [`GridSpan`](../../core/interfaces/GridSpan.md)[]
 
-Defined in: [src/vue/VGrid.tsx:101](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L101)
+Defined in: [src/vue/VGrid.tsx:103](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L103)
 
 Cells merged over multiple rows and/or columns. See [GridSpan](../../core/interfaces/GridSpan.md) for the accepted values.
 
@@ -164,7 +164,7 @@ The cell at the origin is stretched over the merged area, and the other cells in
 
 > `optional` **keepMounted?**: readonly [`GridCell`](../../core/interfaces/GridCell.md)[]
 
-Defined in: [src/vue/VGrid.tsx:105](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L105)
+Defined in: [src/vue/VGrid.tsx:107](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L107)
 
 List of cells that should be always mounted, even when off screen.
 
@@ -174,7 +174,7 @@ List of cells that should be always mounted, even when off screen.
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/vue/VGrid.tsx:110](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L110)
+Defined in: [src/vue/VGrid.tsx:112](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L112)
 
 Extra space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank cells in fast scrolling.
 
@@ -190,7 +190,7 @@ Extra space in pixels to render before/after the viewport. The minimum value is 
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/vue/VGrid.tsx:115](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L115)
+Defined in: [src/vue/VGrid.tsx:117](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L117)
 
 The gap between the rows and the columns in pixels, which is not included in the sizes. Must not be changed after mount.
 
@@ -206,7 +206,7 @@ The gap between the rows and the columns in pixels, which is not included in the
 
 > `optional` **ariaSort?**: [`GridCell`](../../core/interfaces/GridCell.md) & `object`
 
-Defined in: [src/vue/VGrid.tsx:119](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L119)
+Defined in: [src/vue/VGrid.tsx:121](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L121)
 
 The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
@@ -222,7 +222,7 @@ The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
 > `optional` **onVerticalScroll?**: (`offset`) => `void`
 
-Defined in: [src/vue/VGrid.tsx:124](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L124)
+Defined in: [src/vue/VGrid.tsx:126](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L126)
 
 Callback invoked whenever the vertical scroll offset changes.
 
@@ -244,7 +244,7 @@ Current scrollTop.
 
 > `optional` **onHorizontalScroll?**: (`offset`) => `void`
 
-Defined in: [src/vue/VGrid.tsx:129](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L129)
+Defined in: [src/vue/VGrid.tsx:131](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L131)
 
 Callback invoked whenever the horizontal scroll offset changes.
 
@@ -266,7 +266,7 @@ Current scrollLeft. Always positive even in RTL.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/vue/VGrid.tsx:133](https://github.com/inokawa/virtua/blob/d2c401060e6d18a2ba3047dfbec3d3261c983fcc/src/vue/VGrid.tsx#L133)
+Defined in: [src/vue/VGrid.tsx:135](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/vue/VGrid.tsx#L135)
 
 Callback invoked when scrolling stops.
 
@@ -280,7 +280,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **key?**: `PropertyKey`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1215
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1213
 
 #### Inherited from
 
@@ -292,7 +292,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1215
 
 > `optional` **ref?**: `VNodeRef`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1216
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1214
 
 #### Inherited from
 
@@ -304,7 +304,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1216
 
 > `optional` **ref\_for?**: `boolean`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1217
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1215
 
 #### Inherited from
 
@@ -316,7 +316,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1217
 
 > `optional` **ref\_key?**: `string`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1218
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1216
 
 #### Inherited from
 
@@ -328,7 +328,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1218
 
 > `optional` **onVnodeBeforeMount?**: `VNodeMountHook` \| `VNodeMountHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1219
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1217
 
 #### Inherited from
 
@@ -340,7 +340,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1219
 
 > `optional` **onVnodeMounted?**: `VNodeMountHook` \| `VNodeMountHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1220
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1218
 
 #### Inherited from
 
@@ -352,7 +352,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1220
 
 > `optional` **onVnodeBeforeUpdate?**: `VNodeUpdateHook` \| `VNodeUpdateHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1221
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1219
 
 #### Inherited from
 
@@ -364,7 +364,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1221
 
 > `optional` **onVnodeUpdated?**: `VNodeUpdateHook` \| `VNodeUpdateHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1222
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1220
 
 #### Inherited from
 
@@ -376,7 +376,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1222
 
 > `optional` **onVnodeBeforeUnmount?**: `VNodeMountHook` \| `VNodeMountHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1223
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1221
 
 #### Inherited from
 
@@ -388,7 +388,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1223
 
 > `optional` **onVnodeUnmounted?**: `VNodeMountHook` \| `VNodeMountHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1224
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1222
 
 #### Inherited from
 
@@ -400,7 +400,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1224
 
 > `optional` **class?**: `unknown`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1403
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1401
 
 #### Inherited from
 
@@ -412,7 +412,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1403
 
 > `optional` **style?**: `unknown`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1404
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1402
 
 #### Inherited from
 
