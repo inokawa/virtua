@@ -3,84 +3,84 @@
     "name": "Total",
     "path": "lib/index.js",
     "import": "*",
-    "limit": "8.4 kB"
+    "limit": "7.9 kB"
   },
   {
     "name": "VList",
     "path": "lib/index.js",
     "import": "{ VList }",
-    "limit": "4 kB"
+    "limit": "3.8 kB"
   },
   {
     "name": "Virtualizer",
     "path": "lib/index.js",
     "import": "{ Virtualizer }",
-    "limit": "4 kB"
+    "limit": "3.7 kB"
   },
   {
     "name": "WindowVirtualizer",
     "path": "lib/index.js",
     "import": "{ WindowVirtualizer }",
-    "limit": "4 kB"
+    "limit": "3.6 kB"
   },
   {
     "name": "VGrid",
     "path": "lib/index.js",
     "import": "{ VGrid }",
-    "limit": "6.3 kB"
+    "limit": "6 kB"
   },
   {
     "name": "vue VList",
     "path": "lib/vue/index.js",
     "import": "{ VList }",
-    "limit": "4.3 kB"
+    "limit": "4.1 kB"
   },
   {
     "name": "vue Virtualizer",
     "path": "lib/vue/index.js",
     "import": "{ Virtualizer }",
-    "limit": "4 kB"
+    "limit": "3.8 kB"
   },
   {
     "name": "vue WindowVirtualizer",
     "path": "lib/vue/index.js",
     "import": "{ WindowVirtualizer }",
-    "limit": "4 kB"
+    "limit": "3.7 kB"
   },
   {
     "name": "vue VGrid",
     "path": "lib/vue/index.js",
     "import": "{ VGrid }",
-    "limit": "6.3 kB"
+    "limit": "6.1 kB"
   },
   {
     "name": "solid VList",
     "path": "lib/solid/index.js",
     "import": "{ VList }",
-    "limit": "4 kB"
+    "limit": "3.9 kB"
   },
   {
     "name": "solid Virtualizer",
     "path": "lib/solid/index.js",
     "import": "{ Virtualizer }",
-    "limit": "4 kB"
+    "limit": "3.6 kB"
   },
   {
     "name": "solid WindowVirtualizer",
     "path": "lib/solid/index.js",
     "import": "{ WindowVirtualizer }",
-    "limit": "4 kB"
+    "limit": "3.6 kB"
   },
   {
     "name": "solid VGrid",
     "path": "lib/solid/index.js",
     "import": "{ VGrid }",
-    "limit": "6.75 kB"
+    "limit": "6.4 kB"
   },
   {
     "name": "angular",
     "path": "lib/angular/index.js",
     "import": "*",
-    "limit": "10.7 kB"
+    "limit": "10.1 kB"
   }
 ]
