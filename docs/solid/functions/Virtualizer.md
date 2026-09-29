@@ -6,7 +6,7 @@
 
 > **Virtualizer**\<`T`\>(`props`): `Element`
 
-Defined in: [src/solid/Virtualizer.tsx:176](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/solid/Virtualizer.tsx#L176)
+Defined in: [src/solid/Virtualizer.tsx:176](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/solid/Virtualizer.tsx#L176)
 
 Customizable list virtualizer for advanced usage. See [VirtualizerProps](../interfaces/VirtualizerProps.md) and [VirtualizerHandle](../interfaces/VirtualizerHandle.md).
 

@@ -4,7 +4,7 @@
 
 # Interface: VGridHandle
 
-Defined in: [src/angular/VGrid.ts:59](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/angular/VGrid.ts#L59)
+Defined in: [src/angular/VGrid.ts:59](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/angular/VGrid.ts#L59)
 
 Methods of [VGrid](../classes/VGrid.md).
 
@@ -14,7 +14,7 @@ Methods of [VGrid](../classes/VGrid.md).
 
 > **findRowIndex**(`offset`): `number`
 
-Defined in: [src/angular/VGrid.ts:88](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/angular/VGrid.ts#L88)
+Defined in: [src/angular/VGrid.ts:88](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/angular/VGrid.ts#L88)
 
 Find nearest row index from offset.
 
@@ -36,7 +36,7 @@ offset in pixels from the top of the scroll container
 
 > **findColIndex**(`offset`): `number`
 
-Defined in: [src/angular/VGrid.ts:93](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/angular/VGrid.ts#L93)
+Defined in: [src/angular/VGrid.ts:93](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/angular/VGrid.ts#L93)
 
 Find nearest column index from offset.
 
@@ -58,7 +58,7 @@ offset in pixels from the start of the scroll container
 
 > **getRowOffset**(`index`): `number`
 
-Defined in: [src/angular/VGrid.ts:98](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/angular/VGrid.ts#L98)
+Defined in: [src/angular/VGrid.ts:98](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/angular/VGrid.ts#L98)
 
 Get offset of the row from the top.
 
@@ -80,7 +80,7 @@ index of row
 
 > **getColOffset**(`index`): `number`
 
-Defined in: [src/angular/VGrid.ts:103](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/angular/VGrid.ts#L103)
+Defined in: [src/angular/VGrid.ts:103](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/angular/VGrid.ts#L103)
 
 Get offset of the column from the start.
 
@@ -102,7 +102,7 @@ index of column
 
 > **getRowSize**(`index`): `number`
 
-Defined in: [src/angular/VGrid.ts:108](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/angular/VGrid.ts#L108)
+Defined in: [src/angular/VGrid.ts:108](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/angular/VGrid.ts#L108)
 
 Get size of the row.
 
@@ -124,7 +124,7 @@ index of row
 
 > **getColSize**(`index`): `number`
 
-Defined in: [src/angular/VGrid.ts:113](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/angular/VGrid.ts#L113)
+Defined in: [src/angular/VGrid.ts:113](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/angular/VGrid.ts#L113)
 
 Get size of the column.
 
@@ -146,7 +146,7 @@ index of column
 
 > **scrollToIndex**(`opts`): `void`
 
-Defined in: [src/angular/VGrid.ts:118](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/angular/VGrid.ts#L118)
+Defined in: [src/angular/VGrid.ts:118](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/angular/VGrid.ts#L118)
 
 Scroll to the cell specified by the indexes. The cell is not hidden behind the rows and the columns sticking over it.
 
@@ -168,7 +168,7 @@ the indexes of the cell and the options. See [GridScrollToIndexOpts](../../core/
 
 > **scrollTo**(`offset`): `void`
 
-Defined in: [src/angular/VGrid.ts:123](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/angular/VGrid.ts#L123)
+Defined in: [src/angular/VGrid.ts:123](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/angular/VGrid.ts#L123)
 
 Scroll to the given offsets from the top/start of the scroll container.
 
@@ -196,7 +196,7 @@ the offsets. The axis whose offset is omitted is not scrolled.
 
 > **scrollBy**(`offset`): `void`
 
-Defined in: [src/angular/VGrid.ts:128](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/angular/VGrid.ts#L128)
+Defined in: [src/angular/VGrid.ts:128](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/angular/VGrid.ts#L128)
 
 Scroll by the given offsets from the current position.
 
@@ -224,7 +224,7 @@ the offsets. The axis whose offset is omitted is not scrolled.
 
 > `readonly` **verticalScrollOffset**: `number`
 
-Defined in: [src/angular/VGrid.ts:63](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/angular/VGrid.ts#L63)
+Defined in: [src/angular/VGrid.ts:63](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/angular/VGrid.ts#L63)
 
 Get current scrollTop.
 
@@ -234,7 +234,7 @@ Get current scrollTop.
 
 > `readonly` **horizontalScrollOffset**: `number`
 
-Defined in: [src/angular/VGrid.ts:67](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/angular/VGrid.ts#L67)
+Defined in: [src/angular/VGrid.ts:67](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/angular/VGrid.ts#L67)
 
 Get current scrollLeft. Always positive even in RTL.
 
@@ -244,7 +244,7 @@ Get current scrollLeft. Always positive even in RTL.
 
 > `readonly` **scrollHeight**: `number`
 
-Defined in: [src/angular/VGrid.ts:71](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/angular/VGrid.ts#L71)
+Defined in: [src/angular/VGrid.ts:71](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/angular/VGrid.ts#L71)
 
 Get current scrollHeight.
 
@@ -254,7 +254,7 @@ Get current scrollHeight.
 
 > `readonly` **scrollWidth**: `number`
 
-Defined in: [src/angular/VGrid.ts:75](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/angular/VGrid.ts#L75)
+Defined in: [src/angular/VGrid.ts:75](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/angular/VGrid.ts#L75)
 
 Get current scrollWidth.
 
@@ -264,7 +264,7 @@ Get current scrollWidth.
 
 > `readonly` **viewportHeight**: `number`
 
-Defined in: [src/angular/VGrid.ts:79](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/angular/VGrid.ts#L79)
+Defined in: [src/angular/VGrid.ts:79](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/angular/VGrid.ts#L79)
 
 Get current clientHeight.
 
@@ -274,6 +274,6 @@ Get current clientHeight.
 
 > `readonly` **viewportWidth**: `number`
 
-Defined in: [src/angular/VGrid.ts:83](https://github.com/inokawa/virtua/blob/166aa0c2bd04bf23e3e21e6e8e7b2789d958e28c/src/angular/VGrid.ts#L83)
+Defined in: [src/angular/VGrid.ts:83](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/angular/VGrid.ts#L83)
 
 Get current clientWidth.
