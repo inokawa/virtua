@@ -1,5 +1,6 @@
 import { vi, onTestFinished } from "vitest";
 import { render as _render, cleanup } from "@testing-library/vue";
+import { delay } from "../utils.js";
 
 export const render = async <T>(...args: Parameters<typeof _render<T>>) => {
   onTestFinished(cleanup);
@@ -8,7 +9,7 @@ export const render = async <T>(...args: Parameters<typeof _render<T>>) => {
   let prev = res.baseElement.innerHTML;
   while (true) {
     vi.runAllTicks();
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await delay(50);
     const current = res.baseElement.innerHTML;
     if (prev === current) {
       if (same) {

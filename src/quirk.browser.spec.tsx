@@ -15,6 +15,7 @@ import {
   expectVirtualizedAndScrollable,
   getVirtualizer,
 } from "../spec/browser/index.js";
+import { delay } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
 
@@ -76,7 +77,7 @@ it("display: none (Virtualizer)", async () => {
   root.style.display = "none";
   await waitForZeroSizeNotification(container);
   // let pending resize notifications propagate
-  await new Promise((resolve) => setTimeout(resolve, 100));
+  await delay(100);
 
   expect(container.style.height).toEqual(initialHeight);
 });
@@ -99,7 +100,7 @@ it("display: none (WindowVirtualizer)", async () => {
   root.style.display = "none";
   await waitForZeroSizeNotification(container);
   // let pending resize notifications propagate
-  await new Promise((resolve) => setTimeout(resolve, 100));
+  await delay(100);
 
   expect(container.style.height).toEqual(initialHeight);
 });
@@ -176,7 +177,7 @@ it("hidden document does not cancel imperative scroll", async () => {
   const root = render(<Component />);
 
   // Scheduled scroll gives up 150ms after the last resize
-  await new Promise((resolve) => setTimeout(resolve, 400));
+  await delay(400);
   const hidden = root.firstElementChild as HTMLElement;
   const { viewport } = await getVirtualizer(root);
   const bottom = items.length * 60 - 400;

@@ -1,6 +1,7 @@
 import { vi } from "vitest";
 import type { Type } from "@angular/core";
 import { TestBed, type ComponentFixture } from "@angular/core/testing";
+import { delay } from "../utils.js";
 
 export const render = async <T>(
   component: Type<T>,
@@ -16,7 +17,7 @@ export const render = async <T>(
   let prev = container.innerHTML;
   while (true) {
     vi.runAllTicks();
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await delay(50);
     const current = container.innerHTML;
     if (prev === current) {
       if (same) {

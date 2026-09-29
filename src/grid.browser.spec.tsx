@@ -15,6 +15,7 @@ import {
   expectPosition,
   getVirtualizer,
 } from "../spec/browser/index.js";
+import { delay } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
 
@@ -286,7 +287,7 @@ it("scrollToIndex keeps the cell out of the pinned blocks", async () => {
     rowAlign: "nearest",
     colAlign: "nearest",
   });
-  await new Promise((r) => setTimeout(r, 100));
+  await delay(100);
   expect([viewport.scrollTop, viewport.scrollLeft]).toEqual(before);
   ref.current!.scrollToIndex({ rowIndex: 696, rowAlign: "nearest" });
   await expect
@@ -485,7 +486,7 @@ it("the scroll end is notified once after both axes have ended", async () => {
 
   viewport.scrollTop = 400;
   await expect.poll(() => scrollEnds, { timeout: 3000 }).toBe(2);
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  await delay(500);
   expect(scrollEnds).toBe(2);
 });
 
@@ -1057,7 +1058,7 @@ for (const gap of [0, 8]) {
     viewport.scrollTop = step * 21;
     await expect.poll(() => root.querySelector("button")).toBeTruthy();
     root.querySelector("button")!.focus();
-    await new Promise((r) => setTimeout(r, 50));
+    await delay(50);
     expect(viewport.scrollTop).toBe(step * 21);
     await expectGridGeometry(root, rows, cols, gap, spans);
 
@@ -1172,7 +1173,7 @@ describe("scrollToIndex with sections", () => {
       await settle();
       const scrollTop = viewport.scrollTop;
       handle.scrollToIndex({ rowIndex: 33, rowAlign: "nearest" });
-      await new Promise((r) => setTimeout(r, 100));
+      await delay(100);
       expect(viewport.scrollTop).toBe(scrollTop);
     });
 
@@ -1199,7 +1200,7 @@ describe("scrollToIndex with sections", () => {
       await settle();
       const scrollTop = viewport.scrollTop;
       handle.scrollToIndex({ rowIndex: 20, rowAlign: "nearest" });
-      await new Promise((r) => setTimeout(r, 100));
+      await delay(100);
       expect(viewport.scrollTop).toBe(scrollTop);
     });
 
@@ -1511,7 +1512,7 @@ describe("scrollToIndex with sections", () => {
                   viewport.scrollLeft,
                 ];
                 button.focus();
-                await new Promise((r) => setTimeout(r, 50));
+                await delay(50);
                 expect(document.activeElement).toBe(button);
                 expect(
                   Math.abs(viewport.scrollTop - scrollTop),
@@ -1551,7 +1552,7 @@ describe("scrollToIndex with sections", () => {
                   .poll(() => container.querySelector(selector))
                   .toBeTruthy();
                 // the cells around it are measured after they are painted
-                await new Promise((r) => setTimeout(r, 100));
+                await delay(100);
               };
               const settleRow = (rowIndex: number) =>
                 settle(`[role="row"][aria-rowindex="${rowIndex + 1}"]`);

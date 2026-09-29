@@ -3,6 +3,7 @@ import axe from "axe-core";
 import { useCallback } from "react";
 import { VGrid, type VGridProps } from "./VGrid.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
+import { delay } from "../../spec/utils.js";
 import { render } from "../../spec/jsdom/react.js";
 
 const ITEM_HEIGHT = 50;
@@ -180,7 +181,7 @@ it("should not render the existing cells again when a row is added", async () =>
 
   rerender(<Grid rows={[...rows, {}]} />);
   vi.runAllTicks();
-  await new Promise((resolve) => setTimeout(resolve, 100));
+  await delay(100);
   expect(calls).toBe(16);
 });
 

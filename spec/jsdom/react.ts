@@ -1,5 +1,6 @@
 import { vi, onTestFinished } from "vitest";
 import { render as _render, cleanup } from "@testing-library/react";
+import { delay } from "../utils.js";
 
 export const render = async (...args: Parameters<typeof _render>) => {
   onTestFinished(cleanup);
@@ -8,7 +9,7 @@ export const render = async (...args: Parameters<typeof _render>) => {
   let prev = res.baseElement.innerHTML;
   while (true) {
     vi.runAllTicks();
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await delay(50);
     const current = res.baseElement.innerHTML;
     if (prev === current) {
       if (same) {

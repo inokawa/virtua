@@ -2,6 +2,7 @@ import { it, expect, vi } from "vitest";
 import { defineComponent, h, reactive } from "vue";
 import { VGrid } from "./VGrid.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
+import { delay } from "../../spec/utils.js";
 import { render } from "../../spec/jsdom/vue.js";
 
 const ITEM_HEIGHT = 50;
@@ -97,7 +98,7 @@ it("should not render the existing cells again when a row is added", async () =>
 
   rows.push({});
   vi.runAllTicks();
-  await new Promise((resolve) => setTimeout(resolve, 100));
+  await delay(100);
   expect(calls).toBe(16);
 });
 
@@ -121,11 +122,11 @@ it("should follow the sizes mutated in place", async () => {
 
   rows[0]!.h = 80;
   vi.runAllTicks();
-  await new Promise((resolve) => setTimeout(resolve, 100));
+  await delay(100);
   expect(getContainerStyle()).toContain("[l0] 80px [l1]");
 
   rows.splice(0, 1, { h: 120 });
   vi.runAllTicks();
-  await new Promise((resolve) => setTimeout(resolve, 100));
+  await delay(100);
   expect(getContainerStyle()).toContain("[l0] 120px [l1]");
 });

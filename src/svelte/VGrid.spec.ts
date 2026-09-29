@@ -2,6 +2,7 @@ import { it, expect, vi } from "vitest";
 import { createRawSnippet } from "svelte";
 import VGrid from "./VGrid.svelte";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
+import { delay } from "../../spec/utils.js";
 import { render } from "../../spec/jsdom/svelte.js";
 
 const ITEM_HEIGHT = 50;
@@ -106,6 +107,6 @@ it("should not render the existing cells again when a row is added", async () =>
 
   await rerender({ rows: [...rows, {}] });
   vi.runAllTicks();
-  await new Promise((resolve) => setTimeout(resolve, 100));
+  await delay(100);
   expect(calls).toBe(16);
 });
