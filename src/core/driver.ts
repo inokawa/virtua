@@ -39,6 +39,7 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
+  let isViewportDisplayed = true;
 
   const mountedIndexes = new WeakMap<Element, number>();
 
@@ -51,7 +52,16 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
       if (target === viewportElement) {
         // https://github.com/inokawa/virtua/issues/964
         if (width || height) {
+          if (!isViewportDisplayed) {
+            // Scroll events can be missed while the viewport has no box, so read the offset again when its size is back
+            // https://github.com/inokawa/virtua/issues/841
+            // https://github.com/inokawa/virtua/issues/940
+            scrollObserver!._sync();
+          }
+          isViewportDisplayed = true;
           store.$update(ACTION_VIEWPORT_RESIZE, isHorizontal ? width : height);
+        } else {
+          isViewportDisplayed = false;
         }
         // Skip zero-sized rects that may be observed under `display: none` style
       } else if ((target as HTMLElement).offsetParent) {
@@ -296,6 +306,7 @@ export const createContainerGridDriver = (
   let rowScrollObserver: ScrollObserver | undefined;
   let colScrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
+  let isViewportDisplayed = true;
 
   const mountedRowIndexes = new WeakMap<Element, number>();
   const mountedColIndexes = new WeakMap<Element, number>();
@@ -310,8 +321,18 @@ export const createContainerGridDriver = (
       if (target === viewportElement) {
         // https://github.com/inokawa/virtua/issues/964
         if (width || height) {
+          if (!isViewportDisplayed) {
+            // Scroll events can be missed while the viewport has no box, so read the offset again when its size is back
+            // https://github.com/inokawa/virtua/issues/841
+            // https://github.com/inokawa/virtua/issues/940
+            rowScrollObserver!._sync();
+            colScrollObserver!._sync();
+          }
+          isViewportDisplayed = true;
           rowStore.$update(ACTION_VIEWPORT_RESIZE, height);
           colStore.$update(ACTION_VIEWPORT_RESIZE, width);
+        } else {
+          isViewportDisplayed = false;
         }
         // Skip zero-sized rects that may be observed under `display: none` style
       } else if ((target as HTMLElement).offsetParent) {
