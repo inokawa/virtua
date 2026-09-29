@@ -12,15 +12,18 @@ import { type ItemResize } from "./types.js";
 import { createPromise, NULL, timeout } from "./utils.js";
 import { getCurrentDocument, getCurrentWindow } from "./environment.js";
 
+interface DriverBase {
+  $observe(containerElement: HTMLElement, viewport?: HTMLElement): void;
+  $dispose(): void;
+  $effect(): void;
+}
+
 /**
  * @internal
  */
-export interface Driver {
-  $observe(containerElement: HTMLElement, viewport?: HTMLElement): void;
-  $dispose(): void;
+export interface Driver extends DriverBase {
   $observeItem(el: HTMLElement, index: number): () => void;
   $scroll(getTargetOffset: () => number, smooth?: boolean): void;
-  $effect(): void;
   $getBaseOffset(): number;
 }
 
@@ -283,17 +286,14 @@ export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
 /**
  * @internal
  */
-export type GridDriver = {
+export interface GridDriver extends DriverBase {
   $scroll(isHorizontal: boolean, getTargetOffset: () => number): void;
-  $observe(containerElement: HTMLElement): void;
-  $dispose(): void;
   $observeItem(
     el: HTMLElement,
     rowIndex: number | undefined,
     colIndex: number | undefined,
   ): () => void;
-  $effect(): void;
-};
+}
 
 /**
  * @internal
@@ -366,8 +366,7 @@ export const createContainerGridDriver = (
         );
       }
     },
-    $observe(containerElement) {
-      const viewport = (viewportElement = containerElement.parentElement!);
+    $observe(containerElement, viewport = containerElement.parentElement!) {
       resizeObserver._observe(viewport);
 
       const observe = (store: VirtualStore, isHorizontal: boolean) =>
