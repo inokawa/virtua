@@ -365,7 +365,7 @@ export const createContainerGridDriver = (
       }
     },
     $observe(containerElement, viewport = containerElement.parentElement!) {
-      resizeObserver._observe(viewport);
+      resizeObserver._observe((viewportElement = viewport));
 
       const observe = (store: VirtualStore, isHorizontal: boolean) =>
         createScrollObserver(
