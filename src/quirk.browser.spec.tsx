@@ -105,6 +105,59 @@ it("display: none (WindowVirtualizer)", async () => {
   expect(container.style.height).toEqual(initialHeight);
 });
 
+it("display: none before the scroll event is dispatched", async () => {
+  const root = render(
+    <div style={{ height: 400, overflowY: "auto" }}>
+      <Virtualizer data={items} itemSize={30}>
+        {(d) => (
+          <div key={d} style={{ height: 30 }}>
+            item-{d}
+          </div>
+        )}
+      </Virtualizer>
+    </div>,
+  );
+  await expectVirtualized(root, "item-0", "item-999");
+
+  const { viewport } = await getVirtualizer(root);
+  viewport.scrollTop = 5000;
+  viewport.style.display = "none";
+  await delay(100);
+  viewport.style.removeProperty("display");
+
+  await expect
+    .poll(() => root.textContent)
+    .toContain(`item-${Math.floor(viewport.scrollTop / 30)}`);
+});
+
+it("detached and reattached viewport", async () => {
+  const root = render(
+    <div style={{ height: 400, overflowY: "auto" }}>
+      <Virtualizer data={items} itemSize={30}>
+        {(d) => (
+          <div key={d} style={{ height: 30 }}>
+            item-{d}
+          </div>
+        )}
+      </Virtualizer>
+    </div>,
+  );
+  await expectVirtualized(root, "item-0", "item-999");
+
+  const { viewport } = await getVirtualizer(root);
+  viewport.scrollTop = 5000;
+  await delay(300);
+
+  const parent = root.parentElement!;
+  root.remove();
+  await delay(100);
+  parent.append(root);
+
+  await expect
+    .poll(() => root.textContent)
+    .toContain(`item-${Math.floor(viewport.scrollTop / 30)}`);
+});
+
 it("position: fixed viewport (Virtualizer)", async () => {
   const root = render(
     <div

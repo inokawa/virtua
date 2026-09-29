@@ -169,6 +169,7 @@ export const createScrollObserver = (
   viewport.addEventListener("touchend", onTouchEnd, { passive: true });
 
   return {
+    _sync: onScroll,
     _dispose: () => {
       viewport.removeEventListener("scroll", onScroll);
       viewport.removeEventListener("wheel", onWheel);
