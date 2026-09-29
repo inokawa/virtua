@@ -30,15 +30,10 @@ export interface Driver extends DriverBase {
 /**
  * @internal
  */
-export type DriverFactory = (
+export const createContainerDriver = (
   store: VirtualStore,
   isHorizontal: boolean,
-) => Driver;
-
-/**
- * @internal
- */
-export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
+): Driver => {
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
@@ -140,7 +135,10 @@ export const createContainerDriver: DriverFactory = (store, isHorizontal) => {
 /**
  * @internal
  */
-export const createWindowDriver: DriverFactory = (store, isHorizontal) => {
+export const createWindowDriver = (
+  store: VirtualStore,
+  isHorizontal: boolean,
+): Driver => {
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let cleanupOnWindowResize: (() => void) | undefined;
