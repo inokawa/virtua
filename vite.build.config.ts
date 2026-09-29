@@ -23,7 +23,8 @@ const terserOptions = ({
   ecma: 2018,
   module: true,
   safari10: false,
-  compress: { passes: 5, unsafe: true, keep_fargs: false },
+  // keep "use no memo" for React Compiler
+  compress: { passes: 5, unsafe: true, keep_fargs: false, directives: false },
   mangle: {
     properties: {
       // @vue/babel-plugin-jsx may generate _ field

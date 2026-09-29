@@ -159,6 +159,10 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
     },
     ref,
   ): ReactElement => {
+    // Opted out on purpose. React Compiler has nothing to gain here for now: scrolling is bound by DOM mount/unmount and layout rather than scripting, the items are already memoized by React.memo, and the visible range and positions read from the store below change on every store update.
+    // Making those reads memoizable needs an immutable snapshot per update, which costs allocation with useReducer or synchronous updates with useSyncExternalStore.
+    "use no memo";
+
     Element = Element as "div";
 
     const [renderElement, count] = useChildren(children, data);
