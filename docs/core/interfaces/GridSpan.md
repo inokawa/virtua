@@ -4,7 +4,7 @@
 
 # Interface: GridSpan
 
-Defined in: [src/core/grid.ts:24](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/core/grid.ts#L24)
+Defined in: [src/core/grid.ts:24](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/core/grid.ts#L24)
 
 A cell merged over multiple rows and/or columns in the grid.
 
@@ -20,7 +20,7 @@ A cell merged over multiple rows and/or columns in the grid.
 
 > `optional` **rowSpan?**: `number`
 
-Defined in: [src/core/grid.ts:29](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/core/grid.ts#L29)
+Defined in: [src/core/grid.ts:29](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/core/grid.ts#L29)
 
 The number of rows the cell spans.
 
@@ -36,7 +36,7 @@ The number of rows the cell spans.
 
 > `optional` **colSpan?**: `number`
 
-Defined in: [src/core/grid.ts:34](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/core/grid.ts#L34)
+Defined in: [src/core/grid.ts:34](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/core/grid.ts#L34)
 
 The number of columns the cell spans.
 
@@ -52,7 +52,7 @@ The number of columns the cell spans.
 
 > **rowIndex**: `number`
 
-Defined in: [src/core/grid.ts:12](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/core/grid.ts#L12)
+Defined in: [src/core/grid.ts:12](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/core/grid.ts#L12)
 
 The row index of the cell.
 
@@ -66,7 +66,7 @@ The row index of the cell.
 
 > **colIndex**: `number`
 
-Defined in: [src/core/grid.ts:16](https://github.com/inokawa/virtua/blob/aa14d9ee791ea80eb3d89c2fee927273b8a89b8c/src/core/grid.ts#L16)
+Defined in: [src/core/grid.ts:16](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/core/grid.ts#L16)
 
 The column index of the cell.
 
