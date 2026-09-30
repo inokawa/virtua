@@ -1717,14 +1717,16 @@
               <pre><code>const Default = () =&gt; {
   let ref: VListHandle | undefined;
   const [activeIndex, setActiveIndex] = createSignal(0);
-  const [items] = createSignal(
-    Array.from({ length: 1000 }).map((_, id) =&gt; ({ id })),
-  );
   return (
     &lt;StickyIndexContext.Provider value={[activeIndex, setActiveIndex]}&gt;
       &lt;VList
         ref={ref}
-        data={items()}
+        style={{
+          height: &quot;100vh&quot;,
+          &quot;font-family&quot;: &quot;system-ui, sans-serif&quot;,
+          &quot;font-size&quot;: &quot;14px&quot;,
+        }}
+        data={rows}
         item={StickyItem}
         keepMounted={[activeIndex()]}
         onScroll={() =&gt; {
@@ -1736,23 +1738,38 @@
           setActiveIndex(activeStickyIndex);
         }}
       &gt;
-        {(data, index) =&gt; {
-          const isSticky = () =&gt; stickyIndexes.has(index());
-          return (
+        {(row) =&gt;
+          row.type === &quot;header&quot; ? (
             &lt;div
               style={{
-                height: (isSticky() ? stickyItemHeight : 80) + &quot;px&quot;,
-                &quot;border-bottom&quot;: &quot;solid 1px #ccc&quot;,
-                background: isSticky() ? &quot;#B8C1C8&quot; : &quot;#fff&quot;,
-                color: isSticky() ? &quot;#fff&quot; : undefined,
-                &quot;padding-right&quot;: &quot;4px&quot;,
-                &quot;padding-left&quot;: &quot;4px&quot;,
+                height: stickyItemHeight + &quot;px&quot;,
+                display: &quot;flex&quot;,
+                &quot;align-items&quot;: &quot;center&quot;,
+                padding: &quot;0 16px&quot;,
+                background: &quot;#f3f4f6&quot;,
+                &quot;border-bottom&quot;: &quot;solid 1px #e5e7eb&quot;,
+                color: &quot;#6b7280&quot;,
+                &quot;font-size&quot;: &quot;13px&quot;,
+                &quot;font-weight&quot;: 600,
               }}
             &gt;
-              {data.id}
+              {row.letter}
             &lt;/div&gt;
-          );
-        }}
+          ) : (
+            &lt;div
+              style={{
+                height: &quot;48px&quot;,
+                display: &quot;flex&quot;,
+                &quot;align-items&quot;: &quot;center&quot;,
+                padding: &quot;0 16px&quot;,
+                &quot;border-bottom&quot;: &quot;solid 1px #f0f0f0&quot;,
+                background: &quot;#fff&quot;,
+              }}
+            &gt;
+              {row.name}
+            &lt;/div&gt;
+          )
+        }
       &lt;/VList&gt;
     &lt;/StickyIndexContext.Provider&gt;
   );
@@ -2965,14 +2982,16 @@
               <pre><code>const Default = () =&gt; {
   let ref: VListHandle | undefined;
   const [activeIndex, setActiveIndex] = createSignal(0);
-  const [items] = createSignal(
-    Array.from({ length: 1000 }).map((_, id) =&gt; ({ id })),
-  );
   return (
     &lt;StickyIndexContext.Provider value={[activeIndex, setActiveIndex]}&gt;
       &lt;VList
         ref={ref}
-        data={items()}
+        style={{
+          height: &quot;100vh&quot;,
+          &quot;font-family&quot;: &quot;system-ui, sans-serif&quot;,
+          &quot;font-size&quot;: &quot;14px&quot;,
+        }}
+        data={rows}
         item={StickyItem}
         keepMounted={[activeIndex()]}
         onScroll={() =&gt; {
@@ -2984,23 +3003,38 @@
           setActiveIndex(activeStickyIndex);
         }}
       &gt;
-        {(data, index) =&gt; {
-          const isSticky = () =&gt; stickyIndexes.has(index());
-          return (
+        {(row) =&gt;
+          row.type === &quot;header&quot; ? (
             &lt;div
               style={{
-                height: (isSticky() ? stickyItemHeight : 80) + &quot;px&quot;,
-                &quot;border-bottom&quot;: &quot;solid 1px #ccc&quot;,
-                background: isSticky() ? &quot;#B8C1C8&quot; : &quot;#fff&quot;,
-                color: isSticky() ? &quot;#fff&quot; : undefined,
-                &quot;padding-right&quot;: &quot;4px&quot;,
-                &quot;padding-left&quot;: &quot;4px&quot;,
+                height: stickyItemHeight + &quot;px&quot;,
+                display: &quot;flex&quot;,
+                &quot;align-items&quot;: &quot;center&quot;,
+                padding: &quot;0 16px&quot;,
+                background: &quot;#f3f4f6&quot;,
+                &quot;border-bottom&quot;: &quot;solid 1px #e5e7eb&quot;,
+                color: &quot;#6b7280&quot;,
+                &quot;font-size&quot;: &quot;13px&quot;,
+                &quot;font-weight&quot;: 600,
               }}
             &gt;
-              {data.id}
+              {row.letter}
             &lt;/div&gt;
-          );
-        }}
+          ) : (
+            &lt;div
+              style={{
+                height: &quot;48px&quot;,
+                display: &quot;flex&quot;,
+                &quot;align-items&quot;: &quot;center&quot;,
+                padding: &quot;0 16px&quot;,
+                &quot;border-bottom&quot;: &quot;solid 1px #f0f0f0&quot;,
+                background: &quot;#fff&quot;,
+              }}
+            &gt;
+              {row.name}
+            &lt;/div&gt;
+          )
+        }
       &lt;/VList&gt;
     &lt;/StickyIndexContext.Provider&gt;
   );
