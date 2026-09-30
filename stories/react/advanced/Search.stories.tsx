@@ -19,6 +19,28 @@ type Data = {
   description: string;
 };
 
+const Row = ({
+  id,
+  name,
+  description,
+  style,
+}: Data & { style?: CSSProperties }) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        padding: "10px 16px",
+        borderBottom: "solid 1px #eee",
+        ...style,
+      }}
+    >
+      <div style={{ minWidth: 80 }}>{id}</div>
+      <div style={{ minWidth: 200 }}>{name}</div>
+      <div style={{ flex: 1, minWidth: 0 }}>{description}</div>
+    </div>
+  );
+};
+
 export const Default: StoryObj = {
   name: "Search",
   render: () => {
@@ -131,22 +153,18 @@ export const Default: StoryObj = {
             flexDirection: "column",
           }}
         >
-          <div
+          <Row
+            id="id"
+            name="name"
+            description="description"
             style={{
-              display: "flex",
-              padding: "10px 16px",
-              borderBottom: "solid 1px #eee",
               background: "#fafafa",
               color: "#6b7280",
               fontSize: 12,
               fontWeight: 600,
               textTransform: "uppercase",
             }}
-          >
-            <div style={{ minWidth: 80 }}>id</div>
-            <div style={{ minWidth: 200 }}>name</div>
-            <div style={{ flex: 1, minWidth: 0 }}>description</div>
-          </div>
+          />
           <VList ref={ref} style={{ flex: 1 }}>
             {!filtered.length ? (
               <div
@@ -155,20 +173,7 @@ export const Default: StoryObj = {
                 No data.
               </div>
             ) : (
-              filtered.map((d) => (
-                <div
-                  key={d.id}
-                  style={{
-                    display: "flex",
-                    padding: "10px 16px",
-                    borderBottom: "solid 1px #eee",
-                  }}
-                >
-                  <div style={{ minWidth: 80 }}>{d.id}</div>
-                  <div style={{ minWidth: 200 }}>{d.name}</div>
-                  <div style={{ flex: 1, minWidth: 0 }}>{d.description}</div>
-                </div>
-              ))
+              filtered.map((d) => <Row key={d.id} {...d} />)
             )}
           </VList>
         </div>
