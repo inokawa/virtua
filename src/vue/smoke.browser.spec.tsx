@@ -24,10 +24,38 @@ it("VList", async () => {
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
+it("VList (horizontal)", async () => {
+  const root = render(
+    <VList
+      data={range(1000)}
+      horizontal
+      style={{ width: "400px", height: "200px" }}
+    >
+      {{
+        default: ({ item }: { item: number }) => <div>item-{item}</div>,
+      }}
+    </VList>,
+  );
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
 it("Virtualizer", async () => {
   const root = render(
     <div style={{ height: "400px", overflowY: "auto" }}>
       <Virtualizer data={range(1000)}>
+        {{
+          default: ({ item }: { item: number }) => <div>item-{item}</div>,
+        }}
+      </Virtualizer>
+    </div>,
+  );
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
+it("Virtualizer (horizontal)", async () => {
+  const root = render(
+    <div style={{ width: "400px", height: "200px", overflowX: "auto" }}>
+      <Virtualizer data={range(1000)} horizontal>
         {{
           default: ({ item }: { item: number }) => <div>item-{item}</div>,
         }}
@@ -44,6 +72,19 @@ it("WindowVirtualizer", async () => {
         default: ({ item }: { item: number }) => <div>item-{item}</div>,
       }}
     </WindowVirtualizer>,
+  );
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
+it("WindowVirtualizer (horizontal)", async () => {
+  const root = render(
+    <div style={{ display: "inline-block", height: "200px" }}>
+      <WindowVirtualizer data={range(1000)} horizontal>
+        {{
+          default: ({ item }: { item: number }) => <div>item-{item}</div>,
+        }}
+      </WindowVirtualizer>
+    </div>,
   );
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
@@ -66,11 +107,11 @@ it("VGrid", async () => {
           col: number;
         }) => (
           <div>
-            item-{rowIndex}/item-{colIndex}
+            row-{rowIndex}/col-{colIndex}
           </div>
         ),
       }}
     </VGrid>,
   );
-  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "row-0/col-0", "row-999/col-999");
 });

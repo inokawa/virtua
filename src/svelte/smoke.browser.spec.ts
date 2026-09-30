@@ -19,7 +19,7 @@ const itemSnippet = createRawSnippet<[number, number]>((item) => ({
 
 const cellSnippet = createRawSnippet<[number, number]>(
   (rowIndex, colIndex) => ({
-    render: () => `<div>item-${rowIndex()}/item-${colIndex()}</div>`,
+    render: () => `<div>row-${rowIndex()}/col-${colIndex()}</div>`,
   }),
 );
 
@@ -27,6 +27,16 @@ it("VList", async () => {
   const root = render(VList, {
     data: range(1000),
     style: "height: 400px;",
+    children: itemSnippet,
+  });
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
+it("VList (horizontal)", async () => {
+  const root = render(VList, {
+    data: range(1000),
+    horizontal: true,
+    style: "width: 400px; height: 200px;",
     children: itemSnippet,
   });
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
@@ -41,11 +51,37 @@ it("Virtualizer", async () => {
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
+it("Virtualizer (horizontal)", async () => {
+  const root = render(
+    Virtualizer,
+    {
+      data: range(1000),
+      horizontal: true,
+      children: itemSnippet,
+    },
+    "width: 400px; height: 200px; overflow-x: auto;",
+  );
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
 it("WindowVirtualizer", async () => {
   const root = render(WindowVirtualizer, {
     data: range(1000),
     children: itemSnippet,
   });
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
+it("WindowVirtualizer (horizontal)", async () => {
+  const root = render(
+    WindowVirtualizer,
+    {
+      data: range(1000),
+      horizontal: true,
+      children: itemSnippet,
+    },
+    "display: inline-block; height: 200px;",
+  );
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
 
@@ -58,5 +94,5 @@ it("VGrid", async () => {
     style: "height: 400px; width: 400px;",
     children: cellSnippet,
   });
-  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(root, "row-0/col-0", "row-999/col-999");
 });

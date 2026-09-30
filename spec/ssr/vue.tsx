@@ -33,7 +33,7 @@ export const Grid = () => (
         cell: { rowIndex, colIndex },
       }: {
         cell: { rowIndex: number; colIndex: number };
-      }) => <div>{`item-${rowIndex}/item-${colIndex}`}</div>,
+      }) => <div>{`row-${rowIndex}/col-${colIndex}`}</div>,
     }}
   </VGrid>
 );
