@@ -108,40 +108,6 @@ test.describe("smoke", () => {
       component.getByText("Column 999", { exact: true }),
     ).toBeVisible();
   });
-
-  test("scroll restoration", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--scroll-restoration"));
-
-    const component = await getScrollable(page);
-
-    // check if start is displayed
-    const initialItem = await findFirstVisibleItem(component);
-    const initialText = "0";
-    await expect(initialItem).toHaveText(initialText);
-
-    // scroll to mid
-    await scrollTo(component, 5000);
-    await page.waitForTimeout(250);
-    const mountedItem = await findFirstVisibleItem(component);
-    await expect(mountedItem).not.toHaveText(initialText);
-    const mountedItemText = (await mountedItem.textContent())!;
-    const mountedItemTop = await relativeTop(component, mountedItem);
-
-    // check if items are unmounted
-    await page.getByRole("button", { name: "hide" }).click();
-
-    await expect(component).not.toBeAttached();
-
-    // check if scroll position is restored
-    await page.getByRole("button", { name: "show" }).click();
-    await page.waitForTimeout(250);
-    const remountedComponent = await getScrollable(page);
-    const remountedItem = await findFirstVisibleItem(remountedComponent);
-    await expect(remountedItem).toHaveText(mountedItemText);
-    expect(await relativeTop(remountedComponent, remountedItem)).toEqual(
-      mountedItemTop,
-    );
-  });
 });
 
 test.describe("check if it works when children change", () => {

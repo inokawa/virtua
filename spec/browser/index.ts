@@ -72,6 +72,23 @@ export const expectPosition = (getPosition: () => number, position: number) =>
       `to be ${position}`,
     );
 
+export const findFirstVisibleItem = (
+  container: HTMLElement,
+  viewport: HTMLElement,
+) => {
+  const { top } = viewport.getBoundingClientRect();
+  // An item ending within a rounding error of the edge is not the one in view
+  return Array.from(container.children).find(
+    (item) => item.getBoundingClientRect().bottom > top + 1,
+  );
+};
+
+export const relativeTop = (viewport: HTMLElement, item: Element) =>
+  item.getBoundingClientRect().top - viewport.getBoundingClientRect().top;
+
+export const relativeBottom = (viewport: HTMLElement, item: Element) =>
+  viewport.getBoundingClientRect().bottom - item.getBoundingClientRect().bottom;
+
 export const expectVirtualized = async (
   root: Element,
   first: string,
