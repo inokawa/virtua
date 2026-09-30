@@ -17,6 +17,8 @@ describe("startMargin", () => {
     const HEIGHTS = [20, 40, 80, 77];
     const items = Array.from({ length: 1000 }, (_, i) => i);
     const last = String(items.length - 1);
+    const HEADER_SIZE = 100;
+    const FOOTER_SIZE = 200;
     const root = render(
       <div
         style={{
@@ -26,15 +28,15 @@ describe("startMargin", () => {
           overflowAnchor: "none",
         }}
       >
-        <div style={{ height: 100 }}>header</div>
-        <Virtualizer startMargin={100}>
+        <div style={{ height: HEADER_SIZE }}>header</div>
+        <Virtualizer startMargin={HEADER_SIZE}>
           {items.map((i) => (
             <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
               {i}
             </div>
           ))}
         </Virtualizer>
-        <div style={{ height: 200 }}>footer</div>
+        <div style={{ height: FOOTER_SIZE }}>footer</div>
       </div>,
     );
     const { viewport, container } = await getVirtualizer(root);
@@ -43,7 +45,7 @@ describe("startMargin", () => {
     await expect.poll(() => getItem(container, "0")).toBeDefined();
     await expectPosition(
       () => relativeTop(viewport, getItem(container, "0")!),
-      100,
+      HEADER_SIZE,
     );
 
     // scroll to the end
@@ -57,7 +59,7 @@ describe("startMargin", () => {
     // check if the end is displayed above the footer
     await expectPosition(
       () => relativeBottom(viewport, getItem(container, last)!),
-      200,
+      FOOTER_SIZE,
     );
   });
 });

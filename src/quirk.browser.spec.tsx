@@ -13,6 +13,7 @@ import {
   createDomRoot,
   expectVirtualized,
   expectVirtualizedAndScrollable,
+  getItem,
   getVirtualizer,
 } from "../spec/browser/index.js";
 import { delay } from "../spec/utils.js";
@@ -263,6 +264,52 @@ it("flex parent", async () => {
     </div>,
   );
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
+it("overflow", async () => {
+  // The header gives room for the first item to overflow out of the virtualizer
+  const HEADER_SIZE = 24;
+  const root = render(
+    <div style={{ height: 400, overflowY: "auto" }}>
+      <div style={{ height: HEADER_SIZE }} />
+      <Virtualizer data={items} startMargin={HEADER_SIZE}>
+        {(d) => (
+          <div key={d} style={{ height: 40, position: "relative" }}>
+            item-{d}
+            <div
+              style={{
+                position: "absolute",
+                top: -16,
+                right: 8,
+                height: 32,
+                zIndex: 10,
+                background: "white",
+              }}
+            >
+              😊
+            </div>
+          </div>
+        )}
+      </Virtualizer>
+    </div>,
+  );
+  await expectVirtualized(root, "item-0", "item-999");
+  const { container } = await getVirtualizer(root);
+
+  for (const target of [0, 1, 2]) {
+    const wrapper = getItem(container, `item-${target}😊`)!;
+    const label = Array.from(wrapper.querySelectorAll("div")).find(
+      (e) => e.textContent === "😊",
+    )!;
+
+    // check if overflowed element is visible in front
+    const rect = label.getBoundingClientRect();
+    const pointed = document.elementFromPoint(
+      rect.x + rect.width / 8,
+      rect.y + rect.height / 8,
+    );
+    expect(pointed).toBe(label);
+  }
 });
 
 it("new window", async () => {
