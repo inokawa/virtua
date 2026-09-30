@@ -7,13 +7,34 @@ import React, {
   useState,
 } from "react";
 import { CustomItemComponentProps, VList, VListHandle } from "../../../src";
+import { faker } from "@faker-js/faker";
 
 export default {
   component: VList,
 } as Meta;
 
-const stickyItemHeight = 40;
-const stickyIndexes = new Set([0, 100, 200, 300, 400, 500, 600, 700, 800, 900]);
+type Row =
+  { type: "header"; letter: string } | { type: "contact"; name: string };
+
+const rows: Row[] = [];
+faker.helpers
+  .multiple(() => `${faker.person.firstName()} ${faker.person.lastName()}`, {
+    count: 1000,
+  })
+  .sort((a, b) => a.localeCompare(b))
+  .forEach((name) => {
+    const letter = name[0]!.toUpperCase();
+    const prev = rows.findLast((r) => r.type === "header");
+    if (!prev || prev.letter !== letter) {
+      rows.push({ type: "header", letter });
+    }
+    rows.push({ type: "contact", name });
+  });
+
+const stickyItemHeight = 32;
+const stickyIndexes = new Set(
+  rows.flatMap((r, i) => (r.type === "header" ? [i] : [])),
+);
 const StickyIndexContext = createContext(-1);
 const StickyItem = forwardRef<HTMLDivElement, CustomItemComponentProps>(
   ({ children, style, index }, ref) => {
@@ -47,6 +68,11 @@ export const Default: StoryObj = {
       <StickyIndexContext.Provider value={activeIndex}>
         <VList
           ref={ref}
+          style={{
+            height: "100vh",
+            fontFamily: "system-ui, sans-serif",
+            fontSize: 14,
+          }}
           item={StickyItem}
           keepMounted={[activeIndex]}
           onScroll={() => {
@@ -58,24 +84,40 @@ export const Default: StoryObj = {
             setActiveIndex(activeStickyIndex);
           }}
         >
-          {Array.from({ length: 1000 }).map((_, i) => {
-            const isSticky = stickyIndexes.has(i);
-            return (
+          {rows.map((row, i) =>
+            row.type === "header" ? (
               <div
                 key={i}
                 style={{
-                  height: isSticky ? stickyItemHeight : 80,
-                  borderBottom: "solid 1px #ccc",
-                  background: isSticky ? "#B8C1C8" : "#fff",
-                  color: isSticky ? "#fff" : undefined,
-                  paddingRight: 4,
-                  paddingLeft: 4,
+                  height: stickyItemHeight,
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "0 16px",
+                  background: "#f3f4f6",
+                  borderBottom: "solid 1px #e5e7eb",
+                  color: "#6b7280",
+                  fontSize: 13,
+                  fontWeight: 600,
                 }}
               >
-                {i}
+                {row.letter}
               </div>
-            );
-          })}
+            ) : (
+              <div
+                key={i}
+                style={{
+                  height: 48,
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "0 16px",
+                  borderBottom: "solid 1px #f0f0f0",
+                  background: "#fff",
+                }}
+              >
+                {row.name}
+              </div>
+            ),
+          )}
         </VList>
       </StickyIndexContext.Provider>
     );

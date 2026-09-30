@@ -7,33 +7,16 @@ export default {
   component: VList,
 } as Meta;
 
-const rowStyle: CSSProperties = {
-  borderBottom: "solid 1px #ccc",
+const labelStyle: CSSProperties = {
   display: "flex",
-  flexDirection: "row",
-};
-
-const idColStyle: CSSProperties = {
-  minWidth: 120,
-};
-const nameColStyle: CSSProperties = {
-  minWidth: 240,
+  alignItems: "center",
+  marginRight: 4,
 };
 
 type Data = {
   id: string;
   name: string;
   description: string;
-};
-
-const Row = ({ id, name, description }: Data) => {
-  return (
-    <div style={rowStyle}>
-      <div style={idColStyle}>{id}</div>
-      <div style={nameColStyle}>{name}</div>
-      <div>{description}</div>
-    </div>
-  );
 };
 
 export const Default: StoryObj = {
@@ -69,9 +52,21 @@ export const Default: StoryObj = {
     }, [value, items, desc]);
 
     return (
-      <div>
-        <div>
-          <label style={{ marginRight: 4 }}>
+      <div
+        style={{
+          height: "100vh",
+          boxSizing: "border-box",
+          padding: 16,
+          background: "#f6f7f9",
+          fontFamily: "system-ui, sans-serif",
+          fontSize: 14,
+          display: "flex",
+          flexDirection: "column",
+          gap: 12,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <label style={labelStyle}>
             search
             <input
               style={{ marginLeft: 4 }}
@@ -81,7 +76,7 @@ export const Default: StoryObj = {
               }}
             />
           </label>
-          <label style={{ marginRight: 4 }}>
+          <label style={labelStyle}>
             scroll to
             <input
               style={{ marginLeft: 4 }}
@@ -100,10 +95,10 @@ export const Default: StoryObj = {
               }}
             />
           </label>
-          <label style={{ marginRight: 4 }}>
+          <label style={labelStyle}>
             <input
               type="radio"
-              style={{ marginLeft: 4 }}
+              style={{ marginLeft: 4, marginTop: 0, marginBottom: 0 }}
               checked={!desc}
               onChange={() => {
                 setDesc(false);
@@ -111,10 +106,10 @@ export const Default: StoryObj = {
             />
             asc
           </label>
-          <label style={{ marginRight: 4 }}>
+          <label style={labelStyle}>
             <input
               type="radio"
-              style={{ marginLeft: 4 }}
+              style={{ marginLeft: 4, marginTop: 0, marginBottom: 0 }}
               checked={desc}
               onChange={() => {
                 setDesc(true);
@@ -125,20 +120,55 @@ export const Default: StoryObj = {
         </div>
         <div
           style={{
-            width: "90vw",
-            height: "90vh",
-            border: "solid 1px #ddd",
+            flex: 1,
+            minHeight: 0,
+            border: "solid 1px #e5e7eb",
+            borderRadius: 8,
+            overflow: "hidden",
+            boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
             background: "#fff",
             display: "flex",
             flexDirection: "column",
           }}
         >
-          <Row id="id" name="name" description="description" />
+          <div
+            style={{
+              display: "flex",
+              padding: "10px 16px",
+              borderBottom: "solid 1px #eee",
+              background: "#fafafa",
+              color: "#6b7280",
+              fontSize: 12,
+              fontWeight: 600,
+              textTransform: "uppercase",
+            }}
+          >
+            <div style={{ minWidth: 80 }}>id</div>
+            <div style={{ minWidth: 200 }}>name</div>
+            <div style={{ flex: 1, minWidth: 0 }}>description</div>
+          </div>
           <VList ref={ref} style={{ flex: 1 }}>
             {!filtered.length ? (
-              <div>No data.</div>
+              <div
+                style={{ padding: 32, textAlign: "center", color: "#6b7280" }}
+              >
+                No data.
+              </div>
             ) : (
-              filtered.map((d, i) => <Row key={i} {...d} />)
+              filtered.map((d) => (
+                <div
+                  key={d.id}
+                  style={{
+                    display: "flex",
+                    padding: "10px 16px",
+                    borderBottom: "solid 1px #eee",
+                  }}
+                >
+                  <div style={{ minWidth: 80 }}>{d.id}</div>
+                  <div style={{ minWidth: 200 }}>{d.name}</div>
+                  <div style={{ flex: 1, minWidth: 0 }}>{d.description}</div>
+                </div>
+              ))
             )}
           </VList>
         </div>
