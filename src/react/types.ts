@@ -1,10 +1,9 @@
 import type { ComponentType, CSSProperties, LegacyRef, ReactNode } from "react";
 
-export type ViewportComponentAttributes = Pick<
-  React.HTMLAttributes<HTMLElement>,
-  "className" | "style" | "id" | "role" | "tabIndex" | "onKeyDown" | "onWheel"
-> &
-  React.AriaAttributes;
+export type ViewportComponentAttributes = Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "children" | "onScroll" | "onScrollEnd"
+>;
 
 export interface CustomContainerComponentProps {
   style: CSSProperties;

@@ -1,7 +1,6 @@
-import type { HTMLAttributes, AriaAttributes } from "svelte/elements";
+import type { HTMLAttributes } from "svelte/elements";
 
-export type ViewportComponentAttributes = Pick<
-  HTMLAttributes<HTMLElement>,
-  "class" | "style" | "id" | "role" | "tabindex"
-> &
-  AriaAttributes;
+export type ViewportComponentAttributes = Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "children" | "onscroll" | "onscrollend"
+>;
