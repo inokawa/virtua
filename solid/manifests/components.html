@@ -1243,7 +1243,7 @@
     me,
   });
   const [items, setItems] = createSignal&lt;Data[]&gt;(
-    Array.from({ length: 100 }, () =&gt; createItem()),
+    Array.from({ length: 100 }).map(() =&gt; createItem()),
   );
   let virtualizerHandle: VirtualizerHandle | undefined;
   const [isPrepend, setIsPrepend] = createSignal(false);
@@ -1335,7 +1335,7 @@
               await new Promise((resolve) =&gt; setTimeout(resolve, 1000));
               setIsPrepend(true);
               setItems((prev) =&gt; [
-                ...Array.from({ length: 100 }, () =&gt; createItem()),
+                ...Array.from({ length: 100 }).map(() =&gt; createItem()),
                 ...prev,
               ]);
               setFetching(false);
@@ -2491,7 +2491,7 @@
     me,
   });
   const [items, setItems] = createSignal&lt;Data[]&gt;(
-    Array.from({ length: 100 }, () =&gt; createItem()),
+    Array.from({ length: 100 }).map(() =&gt; createItem()),
   );
   let virtualizerHandle: VirtualizerHandle | undefined;
   const [isPrepend, setIsPrepend] = createSignal(false);
@@ -2583,7 +2583,7 @@
               await new Promise((resolve) =&gt; setTimeout(resolve, 1000));
               setIsPrepend(true);
               setItems((prev) =&gt; [
-                ...Array.from({ length: 100 }, () =&gt; createItem()),
+                ...Array.from({ length: 100 }).map(() =&gt; createItem()),
                 ...prev,
               ]);
               setFetching(false);
