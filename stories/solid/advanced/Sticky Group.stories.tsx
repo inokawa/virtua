@@ -14,13 +14,34 @@ import {
   useContext,
   Signal,
 } from "solid-js";
+import { faker } from "@faker-js/faker";
 
 export default {
   component: VList,
 } as Meta;
 
-const stickyItemHeight = 40;
-const stickyIndexes = new Set([0, 100, 200, 300, 400, 500, 600, 700, 800, 900]);
+type Row =
+  { type: "header"; letter: string } | { type: "contact"; name: string };
+
+const rows: Row[] = [];
+faker.helpers
+  .multiple(() => `${faker.person.firstName()} ${faker.person.lastName()}`, {
+    count: 1000,
+  })
+  .sort((a, b) => a.localeCompare(b))
+  .forEach((name) => {
+    const letter = name[0]!.toUpperCase();
+    const prev = rows.findLast((r) => r.type === "header");
+    if (!prev || prev.letter !== letter) {
+      rows.push({ type: "header", letter });
+    }
+    rows.push({ type: "contact", name });
+  });
+
+const stickyItemHeight = 32;
+const stickyIndexes = new Set(
+  rows.flatMap((r, i) => (r.type === "header" ? [i] : [])),
+);
 const StickyIndexContext = createContext<Signal<number>>();
 const StickyItem: ParentComponent<CustomItemComponentProps> = (props) => {
   const [activeIndex] = useContext(StickyIndexContext);
@@ -48,14 +69,16 @@ export const Default: StoryObj = {
   render: () => {
     let ref: VListHandle | undefined;
     const [activeIndex, setActiveIndex] = createSignal(0);
-    const [items] = createSignal(
-      Array.from({ length: 1000 }).map((_, id) => ({ id })),
-    );
     return (
       <StickyIndexContext.Provider value={[activeIndex, setActiveIndex]}>
         <VList
           ref={ref}
-          data={items()}
+          style={{
+            height: "100vh",
+            "font-family": "system-ui, sans-serif",
+            "font-size": "14px",
+          }}
+          data={rows}
           item={StickyItem}
           keepMounted={[activeIndex()]}
           onScroll={() => {
@@ -67,23 +90,38 @@ export const Default: StoryObj = {
             setActiveIndex(activeStickyIndex);
           }}
         >
-          {(data, index) => {
-            const isSticky = () => stickyIndexes.has(index());
-            return (
+          {(row) =>
+            row.type === "header" ? (
               <div
                 style={{
-                  height: (isSticky() ? stickyItemHeight : 80) + "px",
-                  "border-bottom": "solid 1px #ccc",
-                  background: isSticky() ? "#B8C1C8" : "#fff",
-                  color: isSticky() ? "#fff" : undefined,
-                  "padding-right": "4px",
-                  "padding-left": "4px",
+                  height: stickyItemHeight + "px",
+                  display: "flex",
+                  "align-items": "center",
+                  padding: "0 16px",
+                  background: "#f3f4f6",
+                  "border-bottom": "solid 1px #e5e7eb",
+                  color: "#6b7280",
+                  "font-size": "13px",
+                  "font-weight": 600,
                 }}
               >
-                {data.id}
+                {row.letter}
               </div>
-            );
-          }}
+            ) : (
+              <div
+                style={{
+                  height: "48px",
+                  display: "flex",
+                  "align-items": "center",
+                  padding: "0 16px",
+                  "border-bottom": "solid 1px #f0f0f0",
+                  background: "#fff",
+                }}
+              >
+                {row.name}
+              </div>
+            )
+          }
         </VList>
       </StickyIndexContext.Provider>
     );
