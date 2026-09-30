@@ -13,9 +13,13 @@ import {
   cleanupScroll,
   expectPosition,
   expectVirtualized,
+  getItem,
   getVirtualizer,
+  scrollToEnd,
+  SUBPIXEL,
+  setRTL,
 } from "../spec/browser/index.js";
-import { range } from "../spec/utils.js";
+import { nextFrame, range } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
 
@@ -51,7 +55,7 @@ describe("jump write", () => {
       }
       pos += 1500;
       viewport.scrollTop = pos;
-      await new Promise(requestAnimationFrame);
+      await nextFrame();
     }
     expect(lost).toBe(0);
   });
@@ -94,6 +98,44 @@ describe("jump write", () => {
 
     ref.current!.setHeight(50);
     await expectPosition(() => viewport.scrollTop, 1530);
+  });
+});
+
+describe("resize jump compensation", () => {
+  it("horizontal start -> end (RTL)", async () => {
+    setRTL();
+    const VIEWPORT_WIDTH = 400;
+    const root = render(
+      <div style={{ width: VIEWPORT_WIDTH, height: 200, overflowX: "auto" }}>
+        <Virtualizer horizontal>
+          {range(1000, (i) => (
+            <div key={i} style={{ width: i % 3 === 0 ? 100 : 60 }}>
+              item-{i}
+            </div>
+          ))}
+        </Virtualizer>
+      </div>,
+    );
+    const { viewport, container } = await getVirtualizer(root);
+
+    // check if start is displayed
+    await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+    // check if offset from start is always keeped
+    const MIN_PROGRESS = 200;
+    // The offset from the start grows as scrollLeft goes negative
+    const read = () => -viewport.scrollLeft;
+    const initial = read();
+    let prev = initial;
+    for (let i = 0; i < 20; i++) {
+      // use scrollBy to scroll a lot, past the rendered items into the area sized by estimation
+      viewport.scrollBy({ left: -VIEWPORT_WIDTH * 2 });
+      await nextFrame();
+      const next = read();
+      expect(next).toBeGreaterThanOrEqual(prev - SUBPIXEL);
+      prev = next;
+    }
+    expect(prev).toBeGreaterThan(initial + MIN_PROGRESS);
   });
 });
 
@@ -145,7 +187,7 @@ describe("shift compensation", () => {
 
     // scroll to end
     const { viewport } = await getVirtualizer(root);
-    viewport.scrollTop = viewport.scrollHeight;
+    scrollToEnd(viewport);
     await expect.poll(() => scrollEnded).toBe(true);
     scrollEnded = false;
 

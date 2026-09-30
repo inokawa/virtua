@@ -22,6 +22,21 @@ export const cleanupScroll = () => {
   document.scrollingElement!.scrollLeft = 0;
 };
 
+// The direction is read when the virtualizer starts observing, so it has to be set before the render
+export const setRTL = () => {
+  const { documentElement } = document;
+  documentElement.dir = "rtl";
+  onTestFinished(() => {
+    documentElement.dir = "";
+  });
+};
+
+// The end is at a negative offset in the inline axis of RTL
+export const scrollToEnd = (viewport: HTMLElement, isRTL?: boolean) => {
+  viewport.scrollTop = viewport.scrollHeight;
+  viewport.scrollLeft = isRTL ? -viewport.scrollWidth : viewport.scrollWidth;
+};
+
 export const createDomRoot = <T extends keyof HTMLElementTagNameMap = "div">(
   doc: Document,
   name: T = "div" as T,
@@ -62,7 +77,7 @@ export const getItem = (container: HTMLElement, text: string) =>
   Array.from(container.children).find((e) => e.textContent === text);
 
 // Firefox rounds a scroll position to a device pixel, and the tester scales its iframe so that is not a whole CSS pixel
-const SUBPIXEL = server.browser === "firefox" ? 1 : 0;
+export const SUBPIXEL = server.browser === "firefox" ? 1 : 0;
 
 export const expectPosition = (getPosition: () => number, position: number) =>
   expect
@@ -72,11 +87,24 @@ export const expectPosition = (getPosition: () => number, position: number) =>
       `to be ${position}`,
     );
 
+// The window viewport always starts at 0, unlike the rect of the element which scrolls.
+// It includes the scrollbars like the rect of the element does.
+const getViewportRect = (
+  viewport: HTMLElement,
+): Pick<DOMRect, "top" | "left" | "bottom" | "right"> => {
+  const { ownerDocument } = viewport;
+  if (viewport === ownerDocument.scrollingElement) {
+    const { innerWidth, innerHeight } = ownerDocument.defaultView!;
+    return { top: 0, left: 0, bottom: innerHeight, right: innerWidth };
+  }
+  return viewport.getBoundingClientRect();
+};
+
 export const findFirstVisibleItem = (
   container: HTMLElement,
   viewport: HTMLElement,
 ) => {
-  const { top } = viewport.getBoundingClientRect();
+  const { top } = getViewportRect(viewport);
   // An item ending within a rounding error of the edge is not the one in view
   return Array.from(container.children).find(
     (item) => item.getBoundingClientRect().bottom > top + 1,
@@ -84,10 +112,16 @@ export const findFirstVisibleItem = (
 };
 
 export const relativeTop = (viewport: HTMLElement, item: Element) =>
-  item.getBoundingClientRect().top - viewport.getBoundingClientRect().top;
+  item.getBoundingClientRect().top - getViewportRect(viewport).top;
+
+export const relativeLeft = (viewport: HTMLElement, item: Element) =>
+  item.getBoundingClientRect().left - getViewportRect(viewport).left;
+
+export const relativeRight = (viewport: HTMLElement, item: Element) =>
+  getViewportRect(viewport).right - item.getBoundingClientRect().right;
 
 export const relativeBottom = (viewport: HTMLElement, item: Element) =>
-  viewport.getBoundingClientRect().bottom - item.getBoundingClientRect().bottom;
+  getViewportRect(viewport).bottom - item.getBoundingClientRect().bottom;
 
 export const expectVirtualized = async (
   root: Element,
@@ -98,10 +132,11 @@ export const expectVirtualized = async (
   expect(root.textContent).not.toContain(last);
 };
 
-export const expectVirtualizedAndScrollable = async (
+const expectScrollableToEnd = async (
   root: Element,
   first: string,
   last: string,
+  isRTL?: boolean,
 ) => {
   // check if start is displayed
   await expectVirtualized(root, first, last);
@@ -109,13 +144,24 @@ export const expectVirtualizedAndScrollable = async (
   // scroll to the end, and check if the end is displayed
   await expect
     .poll(() => {
-      viewport.scrollTop = viewport.scrollHeight;
-      viewport.scrollLeft = viewport.scrollWidth;
+      scrollToEnd(viewport, isRTL);
       return root.textContent;
     })
     .toContain(last);
   expect(root.textContent).not.toContain(first);
 };
+
+export const expectVirtualizedAndScrollable = (
+  root: Element,
+  first: string,
+  last: string,
+) => expectScrollableToEnd(root, first, last);
+
+export const expectVirtualizedAndScrollableRTL = (
+  root: Element,
+  first: string,
+  last: string,
+) => expectScrollableToEnd(root, first, last, true);
 
 type GridAxisGeometry = {
   count: number;

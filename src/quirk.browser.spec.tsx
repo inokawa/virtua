@@ -1,4 +1,11 @@
-import { afterEach, expect, it, onTestFinished } from "vitest";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  onTestFinished,
+} from "vitest";
 import { render, rerender } from "../spec/browser/react.js";
 import { createRef, useLayoutEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
@@ -14,8 +21,12 @@ import {
   createDomRoot,
   expectVirtualized,
   expectVirtualizedAndScrollable,
+  expectVirtualizedAndScrollableRTL,
   getItem,
   getVirtualizer,
+  relativeRight,
+  relativeTop,
+  setRTL,
 } from "../spec/browser/index.js";
 import { delay, range } from "../spec/utils.js";
 
@@ -552,4 +563,112 @@ it("scroll-behavior: smooth (shift compensation)", async () => {
 
   // The compensation must jump in a single write, not animated by CSS scroll-behavior
   expect(offsets[0]).toBe(offsets[offsets.length - 1]);
+});
+
+describe("RTL", () => {
+  beforeEach(setRTL);
+
+  it("vertically scrollable (Virtualizer)", async () => {
+    const COUNT = 1000;
+    const HEIGHTS = [20, 40, 80, 77];
+    const root = render(
+      <div style={{ height: 400, overflowY: "auto" }}>
+        <Virtualizer>
+          {range(COUNT, (i) => (
+            <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
+              item-{i}
+            </div>
+          ))}
+        </Virtualizer>
+      </div>,
+    );
+    const { viewport, container } = await getVirtualizer(root);
+
+    // check if start is displayed
+    await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+    expect(relativeTop(viewport, getItem(container, "item-0")!)).toBe(0);
+
+    await expectVirtualizedAndScrollableRTL(
+      root,
+      "item-0",
+      `item-${COUNT - 1}`,
+    );
+  });
+
+  it("horizontally scrollable (Virtualizer)", async () => {
+    const COUNT = 1000;
+    const root = render(
+      <div style={{ width: 400, height: 200, overflowX: "auto" }}>
+        <Virtualizer horizontal>
+          {range(COUNT, (i) => (
+            <div key={i} style={{ width: i % 3 === 0 ? 100 : 60 }}>
+              item-{i}
+            </div>
+          ))}
+        </Virtualizer>
+      </div>,
+    );
+    const { viewport, container } = await getVirtualizer(root);
+
+    // check if start is displayed
+    await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+    expect(relativeRight(viewport, getItem(container, "item-0")!)).toBe(0);
+
+    await expectVirtualizedAndScrollableRTL(
+      root,
+      "item-0",
+      `item-${COUNT - 1}`,
+    );
+  });
+
+  it("vertically scrollable (WindowVirtualizer)", async () => {
+    const COUNT = 1000;
+    const HEIGHTS = [20, 40, 80, 77];
+    const root = render(
+      <WindowVirtualizer>
+        {range(COUNT, (i) => (
+          <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
+            item-{i}
+          </div>
+        ))}
+      </WindowVirtualizer>,
+    );
+    const { viewport, container } = await getVirtualizer(root);
+
+    // check if start is displayed
+    await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+    expect(relativeTop(viewport, getItem(container, "item-0")!)).toBe(0);
+
+    await expectVirtualizedAndScrollableRTL(
+      root,
+      "item-0",
+      `item-${COUNT - 1}`,
+    );
+  });
+
+  it("horizontally scrollable (WindowVirtualizer)", async () => {
+    const COUNT = 1000;
+    const root = render(
+      <div style={{ display: "inline-block", height: 400 }}>
+        <WindowVirtualizer horizontal>
+          {range(COUNT, (i) => (
+            <div key={i} style={{ width: i % 3 === 0 ? 100 : 60 }}>
+              item-{i}
+            </div>
+          ))}
+        </WindowVirtualizer>
+      </div>,
+    );
+    const { viewport, container } = await getVirtualizer(root);
+
+    // check if start is displayed
+    await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+    expect(relativeRight(viewport, getItem(container, "item-0")!)).toBe(0);
+
+    await expectVirtualizedAndScrollableRTL(
+      root,
+      "item-0",
+      `item-${COUNT - 1}`,
+    );
+  });
 });
