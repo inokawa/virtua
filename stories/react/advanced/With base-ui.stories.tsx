@@ -3,7 +3,7 @@ import { Virtualizer } from "../../../src";
 import React, { useRef } from "react";
 import { ScrollArea } from "@base-ui/react/scroll-area";
 import { faker } from "@faker-js/faker";
-import "./base-ui-scroll-area.css";
+import styles from "./base-ui-scroll-area.module.css";
 
 export default {
   component: Virtualizer,
@@ -14,32 +14,32 @@ const TAGS = Array.from({ length: 1000 }).map((_, i) => ({
   label: faker.person.fullName(),
 }));
 
-export const _ScrollArea: StoryObj = {
-  name: "Scroll Area",
+export const Default: StoryObj = {
+  name: "With base-ui",
   render: () => {
     const ref = useRef<HTMLDivElement>(null);
     return (
-      <ScrollArea.Root className="BaseScrollAreaRoot">
-        <ScrollArea.Viewport ref={ref} className="BaseScrollAreaViewport">
+      <ScrollArea.Root className={styles.root}>
+        <ScrollArea.Viewport ref={ref} className={styles.viewport}>
           <Virtualizer scrollRef={ref}>
             {TAGS.map((tag) => (
-              <div className="BaseTag" key={tag.id}>
+              <div className={styles.item} key={tag.id}>
                 {tag.label}
               </div>
             ))}
           </Virtualizer>
         </ScrollArea.Viewport>
         <ScrollArea.Scrollbar
-          className="BaseScrollAreaScrollbar"
+          className={styles.scrollbar}
           orientation="vertical"
         >
-          <ScrollArea.Thumb className="BaseScrollAreaThumb" />
+          <ScrollArea.Thumb className={styles.thumb} />
         </ScrollArea.Scrollbar>
         <ScrollArea.Scrollbar
-          className="BaseScrollAreaScrollbar"
+          className={styles.scrollbar}
           orientation="horizontal"
         >
-          <ScrollArea.Thumb className="BaseScrollAreaThumb" />
+          <ScrollArea.Thumb className={styles.thumb} />
         </ScrollArea.Scrollbar>
         <ScrollArea.Corner />
       </ScrollArea.Root>
