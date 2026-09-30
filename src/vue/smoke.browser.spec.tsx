@@ -9,15 +9,13 @@ import {
   expectVirtualizedAndScrollable,
 } from "../../spec/browser/index.js";
 import { VGrid } from "./VGrid.js";
+import { range } from "../../spec/utils.js";
 
 afterEach(cleanupScroll);
 
 it("VList", async () => {
   const root = render(
-    <VList
-      data={Array.from({ length: 1000 }, (_, i) => i)}
-      style={{ height: "400px" }}
-    >
+    <VList data={range(1000)} style={{ height: "400px" }}>
       {{
         default: ({ item }: { item: number }) => <div>item-{item}</div>,
       }}
@@ -29,7 +27,7 @@ it("VList", async () => {
 it("Virtualizer", async () => {
   const root = render(
     <div style={{ height: "400px", overflowY: "auto" }}>
-      <Virtualizer data={Array.from({ length: 1000 }, (_, i) => i)}>
+      <Virtualizer data={range(1000)}>
         {{
           default: ({ item }: { item: number }) => <div>item-{item}</div>,
         }}
@@ -41,7 +39,7 @@ it("Virtualizer", async () => {
 
 it("WindowVirtualizer", async () => {
   const root = render(
-    <WindowVirtualizer data={Array.from({ length: 1000 }, (_, i) => i)}>
+    <WindowVirtualizer data={range(1000)}>
       {{
         default: ({ item }: { item: number }) => <div>item-{item}</div>,
       }}

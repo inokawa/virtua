@@ -4,10 +4,11 @@
 import { VGrid, VList } from "../../src/solid/index.js";
 import type { SsrProps } from "../browser/index.js";
 import { generateHydrationScript, renderToString } from "solid-js/web";
+import { range } from "../utils.js";
 
 export const List = (props: SsrProps) => (
   <VList
-    data={Array.from({ length: 1000 }, (_, i) => i)}
+    data={range(1000)}
     ssrCount={props.ssrCount}
     itemSize={props.itemSize}
     horizontal={props.horizontal}

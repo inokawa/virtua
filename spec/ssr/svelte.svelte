@@ -11,13 +11,14 @@
 </script>
 
 <script lang="ts">
+  import { range } from "../utils.js";
   import { VList } from "../../src/svelte/index.js";
 
   let { ssrCount, itemSize, horizontal = false }: SsrProps = $props();
 </script>
 
 <VList
-  data={Array.from({ length: 1000 }, (_, i) => i)}
+  data={range(1000)}
   {ssrCount}
   {itemSize}
   {horizontal}

@@ -6,12 +6,11 @@ import { WindowVirtualizer } from "./WindowVirtualizer.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { type JSX } from "solid-js";
 import { render } from "../../spec/jsdom/solid.js";
+import { range } from "../../spec/utils.js";
 
 setupResizeJsDom({
   itemSize: { width: 100, height: 50 },
 });
-
-const range = (length: number) => Array.from({ length }).map((_, i) => i);
 
 describe("vertical", () => {
   it("should render 0 children", () => {

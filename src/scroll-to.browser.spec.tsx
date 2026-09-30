@@ -23,6 +23,7 @@ import {
   getItem,
   getVirtualizer,
 } from "../spec/browser/index.js";
+import { range } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
 
@@ -32,7 +33,7 @@ describe("scrollTo", () => {
     const ref = createRef<VListHandle>();
     const root = render(
       <VList ref={ref} style={{ height: 400 }}>
-        {Array.from({ length: 1000 }, (_, i) => (
+        {range(1000, (i) => (
           <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
             {i}
           </div>
@@ -60,7 +61,7 @@ describe("scrollBy", () => {
     const ref = createRef<VListHandle>();
     const root = render(
       <VList ref={ref} style={{ height: 400 }}>
-        {Array.from({ length: 1000 }, (_, i) => (
+        {range(1000, (i) => (
           <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
             {i}
           </div>
@@ -111,7 +112,7 @@ describe("scrollbar", () => {
         className="classic-scrollbar"
         style={{ height: 400, overflowY: "auto", overflowX: "scroll" }}
       >
-        <Virtualizer ref={ref} data={Array.from({ length: 1000 }, (_, i) => i)}>
+        <Virtualizer ref={ref} data={range(1000)}>
           {(d) => (
             <div key={d} style={{ height: 30 }}>
               item-{d}
@@ -151,10 +152,7 @@ describe("scrollbar", () => {
 
     const ref = createRef<WindowVirtualizerHandle>();
     const root = render(
-      <WindowVirtualizer
-        ref={ref}
-        data={Array.from({ length: 1000 }, (_, i) => i)}
-      >
+      <WindowVirtualizer ref={ref} data={range(1000)}>
         {(d) => (
           <div key={d} style={{ height: 30 }}>
             item-{d}

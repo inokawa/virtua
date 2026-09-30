@@ -15,6 +15,7 @@ import {
   expectVirtualized,
   getVirtualizer,
 } from "../spec/browser/index.js";
+import { range } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
 
@@ -25,7 +26,7 @@ describe("jump write", () => {
     const root = render(
       <div style={{ height: "100vh", overflowY: "auto" }}>
         <Virtualizer>
-          {Array.from({ length: 1000 }, (_, i) => (
+          {range(1000, (i) => (
             <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
               {i}
             </div>
@@ -71,7 +72,7 @@ describe("jump write", () => {
       return (
         <div style={{ height: 400, overflowY: "auto" }}>
           <Virtualizer ref={handle} itemSize={100} keepMounted={[14]}>
-            {Array.from({ length: 20 }, (_, i) => (
+            {range(20, (i) => (
               <div key={i} style={{ height: i === 14 ? height : 100 }}>
                 {i}
               </div>
@@ -99,8 +100,7 @@ describe("jump write", () => {
 describe("shift compensation", () => {
   it("prepending cancels imperative scroll", async () => {
     let id = 0;
-    const createItems = (count: number) =>
-      Array.from({ length: count }, () => id++);
+    const createItems = (count: number) => range(count, () => id++);
 
     const ref = createRef<VirtualizerHandle>();
     let prependCount = 0;

@@ -15,7 +15,7 @@ import {
   expectPosition,
   getVirtualizer,
 } from "../spec/browser/index.js";
-import { delay } from "../spec/utils.js";
+import { delay, range } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
 
@@ -168,10 +168,10 @@ it("auto sizes follow the content of the cells", async () => {
 });
 
 it("spans cover their cells across the unrendered tracks", async () => {
-  const rowItems = Array.from({ length: 200 }, (_, i) => ({
+  const rowItems = range(200, (i) => ({
     height: i % 4 ? 40 : 60,
   }));
-  const colItems = Array.from({ length: 100 }, (_, i) => ({
+  const colItems = range(100, (i) => ({
     width: i % 3 ? 100 : 150,
   }));
   const offsetOf = (sizes: number[], index: number) =>
@@ -494,7 +494,7 @@ const WIDE = 300;
 
 const Resizable = () => {
   const [widths, setWidths] = useState(() =>
-    Array.from({ length: COLS }, (_, i) => ({ width: i ? COL_WIDTH : WIDE })),
+    range(COLS, (i) => ({ width: i ? COL_WIDTH : WIDE })),
   );
   return (
     <>
@@ -545,7 +545,7 @@ it("changing sizes keeps the visible position", async () => {
 it("cells follow the changed sizes", async () => {
   const Resized = () => {
     const [widths, setWidths] = useState(() =>
-      Array.from({ length: COLS }, () => ({ width: COL_WIDTH })),
+      range(COLS, () => ({ width: COL_WIDTH })),
     );
     return (
       <>
@@ -862,7 +862,7 @@ it("changing a uniform size keeps the visible position", async () => {
 });
 
 it("auto tracks rendered only with the spanning cells keep their sizes", async () => {
-  const rowItems = Array.from({ length: ROWS }, (_, i) => ({
+  const rowItems = range(ROWS, (i) => ({
     height: i < 2 ? undefined : ROW_HEIGHT,
   }));
   const spans = [{ rowIndex: 0, colIndex: 0, rowSpan: 2, colSpan: 3 }];
@@ -1359,10 +1359,7 @@ describe("scrollToIndex with sections", () => {
               pinned: { start: pinnedCols.header, end: pinnedCols.footer },
             };
             const total = (count: number, size: (i: number) => number) =>
-              Array.from({ length: count }, (_, i) => size(i)).reduce(
-                (a, b) => a + b,
-                0,
-              ) +
+              range(count, (i) => size(i)).reduce((a, b) => a + b, 0) +
               gap * (count - 1);
             const scrollHeight = total(MATRIX_ROWS, rows.size);
             const scrollWidth = total(MATRIX_COLS, cols.size);
@@ -1530,7 +1527,7 @@ describe("scrollToIndex with sections", () => {
               size: (i: number) => number,
               get: (i: number) => number,
             ) =>
-              Array.from({ length: count }, (_, i) => i)
+              range(count)
                 .filter((i) => get(i) !== size(i))
                 .map((i) => `${i}:${get(i)}`);
             const unmeasuredRows = () =>

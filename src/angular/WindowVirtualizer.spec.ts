@@ -3,12 +3,11 @@ import { Component, input } from "@angular/core";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { render } from "../../spec/jsdom/angular.js";
+import { range } from "../../spec/utils.js";
 
 setupResizeJsDom({
   itemSize: { width: 100, height: 50 },
 });
-
-const range = (length: number) => Array.from({ length }).map((_, i) => i);
 
 @Component({
   selector: "test-host",
@@ -63,7 +62,9 @@ describe("vertical", () => {
   });
 
   it("should render component", async () => {
-    const { container } = await render(ComponentHost, { data: range(3) });
+    const { container } = await render(ComponentHost, {
+      data: range(3),
+    });
     expect(container.innerHTML).toMatchSnapshot();
   });
 });

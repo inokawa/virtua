@@ -6,6 +6,7 @@ import {
   type GridPlan,
   type GridRowState,
 } from "./grid.js";
+import { range } from "../../spec/utils.js";
 
 const NO_SPANS = createGridSpanIndex();
 
@@ -947,7 +948,7 @@ describe("sections", () => {
   });
 
   it("should cut the tracks only at the ends of the rendered sections", () => {
-    const sections = Array.from({ length: 100 }, (_, i) => i * 10);
+    const sections = range(100, (i) => i * 10);
     const plan = createGridPlan(
       createGridLayout(1000, 40),
       createGridLayout(3, 100),

@@ -9,6 +9,7 @@ import {
   expectVirtualizedAndScrollable,
 } from "../../spec/browser/index.js";
 import { VGrid } from "./VGrid.js";
+import { range } from "../../spec/utils.js";
 
 afterEach(cleanupScroll);
 
@@ -24,7 +25,7 @@ afterEach(cleanupScroll);
   `,
 })
 class VListHost {
-  readonly data = Array.from({ length: 1000 }, (_, i) => i);
+  readonly data = range(1000);
 }
 
 @Component({
@@ -41,7 +42,7 @@ class VListHost {
   `,
 })
 class VirtualizerHost {
-  readonly data = Array.from({ length: 1000 }, (_, i) => i);
+  readonly data = range(1000);
 }
 
 @Component({
@@ -56,7 +57,7 @@ class VirtualizerHost {
   `,
 })
 class WindowVirtualizerHost {
-  readonly data = Array.from({ length: 1000 }, (_, i) => i);
+  readonly data = range(1000);
 }
 
 @Component({

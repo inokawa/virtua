@@ -3,6 +3,7 @@ import { Component, input } from "@angular/core";
 import { VList } from "./VList.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { render } from "../../spec/jsdom/angular.js";
+import { range } from "../../spec/utils.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -12,8 +13,6 @@ setupResizeJsDom({
   itemSize: { width: ITEM_WIDTH, height: ITEM_HEIGHT },
   viewportSize: { width: ITEM_WIDTH, height: VIEWPORT_HEIGHT },
 });
-
-const range = (length: number) => Array.from({ length }).map((_, i) => i);
 
 @Component({
   selector: "test-host-attrs",

@@ -9,13 +9,14 @@ import {
   relativeBottom,
   relativeTop,
 } from "../spec/browser/index.js";
+import { range } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
 
 describe("startMargin", () => {
   it("places the items after the header and keeps the footer at the end", async () => {
     const HEIGHTS = [20, 40, 80, 77];
-    const items = Array.from({ length: 1000 }, (_, i) => i);
+    const items = range(1000);
     const last = String(items.length - 1);
     const HEADER_SIZE = 100;
     const FOOTER_SIZE = 200;
@@ -75,7 +76,7 @@ describe("nested scroll containers", () => {
         }}
       >
         <Virtualizer horizontal>
-          {Array.from({ length: 100 }, (_, c) => (
+          {range(100, (c) => (
             <div
               key={c}
               style={{
@@ -85,7 +86,7 @@ describe("nested scroll containers", () => {
               }}
             >
               <Virtualizer>
-                {Array.from({ length: 100 }, (_, r) => (
+                {range(100, (r) => (
                   <div key={r} style={{ height: 80 }}>
                     {c}-{r}
                   </div>

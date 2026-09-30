@@ -1,13 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { findIndex } from "./cache.js";
-
-const range = <T>(length: number, cb: (i: number) => T): T[] => {
-  const array: T[] = [];
-  for (let i = 0; i < length; i++) {
-    array.push(cb(i));
-  }
-  return array;
-};
+import { range } from "../../spec/utils.js";
 
 const sum = (cache: readonly number[]): number => {
   return cache.reduce((acc, c) => acc + c, 0);

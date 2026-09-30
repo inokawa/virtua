@@ -9,6 +9,7 @@ import {
   expectVirtualizedAndScrollable,
 } from "../../spec/browser/index.js";
 import VGrid from "./VGrid.svelte";
+import { range } from "../../spec/utils.js";
 
 afterEach(cleanupScroll);
 
@@ -24,7 +25,7 @@ const cellSnippet = createRawSnippet<[number, number]>(
 
 it("VList", async () => {
   const root = render(VList, {
-    data: Array.from({ length: 1000 }, (_, i) => i),
+    data: range(1000),
     style: "height: 400px;",
     children: itemSnippet,
   });
@@ -34,7 +35,7 @@ it("VList", async () => {
 it("Virtualizer", async () => {
   const root = render(
     Virtualizer,
-    { data: Array.from({ length: 1000 }, (_, i) => i), children: itemSnippet },
+    { data: range(1000), children: itemSnippet },
     "height: 400px; overflow-y: auto;",
   );
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
@@ -42,7 +43,7 @@ it("Virtualizer", async () => {
 
 it("WindowVirtualizer", async () => {
   const root = render(WindowVirtualizer, {
-    data: Array.from({ length: 1000 }, (_, i) => i),
+    data: range(1000),
     children: itemSnippet,
   });
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");

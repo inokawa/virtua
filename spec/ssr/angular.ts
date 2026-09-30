@@ -16,6 +16,7 @@ import {
 } from "@angular/platform-server";
 import { VGrid, VList } from "../../src/angular/index.js";
 import type { SsrProps } from "../browser/index.js";
+import { range } from "../utils.js";
 
 export const SSR_PROPS = new InjectionToken<SsrProps>("ssrProps");
 
@@ -38,7 +39,7 @@ export const SSR_PROPS = new InjectionToken<SsrProps>("ssrProps");
 })
 export class SsrVListHost {
   protected readonly props = inject(SSR_PROPS);
-  protected readonly data = Array.from({ length: 1000 }, (_, i) => i);
+  protected readonly data = range(1000);
 }
 
 @Component({

@@ -1,10 +1,11 @@
 import { VGrid, VList } from "../../src/react/index.js";
 import type { SsrProps } from "../browser/index.js";
 import { renderToString } from "react-dom/server";
+import { range } from "../utils.js";
 
 export const List = (props: SsrProps) => (
   <VList
-    data={Array.from({ length: 1000 }, (_, i) => i)}
+    data={range(1000)}
     ssrCount={props.ssrCount}
     itemSize={props.itemSize}
     horizontal={props.horizontal}

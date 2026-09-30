@@ -3,12 +3,11 @@ import { createRawSnippet } from "svelte";
 import WindowVirtualizer from "./WindowVirtualizer.svelte";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { render } from "../../spec/jsdom/svelte.js";
+import { range } from "../../spec/utils.js";
 
 setupResizeJsDom({
   itemSize: { width: 100, height: 50 },
 });
-
-const range = (length: number) => Array.from({ length }).map((_, i) => i);
 
 const itemSnippet = createRawSnippet<[number, number]>((item) => ({
   render: () => `<div>${item()}</div>`,
@@ -58,21 +57,33 @@ describe("horizontal", () => {
 
   it("should render 5 children", async () => {
     const { container } = await render(WindowVirtualizer, {
-      props: { data: range(5), horizontal: true, children: itemSnippet },
+      props: {
+        data: range(5),
+        horizontal: true,
+        children: itemSnippet,
+      },
     });
     expect(container.innerHTML).toMatchSnapshot();
   });
 
   it("should render 100 children", async () => {
     const { container } = await render(WindowVirtualizer, {
-      props: { data: range(100), horizontal: true, children: itemSnippet },
+      props: {
+        data: range(100),
+        horizontal: true,
+        children: itemSnippet,
+      },
     });
     expect(container.innerHTML).toMatchSnapshot();
   });
 
   it("should render component", async () => {
     const { container } = await render(WindowVirtualizer, {
-      props: { data: range(3), horizontal: true, children: componentSnippet },
+      props: {
+        data: range(3),
+        horizontal: true,
+        children: componentSnippet,
+      },
     });
     expect(container.innerHTML).toMatchSnapshot();
   });

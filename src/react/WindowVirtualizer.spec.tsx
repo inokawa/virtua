@@ -4,6 +4,7 @@ import { forwardRef } from "react";
 import { type CustomItemComponentProps } from "./types.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { render } from "../../spec/jsdom/react.js";
+import { range } from "../../spec/utils.js";
 
 setupResizeJsDom({
   itemSize: { width: 100, height: 50 },
@@ -41,7 +42,7 @@ it("should pass index to items", async () => {
 });
 
 it("should render with render prop", async () => {
-  const items = Array.from({ length: 1000 }).map((_, i) => ({
+  const items = range(1000, (i) => ({
     id: i,
     label: "This is " + i,
   }));
@@ -79,7 +80,7 @@ describe("vertical", async () => {
   it("should render 100 children", async () => {
     const { asFragment } = await render(
       <WindowVirtualizer>
-        {Array.from({ length: 100 }).map((_, i) => (
+        {range(100, (i) => (
           <div key={i}>{i}</div>
         ))}
       </WindowVirtualizer>,
@@ -156,7 +157,7 @@ describe("horizontal", async () => {
   it("should render 100 children", async () => {
     const { asFragment } = await render(
       <WindowVirtualizer horizontal>
-        {Array.from({ length: 100 }).map((_, i) => (
+        {range(100, (i) => (
           <div key={i}>{i}</div>
         ))}
       </WindowVirtualizer>,

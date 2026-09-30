@@ -3,6 +3,7 @@ import { Component, input } from "@angular/core";
 import { Virtualizer } from "./Virtualizer.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { render } from "../../spec/jsdom/angular.js";
+import { range } from "../../spec/utils.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -12,8 +13,6 @@ setupResizeJsDom({
   itemSize: { width: ITEM_WIDTH, height: ITEM_HEIGHT },
   viewportSize: { width: ITEM_WIDTH, height: VIEWPORT_HEIGHT },
 });
-
-const range = (length: number) => Array.from({ length }).map((_, i) => i);
 
 // Virtualizer observes its parent element as the scrollable container, so it
 // has to be rendered inside a scrollable element.
@@ -111,7 +110,9 @@ describe("vertical", () => {
   });
 
   it("should render component", async () => {
-    const { container } = await render(ComponentHost, { data: range(3) });
+    const { container } = await render(ComponentHost, {
+      data: range(3),
+    });
     expect(container.innerHTML).toMatchSnapshot();
   });
 });

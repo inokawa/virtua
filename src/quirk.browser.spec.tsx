@@ -16,11 +16,11 @@ import {
   getItem,
   getVirtualizer,
 } from "../spec/browser/index.js";
-import { delay } from "../spec/utils.js";
+import { delay, range } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
 
-const items = Array.from({ length: 1000 }, (_, i) => i);
+const items = range(1000);
 
 const waitForStableHeight = async (container: HTMLElement): Promise<string> => {
   let prev: string | undefined;

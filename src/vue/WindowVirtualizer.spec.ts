@@ -3,12 +3,11 @@ import { defineComponent, h } from "vue";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { render, SlotType } from "../../spec/jsdom/vue.js";
+import { range } from "../../spec/utils.js";
 
 setupResizeJsDom({
   itemSize: { width: 100, height: 50 },
 });
-
-const range = (length: number) => Array.from({ length }).map((_, i) => i);
 
 it("should change components", async () => {
   const wrapper = await render(WindowVirtualizer<number>, {

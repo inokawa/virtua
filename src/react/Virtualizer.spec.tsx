@@ -4,6 +4,7 @@ import { forwardRef } from "react";
 import { type CustomItemComponentProps } from "./types.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { render } from "../../spec/jsdom/react.js";
+import { range } from "../../spec/utils.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -50,7 +51,7 @@ it("should pass index to items", async () => {
 });
 
 it("should render with render prop", async () => {
-  const items = Array.from({ length: 1000 }).map((_, i) => ({
+  const items = range(1000, (i) => ({
     id: i,
     label: "This is " + i,
   }));
@@ -70,7 +71,7 @@ it("should render with keepMounted", async () => {
   const { asFragment } = await render(
     <div style={{ overflowY: "auto" }}>
       <Virtualizer keepMounted={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90]}>
-        {Array.from({ length: 100 }).map((_, i) => (
+        {range(100, (i) => (
           <div key={i}>{i}</div>
         ))}
       </Virtualizer>
@@ -108,7 +109,7 @@ describe("vertical", async () => {
     const { asFragment } = await render(
       <div style={{ overflowY: "auto" }}>
         <Virtualizer>
-          {Array.from({ length: 100 }).map((_, i) => (
+          {range(100, (i) => (
             <div key={i}>{i}</div>
           ))}
         </Virtualizer>
@@ -197,7 +198,7 @@ describe("horizontal", async () => {
     const { asFragment } = await render(
       <div style={{ overflowX: "auto" }}>
         <Virtualizer horizontal>
-          {Array.from({ length: 100 }).map((_, i) => (
+          {range(100, (i) => (
             <div key={i}>{i}</div>
           ))}
         </Virtualizer>

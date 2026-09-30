@@ -4,16 +4,9 @@ import { createGridLayout } from "./grid.js";
 import type { Layout } from "./types.js";
 import type { CacheSnapshot } from "../types.js";
 import { UNCACHED } from "../cache.js";
+import { range } from "../../../spec/utils.js";
 
 const DEFAULT_SIZE = 40;
-
-const range = <T>(length: number, cb: (i: number) => T): T[] => {
-  const array: T[] = [];
-  for (let i = 0; i < length; i++) {
-    array.push(cb(i));
-  }
-  return array;
-};
 
 const sum = (values: readonly number[]): number => {
   return values.reduce((acc, c) => acc + c, 0);

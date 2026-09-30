@@ -10,6 +10,7 @@ import {
   getVirtualizer,
   relativeTop,
 } from "../spec/browser/index.js";
+import { range } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
 
@@ -35,7 +36,7 @@ describe("cache", () => {
     return (
       <div style={{ height: 400, overflowY: "auto" }}>
         <Virtualizer ref={handle} cache={saved.current?.[1]}>
-          {Array.from({ length: 1000 }, (_, i) => (
+          {range(1000, (i) => (
             <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
               {i}
             </div>

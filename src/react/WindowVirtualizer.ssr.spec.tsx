@@ -5,6 +5,7 @@ import { it, describe, expect } from "vitest";
 import { renderToString } from "react-dom/server";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
 import { JSDOM } from "jsdom";
+import { range } from "../../spec/utils.js";
 
 const LIST_ID = "list-id";
 
@@ -15,7 +16,7 @@ describe("SSR", () => {
     const html = renderToString(
       <div id={LIST_ID}>
         <WindowVirtualizer ssrCount={COUNT} itemSize={ITEM_SIZE}>
-          {Array.from({ length: 1000 }).map((_, i) => (
+          {range(1000, (i) => (
             <div key={i}>{i}</div>
           ))}
         </WindowVirtualizer>
@@ -35,7 +36,7 @@ describe("SSR", () => {
     const html = renderToString(
       <div id={LIST_ID}>
         <WindowVirtualizer ssrCount={COUNT} itemSize={ITEM_SIZE}>
-          {Array.from({ length: 1000 }).map((_, i) => (
+          {range(1000, (i) => (
             <div key={i}>{i}</div>
           ))}
         </WindowVirtualizer>
@@ -55,7 +56,7 @@ describe("SSR", () => {
     const html = renderToString(
       <div id={LIST_ID}>
         <WindowVirtualizer ssrCount={COUNT} itemSize={ITEM_SIZE} horizontal>
-          {Array.from({ length: 1000 }).map((_, i) => (
+          {range(1000, (i) => (
             <div key={i}>{i}</div>
           ))}
         </WindowVirtualizer>
