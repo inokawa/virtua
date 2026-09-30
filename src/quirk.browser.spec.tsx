@@ -1,12 +1,13 @@
 import { afterEach, expect, it, onTestFinished } from "vitest";
-import { render } from "../spec/browser/react.js";
-import { useLayoutEffect, useRef } from "react";
+import { render, rerender } from "../spec/browser/react.js";
+import { createRef, useLayoutEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import {
   VGrid,
   Virtualizer,
   type VirtualizerHandle,
   WindowVirtualizer,
+  type WindowVirtualizerHandle,
 } from "./react/index.js";
 import {
   cleanupScroll,
@@ -440,4 +441,119 @@ it("fractional item size", async () => {
   const { container } = await getVirtualizer(root);
   await waitForStableHeight(container);
   expectItemDistance(container, 30.5);
+});
+
+it("scroll-behavior: smooth", async () => {
+  const OFFSET = 6000;
+  const ref = createRef<VirtualizerHandle>();
+  const root = render(
+    <div style={{ height: 400, overflowY: "auto", scrollBehavior: "smooth" }}>
+      <Virtualizer ref={ref} data={items}>
+        {(d) => (
+          <div key={d} style={{ height: 30 }}>
+            item-{d}
+          </div>
+        )}
+      </Virtualizer>
+    </div>,
+  );
+  await expectVirtualized(root, "item-0", "item-999");
+  const { viewport, container } = await getVirtualizer(root);
+  await waitForStableHeight(container);
+
+  const offsets: number[] = [];
+  viewport.addEventListener("scroll", () => {
+    offsets.push(viewport.scrollTop);
+  });
+
+  ref.current!.scrollTo(OFFSET);
+  await expect.poll(() => offsets[offsets.length - 1]).toBe(OFFSET);
+
+  // The scroll position must be updated instantly, not animated by CSS scroll-behavior
+  expect(offsets[0]).toBe(OFFSET);
+});
+
+it("scroll-behavior: smooth (WindowVirtualizer)", async () => {
+  const ITEM_SIZE = 30;
+  const INDEX = 200;
+  const { documentElement, scrollingElement } = document;
+  documentElement.style.scrollBehavior = "smooth";
+  onTestFinished(() => {
+    documentElement.style.scrollBehavior = "";
+  });
+  const ref = createRef<WindowVirtualizerHandle>();
+  const root = render(
+    // The size is known before the items are measured, so the scroll lands on the item at once
+    <WindowVirtualizer ref={ref} data={items} itemSize={ITEM_SIZE}>
+      {(d) => (
+        <div key={d} style={{ height: ITEM_SIZE }}>
+          item-{d}
+        </div>
+      )}
+    </WindowVirtualizer>,
+  );
+  await expectVirtualized(root, "item-0", "item-999");
+  const { container } = await getVirtualizer(root);
+  await waitForStableHeight(container);
+
+  const offsets: number[] = [];
+  const onScroll = () => {
+    offsets.push(scrollingElement!.scrollTop);
+  };
+  window.addEventListener("scroll", onScroll);
+  onTestFinished(() => window.removeEventListener("scroll", onScroll));
+
+  ref.current!.scrollToIndex(INDEX);
+  // The virtualizer starts at the top of the document
+  await expect.poll(() => offsets[offsets.length - 1]).toBe(INDEX * ITEM_SIZE);
+
+  // The scroll position must be updated instantly, not animated by CSS scroll-behavior
+  expect(offsets[0]).toBe(INDEX * ITEM_SIZE);
+});
+
+it("scroll-behavior: smooth (shift compensation)", async () => {
+  const ITEM_SIZE = 30;
+  const OFFSET = 6000;
+  const PREPEND_COUNT = 10;
+  const List = ({ data }: { data: number[] }) => (
+    <div style={{ height: 400, overflowY: "auto", scrollBehavior: "smooth" }}>
+      <Virtualizer shift data={data}>
+        {(d) => (
+          <div key={d} style={{ height: ITEM_SIZE }}>
+            item-{d}
+          </div>
+        )}
+      </Virtualizer>
+    </div>
+  );
+  const root = render(<List data={items} />);
+  await expectVirtualized(root, "item-0", "item-999");
+  const { viewport, container } = await getVirtualizer(root);
+  await waitForStableHeight(container);
+
+  await expect
+    .poll(() => {
+      viewport.scrollTo({ top: OFFSET, behavior: "instant" });
+      return getItem(container, `item-${OFFSET / ITEM_SIZE}`);
+    })
+    .toBeDefined();
+  await waitForStableHeight(container);
+
+  const offsets: number[] = [];
+  viewport.addEventListener("scroll", () => {
+    offsets.push(viewport.scrollTop);
+  });
+
+  rerender(
+    root,
+    <List
+      data={[...range(PREPEND_COUNT, (i) => i - PREPEND_COUNT), ...items]}
+    />,
+  );
+  await expect
+    .poll(() => offsets[offsets.length - 1])
+    .toBe(OFFSET + PREPEND_COUNT * ITEM_SIZE);
+
+  // The compensation must jump in a single write, not animated by CSS scroll-behavior
+  expect(offsets[0]).toBe(offsets[offsets.length - 1]);
 });
