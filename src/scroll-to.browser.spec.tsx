@@ -26,15 +26,13 @@ import {
 
 afterEach(cleanupScroll);
 
-const HEIGHTS = [20, 40, 80, 77];
-const items = Array.from({ length: 1000 }, (_, i) => i);
-
 describe("scrollTo", () => {
   it("down and up", async () => {
+    const HEIGHTS = [20, 40, 80, 77];
     const ref = createRef<VListHandle>();
     const root = render(
       <VList ref={ref} style={{ height: 400 }}>
-        {items.map((i) => (
+        {Array.from({ length: 1000 }, (_, i) => (
           <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
             {i}
           </div>
@@ -58,10 +56,11 @@ describe("scrollTo", () => {
 
 describe("scrollBy", () => {
   it("down and up", async () => {
+    const HEIGHTS = [20, 40, 80, 77];
     const ref = createRef<VListHandle>();
     const root = render(
       <VList ref={ref} style={{ height: 400 }}>
-        {items.map((i) => (
+        {Array.from({ length: 1000 }, (_, i) => (
           <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
             {i}
           </div>
@@ -112,7 +111,7 @@ describe("scrollbar", () => {
         className="classic-scrollbar"
         style={{ height: 400, overflowY: "auto", overflowX: "scroll" }}
       >
-        <Virtualizer ref={ref} data={items}>
+        <Virtualizer ref={ref} data={Array.from({ length: 1000 }, (_, i) => i)}>
           {(d) => (
             <div key={d} style={{ height: 30 }}>
               item-{d}
@@ -152,7 +151,10 @@ describe("scrollbar", () => {
 
     const ref = createRef<WindowVirtualizerHandle>();
     const root = render(
-      <WindowVirtualizer ref={ref} data={items}>
+      <WindowVirtualizer
+        ref={ref}
+        data={Array.from({ length: 1000 }, (_, i) => i)}
+      >
         {(d) => (
           <div key={d} style={{ height: 30 }}>
             item-{d}

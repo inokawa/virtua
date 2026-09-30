@@ -19,15 +19,13 @@ import {
 afterEach(cleanupScroll);
 
 describe("jump write", () => {
-  const ITEM_COUNT = 1000;
-  const HEIGHTS = [20, 40, 80, 77];
-
   it("fast scrolling into unmeasured area does not lose scroll position", async () => {
+    const HEIGHTS = [20, 40, 80, 77];
     // itemSize is not given and the sizes vary, so scrolling far ahead lands in an area sized by estimation
     const root = render(
       <div style={{ height: "100vh", overflowY: "auto" }}>
         <Virtualizer>
-          {Array.from({ length: ITEM_COUNT }, (_, i) => (
+          {Array.from({ length: 1000 }, (_, i) => (
             <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
               {i}
             </div>
