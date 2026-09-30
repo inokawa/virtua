@@ -1,10 +1,9 @@
 import type { JSX, ParentComponent } from "solid-js";
 
-export type ViewportComponentAttributes = Pick<
-  JSX.HTMLAttributes<HTMLElement>,
-  "class" | "id" | "role" | "tabIndex" | "onKeyDown" | "onWheel"
-> &
-  JSX.AriaAttributes & { style?: JSX.CSSProperties };
+export type ViewportComponentAttributes = Omit<
+  JSX.HTMLAttributes<HTMLDivElement>,
+  "ref" | "children" | "style" | "onScroll" | "onScrollEnd"
+> & { style?: JSX.CSSProperties };
 
 export interface CustomContainerComponentProps {
   style: JSX.CSSProperties;
