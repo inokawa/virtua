@@ -51,7 +51,7 @@ export const Default: StoryObj = {
   name: "With re-resizable",
   render: () => {
     const [heights, setHeights] = useState(() =>
-      Array.from({ length: 1000 }, () => 50),
+      Array.from({ length: 1000 }).map(() => 50),
     );
     const onResize = useCallback((id: number, height: number) => {
       setHeights((p) => {
@@ -66,7 +66,7 @@ export const Default: StoryObj = {
         style={{ border: "solid 4px #ccc" }}
       >
         <VList style={{ width: "100%", height: "100%" }}>
-          {Array.from({ length: 1000 }, (_, i) => (
+          {Array.from({ length: 1000 }).map((_, i) => (
             <ResizableItem
               key={i}
               id={i}

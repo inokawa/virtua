@@ -202,7 +202,7 @@ export const Columns: StoryObj = {
       () => [
         // the header row has no data
         null,
-        ...Array.from({ length: 1000 }, (_, i) => ({
+        ...Array.from({ length: 1000 }).map((_, i) => ({
           id: i,
           username: faker.person.fullName(),
           email: faker.internet.email(),
@@ -246,11 +246,11 @@ export const Columns: StoryObj = {
   },
 };
 
-const SECTIONS = Array.from({ length: 26 }, (_, i) => {
+const SECTIONS = Array.from({ length: 26 }).map((_, i) => {
   const letter = String.fromCharCode(65 + i);
   return {
     label: letter,
-    data: Array.from({ length: 5 + ((i * 7) % 20) }, (_, j) => ({
+    data: Array.from({ length: 5 + ((i * 7) % 20) }).map((_, j) => ({
       name: `${letter}${j}`,
       value: (i * 31 + j * 17) % 100,
     })),
@@ -321,7 +321,7 @@ export const Sections: StoryObj = {
   },
 };
 
-const PHRASES = Array.from({ length: 64 }, () =>
+const PHRASES = Array.from({ length: 64 }).map(() =>
   faker.lorem.words({ min: 1, max: 24 }),
 );
 const hash = (n: number) => {
@@ -369,7 +369,7 @@ export const Resizable: StoryObj = {
     const COLS = 100;
     const MIN_WIDTH = 40;
     const initialColumns = () =>
-      Array.from({ length: COLS }, () => ({ width: 100 }));
+      Array.from({ length: COLS }).map(() => ({ width: 100 }));
     const [columns, setColumns] = useState(initialColumns);
     const drag = useRef<{ col: number; startX: number; startWidth: number }>(
       undefined,

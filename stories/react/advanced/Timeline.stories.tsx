@@ -26,7 +26,7 @@ type Person = { name: string };
 type Event = { title: string; color: string };
 
 const COLORS = ["#4285f4", "#0b8043", "#f4511e", "#8e24aa", "#f6bf26"];
-const people: Person[] = Array.from({ length: 300 }, () => ({
+const people: Person[] = Array.from({ length: 300 }).map(() => ({
   name: faker.person.fullName(),
 }));
 // the header rows have no person
@@ -41,7 +41,7 @@ const DAY_WIDTH = 48;
 type Col = typeof NAME_COL | { date: Date; width: number };
 const COLS: Col[] = [
   NAME_COL,
-  ...Array.from({ length: DAYS }, (_, i) => ({
+  ...Array.from({ length: DAYS }).map((_, i) => ({
     date: new Date(FIRST_DAY.getTime() + i * DAY_MS),
     width: DAY_WIDTH,
   })),

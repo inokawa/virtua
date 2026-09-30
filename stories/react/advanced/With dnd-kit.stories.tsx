@@ -48,7 +48,7 @@ export const Default: StoryObj = {
   name: "With dnd-kit",
   render: () => {
     const [items, setItems] = useState(() =>
-      Array.from({ length: 1000 }, (_, i) => i + 1),
+      Array.from({ length: 1000 }).map((_, i) => i + 1),
     );
     const itemsBeforeDrag = useRef(items);
 

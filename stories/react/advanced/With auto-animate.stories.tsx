@@ -82,7 +82,7 @@ export const Default: StoryObj = {
       data: faker.music.songName(),
     });
     const [items, setItems] = useState(() =>
-      Array.from({ length: 100 }, createItem),
+      Array.from({ length: 100 }).map(createItem),
     );
     const [animationParent, enable] = useAutoAnimate();
 

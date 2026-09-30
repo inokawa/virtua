@@ -39,7 +39,7 @@ export const Default: StoryObj = {
   name: "Lazy",
   render: () => {
     const heavyComps = useState(() =>
-      Array.from({ length: 1000 }, () =>
+      Array.from({ length: 1000 }).map(() =>
         lazy(
           () =>
             new Promise<{ default: ComponentType }>(async (resolve) => {

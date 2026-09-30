@@ -189,7 +189,7 @@ const columns = [
   { key: "bio", width: 480 },
 ] as const;
 
-const rows = Array.from({ length: 10000 }, (_, i) => ({
+const rows = Array.from({ length: 10000 }).map((_, i) => ({
   id: i,
   name: `User ${i}`,
   email: `user${i}@example.com`,

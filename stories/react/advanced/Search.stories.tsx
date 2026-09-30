@@ -40,7 +40,7 @@ export const Default: StoryObj = {
   name: "Search",
   render: () => {
     const items = useState(() =>
-      Array.from({ length: 1000 }, (_, i): Data => ({
+      Array.from({ length: 1000 }).map((_, i): Data => ({
         id: String(i),
         name: `${faker.person.firstName()} ${faker.person.lastName()}`,
         description: faker.lorem.paragraphs(1),

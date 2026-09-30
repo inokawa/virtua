@@ -26,7 +26,7 @@ export const Default: StoryObj = {
         }}
       >
         <VList style={{ width: "100%", height: "100%" }}>
-          {Array.from({ length: 1000 }, (_, i) => {
+          {Array.from({ length: 1000 }).map((_, i) => {
             const labelId = `checkbox-list-label-${i}`;
             return (
               <ListItem key={i} component="div" disablePadding>

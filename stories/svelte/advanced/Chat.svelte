@@ -22,7 +22,7 @@
     me,
   });
 
-  let items = $state(Array.from({ length: 100 }, () => createItem()));
+  let items = $state(Array.from({ length: 100 }).map(() => createItem()));
   let value = $state("Hello world!");
   let ref: VirtualizerHandle;
   let shouldStickToBottom = $state(true);
@@ -77,7 +77,10 @@
       fetching = true;
       await new Promise((resolve) => setTimeout(resolve, 1000));
       isPrepend = true;
-      items = [...Array.from({ length: 100 }, () => createItem()), ...items];
+      items = [
+        ...Array.from({ length: 100 }).map(() => createItem()),
+        ...items,
+      ];
       fetching = false;
     }
   };

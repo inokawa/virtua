@@ -134,7 +134,7 @@ export class ChatDemo {
   private readonly ref = viewChild(Virtualizer);
 
   protected readonly items = signal(
-    Array.from({ length: 100 }, () => createItem()),
+    Array.from({ length: 100 }).map(() => createItem()),
   );
   protected readonly value = signal("Hello world!");
   protected readonly isPrepend = signal(false);
@@ -193,7 +193,7 @@ export class ChatDemo {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       this.isPrepend.set(true);
       this.items.set([
-        ...Array.from({ length: 100 }, () => createItem()),
+        ...Array.from({ length: 100 }).map(() => createItem()),
         ...this.items(),
       ]);
       this.fetching.set(false);

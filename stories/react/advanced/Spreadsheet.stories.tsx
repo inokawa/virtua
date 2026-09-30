@@ -98,7 +98,7 @@ export const Spreadsheet: StoryObj = {
     const pointerFocus = useRef(false);
     const [cols, setCols] = useState(() => [
       { name: "", width: HEADER_WIDTH },
-      ...Array.from({ length: COLS }, (_, i) => ({
+      ...Array.from({ length: COLS }).map((_, i) => ({
         name: colName(i),
         width: CELL_WIDTH,
       })),
@@ -109,7 +109,7 @@ export const Spreadsheet: StoryObj = {
     const [values, setValues] = useState<ReadonlyMap<string, string>>(
       () =>
         new Map(
-          Array.from({ length: 20 }, (_, i): [string, string] => [
+          Array.from({ length: 20 }).map((_, i): [string, string] => [
             genKey(i, (i * 7) % 10),
             "hello",
           ]),

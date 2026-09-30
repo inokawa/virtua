@@ -56,7 +56,7 @@ type Data = {
   visits: number;
 };
 
-const data: Data[] = Array.from({ length: 1000 }, (_, i): Data => ({
+const data: Data[] = Array.from({ length: 1000 }).map((_, i): Data => ({
   id: i,
   firstName: faker.person.firstName(),
   lastName: faker.person.lastName(),

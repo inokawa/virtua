@@ -141,7 +141,7 @@ export const Default: StoryObj = {
   name: "With pragmatic-drag-and-drop",
   render: () => {
     const [items, setItems] = useState(() =>
-      Array.from({ length: 1000 }, (_, i) => ({ id: i + 1 })),
+      Array.from({ length: 1000 }).map((_, i) => ({ id: i + 1 })),
     );
 
     useEffect(() => {

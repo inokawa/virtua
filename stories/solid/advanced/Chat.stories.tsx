@@ -89,7 +89,7 @@ export const Default: StoryObj = {
       me,
     });
     const [items, setItems] = createSignal<Data[]>(
-      Array.from({ length: 100 }, () => createItem()),
+      Array.from({ length: 100 }).map(() => createItem()),
     );
     let virtualizerHandle: VirtualizerHandle | undefined;
     const [isPrepend, setIsPrepend] = createSignal(false);
@@ -181,7 +181,7 @@ export const Default: StoryObj = {
                 await new Promise((resolve) => setTimeout(resolve, 1000));
                 setIsPrepend(true);
                 setItems((prev) => [
-                  ...Array.from({ length: 100 }, () => createItem()),
+                  ...Array.from({ length: 100 }).map(() => createItem()),
                   ...prev,
                 ]);
                 setFetching(false);

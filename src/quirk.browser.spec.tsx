@@ -37,9 +37,9 @@ const waitForStableHeight = async (container: HTMLElement): Promise<string> => {
 
 // Items must be placed in layout size, not in visual size of getBoundingClientRect or rounded size of offsetHeight
 const expectItemDistance = (container: HTMLElement, size: number) => {
-  const tops = Array.from(container.children, (e) =>
-    parseFloat((e as HTMLElement).style.top),
-  ).sort((a, b) => a - b);
+  const tops = Array.from(container.children)
+    .map((e) => parseFloat((e as HTMLElement).style.top))
+    .sort((a, b) => a - b);
   expect(tops.length).toBeGreaterThan(1);
   for (let i = 1; i < tops.length; i++) {
     expect(tops[i]! - tops[i - 1]!).toBeCloseTo(size);

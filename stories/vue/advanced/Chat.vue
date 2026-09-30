@@ -19,7 +19,7 @@ const createItem = ({
   me,
 });
 
-const items = ref<Data[]>(Array.from({ length: 100 }, () => createItem()));
+const items = ref<Data[]>(Array.from({ length: 100 }).map(() => createItem()));
 const value = ref("Hello world!");
 const handleRef = ref<InstanceType<typeof Virtualizer>>();
 const shouldStickToBottom = ref(true);
@@ -84,7 +84,7 @@ const handleScroll = async (offset: number) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     isPrepend.value = true;
     items.value = [
-      ...Array.from({ length: 100 }, () => createItem()),
+      ...Array.from({ length: 100 }).map(() => createItem()),
       ...items.value,
     ];
     fetching.value = false;

@@ -18,14 +18,14 @@ type Person = {
 };
 
 const MONTHS = 36;
-const people: Person[] = Array.from({ length: 10000 }, (_, i): Person => ({
+const people: Person[] = Array.from({ length: 10000 }).map((_, i): Person => ({
   id: i,
   name: faker.person.fullName(),
   email: faker.internet.email(),
   city: faker.location.city(),
   age: faker.number.int({ min: 18, max: 80 }),
   salary: faker.number.int({ min: 30000, max: 200000 }),
-  sales: Array.from({ length: MONTHS }, () =>
+  sales: Array.from({ length: MONTHS }).map(() =>
     faker.number.int({ min: 0, max: 50000 }),
   ),
 }));
@@ -54,7 +54,7 @@ const COLUMNS: Column[] = [
     format: money,
     align: "right",
   },
-  ...Array.from({ length: MONTHS }, (_, m): Column => {
+  ...Array.from({ length: MONTHS }).map((_, m): Column => {
     const date = new Date(2024, m);
     return {
       name: date.toLocaleString("en", { month: "short", year: "2-digit" }),

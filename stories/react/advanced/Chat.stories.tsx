@@ -97,7 +97,7 @@ export const Default: StoryObj = {
       me,
     });
     const [items, setItems] = useState(() =>
-      Array.from({ length: 100 }, () => createItem()),
+      Array.from({ length: 100 }).map(() => createItem()),
     );
 
     const ref = useRef<VirtualizerHandle>(null);
@@ -194,7 +194,7 @@ export const Default: StoryObj = {
                 await delay(1000);
                 isPrepend.current = true;
                 setItems((p) => [
-                  ...Array.from({ length: 100 }, () => createItem()),
+                  ...Array.from({ length: 100 }).map(() => createItem()),
                   ...p,
                 ]);
                 setFetching(false);

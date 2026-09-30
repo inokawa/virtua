@@ -145,7 +145,7 @@ export const SelectedIndex: StoryObj = {
       value: value,
     });
     const [items, setItems] = useState(() =>
-      Array.from({ length: 20 }, () => createItem()),
+      Array.from({ length: 20 }).map(() => createItem()),
     );
     const [editingItemId, setEditingItemId] = useState<number | null>(null);
 
@@ -201,7 +201,7 @@ export const SelectedIndex: StoryObj = {
             if (offset < 100) {
               isPrepend.current = true;
               setItems((p) => [
-                ...Array.from({ length: 20 }, () => createItem()),
+                ...Array.from({ length: 20 }).map(() => createItem()),
                 ...p,
               ]);
             }
