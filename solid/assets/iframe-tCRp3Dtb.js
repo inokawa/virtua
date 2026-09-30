@@ -1,1 +1,0 @@
-import{t as e}from"./iframe-BE2-Ge-8.js";e();
