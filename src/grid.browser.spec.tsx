@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, onTestFinished } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import { server } from "vitest/browser";
 import {
   createRef,
@@ -14,6 +14,12 @@ import {
   expectGridGeometry,
   expectPosition,
   getVirtualizer,
+  scrollToEnd,
+  setRTL,
+  relativeBottom,
+  relativeLeft,
+  relativeRight,
+  relativeTop,
 } from "../spec/browser/index.js";
 import { delay, range } from "../spec/utils.js";
 
@@ -29,26 +35,6 @@ const cell = (container: Element, text: string): HTMLElement =>
   [...container.querySelectorAll('[role="row"] > *')].find(
     (e) => e.textContent === text,
   ) as HTMLElement;
-
-const relativeTop = (viewport: Element, e: Element) =>
-  e.getBoundingClientRect().top - viewport.getBoundingClientRect().top;
-const relativeLeft = (viewport: Element, e: Element) =>
-  e.getBoundingClientRect().left - viewport.getBoundingClientRect().left;
-const relativeRight = (viewport: Element, e: Element) =>
-  viewport.getBoundingClientRect().right - e.getBoundingClientRect().right;
-
-const setRTL = () => {
-  const { documentElement } = document;
-  documentElement.dir = "rtl";
-  onTestFinished(() => {
-    documentElement.dir = "";
-  });
-};
-
-const scrollToEnd = (viewport: HTMLElement, isRTL?: boolean) => {
-  viewport.scrollTop = viewport.scrollHeight;
-  viewport.scrollLeft = isRTL ? -viewport.scrollWidth : viewport.scrollWidth;
-};
 
 const Grid = ({
   handle,
@@ -255,14 +241,14 @@ it("scrollToIndex keeps the cell out of the pinned blocks", async () => {
     colAlign: "end",
   });
   await expect.poll(() => cell(container, "600 / 200")).toBeTruthy();
-  expect(
-    viewport.getBoundingClientRect().bottom -
-      cell(container, "600 / 200").getBoundingClientRect().bottom,
-  ).toBeCloseTo(ROW_HEIGHT, 0);
-  expect(
-    viewport.getBoundingClientRect().right -
-      cell(container, "600 / 200").getBoundingClientRect().right,
-  ).toBeCloseTo(COL_WIDTH, 0);
+  expect(relativeBottom(viewport, cell(container, "600 / 200"))).toBeCloseTo(
+    ROW_HEIGHT,
+    0,
+  );
+  expect(relativeRight(viewport, cell(container, "600 / 200"))).toBeCloseTo(
+    COL_WIDTH,
+    0,
+  );
 
   ref.current!.scrollToIndex({
     rowIndex: 700,
@@ -297,11 +283,7 @@ it("scrollToIndex keeps the cell out of the pinned blocks", async () => {
   // the axes are aligned separately
   ref.current!.scrollToIndex({ rowIndex: 100, colIndex: 50, rowAlign: "end" });
   await expect
-    .poll(
-      () =>
-        viewport.getBoundingClientRect().bottom -
-        cell(container, "100 / 50").getBoundingClientRect().bottom,
-    )
+    .poll(() => relativeBottom(viewport, cell(container, "100 / 50")))
     .toBeCloseTo(ROW_HEIGHT, 0);
   expect(relativeLeft(viewport, cell(container, "100 / 50"))).toBeCloseTo(
     COL_WIDTH * 2,
@@ -341,16 +323,12 @@ it("scrollToIndex aligns the cell next to the gap before the pinned blocks", asy
     colAlign: "end",
   });
   await expect
-    .poll(
-      () =>
-        viewport.getBoundingClientRect().bottom -
-        cell(container, "500 / 100").getBoundingClientRect().bottom,
-    )
+    .poll(() => relativeBottom(viewport, cell(container, "500 / 100")))
     .toBeCloseTo(ROW_HEIGHT + GAP, 0);
-  expect(
-    viewport.getBoundingClientRect().right -
-      cell(container, "500 / 100").getBoundingClientRect().right,
-  ).toBeCloseTo(0, 0);
+  expect(relativeRight(viewport, cell(container, "500 / 100"))).toBeCloseTo(
+    0,
+    0,
+  );
 });
 
 it("scrollToIndex on mount keeps the cell out of the pinned rows measured later", async () => {

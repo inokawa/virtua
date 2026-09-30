@@ -3,12 +3,6 @@ import { type Locator, type Page, expect } from "@playwright/test";
 export const storyUrl = (id: `${string}-${string}--${string}`) =>
   `http://localhost:6006/iframe.html?id=${id}&viewMode=story`;
 
-export const setRTL = async (page: Page) => {
-  await page.evaluate(() => {
-    document.documentElement.dir = "rtl";
-  });
-};
-
 declare const scrollableSymbol: unique symbol;
 export type ScrollableLocator = Locator & { [scrollableSymbol]: never };
 
@@ -81,12 +75,6 @@ export const relativeBottom = async (parent: Locator, child: Locator) => {
   const { y: pY, height: pHeight } = (await parent.boundingBox())!;
   const { y: cY, height: cHeight } = (await child.boundingBox())!;
   return pY + pHeight - (cY + cHeight);
-};
-
-export const relativeRight = async (parent: Locator, child: Locator) => {
-  const { x: pX, width: pWidth } = (await parent.boundingBox())!;
-  const { x: cX, width: cWidth } = (await child.boundingBox())!;
-  return pX + pWidth - (cX + cWidth);
 };
 
 const isPointedLocator = (loc: Locator, x: number, y: number) => {
@@ -278,33 +266,6 @@ export const scrollToRight = async (
   });
 };
 
-export const scrollToLeft = async (scrollable: ScrollableLocator) => {
-  return scrollable.evaluate((e) => {
-    return new Promise<void>((resolve) => {
-      let timer: ReturnType<typeof setTimeout> | null = null;
-
-      const onScroll = () => {
-        e.scrollLeft = -e.scrollWidth;
-
-        if (timer !== null) {
-          clearTimeout(timer);
-        }
-        timer = setTimeout(() => {
-          if (e.scrollLeft - (e as HTMLElement).offsetWidth <= -e.scrollWidth) {
-            e.removeEventListener("scroll", onScroll);
-            resolve();
-          } else {
-            onScroll();
-          }
-        }, 50);
-      };
-      e.addEventListener("scroll", onScroll);
-
-      onScroll();
-    });
-  });
-};
-
 export const windowScrollToBottom = async (page: Page) => {
   return page.evaluate(() => {
     return new Promise<void>((resolve) => {
@@ -348,36 +309,6 @@ export const windowScrollToRight = async (page: Page) => {
         }
         timer = setTimeout(() => {
           if (window.scrollX + window.innerWidth >= document.body.scrollWidth) {
-            window.removeEventListener("scroll", onScroll);
-            resolve();
-          } else {
-            onScroll();
-          }
-        }, 50);
-      };
-      window.addEventListener("scroll", onScroll);
-
-      onScroll();
-    });
-  });
-};
-
-export const windowScrollToLeft = async (page: Page) => {
-  return page.evaluate(() => {
-    return new Promise<void>((resolve) => {
-      let timer: ReturnType<typeof setTimeout> | null = null;
-
-      const onScroll = () => {
-        window.scrollTo(-document.body.scrollWidth, 0);
-
-        if (timer !== null) {
-          clearTimeout(timer);
-        }
-        timer = setTimeout(() => {
-          if (
-            window.scrollX - window.innerWidth <=
-            -document.body.scrollWidth
-          ) {
             window.removeEventListener("scroll", onScroll);
             resolve();
           } else {

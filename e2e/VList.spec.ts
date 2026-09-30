@@ -10,68 +10,20 @@ import {
   getScrollRight,
   expectInRange,
   scrollWithTouch,
-  scrollToLeft,
   getVirtualizer,
   getScrollable,
   clearTimer,
   scrollTo,
   listenScrollEnd,
-  relativeRight,
   relativeTop,
   relativeBottom,
   getItems,
-  setRTL,
   findFirstVisibleItem,
   findLastVisibleItem,
   isVerticalScrollBarVisible,
-  ScrollableLocator,
 } from "./utils";
 
 const SMOOTH_SCROLL_MS = 100;
-
-test.describe("smoke", () => {
-  test("vertically scrollable (RTL)", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--default"), {
-      waitUntil: "domcontentloaded",
-    });
-    await setRTL(page);
-
-    const component = await getScrollable(page);
-
-    // check if start is displayed
-    const first = component.getByText("0", { exact: true });
-    await expect(first).toBeVisible();
-    expect(await relativeTop(component, first)).toEqual(0);
-
-    // scroll to the end
-    await scrollToBottom(component);
-
-    // check if the end is displayed
-    await expect(component.getByText("999", { exact: true })).toBeVisible();
-  });
-
-  test("horizontally scrollable (RTL)", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--horizontal"), {
-      waitUntil: "domcontentloaded",
-    });
-    await setRTL(page);
-
-    const component = await getScrollable(page);
-
-    // check if start is displayed
-    const first = component.getByText("Column 0", { exact: true });
-    await expect(first).toBeVisible();
-    expect(await relativeRight(component, first)).toEqual(0);
-
-    // scroll to the end
-    await scrollToLeft(component);
-
-    // check if the end is displayed
-    await expect(
-      component.getByText("Column 999", { exact: true }),
-    ).toBeVisible();
-  });
-});
 
 test.describe("check if it works when children change", () => {
   const hasError = async (page: Page): Promise<boolean> => {
@@ -222,36 +174,6 @@ test.describe("check if scroll jump compensation works", () => {
     while ((performance.now() - start) / 1000 < 4) {
       await page.keyboard.press("ArrowRight", { delay: 10 });
       const offset = await getScrollLeft(component);
-      expect(offset).toBeGreaterThanOrEqual(prev);
-      prev = offset;
-    }
-    expect(prev).toBeGreaterThan(initial + min);
-  });
-
-  test("horizontal start -> end (RTL)", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--horizontal"), {
-      waitUntil: "domcontentloaded",
-    });
-    await setRTL(page);
-    const component = await getScrollable(page);
-
-    // check if start is displayed
-    await expect(
-      component.getByText("Column 0", { exact: true }),
-    ).toBeVisible();
-
-    const windowWidth = await page.evaluate(() => window.innerWidth);
-    // check if offset from start is always keeped
-    await component.click();
-    const min = 200;
-    const initial = await getScrollRight(component);
-    let prev = initial;
-    const start = performance.now();
-    while ((performance.now() - start) / 1000 < 4) {
-      // use scrollBy to scroll a lot
-      await scrollBy(component, -(windowWidth * 2), "Left");
-      await page.waitForTimeout(100);
-      const offset = await getScrollRight(component);
       expect(offset).toBeGreaterThanOrEqual(prev);
       prev = offset;
     }

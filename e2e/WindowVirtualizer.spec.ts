@@ -3,7 +3,6 @@ import {
   storyUrl,
   windowScrollToBottom,
   windowScrollToRight,
-  windowScrollToLeft,
   getVirtualizer,
   getWindowScrollTop,
   getWindowScrollLeft,
@@ -16,7 +15,6 @@ import {
   windowBottom,
   relativeTop,
   getItems,
-  setRTL,
 } from "./utils";
 
 const SMOOTH_SCROLL_MS = 100;
@@ -24,56 +22,6 @@ const SMOOTH_SCROLL_MS = 100;
 const isVerticalScrollBarVisible = async (page: Page) => {
   return page.evaluate(() => document.body.scrollHeight > window.innerHeight);
 };
-
-test.describe("smoke", () => {
-  test("vertically scrollable (RTL)", async ({ page }) => {
-    await page.goto(storyUrl("basics-windowvirtualizer--default"), {
-      waitUntil: "domcontentloaded",
-    });
-    await setRTL(page);
-
-    const component = await getVirtualizer(page);
-
-    // check if start is displayed
-    await expect(component.getByText("0", { exact: true })).toBeVisible();
-    await expect(component.getByText("50", { exact: true })).not.toBeVisible();
-
-    // scroll to the end
-    await windowScrollToBottom(page);
-
-    // check if the end is displayed
-    await expect(component.getByText("999", { exact: true })).toBeVisible();
-    await expect(component.getByText("949", { exact: true })).not.toBeVisible();
-  });
-
-  test("horizontally scrollable (RTL)", async ({ page }) => {
-    await page.goto(storyUrl("basics-windowvirtualizer--horizontal"), {
-      waitUntil: "domcontentloaded",
-    });
-    await setRTL(page);
-
-    const component = await getVirtualizer(page);
-
-    // check if start is displayed
-    await expect(
-      component.getByText("Column 0", { exact: true }),
-    ).toBeVisible();
-    await expect(
-      component.getByText("Column 50", { exact: true }),
-    ).not.toBeVisible();
-
-    // scroll to the end
-    await windowScrollToLeft(page);
-
-    // check if the end is displayed
-    await expect(
-      component.getByText("Column 999", { exact: true }),
-    ).toBeVisible();
-    await expect(
-      component.getByText("Column 949", { exact: true }),
-    ).not.toBeVisible();
-  });
-});
 
 test.describe("check if scroll jump compensation works", () => {
   test("vertical start -> end", async ({ page }) => {

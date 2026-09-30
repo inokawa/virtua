@@ -1,6 +1,8 @@
 export const delay = (ms: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms));
 
+export const nextFrame = () => new Promise<number>(requestAnimationFrame);
+
 export const range = <T = number>(
   length: number,
   cb: (i: number) => T = (i) => i as T,

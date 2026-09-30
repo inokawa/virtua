@@ -7,7 +7,9 @@ import {
   getItem,
   getVirtualizer,
   relativeBottom,
+  relativeLeft,
   relativeTop,
+  scrollToEnd,
 } from "../spec/browser/index.js";
 import { range } from "../spec/utils.js";
 
@@ -52,7 +54,7 @@ describe("startMargin", () => {
     // scroll to the end
     await expect
       .poll(() => {
-        viewport.scrollTop = viewport.scrollHeight;
+        scrollToEnd(viewport);
         return getItem(container, last);
       })
       .toBeDefined();
@@ -117,10 +119,11 @@ describe("nested scroll containers", () => {
     expect(deck.container.children[0]).toBe(firstColumn);
 
     // scroll the deck right, less than a column width not to unmount the first column
-    deck.viewport.scrollLeft = 100;
+    const DECK_OFFSET = 100;
+    deck.viewport.scrollLeft = DECK_OFFSET;
     await expectPosition(
-      () => firstColumn.getBoundingClientRect().left,
-      deck.viewport.getBoundingClientRect().left - 100,
+      () => relativeLeft(deck.viewport, firstColumn),
+      -DECK_OFFSET,
     );
 
     // check if the first column is not scrolled and still renders the same rows
