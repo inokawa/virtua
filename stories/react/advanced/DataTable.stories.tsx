@@ -79,6 +79,10 @@ const AVERAGES = COLUMNS.map((column) =>
     : "",
 );
 
+// the header row and the summary row have no person
+const HEADER = { header: true } as const;
+const SUMMARY = { summary: true } as const;
+const ROWS = [HEADER, ...people, SUMMARY];
 const PINNED_COLS = 3;
 
 const cellStyle: CSSProperties = {
@@ -135,8 +139,7 @@ export const DataTable: StoryObj = {
             boxSizing: "border-box",
             border: "solid 1px #e2e3e3",
           }}
-          // the header row, the people and the summary row
-          rows={people.length + 2}
+          rows={ROWS}
           rowHeight={36}
           cols={COLUMNS}
           colWidth="width"
@@ -144,58 +147,58 @@ export const DataTable: StoryObj = {
           footerRows={1}
           headerCols={PINNED_COLS}
         >
-          {(rowIndex, column, { colIndex }) => {
-            if (rowIndex === 0 || rowIndex > people.length) {
-              if (rowIndex === 0) {
-                if ("actions" in column) {
-                  return <div style={edgeStyle}>{column.name}</div>;
-                }
-                if ("select" in column) {
-                  return (
-                    <div
-                      style={{
-                        ...edgeStyle,
-                        justifyContent: "center",
-                        padding: 0,
-                        boxShadow:
-                          colIndex === PINNED_COLS - 1
-                            ? "inset -1px 0 #dadce0"
-                            : undefined,
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        aria-label="Select all"
-                        checked={selected.size === people.length}
-                        onChange={(e) => {
-                          setSelected(
-                            e.target.checked
-                              ? new Set(people.map((p) => p.id))
-                              : new Set(),
-                          );
-                        }}
-                      />
-                    </div>
-                  );
-                }
+          {(row, column, { colIndex }) => {
+            if ("header" in row) {
+              if ("actions" in column) {
+                return <div style={edgeStyle}>{column.name}</div>;
+              }
+              if ("select" in column) {
                 return (
                   <div
                     style={{
                       ...edgeStyle,
-                      justifyContent:
-                        column.align === "right" ? "flex-end" : undefined,
-                      fontVariantNumeric:
-                        column.align === "right" ? "tabular-nums" : undefined,
+                      justifyContent: "center",
+                      padding: 0,
                       boxShadow:
                         colIndex === PINNED_COLS - 1
                           ? "inset -1px 0 #dadce0"
                           : undefined,
                     }}
                   >
-                    {column.name}
+                    <input
+                      type="checkbox"
+                      aria-label="Select all"
+                      checked={selected.size === people.length}
+                      onChange={(e) => {
+                        setSelected(
+                          e.target.checked
+                            ? new Set(people.map((p) => p.id))
+                            : new Set(),
+                        );
+                      }}
+                    />
                   </div>
                 );
               }
+              return (
+                <div
+                  style={{
+                    ...edgeStyle,
+                    justifyContent:
+                      column.align === "right" ? "flex-end" : undefined,
+                    fontVariantNumeric:
+                      column.align === "right" ? "tabular-nums" : undefined,
+                    boxShadow:
+                      colIndex === PINNED_COLS - 1
+                        ? "inset -1px 0 #dadce0"
+                        : undefined,
+                  }}
+                >
+                  {column.name}
+                </div>
+              );
+            }
+            if ("summary" in row) {
               return (
                 <div
                   style={{
@@ -216,7 +219,6 @@ export const DataTable: StoryObj = {
                 </div>
               );
             }
-            const row = people[rowIndex - 1]!;
             const isSelected = selected.has(row.id);
             if ("actions" in column) {
               return (

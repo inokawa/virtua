@@ -162,6 +162,8 @@ const columns = columnHelper.columns([
 
 const COLUMN_TYPE = "text/x-column-id";
 
+const EMPTY = { empty: true } as const;
+
 const cellStyle: CSSProperties = {
   display: "flex",
   alignItems: "center",
@@ -315,7 +317,7 @@ export const Default: StoryObj = {
         }
         colIndex += header.colSpan;
       }
-      return headers;
+      return { headers };
     });
     const dataRows = table.getRowModel().rows;
     if (!dataRows.length) {
@@ -362,8 +364,7 @@ export const Default: StoryObj = {
             boxSizing: "border-box",
             border: "solid 1px #e2e3e3",
           }}
-          // the header rows and the data rows, or a row for the empty state
-          rows={headerRows.length + (dataRows.length || 1)}
+          rows={[...headerRows, ...(dataRows.length ? dataRows : [EMPTY])]}
           rowHeight={36}
           cols={columnHeaders.map((header) => ({
             header,
@@ -374,9 +375,9 @@ export const Default: StoryObj = {
           spans={spans}
           ariaSort={ariaSort}
         >
-          {(rowIndex, col, { colIndex }) => {
-            if (rowIndex < headerRows.length) {
-              const header = headerRows[rowIndex]![colIndex]!;
+          {(row, col, { colIndex }) => {
+            if ("headers" in row) {
+              const header = row.headers[colIndex]!;
               if (header.column.columns.length > 0) {
                 return <ColumnGroupHeader header={header} />;
               }
@@ -393,10 +394,9 @@ export const Default: StoryObj = {
                 />
               );
             }
-            if (!dataRows.length) {
+            if ("empty" in row) {
               return <Empty />;
             }
-            const row = dataRows[rowIndex - headerRows.length]!;
             const cell = row.getAllCellsByColumnId()[col.header.column.id]!;
             return (
               <div style={cellStyle}>
