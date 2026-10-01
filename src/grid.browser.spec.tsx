@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, onTestFinished, vi } from "vitest";
 import { server } from "vitest/browser";
 import {
   createRef,
@@ -422,6 +422,16 @@ it("the scroll end is notified once after both axes have ended", async () => {
   let scrolledAt = 0;
   let endedAt = 0;
   let onHorizontal = () => {};
+  // The clock is pinned while the wheel is dispatched, as if the wheel came a while after the scroll.
+  // It's replaced before the render, as the scroll observer takes Date.now when it's created
+  let pinnedNow: number | undefined;
+  const { now } = Date;
+  const nowSpy = vi
+    .spyOn(Date, "now")
+    .mockImplementation(() => pinnedNow ?? now());
+  onTestFinished(() => {
+    nowSpy.mockRestore();
+  });
   const root = render(
     <VGrid
       rows={ROWS}
@@ -451,12 +461,13 @@ it("the scroll end is notified once after both axes have ended", async () => {
   const { viewport, container } = await getVirtualizer(root);
   await expect.poll(() => cell(container, "0 / 0")).toBeTruthy();
 
-  // a busy main thread drops the scroll events, so a wheel keeps the columns scrolling
+  // a busy main thread drops the scroll events, so a wheel keeps the columns scrolling.
+  // A wheel counts only between 50ms and 150ms after the last scroll event
   onHorizontal = () => {
     onHorizontal = () => {};
-    setTimeout(() => {
-      viewport.dispatchEvent(new WheelEvent("wheel", { deltaX: 10 }));
-    }, 75);
+    pinnedNow = Date.now() + 75;
+    viewport.dispatchEvent(new WheelEvent("wheel", { deltaX: 10 }));
+    pinnedNow = undefined;
   };
   viewport.scrollLeft = 200;
   await expect.poll(() => scrollEnds, { timeout: 3000 }).toBe(1);
