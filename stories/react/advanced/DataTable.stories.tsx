@@ -67,18 +67,6 @@ const COLUMNS: Column[] = [
   { name: "Actions", width: 90, actions: true },
 ];
 
-const AVERAGES = COLUMNS.map((column) =>
-  "get" in column && column.align === "right"
-    ? "~" +
-      (column.format ?? String)(
-        Math.round(
-          people.reduce((acc, p) => acc + (column.get(p) as number), 0) /
-            people.length,
-        ),
-      )
-    : "",
-);
-
 // the header row and the summary row have no person
 const HEADER = { header: true } as const;
 const SUMMARY = { summary: true } as const;
@@ -215,7 +203,17 @@ export const DataTable: StoryObj = {
                 >
                   {column.name === "Name"
                     ? selected.size.toLocaleString() + " selected"
-                    : AVERAGES[colIndex]}
+                    : "get" in column && column.align === "right"
+                      ? "~" +
+                        (column.format ?? String)(
+                          Math.round(
+                            people.reduce(
+                              (acc, p) => acc + (column.get(p) as number),
+                              0,
+                            ) / people.length,
+                          ),
+                        )
+                      : ""}
                 </div>
               );
             }
