@@ -267,7 +267,7 @@ const groupedRows = [
   ...SECTIONS.flatMap((section) => [section, ...section.data]),
 ];
 const sectionStarts = groupedRows.flatMap((row, i) =>
-  "data" in row ? [i] : [],
+  "label" in row ? [i] : [],
 );
 
 export const Sections: StoryObj = {
@@ -301,15 +301,16 @@ export const Sections: StoryObj = {
               background:
                 "header" in row
                   ? "burlywood"
-                  : "data" in row
+                  : "label" in row
                     ? "#eee"
                     : undefined,
-              fontWeight: "header" in row || "data" in row ? "bold" : undefined,
+              fontWeight:
+                "header" in row || "label" in row ? "bold" : undefined,
             }}
           >
             {"header" in row
               ? column.key
-              : "data" in row
+              : "label" in row
                 ? `${row.label} (${row.data.length})`
                 : column.key === "note"
                   ? "-"

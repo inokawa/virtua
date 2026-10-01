@@ -79,11 +79,6 @@ const AVERAGES = COLUMNS.map(({ get, format = String, align }) =>
     : "",
 );
 
-// the header row and the summary row have no person
-const HEADER = { edge: "header" } as const;
-const SUMMARY = { edge: "summary" } as const;
-type Row = Person | typeof HEADER | typeof SUMMARY;
-const ROWS: Row[] = [HEADER, ...people, SUMMARY];
 const PINNED_COLS = 3;
 
 const cellStyle: CSSProperties = {
@@ -140,7 +135,8 @@ export const DataTable: StoryObj = {
             boxSizing: "border-box",
             border: "solid 1px #e2e3e3",
           }}
-          rows={ROWS}
+          // the header row, the people and the summary row
+          rows={people.length + 2}
           rowHeight={36}
           cols={COLUMNS}
           colWidth="width"
@@ -148,64 +144,89 @@ export const DataTable: StoryObj = {
           footerRows={1}
           headerCols={PINNED_COLS}
         >
-          {(row, column, { colIndex }) => {
-            const isEdge = "edge" in row;
-            const shadows: string[] = [];
-            if (colIndex === PINNED_COLS - 1) {
-              shadows.push("inset -1px 0 #dadce0");
-            }
-            if (isEdge && row.edge === "summary") {
-              shadows.push("inset 0 1px #dadce0");
-            }
-            const style: CSSProperties = {
-              ...(isEdge ? edgeStyle : cellStyle),
-              justifyContent: column.align === "right" ? "flex-end" : undefined,
-              fontVariantNumeric:
-                column.align === "right" ? "tabular-nums" : undefined,
-              boxShadow: shadows.join(", ") || undefined,
-            };
-            if (isEdge && row.edge === "header") {
-              if (column.actions) {
-                return <div style={style}>{column.name}</div>;
-              }
-              if (!column.get) {
+          {(rowIndex, column, { colIndex }) => {
+            if (rowIndex === 0 || rowIndex > people.length) {
+              if (rowIndex === 0) {
+                if (column.actions) {
+                  return <div style={edgeStyle}>{column.name}</div>;
+                }
+                if (!column.get) {
+                  return (
+                    <div
+                      style={{
+                        ...edgeStyle,
+                        justifyContent: "center",
+                        padding: 0,
+                        boxShadow:
+                          colIndex === PINNED_COLS - 1
+                            ? "inset -1px 0 #dadce0"
+                            : undefined,
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        aria-label="Select all"
+                        checked={selected.size === people.length}
+                        onChange={(e) => {
+                          setSelected(
+                            e.target.checked
+                              ? new Set(people.map((p) => p.id))
+                              : new Set(),
+                          );
+                        }}
+                      />
+                    </div>
+                  );
+                }
                 return (
                   <div
-                    style={{ ...style, justifyContent: "center", padding: 0 }}
+                    style={{
+                      ...edgeStyle,
+                      justifyContent:
+                        column.align === "right" ? "flex-end" : undefined,
+                      fontVariantNumeric:
+                        column.align === "right" ? "tabular-nums" : undefined,
+                      boxShadow:
+                        colIndex === PINNED_COLS - 1
+                          ? "inset -1px 0 #dadce0"
+                          : undefined,
+                    }}
                   >
-                    <input
-                      type="checkbox"
-                      aria-label="Select all"
-                      checked={selected.size === people.length}
-                      onChange={(e) => {
-                        setSelected(
-                          e.target.checked
-                            ? new Set(people.map((p) => p.id))
-                            : new Set(),
-                        );
-                      }}
-                    />
+                    {column.name}
                   </div>
                 );
               }
-              return <div style={style}>{column.name}</div>;
-            }
-            if (isEdge) {
               return (
-                <div style={style}>
+                <div
+                  style={{
+                    ...edgeStyle,
+                    justifyContent:
+                      column.align === "right" ? "flex-end" : undefined,
+                    fontVariantNumeric:
+                      column.align === "right" ? "tabular-nums" : undefined,
+                    boxShadow:
+                      colIndex === PINNED_COLS - 1
+                        ? "inset -1px 0 #dadce0, inset 0 1px #dadce0"
+                        : "inset 0 1px #dadce0",
+                  }}
+                >
                   {column.name === "Name"
                     ? selected.size.toLocaleString() + " selected"
                     : AVERAGES[colIndex]}
                 </div>
               );
             }
+            const row = people[rowIndex - 1]!;
             const isSelected = selected.has(row.id);
-            if (isSelected) {
-              style.background = "#e8f0fe";
-            }
             if (column.actions) {
               return (
-                <div style={{ ...style, justifyContent: "center" }}>
+                <div
+                  style={{
+                    ...cellStyle,
+                    ...(isSelected && { background: "#e8f0fe" }),
+                    justifyContent: "center",
+                  }}
+                >
                   <button
                     type="button"
                     aria-label={"Edit " + row.name}
@@ -219,7 +240,18 @@ export const DataTable: StoryObj = {
             }
             if (!column.get) {
               return (
-                <div style={{ ...style, justifyContent: "center", padding: 0 }}>
+                <div
+                  style={{
+                    ...cellStyle,
+                    ...(isSelected && { background: "#e8f0fe" }),
+                    justifyContent: "center",
+                    padding: 0,
+                    boxShadow:
+                      colIndex === PINNED_COLS - 1
+                        ? "inset -1px 0 #dadce0"
+                        : undefined,
+                  }}
+                >
                   <input
                     type="checkbox"
                     aria-label={"Select " + row.name}
@@ -239,7 +271,20 @@ export const DataTable: StoryObj = {
             }
             const value = column.get(row);
             return (
-              <div style={style}>
+              <div
+                style={{
+                  ...cellStyle,
+                  ...(isSelected && { background: "#e8f0fe" }),
+                  justifyContent:
+                    column.align === "right" ? "flex-end" : undefined,
+                  fontVariantNumeric:
+                    column.align === "right" ? "tabular-nums" : undefined,
+                  boxShadow:
+                    colIndex === PINNED_COLS - 1
+                      ? "inset -1px 0 #dadce0"
+                      : undefined,
+                }}
+              >
                 {column.format ? column.format(value) : value}
               </div>
             );

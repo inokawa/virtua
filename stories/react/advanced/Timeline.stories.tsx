@@ -184,28 +184,24 @@ export const Timeline: StoryObj = {
           spans={SPANS}
         >
           {(row, col, { rowIndex, colIndex }) => {
-            if (row === MONTHS_ROW) {
-              if (!("date" in col)) {
+            if ("header" in row) {
+              if ("name" in col) {
+                // the corner spans the header rows
                 return <div style={headerStyle} />;
               }
-              return (
-                <div style={{ ...headerStyle, ...labelTrackStyle }}>
-                  <div style={{ ...stickyLabelStyle, fontWeight: 500 }}>
-                    {col.date.toLocaleString("en", {
-                      month: "long",
-                      year: "numeric",
-                    })}
+              if (row.header === "months") {
+                return (
+                  <div style={{ ...headerStyle, ...labelTrackStyle }}>
+                    <div style={{ ...stickyLabelStyle, fontWeight: 500 }}>
+                      {col.date.toLocaleString("en", {
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </div>
                   </div>
-                </div>
-              );
-            }
-            if (!("date" in col)) {
-              return (
-                <div style={nameStyle}>{"header" in row ? "" : row.name}</div>
-              );
-            }
-            const today = isToday(col.date);
-            if (row === DAYS_ROW) {
+                );
+              }
+              const today = isToday(col.date);
               return (
                 <div
                   style={{
@@ -229,6 +225,9 @@ export const Timeline: StoryObj = {
                   </span>
                 </div>
               );
+            }
+            if ("name" in col) {
+              return <div style={nameStyle}>{row.name}</div>;
             }
             const event = events.get(rowIndex * (DAYS + 1) + colIndex);
             return (
