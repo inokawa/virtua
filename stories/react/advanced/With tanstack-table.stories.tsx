@@ -14,6 +14,7 @@ import {
   flexRender,
   globalFilteringFeature,
   rowSortingFeature,
+  type Header,
   sortFn_alphanumeric,
   sortFn_basic,
   sortFn_text,
@@ -183,23 +184,97 @@ const headerStyle: CSSProperties = {
   fontWeight: 500,
   userSelect: "none",
 };
-const sortButtonStyle: CSSProperties = {
-  padding: 0,
-  border: "none",
-  background: "none",
-  color: "inherit",
-  font: "inherit",
-  cursor: "pointer",
+const Empty = () => {
+  return (
+    <div
+      style={{
+        ...cellStyle,
+        overflow: "visible",
+        color: "#5f6368",
+      }}
+    >
+      {/* the cell spans all the columns, so keep the message in the viewport */}
+      <span style={{ position: "sticky", insetInlineStart: 12 }}>
+        No results
+      </span>
+    </div>
+  );
 };
-const searchStyle: CSSProperties = {
-  boxSizing: "border-box",
-  width: 240,
-  height: 30,
-  padding: "0 10px",
-  border: "solid 1px #dadce0",
-  borderRadius: 4,
-  font: "inherit",
-  color: "inherit",
+
+const ColumnGroupHeader = ({
+  header,
+}: {
+  header: Header<typeof features, Data>;
+}) => {
+  return (
+    <div style={{ ...headerStyle, justifyContent: "center" }}>
+      {flexRender(header.column.columnDef.header, header.getContext())}
+    </div>
+  );
+};
+
+const ColumnHeader = ({
+  header,
+  onDropColumn,
+}: {
+  header: Header<typeof features, Data>;
+  onDropColumn: (id: string) => void;
+}) => {
+  const column = header.column;
+  const sorted = column.getIsSorted();
+  return (
+    <div
+      style={headerStyle}
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={(e) => {
+        e.preventDefault();
+        const from = e.dataTransfer.getData(COLUMN_TYPE);
+        if (!from || from === column.id) return;
+        onDropColumn(from);
+      }}
+    >
+      <span
+        draggable
+        style={{ flex: 1, cursor: "grab" }}
+        onDragStart={(e) => {
+          e.dataTransfer.setData(COLUMN_TYPE, column.id);
+        }}
+      >
+        <button
+          type="button"
+          style={{
+            padding: 0,
+            border: "none",
+            background: "none",
+            color: "inherit",
+            font: "inherit",
+            cursor: "pointer",
+          }}
+          onClick={column.getToggleSortingHandler()}
+        >
+          {flexRender(column.columnDef.header, header.getContext())}
+          {sorted && (
+            <span aria-hidden style={{ marginLeft: 6, fontSize: 9 }}>
+              {sorted === "asc" ? "▲" : "▼"}
+            </span>
+          )}
+        </button>
+      </span>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          right: 0,
+          width: 4,
+          height: "100%",
+          cursor: "col-resize",
+          background: column.getIsResizing() ? "#1a73e8" : undefined,
+        }}
+        onMouseDown={header.getResizeHandler()}
+        onTouchStart={header.getResizeHandler()}
+      />
+    </div>
+  );
 };
 
 export const Default: StoryObj = {
@@ -213,12 +288,12 @@ export const Default: StoryObj = {
       columnResizeMode: "onChange",
     });
     const headerGroups = table.getHeaderGroups();
-    const leafHeaders = headerGroups[headerGroups.length - 1]!.headers;
+    const columnHeaders = headerGroups[headerGroups.length - 1]!.headers;
     // the header rows hold their headers at the column indexes they span
     const spans: GridSpan[] = [];
     let ariaSort: VGridProps["ariaSort"];
     const headerRows = headerGroups.map((headerGroup, rowIndex) => {
-      const headers: (typeof leafHeaders)[number][] = [];
+      const headers: Header<typeof features, Data>[] = [];
       let colIndex = 0;
       for (const header of headerGroup.headers) {
         if (header.rowSpan > 0) {
@@ -242,14 +317,14 @@ export const Default: StoryObj = {
         }
         colIndex += header.colSpan;
       }
-      return headers;
+      return { headers };
     });
     const dataRows = table.getRowModel().rows;
     if (!dataRows.length) {
       spans.push({
         rowIndex: headerRows.length,
         colIndex: 0,
-        colSpan: leafHeaders.length,
+        colSpan: columnHeaders.length,
       });
     }
 
@@ -270,7 +345,16 @@ export const Default: StoryObj = {
             placeholder="Search"
             value={(table.state.globalFilter as string) || ""}
             onChange={(e) => table.setGlobalFilter(e.target.value)}
-            style={searchStyle}
+            style={{
+              boxSizing: "border-box",
+              width: 240,
+              height: 30,
+              padding: "0 10px",
+              border: "solid 1px #dadce0",
+              borderRadius: 4,
+              font: "inherit",
+              color: "inherit",
+            }}
           />
         </div>
         <VGrid
@@ -282,7 +366,7 @@ export const Default: StoryObj = {
           }}
           rows={[...headerRows, ...(dataRows.length ? dataRows : [EMPTY_ROW])]}
           rowHeight={36}
-          cols={leafHeaders.map((header) => ({
+          cols={columnHeaders.map((header) => ({
             header,
             width: header.column.getSize(),
           }))}
@@ -291,92 +375,32 @@ export const Default: StoryObj = {
           spans={spans}
           ariaSort={ariaSort}
         >
-          {(row, { header: leaf }, { colIndex }) => {
+          {(row, col, { colIndex }) => {
             if ("isEmpty" in row) {
-              return (
-                <div
-                  style={{
-                    ...cellStyle,
-                    overflow: "visible",
-                    color: "#5f6368",
-                  }}
-                >
-                  {/* the cell spans all the columns, so keep the message in the viewport */}
-                  <span style={{ position: "sticky", insetInlineStart: 12 }}>
-                    No results
-                  </span>
-                </div>
-              );
+              return <Empty />;
             }
-            if (!Array.isArray(row)) {
-              const cell = row.getAllCellsByColumnId()[leaf.column.id]!;
+            if ("headers" in row) {
+              const header = row.headers[colIndex]!;
+              if (header.column.columns.length > 0) {
+                return <ColumnGroupHeader header={header} />;
+              }
               return (
-                <div style={cellStyle}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </div>
-              );
-            }
-            const header = row[colIndex]!;
-            if (header.column.columns.length > 0) {
-              return (
-                <div style={{ ...headerStyle, justifyContent: "center" }}>
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext(),
-                  )}
-                </div>
-              );
-            }
-            const column = leaf.column;
-            const sorted = column.getIsSorted();
-            return (
-              <div
-                style={headerStyle}
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  const from = e.dataTransfer.getData(COLUMN_TYPE);
-                  if (!from || from === column.id) return;
-                  const order = leafHeaders
-                    .map((h) => h.column.id)
-                    .filter((id) => id !== from);
-                  order.splice(order.indexOf(column.id), 0, from);
-                  table.setColumnOrder(order);
-                }}
-              >
-                <span
-                  draggable
-                  style={{ flex: 1, cursor: "grab" }}
-                  onDragStart={(e) => {
-                    e.dataTransfer.setData(COLUMN_TYPE, column.id);
+                <ColumnHeader
+                  header={col.header}
+                  onDropColumn={(from) => {
+                    const order = columnHeaders
+                      .map((h) => h.column.id)
+                      .filter((id) => id !== from);
+                    order.splice(order.indexOf(col.header.column.id), 0, from);
+                    table.setColumnOrder(order);
                   }}
-                >
-                  <button
-                    type="button"
-                    style={sortButtonStyle}
-                    onClick={column.getToggleSortingHandler()}
-                  >
-                    {flexRender(column.columnDef.header, leaf.getContext())}
-                    {sorted && (
-                      <span aria-hidden style={{ marginLeft: 6, fontSize: 9 }}>
-                        {sorted === "asc" ? "▲" : "▼"}
-                      </span>
-                    )}
-                  </button>
-                </span>
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    right: 0,
-                    width: 4,
-                    height: "100%",
-                    cursor: "col-resize",
-                    background: column.getIsResizing() ? "#1a73e8" : undefined,
-                  }}
-                  onMouseDown={leaf.getResizeHandler()}
-                  onTouchStart={leaf.getResizeHandler()}
                 />
+              );
+            }
+            const cell = row.getAllCellsByColumnId()[col.header.column.id]!;
+            return (
+              <div style={cellStyle}>
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </div>
             );
           }}
