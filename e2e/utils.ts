@@ -56,12 +56,6 @@ export const relativeTop = async (parent: Locator, child: Locator) => {
   return c - p;
 };
 
-export const relativeLeft = async (parent: Locator, child: Locator) => {
-  const p = (await parent.boundingBox())!.x;
-  const c = (await child.boundingBox())!.x;
-  return c - p;
-};
-
 export const relativeBottom = async (parent: Locator, child: Locator) => {
   const { y: pY, height: pHeight } = (await parent.boundingBox())!;
   const { y: cY, height: cHeight } = (await child.boundingBox())!;
@@ -138,19 +132,6 @@ export const isVerticalScrollBarVisible = async (e: Locator) => {
   return e.evaluate((e) => e.scrollHeight > (e as HTMLElement).offsetHeight);
 };
 
-export const scrollTo = (
-  scrollable: ScrollableLocator,
-  offset: number,
-  key: "Top" | "Left" = "Top",
-) => {
-  return scrollable.evaluate(
-    (e, [offset, key]) => {
-      e[key] = offset;
-    },
-    [offset, `scroll${key}`] as const,
-  );
-};
-
 export const scrollBy = (
   scrollable: ScrollableLocator,
   offset: number,
@@ -199,35 +180,6 @@ export const scrollToBottom = (
   });
 };
 
-export const scrollToTop = (scrollable: ScrollableLocator): Promise<void> => {
-  return scrollable.evaluate((e) => {
-    return new Promise<void>((resolve) => {
-      let timer: ReturnType<typeof setTimeout> | null = null;
-
-      const onScroll = () => {
-        e.scrollTop = -e.scrollHeight;
-
-        if (timer !== null) {
-          clearTimeout(timer);
-        }
-        timer = setTimeout(() => {
-          if (
-            e.scrollTop - (e as HTMLElement).offsetHeight <=
-            -e.scrollHeight
-          ) {
-            e.removeEventListener("scroll", onScroll);
-            resolve();
-          } else {
-            onScroll();
-          }
-        }, 50);
-      };
-      e.addEventListener("scroll", onScroll);
-
-      onScroll();
-    });
-  });
-};
 export const scrollToRight = async (
   scrollable: ScrollableLocator,
 ): Promise<void> => {

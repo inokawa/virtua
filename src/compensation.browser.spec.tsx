@@ -3,6 +3,7 @@ import { render, rerender } from "../spec/browser/react.js";
 import {
   createRef,
   type Ref,
+  useEffect,
   useImperativeHandle,
   useLayoutEffect,
   useRef,
@@ -13,8 +14,10 @@ import {
   cleanupScroll,
   expectPosition,
   expectVirtualized,
+  findFirstVisibleItem,
   getItem,
   getVirtualizer,
+  relativeBottom,
   relativeTop,
   scrollToEnd,
   SUBPIXEL,
@@ -103,6 +106,39 @@ describe("jump write", () => {
 });
 
 describe("resize jump compensation", () => {
+  // Wait until the scroll has ended and nothing changes for a few frames.
+  // A scroll may have just happened before the wait, so the wait counts from its start too
+  const settle = async (viewport: HTMLElement, container: HTMLElement) => {
+    let lastScrollTime = performance.now();
+    const onScroll = () => {
+      lastScrollTime = performance.now();
+    };
+    viewport.addEventListener("scroll", onScroll);
+    const snapshot = () =>
+      JSON.stringify([
+        viewport.scrollTop,
+        viewport.scrollHeight,
+        Array.from(container.children as HTMLCollectionOf<HTMLElement>).map(
+          (el) => [el.textContent, el.offsetTop, el.offsetHeight],
+        ),
+      ]);
+    let prev = snapshot();
+    let stable = 0;
+    let settled = false;
+    // Give up after about 10 seconds
+    for (let i = 0; i < 600 && !settled; i++) {
+      await nextFrame();
+      const next = snapshot();
+      stable = next === prev ? stable + 1 : 0;
+      prev = next;
+      // A single unchanged frame can fall in the middle of a multi frame correction, so a few in a row are required.
+      // The store keeps the scrolling state until 150ms after the last scroll event
+      settled = stable >= 3 && performance.now() - lastScrollTime > 200;
+    }
+    viewport.removeEventListener("scroll", onScroll);
+    expect(settled).toBe(true);
+  };
+
   it("horizontal start -> end (RTL)", async () => {
     setRTL();
     const VIEWPORT_WIDTH = 400;
@@ -178,38 +214,6 @@ describe("resize jump compensation", () => {
       new Promise((resolve) =>
         viewport.addEventListener("scroll", resolve, { once: true }),
       );
-
-    // Wait until the scroll has ended and nothing changes for a few frames
-    const settle = async (viewport: HTMLElement, container: HTMLElement) => {
-      let lastScrollTime = 0;
-      const onScroll = () => {
-        lastScrollTime = performance.now();
-      };
-      viewport.addEventListener("scroll", onScroll);
-      const snapshot = () =>
-        JSON.stringify([
-          viewport.scrollTop,
-          viewport.scrollHeight,
-          Array.from(container.children as HTMLCollectionOf<HTMLElement>).map(
-            (el) => [el.textContent, el.offsetTop, el.offsetHeight],
-          ),
-        ]);
-      let prev = snapshot();
-      let stable = 0;
-      let settled = false;
-      // Give up after about 10 seconds
-      for (let i = 0; i < 600 && !settled; i++) {
-        await nextFrame();
-        const next = snapshot();
-        stable = next === prev ? stable + 1 : 0;
-        prev = next;
-        // A single unchanged frame can fall in the middle of a multi frame correction, so a few in a row are required.
-        // The store keeps the scrolling state until 150ms after the last scroll event
-        settled = stable >= 3 && performance.now() - lastScrollTime > 200;
-      }
-      viewport.removeEventListener("scroll", onScroll);
-      expect(settled).toBe(true);
-    };
 
     describe("while idle", () => {
       it("compensates an item which is fully above the viewport", async () => {
@@ -539,6 +543,227 @@ describe("resize jump compensation", () => {
         );
       });
     });
+  });
+
+  it("lazy content at the end", async () => {
+    const ITEM_COUNT = 100;
+    const INITIAL_SIZE = 80;
+    const LOADED_SIZE = 150;
+    // Every item grows a while after it has been rendered, like content loaded later does, and the items finish at different times
+    const Item = ({ index }: { index: number }) => {
+      const [loaded, setLoaded] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setLoaded(true), 100 + (index % 4) * 50);
+        return () => clearTimeout(timer);
+      }, []);
+      return (
+        <div
+          style={{ height: loaded ? LOADED_SIZE : INITIAL_SIZE }}
+          data-loaded={loaded}
+        >
+          item-{index}
+        </div>
+      );
+    };
+    const root = render(
+      <div style={{ height: 400, overflowY: "auto" }}>
+        <Virtualizer>
+          {range(ITEM_COUNT, (i) => (
+            <Item key={i} index={i} />
+          ))}
+        </Virtualizer>
+      </div>,
+    );
+    const { viewport, container } = await getVirtualizer(root);
+    await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+    const last = () => getItem(container, `item-${ITEM_COUNT - 1}`);
+
+    // should reach to the bottom within the specified number of tries
+    for (let i = 0; ; i++) {
+      // scroll to bottom
+      await expect
+        .poll(() => {
+          scrollToEnd(viewport);
+          return last();
+        })
+        .toBeDefined();
+
+      // wait for resize completed
+      await expect
+        .poll(() => container.querySelectorAll('[data-loaded="false"]').length)
+        .toBe(0);
+      await settle(viewport, container);
+
+      // check if distance from the bottom isn't changed by resizes
+      if (Math.abs(relativeBottom(viewport, last()!)) <= SUBPIXEL) {
+        break;
+      }
+      expect(i).toBeLessThan(1);
+    }
+  });
+
+  it("lazy content while scrolling up", async () => {
+    const INITIAL_SIZE = 40;
+    const LOADED_SIZE = 100;
+    // Every fifth item is much taller, so the sizes vary a lot when the items are rendered for the first time
+    const TALL_SCALE = 4;
+    const STEP = 30;
+    // Every item grows a while after it has been rendered, like content loaded later does, and the items finish at different times.
+    // Scrolling up brings them into the buffer above the viewport, where their resizes cause jumps
+    const Item = ({ index }: { index: number }) => {
+      const [loaded, setLoaded] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setLoaded(true), 30 + (index % 4) * 20);
+        return () => clearTimeout(timer);
+      }, []);
+      const size = loaded ? LOADED_SIZE : INITIAL_SIZE;
+      return (
+        <div style={{ height: index % 5 === 0 ? size * TALL_SCALE : size }}>
+          item-{index}
+        </div>
+      );
+    };
+    const root = render(
+      <div style={{ height: 400, overflowY: "auto" }}>
+        <Virtualizer>
+          {range(1000, (i) => (
+            <Item key={i} index={i} />
+          ))}
+        </Virtualizer>
+      </div>,
+    );
+    const { viewport, container } = await getVirtualizer(root);
+    await expect
+      .poll(() => {
+        scrollToEnd(viewport);
+        return getItem(container, "item-999");
+      })
+      .toBeDefined();
+    await settle(viewport, container);
+
+    // The jumps are written to the scroll position after the render, so the range of the render has to follow them already
+    const isCovered = () => {
+      const { top, bottom } = viewport.getBoundingClientRect();
+      let covered = top;
+      for (const item of container.children) {
+        const rect = item.getBoundingClientRect();
+        if (rect.bottom <= covered || rect.top >= bottom) {
+          continue;
+        }
+        if (rect.top > covered + SUBPIXEL) {
+          return false;
+        }
+        covered = rect.bottom;
+      }
+      return covered >= bottom - SUBPIXEL;
+    };
+
+    // check if the rendered items cover the viewport in every frame
+    let uncovered = 0;
+    for (let i = 0; i < 100; i++) {
+      viewport.scrollTop -= STEP;
+      await nextFrame();
+      if (!isCovered()) {
+        uncovered++;
+      }
+    }
+    expect(uncovered).toBe(0);
+  });
+
+  it("lazy images with prepending", async () => {
+    const BATCH_COUNT = 30;
+    const TEXT_SIZE = 100;
+    const IMAGE_SIZE = 300;
+    // Every third item is an image, whose size is known a while after it has been rendered for the first time.
+    // The size is kept once loaded, like the cache of the browser does when the item is rendered again
+    const loadedImages = new Set<number>();
+    const ImageItem = ({ id }: { id: number }) => {
+      const [loaded, setLoaded] = useState(loadedImages.has(id));
+      useEffect(() => {
+        if (loaded) {
+          return;
+        }
+        const timer = setTimeout(() => {
+          loadedImages.add(id);
+          setLoaded(true);
+        }, 200);
+        return () => clearTimeout(timer);
+      }, []);
+      return (
+        <div
+          style={{ height: loaded ? IMAGE_SIZE : TEXT_SIZE }}
+          data-loaded={loaded}
+        >
+          item-{id}
+        </div>
+      );
+    };
+    const Feed = ({ ids, shift }: { ids: number[]; shift?: boolean }) => {
+      const ref = useRef<VirtualizerHandle>(null);
+      useEffect(() => {
+        ref.current!.scrollToIndex(BATCH_COUNT + 1);
+      }, []);
+      return (
+        <div style={{ height: 400, overflowY: "auto" }}>
+          <Virtualizer ref={ref} shift={shift}>
+            {ids.map((id) =>
+              id % 3 === 1 ? (
+                <ImageItem key={id} id={id} />
+              ) : (
+                <div key={id} style={{ height: TEXT_SIZE }}>
+                  item-{id}
+                </div>
+              ),
+            )}
+          </Virtualizer>
+        </div>
+      );
+    };
+    // The ids start after the ones prepended later
+    const ids = range(BATCH_COUNT * 2, (i) => BATCH_COUNT + i);
+    const root = render(<Feed ids={ids} />);
+    const { viewport, container } = await getVirtualizer(root);
+    const first = () => findFirstVisibleItem(container, viewport)!;
+    const expectImagesLoaded = () =>
+      expect
+        .poll(() => container.querySelectorAll('[data-loaded="false"]').length)
+        .toBe(0);
+
+    // check if start is displayed
+    const TARGET = `item-${ids[BATCH_COUNT + 1]}`;
+    await expect.poll(() => first().textContent).toBe(TARGET);
+    await expectPosition(() => relativeTop(viewport, first()), 0);
+
+    // check if stable after image load
+    await expectImagesLoaded();
+    await settle(viewport, container);
+    expect(first().textContent).toBe(TARGET);
+    await expectPosition(() => relativeTop(viewport, first()), 0);
+
+    // scroll to top, and let the images rendered there load before prepending.
+    // The scroll to the index on mount keeps re-scrolling for a while after the last measurement, so the scroll is kept up
+    const FIRST = `item-${ids[0]}`;
+    const scrollToTop = () =>
+      expect
+        .poll(() => {
+          viewport.scrollTop = 0;
+          return first().textContent;
+        })
+        .toBe(FIRST);
+    await scrollToTop();
+    await expectImagesLoaded();
+    await scrollToTop();
+    await settle(viewport, container);
+    rerender(root, <Feed ids={[...range(BATCH_COUNT), ...ids]} shift />);
+
+    // wait for prepending
+    await expect.poll(() => viewport.scrollTop).toBeGreaterThan(0);
+    await expectImagesLoaded();
+    await settle(viewport, container);
+
+    // check if stable after prepending
+    expect(first().textContent).toBe(FIRST);
+    await expectPosition(() => relativeTop(viewport, first()), 0);
   });
 });
 

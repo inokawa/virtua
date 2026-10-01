@@ -12,7 +12,6 @@ import {
   scrollWithTouch,
   getVirtualizer,
   getScrollable,
-  scrollTo,
   listenScrollEnd,
   relativeTop,
   relativeBottom,
@@ -204,115 +203,6 @@ test.describe("check if scroll jump compensation works", () => {
       prev = offset;
     }
     expect(prev).toBeGreaterThan(initial + min);
-  });
-
-  test("resize at bottom", async ({ page, browserName }) => {
-    await page.goto(storyUrl("advanced-collapse--two-stage-render"));
-    const component = await getScrollable(page);
-    await expect(component.getByText("Delayed Content").first()).toBeVisible();
-
-    // should reach to the bottom within the specified number of tries
-    for (let i = 0; i <= 1; i++) {
-      // scroll to bottom
-      await scrollToBottom(component);
-
-      const prevBottom = await relativeBottom(
-        component,
-        await findLastVisibleItem(component),
-      );
-
-      // wait for resize completed
-      await page.waitForTimeout(300);
-
-      const bottom = await relativeBottom(
-        component,
-        await findLastVisibleItem(component),
-      );
-
-      // check if distance from the bottom isn't changed by resizes
-      if (
-        browserName === "firefox"
-          ? Math.abs(bottom - prevBottom) <= 2
-          : bottom === prevBottom
-      ) {
-        // succeeded
-        return;
-      }
-    }
-
-    throw new Error(`couldn't reach the bottom`);
-  });
-
-  test("dynamic image", async ({ page, browserName }) => {
-    await page.goto(storyUrl("advanced-feed--default"));
-    const component = await getScrollable(page);
-
-    // TODO firefox is bit unstable
-    const nearlyZeroMax = browserName === "firefox" ? 2 : 1;
-
-    // check if start is displayed
-    expectInRange(
-      await relativeTop(component, await findFirstVisibleItem(component)),
-      {
-        min: 0,
-        max: nearlyZeroMax,
-      },
-    );
-
-    // check if stable after image load
-    await page.waitForTimeout(3000);
-
-    expectInRange(
-      await relativeTop(component, await findFirstVisibleItem(component)),
-      {
-        min: 0,
-        max: nearlyZeroMax,
-      },
-    );
-
-    // scroll to top
-    await scrollTo(component, 0);
-
-    // wait for prepending
-    await component.evaluate((e) => {
-      let timer: null | ReturnType<typeof setTimeout> = null;
-
-      return new Promise<void>((resolve, reject) => {
-        let prepended = false;
-
-        if (e.scrollTop !== 0) {
-          reject();
-          return;
-        }
-        const cb = () => {
-          if (e.scrollTop > 1000) {
-            prepended = true;
-          } else {
-            if (!prepended) {
-              return;
-            }
-          }
-
-          if (timer !== null) {
-            clearTimeout(timer);
-          }
-          timer = setTimeout(() => {
-            e.removeEventListener("scroll", cb);
-            resolve();
-          }, 2000);
-        };
-        e.addEventListener("scroll", cb);
-      });
-    });
-
-    // check if stable after prepending
-    expectInRange(
-      await relativeTop(component, await findFirstVisibleItem(component)),
-      {
-        min: 0,
-        max: nearlyZeroMax,
-      },
-    );
   });
 });
 
