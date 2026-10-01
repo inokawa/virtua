@@ -1,1 +1,0 @@
-import{t as e}from"./iframe-C8m2Yodu.js";e();

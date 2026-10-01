@@ -1,0 +1,1 @@
+import{t as e}from"./iframe-BUEX3lcu.js";e();
