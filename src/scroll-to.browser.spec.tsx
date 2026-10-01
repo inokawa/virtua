@@ -6,7 +6,7 @@ import {
   onTestFinished,
   type TestContext,
 } from "vitest";
-import { createRef, useEffect, useRef } from "react";
+import { createRef, type Ref, useEffect, useRef } from "react";
 import { render, rerender } from "../spec/browser/react.js";
 import {
   VList,
@@ -19,14 +19,572 @@ import {
 import {
   cleanupScroll,
   expectPosition,
+  expectSmooth,
   expectVirtualized,
+  findFirstVisibleItem,
   getItem,
   getVirtualizer,
+  recordScroll,
   relativeBottom,
+  relativeTop,
 } from "../spec/browser/index.js";
 import { range } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
+
+describe("scrollToIndex", () => {
+  const ITEM_COUNT = 1000;
+  const HEIGHTS = [20, 40, 80, 77];
+  // A long smooth scroll animates for longer than the default poll timeout
+  const SMOOTH_TIMEOUT = 10000;
+
+  const expectItemTop = (
+    viewport: HTMLElement,
+    container: HTMLElement,
+    index: number,
+    distance = 0,
+    timeout?: number,
+  ) =>
+    expectPosition(
+      () => relativeTop(viewport, getItem(container, String(index))!),
+      distance,
+      timeout,
+    );
+
+  const expectItemBottom = (
+    viewport: HTMLElement,
+    container: HTMLElement,
+    index: number,
+    distance = 0,
+    timeout?: number,
+  ) =>
+    expectPosition(
+      () => relativeBottom(viewport, getItem(container, String(index))!),
+      distance,
+      timeout,
+    );
+
+  describe("Virtualizer", () => {
+    const List = ({
+      handle,
+      onScrollEnd,
+    }: {
+      handle: Ref<VirtualizerHandle>;
+      onScrollEnd?: () => void;
+    }) => (
+      <div style={{ height: 400, overflowY: "auto" }}>
+        <Virtualizer
+          ref={handle}
+          data={range(ITEM_COUNT)}
+          onScrollEnd={onScrollEnd}
+        >
+          {(i) => (
+            <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
+              {i}
+            </div>
+          )}
+        </Virtualizer>
+      </div>
+    );
+
+    describe("align start", () => {
+      it("mid", async () => {
+        const ref = createRef<VirtualizerHandle>();
+        const root = render(<List handle={ref} />);
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        ref.current!.scrollToIndex(700);
+
+        // Check if scrolled precisely
+        await expectItemTop(viewport, container, 700);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "650")).toBeUndefined();
+        await expect.poll(() => getItem(container, "750")).toBeUndefined();
+      });
+
+      it("start", async () => {
+        const ref = createRef<VirtualizerHandle>();
+        const root = render(<List handle={ref} />);
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        ref.current!.scrollToIndex(500);
+        await expect.poll(() => getItem(container, "500")).toBeDefined();
+
+        ref.current!.scrollToIndex(0);
+
+        // Check if scrolled precisely
+        await expectItemTop(viewport, container, 0);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "50")).toBeUndefined();
+      });
+
+      it("end", async () => {
+        const ref = createRef<VirtualizerHandle>();
+        const root = render(<List handle={ref} />);
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        ref.current!.scrollToIndex(ITEM_COUNT - 1);
+
+        // Check if scrolled precisely. The list can not scroll past the end, so the item rests at the bottom
+        await expectItemBottom(viewport, container, ITEM_COUNT - 1);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "949")).toBeUndefined();
+      });
+    });
+
+    describe("align end", () => {
+      it("mid", async () => {
+        const ref = createRef<VirtualizerHandle>();
+        const root = render(<List handle={ref} />);
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        ref.current!.scrollToIndex(700, { align: "end" });
+
+        // Check if scrolled precisely
+        await expectItemBottom(viewport, container, 700);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "650")).toBeUndefined();
+        await expect.poll(() => getItem(container, "750")).toBeUndefined();
+      });
+
+      it("start", async () => {
+        const ref = createRef<VirtualizerHandle>();
+        const root = render(<List handle={ref} />);
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        ref.current!.scrollToIndex(500, { align: "end" });
+        await expect.poll(() => getItem(container, "500")).toBeDefined();
+
+        ref.current!.scrollToIndex(0, { align: "end" });
+
+        // Check if scrolled precisely. The list can not scroll past the start, so the item rests at the top
+        await expectItemTop(viewport, container, 0);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "50")).toBeUndefined();
+      });
+
+      it("end", async () => {
+        const ref = createRef<VirtualizerHandle>();
+        const root = render(<List handle={ref} />);
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        ref.current!.scrollToIndex(ITEM_COUNT - 1, { align: "end" });
+
+        // Check if scrolled precisely
+        await expectItemBottom(viewport, container, ITEM_COUNT - 1);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "949")).toBeUndefined();
+      });
+    });
+
+    describe("smooth", () => {
+      it("from start (align start)", async () => {
+        const ref = createRef<VirtualizerHandle>();
+        const root = render(<List handle={ref} />);
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        const scrolled = recordScroll(viewport);
+        ref.current!.scrollToIndex(700, { smooth: true });
+
+        // Check if scrolled precisely
+        await expectItemTop(viewport, container, 700, 0, SMOOTH_TIMEOUT);
+
+        // Check if this is smooth scrolling
+        expectSmooth(scrolled);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "650")).toBeUndefined();
+        await expect.poll(() => getItem(container, "750")).toBeUndefined();
+      });
+
+      it("from start (align end)", async () => {
+        const ref = createRef<VirtualizerHandle>();
+        const root = render(<List handle={ref} />);
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        const scrolled = recordScroll(viewport);
+        ref.current!.scrollToIndex(700, { align: "end", smooth: true });
+
+        // Check if scrolled precisely
+        await expectItemBottom(viewport, container, 700, 0, SMOOTH_TIMEOUT);
+
+        // Check if this is smooth scrolling
+        expectSmooth(scrolled);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "650")).toBeUndefined();
+        await expect.poll(() => getItem(container, "750")).toBeUndefined();
+      });
+
+      it("from end (align start)", async () => {
+        const ref = createRef<VirtualizerHandle>();
+        let scrollEnded = false;
+        const root = render(
+          <List
+            handle={ref}
+            onScrollEnd={() => {
+              scrollEnded = true;
+            }}
+          />,
+        );
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        // scroll to the bottom
+        ref.current!.scrollToIndex(ITEM_COUNT - 1);
+        // A smooth scroll started before this ends is interrupted by the pending scroll end
+        await expect.poll(() => scrollEnded).toBe(true);
+
+        // smooth scroll up
+        const scrolled = recordScroll(viewport);
+        ref.current!.scrollToIndex(300, { smooth: true });
+
+        // Check if scrolled precisely
+        await expectItemTop(viewport, container, 300, 0, SMOOTH_TIMEOUT);
+
+        // Check if this is smooth scrolling
+        expectSmooth(scrolled);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "250")).toBeUndefined();
+        await expect.poll(() => getItem(container, "350")).toBeUndefined();
+      });
+
+      it("from end (align end)", async () => {
+        const ref = createRef<VirtualizerHandle>();
+        let scrollEnded = false;
+        const root = render(
+          <List
+            handle={ref}
+            onScrollEnd={() => {
+              scrollEnded = true;
+            }}
+          />,
+        );
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        // scroll to the bottom
+        ref.current!.scrollToIndex(ITEM_COUNT - 1);
+        // A smooth scroll started before this ends is interrupted by the pending scroll end
+        await expect.poll(() => scrollEnded).toBe(true);
+
+        // smooth scroll up
+        const scrolled = recordScroll(viewport);
+        ref.current!.scrollToIndex(300, { align: "end", smooth: true });
+
+        // Check if scrolled precisely
+        await expectItemBottom(viewport, container, 300, 0, SMOOTH_TIMEOUT);
+
+        // Check if this is smooth scrolling
+        expectSmooth(scrolled);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "250")).toBeUndefined();
+        await expect.poll(() => getItem(container, "350")).toBeUndefined();
+      });
+
+      it("scroll start item to end in reverse", async () => {
+        const ref = createRef<VirtualizerHandle>();
+        let scrollEnded = false;
+        const root = render(
+          <List
+            handle={ref}
+            onScrollEnd={() => {
+              scrollEnded = true;
+            }}
+          />,
+        );
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        // scroll to the bottom
+        ref.current!.scrollToIndex(ITEM_COUNT - 1);
+        await expectItemBottom(viewport, container, ITEM_COUNT - 1);
+
+        for (let i = 0; i < 3; i++) {
+          // A smooth scroll started before the previous one ends is interrupted by its pending scroll end
+          await expect.poll(() => scrollEnded).toBe(true);
+          scrollEnded = false;
+
+          const target = Number(
+            findFirstVisibleItem(container, viewport)!.textContent,
+          );
+
+          // smooth scroll up
+          ref.current!.scrollToIndex(target, { align: "end", smooth: true });
+
+          // Check if scrolled precisely
+          await expectItemBottom(
+            viewport,
+            container,
+            target,
+            0,
+            SMOOTH_TIMEOUT,
+          );
+        }
+      });
+    });
+  });
+
+  describe("WindowVirtualizer", () => {
+    // The list starts below other content, so scrolling to an index has to account for the base offset
+    const PADDING = 100;
+
+    const List = ({ handle }: { handle: Ref<WindowVirtualizerHandle> }) => (
+      <div style={{ padding: PADDING }}>
+        <WindowVirtualizer ref={handle} data={range(ITEM_COUNT)}>
+          {(i) => (
+            <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
+              {i}
+            </div>
+          )}
+        </WindowVirtualizer>
+      </div>
+    );
+
+    describe("align start", () => {
+      it("mid", async () => {
+        const ref = createRef<WindowVirtualizerHandle>();
+        const root = render(<List handle={ref} />);
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        ref.current!.scrollToIndex(700);
+
+        // Check if scrolled precisely
+        await expectItemTop(viewport, container, 700);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "650")).toBeUndefined();
+        await expect.poll(() => getItem(container, "750")).toBeUndefined();
+      });
+
+      it("start", async () => {
+        const ref = createRef<WindowVirtualizerHandle>();
+        const root = render(<List handle={ref} />);
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        ref.current!.scrollToIndex(500);
+        await expect.poll(() => getItem(container, "500")).toBeDefined();
+
+        ref.current!.scrollToIndex(0);
+
+        // Check if scrolled precisely. The document scrolls past the padding, so the item reaches the viewport top
+        await expectItemTop(viewport, container, 0);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "50")).toBeUndefined();
+      });
+
+      it("end", async () => {
+        const ref = createRef<WindowVirtualizerHandle>();
+        const root = render(<List handle={ref} />);
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        ref.current!.scrollToIndex(ITEM_COUNT - 1);
+
+        // Check if scrolled precisely. The document can not scroll past its end, so the padding below the list stays visible
+        await expectItemBottom(viewport, container, ITEM_COUNT - 1, PADDING);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "949")).toBeUndefined();
+      });
+    });
+
+    describe("align end", () => {
+      it("mid", async () => {
+        const ref = createRef<WindowVirtualizerHandle>();
+        const root = render(<List handle={ref} />);
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        ref.current!.scrollToIndex(700, { align: "end" });
+
+        // Check if scrolled precisely
+        await expectItemBottom(viewport, container, 700);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "650")).toBeUndefined();
+        await expect.poll(() => getItem(container, "750")).toBeUndefined();
+      });
+
+      it("start", async () => {
+        const ref = createRef<WindowVirtualizerHandle>();
+        const root = render(<List handle={ref} />);
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        ref.current!.scrollToIndex(500, { align: "end" });
+        await expect.poll(() => getItem(container, "500")).toBeDefined();
+
+        ref.current!.scrollToIndex(0, { align: "end" });
+
+        // Check if scrolled precisely. The document can not scroll past its start, so the padding above the list stays visible
+        await expectItemTop(viewport, container, 0, PADDING);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "50")).toBeUndefined();
+      });
+
+      it("end", async () => {
+        const ref = createRef<WindowVirtualizerHandle>();
+        const root = render(<List handle={ref} />);
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        ref.current!.scrollToIndex(ITEM_COUNT - 1, { align: "end" });
+
+        // Check if scrolled precisely
+        await expectItemBottom(viewport, container, ITEM_COUNT - 1);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "949")).toBeUndefined();
+      });
+    });
+
+    describe("smooth", () => {
+      it("align start", async () => {
+        const ref = createRef<WindowVirtualizerHandle>();
+        const root = render(<List handle={ref} />);
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        const scrolled = recordScroll(window);
+        ref.current!.scrollToIndex(700, { smooth: true });
+
+        // Check if scrolled precisely
+        await expectItemTop(viewport, container, 700, 0, SMOOTH_TIMEOUT);
+
+        // Check if this is smooth scrolling
+        expectSmooth(scrolled);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "650")).toBeUndefined();
+        await expect.poll(() => getItem(container, "750")).toBeUndefined();
+      });
+
+      it("align end", async () => {
+        const ref = createRef<WindowVirtualizerHandle>();
+        const root = render(<List handle={ref} />);
+        const { viewport, container } = await getVirtualizer(root);
+
+        // check if start is displayed
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        const scrolled = recordScroll(window);
+        ref.current!.scrollToIndex(700, { align: "end", smooth: true });
+
+        // Check if scrolled precisely
+        await expectItemBottom(viewport, container, 700, 0, SMOOTH_TIMEOUT);
+
+        // Check if this is smooth scrolling
+        expectSmooth(scrolled);
+
+        // Check if unnecessary items are not rendered
+        await expect.poll(() => getItem(container, "650")).toBeUndefined();
+        await expect.poll(() => getItem(container, "750")).toBeUndefined();
+      });
+    });
+  });
+
+  it("stick to bottom", async () => {
+    // Like a chat, which scrolls to the item appended last
+    const Chat = ({ items }: { items: string[] }) => {
+      const ref = useRef<VirtualizerHandle>(null);
+      useEffect(() => {
+        ref.current!.scrollToIndex(items.length - 1, { align: "end" });
+      }, [items]);
+      return (
+        <div style={{ height: 400, overflowY: "auto" }}>
+          <Virtualizer ref={ref} data={items}>
+            {(text) => (
+              <div key={text} style={{ whiteSpace: "pre-wrap" }}>
+                {text}
+              </div>
+            )}
+          </Virtualizer>
+        </div>
+      );
+    };
+    const items = range(100, (i) => `item-${i}`);
+    const root = render(<Chat items={items} />);
+    const { viewport, container } = await getVirtualizer(root);
+    const last = () => container.lastElementChild!;
+
+    // check if end is displayed
+    await expect.poll(() => getItem(container, "item-99")).toBeDefined();
+    await expectPosition(() => relativeBottom(viewport, last()), 0);
+
+    // append small item
+    const SMALL = "item-100";
+    rerender(root, <Chat items={[...items, SMALL]} />);
+    await expect.poll(() => last().textContent).toBe(SMALL);
+    await expectPosition(() => relativeBottom(viewport, last()), 0);
+    const smallSize = last().getBoundingClientRect().height;
+
+    // append large item
+    const LARGE = "item-101" + "\nHello".repeat(100);
+    rerender(root, <Chat items={[...items, SMALL, LARGE]} />);
+    await expect.poll(() => last().textContent).toBe(LARGE);
+    await expectPosition(() => relativeBottom(viewport, last()), 0);
+    expect(last().getBoundingClientRect().height).toBeGreaterThan(
+      smallSize * 10,
+    );
+  });
+});
 
 describe("scrollTo", () => {
   it("down and up", async () => {
@@ -176,47 +734,4 @@ describe("scrollbar", () => {
       visibleSize,
     );
   });
-});
-
-it("stick to bottom", async () => {
-  // Like a chat, which scrolls to the item appended last
-  const Chat = ({ items }: { items: string[] }) => {
-    const ref = useRef<VirtualizerHandle>(null);
-    useEffect(() => {
-      ref.current!.scrollToIndex(items.length - 1, { align: "end" });
-    }, [items]);
-    return (
-      <div style={{ height: 400, overflowY: "auto" }}>
-        <Virtualizer ref={ref} data={items}>
-          {(text) => (
-            <div key={text} style={{ whiteSpace: "pre-wrap" }}>
-              {text}
-            </div>
-          )}
-        </Virtualizer>
-      </div>
-    );
-  };
-  const items = range(100, (i) => `item-${i}`);
-  const root = render(<Chat items={items} />);
-  const { viewport, container } = await getVirtualizer(root);
-  const last = () => container.lastElementChild!;
-
-  // check if end is displayed
-  await expect.poll(() => getItem(container, "item-99")).toBeDefined();
-  await expectPosition(() => relativeBottom(viewport, last()), 0);
-
-  // append small item
-  const SMALL = "item-100";
-  rerender(root, <Chat items={[...items, SMALL]} />);
-  await expect.poll(() => last().textContent).toBe(SMALL);
-  await expectPosition(() => relativeBottom(viewport, last()), 0);
-  const smallSize = last().getBoundingClientRect().height;
-
-  // append large item
-  const LARGE = "item-101" + "\nHello".repeat(100);
-  rerender(root, <Chat items={[...items, SMALL, LARGE]} />);
-  await expect.poll(() => last().textContent).toBe(LARGE);
-  await expectPosition(() => relativeBottom(viewport, last()), 0);
-  expect(last().getBoundingClientRect().height).toBeGreaterThan(smallSize * 10);
 });
