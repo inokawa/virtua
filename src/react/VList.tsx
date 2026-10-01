@@ -60,7 +60,7 @@ export const VList = /*#__PURE__*/ forwardRef<VListHandle, VListProps>(
       <div
         {...attrs}
         style={{
-          display: horizontal ? "inline-block" : "block",
+          display: "block",
           [horizontal ? "overflowX" : "overflowY"]: "auto",
           contain: "strict",
           width: "100%",

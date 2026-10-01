@@ -62,7 +62,7 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
     <div
       {...others}
       style={{
-        display: local.horizontal ? "inline-block" : "block",
+        display: "block",
         [local.horizontal ? "overflow-x" : "overflow-y"]: "auto",
         contain: "strict",
         width: "100%",

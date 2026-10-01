@@ -130,8 +130,7 @@ export class VList<T> implements OnInit, VListHandle {
     const element = this._element;
     element.setAttribute(
       "style",
-      `display:${horizontal ? "inline-block" : "block"};` +
-        `${horizontal ? "overflow-x" : "overflow-y"}:auto;` +
+      `display:block;${horizontal ? "overflow-x" : "overflow-y"}:auto;` +
         "contain:strict;width:100%;height:100%;" +
         (element.getAttribute("style") || ""),
     );

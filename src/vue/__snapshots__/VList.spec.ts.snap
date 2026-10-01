@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`horizontal > should pass attributes to element 1`] = `
-"<div style="display: inline-block; overflow-x: auto; contain: strict; width: 100px; height: 800px; background: red;" id="id" class="class" tab-index="0" role="list" aria-label="test">
+"<div style="display: block; overflow-x: auto; contain: strict; width: 100px; height: 800px; background: red;" id="id" class="class" tab-index="0" role="list" aria-label="test">
   <div style="contain: size style; overflow-anchor: none; flex: 0 0 auto; position: relative; width: 100px; height: 100%;">
     <div style="contain: layout style; position: absolute; height: 100%; top: 0px; inset-inline-start: 0px; display: inline-flex;">
       <div>0</div>
