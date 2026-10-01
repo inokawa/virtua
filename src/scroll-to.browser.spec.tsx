@@ -540,6 +540,64 @@ describe("scrollToIndex", () => {
     });
   });
 
+  it("reverse", async () => {
+    // A reverse scroll starts from the end, and keeps the items at the bottom while they don't fill the viewport
+    const handle = createRef<VirtualizerHandle>();
+    const Reverse = () => {
+      useEffect(() => {
+        handle.current!.scrollToIndex(ITEM_COUNT - 1);
+      }, []);
+      return (
+        <div
+          style={{
+            height: 400,
+            overflowY: "auto",
+            display: "flex",
+            flexDirection: "column",
+            // opt out browser's scroll anchoring on the spacer because it will conflict to scroll anchoring of virtualizer
+            overflowAnchor: "none",
+          }}
+        >
+          <div style={{ flexGrow: 1 }} />
+          <Virtualizer ref={handle} data={range(ITEM_COUNT)}>
+            {(i) => (
+              <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
+                item-{i}
+              </div>
+            )}
+          </Virtualizer>
+        </div>
+      );
+    };
+    const root = render(<Reverse />);
+    // The observer is set before the items are committed, so it sees every item ever rendered.
+    // An item rendered while the scroll to the end is still pending stays out of the viewport, so it is not displayed
+    let isStartDisplayed = false;
+    const observer = new MutationObserver(() => {
+      const viewport = root.firstElementChild as HTMLElement;
+      const start = [...root.querySelectorAll("*")].find(
+        (el) => el.textContent === "item-0",
+      );
+      isStartDisplayed ||=
+        !!start &&
+        relativeTop(viewport, start) < viewport.clientHeight &&
+        relativeBottom(viewport, start) < viewport.clientHeight;
+    });
+    observer.observe(root, { childList: true, subtree: true });
+    onTestFinished(() => observer.disconnect());
+    const { viewport, container } = await getVirtualizer(root);
+
+    // check if last is displayed
+    const last = `item-${ITEM_COUNT - 1}`;
+    await expect.poll(() => getItem(container, last)).toBeDefined();
+    await expectPosition(
+      () => relativeBottom(viewport, getItem(container, last)!),
+      0,
+    );
+    // check if start is not displayed
+    expect(isStartDisplayed).toBe(false);
+  });
+
   it("stick to bottom", async () => {
     // Like a chat, which scrolls to the item appended last
     const Chat = ({ items }: { items: string[] }) => {

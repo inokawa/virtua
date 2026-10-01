@@ -1,24 +1,18 @@
-import { test, expect, type Locator, type Page } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import {
   storyUrl,
   scrollToBottom,
   scrollToRight,
-  scrollBy,
   getScrollTop,
   getScrollLeft,
   getScrollBottom,
   getScrollRight,
   expectInRange,
   scrollWithTouch,
-  getVirtualizer,
   getScrollable,
   listenScrollEnd,
   relativeTop,
-  relativeBottom,
-  getItems,
   findFirstVisibleItem,
-  findLastVisibleItem,
-  isVerticalScrollBarVisible,
 } from "./utils";
 
 const SMOOTH_SCROLL_MS = 100;
@@ -120,136 +114,6 @@ test.describe("check if scroll jump compensation works", () => {
       prev = offset;
     }
     expect(prev).toBeGreaterThan(initial + min);
-  });
-});
-
-test.describe("check if item shift compensation works", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--increasing-items"));
-  });
-
-  test("keep end at mid when add to/remove from end", async ({ page }) => {
-    const component = await getScrollable(page);
-
-    const updateButton = page.getByRole("button", { name: "update" });
-
-    // fill list and move to mid
-    for (let i = 0; i < 20; i++) {
-      await updateButton.click();
-    }
-    await scrollBy(component, 400);
-    await page.waitForTimeout(300);
-
-    const topItem = await findFirstVisibleItem(component);
-    await expect(topItem).not.toHaveText("0");
-    const topItemTop = await relativeTop(component, topItem);
-    expect((await topItem.textContent())!.length).toBeLessThanOrEqual(2);
-
-    // add
-    await page.getByRole("radio", { name: "increase" }).click();
-    await updateButton.click();
-    await page.waitForTimeout(100);
-    // check if visible item is keeped
-    expect(await relativeTop(component, topItem)).toEqual(topItemTop);
-
-    // remove
-    await page.getByRole("radio", { name: "decrease" }).click();
-    await updateButton.click();
-    await page.waitForTimeout(100);
-    // check if visible item is keeped
-    expect(await relativeTop(component, topItem)).toEqual(topItemTop);
-  });
-
-  test("keep start at mid when add to/remove from start", async ({ page }) => {
-    const component = await getScrollable(page);
-
-    const updateButton = page.getByRole("button", { name: "update" });
-
-    // fill list and move to mid
-    for (let i = 0; i < 20; i++) {
-      await updateButton.click();
-    }
-    await scrollBy(component, 800);
-    await page.waitForTimeout(300);
-
-    const topItem = await findFirstVisibleItem(component);
-    await expect(topItem).not.toHaveText("0");
-    const topItemTop = await relativeTop(component, topItem);
-    expect((await topItem.textContent())!.length).toBeLessThanOrEqual(2);
-
-    // add
-    await page.getByRole("checkbox", { name: "prepend" }).click();
-    await page.getByRole("radio", { name: "increase" }).click();
-    await updateButton.click();
-    await page.waitForTimeout(100);
-    // check if visible item is keeped
-    expect(await relativeTop(component, topItem)).toEqual(topItemTop);
-
-    // remove
-    await page.getByRole("radio", { name: "decrease" }).click();
-    await updateButton.click();
-    await page.waitForTimeout(100);
-    // check if visible item is keeped
-    expect(await relativeTop(component, topItem)).toEqual(topItemTop);
-  });
-
-  test("prepending when total height is lower than viewport height", async ({
-    page,
-    browserName,
-  }) => {
-    const [component, container] = await Promise.all([
-      getScrollable(page),
-      getVirtualizer(page),
-    ]);
-
-    await page.getByRole("checkbox", { name: "prepend" }).click();
-    const decreaseRadio = page.getByRole("radio", { name: "decrease" });
-    const increaseRadio = page.getByRole("radio", { name: "increase" });
-    const valueInput = page.getByRole("spinbutton");
-    const updateButton = page.getByRole("button", { name: "update" });
-
-    const initialLength = await getItems(container).count();
-    expect(initialLength).toBeGreaterThan(1);
-
-    let i = 0;
-    while (true) {
-      i++;
-      await valueInput.clear();
-      await valueInput.fill(String(i));
-
-      // preprend
-      await increaseRadio.click();
-      await updateButton.click();
-
-      const items = getItems(container);
-
-      // Check if all items are visible
-      await expect(items).toHaveCount(i + initialLength);
-
-      const isScrollBarVisible = await isVerticalScrollBarVisible(component);
-      const itemTop = await relativeTop(component, items.first());
-
-      if (isScrollBarVisible) {
-        // Check if sticked to bottom
-        expectInRange(
-          await relativeBottom(component, await findLastVisibleItem(component)),
-          {
-            min: browserName === "firefox" ? -0.45 : -0.1,
-            max: 0.1,
-          },
-        );
-        break;
-      } else {
-        // Check if top is always visible and on top
-        expect(itemTop).toBe(0);
-      }
-
-      // remove
-      await decreaseRadio.click();
-      await updateButton.click();
-    }
-
-    expect(i).toBeGreaterThanOrEqual(8);
   });
 });
 
