@@ -30,18 +30,18 @@ const people: Person[] = Array.from({ length: 10000 }).map((_, i): Person => ({
   ),
 }));
 
-type Column = {
-  name: string;
-  width: number;
-  get?: (p: Person) => number | string;
-  format?: (v: number | string) => string;
-  align?: "right";
-  actions?: true;
-};
+type Column = { name: string; width: number; align?: "right" } & (
+  | {
+      get: (p: Person) => number | string;
+      format?: (v: number | string) => string;
+    }
+  | { select: true }
+  | { actions: true }
+);
 
 const money = (v: number | string) => "$" + v.toLocaleString();
 const COLUMNS: Column[] = [
-  { name: "", width: 40 },
+  { name: "", width: 40, select: true },
   { name: "ID", width: 60, get: (p) => p.id },
   { name: "Name", width: 180, get: (p) => p.name },
   { name: "Email", width: 240, get: (p) => p.email },
@@ -67,12 +67,12 @@ const COLUMNS: Column[] = [
   { name: "Actions", width: 90, actions: true },
 ];
 
-const AVERAGES = COLUMNS.map(({ get, format = String, align }) =>
-  get && align === "right"
+const AVERAGES = COLUMNS.map((column) =>
+  "get" in column && column.align === "right"
     ? "~" +
-      format(
+      (column.format ?? String)(
         Math.round(
-          people.reduce((acc, p) => acc + (get(p) as number), 0) /
+          people.reduce((acc, p) => acc + (column.get(p) as number), 0) /
             people.length,
         ),
       )
@@ -147,10 +147,10 @@ export const DataTable: StoryObj = {
           {(rowIndex, column, { colIndex }) => {
             if (rowIndex === 0 || rowIndex > people.length) {
               if (rowIndex === 0) {
-                if (column.actions) {
+                if ("actions" in column) {
                   return <div style={edgeStyle}>{column.name}</div>;
                 }
-                if (!column.get) {
+                if ("select" in column) {
                   return (
                     <div
                       style={{
@@ -218,7 +218,7 @@ export const DataTable: StoryObj = {
             }
             const row = people[rowIndex - 1]!;
             const isSelected = selected.has(row.id);
-            if (column.actions) {
+            if ("actions" in column) {
               return (
                 <div
                   style={{
@@ -238,7 +238,7 @@ export const DataTable: StoryObj = {
                 </div>
               );
             }
-            if (!column.get) {
+            if ("select" in column) {
               return (
                 <div
                   style={{
