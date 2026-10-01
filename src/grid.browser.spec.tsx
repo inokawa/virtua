@@ -1513,53 +1513,20 @@ describe("scrollToIndex with sections", () => {
             const unmeasuredCols = () =>
               unmeasured(MATRIX_COLS, cols.size, ref.current!.getColSize);
 
-            // The tracks out of the viewport are estimated, so every track is measured first, again if missed under load.
-            for (
-              let pass = 0;
-              auto &&
-              pass < 3 &&
-              (!pass || unmeasuredRows().length || unmeasuredCols().length);
-              pass++
-            ) {
-              // The track of the other axis is not waited for, as the pinned tracks shrink the range of both.
-              const settle = async (selector: string) => {
-                await expect
-                  .poll(() => container.querySelector(selector))
-                  .toBeTruthy();
-                // the cells around it are measured after they are painted
-                await delay(100);
-              };
-              const settleRow = (rowIndex: number) =>
-                settle(`[role="row"][aria-rowindex="${rowIndex + 1}"]`);
-              // by half the viewport, so that every track is rendered in a step
-              for (
-                let top = 0;
-                top <= viewport.scrollHeight;
-                top += VIEWPORT / 2
-              ) {
-                viewport.scrollTop = top;
-                // a row in the middle of the viewport, which the pinned rows never cover
-                await settleRow(
-                  Math.min(
-                    MATRIX_ROWS - 2,
-                    ref.current!.findRowIndex(top + VIEWPORT / 2),
-                  ),
-                );
-              }
-              viewport.scrollTop = 0;
-              for (
-                let start = 0;
-                start <= viewport.scrollWidth;
-                start += VIEWPORT / 2
-              ) {
-                viewport.scrollLeft = rtl ? -start : start;
-                await settle(
-                  `[aria-colindex="${Math.min(MATRIX_COLS - 2, ref.current!.findColIndex(start + VIEWPORT / 2)) + 1}"]`,
-                );
-              }
-              viewport.scrollTop = 0;
-              viewport.scrollLeft = 0;
-              await settleRow(0);
+            // The tracks out of the viewport are estimated, so every track is measured first.
+            // The viewport is enlarged to the whole grid for a while, which renders and measures every track at once
+            if (auto) {
+              viewport.style.height = `${scrollHeight}px`;
+              viewport.style.width = `${scrollWidth}px`;
+              await expect
+                .poll(() => [...unmeasuredRows(), ...unmeasuredCols()])
+                .toEqual([]);
+              viewport.style.height = `${VIEWPORT}px`;
+              viewport.style.width = `${VIEWPORT}px`;
+              // the range shrinks back with the viewport
+              await expect
+                .poll(() => container.querySelectorAll('[role="row"]').length)
+                .toBeLessThan(MATRIX_ROWS);
             }
             await check();
             for (const [top, start] of [

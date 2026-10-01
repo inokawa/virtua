@@ -33,12 +33,12 @@ describe("scrollTo", () => {
     const HEIGHTS = [20, 40, 80, 77];
     const ref = createRef<VListHandle>();
     const root = render(
-      <VList ref={ref} style={{ height: 400 }}>
-        {range(1000, (i) => (
+      <VList ref={ref} data={range(1000)} style={{ height: 400 }}>
+        {(i) => (
           <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
             {i}
           </div>
-        ))}
+        )}
       </VList>,
     );
     const { viewport, container } = await getVirtualizer(root);
@@ -61,12 +61,12 @@ describe("scrollBy", () => {
     const HEIGHTS = [20, 40, 80, 77];
     const ref = createRef<VListHandle>();
     const root = render(
-      <VList ref={ref} style={{ height: 400 }}>
-        {range(1000, (i) => (
+      <VList ref={ref} data={range(1000)} style={{ height: 400 }}>
+        {(i) => (
           <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
             {i}
           </div>
-        ))}
+        )}
       </VList>,
     );
     const { viewport, container } = await getVirtualizer(root);
@@ -187,12 +187,12 @@ it("stick to bottom", async () => {
     }, [items]);
     return (
       <div style={{ height: 400, overflowY: "auto" }}>
-        <Virtualizer ref={ref}>
-          {items.map((text) => (
+        <Virtualizer ref={ref} data={items}>
+          {(text) => (
             <div key={text} style={{ whiteSpace: "pre-wrap" }}>
               {text}
             </div>
-          ))}
+          )}
         </Virtualizer>
       </div>
     );
