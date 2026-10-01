@@ -524,7 +524,7 @@ it("scroll-behavior: smooth (shift compensation)", async () => {
   const PREPEND_COUNT = 10;
   const List = ({ data }: { data: number[] }) => (
     <div style={{ height: 400, overflowY: "auto", scrollBehavior: "smooth" }}>
-      <Virtualizer shift data={data}>
+      <Virtualizer data={data} shift>
         {(d) => (
           <div key={d} style={{ height: ITEM_SIZE }}>
             item-{d}
@@ -573,12 +573,12 @@ describe("RTL", () => {
     const HEIGHTS = [20, 40, 80, 77];
     const root = render(
       <div style={{ height: 400, overflowY: "auto" }}>
-        <Virtualizer>
-          {range(COUNT, (i) => (
+        <Virtualizer data={range(COUNT)}>
+          {(i) => (
             <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
               item-{i}
             </div>
-          ))}
+          )}
         </Virtualizer>
       </div>,
     );
@@ -599,12 +599,12 @@ describe("RTL", () => {
     const COUNT = 1000;
     const root = render(
       <div style={{ width: 400, height: 200, overflowX: "auto" }}>
-        <Virtualizer horizontal>
-          {range(COUNT, (i) => (
+        <Virtualizer data={range(COUNT)} horizontal>
+          {(i) => (
             <div key={i} style={{ width: i % 3 === 0 ? 100 : 60 }}>
               item-{i}
             </div>
-          ))}
+          )}
         </Virtualizer>
       </div>,
     );
@@ -625,12 +625,12 @@ describe("RTL", () => {
     const COUNT = 1000;
     const HEIGHTS = [20, 40, 80, 77];
     const root = render(
-      <WindowVirtualizer>
-        {range(COUNT, (i) => (
+      <WindowVirtualizer data={range(COUNT)}>
+        {(i) => (
           <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
             item-{i}
           </div>
-        ))}
+        )}
       </WindowVirtualizer>,
     );
     const { viewport, container } = await getVirtualizer(root);
@@ -650,12 +650,12 @@ describe("RTL", () => {
     const COUNT = 1000;
     const root = render(
       <div style={{ display: "inline-block", height: 400 }}>
-        <WindowVirtualizer horizontal>
-          {range(COUNT, (i) => (
+        <WindowVirtualizer data={range(COUNT)} horizontal>
+          {(i) => (
             <div key={i} style={{ width: i % 3 === 0 ? 100 : 60 }}>
               item-{i}
             </div>
-          ))}
+          )}
         </WindowVirtualizer>
       </div>,
     );

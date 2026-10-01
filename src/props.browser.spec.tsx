@@ -47,12 +47,12 @@ describe("cache", () => {
     }, []);
     return (
       <div style={{ height: 400, overflowY: "auto" }}>
-        <Virtualizer ref={handle} cache={saved.current?.[1]}>
-          {range(1000, (i) => (
+        <Virtualizer ref={handle} data={range(1000)} cache={saved.current?.[1]}>
+          {(i) => (
             <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
               {i}
             </div>
-          ))}
+          )}
         </Virtualizer>
       </div>
     );
@@ -143,6 +143,7 @@ describe("keepMounted", () => {
           <div style={{ height: 400, overflowY: "auto" }}>
             <Virtualizer
               ref={handle}
+              data={range(1000)}
               item={StickyItem}
               keepMounted={[activeIndex]}
               onScroll={() => {
@@ -154,7 +155,7 @@ describe("keepMounted", () => {
                 );
               }}
             >
-              {range(1000, (i) => (
+              {(i) => (
                 <div
                   key={i}
                   style={{
@@ -163,7 +164,7 @@ describe("keepMounted", () => {
                 >
                   item-{i}
                 </div>
-              ))}
+              )}
             </Virtualizer>
           </div>
         </StickyIndexContext>

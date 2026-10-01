@@ -33,12 +33,12 @@ describe("jump write", () => {
     // itemSize is not given and the sizes vary, so scrolling far ahead lands in an area sized by estimation
     const root = render(
       <div style={{ height: "100vh", overflowY: "auto" }}>
-        <Virtualizer>
-          {range(1000, (i) => (
+        <Virtualizer data={range(1000)}>
+          {(i) => (
             <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
               {i}
             </div>
-          ))}
+          )}
         </Virtualizer>
       </div>,
     );
@@ -79,12 +79,17 @@ describe("jump write", () => {
       useImperativeHandle(ref, () => ({ setHeight }), []);
       return (
         <div style={{ height: 400, overflowY: "auto" }}>
-          <Virtualizer ref={handle} itemSize={100} keepMounted={[14]}>
-            {range(20, (i) => (
+          <Virtualizer
+            ref={handle}
+            data={range(20)}
+            itemSize={100}
+            keepMounted={[14]}
+          >
+            {(i) => (
               <div key={i} style={{ height: i === 14 ? height : 100 }}>
                 {i}
               </div>
-            ))}
+            )}
           </Virtualizer>
         </div>
       );
@@ -144,12 +149,12 @@ describe("resize jump compensation", () => {
     const VIEWPORT_WIDTH = 400;
     const root = render(
       <div style={{ width: VIEWPORT_WIDTH, height: 200, overflowX: "auto" }}>
-        <Virtualizer horizontal>
-          {range(1000, (i) => (
+        <Virtualizer data={range(1000)} horizontal>
+          {(i) => (
             <div key={i} style={{ width: i % 3 === 0 ? 100 : 60 }}>
               item-{i}
             </div>
-          ))}
+          )}
         </Virtualizer>
       </div>,
     );
@@ -194,12 +199,17 @@ describe("resize jump compensation", () => {
       shift?: boolean;
     }) => (
       <div style={{ height: ITEM_SIZE * 4, overflowY: "auto" }}>
-        <Virtualizer ref={handle} itemSize={ITEM_SIZE} shift={shift}>
-          {keys.map((key) => (
+        <Virtualizer
+          ref={handle}
+          data={keys}
+          itemSize={ITEM_SIZE}
+          shift={shift}
+        >
+          {(key) => (
             <div key={key} style={{ height: ITEM_SIZE }}>
               {key}
             </div>
-          ))}
+          )}
         </Virtualizer>
       </div>
     );
@@ -567,10 +577,8 @@ describe("resize jump compensation", () => {
     };
     const root = render(
       <div style={{ height: 400, overflowY: "auto" }}>
-        <Virtualizer>
-          {range(ITEM_COUNT, (i) => (
-            <Item key={i} index={i} />
-          ))}
+        <Virtualizer data={range(ITEM_COUNT)}>
+          {(i) => <Item key={i} index={i} />}
         </Virtualizer>
       </div>,
     );
@@ -625,10 +633,8 @@ describe("resize jump compensation", () => {
     };
     const root = render(
       <div style={{ height: 400, overflowY: "auto" }}>
-        <Virtualizer>
-          {range(1000, (i) => (
-            <Item key={i} index={i} />
-          ))}
+        <Virtualizer data={range(1000)}>
+          {(i) => <Item key={i} index={i} />}
         </Virtualizer>
       </div>,
     );
@@ -705,16 +711,16 @@ describe("resize jump compensation", () => {
       }, []);
       return (
         <div style={{ height: 400, overflowY: "auto" }}>
-          <Virtualizer ref={ref} shift={shift}>
-            {ids.map((id) =>
+          <Virtualizer ref={ref} data={ids} shift={shift}>
+            {(id) =>
               id % 3 === 1 ? (
                 <ImageItem key={id} id={id} />
               ) : (
                 <div key={id} style={{ height: TEXT_SIZE }}>
                   item-{id}
                 </div>
-              ),
-            )}
+              )
+            }
           </Virtualizer>
         </div>
       );
@@ -788,6 +794,7 @@ describe("shift compensation", () => {
         <div style={{ height: 400, overflowY: "auto" }}>
           <Virtualizer
             ref={ref}
+            data={items}
             shift={isPrepend.current}
             onScroll={(offset) => {
               if (offset < 100) {
@@ -800,11 +807,11 @@ describe("shift compensation", () => {
               scrollEnded = true;
             }}
           >
-            {items.map((i) => (
+            {(i) => (
               <div key={i} style={{ height: 40 }}>
                 item-{i}
               </div>
-            ))}
+            )}
           </Virtualizer>
         </div>
       );

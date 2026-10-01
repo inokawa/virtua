@@ -32,12 +32,12 @@ describe("startMargin", () => {
         }}
       >
         <div style={{ height: HEADER_SIZE }}>header</div>
-        <Virtualizer startMargin={HEADER_SIZE}>
-          {items.map((i) => (
+        <Virtualizer data={items} startMargin={HEADER_SIZE}>
+          {(i) => (
             <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
               {i}
             </div>
-          ))}
+          )}
         </Virtualizer>
         <div style={{ height: FOOTER_SIZE }}>footer</div>
       </div>,
@@ -77,8 +77,8 @@ describe("nested scroll containers", () => {
           overflowX: "auto",
         }}
       >
-        <Virtualizer horizontal>
-          {range(100, (c) => (
+        <Virtualizer data={range(100)} horizontal>
+          {(c) => (
             <div
               key={c}
               style={{
@@ -87,15 +87,15 @@ describe("nested scroll containers", () => {
                 overflowY: "auto",
               }}
             >
-              <Virtualizer>
-                {range(100, (r) => (
+              <Virtualizer data={range(100)}>
+                {(r) => (
                   <div key={r} style={{ height: 80 }}>
                     {c}-{r}
                   </div>
-                ))}
+                )}
               </Virtualizer>
             </div>
-          ))}
+          )}
         </Virtualizer>
       </div>,
     );
