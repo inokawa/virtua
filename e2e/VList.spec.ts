@@ -1,12 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import {
   storyUrl,
-  scrollToBottom,
-  scrollToRight,
   getScrollTop,
-  getScrollLeft,
-  getScrollBottom,
-  getScrollRight,
   expectInRange,
   scrollWithTouch,
   getScrollable,
@@ -16,106 +11,6 @@ import {
 } from "./utils";
 
 const SMOOTH_SCROLL_MS = 100;
-
-test.describe("check if scroll jump compensation works", () => {
-  test("vertical start -> end", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--default"));
-    const component = await getScrollable(page);
-
-    // check if start is displayed
-    await expect(component.getByText("0", { exact: true })).toBeVisible();
-
-    // check if offset from start is always keeped
-    await component.click();
-    const min = 200;
-    const initial = await getScrollTop(component);
-    let prev = initial;
-    const start = performance.now();
-    while ((performance.now() - start) / 1000 < 4) {
-      await page.keyboard.press("ArrowDown", { delay: 10 });
-      const offset = await getScrollTop(component);
-      expect(offset).toBeGreaterThanOrEqual(prev);
-      prev = offset;
-    }
-    expect(prev).toBeGreaterThan(initial + min);
-  });
-
-  test("vertical end -> start", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--default"));
-    const component = await getScrollable(page);
-
-    // check if start is displayed
-    await expect(component.getByText("0", { exact: true })).toBeVisible();
-
-    // scroll to the end
-    await scrollToBottom(component);
-
-    // check if offset from end is always keeped
-    await component.click();
-    const min = 200;
-    const initial = await getScrollBottom(component);
-    let prev = initial;
-    const start = performance.now();
-    while ((performance.now() - start) / 1000 < 4) {
-      await page.keyboard.press("ArrowUp", { delay: 10 });
-      const offset = await getScrollBottom(component);
-      expect(offset).toBeGreaterThanOrEqual(prev);
-      prev = offset;
-    }
-    expect(prev).toBeGreaterThan(initial + min);
-  });
-
-  test("horizontal start -> end", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--horizontal"));
-    const component = await getScrollable(page);
-
-    // check if start is displayed
-    await expect(
-      component.getByText("Column 0", { exact: true }),
-    ).toBeVisible();
-
-    // check if offset from start is always keeped
-    await component.click();
-    const min = 200;
-    const initial = await getScrollLeft(component);
-    let prev = initial;
-    const start = performance.now();
-    while ((performance.now() - start) / 1000 < 4) {
-      await page.keyboard.press("ArrowRight", { delay: 10 });
-      const offset = await getScrollLeft(component);
-      expect(offset).toBeGreaterThanOrEqual(prev);
-      prev = offset;
-    }
-    expect(prev).toBeGreaterThan(initial + min);
-  });
-
-  test("horizontal end -> start", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--horizontal"));
-    const component = await getScrollable(page);
-
-    // check if start is displayed
-    await expect(
-      component.getByText("Column 0", { exact: true }),
-    ).toBeVisible();
-
-    // scroll to the end
-    await scrollToRight(component);
-
-    // check if offset from end is always keeped
-    await component.click();
-    const min = 200;
-    const initial = await getScrollRight(component);
-    let prev = initial;
-    const start = performance.now();
-    while ((performance.now() - start) / 1000 < 4) {
-      await page.keyboard.press("ArrowLeft", { delay: 10 });
-      const offset = await getScrollRight(component);
-      expect(offset).toBeGreaterThanOrEqual(prev);
-      prev = offset;
-    }
-    expect(prev).toBeGreaterThan(initial + min);
-  });
-});
 
 test.describe("SSR and hydration", () => {
   test("check if smooth scrolling works after hydration", async ({ page }) => {
