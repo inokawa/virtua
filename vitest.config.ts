@@ -35,6 +35,13 @@ const testBrowser = (...browsers: ("chromium" | "firefox" | "webkit")[]) => ({
 export default defineConfig({
   test: {
     clearMocks: true,
+    onConsoleLog: (log, type, entity) => {
+      return !(
+        entity?.project.config.browser.enabled &&
+        type === "stderr" &&
+        log.includes("ResizeObserver loop")
+      );
+    },
     projects: [
       {
         test: {

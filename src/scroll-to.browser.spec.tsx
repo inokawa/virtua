@@ -6,8 +6,8 @@ import {
   onTestFinished,
   type TestContext,
 } from "vitest";
-import { createRef } from "react";
-import { render } from "../spec/browser/react.js";
+import { createRef, useEffect, useRef } from "react";
+import { render, rerender } from "../spec/browser/react.js";
 import {
   VList,
   type VListHandle,
@@ -22,6 +22,7 @@ import {
   expectVirtualized,
   getItem,
   getVirtualizer,
+  relativeBottom,
 } from "../spec/browser/index.js";
 import { range } from "../spec/utils.js";
 
@@ -175,4 +176,47 @@ describe("scrollbar", () => {
       visibleSize,
     );
   });
+});
+
+it("stick to bottom", async () => {
+  // Like a chat, which scrolls to the item appended last
+  const Chat = ({ items }: { items: string[] }) => {
+    const ref = useRef<VirtualizerHandle>(null);
+    useEffect(() => {
+      ref.current!.scrollToIndex(items.length - 1, { align: "end" });
+    }, [items]);
+    return (
+      <div style={{ height: 400, overflowY: "auto" }}>
+        <Virtualizer ref={ref}>
+          {items.map((text) => (
+            <div key={text} style={{ whiteSpace: "pre-wrap" }}>
+              {text}
+            </div>
+          ))}
+        </Virtualizer>
+      </div>
+    );
+  };
+  const items = range(100, (i) => `item-${i}`);
+  const root = render(<Chat items={items} />);
+  const { viewport, container } = await getVirtualizer(root);
+  const last = () => container.lastElementChild!;
+
+  // check if end is displayed
+  await expect.poll(() => getItem(container, "item-99")).toBeDefined();
+  await expectPosition(() => relativeBottom(viewport, last()), 0);
+
+  // append small item
+  const SMALL = "item-100";
+  rerender(root, <Chat items={[...items, SMALL]} />);
+  await expect.poll(() => last().textContent).toBe(SMALL);
+  await expectPosition(() => relativeBottom(viewport, last()), 0);
+  const smallSize = last().getBoundingClientRect().height;
+
+  // append large item
+  const LARGE = "item-101" + "\nHello".repeat(100);
+  rerender(root, <Chat items={[...items, SMALL, LARGE]} />);
+  await expect.poll(() => last().textContent).toBe(LARGE);
+  await expectPosition(() => relativeBottom(viewport, last()), 0);
+  expect(last().getBoundingClientRect().height).toBeGreaterThan(smallSize * 10);
 });
