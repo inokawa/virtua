@@ -93,15 +93,15 @@ describe("jump write", () => {
     const { viewport, container } = await getVirtualizer(root);
 
     // check if start is displayed
-    await expect.poll(() => container.firstElementChild!.textContent).toBe("0");
+    await expect.poll(() => getItem(container, "0")).toBeDefined();
 
-    // scroll fast with large delta and check if the scrolled position is not rolled back, ignoring the expected compensation of estimated sizes
+    // scroll fast with large delta and check if the scrolled position is not rolled back
     let lost = 0;
     let pos = 0;
     for (let i = 0; i < 25; i++) {
       if (i > 0) {
         const rollback = pos - viewport.scrollTop;
-        if (rollback > 1) {
+        if (rollback > SUBPIXEL) {
           lost += rollback;
         }
       }
@@ -767,8 +767,8 @@ describe("resize jump compensation", () => {
 
     describe("during imperative scrolling", () => {
       it("compensates an item which straddles the viewport start", async () => {
-        const handle = createRef<VirtualizerHandle>();
-        const root = render(<List handle={handle} />);
+        const ref = createRef<VirtualizerHandle>();
+        const root = render(<List handle={ref} />);
         const { viewport, container } = await getVirtualizer(root);
         await expect.poll(() => getItem(container, "0")).toBeDefined();
         viewport.scrollTop = ITEM_SIZE * 5;
@@ -776,7 +776,7 @@ describe("resize jump compensation", () => {
 
         // Scrolling imperatively to the current offset emits no scroll event, so the manual mode lasts until the next scroll.
         // The imperative scroll keeps writing its destination until no item has been measured for 150ms
-        handle.current!.scrollTo(ITEM_SIZE * 5);
+        ref.current!.scrollTo(ITEM_SIZE * 5);
         await delay(200);
 
         // The manual mode compensates even while scrolling up, unlike native scrolling
@@ -794,14 +794,14 @@ describe("resize jump compensation", () => {
       // The jump is deferred and subtracted from the item offsets meanwhile, so the destination is what to assert.
       // The destination is close, so that the item to resize is already rendered on the first scroll event of the smooth scroll and stays rendered until it is measured
       it("compensates an item above the destination", async () => {
-        const handle = createRef<VirtualizerHandle>();
-        const root = render(<List handle={handle} />);
+        const ref = createRef<VirtualizerHandle>();
+        const root = render(<List handle={ref} />);
         const { viewport, container } = await getVirtualizer(root);
         await expect.poll(() => getItem(container, "0")).toBeDefined();
-        const TARGET = 4;
+        const TARGET_INDEX = 4;
 
         const scroll = scrolled(viewport);
-        handle.current!.scrollToIndex(TARGET, { smooth: true });
+        ref.current!.scrollToIndex(TARGET_INDEX, { smooth: true });
         await scroll;
         resize(container, 2, ITEM_SIZE * 3);
         await settle(viewport, container);
@@ -809,7 +809,8 @@ describe("resize jump compensation", () => {
         expect(viewport.scrollHeight).toBe(ITEM_SIZE * (ITEM_COUNT + 2));
         // item 2 grew by 200 above the destination, and the destination stays where the scroll landed
         await expectPosition(
-          () => relativeTop(viewport, getItem(container, String(TARGET))!),
+          () =>
+            relativeTop(viewport, getItem(container, String(TARGET_INDEX))!),
           0,
         );
 
@@ -817,28 +818,30 @@ describe("resize jump compensation", () => {
         viewport.scrollTop += 1;
         await settle(viewport, container);
         await expectPosition(
-          () => relativeTop(viewport, getItem(container, String(TARGET))!),
+          () =>
+            relativeTop(viewport, getItem(container, String(TARGET_INDEX))!),
           -1,
         );
       });
 
       it("does not compensate an item inside the destination", async () => {
-        const handle = createRef<VirtualizerHandle>();
-        const root = render(<List handle={handle} />);
+        const ref = createRef<VirtualizerHandle>();
+        const root = render(<List handle={ref} />);
         const { viewport, container } = await getVirtualizer(root);
         await expect.poll(() => getItem(container, "0")).toBeDefined();
-        const TARGET = 4;
+        const TARGET_INDEX = 4;
 
         const scroll = scrolled(viewport);
-        handle.current!.scrollToIndex(TARGET, { smooth: true });
+        ref.current!.scrollToIndex(TARGET_INDEX, { smooth: true });
         await scroll;
-        resize(container, TARGET, ITEM_SIZE * 3);
+        resize(container, TARGET_INDEX, ITEM_SIZE * 3);
         await settle(viewport, container);
 
         expect(viewport.scrollHeight).toBe(ITEM_SIZE * (ITEM_COUNT + 2));
         // The destination itself grew but nothing above it did, so it is not moved
         await expectPosition(
-          () => relativeTop(viewport, getItem(container, String(TARGET))!),
+          () =>
+            relativeTop(viewport, getItem(container, String(TARGET_INDEX))!),
           0,
         );
       });
@@ -923,7 +926,7 @@ describe("resize jump compensation", () => {
         .toBe(0);
       await settle(viewport, container);
 
-      // check if distance from the bottom isn't changed by resizes
+      // check if the last item stays at the bottom after the resizes
       if (Math.abs(relativeBottom(viewport, last()!)) <= SUBPIXEL) {
         break;
       }
@@ -932,6 +935,7 @@ describe("resize jump compensation", () => {
   });
 
   it("lazy content while scrolling up", async () => {
+    const ITEM_COUNT = 1000;
     const INITIAL_SIZE = 40;
     const LOADED_SIZE = 100;
     // Every fifth item is much taller, so the sizes vary a lot when the items are rendered for the first time
@@ -954,7 +958,7 @@ describe("resize jump compensation", () => {
     };
     const root = render(
       <div style={{ height: 400, overflowY: "auto" }}>
-        <Virtualizer data={range(1000)}>
+        <Virtualizer data={range(ITEM_COUNT)}>
           {(i) => <Item key={i} index={i} />}
         </Virtualizer>
       </div>,
@@ -963,7 +967,7 @@ describe("resize jump compensation", () => {
     await expect
       .poll(() => {
         scrollToEnd(viewport);
-        return getItem(container, "item-999");
+        return getItem(container, `item-${ITEM_COUNT - 1}`);
       })
       .toBeDefined();
     await settle(viewport, container);
@@ -1057,14 +1061,14 @@ describe("resize jump compensation", () => {
         .toBe(0);
 
     // check if start is displayed
-    const TARGET = `item-${ids[BATCH_COUNT + 1]}`;
-    await expect.poll(() => first().textContent).toBe(TARGET);
+    const TARGET_TEXT = `item-${ids[BATCH_COUNT + 1]}`;
+    await expect.poll(() => first().textContent).toBe(TARGET_TEXT);
     await expectPosition(() => relativeTop(viewport, first()), 0);
 
     // check if stable after image load
     await expectImagesLoaded();
     await settle(viewport, container);
-    expect(first().textContent).toBe(TARGET);
+    expect(first().textContent).toBe(TARGET_TEXT);
     await expectPosition(() => relativeTop(viewport, first()), 0);
 
     // scroll to top, and let the images rendered there load before prepending.
@@ -1137,7 +1141,7 @@ describe("shift compensation", () => {
     viewport.scrollHeight > viewport.clientHeight;
 
   it("keep end at mid when add to/remove from end", async () => {
-    const COUNT = 4;
+    const ADDED_COUNT = 4;
     let items = range(84);
     const root = render(<List items={items} />);
     const { viewport, container } = await getVirtualizer(root);
@@ -1151,14 +1155,14 @@ describe("shift compensation", () => {
     const top = relativeTop(viewport, item);
 
     // add
-    items = [...items, ...range(COUNT, (i) => items.length + i)];
+    items = [...items, ...range(ADDED_COUNT, (i) => items.length + i)];
     rerender(root, <List items={items} />);
     await settle(viewport, container);
     // check if visible item is keeped
     expect(relativeTop(viewport, item)).toBe(top);
 
     // remove
-    items = items.slice(0, -COUNT);
+    items = items.slice(0, -ADDED_COUNT);
     rerender(root, <List items={items} />);
     await settle(viewport, container);
     // check if visible item is keeped
@@ -1166,7 +1170,7 @@ describe("shift compensation", () => {
   });
 
   it("keep start at mid when add to/remove from start", async () => {
-    const COUNT = 4;
+    const ADDED_COUNT = 4;
     let items = range(84);
     const root = render(<List items={items} />);
     const { viewport, container } = await getVirtualizer(root);
@@ -1180,14 +1184,14 @@ describe("shift compensation", () => {
     const top = relativeTop(viewport, item);
 
     // add
-    items = [...range(COUNT, (i) => i - COUNT), ...items];
+    items = [...range(ADDED_COUNT, (i) => i - ADDED_COUNT), ...items];
     rerender(root, <List items={items} shift />);
     await settle(viewport, container);
     // check if visible item is keeped
     expect(relativeTop(viewport, item)).toBe(top);
 
     // remove
-    items = items.slice(COUNT);
+    items = items.slice(ADDED_COUNT);
     rerender(root, <List items={items} shift />);
     await settle(viewport, container);
     // check if visible item is keeped
@@ -1195,8 +1199,8 @@ describe("shift compensation", () => {
   });
 
   it("prepending when total height is lower than viewport height", async () => {
-    const INITIAL = range(4);
-    const root = render(<List items={INITIAL} />);
+    const initial = range(4);
+    const root = render(<List items={initial} />);
     const { viewport, container } = await getVirtualizer(root);
     await expect.poll(() => getItem(container, "item-0")).toBeDefined();
 
@@ -1206,12 +1210,12 @@ describe("shift compensation", () => {
       // prepend
       rerender(
         root,
-        <List items={[...range(i, (j) => j - i), ...INITIAL]} shift />,
+        <List items={[...range(i, (j) => j - i), ...initial]} shift />,
       );
       // Check if all items are visible
       await expect
         .poll(() => container.childElementCount)
-        .toBe(INITIAL.length + i);
+        .toBe(initial.length + i);
       await settle(viewport, container);
 
       if (isScrollable(viewport)) {
@@ -1227,8 +1231,8 @@ describe("shift compensation", () => {
       expect(relativeTop(viewport, container.firstElementChild!)).toBe(0);
 
       // remove
-      rerender(root, <List items={INITIAL} shift />);
-      await expect.poll(() => container.childElementCount).toBe(INITIAL.length);
+      rerender(root, <List items={initial} shift />);
+      await expect.poll(() => container.childElementCount).toBe(initial.length);
     }
 
     expect(i).toBeGreaterThanOrEqual(8);
@@ -1236,8 +1240,9 @@ describe("shift compensation", () => {
 
   describe("aligned to bottom", () => {
     it("prepending when total height is lower than viewport height", async () => {
-      const INITIAL = range(4);
-      const root = render(<List items={INITIAL} alignBottom />);
+      const initial = range(4);
+      const last = `item-${initial.length - 1}`;
+      const root = render(<List items={initial} alignBottom />);
       const { viewport, container } = await getVirtualizer(root);
       await expect.poll(() => getItem(container, "item-0")).toBeDefined();
 
@@ -1248,7 +1253,7 @@ describe("shift compensation", () => {
         rerender(
           root,
           <List
-            items={[...range(i, (j) => j - i), ...INITIAL]}
+            items={[...range(i, (j) => j - i), ...initial]}
             alignBottom
             shift
           />,
@@ -1256,33 +1261,28 @@ describe("shift compensation", () => {
         // Check if all items are visible
         await expect
           .poll(() => container.childElementCount)
-          .toBe(INITIAL.length + i);
+          .toBe(initial.length + i);
         await settle(viewport, container);
 
         if (isScrollable(viewport)) {
           // Check if sticked to bottom
           await expectPosition(
-            () =>
-              relativeBottom(
-                viewport,
-                findLastVisibleItem(container, viewport)!,
-              ),
+            () => relativeBottom(viewport, getItem(container, last)!),
             0,
           );
           break;
         }
         // Check if bottom is always visible and on bottom
         await expectPosition(
-          () =>
-            relativeBottom(viewport, findLastVisibleItem(container, viewport)!),
+          () => relativeBottom(viewport, getItem(container, last)!),
           0,
         );
 
         // remove
-        rerender(root, <List items={INITIAL} alignBottom shift />);
+        rerender(root, <List items={initial} alignBottom shift />);
         await expect
           .poll(() => container.childElementCount)
-          .toBe(INITIAL.length);
+          .toBe(initial.length);
       }
 
       expect(i).toBeGreaterThanOrEqual(8);
@@ -1290,6 +1290,7 @@ describe("shift compensation", () => {
 
     it("stick to bottom even if many items are removed from top", async () => {
       let items = range(4);
+      const last = `item-${items.length - 1}`;
       const root = render(<List items={items} alignBottom />);
       const { viewport, container } = await getVirtualizer(root);
       await expect.poll(() => getItem(container, "item-0")).toBeDefined();
@@ -1302,7 +1303,7 @@ describe("shift compensation", () => {
       await expect
         .poll(() => {
           scrollToEnd(viewport);
-          return getItem(container, "item-3");
+          return getItem(container, last);
         })
         .toBeDefined();
       await settle(viewport, container);
@@ -1317,8 +1318,7 @@ describe("shift compensation", () => {
 
         // Check if bottom is always visible and on bottom
         await expectPosition(
-          () =>
-            relativeBottom(viewport, findLastVisibleItem(container, viewport)!),
+          () => relativeBottom(viewport, getItem(container, last)!),
           0,
         );
 
@@ -1349,28 +1349,28 @@ describe("shift compensation", () => {
     );
 
     it("keep end at mid when add to/remove from end", async () => {
-      const COUNT = 4;
+      const ADDED_COUNT = 4;
       let items = range(84);
       const root = render(<WindowList items={items} />);
       const { viewport, container } = await getVirtualizer(root);
       await expect.poll(() => getItem(container, "item-0")).toBeDefined();
 
       // fill list and move to mid
-      window.scrollBy(0, 400);
+      viewport.scrollTop += 400;
       await settle(viewport, container);
       const item = findFirstVisibleItem(container, viewport)!;
       expect(item.textContent).not.toBe("item-0");
       const top = relativeTop(viewport, item);
 
       // add
-      items = [...items, ...range(COUNT, (i) => items.length + i)];
+      items = [...items, ...range(ADDED_COUNT, (i) => items.length + i)];
       rerender(root, <WindowList items={items} />);
       await settle(viewport, container);
       // check if visible item is keeped
       expect(relativeTop(viewport, item)).toBe(top);
 
       // remove
-      items = items.slice(0, -COUNT);
+      items = items.slice(0, -ADDED_COUNT);
       rerender(root, <WindowList items={items} />);
       await settle(viewport, container);
       // check if visible item is keeped
@@ -1378,28 +1378,28 @@ describe("shift compensation", () => {
     });
 
     it("keep start at mid when add to/remove from start", async () => {
-      const COUNT = 4;
+      const ADDED_COUNT = 4;
       let items = range(84);
       const root = render(<WindowList items={items} />);
       const { viewport, container } = await getVirtualizer(root);
       await expect.poll(() => getItem(container, "item-0")).toBeDefined();
 
       // fill list and move to mid
-      window.scrollBy(0, 800);
+      viewport.scrollTop += 800;
       await settle(viewport, container);
       const item = findFirstVisibleItem(container, viewport)!;
       expect(item.textContent).not.toBe("item-0");
       const top = relativeTop(viewport, item);
 
       // add
-      items = [...range(COUNT, (i) => i - COUNT), ...items];
+      items = [...range(ADDED_COUNT, (i) => i - ADDED_COUNT), ...items];
       rerender(root, <WindowList items={items} shift />);
       await settle(viewport, container);
       // check if visible item is keeped
       expect(relativeTop(viewport, item)).toBe(top);
 
       // remove
-      items = items.slice(COUNT);
+      items = items.slice(ADDED_COUNT);
       rerender(root, <WindowList items={items} shift />);
       await settle(viewport, container);
       // check if visible item is keeped
@@ -1407,8 +1407,8 @@ describe("shift compensation", () => {
     });
 
     it("prepending when total height is lower than viewport height", async () => {
-      const INITIAL = range(4);
-      const root = render(<WindowList items={INITIAL} />);
+      const initial = range(4);
+      const root = render(<WindowList items={initial} />);
       const { viewport, container } = await getVirtualizer(root);
       await expect.poll(() => getItem(container, "item-0")).toBeDefined();
 
@@ -1418,12 +1418,12 @@ describe("shift compensation", () => {
         // prepend
         rerender(
           root,
-          <WindowList items={[...range(i, (j) => j - i), ...INITIAL]} shift />,
+          <WindowList items={[...range(i, (j) => j - i), ...initial]} shift />,
         );
         // Check if all items are visible
         await expect
           .poll(() => container.childElementCount)
-          .toBe(INITIAL.length + i);
+          .toBe(initial.length + i);
         await settle(viewport, container);
 
         if (isScrollable(viewport)) {
@@ -1442,10 +1442,10 @@ describe("shift compensation", () => {
         expect(relativeTop(viewport, container.firstElementChild!)).toBe(0);
 
         // remove
-        rerender(root, <WindowList items={INITIAL} shift />);
+        rerender(root, <WindowList items={initial} shift />);
         await expect
           .poll(() => container.childElementCount)
-          .toBe(INITIAL.length);
+          .toBe(initial.length);
       }
 
       expect(i).toBeGreaterThanOrEqual(8);
@@ -1453,6 +1453,7 @@ describe("shift compensation", () => {
 
     it("stick to bottom even if many items are removed from top", async () => {
       let items = range(4);
+      const last = `item-${items.length - 1}`;
       const root = render(<WindowList items={items} />);
       const { viewport, container } = await getVirtualizer(root);
       await expect.poll(() => getItem(container, "item-0")).toBeDefined();
@@ -1465,7 +1466,7 @@ describe("shift compensation", () => {
       await expect
         .poll(() => {
           scrollToEnd(viewport);
-          return getItem(container, "item-3");
+          return getItem(container, last);
         })
         .toBeDefined();
       await settle(viewport, container);
@@ -1485,8 +1486,7 @@ describe("shift compensation", () => {
 
         // Check if bottom is always visible and on bottom
         await expectPosition(
-          () =>
-            relativeBottom(viewport, findLastVisibleItem(container, viewport)!),
+          () => relativeBottom(viewport, getItem(container, last)!),
           0,
         );
       }
@@ -1496,6 +1496,7 @@ describe("shift compensation", () => {
   });
 
   it("prepending cancels imperative scroll", async () => {
+    const ITEM_COUNT = 100;
     let id = 0;
     const createItems = (count: number) => range(count, () => id++);
 
@@ -1504,7 +1505,7 @@ describe("shift compensation", () => {
     let scrollEnded = false;
 
     const Component = () => {
-      const [items, setItems] = useState(() => createItems(100));
+      const [items, setItems] = useState(() => createItems(ITEM_COUNT));
       const isPrepend = useRef(false);
 
       useLayoutEffect(() => {
@@ -1539,7 +1540,7 @@ describe("shift compensation", () => {
     };
 
     const root = render(<Component />);
-    await expectVirtualized(root, "item-0", "item-999");
+    await expectVirtualized(root, "item-0", `item-${ITEM_COUNT - 1}`);
 
     // scroll to end
     const { viewport } = await getVirtualizer(root);

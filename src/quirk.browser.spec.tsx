@@ -21,9 +21,9 @@ import {
   createDomRoot,
   expectVirtualized,
   expectVirtualizedAndScrollable,
-  expectVirtualizedAndScrollableRTL,
   getItem,
   getVirtualizer,
+  recordScroll,
   relativeRight,
   relativeTop,
   setRTL,
@@ -58,6 +58,13 @@ const expectItemDistance = (container: HTMLElement, size: number) => {
   }
 };
 
+// The first scroll event is already at the destination, as the position is updated at once instead of animated by CSS scroll-behavior
+const expectInstant = async (offsets: number[], position: number) => {
+  await expect.poll(() => offsets.at(-1)).toBe(position);
+  // The first offset is where the record started
+  expect(offsets[1]).toBe(position);
+};
+
 const waitForZeroSizeNotification = (target: Element) => {
   return new Promise<void>((resolve) => {
     const observer = new ResizeObserver((entries) => {
@@ -74,20 +81,20 @@ it("display: none (Virtualizer)", async () => {
   const root = render(
     <div style={{ height: 400, overflowY: "auto" }}>
       <Virtualizer data={items}>
-        {(d) => (
-          <div key={d} style={{ height: 30 }}>
-            item-{d}
+        {(i) => (
+          <div key={i} style={{ height: 30 }}>
+            item-{i}
           </div>
         )}
       </Virtualizer>
     </div>,
   );
-  await expectVirtualized(root, "item-0", "item-999");
+  await expectVirtualized(root, "item-0", `item-${items.length - 1}`);
 
   const { container } = await getVirtualizer(root);
   const initialHeight = await waitForStableHeight(container);
 
-  root.style.display = "none";
+  container.style.display = "none";
   await waitForZeroSizeNotification(container);
   // let pending resize notifications propagate
   await delay(100);
@@ -98,19 +105,19 @@ it("display: none (Virtualizer)", async () => {
 it("display: none (WindowVirtualizer)", async () => {
   const root = render(
     <WindowVirtualizer data={items}>
-      {(d) => (
-        <div key={d} style={{ height: 30 }}>
-          item-{d}
+      {(i) => (
+        <div key={i} style={{ height: 30 }}>
+          item-{i}
         </div>
       )}
     </WindowVirtualizer>,
   );
-  await expectVirtualized(root, "item-0", "item-999");
+  await expectVirtualized(root, "item-0", `item-${items.length - 1}`);
 
   const { container } = await getVirtualizer(root);
   const initialHeight = await waitForStableHeight(container);
 
-  root.style.display = "none";
+  container.style.display = "none";
   await waitForZeroSizeNotification(container);
   // let pending resize notifications propagate
   await delay(100);
@@ -119,18 +126,19 @@ it("display: none (WindowVirtualizer)", async () => {
 });
 
 it("display: none before the scroll event is dispatched", async () => {
+  const ITEM_SIZE = 30;
   const root = render(
     <div style={{ height: 400, overflowY: "auto" }}>
-      <Virtualizer data={items} itemSize={30}>
-        {(d) => (
-          <div key={d} style={{ height: 30 }}>
-            item-{d}
+      <Virtualizer data={items} itemSize={ITEM_SIZE}>
+        {(i) => (
+          <div key={i} style={{ height: ITEM_SIZE }}>
+            item-{i}
           </div>
         )}
       </Virtualizer>
     </div>,
   );
-  await expectVirtualized(root, "item-0", "item-999");
+  await expectVirtualized(root, "item-0", `item-${items.length - 1}`);
 
   const { viewport } = await getVirtualizer(root);
   viewport.scrollTop = 5000;
@@ -140,35 +148,45 @@ it("display: none before the scroll event is dispatched", async () => {
 
   await expect
     .poll(() => root.textContent)
-    .toContain(`item-${Math.floor(viewport.scrollTop / 30)}`);
+    .toContain(`item-${Math.floor(viewport.scrollTop / ITEM_SIZE)}`);
 });
 
 it("detached and reattached viewport", async () => {
+  const ITEM_SIZE = 30;
+  let scrollEnded = false;
   const root = render(
     <div style={{ height: 400, overflowY: "auto" }}>
-      <Virtualizer data={items} itemSize={30}>
-        {(d) => (
-          <div key={d} style={{ height: 30 }}>
-            item-{d}
+      <Virtualizer
+        data={items}
+        itemSize={ITEM_SIZE}
+        onScrollEnd={() => {
+          scrollEnded = true;
+        }}
+      >
+        {(i) => (
+          <div key={i} style={{ height: ITEM_SIZE }}>
+            item-{i}
           </div>
         )}
       </Virtualizer>
     </div>,
   );
-  await expectVirtualized(root, "item-0", "item-999");
+  await expectVirtualized(root, "item-0", `item-${items.length - 1}`);
 
   const { viewport } = await getVirtualizer(root);
   viewport.scrollTop = 5000;
-  await delay(300);
+  // Detach the viewport at rest, not while the scroll end is pending
+  await expect.poll(() => scrollEnded).toBe(true);
 
   const parent = root.parentElement!;
+  const detached = waitForZeroSizeNotification(viewport);
   root.remove();
-  await delay(100);
+  await detached;
   parent.append(root);
 
   await expect
     .poll(() => root.textContent)
-    .toContain(`item-${Math.floor(viewport.scrollTop / 30)}`);
+    .toContain(`item-${Math.floor(viewport.scrollTop / ITEM_SIZE)}`);
 });
 
 it("position: fixed viewport (Virtualizer)", async () => {
@@ -184,23 +202,29 @@ it("position: fixed viewport (Virtualizer)", async () => {
       }}
     >
       <Virtualizer data={items}>
-        {(d) => (
-          <div key={d} style={{ height: 40 }}>
-            item-{d}
+        {(i) => (
+          <div key={i} style={{ height: 40 }}>
+            item-{i}
           </div>
         )}
       </Virtualizer>
     </div>,
   );
-  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(
+    root,
+    "item-0",
+    `item-${items.length - 1}`,
+  );
 });
 
 it("position: fixed viewport (VGrid)", async () => {
+  const ROWS = 100;
+  const COLS = 100;
   const root = render(
     <VGrid
-      rows={100}
+      rows={ROWS}
       rowHeight={40}
-      cols={100}
+      cols={COLS}
       colWidth={100}
       style={{ position: "fixed", top: 0, left: 0, width: 400, height: 400 }}
     >
@@ -211,10 +235,16 @@ it("position: fixed viewport (VGrid)", async () => {
       )}
     </VGrid>,
   );
-  await expectVirtualizedAndScrollable(root, "row-0/col-0", "row-99/col-99");
+  await expectVirtualizedAndScrollable(
+    root,
+    "row-0/col-0",
+    `row-${ROWS - 1}/col-${COLS - 1}`,
+  );
 });
 
 it("hidden document does not cancel imperative scroll", async () => {
+  const ITEM_SIZE = 60;
+  const VIEWPORT_SIZE = 400;
   const Component = () => {
     const ref = useRef<VirtualizerHandle>(null);
     useLayoutEffect(() => {
@@ -224,11 +254,11 @@ it("hidden document does not cancel imperative scroll", async () => {
     // Emulates hidden document
     return (
       <div style={{ contentVisibility: "hidden" }}>
-        <div style={{ height: 400, overflowY: "auto" }}>
+        <div style={{ height: VIEWPORT_SIZE, overflowY: "auto" }}>
           <Virtualizer ref={ref} data={items}>
-            {(d) => (
-              <div key={d} style={{ height: 60 }}>
-                item-{d}
+            {(i) => (
+              <div key={i} style={{ height: ITEM_SIZE }}>
+                item-{i}
               </div>
             )}
           </Virtualizer>
@@ -242,14 +272,14 @@ it("hidden document does not cancel imperative scroll", async () => {
   await delay(400);
   const hidden = root.firstElementChild as HTMLElement;
   const { viewport } = await getVirtualizer(root);
-  const bottom = items.length * 60 - 400;
+  const bottom = items.length * ITEM_SIZE - VIEWPORT_SIZE;
   expect(viewport.checkVisibility()).toBe(false);
   // The estimated size must be smaller than the actual one, or a canceled scroll is also clamped to the bottom
   expect(viewport.scrollTop).toBeLessThan(bottom);
 
   hidden.style.contentVisibility = "";
 
-  await expect.poll(() => viewport.scrollTop, { timeout: 5000 }).toBe(bottom);
+  await expect.poll(() => viewport.scrollTop).toBe(bottom);
 });
 
 it("flex parent", async () => {
@@ -263,15 +293,19 @@ it("flex parent", async () => {
       }}
     >
       <Virtualizer data={items}>
-        {(d) => (
-          <div key={d} style={{ height: 30 }}>
-            item-{d}
+        {(i) => (
+          <div key={i} style={{ height: 30 }}>
+            item-{i}
           </div>
         )}
       </Virtualizer>
     </div>,
   );
-  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(
+    root,
+    "item-0",
+    `item-${items.length - 1}`,
+  );
 });
 
 it("overflow", async () => {
@@ -281,9 +315,9 @@ it("overflow", async () => {
     <div style={{ height: 400, overflowY: "auto" }}>
       <div style={{ height: HEADER_SIZE }} />
       <Virtualizer data={items} startMargin={HEADER_SIZE}>
-        {(d) => (
-          <div key={d} style={{ height: 40, position: "relative" }}>
-            item-{d}
+        {(i) => (
+          <div key={i} style={{ height: 40, position: "relative" }}>
+            item-{i}
             <div
               style={{
                 position: "absolute",
@@ -301,7 +335,7 @@ it("overflow", async () => {
       </Virtualizer>
     </div>,
   );
-  await expectVirtualized(root, "item-0", "item-999");
+  await expectVirtualized(root, "item-0", `item-${items.length - 1}`);
   const { container } = await getVirtualizer(root);
 
   for (const target of [0, 1, 2]) {
@@ -333,16 +367,20 @@ it("new window", async () => {
   const root = render(
     <div style={{ height: 400, overflowY: "auto" }}>
       <Virtualizer data={items}>
-        {(d) => (
-          <div key={d} style={{ height: 30 }}>
-            item-{d}
+        {(i) => (
+          <div key={i} style={{ height: 30 }}>
+            item-{i}
           </div>
         )}
       </Virtualizer>
     </div>,
     newWindow!.document,
   );
-  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(
+    root,
+    "item-0",
+    `item-${items.length - 1}`,
+  );
 });
 
 it("iframe", async () => {
@@ -353,16 +391,20 @@ it("iframe", async () => {
   const root = render(
     <div style={{ height: 400, overflowY: "auto" }}>
       <Virtualizer data={items}>
-        {(d) => (
-          <div key={d} style={{ height: 30 }}>
-            item-{d}
+        {(i) => (
+          <div key={i} style={{ height: 30 }}>
+            item-{i}
           </div>
         )}
       </Virtualizer>
     </div>,
     iframe.contentDocument!,
   );
-  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(
+    root,
+    "item-0",
+    `item-${items.length - 1}`,
+  );
 });
 
 it("shadow DOM", async () => {
@@ -374,16 +416,20 @@ it("shadow DOM", async () => {
   reactRoot.render(
     <div style={{ height: 400, overflowY: "auto" }}>
       <Virtualizer data={items}>
-        {(d) => (
-          <div key={d} style={{ height: 30 }}>
-            item-{d}
+        {(i) => (
+          <div key={i} style={{ height: 30 }}>
+            item-{i}
           </div>
         )}
       </Virtualizer>
     </div>,
   );
   onTestFinished(() => reactRoot.unmount());
-  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(
+    root,
+    "item-0",
+    `item-${items.length - 1}`,
+  );
 });
 
 it("transform: scale", async () => {
@@ -397,15 +443,19 @@ it("transform: scale", async () => {
       }}
     >
       <Virtualizer data={items}>
-        {(d) => (
-          <div key={d} style={{ height: 30 }}>
-            item-{d}
+        {(i) => (
+          <div key={i} style={{ height: 30 }}>
+            item-{i}
           </div>
         )}
       </Virtualizer>
     </div>,
   );
-  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(
+    root,
+    "item-0",
+    `item-${items.length - 1}`,
+  );
 
   const { container } = await getVirtualizer(root);
   await waitForStableHeight(container);
@@ -416,15 +466,19 @@ it("zoom", async () => {
   const root = render(
     <div style={{ zoom: 1.5, height: 400, overflowY: "auto" }}>
       <Virtualizer data={items}>
-        {(d) => (
-          <div key={d} style={{ height: 30 }}>
-            item-{d}
+        {(i) => (
+          <div key={i} style={{ height: 30 }}>
+            item-{i}
           </div>
         )}
       </Virtualizer>
     </div>,
   );
-  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(
+    root,
+    "item-0",
+    `item-${items.length - 1}`,
+  );
 
   const { container } = await getVirtualizer(root);
   await waitForStableHeight(container);
@@ -435,15 +489,19 @@ it("fractional item size", async () => {
   const root = render(
     <div style={{ height: 400, overflowY: "auto" }}>
       <Virtualizer data={items}>
-        {(d) => (
-          <div key={d} style={{ height: 30.5 }}>
-            item-{d}
+        {(i) => (
+          <div key={i} style={{ height: 30.5 }}>
+            item-{i}
           </div>
         )}
       </Virtualizer>
     </div>,
   );
-  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+  await expectVirtualizedAndScrollable(
+    root,
+    "item-0",
+    `item-${items.length - 1}`,
+  );
 
   const { container } = await getVirtualizer(root);
   await waitForStableHeight(container);
@@ -456,34 +514,28 @@ it("scroll-behavior: smooth", async () => {
   const root = render(
     <div style={{ height: 400, overflowY: "auto", scrollBehavior: "smooth" }}>
       <Virtualizer ref={ref} data={items}>
-        {(d) => (
-          <div key={d} style={{ height: 30 }}>
-            item-{d}
+        {(i) => (
+          <div key={i} style={{ height: 30 }}>
+            item-{i}
           </div>
         )}
       </Virtualizer>
     </div>,
   );
-  await expectVirtualized(root, "item-0", "item-999");
+  await expectVirtualized(root, "item-0", `item-${items.length - 1}`);
   const { viewport, container } = await getVirtualizer(root);
   await waitForStableHeight(container);
 
-  const offsets: number[] = [];
-  viewport.addEventListener("scroll", () => {
-    offsets.push(viewport.scrollTop);
-  });
+  const scrolled = recordScroll(viewport);
 
   ref.current!.scrollTo(OFFSET);
-  await expect.poll(() => offsets[offsets.length - 1]).toBe(OFFSET);
-
-  // The scroll position must be updated instantly, not animated by CSS scroll-behavior
-  expect(offsets[0]).toBe(OFFSET);
+  await expectInstant(scrolled.offsets, OFFSET);
 });
 
 it("scroll-behavior: smooth (WindowVirtualizer)", async () => {
   const ITEM_SIZE = 30;
   const INDEX = 200;
-  const { documentElement, scrollingElement } = document;
+  const { documentElement } = document;
   documentElement.style.scrollBehavior = "smooth";
   onTestFinished(() => {
     documentElement.style.scrollBehavior = "";
@@ -492,30 +544,22 @@ it("scroll-behavior: smooth (WindowVirtualizer)", async () => {
   const root = render(
     // The size is known before the items are measured, so the scroll lands on the item at once
     <WindowVirtualizer ref={ref} data={items} itemSize={ITEM_SIZE}>
-      {(d) => (
-        <div key={d} style={{ height: ITEM_SIZE }}>
-          item-{d}
+      {(i) => (
+        <div key={i} style={{ height: ITEM_SIZE }}>
+          item-{i}
         </div>
       )}
     </WindowVirtualizer>,
   );
-  await expectVirtualized(root, "item-0", "item-999");
+  await expectVirtualized(root, "item-0", `item-${items.length - 1}`);
   const { container } = await getVirtualizer(root);
   await waitForStableHeight(container);
 
-  const offsets: number[] = [];
-  const onScroll = () => {
-    offsets.push(scrollingElement!.scrollTop);
-  };
-  window.addEventListener("scroll", onScroll);
-  onTestFinished(() => window.removeEventListener("scroll", onScroll));
+  const scrolled = recordScroll(window);
 
   ref.current!.scrollToIndex(INDEX);
   // The virtualizer starts at the top of the document
-  await expect.poll(() => offsets[offsets.length - 1]).toBe(INDEX * ITEM_SIZE);
-
-  // The scroll position must be updated instantly, not animated by CSS scroll-behavior
-  expect(offsets[0]).toBe(INDEX * ITEM_SIZE);
+  await expectInstant(scrolled.offsets, INDEX * ITEM_SIZE);
 });
 
 it("scroll-behavior: smooth (shift compensation)", async () => {
@@ -525,16 +569,16 @@ it("scroll-behavior: smooth (shift compensation)", async () => {
   const List = ({ data }: { data: number[] }) => (
     <div style={{ height: 400, overflowY: "auto", scrollBehavior: "smooth" }}>
       <Virtualizer data={data} shift>
-        {(d) => (
-          <div key={d} style={{ height: ITEM_SIZE }}>
-            item-{d}
+        {(i) => (
+          <div key={i} style={{ height: ITEM_SIZE }}>
+            item-{i}
           </div>
         )}
       </Virtualizer>
     </div>
   );
   const root = render(<List data={items} />);
-  await expectVirtualized(root, "item-0", "item-999");
+  await expectVirtualized(root, "item-0", `item-${items.length - 1}`);
   const { viewport, container } = await getVirtualizer(root);
   await waitForStableHeight(container);
 
@@ -546,10 +590,7 @@ it("scroll-behavior: smooth (shift compensation)", async () => {
     .toBeDefined();
   await waitForStableHeight(container);
 
-  const offsets: number[] = [];
-  viewport.addEventListener("scroll", () => {
-    offsets.push(viewport.scrollTop);
-  });
+  const scrolled = recordScroll(viewport);
 
   rerender(
     root,
@@ -557,23 +598,19 @@ it("scroll-behavior: smooth (shift compensation)", async () => {
       data={[...range(PREPEND_COUNT, (i) => i - PREPEND_COUNT), ...items]}
     />,
   );
-  await expect
-    .poll(() => offsets[offsets.length - 1])
-    .toBe(OFFSET + PREPEND_COUNT * ITEM_SIZE);
-
-  // The compensation must jump in a single write, not animated by CSS scroll-behavior
-  expect(offsets[0]).toBe(offsets[offsets.length - 1]);
+  // The compensation must jump in a single write
+  await expectInstant(scrolled.offsets, OFFSET + PREPEND_COUNT * ITEM_SIZE);
 });
 
 describe("RTL", () => {
   beforeEach(setRTL);
 
   it("vertically scrollable (Virtualizer)", async () => {
-    const COUNT = 1000;
+    const ITEM_COUNT = 1000;
     const HEIGHTS = [20, 40, 80, 77];
     const root = render(
       <div style={{ height: 400, overflowY: "auto" }}>
-        <Virtualizer data={range(COUNT)}>
+        <Virtualizer data={range(ITEM_COUNT)}>
           {(i) => (
             <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
               item-{i}
@@ -588,18 +625,19 @@ describe("RTL", () => {
     await expect.poll(() => getItem(container, "item-0")).toBeDefined();
     expect(relativeTop(viewport, getItem(container, "item-0")!)).toBe(0);
 
-    await expectVirtualizedAndScrollableRTL(
+    await expectVirtualizedAndScrollable(
       root,
       "item-0",
-      `item-${COUNT - 1}`,
+      `item-${ITEM_COUNT - 1}`,
+      true,
     );
   });
 
   it("horizontally scrollable (Virtualizer)", async () => {
-    const COUNT = 1000;
+    const ITEM_COUNT = 1000;
     const root = render(
       <div style={{ width: 400, height: 200, overflowX: "auto" }}>
-        <Virtualizer data={range(COUNT)} horizontal>
+        <Virtualizer data={range(ITEM_COUNT)} horizontal>
           {(i) => (
             <div key={i} style={{ width: i % 3 === 0 ? 100 : 60 }}>
               item-{i}
@@ -614,18 +652,19 @@ describe("RTL", () => {
     await expect.poll(() => getItem(container, "item-0")).toBeDefined();
     expect(relativeRight(viewport, getItem(container, "item-0")!)).toBe(0);
 
-    await expectVirtualizedAndScrollableRTL(
+    await expectVirtualizedAndScrollable(
       root,
       "item-0",
-      `item-${COUNT - 1}`,
+      `item-${ITEM_COUNT - 1}`,
+      true,
     );
   });
 
   it("vertically scrollable (WindowVirtualizer)", async () => {
-    const COUNT = 1000;
+    const ITEM_COUNT = 1000;
     const HEIGHTS = [20, 40, 80, 77];
     const root = render(
-      <WindowVirtualizer data={range(COUNT)}>
+      <WindowVirtualizer data={range(ITEM_COUNT)}>
         {(i) => (
           <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
             item-{i}
@@ -639,18 +678,19 @@ describe("RTL", () => {
     await expect.poll(() => getItem(container, "item-0")).toBeDefined();
     expect(relativeTop(viewport, getItem(container, "item-0")!)).toBe(0);
 
-    await expectVirtualizedAndScrollableRTL(
+    await expectVirtualizedAndScrollable(
       root,
       "item-0",
-      `item-${COUNT - 1}`,
+      `item-${ITEM_COUNT - 1}`,
+      true,
     );
   });
 
   it("horizontally scrollable (WindowVirtualizer)", async () => {
-    const COUNT = 1000;
+    const ITEM_COUNT = 1000;
     const root = render(
       <div style={{ display: "inline-block", height: 400 }}>
-        <WindowVirtualizer data={range(COUNT)} horizontal>
+        <WindowVirtualizer data={range(ITEM_COUNT)} horizontal>
           {(i) => (
             <div key={i} style={{ width: i % 3 === 0 ? 100 : 60 }}>
               item-{i}
@@ -665,10 +705,11 @@ describe("RTL", () => {
     await expect.poll(() => getItem(container, "item-0")).toBeDefined();
     expect(relativeRight(viewport, getItem(container, "item-0")!)).toBe(0);
 
-    await expectVirtualizedAndScrollableRTL(
+    await expectVirtualizedAndScrollable(
       root,
       "item-0",
-      `item-${COUNT - 1}`,
+      `item-${ITEM_COUNT - 1}`,
+      true,
     );
   });
 });

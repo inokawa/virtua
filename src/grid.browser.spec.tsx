@@ -7,11 +7,11 @@ import {
   useImperativeHandle,
   useState,
 } from "react";
+import { flushSync } from "react-dom";
 import { render } from "../spec/browser/react.js";
 import { VGrid, type VGridHandle } from "./react/index.js";
 import {
   cleanupScroll,
-  expectGridGeometry,
   expectPosition,
   getVirtualizer,
   scrollToEnd,
@@ -20,10 +20,206 @@ import {
   relativeLeft,
   relativeRight,
   relativeTop,
+  SUBPIXEL,
 } from "../spec/browser/index.js";
 import { delay, range } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
+
+type GridAxisGeometry = {
+  count: number;
+  size: (index: number) => number;
+  pinned?: { start?: number; end?: number };
+  // The section headers between the pinned tracks, sorted
+  headers?: readonly number[];
+};
+
+// The positions come from the declared sizes, independently of how the grid lays them out
+const resolveGridAxisGeometry = (
+  { count, size, pinned = {}, headers = [] }: GridAxisGeometry,
+  gap: number,
+  scroll: number,
+  client: number,
+) => {
+  const offsets = [0];
+  for (let i = 0; i < count; i++) {
+    offsets.push(offsets[i]! + size(i) + gap);
+  }
+  const total = count ? offsets[count]! - gap : 0;
+  const pinnedStart = Math.min(Math.max(pinned.start || 0, 0), count);
+  const trailStart =
+    count - Math.min(Math.max(pinned.end || 0, 0), count - pinnedStart);
+  const pinnedEnd = offsets[pinnedStart]!;
+  const place = (index: number, span: number): [number, number] => {
+    const offset = offsets[index]!;
+    let position =
+      index < pinnedStart
+        ? offset
+        : index >= trailStart
+          ? Math.min(offset - scroll, client - total + offset)
+          : offset - scroll;
+    if (headers.includes(index)) {
+      // A section header sticks under the pinned tracks until the end of its section
+      let sectionEnd = index + 1;
+      while (sectionEnd < trailStart && !headers.includes(sectionEnd)) {
+        sectionEnd++;
+      }
+      position = Math.max(
+        position,
+        Math.min(pinnedEnd, offsets[sectionEnd]! - gap - scroll - size(index)),
+      );
+    }
+    return [position, offsets[index + span]! - offset - gap];
+  };
+  // The bands of the pinned tracks are painted over the scrollport, and don't cover the gaps after them.
+  const headSize = pinnedStart ? pinnedEnd - gap : 0;
+  const tailSize = trailStart < count ? total - offsets[trailStart]! : 0;
+  const visible: number[] = [];
+  for (let i = 0; i < count; i++) {
+    const [position, length] = place(i, 1);
+    // A track hidden behind the pinned ones is not rendered. The section headers don't shrink the range, so they are not taken into account.
+    const [from, to] =
+      i < pinnedStart || i >= trailStart
+        ? [0, client]
+        : [headSize, client - tailSize];
+    if (position < to && position + length > from) {
+      visible.push(i);
+    }
+  }
+  return [place, visible] as const;
+};
+
+type GridSpanGeometry = {
+  rowIndex: number;
+  colIndex: number;
+  rowSpan?: number;
+  colSpan?: number;
+};
+
+const getGridGeometryErrors = (
+  viewport: HTMLElement,
+  container: HTMLElement,
+  rows: GridAxisGeometry,
+  cols: GridAxisGeometry,
+  gap: number,
+  spans: readonly GridSpanGeometry[],
+): string[] => {
+  const errors: string[] = [];
+  const spanned = new Map<string, readonly [string, number, number]>();
+  for (const { rowIndex, colIndex, rowSpan = 1, colSpan = 1 } of spans) {
+    const rowTo = Math.min(rowIndex + rowSpan, rows.count);
+    const colTo = Math.min(colIndex + colSpan, cols.count);
+    if (rowTo - rowIndex < 2 && colTo - colIndex < 2) {
+      continue;
+    }
+    const area = [
+      rowIndex + "/" + colIndex,
+      rowTo - rowIndex,
+      colTo - colIndex,
+    ] as const;
+    for (let r = rowIndex; r < rowTo; r++) {
+      for (let c = colIndex; c < colTo; c++) {
+        spanned.set(r + "/" + c, area);
+      }
+    }
+  }
+  const [placeRow, visibleRows] = resolveGridAxisGeometry(
+    rows,
+    gap,
+    viewport.scrollTop,
+    viewport.clientHeight,
+  );
+  const rtl = getComputedStyle(viewport).direction === "rtl";
+  const [placeCol, visibleCols] = resolveGridAxisGeometry(
+    cols,
+    gap,
+    Math.abs(viewport.scrollLeft),
+    viewport.clientWidth,
+  );
+  const rect = viewport.getBoundingClientRect();
+  const top = rect.top + viewport.clientTop;
+  const left = rect.left + viewport.clientLeft;
+  const right = rect.right - viewport.clientLeft;
+  const covered = new Set<string>();
+  let prevRow = -1;
+  for (const row of container.querySelectorAll('[role="row"]')) {
+    const rowIndex = Number(row.getAttribute("aria-rowindex")) - 1;
+    if (rowIndex <= prevRow) {
+      errors.push(`row ${rowIndex}: after row ${prevRow}`);
+    }
+    prevRow = rowIndex;
+    let prevCol = -1;
+    for (const cell of row.children) {
+      const colIndex = Number(cell.getAttribute("aria-colindex")) - 1;
+      const name = `cell ${rowIndex}/${colIndex}`;
+      if (colIndex <= prevCol) {
+        errors.push(`${name}: after column ${prevCol}`);
+      }
+      prevCol = colIndex;
+      const rowSpan = Number(cell.getAttribute("aria-rowspan") || 1);
+      const colSpan = Number(cell.getAttribute("aria-colspan") || 1);
+      const area = spanned.get(rowIndex + "/" + colIndex);
+      if (area) {
+        if (area[0] !== rowIndex + "/" + colIndex) {
+          errors.push(`${name}: under the span at ${area[0]}`);
+        } else if (area[1] !== rowSpan || area[2] !== colSpan) {
+          errors.push(
+            `${name}: spans ${rowSpan}x${colSpan}, expected ${area[1]}x${area[2]}`,
+          );
+        }
+      }
+      const [expectedTop, expectedHeight] = placeRow(rowIndex, rowSpan);
+      const [expectedLeft, expectedWidth] = placeCol(colIndex, colSpan);
+      const actual = cell.getBoundingClientRect();
+      for (const [key, value, expected] of [
+        ["top", actual.top - top, expectedTop],
+        [
+          "start",
+          rtl ? right - actual.right : actual.left - left,
+          expectedLeft,
+        ],
+        ["height", actual.height, expectedHeight],
+        ["width", actual.width, expectedWidth],
+      ] as const) {
+        if (Math.abs(value - expected) > SUBPIXEL) {
+          errors.push(`${name}: ${key} ${value}, expected ${expected}`);
+        }
+      }
+      for (let r = rowIndex; r < rowIndex + rowSpan; r++) {
+        for (let c = colIndex; c < colIndex + colSpan; c++) {
+          const key = r + "/" + c;
+          if (covered.has(key)) {
+            errors.push(`${name}: overlaps ${key}`);
+          }
+          covered.add(key);
+        }
+      }
+    }
+  }
+  for (const r of visibleRows) {
+    for (const c of visibleCols) {
+      if (!covered.has(r + "/" + c)) {
+        errors.push(`cell ${r}/${c}: not rendered`);
+      }
+    }
+  }
+  return errors;
+};
+
+const expectGridGeometry = async (
+  root: Element,
+  rows: GridAxisGeometry,
+  cols: GridAxisGeometry,
+  gap = 0,
+  spans: readonly GridSpanGeometry[] = [],
+) => {
+  const { viewport, container } = await getVirtualizer(root);
+  await expect
+    .poll(() =>
+      getGridGeometryErrors(viewport, container, rows, cols, gap, spans),
+    )
+    .toEqual([]);
+};
 
 const ROWS = 1000;
 const COLS = 500;
@@ -40,7 +236,7 @@ const Grid = ({
   handle,
   pinned,
 }: {
-  handle?: React.Ref<VGridHandle>;
+  handle?: Ref<VGridHandle>;
   pinned?: boolean;
 }) => (
   <VGrid
@@ -70,86 +266,95 @@ it("scrollable in both axes (RTL)", async () => {
   const { viewport, container } = await getVirtualizer(root);
 
   await expect.poll(() => cell(container, "0 / 0")).toBeTruthy();
-  expect(relativeTop(viewport, cell(container, "0 / 0"))).toBeCloseTo(0, 0);
-  expect(relativeRight(viewport, cell(container, "0 / 0"))).toBeCloseTo(0, 0);
+  await expectPosition(
+    () => relativeTop(viewport, cell(container, "0 / 0")),
+    0,
+  );
+  await expectPosition(
+    () => relativeRight(viewport, cell(container, "0 / 0")),
+    0,
+  );
 
   scrollToEnd(viewport, true);
-  await expect.poll(() => root.textContent).toContain("999 / 499");
+  await expect
+    .poll(() => root.textContent)
+    .toContain(`${ROWS - 1} / ${COLS - 1}`);
   expect(ref.current!.horizontalScrollOffset).toBeGreaterThan(0);
   expect(viewport.scrollLeft).toBeLessThan(0);
 });
 
 it("auto sizes follow the content of the cells", async () => {
-  const ref = createRef<VGridHandle>();
-  const Auto = () => {
+  type Handle = { setTall: (tall: boolean) => void };
+  const ref = createRef<Handle>();
+  const handle = createRef<VGridHandle>();
+  const Auto = ({ ref }: { ref: Ref<Handle> }) => {
     const [tall, setTall] = useState(false);
+    useImperativeHandle(ref, () => ({ setTall }), []);
     return (
-      <>
-        <button onClick={() => setTall(true)}>grow</button>
-        <VGrid
-          ref={ref}
-          rows={ROWS}
-          rowHeight="auto"
-          cols={COLS}
-          colWidth="auto"
-          style={{ height: VIEWPORT, width: VIEWPORT }}
-        >
-          {(rowIndex, colIndex) => (
-            <div
-              style={{
-                height:
-                  rowIndex === 1 && colIndex === 1 ? (tall ? 90 : 60) : 30,
-                width: rowIndex === 2 && colIndex === 1 ? 150 : 80,
-                whiteSpace: "nowrap",
-              }}
-            >
-              {rowIndex} / {colIndex}
-            </div>
-          )}
-        </VGrid>
-      </>
+      <VGrid
+        ref={handle}
+        rows={ROWS}
+        rowHeight="auto"
+        cols={COLS}
+        colWidth="auto"
+        style={{ height: VIEWPORT, width: VIEWPORT }}
+      >
+        {(rowIndex, colIndex) => (
+          <div
+            style={{
+              height: rowIndex === 1 && colIndex === 1 ? (tall ? 90 : 60) : 30,
+              width: rowIndex === 2 && colIndex === 1 ? 150 : 80,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {rowIndex} / {colIndex}
+          </div>
+        )}
+      </VGrid>
     );
   };
-  const root = render(<Auto />);
+  const root = render(<Auto ref={ref} />);
   const { container } = await getVirtualizer(root);
   await expect.poll(() => cell(container, "0 / 0")).toBeTruthy();
 
   // a track is sized by its largest cell, and every cell is stretched to it
-  await expect
-    .poll(() => cell(container, "1 / 0").getBoundingClientRect().height)
-    .toBeCloseTo(60, 0);
-  expect(cell(container, "1 / 2").getBoundingClientRect().height).toBeCloseTo(
+  await expectPosition(
+    () => cell(container, "1 / 0").getBoundingClientRect().height,
     60,
-    0,
   );
-  expect(cell(container, "0 / 0").getBoundingClientRect().height).toBeCloseTo(
+  await expectPosition(
+    () => cell(container, "1 / 2").getBoundingClientRect().height,
+    60,
+  );
+  await expectPosition(
+    () => cell(container, "0 / 0").getBoundingClientRect().height,
     30,
-    0,
   );
-  expect(cell(container, "0 / 1").getBoundingClientRect().width).toBeCloseTo(
+  await expectPosition(
+    () => cell(container, "0 / 1").getBoundingClientRect().width,
     150,
-    0,
   );
-  expect(cell(container, "0 / 2").getBoundingClientRect().width).toBeCloseTo(
+  await expectPosition(
+    () => cell(container, "0 / 2").getBoundingClientRect().width,
     80,
-    0,
   );
-  expect(cell(container, "2 / 0").getBoundingClientRect().top).toBeCloseTo(
+  await expectPosition(
+    () => cell(container, "2 / 0").getBoundingClientRect().top,
     cell(container, "1 / 0").getBoundingClientRect().bottom,
-    0,
   );
   await expect
-    .poll(() => [ref.current!.getRowSize(1), ref.current!.getColSize(1)])
+    .poll(() => [handle.current!.getRowSize(1), handle.current!.getColSize(1)])
     .toEqual([60, 150]);
 
-  root.querySelector("button")!.click();
-  await expect
-    .poll(() => cell(container, "1 / 2").getBoundingClientRect().height)
-    .toBeCloseTo(90, 0);
-  await expect.poll(() => ref.current!.getRowSize(1)).toBe(90);
-  expect(cell(container, "2 / 0").getBoundingClientRect().top).toBeCloseTo(
+  flushSync(() => ref.current!.setTall(true));
+  await expectPosition(
+    () => cell(container, "1 / 2").getBoundingClientRect().height,
+    90,
+  );
+  await expect.poll(() => handle.current!.getRowSize(1)).toBe(90);
+  await expectPosition(
+    () => cell(container, "2 / 0").getBoundingClientRect().top,
     cell(container, "1 / 0").getBoundingClientRect().bottom,
-    0,
   );
 });
 
@@ -223,13 +428,13 @@ it("scrollToIndex keeps the cell out of the pinned blocks", async () => {
 
   ref.current!.scrollToIndex({ rowIndex: 500, colIndex: 100 });
   await expect.poll(() => cell(container, "500 / 100")).toBeTruthy();
-  expect(relativeTop(viewport, cell(container, "500 / 100"))).toBeCloseTo(
+  await expectPosition(
+    () => relativeTop(viewport, cell(container, "500 / 100")),
     ROW_HEIGHT,
-    0,
   );
-  expect(relativeLeft(viewport, cell(container, "500 / 100"))).toBeCloseTo(
+  await expectPosition(
+    () => relativeLeft(viewport, cell(container, "500 / 100")),
     COL_WIDTH * 2,
-    0,
   );
   expect(root.textContent).not.toContain("400 / 100");
   expect(root.textContent).not.toContain("500 / 200");
@@ -241,13 +446,13 @@ it("scrollToIndex keeps the cell out of the pinned blocks", async () => {
     colAlign: "end",
   });
   await expect.poll(() => cell(container, "600 / 200")).toBeTruthy();
-  expect(relativeBottom(viewport, cell(container, "600 / 200"))).toBeCloseTo(
+  await expectPosition(
+    () => relativeBottom(viewport, cell(container, "600 / 200")),
     ROW_HEIGHT,
-    0,
   );
-  expect(relativeRight(viewport, cell(container, "600 / 200"))).toBeCloseTo(
+  await expectPosition(
+    () => relativeRight(viewport, cell(container, "600 / 200")),
     COL_WIDTH,
-    0,
   );
 
   ref.current!.scrollToIndex({
@@ -259,12 +464,14 @@ it("scrollToIndex keeps the cell out of the pinned blocks", async () => {
   await expect.poll(() => cell(container, "700 / 300")).toBeTruthy();
   const c = cell(container, "700 / 300").getBoundingClientRect();
   const v = viewport.getBoundingClientRect();
-  expect(
-    Math.abs(c.top - v.top - ROW_HEIGHT - (v.bottom - ROW_HEIGHT - c.bottom)),
-  ).toBeLessThan(1);
-  expect(
-    Math.abs(c.left - v.left - COL_WIDTH * 2 - (v.right - COL_WIDTH - c.right)),
-  ).toBeLessThan(1);
+  await expectPosition(
+    () => c.top - v.top - ROW_HEIGHT,
+    v.bottom - ROW_HEIGHT - c.bottom,
+  );
+  await expectPosition(
+    () => c.left - v.left - COL_WIDTH * 2,
+    v.right - COL_WIDTH - c.right,
+  );
 
   const before = [viewport.scrollTop, viewport.scrollLeft];
   ref.current!.scrollToIndex({
@@ -276,18 +483,20 @@ it("scrollToIndex keeps the cell out of the pinned blocks", async () => {
   await delay(100);
   expect([viewport.scrollTop, viewport.scrollLeft]).toEqual(before);
   ref.current!.scrollToIndex({ rowIndex: 696, rowAlign: "nearest" });
-  await expect
-    .poll(() => relativeTop(viewport, cell(container, "696 / 300")))
-    .toBeCloseTo(ROW_HEIGHT, 0);
+  await expectPosition(
+    () => relativeTop(viewport, cell(container, "696 / 300")),
+    ROW_HEIGHT,
+  );
 
   // the axes are aligned separately
   ref.current!.scrollToIndex({ rowIndex: 100, colIndex: 50, rowAlign: "end" });
-  await expect
-    .poll(() => relativeBottom(viewport, cell(container, "100 / 50")))
-    .toBeCloseTo(ROW_HEIGHT, 0);
-  expect(relativeLeft(viewport, cell(container, "100 / 50"))).toBeCloseTo(
+  await expectPosition(
+    () => relativeBottom(viewport, cell(container, "100 / 50")),
+    ROW_HEIGHT,
+  );
+  await expectPosition(
+    () => relativeLeft(viewport, cell(container, "100 / 50")),
     COL_WIDTH * 2,
-    0,
   );
 });
 
@@ -322,11 +531,12 @@ it("scrollToIndex aligns the cell next to the gap before the pinned blocks", asy
     rowAlign: "end",
     colAlign: "end",
   });
-  await expect
-    .poll(() => relativeBottom(viewport, cell(container, "500 / 100")))
-    .toBeCloseTo(ROW_HEIGHT + GAP, 0);
-  expect(relativeRight(viewport, cell(container, "500 / 100"))).toBeCloseTo(
-    0,
+  await expectPosition(
+    () => relativeBottom(viewport, cell(container, "500 / 100")),
+    ROW_HEIGHT + GAP,
+  );
+  await expectPosition(
+    () => relativeRight(viewport, cell(container, "500 / 100")),
     0,
   );
 });
@@ -358,12 +568,10 @@ it("scrollToIndex on mount keeps the cell out of the pinned rows measured later"
   const root = render(<Mount />);
   const { viewport, container } = await getVirtualizer(root);
 
-  await expect
-    .poll(() => {
-      const c = cell(container, "100 / 0");
-      return c && relativeTop(viewport, c);
-    })
-    .toSatisfy((top) => top != null && Math.abs(top - ROW_HEIGHT * 2) < 2);
+  await expectPosition(() => {
+    const c = cell(container, "100 / 0");
+    return c ? relativeTop(viewport, c) : NaN;
+  }, ROW_HEIGHT * 2);
 });
 
 it("scrollTo and scrollBy move only the given axes", async () => {
@@ -409,12 +617,12 @@ it("a scroll is notified only to the axes which moved", async () => {
   await expect.poll(() => cell(container, "0 / 0")).toBeTruthy();
 
   viewport.scrollTop = 400;
-  await expect.poll(() => verticals.at(-1)).toBeCloseTo(400, 0);
+  await expectPosition(() => verticals.at(-1) ?? NaN, 400);
   expect(horizontals).toEqual([]);
 
   viewport.scrollLeft = 200;
-  await expect.poll(() => horizontals.at(-1)).toBeCloseTo(200, 0);
-  expect(verticals.at(-1)).toBeCloseTo(400, 0);
+  await expectPosition(() => horizontals.at(-1) ?? NaN, 200);
+  await expectPosition(() => verticals.at(-1) ?? NaN, 400);
 });
 
 it("the scroll end is notified once after both axes have ended", async () => {
@@ -470,32 +678,74 @@ it("the scroll end is notified once after both axes have ended", async () => {
     pinnedNow = undefined;
   };
   viewport.scrollLeft = 200;
-  await expect.poll(() => scrollEnds, { timeout: 3000 }).toBe(1);
+  await expect.poll(() => scrollEnds).toBe(1);
   expect(endedAt - scrolledAt).toBeGreaterThanOrEqual(250);
 
   viewport.scrollTop = 400;
-  await expect.poll(() => scrollEnds, { timeout: 3000 }).toBe(2);
+  await expect.poll(() => scrollEnds).toBe(2);
   await delay(500);
   expect(scrollEnds).toBe(2);
 });
 
 const WIDE = 300;
 
-const Resizable = () => {
+type WidthsHandle = { setWidths: (widths: { width: number }[]) => void };
+
+const Resizable = ({ ref }: { ref: Ref<WidthsHandle> }) => {
   const [widths, setWidths] = useState(() =>
     range(COLS, (i) => ({ width: i ? COL_WIDTH : WIDE })),
   );
+  useImperativeHandle(ref, () => ({ setWidths }), []);
   return (
-    <>
-      <button
-        onClick={() =>
-          setWidths((prev) =>
-            prev.map((c, i) => (i ? c : { width: COL_WIDTH })),
-          )
-        }
-      >
-        reset
-      </button>
+    <VGrid
+      rows={ROWS}
+      rowHeight={ROW_HEIGHT}
+      cols={widths}
+      colWidth="width"
+      style={{ height: VIEWPORT, width: VIEWPORT }}
+    >
+      {(rowIndex, _, { colIndex }) => (
+        <div style={{ background: "white" }}>
+          {rowIndex} / {colIndex}
+        </div>
+      )}
+    </VGrid>
+  );
+};
+
+it("changing sizes keeps the visible position", async () => {
+  const ref = createRef<WidthsHandle>();
+  const root = render(<Resizable ref={ref} />);
+  const { viewport, container } = await getVirtualizer(root);
+  await expect.poll(() => cell(container, "0 / 0")).toBeTruthy();
+
+  // 300 + 100 * 6 = the 7th column sits exactly at the start of the viewport
+  viewport.scrollLeft = WIDE + COL_WIDTH * 6;
+  await expect.poll(() => cell(container, "1 / 7")).toBeTruthy();
+  await expectPosition(
+    () => relativeLeft(viewport, cell(container, "1 / 7")),
+    0,
+  );
+
+  // the shrunk column is before the anchor
+  flushSync(() =>
+    ref.current!.setWidths(range(COLS, () => ({ width: COL_WIDTH }))),
+  );
+
+  await expectPosition(
+    () => relativeLeft(viewport, cell(container, "1 / 7")),
+    0,
+  );
+});
+
+it("cells follow the changed sizes", async () => {
+  const ref = createRef<WidthsHandle>();
+  const Resized = ({ ref }: { ref: Ref<WidthsHandle> }) => {
+    const [widths, setWidths] = useState(() =>
+      range(COLS, () => ({ width: COL_WIDTH })),
+    );
+    useImperativeHandle(ref, () => ({ setWidths }), []);
+    return (
       <VGrid
         rows={ROWS}
         rowHeight={ROW_HEIGHT}
@@ -509,61 +759,9 @@ const Resizable = () => {
           </div>
         )}
       </VGrid>
-    </>
-  );
-};
-
-it("changing sizes keeps the visible position", async () => {
-  const root = render(<Resizable />);
-  const { viewport, container } = await getVirtualizer(root);
-  await expect.poll(() => cell(container, "0 / 0")).toBeTruthy();
-
-  // 300 + 100 * 6 = the 7th column sits exactly at the start of the viewport
-  viewport.scrollLeft = WIDE + COL_WIDTH * 6;
-  await expect.poll(() => cell(container, "1 / 7")).toBeTruthy();
-  expect(relativeLeft(viewport, cell(container, "1 / 7"))).toBeCloseTo(0, 0);
-
-  // the shrunk column is before the anchor
-  root.querySelector("button")!.click();
-
-  await expect
-    .poll(() => relativeLeft(viewport, cell(container, "1 / 7")))
-    .toBeCloseTo(0, 0);
-});
-
-it("cells follow the changed sizes", async () => {
-  const Resized = () => {
-    const [widths, setWidths] = useState(() =>
-      range(COLS, () => ({ width: COL_WIDTH })),
-    );
-    return (
-      <>
-        <button
-          onClick={() =>
-            setWidths((prev) =>
-              prev.map((c, i) => (i % 2 ? { width: WIDE } : c)),
-            )
-          }
-        >
-          resize
-        </button>
-        <VGrid
-          rows={ROWS}
-          rowHeight={ROW_HEIGHT}
-          cols={widths}
-          colWidth="width"
-          style={{ height: VIEWPORT, width: VIEWPORT }}
-        >
-          {(rowIndex, _, { colIndex }) => (
-            <div style={{ background: "white" }}>
-              {rowIndex} / {colIndex}
-            </div>
-          )}
-        </VGrid>
-      </>
     );
   };
-  const root = render(<Resized />);
+  const root = render(<Resized ref={ref} />);
   const { viewport } = await getVirtualizer(root);
   const rows = { count: ROWS, size: () => ROW_HEIGHT };
   viewport.scrollTop = ROW_HEIGHT * 10;
@@ -573,7 +771,11 @@ it("cells follow the changed sizes", async () => {
     size: () => COL_WIDTH,
   });
 
-  root.querySelector("button")!.click();
+  flushSync(() =>
+    ref.current!.setWidths(
+      range(COLS, (i) => ({ width: i % 2 ? WIDE : COL_WIDTH })),
+    ),
+  );
   await expectGridGeometry(root, rows, {
     count: COLS,
     size: (i) => (i % 2 ? WIDE : COL_WIDTH),
@@ -589,7 +791,7 @@ it("a grid has focusable rows", async () => {
   row.tabIndex = 0;
   row.focus();
   expect(document.activeElement).toBe(row);
-  expect(row.getBoundingClientRect().height).toBeCloseTo(ROW_HEIGHT, 0);
+  await expectPosition(() => row.getBoundingClientRect().height, ROW_HEIGHT);
 });
 
 it("keepMounted keeps the cell alive while it's scrolled away", async () => {
@@ -623,7 +825,9 @@ it("keepMounted keeps the cell alive while it's scrolled away", async () => {
   }
 
   scrollToEnd(viewport);
-  await expect.poll(() => root.textContent).toContain("999 / 499");
+  await expect
+    .poll(() => root.textContent)
+    .toContain(`${ROWS - 1} / ${COLS - 1}`);
   expect(root.textContent).not.toContain("5 / 1");
   expect(root.querySelector("input")).toBe(input);
   if (focusable) {
@@ -634,7 +838,7 @@ it("keepMounted keeps the cell alive while it's scrolled away", async () => {
   viewport.scrollLeft = 0;
   await expect.poll(() => cell(container, "5 / 1")).toBeTruthy();
   expect(root.querySelector("input")).toBe(input);
-  expect(relativeTop(viewport, input)).toBeCloseTo(ROW_HEIGHT * 5, 0);
+  await expectPosition(() => relativeTop(viewport, input), ROW_HEIGHT * 5);
 });
 
 it("the header cells under the spans stay covered while the other spans render their columns", async () => {
@@ -706,39 +910,38 @@ it("the section header is rendered with the cells scrolled away from it", async 
 it("cells follow the changed counts", async () => {
   const SMALL = [100, 50] as const;
   const spans = [{ rowIndex: 90, colIndex: 40, rowSpan: 5, colSpan: 5 }];
-  const Counts = () => {
+  type Handle = { setCounts: (counts: readonly number[]) => void };
+  const ref = createRef<Handle>();
+  const Counts = ({ ref }: { ref: Ref<Handle> }) => {
     const [[rowCount, colCount], setCounts] = useState<readonly number[]>([
       ROWS,
       COLS,
     ]);
+    useImperativeHandle(ref, () => ({ setCounts }), []);
     return (
-      <>
-        <button onClick={() => setCounts(SMALL)}>shrink</button>
-        <button onClick={() => setCounts([ROWS, COLS])}>grow</button>
-        <VGrid
-          rows={rowCount!}
-          rowHeight={ROW_HEIGHT}
-          cols={colCount!}
-          colWidth={COL_WIDTH}
-          headerRows={1}
-          footerRows={1}
-          headerCols={1}
-          footerCols={1}
-          spans={spans}
-          // out of the grid while it's shrunk
-          keepMounted={[{ rowIndex: 900, colIndex: 400 }]}
-          style={{ height: VIEWPORT, width: VIEWPORT }}
-        >
-          {(rowIndex, colIndex) => (
-            <div style={{ background: "white" }}>
-              {rowIndex} / {colIndex}
-            </div>
-          )}
-        </VGrid>
-      </>
+      <VGrid
+        rows={rowCount!}
+        rowHeight={ROW_HEIGHT}
+        cols={colCount!}
+        colWidth={COL_WIDTH}
+        headerRows={1}
+        footerRows={1}
+        headerCols={1}
+        footerCols={1}
+        spans={spans}
+        // out of the grid while it's shrunk
+        keepMounted={[{ rowIndex: 900, colIndex: 400 }]}
+        style={{ height: VIEWPORT, width: VIEWPORT }}
+      >
+        {(rowIndex, colIndex) => (
+          <div style={{ background: "white" }}>
+            {rowIndex} / {colIndex}
+          </div>
+        )}
+      </VGrid>
     );
   };
-  const root = render(<Counts />);
+  const root = render(<Counts ref={ref} />);
   const { viewport } = await getVirtualizer(root);
   const geometry = (rowCount: number, colCount: number) =>
     [
@@ -747,18 +950,17 @@ it("cells follow the changed counts", async () => {
       0,
       spans,
     ] as const;
-  const [shrink, grow] = root.querySelectorAll("button");
 
   scrollToEnd(viewport);
   await expectGridGeometry(root, ...geometry(ROWS, COLS));
 
-  shrink!.click();
+  flushSync(() => ref.current!.setCounts(SMALL));
   await expectGridGeometry(root, ...geometry(...SMALL));
   expect(viewport.scrollHeight).toBe(SMALL[0] * ROW_HEIGHT);
   scrollToEnd(viewport);
   await expectGridGeometry(root, ...geometry(...SMALL));
 
-  grow!.click();
+  flushSync(() => ref.current!.setCounts([ROWS, COLS]));
   await expectGridGeometry(root, ...geometry(ROWS, COLS));
   scrollToEnd(viewport);
   await expectGridGeometry(root, ...geometry(ROWS, COLS));
@@ -769,7 +971,7 @@ it("auto sizes fit the cells without the gap and the spans", async () => {
   const GAP = 4;
   const height = (rowIndex: number) => 30 + (rowIndex % 3) * 10;
   const width = (colIndex: number) => 60 + (colIndex % 2) * 40;
-  const SPANS = [
+  const spans = [
     { rowIndex: 1, colIndex: 1, rowSpan: 2, colSpan: 2 },
     { rowIndex: 4, colIndex: 0, rowSpan: 2 },
     { rowIndex: 7, colIndex: 0, colSpan: 2 },
@@ -781,11 +983,11 @@ it("auto sizes fit the cells without the gap and the spans", async () => {
       cols={COLS}
       colWidth="auto"
       gap={GAP}
-      spans={SPANS}
+      spans={spans}
       style={{ height: VIEWPORT, width: VIEWPORT }}
     >
       {(rowIndex, colIndex) => {
-        const span = SPANS.find(
+        const span = spans.find(
           (s) => s.rowIndex === rowIndex && s.colIndex === colIndex,
         );
         // the spanning cells are larger than their tracks on the spanned axes
@@ -808,32 +1010,32 @@ it("auto sizes fit the cells without the gap and the spans", async () => {
     { count: ROWS, size: height },
     { count: COLS, size: width },
     GAP,
-    SPANS,
+    spans,
   );
 });
 it("changing a uniform size keeps the visible position", async () => {
-  const Uniform = () => {
+  type Handle = { setRowHeight: (rowHeight: number) => void };
+  const ref = createRef<Handle>();
+  const Uniform = ({ ref }: { ref: Ref<Handle> }) => {
     const [rowHeight, setRowHeight] = useState(ROW_HEIGHT);
+    useImperativeHandle(ref, () => ({ setRowHeight }), []);
     return (
-      <>
-        <button onClick={() => setRowHeight(ROW_HEIGHT * 2)}>grow</button>
-        <VGrid
-          rows={ROWS}
-          rowHeight={rowHeight}
-          cols={COLS}
-          colWidth={COL_WIDTH}
-          style={{ height: VIEWPORT, width: VIEWPORT }}
-        >
-          {(rowIndex, colIndex) => (
-            <div style={{ background: "white" }}>
-              {rowIndex} / {colIndex}
-            </div>
-          )}
-        </VGrid>
-      </>
+      <VGrid
+        rows={ROWS}
+        rowHeight={rowHeight}
+        cols={COLS}
+        colWidth={COL_WIDTH}
+        style={{ height: VIEWPORT, width: VIEWPORT }}
+      >
+        {(rowIndex, colIndex) => (
+          <div style={{ background: "white" }}>
+            {rowIndex} / {colIndex}
+          </div>
+        )}
+      </VGrid>
     );
   };
-  const root = render(<Uniform />);
+  const root = render(<Uniform ref={ref} />);
   const { viewport, container } = await getVirtualizer(root);
   viewport.scrollTop = ROW_HEIGHT * 100;
   await expect.poll(() => cell(container, "100 / 0")).toBeTruthy();
@@ -841,13 +1043,16 @@ it("changing a uniform size keeps the visible position", async () => {
   const anchor = Math.floor(viewport.scrollTop / ROW_HEIGHT) + " / 0";
   const top = relativeTop(viewport, cell(container, anchor));
 
-  root.querySelector("button")!.click();
+  flushSync(() => ref.current!.setRowHeight(ROW_HEIGHT * 2));
   await expectGridGeometry(
     root,
     { count: ROWS, size: () => ROW_HEIGHT * 2 },
     { count: COLS, size: () => COL_WIDTH },
   );
-  expect(relativeTop(viewport, cell(container, anchor))).toBeCloseTo(top, 0);
+  await expectPosition(
+    () => relativeTop(viewport, cell(container, anchor)),
+    top,
+  );
 });
 
 it("auto tracks rendered only with the spanning cells keep their sizes", async () => {
@@ -926,25 +1131,25 @@ it("auto columns share the space left in the viewport", async () => {
     cell(container, text).getBoundingClientRect().width;
 
   // 60 + 80 + 80 + 100 = 320, so the auto columns share the rest of 600
-  await expect.poll(() => width("1 / 1")).toBeCloseTo(220, 0);
-  expect(width("1 / 2")).toBeCloseTo(220, 0);
-  expect(width("1 / 0")).toBeCloseTo(60, 0);
+  await expectPosition(() => width("1 / 1"), 220);
+  await expectPosition(() => width("1 / 2"), 220);
+  await expectPosition(() => width("1 / 0"), 60);
   expect(viewport.scrollWidth).toBe(600);
 
   // the columns overflow the narrowed viewport at their content widths
   ref.current!.setViewport(300);
-  await expect.poll(() => width("1 / 1")).toBeCloseTo(80, 0);
+  await expectPosition(() => width("1 / 1"), 80);
   expect(viewport.scrollWidth).toBe(320);
 
   ref.current!.setViewport(600);
-  await expect.poll(() => width("1 / 1")).toBeCloseTo(220, 0);
+  await expectPosition(() => width("1 / 1"), 220);
 
   // the grown content overflows, and the shrunk content shares the space again
   ref.current!.setContent(300);
-  await expect.poll(() => width("1 / 1")).toBeCloseTo(300, 0);
+  await expectPosition(() => width("1 / 1"), 300);
   expect(viewport.scrollWidth).toBe(760);
   ref.current!.setContent(80);
-  await expect.poll(() => width("1 / 1")).toBeCloseTo(220, 0);
+  await expectPosition(() => width("1 / 1"), 220);
   expect(viewport.scrollWidth).toBe(600);
 });
 
@@ -962,9 +1167,10 @@ it("a row spanning the auto columns fills the viewport without the cells measuri
     </VGrid>,
   );
   const { viewport, container } = await getVirtualizer(root);
-  await expect
-    .poll(() => cell(container, "empty").getBoundingClientRect().width)
-    .toBeCloseTo(viewport.clientWidth, 0);
+  await expectPosition(
+    () => cell(container, "empty").getBoundingClientRect().width,
+    viewport.clientWidth,
+  );
 });
 
 for (const gap of [0, 8]) {
@@ -1030,7 +1236,7 @@ for (const gap of [0, 8]) {
     await expectGridGeometry(root, rows, cols, gap, spans);
     // the header of the empty section before it is scrolled away, which the geometry checks
     const header = cell(container, "6 / 1");
-    expect(relativeTop(viewport, header)).toBeCloseTo(stuckTop, 0);
+    await expectPosition(() => relativeTop(viewport, header), stuckTop);
     await expect
       .poll(() => getComputedStyle(container).pointerEvents)
       .toBe("auto");
@@ -1229,12 +1435,7 @@ describe("scrollToIndex with sections", () => {
     (index < (pinned.header || 0) || index >= count - (pinned.footer || 0));
   // The spans must not cross the pinned tracks or the sections
   const spansOf = (rows: Pinned, cols: Pinned) => {
-    const spans: {
-      rowIndex: number;
-      colIndex: number;
-      rowSpan?: number;
-      colSpan?: number;
-    }[] = [
+    const spans: GridSpanGeometry[] = [
       // a label spanning the rows in the first column, and a merged area in the body
       { rowIndex: 4, colIndex: 0, rowSpan: 4 },
       { rowIndex: 10, colIndex: 3, rowSpan: 2, colSpan: 2 },
@@ -1264,7 +1465,7 @@ describe("scrollToIndex with sections", () => {
     return spans;
   };
   // the cells with a control, in each of the pinned and the other regions
-  const CONTROLS = [
+  const controls = [
     [1, 2],
     [8, 2],
     [9, 0],
@@ -1303,7 +1504,7 @@ describe("scrollToIndex with sections", () => {
                   const span = spans.find(
                     (s) => s.rowIndex === rowIndex && s.colIndex === colIndex,
                   );
-                  const control = CONTROLS.some(
+                  const control = controls.some(
                     ([r, c]) => r === rowIndex && c === colIndex,
                   );
                   return (
@@ -1500,12 +1701,8 @@ describe("scrollToIndex with sections", () => {
                 button.focus();
                 await delay(50);
                 expect(document.activeElement).toBe(button);
-                expect(
-                  Math.abs(viewport.scrollTop - scrollTop),
-                ).toBeLessThanOrEqual(1);
-                expect(
-                  Math.abs(viewport.scrollLeft - scrollLeft),
-                ).toBeLessThanOrEqual(1);
+                await expectPosition(() => viewport.scrollTop, scrollTop);
+                await expectPosition(() => viewport.scrollLeft, scrollLeft);
                 // Firefox and WebKit scroll a focused element back into view when the DOM around it changes
                 button.blur();
               }
