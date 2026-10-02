@@ -160,7 +160,7 @@
   },
   "meta": {
     "docgen": "react-component-meta",
-    "durationMs": 100,
+    "durationMs": 85,
     "engine": "solid-component-meta"
   }
 }
