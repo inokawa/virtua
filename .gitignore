@@ -4,8 +4,5 @@
 lib
 node_modules
 /storybook-static/
-/test-results/
-/playwright-report/
-/playwright/.cache/
 .eslintcache
 .angular-dts
