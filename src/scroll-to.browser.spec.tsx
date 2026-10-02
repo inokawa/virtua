@@ -10,8 +10,6 @@ import { createRef, type Ref, useEffect, useRef } from "react";
 import { flushSync } from "react-dom";
 import { render, rerender } from "../spec/browser/react.js";
 import {
-  VList,
-  type VListHandle,
   Virtualizer,
   type VirtualizerHandle,
   WindowVirtualizer,
@@ -683,15 +681,17 @@ describe("scrollToIndex", () => {
 describe("scrollTo", () => {
   it("down and up", async () => {
     const HEIGHTS = [20, 40, 80, 77];
-    const ref = createRef<VListHandle>();
+    const ref = createRef<VirtualizerHandle>();
     const root = render(
-      <VList ref={ref} data={range(1000)} style={{ height: 400 }}>
-        {(i) => (
-          <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
-            {i}
-          </div>
-        )}
-      </VList>,
+      <div style={{ height: 400, overflowY: "auto" }}>
+        <Virtualizer ref={ref} data={range(1000)}>
+          {(i) => (
+            <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
+              {i}
+            </div>
+          )}
+        </Virtualizer>
+      </div>,
     );
     const { viewport, container } = await getVirtualizer(root);
 
@@ -711,15 +711,17 @@ describe("scrollTo", () => {
 describe("scrollBy", () => {
   it("down and up", async () => {
     const HEIGHTS = [20, 40, 80, 77];
-    const ref = createRef<VListHandle>();
+    const ref = createRef<VirtualizerHandle>();
     const root = render(
-      <VList ref={ref} data={range(1000)} style={{ height: 400 }}>
-        {(i) => (
-          <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
-            {i}
-          </div>
-        )}
-      </VList>,
+      <div style={{ height: 400, overflowY: "auto" }}>
+        <Virtualizer ref={ref} data={range(1000)}>
+          {(i) => (
+            <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
+              {i}
+            </div>
+          )}
+        </Virtualizer>
+      </div>,
     );
     const { viewport, container } = await getVirtualizer(root);
 

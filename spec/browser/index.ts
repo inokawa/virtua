@@ -370,8 +370,7 @@ const getGridGeometryErrors = (
         ["height", actual.height, expectedHeight],
         ["width", actual.width, expectedWidth],
       ] as const) {
-        // Firefox rounds positions to device pixels
-        if (Math.abs(value - expected) > 1) {
+        if (Math.abs(value - expected) > SUBPIXEL) {
           errors.push(`${name}: ${key} ${value}, expected ${expected}`);
         }
       }
