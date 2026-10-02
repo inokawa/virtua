@@ -103,8 +103,6 @@ export const Default: StoryObj = {
         horizontal
         style={{
           height: "100vh",
-          // only scrolls horizontally, even if the horizontal scrollbar makes the columns overflow vertically
-          overflowY: "hidden",
           background: "#fff",
           fontFamily: "system-ui, sans-serif",
           fontSize: 14,

@@ -96,7 +96,7 @@ export const VList = /*#__PURE__*/ defineComponent({
       return (
         <div
           style={{
-            display: horizontal ? "inline-block" : "block",
+            display: "block",
             [horizontal ? "overflowX" : "overflowY"]: "auto",
             contain: "strict",
             width: "100%",

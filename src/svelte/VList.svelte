@@ -58,7 +58,7 @@
     )) satisfies VListHandle["scrollBy"] as VListHandle["scrollBy"];
 
   const viewportStyle = styleToString({
-    display: horizontal ? "inline-block" : "block",
+    display: "block",
     [horizontal ? "overflow-x" : "overflow-y"]: "auto",
     contain: "strict",
     width: "100%",
