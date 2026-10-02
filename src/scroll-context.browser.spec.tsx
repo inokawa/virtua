@@ -69,6 +69,8 @@ describe("startMargin", () => {
 
 describe("nested scroll containers", () => {
   it("keeps the state of each axis independent", async () => {
+    const ROW_SIZE = 80;
+    const COLUMN_OFFSET = 2000;
     const root = render(
       <div
         style={{
@@ -89,7 +91,7 @@ describe("nested scroll containers", () => {
             >
               <Virtualizer data={range(100)}>
                 {(r) => (
-                  <div key={r} style={{ height: 80 }}>
+                  <div key={r} style={{ height: ROW_SIZE }}>
                     {c}-{r}
                   </div>
                 )}
@@ -109,9 +111,11 @@ describe("nested scroll containers", () => {
     await expect.poll(() => getItem(column.container, "0-0")).toBeDefined();
 
     // scroll the first column down
-    column.viewport.scrollTop = 2000;
-    await expect.poll(() => getItem(column.container, "0-25")).toBeDefined();
-    expect(getItem(column.container, "0-0")).toBeUndefined();
+    column.viewport.scrollTop = COLUMN_OFFSET;
+    await expect
+      .poll(() => getItem(column.container, `0-${COLUMN_OFFSET / ROW_SIZE}`))
+      .toBeDefined();
+    await expect.poll(() => getItem(column.container, "0-0")).toBeUndefined();
     const columnOffset = column.viewport.scrollTop;
 
     // check if the deck is not scrolled and still renders the same columns
@@ -128,7 +132,9 @@ describe("nested scroll containers", () => {
 
     // check if the first column is not scrolled and still renders the same rows
     expect(column.viewport.scrollTop).toBe(columnOffset);
-    expect(getItem(column.container, "0-25")).toBeDefined();
-    expect(getItem(column.container, "0-0")).toBeUndefined();
+    expect(
+      getItem(column.container, `0-${COLUMN_OFFSET / ROW_SIZE}`),
+    ).toBeDefined();
+    await expect.poll(() => getItem(column.container, "0-0")).toBeUndefined();
   });
 });

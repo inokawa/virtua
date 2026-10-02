@@ -37,28 +37,36 @@ describe("children change", () => {
   );
 
   it("recovering from 0", async () => {
-    const root = render(<List count={4} />);
+    const ITEM_COUNT = 4;
+    const root = render(<List count={ITEM_COUNT} />);
     const { container } = await getVirtualizer(root);
-    await expect.poll(() => getItem(container, "item-3")).toBeDefined();
+    await expect
+      .poll(() => getItem(container, `item-${ITEM_COUNT - 1}`))
+      .toBeDefined();
 
     // delete all
     rerender(root, <List count={0} />);
     await expect.poll(() => container.childElementCount).toBe(0);
 
     // add
-    rerender(root, <List count={4} />);
+    rerender(root, <List count={ITEM_COUNT} />);
 
     // check if an error didn't occur
-    await expect.poll(() => getItem(container, "item-3")).toBeDefined();
+    await expect
+      .poll(() => getItem(container, `item-${ITEM_COUNT - 1}`))
+      .toBeDefined();
   });
 
   it("recovering from 0 with height: auto style", async () => {
+    const ITEM_COUNT = 4;
     // set height: auto
     // The viewport shrinks to 0 along with its items because its height is not fixed
     const style: CSSProperties = { height: "auto", contain: "content" };
-    const root = render(<List count={4} style={style} />);
+    const root = render(<List count={ITEM_COUNT} style={style} />);
     const { viewport, container } = await getVirtualizer(root);
-    await expect.poll(() => getItem(container, "item-3")).toBeDefined();
+    await expect
+      .poll(() => getItem(container, `item-${ITEM_COUNT - 1}`))
+      .toBeDefined();
 
     // delete all
     rerender(root, <List count={0} style={style} />);
@@ -66,40 +74,48 @@ describe("children change", () => {
     await expect.poll(() => viewport.clientHeight).toBe(0);
 
     // add
-    rerender(root, <List count={4} style={style} />);
+    rerender(root, <List count={ITEM_COUNT} style={style} />);
 
     // check if an error didn't occur
-    await expect.poll(() => getItem(container, "item-3")).toBeDefined();
+    await expect
+      .poll(() => getItem(container, `item-${ITEM_COUNT - 1}`))
+      .toBeDefined();
   });
 
   it("recovering when changed a lot after scrolling", async () => {
-    const handle = createRef<VirtualizerHandle>();
-    const root = render(<List count={4} handle={handle} />);
+    const FEW_ITEM_COUNT = 4;
+    const MANY_ITEM_COUNT = 1004;
+    const ref = createRef<VirtualizerHandle>();
+    const root = render(<List count={FEW_ITEM_COUNT} handle={ref} />);
     const { viewport, container } = await getVirtualizer(root);
-    await expect.poll(() => getItem(container, "item-3")).toBeDefined();
+    await expect
+      .poll(() => getItem(container, `item-${FEW_ITEM_COUNT - 1}`))
+      .toBeDefined();
 
     // add many
-    rerender(root, <List count={1004} handle={handle} />);
+    rerender(root, <List count={MANY_ITEM_COUNT} handle={ref} />);
 
     // scroll a lot
     await expect
       .poll(() => {
         scrollToEnd(viewport);
-        return getItem(container, "item-1003");
+        return getItem(container, `item-${MANY_ITEM_COUNT - 1}`);
       })
       .toBeDefined();
     await expect.poll(() => getItem(container, "item-0")).toBeUndefined();
 
     // delete many
-    rerender(root, <List count={4} handle={handle} />);
-    await expect.poll(() => getItem(container, "item-3")).toBeDefined();
+    rerender(root, <List count={FEW_ITEM_COUNT} handle={ref} />);
+    await expect
+      .poll(() => getItem(container, `item-${FEW_ITEM_COUNT - 1}`))
+      .toBeDefined();
     // The shrink clamps the scroll offset, which the store has to learn from the scroll event before adding many again
-    await expect.poll(() => handle.current!.scrollOffset).toBe(0);
+    await expect.poll(() => ref.current!.scrollOffset).toBe(0);
 
     // add many
-    rerender(root, <List count={1004} handle={handle} />);
+    rerender(root, <List count={MANY_ITEM_COUNT} handle={ref} />);
 
     // check if an error didn't occur
-    await expectVirtualized(root, "item-0", "item-1003");
+    await expectVirtualized(root, "item-0", `item-${MANY_ITEM_COUNT - 1}`);
   });
 });

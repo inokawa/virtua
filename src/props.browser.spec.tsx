@@ -59,9 +59,9 @@ describe("cache", () => {
   };
 
   it("restores the scroll position after remount", async () => {
-    const handle = createRef<VirtualizerHandle>();
+    const ref = createRef<VirtualizerHandle>();
     const saved = createRef<[number, CacheSnapshot]>();
-    const list = <Restorable handle={handle} saved={saved} />;
+    const list = <Restorable handle={ref} saved={saved} />;
 
     const root = render(list);
     const mounted = await getVirtualizer(root);
@@ -81,7 +81,7 @@ describe("cache", () => {
       .toBeGreaterThan(200);
     const offset = mounted.viewport.scrollTop;
     // The store learns the offset from scroll events, so it can lag the element after a jump compensation
-    await expect.poll(() => handle.current!.scrollOffset).toBe(offset);
+    await expect.poll(() => ref.current!.scrollOffset).toBe(offset);
     const item = findFirstVisibleItem(mounted.container, mounted.viewport)!;
     const text = item.textContent!;
     const top = relativeTop(mounted.viewport, item);
@@ -135,20 +135,20 @@ describe("keepMounted", () => {
         </div>
       );
     };
-    const handle = createRef<VirtualizerHandle>();
+    const ref = createRef<VirtualizerHandle>();
     const Component = () => {
       const [activeIndex, setActiveIndex] = useState(0);
       return (
         <StickyIndexContext value={activeIndex}>
           <div style={{ height: 400, overflowY: "auto" }}>
             <Virtualizer
-              ref={handle}
+              ref={ref}
               data={range(1000)}
               item={StickyItem}
               keepMounted={[activeIndex]}
               onScroll={() => {
-                const start = handle.current!.findItemIndex(
-                  handle.current!.scrollOffset,
+                const start = ref.current!.findItemIndex(
+                  ref.current!.scrollOffset,
                 );
                 setActiveIndex(
                   [...stickyIndexes].reverse().find((index) => start >= index)!,
