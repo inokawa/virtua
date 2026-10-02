@@ -41,6 +41,7 @@ export const microtask: (fn: () => void) => void =
   typeof queueMicrotask === "function"
     ? queueMicrotask
     : (fn) => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         Promise.resolve().then(fn);
       };
 

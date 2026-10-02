@@ -38,8 +38,10 @@ export default [
     },
     plugins: {
       import: pluginImport,
+      "@typescript-eslint": tseslint.plugin,
     },
     rules: {
+      "@typescript-eslint/no-floating-promises": "error",
       "import/no-restricted-paths": [
         "error",
         {
