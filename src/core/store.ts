@@ -145,6 +145,7 @@ export const createVirtualStore = <T = never>(
     }
     if (_frozenRange && _scrollMode === SCROLL_BY_MANUAL_SCROLL) {
       // https://github.com/inokawa/virtua/issues/380
+      // https://github.com/inokawa/virtua/issues/590
       // https://github.com/inokawa/virtua/issues/758
       return index < _frozenRange[0];
     }

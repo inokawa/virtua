@@ -5,38 +5,9 @@ import {
   expectInRange,
   scrollWithTouch,
   getScrollable,
-  listenScrollEnd,
   relativeTop,
   findFirstVisibleItem,
 } from "./utils";
-
-const SMOOTH_SCROLL_MS = 100;
-
-test.describe("SSR and hydration", () => {
-  test("check if smooth scrolling works after hydration", async ({ page }) => {
-    await page.goto(storyUrl("basics-vlist--ssr"));
-
-    // turn scroll to index with smooth on
-    await page.getByRole("radio", { name: "smooth scroll on hydrate" }).click();
-
-    const component = await getScrollable(page);
-
-    const scrollListener = listenScrollEnd(component);
-
-    // hydrate
-    await page.getByRole("button", { name: "hydrate" }).click();
-
-    await page.waitForTimeout(100);
-    const elapsed = await scrollListener;
-
-    // Check if this is smooth scrolling
-    expect(elapsed).toBeGreaterThan(SMOOTH_SCROLL_MS);
-
-    expect(await (await findFirstVisibleItem(component)).textContent()).toEqual(
-      "100",
-    );
-  });
-});
 
 test.describe("emulated iOS WebKit", () => {
   const getWindowSize = (page: Page) => {

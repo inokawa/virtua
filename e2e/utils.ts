@@ -172,28 +172,3 @@ export const scrollWithTouch = (
     target,
   );
 };
-
-export const listenScrollEnd = (
-  component: ScrollableLocator,
-  timeout = 2000,
-): Promise<number> => {
-  return component.evaluate((c, t) => {
-    const start = performance.now();
-    let timer: null | ReturnType<typeof setTimeout> = null;
-    let elapsed = 0;
-
-    return new Promise<number>((resolve) => {
-      const cb = () => {
-        elapsed = performance.now() - start;
-        if (timer !== null) {
-          clearTimeout(timer);
-        }
-        timer = setTimeout(() => {
-          c.removeEventListener("scrollend", cb);
-          resolve(elapsed);
-        }, t);
-      };
-      c.addEventListener("scrollend", cb);
-    });
-  }, timeout);
-};

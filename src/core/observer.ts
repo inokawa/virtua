@@ -285,11 +285,8 @@ export const createScrollObserver = (
 
       if (smooth) {
         store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
-        // https://github.com/inokawa/virtua/issues/590
-        microtask(start);
-      } else {
-        start();
       }
+      start();
     },
   };
 };

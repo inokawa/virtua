@@ -7,6 +7,7 @@ import {
   type TestContext,
 } from "vitest";
 import { createRef, type Ref, useEffect, useRef } from "react";
+import { flushSync } from "react-dom";
 import { render, rerender } from "../spec/browser/react.js";
 import {
   VList,
@@ -27,6 +28,7 @@ import {
   recordScroll,
   relativeBottom,
   relativeTop,
+  SMOOTH_TIMEOUT,
 } from "../spec/browser/index.js";
 import { range } from "../spec/utils.js";
 
@@ -35,8 +37,6 @@ afterEach(cleanupScroll);
 describe("scrollToIndex", () => {
   const ITEM_COUNT = 1000;
   const HEIGHTS = [20, 40, 80, 77];
-  // A long smooth scroll animates for longer than the default poll timeout
-  const SMOOTH_TIMEOUT = 10000;
 
   const expectItemTop = (
     viewport: HTMLElement,
@@ -359,6 +359,42 @@ describe("scrollToIndex", () => {
             SMOOTH_TIMEOUT,
           );
         }
+      });
+
+      it("on mount with ssrCount", async () => {
+        const SSR_COUNT = 30;
+        const TARGET = 100;
+        // ssrCount and a synchronous mount start like hydration in an event handler, where the effect scrolls before the items rendered for SSR are measured
+        const ScrollOnMount = () => {
+          const ref = useRef<VirtualizerHandle>(null);
+          useEffect(() => {
+            ref.current!.scrollToIndex(TARGET, { smooth: true });
+          }, []);
+          return (
+            <div style={{ height: 400, overflowY: "auto" }}>
+              <Virtualizer
+                ref={ref}
+                data={range(ITEM_COUNT)}
+                ssrCount={SSR_COUNT}
+              >
+                {(i) => (
+                  <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
+                    {i}
+                  </div>
+                )}
+              </Virtualizer>
+            </div>
+          );
+        };
+        const root = flushSync(() => render(<ScrollOnMount />));
+        const { viewport, container } = await getVirtualizer(root);
+        const scrolled = recordScroll(viewport);
+
+        // Check if scrolled precisely
+        await expectItemTop(viewport, container, TARGET, 0, SMOOTH_TIMEOUT);
+
+        // Check if this is smooth scrolling
+        expectSmooth(scrolled);
       });
     });
   });
