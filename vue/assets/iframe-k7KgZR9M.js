@@ -1,0 +1,1 @@
+import{t as e}from"./iframe-BzAfaz-9.js";e();
