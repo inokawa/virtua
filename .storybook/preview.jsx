@@ -11,7 +11,7 @@ export default {
       storySort: {
         order: [
           "basics",
-          ["VList", "Virtualizer", "WindowVirtualizer", "VGrid"],
+          ["VList", "Virtualizer", "WindowVirtualizer", "VGrid", "VMasonry"],
           "advanced",
           "comparisons",
         ],

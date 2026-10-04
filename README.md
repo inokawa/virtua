@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/npm/v/virtua) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/virtua) ![npm](https://img.shields.io/npm/dw/virtua) [![Best of JS](https://img.shields.io/endpoint?url=https://bestofjs-serverless.now.sh/api/project-badge?fullName=inokawa%2Fvirtua%26since=daily)](https://bestofjs.org/projects/virtua) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/inokawa/virtua) [![check](https://github.com/inokawa/virtua/actions/workflows/check.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/check.yml) [![demo](https://github.com/inokawa/virtua/actions/workflows/demo.yml/badge.svg)](https://github.com/inokawa/virtua/actions/workflows/demo.yml)
 
-> A zero-config, fast and small virtual list and grid component for [React](https://github.com/facebook/react), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/), [Svelte](https://svelte.dev/) and [Angular](https://angular.dev/).
+> A zero-config, fast and small virtual list, grid and masonry component for [React](https://github.com/facebook/react), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/), [Svelte](https://svelte.dev/) and [Angular](https://angular.dev/).
 
 ![list example](./example.gif) ![grid example](./example2.gif)
 
@@ -15,7 +15,7 @@ This project is a challenge to rethink virtualization. The goals are...
 - **Zero-config virtualization:** This library is designed to give the best performance without configuration. It also handles common hard things in the real world (dynamic size measurement, scroll position adjustment while reverse scrolling and imperative scrolling, iOS support, etc).
 - **Fast:** Natural virtual scrolling needs optimization in many aspects (eliminate frame drops by reducing CPU usage and GC, reduce [synchronous layout recalculation](https://gist.github.com/paulirish/5d52fb081b3570c81e3a), reduce visual jumps on repaint, optimize with CSS, optimize for JIT, optimize for frameworks, etc). We are trying to combine the best of them.
 - **Small:** Its bundle size should be small as much as possible to be friendly with modern web development. Currently components start from ~3kB gzipped and are tree-shakeable.
-- **Flexible:** Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, table, RTL, mobile, infinite scrolling, scroll restoration, DnD, keyboard navigation, sticky and more. See [live demo](#demo).
+- **Flexible:** Aiming to support many usecases - fixed size, dynamic size, horizontal scrolling, reverse scrolling, table, masonry, RTL, mobile, infinite scrolling, scroll restoration, DnD, keyboard navigation, sticky and more. See [live demo](#demo).
 - **Framework agnostic:** [React](https://react.dev/), [Vue](https://vuejs.org/), [Solid](https://www.solidjs.com/), [Svelte](https://svelte.dev/) and [Angular](https://angular.dev/) are supported. We could support other frameworks in the future.
 
 ## Demo
@@ -33,7 +33,7 @@ If you want to support legacy browsers, you need polyfills.
 - [ResizeObserver](https://caniuse.com/?search=resizeobserver) is always required (e.g. [@juggle/resize-observer](https://github.com/juggle/resize-observer#switching-between-native-and-polyfilled-versions)).
 - [Scroll methods on elements](https://caniuse.com/element-scroll-methods) are always required (e.g. [element-scroll-polyfill](https://github.com/idmadj/element-scroll-polyfill)).
 - [CSS scroll-behavior](https://caniuse.com/?search=scroll-behavior) is required only if you call `scrollToIndex` with `smooth: true` (e.g. [scroll-behavior-polyfill](https://github.com/wessberg/scroll-behavior-polyfill)).
-- [CSS inset-inline-start](https://caniuse.com/mdn-css_properties_inset-inline-start) is required only if you set `horizontal: true`. It cannot be polyfilled so use `virtua@<=0.50` instead.
+- [CSS inset-inline-start](https://caniuse.com/mdn-css_properties_inset-inline-start) is required only if you set `horizontal: true` or use `VMasonry`. It cannot be polyfilled so use `virtua@<=0.50` instead.
 - [CSS subgrid](https://caniuse.com/css-subgrid) is required for VGrid.
 
 ## Getting started
@@ -375,6 +375,40 @@ export const App = () => {
 };
 ```
 
+### Masonry
+
+For items with different heights laid out in columns such as a gallery, use `VMasonry`.
+
+```tsx
+import { VMasonry } from "virtua";
+
+const sizes = [100, 180, 140, 220];
+const colors = ["skyblue", "pink", "khaki", "lightgreen", "plum"];
+const data = Array.from({ length: 1000 }).map((_, i) => ({
+  id: i,
+  size: sizes[i % 4],
+  color: colors[i % 5],
+}));
+
+export const App = () => {
+  return (
+    <VMasonry data={data} lanes={3} gap={8} style={{ height: 800 }}>
+      {(item) => (
+        <div
+          key={item.id}
+          style={{
+            height: item.size,
+            background: item.color,
+          }}
+        >
+          {item.id}
+        </div>
+      )}
+    </VMasonry>
+  );
+};
+```
+
 ### More examples
 
 See [demo](https://inokawa.github.io/virtua/) and [its source code](./stories).
@@ -474,7 +508,7 @@ This package uses [exports of package.json](https://nodejs.org/api/packages.html
 | Grid (Virtualization for two dimensions)                                                                                                                       | ✅ (VGrid)                                                                                                       | ❌                                                                                                                               | ✅ ([Grid](https://react-window.vercel.app/grid/grid))                                                                       | 🟠 (needs customization)                                                                                                                           | ✅ ([Grid](https://github.com/bvaughn/react-virtualized/blob/master/docs/Grid.md))                                                                                     |
 | Tabular data (Columns with headers)                                                                                                                            | ✅ (VGrid)                                                                                                       | ✅ (TableVirtuoso)                                                                                                               | ✅ ([Supported](https://react-window.vercel.app/list/tabular-data))                                                          | 🟠 (needs customization)                                                                                                                           | ✅ ([Table](https://github.com/bvaughn/react-virtualized/blob/master/docs/Table.md))                                                                                   |
 | HTML table element                                                                                                                                             | 🟠 (needs customization)                                                                                         | ✅ (TableVirtuoso)                                                                                                               | ❌                                                                                                                           | 🟠 (needs customization)                                                                                                                           | ❌                                                                                                                                                                     |
-| Masonry                                                                                                                                                        | ❌                                                                                                               | ✅ (VirtuosoMasonry)                                                                                                             | ❌                                                                                                                           | 🟠 (needs customization)                                                                                                                           | ✅ ([Masonry](https://github.com/bvaughn/react-virtualized/blob/master/docs/Masonry.md))                                                                               |
+| Masonry                                                                                                                                                        | ✅ (VMasonry)                                                                                                    | ✅ (VirtuosoMasonry)                                                                                                             | ❌                                                                                                                           | 🟠 (lanes)                                                                                                                                         | ✅ ([Masonry](https://github.com/bvaughn/react-virtualized/blob/master/docs/Masonry.md))                                                                               |
 | Window scroller                                                                                                                                                | ✅ (WindowVirtualizer)                                                                                           | ✅                                                                                                                               | ❌                                                                                                                           | ✅ (useWindowVirtualizer)                                                                                                                          | ✅ ([WindowScroller](https://github.com/bvaughn/react-virtualized/blob/master/docs/WindowScroller.md))                                                                 |
 | Dynamic list size                                                                                                                                              | ✅                                                                                                               | ✅                                                                                                                               | ✅                                                                                                                           | ✅                                                                                                                                                 | 🟠 (needs [AutoSizer](https://github.com/bvaughn/react-virtualized/blob/master/docs/AutoSizer.md))                                                                     |
 | Dynamic item size                                                                                                                                              | ✅                                                                                                               | ✅                                                                                                                               | ✅ (useDynamicRowHeight)                                                                                                     | ✅ (measureElement)                                                                                                                                | 🟠 (needs [CellMeasurer](https://github.com/bvaughn/react-virtualized/blob/master/docs/CellMeasurer.md) and has wrong destination when scrolling to item imperatively) |

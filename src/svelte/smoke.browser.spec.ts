@@ -10,6 +10,7 @@ import {
 } from "../../spec/browser/index.js";
 import VGrid from "./VGrid.svelte";
 import { range } from "../../spec/utils.js";
+import VMasonry from "./VMasonry.svelte";
 
 afterEach(cleanupScroll);
 
@@ -95,4 +96,14 @@ it("VGrid", async () => {
     children: cellSnippet,
   });
   await expectVirtualizedAndScrollable(root, "row-0/col-0", "row-999/col-999");
+});
+
+it("VMasonry", async () => {
+  const root = render(VMasonry, {
+    lanes: 2,
+    data: range(1000),
+    style: "height: 400px;",
+    children: itemSnippet,
+  });
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });

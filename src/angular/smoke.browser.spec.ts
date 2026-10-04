@@ -10,6 +10,7 @@ import {
 } from "../../spec/browser/index.js";
 import { VGrid } from "./VGrid.js";
 import { range } from "../../spec/utils.js";
+import { VMasonry } from "./VMasonry.js";
 
 afterEach(cleanupScroll);
 
@@ -132,6 +133,21 @@ class WindowVirtualizerHorizontalHost {
 })
 class VGridHost {}
 
+@Component({
+  selector: "smoke-vmasonry",
+  imports: [VMasonry],
+  template: `
+    <virtua-vmasonry [lanes]="2" [data]="data" style="height: 400px">
+      <ng-template let-item
+        ><div>item-{{ item }}</div></ng-template
+      >
+    </virtua-vmasonry>
+  `,
+})
+class VMasonryHost {
+  readonly data = range(1000);
+}
+
 it("VList", async () => {
   const root = render(VListHost);
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
@@ -165,4 +181,9 @@ it("WindowVirtualizer (horizontal)", async () => {
 it("VGrid", async () => {
   const root = render(VGridHost);
   await expectVirtualizedAndScrollable(root, "row-0/col-0", "row-999/col-999");
+});
+
+it("VMasonry", async () => {
+  const root = render(VMasonryHost);
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });

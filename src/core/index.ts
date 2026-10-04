@@ -32,6 +32,7 @@ export {
   type GridCell,
   type GridSpan,
 } from "./grid.js";
+export { createMasonryLayout, type MasonryLayout } from "./layouts/masonry.js";
 export type { Driver, GridDriver } from "./driver.js";
 export {
   createContainerDriver,

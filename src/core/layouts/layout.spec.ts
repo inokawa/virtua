@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { createListLayout, type ListLayout } from "./list.js";
 import { createGridLayout } from "./grid.js";
+import { createMasonryLayout, type MasonryLayout } from "./masonry.js";
 import type { Layout } from "./types.js";
 import type { CacheSnapshot } from "../types.js";
 import { UNCACHED } from "../cache.js";
@@ -45,6 +46,16 @@ describe.each<{
         unmeasured < 0 ? DEFAULT_SIZE : layout.$getItemSize(unmeasured),
       ];
     },
+  },
+  {
+    // With 1 lane, items are stacked in order like the list layout.
+    name: "masonry",
+    init: (sizes) =>
+      createMasonryLayout(sizes.length, 1, 0, undefined, [
+        sizes.slice(),
+        DEFAULT_SIZE,
+      ]),
+    snapshot: (layout) => (layout as MasonryLayout).$snapshot(),
   },
 ])("$name", ({ init, snapshot }) => {
   const sizesOf = (layout: Layout) => snapshot(layout)[0];
