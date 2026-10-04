@@ -554,7 +554,7 @@ describe("resize jump compensation", () => {
         viewport.scrollTop = ITEM_SIZE * 4;
         await settle(viewport, container);
 
-        // item 2 is (200, 300), the viewport is (400, 800)
+        // item 2 is 200 to 300, the viewport is 400 to 800
         resize(container, 2, ITEM_SIZE * 2);
         await settle(viewport, container);
 
@@ -568,7 +568,7 @@ describe("resize jump compensation", () => {
         viewport.scrollTop = ITEM_SIZE * 4;
         await settle(viewport, container);
 
-        // item 3 is (300, 400) and the viewport starts exactly on its bottom
+        // item 3 is 300 to 400 and the viewport starts exactly on its bottom
         resize(container, 3, ITEM_SIZE * 2);
         await settle(viewport, container);
 
@@ -582,7 +582,7 @@ describe("resize jump compensation", () => {
         viewport.scrollTop = ITEM_SIZE * 4 + HALF;
         await settle(viewport, container);
 
-        // item 4 is (400, 500), the viewport is (450, 850)
+        // item 4 is 400 to 500, the viewport is 450 to 850
         resize(container, 4, ITEM_SIZE * 2);
         await settle(viewport, container);
 
@@ -593,13 +593,13 @@ describe("resize jump compensation", () => {
         const root = render(<List />);
         const { viewport, container } = await getVirtualizer(root);
         await expect.poll(() => getItem(container, "0")).toBeDefined();
-        // Grow item 4 to (400, 1000) from below the viewport
+        // Grow item 4 into 400 to 1000 from below the viewport
         resize(container, 4, ITEM_SIZE * 6);
         await settle(viewport, container);
         viewport.scrollTop = ITEM_SIZE * 5;
         await settle(viewport, container);
 
-        // item 4 sticks out of both edges of the viewport (500, 900)
+        // item 4 sticks out of both edges of the viewport of 500 to 900
         resize(container, 4, ITEM_SIZE * 7);
         await settle(viewport, container);
 
@@ -613,7 +613,7 @@ describe("resize jump compensation", () => {
         viewport.scrollTop = ITEM_SIZE * 4;
         await settle(viewport, container);
 
-        // item 6 is (600, 700), the viewport is (400, 800)
+        // item 6 is 600 to 700, the viewport is 400 to 800
         resize(container, 6, ITEM_SIZE * 2);
         await settle(viewport, container);
 
@@ -624,7 +624,7 @@ describe("resize jump compensation", () => {
         const root = render(<List />);
         const { viewport, container } = await getVirtualizer(root);
         await expect.poll(() => getItem(container, "0")).toBeDefined();
-        // Grow item 2 to (200, 400) before scrolling, so it is fully above the viewport (500, 900)
+        // Grow item 2 into 200 to 400 before scrolling, so it is fully above the viewport of 500 to 900
         resize(container, 2, ITEM_SIZE * 2);
         await settle(viewport, container);
         viewport.scrollTop = ITEM_SIZE * 5;
@@ -640,7 +640,7 @@ describe("resize jump compensation", () => {
         const root = render(<List />);
         const { viewport, container } = await getVirtualizer(root);
         await expect.poll(() => getItem(container, "0")).toBeDefined();
-        // Grow item 4 to (400, 700) before scrolling
+        // Grow item 4 into 400 to 700 before scrolling
         resize(container, 4, ITEM_SIZE * 3);
         await settle(viewport, container);
         viewport.scrollTop = ITEM_SIZE * 4 + HALF;
@@ -662,7 +662,7 @@ describe("resize jump compensation", () => {
         viewport.scrollTop = ITEM_SIZE * 5;
         await settle(viewport, container);
 
-        // The viewport becomes (450, 850) and item 4 is (400, 500)
+        // The viewport becomes 450 to 850 and item 4 is 400 to 500
         viewport.scrollTop -= HALF;
         await scrolled(viewport);
         resize(container, 4, ITEM_SIZE * 2);
@@ -698,7 +698,7 @@ describe("resize jump compensation", () => {
           viewport.scrollTop = ITEM_SIZE * 4 + HALF;
           await settle(viewport, container);
 
-          // The viewport becomes (500, 900) and item 5 starts exactly on its start
+          // The viewport becomes 500 to 900 and item 5 starts exactly on its start
           viewport.scrollTop += HALF;
           await scrolled(viewport);
           resize(container, 5, ITEM_SIZE * 2);
@@ -714,13 +714,13 @@ describe("resize jump compensation", () => {
           const root = render(<List />);
           const { viewport, container } = await getVirtualizer(root);
           await expect.poll(() => getItem(container, "0")).toBeDefined();
-          // Grow item 4 to (400, 850) from below the viewport
+          // Grow item 4 into 400 to 850 from below the viewport
           resize(container, 4, ITEM_SIZE * 4 + HALF);
           await settle(viewport, container);
           viewport.scrollTop = ITEM_SIZE * 4;
           await settle(viewport, container);
 
-          // The viewport becomes (450, 850) and item 4 ends exactly on its end
+          // The viewport becomes 450 to 850 and item 4 ends exactly on its end
           viewport.scrollTop += HALF;
           await scrolled(viewport);
           resize(container, 4, ITEM_SIZE * 5);
@@ -739,7 +739,7 @@ describe("resize jump compensation", () => {
         viewport.scrollTop = ITEM_SIZE * 5;
         await settle(viewport, container);
 
-        // The viewport becomes (550, 950) and item 4 is (400, 1000)
+        // The viewport becomes 550 to 950 and item 4 is 400 to 1000
         viewport.scrollTop += HALF;
         await scrolled(viewport);
         resize(container, 4, ITEM_SIZE * 7);
@@ -755,7 +755,7 @@ describe("resize jump compensation", () => {
         viewport.scrollTop = ITEM_SIZE * 4;
         await settle(viewport, container);
 
-        // The viewport becomes (450, 850) and item 6 is (600, 700)
+        // The viewport becomes 450 to 850 and item 6 is 600 to 700
         viewport.scrollTop += HALF;
         await scrolled(viewport);
         resize(container, 6, ITEM_SIZE * 2);
