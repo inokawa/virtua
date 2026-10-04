@@ -117,6 +117,32 @@
         "message": "No component file found for the \"VGrid\" component."
       }
     },
+    "basics-vmasonry": {
+      "id": "basics-vmasonry",
+      "name": "VMasonry",
+      "path": "./stories/solid/basics/VMasonry.stories.tsx",
+      "stories": [
+        {
+          "id": "basics-vmasonry--default",
+          "name": "Default",
+          "snippet": "const Default = () => {\n  return (\n    <VMasonry style={{ height: \"100vh\" }} lanes={3} data={data1000}>\n      {(i) => <div style={itemStyle(i)}>{i}</div>}\n    </VMasonry>\n  );\n};",
+          "description": ""
+        },
+        {
+          "id": "basics-vmasonry--scroll-to",
+          "name": "Scroll To",
+          "snippet": "const ScrollTo = () => {\n  const LENGTH = 1000;\n  const aligns = [\"start\", \"center\", \"end\", \"nearest\"] as const;\n  const [scrollIndex, setScrollIndex] = createSignal(567);\n  const [scrollIndexAlign, setScrollToIndexAlign] =\n    createSignal<(typeof aligns)[number]>(\"start\");\n  const [smooth, setSmooth] = createSignal(false);\n  let handle: VMasonryHandle | undefined;\n  return (\n    <div\n      style={{ height: \"100vh\", display: \"flex\", \"flex-direction\": \"column\" }}\n    >\n      <div>\n        <input\n          type=\"number\"\n          value={scrollIndex()}\n          onInput={(e) => setScrollIndex(Number(e.currentTarget.value))}\n        />\n        <button\n          onClick={() => {\n            handle?.scrollToIndex(scrollIndex(), {\n              align: scrollIndexAlign(),\n              smooth: smooth(),\n            });\n          }}\n        >\n          scroll to index\n        </button>\n        <button\n          onClick={() => {\n            setScrollIndex(Math.round(LENGTH * Math.random()));\n          }}\n        >\n          randomize\n        </button>\n        <For each={aligns}>\n          {(align) => (\n            <label style={{ \"margin-left\": \"4px\" }}>\n              <input\n                type=\"radio\"\n                checked={scrollIndexAlign() === align}\n                onChange={() => {\n                  setScrollToIndexAlign(align);\n                }}\n              />\n              {align}\n            </label>\n          )}\n        </For>\n        <label style={{ \"margin-left\": \"4px\" }}>\n          <input\n            type=\"checkbox\"\n            checked={smooth()}\n            onChange={() => {\n              setSmooth((prev) => !prev);\n            }}\n          />\n          smooth\n        </label>\n      </div>\n      <VMasonry ref={handle} style={{ flex: 1 }} lanes={4} data={data1000}>\n        {(i) => <div style={itemStyle(i)}>{i}</div>}\n      </VMasonry>\n    </div>\n  );\n};",
+          "description": ""
+        }
+      ],
+      "import": "import { VMasonry } from \"../../../src/solid\";",
+      "jsDocTags": {},
+      "subcomponents": {},
+      "error": {
+        "name": "No component import found",
+        "message": "No component file found for the \"VMasonry\" component."
+      }
+    },
     "advanced-chat": {
       "id": "advanced-chat",
       "name": "Virtualizer",
@@ -160,7 +186,7 @@
   },
   "meta": {
     "docgen": "react-component-meta",
-    "durationMs": 91,
+    "durationMs": 78,
     "engine": "solid-component-meta"
   }
 }

@@ -620,7 +620,7 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">6/6 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">6/6 infos</a><span class="filter-pill ok" aria-disabled="true">12 stories ok</span></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">7/7 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">7/7 infos</a><span class="filter-pill ok" aria-disabled="true">14 stories ok</span></div>
   </div>
 </header>
 <main>
@@ -1782,6 +1782,169 @@
   </div>
 </article>
 <article
+  id="basics-vmasonry"
+  class="card 
+  has-error
+  has-info
+  no-story-error
+  no-story-warning
+  
+  no-doc-error"
+  role="listitem"
+  aria-label="VMasonry">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-err"></span> VMasonry</h2>
+      <div class="badges">
+        <label for="c-5-basics-vmasonry-err" class="badge err as-toggle">API error</label>
+        <label for="c-5-basics-vmasonry-info" class="badge info as-toggle">1 info</label>
+        <label for="c-5-basics-vmasonry-stories" class="badge ok as-toggle">2 stories</label>
+        
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/solid/basics/VMasonry.stories.tsx">basics-vmasonry · ./stories/solid/basics/VMasonry.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  <input id="c-5-basics-vmasonry-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-5-basics-vmasonry-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-5-basics-vmasonry-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  
+  
+
+  <div class="panels">
+    
+        <div class="panel panel-err">
+          
+    <div class="note err">
+      <div class="note-title">API error</div>
+      <div class="note-body"><pre><code>No component file found for the &quot;VMasonry&quot; component.</code></pre></div>
+    </div>
+        </div>
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { VMasonry } from "../../../src/solid";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; {
+  return (
+    &lt;VMasonry style={{ height: &quot;100vh&quot; }} lanes={3} data={data1000}&gt;
+      {(i) =&gt; &lt;div style={itemStyle(i)}&gt;{i}&lt;/div&gt;}
+    &lt;/VMasonry&gt;
+  );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Scroll To</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const ScrollTo = () =&gt; {
+  const LENGTH = 1000;
+  const aligns = [&quot;start&quot;, &quot;center&quot;, &quot;end&quot;, &quot;nearest&quot;] as const;
+  const [scrollIndex, setScrollIndex] = createSignal(567);
+  const [scrollIndexAlign, setScrollToIndexAlign] =
+    createSignal&lt;(typeof aligns)[number]&gt;(&quot;start&quot;);
+  const [smooth, setSmooth] = createSignal(false);
+  let handle: VMasonryHandle | undefined;
+  return (
+    &lt;div
+      style={{ height: &quot;100vh&quot;, display: &quot;flex&quot;, &quot;flex-direction&quot;: &quot;column&quot; }}
+    &gt;
+      &lt;div&gt;
+        &lt;input
+          type=&quot;number&quot;
+          value={scrollIndex()}
+          onInput={(e) =&gt; setScrollIndex(Number(e.currentTarget.value))}
+        /&gt;
+        &lt;button
+          onClick={() =&gt; {
+            handle?.scrollToIndex(scrollIndex(), {
+              align: scrollIndexAlign(),
+              smooth: smooth(),
+            });
+          }}
+        &gt;
+          scroll to index
+        &lt;/button&gt;
+        &lt;button
+          onClick={() =&gt; {
+            setScrollIndex(Math.round(LENGTH * Math.random()));
+          }}
+        &gt;
+          randomize
+        &lt;/button&gt;
+        &lt;For each={aligns}&gt;
+          {(align) =&gt; (
+            &lt;label style={{ &quot;margin-left&quot;: &quot;4px&quot; }}&gt;
+              &lt;input
+                type=&quot;radio&quot;
+                checked={scrollIndexAlign() === align}
+                onChange={() =&gt; {
+                  setScrollToIndexAlign(align);
+                }}
+              /&gt;
+              {align}
+            &lt;/label&gt;
+          )}
+        &lt;/For&gt;
+        &lt;label style={{ &quot;margin-left&quot;: &quot;4px&quot; }}&gt;
+          &lt;input
+            type=&quot;checkbox&quot;
+            checked={smooth()}
+            onChange={() =&gt; {
+              setSmooth((prev) =&gt; !prev);
+            }}
+          /&gt;
+          smooth
+        &lt;/label&gt;
+      &lt;/div&gt;
+      &lt;VMasonry ref={handle} style={{ flex: 1 }} lanes={4} data={data1000}&gt;
+        {(i) =&gt; &lt;div style={itemStyle(i)}&gt;{i}&lt;/div&gt;}
+      &lt;/VMasonry&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+              
+            </div>
+        </div>
+    
+    
+  </div>
+</article>
+<article
   id="basics-windowvirtualizer"
   class="card 
   has-error
@@ -1796,9 +1959,9 @@
     <div class="title">
       <h2><span class="status-dot dot-err"></span> WindowVirtualizer</h2>
       <div class="badges">
-        <label for="c-5-basics-windowvirtualizer-err" class="badge err as-toggle">API error</label>
-        <label for="c-5-basics-windowvirtualizer-info" class="badge info as-toggle">1 info</label>
-        <label for="c-5-basics-windowvirtualizer-stories" class="badge ok as-toggle">1 story</label>
+        <label for="c-6-basics-windowvirtualizer-err" class="badge err as-toggle">API error</label>
+        <label for="c-6-basics-windowvirtualizer-info" class="badge info as-toggle">1 info</label>
+        <label for="c-6-basics-windowvirtualizer-stories" class="badge ok as-toggle">1 story</label>
         
         
       </div>
@@ -1810,9 +1973,9 @@
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
-  <input id="c-5-basics-windowvirtualizer-err" class="tg tg-err" type="checkbox" hidden />
-  <input id="c-5-basics-windowvirtualizer-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-5-basics-windowvirtualizer-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-6-basics-windowvirtualizer-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-6-basics-windowvirtualizer-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-6-basics-windowvirtualizer-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
@@ -1893,7 +2056,7 @@
           <label for="no-component-import-found-toggle" class="group-header">
             <span class="caret">▸</span>
             <span class="group-title">No component import found</span>
-            <span class="group-count">6</span>
+            <span class="group-count">7</span>
           </label>
           <div class="group-cards">
 <article
@@ -3056,14 +3219,177 @@
   
   no-doc-error"
   role="listitem"
+  aria-label="VMasonry">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-err"></span> VMasonry</h2>
+      <div class="badges">
+        <label for="c-error-5-basics-vmasonry-err" class="badge err as-toggle">API error</label>
+        <label for="c-error-5-basics-vmasonry-info" class="badge info as-toggle">1 info</label>
+        <label for="c-error-5-basics-vmasonry-stories" class="badge ok as-toggle">2 stories</label>
+        
+        
+      </div>
+    </div>
+    <div class="meta" title="./stories/solid/basics/VMasonry.stories.tsx">basics-vmasonry · ./stories/solid/basics/VMasonry.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  <input id="c-error-5-basics-vmasonry-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-error-5-basics-vmasonry-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-error-5-basics-vmasonry-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  
+  
+
+  <div class="panels">
+    
+        <div class="panel panel-err">
+          
+    <div class="note err">
+      <div class="note-title">API error</div>
+      <div class="note-body"><pre><code>No component file found for the &quot;VMasonry&quot; component.</code></pre></div>
+    </div>
+        </div>
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { VMasonry } from "../../../src/solid";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; {
+  return (
+    &lt;VMasonry style={{ height: &quot;100vh&quot; }} lanes={3} data={data1000}&gt;
+      {(i) =&gt; &lt;div style={itemStyle(i)}&gt;{i}&lt;/div&gt;}
+    &lt;/VMasonry&gt;
+  );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Scroll To</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const ScrollTo = () =&gt; {
+  const LENGTH = 1000;
+  const aligns = [&quot;start&quot;, &quot;center&quot;, &quot;end&quot;, &quot;nearest&quot;] as const;
+  const [scrollIndex, setScrollIndex] = createSignal(567);
+  const [scrollIndexAlign, setScrollToIndexAlign] =
+    createSignal&lt;(typeof aligns)[number]&gt;(&quot;start&quot;);
+  const [smooth, setSmooth] = createSignal(false);
+  let handle: VMasonryHandle | undefined;
+  return (
+    &lt;div
+      style={{ height: &quot;100vh&quot;, display: &quot;flex&quot;, &quot;flex-direction&quot;: &quot;column&quot; }}
+    &gt;
+      &lt;div&gt;
+        &lt;input
+          type=&quot;number&quot;
+          value={scrollIndex()}
+          onInput={(e) =&gt; setScrollIndex(Number(e.currentTarget.value))}
+        /&gt;
+        &lt;button
+          onClick={() =&gt; {
+            handle?.scrollToIndex(scrollIndex(), {
+              align: scrollIndexAlign(),
+              smooth: smooth(),
+            });
+          }}
+        &gt;
+          scroll to index
+        &lt;/button&gt;
+        &lt;button
+          onClick={() =&gt; {
+            setScrollIndex(Math.round(LENGTH * Math.random()));
+          }}
+        &gt;
+          randomize
+        &lt;/button&gt;
+        &lt;For each={aligns}&gt;
+          {(align) =&gt; (
+            &lt;label style={{ &quot;margin-left&quot;: &quot;4px&quot; }}&gt;
+              &lt;input
+                type=&quot;radio&quot;
+                checked={scrollIndexAlign() === align}
+                onChange={() =&gt; {
+                  setScrollToIndexAlign(align);
+                }}
+              /&gt;
+              {align}
+            &lt;/label&gt;
+          )}
+        &lt;/For&gt;
+        &lt;label style={{ &quot;margin-left&quot;: &quot;4px&quot; }}&gt;
+          &lt;input
+            type=&quot;checkbox&quot;
+            checked={smooth()}
+            onChange={() =&gt; {
+              setSmooth((prev) =&gt; !prev);
+            }}
+          /&gt;
+          smooth
+        &lt;/label&gt;
+      &lt;/div&gt;
+      &lt;VMasonry ref={handle} style={{ flex: 1 }} lanes={4} data={data1000}&gt;
+        {(i) =&gt; &lt;div style={itemStyle(i)}&gt;{i}&lt;/div&gt;}
+      &lt;/VMasonry&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+              
+            </div>
+        </div>
+    
+    
+  </div>
+</article>
+<article
+  
+  class="card 
+  has-error
+  has-info
+  no-story-error
+  no-story-warning
+  
+  no-doc-error"
+  role="listitem"
   aria-label="WindowVirtualizer">
   <div class="head">
     <div class="title">
       <h2><span class="status-dot dot-err"></span> WindowVirtualizer</h2>
       <div class="badges">
-        <label for="c-error-5-basics-windowvirtualizer-err" class="badge err as-toggle">API error</label>
-        <label for="c-error-5-basics-windowvirtualizer-info" class="badge info as-toggle">1 info</label>
-        <label for="c-error-5-basics-windowvirtualizer-stories" class="badge ok as-toggle">1 story</label>
+        <label for="c-error-6-basics-windowvirtualizer-err" class="badge err as-toggle">API error</label>
+        <label for="c-error-6-basics-windowvirtualizer-info" class="badge info as-toggle">1 info</label>
+        <label for="c-error-6-basics-windowvirtualizer-stories" class="badge ok as-toggle">1 story</label>
         
         
       </div>
@@ -3075,9 +3401,9 @@
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
-  <input id="c-error-5-basics-windowvirtualizer-err" class="tg tg-err" type="checkbox" hidden />
-  <input id="c-error-5-basics-windowvirtualizer-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-error-5-basics-windowvirtualizer-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-error-6-basics-windowvirtualizer-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-error-6-basics-windowvirtualizer-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-error-6-basics-windowvirtualizer-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
