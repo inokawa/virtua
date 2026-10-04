@@ -620,7 +620,7 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">7/7 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">7/7 infos</a><span class="filter-pill ok" aria-disabled="true">14 stories ok</span></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">7/7 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">7/7 infos</a><span class="filter-pill ok" aria-disabled="true">15 stories ok</span></div>
   </div>
 </header>
 <main>
@@ -1798,7 +1798,7 @@
       <div class="badges">
         <label for="c-5-basics-vmasonry-err" class="badge err as-toggle">API error</label>
         <label for="c-5-basics-vmasonry-info" class="badge info as-toggle">1 info</label>
-        <label for="c-5-basics-vmasonry-stories" class="badge ok as-toggle">2 stories</label>
+        <label for="c-5-basics-vmasonry-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -1859,6 +1859,36 @@
   return (
     &lt;VMasonry style={{ height: &quot;100vh&quot; }} lanes={3} data={data1000}&gt;
       {(i) =&gt; &lt;div style={itemStyle(i)}&gt;{i}&lt;/div&gt;}
+    &lt;/VMasonry&gt;
+  );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Media Queries</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const MediaQueries = () =&gt; {
+  const [lanes, setLanes] = createSignal(getLanesByMediaQuery());
+  const onChange = () =&gt; {
+    setLanes(getLanesByMediaQuery());
+  };
+  const lists = BREAKPOINTS.map(([query]) =&gt; window.matchMedia(query));
+  lists.forEach((list) =&gt; list.addEventListener(&quot;change&quot;, onChange));
+  onCleanup(() =&gt; {
+    lists.forEach((list) =&gt; list.removeEventListener(&quot;change&quot;, onChange));
+  });
+  return (
+    &lt;VMasonry
+      style={{ height: &quot;100vh&quot; }}
+      lanes={lanes()}
+      gap={8}
+      data={data1000}
+    &gt;
+      {(i) =&gt; &lt;div style={aspectRatioItemStyle(i)}&gt;{i}&lt;/div&gt;}
     &lt;/VMasonry&gt;
   );
 };</code></pre>
@@ -3226,7 +3256,7 @@
       <div class="badges">
         <label for="c-error-5-basics-vmasonry-err" class="badge err as-toggle">API error</label>
         <label for="c-error-5-basics-vmasonry-info" class="badge info as-toggle">1 info</label>
-        <label for="c-error-5-basics-vmasonry-stories" class="badge ok as-toggle">2 stories</label>
+        <label for="c-error-5-basics-vmasonry-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -3287,6 +3317,36 @@
   return (
     &lt;VMasonry style={{ height: &quot;100vh&quot; }} lanes={3} data={data1000}&gt;
       {(i) =&gt; &lt;div style={itemStyle(i)}&gt;{i}&lt;/div&gt;}
+    &lt;/VMasonry&gt;
+  );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Media Queries</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const MediaQueries = () =&gt; {
+  const [lanes, setLanes] = createSignal(getLanesByMediaQuery());
+  const onChange = () =&gt; {
+    setLanes(getLanesByMediaQuery());
+  };
+  const lists = BREAKPOINTS.map(([query]) =&gt; window.matchMedia(query));
+  lists.forEach((list) =&gt; list.addEventListener(&quot;change&quot;, onChange));
+  onCleanup(() =&gt; {
+    lists.forEach((list) =&gt; list.removeEventListener(&quot;change&quot;, onChange));
+  });
+  return (
+    &lt;VMasonry
+      style={{ height: &quot;100vh&quot; }}
+      lanes={lanes()}
+      gap={8}
+      data={data1000}
+    &gt;
+      {(i) =&gt; &lt;div style={aspectRatioItemStyle(i)}&gt;{i}&lt;/div&gt;}
     &lt;/VMasonry&gt;
   );
 };</code></pre>

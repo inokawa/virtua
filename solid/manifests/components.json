@@ -129,6 +129,12 @@
           "description": ""
         },
         {
+          "id": "basics-vmasonry--media-queries",
+          "name": "Media Queries",
+          "snippet": "const MediaQueries = () => {\n  const [lanes, setLanes] = createSignal(getLanesByMediaQuery());\n  const onChange = () => {\n    setLanes(getLanesByMediaQuery());\n  };\n  const lists = BREAKPOINTS.map(([query]) => window.matchMedia(query));\n  lists.forEach((list) => list.addEventListener(\"change\", onChange));\n  onCleanup(() => {\n    lists.forEach((list) => list.removeEventListener(\"change\", onChange));\n  });\n  return (\n    <VMasonry\n      style={{ height: \"100vh\" }}\n      lanes={lanes()}\n      gap={8}\n      data={data1000}\n    >\n      {(i) => <div style={aspectRatioItemStyle(i)}>{i}</div>}\n    </VMasonry>\n  );\n};",
+          "description": ""
+        },
+        {
           "id": "basics-vmasonry--scroll-to",
           "name": "Scroll To",
           "snippet": "const ScrollTo = () => {\n  const LENGTH = 1000;\n  const aligns = [\"start\", \"center\", \"end\", \"nearest\"] as const;\n  const [scrollIndex, setScrollIndex] = createSignal(567);\n  const [scrollIndexAlign, setScrollToIndexAlign] =\n    createSignal<(typeof aligns)[number]>(\"start\");\n  const [smooth, setSmooth] = createSignal(false);\n  let handle: VMasonryHandle | undefined;\n  return (\n    <div\n      style={{ height: \"100vh\", display: \"flex\", \"flex-direction\": \"column\" }}\n    >\n      <div>\n        <input\n          type=\"number\"\n          value={scrollIndex()}\n          onInput={(e) => setScrollIndex(Number(e.currentTarget.value))}\n        />\n        <button\n          onClick={() => {\n            handle?.scrollToIndex(scrollIndex(), {\n              align: scrollIndexAlign(),\n              smooth: smooth(),\n            });\n          }}\n        >\n          scroll to index\n        </button>\n        <button\n          onClick={() => {\n            setScrollIndex(Math.round(LENGTH * Math.random()));\n          }}\n        >\n          randomize\n        </button>\n        <For each={aligns}>\n          {(align) => (\n            <label style={{ \"margin-left\": \"4px\" }}>\n              <input\n                type=\"radio\"\n                checked={scrollIndexAlign() === align}\n                onChange={() => {\n                  setScrollToIndexAlign(align);\n                }}\n              />\n              {align}\n            </label>\n          )}\n        </For>\n        <label style={{ \"margin-left\": \"4px\" }}>\n          <input\n            type=\"checkbox\"\n            checked={smooth()}\n            onChange={() => {\n              setSmooth((prev) => !prev);\n            }}\n          />\n          smooth\n        </label>\n      </div>\n      <VMasonry ref={handle} style={{ flex: 1 }} lanes={4} data={data1000}>\n        {(i) => <div style={itemStyle(i)}>{i}</div>}\n      </VMasonry>\n    </div>\n  );\n};",
@@ -186,7 +192,7 @@
   },
   "meta": {
     "docgen": "react-component-meta",
-    "durationMs": 103,
+    "durationMs": 82,
     "engine": "solid-component-meta"
   }
 }
