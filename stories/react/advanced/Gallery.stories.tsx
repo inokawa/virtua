@@ -1,6 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { VMasonry } from "../../../src";
-import React, { startTransition, useState, ViewTransition } from "react";
+import React, {
+  startTransition,
+  useState,
+  useSyncExternalStore,
+  ViewTransition,
+} from "react";
 import { flushSync } from "react-dom";
 import { faker } from "@faker-js/faker";
 import { range } from "../common";
@@ -31,6 +36,23 @@ const createPhotos = (count: number): Photo[] =>
     };
   });
 
+// Lanes for each breakpoint of the window, like the classes of Tailwind CSS
+const BREAKPOINTS = [
+  ["(min-width: 1536px)", 6],
+  ["(min-width: 1280px)", 5],
+  ["(min-width: 1024px)", 4],
+  ["(min-width: 768px)", 3],
+] as const;
+const getLanesByMediaQuery = (): number =>
+  BREAKPOINTS.find(([query]) => window.matchMedia(query).matches)?.[1] ?? 2;
+const subscribeMediaQueries = (onChange: () => void) => {
+  const lists = BREAKPOINTS.map(([query]) => window.matchMedia(query));
+  lists.forEach((list) => list.addEventListener("change", onChange));
+  return () => {
+    lists.forEach((list) => list.removeEventListener("change", onChange));
+  };
+};
+
 const PHOTO_CLASS = "gallery-photo";
 
 const thumbnailStyle: React.CSSProperties = {
@@ -44,6 +66,10 @@ export const Default: StoryObj = {
   name: "Gallery",
   render: () => {
     const [photos] = useState(() => createPhotos(1000));
+    const lanes = useSyncExternalStore(
+      subscribeMediaQueries,
+      getLanesByMediaQuery,
+    );
     const [selected, setSelected] = useState<Photo | null>(null);
     // Only the photo moving between the grid and the viewer has the name, otherwise every photo in the grid is animated over the page
     const [activeId, setActiveId] = useState<number | null>(null);
@@ -59,7 +85,12 @@ export const Default: StoryObj = {
       <>
         {/* The moving photo is placed over the backdrop fading in, which is a later group of the transition */}
         <style>{`::view-transition-group(.${PHOTO_CLASS}) { z-index: 1; }`}</style>
-        <VMasonry style={{ height: "100vh" }} lanes={4} gap={4} data={photos}>
+        <VMasonry
+          style={{ height: "100vh" }}
+          lanes={lanes}
+          gap={4}
+          data={photos}
+        >
           {(photo) => (
             <button
               key={photo.id}

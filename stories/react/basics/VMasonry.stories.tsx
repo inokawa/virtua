@@ -117,6 +117,7 @@ export const LanesAndGap: StoryObj = {
 
 // Recipe: lanes for each breakpoint of the window, like the classes of Tailwind CSS. The media queries are read synchronously, so the lanes are right from the first render on the client.
 const BREAKPOINTS = [
+  ["(min-width: 1536px)", 6],
   ["(min-width: 1280px)", 5],
   ["(min-width: 1024px)", 4],
   ["(min-width: 768px)", 3],
