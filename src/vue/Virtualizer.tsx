@@ -53,7 +53,9 @@ export interface VirtualizerProps<T = unknown> extends PublicProps {
    */
   itemSize?: number;
   /**
-   * While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
+   * Set true only when items are added to or removed from the start of the list, such as when older items are loaded in reverse infinite scrolling. In that case, the scroll position is maintained from the end of the list instead of the start.
+   *
+   * **Do not set true in any other case, as it can cause unexpected behavior.**
    */
   shift?: boolean;
   /**
