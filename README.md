@@ -322,7 +322,7 @@ export const App = () => {
 
 ### Tabular data
 
-`VGrid` is `VList` extended to two axes. It virtualizes both `rows` and `cols`.
+For data with rows and columns such as a table, use `VGrid`. It virtualizes on both axes.
 
 ```tsx
 import { VGrid } from "virtua";
