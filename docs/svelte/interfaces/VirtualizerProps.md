@@ -4,7 +4,7 @@
 
 # Interface: VirtualizerProps\<T\>
 
-Defined in: [src/svelte/Virtualizer.type.ts:9](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L9)
+Defined in: [src/svelte/Virtualizer.type.ts:9](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L9)
 
 Props of [Virtualizer](../variables/VList.md).
 
@@ -20,7 +20,7 @@ Props of [Virtualizer](../variables/VList.md).
 
 > **data**: readonly `T`[]
 
-Defined in: [src/svelte/Virtualizer.type.ts:13](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L13)
+Defined in: [src/svelte/Virtualizer.type.ts:13](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L13)
 
 The data items rendered by this component.
 
@@ -30,7 +30,7 @@ The data items rendered by this component.
 
 > **children**: `Snippet`\<\[`T`, `number`\]\>
 
-Defined in: [src/svelte/Virtualizer.type.ts:17](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L17)
+Defined in: [src/svelte/Virtualizer.type.ts:17](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L17)
 
 The elements renderer snippet.
 
@@ -40,7 +40,7 @@ The elements renderer snippet.
 
 > `optional` **getKey?**: (`data`, `index`) => `string` \| `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:22](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L22)
+Defined in: [src/svelte/Virtualizer.type.ts:22](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L22)
 
 Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
 
@@ -70,7 +70,7 @@ defaultGetKey (returns index of item)
 
 > `optional` **as?**: keyof SvelteHTMLElements
 
-Defined in: [src/svelte/Virtualizer.type.ts:27](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L27)
+Defined in: [src/svelte/Virtualizer.type.ts:27](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L27)
 
 Component or element type for container element.
 
@@ -86,7 +86,7 @@ Component or element type for container element.
 
 > `optional` **item?**: keyof SvelteHTMLElements
 
-Defined in: [src/svelte/Virtualizer.type.ts:32](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L32)
+Defined in: [src/svelte/Virtualizer.type.ts:32](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L32)
 
 Component or element type for item element.
 
@@ -102,7 +102,7 @@ Component or element type for item element.
 
 > `optional` **itemProps?**: `ItemProps`\<`T`\>
 
-Defined in: [src/svelte/Virtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L36)
+Defined in: [src/svelte/Virtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L36)
 
 A function that provides properties/attributes for item element
 
@@ -112,7 +112,7 @@ A function that provides properties/attributes for item element
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:41](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L41)
+Defined in: [src/svelte/Virtualizer.type.ts:41](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L41)
 
 Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -128,7 +128,7 @@ Extra item space in pixels to render before/after the viewport. The minimum valu
 
 > `optional` **scrollRef?**: `HTMLElement`
 
-Defined in: [src/svelte/Virtualizer.type.ts:45](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L45)
+Defined in: [src/svelte/Virtualizer.type.ts:45](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L45)
 
 Reference to the scrollable element. The default will get the direct parent element of virtualizer.
 
@@ -138,7 +138,7 @@ Reference to the scrollable element. The default will get the direct parent elem
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:52](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L52)
+Defined in: [src/svelte/Virtualizer.type.ts:52](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L52)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -151,7 +151,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **ssrCount?**: `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:56](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L56)
+Defined in: [src/svelte/Virtualizer.type.ts:56](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L56)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -161,9 +161,11 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `optional` **shift?**: `boolean`
 
-Defined in: [src/svelte/Virtualizer.type.ts:60](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L60)
+Defined in: [src/svelte/Virtualizer.type.ts:62](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L62)
 
-While true is set, scroll position will be maintained from the end not usual start when items are added to/removed from start. It's recommended to set false if you add to/remove from mid/end of the list because it can cause unexpected behavior. This prop is useful for reverse infinite scrolling.
+Set true only when items are added to or removed from the start of the list, such as when older items are loaded in reverse infinite scrolling. In that case, the scroll position is maintained from the end of the list instead of the start.
+
+**Do not set true in any other case, as it can cause unexpected behavior.**
 
 ***
 
@@ -171,7 +173,7 @@ While true is set, scroll position will be maintained from the end not usual sta
 
 > `optional` **horizontal?**: `boolean`
 
-Defined in: [src/svelte/Virtualizer.type.ts:64](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L64)
+Defined in: [src/svelte/Virtualizer.type.ts:66](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L66)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -181,7 +183,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `optional` **keepMounted?**: readonly `number`[]
 
-Defined in: [src/svelte/Virtualizer.type.ts:68](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L68)
+Defined in: [src/svelte/Virtualizer.type.ts:70](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L70)
 
 List of indexes that should be always mounted, even when off screen.
 
@@ -191,7 +193,7 @@ List of indexes that should be always mounted, even when off screen.
 
 > `optional` **cache?**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/svelte/Virtualizer.type.ts:74](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L74)
+Defined in: [src/svelte/Virtualizer.type.ts:76](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L76)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VirtualizerHandle.getCache](VListHandle.md#getcache).
 
@@ -203,7 +205,7 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `optional` **startMargin?**: `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:78](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L78)
+Defined in: [src/svelte/Virtualizer.type.ts:80](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L80)
 
 The offset to the scrollable parent before virtualizer in pixels. If you put an element before virtualizer, you have to set its height to this prop.
 
@@ -213,7 +215,7 @@ The offset to the scrollable parent before virtualizer in pixels. If you put an 
 
 > `optional` **onscroll?**: (`offset`) => `void`
 
-Defined in: [src/svelte/Virtualizer.type.ts:83](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L83)
+Defined in: [src/svelte/Virtualizer.type.ts:85](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L85)
 
 Callback invoked whenever scroll offset changes.
 
@@ -235,7 +237,7 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 > `optional` **onscrollend?**: () => `void`
 
-Defined in: [src/svelte/Virtualizer.type.ts:87](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/Virtualizer.type.ts#L87)
+Defined in: [src/svelte/Virtualizer.type.ts:89](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/Virtualizer.type.ts#L89)
 
 Callback invoked when scrolling stops.
 

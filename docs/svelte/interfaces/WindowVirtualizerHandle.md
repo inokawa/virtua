@@ -4,7 +4,7 @@
 
 # Interface: WindowVirtualizerHandle
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:64](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/WindowVirtualizer.type.ts#L64)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:66](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L66)
 
 Methods of [WindowVirtualizer](../variables/VList.md).
 
@@ -14,7 +14,7 @@ Methods of [WindowVirtualizer](../variables/VList.md).
 
 > **findItemIndex**(`offset`): `number`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:81](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/WindowVirtualizer.type.ts#L81)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:83](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L83)
 
 Find nearest item index from offset.
 
@@ -36,7 +36,7 @@ offset in pixels from the start of the scroll container
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:86](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/WindowVirtualizer.type.ts#L86)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:88](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L88)
 
 Get item offset from start.
 
@@ -58,7 +58,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:91](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/WindowVirtualizer.type.ts#L91)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:93](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L93)
 
 Get item size.
 
@@ -80,7 +80,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:97](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/WindowVirtualizer.type.ts#L97)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:99](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L99)
 
 Scroll to the item specified by index.
 
@@ -108,7 +108,7 @@ options
 
 > **getCache**: () => [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:68](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/WindowVirtualizer.type.ts#L68)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:70](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L70)
 
 Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
@@ -122,7 +122,7 @@ Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
 > **getScrollOffset**: () => `number`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:72](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/WindowVirtualizer.type.ts#L72)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:74](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L74)
 
 Get current scrollTop, or scrollLeft if horizontal: true. Always positive even in RTL.
 
@@ -136,7 +136,7 @@ Get current scrollTop, or scrollLeft if horizontal: true. Always positive even i
 
 > **getViewportSize**: () => `number`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:76](https://github.com/inokawa/virtua/blob/d1123ca925d85826d3e17bb8ef4c8c85282b1d8e/src/svelte/WindowVirtualizer.type.ts#L76)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:78](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L78)
 
 Get current clientHeight of the document, or clientWidth if horizontal: true.
 
