@@ -441,11 +441,17 @@ It may be dispatched by ResizeObserver in this lib [as described in spec](https:
 
 Especially for `webpack-dev-server`, [you can filter out the specific error with `devServer.client.overlay.runtimeErrors` option](https://webpack.js.org/configuration/dev-server/#overlay).
 
-#### Why my items are squashed(or rendered inconsistently) on resize/add/remove?
+#### Why are my items squashed, overlapped or rendered inconsistently on resize/add/remove/reorder?
 
-Maybe you forgot to pass `key` prop to each items, or the keys are not unique. Item sizes are stored per key.
+Check that each item has a unique key, such as the id of your data, not its index.
 
-And do not use index of items as `key`, especially when you want to toggle `shift` prop to `true`. Prepending will increment every indexes of items and that will cause unexpected behavior.
+- React: `key` of the element of each item
+- Vue: `key` of the root element in the default slot
+- Solid: the item of `data` itself, so keep the same reference for the same item
+- Svelte: `getKey` prop
+- Angular: `getKey` input
+
+If it still happens, the `shift` prop may be misused.
 
 #### Why `VListHandle.viewportSize` is 0 on mount?
 
