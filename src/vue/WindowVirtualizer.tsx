@@ -266,7 +266,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
           ref={containerRef}
           style={{
             contain: "size style", // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
-            overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
+            overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict with scroll anchoring of virtualizer
             flex: "none", // flex style can break layout
             position: "relative",
             width: isHorizontal ? total + "px" : "100%",

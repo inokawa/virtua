@@ -39,7 +39,7 @@ export const HeaderAndFooter: StoryObj = {
           width: "100%",
           height: "100vh",
           overflowY: "auto",
-          // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+          // opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer
           overflowAnchor: "none",
         }}
       >
@@ -62,7 +62,7 @@ export const StickyHeaderAndFooter: StoryObj = {
           width: "100%",
           height: "100vh",
           overflowY: "auto",
-          // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+          // opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer
           overflowAnchor: "none",
         }}
       >
@@ -102,7 +102,7 @@ export const Overflow: StoryObj = {
           boxSizing: "border-box",
           height: "100vh",
           overflowY: "auto",
-          // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+          // opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer
           overflowAnchor: "none",
           border: "solid 1px #eee",
           borderRadius: 8,
@@ -175,7 +175,7 @@ export const Nested: StoryObj = {
           width: "100%",
           height: "100vh",
           overflowY: "auto",
-          // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+          // opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer
           overflowAnchor: "none",
         }}
       >
@@ -208,7 +208,7 @@ export const Reverse: StoryObj = {
         style={{
           height: "100vh",
           overflowY: "auto",
-          // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+          // opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer
           overflowAnchor: "none",
           // flex style for spacer
           display: "flex",
@@ -234,7 +234,7 @@ export const Reverse: StoryObj = {
 //         style={{
 //           height: "100vh",
 //           overflowY: "auto",
-//           // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+//           // opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer
 //           overflowAnchor: "none",
 //           // apply column-reverse to reverse scroll direction
 //           display: "flex",
@@ -364,7 +364,7 @@ export const AlignBottom: StoryObj = {
           style={{
             flex: 1,
             overflowY: "auto",
-            // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+            // opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer
             overflowAnchor: "none",
             // flex style for spacer
             display: "flex",
@@ -460,7 +460,7 @@ export const BiDirectionalInfiniteScrolling: StoryObj = {
         style={{
           height: "100vh",
           overflowY: "auto",
-          // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+          // opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer
           overflowAnchor: "none",
         }}
       >

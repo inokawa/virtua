@@ -712,7 +712,7 @@ describe("scrollToIndex", () => {
             overflowY: "auto",
             display: "flex",
             flexDirection: "column",
-            // opt out browser's scroll anchoring on the spacer because it will conflict to scroll anchoring of virtualizer
+            // opt out browser's scroll anchoring on the spacer because it will conflict with scroll anchoring of virtualizer
             overflowAnchor: "none",
           }}
         >

@@ -470,7 +470,7 @@ export const VGrid = <R = number, C = number>(
     return {
       // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
       contain: "size style",
-      "overflow-anchor": "none", // opt out browser's scroll anchoring because it will conflict to scroll anchoring of virtualizer
+      "overflow-anchor": "none", // opt out browser's scroll anchoring because it will conflict with scroll anchoring of virtualizer
       flex: "none", // flex style can break layout
       display: "grid",
       "grid-template-rows": $rowTemplate,

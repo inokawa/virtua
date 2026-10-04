@@ -115,7 +115,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
     <div
       style="
         overflow-y: auto;
-        /* opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer */
+        /* opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer */
         flex: 1;
         overflow-anchor: none;
         /* flex style for spacer */

@@ -13,7 +13,7 @@
   width: 100%;
   height: 100vh;
   overflow-y: auto;
-  /* opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer */
+  /* opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer */
   overflow-anchor: none;
 `}
 >

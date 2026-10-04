@@ -161,7 +161,7 @@ export const Default: StoryObj = {
           style={{
             overflowY: "auto",
             flex: 1,
-            // opt out browser's scroll anchoring on header/footer because it will conflict to scroll anchoring of virtualizer
+            // opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer
             overflowAnchor: "none",
             // flex style for spacer
             display: "flex",

@@ -44,183 +44,36 @@ If you want to support legacy browsers, you need polyfills.
 
 If you use ESM and webpack 5, use react >= 18 to avoid [Can't resolve `react/jsx-runtime` error](https://github.com/facebook/react/issues/20235).
 
-#### Vertical scroll
-
 ```tsx
 import { VList } from "virtua";
 
-// children
-export const App = () => {
-  return (
-    <VList style={{ height: 800 }}>
-      {Array.from({ length: 1000 }).map((_, i) => (
-        <div
-          key={i}
-          style={{
-            height: Math.floor(Math.random() * 10) * 10 + 10,
-            borderBottom: "solid 1px gray",
-            background: "white",
-          }}
-        >
-          {i}
-        </div>
-      ))}
-    </VList>
-  );
-};
-
-// or render prop
-export const App = () => {
-  const items = Array.from({ length: 1000 }).map(
-    () => Math.floor(Math.random() * 10) * 10 + 10,
-  );
-  return (
-    <VList data={items} style={{ height: 800 }}>
-      {(d, i) => (
-        <div
-          key={i}
-          style={{
-            height: d,
-            borderBottom: "solid 1px gray",
-            background: "white",
-          }}
-        >
-          {i}
-        </div>
-      )}
-    </VList>
-  );
-};
-```
-
-#### Horizontal scroll
-
-```tsx
-import { VList } from "virtua";
-
-export const App = () => {
-  return (
-    <VList style={{ height: 400 }} horizontal>
-      {Array.from({ length: 1000 }).map((_, i) => (
-        <div
-          key={i}
-          style={{
-            width: Math.floor(Math.random() * 10) * 10 + 10,
-            borderRight: "solid 1px gray",
-            background: "white",
-          }}
-        >
-          {i}
-        </div>
-      ))}
-    </VList>
-  );
-};
-```
-
-#### Customization
-
-`VList` is a recommended solution which works like a drop-in replacement of simple list built with scrollable `div` (or removed [virtual-scroller element](https://github.com/WICG/virtual-scroller)). For more complicated styling or markup, use `Virtualizer`.
-
-```tsx
-import { Virtualizer } from "virtua";
-
-export const App = () => {
-  return (
-    <div style={{ overflowY: "auto", overflowAnchor: "none", height: 800 }}>
-      <div style={{ height: 40 }}>header</div>
-      <Virtualizer startMargin={40}>
-        {Array.from({ length: 1000 }).map((_, i) => (
-          <div
-            key={i}
-            style={{
-              height: Math.floor(Math.random() * 10) * 10 + 10,
-              borderBottom: "solid 1px gray",
-              background: "white",
-            }}
-          >
-            {i}
-          </div>
-        ))}
-      </Virtualizer>
-    </div>
-  );
-};
-```
-
-#### Window scroll
-
-```tsx
-import { WindowVirtualizer } from "virtua";
-
-export const App = () => {
-  return (
-    <div style={{ padding: 200 }}>
-      <WindowVirtualizer>
-        {Array.from({ length: 1000 }).map((_, i) => (
-          <div
-            key={i}
-            style={{
-              height: Math.floor(Math.random() * 10) * 10 + 10,
-              borderBottom: "solid 1px gray",
-              background: "white",
-            }}
-          >
-            {i}
-          </div>
-        ))}
-      </WindowVirtualizer>
-    </div>
-  );
-};
-```
-
-#### Tabular data
-
-```tsx
-import { VGrid } from "virtua";
-
-const columns = [
-  { key: "id", width: 80 },
-  { key: "name", width: 200 },
-  { key: "email", width: 300 },
-  { key: "age", width: 80 },
-  { key: "joined", width: 160 },
-  { key: "bio", width: 480 },
-] as const;
-
-const rows = Array.from({ length: 10000 }).map((_, i) => ({
+const sizes = [20, 40, 80, 77];
+const data = Array.from({ length: 1000 }).map((_, i) => ({
   id: i,
-  name: `User ${i}`,
-  email: `user${i}@example.com`,
-  age: 20 + (i % 50),
-  joined: new Date(2020, 0, 1 + i).toDateString(),
-  bio: `Hello, I'm user ${i}.`,
+  size: sizes[i % 4],
 }));
 
 export const App = () => {
   return (
-    <VGrid
-      style={{ height: 800, border: "solid 1px gray", background: "white" }}
-      rows={rows}
-      rowHeight={40}
-      cols={columns}
-      colWidth="width"
-    >
-      {(row, col) => (
+    <VList data={data} style={{ height: 800 }}>
+      {(item) => (
         <div
+          key={item.id}
           style={{
-            borderRight: "solid 1px gray",
-            borderBottom: "solid 1px gray",
+            height: item.size,
+            background: "white",
+            borderBottom: "solid 1px #ccc",
           }}
         >
-          {row[col.key]}
+          {item.id}
         </div>
       )}
-    </VGrid>
+    </VList>
   );
 };
 ```
+
+You can also pass elements as `children` directly instead of `data`.
 
 ### Vue
 
@@ -230,21 +83,24 @@ export const App = () => {
 <script setup>
 import { VList } from "virtua/vue";
 
-const sizes = [20, 40, 180, 77];
-const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]);
+const sizes = [20, 40, 80, 77];
+const data = Array.from({ length: 1000 }).map((_, i) => ({
+  id: i,
+  size: sizes[i % 4],
+}));
 </script>
 
 <template>
-  <VList :data="data" :style="{ height: '800px' }" #default="{ item, index }">
+  <VList :data="data" :style="{ height: '800px' }" #default="{ item }">
     <div
-      :key="index"
+      :key="item.id"
       :style="{
-        height: item + 'px',
-        borderBottom: 'solid 1px #ccc',
+        height: item.size + 'px',
         background: 'white',
+        borderBottom: 'solid 1px #ccc',
       }"
     >
-      {{ index }}
+      {{ item.id }}
     </div>
   </VList>
 </template>
@@ -257,21 +113,24 @@ const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]);
 ```tsx
 import { VList } from "virtua/solid";
 
-export const App = () => {
-  const sizes = [20, 40, 180, 77];
-  const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]);
+const sizes = [20, 40, 80, 77];
+const data = Array.from({ length: 1000 }).map((_, i) => ({
+  id: i,
+  size: sizes[i % 4],
+}));
 
+export const App = () => {
   return (
     <VList data={data} style={{ height: "800px" }}>
-      {(d, i) => (
+      {(item) => (
         <div
           style={{
-            height: d + "px",
-            "border-bottom": "solid 1px #ccc",
+            height: item.size + "px",
             background: "white",
+            "border-bottom": "solid 1px #ccc",
           }}
         >
-          {i()}
+          {item.id}
         </div>
       )}
     </VList>
@@ -287,21 +146,23 @@ export const App = () => {
 <script lang="ts">
   import { VList } from "virtua/svelte";
 
-  const sizes = [20, 40, 180, 77];
-
-  const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]);
+  const sizes = [20, 40, 80, 77];
+  const data = Array.from({ length: 1000 }).map((_, i) => ({
+    id: i,
+    size: sizes[i % 4],
+  }));
 </script>
 
-<VList {data} style="height: 800px;" getKey={(_, i) => i}>
-  {#snippet children(item, index)}
+<VList {data} style="height: 800px;" getKey={(item) => item.id}>
+  {#snippet children(item)}
     <div
       style="
-        height: {item}px;
-        border-bottom: solid 1px #ccc;
+        height: {item.size}px;
         background: white;
+        border-bottom: solid 1px #ccc;
       "
     >
-      {index}
+      {item.id}
     </div>
   {/snippet}
 </VList>
@@ -315,29 +176,30 @@ export const App = () => {
 import { Component } from "@angular/core";
 import { VList } from "virtua/angular";
 
-const sizes = [20, 40, 180, 77];
+const sizes = [20, 40, 80, 77];
 
 @Component({
   selector: "app-root",
   imports: [VList],
   template: `
     <virtua-vlist [data]="data" [getKey]="getKey" style="height: 800px;">
-      <ng-template let-item let-index="index">
+      <ng-template let-item>
         <div
-          [style.height.px]="item"
+          [style.height.px]="item.size"
           style="background: white; border-bottom: solid 1px #ccc;"
         >
-          {{ index }}
+          {{ item.id }}
         </div>
       </ng-template>
     </virtua-vlist>
   `,
 })
 export class App {
-  protected readonly data = Array.from({ length: 1000 }).map(
-    (_, i) => sizes[i % 4]!,
-  );
-  protected readonly getKey = (_: number, i: number) => i;
+  protected readonly data = Array.from({ length: 1000 }).map((_, i) => ({
+    id: i,
+    size: sizes[i % 4],
+  }));
+  protected readonly getKey = (item: { id: number }) => item.id;
 }
 ```
 
@@ -345,10 +207,181 @@ export class App {
 
 - [vanilla-virtua](https://github.com/aabccd021/vanilla-virtua): virtua for vanilla js
 
+## Usage
+
+The examples are written in React, but the same components and props are available in all frameworks.
+
+### Horizontal scroll
+
+```tsx
+import { VList } from "virtua";
+
+const sizes = [20, 40, 80, 77];
+const data = Array.from({ length: 1000 }).map((_, i) => ({
+  id: i,
+  size: sizes[i % 4],
+}));
+
+export const App = () => {
+  return (
+    <VList data={data} style={{ height: 400 }} horizontal>
+      {(item) => (
+        <div
+          key={item.id}
+          style={{
+            width: item.size,
+            background: "white",
+            borderRight: "solid 1px #ccc",
+          }}
+        >
+          {item.id}
+        </div>
+      )}
+    </VList>
+  );
+};
+```
+
+### Custom scroll container
+
+`VList` is a recommended solution which works like a drop-in replacement of simple list built with scrollable `div` (or removed [virtual-scroller element](https://github.com/WICG/virtual-scroller)). For more complicated styling or markup, use `Virtualizer`.
+
+```tsx
+import { Virtualizer } from "virtua";
+
+const sizes = [20, 40, 80, 77];
+const data = Array.from({ length: 1000 }).map((_, i) => ({
+  id: i,
+  size: sizes[i % 4],
+}));
+const headerHeight = 40;
+
+export const App = () => {
+  return (
+    <div
+      style={{
+        height: 800,
+        overflowY: "auto",
+        // opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer
+        overflowAnchor: "none",
+      }}
+    >
+      <div style={{ height: headerHeight }}>header</div>
+      <Virtualizer data={data} startMargin={headerHeight}>
+        {(item) => (
+          <div
+            key={item.id}
+            style={{
+              height: item.size,
+              background: "white",
+              borderBottom: "solid 1px #ccc",
+            }}
+          >
+            {item.id}
+          </div>
+        )}
+      </Virtualizer>
+      <div style={{ height: 600 }}>footer</div>
+    </div>
+  );
+};
+```
+
+### Window scroll
+
+```tsx
+import { WindowVirtualizer } from "virtua";
+
+const sizes = [20, 40, 80, 77];
+const data = Array.from({ length: 1000 }).map((_, i) => ({
+  id: i,
+  size: sizes[i % 4],
+}));
+
+export const App = () => {
+  return (
+    <div style={{ padding: 200 }}>
+      <WindowVirtualizer data={data}>
+        {(item) => (
+          <div
+            key={item.id}
+            style={{
+              height: item.size,
+              background: "white",
+              borderBottom: "solid 1px #ccc",
+            }}
+          >
+            {item.id}
+          </div>
+        )}
+      </WindowVirtualizer>
+    </div>
+  );
+};
+```
+
+### Tabular data
+
+`VGrid` is `VList` extended to two axes. It virtualizes both `rows` and `cols`.
+
+```tsx
+import { VGrid } from "virtua";
+
+const columns = [
+  { key: "id", width: 80 },
+  { key: "name", width: 200 },
+  { key: "email", width: 300 },
+  { key: "age", width: 80 },
+  { key: "joined", width: 160 },
+  { key: "bio", width: 480 },
+] as const;
+
+const rows = [
+  // the header row has no data
+  null,
+  ...Array.from({ length: 10000 }).map((_, i) => ({
+    id: i,
+    name: `User ${i}`,
+    email: `user${i}@example.com`,
+    age: 20 + (i % 50),
+    joined: new Date(2020, 0, 1 + i).toDateString(),
+    bio: `Hello, I'm user ${i}.`,
+  })),
+];
+
+export const App = () => {
+  return (
+    <VGrid
+      style={{ height: 800, border: "solid 1px #ccc", background: "white" }}
+      rows={rows}
+      rowHeight={40}
+      cols={columns}
+      colWidth="width"
+      headerRows={1}
+    >
+      {(row, col) => (
+        <div
+          style={{
+            borderRight: "solid 1px #ccc",
+            borderBottom: "solid 1px #ccc",
+            background: row === null ? "lightgray" : undefined,
+          }}
+        >
+          {row === null ? col.key : row[col.key]}
+        </div>
+      )}
+    </VGrid>
+  );
+};
+```
+
+### More examples
+
+See [demo](https://inokawa.github.io/virtua/) and [its source code](./stories).
+
 ## Documentation
 
 - [API reference](./docs/API.md)
-- [Storybook examples](./stories) for more usages
 - [DeepWiki](https://deepwiki.com/inokawa/virtua)
 
 ### FAQs
