@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/angular";
 import { VMasonry } from "../../../src/angular";
 import { VMasonryDefaultDemo } from "./VMasonryDefault";
+import { VMasonryMediaQueriesDemo } from "./VMasonryMediaQueries";
 import { VMasonryScrollToDemo } from "./VMasonryScrollTo";
 
 export default {
@@ -11,6 +12,13 @@ export const Default: StoryObj = {
   render: () => ({
     template: `<story-vmasonry-default></story-vmasonry-default>`,
     moduleMetadata: { imports: [VMasonryDefaultDemo] },
+  }),
+};
+
+export const MediaQueries: StoryObj = {
+  render: () => ({
+    template: `<story-vmasonry-media-queries></story-vmasonry-media-queries>`,
+    moduleMetadata: { imports: [VMasonryMediaQueriesDemo] },
   }),
 };
 
