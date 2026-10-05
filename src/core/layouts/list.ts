@@ -6,6 +6,7 @@ import { max, min, sort } from "../utils.js";
  * @internal
  */
 export interface ListLayout extends Layout {
+  $findIndex(offset: number): number;
   $snapshot(): CacheSnapshot;
 }
 

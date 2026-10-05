@@ -122,7 +122,6 @@ export const createMasonryLayout = (
       const end = findIndex(getOffset, length, endOffset);
       return [min(findStart(startOffset), end), end];
     },
-    $findIndex: (offset) => findIndex(getOffset, length, offset),
     $getItemOffset: getOffset,
     $getItemSize: getSize,
     $isSizeEqual: (index, size = UNCACHED) => sizes[index] === size,

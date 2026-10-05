@@ -5,7 +5,6 @@ import type { ItemResize, ItemsRange } from "../types.js";
  */
 export interface Layout<T = never> {
   $getRange(startOffset: number, endOffset: number): ItemsRange;
-  $findIndex(offset: number): number;
   $getItemOffset(index: number): number;
   $getItemSize(index: number): number;
   $isSizeEqual(index: number, size?: number): boolean;
