@@ -59,7 +59,6 @@ export const Default: StoryObj = {
 
     const [value, setValue] = useState("Hello world!");
 
-    // The messages are virtualized by turn
     const turns = groupByTurn(items);
 
     useEffect(() => {
