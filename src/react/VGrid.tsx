@@ -526,8 +526,8 @@ export const VGrid = /*#__PURE__*/ forwardRef<
         get viewportWidth() {
           return colStore.$getViewportSize();
         },
-        findRowIndex: rowStore.$findItemIndex,
-        findColIndex: colStore.$findItemIndex,
+        findRowIndex: rowLayout.$findIndex,
+        findColIndex: colLayout.$findIndex,
         getRowOffset: rowStore.$getItemOffset,
         getColOffset: colStore.$getItemOffset,
         getRowSize: rowStore.$getItemSize,

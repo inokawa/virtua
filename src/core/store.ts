@@ -81,7 +81,6 @@ export type VirtualStore<T = never> = {
   $dispose(): void;
   $getStateVersion(): StateVersion;
   $getRange(bufferSize?: number): ItemsRange;
-  $findItemIndex(offset: number): number;
   $isUnmeasuredItem(index: number): boolean;
   $getItemOffset(index: number): number;
   $getItemSize(index: number): number;
@@ -102,7 +101,6 @@ export type VirtualStore<T = never> = {
 export const createVirtualStore = <T = never>(
   {
     $getRange: getRange,
-    $findIndex: findIndex,
     $getItemOffset: getOffset,
     $getItemSize: getItemSize,
     $isSizeEqual: isSizeEqual,
@@ -225,7 +223,6 @@ export const createVirtualStore = <T = never>(
 
       return [max(startIndex, 0), min(endIndex, getLength() - 1)];
     },
-    $findItemIndex: (offset) => findIndex(offset - startSpacerSize),
     $isUnmeasuredItem: isSizeEqual,
     $getItemOffset: getItemOffset,
     $getItemSize: getItemSize,

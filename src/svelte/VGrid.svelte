@@ -148,10 +148,8 @@
     rowStore.$getViewportSize;
   export const getViewportWidth: VGridHandle["getViewportWidth"] =
     colStore.$getViewportSize;
-  export const findRowIndex: VGridHandle["findRowIndex"] =
-    rowStore.$findItemIndex;
-  export const findColIndex: VGridHandle["findColIndex"] =
-    colStore.$findItemIndex;
+  export const findRowIndex: VGridHandle["findRowIndex"] = rowLayout.$findIndex;
+  export const findColIndex: VGridHandle["findColIndex"] = colLayout.$findIndex;
   export const getRowOffset: VGridHandle["getRowOffset"] =
     rowStore.$getItemOffset;
   export const getColOffset: VGridHandle["getColOffset"] =

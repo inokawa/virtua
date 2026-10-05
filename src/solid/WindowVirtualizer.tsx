@@ -190,7 +190,8 @@ export const WindowVirtualizer = <T,>(
       get viewportSize() {
         return store.$getViewportSize();
       },
-      findItemIndex: store.$findItemIndex,
+      findItemIndex: (offset) =>
+        layout.$findIndex(offset - store.$getStartSpacerSize()),
       getItemOffset: store.$getItemOffset,
       getItemSize: store.$getItemSize,
       scrollToIndex: (index, opts) => scrollToIndex(driver, store, index, opts),

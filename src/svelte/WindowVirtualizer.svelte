@@ -112,8 +112,10 @@
     store.$getScrollOffset satisfies WindowVirtualizerHandle["getScrollOffset"] as WindowVirtualizerHandle["getScrollOffset"];
   export const getViewportSize =
     store.$getViewportSize satisfies WindowVirtualizerHandle["getViewportSize"] as WindowVirtualizerHandle["getViewportSize"];
-  export const findItemIndex =
-    store.$findItemIndex satisfies WindowVirtualizerHandle["findItemIndex"] as WindowVirtualizerHandle["findItemIndex"];
+  export const findItemIndex = ((offset) =>
+    layout.$findIndex(
+      offset - store.$getStartSpacerSize(),
+    )) satisfies WindowVirtualizerHandle["findItemIndex"] as WindowVirtualizerHandle["findItemIndex"];
   export const getItemOffset =
     store.$getItemOffset satisfies WindowVirtualizerHandle["getItemOffset"] as WindowVirtualizerHandle["getItemOffset"];
   export const getItemSize =
