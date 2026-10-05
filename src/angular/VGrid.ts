@@ -624,10 +624,10 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
     return this._colStore.$getViewportSize();
   }
   findRowIndex(offset: number): number {
-    return this._rowStore.$findItemIndex(offset);
+    return this._rowLayout.$findIndex(offset);
   }
   findColIndex(offset: number): number {
-    return this._colStore.$findItemIndex(offset);
+    return this._colLayout.$findIndex(offset);
   }
   getRowOffset(index: number): number {
     return this._rowStore.$getItemOffset(index);

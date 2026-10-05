@@ -376,7 +376,7 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
     return this._store.$getViewportSize();
   }
   findItemIndex(offset: number): number {
-    return this._store.$findItemIndex(offset);
+    return this._layout.$findIndex(offset - this._store.$getStartSpacerSize());
   }
   getItemOffset(index: number): number {
     return this._store.$getItemOffset(index);
