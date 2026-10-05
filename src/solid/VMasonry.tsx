@@ -29,6 +29,7 @@ import {
   scrollTo,
   scrollBy,
   scrollToIndex,
+  sort,
   type Driver,
   type ItemsRange,
   type ScrollToIndexOpts,
@@ -160,6 +161,10 @@ export interface VMasonryProps<T> extends ViewportComponentAttributes {
    */
   bufferSize?: number;
   /**
+   * List of indexes that should be always mounted, even when off screen.
+   */
+  keepMounted?: readonly number[];
+  /**
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VMasonryHandle.cache}.
    *
    * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
@@ -190,6 +195,7 @@ export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
     "gap",
     "itemSize",
     "bufferSize",
+    "keepMounted",
     "cache",
     "onScroll",
     "onScrollEnd",
@@ -289,10 +295,25 @@ export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
     });
     const items: T[] = [];
     const indexes: number[] = [];
-    for (let [i, j] = range(); i <= j; i++) {
-      items.push(props.data[i]!);
-      indexes.push(i);
+
+    if (props.keepMounted) {
+      const mounted = new Set(props.keepMounted);
+      for (let [i, j] = range(); i <= j; i++) {
+        mounted.add(i);
+      }
+      sort([...mounted]).forEach((index) => {
+        if (index < count) {
+          items.push(props.data[index]!);
+          indexes.push(index);
+        }
+      });
+    } else {
+      for (let [i, j] = range(); i <= j; i++) {
+        items.push(props.data[i]!);
+        indexes.push(i);
+      }
     }
+
     return { _items: items, _indexes: indexes };
   });
 

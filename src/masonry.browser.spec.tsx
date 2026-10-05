@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
+import { server } from "vitest/browser";
 import { createRef, type Ref } from "react";
 import { render, rerender } from "../spec/browser/react.js";
 import {
@@ -417,6 +418,55 @@ it("renders the items in the buffer with the gap larger than the items", async (
       ),
     )
     .toBe(true);
+});
+
+it("keepMounted keeps the item alive while it's scrolled away", async () => {
+  const ITEM_SIZE = 50;
+  const KEPT = 7;
+  const root = render(
+    <VMasonry
+      lanes={3}
+      itemSize={ITEM_SIZE}
+      data={data}
+      keepMounted={[KEPT]}
+      style={{ height: VIEWPORT }}
+    >
+      {(i) =>
+        i === KEPT ? (
+          <input
+            aria-label="edit"
+            style={{ boxSizing: "border-box", height: ITEM_SIZE }}
+          />
+        ) : (
+          <div style={{ height: ITEM_SIZE }}>item-{i}</div>
+        )
+      }
+    </VMasonry>,
+  );
+  await expectVirtualized(root, "item-0", `item-${COUNT - 1}`);
+  const { viewport, container } = await getVirtualizer(root);
+  const input = root.querySelector("input")!;
+  // Firefox and WebKit scroll a focused element back into view when the DOM around it changes
+  const focusable = server.browser === "chromium";
+  if (focusable) {
+    input.focus();
+  }
+
+  await scrollToLast(root, COUNT - 1);
+  expect(getItem(container, "item-6")).toBeUndefined();
+  expect(root.querySelector("input")).toBe(input);
+  if (focusable) {
+    expect(document.activeElement).toBe(input);
+  }
+
+  viewport.scrollTop = 0;
+  await expect.poll(() => getItem(container, "item-6")).toBeDefined();
+  expect(root.querySelector("input")).toBe(input);
+  // The items with the same size are laid out like a grid
+  await expectPosition(
+    () => relativeTop(viewport, input),
+    Math.floor(KEPT / 3) * ITEM_SIZE,
+  );
 });
 
 it("lays out the appended items after the existing ones", async () => {

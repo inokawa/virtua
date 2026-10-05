@@ -24,6 +24,7 @@ import {
   scrollTo,
   scrollBy,
   scrollToIndex,
+  sort,
   type Driver,
   type CacheSnapshot,
   type ScrollToIndexOpts,
@@ -164,6 +165,10 @@ export interface VMasonryProps<T> extends ViewportComponentAttributes {
    */
   bufferSize?: number;
   /**
+   * List of indexes that should be always mounted, even when off screen.
+   */
+  keepMounted?: readonly number[];
+  /**
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VMasonryHandle.cache}.
    *
    * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
@@ -195,6 +200,7 @@ export const VMasonry = /*#__PURE__*/ forwardRef<
       gap: gapProp,
       itemSize,
       bufferSize,
+      keepMounted,
       cache,
       onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
@@ -295,11 +301,10 @@ export const VMasonry = /*#__PURE__*/ forwardRef<
     const gap = layout.$getGap();
     // The lanes share the width left by the gaps between them
     const crossSize = toCrossValue(1 / lanes, gap / lanes - gap);
-    const [startIndex, endIndex] = store.$getRange(bufferSize);
-    for (let i = startIndex; i <= endIndex; i++) {
+    const renderItem = (i: number) => {
       const e = children(data[i]!, i);
       const lane = layout.$getItemLane(i);
-      items.push(
+      return (
         <MasonryItem
           key={getKey(e, i)}
           _resizer={driver.$observeItem}
@@ -309,8 +314,24 @@ export const VMasonry = /*#__PURE__*/ forwardRef<
           _crossSize={crossSize}
           _hide={store.$isUnmeasuredItem(i)}
           _children={e}
-        />,
+        />
       );
+    };
+
+    if (keepMounted) {
+      const mounted = new Set(keepMounted);
+      for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
+        mounted.add(i);
+      }
+      sort([...mounted]).forEach((index) => {
+        if (index < data.length) {
+          items.push(renderItem(index));
+        }
+      });
+    } else {
+      for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
+        items.push(renderItem(i));
+      }
     }
 
     return (

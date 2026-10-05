@@ -15,6 +15,7 @@
     scrollTo as _scrollTo,
     scrollBy as _scrollBy,
     scrollToIndex as _scrollToIndex,
+    sort,
   } from "../core/index.js";
   import { defaultGetKey, isSameRange, styleToString } from "./utils.js";
   import MasonryItem from "./MasonryItem.svelte";
@@ -32,6 +33,7 @@
     gap: gapProp,
     itemSize,
     bufferSize,
+    keepMounted,
     cache,
     children,
     onscroll,
@@ -82,11 +84,23 @@
     const len = data.length;
     const [start, end] = range;
     const arr: number[] = [];
-    for (let i = start; i <= end; i++) {
-      // Guard for experimental.async: true, which runs the each block before $effect.pre
-      // https://github.com/inokawa/virtua/pull/847
-      if (i < len) {
-        arr.push(i);
+    if (keepMounted) {
+      const mounted = new Set(keepMounted);
+      for (let i = start; i <= end; i++) {
+        mounted.add(i);
+      }
+      for (const index of sort([...mounted])) {
+        if (index < len) {
+          arr.push(index);
+        }
+      }
+    } else {
+      for (let i = start; i <= end; i++) {
+        // Guard for experimental.async: true, which runs the each block before $effect.pre
+        // https://github.com/inokawa/virtua/pull/847
+        if (i < len) {
+          arr.push(i);
+        }
       }
     }
     return arr;
