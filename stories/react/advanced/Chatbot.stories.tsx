@@ -9,57 +9,40 @@ export default {
 
 type Data = {
   id: number;
-  question: string;
-  answer: string;
+  value: string;
+  role: "user" | "assistant";
 };
 
-const itemStyle: CSSProperties = {
-  border: "solid 1px #ccc",
-  background: "#fff",
-  padding: 10,
-  borderRadius: 8,
-  whiteSpace: "pre-wrap",
+// A turn is a message of the user and the messages of the assistant following it
+const groupByTurn = (messages: Data[]): Data[][] => {
+  const turns: Data[][] = [];
+  for (const message of messages) {
+    if (message.role === "user" || !turns.length) {
+      turns.push([message]);
+    } else {
+      turns[turns.length - 1].push(message);
+    }
+  }
+  return turns;
 };
 
-const Turn = ({
-  question,
-  answer,
-  isLast,
-}: {
-  question: string;
-  answer: string;
-  isLast: boolean;
-}) => {
+const Message = ({ value, role }: Pick<Data, "value" | "role">) => {
   return (
-    <div
-      style={{
-        // The last turn fills the viewport, so its question can be scrolled to the top while its answer is short
-        minHeight: isLast ? "100cqh" : undefined,
-      }}
-    >
-      <div style={{ padding: 10 }}>
-        <div
-          style={{
-            ...itemStyle,
-            background: "lightyellow",
-            marginLeft: 160,
-          }}
-        >
-          {question}
-        </div>
+    <div style={{ padding: 10 }}>
+      <div
+        style={{
+          border: "solid 1px #ccc",
+          background: "#fff",
+          padding: 10,
+          borderRadius: 8,
+          whiteSpace: "pre-wrap",
+          ...(role === "user"
+            ? { background: "lightyellow", marginLeft: 160 }
+            : { marginRight: 160 }),
+        }}
+      >
+        {value}
       </div>
-      {answer ? (
-        <div style={{ padding: 10 }}>
-          <div
-            style={{
-              ...itemStyle,
-              marginRight: 160,
-            }}
-          >
-            {answer}
-          </div>
-        </div>
-      ) : null}
     </div>
   );
 };
@@ -76,22 +59,26 @@ export const Default: StoryObj = {
 
     const [value, setValue] = useState("Hello world!");
 
+    // The messages are virtualized by turn
+    const turns = groupByTurn(items);
+
     useEffect(() => {
-      if (!ref.current || !items.length) return;
-      ref.current.scrollToIndex(items.length - 1, {
+      if (!ref.current || !turns.length) return;
+      ref.current.scrollToIndex(turns.length - 1, {
         smooth: true,
         align: "start",
       });
-    }, [items.length]);
+    }, [turns.length]);
 
     const disabled = !value.length || streaming;
     const submit = () => {
       if (disabled) return;
       setValue("");
 
-      const item: Data = { id: id.current++, question: value, answer: "" };
+      const question: Data = { id: id.current++, value, role: "user" };
+      const answer: Data = { id: id.current++, value: "", role: "assistant" };
 
-      setItems((p) => [...p, item]);
+      setItems((p) => [...p, question, answer]);
       setStreaming(true);
 
       // emulate streaming from LLM
@@ -106,8 +93,8 @@ export const Default: StoryObj = {
 
           setItems((p) =>
             p.map((d) =>
-              d.id === item.id
-                ? { ...d, answer: d.answer + faker.lorem.paragraph(amount) }
+              d.id === answer.id
+                ? { ...d, value: d.value + faker.lorem.paragraph(amount) }
                 : d,
             ),
           );
@@ -131,13 +118,20 @@ export const Default: StoryObj = {
             containerType: "size",
           }}
         >
-          {items.map((d, i) => (
-            <Turn
-              key={d.id}
-              question={d.question}
-              answer={d.answer}
-              isLast={i === items.length - 1}
-            />
+          {turns.map((turn, i) => (
+            <div
+              key={turn[0].id}
+              style={{
+                // The last turn fills the viewport, so its question can be scrolled to the top while its answer is short
+                minHeight: i === turns.length - 1 ? "100cqh" : undefined,
+              }}
+            >
+              {turn.map((d) =>
+                d.value ? (
+                  <Message key={d.id} value={d.value} role={d.role} />
+                ) : null,
+              )}
+            </div>
           ))}
         </VList>
 
