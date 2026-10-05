@@ -421,8 +421,14 @@ export const VGrid = /*#__PURE__*/ forwardRef<
     if (colLength !== colStore.$getItemsLength()) {
       colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colLength]);
     }
-    rowStore.$update(ACTION_RELAYOUT, rowSizes);
-    colStore.$update(ACTION_RELAYOUT, colSizes);
+    rowStore.$update(
+      ACTION_RELAYOUT,
+      rowLayout.$relayout(rowSizes, rowStore.$getVisibleOffset()),
+    );
+    colStore.$update(
+      ACTION_RELAYOUT,
+      colLayout.$relayout(colSizes, colStore.$getVisibleOffset()),
+    );
 
     const getStateVersion = () =>
       rowStore.$getStateVersion() + colStore.$getStateVersion();

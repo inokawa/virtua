@@ -38,7 +38,7 @@ export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 8;
 /** @internal */
 export const ACTION_RELAYOUT = 9;
 
-type Actions<T> =
+type Actions =
   | [type: typeof ACTION_SCROLL, offset: number]
   | [type: typeof ACTION_SCROLL_END, dummy?: void]
   | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
@@ -50,7 +50,7 @@ type Actions<T> =
   | [type: typeof ACTION_START_OFFSET_CHANGE, offset: number]
   | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
   | [type: typeof ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, offset: number]
-  | [type: typeof ACTION_RELAYOUT, input: T];
+  | [type: typeof ACTION_RELAYOUT, jump: number | undefined];
 
 /** @internal */
 export const UPDATE_VIRTUAL_STATE = 0b0001;
@@ -77,7 +77,7 @@ export type StateVersion =
 /**
  * @internal
  */
-export type VirtualStore<T = never> = {
+export type VirtualStore = {
   $dispose(): void;
   $getStateVersion(): StateVersion;
   $getRange(bufferSize?: number): ItemsRange;
@@ -86,19 +86,20 @@ export type VirtualStore<T = never> = {
   $getItemSize(index: number): number;
   $getItemsLength(): number;
   $getScrollOffset(): number;
+  $getVisibleOffset(): number;
   $isScrolling(): boolean;
   $getViewportSize(): number;
   $getStartSpacerSize(): number;
   $getTotalSize(): number;
   _flushJump(): [number, boolean];
   $subscribe(target: number, cb: Subscriber): () => void;
-  $update(...action: Actions<T>): void;
+  $update(...action: Actions): void;
 };
 
 /**
  * @internal
  */
-export const createVirtualStore = <T = never>(
+export const createVirtualStore = (
   {
     $getRange: getRange,
     $getItemOffset: getOffset,
@@ -109,10 +110,9 @@ export const createVirtualStore = <T = never>(
     $setLength: setLength,
     $isEstimating: isEstimating,
     $resize: resize,
-    $relayout: relayout,
-  }: Layout<T>,
+  }: Layout,
   ssrCount: number = 0,
-): VirtualStore<T> => {
+): VirtualStore => {
   let isSSR = !!ssrCount;
   let stateVersion: StateVersion = 1;
   let viewportSize = 0;
@@ -228,6 +228,7 @@ export const createVirtualStore = <T = never>(
     $getItemSize: getItemSize,
     $getItemsLength: getLength,
     $getScrollOffset: () => scrollOffset,
+    $getVisibleOffset: getVisibleOffset,
     $isScrolling: () => _scrollDirection !== SCROLL_IDLE,
     $getViewportSize: () => viewportSize,
     $getStartSpacerSize: () => startSpacerSize,
@@ -379,9 +380,8 @@ export const createVirtualStore = <T = never>(
         }
         case ACTION_RELAYOUT: {
           // It never requests a synchronous update, so it's safe to dispatch during render.
-          const relayoutJump = relayout!(payload, getVisibleOffset());
-          if (relayoutJump != NULL) {
-            applyJump(relayoutJump);
+          if (payload != NULL) {
+            applyJump(payload);
             mutated = UPDATE_VIRTUAL_STATE + UPDATE_SIZE_EVENT;
           }
           break;

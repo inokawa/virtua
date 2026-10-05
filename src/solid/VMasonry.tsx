@@ -225,8 +225,10 @@ export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
   });
 
   createComputed(() => {
-    layout.$setOptions(props.lanes, props.gap);
-    store.$update(ACTION_RELAYOUT, undefined);
+    store.$update(
+      ACTION_RELAYOUT,
+      layout.$relayout(props.lanes, props.gap, store.$getVisibleOffset()),
+    );
   });
 
   const range = createMemo<ItemsRange>((prev) => {

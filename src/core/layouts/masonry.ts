@@ -6,9 +6,13 @@ import { max, min, sort } from "../utils.js";
 /**
  * @internal
  */
-export interface MasonryLayout extends Layout<undefined> {
+export interface MasonryLayout extends Layout {
   $snapshot(): CacheSnapshot;
-  $setOptions(lanes: number, gap?: number): void;
+  $relayout(
+    lanes: number,
+    gap: number | undefined,
+    scrollOffset: number,
+  ): number | undefined;
   $getLanes(): number;
   $getGap(): number;
   $getItemLane(index: number): number;
@@ -25,9 +29,6 @@ export const createMasonryLayout = (
   snapshot?: CacheSnapshot | undefined,
 ): MasonryLayout => {
   let lanes = max(lanesOpt, 1);
-  // Applied on relayout, which keeps the item at the scroll offset in place
-  let nextLanes = lanes;
-  let nextGap = gap;
   let defaultItemSize = (snapshot && snapshot[1]) || itemSize || 40;
   let computedIndex = -1;
   // The items measured in the current lanes, which the size is estimated from
@@ -196,7 +197,8 @@ export const createMasonryLayout = (
       // Shift is not supported
       return 0;
     },
-    $relayout: (_, scrollOffset) => {
+    $relayout: (nextLanes, nextGap = 0, scrollOffset) => {
+      nextLanes = max(nextLanes, 1);
       if (nextLanes === lanes && nextGap === gap) {
         return;
       }
@@ -208,10 +210,6 @@ export const createMasonryLayout = (
       // The sizes of items, such as images keeping their aspect ratios, may depend on the width of the lanes, so estimate again from the items measured in the new lanes
       estimatingIndexes = itemSize ? undefined : new Set();
       return getOffset(startIndex) - prevStartOffset;
-    },
-    $setOptions: (lanes, gap = 0) => {
-      nextLanes = max(lanes, 1);
-      nextGap = gap;
     },
     $isEstimating: () => isEstimating,
     $snapshot: () => [sizes.slice(), defaultItemSize],

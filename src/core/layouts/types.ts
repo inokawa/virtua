@@ -3,7 +3,7 @@ import type { ItemResize, ItemsRange } from "../types.js";
 /**
  * @internal
  */
-export interface Layout<T = never> {
+export interface Layout {
   $getRange(startOffset: number, endOffset: number): ItemsRange;
   $getItemOffset(index: number): number;
   $getItemSize(index: number): number;
@@ -18,5 +18,4 @@ export interface Layout<T = never> {
     viewportSize: number,
   ): number;
   $isEstimating(): boolean;
-  $relayout?(input: T, scrollOffset: number): number | undefined;
 }

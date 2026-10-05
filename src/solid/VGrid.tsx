@@ -430,8 +430,14 @@ export const VGrid = <R = number, C = number>(
     if (colLength !== colStore.$getItemsLength()) {
       colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colLength]);
     }
-    rowStore.$update(ACTION_RELAYOUT, rowSizes());
-    colStore.$update(ACTION_RELAYOUT, colSizes());
+    rowStore.$update(
+      ACTION_RELAYOUT,
+      rowLayout.$relayout(rowSizes(), rowStore.$getVisibleOffset()),
+    );
+    colStore.$update(
+      ACTION_RELAYOUT,
+      colLayout.$relayout(colSizes(), colStore.$getVisibleOffset()),
+    );
   });
 
   const rowCount = createMemo(

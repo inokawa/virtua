@@ -235,7 +235,7 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
   private container = viewChild.required<ElementRef<HTMLElement>>("container");
 
   /** @internal */
-  private _store!: VirtualStore<undefined>;
+  private _store!: VirtualStore;
   /** @internal */
   private _layout!: MasonryLayout;
   /** @internal */
@@ -331,8 +331,10 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
       const gap = this.gap();
       if (!this._store) return;
       untracked(() => {
-        this._layout.$setOptions(lanes, gap);
-        this._store.$update(ACTION_RELAYOUT, undefined);
+        this._store.$update(
+          ACTION_RELAYOUT,
+          this._layout.$relayout(lanes, gap, this._store.$getVisibleOffset()),
+        );
       });
     });
 

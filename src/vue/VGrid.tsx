@@ -471,8 +471,14 @@ export const VGrid = /*#__PURE__*/ defineComponent({
       if (colLength !== colStore.$getItemsLength()) {
         colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colLength]);
       }
-      rowStore.$update(ACTION_RELAYOUT, rowSizes.value);
-      colStore.$update(ACTION_RELAYOUT, colSizes.value);
+      rowStore.$update(
+        ACTION_RELAYOUT,
+        rowLayout.$relayout(rowSizes.value, rowStore.$getVisibleOffset()),
+      );
+      colStore.$update(
+        ACTION_RELAYOUT,
+        colLayout.$relayout(colSizes.value, colStore.$getVisibleOffset()),
+      );
     });
 
     const rowCount = computed(

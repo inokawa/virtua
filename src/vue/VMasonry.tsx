@@ -297,8 +297,10 @@ export const VMasonry = /*#__PURE__*/ defineComponent({
       }
     });
     watchEffect(() => {
-      layout.$setOptions(props.lanes, props.gap);
-      store.$update(ACTION_RELAYOUT, undefined);
+      store.$update(
+        ACTION_RELAYOUT,
+        layout.$relayout(props.lanes, props.gap, store.$getVisibleOffset()),
+      );
     });
 
     watch(

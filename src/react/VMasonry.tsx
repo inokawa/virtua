@@ -233,8 +233,10 @@ export const VMasonry = /*#__PURE__*/ forwardRef<
     if (data.length !== store.$getItemsLength()) {
       store.$update(ACTION_ITEMS_LENGTH_CHANGE, [data.length]);
     }
-    layout.$setOptions(lanesProp, gapProp);
-    store.$update(ACTION_RELAYOUT, undefined);
+    store.$update(
+      ACTION_RELAYOUT,
+      layout.$relayout(lanesProp, gapProp, store.$getVisibleOffset()),
+    );
 
     const [stateVersion, rerender] = useReducer(
       store.$getStateVersion,

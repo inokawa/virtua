@@ -120,8 +120,10 @@
     }
   });
   $effect.pre(() => {
-    layout.$setOptions(lanesProp, gapProp);
-    store.$update(ACTION_RELAYOUT, undefined);
+    store.$update(
+      ACTION_RELAYOUT,
+      layout.$relayout(lanesProp, gapProp, store.$getVisibleOffset()),
+    );
   });
 
   let prevStateVersion: StateVersion | undefined;

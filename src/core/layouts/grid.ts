@@ -57,7 +57,7 @@ export type GridAxisSizes = readonly (GridTrackSize | null | undefined)[];
 /**
  * @internal
  */
-export interface GridLayout extends Layout<GridAxisSizes | number | null> {
+export interface GridLayout extends Layout {
   $findIndex(offset: number): number;
   $isMeasurable(index: number): boolean;
   $setPinned(header?: number, footer?: number): void;
@@ -68,6 +68,10 @@ export interface GridLayout extends Layout<GridAxisSizes | number | null> {
     axis: GridAxis<unknown>,
     size: GridTrackSize | string,
   ): GridAxisSizes | number | null;
+  $relayout(
+    sizes: GridAxisSizes | number | null,
+    scrollOffset: number,
+  ): number | undefined;
 }
 
 /**

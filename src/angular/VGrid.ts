@@ -30,7 +30,6 @@ import {
   type GridScrollToIndexOpts,
   type StateVersion,
   type GridAxis,
-  type GridAxisSizes,
   type GridCell as GridCellType,
   type GridSize,
   type GridSpan,
@@ -410,9 +409,9 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
   private container = viewChild.required<ElementRef<HTMLElement>>("container");
 
   /** @internal */
-  private _rowStore!: VirtualStore<GridAxisSizes | number | null>;
+  private _rowStore!: VirtualStore;
   /** @internal */
-  private _colStore!: VirtualStore<GridAxisSizes | number | null>;
+  private _colStore!: VirtualStore;
   /** @internal */
   private _rowLayout!: GridLayout;
   /** @internal */
@@ -522,8 +521,20 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
         if (colLength !== this._colStore.$getItemsLength()) {
           this._colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colLength]);
         }
-        this._rowStore.$update(ACTION_RELAYOUT, rowSizes);
-        this._colStore.$update(ACTION_RELAYOUT, colSizes);
+        this._rowStore.$update(
+          ACTION_RELAYOUT,
+          this._rowLayout.$relayout(
+            rowSizes,
+            this._rowStore.$getVisibleOffset(),
+          ),
+        );
+        this._colStore.$update(
+          ACTION_RELAYOUT,
+          this._colLayout.$relayout(
+            colSizes,
+            this._colStore.$getVisibleOffset(),
+          ),
+        );
       });
     });
 
