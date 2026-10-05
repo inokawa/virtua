@@ -4,7 +4,7 @@
 
 # Interface: VGridHandle
 
-Defined in: [src/solid/VGrid.tsx:52](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VGrid.tsx#L52)
+Defined in: [src/solid/VGrid.tsx:54](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L54)
 
 Methods of [VGrid](../functions/VGrid.md).
 
@@ -14,7 +14,7 @@ Methods of [VGrid](../functions/VGrid.md).
 
 > **findRowIndex**(`offset`): `number`
 
-Defined in: [src/solid/VGrid.tsx:81](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VGrid.tsx#L81)
+Defined in: [src/solid/VGrid.tsx:83](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L83)
 
 Find nearest row index from offset.
 
@@ -36,7 +36,7 @@ offset in pixels from the top of the scroll container
 
 > **findColIndex**(`offset`): `number`
 
-Defined in: [src/solid/VGrid.tsx:86](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VGrid.tsx#L86)
+Defined in: [src/solid/VGrid.tsx:88](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L88)
 
 Find nearest column index from offset.
 
@@ -58,7 +58,7 @@ offset in pixels from the start of the scroll container
 
 > **getRowOffset**(`index`): `number`
 
-Defined in: [src/solid/VGrid.tsx:91](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VGrid.tsx#L91)
+Defined in: [src/solid/VGrid.tsx:93](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L93)
 
 Get offset of the row from the top.
 
@@ -80,7 +80,7 @@ index of row
 
 > **getColOffset**(`index`): `number`
 
-Defined in: [src/solid/VGrid.tsx:96](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VGrid.tsx#L96)
+Defined in: [src/solid/VGrid.tsx:98](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L98)
 
 Get offset of the column from the start.
 
@@ -102,7 +102,7 @@ index of column
 
 > **getRowSize**(`index`): `number`
 
-Defined in: [src/solid/VGrid.tsx:101](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VGrid.tsx#L101)
+Defined in: [src/solid/VGrid.tsx:103](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L103)
 
 Get size of the row.
 
@@ -124,7 +124,7 @@ index of row
 
 > **getColSize**(`index`): `number`
 
-Defined in: [src/solid/VGrid.tsx:106](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VGrid.tsx#L106)
+Defined in: [src/solid/VGrid.tsx:108](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L108)
 
 Get size of the column.
 
@@ -146,7 +146,7 @@ index of column
 
 > **scrollToIndex**(`opts`): `void`
 
-Defined in: [src/solid/VGrid.tsx:111](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VGrid.tsx#L111)
+Defined in: [src/solid/VGrid.tsx:113](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L113)
 
 Scroll to the cell specified by the indexes. The cell is not hidden behind the rows and the columns sticking over it.
 
@@ -168,7 +168,7 @@ the indexes of the cell and the options. See [GridScrollToIndexOpts](../../core/
 
 > **scrollTo**(`offset`): `void`
 
-Defined in: [src/solid/VGrid.tsx:116](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VGrid.tsx#L116)
+Defined in: [src/solid/VGrid.tsx:118](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L118)
 
 Scroll to the given offsets from the top/start of the scroll container.
 
@@ -196,7 +196,7 @@ the offsets. The axis whose offset is omitted is not scrolled.
 
 > **scrollBy**(`offset`): `void`
 
-Defined in: [src/solid/VGrid.tsx:121](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VGrid.tsx#L121)
+Defined in: [src/solid/VGrid.tsx:123](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L123)
 
 Scroll by the given offsets from the current position.
 
@@ -224,7 +224,7 @@ the offsets. The axis whose offset is omitted is not scrolled.
 
 > `readonly` **verticalScrollOffset**: `number`
 
-Defined in: [src/solid/VGrid.tsx:56](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VGrid.tsx#L56)
+Defined in: [src/solid/VGrid.tsx:58](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L58)
 
 Get current scrollTop.
 
@@ -234,7 +234,7 @@ Get current scrollTop.
 
 > `readonly` **horizontalScrollOffset**: `number`
 
-Defined in: [src/solid/VGrid.tsx:60](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VGrid.tsx#L60)
+Defined in: [src/solid/VGrid.tsx:62](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L62)
 
 Get current scrollLeft. Always positive even in RTL.
 
@@ -244,7 +244,7 @@ Get current scrollLeft. Always positive even in RTL.
 
 > `readonly` **scrollHeight**: `number`
 
-Defined in: [src/solid/VGrid.tsx:64](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VGrid.tsx#L64)
+Defined in: [src/solid/VGrid.tsx:66](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L66)
 
 Get current scrollHeight.
 
@@ -254,7 +254,7 @@ Get current scrollHeight.
 
 > `readonly` **scrollWidth**: `number`
 
-Defined in: [src/solid/VGrid.tsx:68](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VGrid.tsx#L68)
+Defined in: [src/solid/VGrid.tsx:70](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L70)
 
 Get current scrollWidth.
 
@@ -264,7 +264,7 @@ Get current scrollWidth.
 
 > `readonly` **viewportHeight**: `number`
 
-Defined in: [src/solid/VGrid.tsx:72](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VGrid.tsx#L72)
+Defined in: [src/solid/VGrid.tsx:74](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L74)
 
 Get current clientHeight.
 
@@ -274,6 +274,6 @@ Get current clientHeight.
 
 > `readonly` **viewportWidth**: `number`
 
-Defined in: [src/solid/VGrid.tsx:76](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VGrid.tsx#L76)
+Defined in: [src/solid/VGrid.tsx:78](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L78)
 
 Get current clientWidth.

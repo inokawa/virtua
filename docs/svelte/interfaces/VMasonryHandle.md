@@ -4,7 +4,7 @@
 
 # Interface: VMasonryHandle
 
-Defined in: [src/svelte/VMasonry.type.ts:67](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/VMasonry.type.ts#L67)
+Defined in: [src/svelte/VMasonry.type.ts:71](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VMasonry.type.ts#L71)
 
 Methods of [VMasonry](../variables/VList.md).
 
@@ -14,7 +14,7 @@ Methods of [VMasonry](../variables/VList.md).
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/svelte/VMasonry.type.ts:88](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/VMasonry.type.ts#L88)
+Defined in: [src/svelte/VMasonry.type.ts:92](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VMasonry.type.ts#L92)
 
 Get item offset from start.
 
@@ -36,7 +36,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/svelte/VMasonry.type.ts:93](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/VMasonry.type.ts#L93)
+Defined in: [src/svelte/VMasonry.type.ts:97](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VMasonry.type.ts#L97)
 
 Get item size.
 
@@ -58,7 +58,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/svelte/VMasonry.type.ts:99](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/VMasonry.type.ts#L99)
+Defined in: [src/svelte/VMasonry.type.ts:103](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VMasonry.type.ts#L103)
 
 Scroll to the item specified by index.
 
@@ -86,7 +86,7 @@ options
 
 > **scrollTo**(`offset`): `void`
 
-Defined in: [src/svelte/VMasonry.type.ts:104](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/VMasonry.type.ts#L104)
+Defined in: [src/svelte/VMasonry.type.ts:108](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VMasonry.type.ts#L108)
 
 Scroll to the given offset.
 
@@ -108,7 +108,7 @@ offset from start
 
 > **scrollBy**(`offset`): `void`
 
-Defined in: [src/svelte/VMasonry.type.ts:109](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/VMasonry.type.ts#L109)
+Defined in: [src/svelte/VMasonry.type.ts:113](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VMasonry.type.ts#L113)
 
 Scroll by the given offset.
 
@@ -130,7 +130,7 @@ offset from current position
 
 > **getCache**: () => [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/svelte/VMasonry.type.ts:71](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/VMasonry.type.ts#L71)
+Defined in: [src/svelte/VMasonry.type.ts:75](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VMasonry.type.ts#L75)
 
 Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
@@ -144,7 +144,7 @@ Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
 > **getScrollOffset**: () => `number`
 
-Defined in: [src/svelte/VMasonry.type.ts:75](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/VMasonry.type.ts#L75)
+Defined in: [src/svelte/VMasonry.type.ts:79](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VMasonry.type.ts#L79)
 
 Get current scrollTop.
 
@@ -158,7 +158,7 @@ Get current scrollTop.
 
 > **getScrollSize**: () => `number`
 
-Defined in: [src/svelte/VMasonry.type.ts:79](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/VMasonry.type.ts#L79)
+Defined in: [src/svelte/VMasonry.type.ts:83](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VMasonry.type.ts#L83)
 
 Get current scrollHeight.
 
@@ -172,7 +172,7 @@ Get current scrollHeight.
 
 > **getViewportSize**: () => `number`
 
-Defined in: [src/svelte/VMasonry.type.ts:83](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/VMasonry.type.ts#L83)
+Defined in: [src/svelte/VMasonry.type.ts:87](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VMasonry.type.ts#L87)
 
 Get current clientHeight.
 

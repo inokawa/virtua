@@ -4,7 +4,7 @@
 
 # Interface: VMasonryProps\<T\>
 
-Defined in: [src/vue/VMasonry.tsx:179](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/vue/VMasonry.tsx#L179)
+Defined in: [src/vue/VMasonry.tsx:180](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/vue/VMasonry.tsx#L180)
 
 Props of [VMasonry](../variables/VMasonry.md).
 
@@ -24,7 +24,7 @@ Props of [VMasonry](../variables/VMasonry.md).
 
 > **data**: `T`[]
 
-Defined in: [src/vue/VMasonry.tsx:183](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/vue/VMasonry.tsx#L183)
+Defined in: [src/vue/VMasonry.tsx:184](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/vue/VMasonry.tsx#L184)
 
 The data items rendered by this component.
 
@@ -34,7 +34,7 @@ The data items rendered by this component.
 
 > **lanes**: `number`
 
-Defined in: [src/vue/VMasonry.tsx:187](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/vue/VMasonry.tsx#L187)
+Defined in: [src/vue/VMasonry.tsx:188](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/vue/VMasonry.tsx#L188)
 
 The number of lanes (columns) which items are laid out into. Each item is placed into the shortest lane in order. It must be an integer and the minimum value is 1.
 
@@ -44,7 +44,7 @@ The number of lanes (columns) which items are laid out into. Each item is placed
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/vue/VMasonry.tsx:192](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/vue/VMasonry.tsx#L192)
+Defined in: [src/vue/VMasonry.tsx:193](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/vue/VMasonry.tsx#L193)
 
 The gap between the items and the lanes in pixels, which is not included in the sizes.
 
@@ -60,7 +60,7 @@ The gap between the items and the lanes in pixels, which is not included in the 
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/vue/VMasonry.tsx:199](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/vue/VMasonry.tsx#L199)
+Defined in: [src/vue/VMasonry.tsx:200](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/vue/VMasonry.tsx#L200)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -73,7 +73,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/vue/VMasonry.tsx:204](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/vue/VMasonry.tsx#L204)
+Defined in: [src/vue/VMasonry.tsx:205](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/vue/VMasonry.tsx#L205)
 
 Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -89,7 +89,7 @@ Extra item space in pixels to render before/after the viewport. The minimum valu
 
 > `optional` **keepMounted?**: readonly `number`[]
 
-Defined in: [src/vue/VMasonry.tsx:208](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/vue/VMasonry.tsx#L208)
+Defined in: [src/vue/VMasonry.tsx:209](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/vue/VMasonry.tsx#L209)
 
 List of indexes that should be always mounted, even when off screen.
 
@@ -99,7 +99,7 @@ List of indexes that should be always mounted, even when off screen.
 
 > `optional` **cache?**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/vue/VMasonry.tsx:214](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/vue/VMasonry.tsx#L214)
+Defined in: [src/vue/VMasonry.tsx:215](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/vue/VMasonry.tsx#L215)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VMasonryHandle.cache](VMasonryHandle.md#cache).
 
@@ -111,7 +111,7 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `optional` **onScroll?**: (`offset`) => `void`
 
-Defined in: [src/vue/VMasonry.tsx:219](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/vue/VMasonry.tsx#L219)
+Defined in: [src/vue/VMasonry.tsx:220](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/vue/VMasonry.tsx#L220)
 
 Callback invoked whenever scroll offset changes.
 
@@ -133,9 +133,23 @@ Current scrollTop.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/vue/VMasonry.tsx:223](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/vue/VMasonry.tsx#L223)
+Defined in: [src/vue/VMasonry.tsx:224](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/vue/VMasonry.tsx#L224)
 
 Callback invoked when scrolling stops.
+
+#### Returns
+
+`void`
+
+***
+
+### onResize?
+
+> `optional` **onResize?**: () => `void`
+
+Defined in: [src/vue/VMasonry.tsx:228](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/vue/VMasonry.tsx#L228)
+
+Callback invoked when the size of the viewport or the items changes.
 
 #### Returns
 

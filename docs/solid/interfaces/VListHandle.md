@@ -4,7 +4,7 @@
 
 # Interface: VListHandle
 
-Defined in: [src/solid/VList.tsx:15](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/VList.tsx#L15)
+Defined in: [src/solid/VList.tsx:15](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VList.tsx#L15)
 
 Methods of [VList](../functions/VList.md).
 
@@ -18,7 +18,7 @@ Methods of [VList](../functions/VList.md).
 
 > **findItemIndex**(`offset`): `number`
 
-Defined in: [src/solid/Virtualizer.tsx:65](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/Virtualizer.tsx#L65)
+Defined in: [src/solid/Virtualizer.tsx:66](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/Virtualizer.tsx#L66)
 
 Find nearest item index from offset.
 
@@ -44,7 +44,7 @@ offset in pixels from the start of the scroll container
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/solid/Virtualizer.tsx:70](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/Virtualizer.tsx#L70)
+Defined in: [src/solid/Virtualizer.tsx:71](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/Virtualizer.tsx#L71)
 
 Get item offset from start.
 
@@ -70,7 +70,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/solid/Virtualizer.tsx:75](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/Virtualizer.tsx#L75)
+Defined in: [src/solid/Virtualizer.tsx:76](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/Virtualizer.tsx#L76)
 
 Get item size.
 
@@ -96,7 +96,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/solid/Virtualizer.tsx:81](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/Virtualizer.tsx#L81)
+Defined in: [src/solid/Virtualizer.tsx:82](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/Virtualizer.tsx#L82)
 
 Scroll to the item specified by index.
 
@@ -128,7 +128,7 @@ options
 
 > **scrollTo**(`offset`): `void`
 
-Defined in: [src/solid/Virtualizer.tsx:86](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/Virtualizer.tsx#L86)
+Defined in: [src/solid/Virtualizer.tsx:87](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/Virtualizer.tsx#L87)
 
 Scroll to the given offset.
 
@@ -154,7 +154,7 @@ offset from start
 
 > **scrollBy**(`offset`): `void`
 
-Defined in: [src/solid/Virtualizer.tsx:91](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/Virtualizer.tsx#L91)
+Defined in: [src/solid/Virtualizer.tsx:92](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/Virtualizer.tsx#L92)
 
 Scroll by the given offset.
 
@@ -180,7 +180,7 @@ offset from current position
 
 > `readonly` **cache**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/solid/Virtualizer.tsx:48](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/Virtualizer.tsx#L48)
+Defined in: [src/solid/Virtualizer.tsx:49](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/Virtualizer.tsx#L49)
 
 Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
@@ -194,7 +194,7 @@ Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
 > `readonly` **scrollOffset**: `number`
 
-Defined in: [src/solid/Virtualizer.tsx:52](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/Virtualizer.tsx#L52)
+Defined in: [src/solid/Virtualizer.tsx:53](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/Virtualizer.tsx#L53)
 
 Get current scrollTop, or scrollLeft if horizontal: true. Always positive even in RTL.
 
@@ -208,7 +208,7 @@ Get current scrollTop, or scrollLeft if horizontal: true. Always positive even i
 
 > `readonly` **scrollSize**: `number`
 
-Defined in: [src/solid/Virtualizer.tsx:56](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/Virtualizer.tsx#L56)
+Defined in: [src/solid/Virtualizer.tsx:57](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/Virtualizer.tsx#L57)
 
 Get current scrollHeight, or scrollWidth if horizontal: true.
 
@@ -222,7 +222,7 @@ Get current scrollHeight, or scrollWidth if horizontal: true.
 
 > `readonly` **viewportSize**: `number`
 
-Defined in: [src/solid/Virtualizer.tsx:60](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/Virtualizer.tsx#L60)
+Defined in: [src/solid/Virtualizer.tsx:61](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/Virtualizer.tsx#L61)
 
 Get current clientHeight, or clientWidth if horizontal: true.
 
