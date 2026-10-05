@@ -23,7 +23,7 @@ const getLanesByMediaQuery = (): number =>
   BREAKPOINTS.find(([query]) => window.matchMedia(query).matches)?.[1] ?? 2;
 
 @Component({
-  selector: "story-vmasonry-media-queries",
+  selector: "story-vmasonry-responsive",
   imports: [VMasonry],
   template: `
     <virtua-vmasonry
@@ -38,7 +38,7 @@ const getLanesByMediaQuery = (): number =>
     </virtua-vmasonry>
   `,
 })
-export class VMasonryMediaQueriesDemo {
+export class VMasonryResponsiveDemo {
   protected readonly data = Array.from({ length: 1000 }, (_, i) => i);
   protected readonly lanes = signal(getLanesByMediaQuery());
 

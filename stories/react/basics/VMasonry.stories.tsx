@@ -132,7 +132,7 @@ const subscribeMediaQueries = (onChange: () => void) => {
   };
 };
 
-export const MediaQueries: StoryObj = {
+export const Responsive: StoryObj = {
   render: () => {
     const lanes = useSyncExternalStore(
       subscribeMediaQueries,

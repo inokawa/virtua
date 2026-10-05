@@ -64,7 +64,7 @@ const BREAKPOINTS = [
 const getLanesByMediaQuery = (): number =>
   BREAKPOINTS.find(([query]) => window.matchMedia(query).matches)?.[1] ?? 2;
 
-export const MediaQueries: StoryObj = {
+export const Responsive: StoryObj = {
   render: () => {
     const [lanes, setLanes] = createSignal(getLanesByMediaQuery());
     const onChange = () => {

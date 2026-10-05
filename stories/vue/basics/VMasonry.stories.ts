@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { VMasonry } from "../../../src/vue";
 import DefaultComponent from "./VMasonryDefault.vue";
-import MediaQueriesComponent from "./VMasonryMediaQueries.vue";
+import ResponsiveComponent from "./VMasonryResponsive.vue";
 import ScrollToComponent from "./VMasonryScrollTo.vue";
 
 export default {
@@ -15,9 +15,9 @@ export const Default: StoryObj = {
   }),
 };
 
-export const MediaQueries: StoryObj = {
+export const Responsive: StoryObj = {
   render: () => ({
-    components: { Component: MediaQueriesComponent },
+    components: { Component: ResponsiveComponent },
     template: "<Component />",
   }),
 };

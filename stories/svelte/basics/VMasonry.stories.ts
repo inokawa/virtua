@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { VMasonry } from "../../../src/svelte";
 import DefaultComponent from "./VMasonryDefault.svelte";
-import MediaQueriesComponent from "./VMasonryMediaQueries.svelte";
+import ResponsiveComponent from "./VMasonryResponsive.svelte";
 import ScrollToComponent from "./VMasonryScrollTo.svelte";
 
 export default {
@@ -14,9 +14,9 @@ export const Default: StoryObj = {
   }),
 };
 
-export const MediaQueries: StoryObj = {
+export const Responsive: StoryObj = {
   render: () => ({
-    Component: MediaQueriesComponent,
+    Component: ResponsiveComponent,
   }),
 };
 
