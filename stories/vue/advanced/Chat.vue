@@ -37,6 +37,12 @@ watch(
   { flush: "post" },
 );
 
+const stickToBottom = () => {
+  if (handleRef.value && shouldStickToBottom.value) {
+    handleRef.value.scrollToIndex(items.value.length - 1, { align: "end" });
+  }
+};
+
 // Auto-scroll to bottom when items change
 let initial = true;
 watch(
@@ -47,11 +53,7 @@ watch(
       await nextTick();
       initial = false;
     }
-    if (!handleRef.value) return;
-    const lastItemIndex = items.value.length - 1;
-    if (shouldStickToBottom.value) {
-      handleRef.value.scrollToIndex(lastItemIndex, { align: "end" });
-    }
+    stickToBottom();
   },
   { flush: "post", immediate: true },
 );
@@ -141,6 +143,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
         :shift="isPrepend"
         :start-margin="spinnerHeight"
         @scroll="handleScroll"
+        @resize="stickToBottom"
       >
         <template #default="{ item }" :key="item.id">
           <div

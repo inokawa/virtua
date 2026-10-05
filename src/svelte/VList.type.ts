@@ -21,6 +21,7 @@ export interface VListProps<T>
       | "children"
       | "onscroll"
       | "onscrollend"
+      | "onresize"
       | "keepMounted"
       | "cache"
       | "itemProps"

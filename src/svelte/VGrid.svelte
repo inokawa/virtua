@@ -5,6 +5,8 @@
     ACTION_ITEMS_LENGTH_CHANGE,
     ACTION_RELAYOUT,
     UPDATE_SCROLL_END_EVENT,
+    UPDATE_SIZE_EVENT,
+    microtask,
     UPDATE_SCROLL_EVENT,
     UPDATE_VIRTUAL_STATE,
     createContainerGridDriver,
@@ -45,6 +47,7 @@
     onverticalscroll,
     onhorizontalscroll,
     onscrollend,
+    onresize,
     ...rest
   }: Props = $props();
 
@@ -86,6 +89,19 @@
   };
   rowStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
   colStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
+  // Notify once after both stores are updated with the sizes observed together
+  let resized: boolean | undefined;
+  const notifyResize = () => {
+    if (!resized) {
+      resized = true;
+      microtask(() => {
+        resized = false;
+        onresize && onresize();
+      });
+    }
+  };
+  rowStore.$subscribe(UPDATE_SIZE_EVENT, notifyResize);
+  colStore.$subscribe(UPDATE_SIZE_EVENT, notifyResize);
 
   $effect.pre(() => {
     rowLayout.$setPinned(headerRows, footerRows);

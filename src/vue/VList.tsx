@@ -35,6 +35,7 @@ export interface VListProps<T = unknown>
       | "itemProps"
       | "onScroll"
       | "onScrollEnd"
+      | "onResize"
       | "keepMounted"
     > {}
 
@@ -58,7 +59,7 @@ export const VList = /*#__PURE__*/ defineComponent({
     keepMounted: Array as PropType<VListProps["keepMounted"]>,
     cache: Object as PropType<VListProps["cache"]>,
   },
-  emits: ["scroll", "scrollEnd"],
+  emits: ["scroll", "scrollEnd", "resize"],
   setup(props, { emit, expose, slots }) {
     const horizontal = props.horizontal;
 
@@ -67,6 +68,9 @@ export const VList = /*#__PURE__*/ defineComponent({
     };
     const onScrollEnd = () => {
       emit("scrollEnd");
+    };
+    const onResize = () => {
+      emit("resize");
     };
 
     const handle = ref<InstanceType<typeof Virtualizer>>();
@@ -116,6 +120,7 @@ export const VList = /*#__PURE__*/ defineComponent({
             cache={props.cache}
             onScroll={onScroll}
             onScrollEnd={onScrollEnd}
+            onResize={onResize}
           >
             {slots}
           </Virtualizer>

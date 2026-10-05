@@ -110,6 +110,10 @@ export interface VGridProps<R = number, C = number> extends Omit<
    * Callback invoked when scrolling stops.
    */
   onscrollend?: () => void;
+  /**
+   * Callback invoked when the size of the viewport or the items changes.
+   */
+  onresize?: () => void;
 }
 
 /**

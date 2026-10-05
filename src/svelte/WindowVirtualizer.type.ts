@@ -58,6 +58,10 @@ export interface WindowVirtualizerProps<T> {
    * Callback invoked when scrolling stops.
    */
   onscrollend?: () => void;
+  /**
+   * Callback invoked when the size of the viewport or the items changes.
+   */
+  onresize?: () => void;
 }
 
 /**

@@ -5,6 +5,7 @@
     type ItemsRange,
     type StateVersion,
     UPDATE_SCROLL_END_EVENT,
+    UPDATE_SIZE_EVENT,
     UPDATE_SCROLL_EVENT,
     UPDATE_VIRTUAL_STATE,
     createVirtualStore,
@@ -34,6 +35,7 @@
     children,
     onscroll,
     onscrollend,
+    onresize,
   }: Props = $props();
 
   const layout = createListLayout(data.length, itemSize, cache);
@@ -48,6 +50,9 @@
   });
   store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
     onscrollend && onscrollend();
+  });
+  store.$subscribe(UPDATE_SIZE_EVENT, () => {
+    onresize && onresize();
   });
 
   let isSSR = $state(!!ssrCount);

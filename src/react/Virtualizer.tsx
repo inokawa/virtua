@@ -16,6 +16,7 @@ import {
   createListLayout,
   UPDATE_VIRTUAL_STATE,
   UPDATE_SCROLL_END_EVENT,
+  UPDATE_SIZE_EVENT,
   getScrollSize,
   ACTION_START_OFFSET_CHANGE,
   createContainerDriver,
@@ -169,6 +170,10 @@ export interface VirtualizerProps<T = unknown> {
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
+  /**
+   * Callback invoked when the size of the viewport or the items changes.
+   */
+  onResize?: () => void;
 }
 
 /**
@@ -195,6 +200,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
       scrollRef,
       onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
+      onResize: onResizeProp,
     },
     ref,
   ): ReactElement => {
@@ -212,6 +218,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
 
     const onScroll = useLatestRef(onScrollProp);
     const onScrollEnd = useLatestRef(onScrollEndProp);
+    const onResize = useLatestRef(onResizeProp);
 
     const [store, layout, driver, isHorizontal] = useStatic(() => {
       const _isHorizontal = !!horizontalProp;
@@ -278,6 +285,9 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
       });
       store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
         onScrollEnd[refKey] && onScrollEnd[refKey]();
+      });
+      store.$subscribe(UPDATE_SIZE_EVENT, () => {
+        onResize[refKey] && onResize[refKey]();
       });
       const container = containerRef[refKey]!;
       if (scrollRef) {

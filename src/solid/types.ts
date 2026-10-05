@@ -2,7 +2,7 @@ import type { JSX, ParentComponent } from "solid-js";
 
 export type ViewportComponentAttributes = Omit<
   JSX.HTMLAttributes<HTMLDivElement>,
-  "ref" | "children" | "style" | "onScroll" | "onScrollEnd"
+  "ref" | "children" | "style" | "onScroll" | "onScrollEnd" | "onResize"
 > & { style?: JSX.CSSProperties };
 
 export interface CustomContainerComponentProps {

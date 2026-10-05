@@ -37,13 +37,16 @@
     isPrepend = false;
   });
 
+  const stickToBottom = () => {
+    if (ref && shouldStickToBottom) {
+      ref.scrollToIndex(items.length - 1, { align: "end" });
+    }
+  };
+
   // Auto-scroll to bottom when items change
   $effect(() => {
-    if (!ref) return;
-    const lastItemIndex = items.length - 1;
-    if (shouldStickToBottom) {
-      ref.scrollToIndex(lastItemIndex, { align: "end" });
-    }
+    items;
+    stickToBottom();
   });
 
   // Auto-add items timer
@@ -132,6 +135,7 @@
       startMargin={spinnerHeight}
       getKey={(d) => d.id}
       onscroll={handleScroll}
+      onresize={stickToBottom}
     >
       {#snippet children(item)}
         {#if item.me === true}

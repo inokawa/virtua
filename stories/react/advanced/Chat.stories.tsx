@@ -112,13 +112,14 @@ export const Default: StoryObj = {
       isPrepend.current = false;
     });
 
-    useEffect(() => {
-      if (!ref.current) return;
-      const handle = ref.current;
-      const lastItemIndex = items.length - 1;
-      if (shouldStickToBottom.current) {
-        handle.scrollToIndex(lastItemIndex, { align: "end" });
+    const stickToBottom = () => {
+      if (ref.current && shouldStickToBottom.current) {
+        ref.current.scrollToIndex(items.length - 1, { align: "end" });
       }
+    };
+
+    useEffect(() => {
+      stickToBottom();
     }, [items]);
 
     useEffect(() => {
@@ -179,6 +180,7 @@ export const Default: StoryObj = {
             ref={ref}
             shift={isPrepend.current}
             startMargin={spinnerHeight}
+            onResize={stickToBottom}
             onScroll={async (offset) => {
               if (!ref.current) return;
               shouldStickToBottom.current =

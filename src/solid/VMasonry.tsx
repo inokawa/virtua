@@ -19,6 +19,7 @@ import { isServer } from "solid-js/web";
 import {
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
+  UPDATE_SIZE_EVENT,
   UPDATE_VIRTUAL_STATE,
   createVirtualStore,
   getScrollSize,
@@ -179,6 +180,10 @@ export interface VMasonryProps<T> extends ViewportComponentAttributes {
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
+  /**
+   * Callback invoked when the size of the viewport or the items changes.
+   */
+  onResize?: () => void;
 }
 
 /**
@@ -199,6 +204,7 @@ export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
     "cache",
     "onScroll",
     "onScrollEnd",
+    "onResize",
     "style",
   ]);
 
@@ -222,6 +228,9 @@ export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
   });
   store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
     props.onScrollEnd?.();
+  });
+  store.$subscribe(UPDATE_SIZE_EVENT, () => {
+    props.onResize?.();
   });
 
   createComputed(() => {

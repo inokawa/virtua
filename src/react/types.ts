@@ -2,7 +2,7 @@ import type { ComponentType, CSSProperties, LegacyRef, ReactNode } from "react";
 
 export type ViewportComponentAttributes = Omit<
   React.HTMLAttributes<HTMLDivElement>,
-  "children" | "onScroll" | "onScrollEnd"
+  "children" | "onScroll" | "onScrollEnd" | "onResize"
 >;
 
 export interface CustomContainerComponentProps {

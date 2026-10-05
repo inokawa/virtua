@@ -51,6 +51,7 @@ export interface VListHandle extends VirtualizerHandle {}
       [cache]="cacheProp()"
       (scrolled)="scrolled.emit($event)"
       (scrollEnded)="scrollEnded.emit()"
+      (resized)="resized.emit()"
     ></div>
   `,
 })
@@ -114,6 +115,10 @@ export class VList<T> implements OnInit, VListHandle {
    * Emitted when scrolling stops.
    */
   readonly scrollEnded = output<void>();
+  /**
+   * Emitted when the size of the viewport or the items changes.
+   */
+  readonly resized = output<void>();
 
   /** @internal */
   readonly template =

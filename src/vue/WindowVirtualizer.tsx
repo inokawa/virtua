@@ -13,6 +13,7 @@ import {
 } from "vue";
 import {
   UPDATE_SCROLL_END_EVENT,
+  UPDATE_SIZE_EVENT,
   UPDATE_VIRTUAL_STATE,
   createVirtualStore,
   createListLayout,
@@ -85,6 +86,10 @@ export interface WindowVirtualizerProps<T = unknown> extends PublicProps {
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
+  /**
+   * Callback invoked when the size of the viewport or the items changes.
+   */
+  onResize?: () => void;
 }
 
 interface WindowVirtualizerInstance<
@@ -154,7 +159,7 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     },
     cache: Object as PropType<WindowVirtualizerProps["cache"]>,
   },
-  emits: ["scroll", "scrollEnd"],
+  emits: ["scroll", "scrollEnd", "resize"],
   setup(props, { emit, slots, expose }) {
     let isSSR = !!props.ssrCount;
 
@@ -178,6 +183,9 @@ export const WindowVirtualizer = /*#__PURE__*/ defineComponent({
     });
     store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
       emit("scrollEnd");
+    });
+    store.$subscribe(UPDATE_SIZE_EVENT, () => {
+      emit("resize");
     });
 
     const range = computed<ItemsRange>((prev) => {

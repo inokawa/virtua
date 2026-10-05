@@ -59,6 +59,10 @@ export interface VMasonryProps<T> extends ViewportComponentAttributes {
    * Callback invoked when scrolling stops.
    */
   onscrollend?: () => void;
+  /**
+   * Callback invoked when the size of the viewport or the items changes.
+   */
+  onresize?: () => void;
 }
 
 /**

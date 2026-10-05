@@ -16,6 +16,7 @@ import {
 import {
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
+  UPDATE_SIZE_EVENT,
   UPDATE_VIRTUAL_STATE,
   createVirtualStore,
   getScrollSize,
@@ -221,6 +222,10 @@ export interface VMasonryProps<T> extends PublicProps {
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
+  /**
+   * Callback invoked when the size of the viewport or the items changes.
+   */
+  onResize?: () => void;
 }
 
 interface VMasonryInstance<T> extends VMasonryHandle {
@@ -244,7 +249,7 @@ export const VMasonry = /*#__PURE__*/ defineComponent({
     keepMounted: Array as PropType<VMasonryProps<unknown>["keepMounted"]>,
     cache: Object as PropType<VMasonryProps<unknown>["cache"]>,
   },
-  emits: ["scroll", "scrollEnd"],
+  emits: ["scroll", "scrollEnd", "resize"],
   setup(props, { emit, expose, slots }) {
     const containerRef = ref<HTMLDivElement>();
     const layout = createMasonryLayout(
@@ -266,6 +271,9 @@ export const VMasonry = /*#__PURE__*/ defineComponent({
     });
     store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
       emit("scrollEnd");
+    });
+    store.$subscribe(UPDATE_SIZE_EVENT, () => {
+      emit("resize");
     });
 
     const range = computed<ItemsRange>((prev) => {
