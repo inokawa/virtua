@@ -1,12 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { VList, VListHandle } from "../../../src";
-import React, {
-  CSSProperties,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { CSSProperties, useEffect, useRef, useState } from "react";
 import { faker } from "@faker-js/faker";
 
 export default {
@@ -15,8 +9,8 @@ export default {
 
 type Data = {
   id: number;
-  value: string;
-  role: "user" | "assistant";
+  question: string;
+  answer: string;
 };
 
 const itemStyle: CSSProperties = {
@@ -27,53 +21,45 @@ const itemStyle: CSSProperties = {
   whiteSpace: "pre-wrap",
 };
 
-const AssistantItem = ({
-  children,
-  blankSize,
+const Turn = ({
+  question,
+  answer,
+  isLast,
 }: {
-  children: ReactNode;
-  blankSize?: number;
+  question: string;
+  answer: string;
+  isLast: boolean;
 }) => {
   return (
-    <div style={{ padding: 10, boxSizing: "border-box", minHeight: blankSize }}>
-      {children ? (
+    <div
+      style={{
+        // The last turn fills the viewport, so its question can be scrolled to the top while its answer is short
+        minHeight: isLast ? "100cqh" : undefined,
+      }}
+    >
+      <div style={{ padding: 10 }}>
         <div
           style={{
             ...itemStyle,
-            marginRight: 160,
+            background: "lightyellow",
+            marginLeft: 160,
           }}
         >
-          {children}
+          {question}
+        </div>
+      </div>
+      {answer ? (
+        <div style={{ padding: 10 }}>
+          <div
+            style={{
+              ...itemStyle,
+              marginRight: 160,
+            }}
+          >
+            {answer}
+          </div>
         </div>
       ) : null}
-    </div>
-  );
-};
-
-const UserItem = ({
-  children,
-  onMeasure,
-}: {
-  children: ReactNode;
-  onMeasure?: (size: number) => void;
-}) => {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (ref.current && onMeasure) {
-      onMeasure(ref.current.getBoundingClientRect().height);
-    }
-  }, []);
-  return (
-    <div ref={ref} style={{ padding: 10, boxSizing: "border-box" }}>
-      <div
-        style={{
-          ...itemStyle,
-          background: "lightyellow",
-          marginLeft: 160,
-        }}
-      >
-        {children}
-      </div>
     </div>
   );
 };
@@ -82,48 +68,31 @@ export const Default: StoryObj = {
   name: "Chatbot",
   render: () => {
     const id = useRef(0);
-    const createItem = ({
-      value = faker.lorem.paragraphs(1),
-      role,
-    }: {
-      value?: string;
-      role: Data["role"];
-    }): Data => ({
-      id: id.current++,
-      value: value,
-      role,
-    });
     const [items, setItems] = useState<Data[]>([]);
 
     const ref = useRef<VListHandle>(null);
 
     const [streaming, setStreaming] = useState(false);
-    const [lastUserSize, setLastUserSize] = useState(0);
-    const [blankSize, setBlankSize] = useState(0);
 
     const [value, setValue] = useState("Hello world!");
+
+    useEffect(() => {
+      if (!ref.current || !items.length) return;
+      ref.current.scrollToIndex(items.length - 1, {
+        smooth: true,
+        align: "start",
+      });
+    }, [items.length]);
 
     const disabled = !value.length || streaming;
     const submit = () => {
       if (disabled) return;
       setValue("");
 
-      const handle = ref.current;
-      if (!handle) return;
-      const lastItemIndex = items.length - 1;
-      const item = createItem({ value: "", role: "assistant" });
-      const { id } = item;
+      const item: Data = { id: id.current++, question: value, answer: "" };
 
-      setItems((p) => [...p, createItem({ role: "user", value }), item]);
+      setItems((p) => [...p, item]);
       setStreaming(true);
-      setBlankSize(handle.viewportSize);
-
-      requestAnimationFrame(() => {
-        handle.scrollToIndex(lastItemIndex + 1, {
-          smooth: true,
-          align: "start",
-        });
-      });
 
       // emulate streaming from LLM
       setTimeout(() => {
@@ -135,15 +104,13 @@ export const Default: StoryObj = {
             clearInterval(interval);
           }
 
-          setItems((p) => {
-            const next = [...p];
-            const i = next.findIndex((item) => item.id === id);
-            next[i] = {
-              ...next[i],
-              value: next[i].value + faker.lorem.paragraph(amount),
-            };
-            return next;
-          });
+          setItems((p) =>
+            p.map((d) =>
+              d.id === item.id
+                ? { ...d, answer: d.answer + faker.lorem.paragraph(amount) }
+                : d,
+            ),
+          );
         }, 100);
       }, 1000);
     };
@@ -157,26 +124,21 @@ export const Default: StoryObj = {
           flexDirection: "column",
         }}
       >
-        <VList ref={ref}>
-          {items.map((d, i) =>
-            d.role === "assistant" ? (
-              <AssistantItem
-                key={d.id}
-                blankSize={
-                  i === items.length - 1 ? blankSize - lastUserSize : undefined
-                }
-              >
-                {d.value}
-              </AssistantItem>
-            ) : (
-              <UserItem
-                key={d.id}
-                onMeasure={i === items.length - 2 ? setLastUserSize : undefined}
-              >
-                {d.value}
-              </UserItem>
-            ),
-          )}
+        <VList
+          ref={ref}
+          style={{
+            // 100cqh is the height of the viewport
+            containerType: "size",
+          }}
+        >
+          {items.map((d, i) => (
+            <Turn
+              key={d.id}
+              question={d.question}
+              answer={d.answer}
+              isLast={i === items.length - 1}
+            />
+          ))}
         </VList>
 
         <form
