@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import { flushSync } from "react-dom";
-import { render } from "../spec/browser/react.js";
+import { render, rerender } from "../spec/browser/react.js";
 import { VGrid, type VGridHandle } from "./react/index.js";
 import {
   cleanupScroll,
@@ -22,7 +22,7 @@ import {
   relativeTop,
   SUBPIXEL,
 } from "../spec/browser/index.js";
-import { delay, range } from "../spec/utils.js";
+import { delay, nextFrame, range } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
 
@@ -685,6 +685,43 @@ it("the scroll end is notified once after both axes have ended", async () => {
   await expect.poll(() => scrollEnds).toBe(2);
   await delay(500);
   expect(scrollEnds).toBe(2);
+});
+
+it("the resize is notified once after both axes have resized", async () => {
+  let resizes = 0;
+  const Grid = ({ size }: { size: number }) => (
+    <VGrid
+      rows={100}
+      rowHeight={40}
+      cols={100}
+      colWidth={100}
+      style={{ height: size, width: size }}
+      onResize={() => {
+        resizes++;
+      }}
+    >
+      {(rowIndex, colIndex) => (
+        <div>
+          {rowIndex} / {colIndex}
+        </div>
+      )}
+    </VGrid>
+  );
+  const root = render(<Grid size={400} />);
+  const { container } = await getVirtualizer(root);
+  await expect.poll(() => cell(container, "0 / 0")).toBeTruthy();
+  // wait for the notifications of the mount
+  await nextFrame();
+  await nextFrame();
+  resizes = 0;
+
+  flushSync(() => {
+    rerender(root, <Grid size={300} />);
+  });
+  await expect.poll(() => resizes).toBeGreaterThan(0);
+  await nextFrame();
+
+  expect(resizes).toBe(1);
 });
 
 const WIDE = 300;

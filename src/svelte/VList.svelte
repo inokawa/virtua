@@ -19,6 +19,7 @@
     children,
     onscroll,
     onscrollend,
+    onresize,
     ...rest
   }: Props = $props();
 
@@ -86,5 +87,6 @@
     {itemProps}
     {onscroll}
     {onscrollend}
+    {onresize}
   />
 </div>

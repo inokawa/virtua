@@ -16,6 +16,7 @@ import {
 import { isServer } from "solid-js/web";
 import {
   UPDATE_SCROLL_END_EVENT,
+  UPDATE_SIZE_EVENT,
   UPDATE_VIRTUAL_STATE,
   createVirtualStore,
   createListLayout,
@@ -125,6 +126,10 @@ export interface WindowVirtualizerProps<T> {
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
+  /**
+   * Callback invoked when the size of the viewport or the items changes.
+   */
+  onResize?: () => void;
 }
 
 /**
@@ -164,6 +169,9 @@ export const WindowVirtualizer = <T,>(
   });
   store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
     props.onScrollEnd?.();
+  });
+  store.$subscribe(UPDATE_SIZE_EVENT, () => {
+    props.onResize?.();
   });
 
   const range = createMemo<ItemsRange>((prev) => {

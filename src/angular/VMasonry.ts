@@ -28,6 +28,7 @@ import {
   type StateVersion,
   type VirtualStore,
   UPDATE_SCROLL_END_EVENT,
+  UPDATE_SIZE_EVENT,
   UPDATE_SCROLL_EVENT,
   UPDATE_VIRTUAL_STATE,
   createContainerDriver,
@@ -225,6 +226,10 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
    * Emitted when scrolling stops.
    */
   readonly scrollEnded = output<void>();
+  /**
+   * Emitted when the size of the viewport or the items changes.
+   */
+  readonly resized = output<void>();
 
   /** @internal */
   protected template =
@@ -389,6 +394,9 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
     });
     store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
       this.scrollEnded.emit();
+    });
+    store.$subscribe(UPDATE_SIZE_EVENT, () => {
+      this.resized.emit();
     });
     this._stateVersion.set(store.$getStateVersion());
   }

@@ -16,6 +16,8 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   ACTION_RELAYOUT,
   UPDATE_SCROLL_END_EVENT,
+  UPDATE_SIZE_EVENT,
+  microtask,
   UPDATE_SCROLL_EVENT,
   UPDATE_VIRTUAL_STATE,
   createContainerGridDriver,
@@ -133,6 +135,10 @@ export interface VGridProps<R = number, C = number> extends PublicProps {
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
+  /**
+   * Callback invoked when the size of the viewport or the items changes.
+   */
+  onResize?: () => void;
 }
 
 /**
@@ -414,7 +420,7 @@ export const VGrid = /*#__PURE__*/ defineComponent({
     gap: { type: Number, default: 0 },
     ariaSort: Object as PropType<VGridProps["ariaSort"]>,
   },
-  emits: ["verticalScroll", "horizontalScroll", "scrollEnd"],
+  emits: ["verticalScroll", "horizontalScroll", "scrollEnd", "resize"],
   setup(props, { emit, expose, slots }) {
     const containerRef = ref<HTMLDivElement>();
 
@@ -459,6 +465,19 @@ export const VGrid = /*#__PURE__*/ defineComponent({
     };
     rowStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
     colStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
+    // Notify once after both stores are updated with the sizes observed together
+    let resized: boolean | undefined;
+    const notifyResize = () => {
+      if (!resized) {
+        resized = true;
+        microtask(() => {
+          resized = false;
+          emit("resize");
+        });
+      }
+    };
+    rowStore.$subscribe(UPDATE_SIZE_EVENT, notifyResize);
+    colStore.$subscribe(UPDATE_SIZE_EVENT, notifyResize);
 
     watchEffect(() => {
       rowLayout.$setPinned(props.headerRows, props.footerRows);

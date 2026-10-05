@@ -102,11 +102,15 @@ export const Default: StoryObj = {
       setIsPrepend(false);
     });
 
-    createEffect(() => {
-      const lastItemIndex = items().length - 1;
-      if (shouldStickToBottom()) {
-        virtualizerHandle?.scrollToIndex(lastItemIndex, { align: "end" });
+    const stickToBottom = () => {
+      if (virtualizerHandle && shouldStickToBottom()) {
+        virtualizerHandle.scrollToIndex(items().length - 1, { align: "end" });
       }
+    };
+
+    createEffect(() => {
+      items();
+      stickToBottom();
     });
 
     onMount(() => {
@@ -166,6 +170,7 @@ export const Default: StoryObj = {
             data={items()}
             shift={isPrepend()}
             startMargin={spinnerHeight}
+            onResize={stickToBottom}
             onScroll={async (offset) => {
               const handle = virtualizerHandle;
               if (!handle) return;

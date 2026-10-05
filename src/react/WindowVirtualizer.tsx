@@ -14,6 +14,7 @@ import {
   createVirtualStore,
   createListLayout,
   UPDATE_SCROLL_END_EVENT,
+  UPDATE_SIZE_EVENT,
   UPDATE_SCROLL_EVENT,
   createWindowDriver,
   scrollToIndex,
@@ -135,6 +136,10 @@ export interface WindowVirtualizerProps<T = unknown> {
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
+  /**
+   * Callback invoked when the size of the viewport or the items changes.
+   */
+  onResize?: () => void;
 }
 
 /**
@@ -158,6 +163,7 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
       item: ItemElement = "div",
       onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
+      onResize: onResizeProp,
     },
     ref,
   ): ReactElement => {
@@ -173,6 +179,7 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
 
     const onScroll = useLatestRef(onScrollProp);
     const onScrollEnd = useLatestRef(onScrollEndProp);
+    const onResize = useLatestRef(onResizeProp);
 
     const isSSR = useRef(!!ssrCount);
 
@@ -221,6 +228,9 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
       });
       store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
         onScrollEnd[refKey] && onScrollEnd[refKey]();
+      });
+      store.$subscribe(UPDATE_SIZE_EVENT, () => {
+        onResize[refKey] && onResize[refKey]();
       });
 
       driver.$observe(containerRef[refKey]!);

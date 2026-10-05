@@ -4,6 +4,7 @@
     type ItemsRange,
     type StateVersion,
     UPDATE_SCROLL_END_EVENT,
+    UPDATE_SIZE_EVENT,
     UPDATE_SCROLL_EVENT,
     UPDATE_VIRTUAL_STATE,
     createContainerDriver,
@@ -38,6 +39,7 @@
     children,
     onscroll,
     onscrollend,
+    onresize,
     ...rest
   }: Props = $props();
 
@@ -58,6 +60,9 @@
   });
   store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
     onscrollend && onscrollend();
+  });
+  store.$subscribe(UPDATE_SIZE_EVENT, () => {
+    onresize && onresize();
   });
 
   let containerRef: HTMLDivElement | undefined = $state();

@@ -33,6 +33,7 @@ export interface VListProps<T>
       | "item"
       | "onScroll"
       | "onScrollEnd"
+      | "onResize"
       | "keepMounted"
     >,
     ViewportComponentAttributes {}
@@ -55,6 +56,7 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
     "item",
     "onScroll",
     "onScrollEnd",
+    "onResize",
     "style",
   ]);
 
@@ -83,6 +85,7 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
         item={local.item}
         onScroll={local.onScroll}
         onScrollEnd={local.onScrollEnd}
+        onResize={local.onResize}
       >
         {local.children}
       </Virtualizer>

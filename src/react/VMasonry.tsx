@@ -16,6 +16,7 @@ import {
   createVirtualStore,
   UPDATE_VIRTUAL_STATE,
   UPDATE_SCROLL_END_EVENT,
+  UPDATE_SIZE_EVENT,
   getScrollSize,
   createContainerDriver,
   createMasonryLayout,
@@ -183,6 +184,10 @@ export interface VMasonryProps<T> extends ViewportComponentAttributes {
    * Callback invoked when scrolling stops.
    */
   onScrollEnd?: () => void;
+  /**
+   * Callback invoked when the size of the viewport or the items changes.
+   */
+  onResize?: () => void;
 }
 
 /**
@@ -204,6 +209,7 @@ export const VMasonry = /*#__PURE__*/ forwardRef<
       cache,
       onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
+      onResize: onResizeProp,
       style,
       ...attrs
     },
@@ -217,6 +223,7 @@ export const VMasonry = /*#__PURE__*/ forwardRef<
 
     const onScroll = useLatestRef(onScrollProp);
     const onScrollEnd = useLatestRef(onScrollEndProp);
+    const onResize = useLatestRef(onResizeProp);
 
     const [store, layout, driver] = useStatic(() => {
       const _layout = createMasonryLayout(
@@ -261,6 +268,9 @@ export const VMasonry = /*#__PURE__*/ forwardRef<
       });
       store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
         onScrollEnd[refKey] && onScrollEnd[refKey]();
+      });
+      store.$subscribe(UPDATE_SIZE_EVENT, () => {
+        onResize[refKey] && onResize[refKey]();
       });
 
       driver.$observe(containerRef[refKey]!);

@@ -66,6 +66,7 @@ const createItem = ({
           [startMargin]="spinnerHeight"
           [getKey]="getKey"
           (scrolled)="onScroll($event)"
+          (resized)="stickToBottom()"
         >
           <ng-template let-item>
             @if (item.me === true) {
@@ -155,13 +156,9 @@ export class ChatDemo {
     // Auto-scroll to bottom when items change, or when it gets stuck to the bottom
     // again while the items around the destination are still being measured
     afterRenderEffect(() => {
-      const lastItemIndex = this.items().length - 1;
-      const shouldStickToBottom = this.shouldStickToBottom();
-      untracked(() => {
-        if (shouldStickToBottom) {
-          this.ref()?.scrollToIndex(lastItemIndex, { align: "end" });
-        }
-      });
+      this.items();
+      this.shouldStickToBottom();
+      untracked(() => this.stickToBottom());
     });
 
     // Auto-add items timer
@@ -178,6 +175,13 @@ export class ChatDemo {
         clearTimeout(timer);
       }
     });
+  }
+
+  protected stickToBottom(): void {
+    const ref = this.ref();
+    if (ref && this.shouldStickToBottom()) {
+      ref.scrollToIndex(this.items().length - 1, { align: "end" });
+    }
   }
 
   protected async onScroll(offset: number): Promise<void> {

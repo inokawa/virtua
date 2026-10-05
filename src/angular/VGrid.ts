@@ -37,6 +37,8 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   ACTION_RELAYOUT,
   UPDATE_SCROLL_END_EVENT,
+  UPDATE_SIZE_EVENT,
+  microtask,
   UPDATE_SCROLL_EVENT,
   UPDATE_VIRTUAL_STATE,
   createContainerGridDriver,
@@ -399,6 +401,10 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
    * Emitted when scrolling stops.
    */
   readonly scrollEnded = output<void>();
+  /**
+   * Emitted when the size of the viewport or the items changes.
+   */
+  readonly resized = output<void>();
 
   /** @internal */
   protected template =
@@ -613,6 +619,19 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
     };
     rowStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
     colStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
+    // Notify once after both stores are updated with the sizes observed together
+    let resized: boolean | undefined;
+    const notifyResize = () => {
+      if (!resized) {
+        resized = true;
+        microtask(() => {
+          resized = false;
+          this.resized.emit();
+        });
+      }
+    };
+    rowStore.$subscribe(UPDATE_SIZE_EVENT, notifyResize);
+    colStore.$subscribe(UPDATE_SIZE_EVENT, notifyResize);
     rerender();
   }
 
