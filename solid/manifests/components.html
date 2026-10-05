@@ -1256,11 +1256,15 @@
     setIsPrepend(false);
   });
 
-  createEffect(() =&gt; {
-    const lastItemIndex = items().length - 1;
-    if (shouldStickToBottom()) {
-      virtualizerHandle?.scrollToIndex(lastItemIndex, { align: &quot;end&quot; });
+  const stickToBottom = () =&gt; {
+    if (virtualizerHandle &amp;&amp; shouldStickToBottom()) {
+      virtualizerHandle.scrollToIndex(items().length - 1, { align: &quot;end&quot; });
     }
+  };
+
+  createEffect(() =&gt; {
+    items();
+    stickToBottom();
   });
 
   onMount(() =&gt; {
@@ -1320,6 +1324,7 @@
           data={items()}
           shift={isPrepend()}
           startMargin={spinnerHeight}
+          onResize={stickToBottom}
           onScroll={async (offset) =&gt; {
             const handle = virtualizerHandle;
             if (!handle) return;
@@ -2714,11 +2719,15 @@
     setIsPrepend(false);
   });
 
-  createEffect(() =&gt; {
-    const lastItemIndex = items().length - 1;
-    if (shouldStickToBottom()) {
-      virtualizerHandle?.scrollToIndex(lastItemIndex, { align: &quot;end&quot; });
+  const stickToBottom = () =&gt; {
+    if (virtualizerHandle &amp;&amp; shouldStickToBottom()) {
+      virtualizerHandle.scrollToIndex(items().length - 1, { align: &quot;end&quot; });
     }
+  };
+
+  createEffect(() =&gt; {
+    items();
+    stickToBottom();
   });
 
   onMount(() =&gt; {
@@ -2778,6 +2787,7 @@
           data={items()}
           shift={isPrepend()}
           startMargin={spinnerHeight}
+          onResize={stickToBottom}
           onScroll={async (offset) =&gt; {
             const handle = virtualizerHandle;
             if (!handle) return;

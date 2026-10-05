@@ -1,0 +1,1 @@
+import{t as e}from"./iframe-My_PXlEF.js";e();
