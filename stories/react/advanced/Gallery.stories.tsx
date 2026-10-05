@@ -78,7 +78,7 @@ const Viewer = ({ photo, onClose }: { photo: Photo; onClose: () => void }) => {
     // Return the focus to the photo in the grid when closed
     const opener = document.activeElement as HTMLElement | null;
     return () => {
-      opener?.focus();
+      opener?.focus({ preventScroll: true });
     };
   }, []);
   useEffect(() => {
