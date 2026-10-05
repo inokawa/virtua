@@ -129,9 +129,9 @@
           "description": ""
         },
         {
-          "id": "basics-vmasonry--media-queries",
-          "name": "Media Queries",
-          "snippet": "const MediaQueries = () => {\n  const [lanes, setLanes] = createSignal(getLanesByMediaQuery());\n  const onChange = () => {\n    setLanes(getLanesByMediaQuery());\n  };\n  const lists = BREAKPOINTS.map(([query]) => window.matchMedia(query));\n  lists.forEach((list) => list.addEventListener(\"change\", onChange));\n  onCleanup(() => {\n    lists.forEach((list) => list.removeEventListener(\"change\", onChange));\n  });\n  return (\n    <VMasonry\n      style={{ height: \"100vh\" }}\n      lanes={lanes()}\n      gap={8}\n      data={data1000}\n    >\n      {(i) => <div style={aspectRatioItemStyle(i)}>{i}</div>}\n    </VMasonry>\n  );\n};",
+          "id": "basics-vmasonry--responsive",
+          "name": "Responsive",
+          "snippet": "const Responsive = () => {\n  const [lanes, setLanes] = createSignal(getLanesByMediaQuery());\n  const onChange = () => {\n    setLanes(getLanesByMediaQuery());\n  };\n  const lists = BREAKPOINTS.map(([query]) => window.matchMedia(query));\n  lists.forEach((list) => list.addEventListener(\"change\", onChange));\n  onCleanup(() => {\n    lists.forEach((list) => list.removeEventListener(\"change\", onChange));\n  });\n  return (\n    <VMasonry\n      style={{ height: \"100vh\" }}\n      lanes={lanes()}\n      gap={8}\n      data={data1000}\n    >\n      {(i) => <div style={aspectRatioItemStyle(i)}>{i}</div>}\n    </VMasonry>\n  );\n};",
           "description": ""
         },
         {
@@ -192,7 +192,7 @@
   },
   "meta": {
     "docgen": "react-component-meta",
-    "durationMs": 123,
+    "durationMs": 80,
     "engine": "solid-component-meta"
   }
 }
