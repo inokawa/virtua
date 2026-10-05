@@ -6,7 +6,7 @@
 
 > `const` **VMasonry**: \<`T`\>(`props`) => `ReactElement`
 
-Defined in: [src/react/VMasonry.tsx:186](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/react/VMasonry.tsx#L186)
+Defined in: [src/react/VMasonry.tsx:191](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/react/VMasonry.tsx#L191)
 
 Virtualized masonry component. See [VMasonryProps](../interfaces/VMasonryProps.md) and [VMasonryHandle](../interfaces/VMasonryHandle.md).
 

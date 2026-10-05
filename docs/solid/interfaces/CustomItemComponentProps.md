@@ -4,7 +4,7 @@
 
 # Interface: CustomItemComponentProps
 
-Defined in: [src/solid/types.ts:20](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/solid/types.ts#L20)
+Defined in: [src/solid/types.ts:20](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/types.ts#L20)
 
 Props of customized item component for [Virtualizer](../functions/Virtualizer.md) or [WindowVirtualizer](../functions/WindowVirtualizer.md).
 
@@ -14,7 +14,7 @@ Props of customized item component for [Virtualizer](../functions/Virtualizer.md
 
 > **style**: `CSSProperties`
 
-Defined in: [src/solid/types.ts:21](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/solid/types.ts#L21)
+Defined in: [src/solid/types.ts:21](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/types.ts#L21)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [src/solid/types.ts:21](https://github.com/inokawa/virtua/blob/b906c
 
 > **index**: `number`
 
-Defined in: [src/solid/types.ts:22](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/solid/types.ts#L22)
+Defined in: [src/solid/types.ts:22](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/types.ts#L22)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [src/solid/types.ts:22](https://github.com/inokawa/virtua/blob/b906c
 
 > **children**: `Element`
 
-Defined in: [src/solid/types.ts:23](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/solid/types.ts#L23)
+Defined in: [src/solid/types.ts:23](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/types.ts#L23)
 
 ***
 
@@ -38,4 +38,4 @@ Defined in: [src/solid/types.ts:23](https://github.com/inokawa/virtua/blob/b906c
 
 > `optional` **ref?**: `any`
 
-Defined in: [src/solid/types.ts:24](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/solid/types.ts#L24)
+Defined in: [src/solid/types.ts:24](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/types.ts#L24)

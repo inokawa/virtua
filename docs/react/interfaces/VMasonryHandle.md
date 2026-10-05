@@ -4,7 +4,7 @@
 
 # Interface: VMasonryHandle
 
-Defined in: [src/react/VMasonry.tsx:88](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/react/VMasonry.tsx#L88)
+Defined in: [src/react/VMasonry.tsx:89](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/react/VMasonry.tsx#L89)
 
 Methods of [VMasonry](../variables/VMasonry.md).
 
@@ -14,7 +14,7 @@ Methods of [VMasonry](../variables/VMasonry.md).
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/react/VMasonry.tsx:109](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/react/VMasonry.tsx#L109)
+Defined in: [src/react/VMasonry.tsx:110](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/react/VMasonry.tsx#L110)
 
 Get item offset from start.
 
@@ -36,7 +36,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/react/VMasonry.tsx:114](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/react/VMasonry.tsx#L114)
+Defined in: [src/react/VMasonry.tsx:115](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/react/VMasonry.tsx#L115)
 
 Get item size.
 
@@ -58,7 +58,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/react/VMasonry.tsx:120](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/react/VMasonry.tsx#L120)
+Defined in: [src/react/VMasonry.tsx:121](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/react/VMasonry.tsx#L121)
 
 Scroll to the item specified by index.
 
@@ -86,7 +86,7 @@ options
 
 > **scrollTo**(`offset`): `void`
 
-Defined in: [src/react/VMasonry.tsx:125](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/react/VMasonry.tsx#L125)
+Defined in: [src/react/VMasonry.tsx:126](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/react/VMasonry.tsx#L126)
 
 Scroll to the given offset.
 
@@ -108,7 +108,7 @@ offset from start
 
 > **scrollBy**(`offset`): `void`
 
-Defined in: [src/react/VMasonry.tsx:130](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/react/VMasonry.tsx#L130)
+Defined in: [src/react/VMasonry.tsx:131](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/react/VMasonry.tsx#L131)
 
 Scroll by the given offset.
 
@@ -130,7 +130,7 @@ offset from current position
 
 > `readonly` **cache**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/react/VMasonry.tsx:92](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/react/VMasonry.tsx#L92)
+Defined in: [src/react/VMasonry.tsx:93](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/react/VMasonry.tsx#L93)
 
 Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
@@ -140,7 +140,7 @@ Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
 > `readonly` **scrollOffset**: `number`
 
-Defined in: [src/react/VMasonry.tsx:96](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/react/VMasonry.tsx#L96)
+Defined in: [src/react/VMasonry.tsx:97](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/react/VMasonry.tsx#L97)
 
 Get current scrollTop.
 
@@ -150,7 +150,7 @@ Get current scrollTop.
 
 > `readonly` **scrollSize**: `number`
 
-Defined in: [src/react/VMasonry.tsx:100](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/react/VMasonry.tsx#L100)
+Defined in: [src/react/VMasonry.tsx:101](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/react/VMasonry.tsx#L101)
 
 Get current scrollHeight.
 
@@ -160,6 +160,6 @@ Get current scrollHeight.
 
 > `readonly` **viewportSize**: `number`
 
-Defined in: [src/react/VMasonry.tsx:104](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/react/VMasonry.tsx#L104)
+Defined in: [src/react/VMasonry.tsx:105](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/react/VMasonry.tsx#L105)
 
 Get current clientHeight.

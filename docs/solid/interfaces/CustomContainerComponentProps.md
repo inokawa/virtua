@@ -4,7 +4,7 @@
 
 # Interface: CustomContainerComponentProps
 
-Defined in: [src/solid/types.ts:8](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/solid/types.ts#L8)
+Defined in: [src/solid/types.ts:8](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/types.ts#L8)
 
 ## Properties
 
@@ -12,7 +12,7 @@ Defined in: [src/solid/types.ts:8](https://github.com/inokawa/virtua/blob/b906c6
 
 > **style**: `CSSProperties`
 
-Defined in: [src/solid/types.ts:9](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/solid/types.ts#L9)
+Defined in: [src/solid/types.ts:9](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/types.ts#L9)
 
 ***
 
@@ -20,7 +20,7 @@ Defined in: [src/solid/types.ts:9](https://github.com/inokawa/virtua/blob/b906c6
 
 > **children**: `Element`
 
-Defined in: [src/solid/types.ts:10](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/solid/types.ts#L10)
+Defined in: [src/solid/types.ts:10](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/types.ts#L10)
 
 ***
 
@@ -28,4 +28,4 @@ Defined in: [src/solid/types.ts:10](https://github.com/inokawa/virtua/blob/b906c
 
 > `optional` **ref?**: `any`
 
-Defined in: [src/solid/types.ts:11](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/solid/types.ts#L11)
+Defined in: [src/solid/types.ts:11](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/solid/types.ts#L11)

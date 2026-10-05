@@ -4,7 +4,7 @@
 
 # Class: VMasonry\<T\>
 
-Defined in: [src/angular/VMasonry.ts:176](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L176)
+Defined in: [src/angular/VMasonry.ts:177](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L177)
 
 Virtualized masonry component. See [VMasonryHandle](../interfaces/VMasonryHandle.md).
 
@@ -29,7 +29,7 @@ The host element is the scrollable viewport of the masonry.
 
 > **get** **cache**(): [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/angular/VMasonry.ts:365](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L365)
+Defined in: [src/angular/VMasonry.ts:394](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L394)
 
 Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
@@ -51,7 +51,7 @@ Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
 > **get** **scrollOffset**(): `number`
 
-Defined in: [src/angular/VMasonry.ts:368](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L368)
+Defined in: [src/angular/VMasonry.ts:397](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L397)
 
 Get current scrollTop.
 
@@ -73,7 +73,7 @@ Get current scrollTop.
 
 > **get** **scrollSize**(): `number`
 
-Defined in: [src/angular/VMasonry.ts:371](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L371)
+Defined in: [src/angular/VMasonry.ts:400](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L400)
 
 Get current scrollHeight.
 
@@ -95,7 +95,7 @@ Get current scrollHeight.
 
 > **get** **viewportSize**(): `number`
 
-Defined in: [src/angular/VMasonry.ts:374](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L374)
+Defined in: [src/angular/VMasonry.ts:403](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L403)
 
 Get current clientHeight.
 
@@ -115,7 +115,7 @@ Get current clientHeight.
 
 > **new VMasonry**\<`T`\>(): `VMasonry`\<`T`\>
 
-Defined in: [src/angular/VMasonry.ts:289](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L289)
+Defined in: [src/angular/VMasonry.ts:318](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L318)
 
 #### Returns
 
@@ -127,7 +127,7 @@ Defined in: [src/angular/VMasonry.ts:289](https://github.com/inokawa/virtua/blob
 
 > **ngOnInit**(): `void`
 
-Defined in: [src/angular/VMasonry.ts:329](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L329)
+Defined in: [src/angular/VMasonry.ts:358](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L358)
 
 A callback method that is invoked immediately after the
 default change detector has checked the directive's
@@ -149,7 +149,7 @@ It is invoked only once when the directive is instantiated.
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/angular/VMasonry.ts:377](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L377)
+Defined in: [src/angular/VMasonry.ts:406](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L406)
 
 Get item offset from start.
 
@@ -175,7 +175,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/angular/VMasonry.ts:380](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L380)
+Defined in: [src/angular/VMasonry.ts:409](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L409)
 
 Get item size.
 
@@ -201,7 +201,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/angular/VMasonry.ts:383](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L383)
+Defined in: [src/angular/VMasonry.ts:412](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L412)
 
 Scroll to the item specified by index.
 
@@ -233,7 +233,7 @@ options
 
 > **scrollTo**(`offset`): `void`
 
-Defined in: [src/angular/VMasonry.ts:386](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L386)
+Defined in: [src/angular/VMasonry.ts:415](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L415)
 
 Scroll to the given offset.
 
@@ -259,7 +259,7 @@ offset from start
 
 > **scrollBy**(`offset`): `void`
 
-Defined in: [src/angular/VMasonry.ts:389](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L389)
+Defined in: [src/angular/VMasonry.ts:418](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L418)
 
 Scroll by the given offset.
 
@@ -285,7 +285,7 @@ offset from current position
 
 > `readonly` **data**: `InputSignal`\<readonly `T`[]\>
 
-Defined in: [src/angular/VMasonry.ts:180](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L180)
+Defined in: [src/angular/VMasonry.ts:181](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L181)
 
 The data items rendered by this component.
 
@@ -295,7 +295,7 @@ The data items rendered by this component.
 
 > `readonly` **getKey**: `InputSignal`\<(`data`, `index`) => `string` \| `number`\>
 
-Defined in: [src/angular/VMasonry.ts:185](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L185)
+Defined in: [src/angular/VMasonry.ts:186](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L186)
 
 Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
 
@@ -311,7 +311,7 @@ defaultGetKey (returns index of item)
 
 > `readonly` **lanes**: `InputSignal`\<`number`\>
 
-Defined in: [src/angular/VMasonry.ts:190](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L190)
+Defined in: [src/angular/VMasonry.ts:191](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L191)
 
 The number of lanes (columns) which items are laid out into. Each item is placed into the shortest lane in order. It must be an integer and the minimum value is 1.
 
@@ -321,7 +321,7 @@ The number of lanes (columns) which items are laid out into. Each item is placed
 
 > `readonly` **gap**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/VMasonry.ts:195](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L195)
+Defined in: [src/angular/VMasonry.ts:196](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L196)
 
 The gap between the items and the lanes in pixels, which is not included in the sizes.
 
@@ -337,7 +337,7 @@ The gap between the items and the lanes in pixels, which is not included in the 
 
 > `readonly` **itemSize**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/VMasonry.ts:202](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L202)
+Defined in: [src/angular/VMasonry.ts:203](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L203)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -350,7 +350,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `readonly` **bufferSize**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/VMasonry.ts:207](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L207)
+Defined in: [src/angular/VMasonry.ts:208](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L208)
 
 Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -362,11 +362,21 @@ Extra item space in pixels to render before/after the viewport. The minimum valu
 
 ***
 
+### keepMounted
+
+> `readonly` **keepMounted**: `InputSignal`\<readonly `number`[] \| `undefined`\>
+
+Defined in: [src/angular/VMasonry.ts:212](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L212)
+
+List of indexes that should be always mounted, even when off screen.
+
+***
+
 ### cacheProp
 
 > `readonly` **cacheProp**: `InputSignal`\<[`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md) \| `undefined`\>
 
-Defined in: [src/angular/VMasonry.ts:213](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L213)
+Defined in: [src/angular/VMasonry.ts:218](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L218)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VMasonryHandle.cache](../interfaces/VMasonryHandle.md#cache).
 
@@ -378,7 +388,7 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `readonly` **scrolled**: `OutputEmitterRef`\<`number`\>
 
-Defined in: [src/angular/VMasonry.ts:218](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L218)
+Defined in: [src/angular/VMasonry.ts:223](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L223)
 
 Emitted whenever scroll offset changes. The value is current scrollTop.
 
@@ -388,6 +398,6 @@ Emitted whenever scroll offset changes. The value is current scrollTop.
 
 > `readonly` **scrollEnded**: `OutputEmitterRef`\<`void`\>
 
-Defined in: [src/angular/VMasonry.ts:222](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/angular/VMasonry.ts#L222)
+Defined in: [src/angular/VMasonry.ts:227](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/angular/VMasonry.ts#L227)
 
 Emitted when scrolling stops.

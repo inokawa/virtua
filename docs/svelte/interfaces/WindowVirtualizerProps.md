@@ -4,7 +4,7 @@
 
 # Interface: WindowVirtualizerProps\<T\>
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:7](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L7)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:7](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/WindowVirtualizer.type.ts#L7)
 
 Props of [WindowVirtualizer](../variables/VList.md).
 
@@ -20,7 +20,7 @@ Props of [WindowVirtualizer](../variables/VList.md).
 
 > **data**: readonly `T`[]
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:11](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L11)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:11](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/WindowVirtualizer.type.ts#L11)
 
 The data items rendered by this component.
 
@@ -30,7 +30,7 @@ The data items rendered by this component.
 
 > **children**: `Snippet`\<\[`T`, `number`\]\>
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:15](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L15)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:15](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/WindowVirtualizer.type.ts#L15)
 
 The elements renderer snippet.
 
@@ -40,7 +40,7 @@ The elements renderer snippet.
 
 > `optional` **getKey?**: (`data`, `index`) => `string` \| `number`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:20](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L20)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:20](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/WindowVirtualizer.type.ts#L20)
 
 Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
 
@@ -70,7 +70,7 @@ defaultGetKey (returns index of item)
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:25](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L25)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:25](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/WindowVirtualizer.type.ts#L25)
 
 Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -86,7 +86,7 @@ Extra item space in pixels to render before/after the viewport. The minimum valu
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:32](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L32)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:32](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/WindowVirtualizer.type.ts#L32)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -99,7 +99,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **ssrCount?**: `number`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L36)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/WindowVirtualizer.type.ts#L36)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -109,7 +109,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `optional` **shift?**: `boolean`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:42](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L42)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:42](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/WindowVirtualizer.type.ts#L42)
 
 Set true only when items are added to or removed from the start of the list, such as when older items are loaded in reverse infinite scrolling. In that case, the scroll position is maintained from the end of the list instead of the start.
 
@@ -121,7 +121,7 @@ Set true only when items are added to or removed from the start of the list, suc
 
 > `optional` **horizontal?**: `boolean`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:46](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L46)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:46](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/WindowVirtualizer.type.ts#L46)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -131,7 +131,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `optional` **cache?**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:52](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L52)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:52](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/WindowVirtualizer.type.ts#L52)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [WindowVirtualizerHandle.getCache](WindowVirtualizerHandle.md#getcache).
 
@@ -143,7 +143,7 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `optional` **onscroll?**: () => `void`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:56](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L56)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:56](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/WindowVirtualizer.type.ts#L56)
 
 Callback invoked whenever scroll offset changes.
 
@@ -157,7 +157,7 @@ Callback invoked whenever scroll offset changes.
 
 > `optional` **onscrollend?**: () => `void`
 
-Defined in: [src/svelte/WindowVirtualizer.type.ts:60](https://github.com/inokawa/virtua/blob/b906c6eff324cbe837d791f641d8acb810bb7a37/src/svelte/WindowVirtualizer.type.ts#L60)
+Defined in: [src/svelte/WindowVirtualizer.type.ts:60](https://github.com/inokawa/virtua/blob/d568d326bf50279b556bf13f61cfd7270e191dac/src/svelte/WindowVirtualizer.type.ts#L60)
 
 Callback invoked when scrolling stops.
 
