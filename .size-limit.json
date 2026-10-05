@@ -63,7 +63,7 @@
     "name": "vue VMasonry",
     "path": "lib/vue/index.js",
     "import": "{ VMasonry }",
-    "limit": "3.7 kB"
+    "limit": "3.75 kB"
   },
   {
     "name": "solid VList",

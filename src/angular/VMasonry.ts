@@ -39,6 +39,7 @@ import {
   scrollBy,
   scrollTo,
   scrollToIndex,
+  sort,
 } from "../core/index.js";
 import { defaultGetKey, type ItemContext } from "./utils.js";
 
@@ -206,6 +207,10 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
    */
   readonly bufferSize = input<number>();
   /**
+   * List of indexes that should be always mounted, even when off screen.
+   */
+  readonly keepMounted = input<readonly number[]>();
+  /**
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link VMasonryHandle.cache}.
    *
    * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
@@ -242,6 +247,31 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
   /** @internal */
   private _stateVersion = signal<StateVersion>(undefined!);
 
+  private _indexes = computed(() => {
+    this._stateVersion(); // the store is not a signal, so depend on its version
+    const len = this.data().length;
+
+    const [start, end] = this._store.$getRange(this.bufferSize());
+    const keepMounted = this.keepMounted();
+    const arr: number[] = [];
+    if (keepMounted) {
+      const mounted = new Set(keepMounted);
+      for (let i = start; i <= end; i++) {
+        mounted.add(i);
+      }
+      for (const index of sort([...mounted])) {
+        if (index < len) {
+          arr.push(index);
+        }
+      }
+    } else {
+      for (let i = start; i <= end; i++) {
+        arr.push(i);
+      }
+    }
+    return arr;
+  });
+
   /** @internal */
   protected items = computed(() => {
     this._stateVersion(); // the store is not a signal, so depend on its version
@@ -253,9 +283,8 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
     const lanes = layout.$getLanes();
     // The lanes share the width left by the gaps between them
     const crossSize = toCrossValue(1 / lanes, gap / lanes - gap);
-    const [start, end] = store.$getRange(this.bufferSize());
     const items = [];
-    for (let i = start; i <= end; i++) {
+    for (const i of this._indexes()) {
       const item = data[i]!;
       const lane = layout.$getItemLane(i);
       items.push({
