@@ -1,0 +1,1 @@
+import{t as e}from"./iframe-ixd-LZd-.js";e();
