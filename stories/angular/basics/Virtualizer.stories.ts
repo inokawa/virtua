@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/angular";
 import { Virtualizer } from "../../../src/angular";
 import { HeaderAndFooterDemo } from "./HeaderAndFooter";
 import { NestedDemo } from "./Nested";
+import { ReverseDemo } from "./Reverse";
 
 export default {
   component: Virtualizer,
@@ -18,5 +19,12 @@ export const Nested: StoryObj = {
   render: () => ({
     template: `<story-nested></story-nested>`,
     moduleMetadata: { imports: [NestedDemo] },
+  }),
+};
+
+export const Reverse: StoryObj = {
+  render: () => ({
+    template: `<story-reverse></story-reverse>`,
+    moduleMetadata: { imports: [ReverseDemo] },
   }),
 };

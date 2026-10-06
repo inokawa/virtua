@@ -2,7 +2,8 @@
  * @jsxImportSource solid-js
  */
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
-import { Virtualizer } from "../../../src/solid";
+import { onMount } from "solid-js";
+import { Virtualizer, type VirtualizerHandle } from "../../../src/solid";
 
 export default {
   component: Virtualizer,
@@ -101,6 +102,49 @@ export const Nested: StoryObj = {
             </Virtualizer>
           </div>
         </div>
+      </div>
+    );
+  },
+};
+
+export const Reverse: StoryObj = {
+  render: () => {
+    const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]!);
+    let ref: VirtualizerHandle | undefined;
+    onMount(() => {
+      ref?.scrollToIndex(999);
+    });
+    return (
+      <div
+        style={{
+          height: "100vh",
+          "overflow-y": "auto",
+          // opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer
+          "overflow-anchor": "none",
+          // flex style for spacer
+          display: "flex",
+          "flex-direction": "column",
+        }}
+      >
+        <div
+          style={{
+            // spacer to align virtualizer to the bottom when all items are visible in the viewport
+            "flex-grow": 1,
+          }}
+        />
+        <Virtualizer ref={ref} data={data}>
+          {(item, index) => (
+            <div
+              style={{
+                height: item + "px",
+                background: "white",
+                "border-bottom": "solid 1px #ccc",
+              }}
+            >
+              {index()}
+            </div>
+          )}
+        </Virtualizer>
       </div>
     );
   },
