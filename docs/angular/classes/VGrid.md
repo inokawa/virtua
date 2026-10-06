@@ -4,7 +4,7 @@
 
 # Class: VGrid\<R, C\>
 
-Defined in: [src/angular/VGrid.ts:314](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L314)
+Defined in: [src/angular/VGrid.ts:314](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L314)
 
 Virtualized grid component for tabular data. See [VGridHandle](../interfaces/VGridHandle.md).
 
@@ -33,7 +33,7 @@ The host element is the scrollable viewport of the grid.
 
 > **get** **verticalScrollOffset**(): `number`
 
-Defined in: [src/angular/VGrid.ts:638](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L638)
+Defined in: [src/angular/VGrid.ts:638](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L638)
 
 Get current scrollTop.
 
@@ -55,7 +55,7 @@ Get current scrollTop.
 
 > **get** **horizontalScrollOffset**(): `number`
 
-Defined in: [src/angular/VGrid.ts:641](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L641)
+Defined in: [src/angular/VGrid.ts:641](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L641)
 
 Get current scrollLeft. Always positive even in RTL.
 
@@ -77,7 +77,7 @@ Get current scrollLeft. Always positive even in RTL.
 
 > **get** **scrollHeight**(): `number`
 
-Defined in: [src/angular/VGrid.ts:644](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L644)
+Defined in: [src/angular/VGrid.ts:644](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L644)
 
 Get current scrollHeight.
 
@@ -99,7 +99,7 @@ Get current scrollHeight.
 
 > **get** **scrollWidth**(): `number`
 
-Defined in: [src/angular/VGrid.ts:647](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L647)
+Defined in: [src/angular/VGrid.ts:647](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L647)
 
 Get current scrollWidth.
 
@@ -121,7 +121,7 @@ Get current scrollWidth.
 
 > **get** **viewportHeight**(): `number`
 
-Defined in: [src/angular/VGrid.ts:650](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L650)
+Defined in: [src/angular/VGrid.ts:650](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L650)
 
 Get current clientHeight.
 
@@ -143,7 +143,7 @@ Get current clientHeight.
 
 > **get** **viewportWidth**(): `number`
 
-Defined in: [src/angular/VGrid.ts:653](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L653)
+Defined in: [src/angular/VGrid.ts:653](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L653)
 
 Get current clientWidth.
 
@@ -163,7 +163,7 @@ Get current clientWidth.
 
 > **new VGrid**\<`R`, `C`\>(): `VGrid`\<`R`, `C`\>
 
-Defined in: [src/angular/VGrid.ts:507](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L507)
+Defined in: [src/angular/VGrid.ts:507](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L507)
 
 #### Returns
 
@@ -175,7 +175,7 @@ Defined in: [src/angular/VGrid.ts:507](https://github.com/inokawa/virtua/blob/eb
 
 > **ngOnInit**(): `void`
 
-Defined in: [src/angular/VGrid.ts:567](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L567)
+Defined in: [src/angular/VGrid.ts:567](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L567)
 
 A callback method that is invoked immediately after the
 default change detector has checked the directive's
@@ -197,7 +197,7 @@ It is invoked only once when the directive is instantiated.
 
 > **findRowIndex**(`offset`): `number`
 
-Defined in: [src/angular/VGrid.ts:656](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L656)
+Defined in: [src/angular/VGrid.ts:656](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L656)
 
 Find nearest row index from offset.
 
@@ -223,7 +223,7 @@ offset in pixels from the top of the scroll container
 
 > **findColIndex**(`offset`): `number`
 
-Defined in: [src/angular/VGrid.ts:659](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L659)
+Defined in: [src/angular/VGrid.ts:659](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L659)
 
 Find nearest column index from offset.
 
@@ -249,7 +249,7 @@ offset in pixels from the start of the scroll container
 
 > **getRowOffset**(`index`): `number`
 
-Defined in: [src/angular/VGrid.ts:662](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L662)
+Defined in: [src/angular/VGrid.ts:662](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L662)
 
 Get offset of the row from the top.
 
@@ -275,7 +275,7 @@ index of row
 
 > **getColOffset**(`index`): `number`
 
-Defined in: [src/angular/VGrid.ts:665](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L665)
+Defined in: [src/angular/VGrid.ts:665](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L665)
 
 Get offset of the column from the start.
 
@@ -301,7 +301,7 @@ index of column
 
 > **getRowSize**(`index`): `number`
 
-Defined in: [src/angular/VGrid.ts:668](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L668)
+Defined in: [src/angular/VGrid.ts:668](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L668)
 
 Get size of the row.
 
@@ -327,7 +327,7 @@ index of row
 
 > **getColSize**(`index`): `number`
 
-Defined in: [src/angular/VGrid.ts:671](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L671)
+Defined in: [src/angular/VGrid.ts:671](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L671)
 
 Get size of the column.
 
@@ -353,7 +353,7 @@ index of column
 
 > **scrollToIndex**(`opts`): `void`
 
-Defined in: [src/angular/VGrid.ts:674](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L674)
+Defined in: [src/angular/VGrid.ts:674](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L674)
 
 Scroll to the cell specified by the indexes. The cell is not hidden behind the rows and the columns sticking over it.
 
@@ -379,7 +379,7 @@ the indexes of the cell and the options. See [GridScrollToIndexOpts](../../core/
 
 > **scrollTo**(`offset`): `void`
 
-Defined in: [src/angular/VGrid.ts:685](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L685)
+Defined in: [src/angular/VGrid.ts:685](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L685)
 
 Scroll to the given offsets from the top/start of the scroll container.
 
@@ -411,7 +411,7 @@ the offsets. The axis whose offset is omitted is not scrolled.
 
 > **scrollBy**(`offset`): `void`
 
-Defined in: [src/angular/VGrid.ts:694](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L694)
+Defined in: [src/angular/VGrid.ts:694](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L694)
 
 Scroll by the given offsets from the current position.
 
@@ -443,7 +443,7 @@ the offsets. The axis whose offset is omitted is not scrolled.
 
 > `readonly` **rows**: `InputSignal`\<[`GridAxis`](../../core/type-aliases/GridAxis.md)\<`R`\>\>
 
-Defined in: [src/angular/VGrid.ts:318](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L318)
+Defined in: [src/angular/VGrid.ts:318](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L318)
 
 The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -453,7 +453,7 @@ The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for th
 
 > `readonly` **cols**: `InputSignal`\<[`GridAxis`](../../core/type-aliases/GridAxis.md)\<`C`\>\>
 
-Defined in: [src/angular/VGrid.ts:322](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L322)
+Defined in: [src/angular/VGrid.ts:322](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L322)
 
 The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -463,7 +463,7 @@ The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for
 
 > `readonly` **rowHeight**: `InputSignal`\<[`GridSize`](../../core/type-aliases/GridSize.md)\<`R`\>\>
 
-Defined in: [src/angular/VGrid.ts:326](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L326)
+Defined in: [src/angular/VGrid.ts:326](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L326)
 
 The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -473,7 +473,7 @@ The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for
 
 > `readonly` **colWidth**: `InputSignal`\<[`GridSize`](../../core/type-aliases/GridSize.md)\<`C`\>\>
 
-Defined in: [src/angular/VGrid.ts:330](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L330)
+Defined in: [src/angular/VGrid.ts:330](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L330)
 
 The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -483,7 +483,7 @@ The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) f
 
 > `readonly` **headerRows**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/VGrid.ts:337](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L337)
+Defined in: [src/angular/VGrid.ts:337](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L337)
 
 The number of the leading rows pinned to the start, which are the column headers (`role="columnheader"`).
 
@@ -501,7 +501,7 @@ The number of the leading rows pinned to the start, which are the column headers
 
 > `readonly` **sectionRows**: `InputSignal`\<readonly `number`[] \| `undefined`\>
 
-Defined in: [src/angular/VGrid.ts:343](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L343)
+Defined in: [src/angular/VGrid.ts:343](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L343)
 
 Indexes of the rows which start sections. A section lasts until the next section row or the footer rows, and its first row sticks below the header rows while the section is scrolled through.
 
@@ -513,7 +513,7 @@ Indexes of the rows which start sections. A section lasts until the next section
 
 > `readonly` **footerRows**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/VGrid.ts:350](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L350)
+Defined in: [src/angular/VGrid.ts:350](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L350)
 
 The number of the trailing rows pinned to the end.
 
@@ -531,7 +531,7 @@ The number of the trailing rows pinned to the end.
 
 > `readonly` **headerCols**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/VGrid.ts:357](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L357)
+Defined in: [src/angular/VGrid.ts:357](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L357)
 
 The number of the leading columns pinned to the start, the last of which is the row header (`role="rowheader"`).
 
@@ -549,7 +549,7 @@ The number of the leading columns pinned to the start, the last of which is the 
 
 > `readonly` **footerCols**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/VGrid.ts:364](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L364)
+Defined in: [src/angular/VGrid.ts:364](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L364)
 
 The number of the trailing columns pinned to the end.
 
@@ -567,7 +567,7 @@ The number of the trailing columns pinned to the end.
 
 > `readonly` **spans**: `InputSignal`\<readonly [`GridSpan`](../../core/interfaces/GridSpan.md)[] \| `undefined`\>
 
-Defined in: [src/angular/VGrid.ts:370](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L370)
+Defined in: [src/angular/VGrid.ts:370](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L370)
 
 Cells merged over multiple rows and/or columns. See [GridSpan](../../core/interfaces/GridSpan.md) for the accepted values.
 
@@ -579,7 +579,7 @@ The cell at the origin is stretched over the merged area, and the other cells in
 
 > `readonly` **keepMounted**: `InputSignal`\<readonly [`GridCell`](../../core/interfaces/GridCell.md)[] \| `undefined`\>
 
-Defined in: [src/angular/VGrid.ts:374](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L374)
+Defined in: [src/angular/VGrid.ts:374](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L374)
 
 List of cells that should be always mounted, even when off screen.
 
@@ -589,7 +589,7 @@ List of cells that should be always mounted, even when off screen.
 
 > `readonly` **bufferSize**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/VGrid.ts:379](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L379)
+Defined in: [src/angular/VGrid.ts:379](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L379)
 
 Extra space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank cells in fast scrolling.
 
@@ -605,7 +605,7 @@ Extra space in pixels to render before/after the viewport. The minimum value is 
 
 > `readonly` **gap**: `InputSignal`\<`number`\>
 
-Defined in: [src/angular/VGrid.ts:384](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L384)
+Defined in: [src/angular/VGrid.ts:384](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L384)
 
 The gap between the rows and the columns in pixels, which is not included in the sizes. Must not be changed after mount.
 
@@ -621,7 +621,7 @@ The gap between the rows and the columns in pixels, which is not included in the
 
 > `readonly` **ariaSort**: `InputSignal`\<[`GridCell`](../../core/interfaces/GridCell.md) & `object` \| `undefined`\>
 
-Defined in: [src/angular/VGrid.ts:388](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L388)
+Defined in: [src/angular/VGrid.ts:388](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L388)
 
 The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
@@ -631,7 +631,7 @@ The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
 > `readonly` **verticalScrolled**: `OutputEmitterRef`\<`number`\>
 
-Defined in: [src/angular/VGrid.ts:395](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L395)
+Defined in: [src/angular/VGrid.ts:395](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L395)
 
 Emitted whenever the vertical scroll offset changes. The value is current scrollTop.
 
@@ -641,7 +641,7 @@ Emitted whenever the vertical scroll offset changes. The value is current scroll
 
 > `readonly` **horizontalScrolled**: `OutputEmitterRef`\<`number`\>
 
-Defined in: [src/angular/VGrid.ts:399](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L399)
+Defined in: [src/angular/VGrid.ts:399](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L399)
 
 Emitted whenever the horizontal scroll offset changes. The value is current scrollLeft, which is always positive even in RTL.
 
@@ -651,7 +651,7 @@ Emitted whenever the horizontal scroll offset changes. The value is current scro
 
 > `readonly` **scrollEnded**: `OutputEmitterRef`\<`void`\>
 
-Defined in: [src/angular/VGrid.ts:403](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L403)
+Defined in: [src/angular/VGrid.ts:403](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L403)
 
 Emitted when scrolling stops.
 
@@ -661,6 +661,6 @@ Emitted when scrolling stops.
 
 > `readonly` **resized**: `OutputEmitterRef`\<`void`\>
 
-Defined in: [src/angular/VGrid.ts:407](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/angular/VGrid.ts#L407)
+Defined in: [src/angular/VGrid.ts:407](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/angular/VGrid.ts#L407)
 
 Emitted when the size of the viewport or the items changes.

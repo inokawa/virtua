@@ -4,7 +4,7 @@
 
 # Interface: VGridProps\<R, C\>
 
-Defined in: [src/solid/VGrid.tsx:129](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L129)
+Defined in: [src/solid/VGrid.tsx:129](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L129)
 
 Props of [VGrid](../functions/VGrid.md).
 
@@ -28,7 +28,7 @@ Props of [VGrid](../functions/VGrid.md).
 
 > `optional` **ref?**: [`VGridHandle`](VGridHandle.md) \| ((`handle?`) => `void`)
 
-Defined in: [src/solid/VGrid.tsx:136](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L136)
+Defined in: [src/solid/VGrid.tsx:136](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L136)
 
 Get reference to [VGridHandle](VGridHandle.md).
 
@@ -38,7 +38,7 @@ Get reference to [VGridHandle](VGridHandle.md).
 
 > **children**: (`row`, `col`, `cell`) => `Element`
 
-Defined in: [src/solid/VGrid.tsx:143](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L143)
+Defined in: [src/solid/VGrid.tsx:143](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L143)
 
 A function to create cell elements rendered by this component.
 
@@ -72,7 +72,7 @@ the row index and the column index of the cell
 
 > **rows**: [`GridAxis`](../../core/type-aliases/GridAxis.md)\<`R`\>
 
-Defined in: [src/solid/VGrid.tsx:147](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L147)
+Defined in: [src/solid/VGrid.tsx:147](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L147)
 
 The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -82,7 +82,7 @@ The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for th
 
 > **cols**: [`GridAxis`](../../core/type-aliases/GridAxis.md)\<`C`\>
 
-Defined in: [src/solid/VGrid.tsx:151](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L151)
+Defined in: [src/solid/VGrid.tsx:151](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L151)
 
 The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -92,7 +92,7 @@ The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for
 
 > **rowHeight**: [`GridSize`](../../core/type-aliases/GridSize.md)\<`R`\>
 
-Defined in: [src/solid/VGrid.tsx:155](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L155)
+Defined in: [src/solid/VGrid.tsx:155](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L155)
 
 The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -102,7 +102,7 @@ The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for
 
 > **colWidth**: [`GridSize`](../../core/type-aliases/GridSize.md)\<`C`\>
 
-Defined in: [src/solid/VGrid.tsx:159](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L159)
+Defined in: [src/solid/VGrid.tsx:159](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L159)
 
 The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -112,7 +112,7 @@ The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) f
 
 > `optional` **headerRows?**: `number`
 
-Defined in: [src/solid/VGrid.tsx:166](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L166)
+Defined in: [src/solid/VGrid.tsx:166](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L166)
 
 The number of the leading rows pinned to the start, which are the column headers (`role="columnheader"`).
 
@@ -130,7 +130,7 @@ The number of the leading rows pinned to the start, which are the column headers
 
 > `optional` **sectionRows?**: readonly `number`[]
 
-Defined in: [src/solid/VGrid.tsx:172](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L172)
+Defined in: [src/solid/VGrid.tsx:172](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L172)
 
 Indexes of the rows which start sections. A section lasts until the next section row or the footer rows, and its first row sticks below the header rows while the section is scrolled through.
 
@@ -142,7 +142,7 @@ Indexes of the rows which start sections. A section lasts until the next section
 
 > `optional` **footerRows?**: `number`
 
-Defined in: [src/solid/VGrid.tsx:179](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L179)
+Defined in: [src/solid/VGrid.tsx:179](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L179)
 
 The number of the trailing rows pinned to the end.
 
@@ -160,7 +160,7 @@ The number of the trailing rows pinned to the end.
 
 > `optional` **headerCols?**: `number`
 
-Defined in: [src/solid/VGrid.tsx:186](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L186)
+Defined in: [src/solid/VGrid.tsx:186](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L186)
 
 The number of the leading columns pinned to the start, the last of which is the row header (`role="rowheader"`).
 
@@ -178,7 +178,7 @@ The number of the leading columns pinned to the start, the last of which is the 
 
 > `optional` **footerCols?**: `number`
 
-Defined in: [src/solid/VGrid.tsx:193](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L193)
+Defined in: [src/solid/VGrid.tsx:193](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L193)
 
 The number of the trailing columns pinned to the end.
 
@@ -196,7 +196,7 @@ The number of the trailing columns pinned to the end.
 
 > `optional` **spans?**: readonly [`GridSpan`](../../core/interfaces/GridSpan.md)[]
 
-Defined in: [src/solid/VGrid.tsx:199](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L199)
+Defined in: [src/solid/VGrid.tsx:199](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L199)
 
 Cells merged over multiple rows and/or columns. See [GridSpan](../../core/interfaces/GridSpan.md) for the accepted values.
 
@@ -208,7 +208,7 @@ The cell at the origin is stretched over the merged area, and the other cells in
 
 > `optional` **keepMounted?**: readonly [`GridCell`](../../core/interfaces/GridCell.md)[]
 
-Defined in: [src/solid/VGrid.tsx:203](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L203)
+Defined in: [src/solid/VGrid.tsx:203](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L203)
 
 List of cells that should be always mounted, even when off screen.
 
@@ -218,7 +218,7 @@ List of cells that should be always mounted, even when off screen.
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/solid/VGrid.tsx:208](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L208)
+Defined in: [src/solid/VGrid.tsx:208](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L208)
 
 Extra space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank cells in fast scrolling.
 
@@ -234,7 +234,7 @@ Extra space in pixels to render before/after the viewport. The minimum value is 
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/solid/VGrid.tsx:213](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L213)
+Defined in: [src/solid/VGrid.tsx:213](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L213)
 
 The gap between the rows and the columns in pixels, which is not included in the sizes. Must not be changed after mount.
 
@@ -250,7 +250,7 @@ The gap between the rows and the columns in pixels, which is not included in the
 
 > `optional` **ariaSort?**: [`GridCell`](../../core/interfaces/GridCell.md) & `object`
 
-Defined in: [src/solid/VGrid.tsx:217](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L217)
+Defined in: [src/solid/VGrid.tsx:217](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L217)
 
 The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
@@ -266,7 +266,7 @@ The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
 > `optional` **onVerticalScroll?**: (`offset`) => `void`
 
-Defined in: [src/solid/VGrid.tsx:222](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L222)
+Defined in: [src/solid/VGrid.tsx:222](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L222)
 
 Callback invoked whenever the vertical scroll offset changes.
 
@@ -288,7 +288,7 @@ Current scrollTop.
 
 > `optional` **onHorizontalScroll?**: (`offset`) => `void`
 
-Defined in: [src/solid/VGrid.tsx:227](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L227)
+Defined in: [src/solid/VGrid.tsx:227](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L227)
 
 Callback invoked whenever the horizontal scroll offset changes.
 
@@ -310,7 +310,7 @@ Current scrollLeft. Always positive even in RTL.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/solid/VGrid.tsx:231](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L231)
+Defined in: [src/solid/VGrid.tsx:231](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L231)
 
 Callback invoked when scrolling stops.
 
@@ -324,7 +324,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **onResize?**: () => `void`
 
-Defined in: [src/solid/VGrid.tsx:235](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/VGrid.tsx#L235)
+Defined in: [src/solid/VGrid.tsx:235](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L235)
 
 Callback invoked when the size of the viewport or the items changes.
 
@@ -350,7 +350,7 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:690
 
 > `optional` **style?**: `CSSProperties`
 
-Defined in: [src/solid/types.ts:6](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/types.ts#L6)
+Defined in: [src/solid/types.ts:6](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/types.ts#L6)
 
 #### Inherited from
 

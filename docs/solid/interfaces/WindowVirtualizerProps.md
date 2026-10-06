@@ -4,7 +4,7 @@
 
 # Interface: WindowVirtualizerProps\<T\>
 
-Defined in: [src/solid/WindowVirtualizer.tsx:76](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/WindowVirtualizer.tsx#L76)
+Defined in: [src/solid/WindowVirtualizer.tsx:76](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/WindowVirtualizer.tsx#L76)
 
 Props of [WindowVirtualizer](../functions/WindowVirtualizer.md).
 
@@ -20,7 +20,7 @@ Props of [WindowVirtualizer](../functions/WindowVirtualizer.md).
 
 > `optional` **ref?**: [`WindowVirtualizerHandle`](WindowVirtualizerHandle.md) \| ((`handle?`) => `void`)
 
-Defined in: [src/solid/WindowVirtualizer.tsx:80](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/WindowVirtualizer.tsx#L80)
+Defined in: [src/solid/WindowVirtualizer.tsx:80](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/WindowVirtualizer.tsx#L80)
 
 Get reference to [WindowVirtualizerHandle](WindowVirtualizerHandle.md).
 
@@ -30,7 +30,7 @@ Get reference to [WindowVirtualizerHandle](WindowVirtualizerHandle.md).
 
 > **data**: readonly `T`[]
 
-Defined in: [src/solid/WindowVirtualizer.tsx:84](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/WindowVirtualizer.tsx#L84)
+Defined in: [src/solid/WindowVirtualizer.tsx:84](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/WindowVirtualizer.tsx#L84)
 
 The data items rendered by this component.
 
@@ -40,7 +40,7 @@ The data items rendered by this component.
 
 > **children**: (`data`, `index`) => `Element`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:88](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/WindowVirtualizer.tsx#L88)
+Defined in: [src/solid/WindowVirtualizer.tsx:88](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/WindowVirtualizer.tsx#L88)
 
 The elements renderer function.
 
@@ -64,7 +64,7 @@ The elements renderer function.
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:93](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/WindowVirtualizer.tsx#L93)
+Defined in: [src/solid/WindowVirtualizer.tsx:93](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/WindowVirtualizer.tsx#L93)
 
 Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
 
@@ -80,7 +80,7 @@ Extra item space in pixels to render before/after the viewport. The minimum valu
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:100](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/WindowVirtualizer.tsx#L100)
+Defined in: [src/solid/WindowVirtualizer.tsx:100](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/WindowVirtualizer.tsx#L100)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -93,7 +93,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **ssrCount?**: `number`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:104](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/WindowVirtualizer.tsx#L104)
+Defined in: [src/solid/WindowVirtualizer.tsx:104](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/WindowVirtualizer.tsx#L104)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -103,7 +103,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `optional` **shift?**: `boolean`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:110](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/WindowVirtualizer.tsx#L110)
+Defined in: [src/solid/WindowVirtualizer.tsx:110](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/WindowVirtualizer.tsx#L110)
 
 Set true only when items are added to or removed from the start of the list, such as when older items are loaded in reverse infinite scrolling. In that case, the scroll position is maintained from the end of the list instead of the start.
 
@@ -115,7 +115,7 @@ Set true only when items are added to or removed from the start of the list, suc
 
 > `optional` **horizontal?**: `boolean`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:114](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/WindowVirtualizer.tsx#L114)
+Defined in: [src/solid/WindowVirtualizer.tsx:114](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/WindowVirtualizer.tsx#L114)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -125,7 +125,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `optional` **cache?**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/solid/WindowVirtualizer.tsx:120](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/WindowVirtualizer.tsx#L120)
+Defined in: [src/solid/WindowVirtualizer.tsx:120](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/WindowVirtualizer.tsx#L120)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [WindowVirtualizerHandle.cache](WindowVirtualizerHandle.md#cache).
 
@@ -137,7 +137,7 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `optional` **onScroll?**: () => `void`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:124](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/WindowVirtualizer.tsx#L124)
+Defined in: [src/solid/WindowVirtualizer.tsx:124](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/WindowVirtualizer.tsx#L124)
 
 Callback invoked whenever scroll offset changes.
 
@@ -151,7 +151,7 @@ Callback invoked whenever scroll offset changes.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:128](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/WindowVirtualizer.tsx#L128)
+Defined in: [src/solid/WindowVirtualizer.tsx:128](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/WindowVirtualizer.tsx#L128)
 
 Callback invoked when scrolling stops.
 
@@ -165,7 +165,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **onResize?**: () => `void`
 
-Defined in: [src/solid/WindowVirtualizer.tsx:132](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/solid/WindowVirtualizer.tsx#L132)
+Defined in: [src/solid/WindowVirtualizer.tsx:132](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/WindowVirtualizer.tsx#L132)
 
 Callback invoked when the size of the viewport or the items changes.
 

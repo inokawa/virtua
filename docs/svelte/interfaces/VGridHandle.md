@@ -4,7 +4,7 @@
 
 # Interface: VGridHandle
 
-Defined in: [src/svelte/VGrid.type.ts:122](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VGrid.type.ts#L122)
+Defined in: [src/svelte/VGrid.type.ts:122](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VGrid.type.ts#L122)
 
 Methods of [VGrid](../variables/VList.md).
 
@@ -14,7 +14,7 @@ Methods of [VGrid](../variables/VList.md).
 
 > **getVerticalScrollOffset**(): `number`
 
-Defined in: [src/svelte/VGrid.type.ts:126](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VGrid.type.ts#L126)
+Defined in: [src/svelte/VGrid.type.ts:126](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VGrid.type.ts#L126)
 
 Get current scrollTop.
 
@@ -28,7 +28,7 @@ Get current scrollTop.
 
 > **getHorizontalScrollOffset**(): `number`
 
-Defined in: [src/svelte/VGrid.type.ts:130](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VGrid.type.ts#L130)
+Defined in: [src/svelte/VGrid.type.ts:130](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VGrid.type.ts#L130)
 
 Get current scrollLeft. Always positive even in RTL.
 
@@ -42,7 +42,7 @@ Get current scrollLeft. Always positive even in RTL.
 
 > **getScrollHeight**(): `number`
 
-Defined in: [src/svelte/VGrid.type.ts:134](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VGrid.type.ts#L134)
+Defined in: [src/svelte/VGrid.type.ts:134](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VGrid.type.ts#L134)
 
 Get current scrollHeight.
 
@@ -56,7 +56,7 @@ Get current scrollHeight.
 
 > **getScrollWidth**(): `number`
 
-Defined in: [src/svelte/VGrid.type.ts:138](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VGrid.type.ts#L138)
+Defined in: [src/svelte/VGrid.type.ts:138](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VGrid.type.ts#L138)
 
 Get current scrollWidth.
 
@@ -70,7 +70,7 @@ Get current scrollWidth.
 
 > **getViewportHeight**(): `number`
 
-Defined in: [src/svelte/VGrid.type.ts:142](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VGrid.type.ts#L142)
+Defined in: [src/svelte/VGrid.type.ts:142](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VGrid.type.ts#L142)
 
 Get current clientHeight.
 
@@ -84,7 +84,7 @@ Get current clientHeight.
 
 > **getViewportWidth**(): `number`
 
-Defined in: [src/svelte/VGrid.type.ts:146](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VGrid.type.ts#L146)
+Defined in: [src/svelte/VGrid.type.ts:146](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VGrid.type.ts#L146)
 
 Get current clientWidth.
 
@@ -98,7 +98,7 @@ Get current clientWidth.
 
 > **findRowIndex**(`offset`): `number`
 
-Defined in: [src/svelte/VGrid.type.ts:151](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VGrid.type.ts#L151)
+Defined in: [src/svelte/VGrid.type.ts:151](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VGrid.type.ts#L151)
 
 Find nearest row index from offset.
 
@@ -120,7 +120,7 @@ offset in pixels from the top of the scroll container
 
 > **findColIndex**(`offset`): `number`
 
-Defined in: [src/svelte/VGrid.type.ts:156](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VGrid.type.ts#L156)
+Defined in: [src/svelte/VGrid.type.ts:156](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VGrid.type.ts#L156)
 
 Find nearest column index from offset.
 
@@ -142,7 +142,7 @@ offset in pixels from the start of the scroll container
 
 > **getRowOffset**(`index`): `number`
 
-Defined in: [src/svelte/VGrid.type.ts:161](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VGrid.type.ts#L161)
+Defined in: [src/svelte/VGrid.type.ts:161](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VGrid.type.ts#L161)
 
 Get offset of the row from the top.
 
@@ -164,7 +164,7 @@ index of row
 
 > **getColOffset**(`index`): `number`
 
-Defined in: [src/svelte/VGrid.type.ts:166](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VGrid.type.ts#L166)
+Defined in: [src/svelte/VGrid.type.ts:166](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VGrid.type.ts#L166)
 
 Get offset of the column from the start.
 
@@ -186,7 +186,7 @@ index of column
 
 > **getRowSize**(`index`): `number`
 
-Defined in: [src/svelte/VGrid.type.ts:171](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VGrid.type.ts#L171)
+Defined in: [src/svelte/VGrid.type.ts:171](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VGrid.type.ts#L171)
 
 Get size of the row.
 
@@ -208,7 +208,7 @@ index of row
 
 > **getColSize**(`index`): `number`
 
-Defined in: [src/svelte/VGrid.type.ts:176](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VGrid.type.ts#L176)
+Defined in: [src/svelte/VGrid.type.ts:176](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VGrid.type.ts#L176)
 
 Get size of the column.
 
@@ -230,7 +230,7 @@ index of column
 
 > **scrollToIndex**(`opts`): `void`
 
-Defined in: [src/svelte/VGrid.type.ts:181](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VGrid.type.ts#L181)
+Defined in: [src/svelte/VGrid.type.ts:181](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VGrid.type.ts#L181)
 
 Scroll to the cell specified by the indexes. The cell is not hidden behind the rows and the columns sticking over it.
 
@@ -252,7 +252,7 @@ the indexes of the cell and the options. See [GridScrollToIndexOpts](../../core/
 
 > **scrollTo**(`offset`): `void`
 
-Defined in: [src/svelte/VGrid.type.ts:186](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VGrid.type.ts#L186)
+Defined in: [src/svelte/VGrid.type.ts:186](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VGrid.type.ts#L186)
 
 Scroll to the given offsets from the top/start of the scroll container.
 
@@ -280,7 +280,7 @@ the offsets. The axis whose offset is omitted is not scrolled.
 
 > **scrollBy**(`offset`): `void`
 
-Defined in: [src/svelte/VGrid.type.ts:191](https://github.com/inokawa/virtua/blob/ebdd6cc8543da115845328fdabf9a0214eec12b8/src/svelte/VGrid.type.ts#L191)
+Defined in: [src/svelte/VGrid.type.ts:191](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VGrid.type.ts#L191)
 
 Scroll by the given offsets from the current position.
 
