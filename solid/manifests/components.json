@@ -49,6 +49,12 @@
           "name": "Nested",
           "snippet": "const Nested = () => {\n  const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]!);\n  const outerPadding = 40;\n  const innerPadding = 60;\n  let scrollRef: HTMLDivElement | undefined;\n  return (\n    <div\n      ref={scrollRef}\n      style={{\n        width: \"100%\",\n        height: \"100vh\",\n        \"overflow-y\": \"auto\",\n        // opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer\n        \"overflow-anchor\": \"none\",\n      }}\n    >\n      <div\n        style={{\n          \"background-color\": \"burlywood\",\n          padding: outerPadding + \"px\",\n        }}\n      >\n        <div\n          style={{\n            \"background-color\": \"steelblue\",\n            padding: innerPadding + \"px\",\n          }}\n        >\n          <Virtualizer\n            data={data}\n            scrollRef={scrollRef}\n            startMargin={outerPadding + innerPadding}\n          >\n            {(item, index) => (\n              <div\n                style={{\n                  height: item + \"px\",\n                  background: \"white\",\n                  \"border-bottom\": \"solid 1px #ccc\",\n                }}\n              >\n                {index()}\n              </div>\n            )}\n          </Virtualizer>\n        </div>\n      </div>\n    </div>\n  );\n};",
           "description": ""
+        },
+        {
+          "id": "basics-virtualizer--reverse",
+          "name": "Reverse",
+          "snippet": "const Reverse = () => {\n  const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]!);\n  let ref: VirtualizerHandle | undefined;\n  onMount(() => {\n    ref?.scrollToIndex(999);\n  });\n  return (\n    <div\n      style={{\n        height: \"100vh\",\n        \"overflow-y\": \"auto\",\n        // opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer\n        \"overflow-anchor\": \"none\",\n        // flex style for spacer\n        display: \"flex\",\n        \"flex-direction\": \"column\",\n      }}\n    >\n      <div\n        style={{\n          // spacer to align virtualizer to the bottom when all items are visible in the viewport\n          \"flex-grow\": 1,\n        }}\n      />\n      <Virtualizer ref={ref} data={data}>\n        {(item, index) => (\n          <div\n            style={{\n              height: item + \"px\",\n              background: \"white\",\n              \"border-bottom\": \"solid 1px #ccc\",\n            }}\n          >\n            {index()}\n          </div>\n        )}\n      </Virtualizer>\n    </div>\n  );\n};",
+          "description": ""
         }
       ],
       "import": "import { Virtualizer } from \"../../../src/solid\";",
@@ -192,7 +198,7 @@
   },
   "meta": {
     "docgen": "react-component-meta",
-    "durationMs": 124,
+    "durationMs": 121,
     "engine": "solid-component-meta"
   }
 }

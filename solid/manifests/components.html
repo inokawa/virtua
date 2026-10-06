@@ -620,7 +620,7 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">7/7 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">7/7 infos</a><span class="filter-pill ok" aria-disabled="true">15 stories ok</span></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">7/7 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">7/7 infos</a><span class="filter-pill ok" aria-disabled="true">16 stories ok</span></div>
   </div>
 </header>
 <main>
@@ -995,7 +995,7 @@
       <div class="badges">
         <label for="c-1-basics-virtualizer-err" class="badge err as-toggle">API error</label>
         <label for="c-1-basics-virtualizer-info" class="badge info as-toggle">1 info</label>
-        <label for="c-1-basics-virtualizer-stories" class="badge ok as-toggle">2 stories</label>
+        <label for="c-1-basics-virtualizer-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -1148,6 +1148,55 @@
           &lt;/Virtualizer&gt;
         &lt;/div&gt;
       &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Reverse</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Reverse = () =&gt; {
+  const data = Array.from({ length: 1000 }).map((_, i) =&gt; sizes[i % 4]!);
+  let ref: VirtualizerHandle | undefined;
+  onMount(() =&gt; {
+    ref?.scrollToIndex(999);
+  });
+  return (
+    &lt;div
+      style={{
+        height: &quot;100vh&quot;,
+        &quot;overflow-y&quot;: &quot;auto&quot;,
+        // opt out browser&#39;s scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer
+        &quot;overflow-anchor&quot;: &quot;none&quot;,
+        // flex style for spacer
+        display: &quot;flex&quot;,
+        &quot;flex-direction&quot;: &quot;column&quot;,
+      }}
+    &gt;
+      &lt;div
+        style={{
+          // spacer to align virtualizer to the bottom when all items are visible in the viewport
+          &quot;flex-grow&quot;: 1,
+        }}
+      /&gt;
+      &lt;Virtualizer ref={ref} data={data}&gt;
+        {(item, index) =&gt; (
+          &lt;div
+            style={{
+              height: item + &quot;px&quot;,
+              background: &quot;white&quot;,
+              &quot;border-bottom&quot;: &quot;solid 1px #ccc&quot;,
+            }}
+          &gt;
+            {index()}
+          &lt;/div&gt;
+        )}
+      &lt;/Virtualizer&gt;
     &lt;/div&gt;
   );
 };</code></pre>
@@ -2458,7 +2507,7 @@
       <div class="badges">
         <label for="c-error-1-basics-virtualizer-err" class="badge err as-toggle">API error</label>
         <label for="c-error-1-basics-virtualizer-info" class="badge info as-toggle">1 info</label>
-        <label for="c-error-1-basics-virtualizer-stories" class="badge ok as-toggle">2 stories</label>
+        <label for="c-error-1-basics-virtualizer-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -2611,6 +2660,55 @@
           &lt;/Virtualizer&gt;
         &lt;/div&gt;
       &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Reverse</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Reverse = () =&gt; {
+  const data = Array.from({ length: 1000 }).map((_, i) =&gt; sizes[i % 4]!);
+  let ref: VirtualizerHandle | undefined;
+  onMount(() =&gt; {
+    ref?.scrollToIndex(999);
+  });
+  return (
+    &lt;div
+      style={{
+        height: &quot;100vh&quot;,
+        &quot;overflow-y&quot;: &quot;auto&quot;,
+        // opt out browser&#39;s scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer
+        &quot;overflow-anchor&quot;: &quot;none&quot;,
+        // flex style for spacer
+        display: &quot;flex&quot;,
+        &quot;flex-direction&quot;: &quot;column&quot;,
+      }}
+    &gt;
+      &lt;div
+        style={{
+          // spacer to align virtualizer to the bottom when all items are visible in the viewport
+          &quot;flex-grow&quot;: 1,
+        }}
+      /&gt;
+      &lt;Virtualizer ref={ref} data={data}&gt;
+        {(item, index) =&gt; (
+          &lt;div
+            style={{
+              height: item + &quot;px&quot;,
+              background: &quot;white&quot;,
+              &quot;border-bottom&quot;: &quot;solid 1px #ccc&quot;,
+            }}
+          &gt;
+            {index()}
+          &lt;/div&gt;
+        )}
+      &lt;/Virtualizer&gt;
     &lt;/div&gt;
   );
 };</code></pre>
