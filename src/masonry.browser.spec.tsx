@@ -20,7 +20,7 @@ import {
   setRTL,
   SUBPIXEL,
 } from "../spec/browser/index.js";
-import { range } from "../spec/utils.js";
+import { nextFrame, range } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
 
@@ -249,6 +249,113 @@ describe("resize jump compensation", () => {
       0,
     );
   });
+
+  describe("while scrolling down", () => {
+    const ITEM_SIZE = 100;
+    const HALF = ITEM_SIZE / 2;
+
+    // Resizing the DOM directly reaches the store through ResizeObserver like a real resize
+    const resize = (container: HTMLElement, index: number, size: number) => {
+      const item = getItem(container, `item-${index}`)!;
+      (item.firstElementChild as HTMLElement).style.height = `${size}px`;
+    };
+
+    const scrolled = (viewport: HTMLElement) =>
+      new Promise((resolve) =>
+        viewport.addEventListener("scroll", resolve, { once: true }),
+      );
+
+    // Wait until the scroll has ended and the offset stays still for a few frames
+    const settle = async (viewport: HTMLElement) => {
+      let lastScrollTime = performance.now();
+      const onScroll = () => {
+        lastScrollTime = performance.now();
+      };
+      viewport.addEventListener("scroll", onScroll);
+      let prev: string | undefined;
+      let stable = 0;
+      let settled = false;
+      for (let i = 0; i < 600 && !settled; i++) {
+        await nextFrame();
+        const next = `${viewport.scrollTop},${viewport.scrollHeight}`;
+        stable = next === prev ? stable + 1 : 0;
+        prev = next;
+        // The store keeps the scrolling state until 150ms after the last scroll event
+        settled = stable >= 3 && performance.now() - lastScrollTime > 200;
+      }
+      viewport.removeEventListener("scroll", onScroll);
+      expect(settled).toBe(true);
+    };
+
+    it("compensates the items which straddle the viewport start in every lane", async () => {
+      // The sizes are given beforehand, so the 2 lanes are rows of the items: item i is in lane i % 2 from ITEM_SIZE * floor(i / 2)
+      const root = render(
+        <VMasonry
+          lanes={2}
+          itemSize={ITEM_SIZE}
+          data={data}
+          style={{ height: VIEWPORT }}
+        >
+          {(i) => <div style={{ height: ITEM_SIZE }}>item-{i}</div>}
+        </VMasonry>,
+      );
+      const { viewport, container } = await getVirtualizer(root);
+      await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+      viewport.scrollTop = ITEM_SIZE * 10;
+      await settle(viewport);
+
+      // The viewport becomes 1050 to 1450, and items 20 and 21 are 1000 to 1100 in each lane.
+      // Item 22 is the first item not to keep, which is placed lower by both of them
+      viewport.scrollTop += HALF;
+      await scrolled(viewport);
+      resize(container, 20, ITEM_SIZE * 2);
+      resize(container, 21, ITEM_SIZE * 2);
+      await settle(viewport);
+
+      await expectPosition(
+        () => relativeTop(viewport, getItem(container, "item-22")!),
+        HALF,
+      );
+    });
+
+    it("does not compensate an item beside the item which covers the entire viewport", async () => {
+      // The sizes are given beforehand except item 20, which is 1000 to 1600 in lane 0.
+      // The following items are placed in lane 1 beside it, as it is the shorter lane
+      const TALL_INDEX = 20;
+      const root = render(
+        <VMasonry
+          lanes={2}
+          itemSize={ITEM_SIZE}
+          data={data}
+          style={{ height: VIEWPORT }}
+        >
+          {(i) => (
+            <div
+              style={{ height: i === TALL_INDEX ? ITEM_SIZE * 6 : ITEM_SIZE }}
+            >
+              item-{i}
+            </div>
+          )}
+        </VMasonry>,
+      );
+      const { viewport, container } = await getVirtualizer(root);
+      await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+      viewport.scrollTop = ITEM_SIZE * 10;
+      await settle(viewport);
+
+      // The viewport becomes 1050 to 1450, and item 21 is 1000 to 1100 in lane 1.
+      // Item 21 straddles the viewport start like the items compensated above, but item 20 before it covers the viewport and is the item to keep in place
+      viewport.scrollTop += HALF;
+      await scrolled(viewport);
+      resize(container, TALL_INDEX + 1, ITEM_SIZE * 2);
+      await settle(viewport);
+
+      await expectPosition(
+        () => relativeTop(viewport, getItem(container, `item-${TALL_INDEX}`)!),
+        -HALF,
+      );
+    });
+  });
 });
 
 describe("scrollToIndex", () => {
@@ -376,6 +483,44 @@ it("lays out the items again with the new lanes and gap, keeping the item at the
     expect(container.contains(anchor)).toBe(true);
     await expectPosition(() => relativeTop(viewport, anchor), top);
   }
+});
+
+it("lays out the items again with the new lanes while scrolling down, keeping the first item starting in the viewport", async () => {
+  // Items are not measured again in the new lanes, so that the relayout alone moves them
+  const ITEM_SIZE = 50;
+  const ref = createRef<VMasonryHandle>();
+  const Masonry = ({ lanes }: { lanes: number }) => (
+    <VMasonry
+      ref={ref}
+      lanes={lanes}
+      itemSize={ITEM_SIZE}
+      data={data}
+      style={{ height: VIEWPORT }}
+    >
+      {(i) => <div style={{ height: ITEM_SIZE }}>item-{i}</div>}
+    </VMasonry>
+  );
+  const root = render(<Masonry lanes={3} />);
+  await expectVirtualized(root, "item-0", `item-${COUNT - 1}`);
+  const { viewport, container } = await getVirtualizer(root);
+  viewport.scrollTop = ITEM_SIZE * 60;
+  await expect.poll(() => ref.current!.scrollOffset).toBe(viewport.scrollTop);
+
+  // The viewport starts in row 60 of items 180 to 182, so item 183 in the next row is the first item starting in it.
+  // Item 180 at the start of the viewport is kept in place instead while idle. Items 180 to 183 are in the same row in 4 lanes, so keeping either of them puts item 183 at a different position
+  const OFFSET = 10;
+  const scroll = new Promise((resolve) =>
+    viewport.addEventListener("scroll", resolve, { once: true }),
+  );
+  viewport.scrollTop += OFFSET;
+  await scroll;
+  await expect.poll(() => ref.current!.scrollOffset).toBe(viewport.scrollTop);
+  const anchor = getItem(container, "item-183")!;
+  await expectPosition(() => relativeTop(viewport, anchor), ITEM_SIZE - OFFSET);
+  rerender(root, <Masonry lanes={4} />);
+
+  await expectGeometry(root, ref.current!, { lanes: 4, itemSize: ITEM_SIZE });
+  await expectPosition(() => relativeTop(viewport, anchor), ITEM_SIZE - OFFSET);
 });
 
 it("estimates the item size again from the items measured in the new lanes", async () => {

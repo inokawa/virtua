@@ -10,7 +10,7 @@
     createContainerDriver,
     createMasonryLayout,
     ACTION_ITEMS_LENGTH_CHANGE,
-    ACTION_RELAYOUT,
+    relayout,
     createVirtualStore,
     getScrollSize as _getScrollSize,
     scrollTo as _scrollTo,
@@ -51,7 +51,7 @@
     cache,
   );
   const store = createVirtualStore(layout);
-  const driver = createContainerDriver(store, false);
+  const driver = createContainerDriver(store, layout, false);
   store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
     stateVersion = store.$getStateVersion();
   });
@@ -120,15 +120,10 @@
   });
 
   $effect.pre(() => {
-    if (data.length !== store.$getItemsLength()) {
-      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [data.length]);
-    }
+    store.$update(ACTION_ITEMS_LENGTH_CHANGE, data.length);
   });
   $effect.pre(() => {
-    store.$update(
-      ACTION_RELAYOUT,
-      layout.$relayout(lanesProp, gapProp, store.$getVisibleOffset()),
-    );
+    relayout(store, layout, lanesProp, gapProp);
   });
 
   let prevStateVersion: StateVersion | undefined;
@@ -151,9 +146,9 @@
   export const getItemOffset =
     store.$getItemOffset satisfies VMasonryHandle["getItemOffset"] as VMasonryHandle["getItemOffset"];
   export const getItemSize =
-    store.$getItemSize satisfies VMasonryHandle["getItemSize"] as VMasonryHandle["getItemSize"];
+    layout.$getItemSize satisfies VMasonryHandle["getItemSize"] as VMasonryHandle["getItemSize"];
   export const scrollToIndex: VMasonryHandle["scrollToIndex"] = (index, opts) =>
-    _scrollToIndex(driver, store, index, opts);
+    _scrollToIndex(driver, store, layout, index, opts);
   export const scrollTo: VMasonryHandle["scrollTo"] = (offset) =>
     _scrollTo(driver, offset);
   export const scrollBy: VMasonryHandle["scrollBy"] = (offset) =>
@@ -195,7 +190,7 @@
         offset={stateVersion && store.$getItemOffset(index)}
         crossOffset={toCrossValue(lane / lanes, (lane * gap) / lanes)}
         {crossSize}
-        hide={stateVersion && store.$isUnmeasuredItem(index)}
+        hide={stateVersion && layout.$isSizeEqual(index)}
         resizer={driver.$observeItem}
       />
     {/each}

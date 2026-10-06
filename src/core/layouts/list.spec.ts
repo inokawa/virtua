@@ -135,8 +135,8 @@ describe("initialize", () => {
 describe("snapshot", () => {
   it("should return the measured sizes and the default size", () => {
     const layout = createListLayout(4, 40);
-    layout.$resize([[1, 10]], () => false, 0, 0);
-    layout.$resize([[2, 20]], () => false, 0, 0);
+    layout.$setItemSizes([[1, 10]], 0);
+    layout.$setItemSizes([[2, 20]], 0);
     expect(layout.$snapshot()).toEqual([[-1, 10, 20, -1], 40]);
   });
 
@@ -158,8 +158,8 @@ describe("setLength", () => {
   it("should increase cache length with shifting", () => {
     const layout = createListLayout(10, 40);
     const initialTotalSize = layout.$getTotalSize();
-    const res = layout.$setLength(15, true);
-    expect(res).toEqual(40 * 5);
+    layout.$setLength(15, true);
+    expect(layout.$getTotalSize() - initialTotalSize).toEqual(40 * 5);
     expect(layout.$snapshot()).toMatchInlineSnapshot(`
       [
         [
@@ -182,15 +182,14 @@ describe("setLength", () => {
         40,
       ]
     `);
-    expect(layout.$getTotalSize()).toBe(initialTotalSize + res);
   });
 
   it("should increase filled cache length with shifting", () => {
     const sizes = range(10, (i) => (i + 1) * 10);
     const layout = initLayoutWithSizes(sizes, 40);
     const initialTotalSize = layout.$getTotalSize();
-    const res = layout.$setLength(15, true);
-    expect(res).toEqual(40 * 5);
+    layout.$setLength(15, true);
+    expect(layout.$getTotalSize() - initialTotalSize).toEqual(40 * 5);
     expect(layout.$snapshot()).toMatchInlineSnapshot(`
       [
         [
@@ -213,14 +212,13 @@ describe("setLength", () => {
         40,
       ]
     `);
-    expect(layout.$getTotalSize()).toBe(initialTotalSize + res);
   });
 
   it("should decrease cache length with shifting", () => {
     const layout = createListLayout(10, 40);
     const initialTotalSize = layout.$getTotalSize();
-    const res = layout.$setLength(5, true);
-    expect(res).toEqual(-(40 * 5));
+    layout.$setLength(5, true);
+    expect(layout.$getTotalSize() - initialTotalSize).toEqual(-(40 * 5));
     expect(layout.$snapshot()).toMatchInlineSnapshot(`
       [
         [
@@ -233,15 +231,16 @@ describe("setLength", () => {
         40,
       ]
     `);
-    expect(layout.$getTotalSize()).toBe(initialTotalSize + res);
   });
 
   it("should decrease filled cache length with shifting", () => {
     const sizes = range(10, (i) => (i + 1) * 10);
     const layout = initLayoutWithSizes(sizes, 40);
     const initialTotalSize = layout.$getTotalSize();
-    const res = layout.$setLength(5, true);
-    expect(res).toEqual(-sum(sizes.slice(0, 5)));
+    layout.$setLength(5, true);
+    expect(layout.$getTotalSize() - initialTotalSize).toEqual(
+      -sum(sizes.slice(0, 5)),
+    );
     expect(layout.$snapshot()).toMatchInlineSnapshot(`
       [
         [
@@ -254,6 +253,5 @@ describe("setLength", () => {
         40,
       ]
     `);
-    expect(layout.$getTotalSize()).toBe(initialTotalSize + res);
   });
 });

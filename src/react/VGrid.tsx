@@ -11,7 +11,7 @@ import {
 } from "react";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
-  ACTION_RELAYOUT,
+  relayout,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SIZE_EVENT,
   microtask,
@@ -404,7 +404,7 @@ export const VGrid = /*#__PURE__*/ forwardRef<
         _colStore,
         _rowLayout,
         _colLayout,
-        createContainerGridDriver(_rowStore, _colStore),
+        createContainerGridDriver(_rowStore, _colStore, _rowLayout, _colLayout),
       ];
     });
 
@@ -423,20 +423,10 @@ export const VGrid = /*#__PURE__*/ forwardRef<
     colLayout.$setPinned(headerCols, footerCols);
     const rowLength = getAxisLength(rows);
     const colLength = getAxisLength(cols);
-    if (rowLength !== rowStore.$getItemsLength()) {
-      rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [rowLength]);
-    }
-    if (colLength !== colStore.$getItemsLength()) {
-      colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colLength]);
-    }
-    rowStore.$update(
-      ACTION_RELAYOUT,
-      rowLayout.$relayout(rowSizes, rowStore.$getVisibleOffset()),
-    );
-    colStore.$update(
-      ACTION_RELAYOUT,
-      colLayout.$relayout(colSizes, colStore.$getVisibleOffset()),
-    );
+    rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, rowLength);
+    colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, colLength);
+    relayout(rowStore, rowLayout, rowSizes);
+    relayout(colStore, colLayout, colSizes);
 
     const getStateVersion = () =>
       rowStore.$getStateVersion() + colStore.$getStateVersion();
@@ -451,8 +441,8 @@ export const VGrid = /*#__PURE__*/ forwardRef<
     const marginTop = rowStore.$getItemOffset(0);
     const marginInlineStart = colStore.$getItemOffset(0);
 
-    const rowCount = rowStore.$getItemsLength();
-    const colCount = colStore.$getItemsLength();
+    const rowCount = rowLayout.$getLength();
+    const colCount = colLayout.$getLength();
     const plan = createGridPlan(
       rowLayout,
       colLayout,
@@ -557,8 +547,8 @@ export const VGrid = /*#__PURE__*/ forwardRef<
         findColIndex: colLayout.$findIndex,
         getRowOffset: rowStore.$getItemOffset,
         getColOffset: colStore.$getItemOffset,
-        getRowSize: rowStore.$getItemSize,
-        getColSize: colStore.$getItemSize,
+        getRowSize: rowLayout.$getItemSize,
+        getColSize: colLayout.$getItemSize,
         scrollToIndex: (opts) => scrollToIndex[refKey](opts),
         scrollTo: ({ vertical, horizontal }) =>
           gridScrollTo(driver, vertical, horizontal),

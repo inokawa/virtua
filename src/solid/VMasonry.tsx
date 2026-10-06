@@ -26,7 +26,7 @@ import {
   createContainerDriver,
   createMasonryLayout,
   ACTION_ITEMS_LENGTH_CHANGE,
-  ACTION_RELAYOUT,
+  relayout,
   scrollTo,
   scrollBy,
   scrollToIndex,
@@ -216,7 +216,7 @@ export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
     cache,
   );
   const store = createVirtualStore(layout);
-  const driver = createContainerDriver(store, false);
+  const driver = createContainerDriver(store, layout, false);
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
@@ -234,10 +234,7 @@ export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
   });
 
   createComputed(() => {
-    store.$update(
-      ACTION_RELAYOUT,
-      layout.$relayout(props.lanes, props.gap, store.$getVisibleOffset()),
-    );
+    relayout(store, layout, props.lanes, props.gap);
   });
 
   const range = createMemo<ItemsRange>((prev) => {
@@ -274,8 +271,9 @@ export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
         return store.$getViewportSize();
       },
       getItemOffset: store.$getItemOffset,
-      getItemSize: store.$getItemSize,
-      scrollToIndex: (index, opts) => scrollToIndex(driver, store, index, opts),
+      getItemSize: layout.$getItemSize,
+      scrollToIndex: (index, opts) =>
+        scrollToIndex(driver, store, layout, index, opts),
       scrollTo: (offset) => scrollTo(driver, offset),
       scrollBy: (offset) => scrollBy(driver, store, offset),
     });
@@ -300,9 +298,7 @@ export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
   const dataSlice = createMemo(() => {
     const count = props.data.length;
     untrack(() => {
-      if (count !== store.$getItemsLength()) {
-        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count]);
-      }
+      store.$update(ACTION_ITEMS_LENGTH_CHANGE, count);
     });
     const items: T[] = [];
     const indexes: number[] = [];
@@ -339,7 +335,7 @@ export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
     });
     const hide = createMemo(() => {
       stateVersion();
-      return store.$isUnmeasuredItem(index());
+      return layout.$isSizeEqual(index());
     });
     const children = createMemo(() => {
       return untrack(() => props.children(data, index));

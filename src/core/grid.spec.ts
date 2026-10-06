@@ -534,7 +534,7 @@ describe("measurement", () => {
   it("should measure only the auto tracks of a key axis", () => {
     const rows = [{ h: 30 }, { h: undefined }, { h: "auto" }];
     const rowLayout = createGridLayout(rows, "h");
-    rowLayout.$relayout!(rowLayout.$getSizes(rows, "h"), 0);
+    rowLayout.$relayout(rowLayout.$getSizes(rows, "h"));
     const states = rowStates(
       createGridPlan(
         rowLayout,

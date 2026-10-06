@@ -1,14 +1,11 @@
-import {
-  ACTION_ITEM_RESIZE,
-  ACTION_VIEWPORT_RESIZE,
-  type VirtualStore,
-} from "./store.js";
+import { ACTION_VIEWPORT_RESIZE, resize, type VirtualStore } from "./store.js";
 import {
   createResizeObserver,
   createScrollObserver,
   type ScrollObserver,
 } from "./observer.js";
 import { type ItemResize } from "./types.js";
+import type { Layout } from "./layouts/types.js";
 import { createPromise, NULL, timeout } from "./utils.js";
 import { getCurrentDocument, getCurrentWindow } from "./environment.js";
 
@@ -32,6 +29,7 @@ export interface Driver extends DriverBase {
  */
 export const createContainerDriver = (
   store: VirtualStore,
+  layout: Layout,
   isHorizontal: boolean,
 ): Driver => {
   let viewportElement: HTMLElement | undefined;
@@ -65,13 +63,17 @@ export const createContainerDriver = (
       } else if ((target as HTMLElement).offsetParent) {
         const index = mountedIndexes.get(target);
         if (index != NULL) {
-          resizes.push([index, isHorizontal ? width : height]);
+          const size = isHorizontal ? width : height;
+          if (!layout.$isSizeEqual(index, size)) {
+            resizes.push([index, size]);
+          }
         }
       }
     }
 
+    // Skip if all items are cached and not updated
     if (resizes.length) {
-      store.$update(ACTION_ITEM_RESIZE, resizes);
+      resize(store, layout, resizes);
     }
   });
 
@@ -81,6 +83,7 @@ export const createContainerDriver = (
 
       scrollObserver = createScrollObserver(
         store,
+        layout,
         viewport,
         viewport,
         isHorizontal,
@@ -137,6 +140,7 @@ export const createContainerDriver = (
  */
 export const createWindowDriver = (
   store: VirtualStore,
+  layout: Layout,
   isHorizontal: boolean,
 ): Driver => {
   let viewportElement: HTMLElement | undefined;
@@ -161,13 +165,17 @@ export const createWindowDriver = (
       } else if ((target as HTMLElement).offsetParent) {
         const index = mountedIndexes.get(target);
         if (index != NULL) {
-          resizes.push([index, isHorizontal ? width : height]);
+          const size = isHorizontal ? width : height;
+          if (!layout.$isSizeEqual(index, size)) {
+            resizes.push([index, size]);
+          }
         }
       }
     }
 
+    // Skip if all items are cached and not updated
     if (resizes.length) {
-      store.$update(ACTION_ITEM_RESIZE, resizes);
+      resize(store, layout, resizes);
     }
   });
 
@@ -237,6 +245,7 @@ export const createWindowDriver = (
       // TODO support case two window scrollers exist in the same view
       scrollObserver = createScrollObserver(
         store,
+        layout,
         window,
         viewport,
         isHorizontal,
@@ -299,6 +308,8 @@ export interface GridDriver extends DriverBase {
 export const createContainerGridDriver = (
   rowStore: VirtualStore,
   colStore: VirtualStore,
+  rowLayout: Layout,
+  colLayout: Layout,
 ): GridDriver => {
   let viewportElement: HTMLElement | undefined;
   let rowScrollObserver: ScrollObserver | undefined;
@@ -336,20 +347,21 @@ export const createContainerGridDriver = (
       } else if ((target as HTMLElement).offsetParent) {
         const rowIndex = mountedRowIndexes.get(target);
         const colIndex = mountedColIndexes.get(target);
-        if (rowIndex != NULL) {
+        if (rowIndex != NULL && !rowLayout.$isSizeEqual(rowIndex, height)) {
           rowResizes.push([rowIndex, height]);
         }
-        if (colIndex != NULL) {
+        if (colIndex != NULL && !colLayout.$isSizeEqual(colIndex, width)) {
           colResizes.push([colIndex, width]);
         }
       }
     }
 
+    // Skip if all items are cached and not updated
     if (rowResizes.length) {
-      rowStore.$update(ACTION_ITEM_RESIZE, rowResizes);
+      resize(rowStore, rowLayout, rowResizes);
     }
     if (colResizes.length) {
-      colStore.$update(ACTION_ITEM_RESIZE, colResizes);
+      resize(colStore, colLayout, colResizes);
     }
   });
 
@@ -367,9 +379,14 @@ export const createContainerGridDriver = (
     $observe(containerElement, viewport = containerElement.parentElement!) {
       resizeObserver._observe((viewportElement = viewport));
 
-      const observe = (store: VirtualStore, isHorizontal: boolean) =>
+      const observe = (
+        store: VirtualStore,
+        layout: Layout,
+        isHorizontal: boolean,
+      ) =>
         createScrollObserver(
           store,
+          layout,
           viewport,
           viewport,
           isHorizontal,
@@ -388,8 +405,8 @@ export const createContainerGridDriver = (
             });
           },
         );
-      rowScrollObserver = observe(rowStore, false);
-      colScrollObserver = observe(colStore, true);
+      rowScrollObserver = observe(rowStore, rowLayout, false);
+      colScrollObserver = observe(colStore, colLayout, true);
 
       initialized[1](true);
     },

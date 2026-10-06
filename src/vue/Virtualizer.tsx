@@ -208,7 +208,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       props.cache,
     );
     const store = createVirtualStore(layout, props.ssrCount);
-    const driver = createContainerDriver(store, isHorizontal);
+    const driver = createContainerDriver(store, layout, isHorizontal);
 
     const stateVersion = ref(store.$getStateVersion());
     store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
@@ -261,7 +261,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
     watch(
       () => props.data.length,
       (count) => {
-        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, count, props.shift);
       },
     );
     watch(
@@ -296,8 +296,9 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
       findItemIndex: (offset) =>
         layout.$findIndex(offset - store.$getStartSpacerSize()),
       getItemOffset: store.$getItemOffset,
-      getItemSize: store.$getItemSize,
-      scrollToIndex: (index, opts) => scrollToIndex(driver, store, index, opts),
+      getItemSize: layout.$getItemSize,
+      scrollToIndex: (index, opts) =>
+        scrollToIndex(driver, store, layout, index, opts),
       scrollTo: (offset) => scrollTo(driver, offset),
       scrollBy: (offset) => scrollBy(driver, store, offset),
     } satisfies VirtualizerHandle);
@@ -317,6 +318,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
             key={getKey(e, i)}
             _stateVersion={stateVersion}
             _store={store}
+            _layout={layout}
             _resizer={driver.$observeItem}
             _index={i}
             _slot={slots["default"]!}

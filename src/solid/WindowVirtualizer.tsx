@@ -156,7 +156,7 @@ export const WindowVirtualizer = <T,>(
 
   const layout = createListLayout(props.data.length, itemSize, cache);
   const store = createVirtualStore(layout, ssrCount);
-  const driver = createWindowDriver(store, horizontal);
+  const driver = createWindowDriver(store, layout, horizontal);
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
@@ -201,8 +201,9 @@ export const WindowVirtualizer = <T,>(
       findItemIndex: (offset) =>
         layout.$findIndex(offset - store.$getStartSpacerSize()),
       getItemOffset: store.$getItemOffset,
-      getItemSize: store.$getItemSize,
-      scrollToIndex: (index, opts) => scrollToIndex(driver, store, index, opts),
+      getItemSize: layout.$getItemSize,
+      scrollToIndex: (index, opts) =>
+        scrollToIndex(driver, store, layout, index, opts),
     });
     onCleanup(() => ref());
   }
@@ -227,9 +228,7 @@ export const WindowVirtualizer = <T,>(
   const dataSlice = createMemo<T[]>(() => {
     const count = props.data.length;
     untrack(() => {
-      if (count !== store.$getItemsLength()) {
-        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
-      }
+      store.$update(ACTION_ITEMS_LENGTH_CHANGE, count, props.shift);
     });
     const items: T[] = [];
     for (let [i, j] = range(); i <= j; i++) {
@@ -260,7 +259,7 @@ export const WindowVirtualizer = <T,>(
           });
           const hide = createMemo(() => {
             stateVersion();
-            return store.$isUnmeasuredItem(itemIndex());
+            return layout.$isSizeEqual(itemIndex());
           });
           const children = createMemo(() => {
             return untrack(() => props.children(data, itemIndex));

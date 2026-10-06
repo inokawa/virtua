@@ -50,7 +50,7 @@
 
   const layout = createListLayout(data.length, itemSize, cache);
   const store = createVirtualStore(layout, ssrCount);
-  const driver = createContainerDriver(store, horizontal);
+  const driver = createContainerDriver(store, layout, horizontal);
   store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
     stateVersion = store.$getStateVersion();
   });
@@ -130,9 +130,7 @@
   });
 
   $effect.pre(() => {
-    if (data.length !== store.$getItemsLength()) {
-      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [data.length, shift]);
-    }
+    store.$update(ACTION_ITEMS_LENGTH_CHANGE, data.length, shift);
   });
 
   $effect.pre(() => {
@@ -165,11 +163,11 @@
   export const getItemOffset =
     store.$getItemOffset satisfies VirtualizerHandle["getItemOffset"] as VirtualizerHandle["getItemOffset"];
   export const getItemSize =
-    store.$getItemSize satisfies VirtualizerHandle["getItemSize"] as VirtualizerHandle["getItemSize"];
+    layout.$getItemSize satisfies VirtualizerHandle["getItemSize"] as VirtualizerHandle["getItemSize"];
   export const scrollToIndex: VirtualizerHandle["scrollToIndex"] = (
     index,
     opts,
-  ) => _scrollToIndex(driver, store, index, opts);
+  ) => _scrollToIndex(driver, store, layout, index, opts);
   export const scrollTo: VirtualizerHandle["scrollTo"] = (offset) =>
     _scrollTo(driver, offset);
   export const scrollBy: VirtualizerHandle["scrollBy"] = (offset) =>
@@ -201,7 +199,7 @@
       {index}
       as={itemAs}
       offset={stateVersion && store.$getItemOffset(index)}
-      hide={stateVersion && store.$isUnmeasuredItem(index)}
+      hide={stateVersion && layout.$isSizeEqual(index)}
       {horizontal}
       {isSSR}
       resizer={driver.$observeItem}

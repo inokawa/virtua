@@ -191,14 +191,12 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
       return [
         _store,
         _layout,
-        createWindowDriver(_store, _isHorizontal),
+        createWindowDriver(_store, _layout, _isHorizontal),
         _isHorizontal,
       ];
     });
     // The elements length and cached items length are different just after element is added/removed.
-    if (count !== store.$getItemsLength()) {
-      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
-    }
+    store.$update(ACTION_ITEMS_LENGTH_CHANGE, count, shift);
 
     const [stateVersion, rerender] = useReducer(
       store.$getStateVersion,
@@ -258,9 +256,9 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
         findItemIndex: (offset) =>
           layout.$findIndex(offset - store.$getStartSpacerSize()),
         getItemOffset: store.$getItemOffset,
-        getItemSize: store.$getItemSize,
+        getItemSize: layout.$getItemSize,
         scrollToIndex: (index, opts) =>
-          scrollToIndex(driver, store, index, opts),
+          scrollToIndex(driver, store, layout, index, opts),
       };
     }, []);
 
@@ -272,7 +270,7 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
           _resizer={driver.$observeItem}
           _index={i}
           _offset={store.$getItemOffset(i)}
-          _hide={store.$isUnmeasuredItem(i)}
+          _hide={layout.$isSizeEqual(i)}
           _as={ItemElement as "div"}
           _children={e}
           _isHorizontal={isHorizontal}

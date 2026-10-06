@@ -21,7 +21,7 @@ import {
   createContainerDriver,
   createMasonryLayout,
   ACTION_ITEMS_LENGTH_CHANGE,
-  ACTION_RELAYOUT,
+  relayout,
   scrollTo,
   scrollBy,
   scrollToIndex,
@@ -234,16 +234,11 @@ export const VMasonry = /*#__PURE__*/ forwardRef<
         cache,
       );
       const _store = createVirtualStore(_layout);
-      return [_store, _layout, createContainerDriver(_store, false)];
+      return [_store, _layout, createContainerDriver(_store, _layout, false)];
     });
 
-    if (data.length !== store.$getItemsLength()) {
-      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [data.length]);
-    }
-    store.$update(
-      ACTION_RELAYOUT,
-      layout.$relayout(lanesProp, gapProp, store.$getVisibleOffset()),
-    );
+    store.$update(ACTION_ITEMS_LENGTH_CHANGE, data.length);
+    relayout(store, layout, lanesProp, gapProp);
 
     const [stateVersion, rerender] = useReducer(
       store.$getStateVersion,
@@ -300,9 +295,9 @@ export const VMasonry = /*#__PURE__*/ forwardRef<
           return store.$getViewportSize();
         },
         getItemOffset: store.$getItemOffset,
-        getItemSize: store.$getItemSize,
+        getItemSize: layout.$getItemSize,
         scrollToIndex: (index, opts) =>
-          scrollToIndex(driver, store, index, opts),
+          scrollToIndex(driver, store, layout, index, opts),
         scrollTo: (offset) => scrollTo(driver, offset),
         scrollBy: (offset) => scrollBy(driver, store, offset),
       };
@@ -324,7 +319,7 @@ export const VMasonry = /*#__PURE__*/ forwardRef<
           _offset={store.$getItemOffset(i)}
           _crossOffset={toCrossValue(lane / lanes, (lane * gap) / lanes)}
           _crossSize={crossSize}
-          _hide={store.$isUnmeasuredItem(i)}
+          _hide={layout.$isSizeEqual(i)}
           _children={e}
         />
       );

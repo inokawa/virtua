@@ -6,7 +6,6 @@ import { max, min, sort } from "../utils.js";
  * @internal
  */
 export interface ListLayout extends Layout {
-  $findIndex(offset: number): number;
   $snapshot(): CacheSnapshot;
 }
 
@@ -95,12 +94,7 @@ export const createListLayout = (
     $getItemOffset: getOffset,
     $getItemSize: getSize,
     $isSizeEqual: (index, size = UNCACHED) => sizes[index] === size,
-    $resize: (resizes, shouldKeep, scrollOffset, viewportSize) => {
-      let jump = resizes.reduce(
-        (acc, [index, size]) =>
-          shouldKeep(index) ? acc + (size - getSize(index)) : acc,
-        0,
-      );
+    $setItemSizes: (resizes, viewportSize) => {
       // Update item sizes
       for (const [index, size] of resizes) {
         _totalMeasuredSize +=
@@ -116,19 +110,12 @@ export const createListLayout = (
         // If the total size is lower than the viewport, the item may be a empty state
         _totalMeasuredSize > viewportSize
       ) {
-        let measuredCountBeforeStart = 0;
-        const startIndex = findIndex(getOffset, length, scrollOffset + jump);
         // This function will be called after measurement so measured size array must be longer than 0
         const measuredSizes: number[] = [];
-        sizes.forEach((s, i) => {
-          if (s !== UNCACHED) {
-            // https://github.com/inokawa/virtua/issues/907
-            if (s) {
-              measuredSizes.push(s);
-            }
-            if (i < startIndex) {
-              measuredCountBeforeStart++;
-            }
+        sizes.forEach((s) => {
+          // https://github.com/inokawa/virtua/issues/907
+          if (s !== UNCACHED && s) {
+            measuredSizes.push(s);
           }
         });
 
@@ -139,20 +126,12 @@ export const createListLayout = (
         sort(measuredSizes);
         const len = measuredSizes.length;
         const mid = (len / 2) | 0;
-        const median =
+        defaultItemSize =
           len % 2 === 0
             ? (measuredSizes[mid - 1]! + measuredSizes[mid]!) / 2
             : measuredSizes[mid]!;
-
-        const prevDefaultItemSize = defaultItemSize;
-
-        // Calculate diff of unmeasured items before start
-        jump +=
-          ((defaultItemSize = median) - prevDefaultItemSize) *
-          max(startIndex - measuredCountBeforeStart, 0);
         shouldAutoEstimateItemSize = false;
       }
-      return jump;
     },
     $getTotalSize: () => getOffset(length),
     $getLength: () => length,
@@ -169,15 +148,10 @@ export const createListLayout = (
         // Added
         fill(offsets, diff);
         fill(sizes, diff, isShift);
-        return defaultItemSize * diff;
       } else {
         // Removed
         offsets.splice(diff);
-        return (isShift ? sizes.splice(0, -diff) : sizes.splice(diff)).reduce(
-          (acc, removed) =>
-            acc - (removed === UNCACHED ? defaultItemSize : removed),
-          0,
-        );
+        isShift ? sizes.splice(0, -diff) : sizes.splice(diff);
       }
     },
     $isEstimating: () => shouldAutoEstimateItemSize,

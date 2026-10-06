@@ -58,7 +58,6 @@ export type GridAxisSizes = readonly (GridTrackSize | null | undefined)[];
  * @internal
  */
 export interface GridLayout extends Layout {
-  $findIndex(offset: number): number;
   $isMeasurable(index: number): boolean;
   $setPinned(header?: number, footer?: number): void;
   $getPinnedStart(): number;
@@ -68,10 +67,7 @@ export interface GridLayout extends Layout {
     axis: GridAxis<unknown>,
     size: GridTrackSize | string,
   ): GridAxisSizes | number | null;
-  $relayout(
-    sizes: GridAxisSizes | number | null,
-    scrollOffset: number,
-  ): number | undefined;
+  $relayout(sizes: GridAxisSizes | number | null): boolean;
 }
 
 /**
@@ -177,14 +173,7 @@ export const createGridLayout = (
     $findIndex: find,
     $getItemOffset: getOffset,
     $getItemSize: getItemSize,
-    $resize: (resizes, shouldKeep, scrollOffset, viewportSize) => {
-      let jump = resizes.reduce(
-        (acc, [index, size]) =>
-          isMeasurable(index) && shouldKeep(index)
-            ? acc + (size - getItemSize(index))
-            : acc,
-        0,
-      );
+    $setItemSizes: (resizes, viewportSize) => {
       // Update item sizes
       for (const [index, size] of resizes) {
         // A measurement may come for an item given a size after it's rendered.
@@ -202,19 +191,12 @@ export const createGridLayout = (
         // If the total size is lower than the viewport, the item may be a empty state
         _totalMeasuredSize > viewportSize
       ) {
-        let measuredCountBeforeStart = 0;
-        const startIndex = find(scrollOffset + jump);
         // This function will be called after measurement so measured size array must be longer than 0
         const measuredSizes: number[] = [];
-        sizes.forEach((s, i) => {
-          if (s !== UNCACHED) {
-            // https://github.com/inokawa/virtua/issues/907
-            if (s) {
-              measuredSizes.push(s);
-            }
-            if (i < startIndex) {
-              measuredCountBeforeStart++;
-            }
+        sizes.forEach((s) => {
+          // https://github.com/inokawa/virtua/issues/907
+          if (s !== UNCACHED && s) {
+            measuredSizes.push(s);
           }
         });
 
@@ -225,20 +207,12 @@ export const createGridLayout = (
         sort(measuredSizes);
         const len = measuredSizes.length;
         const mid = (len / 2) | 0;
-        const median =
+        defaultItemSize =
           len % 2 === 0
             ? (measuredSizes[mid - 1]! + measuredSizes[mid]!) / 2
             : measuredSizes[mid]!;
-
-        const prevDefaultItemSize = defaultItemSize;
-
-        // Calculate diff of unmeasured items before start
-        jump +=
-          ((defaultItemSize = median) - prevDefaultItemSize) *
-          max(startIndex - measuredCountBeforeStart, 0);
         shouldAutoEstimateItemSize = false;
       }
-      return jump;
     },
     $isSizeEqual: (index, size = UNCACHED) => {
       const cachedSize = sizes.length ? sizes[index] : UNCACHED;
@@ -249,6 +223,7 @@ export const createGridLayout = (
     $getTotalSize: () => (length ? getOffset(length) - gap : 0),
     $getLength: () => length,
     $setLength: (nextLength) => {
+      // Shift is not supported yet
       const diff = nextLength - length;
 
       computedOffsetIndex = min(nextLength - 1, computedOffsetIndex);
@@ -263,8 +238,6 @@ export const createGridLayout = (
           sizes.splice(diff);
         }
       }
-      // The grid doesn't shift the items
-      return 0;
     },
     $isEstimating: () => shouldAutoEstimateItemSize,
     $isMeasurable: isMeasurable,
@@ -290,31 +263,27 @@ export const createGridLayout = (
                   ]
                 : NULL,
             ),
-    $relayout: (nextSizes, scrollOffset) => {
+    $relayout: (nextSizes) => {
       if (nextSizes == NULL) {
-        return;
+        return false;
       }
       if (typeof nextSizes === "number") {
         const nextDefaultItemSize = nextSizes + gap;
         if (nextDefaultItemSize === defaultItemSize) {
-          return;
+          return false;
         }
-        const jump =
-          find(scrollOffset) * (nextDefaultItemSize - defaultItemSize);
         defaultItemSize = nextDefaultItemSize;
-        return jump;
+        return true;
       }
       // The sizes are made again when the items change, so the same sizes are the same.
       if (nextSizes === currentSizes && length === autos.length) {
-        return;
+        return false;
       }
       currentSizes = nextSizes;
       autos.length = length;
       materialize();
 
-      const anchorIndex = find(scrollOffset);
-      const prevOffset = getOffset(anchorIndex);
-      let changed: boolean | undefined;
+      let changed = false;
       for (let i = 0; i < length; i++) {
         const itemSize = nextSizes[i];
         const isAutoItem = typeof itemSize !== "number";
@@ -328,10 +297,7 @@ export const createGridLayout = (
           }
         }
       }
-      if (!changed) {
-        return;
-      }
-      return getOffset(anchorIndex) - prevOffset;
+      return changed;
     },
   };
 };
