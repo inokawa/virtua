@@ -382,7 +382,7 @@ export const createVirtualStore = (
           // It never requests a synchronous update, so it's safe to dispatch during render.
           if (payload != NULL) {
             applyJump(payload);
-            mutated = UPDATE_VIRTUAL_STATE + UPDATE_SIZE_EVENT;
+            mutated = UPDATE_VIRTUAL_STATE;
           }
           break;
         }
