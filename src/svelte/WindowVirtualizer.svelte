@@ -40,7 +40,7 @@
 
   const layout = createListLayout(data.length, itemSize, cache);
   const store = createVirtualStore(layout, ssrCount);
-  const driver = createWindowDriver(store, horizontal);
+  const driver = createWindowDriver(store, layout, horizontal);
   store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
     stateVersion = store.$getStateVersion();
   });
@@ -99,9 +99,7 @@
   });
 
   $effect.pre(() => {
-    if (data.length !== store.$getItemsLength()) {
-      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [data.length, shift]);
-    }
+    store.$update(ACTION_ITEMS_LENGTH_CHANGE, data.length, shift);
   });
 
   let prevStateVersion: StateVersion | undefined;
@@ -124,11 +122,11 @@
   export const getItemOffset =
     store.$getItemOffset satisfies WindowVirtualizerHandle["getItemOffset"] as WindowVirtualizerHandle["getItemOffset"];
   export const getItemSize =
-    store.$getItemSize satisfies WindowVirtualizerHandle["getItemSize"] as WindowVirtualizerHandle["getItemSize"];
+    layout.$getItemSize satisfies WindowVirtualizerHandle["getItemSize"] as WindowVirtualizerHandle["getItemSize"];
   export const scrollToIndex: WindowVirtualizerHandle["scrollToIndex"] = (
     index,
     opts,
-  ) => _scrollToIndex(driver, store, index, opts);
+  ) => _scrollToIndex(driver, store, layout, index, opts);
 
   let containerStyle = $derived(
     styleToString({
@@ -156,7 +154,7 @@
       {index}
       as="div"
       offset={stateVersion && store.$getItemOffset(index)}
-      hide={stateVersion && store.$isUnmeasuredItem(index)}
+      hide={stateVersion && layout.$isSizeEqual(index)}
       {horizontal}
       {isSSR}
       resizer={driver.$observeItem}

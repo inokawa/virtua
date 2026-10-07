@@ -3,6 +3,7 @@ import { createMasonryLayout, type MasonryLayout } from "./masonry.js";
 import { createListLayout } from "./list.js";
 import type { Layout } from "./types.js";
 import { range } from "../../../spec/utils.js";
+import type { ItemResize } from "../types.js";
 
 const initMasonryLayout = (
   sizes: readonly number[],
@@ -60,7 +61,7 @@ describe("placement", () => {
     expect(getOffsets(layout)).toEqual([0, 0, 10, 20]);
     expect(getLaneIndexes(layout)).toEqual([0, 1, 0, 1]);
 
-    layout.$resize([[0, 50]], () => false, 0, 0);
+    layout.$setItemSizes([[0, 50]], 0);
     // lane 0: 0 to 50, 50 to 60 / lane 1: 0 to 20, 20 to 50
     expect(getOffsets(layout)).toEqual([0, 0, 20, 50]);
     expect(getLaneIndexes(layout)).toEqual([0, 1, 1, 0]);
@@ -71,7 +72,7 @@ describe("placement", () => {
     expect(getOffsets(layout)).toEqual([0, 0, 10, 20, 30]);
     expect(getLaneIndexes(layout)).toEqual([0, 1, 1, 1, 1]);
 
-    layout.$resize([[3, 80]], () => false, 0, 0);
+    layout.$setItemSizes([[3, 80]], 0);
     // lane 0: 0 to 100, 100 to 110 / lane 1: 0 to 10, 10 to 20, 20 to 100
     expect(getOffsets(layout)).toEqual([0, 0, 10, 20, 100]);
     expect(getLaneIndexes(layout)).toEqual([0, 1, 1, 1, 0]);
@@ -133,8 +134,7 @@ describe("setLength", () => {
     const layout = initMasonryLayout([10, 20, 30, 10], 40, 2);
     expect(getOffsets(layout)).toEqual([0, 0, 10, 20]);
 
-    // shift is not supported so the returned delta is always 0
-    expect(layout.$setLength(6)).toBe(0);
+    layout.$setLength(6);
     // lane 0: 0 to 10, 10 to 40, 40 to 80 / lane 1: 0 to 20, 20 to 30, 30 to 70
     expect(getOffsets(layout)).toEqual([0, 0, 10, 20, 30, 40]);
     expect(getLaneIndexes(layout)).toEqual([0, 1, 0, 1, 1, 0]);
@@ -142,29 +142,40 @@ describe("setLength", () => {
 });
 
 describe("resize", () => {
+  // The jump the store receives: the displacement of the anchor, the first item not to keep
+  const resizeAt = (
+    layout: MasonryLayout,
+    resizes: ItemResize[],
+    anchorIndex: number,
+    viewportSize: number,
+  ): number => {
+    const anchorOffset = layout.$getItemOffset(anchorIndex);
+    layout.$setItemSizes(resizes, viewportSize);
+    return layout.$getItemOffset(anchorIndex) - anchorOffset;
+  };
   it("should keep the first item not to keep in place", () => {
     // lane 0: 0, 2, 4 / lane 1: 1, 3, 5
     const layout = initMasonryLayout([10, 10, 10, 10, 10, 10], 40, 2);
     expect(getOffsets(layout)).toEqual([0, 0, 10, 10, 20, 20]);
     // The items before the item at 20 are kept, but the resize of the item in the other lane doesn't move it
-    expect(layout.$resize([[1, 12]], (i) => i < 4, 20, 100)).toBe(0);
+    expect(resizeAt(layout, [[1, 12]], 4, 100)).toBe(0);
     expect(getOffsets(layout)).toEqual([0, 0, 10, 12, 20, 22]);
     // The resize of the item in the same lane moves it by the delta
-    expect(layout.$resize([[2, 12]], (i) => i < 4, 20, 100)).toBe(2);
+    expect(resizeAt(layout, [[2, 12]], 4, 100)).toBe(2);
     expect(getOffsets(layout)).toEqual([0, 0, 10, 12, 22, 22]);
   });
 
   it("should keep the destination of scrolling in place", () => {
     const layout = initMasonryLayout([10, 10, 10, 10, 10, 10], 40, 2);
     // The item 5 is the destination, which moves by the resize in its lane
-    expect(layout.$resize([[1, 12]], (i) => i < 5, 0, 100)).toBe(2);
-    expect(layout.$resize([[0, 12]], (i) => i < 5, 0, 100)).toBe(0);
+    expect(resizeAt(layout, [[1, 12]], 5, 100)).toBe(2);
+    expect(resizeAt(layout, [[0, 12]], 5, 100)).toBe(0);
   });
 
   it("should move the item at the start of the viewport by the change of its lane", () => {
     // Resizing an item above can move the items after it to other lanes, and the jump follows the actual displacement
     const layout = initMasonryLayout([10, 10, 10, 10, 10, 10], 40, 2);
-    expect(layout.$resize([[1, 30]], (i) => i < 4, 20, 100)).toBe(10);
+    expect(resizeAt(layout, [[1, 30]], 4, 100)).toBe(10);
     expect(getOffsets(layout)).toEqual([0, 0, 10, 20, 30, 30]);
   });
 
@@ -173,15 +184,14 @@ describe("resize", () => {
     const measuredSize = 100;
     const layout = createMasonryLayout(10, lanes);
     for (let i = 0; i < 5; i++) {
-      layout.$resize([[i, measuredSize]], () => false, 0, 0);
+      layout.$setItemSizes([[i, measuredSize]], 0);
     }
     expect(layout.$isEstimating()).toBe(true);
 
     // The unmeasured items are 40 until estimated, so the items 5-7 are placed at 200, 240 and 280 in lane 1
-    const scrollOffset = 300;
     expect(layout.$getItemOffset(7)).toBe(280);
     // The item 7 is at the start of the viewport, which is moved to 300 by the estimated size
-    expect(layout.$resize([], () => false, scrollOffset, 1)).toBe(20);
+    expect(resizeAt(layout, [], 7, 1)).toBe(20);
     expect(layout.$getItemOffset(7)).toBe(300);
     expect(layout.$isEstimating()).toBe(false);
     // the estimated default size is used for unmeasured items afterwards
@@ -193,17 +203,13 @@ describe("estimateDefaultSize", () => {
   it("should not estimate until the measured sizes exceed the viewport size of all lanes in total", () => {
     const layout = createMasonryLayout(10, 2);
     // 150 exceeds the viewport, but not in 2 lanes
-    layout.$resize(
+    layout.$setItemSizes(
       range(3, (i) => [i, 50]),
-      () => false,
-      0,
       100,
     );
     expect(layout.$isEstimating()).toBe(true);
-    layout.$resize(
+    layout.$setItemSizes(
       range(2, (i) => [3 + i, 50]),
-      () => false,
-      0,
       100,
     );
     expect(layout.$isEstimating()).toBe(false);
@@ -213,14 +219,12 @@ describe("estimateDefaultSize", () => {
   it("should count the gaps as the viewport is filled with them too", () => {
     const layout = createMasonryLayout(10, 2, 50);
     // An item of 50 and a gap of 50 fill the viewport of 100 in a lane
-    layout.$resize(
+    layout.$setItemSizes(
       range(2, (i) => [i, 50]),
-      () => false,
-      0,
       100,
     );
     expect(layout.$isEstimating()).toBe(true);
-    layout.$resize([[2, 50]], () => false, 0, 100);
+    layout.$setItemSizes([[2, 50]], 100);
     expect(layout.$isEstimating()).toBe(false);
     expect(layout.$snapshot()[1]).toBe(50);
   });
@@ -228,10 +232,8 @@ describe("estimateDefaultSize", () => {
   describe("after relayout", () => {
     // Images keeping their aspect ratios: half the size in twice the lanes. The rendered items are resized together with the lanes.
     const measureAll = (layout: MasonryLayout, size: number) => {
-      layout.$resize(
+      layout.$setItemSizes(
         range(4, (i) => [i, size]),
-        () => false,
-        0,
         100,
       );
     };
@@ -242,7 +244,7 @@ describe("estimateDefaultSize", () => {
       expect(layout.$isEstimating()).toBe(false);
       expect(layout.$snapshot()[1]).toBe(200);
 
-      layout.$relayout(2, undefined, 0);
+      layout.$relayout(2, undefined);
       measureAll(layout, 100);
       expect(layout.$snapshot()[1]).toBe(100);
     });
@@ -253,21 +255,19 @@ describe("estimateDefaultSize", () => {
       expect(layout.$isEstimating()).toBe(false);
 
       // The items which keep their sizes in the new lanes are not measured again
-      layout.$relayout(2, undefined, 0);
+      layout.$relayout(2, undefined);
       expect(layout.$isEstimating()).toBe(false);
     });
 
     it("should not estimate from the items measured in the previous lanes", () => {
       const layout = createMasonryLayout(10, 1);
-      layout.$resize(
+      layout.$setItemSizes(
         range(8, (i) => [i, 200]),
-        () => false,
-        0,
         100,
       );
       expect(layout.$snapshot()[1]).toBe(200);
 
-      layout.$relayout(2, undefined, 0);
+      layout.$relayout(2, undefined);
       // The items 4-7 are not rendered in the new lanes, and keep their sizes measured in the previous lanes
       measureAll(layout, 100);
       expect(layout.$snapshot()[1]).toBe(100);
@@ -275,7 +275,7 @@ describe("estimateDefaultSize", () => {
 
     it("should not estimate again if the item size is given", () => {
       const layout = createMasonryLayout(10, 1, 0, 50);
-      layout.$relayout(2, undefined, 0);
+      layout.$relayout(2, undefined);
       measureAll(layout, 100);
       expect(layout.$snapshot()[1]).toBe(50);
     });
@@ -283,7 +283,7 @@ describe("estimateDefaultSize", () => {
     it("should not estimate again with the same options", () => {
       const layout = createMasonryLayout(10, 2);
       measureAll(layout, 200);
-      layout.$relayout(2, undefined, 0);
+      layout.$relayout(2, undefined);
       measureAll(layout, 100);
       expect(layout.$snapshot()[1]).toBe(200);
     });
@@ -346,43 +346,58 @@ describe("snapshot", () => {
 });
 
 describe("relayout", () => {
-  it("should relayout with the new lanes and return the jump to keep the item at the scroll offset in place", () => {
+  // The jump the store receives: the displacement of the anchor, or undefined when nothing changed
+  const relayoutAt = <A, B>(
+    layout: {
+      $relayout(a: A, b?: B): boolean;
+      $getItemOffset(index: number): number;
+    },
+    anchorIndex: number,
+    a: A,
+    b?: B,
+  ): number | undefined => {
+    const anchorOffset = layout.$getItemOffset(anchorIndex);
+    return layout.$relayout(a, b)
+      ? layout.$getItemOffset(anchorIndex) - anchorOffset
+      : undefined;
+  };
+  it("should relayout with the new lanes and return the jump to keep the anchor in place", () => {
     const layout = createMasonryLayout(10, 1, 0, 40);
     expect(layout.$getItemOffset(4)).toBe(160);
     // item 4 moves to the third row of 2 lanes
-    expect(layout.$relayout(2, undefined, 160)).toBe(80 - 160);
+    expect(relayoutAt(layout, 4, 2, undefined)).toBe(80 - 160);
     expect(layout.$getLanes()).toBe(2);
     expect(layout.$getItemOffset(4)).toBe(80);
   });
 
   it("should relayout with the new gap", () => {
     const layout = createMasonryLayout(6, 2, 0, 40);
-    expect(layout.$relayout(2, 10, 0)).toBe(0);
+    expect(relayoutAt(layout, 0, 2, 10)).toBe(0);
     expect(layout.$getGap()).toBe(10);
     expect(getOffsets(layout)).toEqual([0, 0, 50, 50, 100, 100]);
   });
 
   it("should not relayout with the same options", () => {
     const layout = createMasonryLayout(10, 2, 10, 40);
-    expect(layout.$relayout(2, 10, 0)).toBeUndefined();
+    expect(relayoutAt(layout, 0, 2, 10)).toBeUndefined();
   });
 
   it("should clamp the new lanes to 1", () => {
     const layout = createMasonryLayout(10, 2, 0, 40);
-    layout.$relayout(0, undefined, 0);
+    layout.$relayout(0, undefined);
     expect(layout.$getLanes()).toBe(1);
   });
 
   it("should relayout with no items", () => {
     const layout = initMasonryLayout([], 40, 2);
-    expect(layout.$relayout(3, undefined, 0)).toBe(0);
+    expect(relayoutAt(layout, 0, 3, undefined)).toBe(0);
     expect(layout.$getLanes()).toBe(3);
   });
 
   it("should keep the measured sizes on relayout", () => {
     const layout = initMasonryLayout([10, 20, 30, 10], 40, 2);
     expect(getOffsets(layout)).toEqual([0, 0, 10, 20]);
-    expect(layout.$relayout(4, undefined, 0)).toBe(0);
+    expect(relayoutAt(layout, 0, 4, undefined)).toBe(0);
     expect(getOffsets(layout)).toEqual([0, 0, 0, 0]);
     expect(layout.$getItemSize(2)).toBe(30);
   });

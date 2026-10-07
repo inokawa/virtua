@@ -23,7 +23,7 @@ import {
   createContainerDriver,
   createMasonryLayout,
   ACTION_ITEMS_LENGTH_CHANGE,
-  ACTION_RELAYOUT,
+  relayout,
   scrollTo,
   scrollBy,
   scrollToIndex,
@@ -77,8 +77,7 @@ const MasonryItem = /*#__PURE__*/ defineComponent(
     });
     const hide = computed(
       () =>
-        props._stateVersion.value &&
-        props._store.$isUnmeasuredItem(props._index),
+        props._stateVersion.value && props._layout.$isSizeEqual(props._index),
     );
     const children = computed(() =>
       props._slot({ item: props._item, index: props._index }),
@@ -260,7 +259,7 @@ export const VMasonry = /*#__PURE__*/ defineComponent({
       props.cache,
     );
     const store = createVirtualStore(layout);
-    const driver = createContainerDriver(store, false);
+    const driver = createContainerDriver(store, layout, false);
 
     const stateVersion = ref(store.$getStateVersion());
     store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
@@ -300,15 +299,10 @@ export const VMasonry = /*#__PURE__*/ defineComponent({
     });
 
     watchEffect(() => {
-      if (props.data.length !== store.$getItemsLength()) {
-        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [props.data.length]);
-      }
+      store.$update(ACTION_ITEMS_LENGTH_CHANGE, props.data.length);
     });
     watchEffect(() => {
-      store.$update(
-        ACTION_RELAYOUT,
-        layout.$relayout(props.lanes, props.gap, store.$getVisibleOffset()),
-      );
+      relayout(store, layout, props.lanes, props.gap);
     });
 
     watch(
@@ -333,8 +327,9 @@ export const VMasonry = /*#__PURE__*/ defineComponent({
         return store.$getViewportSize();
       },
       getItemOffset: store.$getItemOffset,
-      getItemSize: store.$getItemSize,
-      scrollToIndex: (index, opts) => scrollToIndex(driver, store, index, opts),
+      getItemSize: layout.$getItemSize,
+      scrollToIndex: (index, opts) =>
+        scrollToIndex(driver, store, layout, index, opts),
       scrollTo: (offset) => scrollTo(driver, offset),
       scrollBy: (offset) => scrollBy(driver, store, offset),
     } satisfies VMasonryHandle);

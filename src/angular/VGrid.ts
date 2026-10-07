@@ -35,7 +35,7 @@ import {
   type GridSpan,
   type VirtualStore,
   ACTION_ITEMS_LENGTH_CHANGE,
-  ACTION_RELAYOUT,
+  relayout,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SIZE_EVENT,
   microtask,
@@ -441,11 +441,11 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
   });
   /** @internal */
   protected rowCount = computed(
-    () => this._stateVersion() && this._rowStore.$getItemsLength(),
+    () => this._stateVersion() && this._rowLayout.$getLength(),
   );
   /** @internal */
   protected colCount = computed(
-    () => this._stateVersion() && this._colStore.$getItemsLength(),
+    () => this._stateVersion() && this._colLayout.$getLength(),
   );
 
   private _rowSizes = computed(() =>
@@ -521,26 +521,10 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
         this._colLayout.$setPinned(headerCols, footerCols);
         const rowLength = getAxisLength(rows);
         const colLength = getAxisLength(cols);
-        if (rowLength !== this._rowStore.$getItemsLength()) {
-          this._rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [rowLength]);
-        }
-        if (colLength !== this._colStore.$getItemsLength()) {
-          this._colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colLength]);
-        }
-        this._rowStore.$update(
-          ACTION_RELAYOUT,
-          this._rowLayout.$relayout(
-            rowSizes,
-            this._rowStore.$getVisibleOffset(),
-          ),
-        );
-        this._colStore.$update(
-          ACTION_RELAYOUT,
-          this._colLayout.$relayout(
-            colSizes,
-            this._colStore.$getVisibleOffset(),
-          ),
-        );
+        this._rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, rowLength);
+        this._colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, colLength);
+        relayout(this._rowStore, this._rowLayout, rowSizes);
+        relayout(this._colStore, this._colLayout, colSizes);
       });
     });
 
@@ -586,7 +570,12 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
     ));
     const rowStore = (this._rowStore = createVirtualStore(rowLayout));
     const colStore = (this._colStore = createVirtualStore(colLayout));
-    this.driver = createContainerGridDriver(rowStore, colStore);
+    this.driver = createContainerGridDriver(
+      rowStore,
+      colStore,
+      rowLayout,
+      colLayout,
+    );
 
     const rerender = (sync?: boolean) => {
       this._stateVersion.set(
@@ -666,10 +655,10 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
     return this._colStore.$getItemOffset(index);
   }
   getRowSize(index: number): number {
-    return this._rowStore.$getItemSize(index);
+    return this._rowLayout.$getItemSize(index);
   }
   getColSize(index: number): number {
-    return this._colStore.$getItemSize(index);
+    return this._colLayout.$getItemSize(index);
   }
   scrollToIndex(opts: GridScrollToIndexOpts): void {
     gridScrollToIndex(

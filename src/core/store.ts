@@ -30,27 +30,28 @@ export const ACTION_VIEWPORT_RESIZE = 4;
 /** @internal */
 export const ACTION_ITEMS_LENGTH_CHANGE = 5;
 /** @internal */
-export const ACTION_START_OFFSET_CHANGE = 6;
+export const ACTION_RELAYOUT = 6;
 /** @internal */
-export const ACTION_MANUAL_SCROLL = 7;
+export const ACTION_START_OFFSET_CHANGE = 7;
 /** @internal */
-export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 8;
+export const ACTION_MANUAL_SCROLL = 8;
 /** @internal */
-export const ACTION_RELAYOUT = 9;
+export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 9;
 
 type Actions =
   | [type: typeof ACTION_SCROLL, offset: number]
   | [type: typeof ACTION_SCROLL_END, dummy?: void]
-  | [type: typeof ACTION_ITEM_RESIZE, entries: ItemResize[]]
+  | [type: typeof ACTION_ITEM_RESIZE, jump: number]
   | [type: typeof ACTION_VIEWPORT_RESIZE, size: number]
   | [
       type: typeof ACTION_ITEMS_LENGTH_CHANGE,
-      arg: [length: number, isShift?: boolean | undefined],
+      length: number,
+      isShift?: boolean | undefined,
     ]
+  | [type: typeof ACTION_RELAYOUT, jump: number]
   | [type: typeof ACTION_START_OFFSET_CHANGE, offset: number]
   | [type: typeof ACTION_MANUAL_SCROLL, dummy?: void]
-  | [type: typeof ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, offset: number]
-  | [type: typeof ACTION_RELAYOUT, jump: number | undefined];
+  | [type: typeof ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, offset: number];
 
 /** @internal */
 export const UPDATE_VIRTUAL_STATE = 0b0001;
@@ -68,6 +69,46 @@ export const getScrollSize = (store: VirtualStore): number => {
   return max(store.$getTotalSize(), store.$getViewportSize());
 };
 
+/**
+ * @internal
+ */
+export const resize = (
+  store: VirtualStore,
+  layout: Layout,
+  resizes: readonly ItemResize[],
+): void => {
+  const anchorIndex = store._getAnchorIndex();
+  const anchorOffset = layout.$getItemOffset(anchorIndex);
+  layout.$setItemSizes(resizes, store.$getViewportSize());
+  store.$update(
+    ACTION_ITEM_RESIZE,
+    // Calculate jump by resize to minimize janks in appearance
+    layout.$getItemOffset(anchorIndex) - anchorOffset,
+  );
+};
+
+/**
+ * @internal
+ */
+export const relayout = <A, B>(
+  store: VirtualStore,
+  layout: {
+    $relayout(a: A, b?: B): boolean;
+    $getItemOffset(index: number): number;
+  },
+  a: A,
+  b?: B,
+): void => {
+  const anchorIndex = store._getAnchorIndex();
+  const anchorOffset = layout.$getItemOffset(anchorIndex);
+  if (layout.$relayout(a, b)) {
+    store.$update(
+      ACTION_RELAYOUT,
+      layout.$getItemOffset(anchorIndex) - anchorOffset,
+    );
+  }
+};
+
 type Subscriber = (sync?: boolean) => void;
 
 /** @internal */
@@ -81,12 +122,9 @@ export type VirtualStore = {
   $dispose(): void;
   $getStateVersion(): StateVersion;
   $getRange(bufferSize?: number): ItemsRange;
-  $isUnmeasuredItem(index: number): boolean;
+  _getAnchorIndex(): number;
   $getItemOffset(index: number): number;
-  $getItemSize(index: number): number;
-  $getItemsLength(): number;
   $getScrollOffset(): number;
-  $getVisibleOffset(): number;
   $isScrolling(): boolean;
   $getViewportSize(): number;
   $getStartSpacerSize(): number;
@@ -102,14 +140,13 @@ export type VirtualStore = {
 export const createVirtualStore = (
   {
     $getRange: getRange,
+    $findIndex: findIndex,
     $getItemOffset: getOffset,
     $getItemSize: getItemSize,
-    $isSizeEqual: isSizeEqual,
     $getTotalSize: getTotalSize,
     $getLength: getLength,
     $setLength: setLength,
     $isEstimating: isEstimating,
-    $resize: resize,
   }: Layout,
   ssrCount: number = 0,
 ): VirtualStore => {
@@ -134,22 +171,8 @@ export const createVirtualStore = (
     return getOffset(index) - pendingJump;
   };
 
-  const shouldKeep = (index: number): boolean => {
-    if (
-      // Keep distance from end during shifting
-      _scrollMode === SCROLL_BY_SHIFT
-    ) {
-      return true;
-    }
-    if (_frozenRange && _scrollMode === SCROLL_BY_MANUAL_SCROLL) {
-      // https://github.com/inokawa/virtua/issues/380
-      // https://github.com/inokawa/virtua/issues/590
-      // https://github.com/inokawa/virtua/issues/758
-      return index < _frozenRange[0];
-    }
-    // Otherwise we should maintain visible position
-    const start = getRelativeScrollOffset();
-    const itemOffset = getItemOffset(index);
+  const shouldKeep = (index: number, start: number): boolean => {
+    const itemOffset = getOffset(index);
     const itemSize = getItemSize(index);
     return _scrollDirection !== SCROLL_DOWN && _scrollMode === SCROLL_BY_NATIVE
       ? // https://github.com/inokawa/virtua/issues/385
@@ -223,12 +246,36 @@ export const createVirtualStore = (
 
       return [max(startIndex, 0), min(endIndex, getLength() - 1)];
     },
-    $isUnmeasuredItem: isSizeEqual,
+    _getAnchorIndex: () => {
+      const length = getLength();
+      if (_scrollMode === SCROLL_BY_SHIFT) {
+        // Keep distance from end during shifting
+        return length;
+      }
+      if (_frozenRange && _scrollMode === SCROLL_BY_MANUAL_SCROLL) {
+        // https://github.com/inokawa/virtua/issues/380
+        // https://github.com/inokawa/virtua/issues/590
+        // https://github.com/inokawa/virtua/issues/758
+        // The range may exceed the length decreased after it was frozen
+        return min(_frozenRange[0], length);
+      }
+      // Otherwise we should maintain visible position
+
+      // The anchor is the first item not to keep
+      const start = getVisibleOffset();
+      let anchorIndex = findIndex(start);
+      // Before the item at the start of the viewport, only the empty items at the start may not be kept
+      while (anchorIndex > 0 && !shouldKeep(anchorIndex - 1, start)) {
+        anchorIndex--;
+      }
+      // From the item at the start of the viewport, the items starting above the viewport may be kept, which can be several in masonry as they are in different lanes
+      while (anchorIndex < length && shouldKeep(anchorIndex, start)) {
+        anchorIndex++;
+      }
+      return anchorIndex;
+    },
     $getItemOffset: getItemOffset,
-    $getItemSize: getItemSize,
-    $getItemsLength: getLength,
     $getScrollOffset: () => scrollOffset,
-    $getVisibleOffset: getVisibleOffset,
     $isScrolling: () => _scrollDirection !== SCROLL_IDLE,
     $getViewportSize: () => viewportSize,
     $getStartSpacerSize: () => startSpacerSize,
@@ -245,7 +292,7 @@ export const createVirtualStore = (
         subscribers.delete(sub);
       };
     },
-    $update: (type, payload): void => {
+    $update: (type, payload, payload2?): void => {
       let shouldFlushPendingJump: boolean | undefined;
       let shouldSync: boolean | undefined;
       let mutated = 0;
@@ -322,19 +369,7 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_ITEM_RESIZE: {
-          const updated = payload.filter(
-            ([index, size]) => !isSizeEqual(index, size),
-          );
-
-          // Skip if all items are cached and not updated
-          if (!updated.length) {
-            break;
-          }
-
-          // Calculate jump by resize to minimize junks in appearance
-          applyJump(
-            resize(updated, shouldKeep, getVisibleOffset(), viewportSize),
-          );
+          applyJump(payload);
 
           mutated = UPDATE_VIRTUAL_STATE + UPDATE_SIZE_EVENT;
 
@@ -358,16 +393,27 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_ITEMS_LENGTH_CHANGE: {
-          if (payload[1]) {
-            applyJump(setLength(payload[0], true));
-            _scrollMode = SCROLL_BY_SHIFT;
-            mutated = UPDATE_VIRTUAL_STATE;
-          } else {
-            setLength(payload[0]);
-            // https://github.com/inokawa/virtua/issues/552
-            // https://github.com/inokawa/virtua/issues/557
-            mutated = UPDATE_VIRTUAL_STATE;
+          if (payload === getLength()) {
+            // Skip if the length is not changed, as the layouts discard the sizes even then
+            break;
           }
+          if (payload2) {
+            const totalSize = getTotalSize();
+            setLength(payload, true);
+            applyJump(getTotalSize() - totalSize);
+            _scrollMode = SCROLL_BY_SHIFT;
+          } else {
+            setLength(payload);
+          }
+          // https://github.com/inokawa/virtua/issues/552
+          // https://github.com/inokawa/virtua/issues/557
+          mutated = UPDATE_VIRTUAL_STATE;
+          break;
+        }
+        case ACTION_RELAYOUT: {
+          // It never requests a synchronous update, so it's safe to dispatch during render.
+          applyJump(payload);
+          mutated = UPDATE_VIRTUAL_STATE;
           break;
         }
         case ACTION_START_OFFSET_CHANGE: {
@@ -376,14 +422,6 @@ export const createVirtualStore = (
         }
         case ACTION_MANUAL_SCROLL: {
           _scrollMode = SCROLL_BY_MANUAL_SCROLL;
-          break;
-        }
-        case ACTION_RELAYOUT: {
-          // It never requests a synchronous update, so it's safe to dispatch during render.
-          if (payload != NULL) {
-            applyJump(payload);
-            mutated = UPDATE_VIRTUAL_STATE;
-          }
           break;
         }
         case ACTION_BEFORE_MANUAL_SMOOTH_SCROLL: {

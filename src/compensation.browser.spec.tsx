@@ -19,6 +19,7 @@ import {
   cleanupScroll,
   expectPosition,
   expectVirtualized,
+  expectVirtualizedAndScrollable,
   findFirstVisibleItem,
   findLastVisibleItem,
   getItem,
@@ -1625,6 +1626,62 @@ describe("children change", () => {
     await expect
       .poll(() => getItem(container, `item-${ITEM_COUNT - 1}`))
       .toBeDefined();
+  });
+
+  it("recovering when the destination of smooth scrolling is removed", async () => {
+    const ITEM_SIZE = 100;
+    const ITEM_COUNT = 100;
+    const REMAINING_COUNT = 50;
+    const ref = createRef<VirtualizerHandle>();
+    // The sizes are given beforehand, so the scroll size is known before the items are measured
+    const Sized = ({ count }: { count: number }) => (
+      <div style={{ height: 400, overflowY: "auto" }}>
+        <Virtualizer ref={ref} data={range(count)} itemSize={ITEM_SIZE}>
+          {(i) => (
+            <div key={i} style={{ height: ITEM_SIZE }}>
+              item-{i}
+            </div>
+          )}
+        </Virtualizer>
+      </div>
+    );
+    const root = render(<Sized count={ITEM_COUNT} />);
+    const { viewport, container } = await getVirtualizer(root);
+    await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+    const scroll = new Promise((resolve) =>
+      viewport.addEventListener("scroll", resolve, { once: true }),
+    );
+    ref.current!.scrollToIndex(ITEM_COUNT - 10, { smooth: true });
+    await scroll;
+    // delete many with the destination
+    rerender(root, <Sized count={REMAINING_COUNT} />);
+    await expect
+      .poll(() => getItem(container, `item-${REMAINING_COUNT}`))
+      .toBeUndefined();
+    // The range is widened to the destination, so the last item is rendered while the smooth scroll runs
+    const last = getItem(container, `item-${REMAINING_COUNT - 1}`)!;
+    (last.firstElementChild as HTMLElement).style.height = `${ITEM_SIZE * 3}px`;
+    await expect
+      .poll(() => viewport.scrollHeight)
+      .toBe(ITEM_SIZE * (REMAINING_COUNT + 2));
+    await settle(viewport, container);
+
+    // The items added later are measured if they are rendered, which hides the error, so add them out of the viewport
+    viewport.scrollTop = 0;
+    await settle(viewport, container);
+    // add many
+    rerender(root, <Sized count={ITEM_COUNT} />);
+    await expect
+      .poll(() => viewport.scrollHeight)
+      .toBe(ITEM_SIZE * (ITEM_COUNT + 2));
+
+    // check if an error didn't occur
+    await expectVirtualizedAndScrollable(
+      root,
+      "item-0",
+      `item-${ITEM_COUNT - 1}`,
+    );
   });
 
   it("recovering when changed a lot after scrolling", async () => {

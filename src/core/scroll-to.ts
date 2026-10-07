@@ -3,6 +3,7 @@ import { clamp, EMPTY, max, min, NULL } from "./utils.js";
 import { type Driver, type GridDriver } from "./driver.js";
 import { getSectionIndex, getSectionStarts } from "./grid.js";
 import { type GridLayout } from "./layouts/grid.js";
+import { type Layout } from "./layouts/types.js";
 
 /**
  * Alignment of item in the viewport.
@@ -81,10 +82,11 @@ export const scrollBy = (
 export const scrollToIndex = (
   driver: Driver,
   store: VirtualStore,
+  layout: Layout,
   index: number,
   { align, smooth, offset = 0 }: ScrollToIndexOpts = {},
 ) => {
-  index = clamp(index, 0, store.$getItemsLength() - 1);
+  index = clamp(index, 0, layout.$getLength() - 1);
 
   if (align === "nearest") {
     const itemOffset = store.$getItemOffset(index);
@@ -93,7 +95,7 @@ export const scrollToIndex = (
     if (itemOffset < scrollOffset) {
       align = "start";
     } else if (
-      itemOffset + store.$getItemSize(index) >
+      itemOffset + layout.$getItemSize(index) >
       scrollOffset + store.$getViewportSize()
     ) {
       align = "end";
@@ -109,9 +111,9 @@ export const scrollToIndex = (
       driver.$getBaseOffset() +
       store.$getItemOffset(index) +
       (align === "end"
-        ? store.$getItemSize(index) - store.$getViewportSize()
+        ? layout.$getItemSize(index) - store.$getViewportSize()
         : align === "center"
-          ? (store.$getItemSize(index) - store.$getViewportSize()) / 2
+          ? (layout.$getItemSize(index) - store.$getViewportSize()) / 2
           : 0)
     );
   }, smooth);
@@ -162,7 +164,7 @@ const scrollGridAxisToIndex = (
   align: ScrollToIndexAlign | undefined,
   isHorizontal: boolean,
 ) => {
-  const count = store.$getItemsLength();
+  const count = layout.$getLength();
   const pinnedStart = layout.$getPinnedStart();
   const trailStart = layout.$getTrailStart();
   index = clamp(index, 0, count - 1);
@@ -188,7 +190,7 @@ const scrollGridAxisToIndex = (
     const insetStart = getInsetStart();
     const scrollOffset = store.$getScrollOffset() + insetStart;
     const viewportSize = store.$getViewportSize() - insetStart - getInsetEnd();
-    const itemSize = store.$getItemSize(index);
+    const itemSize = layout.$getItemSize(index);
     let itemOffset = store.$getItemOffset(index);
     if (sectionHeader === index) {
       // A section header is where it sticks, until the end of its section pushes it out
@@ -199,7 +201,7 @@ const scrollGridAxisToIndex = (
         min(
           scrollOffset,
           store.$getItemOffset(lastIndex) +
-            store.$getItemSize(lastIndex) -
+            layout.$getItemSize(lastIndex) -
             itemSize,
         ),
       );
@@ -216,7 +218,7 @@ const scrollGridAxisToIndex = (
   driver.$scroll(isHorizontal, () => {
     const insetStart = getInsetStart();
     const rest =
-      store.$getItemSize(index) -
+      layout.$getItemSize(index) -
       (store.$getViewportSize() - insetStart - getInsetEnd());
     return (
       store.$getItemOffset(index) -

@@ -227,15 +227,13 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
       return [
         _store,
         _layout,
-        createContainerDriver(_store, _isHorizontal),
+        createContainerDriver(_store, _layout, _isHorizontal),
         _isHorizontal,
       ];
     });
 
     // The elements length and cached items length are different just after element is added/removed.
-    if (count !== store.$getItemsLength()) {
-      store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, shift]);
-    }
+    store.$update(ACTION_ITEMS_LENGTH_CHANGE, count, shift);
     if (startMargin !== store.$getStartSpacerSize()) {
       store.$update(ACTION_START_OFFSET_CHANGE, startMargin);
     }
@@ -260,7 +258,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
           _resizer={driver.$observeItem}
           _index={index}
           _offset={store.$getItemOffset(index)}
-          _hide={store.$isUnmeasuredItem(index)}
+          _hide={layout.$isSizeEqual(index)}
           _as={ItemElement as "div"}
           _children={e}
           _isHorizontal={isHorizontal}
@@ -329,9 +327,9 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
         findItemIndex: (offset) =>
           layout.$findIndex(offset - store.$getStartSpacerSize()),
         getItemOffset: store.$getItemOffset,
-        getItemSize: store.$getItemSize,
+        getItemSize: layout.$getItemSize,
         scrollToIndex: (index, opts) =>
-          scrollToIndex(driver, store, index, opts),
+          scrollToIndex(driver, store, layout, index, opts),
         scrollTo: (offset) => scrollTo(driver, offset),
         scrollBy: (offset) => scrollBy(driver, store, offset),
       };

@@ -11,6 +11,7 @@ import {
 } from "vue";
 import {
   type Driver,
+  type Layout,
   type StateVersion,
   type VirtualStore,
 } from "../core/index.js";
@@ -19,6 +20,7 @@ import { type ItemProps } from "./utils.js";
 interface ListItemProps {
   _stateVersion: Ref<StateVersion>;
   _store: VirtualStore;
+  _layout: Layout;
   _slot: (arg: { item: unknown; index: number }) => VNode[];
   _item: unknown;
   _resizer: Driver["$observeItem"];
@@ -42,8 +44,7 @@ export const ListItem = /*#__PURE__*/ defineComponent(
     );
     const hide = computed(
       () =>
-        props._stateVersion.value &&
-        props._store.$isUnmeasuredItem(props._index),
+        props._stateVersion.value && props._layout.$isSizeEqual(props._index),
     );
     const children = computed(() =>
       props._slot({ item: props._item, index: props._index }),
@@ -98,6 +99,7 @@ export const ListItem = /*#__PURE__*/ defineComponent(
     props: {
       _stateVersion: null,
       _store: null,
+      _layout: null,
       _slot: null,
       _item: null,
       _resizer: null,

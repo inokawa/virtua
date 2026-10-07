@@ -3,7 +3,7 @@ import { createListLayout, type ListLayout } from "./list.js";
 import { createGridLayout } from "./grid.js";
 import { createMasonryLayout, type MasonryLayout } from "./masonry.js";
 import type { Layout } from "./types.js";
-import type { CacheSnapshot } from "../types.js";
+import type { CacheSnapshot, ItemResize } from "../types.js";
 import { UNCACHED } from "../cache.js";
 import { range } from "../../../spec/utils.js";
 
@@ -30,7 +30,7 @@ describe.each<{
       const layout = createGridLayout(sizes.length, "auto");
       sizes.forEach((s, i) => {
         if (s !== UNCACHED) {
-          layout.$resize([[i, s]], () => false, 0, 0);
+          layout.$setItemSizes([[i, s]], 0);
         }
       });
       return layout;
@@ -222,7 +222,7 @@ describe.each<{
       const filledSizes = range(10, () => 20);
       const layout = init(filledSizes);
 
-      layout.$resize([[0, 123]], () => false, 0, 0);
+      layout.$setItemSizes([[0, 123]], 0);
       expect(sizesOf(layout)).toEqual([
         123, 20, 20, 20, 20, 20, 20, 20, 20, 20,
       ]);
@@ -233,7 +233,7 @@ describe.each<{
       const filledSizes = range(10, () => 20);
       const layout = init(filledSizes);
 
-      layout.$resize([[4, 123]], () => false, 0, 0);
+      layout.$setItemSizes([[4, 123]], 0);
       expect(sizesOf(layout)).toEqual([
         20, 20, 20, 20, 123, 20, 20, 20, 20, 20,
       ]);
@@ -244,27 +244,26 @@ describe.each<{
       const filledSizes = range(10, () => 20);
       const layout = init(filledSizes);
 
-      layout.$resize([[layout.$getLength() - 1, 123]], () => false, 0, 0);
+      layout.$setItemSizes([[layout.$getLength() - 1, 123]], 0);
       expect(sizesOf(layout)).toEqual([
         20, 20, 20, 20, 20, 20, 20, 20, 20, 123,
       ]);
       expect(offsetsOf(layout)).toEqual(sizesToOffsets(sizesOf(layout)));
     });
 
-    it("should return the jump of the items to keep", () => {
+    it("should move the anchor by the resizes before it", () => {
       const filledSizes = range(10, () => 20);
       const layout = init(filledSizes);
 
-      const res = layout.$resize(
+      const anchorOffset = layout.$getItemOffset(1);
+      layout.$setItemSizes(
         [
           [0, 123],
           [4, 50],
         ],
-        (index) => index === 0,
-        0,
         0,
       );
-      expect(res).toBe(103);
+      expect(layout.$getItemOffset(1) - anchorOffset).toBe(103);
       expect(sizesOf(layout)).toEqual([
         123, 20, 20, 20, 50, 20, 20, 20, 20, 20,
       ]);
@@ -334,6 +333,18 @@ describe.each<{
   });
 
   describe("estimateDefaultSize", () => {
+    // The displacement of the item at the offset, which is the item the store keeps in place while idle
+    const resizeAt = (
+      layout: Layout,
+      resizes: ItemResize[],
+      scrollOffset: number,
+      viewportSize: number,
+    ): number => {
+      const anchorIndex = layout.$findIndex(scrollOffset);
+      const anchorOffset = layout.$getItemOffset(anchorIndex);
+      layout.$setItemSizes(resizes, viewportSize);
+      return layout.$getItemOffset(anchorIndex) - anchorOffset;
+    };
     const initUnmeasured = (length: number) =>
       initWithOffsets(range(length, () => UNCACHED));
 
@@ -341,11 +352,11 @@ describe.each<{
       it("should update with 1 entry", () => {
         const indexes = [0];
         const layout = initUnmeasured(100);
-        indexes.forEach((i) => layout.$resize([[i, 50]], () => false, 0, 0));
+        indexes.forEach((i) => layout.$setItemSizes([[i, 50]], 0));
         const [initialSizes, initialDefaultSize] = snapshot(layout);
         const initialTotalSize = layout.$getTotalSize();
 
-        const diff = layout.$resize([], () => false, 0, 1);
+        const diff = resizeAt(layout, [], 0, 1);
         const [sizes, defaultSize] = snapshot(layout);
         expect(defaultSize).toBe(50);
         expect(sizes).toEqual(initialSizes);
@@ -359,11 +370,11 @@ describe.each<{
       it("should update with some entry", () => {
         const indexes = [0, 1, 2, 3];
         const layout = initUnmeasured(100);
-        indexes.forEach((i) => layout.$resize([[i, 50]], () => false, 0, 0));
+        indexes.forEach((i) => layout.$setItemSizes([[i, 50]], 0));
         const [initialSizes, initialDefaultSize] = snapshot(layout);
         const initialTotalSize = layout.$getTotalSize();
 
-        const diff = layout.$resize([], () => false, 0, 1);
+        const diff = resizeAt(layout, [], 0, 1);
         const [sizes, defaultSize] = snapshot(layout);
         expect(defaultSize).toBe(50);
         expect(sizes).toEqual(initialSizes);
@@ -377,11 +388,11 @@ describe.each<{
       it("should update with some entry from outside", () => {
         const indexes = [20, 21, 22, 23];
         const layout = initUnmeasured(100);
-        indexes.forEach((i) => layout.$resize([[i, 50]], () => false, 0, 0));
+        indexes.forEach((i) => layout.$setItemSizes([[i, 50]], 0));
         const [initialSizes, initialDefaultSize] = snapshot(layout);
         const initialTotalSize = layout.$getTotalSize();
 
-        const diff = layout.$resize([], () => false, 0, 1);
+        const diff = resizeAt(layout, [], 0, 1);
         const [sizes, defaultSize] = snapshot(layout);
         expect(defaultSize).toBe(50);
         expect(sizes).toEqual(initialSizes);
@@ -397,13 +408,13 @@ describe.each<{
       it("should update with 1 entry", () => {
         const indexes = [92];
         const layout = initUnmeasured(100);
-        indexes.forEach((i) => layout.$resize([[i, 50]], () => false, 0, 0));
+        indexes.forEach((i) => layout.$setItemSizes([[i, 50]], 0));
         const [initialSizes, initialDefaultSize] = snapshot(layout);
         const initialTotalSize = layout.$getTotalSize();
 
-        const diff = layout.$resize(
+        const diff = resizeAt(
+          layout,
           [],
-          () => false,
           layout.$getItemOffset(layout.$getLength() - 10),
           1,
         );
@@ -420,13 +431,13 @@ describe.each<{
       it("should update with some entry", () => {
         const indexes = [92, 93, 94, 95];
         const layout = initUnmeasured(100);
-        indexes.forEach((i) => layout.$resize([[i, 50]], () => false, 0, 0));
+        indexes.forEach((i) => layout.$setItemSizes([[i, 50]], 0));
         const [initialSizes, initialDefaultSize] = snapshot(layout);
         const initialTotalSize = layout.$getTotalSize();
 
-        const diff = layout.$resize(
+        const diff = resizeAt(
+          layout,
           [],
-          () => false,
           layout.$getItemOffset(layout.$getLength() - 10),
           1,
         );
@@ -443,13 +454,13 @@ describe.each<{
       it("should update with some entry from outside", () => {
         const indexes = [20, 21, 22, 23];
         const layout = initUnmeasured(100);
-        indexes.forEach((i) => layout.$resize([[i, 50]], () => false, 0, 0));
+        indexes.forEach((i) => layout.$setItemSizes([[i, 50]], 0));
         const [initialSizes, initialDefaultSize] = snapshot(layout);
         const initialTotalSize = layout.$getTotalSize();
 
-        const diff = layout.$resize(
+        const diff = resizeAt(
+          layout,
           [],
-          () => false,
           layout.$getItemOffset(layout.$getLength() - 10),
           1,
         );
@@ -466,13 +477,13 @@ describe.each<{
       it("should update with some entry from near bound", () => {
         const indexes = [88, 89, 90, 91];
         const layout = initUnmeasured(100);
-        indexes.forEach((i) => layout.$resize([[i, 50]], () => false, 0, 0));
+        indexes.forEach((i) => layout.$setItemSizes([[i, 50]], 0));
         const [initialSizes, initialDefaultSize] = snapshot(layout);
         const initialTotalSize = layout.$getTotalSize();
 
-        const diff = layout.$resize(
+        const diff = resizeAt(
+          layout,
           [],
-          () => false,
           layout.$getItemOffset(layout.$getLength() - 10),
           1,
         );
@@ -489,41 +500,39 @@ describe.each<{
 
     it("should calculate excluding zero-height entries", () => {
       const layout = initUnmeasured(100);
-      layout.$resize([[0, 0]], () => false, 0, 0);
-      layout.$resize([[1, 0]], () => false, 0, 0);
-      layout.$resize([[2, 0]], () => false, 0, 0);
-      layout.$resize([[3, 50]], () => false, 0, 0);
-      layout.$resize([[4, 0]], () => false, 0, 0);
+      layout.$setItemSizes([[0, 0]], 0);
+      layout.$setItemSizes([[1, 0]], 0);
+      layout.$setItemSizes([[2, 0]], 0);
+      layout.$setItemSizes([[3, 50]], 0);
+      layout.$setItemSizes([[4, 0]], 0);
 
-      layout.$resize([], () => false, 0, 1);
+      layout.$setItemSizes([], 1);
       const [, defaultSize] = snapshot(layout);
       expect(defaultSize).toBe(50);
     });
 
     it("should not update until the measured sizes exceed the viewport", () => {
       const layout = initUnmeasured(100);
-      layout.$resize(
+      layout.$setItemSizes(
         [
           [0, 50],
           [1, 50],
         ],
-        () => false,
-        0,
         100,
       );
       expect(layout.$isEstimating()).toBe(true);
       expect(snapshot(layout)[1]).toBe(DEFAULT_SIZE);
 
-      layout.$resize([[2, 50]], () => false, 0, 100);
+      layout.$setItemSizes([[2, 50]], 100);
       expect(layout.$isEstimating()).toBe(false);
       expect(snapshot(layout)[1]).toBe(50);
     });
 
     it("should count the measured sizes by the latest ones", () => {
       const layout = initUnmeasured(100);
-      layout.$resize([[0, 50]], () => false, 0, 100);
+      layout.$setItemSizes([[0, 50]], 100);
       expect(layout.$isEstimating()).toBe(true);
-      layout.$resize([[0, 150]], () => false, 0, 100);
+      layout.$setItemSizes([[0, 150]], 100);
       expect(layout.$isEstimating()).toBe(false);
       expect(snapshot(layout)[1]).toBe(150);
     });

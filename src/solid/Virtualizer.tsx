@@ -192,7 +192,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
   const layout = createListLayout(props.data.length, itemSize, cache);
   const store = createVirtualStore(layout, ssrCount);
-  const driver = createContainerDriver(store, horizontal);
+  const driver = createContainerDriver(store, layout, horizontal);
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
@@ -239,8 +239,9 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
       findItemIndex: (offset) =>
         layout.$findIndex(offset - store.$getStartSpacerSize()),
       getItemOffset: store.$getItemOffset,
-      getItemSize: store.$getItemSize,
-      scrollToIndex: (index, opts) => scrollToIndex(driver, store, index, opts),
+      getItemSize: layout.$getItemSize,
+      scrollToIndex: (index, opts) =>
+        scrollToIndex(driver, store, layout, index, opts),
       scrollTo: (offset) => scrollTo(driver, offset),
       scrollBy: (offset) => scrollBy(driver, store, offset),
     });
@@ -278,9 +279,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   const dataSlice = createMemo(() => {
     const count = props.data.length;
     untrack(() => {
-      if (count !== store.$getItemsLength()) {
-        store.$update(ACTION_ITEMS_LENGTH_CHANGE, [count, props.shift]);
-      }
+      store.$update(ACTION_ITEMS_LENGTH_CHANGE, count, props.shift);
     });
     const items: T[] = [];
     const indexes: number[] = [];
@@ -313,7 +312,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     });
     const hide = createMemo(() => {
       stateVersion();
-      return store.$isUnmeasuredItem(index());
+      return layout.$isSizeEqual(index());
     });
     const children = createMemo(() => {
       return untrack(() => props.children(data, index));

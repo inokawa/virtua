@@ -12,6 +12,7 @@ import {
   ACTION_BEFORE_MANUAL_SMOOTH_SCROLL,
   UPDATE_SIZE_EVENT,
 } from "./store.js";
+import type { Layout } from "./layouts/types.js";
 import { cancelTimeout, microtask, timeout } from "./utils.js";
 
 /**
@@ -44,6 +45,7 @@ export const createResizeObserver = (cb: ResizeObserverCallback) => {
  */
 export const createScrollObserver = (
   store: VirtualStore,
+  layout: Layout,
   viewport: HTMLElement | Window,
   scroller: HTMLElement,
   isHorizontal: boolean,
@@ -253,7 +255,7 @@ export const createScrollObserver = (
         if (smooth) {
           // Smooth scrolling can be started only once, so wait for all the items on the way to be measured.
           for (let [i, end] = store.$getRange(0); i <= end; i++) {
-            if (store.$isUnmeasuredItem(i)) {
+            if (layout.$isSizeEqual(i)) {
               return;
             }
           }

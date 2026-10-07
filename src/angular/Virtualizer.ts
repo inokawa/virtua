@@ -276,7 +276,7 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
         index,
         data: item,
         offset: store.$getItemOffset(index),
-        hide: store.$isUnmeasuredItem(index),
+        hide: this._layout.$isSizeEqual(index),
         attrs: itemProps?.({ item, index }),
       };
     });
@@ -304,12 +304,11 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
     effect(() => {
       const len = this.data().length;
       if (!this._store) return;
-      if (len !== this._store.$getItemsLength()) {
-        this._store.$update(ACTION_ITEMS_LENGTH_CHANGE, [
-          len,
-          untracked(this.shift),
-        ]);
-      }
+      this._store.$update(
+        ACTION_ITEMS_LENGTH_CHANGE,
+        len,
+        untracked(this.shift),
+      );
     });
     effect(() => {
       const startMargin = this.startMargin();
@@ -350,7 +349,7 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
       this.cacheProp(),
     ));
     const store = (this._store = createVirtualStore(layout, ssrCount));
-    this.driver = createContainerDriver(store, this.horizontal());
+    this.driver = createContainerDriver(store, layout, this.horizontal());
     store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
       this._stateVersion.set(store.$getStateVersion());
       if (sync) {
@@ -390,10 +389,10 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
     return this._store.$getItemOffset(index);
   }
   getItemSize(index: number): number {
-    return this._store.$getItemSize(index);
+    return this._layout.$getItemSize(index);
   }
   scrollToIndex(index: number, opts?: ScrollToIndexOpts): void {
-    scrollToIndex(this.driver, this._store, index, opts);
+    scrollToIndex(this.driver, this._store, this._layout, index, opts);
   }
   scrollTo(offset: number): void {
     scrollTo(this.driver, offset);

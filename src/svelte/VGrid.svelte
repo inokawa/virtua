@@ -3,7 +3,7 @@
   import {
     type StateVersion,
     ACTION_ITEMS_LENGTH_CHANGE,
-    ACTION_RELAYOUT,
+    relayout,
     UPDATE_SCROLL_END_EVENT,
     UPDATE_SIZE_EVENT,
     microtask,
@@ -58,7 +58,12 @@
   let spanIndex = $derived(createGridSpanIndex(spans));
   const rowStore = createVirtualStore(rowLayout);
   const colStore = createVirtualStore(colLayout);
-  const driver = createContainerGridDriver(rowStore, colStore);
+  const driver = createContainerGridDriver(
+    rowStore,
+    colStore,
+    rowLayout,
+    colLayout,
+  );
 
   let containerRef: HTMLDivElement | undefined = $state();
 
@@ -108,23 +113,13 @@
     colLayout.$setPinned(headerCols, footerCols);
     const rowLength = getAxisLength(rows);
     const colLength = getAxisLength(cols);
-    if (rowLength !== rowStore.$getItemsLength()) {
-      rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [rowLength]);
-    }
-    if (colLength !== colStore.$getItemsLength()) {
-      colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colLength]);
-    }
-    rowStore.$update(
-      ACTION_RELAYOUT,
-      rowLayout.$relayout(rowSizes, rowStore.$getVisibleOffset()),
-    );
-    colStore.$update(
-      ACTION_RELAYOUT,
-      colLayout.$relayout(colSizes, colStore.$getVisibleOffset()),
-    );
+    rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, rowLength);
+    colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, colLength);
+    relayout(rowStore, rowLayout, rowSizes);
+    relayout(colStore, colLayout, colSizes);
   });
-  let rowCount = $derived(stateVersion && rowStore.$getItemsLength());
-  let colCount = $derived(stateVersion && colStore.$getItemsLength());
+  let rowCount = $derived(stateVersion && rowLayout.$getLength());
+  let colCount = $derived(stateVersion && colLayout.$getLength());
   let plan = $derived.by(() => {
     stateVersion;
     return createGridPlan(
@@ -176,8 +171,8 @@
     rowStore.$getItemOffset;
   export const getColOffset: VGridHandle["getColOffset"] =
     colStore.$getItemOffset;
-  export const getRowSize: VGridHandle["getRowSize"] = rowStore.$getItemSize;
-  export const getColSize: VGridHandle["getColSize"] = colStore.$getItemSize;
+  export const getRowSize: VGridHandle["getRowSize"] = rowLayout.$getItemSize;
+  export const getColSize: VGridHandle["getColSize"] = colLayout.$getItemSize;
   export const scrollToIndex: VGridHandle["scrollToIndex"] = (opts) =>
     gridScrollToIndex(
       driver,

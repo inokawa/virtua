@@ -34,7 +34,7 @@ import {
   createContainerDriver,
   createMasonryLayout,
   ACTION_ITEMS_LENGTH_CHANGE,
-  ACTION_RELAYOUT,
+  relayout,
   createVirtualStore,
   getScrollSize,
   scrollBy,
@@ -299,7 +299,7 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
         offset: store.$getItemOffset(i),
         crossOffset: toCrossValue(lane / lanes, (lane * gap) / lanes),
         crossSize,
-        hide: store.$isUnmeasuredItem(i),
+        hide: layout.$isSizeEqual(i),
       });
     }
     return items;
@@ -326,9 +326,7 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
       const data = this.data();
       if (!this._store) return;
       untracked(() => {
-        if (data.length !== this._store.$getItemsLength()) {
-          this._store.$update(ACTION_ITEMS_LENGTH_CHANGE, [data.length]);
-        }
+        this._store.$update(ACTION_ITEMS_LENGTH_CHANGE, data.length);
       });
     });
     effect(() => {
@@ -336,10 +334,7 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
       const gap = this.gap();
       if (!this._store) return;
       untracked(() => {
-        this._store.$update(
-          ACTION_RELAYOUT,
-          this._layout.$relayout(lanes, gap, this._store.$getVisibleOffset()),
-        );
+        relayout(this._store, this._layout, lanes, gap);
       });
     });
 
@@ -380,7 +375,7 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
       this.cacheProp(),
     ));
     const store = (this._store = createVirtualStore(layout));
-    this.driver = createContainerDriver(store, false);
+    this.driver = createContainerDriver(store, layout, false);
     store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
       this._stateVersion.set(store.$getStateVersion());
       if (sync) {
@@ -417,10 +412,10 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
     return this._store.$getItemOffset(index);
   }
   getItemSize(index: number): number {
-    return this._store.$getItemSize(index);
+    return this._layout.$getItemSize(index);
   }
   scrollToIndex(index: number, opts?: ScrollToIndexOpts): void {
-    scrollToIndex(this.driver, this._store, index, opts);
+    scrollToIndex(this.driver, this._store, this._layout, index, opts);
   }
   scrollTo(offset: number): void {
     scrollTo(this.driver, offset);

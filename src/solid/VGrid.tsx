@@ -18,7 +18,7 @@ import {
 import { isServer } from "solid-js/web";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
-  ACTION_RELAYOUT,
+  relayout,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SIZE_EVENT,
   microtask,
@@ -396,7 +396,12 @@ export const VGrid = <R = number, C = number>(
   const spanIndex = createMemo(() => createGridSpanIndex(props.spans));
   const rowStore = createVirtualStore(rowLayout);
   const colStore = createVirtualStore(colLayout);
-  const driver = createContainerGridDriver(rowStore, colStore);
+  const driver = createContainerGridDriver(
+    rowStore,
+    colStore,
+    rowLayout,
+    colLayout,
+  );
 
   const getStateVersion = () =>
     rowStore.$getStateVersion() + colStore.$getStateVersion();
@@ -444,28 +449,14 @@ export const VGrid = <R = number, C = number>(
     colLayout.$setPinned(props.headerCols, props.footerCols);
     const rowLength = getAxisLength(props.rows);
     const colLength = getAxisLength(props.cols);
-    if (rowLength !== rowStore.$getItemsLength()) {
-      rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [rowLength]);
-    }
-    if (colLength !== colStore.$getItemsLength()) {
-      colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colLength]);
-    }
-    rowStore.$update(
-      ACTION_RELAYOUT,
-      rowLayout.$relayout(rowSizes(), rowStore.$getVisibleOffset()),
-    );
-    colStore.$update(
-      ACTION_RELAYOUT,
-      colLayout.$relayout(colSizes(), colStore.$getVisibleOffset()),
-    );
+    rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, rowLength);
+    colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, colLength);
+    relayout(rowStore, rowLayout, rowSizes());
+    relayout(colStore, colLayout, colSizes());
   });
 
-  const rowCount = createMemo(
-    () => stateVersion() && rowStore.$getItemsLength(),
-  );
-  const colCount = createMemo(
-    () => stateVersion() && colStore.$getItemsLength(),
-  );
+  const rowCount = createMemo(() => stateVersion() && rowLayout.$getLength());
+  const colCount = createMemo(() => stateVersion() && colLayout.$getLength());
   const plan = createMemo(() => {
     stateVersion();
     return createGridPlan(
@@ -536,8 +527,8 @@ export const VGrid = <R = number, C = number>(
       findColIndex: colLayout.$findIndex,
       getRowOffset: rowStore.$getItemOffset,
       getColOffset: colStore.$getItemOffset,
-      getRowSize: rowStore.$getItemSize,
-      getColSize: colStore.$getItemSize,
+      getRowSize: rowLayout.$getItemSize,
+      getColSize: colLayout.$getItemSize,
       scrollToIndex: (opts) =>
         gridScrollToIndex(
           driver,

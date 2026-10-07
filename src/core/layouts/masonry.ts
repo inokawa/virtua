@@ -8,11 +8,7 @@ import { max, min, sort } from "../utils.js";
  */
 export interface MasonryLayout extends Layout {
   $snapshot(): CacheSnapshot;
-  $relayout(
-    lanes: number,
-    gap: number | undefined,
-    scrollOffset: number,
-  ): number | undefined;
+  $relayout(lanes: number, gap: number | undefined): boolean;
   $getLanes(): number;
   $getGap(): number;
   $getItemLane(index: number): number;
@@ -123,19 +119,11 @@ export const createMasonryLayout = (
       const end = findIndex(getOffset, length, endOffset);
       return [min(findStart(startOffset), end), end];
     },
+    $findIndex: findStart,
     $getItemOffset: getOffset,
     $getItemSize: getSize,
     $isSizeEqual: (index, size = UNCACHED) => sizes[index] === size,
-    $resize: (resizes, shouldKeep, scrollOffset, viewportSize) => {
-      // The jump is the displacement of the first item not to keep, as the viewport can keep only one item in place
-      let anchorIndex = findStart(scrollOffset);
-      while (anchorIndex > 0 && !shouldKeep(anchorIndex - 1)) {
-        anchorIndex--;
-      }
-      while (anchorIndex < length && shouldKeep(anchorIndex)) {
-        anchorIndex++;
-      }
-      const prevAnchorOffset = getOffset(anchorIndex);
+    $setItemSizes: (resizes, viewportSize) => {
       // Update item sizes
       for (const [index, size] of resizes) {
         sizes[index] = size;
@@ -143,7 +131,6 @@ export const createMasonryLayout = (
         // mark the item as dirty too, as its running maximum includes its size
         computedIndex = min(index - 1, computedIndex);
       }
-      let jump = getOffset(anchorIndex) - prevAnchorOffset;
       // Estimate initial item size from measured sizes
       if (estimatingIndexes && viewportSize) {
         // This function will be called after measurement so measured size array must be longer than 0
@@ -165,27 +152,21 @@ export const createMasonryLayout = (
           sort(measuredSizes);
           const len = measuredSizes.length;
           const mid = (len / 2) | 0;
-          const median =
+          defaultItemSize =
             len % 2 === 0
               ? (measuredSizes[mid - 1]! + measuredSizes[mid]!) / 2
               : measuredSizes[mid]!;
-
-          // Keep the item at the visible offset in place, as the unmeasured items before it are laid out again with the estimated size
-          const startIndex = findStart(scrollOffset + jump);
-          const prevStartOffset = getOffset(startIndex);
-          defaultItemSize = median;
           // Discard cache for now
           computedIndex = -1;
-          jump += getOffset(startIndex) - prevStartOffset;
           estimatingIndexes = undefined;
           isEstimating = false;
         }
       }
-      return jump;
     },
     $getTotalSize: getTotalSize,
     $getLength: () => length,
     $setLength: (nextLength) => {
+      // Shift is not supported yet
       const diff = nextLength - length;
       computedIndex = min(nextLength - 1, computedIndex);
       length = nextLength;
@@ -194,22 +175,18 @@ export const createMasonryLayout = (
       } else {
         sizes.splice(diff);
       }
-      // Shift is not supported
-      return 0;
     },
-    $relayout: (nextLanes, nextGap = 0, scrollOffset) => {
+    $relayout: (nextLanes, nextGap = 0) => {
       nextLanes = max(nextLanes, 1);
       if (nextLanes === lanes && nextGap === gap) {
-        return;
+        return false;
       }
-      const startIndex = findStart(scrollOffset);
-      const prevStartOffset = getOffset(startIndex);
       lanes = nextLanes;
       gap = nextGap;
       computedIndex = -1;
       // The sizes of items, such as images keeping their aspect ratios, may depend on the width of the lanes, so estimate again from the items measured in the new lanes
       estimatingIndexes = itemSize ? undefined : new Set();
-      return getOffset(startIndex) - prevStartOffset;
+      return true;
     },
     $isEstimating: () => isEstimating,
     $snapshot: () => [sizes.slice(), defaultItemSize],

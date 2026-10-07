@@ -14,7 +14,7 @@ import {
 } from "vue";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
-  ACTION_RELAYOUT,
+  relayout,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SIZE_EVENT,
   microtask,
@@ -435,7 +435,12 @@ export const VGrid = /*#__PURE__*/ defineComponent({
     const spanIndex = computed(() => createGridSpanIndex(props.spans));
     const rowStore = createVirtualStore(rowLayout);
     const colStore = createVirtualStore(colLayout);
-    const driver = createContainerGridDriver(rowStore, colStore);
+    const driver = createContainerGridDriver(
+      rowStore,
+      colStore,
+      rowLayout,
+      colLayout,
+    );
 
     const stateVersion = ref(
       rowStore.$getStateVersion() + colStore.$getStateVersion(),
@@ -484,27 +489,17 @@ export const VGrid = /*#__PURE__*/ defineComponent({
       colLayout.$setPinned(props.headerCols, props.footerCols);
       const rowLength = getAxisLength(props.rows);
       const colLength = getAxisLength(props.cols);
-      if (rowLength !== rowStore.$getItemsLength()) {
-        rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [rowLength]);
-      }
-      if (colLength !== colStore.$getItemsLength()) {
-        colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, [colLength]);
-      }
-      rowStore.$update(
-        ACTION_RELAYOUT,
-        rowLayout.$relayout(rowSizes.value, rowStore.$getVisibleOffset()),
-      );
-      colStore.$update(
-        ACTION_RELAYOUT,
-        colLayout.$relayout(colSizes.value, colStore.$getVisibleOffset()),
-      );
+      rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, rowLength);
+      colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, colLength);
+      relayout(rowStore, rowLayout, rowSizes.value);
+      relayout(colStore, colLayout, colSizes.value);
     });
 
     const rowCount = computed(
-      () => stateVersion.value && rowStore.$getItemsLength(),
+      () => stateVersion.value && rowLayout.$getLength(),
     );
     const colCount = computed(
-      () => stateVersion.value && colStore.$getItemsLength(),
+      () => stateVersion.value && colLayout.$getLength(),
     );
     const plan = computed(() => {
       stateVersion.value;
@@ -565,8 +560,8 @@ export const VGrid = /*#__PURE__*/ defineComponent({
       findColIndex: colLayout.$findIndex,
       getRowOffset: rowStore.$getItemOffset,
       getColOffset: colStore.$getItemOffset,
-      getRowSize: rowStore.$getItemSize,
-      getColSize: colStore.$getItemSize,
+      getRowSize: rowLayout.$getItemSize,
+      getColSize: colLayout.$getItemSize,
       scrollToIndex: (opts) =>
         gridScrollToIndex(
           driver,
