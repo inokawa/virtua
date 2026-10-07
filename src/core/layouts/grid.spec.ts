@@ -349,33 +349,36 @@ describe("isMeasurable", () => {
 
 describe("uniform size", () => {
   const CACHE_LENGTH = 10;
-  const init = () => createGridLayout(CACHE_LENGTH, 20);
 
   describe("getRange", () => {
     it("should get start if offset is at start", () => {
-      expect(init().$getRange(0, 100)).toEqual([0, 5]);
+      expect(createGridLayout(CACHE_LENGTH, 20).$getRange(0, 100)).toEqual([
+        0, 5,
+      ]);
     });
 
     it("should get start + 1 if offset is at start + 1", () => {
-      expect(init().$getRange(20, 20 + 100)).toEqual([1, 6]);
+      expect(
+        createGridLayout(CACHE_LENGTH, 20).$getRange(20, 20 + 100),
+      ).toEqual([1, 6]);
     });
 
     it("should get last if offset is at end", () => {
-      const layout = init();
+      const layout = createGridLayout(CACHE_LENGTH, 20);
       const last = layout.$getLength() - 1;
       const start = 20 * CACHE_LENGTH;
       expect(layout.$getRange(start, start + 100)).toEqual([last, last]);
     });
 
     it("should get last if offset is at end - 1", () => {
-      const layout = init();
+      const layout = createGridLayout(CACHE_LENGTH, 20);
       const last = layout.$getLength() - 1;
       const start = 20 * CACHE_LENGTH - 20;
       expect(layout.$getRange(start, start + 100)).toEqual([last, last]);
     });
 
     it("should get last - 1 if offset is at end - 1 and more", () => {
-      const layout = init();
+      const layout = createGridLayout(CACHE_LENGTH, 20);
       const last = layout.$getLength() - 1;
       const start = 20 * CACHE_LENGTH - 20 - 1;
       expect(layout.$getRange(start, start + 100)).toEqual([last - 1, last]);
@@ -383,11 +386,13 @@ describe("uniform size", () => {
 
     it("should get start if offset is before start", () => {
       const start = -1000;
-      expect(init().$getRange(start, start + 100)).toEqual([0, 0]);
+      expect(
+        createGridLayout(CACHE_LENGTH, 20).$getRange(start, start + 100),
+      ).toEqual([0, 0]);
     });
 
     it("should get last if offset is after end", () => {
-      const layout = init();
+      const layout = createGridLayout(CACHE_LENGTH, 20);
       const last = layout.$getLength() - 1;
       const start = 20 * CACHE_LENGTH + 1000;
       expect(layout.$getRange(start, start + 100)).toEqual([last, last]);
@@ -403,7 +408,7 @@ describe("uniform size", () => {
 
   describe("findIndex", () => {
     it("should find the item at the offset", () => {
-      const layout = init();
+      const layout = createGridLayout(CACHE_LENGTH, 20);
       expect(layout.$findIndex(0)).toBe(0);
       expect(layout.$findIndex(19)).toBe(0);
       expect(layout.$findIndex(20)).toBe(1);
@@ -411,7 +416,7 @@ describe("uniform size", () => {
     });
 
     it("should clamp the offset out of the items", () => {
-      const layout = init();
+      const layout = createGridLayout(CACHE_LENGTH, 20);
       expect(layout.$findIndex(-1000)).toBe(0);
       expect(layout.$findIndex(20 * CACHE_LENGTH + 1000)).toBe(
         CACHE_LENGTH - 1,
@@ -421,17 +426,17 @@ describe("uniform size", () => {
 
   describe("getItemOffset", () => {
     it("should get 0 if index is at start", () => {
-      expect(init().$getItemOffset(0)).toBe(0);
+      expect(createGridLayout(CACHE_LENGTH, 20).$getItemOffset(0)).toBe(0);
     });
 
     it("should get 1 item if index is at start", () => {
-      expect(init().$getItemOffset(1)).toBe(20);
+      expect(createGridLayout(CACHE_LENGTH, 20).$getItemOffset(1)).toBe(20);
     });
 
     it("should get total - 1 item if index is at last", () => {
-      expect(init().$getItemOffset(CACHE_LENGTH - 1)).toBe(
-        20 * CACHE_LENGTH - 20,
-      );
+      expect(
+        createGridLayout(CACHE_LENGTH, 20).$getItemOffset(CACHE_LENGTH - 1),
+      ).toBe(20 * CACHE_LENGTH - 20);
     });
 
     it("should return 0 if cache length is 0", () => {
@@ -442,7 +447,9 @@ describe("uniform size", () => {
 
   describe("getTotalSize", () => {
     it("should be the size of the items", () => {
-      expect(init().$getTotalSize()).toBe(20 * CACHE_LENGTH);
+      expect(createGridLayout(CACHE_LENGTH, 20).$getTotalSize()).toBe(
+        20 * CACHE_LENGTH,
+      );
     });
 
     it("should return 0 if sizes length is 0", () => {
@@ -452,7 +459,7 @@ describe("uniform size", () => {
 
   describe("resize", () => {
     it("should ignore the measurements", () => {
-      const layout = init();
+      const layout = createGridLayout(CACHE_LENGTH, 20);
       layout.$setItemSizes([[0, 123]], 0);
       expect(layout.$getItemSize(0)).toBe(20);
       expect(layout.$getItemOffset(1)).toBe(20);

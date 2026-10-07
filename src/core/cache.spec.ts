@@ -23,8 +23,6 @@ const initCacheWithSizes = (
   };
 };
 
-const initCacheWithSizesAndEmptyOffsets = initCacheWithSizes;
-
 const offsetGetterOf = (cache: TestCache) => {
   const offsets: number[] = [0];
   for (let i = 0; i < cache._length; i++) {
@@ -45,7 +43,7 @@ describe(findIndex.name, () => {
   const CACHE_LENGTH = 10;
 
   it("should resolve default height", () => {
-    const cache = initCacheWithSizesAndEmptyOffsets(
+    const cache = initCacheWithSizes(
       range(10, () => -1),
       25,
     );

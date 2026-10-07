@@ -81,23 +81,25 @@ describe.each<{
       [Math.floor(CACHE_LENGTH / 2)], // mid
       [CACHE_LENGTH - 1], // end
     ])("start from %i", (initialIndex) => {
-      const initAtCursor = () =>
-        initWithCursorAt(
+      it("should get start if offset is at start", () => {
+        const layout = initWithCursorAt(
           range(CACHE_LENGTH, () => 20),
           initialIndex,
         );
-
-      it("should get start if offset is at start", () => {
-        expect(initAtCursor().$getRange(0, 100)).toEqual([0, 5]);
+        expect(layout.$getRange(0, 100)).toEqual([0, 5]);
       });
 
       it("should get start + 1 if offset is at start + 1", () => {
-        expect(initAtCursor().$getRange(20, 20 + 100)).toEqual([1, 6]);
+        const layout = initWithCursorAt(
+          range(CACHE_LENGTH, () => 20),
+          initialIndex,
+        );
+        expect(layout.$getRange(20, 20 + 100)).toEqual([1, 6]);
       });
 
       it("should get last if offset is at end", () => {
         const sizes = range(CACHE_LENGTH, () => 20);
-        const layout = initAtCursor();
+        const layout = initWithCursorAt(sizes, initialIndex);
         const last = layout.$getLength() - 1;
         const start = sum(sizes);
         expect(layout.$getRange(start, start + 100)).toEqual([last, last]);
@@ -105,7 +107,7 @@ describe.each<{
 
       it("should get last if offset is at end - 1", () => {
         const sizes = range(CACHE_LENGTH, () => 20);
-        const layout = initAtCursor();
+        const layout = initWithCursorAt(sizes, initialIndex);
         const last = layout.$getLength() - 1;
         const start = sum(sizes) - 20;
         expect(layout.$getRange(start, start + 100)).toEqual([last, last]);
@@ -113,7 +115,7 @@ describe.each<{
 
       it("should get last - 1 if offset is at end - 1 and more", () => {
         const sizes = range(CACHE_LENGTH, () => 20);
-        const layout = initAtCursor();
+        const layout = initWithCursorAt(sizes, initialIndex);
         const last = layout.$getLength() - 1;
         const start = sum(sizes) - 20 - 1;
         expect(layout.$getRange(start, start + 100)).toEqual([last - 1, last]);
@@ -121,12 +123,16 @@ describe.each<{
 
       it("should get start if offset is before start", () => {
         const start = -1000;
-        expect(initAtCursor().$getRange(start, start + 100)).toEqual([0, 0]);
+        const layout = initWithCursorAt(
+          range(CACHE_LENGTH, () => 20),
+          initialIndex,
+        );
+        expect(layout.$getRange(start, start + 100)).toEqual([0, 0]);
       });
 
       it("should get last if offset is after end", () => {
         const sizes = range(CACHE_LENGTH, () => 20);
-        const layout = initAtCursor();
+        const layout = initWithCursorAt(sizes, initialIndex);
         const last = layout.$getLength() - 1;
         const start = sum(sizes) + 1000;
         expect(layout.$getRange(start, start + 100)).toEqual([last, last]);
@@ -134,7 +140,7 @@ describe.each<{
 
       it("should get the index the range was computed from", () => {
         const sizes = range(CACHE_LENGTH, () => 20);
-        const layout = initAtCursor();
+        const layout = initWithCursorAt(sizes, initialIndex);
         const start = sum(sizes.slice(0, initialIndex));
         expect(layout.$getRange(start, start + 100)).toEqual([
           initialIndex,
