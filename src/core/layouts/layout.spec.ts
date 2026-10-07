@@ -28,11 +28,10 @@ describe.each<{
     name: "grid",
     init: (sizes) => {
       const layout = createGridLayout(sizes.length, "auto");
-      sizes.forEach((s, i) => {
-        if (s !== UNCACHED) {
-          layout.$setItemSizes([[i, s]], 0);
-        }
-      });
+      layout.$setItemSizes(
+        sizes.flatMap((s, i): ItemResize[] => (s !== UNCACHED ? [[i, s]] : [])),
+        0,
+      );
       return layout;
     },
     // The grid layout has no snapshot, so the sizes are read back through it: an unmeasured item is UNCACHED and shows the default size, which is DEFAULT_SIZE until it's estimated.
@@ -352,7 +351,10 @@ describe.each<{
       it("should update with 1 entry", () => {
         const indexes = [0];
         const layout = initUnmeasured(100);
-        indexes.forEach((i) => layout.$setItemSizes([[i, 50]], 0));
+        layout.$setItemSizes(
+          indexes.map((i) => [i, 50]),
+          0,
+        );
         const [initialSizes, initialDefaultSize] = snapshot(layout);
         const initialTotalSize = layout.$getTotalSize();
 
@@ -370,7 +372,10 @@ describe.each<{
       it("should update with some entry", () => {
         const indexes = [0, 1, 2, 3];
         const layout = initUnmeasured(100);
-        indexes.forEach((i) => layout.$setItemSizes([[i, 50]], 0));
+        layout.$setItemSizes(
+          indexes.map((i) => [i, 50]),
+          0,
+        );
         const [initialSizes, initialDefaultSize] = snapshot(layout);
         const initialTotalSize = layout.$getTotalSize();
 
@@ -388,7 +393,10 @@ describe.each<{
       it("should update with some entry from outside", () => {
         const indexes = [20, 21, 22, 23];
         const layout = initUnmeasured(100);
-        indexes.forEach((i) => layout.$setItemSizes([[i, 50]], 0));
+        layout.$setItemSizes(
+          indexes.map((i) => [i, 50]),
+          0,
+        );
         const [initialSizes, initialDefaultSize] = snapshot(layout);
         const initialTotalSize = layout.$getTotalSize();
 
@@ -408,7 +416,10 @@ describe.each<{
       it("should update with 1 entry", () => {
         const indexes = [92];
         const layout = initUnmeasured(100);
-        indexes.forEach((i) => layout.$setItemSizes([[i, 50]], 0));
+        layout.$setItemSizes(
+          indexes.map((i) => [i, 50]),
+          0,
+        );
         const [initialSizes, initialDefaultSize] = snapshot(layout);
         const initialTotalSize = layout.$getTotalSize();
 
@@ -431,7 +442,10 @@ describe.each<{
       it("should update with some entry", () => {
         const indexes = [92, 93, 94, 95];
         const layout = initUnmeasured(100);
-        indexes.forEach((i) => layout.$setItemSizes([[i, 50]], 0));
+        layout.$setItemSizes(
+          indexes.map((i) => [i, 50]),
+          0,
+        );
         const [initialSizes, initialDefaultSize] = snapshot(layout);
         const initialTotalSize = layout.$getTotalSize();
 
@@ -454,7 +468,10 @@ describe.each<{
       it("should update with some entry from outside", () => {
         const indexes = [20, 21, 22, 23];
         const layout = initUnmeasured(100);
-        indexes.forEach((i) => layout.$setItemSizes([[i, 50]], 0));
+        layout.$setItemSizes(
+          indexes.map((i) => [i, 50]),
+          0,
+        );
         const [initialSizes, initialDefaultSize] = snapshot(layout);
         const initialTotalSize = layout.$getTotalSize();
 
@@ -477,7 +494,10 @@ describe.each<{
       it("should update with some entry from near bound", () => {
         const indexes = [88, 89, 90, 91];
         const layout = initUnmeasured(100);
-        indexes.forEach((i) => layout.$setItemSizes([[i, 50]], 0));
+        layout.$setItemSizes(
+          indexes.map((i) => [i, 50]),
+          0,
+        );
         const [initialSizes, initialDefaultSize] = snapshot(layout);
         const initialTotalSize = layout.$getTotalSize();
 

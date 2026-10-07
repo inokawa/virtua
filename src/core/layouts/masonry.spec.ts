@@ -183,9 +183,10 @@ describe("resize", () => {
     const lanes = 2;
     const measuredSize = 100;
     const layout = createMasonryLayout(10, lanes);
-    for (let i = 0; i < 5; i++) {
-      layout.$setItemSizes([[i, measuredSize]], 0);
-    }
+    layout.$setItemSizes(
+      range(5, (i) => [i, measuredSize]),
+      0,
+    );
     expect(layout.$isEstimating()).toBe(true);
 
     // The unmeasured items are 40 until estimated, so the items 5-7 are placed at 200, 240 and 280 in lane 1
