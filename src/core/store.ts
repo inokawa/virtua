@@ -393,21 +393,20 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_ITEMS_LENGTH_CHANGE: {
-          if (payload === getLength()) {
-            // Skip if the length is not changed, as the layouts discard the sizes even then
-            break;
+          // Skip if the length is not changed, as the layouts discard the sizes even then
+          if (payload !== getLength()) {
+            if (payload2) {
+              const totalSize = getTotalSize();
+              setLength(payload, true);
+              applyJump(getTotalSize() - totalSize);
+              _scrollMode = SCROLL_BY_SHIFT;
+            } else {
+              setLength(payload);
+            }
+            // https://github.com/inokawa/virtua/issues/552
+            // https://github.com/inokawa/virtua/issues/557
+            mutated = UPDATE_VIRTUAL_STATE;
           }
-          if (payload2) {
-            const totalSize = getTotalSize();
-            setLength(payload, true);
-            applyJump(getTotalSize() - totalSize);
-            _scrollMode = SCROLL_BY_SHIFT;
-          } else {
-            setLength(payload);
-          }
-          // https://github.com/inokawa/virtua/issues/552
-          // https://github.com/inokawa/virtua/issues/557
-          mutated = UPDATE_VIRTUAL_STATE;
           break;
         }
         case ACTION_RELAYOUT: {
