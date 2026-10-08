@@ -1,4 +1,8 @@
-import { ACTION_VIEWPORT_RESIZE, resize, type VirtualStore } from "./store.js";
+import {
+  ACTION_ITEM_RESIZE,
+  ACTION_VIEWPORT_RESIZE,
+  type VirtualStore,
+} from "./store.js";
 import {
   createResizeObserver,
   createScrollObserver,
@@ -71,10 +75,7 @@ export const createContainerDriver = (
       }
     }
 
-    // Skip if all items are cached and not updated
-    if (resizes.length) {
-      resize(store, layout, resizes);
-    }
+    store.$update(ACTION_ITEM_RESIZE, resizes);
   });
 
   return {
@@ -173,10 +174,7 @@ export const createWindowDriver = (
       }
     }
 
-    // Skip if all items are cached and not updated
-    if (resizes.length) {
-      resize(store, layout, resizes);
-    }
+    store.$update(ACTION_ITEM_RESIZE, resizes);
   });
 
   return {
@@ -356,13 +354,8 @@ export const createContainerGridDriver = (
       }
     }
 
-    // Skip if all items are cached and not updated
-    if (rowResizes.length) {
-      resize(rowStore, rowLayout, rowResizes);
-    }
-    if (colResizes.length) {
-      resize(colStore, colLayout, colResizes);
-    }
+    rowStore.$update(ACTION_ITEM_RESIZE, rowResizes);
+    colStore.$update(ACTION_ITEM_RESIZE, colResizes);
   });
 
   return {

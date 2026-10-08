@@ -41,7 +41,7 @@ export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 9;
 type Actions =
   | [type: typeof ACTION_SCROLL, offset: number]
   | [type: typeof ACTION_SCROLL_END, dummy?: void]
-  | [type: typeof ACTION_ITEM_RESIZE, jump: number]
+  | [type: typeof ACTION_ITEM_RESIZE, resizes: readonly ItemResize[]]
   | [type: typeof ACTION_VIEWPORT_RESIZE, size: number]
   | [
       type: typeof ACTION_ITEMS_LENGTH_CHANGE,
@@ -67,24 +67,6 @@ export const UPDATE_SCROLL_END_EVENT = 0b1000;
  */
 export const getScrollSize = (store: VirtualStore): number => {
   return max(store.$getTotalSize(), store.$getViewportSize());
-};
-
-/**
- * @internal
- */
-export const resize = (
-  store: VirtualStore,
-  layout: Layout,
-  resizes: readonly ItemResize[],
-): void => {
-  const anchorIndex = store._getAnchorIndex();
-  const anchorOffset = layout.$getItemOffset(anchorIndex);
-  layout.$setItemSizes(resizes, store.$getViewportSize());
-  store.$update(
-    ACTION_ITEM_RESIZE,
-    // Calculate jump by resize to minimize janks in appearance
-    layout.$getItemOffset(anchorIndex) - anchorOffset,
-  );
 };
 
 /**
@@ -143,6 +125,7 @@ export const createVirtualStore = (
     $findIndex: findIndex,
     $getItemOffset: getItemOffset,
     $getItemSize: getItemSize,
+    $setItemSizes: setItemSizes,
     $getTotalSize: getTotalSize,
     $getLength: getLength,
     $setLength: setLength,
@@ -197,6 +180,35 @@ export const createVirtualStore = (
     }
   };
 
+  const getAnchorIndex = (): number => {
+    const length = getLength();
+    if (_scrollMode === SCROLL_BY_SHIFT) {
+      // Keep distance from end during shifting
+      return length;
+    }
+    if (_frozenRange && _scrollMode === SCROLL_BY_MANUAL_SCROLL) {
+      // https://github.com/inokawa/virtua/issues/380
+      // https://github.com/inokawa/virtua/issues/590
+      // https://github.com/inokawa/virtua/issues/758
+      // The range may exceed the length decreased after it was frozen
+      return min(_frozenRange[0], length);
+    }
+    // Otherwise we should maintain visible position
+
+    // The anchor is the first item not to keep
+    const start = getVisibleOffset();
+    let anchorIndex = findIndex(start);
+    // Before the item at the start of the viewport, only the empty items at the start may not be kept
+    while (anchorIndex > 0 && !shouldKeep(anchorIndex - 1, start)) {
+      anchorIndex--;
+    }
+    // From the item at the start of the viewport, the items starting above the viewport may be kept, which can be several in masonry as they are in different lanes
+    while (anchorIndex < length && shouldKeep(anchorIndex, start)) {
+      anchorIndex++;
+    }
+    return anchorIndex;
+  };
+
   return {
     $dispose: () => {
       subscribers.clear();
@@ -243,34 +255,7 @@ export const createVirtualStore = (
 
       return [max(startIndex, 0), min(endIndex, getLength() - 1)];
     },
-    _getAnchorIndex: () => {
-      const length = getLength();
-      if (_scrollMode === SCROLL_BY_SHIFT) {
-        // Keep distance from end during shifting
-        return length;
-      }
-      if (_frozenRange && _scrollMode === SCROLL_BY_MANUAL_SCROLL) {
-        // https://github.com/inokawa/virtua/issues/380
-        // https://github.com/inokawa/virtua/issues/590
-        // https://github.com/inokawa/virtua/issues/758
-        // The range may exceed the length decreased after it was frozen
-        return min(_frozenRange[0], length);
-      }
-      // Otherwise we should maintain visible position
-
-      // The anchor is the first item not to keep
-      const start = getVisibleOffset();
-      let anchorIndex = findIndex(start);
-      // Before the item at the start of the viewport, only the empty items at the start may not be kept
-      while (anchorIndex > 0 && !shouldKeep(anchorIndex - 1, start)) {
-        anchorIndex--;
-      }
-      // From the item at the start of the viewport, the items starting above the viewport may be kept, which can be several in masonry as they are in different lanes
-      while (anchorIndex < length && shouldKeep(anchorIndex, start)) {
-        anchorIndex++;
-      }
-      return anchorIndex;
-    },
+    _getAnchorIndex: getAnchorIndex,
     $getItemOffset: (index) => {
       return getItemOffset(index) - pendingJump;
     },
@@ -368,17 +353,24 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_ITEM_RESIZE: {
-          applyJump(payload);
+          // Skip if all items are cached and not updated
+          if (payload.length) {
+            const anchorIndex = getAnchorIndex();
+            const anchorOffset = getItemOffset(anchorIndex);
+            setItemSizes(payload, viewportSize);
+            // Calculate jump by resize to minimize janks in appearance
+            applyJump(getItemOffset(anchorIndex) - anchorOffset);
 
-          mutated = UPDATE_VIRTUAL_STATE + UPDATE_SIZE_EVENT;
+            mutated = UPDATE_VIRTUAL_STATE + UPDATE_SIZE_EVENT;
 
-          // Synchronous update is necessary in current design to minimize visible glitch in concurrent rendering.
-          // However this seems to be the main cause of the errors from ResizeObserver.
-          // https://github.com/inokawa/virtua/issues/470
-          //
-          // And in React, synchronous update with flushSync after asynchronous update will overtake the asynchronous one.
-          // If items resize happens just after scroll, race condition can occur depending on implementation.
-          shouldSync = true;
+            // Synchronous update is necessary in current design to minimize visible glitch in concurrent rendering.
+            // However this seems to be the main cause of the errors from ResizeObserver.
+            // https://github.com/inokawa/virtua/issues/470
+            //
+            // And in React, synchronous update with flushSync after asynchronous update will overtake the asynchronous one.
+            // If items resize happens just after scroll, race condition can occur depending on implementation.
+            shouldSync = true;
+          }
           break;
         }
         case ACTION_VIEWPORT_RESIZE: {
