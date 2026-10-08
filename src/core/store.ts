@@ -167,9 +167,6 @@ export const createVirtualStore = (
   const subscribers = new Set<[number, Subscriber]>();
   const getRelativeScrollOffset = () => scrollOffset - startSpacerSize;
   const getVisibleOffset = () => getRelativeScrollOffset() + pendingJump + jump;
-  const getItemOffset = (index: number): number => {
-    return getOffset(index) - pendingJump;
-  };
 
   const shouldKeep = (index: number, start: number): boolean => {
     const itemOffset = getOffset(index);
@@ -274,7 +271,9 @@ export const createVirtualStore = (
       }
       return anchorIndex;
     },
-    $getItemOffset: getItemOffset,
+    $getItemOffset: (index) => {
+      return getOffset(index) - pendingJump;
+    },
     $getScrollOffset: () => scrollOffset,
     $isScrolling: () => _scrollDirection !== SCROLL_IDLE,
     $getViewportSize: () => viewportSize,
