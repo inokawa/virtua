@@ -141,7 +141,7 @@ export const createVirtualStore = (
   {
     $getRange: getRange,
     $findIndex: findIndex,
-    $getItemOffset: getOffset,
+    $getItemOffset: getItemOffset,
     $getItemSize: getItemSize,
     $getTotalSize: getTotalSize,
     $getLength: getLength,
@@ -169,7 +169,7 @@ export const createVirtualStore = (
   const getVisibleOffset = () => getRelativeScrollOffset() + pendingJump + jump;
 
   const shouldKeep = (index: number, start: number): boolean => {
-    const itemOffset = getOffset(index);
+    const itemOffset = getItemOffset(index);
     const itemSize = getItemSize(index);
     return _scrollDirection !== SCROLL_DOWN && _scrollMode === SCROLL_BY_NATIVE
       ? // https://github.com/inokawa/virtua/issues/385
@@ -272,7 +272,7 @@ export const createVirtualStore = (
       return anchorIndex;
     },
     $getItemOffset: (index) => {
-      return getOffset(index) - pendingJump;
+      return getItemOffset(index) - pendingJump;
     },
     $getScrollOffset: () => scrollOffset,
     $isScrolling: () => _scrollDirection !== SCROLL_IDLE,
