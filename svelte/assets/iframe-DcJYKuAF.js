@@ -1,0 +1,1 @@
+import{t as e}from"./iframe-BeAkC-67.js";e();
