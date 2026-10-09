@@ -33,9 +33,25 @@ type ImageData = {
   type: "image";
   id: number;
   src: string;
+  width: number;
+  height: number;
 };
 
 type Data = TextData | ImageData;
+
+const IMAGE_WIDTH = 800;
+const IMAGE_HEIGHTS = [400, 600, 800, 1000];
+
+const createImage = (id: number): ImageData => {
+  const height = faker.helpers.arrayElement(IMAGE_HEIGHTS);
+  return {
+    type: "image",
+    id,
+    src: faker.image.url({ width: IMAGE_WIDTH, height }),
+    width: IMAGE_WIDTH,
+    height,
+  };
+};
 
 const Item = ({ content }: { content: ReactNode }) => {
   return <div style={itemStyle}>{content} </div>;
@@ -53,11 +69,7 @@ export const Default: StoryObj = {
             id: nextId,
             value: faker.lorem.paragraphs(Math.floor(Math.random() * 10) + 1),
           }
-        : {
-            type: "image",
-            id: nextId,
-            src: faker.image.url(),
-          };
+        : createImage(nextId);
     };
     const createItems = (num: number) => range(num, createItem);
 
@@ -78,7 +90,12 @@ export const Default: StoryObj = {
             key={d.id}
             content={
               d.type === "image" ? (
-                <img src={d.src} style={{ maxWidth: "100%" }} />
+                <img
+                  src={d.src}
+                  width={d.width}
+                  height={d.height}
+                  style={{ maxWidth: "100%", height: "auto" }}
+                />
               ) : (
                 d.value
               )
