@@ -420,7 +420,34 @@ See [demo](https://inokawa.github.io/virtua/) and [its source code](./stories).
 
 ### FAQs
 
-#### Is there any way to improve performance further?
+#### What is `ResizeObserver loop completed with undelivered notifications.` error?
+
+It may be dispatched by ResizeObserver in this lib [as described in spec](https://www.w3.org/TR/resize-observer/#deliver-resize-error), and [this is a common problem with ResizeObserver](https://github.com/w3c/csswg-drafts/issues/5488). If it bothers you,
+[you can safely ignore it](https://github.com/DevExpress/testcafe/issues/4857#issuecomment-598775956).
+
+Especially for `webpack-dev-server`, [you can filter out the specific error with `devServer.client.overlay.runtimeErrors` option](https://webpack.js.org/configuration/dev-server/#overlay).
+
+#### Why are my items squashed, overlapped or rendered inconsistently on resize/add/remove/reorder?
+
+Check that each item has a unique key, such as the id of your data, not its index.
+
+- React: `key` of the element of each item
+- Vue: `key` of the root element in the default slot
+- Solid: the item of `data` itself, so keep the same reference for the same item
+- Svelte: `getKey` prop
+- Angular: `getKey` input
+
+If it still happens, the `shift` prop may be misused.
+
+#### Why `VListHandle.viewportSize` is 0 on mount?
+
+`viewportSize` will be calculated by ResizeObserver so it's 0 until the first measurement.
+
+#### What is `Cannot find module 'virtua/vue(solid|svelte|angular)' or its corresponding type declarations` error?
+
+This package uses [exports of package.json](https://nodejs.org/api/packages.html#package-entry-points) for entry point of Vue/Solid/Svelte/Angular adapter. This field can't be resolved in TypeScript with `moduleResolution: node`. Try `moduleResolution: bundler` or `moduleResolution: nodenext` instead.
+
+#### How can I improve performance in React?
 
 In complex usage, especially if you re-render frequently the parent of virtual scroller or the children are tons of items, children element creation can be a performance bottle neck. That's because creating React elements is fast enough but not free and new React element instances break some of memoization inside virtual scroller.
 
@@ -464,36 +491,7 @@ const Component = memo(HeavyItem);
 </VList>;
 ```
 
-Decreasing `bufferSize` prop may also improve perf in case that components are large and heavy.
-
 Virtua try to suppress glitch caused by resize as much as possible, but it will also require additional work. If your item contains something resized often, such as lazy loaded image, we recommend to set height or min-height to it if possible.
-
-#### What is `ResizeObserver loop completed with undelivered notifications.` error?
-
-It may be dispatched by ResizeObserver in this lib [as described in spec](https://www.w3.org/TR/resize-observer/#deliver-resize-error), and [this is a common problem with ResizeObserver](https://github.com/w3c/csswg-drafts/issues/5488). If it bothers you,
-[you can safely ignore it](https://github.com/DevExpress/testcafe/issues/4857#issuecomment-598775956).
-
-Especially for `webpack-dev-server`, [you can filter out the specific error with `devServer.client.overlay.runtimeErrors` option](https://webpack.js.org/configuration/dev-server/#overlay).
-
-#### Why are my items squashed, overlapped or rendered inconsistently on resize/add/remove/reorder?
-
-Check that each item has a unique key, such as the id of your data, not its index.
-
-- React: `key` of the element of each item
-- Vue: `key` of the root element in the default slot
-- Solid: the item of `data` itself, so keep the same reference for the same item
-- Svelte: `getKey` prop
-- Angular: `getKey` input
-
-If it still happens, the `shift` prop may be misused.
-
-#### Why `VListHandle.viewportSize` is 0 on mount?
-
-`viewportSize` will be calculated by ResizeObserver so it's 0 until the first measurement.
-
-#### What is `Cannot find module 'virtua/vue(solid|svelte|angular)' or its corresponding type declarations` error?
-
-This package uses [exports of package.json](https://nodejs.org/api/packages.html#package-entry-points) for entry point of Vue/Solid/Svelte/Angular adapter. This field can't be resolved in TypeScript with `moduleResolution: node`. Try `moduleResolution: bundler` or `moduleResolution: nodenext` instead.
 
 ## Comparison
 
