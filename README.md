@@ -427,6 +427,15 @@ It may be dispatched by ResizeObserver in this lib [as described in spec](https:
 
 Especially for `webpack-dev-server`, [you can filter out the specific error with `devServer.client.overlay.runtimeErrors` option](https://webpack.js.org/configuration/dev-server/#overlay).
 
+#### Why do my items jump when images or other async content inside them are rendered?
+
+Item sizes are measured from the DOM. If content inside an item is rendered asynchronously, such as images, videos, or components that render their content after mount, the item resizes after it's displayed. Items are also unmounted when they are out of view, so the same resize happens again every time they are mounted again.
+
+To avoid it, make the content take its final size from the first render:
+
+- Reserve the size of the content before it's rendered, for example with `width`/`height` or `aspect-ratio` of images and videos.
+- Keep items mounted with `keepMounted` prop if their content can't be restored, such as a playing video.
+
 #### Why are my items squashed, overlapped or rendered inconsistently on resize/add/remove/reorder?
 
 Check that each item has a unique key, such as the id of your data, not its index.
@@ -490,8 +499,6 @@ const Component = memo(HeavyItem);
   }}
 </VList>;
 ```
-
-Virtua try to suppress glitch caused by resize as much as possible, but it will also require additional work. If your item contains something resized often, such as lazy loaded image, we recommend to set height or min-height to it if possible.
 
 ## Comparison
 
