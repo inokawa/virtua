@@ -41,33 +41,33 @@ export const createMasonryLayout = (
   fill(sizes, length - sizes.length);
   const offsets: number[] = [];
   const laneIndexes: number[] = [];
-  // Running maximum of the bottoms, which never decrease
-  const highs: number[] = [];
+  // Running maximum of the bottoms of the items before the index, which never decrease
+  const highs: number[] = [0];
 
   const getSize = (index: number): number => {
     const size = sizes[index]!;
     return size === UNCACHED ? defaultItemSize : size;
   };
 
-  const compute = (index: number) => {
-    index = min(index, length - 1);
-    if (computedIndex >= index) return;
-    // Lane bottoms aren't kept, as they go stale when an item before them is resized
-    const bottoms: number[] = [];
+  // The total size is read on every render, so all the items are placed at once
+  const compute = () => {
+    if (computedIndex >= length - 1) return;
+    // The offsets of the next items in the lanes aren't kept, as they go stale when an item before them is resized
+    const nextOffsets: number[] = [];
     const lastIndexes: number[] = [];
     for (let l = 0; l < lanes; l++) {
-      bottoms.push(0);
+      nextOffsets.push(0);
       lastIndexes.push(-1);
     }
     for (let j = computedIndex, remaining = lanes; j >= 0 && remaining; j--) {
       const l = laneIndexes[j]!;
       if (lastIndexes[l] === -1) {
         lastIndexes[l] = j;
-        bottoms[l] = offsets[j]! + getSize(j);
+        nextOffsets[l] = offsets[j]! + getSize(j) + gap;
         remaining--;
       }
     }
-    while (computedIndex < index) {
+    while (computedIndex < length - 1) {
       const i = ++computedIndex;
       // Break ties with the last item index to order items with equal sizes like a grid
       // https://github.com/TanStack/virtual/issues/654
@@ -75,7 +75,7 @@ export const createMasonryLayout = (
       let offset = Infinity;
       let lastIndex = Infinity;
       for (let l = 0; l < lanes; l++) {
-        const candidate = bottoms[l]! + (lastIndexes[l]! >= 0 ? gap : 0);
+        const candidate = nextOffsets[l]!;
         if (
           candidate < offset ||
           (candidate === offset && lastIndexes[l]! < lastIndex)
@@ -85,30 +85,28 @@ export const createMasonryLayout = (
           lastIndex = lastIndexes[l]!;
         }
       }
+      const bottom = offset + getSize(i);
       offsets[i] = offset;
       laneIndexes[i] = lane;
-      bottoms[lane] = offset + getSize(i);
+      nextOffsets[lane] = bottom + gap;
       lastIndexes[lane] = i;
-      highs[i] = max(i ? highs[i - 1]! : 0, bottoms[lane]!);
+      highs[i + 1] = max(highs[i]!, bottom);
     }
   };
 
   const getOffset = (index: number): number => {
     if (index >= length) return getTotalSize();
-    compute(index);
+    compute();
     return offsets[index]!;
   };
   const getHigh = (index: number): number => {
-    compute(index);
+    compute();
     return highs[index]!;
   };
-  const getTotalSize = (): number => (length ? getHigh(length - 1) : 0);
+  const getTotalSize = (): number => getHigh(length);
   // The first item which ends after the offset
-  const findStart = (offset: number): number => {
-    if (!length) return 0;
-    const index = findIndex(getHigh, length, offset);
-    return getHigh(index) <= offset ? index + 1 : index;
-  };
+  const findStart = (offset: number): number =>
+    findIndex(getHigh, length + 1, offset);
 
   return {
     $getRange: (startOffset, endOffset) => {
@@ -190,7 +188,7 @@ export const createMasonryLayout = (
     $getLanes: () => lanes,
     $getGap: () => gap,
     $getItemLane: (index) => {
-      compute(index);
+      compute();
       return laneIndexes[index]!;
     },
   };
