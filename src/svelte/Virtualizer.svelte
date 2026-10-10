@@ -92,8 +92,10 @@
       for (let i = start; i <= end; i++) {
         mounted.add(i);
       }
+      // The store may still have the previous length in async mode, as the range does
+      const storeLen = stateVersion && layout.$getLength();
       for (const index of sort([...mounted])) {
-        if (index < len) {
+        if (index < len && index < storeLen) {
           arr.push(index);
         }
       }
