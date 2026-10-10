@@ -1,7 +1,7 @@
 import { UNCACHED, fill, findIndex } from "../cache.js";
 import type { Layout } from "./types.js";
 import type { CacheSnapshot } from "../types.js";
-import { max, min, sort } from "../utils.js";
+import { min, sort } from "../utils.js";
 /**
  * @internal
  */
@@ -24,15 +24,11 @@ export const createListLayout = (
   let shouldAutoEstimateItemSize = !itemSize;
   let prevStartIndex = 0;
 
-  const restoredSizes = snapshot && snapshot[0];
-
-  const sizes: number[] = restoredSizes
+  const sizes: number[] = snapshot
     ? // https://github.com/inokawa/virtua/issues/441
-      fill(
-        restoredSizes.slice(0, min(length, restoredSizes.length)),
-        max(0, length - restoredSizes.length),
-      )
-    : fill([], length);
+      snapshot[0].slice(0, length)
+    : [];
+  fill(sizes, length - sizes.length);
   const offsets: number[] = fill([], length + 1);
 
   const getSize = (index: number): number => {
