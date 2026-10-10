@@ -34,14 +34,11 @@ export const createMasonryLayout = (
   // Only the first estimation is reported, as the buffer is skipped until it ends
   let isEstimating = !itemSize;
 
-  const restoredSizes = snapshot && snapshot[0];
-  const sizes: number[] = restoredSizes
+  const sizes: number[] = snapshot
     ? // https://github.com/inokawa/virtua/issues/441
-      fill(
-        restoredSizes.slice(0, min(length, restoredSizes.length)),
-        max(0, length - restoredSizes.length),
-      )
-    : fill([], length);
+      snapshot[0].slice(0, length)
+    : [];
+  fill(sizes, length - sizes.length);
   const offsets: number[] = [];
   const laneIndexes: number[] = [];
   // Running maximum of the bottoms, which never decrease
