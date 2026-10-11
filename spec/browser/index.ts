@@ -8,11 +8,34 @@ export type SsrProps = {
   horizontal?: boolean;
 };
 
+export type SsrFixtures = {
+  list: SsrProps;
+  window: SsrProps;
+  grid: undefined;
+  masonry: undefined;
+};
+
+export type SsrEntry = {
+  render: (
+    name: keyof SsrFixtures,
+    props?: SsrFixtures[keyof SsrFixtures],
+  ) => string | Promise<string>;
+  hydrate: (
+    root: HTMLElement,
+    name: keyof SsrFixtures,
+    props?: SsrFixtures[keyof SsrFixtures],
+  ) => void;
+};
+
 declare module "vitest/internal/browser" {
   interface BrowserCommands {
     // Defined in vitest.config.ts, because only the node side can compile for the server
-    ssrRender: (props: SsrProps) => Promise<string>;
-    ssrRenderGrid: () => Promise<string>;
+    ssrRender: <K extends keyof SsrFixtures>(
+      name: K,
+      ...props: undefined extends SsrFixtures[K]
+        ? [props?: SsrFixtures[K]]
+        : [props: SsrFixtures[K]]
+    ) => Promise<string>;
   }
 }
 
@@ -225,8 +248,10 @@ export const expectHydrated = async (
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 };
 
-export const expectGridHydrated = async (
+export const expectEmptyHydrated = async (
   root: Element,
+  first: string,
+  last: string,
   hydrate: () => void,
 ) => {
   const { container } = await getVirtualizer(root);
@@ -235,9 +260,9 @@ export const expectGridHydrated = async (
 
   hydrate();
 
-  await expectVirtualized(root, "row-0/col-0", "row-999/col-999");
+  await expectVirtualized(root, first, last);
   for (const node of ssrNodes) {
     expect(root.contains(node)).toBe(true);
   }
-  await expectVirtualizedAndScrollable(root, "row-0/col-0", "row-999/col-999");
+  await expectVirtualizedAndScrollable(root, first, last);
 };

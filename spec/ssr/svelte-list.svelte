@@ -1,18 +1,7 @@
-<script module lang="ts">
-  import { render as renderToString } from "svelte/server";
-  import Self from "./svelte.svelte";
-  import Grid from "./svelte-grid.svelte";
-  import type { SsrProps } from "../browser/index.js";
-
-  export const render = (props: SsrProps) =>
-    renderToString(Self, { props }).body;
-
-  export const renderGrid = () => renderToString(Grid).body;
-</script>
-
 <script lang="ts">
   import { range } from "../utils.js";
   import { VList } from "../../src/svelte/index.js";
+  import type { SsrProps } from "../browser/index.js";
 
   let { ssrCount, itemSize, horizontal = false }: SsrProps = $props();
 </script>
