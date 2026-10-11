@@ -71,7 +71,7 @@ export class VList<T> implements OnInit, VListHandle {
    */
   readonly itemProps = input<ItemProps<T>>();
   /**
-   * Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
+   * Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
    * @defaultValue 200
    */
   readonly bufferSize = input<number>();
