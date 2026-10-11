@@ -3,7 +3,7 @@ import {
   InjectionToken,
   inject,
   provideZonelessChangeDetection,
-  type Provider,
+  reflectComponentType,
   type Type,
 } from "@angular/core";
 import {
@@ -14,11 +14,17 @@ import {
   provideServerRendering,
   renderApplication,
 } from "@angular/platform-server";
-import { VGrid, VList } from "../../src/angular/index.js";
-import type { SsrProps } from "../browser/index.js";
+import {
+  VGrid,
+  VList,
+  VMasonry,
+  WindowVirtualizer,
+} from "../../src/angular/index.js";
+import { onTestFinished } from "vitest";
+import type { SsrEntry, SsrFixtures, SsrProps } from "../browser/index.js";
 import { range } from "../utils.js";
 
-export const SSR_PROPS = new InjectionToken<SsrProps>("ssrProps");
+const SSR_PROPS = new InjectionToken<SsrProps>("ssrProps");
 
 @Component({
   selector: "ssr-vlist",
@@ -37,7 +43,28 @@ export const SSR_PROPS = new InjectionToken<SsrProps>("ssrProps");
     </virtua-vlist>
   `,
 })
-export class SsrVListHost {
+class SsrVListHost {
+  protected readonly props = inject(SSR_PROPS);
+  protected readonly data = range(1000);
+}
+
+@Component({
+  selector: "ssr-window-virtualizer",
+  imports: [WindowVirtualizer],
+  template: `
+    <virtua-window-virtualizer
+      [data]="data"
+      [ssrCount]="props.ssrCount"
+      [itemSize]="props.itemSize"
+      [horizontal]="props.horizontal ?? false"
+    >
+      <ng-template let-item
+        ><div>item-{{ item }}</div></ng-template
+      >
+    </virtua-window-virtualizer>
+  `,
+})
+class SsrWindowVirtualizerHost {
   protected readonly props = inject(SSR_PROPS);
   protected readonly data = range(1000);
 }
@@ -59,13 +86,33 @@ export class SsrVListHost {
     </virtua-vgrid>
   `,
 })
-export class SsrVGridHost {}
+class SsrVGridHost {}
 
-const renderHost = async (
-  host: Type<unknown>,
-  selector: string,
-  providers: Provider[],
-) => {
+@Component({
+  selector: "ssr-vmasonry",
+  imports: [VMasonry],
+  template: `
+    <virtua-vmasonry [lanes]="2" [data]="data" style="height: 400px">
+      <ng-template let-item
+        ><div>item-{{ item }}</div></ng-template
+      >
+    </virtua-vmasonry>
+  `,
+})
+class SsrVMasonryHost {
+  protected readonly data = range(1000);
+}
+
+const fixtures = {
+  list: SsrVListHost,
+  window: SsrWindowVirtualizerHost,
+  grid: SsrVGridHost,
+  masonry: SsrVMasonryHost,
+} satisfies Record<keyof SsrFixtures, Type<unknown>>;
+
+export const render: SsrEntry["render"] = async (name, props) => {
+  const host = fixtures[name];
+  const { selector } = reflectComponentType(host)!;
   const html = await renderApplication(
     (context) =>
       bootstrapApplication(
@@ -75,7 +122,7 @@ const renderHost = async (
             provideZonelessChangeDetection(),
             provideServerRendering(),
             provideClientHydration(),
-            ...providers,
+            { provide: SSR_PROPS, useValue: props },
           ],
         },
         context,
@@ -91,9 +138,17 @@ const renderHost = async (
   return body.replace(/"t\d+"/g, '"t"');
 };
 
-export const render = (props: SsrProps) =>
-  renderHost(SsrVListHost, "ssr-vlist", [
-    { provide: SSR_PROPS, useValue: props },
-  ]);
-
-export const renderGrid = () => renderHost(SsrVGridHost, "ssr-vgrid", []);
+export const hydrate: SsrEntry["hydrate"] = (root, name, props) => {
+  // angular verifies the marker comment it emitted against the document
+  const marker = root.firstChild!.cloneNode() as Comment;
+  document.head.appendChild(marker);
+  onTestFinished(() => marker.remove());
+  const app = bootstrapApplication(fixtures[name], {
+    providers: [
+      provideZonelessChangeDetection(),
+      provideClientHydration(),
+      { provide: SSR_PROPS, useValue: props },
+    ],
+  });
+  onTestFinished(async () => (await app).destroy());
+};

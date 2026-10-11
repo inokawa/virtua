@@ -1,54 +1,20 @@
-import { afterEach, expect, it, onTestFinished } from "vitest";
+import { afterEach, expect, it } from "vitest";
 import { commands } from "vitest/browser";
-import {
-  type Provider,
-  type Type,
-  provideZonelessChangeDetection,
-} from "@angular/core";
-import {
-  bootstrapApplication,
-  provideClientHydration,
-} from "@angular/platform-browser";
-import {
-  SSR_PROPS,
-  SsrVGridHost,
-  SsrVListHost,
-} from "../../spec/ssr/angular.js";
+import { hydrate } from "../../spec/ssr/angular.js";
 import {
   cleanupScroll,
-  expectGridHydrated,
+  expectEmptyHydrated,
   expectHydrated,
   getVirtualizer,
   mountSsr,
 } from "../../spec/browser/index.js";
-import type { SsrProps } from "../../spec/browser/index.js";
 
 afterEach(cleanupScroll);
-
-// angular verifies the marker comment it emitted against the document
-const moveMarkerToHead = (root: Element) => {
-  const marker = document.head.appendChild(root.firstChild!);
-  onTestFinished(() => marker.remove());
-};
-
-const bootstrapHost = (host: Type<unknown>, providers: Provider[]) => {
-  const app = bootstrapApplication(host, {
-    providers: [
-      provideZonelessChangeDetection(),
-      provideClientHydration(),
-      ...providers,
-    ],
-  });
-  onTestFinished(async () => (await app).destroy());
-};
-
-const bootstrap = (props: SsrProps) =>
-  bootstrapHost(SsrVListHost, [{ provide: SSR_PROPS, useValue: props }]);
 
 it("should render nothing", async () => {
   const COUNT = 0;
   const ITEM_SIZE = 100;
-  const html = await commands.ssrRender({
+  const html = await commands.ssrRender("list", {
     ssrCount: COUNT,
     itemSize: ITEM_SIZE,
   });
@@ -62,48 +28,79 @@ it("should render nothing", async () => {
 it("should render and hydrate items in vertical mode", async () => {
   const COUNT = 10;
   const ITEM_SIZE = 100;
-  const html = await commands.ssrRender({
-    ssrCount: COUNT,
-    itemSize: ITEM_SIZE,
-  });
+  const props = { ssrCount: COUNT, itemSize: ITEM_SIZE };
+  const html = await commands.ssrRender("list", props);
   expect(html).toMatchSnapshot();
 
   const root = mountSsr(html);
-  moveMarkerToHead(root);
   const { container } = await getVirtualizer(root);
   expect(container.childElementCount).toEqual(COUNT);
 
-  await expectHydrated(root, COUNT, () =>
-    bootstrap({ ssrCount: COUNT, itemSize: ITEM_SIZE }),
-  );
+  await expectHydrated(root, COUNT, () => hydrate(root, "list", props));
 });
 
 it("should render and hydrate items in horizontal mode", async () => {
   const COUNT = 10;
   const ITEM_SIZE = 100;
-  const html = await commands.ssrRender({
-    ssrCount: COUNT,
-    itemSize: ITEM_SIZE,
-    horizontal: true,
-  });
+  const props = { ssrCount: COUNT, itemSize: ITEM_SIZE, horizontal: true };
+  const html = await commands.ssrRender("list", props);
   expect(html).toMatchSnapshot();
 
   const root = mountSsr(html);
-  moveMarkerToHead(root);
   const { container } = await getVirtualizer(root);
   expect(container.childElementCount).toEqual(COUNT);
 
-  await expectHydrated(root, COUNT, () =>
-    bootstrap({ ssrCount: COUNT, itemSize: ITEM_SIZE, horizontal: true }),
-  );
+  await expectHydrated(root, COUNT, () => hydrate(root, "list", props));
 });
 
-it("should render no cells and hydrate a grid", async () => {
-  const html = await commands.ssrRenderGrid();
+it("should render and hydrate items in a window in vertical mode", async () => {
+  const COUNT = 10;
+  const ITEM_SIZE = 100;
+  const props = { ssrCount: COUNT, itemSize: ITEM_SIZE };
+  const html = await commands.ssrRender("window", props);
   expect(html).toMatchSnapshot();
 
   const root = mountSsr(html);
-  moveMarkerToHead(root);
+  const { container } = await getVirtualizer(root);
+  expect(container.childElementCount).toEqual(COUNT);
 
-  await expectGridHydrated(root, () => bootstrapHost(SsrVGridHost, []));
+  await expectHydrated(root, COUNT, () => hydrate(root, "window", props));
+});
+
+it("should render and hydrate items in a window in horizontal mode", async () => {
+  const COUNT = 10;
+  const ITEM_SIZE = 100;
+  const props = { ssrCount: COUNT, itemSize: ITEM_SIZE, horizontal: true };
+  const html = await commands.ssrRender("window", props);
+  expect(html).toMatchSnapshot();
+
+  const root = mountSsr(html);
+  // The items take the height of the parent in horizontal mode, and a box without height does not make the document scrollable
+  root.style.height = "200px";
+  const { container } = await getVirtualizer(root);
+  expect(container.childElementCount).toEqual(COUNT);
+
+  await expectHydrated(root, COUNT, () => hydrate(root, "window", props));
+});
+
+it("should render no cells and hydrate a grid", async () => {
+  const html = await commands.ssrRender("grid");
+  expect(html).toMatchSnapshot();
+
+  const root = mountSsr(html);
+
+  await expectEmptyHydrated(root, "row-0/col-0", "row-999/col-999", () =>
+    hydrate(root, "grid"),
+  );
+});
+
+it("should render no items and hydrate a masonry", async () => {
+  const html = await commands.ssrRender("masonry");
+  expect(html).toMatchSnapshot();
+
+  const root = mountSsr(html);
+
+  await expectEmptyHydrated(root, "item-0", "item-999", () =>
+    hydrate(root, "masonry"),
+  );
 });

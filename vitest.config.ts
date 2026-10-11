@@ -6,19 +6,14 @@ import { svelte } from "@sveltejs/vite-plugin-svelte";
 import angular from "@analogjs/vite-plugin-angular";
 import { playwright } from "@vitest/browser-playwright";
 import type { BrowserCommandContext } from "vitest/node";
-import type { SsrProps } from "./spec/browser/index.js";
-
-type SsrEntry = {
-  render: (props: SsrProps) => string | Promise<string>;
-  renderGrid: () => string | Promise<string>;
-};
+import type { SsrEntry } from "./spec/browser/index.js";
 
 // Renders on the node side of vite, where the components can be compiled for the server
 const ssrCommands = (entry: string) => ({
-  ssrRender: async ({ project }: BrowserCommandContext, props: SsrProps) =>
-    (await project.import<SsrEntry>(entry)).render(props),
-  ssrRenderGrid: async ({ project }: BrowserCommandContext) =>
-    (await project.import<SsrEntry>(entry)).renderGrid(),
+  ssrRender: async (
+    { project }: BrowserCommandContext,
+    ...args: Parameters<SsrEntry["render"]>
+  ) => (await project.import<SsrEntry>(entry)).render(...args),
 });
 
 // These waits finish within a frame or two, so the default 50ms interval dominates them.
@@ -164,7 +159,7 @@ export default defineConfig({
           include: ["src/svelte/*.browser.spec.ts"],
           browser: {
             ...testBrowser("chromium"),
-            commands: ssrCommands("/spec/ssr/svelte.svelte"),
+            commands: ssrCommands("/spec/ssr/svelte.ts"),
           },
         },
       },
