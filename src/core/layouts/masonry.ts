@@ -134,7 +134,7 @@ export const createMasonryLayout = (
         estimatingIndexes.forEach((index) => {
           const size = sizes[index]!;
           // https://github.com/inokawa/virtua/issues/907
-          if (size > 0) {
+          if (size !== UNCACHED && size) {
             measuredSizes.push(size);
             // The gaps also fill the viewport
             totalMeasuredSize += size + gap;
