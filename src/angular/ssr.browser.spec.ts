@@ -29,29 +29,42 @@ describe("VList", () => {
   it("should render and hydrate items in vertical mode", async () => {
     const COUNT = 10;
     const ITEM_SIZE = 100;
-    const props = { ssrCount: COUNT, itemSize: ITEM_SIZE };
-    const html = await commands.ssrRender("list", props);
+    const html = await commands.ssrRender("list", {
+      ssrCount: COUNT,
+      itemSize: ITEM_SIZE,
+    });
     expect(html).toMatchSnapshot();
 
     const root = mountSsr(html);
     const { container } = await getVirtualizer(root);
     expect(container.childElementCount).toEqual(COUNT);
 
-    await expectHydrated(root, COUNT, () => hydrate(root, "list", props));
+    await expectHydrated(root, COUNT, () =>
+      hydrate(root, "list", { ssrCount: COUNT, itemSize: ITEM_SIZE }),
+    );
   });
 
   it("should render and hydrate items in horizontal mode", async () => {
     const COUNT = 10;
     const ITEM_SIZE = 100;
-    const props = { ssrCount: COUNT, itemSize: ITEM_SIZE, horizontal: true };
-    const html = await commands.ssrRender("list", props);
+    const html = await commands.ssrRender("list", {
+      ssrCount: COUNT,
+      itemSize: ITEM_SIZE,
+      horizontal: true,
+    });
     expect(html).toMatchSnapshot();
 
     const root = mountSsr(html);
     const { container } = await getVirtualizer(root);
     expect(container.childElementCount).toEqual(COUNT);
 
-    await expectHydrated(root, COUNT, () => hydrate(root, "list", props));
+    await expectHydrated(root, COUNT, () =>
+      hydrate(root, "list", {
+        ssrCount: COUNT,
+        itemSize: ITEM_SIZE,
+        horizontal: true,
+      }),
+    );
   });
 });
 
@@ -59,22 +72,29 @@ describe("WindowVirtualizer", () => {
   it("should render and hydrate items in vertical mode", async () => {
     const COUNT = 10;
     const ITEM_SIZE = 100;
-    const props = { ssrCount: COUNT, itemSize: ITEM_SIZE };
-    const html = await commands.ssrRender("window", props);
+    const html = await commands.ssrRender("window", {
+      ssrCount: COUNT,
+      itemSize: ITEM_SIZE,
+    });
     expect(html).toMatchSnapshot();
 
     const root = mountSsr(html);
     const { container } = await getVirtualizer(root);
     expect(container.childElementCount).toEqual(COUNT);
 
-    await expectHydrated(root, COUNT, () => hydrate(root, "window", props));
+    await expectHydrated(root, COUNT, () =>
+      hydrate(root, "window", { ssrCount: COUNT, itemSize: ITEM_SIZE }),
+    );
   });
 
   it("should render and hydrate items in horizontal mode", async () => {
     const COUNT = 10;
     const ITEM_SIZE = 100;
-    const props = { ssrCount: COUNT, itemSize: ITEM_SIZE, horizontal: true };
-    const html = await commands.ssrRender("window", props);
+    const html = await commands.ssrRender("window", {
+      ssrCount: COUNT,
+      itemSize: ITEM_SIZE,
+      horizontal: true,
+    });
     expect(html).toMatchSnapshot();
 
     const root = mountSsr(html);
@@ -83,7 +103,13 @@ describe("WindowVirtualizer", () => {
     const { container } = await getVirtualizer(root);
     expect(container.childElementCount).toEqual(COUNT);
 
-    await expectHydrated(root, COUNT, () => hydrate(root, "window", props));
+    await expectHydrated(root, COUNT, () =>
+      hydrate(root, "window", {
+        ssrCount: COUNT,
+        itemSize: ITEM_SIZE,
+        horizontal: true,
+      }),
+    );
   });
 });
 
