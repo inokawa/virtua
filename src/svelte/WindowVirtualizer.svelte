@@ -13,6 +13,7 @@
     getScrollSize as _getScrollSize,
     createWindowDriver,
     scrollToIndex as _scrollToIndex,
+    min,
   } from "../core/index.js";
   import { defaultGetKey, isSameRange, styleToString } from "./utils.js";
   import ListItem from "./ListItem.svelte";
@@ -74,13 +75,15 @@
   let totalSize = $derived(stateVersion && store.$getTotalSize());
 
   let indexes = $derived.by(() => {
-    const len = data.length;
+    // The each block runs before $effect.pre with experimental.async, so the store may still have the length before the update
+    // https://svelte.dev/docs/svelte/await-expressions#Breaking-changes
+    // https://github.com/inokawa/virtua/pull/847
+    // https://github.com/inokawa/virtua/pull/1018
+    const len = stateVersion && min(data.length, layout.$getLength());
 
     const [start, end] = range;
     const arr: number[] = [];
     for (let i = start; i <= end; i++) {
-      // Guard for experimental.async: true, which runs the each block before $effect.pre
-      // https://github.com/inokawa/virtua/pull/847
       if (i < len) {
         arr.push(i);
       }

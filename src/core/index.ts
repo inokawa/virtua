@@ -51,5 +51,5 @@ export {
   type GridScrollToIndexOpts,
 } from "./scroll-to.js";
 export { isBrowser } from "./environment.js";
-export { microtask, sort } from "./utils.js";
+export { microtask, min, sort } from "./utils.js";
 export type { CacheSnapshot, ItemsRange } from "./types.js";

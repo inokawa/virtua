@@ -16,6 +16,7 @@
     createVirtualStore,
     createListLayout,
     getScrollSize as _getScrollSize,
+    min,
     sort,
   } from "../core/index.js";
   import { defaultGetKey, isSameRange, styleToString } from "./utils.js";
@@ -83,7 +84,11 @@
   let totalSize = $derived(stateVersion && store.$getTotalSize());
 
   let indexes = $derived.by(() => {
-    const len = data.length;
+    // The each block runs before $effect.pre with experimental.async, so the store may still have the length before the update
+    // https://svelte.dev/docs/svelte/await-expressions#Breaking-changes
+    // https://github.com/inokawa/virtua/pull/847
+    // https://github.com/inokawa/virtua/pull/1018
+    const len = stateVersion && min(data.length, layout.$getLength());
 
     const [start, end] = range;
     const arr: number[] = [];
@@ -92,17 +97,13 @@
       for (let i = start; i <= end; i++) {
         mounted.add(i);
       }
-      // The store may still have the previous length in async mode, as the range does
-      const storeLen = stateVersion && layout.$getLength();
       for (const index of sort([...mounted])) {
-        if (index < len && index < storeLen) {
+        if (index < len) {
           arr.push(index);
         }
       }
     } else {
       for (let i = start; i <= end; i++) {
-        // Guard for experimental.async: true, which runs the each block before $effect.pre
-        // https://github.com/inokawa/virtua/pull/847
         if (i < len) {
           arr.push(i);
         }
