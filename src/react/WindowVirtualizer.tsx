@@ -174,6 +174,9 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
     Element = Element as "div";
 
     const [renderElement, count] = useChildren(children, data);
+    // Read through a ref: every closure created in a render shares that render's scope, so the [] effect and the imperative handle below would otherwise keep the first render's renderElement, and with it the first children/data, for the component's whole life.
+    const renderElementRef = useRef(renderElement);
+    renderElementRef[refKey] = renderElement;
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -263,7 +266,7 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
     }, []);
 
     for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
-      const e = renderElement(i);
+      const e = renderElementRef[refKey](i);
       items.push(
         <ListItem
           key={getKey(e, i)}

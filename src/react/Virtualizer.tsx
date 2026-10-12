@@ -211,6 +211,9 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     Element = Element as "div";
 
     const [renderElement, count] = useChildren(children, data);
+    // Read through a ref: every closure created in a render shares that render's scope, so the [] effect and the imperative handle below would otherwise keep the first render's renderElement, and with it the first children/data, for the component's whole life.
+    const renderElementRef = useRef(renderElement);
+    renderElementRef[refKey] = renderElement;
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -248,7 +251,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     const items: ReactElement[] = [];
 
     const renderItem = (index: number) => {
-      const e = renderElement(index);
+      const e = renderElementRef[refKey](index);
 
       return (
         <ListItem

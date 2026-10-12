@@ -1,10 +1,12 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe, onTestFinished } from "vitest";
 import { Virtualizer } from "./Virtualizer.js";
-import { forwardRef } from "react";
+import { act, forwardRef, type ReactElement } from "react";
+import { createRoot } from "react-dom/client";
 import { type CustomItemComponentProps } from "./types.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { render } from "../../spec/jsdom/react.js";
 import { range } from "../../spec/utils.js";
+import { collectGarbage } from "../../spec/gc.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -65,6 +67,34 @@ it("should render with render prop", async () => {
     </div>,
   );
   expect(asFragment()).toMatchSnapshot();
+});
+
+it("should release the first render's data once it is gone", async () => {
+  const container = document.body.appendChild(document.createElement("div"));
+  const root = createRoot(container);
+  onTestFinished(() => act(() => root.unmount()));
+  const show = (ui: ReactElement) => act(() => root.render(ui));
+  const List = ({ items }: { items: { id: number }[] }) => (
+    <div style={{ overflowY: "auto" }}>
+      <Virtualizer data={items}>
+        {(item) => <div key={item.id}>{item.id}</div>}
+      </Virtualizer>
+    </div>
+  );
+  const first = new WeakRef(range(50, (i) => ({ id: i })));
+  show(<List items={first.deref()!} />);
+  show(<List items={range(50, (i) => ({ id: i }))} />);
+  // Development React keeps an Error per fiber for owner stacks, and V8 keeps the closure scope
+  // of every frame in it alive; a row fiber from the first render, or one still listed in a
+  // container fiber's deletions, would pin that render regardless. Empty the list, then render
+  // twice more so both container fibers drop their deletions.
+  for (let i = 0; i < 3; i++) {
+    show(<List items={[]} />);
+  }
+
+  await collectGarbage();
+
+  expect(first.deref()).toBeUndefined();
 });
 
 it("should render with keepMounted", async () => {
