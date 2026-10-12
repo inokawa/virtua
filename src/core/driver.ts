@@ -172,6 +172,7 @@ const createScrollObserver = (
   viewport.addEventListener("wheel", onWheel, { passive: true });
   viewport.addEventListener("touchstart", onTouchStart, { passive: true });
   viewport.addEventListener("touchend", onTouchEnd, { passive: true });
+  viewport.addEventListener("touchcancel", onTouchEnd, { passive: true });
 
   return {
     _sync: onScroll,
@@ -180,6 +181,7 @@ const createScrollObserver = (
       viewport.removeEventListener("wheel", onWheel);
       viewport.removeEventListener("touchstart", onTouchStart);
       viewport.removeEventListener("touchend", onTouchEnd);
+      viewport.removeEventListener("touchcancel", onTouchEnd);
       cancelTimeout(scrollEndTimer);
     },
     _fixScrollJump: () => {
