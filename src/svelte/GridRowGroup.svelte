@@ -27,8 +27,10 @@
 <!-- https://www.w3.org/TR/wai-aria-1.2/#rowgroup -->
 <div role="rowgroup" {style}>
   {#each state.$rows as row (row.$row)}
-    <!-- Guard for experimental.async: true, which runs the each block before $effect.pre -->
+    <!-- The each block runs before $effect.pre with experimental.async, so the store may still have the length before the update -->
+    <!-- https://svelte.dev/docs/svelte/await-expressions#Breaking-changes -->
     <!-- https://github.com/inokawa/virtua/pull/847 -->
+    <!-- https://github.com/inokawa/virtua/pull/1018 -->
     {#if row.$row < getAxisLength(rows)}
       <GridRow
         state={row}

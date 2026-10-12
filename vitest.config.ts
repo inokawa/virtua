@@ -84,7 +84,9 @@ export default defineConfig({
         },
       },
       {
-        plugins: [svelte()],
+        plugins: [
+          svelte({ compilerOptions: { experimental: { async: true } } }),
+        ],
         test: {
           name: "svelte",
           include: ["src/svelte/**/!(*.browser).spec.ts"],
@@ -152,7 +154,9 @@ export default defineConfig({
         },
       },
       {
-        plugins: [svelte()],
+        plugins: [
+          svelte({ compilerOptions: { experimental: { async: true } } }),
+        ],
         test: {
           name: "browser-svelte",
           expect: browserPoll,
