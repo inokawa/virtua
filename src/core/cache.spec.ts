@@ -1,6 +1,65 @@
 import { describe, it, expect } from "vitest";
-import { findIndex } from "./cache.js";
+import { UNCACHED, fill, findIndex } from "./cache.js";
 import { range } from "../../spec/utils.js";
+
+describe(fill.name, () => {
+  it("should return the given array", () => {
+    const array = [1, 2];
+    expect(fill(array, 3)).toBe(array);
+  });
+
+  describe("append", () => {
+    it("should add uncached items after the items", () => {
+      const array = [1, 2];
+      fill(array, 3);
+      expect(array).toEqual([1, 2, UNCACHED, UNCACHED, UNCACHED]);
+    });
+
+    it("should add uncached items to an empty array", () => {
+      const array: number[] = [];
+      fill(array, 3);
+      expect(array).toEqual([UNCACHED, UNCACHED, UNCACHED]);
+    });
+
+    it("should not change if length is 0", () => {
+      const array = [1, 2];
+      fill(array, 0);
+      expect(array).toEqual([1, 2]);
+    });
+
+    it("should not change if length is negative", () => {
+      const array = [1, 2];
+      fill(array, -1);
+      expect(array).toEqual([1, 2]);
+    });
+  });
+
+  describe("prepend", () => {
+    it("should add uncached items before the items", () => {
+      const array = [1, 2];
+      fill(array, 3, true);
+      expect(array).toEqual([UNCACHED, UNCACHED, UNCACHED, 1, 2]);
+    });
+
+    it("should add uncached items to an empty array", () => {
+      const array: number[] = [];
+      fill(array, 3, true);
+      expect(array).toEqual([UNCACHED, UNCACHED, UNCACHED]);
+    });
+
+    it("should not change if length is 0", () => {
+      const array = [1, 2];
+      fill(array, 0, true);
+      expect(array).toEqual([1, 2]);
+    });
+
+    it("should not change if length is negative", () => {
+      const array = [1, 2];
+      fill(array, -1, true);
+      expect(array).toEqual([1, 2]);
+    });
+  });
+});
 
 const sum = (cache: readonly number[]): number => {
   return cache.reduce((acc, c) => acc + c, 0);
