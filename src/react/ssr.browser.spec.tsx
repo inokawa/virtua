@@ -5,6 +5,7 @@ import {
   cleanupScroll,
   expectEmptyHydrated,
   expectHydrated,
+  findFirstVisibleItem,
   getVirtualizer,
   mountSsr,
 } from "../../spec/browser/index.js";
@@ -65,6 +66,30 @@ describe("VList", () => {
         horizontal: true,
       }),
     );
+  });
+
+  it("should hydrate at the existing scroll offset", async () => {
+    const props = { ssrCount: 40, itemSize: 36 };
+    const html = await commands.ssrRender("list", props);
+    const root = mountSsr(html);
+    root.style.lineHeight = `${props.itemSize}px`;
+
+    const { viewport, container } = await getVirtualizer(root);
+    const offset = props.itemSize * 199;
+    // Consume the scroll event before hydration attaches its listeners.
+    await new Promise<void>((resolve) => {
+      viewport.addEventListener("scroll", () => resolve(), { once: true });
+      viewport.scrollTop = offset;
+    });
+    expect(viewport.scrollTop).toBe(offset);
+    expect(root.textContent).not.toContain("item-199");
+
+    hydrate(root, "list", props);
+
+    await expect
+      .poll(() => findFirstVisibleItem(container, viewport)?.textContent)
+      .toBe("item-199");
+    expect(viewport.scrollTop).toBe(offset);
   });
 });
 
