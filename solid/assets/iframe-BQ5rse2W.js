@@ -1,0 +1,1 @@
+import{t as e}from"./iframe-CWp_osTY.js";e();
