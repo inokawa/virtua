@@ -17,3 +17,7 @@
 - [GridTrackSize](type-aliases/GridTrackSize.md)
 - [GridSize](type-aliases/GridSize.md)
 - [CacheSnapshot](type-aliases/CacheSnapshot.md)
+
+## Variables
+
+- [min](variables/min.md)

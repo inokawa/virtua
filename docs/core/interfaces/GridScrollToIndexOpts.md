@@ -4,7 +4,7 @@
 
 # Interface: GridScrollToIndexOpts
 
-Defined in: [src/core/scroll-to.ts:40](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/core/scroll-to.ts#L40)
+Defined in: [src/core/scroll-to.ts:40](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/core/scroll-to.ts#L40)
 
 The cell to scroll to and the options of the scroll. The axis whose index is omitted is not scrolled.
 
@@ -14,7 +14,7 @@ The cell to scroll to and the options of the scroll. The axis whose index is omi
 
 > `optional` **rowIndex?**: `number`
 
-Defined in: [src/core/scroll-to.ts:44](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/core/scroll-to.ts#L44)
+Defined in: [src/core/scroll-to.ts:44](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/core/scroll-to.ts#L44)
 
 The row index of the cell.
 
@@ -24,7 +24,7 @@ The row index of the cell.
 
 > `optional` **colIndex?**: `number`
 
-Defined in: [src/core/scroll-to.ts:48](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/core/scroll-to.ts#L48)
+Defined in: [src/core/scroll-to.ts:48](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/core/scroll-to.ts#L48)
 
 The column index of the cell.
 
@@ -34,7 +34,7 @@ The column index of the cell.
 
 > `optional` **rowAlign?**: [`ScrollToIndexAlign`](../../react/type-aliases/ScrollToIndexAlign.md)
 
-Defined in: [src/core/scroll-to.ts:53](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/core/scroll-to.ts#L53)
+Defined in: [src/core/scroll-to.ts:53](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/core/scroll-to.ts#L53)
 
 Alignment of the cell in the viewport, excluding the rows sticking over it. See [ScrollToIndexAlign](../../react/type-aliases/ScrollToIndexAlign.md) for the values.
 
@@ -50,7 +50,7 @@ Alignment of the cell in the viewport, excluding the rows sticking over it. See 
 
 > `optional` **colAlign?**: [`ScrollToIndexAlign`](../../react/type-aliases/ScrollToIndexAlign.md)
 
-Defined in: [src/core/scroll-to.ts:58](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/core/scroll-to.ts#L58)
+Defined in: [src/core/scroll-to.ts:58](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/core/scroll-to.ts#L58)
 
 Alignment of the cell in the viewport, excluding the columns sticking over it. See [ScrollToIndexAlign](../../react/type-aliases/ScrollToIndexAlign.md) for the values.
 

@@ -4,7 +4,7 @@
 
 # Interface: VMasonryHandle
 
-Defined in: [src/vue/VMasonry.tsx:131](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/vue/VMasonry.tsx#L131)
+Defined in: [src/vue/VMasonry.tsx:131](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/vue/VMasonry.tsx#L131)
 
 Methods of [VMasonry](../variables/VMasonry.md).
 
@@ -14,7 +14,7 @@ Methods of [VMasonry](../variables/VMasonry.md).
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/vue/VMasonry.tsx:152](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/vue/VMasonry.tsx#L152)
+Defined in: [src/vue/VMasonry.tsx:152](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/vue/VMasonry.tsx#L152)
 
 Get item offset from start.
 
@@ -36,7 +36,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/vue/VMasonry.tsx:157](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/vue/VMasonry.tsx#L157)
+Defined in: [src/vue/VMasonry.tsx:157](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/vue/VMasonry.tsx#L157)
 
 Get item size.
 
@@ -58,7 +58,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/vue/VMasonry.tsx:163](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/vue/VMasonry.tsx#L163)
+Defined in: [src/vue/VMasonry.tsx:163](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/vue/VMasonry.tsx#L163)
 
 Scroll to the item specified by index.
 
@@ -86,7 +86,7 @@ options
 
 > **scrollTo**(`offset`): `void`
 
-Defined in: [src/vue/VMasonry.tsx:168](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/vue/VMasonry.tsx#L168)
+Defined in: [src/vue/VMasonry.tsx:168](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/vue/VMasonry.tsx#L168)
 
 Scroll to the given offset.
 
@@ -108,7 +108,7 @@ offset from start
 
 > **scrollBy**(`offset`): `void`
 
-Defined in: [src/vue/VMasonry.tsx:173](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/vue/VMasonry.tsx#L173)
+Defined in: [src/vue/VMasonry.tsx:173](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/vue/VMasonry.tsx#L173)
 
 Scroll by the given offset.
 
@@ -130,7 +130,7 @@ offset from current position
 
 > `readonly` **cache**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/vue/VMasonry.tsx:135](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/vue/VMasonry.tsx#L135)
+Defined in: [src/vue/VMasonry.tsx:135](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/vue/VMasonry.tsx#L135)
 
 Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
@@ -140,7 +140,7 @@ Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
 > `readonly` **scrollOffset**: `number`
 
-Defined in: [src/vue/VMasonry.tsx:139](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/vue/VMasonry.tsx#L139)
+Defined in: [src/vue/VMasonry.tsx:139](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/vue/VMasonry.tsx#L139)
 
 Get current scrollTop.
 
@@ -150,7 +150,7 @@ Get current scrollTop.
 
 > `readonly` **scrollSize**: `number`
 
-Defined in: [src/vue/VMasonry.tsx:143](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/vue/VMasonry.tsx#L143)
+Defined in: [src/vue/VMasonry.tsx:143](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/vue/VMasonry.tsx#L143)
 
 Get current scrollHeight.
 
@@ -160,6 +160,6 @@ Get current scrollHeight.
 
 > `readonly` **viewportSize**: `number`
 
-Defined in: [src/vue/VMasonry.tsx:147](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/vue/VMasonry.tsx#L147)
+Defined in: [src/vue/VMasonry.tsx:147](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/vue/VMasonry.tsx#L147)
 
 Get current clientHeight.
