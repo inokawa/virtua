@@ -73,7 +73,15 @@ export const App = () => {
 };
 ```
 
-You can also pass elements as `children` directly instead of `data`.
+A trailing node that is not part of `data`, such as a load-more sentinel or a footer, goes into `after`; it is laid out as one more virtual item.
+
+```tsx
+<VList data={data} after={hasNextPage ? <div ref={loadMoreRef} /> : undefined}>
+  {(item) => <Row key={item.id} item={item} />}
+</VList>
+```
+
+You can also pass elements as `children` directly instead of `data`, but prefer `data` for lists of any size: a children array creates a React element for every item on every render of the parent, virtua then picks the visible few out of it, and the whole array stays alive for as long as that render's closures do (stale effects, memoized callbacks, the alternate fiber). With `data` only the visible window is rendered and nothing per item is allocated up front.
 
 ### Vue
 

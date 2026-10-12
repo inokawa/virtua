@@ -108,6 +108,10 @@ export interface VirtualizerProps<T = unknown> {
    */
   data?: ArrayLike<T>;
   /**
+   * One extra element rendered after the last item of {@link VirtualizerProps.data}, as a virtual item of its own: a load-more sentinel, a footer, an add-row form. Used only with a function {@link VirtualizerProps.children}.
+   */
+  after?: ReactElement;
+  /**
    * Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
    * @defaultValue 200
    */
@@ -187,6 +191,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     {
       children,
       data,
+      after,
       bufferSize,
       itemSize,
       shift,
@@ -210,7 +215,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
 
     Element = Element as "div";
 
-    const [renderElement, count] = useChildren(children, data);
+    const [renderElement, count] = useChildren(children, data, after);
 
     const containerRef = useRef<HTMLDivElement>(null);
 

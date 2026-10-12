@@ -67,6 +67,21 @@ it("should render with render prop", async () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
+it("should render after as one more item past data", async () => {
+  const items = range(3, (i) => ({ id: i }));
+  const res = await render(
+    <div style={{ overflowY: "auto" }}>
+      <Virtualizer data={items} after={<div data-testid="after">after</div>}>
+        {(item) => <div key={item.id}>{item.id}</div>}
+      </Virtualizer>
+    </div>,
+  );
+  const afterItem = res.getByTestId("after").parentElement!;
+  expect(afterItem.nextElementSibling).toBeNull();
+  expect(afterItem.previousElementSibling!.textContent).toBe("2");
+  expect(res.asFragment()).toMatchSnapshot();
+});
+
 it("should render with keepMounted", async () => {
   const { asFragment } = await render(
     <div style={{ overflowY: "auto" }}>

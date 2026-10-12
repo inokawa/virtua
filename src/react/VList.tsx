@@ -20,6 +20,7 @@ export interface VListProps<T = unknown>
       VirtualizerProps<T>,
       | "children"
       | "data"
+      | "after"
       | "bufferSize"
       | "itemSize"
       | "shift"
@@ -42,6 +43,7 @@ export const VList = /*#__PURE__*/ forwardRef<VListHandle, VListProps>(
     {
       children,
       data,
+      after,
       bufferSize,
       itemSize,
       shift,
@@ -73,6 +75,7 @@ export const VList = /*#__PURE__*/ forwardRef<VListHandle, VListProps>(
         <Virtualizer
           ref={ref}
           data={data}
+          after={after}
           bufferSize={bufferSize}
           itemSize={itemSize}
           shift={shift}
