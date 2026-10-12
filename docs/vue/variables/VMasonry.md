@@ -6,7 +6,7 @@
 
 > `const` **VMasonry**: \<`T`\>(`props`) => `VMasonryInstance`\<`T`\>
 
-Defined in: [src/vue/VMasonry.tsx:239](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/vue/VMasonry.tsx#L239)
+Defined in: [src/vue/VMasonry.tsx:238](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/vue/VMasonry.tsx#L238)
 
 Virtualized masonry component. See [VMasonryProps](../interfaces/VMasonryProps.md) and [VMasonryHandle](../interfaces/VMasonryHandle.md).
 

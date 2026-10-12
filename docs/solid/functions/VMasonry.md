@@ -6,7 +6,7 @@
 
 > **VMasonry**\<`T`\>(`props`): `Element`
 
-Defined in: [src/solid/VMasonry.tsx:192](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VMasonry.tsx#L192)
+Defined in: [src/solid/VMasonry.tsx:192](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VMasonry.tsx#L192)
 
 Virtualized masonry component. See [VMasonryProps](../interfaces/VMasonryProps.md) and [VMasonryHandle](../interfaces/VMasonryHandle.md).
 

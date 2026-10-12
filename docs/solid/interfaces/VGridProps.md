@@ -4,7 +4,7 @@
 
 # Interface: VGridProps\<R, C\>
 
-Defined in: [src/solid/VGrid.tsx:129](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L129)
+Defined in: [src/solid/VGrid.tsx:129](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L129)
 
 Props of [VGrid](../functions/VGrid.md).
 
@@ -28,7 +28,7 @@ Props of [VGrid](../functions/VGrid.md).
 
 > `optional` **ref?**: [`VGridHandle`](VGridHandle.md) \| ((`handle?`) => `void`)
 
-Defined in: [src/solid/VGrid.tsx:136](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L136)
+Defined in: [src/solid/VGrid.tsx:136](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L136)
 
 Get reference to [VGridHandle](VGridHandle.md).
 
@@ -38,7 +38,7 @@ Get reference to [VGridHandle](VGridHandle.md).
 
 > **children**: (`row`, `col`, `cell`) => `Element`
 
-Defined in: [src/solid/VGrid.tsx:143](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L143)
+Defined in: [src/solid/VGrid.tsx:143](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L143)
 
 A function to create cell elements rendered by this component.
 
@@ -72,7 +72,7 @@ the row index and the column index of the cell
 
 > **rows**: [`GridAxis`](../../core/type-aliases/GridAxis.md)\<`R`\>
 
-Defined in: [src/solid/VGrid.tsx:147](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L147)
+Defined in: [src/solid/VGrid.tsx:147](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L147)
 
 The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -82,7 +82,7 @@ The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for th
 
 > **cols**: [`GridAxis`](../../core/type-aliases/GridAxis.md)\<`C`\>
 
-Defined in: [src/solid/VGrid.tsx:151](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L151)
+Defined in: [src/solid/VGrid.tsx:151](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L151)
 
 The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -92,7 +92,7 @@ The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for
 
 > **rowHeight**: [`GridSize`](../../core/type-aliases/GridSize.md)\<`R`\>
 
-Defined in: [src/solid/VGrid.tsx:155](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L155)
+Defined in: [src/solid/VGrid.tsx:155](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L155)
 
 The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -102,7 +102,7 @@ The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for
 
 > **colWidth**: [`GridSize`](../../core/type-aliases/GridSize.md)\<`C`\>
 
-Defined in: [src/solid/VGrid.tsx:159](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L159)
+Defined in: [src/solid/VGrid.tsx:159](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L159)
 
 The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -112,7 +112,7 @@ The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) f
 
 > `optional` **headerRows?**: `number`
 
-Defined in: [src/solid/VGrid.tsx:166](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L166)
+Defined in: [src/solid/VGrid.tsx:166](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L166)
 
 The number of the leading rows pinned to the start, which are the column headers (`role="columnheader"`).
 
@@ -130,7 +130,7 @@ The number of the leading rows pinned to the start, which are the column headers
 
 > `optional` **sectionRows?**: readonly `number`[]
 
-Defined in: [src/solid/VGrid.tsx:172](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L172)
+Defined in: [src/solid/VGrid.tsx:172](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L172)
 
 Indexes of the rows which start sections. A section lasts until the next section row or the footer rows, and its first row sticks below the header rows while the section is scrolled through.
 
@@ -142,7 +142,7 @@ Indexes of the rows which start sections. A section lasts until the next section
 
 > `optional` **footerRows?**: `number`
 
-Defined in: [src/solid/VGrid.tsx:179](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L179)
+Defined in: [src/solid/VGrid.tsx:179](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L179)
 
 The number of the trailing rows pinned to the end.
 
@@ -160,7 +160,7 @@ The number of the trailing rows pinned to the end.
 
 > `optional` **headerCols?**: `number`
 
-Defined in: [src/solid/VGrid.tsx:186](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L186)
+Defined in: [src/solid/VGrid.tsx:186](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L186)
 
 The number of the leading columns pinned to the start, the last of which is the row header (`role="rowheader"`).
 
@@ -178,7 +178,7 @@ The number of the leading columns pinned to the start, the last of which is the 
 
 > `optional` **footerCols?**: `number`
 
-Defined in: [src/solid/VGrid.tsx:193](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L193)
+Defined in: [src/solid/VGrid.tsx:193](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L193)
 
 The number of the trailing columns pinned to the end.
 
@@ -196,7 +196,7 @@ The number of the trailing columns pinned to the end.
 
 > `optional` **spans?**: readonly [`GridSpan`](../../core/interfaces/GridSpan.md)[]
 
-Defined in: [src/solid/VGrid.tsx:199](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L199)
+Defined in: [src/solid/VGrid.tsx:199](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L199)
 
 Cells merged over multiple rows and/or columns. See [GridSpan](../../core/interfaces/GridSpan.md) for the accepted values.
 
@@ -208,7 +208,7 @@ The cell at the origin is stretched over the merged area, and the other cells in
 
 > `optional` **keepMounted?**: readonly [`GridCell`](../../core/interfaces/GridCell.md)[]
 
-Defined in: [src/solid/VGrid.tsx:203](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L203)
+Defined in: [src/solid/VGrid.tsx:203](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L203)
 
 List of cells that should be always mounted, even when off screen.
 
@@ -218,9 +218,9 @@ List of cells that should be always mounted, even when off screen.
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/solid/VGrid.tsx:208](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L208)
+Defined in: [src/solid/VGrid.tsx:208](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L208)
 
-Extra space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank cells in fast scrolling.
+Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank cells in fast scrolling.
 
 #### Default Value
 
@@ -234,7 +234,7 @@ Extra space in pixels to render before/after the viewport. The minimum value is 
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/solid/VGrid.tsx:213](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L213)
+Defined in: [src/solid/VGrid.tsx:213](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L213)
 
 The gap between the rows and the columns in pixels, which is not included in the sizes. Must not be changed after mount.
 
@@ -250,7 +250,7 @@ The gap between the rows and the columns in pixels, which is not included in the
 
 > `optional` **ariaSort?**: [`GridCell`](../../core/interfaces/GridCell.md) & `object`
 
-Defined in: [src/solid/VGrid.tsx:217](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L217)
+Defined in: [src/solid/VGrid.tsx:217](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L217)
 
 The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
@@ -266,7 +266,7 @@ The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
 > `optional` **onVerticalScroll?**: (`offset`) => `void`
 
-Defined in: [src/solid/VGrid.tsx:222](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L222)
+Defined in: [src/solid/VGrid.tsx:222](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L222)
 
 Callback invoked whenever the vertical scroll offset changes.
 
@@ -288,7 +288,7 @@ Current scrollTop.
 
 > `optional` **onHorizontalScroll?**: (`offset`) => `void`
 
-Defined in: [src/solid/VGrid.tsx:227](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L227)
+Defined in: [src/solid/VGrid.tsx:227](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L227)
 
 Callback invoked whenever the horizontal scroll offset changes.
 
@@ -310,7 +310,7 @@ Current scrollLeft. Always positive even in RTL.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/solid/VGrid.tsx:231](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L231)
+Defined in: [src/solid/VGrid.tsx:231](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L231)
 
 Callback invoked when scrolling stops.
 
@@ -324,7 +324,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **onResize?**: () => `void`
 
-Defined in: [src/solid/VGrid.tsx:235](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/VGrid.tsx#L235)
+Defined in: [src/solid/VGrid.tsx:235](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/VGrid.tsx#L235)
 
 Callback invoked when the size of the viewport or the items changes.
 
@@ -350,7 +350,7 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:690
 
 > `optional` **style?**: `CSSProperties`
 
-Defined in: [src/solid/types.ts:6](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/solid/types.ts#L6)
+Defined in: [src/solid/types.ts:6](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/solid/types.ts#L6)
 
 #### Inherited from
 
@@ -764,7 +764,7 @@ region based on the change notifications defined by the aria-relevant attribute.
 
 ### aria-autocomplete?
 
-> `optional` **aria-autocomplete?**: `"none"` \| `"inline"` \| `"both"` \| `"list"`
+> `optional` **aria-autocomplete?**: `"list"` \| `"none"` \| `"inline"` \| `"both"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:848
 
@@ -1126,7 +1126,7 @@ In ARIA 1.1
 
 ### aria-haspopup?
 
-> `optional` **aria-haspopup?**: `boolean` \| `"dialog"` \| `"menu"` \| `"true"` \| `"false"` \| `"grid"` \| `"listbox"` \| `"tree"`
+> `optional` **aria-haspopup?**: `boolean` \| `"grid"` \| `"dialog"` \| `"menu"` \| `"true"` \| `"false"` \| `"listbox"` \| `"tree"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:962
 
@@ -2656,1170 +2656,6 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:686
 
 ***
 
-### onabort?
-
-> `optional` **onabort?**: `EventHandlerUnion`\<`HTMLDivElement`, `UIEvent`, `EventHandler`\<`HTMLDivElement`, `UIEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:405
-
-#### Inherited from
-
-`Omit.onabort`
-
-***
-
-### onanimationcancel?
-
-> `optional` **onanimationcancel?**: `EventHandlerUnion`\<`HTMLDivElement`, `AnimationEvent`, `EventHandler`\<`HTMLDivElement`, `AnimationEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:406
-
-#### Inherited from
-
-`Omit.onanimationcancel`
-
-***
-
-### onanimationend?
-
-> `optional` **onanimationend?**: `EventHandlerUnion`\<`HTMLDivElement`, `AnimationEvent`, `EventHandler`\<`HTMLDivElement`, `AnimationEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:407
-
-#### Inherited from
-
-`Omit.onanimationend`
-
-***
-
-### onanimationiteration?
-
-> `optional` **onanimationiteration?**: `EventHandlerUnion`\<`HTMLDivElement`, `AnimationEvent`, `EventHandler`\<`HTMLDivElement`, `AnimationEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:408
-
-#### Inherited from
-
-`Omit.onanimationiteration`
-
-***
-
-### onanimationstart?
-
-> `optional` **onanimationstart?**: `EventHandlerUnion`\<`HTMLDivElement`, `AnimationEvent`, `EventHandler`\<`HTMLDivElement`, `AnimationEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:409
-
-#### Inherited from
-
-`Omit.onanimationstart`
-
-***
-
-### onauxclick?
-
-> `optional` **onauxclick?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:410
-
-#### Inherited from
-
-`Omit.onauxclick`
-
-***
-
-### onbeforeinput?
-
-> `optional` **onbeforeinput?**: `InputEventHandlerUnion`\<`HTMLDivElement`, `InputEvent`\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:413
-
-#### Inherited from
-
-`Omit.onbeforeinput`
-
-***
-
-### onbeforematch?
-
-> `optional` **onbeforematch?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:414
-
-#### Inherited from
-
-`Omit.onbeforematch`
-
-***
-
-### onbeforetoggle?
-
-> `optional` **onbeforetoggle?**: `EventHandlerUnion`\<`HTMLDivElement`, `ToggleEvent`, `EventHandler`\<`HTMLDivElement`, `ToggleEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:416
-
-#### Inherited from
-
-`Omit.onbeforetoggle`
-
-***
-
-### onblur?
-
-> `optional` **onblur?**: `FocusEventHandlerUnion`\<`HTMLDivElement`, `FocusEvent`\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:418
-
-#### Inherited from
-
-`Omit.onblur`
-
-***
-
-### oncancel?
-
-> `optional` **oncancel?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:419
-
-#### Inherited from
-
-`Omit.oncancel`
-
-***
-
-### oncanplay?
-
-> `optional` **oncanplay?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:420
-
-#### Inherited from
-
-`Omit.oncanplay`
-
-***
-
-### oncanplaythrough?
-
-> `optional` **oncanplaythrough?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:421
-
-#### Inherited from
-
-`Omit.oncanplaythrough`
-
-***
-
-### onchange?
-
-> `optional` **onchange?**: `ChangeEventHandlerUnion`\<`HTMLDivElement`, `Event`\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:422
-
-#### Inherited from
-
-`Omit.onchange`
-
-***
-
-### onclick?
-
-> `optional` **onclick?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:423
-
-#### Inherited from
-
-`Omit.onclick`
-
-***
-
-### onclose?
-
-> `optional` **onclose?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:424
-
-#### Inherited from
-
-`Omit.onclose`
-
-***
-
-### oncommand?
-
-> `optional` **oncommand?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:426
-
-#### Inherited from
-
-`Omit.oncommand`
-
-***
-
-### oncontextlost?
-
-> `optional` **oncontextlost?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:433
-
-#### Inherited from
-
-`Omit.oncontextlost`
-
-***
-
-### oncontextmenu?
-
-> `optional` **oncontextmenu?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:434
-
-#### Inherited from
-
-`Omit.oncontextmenu`
-
-***
-
-### oncontextrestored?
-
-> `optional` **oncontextrestored?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:435
-
-#### Inherited from
-
-`Omit.oncontextrestored`
-
-***
-
-### oncopy?
-
-> `optional` **oncopy?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:436
-
-#### Inherited from
-
-`Omit.oncopy`
-
-***
-
-### oncuechange?
-
-> `optional` **oncuechange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:437
-
-#### Inherited from
-
-`Omit.oncuechange`
-
-***
-
-### oncut?
-
-> `optional` **oncut?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:438
-
-#### Inherited from
-
-`Omit.oncut`
-
-***
-
-### ondblclick?
-
-> `optional` **ondblclick?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:439
-
-#### Inherited from
-
-`Omit.ondblclick`
-
-***
-
-### ondrag?
-
-> `optional` **ondrag?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:440
-
-#### Inherited from
-
-`Omit.ondrag`
-
-***
-
-### ondragend?
-
-> `optional` **ondragend?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:441
-
-#### Inherited from
-
-`Omit.ondragend`
-
-***
-
-### ondragenter?
-
-> `optional` **ondragenter?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:442
-
-#### Inherited from
-
-`Omit.ondragenter`
-
-***
-
-### ondragleave?
-
-> `optional` **ondragleave?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:444
-
-#### Inherited from
-
-`Omit.ondragleave`
-
-***
-
-### ondragover?
-
-> `optional` **ondragover?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:445
-
-#### Inherited from
-
-`Omit.ondragover`
-
-***
-
-### ondragstart?
-
-> `optional` **ondragstart?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:446
-
-#### Inherited from
-
-`Omit.ondragstart`
-
-***
-
-### ondrop?
-
-> `optional` **ondrop?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:447
-
-#### Inherited from
-
-`Omit.ondrop`
-
-***
-
-### ondurationchange?
-
-> `optional` **ondurationchange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:448
-
-#### Inherited from
-
-`Omit.ondurationchange`
-
-***
-
-### onemptied?
-
-> `optional` **onemptied?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:449
-
-#### Inherited from
-
-`Omit.onemptied`
-
-***
-
-### onended?
-
-> `optional` **onended?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:450
-
-#### Inherited from
-
-`Omit.onended`
-
-***
-
-### onerror?
-
-> `optional` **onerror?**: `EventHandlerUnion`\<`HTMLDivElement`, `ErrorEvent`, `EventHandler`\<`HTMLDivElement`, `ErrorEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:451
-
-#### Inherited from
-
-`Omit.onerror`
-
-***
-
-### onfocus?
-
-> `optional` **onfocus?**: `FocusEventHandlerUnion`\<`HTMLDivElement`, `FocusEvent`\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:452
-
-#### Inherited from
-
-`Omit.onfocus`
-
-***
-
-### onformdata?
-
-> `optional` **onformdata?**: `EventHandlerUnion`\<`HTMLDivElement`, `FormDataEvent`, `EventHandler`\<`HTMLDivElement`, `FormDataEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:455
-
-#### Inherited from
-
-`Omit.onformdata`
-
-***
-
-### ongotpointercapture?
-
-> `optional` **ongotpointercapture?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:458
-
-#### Inherited from
-
-`Omit.ongotpointercapture`
-
-***
-
-### oninput?
-
-> `optional` **oninput?**: `InputEventHandlerUnion`\<`HTMLDivElement`, `InputEvent`\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:459
-
-#### Inherited from
-
-`Omit.oninput`
-
-***
-
-### oninvalid?
-
-> `optional` **oninvalid?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:460
-
-#### Inherited from
-
-`Omit.oninvalid`
-
-***
-
-### onkeydown?
-
-> `optional` **onkeydown?**: `EventHandlerUnion`\<`HTMLDivElement`, `KeyboardEvent`, `EventHandler`\<`HTMLDivElement`, `KeyboardEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:461
-
-#### Inherited from
-
-`Omit.onkeydown`
-
-***
-
-### onkeypress?
-
-> `optional` **onkeypress?**: `EventHandlerUnion`\<`HTMLDivElement`, `KeyboardEvent`, `EventHandler`\<`HTMLDivElement`, `KeyboardEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:462
-
-#### Inherited from
-
-`Omit.onkeypress`
-
-***
-
-### onkeyup?
-
-> `optional` **onkeyup?**: `EventHandlerUnion`\<`HTMLDivElement`, `KeyboardEvent`, `EventHandler`\<`HTMLDivElement`, `KeyboardEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:463
-
-#### Inherited from
-
-`Omit.onkeyup`
-
-***
-
-### onload?
-
-> `optional` **onload?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:464
-
-#### Inherited from
-
-`Omit.onload`
-
-***
-
-### onloadeddata?
-
-> `optional` **onloadeddata?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:465
-
-#### Inherited from
-
-`Omit.onloadeddata`
-
-***
-
-### onloadedmetadata?
-
-> `optional` **onloadedmetadata?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:466
-
-#### Inherited from
-
-`Omit.onloadedmetadata`
-
-***
-
-### onloadstart?
-
-> `optional` **onloadstart?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:467
-
-#### Inherited from
-
-`Omit.onloadstart`
-
-***
-
-### onlostpointercapture?
-
-> `optional` **onlostpointercapture?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:468
-
-#### Inherited from
-
-`Omit.onlostpointercapture`
-
-***
-
-### onmousedown?
-
-> `optional` **onmousedown?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:469
-
-#### Inherited from
-
-`Omit.onmousedown`
-
-***
-
-### onmouseenter?
-
-> `optional` **onmouseenter?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:470
-
-#### Inherited from
-
-`Omit.onmouseenter`
-
-***
-
-### onmouseleave?
-
-> `optional` **onmouseleave?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:471
-
-#### Inherited from
-
-`Omit.onmouseleave`
-
-***
-
-### onmousemove?
-
-> `optional` **onmousemove?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:472
-
-#### Inherited from
-
-`Omit.onmousemove`
-
-***
-
-### onmouseout?
-
-> `optional` **onmouseout?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:473
-
-#### Inherited from
-
-`Omit.onmouseout`
-
-***
-
-### onmouseover?
-
-> `optional` **onmouseover?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:474
-
-#### Inherited from
-
-`Omit.onmouseover`
-
-***
-
-### onmouseup?
-
-> `optional` **onmouseup?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:475
-
-#### Inherited from
-
-`Omit.onmouseup`
-
-***
-
-### onpaste?
-
-> `optional` **onpaste?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:476
-
-#### Inherited from
-
-`Omit.onpaste`
-
-***
-
-### onpause?
-
-> `optional` **onpause?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:477
-
-#### Inherited from
-
-`Omit.onpause`
-
-***
-
-### onplay?
-
-> `optional` **onplay?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:478
-
-#### Inherited from
-
-`Omit.onplay`
-
-***
-
-### onplaying?
-
-> `optional` **onplaying?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:479
-
-#### Inherited from
-
-`Omit.onplaying`
-
-***
-
-### onpointercancel?
-
-> `optional` **onpointercancel?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:480
-
-#### Inherited from
-
-`Omit.onpointercancel`
-
-***
-
-### onpointerdown?
-
-> `optional` **onpointerdown?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:481
-
-#### Inherited from
-
-`Omit.onpointerdown`
-
-***
-
-### onpointerenter?
-
-> `optional` **onpointerenter?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:482
-
-#### Inherited from
-
-`Omit.onpointerenter`
-
-***
-
-### onpointerleave?
-
-> `optional` **onpointerleave?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:483
-
-#### Inherited from
-
-`Omit.onpointerleave`
-
-***
-
-### onpointermove?
-
-> `optional` **onpointermove?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:484
-
-#### Inherited from
-
-`Omit.onpointermove`
-
-***
-
-### onpointerout?
-
-> `optional` **onpointerout?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:485
-
-#### Inherited from
-
-`Omit.onpointerout`
-
-***
-
-### onpointerover?
-
-> `optional` **onpointerover?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:486
-
-#### Inherited from
-
-`Omit.onpointerover`
-
-***
-
-### onpointerrawupdate?
-
-> `optional` **onpointerrawupdate?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:487
-
-#### Inherited from
-
-`Omit.onpointerrawupdate`
-
-***
-
-### onpointerup?
-
-> `optional` **onpointerup?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:488
-
-#### Inherited from
-
-`Omit.onpointerup`
-
-***
-
-### onprogress?
-
-> `optional` **onprogress?**: `EventHandlerUnion`\<`HTMLDivElement`, `ProgressEvent`\<`EventTarget`\>, `EventHandler`\<`HTMLDivElement`, `ProgressEvent`\<`EventTarget`\>\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:489
-
-#### Inherited from
-
-`Omit.onprogress`
-
-***
-
-### onratechange?
-
-> `optional` **onratechange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:490
-
-#### Inherited from
-
-`Omit.onratechange`
-
-***
-
-### onreset?
-
-> `optional` **onreset?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:491
-
-#### Inherited from
-
-`Omit.onreset`
-
-***
-
-### onresize?
-
-> `optional` **onresize?**: `EventHandlerUnion`\<`HTMLDivElement`, `UIEvent`, `EventHandler`\<`HTMLDivElement`, `UIEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:492
-
-#### Inherited from
-
-`Omit.onresize`
-
-***
-
-### onscroll?
-
-> `optional` **onscroll?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:493
-
-#### Inherited from
-
-`Omit.onscroll`
-
-***
-
-### onscrollend?
-
-> `optional` **onscrollend?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:494
-
-#### Inherited from
-
-`Omit.onscrollend`
-
-***
-
-### onsecuritypolicyviolation?
-
-> `optional` **onsecuritypolicyviolation?**: `EventHandlerUnion`\<`HTMLDivElement`, `SecurityPolicyViolationEvent`, `EventHandler`\<`HTMLDivElement`, `SecurityPolicyViolationEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:499
-
-#### Inherited from
-
-`Omit.onsecuritypolicyviolation`
-
-***
-
-### onseeked?
-
-> `optional` **onseeked?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:500
-
-#### Inherited from
-
-`Omit.onseeked`
-
-***
-
-### onseeking?
-
-> `optional` **onseeking?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:501
-
-#### Inherited from
-
-`Omit.onseeking`
-
-***
-
-### onselect?
-
-> `optional` **onselect?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:502
-
-#### Inherited from
-
-`Omit.onselect`
-
-***
-
-### onselectionchange?
-
-> `optional` **onselectionchange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:503
-
-#### Inherited from
-
-`Omit.onselectionchange`
-
-***
-
-### onselectstart?
-
-> `optional` **onselectstart?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:504
-
-#### Inherited from
-
-`Omit.onselectstart`
-
-***
-
-### onslotchange?
-
-> `optional` **onslotchange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:505
-
-#### Inherited from
-
-`Omit.onslotchange`
-
-***
-
-### onstalled?
-
-> `optional` **onstalled?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:506
-
-#### Inherited from
-
-`Omit.onstalled`
-
-***
-
-### onsubmit?
-
-> `optional` **onsubmit?**: `EventHandlerUnion`\<`HTMLDivElement`, `SubmitEvent`, `EventHandler`\<`HTMLDivElement`, `SubmitEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:507
-
-#### Inherited from
-
-`Omit.onsubmit`
-
-***
-
-### onsuspend?
-
-> `optional` **onsuspend?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:508
-
-#### Inherited from
-
-`Omit.onsuspend`
-
-***
-
-### ontimeupdate?
-
-> `optional` **ontimeupdate?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:509
-
-#### Inherited from
-
-`Omit.ontimeupdate`
-
-***
-
-### ontoggle?
-
-> `optional` **ontoggle?**: `EventHandlerUnion`\<`HTMLDivElement`, `ToggleEvent`, `EventHandler`\<`HTMLDivElement`, `ToggleEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:510
-
-#### Inherited from
-
-`Omit.ontoggle`
-
-***
-
-### ontouchcancel?
-
-> `optional` **ontouchcancel?**: `EventHandlerUnion`\<`HTMLDivElement`, `TouchEvent`, `EventHandler`\<`HTMLDivElement`, `TouchEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:511
-
-#### Inherited from
-
-`Omit.ontouchcancel`
-
-***
-
-### ontouchend?
-
-> `optional` **ontouchend?**: `EventHandlerUnion`\<`HTMLDivElement`, `TouchEvent`, `EventHandler`\<`HTMLDivElement`, `TouchEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:512
-
-#### Inherited from
-
-`Omit.ontouchend`
-
-***
-
-### ontouchmove?
-
-> `optional` **ontouchmove?**: `EventHandlerUnion`\<`HTMLDivElement`, `TouchEvent`, `EventHandler`\<`HTMLDivElement`, `TouchEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:513
-
-#### Inherited from
-
-`Omit.ontouchmove`
-
-***
-
-### ontouchstart?
-
-> `optional` **ontouchstart?**: `EventHandlerUnion`\<`HTMLDivElement`, `TouchEvent`, `EventHandler`\<`HTMLDivElement`, `TouchEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:514
-
-#### Inherited from
-
-`Omit.ontouchstart`
-
-***
-
-### ontransitioncancel?
-
-> `optional` **ontransitioncancel?**: `EventHandlerUnion`\<`HTMLDivElement`, `TransitionEvent`, `EventHandler`\<`HTMLDivElement`, `TransitionEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:515
-
-#### Inherited from
-
-`Omit.ontransitioncancel`
-
-***
-
-### ontransitionend?
-
-> `optional` **ontransitionend?**: `EventHandlerUnion`\<`HTMLDivElement`, `TransitionEvent`, `EventHandler`\<`HTMLDivElement`, `TransitionEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:516
-
-#### Inherited from
-
-`Omit.ontransitionend`
-
-***
-
-### ontransitionrun?
-
-> `optional` **ontransitionrun?**: `EventHandlerUnion`\<`HTMLDivElement`, `TransitionEvent`, `EventHandler`\<`HTMLDivElement`, `TransitionEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:517
-
-#### Inherited from
-
-`Omit.ontransitionrun`
-
-***
-
-### ontransitionstart?
-
-> `optional` **ontransitionstart?**: `EventHandlerUnion`\<`HTMLDivElement`, `TransitionEvent`, `EventHandler`\<`HTMLDivElement`, `TransitionEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:518
-
-#### Inherited from
-
-`Omit.ontransitionstart`
-
-***
-
-### onvolumechange?
-
-> `optional` **onvolumechange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:519
-
-#### Inherited from
-
-`Omit.onvolumechange`
-
-***
-
-### onwaiting?
-
-> `optional` **onwaiting?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:520
-
-#### Inherited from
-
-`Omit.onwaiting`
-
-***
-
-### onwheel?
-
-> `optional` **onwheel?**: `EventHandlerUnion`\<`HTMLDivElement`, `WheelEvent`, `EventHandler`\<`HTMLDivElement`, `WheelEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:521
-
-#### Inherited from
-
-`Omit.onwheel`
-
-***
-
 ### innerText?
 
 > `optional` **innerText?**: `string` \| `number`
@@ -4396,6 +3232,78 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:385
 
 ***
 
+### onabort?
+
+> `optional` **onabort?**: `EventHandlerUnion`\<`HTMLDivElement`, `UIEvent`, `EventHandler`\<`HTMLDivElement`, `UIEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:405
+
+#### Inherited from
+
+`Omit.onabort`
+
+***
+
+### onanimationcancel?
+
+> `optional` **onanimationcancel?**: `EventHandlerUnion`\<`HTMLDivElement`, `AnimationEvent`, `EventHandler`\<`HTMLDivElement`, `AnimationEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:406
+
+#### Inherited from
+
+`Omit.onanimationcancel`
+
+***
+
+### onanimationend?
+
+> `optional` **onanimationend?**: `EventHandlerUnion`\<`HTMLDivElement`, `AnimationEvent`, `EventHandler`\<`HTMLDivElement`, `AnimationEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:407
+
+#### Inherited from
+
+`Omit.onanimationend`
+
+***
+
+### onanimationiteration?
+
+> `optional` **onanimationiteration?**: `EventHandlerUnion`\<`HTMLDivElement`, `AnimationEvent`, `EventHandler`\<`HTMLDivElement`, `AnimationEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:408
+
+#### Inherited from
+
+`Omit.onanimationiteration`
+
+***
+
+### onanimationstart?
+
+> `optional` **onanimationstart?**: `EventHandlerUnion`\<`HTMLDivElement`, `AnimationEvent`, `EventHandler`\<`HTMLDivElement`, `AnimationEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:409
+
+#### Inherited from
+
+`Omit.onanimationstart`
+
+***
+
+### onauxclick?
+
+> `optional` **onauxclick?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:410
+
+#### Inherited from
+
+`Omit.onauxclick`
+
+***
+
 ### onbeforecopy?
 
 > `optional` **onbeforecopy?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
@@ -4420,6 +3328,30 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:412
 
 ***
 
+### onbeforeinput?
+
+> `optional` **onbeforeinput?**: `InputEventHandlerUnion`\<`HTMLDivElement`, `InputEvent`\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:413
+
+#### Inherited from
+
+`Omit.onbeforeinput`
+
+***
+
+### onbeforematch?
+
+> `optional` **onbeforematch?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:414
+
+#### Inherited from
+
+`Omit.onbeforematch`
+
+***
+
 ### onbeforepaste?
 
 > `optional` **onbeforepaste?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
@@ -4432,6 +3364,18 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:415
 
 ***
 
+### onbeforetoggle?
+
+> `optional` **onbeforetoggle?**: `EventHandlerUnion`\<`HTMLDivElement`, `ToggleEvent`, `EventHandler`\<`HTMLDivElement`, `ToggleEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:416
+
+#### Inherited from
+
+`Omit.onbeforetoggle`
+
+***
+
 ### onbeforexrselect?
 
 > `optional` **onbeforexrselect?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
@@ -4441,6 +3385,102 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:417
 #### Inherited from
 
 `Omit.onbeforexrselect`
+
+***
+
+### onblur?
+
+> `optional` **onblur?**: `FocusEventHandlerUnion`\<`HTMLDivElement`, `FocusEvent`\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:418
+
+#### Inherited from
+
+`Omit.onblur`
+
+***
+
+### oncancel?
+
+> `optional` **oncancel?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:419
+
+#### Inherited from
+
+`Omit.oncancel`
+
+***
+
+### oncanplay?
+
+> `optional` **oncanplay?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:420
+
+#### Inherited from
+
+`Omit.oncanplay`
+
+***
+
+### oncanplaythrough?
+
+> `optional` **oncanplaythrough?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:421
+
+#### Inherited from
+
+`Omit.oncanplaythrough`
+
+***
+
+### onchange?
+
+> `optional` **onchange?**: `ChangeEventHandlerUnion`\<`HTMLDivElement`, `Event`\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:422
+
+#### Inherited from
+
+`Omit.onchange`
+
+***
+
+### onclick?
+
+> `optional` **onclick?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:423
+
+#### Inherited from
+
+`Omit.onclick`
+
+***
+
+### onclose?
+
+> `optional` **onclose?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:424
+
+#### Inherited from
+
+`Omit.onclose`
+
+***
+
+### oncommand?
+
+> `optional` **oncommand?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:426
+
+#### Inherited from
+
+`Omit.oncommand`
 
 ***
 
@@ -4492,6 +3532,126 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:430
 
 ***
 
+### oncontextlost?
+
+> `optional` **oncontextlost?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:433
+
+#### Inherited from
+
+`Omit.oncontextlost`
+
+***
+
+### oncontextmenu?
+
+> `optional` **oncontextmenu?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:434
+
+#### Inherited from
+
+`Omit.oncontextmenu`
+
+***
+
+### oncontextrestored?
+
+> `optional` **oncontextrestored?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:435
+
+#### Inherited from
+
+`Omit.oncontextrestored`
+
+***
+
+### oncopy?
+
+> `optional` **oncopy?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:436
+
+#### Inherited from
+
+`Omit.oncopy`
+
+***
+
+### oncuechange?
+
+> `optional` **oncuechange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:437
+
+#### Inherited from
+
+`Omit.oncuechange`
+
+***
+
+### oncut?
+
+> `optional` **oncut?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:438
+
+#### Inherited from
+
+`Omit.oncut`
+
+***
+
+### ondblclick?
+
+> `optional` **ondblclick?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:439
+
+#### Inherited from
+
+`Omit.ondblclick`
+
+***
+
+### ondrag?
+
+> `optional` **ondrag?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:440
+
+#### Inherited from
+
+`Omit.ondrag`
+
+***
+
+### ondragend?
+
+> `optional` **ondragend?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:441
+
+#### Inherited from
+
+`Omit.ondragend`
+
+***
+
+### ondragenter?
+
+> `optional` **ondragenter?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:442
+
+#### Inherited from
+
+`Omit.ondragenter`
+
+***
+
 ### ondragexit?
 
 > `optional` **ondragexit?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
@@ -4501,6 +3661,114 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:443
 #### Inherited from
 
 `Omit.ondragexit`
+
+***
+
+### ondragleave?
+
+> `optional` **ondragleave?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:444
+
+#### Inherited from
+
+`Omit.ondragleave`
+
+***
+
+### ondragover?
+
+> `optional` **ondragover?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:445
+
+#### Inherited from
+
+`Omit.ondragover`
+
+***
+
+### ondragstart?
+
+> `optional` **ondragstart?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:446
+
+#### Inherited from
+
+`Omit.ondragstart`
+
+***
+
+### ondrop?
+
+> `optional` **ondrop?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:447
+
+#### Inherited from
+
+`Omit.ondrop`
+
+***
+
+### ondurationchange?
+
+> `optional` **ondurationchange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:448
+
+#### Inherited from
+
+`Omit.ondurationchange`
+
+***
+
+### onemptied?
+
+> `optional` **onemptied?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:449
+
+#### Inherited from
+
+`Omit.onemptied`
+
+***
+
+### onended?
+
+> `optional` **onended?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:450
+
+#### Inherited from
+
+`Omit.onended`
+
+***
+
+### onerror?
+
+> `optional` **onerror?**: `EventHandlerUnion`\<`HTMLDivElement`, `ErrorEvent`, `EventHandler`\<`HTMLDivElement`, `ErrorEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:451
+
+#### Inherited from
+
+`Omit.onerror`
+
+***
+
+### onfocus?
+
+> `optional` **onfocus?**: `FocusEventHandlerUnion`\<`HTMLDivElement`, `FocusEvent`\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:452
+
+#### Inherited from
+
+`Omit.onfocus`
 
 ***
 
@@ -4528,6 +3796,18 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:454
 
 ***
 
+### onformdata?
+
+> `optional` **onformdata?**: `EventHandlerUnion`\<`HTMLDivElement`, `FormDataEvent`, `EventHandler`\<`HTMLDivElement`, `FormDataEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:455
+
+#### Inherited from
+
+`Omit.onformdata`
+
+***
+
 ### onfullscreenchange?
 
 > `optional` **onfullscreenchange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
@@ -4552,6 +3832,450 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:457
 
 ***
 
+### ongotpointercapture?
+
+> `optional` **ongotpointercapture?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:458
+
+#### Inherited from
+
+`Omit.ongotpointercapture`
+
+***
+
+### oninput?
+
+> `optional` **oninput?**: `InputEventHandlerUnion`\<`HTMLDivElement`, `InputEvent`\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:459
+
+#### Inherited from
+
+`Omit.oninput`
+
+***
+
+### oninvalid?
+
+> `optional` **oninvalid?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:460
+
+#### Inherited from
+
+`Omit.oninvalid`
+
+***
+
+### onkeydown?
+
+> `optional` **onkeydown?**: `EventHandlerUnion`\<`HTMLDivElement`, `KeyboardEvent`, `EventHandler`\<`HTMLDivElement`, `KeyboardEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:461
+
+#### Inherited from
+
+`Omit.onkeydown`
+
+***
+
+### onkeypress?
+
+> `optional` **onkeypress?**: `EventHandlerUnion`\<`HTMLDivElement`, `KeyboardEvent`, `EventHandler`\<`HTMLDivElement`, `KeyboardEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:462
+
+#### Inherited from
+
+`Omit.onkeypress`
+
+***
+
+### onkeyup?
+
+> `optional` **onkeyup?**: `EventHandlerUnion`\<`HTMLDivElement`, `KeyboardEvent`, `EventHandler`\<`HTMLDivElement`, `KeyboardEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:463
+
+#### Inherited from
+
+`Omit.onkeyup`
+
+***
+
+### onload?
+
+> `optional` **onload?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:464
+
+#### Inherited from
+
+`Omit.onload`
+
+***
+
+### onloadeddata?
+
+> `optional` **onloadeddata?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:465
+
+#### Inherited from
+
+`Omit.onloadeddata`
+
+***
+
+### onloadedmetadata?
+
+> `optional` **onloadedmetadata?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:466
+
+#### Inherited from
+
+`Omit.onloadedmetadata`
+
+***
+
+### onloadstart?
+
+> `optional` **onloadstart?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:467
+
+#### Inherited from
+
+`Omit.onloadstart`
+
+***
+
+### onlostpointercapture?
+
+> `optional` **onlostpointercapture?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:468
+
+#### Inherited from
+
+`Omit.onlostpointercapture`
+
+***
+
+### onmousedown?
+
+> `optional` **onmousedown?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:469
+
+#### Inherited from
+
+`Omit.onmousedown`
+
+***
+
+### onmouseenter?
+
+> `optional` **onmouseenter?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:470
+
+#### Inherited from
+
+`Omit.onmouseenter`
+
+***
+
+### onmouseleave?
+
+> `optional` **onmouseleave?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:471
+
+#### Inherited from
+
+`Omit.onmouseleave`
+
+***
+
+### onmousemove?
+
+> `optional` **onmousemove?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:472
+
+#### Inherited from
+
+`Omit.onmousemove`
+
+***
+
+### onmouseout?
+
+> `optional` **onmouseout?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:473
+
+#### Inherited from
+
+`Omit.onmouseout`
+
+***
+
+### onmouseover?
+
+> `optional` **onmouseover?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:474
+
+#### Inherited from
+
+`Omit.onmouseover`
+
+***
+
+### onmouseup?
+
+> `optional` **onmouseup?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:475
+
+#### Inherited from
+
+`Omit.onmouseup`
+
+***
+
+### onpaste?
+
+> `optional` **onpaste?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:476
+
+#### Inherited from
+
+`Omit.onpaste`
+
+***
+
+### onpause?
+
+> `optional` **onpause?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:477
+
+#### Inherited from
+
+`Omit.onpause`
+
+***
+
+### onplay?
+
+> `optional` **onplay?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:478
+
+#### Inherited from
+
+`Omit.onplay`
+
+***
+
+### onplaying?
+
+> `optional` **onplaying?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:479
+
+#### Inherited from
+
+`Omit.onplaying`
+
+***
+
+### onpointercancel?
+
+> `optional` **onpointercancel?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:480
+
+#### Inherited from
+
+`Omit.onpointercancel`
+
+***
+
+### onpointerdown?
+
+> `optional` **onpointerdown?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:481
+
+#### Inherited from
+
+`Omit.onpointerdown`
+
+***
+
+### onpointerenter?
+
+> `optional` **onpointerenter?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:482
+
+#### Inherited from
+
+`Omit.onpointerenter`
+
+***
+
+### onpointerleave?
+
+> `optional` **onpointerleave?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:483
+
+#### Inherited from
+
+`Omit.onpointerleave`
+
+***
+
+### onpointermove?
+
+> `optional` **onpointermove?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:484
+
+#### Inherited from
+
+`Omit.onpointermove`
+
+***
+
+### onpointerout?
+
+> `optional` **onpointerout?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:485
+
+#### Inherited from
+
+`Omit.onpointerout`
+
+***
+
+### onpointerover?
+
+> `optional` **onpointerover?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:486
+
+#### Inherited from
+
+`Omit.onpointerover`
+
+***
+
+### onpointerrawupdate?
+
+> `optional` **onpointerrawupdate?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:487
+
+#### Inherited from
+
+`Omit.onpointerrawupdate`
+
+***
+
+### onpointerup?
+
+> `optional` **onpointerup?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:488
+
+#### Inherited from
+
+`Omit.onpointerup`
+
+***
+
+### onprogress?
+
+> `optional` **onprogress?**: `EventHandlerUnion`\<`HTMLDivElement`, `ProgressEvent`\<`EventTarget`\>, `EventHandler`\<`HTMLDivElement`, `ProgressEvent`\<`EventTarget`\>\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:489
+
+#### Inherited from
+
+`Omit.onprogress`
+
+***
+
+### onratechange?
+
+> `optional` **onratechange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:490
+
+#### Inherited from
+
+`Omit.onratechange`
+
+***
+
+### onreset?
+
+> `optional` **onreset?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:491
+
+#### Inherited from
+
+`Omit.onreset`
+
+***
+
+### onresize?
+
+> `optional` **onresize?**: `EventHandlerUnion`\<`HTMLDivElement`, `UIEvent`, `EventHandler`\<`HTMLDivElement`, `UIEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:492
+
+#### Inherited from
+
+`Omit.onresize`
+
+***
+
+### onscroll?
+
+> `optional` **onscroll?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:493
+
+#### Inherited from
+
+`Omit.onscroll`
+
+***
+
+### onscrollend?
+
+> `optional` **onscrollend?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:494
+
+#### Inherited from
+
+`Omit.onscrollend`
+
+***
+
 ### onscrollsnapchange?
 
 > `optional` **onscrollsnapchange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
@@ -4573,6 +4297,282 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:498
 #### Inherited from
 
 `Omit.onscrollsnapchanging`
+
+***
+
+### onsecuritypolicyviolation?
+
+> `optional` **onsecuritypolicyviolation?**: `EventHandlerUnion`\<`HTMLDivElement`, `SecurityPolicyViolationEvent`, `EventHandler`\<`HTMLDivElement`, `SecurityPolicyViolationEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:499
+
+#### Inherited from
+
+`Omit.onsecuritypolicyviolation`
+
+***
+
+### onseeked?
+
+> `optional` **onseeked?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:500
+
+#### Inherited from
+
+`Omit.onseeked`
+
+***
+
+### onseeking?
+
+> `optional` **onseeking?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:501
+
+#### Inherited from
+
+`Omit.onseeking`
+
+***
+
+### onselect?
+
+> `optional` **onselect?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:502
+
+#### Inherited from
+
+`Omit.onselect`
+
+***
+
+### onselectionchange?
+
+> `optional` **onselectionchange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:503
+
+#### Inherited from
+
+`Omit.onselectionchange`
+
+***
+
+### onselectstart?
+
+> `optional` **onselectstart?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:504
+
+#### Inherited from
+
+`Omit.onselectstart`
+
+***
+
+### onslotchange?
+
+> `optional` **onslotchange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:505
+
+#### Inherited from
+
+`Omit.onslotchange`
+
+***
+
+### onstalled?
+
+> `optional` **onstalled?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:506
+
+#### Inherited from
+
+`Omit.onstalled`
+
+***
+
+### onsubmit?
+
+> `optional` **onsubmit?**: `EventHandlerUnion`\<`HTMLDivElement`, `SubmitEvent`, `EventHandler`\<`HTMLDivElement`, `SubmitEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:507
+
+#### Inherited from
+
+`Omit.onsubmit`
+
+***
+
+### onsuspend?
+
+> `optional` **onsuspend?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:508
+
+#### Inherited from
+
+`Omit.onsuspend`
+
+***
+
+### ontimeupdate?
+
+> `optional` **ontimeupdate?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:509
+
+#### Inherited from
+
+`Omit.ontimeupdate`
+
+***
+
+### ontoggle?
+
+> `optional` **ontoggle?**: `EventHandlerUnion`\<`HTMLDivElement`, `ToggleEvent`, `EventHandler`\<`HTMLDivElement`, `ToggleEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:510
+
+#### Inherited from
+
+`Omit.ontoggle`
+
+***
+
+### ontouchcancel?
+
+> `optional` **ontouchcancel?**: `EventHandlerUnion`\<`HTMLDivElement`, `TouchEvent`, `EventHandler`\<`HTMLDivElement`, `TouchEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:511
+
+#### Inherited from
+
+`Omit.ontouchcancel`
+
+***
+
+### ontouchend?
+
+> `optional` **ontouchend?**: `EventHandlerUnion`\<`HTMLDivElement`, `TouchEvent`, `EventHandler`\<`HTMLDivElement`, `TouchEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:512
+
+#### Inherited from
+
+`Omit.ontouchend`
+
+***
+
+### ontouchmove?
+
+> `optional` **ontouchmove?**: `EventHandlerUnion`\<`HTMLDivElement`, `TouchEvent`, `EventHandler`\<`HTMLDivElement`, `TouchEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:513
+
+#### Inherited from
+
+`Omit.ontouchmove`
+
+***
+
+### ontouchstart?
+
+> `optional` **ontouchstart?**: `EventHandlerUnion`\<`HTMLDivElement`, `TouchEvent`, `EventHandler`\<`HTMLDivElement`, `TouchEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:514
+
+#### Inherited from
+
+`Omit.ontouchstart`
+
+***
+
+### ontransitioncancel?
+
+> `optional` **ontransitioncancel?**: `EventHandlerUnion`\<`HTMLDivElement`, `TransitionEvent`, `EventHandler`\<`HTMLDivElement`, `TransitionEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:515
+
+#### Inherited from
+
+`Omit.ontransitioncancel`
+
+***
+
+### ontransitionend?
+
+> `optional` **ontransitionend?**: `EventHandlerUnion`\<`HTMLDivElement`, `TransitionEvent`, `EventHandler`\<`HTMLDivElement`, `TransitionEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:516
+
+#### Inherited from
+
+`Omit.ontransitionend`
+
+***
+
+### ontransitionrun?
+
+> `optional` **ontransitionrun?**: `EventHandlerUnion`\<`HTMLDivElement`, `TransitionEvent`, `EventHandler`\<`HTMLDivElement`, `TransitionEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:517
+
+#### Inherited from
+
+`Omit.ontransitionrun`
+
+***
+
+### ontransitionstart?
+
+> `optional` **ontransitionstart?**: `EventHandlerUnion`\<`HTMLDivElement`, `TransitionEvent`, `EventHandler`\<`HTMLDivElement`, `TransitionEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:518
+
+#### Inherited from
+
+`Omit.ontransitionstart`
+
+***
+
+### onvolumechange?
+
+> `optional` **onvolumechange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:519
+
+#### Inherited from
+
+`Omit.onvolumechange`
+
+***
+
+### onwaiting?
+
+> `optional` **onwaiting?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:520
+
+#### Inherited from
+
+`Omit.onwaiting`
+
+***
+
+### onwheel?
+
+> `optional` **onwheel?**: `EventHandlerUnion`\<`HTMLDivElement`, `WheelEvent`, `EventHandler`\<`HTMLDivElement`, `WheelEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:521
+
+#### Inherited from
+
+`Omit.onwheel`
 
 ***
 

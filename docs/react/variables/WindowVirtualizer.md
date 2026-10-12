@@ -6,7 +6,7 @@
 
 > `const` **WindowVirtualizer**: \<`T`\>(`props`) => `ReactElement`
 
-Defined in: [src/react/WindowVirtualizer.tsx:148](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/react/WindowVirtualizer.tsx#L148)
+Defined in: [src/react/WindowVirtualizer.tsx:148](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/react/WindowVirtualizer.tsx#L148)
 
 [Virtualizer](Virtualizer.md) controlled by the window scrolling. See [WindowVirtualizerProps](../interfaces/WindowVirtualizerProps.md) and [WindowVirtualizerHandle](../interfaces/WindowVirtualizerHandle.md).
 

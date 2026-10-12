@@ -6,4 +6,4 @@
 
 > **ViewportComponentAttributes** = `Omit`\<`React.HTMLAttributes`\<`HTMLDivElement`\>, `"children"` \| `"onScroll"` \| `"onScrollEnd"` \| `"onResize"`\>
 
-Defined in: [src/react/types.ts:3](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/react/types.ts#L3)
+Defined in: [src/react/types.ts:3](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/react/types.ts#L3)

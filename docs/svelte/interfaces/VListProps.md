@@ -4,7 +4,7 @@
 
 # Interface: VListProps\<T\>
 
-Defined in: [src/svelte/VList.type.ts:10](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/VList.type.ts#L10)
+Defined in: [src/svelte/VList.type.ts:10](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/svelte/VList.type.ts#L10)
 
 Props of [VList](../type-aliases/VList.md).
 
@@ -30,7 +30,7 @@ Props of [VList](../type-aliases/VList.md).
 
 > **data**: readonly `T`[]
 
-Defined in: [src/svelte/Virtualizer.type.ts:13](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/Virtualizer.type.ts#L13)
+Defined in: [src/svelte/Virtualizer.type.ts:13](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/svelte/Virtualizer.type.ts#L13)
 
 The data items rendered by this component.
 
@@ -44,7 +44,7 @@ The data items rendered by this component.
 
 > **children**: `Snippet`\<\[`T`, `number`\]\>
 
-Defined in: [src/svelte/Virtualizer.type.ts:17](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/Virtualizer.type.ts#L17)
+Defined in: [src/svelte/Virtualizer.type.ts:17](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/svelte/Virtualizer.type.ts#L17)
 
 The elements renderer snippet.
 
@@ -58,7 +58,7 @@ The elements renderer snippet.
 
 > `optional` **shift?**: `boolean`
 
-Defined in: [src/svelte/Virtualizer.type.ts:62](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/Virtualizer.type.ts#L62)
+Defined in: [src/svelte/Virtualizer.type.ts:62](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/svelte/Virtualizer.type.ts#L62)
 
 Set true only when items are added to or removed from the start of the list, such as when older items are loaded in reverse infinite scrolling. In that case, the scroll position is maintained from the end of the list instead of the start.
 
@@ -74,9 +74,9 @@ Set true only when items are added to or removed from the start of the list, suc
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:41](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/Virtualizer.type.ts#L41)
+Defined in: [src/svelte/Virtualizer.type.ts:41](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/svelte/Virtualizer.type.ts#L41)
 
-Extra item space in pixels to render before/after the viewport. The minimum value is 0. Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
+Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
 
 #### Default Value
 
@@ -94,7 +94,7 @@ Extra item space in pixels to render before/after the viewport. The minimum valu
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:52](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/Virtualizer.type.ts#L52)
+Defined in: [src/svelte/Virtualizer.type.ts:52](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/svelte/Virtualizer.type.ts#L52)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -111,7 +111,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **horizontal?**: `boolean`
 
-Defined in: [src/svelte/Virtualizer.type.ts:66](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/Virtualizer.type.ts#L66)
+Defined in: [src/svelte/Virtualizer.type.ts:66](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/svelte/Virtualizer.type.ts#L66)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -125,7 +125,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `optional` **keepMounted?**: readonly `number`[]
 
-Defined in: [src/svelte/Virtualizer.type.ts:70](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/Virtualizer.type.ts#L70)
+Defined in: [src/svelte/Virtualizer.type.ts:70](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/svelte/Virtualizer.type.ts#L70)
 
 List of indexes that should be always mounted, even when off screen.
 
@@ -139,7 +139,7 @@ List of indexes that should be always mounted, even when off screen.
 
 > `optional` **cache?**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/svelte/Virtualizer.type.ts:76](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/Virtualizer.type.ts#L76)
+Defined in: [src/svelte/Virtualizer.type.ts:76](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/svelte/Virtualizer.type.ts#L76)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VirtualizerHandle.getCache](VListHandle.md#getcache).
 
@@ -155,7 +155,7 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `optional` **ssrCount?**: `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:56](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/Virtualizer.type.ts#L56)
+Defined in: [src/svelte/Virtualizer.type.ts:56](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/svelte/Virtualizer.type.ts#L56)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -169,7 +169,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `optional` **onresize?**: () => `void`
 
-Defined in: [src/svelte/Virtualizer.type.ts:93](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/Virtualizer.type.ts#L93)
+Defined in: [src/svelte/Virtualizer.type.ts:93](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/svelte/Virtualizer.type.ts#L93)
 
 Callback invoked when the size of the viewport or the items changes.
 
@@ -187,7 +187,7 @@ Callback invoked when the size of the viewport or the items changes.
 
 > `optional` **onscroll?**: (`offset`) => `void`
 
-Defined in: [src/svelte/Virtualizer.type.ts:85](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/Virtualizer.type.ts#L85)
+Defined in: [src/svelte/Virtualizer.type.ts:85](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/svelte/Virtualizer.type.ts#L85)
 
 Callback invoked whenever scroll offset changes.
 
@@ -213,7 +213,7 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 > `optional` **onscrollend?**: () => `void`
 
-Defined in: [src/svelte/Virtualizer.type.ts:89](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/Virtualizer.type.ts#L89)
+Defined in: [src/svelte/Virtualizer.type.ts:89](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/svelte/Virtualizer.type.ts#L89)
 
 Callback invoked when scrolling stops.
 
@@ -231,7 +231,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **getKey?**: (`data`, `index`) => `string` \| `number`
 
-Defined in: [src/svelte/Virtualizer.type.ts:22](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/Virtualizer.type.ts#L22)
+Defined in: [src/svelte/Virtualizer.type.ts:22](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/svelte/Virtualizer.type.ts#L22)
 
 Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
 
@@ -265,7 +265,7 @@ defaultGetKey (returns index of item)
 
 > `optional` **itemProps?**: `ItemProps`\<`T`\>
 
-Defined in: [src/svelte/Virtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/9ad857c6a60444d394d580c62785dc50a49fb9a9/src/svelte/Virtualizer.type.ts#L36)
+Defined in: [src/svelte/Virtualizer.type.ts:36](https://github.com/inokawa/virtua/blob/b8e25a35564955f2b56ff55c74751e7c95c1a638/src/svelte/Virtualizer.type.ts#L36)
 
 A function that provides properties/attributes for item element
 
@@ -623,7 +623,7 @@ Indicates whether assistive technologies will present all, or only parts of, the
 
 ### aria-autocomplete?
 
-> `optional` **aria-autocomplete?**: `"none"` \| `"inline"` \| `"both"` \| `"list"` \| `null`
+> `optional` **aria-autocomplete?**: `"list"` \| `"none"` \| `"inline"` \| `"both"` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:488
 
@@ -898,7 +898,7 @@ in ARIA 1.1
 
 ### aria-haspopup?
 
-> `optional` **aria-haspopup?**: `"dialog"` \| `"menu"` \| `"grid"` \| `"listbox"` \| `"tree"` \| `Booleanish` \| `null`
+> `optional` **aria-haspopup?**: `"grid"` \| `"dialog"` \| `"menu"` \| `"listbox"` \| `"tree"` \| `Booleanish` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:556
 
@@ -1418,6 +1418,180 @@ Defined in: node\_modules/svelte/elements.d.ts:756
 
 ***
 
+### accesskey?
+
+> `optional` **accesskey?**: `string` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:753
+
+#### Inherited from
+
+`ViewportComponentAttributes.accesskey`
+
+***
+
+### autocapitalize?
+
+> `optional` **autocapitalize?**: `"none"` \| `"off"` \| `"on"` \| `"sentences"` \| `"words"` \| `"characters"` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:754
+
+#### Inherited from
+
+`ViewportComponentAttributes.autocapitalize`
+
+***
+
+### contenteditable?
+
+> `optional` **contenteditable?**: `"inherit"` \| `"plaintext-only"` \| `Booleanish` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:757
+
+#### Inherited from
+
+`ViewportComponentAttributes.contenteditable`
+
+***
+
+### enterkeyhint?
+
+> `optional` **enterkeyhint?**: `"search"` \| `"next"` \| `"enter"` \| `"done"` \| `"go"` \| `"previous"` \| `"send"` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:762
+
+#### Inherited from
+
+`ViewportComponentAttributes.enterkeyhint`
+
+***
+
+### inputmode?
+
+> `optional` **inputmode?**: `"search"` \| `"text"` \| `"none"` \| `"tel"` \| `"url"` \| `"email"` \| `"numeric"` \| `"decimal"` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:820
+
+Hints at the type of data that might be entered by the user while editing the element or its contents
+
+#### See
+
+https://html.spec.whatwg.org/multipage/interaction.html#input-modalities:-the-inputmode-attribute
+
+#### Inherited from
+
+`ViewportComponentAttributes.inputmode`
+
+***
+
+### spellcheck?
+
+> `optional` **spellcheck?**: `Booleanish` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:778
+
+#### Inherited from
+
+`ViewportComponentAttributes.spellcheck`
+
+***
+
+### itemid?
+
+> `optional` **itemid?**: `string` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:809
+
+#### Inherited from
+
+`ViewportComponentAttributes.itemid`
+
+***
+
+### itemprop?
+
+> `optional` **itemprop?**: `string` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:806
+
+#### Inherited from
+
+`ViewportComponentAttributes.itemprop`
+
+***
+
+### itemref?
+
+> `optional` **itemref?**: `string` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:810
+
+#### Inherited from
+
+`ViewportComponentAttributes.itemref`
+
+***
+
+### itemscope?
+
+> `optional` **itemscope?**: `boolean` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:807
+
+#### Inherited from
+
+`ViewportComponentAttributes.itemscope`
+
+***
+
+### itemtype?
+
+> `optional` **itemtype?**: `string` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:808
+
+#### Inherited from
+
+`ViewportComponentAttributes.itemtype`
+
+***
+
+### autofocus?
+
+> `optional` **autofocus?**: `boolean` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:755
+
+#### Inherited from
+
+`ViewportComponentAttributes.autofocus`
+
+***
+
+### elementtiming?
+
+> `optional` **elementtiming?**: `string` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:761
+
+#### Inherited from
+
+`ViewportComponentAttributes.elementtiming`
+
+***
+
+### tabindex?
+
+> `optional` **tabindex?**: `number` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:780
+
+#### Inherited from
+
+`ViewportComponentAttributes.tabindex`
+
+***
+
 ### onabort?
 
 > `optional` **onabort?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -1598,6 +1772,54 @@ Defined in: node\_modules/svelte/elements.d.ts:458
 
 ***
 
+### oncompositionend?
+
+> `optional` **oncompositionend?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:103
+
+#### Inherited from
+
+`ViewportComponentAttributes.oncompositionend`
+
+***
+
+### oncompositionstart?
+
+> `optional` **oncompositionstart?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:106
+
+#### Inherited from
+
+`ViewportComponentAttributes.oncompositionstart`
+
+***
+
+### oncompositionupdate?
+
+> `optional` **oncompositionupdate?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:109
+
+#### Inherited from
+
+`ViewportComponentAttributes.oncompositionupdate`
+
+***
+
+### oncontentvisibilityautostatechange?
+
+> `optional` **oncontentvisibilityautostatechange?**: `ContentVisibilityAutoStateChangeEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:171
+
+#### Inherited from
+
+`ViewportComponentAttributes.oncontentvisibilityautostatechange`
+
+***
+
 ### oncontextmenu?
 
 > `optional` **oncontextmenu?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -1691,6 +1913,18 @@ Defined in: node\_modules/svelte/elements.d.ts:282
 #### Inherited from
 
 `ViewportComponentAttributes.ondragenter`
+
+***
+
+### ondragexit?
+
+> `optional` **ondragexit?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:285
+
+#### Inherited from
+
+`ViewportComponentAttributes.ondragexit`
 
 ***
 
@@ -1802,6 +2036,30 @@ Defined in: node\_modules/svelte/elements.d.ts:114
 
 ***
 
+### onfocusin?
+
+> `optional` **onfocusin?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:117
+
+#### Inherited from
+
+`ViewportComponentAttributes.onfocusin`
+
+***
+
+### onfocusout?
+
+> `optional` **onfocusout?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:120
+
+#### Inherited from
+
+`ViewportComponentAttributes.onfocusout`
+
+***
+
 ### onformdata?
 
 > `optional` **onformdata?**: `EventHandler`\<`FormDataEvent`, `HTMLDivElement`\> \| `null`
@@ -1811,6 +2069,30 @@ Defined in: node\_modules/svelte/elements.d.ts:147
 #### Inherited from
 
 `ViewportComponentAttributes.onformdata`
+
+***
+
+### onfullscreenchange?
+
+> `optional` **onfullscreenchange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:461
+
+#### Inherited from
+
+`ViewportComponentAttributes.onfullscreenchange`
+
+***
+
+### onfullscreenerror?
+
+> `optional` **onfullscreenerror?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:464
+
+#### Inherited from
+
+`ViewportComponentAttributes.onfullscreenerror`
 
 ***
 
@@ -2459,336 +2741,6 @@ Defined in: node\_modules/svelte/elements.d.ts:395
 #### Inherited from
 
 `ViewportComponentAttributes.onwheel`
-
-***
-
-### ongamepadconnected?
-
-> `optional` **ongamepadconnected?**: `GamepadEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:378
-
-#### Inherited from
-
-`ViewportComponentAttributes.ongamepadconnected`
-
-***
-
-### ongamepaddisconnected?
-
-> `optional` **ongamepaddisconnected?**: `GamepadEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:380
-
-#### Inherited from
-
-`ViewportComponentAttributes.ongamepaddisconnected`
-
-***
-
-### onmessage?
-
-> `optional` **onmessage?**: `MessageEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:439
-
-#### Inherited from
-
-`ViewportComponentAttributes.onmessage`
-
-***
-
-### onmessageerror?
-
-> `optional` **onmessageerror?**: `MessageEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:442
-
-#### Inherited from
-
-`ViewportComponentAttributes.onmessageerror`
-
-***
-
-### accesskey?
-
-> `optional` **accesskey?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:753
-
-#### Inherited from
-
-`ViewportComponentAttributes.accesskey`
-
-***
-
-### autocapitalize?
-
-> `optional` **autocapitalize?**: `"none"` \| `"off"` \| `"on"` \| `"sentences"` \| `"words"` \| `"characters"` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:754
-
-#### Inherited from
-
-`ViewportComponentAttributes.autocapitalize`
-
-***
-
-### contenteditable?
-
-> `optional` **contenteditable?**: `"inherit"` \| `"plaintext-only"` \| `Booleanish` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:757
-
-#### Inherited from
-
-`ViewportComponentAttributes.contenteditable`
-
-***
-
-### enterkeyhint?
-
-> `optional` **enterkeyhint?**: `"search"` \| `"next"` \| `"enter"` \| `"done"` \| `"go"` \| `"previous"` \| `"send"` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:762
-
-#### Inherited from
-
-`ViewportComponentAttributes.enterkeyhint`
-
-***
-
-### inputmode?
-
-> `optional` **inputmode?**: `"search"` \| `"text"` \| `"none"` \| `"tel"` \| `"url"` \| `"email"` \| `"numeric"` \| `"decimal"` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:820
-
-Hints at the type of data that might be entered by the user while editing the element or its contents
-
-#### See
-
-https://html.spec.whatwg.org/multipage/interaction.html#input-modalities:-the-inputmode-attribute
-
-#### Inherited from
-
-`ViewportComponentAttributes.inputmode`
-
-***
-
-### spellcheck?
-
-> `optional` **spellcheck?**: `Booleanish` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:778
-
-#### Inherited from
-
-`ViewportComponentAttributes.spellcheck`
-
-***
-
-### itemid?
-
-> `optional` **itemid?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:809
-
-#### Inherited from
-
-`ViewportComponentAttributes.itemid`
-
-***
-
-### itemprop?
-
-> `optional` **itemprop?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:806
-
-#### Inherited from
-
-`ViewportComponentAttributes.itemprop`
-
-***
-
-### itemref?
-
-> `optional` **itemref?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:810
-
-#### Inherited from
-
-`ViewportComponentAttributes.itemref`
-
-***
-
-### itemscope?
-
-> `optional` **itemscope?**: `boolean` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:807
-
-#### Inherited from
-
-`ViewportComponentAttributes.itemscope`
-
-***
-
-### itemtype?
-
-> `optional` **itemtype?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:808
-
-#### Inherited from
-
-`ViewportComponentAttributes.itemtype`
-
-***
-
-### autofocus?
-
-> `optional` **autofocus?**: `boolean` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:755
-
-#### Inherited from
-
-`ViewportComponentAttributes.autofocus`
-
-***
-
-### elementtiming?
-
-> `optional` **elementtiming?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:761
-
-#### Inherited from
-
-`ViewportComponentAttributes.elementtiming`
-
-***
-
-### tabindex?
-
-> `optional` **tabindex?**: `number` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:780
-
-#### Inherited from
-
-`ViewportComponentAttributes.tabindex`
-
-***
-
-### oncompositionend?
-
-> `optional` **oncompositionend?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:103
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncompositionend`
-
-***
-
-### oncompositionstart?
-
-> `optional` **oncompositionstart?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:106
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncompositionstart`
-
-***
-
-### oncompositionupdate?
-
-> `optional` **oncompositionupdate?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:109
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncompositionupdate`
-
-***
-
-### oncontentvisibilityautostatechange?
-
-> `optional` **oncontentvisibilityautostatechange?**: `ContentVisibilityAutoStateChangeEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:171
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncontentvisibilityautostatechange`
-
-***
-
-### ondragexit?
-
-> `optional` **ondragexit?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:285
-
-#### Inherited from
-
-`ViewportComponentAttributes.ondragexit`
-
-***
-
-### onfocusin?
-
-> `optional` **onfocusin?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:117
-
-#### Inherited from
-
-`ViewportComponentAttributes.onfocusin`
-
-***
-
-### onfocusout?
-
-> `optional` **onfocusout?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:120
-
-#### Inherited from
-
-`ViewportComponentAttributes.onfocusout`
-
-***
-
-### onfullscreenchange?
-
-> `optional` **onfullscreenchange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:461
-
-#### Inherited from
-
-`ViewportComponentAttributes.onfullscreenchange`
-
-***
-
-### onfullscreenerror?
-
-> `optional` **onfullscreenerror?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:464
-
-#### Inherited from
-
-`ViewportComponentAttributes.onfullscreenerror`
 
 ***
 
@@ -5114,6 +5066,18 @@ Defined in: node\_modules/svelte/elements.d.ts:377
 
 ***
 
+### ongamepadconnected?
+
+> `optional` **ongamepadconnected?**: `GamepadEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:378
+
+#### Inherited from
+
+`ViewportComponentAttributes.ongamepadconnected`
+
+***
+
 ### on:gamepaddisconnected?
 
 > `optional` **on:gamepaddisconnected?**: `GamepadEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5123,6 +5087,18 @@ Defined in: node\_modules/svelte/elements.d.ts:379
 #### Inherited from
 
 `ViewportComponentAttributes.on:gamepaddisconnected`
+
+***
+
+### ongamepaddisconnected?
+
+> `optional` **ongamepaddisconnected?**: `GamepadEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:380
+
+#### Inherited from
+
+`ViewportComponentAttributes.ongamepaddisconnected`
 
 ***
 
@@ -5414,6 +5390,18 @@ Defined in: node\_modules/svelte/elements.d.ts:438
 
 ***
 
+### onmessage?
+
+> `optional` **onmessage?**: `MessageEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:439
+
+#### Inherited from
+
+`ViewportComponentAttributes.onmessage`
+
+***
+
 ### onmessagecapture?
 
 > `optional` **onmessagecapture?**: `MessageEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5435,6 +5423,18 @@ Defined in: node\_modules/svelte/elements.d.ts:441
 #### Inherited from
 
 `ViewportComponentAttributes.on:messageerror`
+
+***
+
+### onmessageerror?
+
+> `optional` **onmessageerror?**: `MessageEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:442
+
+#### Inherited from
+
+`ViewportComponentAttributes.onmessageerror`
 
 ***
 
