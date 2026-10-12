@@ -137,9 +137,7 @@
   });
 
   $effect.pre(() => {
-    if (startMargin !== store.$getStartSpacerSize()) {
-      store.$update(ACTION_START_OFFSET_CHANGE, startMargin);
-    }
+    store.$update(ACTION_START_OFFSET_CHANGE, startMargin);
   });
 
   let prevStateVersion: StateVersion | undefined;

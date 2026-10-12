@@ -313,9 +313,7 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
     effect(() => {
       const startMargin = this.startMargin();
       if (!this._store) return;
-      if (startMargin !== this._store.$getStartSpacerSize()) {
-        this._store.$update(ACTION_START_OFFSET_CHANGE, startMargin);
-      }
+      this._store.$update(ACTION_START_OFFSET_CHANGE, startMargin);
     });
 
     // parent's ref may not exist on mount https://github.com/inokawa/virtua/issues/603 https://github.com/inokawa/virtua/issues/690
