@@ -151,6 +151,14 @@ describe.each<{
   });
 
   describe("setLength", () => {
+    it("should keep filled cache when length is not changed", () => {
+      const sizes = range(10, (i) => (i + 1) * 10);
+      const layout = initWithOffsets(sizes);
+      layout.$setLength(10);
+      expect(snapshot(layout)).toEqual([sizes, DEFAULT_SIZE]);
+      expect(layout.$getTotalSize()).toBe(sum(sizes));
+    });
+
     it("should recover cache length from 0", () => {
       const layout = init(range(10, () => UNCACHED));
       const initialSnapshot = snapshot(layout);

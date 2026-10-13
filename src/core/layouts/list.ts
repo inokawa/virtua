@@ -140,14 +140,14 @@ export const createListLayout = (
         : min(nextLength - 1, computedOffsetIndex);
       length = nextLength;
 
-      if (diff > 0) {
+      if (diff >= 0) {
         // Added
         fill(offsets, diff);
         fill(sizes, diff, isShift);
       } else {
         // Removed
         offsets.splice(diff);
-        isShift ? sizes.splice(0, -diff) : sizes.splice(diff);
+        sizes.splice(isShift ? 0 : diff, -diff);
       }
     },
     $isEstimating: () => shouldAutoEstimateItemSize,

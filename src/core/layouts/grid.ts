@@ -230,7 +230,7 @@ export const createGridLayout = (
       length = nextLength;
 
       if (sizes.length) {
-        if (diff > 0) {
+        if (diff >= 0) {
           // Added
           fill(sizes, diff);
         } else {
