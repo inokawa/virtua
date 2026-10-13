@@ -288,16 +288,14 @@ export const createVirtualStore = (
             break;
           }
 
-          const flushedJump = _flushedJump;
-          _flushedJump = 0;
-
           const delta = payload - scrollOffset;
           const distance = abs(delta);
 
           // Scroll event after jump compensation is not reliable because it may result in the opposite direction.
           // The delta of artificial scroll may not be equal with the jump because it may be batched with other scrolls.
           // And at least in latest Chrome/Firefox/Safari in 2023, setting value to scrollTop/scrollLeft can lose subpixel because its integer (sometimes float probably depending on dpr).
-          const isJustJumped = flushedJump && distance < abs(flushedJump) + 1;
+          const isJustJumped = _flushedJump && distance < abs(_flushedJump) + 1;
+          _flushedJump = 0;
 
           // Scroll events are dispatched enough so it's ok to skip some of them.
           if (
@@ -320,9 +318,7 @@ export const createVirtualStore = (
           //   shouldFlushPendingJump = true;
           // }
 
-          if (isSSR) {
-            isSSR = false;
-          }
+          isSSR = false;
 
           scrollOffset = payload;
           mutated = UPDATE_SCROLL_EVENT;
