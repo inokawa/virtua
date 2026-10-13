@@ -1,1 +1,0 @@
-import{t as e}from"./iframe-CcLsp5o2.js";e();
