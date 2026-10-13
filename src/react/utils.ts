@@ -3,11 +3,6 @@ import { type ReactNode } from "react";
 /**
  * @internal
  */
-export const refKey = "current";
-
-/**
- * @internal
- */
 export type ItemElement = Exclude<ReactNode, null | boolean | Array<any>>;
 
 const forEach = (children: ReactNode, elements: ItemElement[]) => {

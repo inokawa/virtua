@@ -29,7 +29,7 @@ import {
   sort,
 } from "../core/index.js";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
-import { getKey, refKey } from "./utils.js";
+import { getKey } from "./utils.js";
 import { useStatic } from "./useStatic.js";
 import { useLatestRef } from "./useLatestRef.js";
 import { ListItem } from "./ListItem.js";
@@ -260,13 +260,13 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
           _as={ItemElement as "div"}
           _children={e}
           _isHorizontal={isHorizontal}
-          _isSSR={isSSR[refKey]}
+          _isSSR={isSSR.current}
         />
       );
     };
 
     useIsomorphicLayoutEffect(() => {
-      isSSR[refKey] = false;
+      isSSR.current = false;
 
       // store must be subscribed first because others may dispatch update on init depending on implementation
       store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
@@ -277,21 +277,21 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
         }
       });
       store.$subscribe(UPDATE_SCROLL_EVENT, () => {
-        onScroll[refKey] && onScroll[refKey](store.$getScrollOffset());
+        onScroll.current && onScroll.current(store.$getScrollOffset());
       });
       store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
-        onScrollEnd[refKey] && onScrollEnd[refKey]();
+        onScrollEnd.current && onScrollEnd.current();
       });
       store.$subscribe(UPDATE_SIZE_EVENT, () => {
-        onResize[refKey] && onResize[refKey]();
+        onResize.current && onResize.current();
       });
-      const container = containerRef[refKey]!;
+      const container = containerRef.current!;
       if (scrollRef) {
         // parent's ref doesn't exist when useLayoutEffect is called
         microtask(() => {
           // https://github.com/inokawa/virtua/pull/733
-          if (scrollRef[refKey]) {
-            driver.$observe(container, scrollRef[refKey]);
+          if (scrollRef.current) {
+            driver.$observe(container, scrollRef.current);
           }
         });
       } else {

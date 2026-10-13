@@ -8,7 +8,6 @@ import {
 } from "react";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
 import { type Driver } from "../core/index.js";
-import { refKey } from "./utils.js";
 import { type CustomItemComponent } from "./types.js";
 
 interface ListItemProps {
@@ -39,7 +38,7 @@ export const ListItem = /*#__PURE__*/ memo(
     const ref = useRef<HTMLDivElement>(null);
 
     // The index may be changed if elements are inserted to or removed from the start of props.children
-    useIsomorphicLayoutEffect(() => resizer(ref[refKey]!, index), [index]);
+    useIsomorphicLayoutEffect(() => resizer(ref.current!, index), [index]);
 
     const style = useMemo((): CSSProperties => {
       const style: CSSProperties = {

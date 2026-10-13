@@ -39,7 +39,6 @@ import {
   type GridRowState,
 } from "../core/index.js";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
-import { refKey } from "./utils.js";
 import { useStatic } from "./useStatic.js";
 import { useLatestRef } from "./useLatestRef.js";
 import { flushSync } from "react-dom";
@@ -263,7 +262,7 @@ const GridCell = /*#__PURE__*/ memo(
 
     useIsomorphicLayoutEffect(() => {
       if (measureRowIndex == null && measureColIndex == null) return;
-      return resizer(ref[refKey]!, measureRowIndex, measureColIndex);
+      return resizer(ref.current!, measureRowIndex, measureColIndex);
     }, [measureRowIndex, measureColIndex, resizer]);
 
     return (
@@ -481,18 +480,18 @@ export const VGrid = /*#__PURE__*/ forwardRef<
       let scrolled = false;
       rowStore.$subscribe(UPDATE_SCROLL_EVENT, () => {
         scrolled = true;
-        onVerticalScroll[refKey] &&
-          onVerticalScroll[refKey](rowStore.$getScrollOffset());
+        onVerticalScroll.current &&
+          onVerticalScroll.current(rowStore.$getScrollOffset());
       });
       colStore.$subscribe(UPDATE_SCROLL_EVENT, () => {
         scrolled = true;
-        onHorizontalScroll[refKey] &&
-          onHorizontalScroll[refKey](colStore.$getScrollOffset());
+        onHorizontalScroll.current &&
+          onHorizontalScroll.current(colStore.$getScrollOffset());
       });
       const notifyScrollEnd = () => {
         if (scrolled && !rowStore.$isScrolling() && !colStore.$isScrolling()) {
           scrolled = false;
-          onScrollEnd[refKey] && onScrollEnd[refKey]();
+          onScrollEnd.current && onScrollEnd.current();
         }
       };
       rowStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
@@ -504,14 +503,14 @@ export const VGrid = /*#__PURE__*/ forwardRef<
           resized = true;
           microtask(() => {
             resized = false;
-            onResize[refKey] && onResize[refKey]();
+            onResize.current && onResize.current();
           });
         }
       };
       rowStore.$subscribe(UPDATE_SIZE_EVENT, notifyResize);
       colStore.$subscribe(UPDATE_SIZE_EVENT, notifyResize);
 
-      driver.$observe(containerRef[refKey]!);
+      driver.$observe(containerRef.current!);
       return () => {
         rowStore.$dispose();
         colStore.$dispose();
@@ -549,7 +548,7 @@ export const VGrid = /*#__PURE__*/ forwardRef<
         getColOffset: colStore.$getItemOffset,
         getRowSize: rowLayout.$getItemSize,
         getColSize: colLayout.$getItemSize,
-        scrollToIndex: (opts) => scrollToIndex[refKey](opts),
+        scrollToIndex: (opts) => scrollToIndex.current(opts),
         scrollTo: ({ vertical, horizontal }) =>
           gridScrollTo(driver, vertical, horizontal),
         scrollBy: ({ vertical, horizontal }) =>

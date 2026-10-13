@@ -22,7 +22,7 @@ import {
   type ScrollToIndexOpts,
 } from "../core/index.js";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
-import { getKey, refKey } from "./utils.js";
+import { getKey } from "./utils.js";
 import { useStatic } from "./useStatic.js";
 import { useLatestRef } from "./useLatestRef.js";
 import {
@@ -210,7 +210,7 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
     const items: ReactElement[] = [];
 
     useIsomorphicLayoutEffect(() => {
-      isSSR[refKey] = false;
+      isSSR.current = false;
 
       // store must be subscribed first because others may dispatch update on init depending on implementation
       store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
@@ -222,16 +222,16 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
       });
       store.$subscribe(UPDATE_SCROLL_EVENT, () => {
         // https://github.com/inokawa/virtua/discussions/580
-        onScroll[refKey] && onScroll[refKey]();
+        onScroll.current && onScroll.current();
       });
       store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
-        onScrollEnd[refKey] && onScrollEnd[refKey]();
+        onScrollEnd.current && onScrollEnd.current();
       });
       store.$subscribe(UPDATE_SIZE_EVENT, () => {
-        onResize[refKey] && onResize[refKey]();
+        onResize.current && onResize.current();
       });
 
-      driver.$observe(containerRef[refKey]!);
+      driver.$observe(containerRef.current!);
       return () => {
         store.$dispose();
         driver.$dispose();
@@ -274,7 +274,7 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
           _as={ItemElement as "div"}
           _children={e}
           _isHorizontal={isHorizontal}
-          _isSSR={isSSR[refKey]}
+          _isSSR={isSSR.current}
         />,
       );
     }

@@ -31,7 +31,7 @@ import {
   type ScrollToIndexOpts,
 } from "../core/index.js";
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
-import { getKey, refKey } from "./utils.js";
+import { getKey } from "./utils.js";
 import { useStatic } from "./useStatic.js";
 import { useLatestRef } from "./useLatestRef.js";
 import { type ViewportComponentAttributes } from "./types.js";
@@ -62,7 +62,7 @@ const MasonryItem = /*#__PURE__*/ memo(
     const ref = useRef<HTMLDivElement>(null);
 
     // The index may be changed if elements are inserted to or removed from the start of data
-    useIsomorphicLayoutEffect(() => resizer(ref[refKey]!, index), [index]);
+    useIsomorphicLayoutEffect(() => resizer(ref.current!, index), [index]);
 
     const style = useMemo(
       (): CSSProperties => ({
@@ -259,16 +259,16 @@ export const VMasonry = /*#__PURE__*/ forwardRef<
         }
       });
       store.$subscribe(UPDATE_SCROLL_EVENT, () => {
-        onScroll[refKey] && onScroll[refKey](store.$getScrollOffset());
+        onScroll.current && onScroll.current(store.$getScrollOffset());
       });
       store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
-        onScrollEnd[refKey] && onScrollEnd[refKey]();
+        onScrollEnd.current && onScrollEnd.current();
       });
       store.$subscribe(UPDATE_SIZE_EVENT, () => {
-        onResize[refKey] && onResize[refKey]();
+        onResize.current && onResize.current();
       });
 
-      driver.$observe(containerRef[refKey]!);
+      driver.$observe(containerRef.current!);
 
       return () => {
         store.$dispose();
