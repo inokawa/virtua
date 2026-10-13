@@ -107,19 +107,15 @@ export const createListLayout = (
         _totalMeasuredSize > viewportSize
       ) {
         // This function will be called after measurement so measured size array must be longer than 0
-        const measuredSizes: number[] = [];
-        sizes.forEach((s) => {
+        const measuredSizes = sort(
           // https://github.com/inokawa/virtua/issues/907
-          if (s !== UNCACHED && s) {
-            measuredSizes.push(s);
-          }
-        });
+          sizes.filter((s) => s !== UNCACHED && s),
+        );
 
         // Discard cache for now
         computedOffsetIndex = -1;
 
         // Calculate median
-        sort(measuredSizes);
         const len = measuredSizes.length;
         const mid = (len / 2) | 0;
         defaultItemSize =
