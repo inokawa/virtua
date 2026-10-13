@@ -145,14 +145,11 @@ export const gridScrollBy = (
   vertical: number | undefined,
   horizontal: number | undefined,
 ) => {
-  if (vertical != NULL) {
-    const offset = vertical + rowStore.$getScrollOffset();
-    driver.$scroll(false, () => offset);
-  }
-  if (horizontal != NULL) {
-    const offset = horizontal + colStore.$getScrollOffset();
-    driver.$scroll(true, () => offset);
-  }
+  gridScrollTo(
+    driver,
+    vertical != NULL ? vertical + rowStore.$getScrollOffset() : NULL,
+    horizontal != NULL ? horizontal + colStore.$getScrollOffset() : NULL,
+  );
 };
 
 const scrollGridAxisToIndex = (
@@ -179,8 +176,10 @@ const scrollGridAxisToIndex = (
       ? 0
       : layout.$getItemOffset(sectionHeader + 1) -
         layout.$getItemOffset(sectionHeader));
-  const getInsetEnd = (): number =>
-    layout.$getItemOffset(count) - layout.$getItemOffset(trailStart);
+  const getVisibleSize = (insetStart: number): number =>
+    store.$getViewportSize() -
+    insetStart -
+    (layout.$getItemOffset(count) - layout.$getItemOffset(trailStart));
 
   if (align === "nearest") {
     if (index < pinnedStart || index >= trailStart) {
@@ -189,7 +188,7 @@ const scrollGridAxisToIndex = (
     }
     const insetStart = getInsetStart();
     const scrollOffset = store.$getScrollOffset() + insetStart;
-    const viewportSize = store.$getViewportSize() - insetStart - getInsetEnd();
+    const viewportSize = getVisibleSize(insetStart);
     const itemSize = layout.$getItemSize(index);
     let itemOffset = store.$getItemOffset(index);
     if (sectionHeader === index) {
@@ -217,9 +216,7 @@ const scrollGridAxisToIndex = (
 
   driver.$scroll(isHorizontal, () => {
     const insetStart = getInsetStart();
-    const rest =
-      layout.$getItemSize(index) -
-      (store.$getViewportSize() - insetStart - getInsetEnd());
+    const rest = layout.$getItemSize(index) - getVisibleSize(insetStart);
     return (
       store.$getItemOffset(index) -
       insetStart +
