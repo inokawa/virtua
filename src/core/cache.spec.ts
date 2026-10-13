@@ -308,4 +308,10 @@ describe(findIndex.name, () => {
       sizes.findLastIndex((s) => s === 0) + 1,
     );
   });
+
+  it("should get 0 if length is 0", () => {
+    const cache = initCacheWithSizes([], 30);
+    expect(findIndexInCache(cache, 100)).toBe(0);
+    expect(findIndexInCache(cache, -100)).toBe(0);
+  });
 });

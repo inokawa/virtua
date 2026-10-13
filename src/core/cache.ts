@@ -1,4 +1,4 @@
-import { clamp, floor } from "./utils.js";
+import { floor } from "./utils.js";
 
 /** @internal */
 export const UNCACHED = -1;
@@ -41,5 +41,5 @@ export const findIndex = (
       high = mid - 1;
     }
   }
-  return clamp(found, 0, length - 1);
+  return found;
 };

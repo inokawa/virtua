@@ -215,17 +215,13 @@ export const createVirtualStore = (
     },
     $getStateVersion: () => stateVersion,
     $getRange: (bufferSize = 200) => {
-      if (!_isViewportMeasured || isSSR) {
-        // Return range for SSR, or return [0, -1] to render nothing, until the scroll offset and viewport size are determined.
-        // https://github.com/inokawa/virtua/issues/415
-        // https://github.com/inokawa/virtua/pull/818
-        return _prevRange;
-      }
       let startIndex: number;
       let endIndex: number;
-      if (_flushedJump) {
+      // Return range for SSR, or return [0, -1] to render nothing, until the scroll offset and viewport size are determined.
+      // https://github.com/inokawa/virtua/issues/415
+      // https://github.com/inokawa/virtua/pull/818
+      if (!_isViewportMeasured || isSSR || _flushedJump) {
         // Return previous range for consistent render until next scroll event comes in.
-        // And it must be clamped. https://github.com/inokawa/virtua/issues/597
         [startIndex, endIndex] = _prevRange;
       } else {
         let startOffset = max(0, getVisibleOffset());
@@ -253,7 +249,9 @@ export const createVirtualStore = (
         }
       }
 
-      return [max(startIndex, 0), min(endIndex, getLength() - 1)];
+      // The range is cut to the items, which the previous or frozen range may exceed after they decreased, and which makes it empty if there are none
+      // https://github.com/inokawa/virtua/issues/597
+      return [startIndex, min(endIndex, getLength() - 1)];
     },
     _getAnchorIndex: getAnchorIndex,
     $getItemOffset: (index) => {

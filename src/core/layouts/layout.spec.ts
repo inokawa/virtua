@@ -148,6 +148,36 @@ describe.each<{
         ]);
       });
     });
+
+    it("should get 0 for both ends if length is 0", () => {
+      const layout = init([]);
+      expect(layout.$getRange(0, 100)).toEqual([0, 0]);
+      expect(layout.$getRange(1000, 1100)).toEqual([0, 0]);
+    });
+
+    it("should get the range after length became 0", () => {
+      const layout = initWithOffsets(range(CACHE_LENGTH, () => UNCACHED));
+      expect(layout.$getRange(200, 300)).toEqual([5, 7]);
+      layout.$setLength(0);
+      expect(layout.$getRange(200, 300)).toEqual([0, 0]);
+      layout.$setLength(CACHE_LENGTH);
+      expect(layout.$getRange(200, 300)).toEqual([5, 7]);
+    });
+
+    it("should get the range after length decreased below the previous start", () => {
+      const layout = initWithOffsets(range(CACHE_LENGTH, () => UNCACHED));
+      expect(layout.$getRange(200, 300)).toEqual([5, 7]);
+      layout.$setLength(3);
+      expect(layout.$getRange(200, 300)).toEqual([2, 2]);
+    });
+  });
+
+  describe("findIndex", () => {
+    it("should get 0 if length is 0", () => {
+      const layout = init([]);
+      expect(layout.$findIndex(0)).toBe(0);
+      expect(layout.$findIndex(100)).toBe(0);
+    });
   });
 
   describe("setLength", () => {

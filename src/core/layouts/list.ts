@@ -1,7 +1,7 @@
 import { UNCACHED, fill, findIndex } from "../cache.js";
 import type { Layout } from "./types.js";
 import type { CacheSnapshot } from "../types.js";
-import { min, sort } from "../utils.js";
+import { clamp, min, sort } from "../utils.js";
 /**
  * @internal
  */
@@ -62,7 +62,7 @@ export const createListLayout = (
   return {
     $getRange: (startOffset, endOffset) => {
       // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
-      prevStartIndex = min(prevStartIndex, length - 1);
+      prevStartIndex = clamp(prevStartIndex, 0, length - 1);
 
       let start: number;
       let end: number;
