@@ -52,6 +52,8 @@ export default defineConfig({
           include: ["src/react/**/!(*.browser).spec.tsx"],
           environment: "jsdom",
           setupFiles: ["./spec/jsdom/setup.ts"],
+          // real GC for the retention spec
+          execArgv: ["--expose-gc"],
         },
       },
       {

@@ -1,10 +1,13 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe, onTestFinished } from "vitest";
 import { Virtualizer } from "./Virtualizer.js";
-import { forwardRef } from "react";
+import { forwardRef, type ReactElement } from "react";
+import { createRoot } from "react-dom/client";
+import { act } from "@testing-library/react";
 import { type CustomItemComponentProps } from "./types.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { render } from "../../spec/jsdom/react.js";
 import { range } from "../../spec/utils.js";
+import { collectGarbage } from "../../spec/gc.js";
 
 const ITEM_HEIGHT = 50;
 const ITEM_WIDTH = 100;
@@ -65,6 +68,54 @@ it("should render with render prop", async () => {
     </div>,
   );
   expect(asFragment()).toMatchSnapshot();
+});
+
+type Item = { id: number };
+// the row element must hold the item itself: the element array of a render, not only its data, can be retained
+const Row = ({ item }: { item: Item }) => <div>{item.id}</div>;
+const DataList = ({ items }: { items: Item[] }) => (
+  <div style={{ overflowY: "auto" }}>
+    <Virtualizer data={items} ssrCount={10}>
+      {(item) => <Row key={item.id} item={item} />}
+    </Virtualizer>
+  </div>
+);
+const ChildrenList = ({ items }: { items: Item[] }) => (
+  <div style={{ overflowY: "auto" }}>
+    <Virtualizer ssrCount={10}>
+      {items.map((item) => (
+        <Row key={item.id} item={item} />
+      ))}
+    </Virtualizer>
+  </div>
+);
+
+it.each([
+  ["data", DataList],
+  ["children", ChildrenList],
+])("should release the first render's %s once it is gone", async (_, List) => {
+  const container = document.body.appendChild(document.createElement("div"));
+  const root = createRoot(container);
+  onTestFinished(() => {
+    act(() => root.unmount());
+    container.remove();
+  });
+  const show = (ui: ReactElement) => act(() => root.render(ui));
+  const first = new WeakRef(range(50, (i) => ({ id: i })));
+  const firstRow = new WeakRef(first.deref()![0]!);
+  show(<List items={first.deref()!} />);
+  // Development React keeps an Error per fiber for owner stacks, and V8 keeps the closure scope
+  // of every frame in it alive; a row fiber from the first render, or one still listed in a
+  // container fiber's deletions, would pin that render regardless. Each later list has new keys,
+  // so the previous rows unmount, and two more renders let both container fibers drop their deletions.
+  for (let generation = 1; generation <= 3; generation++) {
+    show(<List items={range(50, (i) => ({ id: generation * 100 + i }))} />);
+  }
+
+  await collectGarbage();
+
+  expect(first.deref()).toBeUndefined();
+  expect(firstRow.deref()).toBeUndefined();
 });
 
 it("should render with keepMounted", async () => {

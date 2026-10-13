@@ -211,6 +211,9 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     Element = Element as "div";
 
     const [renderElement, count] = useChildren(children, data);
+    // renderItem must not close over renderElement: the [] effect below shares this render's scope and would keep the first children/data alive until unmount
+    const renderElementRef = useRef(renderElement);
+    renderElementRef[refKey] = renderElement;
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -248,7 +251,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     const items: ReactElement[] = [];
 
     const renderItem = (index: number) => {
-      const e = renderElement(index);
+      const e = renderElementRef[refKey](index);
 
       return (
         <ListItem
@@ -338,11 +341,12 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
       for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
         mounted.add(i);
       }
-      sort([...mounted]).forEach((index) => {
+      // no closure here either: it would capture items into the render scope the [] effect keeps
+      for (const index of sort([...mounted])) {
         if (index < count) {
           items.push(renderItem(index));
         }
-      });
+      }
     } else {
       for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
         items.push(renderItem(i));
