@@ -384,7 +384,6 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_ITEMS_LENGTH_CHANGE: {
-          // Skip if the length is not changed, as the layouts discard the sizes even then
           if (payload !== getLength()) {
             if (payload2) {
               const totalSize = getTotalSize();

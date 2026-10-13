@@ -165,7 +165,7 @@ export const createMasonryLayout = (
       const diff = nextLength - length;
       computedIndex = min(nextLength - 1, computedIndex);
       length = nextLength;
-      if (diff > 0) {
+      if (diff >= 0) {
         fill(sizes, diff);
       } else {
         sizes.splice(diff);
