@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, onTestFinished } from "vitest";
 import { render, rerender } from "../spec/browser/react.js";
 import {
   createRef,
@@ -7,9 +7,11 @@ import {
   useEffect,
   useImperativeHandle,
   useLayoutEffect,
+  useReducer,
   useRef,
   useState,
 } from "react";
+import { flushSync } from "react-dom";
 import {
   Virtualizer,
   type VirtualizerHandle,
@@ -157,6 +159,73 @@ describe("jump write", () => {
 
     ref.current!.setHeight(50);
     await expectPosition(() => viewport.scrollTop, 1530);
+  });
+
+  it("keeps the items over the viewport until the scroll of a written jump comes", async () => {
+    const ITEM_COUNT = 1000;
+    type Handle = {
+      setSize: (size: number) => void;
+      rerender: () => void;
+    };
+    const handle = createRef<Handle>();
+    const ref = createRef<VirtualizerHandle>();
+    const Component = ({ handle }: { handle: Ref<Handle> }) => {
+      const [size, setSize] = useState(30);
+      const [, rerender] = useReducer((c: number) => c + 1, 0);
+      useImperativeHandle(handle, () => ({ setSize, rerender }), []);
+      return (
+        <div style={{ height: 400, overflowY: "auto" }}>
+          <Virtualizer ref={ref} data={range(ITEM_COUNT)}>
+            {(i) => (
+              <div key={i} style={{ height: size }}>
+                item-{i}
+              </div>
+            )}
+          </Virtualizer>
+        </div>
+      );
+    };
+    const root = render(<Component handle={handle} />);
+    const { viewport, container } = await getVirtualizer(root);
+    await expect.poll(() => getItem(container, "item-0")).toBeDefined();
+
+    ref.current!.scrollToIndex(ITEM_COUNT / 2);
+    await settle(viewport, container);
+
+    const scrollTop = viewport.scrollTop;
+    let armed = false;
+    let jumped = false;
+    let top: number | undefined;
+    let bottom: number | undefined;
+    // Created after the observer of the list, so its callback comes after the one measuring the items in the same delivery
+    const observer = new ResizeObserver(() => {
+      if (armed) {
+        armed = false;
+        // The jump of the measurement is written synchronously, and its scroll event comes in the next frame
+        jumped = viewport.scrollTop !== scrollTop;
+        flushSync(() => handle.current!.rerender());
+        const first = findFirstVisibleItem(container, viewport);
+        const last = findLastVisibleItem(container, viewport);
+        top = first && relativeTop(viewport, first);
+        bottom = last && relativeBottom(viewport, last);
+      }
+    });
+    onTestFinished(() => observer.disconnect());
+    observer.observe(container.firstElementChild!);
+    // Pass the notification given on observing
+    await nextFrame();
+    await nextFrame();
+
+    // The items above the viewport grow more than the buffer, so the jump moves the viewport out of the range computed from the offset before it
+    armed = true;
+    flushSync(() => handle.current!.setSize(300));
+    await expect.poll(() => armed).toBe(false);
+
+    expect(jumped).toBe(true);
+    expect(top, "no item at the top of the viewport").toBeDefined();
+    expect(bottom, "no item at the bottom of the viewport").toBeDefined();
+    expect(top!).toBeLessThanOrEqual(SUBPIXEL);
+    expect(bottom!).toBeLessThanOrEqual(SUBPIXEL);
   });
 });
 
