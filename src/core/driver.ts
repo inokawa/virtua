@@ -353,11 +353,9 @@ export const createContainerDriver = (
         // Skip zero-sized rects that may be observed under `display: none` style
       } else if ((target as HTMLElement).offsetParent) {
         const index = mountedIndexes.get(target);
-        if (index != NULL) {
-          const size = isHorizontal ? width : height;
-          if (!layout.$isSizeEqual(index, size)) {
-            resizes.push([index, size]);
-          }
+        const size = isHorizontal ? width : height;
+        if (index != NULL && !layout.$isSizeEqual(index, size)) {
+          resizes.push([index, size]);
         }
       }
     }
@@ -452,11 +450,9 @@ export const createWindowDriver = (
         // Skip zero-sized rects that may be observed under `display: none` style
       } else if ((target as HTMLElement).offsetParent) {
         const index = mountedIndexes.get(target);
-        if (index != NULL) {
-          const size = isHorizontal ? width : height;
-          if (!layout.$isSizeEqual(index, size)) {
-            resizes.push([index, size]);
-          }
+        const size = isHorizontal ? width : height;
+        if (index != NULL && !layout.$isSizeEqual(index, size)) {
+          resizes.push([index, size]);
         }
       }
     }
