@@ -142,7 +142,7 @@ export interface VirtualizerHandle {
    */
   readonly viewportSize: number;
   /**
-   * Find nearest item index from offset.
+   * Find nearest item index from offset, which is 0 if there are no items.
    * @param offset offset in pixels from the start of the scroll container
    */
   findItemIndex(offset: number): number;

@@ -77,12 +77,12 @@ export interface VGridHandle {
    */
   readonly viewportWidth: number;
   /**
-   * Find nearest row index from offset.
+   * Find nearest row index from offset, which is 0 if there are no rows.
    * @param offset offset in pixels from the top of the scroll container
    */
   findRowIndex(offset: number): number;
   /**
-   * Find nearest column index from offset.
+   * Find nearest column index from offset, which is 0 if there are no columns.
    * @param offset offset in pixels from the start of the scroll container
    */
   findColIndex(offset: number): number;
