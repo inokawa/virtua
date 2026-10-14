@@ -218,6 +218,7 @@ export const createVirtualStore = (
       let startIndex: number;
       let endIndex: number;
       // Return range for SSR, or return [0, -1] to render nothing, until the scroll offset and viewport size are determined.
+      // https://github.com/inokawa/virtua/pull/264
       // https://github.com/inokawa/virtua/issues/415
       // https://github.com/inokawa/virtua/pull/818
       if (!_isViewportMeasured || isSSR || _flushedJump) {
