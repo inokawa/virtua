@@ -10,7 +10,7 @@ export const EMPTY: readonly never[] = [];
 export const { min, max, abs, floor } = Math;
 
 /**
- * Behaves the same as clamp() in CSS and _.clamp() in lodash: minValue wins if it's greater than maxValue.
+ * Behaves the same as clamp() in CSS: minValue wins if it's greater than maxValue.
  * https://drafts.csswg.org/css-values-4/#comp-func
  * @internal
  */
