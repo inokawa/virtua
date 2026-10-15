@@ -224,7 +224,11 @@ const createScrollObserver = (
         }
       }
     },
-    _scroll: (getTargetOffset: () => number, smooth?: boolean) => {
+    _scroll: (
+      getTargetOffset: () => number,
+      smooth?: boolean,
+      write = scrollTo,
+    ) => {
       if (cancelScroll) {
         // Cancel waiting scrollTo
         cancelScroll();
@@ -268,13 +272,13 @@ const createScrollObserver = (
         }
 
         store.$update(ACTION_MANUAL_SCROLL);
-        scrollTo(getTargetOffset(), smooth);
+        write(getTargetOffset(), smooth);
       };
 
-      const start = () => {
-        if (stopped) {
-          return;
-        }
+      if (smooth) {
+        store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
+      }
+      if (!stopped) {
         // Batch the measurements in the same task to scroll only once
         let queued: boolean | undefined;
         unsubscribe = store.$subscribe(UPDATE_SIZE_EVENT, () => {
@@ -288,12 +292,7 @@ const createScrollObserver = (
           });
         });
         onMeasured();
-      };
-
-      if (smooth) {
-        store.$update(ACTION_BEFORE_MANUAL_SMOOTH_SCROLL, getTargetOffset());
       }
-      start();
     },
   };
 };
@@ -575,7 +574,10 @@ export const createWindowDriver = (
  * @internal
  */
 export interface GridDriver extends DriverBase {
-  $scroll(isHorizontal: boolean, getTargetOffset: () => number): void;
+  $scroll(
+    getTargetTop: (() => number) | null,
+    getTargetLeft: (() => number) | null,
+  ): void;
   $observeItem(
     el: HTMLElement,
     rowIndex: number | undefined,
@@ -597,6 +599,7 @@ export const createContainerGridDriver = (
   let colScrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
   let isViewportDisplayed = true;
+  let isRtl = false;
 
   const mountedRowIndexes = new WeakMap<Element, number>();
   const mountedColIndexes = new WeakMap<Element, number>();
@@ -642,18 +645,46 @@ export const createContainerGridDriver = (
   });
 
   return {
-    async $scroll(isHorizontal, getTargetOffset) {
+    async $scroll(getTargetTop, getTargetLeft) {
+      if (!getTargetTop && !getTargetLeft) {
+        return;
+      }
       // Wait for element assign. The element may be undefined if scroll is scheduled on mount.
       // https://github.com/inokawa/virtua/pull/733
       // https://github.com/inokawa/virtua/pull/750
       if (await initialized[0]) {
-        (isHorizontal ? colScrollObserver : rowScrollObserver)!._scroll(
-          getTargetOffset,
-        );
+        const viewport = viewportElement!;
+        let options: ScrollToOptions = { behavior: "instant" };
+        // The observers write the targets synchronously in _scroll at first, so both axes are written with one scrollTo
+        let collecting = true;
+        const flush = () => {
+          viewport.scrollTo(options);
+          options = { behavior: "instant" };
+        };
+        const write =
+          (key: "top" | "left", rtl: boolean) => (offset: number) => {
+            options[key] = rtl ? -offset : offset;
+            if (!collecting) {
+              flush();
+            }
+          };
+        if (getTargetTop) {
+          rowScrollObserver!._scroll(getTargetTop, false, write("top", false));
+        }
+        if (getTargetLeft) {
+          colScrollObserver!._scroll(
+            getTargetLeft,
+            false,
+            write("left", isRtl),
+          );
+        }
+        collecting = false;
+        flush();
       }
     },
     $observe(containerElement, viewport = containerElement.parentElement!) {
       resizeObserver._observe((viewportElement = viewport));
+      isRtl = getComputedStyle(viewport).direction === "rtl";
 
       const observe = (
         store: VirtualStore,
@@ -666,7 +697,7 @@ export const createContainerGridDriver = (
           viewport,
           viewport,
           isHorizontal,
-          isHorizontal && getComputedStyle(viewport).direction === "rtl",
+          isHorizontal && isRtl,
           () => {
             const overflowKey = isHorizontal ? "overflowX" : "overflowY";
             // If we update scroll position while touching on iOS, the position will be reverted.

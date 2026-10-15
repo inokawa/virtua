@@ -589,6 +589,37 @@ it("scrollTo and scrollBy move only the given axes", async () => {
   await expectPosition(() => viewport.scrollTop, 400);
 });
 
+it("scrollTo moves both axes with one write", async () => {
+  const ref = createRef<VGridHandle>();
+  const root = render(<Grid handle={ref} />);
+  const { viewport, container } = await getVirtualizer(root);
+  await expect.poll(() => cell(container, "0 / 0")).toBeTruthy();
+
+  const scrollTo = vi.spyOn(viewport, "scrollTo");
+  ref.current!.scrollTo({ vertical: 400, horizontal: 200 });
+  await expectPosition(() => viewport.scrollTop, 400);
+  await expectPosition(() => viewport.scrollLeft, 200);
+  expect(scrollTo.mock.calls).toEqual([
+    [{ top: 400, left: 200, behavior: "instant" }],
+  ]);
+});
+
+it("scrollTo moves both axes with one write (RTL)", async () => {
+  setRTL();
+  const ref = createRef<VGridHandle>();
+  const root = render(<Grid handle={ref} />);
+  const { viewport, container } = await getVirtualizer(root);
+  await expect.poll(() => cell(container, "0 / 0")).toBeTruthy();
+
+  const scrollTo = vi.spyOn(viewport, "scrollTo");
+  ref.current!.scrollTo({ vertical: 400, horizontal: 200 });
+  await expectPosition(() => viewport.scrollTop, 400);
+  await expectPosition(() => viewport.scrollLeft, -200);
+  expect(scrollTo.mock.calls).toEqual([
+    [{ top: 400, left: -200, behavior: "instant" }],
+  ]);
+});
+
 it("a scroll is notified only to the axes which moved", async () => {
   const verticals: number[] = [];
   const horizontals: number[] = [];
