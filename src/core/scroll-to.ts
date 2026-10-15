@@ -127,12 +127,10 @@ export const gridScrollTo = (
   vertical: number | undefined,
   horizontal: number | undefined,
 ) => {
-  if (vertical != NULL) {
-    driver.$scroll(false, () => vertical);
-  }
-  if (horizontal != NULL) {
-    driver.$scroll(true, () => horizontal);
-  }
+  driver.$scroll(
+    vertical == NULL ? NULL : () => vertical,
+    horizontal == NULL ? NULL : () => horizontal,
+  );
 };
 
 /**
@@ -152,15 +150,16 @@ export const gridScrollBy = (
   );
 };
 
-const scrollGridAxisToIndex = (
-  driver: GridDriver,
+const getGridAxisTargetOffset = (
   store: VirtualStore,
   layout: GridLayout,
   sections: readonly number[],
-  index: number,
+  index: number | undefined,
   align: ScrollToIndexAlign | undefined,
-  isHorizontal: boolean,
-) => {
+): (() => number) | null => {
+  if (index == NULL) {
+    return NULL;
+  }
   const count = layout.$getLength();
   const pinnedStart = layout.$getPinnedStart();
   const trailStart = layout.$getTrailStart();
@@ -184,7 +183,7 @@ const scrollGridAxisToIndex = (
   if (align === "nearest") {
     if (index < pinnedStart || index >= trailStart) {
       // A pinned item is always visible
-      return;
+      return NULL;
     }
     const insetStart = getInsetStart();
     const scrollOffset = store.$getScrollOffset() + insetStart;
@@ -210,11 +209,11 @@ const scrollGridAxisToIndex = (
     } else if (itemOffset + itemSize > scrollOffset + viewportSize) {
       align = "end";
     } else {
-      return;
+      return NULL;
     }
   }
 
-  driver.$scroll(isHorizontal, () => {
+  return () => {
     const insetStart = getInsetStart();
     const rest = layout.$getItemSize(index) - getVisibleSize(insetStart);
     return (
@@ -222,7 +221,7 @@ const scrollGridAxisToIndex = (
       insetStart +
       (align === "end" ? rest : align === "center" ? rest / 2 : 0)
     );
-  });
+  };
 };
 
 /**
@@ -238,26 +237,14 @@ export const gridScrollToIndex = (
   { rowIndex, colIndex, rowAlign, colAlign }: GridScrollToIndexOpts,
 ) => {
   // TODO support smooth scroll, removed because scrolling both axes smoothly freezes their ranges and the page
-  if (rowIndex != NULL) {
-    scrollGridAxisToIndex(
-      driver,
+  driver.$scroll(
+    getGridAxisTargetOffset(
       rowStore,
       rowLayout,
       sectionRows,
       rowIndex,
       rowAlign,
-      false,
-    );
-  }
-  if (colIndex != NULL) {
-    scrollGridAxisToIndex(
-      driver,
-      colStore,
-      colLayout,
-      EMPTY,
-      colIndex,
-      colAlign,
-      true,
-    );
-  }
+    ),
+    getGridAxisTargetOffset(colStore, colLayout, EMPTY, colIndex, colAlign),
+  );
 };
