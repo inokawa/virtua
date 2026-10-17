@@ -325,7 +325,7 @@ export const createContainerDriver = (
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
-  let isViewportDisplayed = true;
+  let isViewportDisplayed = false;
 
   const mountedIndexes = new WeakMap<Element, number>();
 
@@ -339,7 +339,8 @@ export const createContainerDriver = (
         // https://github.com/inokawa/virtua/issues/964
         if (width || height) {
           if (!isViewportDisplayed) {
-            // Scroll events can be missed while the viewport has no box, so read the offset again when its size is back
+            // Read the initial offset and any scrolls missed while the viewport had no box.
+            // https://github.com/inokawa/virtua/issues/1007
             // https://github.com/inokawa/virtua/issues/841
             // https://github.com/inokawa/virtua/issues/940
             scrollObserver!._sync();
