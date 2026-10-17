@@ -20,17 +20,16 @@ export interface MasonryLayout extends Layout {
 export const createMasonryLayout = (
   length: number,
   lanesOpt: number,
-  gap: number = 0,
+  gapOpt?: number | undefined,
   itemSize?: number | undefined,
   snapshot?: CacheSnapshot | undefined,
 ): MasonryLayout => {
-  let lanes = max(lanesOpt, 1);
+  let lanes: number;
+  let gap: number;
   let defaultItemSize = (snapshot && snapshot[1]) || itemSize || 40;
-  let computedIndex = -1;
+  let computedIndex: number;
   // The items measured in the current lanes, which the size is estimated from
-  let estimatingIndexes: Set<number> | undefined = itemSize
-    ? undefined
-    : new Set();
+  let estimatingIndexes: Set<number> | undefined;
   // Only the first estimation is reported, as the buffer is skipped until it ends
   let isEstimating = !itemSize;
 
@@ -108,6 +107,20 @@ export const createMasonryLayout = (
   const findStart = (offset: number): number =>
     findIndex(getHigh, length + 1, offset);
 
+  const relayout = (nextLanes: number, nextGap: number = 0): boolean => {
+    nextLanes = max(nextLanes, 1);
+    if (nextLanes === lanes && nextGap === gap) {
+      return false;
+    }
+    lanes = nextLanes;
+    gap = nextGap;
+    computedIndex = -1;
+    // The sizes of items, such as images keeping their aspect ratios, may depend on the width of the lanes, so estimate again from the items measured in the new lanes
+    estimatingIndexes = itemSize ? undefined : new Set();
+    return true;
+  };
+  relayout(lanesOpt, gapOpt);
+
   return {
     $getRange: (startOffset, endOffset) => {
       // The offsets never decrease, as each item is placed into the shortest lane
@@ -171,18 +184,7 @@ export const createMasonryLayout = (
         sizes.splice(diff);
       }
     },
-    $relayout: (nextLanes, nextGap = 0) => {
-      nextLanes = max(nextLanes, 1);
-      if (nextLanes === lanes && nextGap === gap) {
-        return false;
-      }
-      lanes = nextLanes;
-      gap = nextGap;
-      computedIndex = -1;
-      // The sizes of items, such as images keeping their aspect ratios, may depend on the width of the lanes, so estimate again from the items measured in the new lanes
-      estimatingIndexes = itemSize ? undefined : new Set();
-      return true;
-    },
+    $relayout: relayout,
     $isEstimating: () => isEstimating,
     $snapshot: () => [sizes.slice(), defaultItemSize],
     $getLanes: () => lanes,
