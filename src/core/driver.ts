@@ -91,7 +91,7 @@ const createScrollObserver = (
   // https://drafts.csswg.org/cssom-view/#dom-element-scrolltop
   const scrollTo = (offset: number, smooth?: boolean) => {
     scroller.scrollTo({
-      [scrollToKey]: normalizeScrollOffset(offset),
+      [scrollToKey]: offset,
       behavior: smooth ? "smooth" : "instant",
     });
   };
@@ -203,7 +203,7 @@ const createScrollObserver = (
         // Use absolute position at the edges not to exceed scrollable bounds
         // https://github.com/inokawa/virtua/discussions/475
         // https://github.com/inokawa/virtua/issues/983
-        scrollTo(to);
+        scrollTo(normalizeScrollOffset(to));
       } else {
         // Use relative position not to overwrite concurrent scrolling
         // https://github.com/inokawa/virtua/issues/898
@@ -272,7 +272,7 @@ const createScrollObserver = (
         }
 
         store.$update(ACTION_MANUAL_SCROLL);
-        write(getTargetOffset(), smooth);
+        write(normalizeScrollOffset(getTargetOffset()), smooth);
       };
 
       if (smooth) {
@@ -599,7 +599,6 @@ export const createContainerGridDriver = (
   let colScrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
   let isViewportDisplayed = true;
-  let isRtl = false;
 
   const mountedRowIndexes = new WeakMap<Element, number>();
   const mountedColIndexes = new WeakMap<Element, number>();
@@ -654,37 +653,28 @@ export const createContainerGridDriver = (
       // https://github.com/inokawa/virtua/pull/750
       if (await initialized[0]) {
         const viewport = viewportElement!;
-        let options: ScrollToOptions = { behavior: "instant" };
         // The observers write the targets synchronously in _scroll at first, so both axes are written with one scrollTo
-        let collecting = true;
-        const flush = () => {
-          viewport.scrollTo(options);
-          options = { behavior: "instant" };
+        let options: ScrollToOptions | null = { behavior: "instant" };
+        const write = (key: "top" | "left") => (offset: number) => {
+          if (options) {
+            options[key] = offset;
+          } else {
+            viewport.scrollTo({ [key]: offset, behavior: "instant" });
+          }
         };
-        const write =
-          (key: "top" | "left", rtl: boolean) => (offset: number) => {
-            options[key] = rtl ? -offset : offset;
-            if (!collecting) {
-              flush();
-            }
-          };
         if (getTargetTop) {
-          rowScrollObserver!._scroll(getTargetTop, false, write("top", false));
+          rowScrollObserver!._scroll(getTargetTop, false, write("top"));
         }
         if (getTargetLeft) {
-          colScrollObserver!._scroll(
-            getTargetLeft,
-            false,
-            write("left", isRtl),
-          );
+          colScrollObserver!._scroll(getTargetLeft, false, write("left"));
         }
-        collecting = false;
-        flush();
+        viewport.scrollTo(options);
+        options = NULL;
       }
     },
     $observe(containerElement, viewport = containerElement.parentElement!) {
       resizeObserver._observe((viewportElement = viewport));
-      isRtl = getComputedStyle(viewport).direction === "rtl";
+      const isRtl = getComputedStyle(viewport).direction === "rtl";
 
       const observe = (
         store: VirtualStore,
