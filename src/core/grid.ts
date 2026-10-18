@@ -401,10 +401,9 @@ export const createGridPlan = (
   }
 
   // A track is measured by its first rendered cell which doesn't span over the other tracks, and is null if its size is given.
-  const measuredCols: (boolean | null)[] = [];
-  for (const colIndex of cols) {
-    measuredCols.push(colLayout.$isMeasurable(colIndex) ? false : NULL);
-  }
+  const measuredCols: (boolean | null)[] = cols.map((colIndex) =>
+    colLayout.$isMeasurable(colIndex) ? false : NULL,
+  );
   const measuredRows: (boolean | null)[] = [];
   // The section headers stick where the first row after the pinned rows is laid.
   const sectionHeaderTop = rowLayout.$getItemOffset(rowPinnedStart);
