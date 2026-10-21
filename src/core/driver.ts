@@ -325,7 +325,7 @@ export const createContainerDriver = (
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
-  let isViewportDisplayed = true;
+  let isViewportDisplayed = false;
 
   const mountedIndexes = new WeakMap<Element, number>();
 
@@ -387,6 +387,15 @@ export const createContainerDriver = (
           });
         },
       );
+
+      if (viewport.clientWidth || viewport.clientHeight) {
+        isViewportDisplayed = true;
+        store.$update(
+          ACTION_VIEWPORT_RESIZE,
+          isHorizontal ? viewport.clientWidth : viewport.clientHeight,
+        );
+        scrollObserver._sync();
+      }
 
       initialized[1](true);
     },
@@ -533,6 +542,9 @@ export const createWindowDriver = (
         NULL,
         baseOffset,
       );
+
+      onViewportResize();
+      scrollObserver._sync();
 
       initialized[1](true);
     },

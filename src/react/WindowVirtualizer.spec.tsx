@@ -209,3 +209,22 @@ describe("horizontal", async () => {
     expect(asFragment()).toMatchSnapshot();
   });
 });
+
+describe("scroll restoration", () => {
+  it("should render visible items when mounted with existing scroll position", async () => {
+    document.documentElement.scrollBy = () => {};
+    document.documentElement.scrollTop = 500;
+
+    const { queryByText } = await render(
+      <WindowVirtualizer>
+        {range(100, (i) => (
+          <div key={i}>item-{i}</div>
+        ))}
+      </WindowVirtualizer>,
+    );
+
+    expect(queryByText("item-12")).not.toBeNull();
+    expect(queryByText("item-0")).toBeNull();
+    document.documentElement.scrollTop = 0;
+  });
+});
