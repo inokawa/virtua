@@ -4,7 +4,7 @@
 
 # Interface: GridCell
 
-Defined in: [src/core/grid.ts:8](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/core/grid.ts#L8)
+Defined in: [src/core/grid.ts:8](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/core/grid.ts#L8)
 
 A cell position in the grid.
 
@@ -18,7 +18,7 @@ A cell position in the grid.
 
 > **rowIndex**: `number`
 
-Defined in: [src/core/grid.ts:12](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/core/grid.ts#L12)
+Defined in: [src/core/grid.ts:12](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/core/grid.ts#L12)
 
 The row index of the cell.
 
@@ -28,6 +28,6 @@ The row index of the cell.
 
 > **colIndex**: `number`
 
-Defined in: [src/core/grid.ts:16](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/core/grid.ts#L16)
+Defined in: [src/core/grid.ts:16](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/core/grid.ts#L16)
 
 The column index of the cell.

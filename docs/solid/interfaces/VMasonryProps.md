@@ -4,7 +4,7 @@
 
 # Interface: VMasonryProps\<T\>
 
-Defined in: [src/solid/VMasonry.tsx:130](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/solid/VMasonry.tsx#L130)
+Defined in: [src/solid/VMasonry.tsx:130](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/VMasonry.tsx#L130)
 
 Props of [VMasonry](../functions/VMasonry.md).
 
@@ -24,7 +24,7 @@ Props of [VMasonry](../functions/VMasonry.md).
 
 > `optional` **ref?**: [`VMasonryHandle`](VMasonryHandle.md) \| ((`handle?`) => `void`)
 
-Defined in: [src/solid/VMasonry.tsx:134](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/solid/VMasonry.tsx#L134)
+Defined in: [src/solid/VMasonry.tsx:134](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/VMasonry.tsx#L134)
 
 Get reference to [VMasonryHandle](VMasonryHandle.md).
 
@@ -34,7 +34,7 @@ Get reference to [VMasonryHandle](VMasonryHandle.md).
 
 > **data**: readonly `T`[]
 
-Defined in: [src/solid/VMasonry.tsx:138](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/solid/VMasonry.tsx#L138)
+Defined in: [src/solid/VMasonry.tsx:138](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/VMasonry.tsx#L138)
 
 The data items rendered by this component.
 
@@ -44,7 +44,7 @@ The data items rendered by this component.
 
 > **children**: (`data`, `index`) => `Element`
 
-Defined in: [src/solid/VMasonry.tsx:142](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/solid/VMasonry.tsx#L142)
+Defined in: [src/solid/VMasonry.tsx:142](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/VMasonry.tsx#L142)
 
 The elements renderer function.
 
@@ -68,7 +68,7 @@ The elements renderer function.
 
 > **lanes**: `number`
 
-Defined in: [src/solid/VMasonry.tsx:146](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/solid/VMasonry.tsx#L146)
+Defined in: [src/solid/VMasonry.tsx:146](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/VMasonry.tsx#L146)
 
 The number of lanes (columns) which items are laid out into. Each item is placed into the shortest lane in order. It must be an integer and the minimum value is 1.
 
@@ -78,7 +78,7 @@ The number of lanes (columns) which items are laid out into. Each item is placed
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/solid/VMasonry.tsx:151](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/solid/VMasonry.tsx#L151)
+Defined in: [src/solid/VMasonry.tsx:151](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/VMasonry.tsx#L151)
 
 The gap between the items and the lanes in pixels, which is not included in the sizes.
 
@@ -94,7 +94,7 @@ The gap between the items and the lanes in pixels, which is not included in the 
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/solid/VMasonry.tsx:158](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/solid/VMasonry.tsx#L158)
+Defined in: [src/solid/VMasonry.tsx:158](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/VMasonry.tsx#L158)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -107,7 +107,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/solid/VMasonry.tsx:163](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/solid/VMasonry.tsx#L163)
+Defined in: [src/solid/VMasonry.tsx:163](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/VMasonry.tsx#L163)
 
 Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
 
@@ -123,7 +123,7 @@ Extra space in pixels to render before/after the viewport. The default value is 
 
 > `optional` **keepMounted?**: readonly `number`[]
 
-Defined in: [src/solid/VMasonry.tsx:167](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/solid/VMasonry.tsx#L167)
+Defined in: [src/solid/VMasonry.tsx:167](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/VMasonry.tsx#L167)
 
 List of indexes that should be always mounted, even when off screen.
 
@@ -133,7 +133,7 @@ List of indexes that should be always mounted, even when off screen.
 
 > `optional` **cache?**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/solid/VMasonry.tsx:173](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/solid/VMasonry.tsx#L173)
+Defined in: [src/solid/VMasonry.tsx:173](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/VMasonry.tsx#L173)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VMasonryHandle.cache](VMasonryHandle.md#cache).
 
@@ -145,7 +145,7 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `optional` **onScroll?**: (`offset`) => `void`
 
-Defined in: [src/solid/VMasonry.tsx:178](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/solid/VMasonry.tsx#L178)
+Defined in: [src/solid/VMasonry.tsx:178](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/VMasonry.tsx#L178)
 
 Callback invoked whenever scroll offset changes.
 
@@ -167,7 +167,7 @@ Current scrollTop.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/solid/VMasonry.tsx:182](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/solid/VMasonry.tsx#L182)
+Defined in: [src/solid/VMasonry.tsx:182](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/VMasonry.tsx#L182)
 
 Callback invoked when scrolling stops.
 
@@ -181,7 +181,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **onResize?**: () => `void`
 
-Defined in: [src/solid/VMasonry.tsx:186](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/solid/VMasonry.tsx#L186)
+Defined in: [src/solid/VMasonry.tsx:186](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/VMasonry.tsx#L186)
 
 Callback invoked when the size of the viewport or the items changes.
 
@@ -2501,42 +2501,6 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:1275
 
 ***
 
-### class?
-
-> `optional` **class?**: `string`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:686
-
-#### Inherited from
-
-`ViewportComponentAttributes.class`
-
-***
-
-### innerText?
-
-> `optional` **innerText?**: `string` \| `number`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:1206
-
-#### Inherited from
-
-`ViewportComponentAttributes.innerText`
-
-***
-
-### accesskey?
-
-> `optional` **accesskey?**: `string`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:1208
-
-#### Inherited from
-
-`ViewportComponentAttributes.accesskey`
-
-***
-
 ### autocapitalize?
 
 > `optional` **autocapitalize?**: `HTMLAutocapitalize`
@@ -2561,39 +2525,15 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:1210
 
 ***
 
-### contenteditable?
+### innerText?
 
-> `optional` **contenteditable?**: `boolean` \| `"true"` \| `"false"` \| `"inherit"` \| `"plaintext-only"`
+> `optional` **innerText?**: `string` \| `number`
 
-Defined in: node\_modules/solid-js/types/jsx.d.ts:1211
-
-#### Inherited from
-
-`ViewportComponentAttributes.contenteditable`
-
-***
-
-### enterkeyhint?
-
-> `optional` **enterkeyhint?**: `"search"` \| `"next"` \| `"enter"` \| `"done"` \| `"go"` \| `"previous"` \| `"send"`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:1214
+Defined in: node\_modules/solid-js/types/jsx.d.ts:1206
 
 #### Inherited from
 
-`ViewportComponentAttributes.enterkeyhint`
-
-***
-
-### inputmode?
-
-> `optional` **inputmode?**: `"search"` \| `"text"` \| `"none"` \| `"tel"` \| `"url"` \| `"email"` \| `"numeric"` \| `"decimal"`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:1218
-
-#### Inherited from
-
-`ViewportComponentAttributes.inputmode`
+`ViewportComponentAttributes.innerText`
 
 ***
 
@@ -2609,87 +2549,15 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:1232
 
 ***
 
-### exportParts?
+### classList?
 
-> `optional` **exportParts?**: `string`
+> `optional` **classList?**: `ClassList`
 
-Defined in: node\_modules/solid-js/types/jsx.d.ts:1239
-
-#### Inherited from
-
-`ViewportComponentAttributes.exportParts`
-
-***
-
-### itemid?
-
-> `optional` **itemid?**: `string`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:1252
+Defined in: node\_modules/solid-js/types/jsx.d.ts:146
 
 #### Inherited from
 
-`ViewportComponentAttributes.itemid`
-
-***
-
-### itemprop?
-
-> `optional` **itemprop?**: `string`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:1253
-
-#### Inherited from
-
-`ViewportComponentAttributes.itemprop`
-
-***
-
-### itemref?
-
-> `optional` **itemref?**: `string`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:1254
-
-#### Inherited from
-
-`ViewportComponentAttributes.itemref`
-
-***
-
-### itemscope?
-
-> `optional` **itemscope?**: `boolean`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:1255
-
-#### Inherited from
-
-`ViewportComponentAttributes.itemscope`
-
-***
-
-### itemtype?
-
-> `optional` **itemtype?**: `string`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:1256
-
-#### Inherited from
-
-`ViewportComponentAttributes.itemtype`
-
-***
-
-### itemId?
-
-> `optional` **itemId?**: `string`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:1258
-
-#### Inherited from
-
-`ViewportComponentAttributes.itemId`
+`ViewportComponentAttributes.classList`
 
 ***
 
@@ -2705,6 +2573,30 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:681
 
 ***
 
+### onfullscreenchange?
+
+> `optional` **onfullscreenchange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:456
+
+#### Inherited from
+
+`ViewportComponentAttributes.onfullscreenchange`
+
+***
+
+### onfullscreenerror?
+
+> `optional` **onfullscreenerror?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:457
+
+#### Inherited from
+
+`ViewportComponentAttributes.onfullscreenerror`
+
+***
+
 ### textContent?
 
 > `optional` **textContent?**: `string` \| `number`
@@ -2714,378 +2606,6 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:682
 #### Inherited from
 
 `ViewportComponentAttributes.textContent`
-
-***
-
-### autofocus?
-
-> `optional` **autofocus?**: `boolean`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:685
-
-#### Inherited from
-
-`ViewportComponentAttributes.autofocus`
-
-***
-
-### elementtiming?
-
-> `optional` **elementtiming?**: `string`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:687
-
-#### Inherited from
-
-`ViewportComponentAttributes.elementtiming`
-
-***
-
-### tabindex?
-
-> `optional` **tabindex?**: `string` \| `number`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:692
-
-#### Inherited from
-
-`ViewportComponentAttributes.tabindex`
-
-***
-
-### classList?
-
-> `optional` **classList?**: `ClassList`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:146
-
-#### Inherited from
-
-`ViewportComponentAttributes.classList`
-
-***
-
-### $ServerOnly?
-
-> `optional` **$ServerOnly?**: `boolean`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:147
-
-#### Inherited from
-
-`ViewportComponentAttributes.$ServerOnly`
-
-***
-
-### onAnimationCancel?
-
-> `optional` **onAnimationCancel?**: `EventHandlerUnion`\<`HTMLDivElement`, `AnimationEvent`, `EventHandler`\<`HTMLDivElement`, `AnimationEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:286
-
-#### Inherited from
-
-`ViewportComponentAttributes.onAnimationCancel`
-
-***
-
-### onBeforeCopy?
-
-> `optional` **onBeforeCopy?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:291
-
-#### Inherited from
-
-`ViewportComponentAttributes.onBeforeCopy`
-
-***
-
-### onBeforeCut?
-
-> `optional` **onBeforeCut?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:292
-
-#### Inherited from
-
-`ViewportComponentAttributes.onBeforeCut`
-
-***
-
-### onBeforeMatch?
-
-> `optional` **onBeforeMatch?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:294
-
-#### Inherited from
-
-`ViewportComponentAttributes.onBeforeMatch`
-
-***
-
-### onBeforePaste?
-
-> `optional` **onBeforePaste?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:295
-
-#### Inherited from
-
-`ViewportComponentAttributes.onBeforePaste`
-
-***
-
-### onBeforeXRSelect?
-
-> `optional` **onBeforeXRSelect?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:297
-
-#### Inherited from
-
-`ViewportComponentAttributes.onBeforeXRSelect`
-
-***
-
-### onCancel?
-
-> `optional` **onCancel?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:299
-
-#### Inherited from
-
-`ViewportComponentAttributes.onCancel`
-
-***
-
-### onClose?
-
-> `optional` **onClose?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:304
-
-#### Inherited from
-
-`ViewportComponentAttributes.onClose`
-
-***
-
-### onCommand?
-
-> `optional` **onCommand?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:306
-
-#### Inherited from
-
-`ViewportComponentAttributes.onCommand`
-
-***
-
-### onContentVisibilityAutoStateChange?
-
-> `optional` **onContentVisibilityAutoStateChange?**: `EventHandlerUnion`\<`HTMLDivElement`, `ContentVisibilityAutoStateChangeEvent`, `EventHandler`\<`HTMLDivElement`, `ContentVisibilityAutoStateChangeEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:310
-
-#### Inherited from
-
-`ViewportComponentAttributes.onContentVisibilityAutoStateChange`
-
-***
-
-### onContextLost?
-
-> `optional` **onContextLost?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:313
-
-#### Inherited from
-
-`ViewportComponentAttributes.onContextLost`
-
-***
-
-### onContextRestored?
-
-> `optional` **onContextRestored?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:315
-
-#### Inherited from
-
-`ViewportComponentAttributes.onContextRestored`
-
-***
-
-### onCueChange?
-
-> `optional` **onCueChange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:317
-
-#### Inherited from
-
-`ViewportComponentAttributes.onCueChange`
-
-***
-
-### onDblClick?
-
-> `optional` **onDblClick?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:319
-
-#### Inherited from
-
-`ViewportComponentAttributes.onDblClick`
-
-***
-
-### onFocusIn?
-
-> `optional` **onFocusIn?**: `FocusEventHandlerUnion`\<`HTMLDivElement`, `FocusEvent`\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:333
-
-#### Inherited from
-
-`ViewportComponentAttributes.onFocusIn`
-
-***
-
-### onFocusOut?
-
-> `optional` **onFocusOut?**: `FocusEventHandlerUnion`\<`HTMLDivElement`, `FocusEvent`\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:334
-
-#### Inherited from
-
-`ViewportComponentAttributes.onFocusOut`
-
-***
-
-### onFormData?
-
-> `optional` **onFormData?**: `EventHandlerUnion`\<`HTMLDivElement`, `FormDataEvent`, `EventHandler`\<`HTMLDivElement`, `FormDataEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:335
-
-#### Inherited from
-
-`ViewportComponentAttributes.onFormData`
-
-***
-
-### onFullscreenChange?
-
-> `optional` **onFullscreenChange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:336
-
-#### Inherited from
-
-`ViewportComponentAttributes.onFullscreenChange`
-
-***
-
-### onFullscreenError?
-
-> `optional` **onFullscreenError?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:337
-
-#### Inherited from
-
-`ViewportComponentAttributes.onFullscreenError`
-
-***
-
-### onPointerRawUpdate?
-
-> `optional` **onPointerRawUpdate?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:367
-
-#### Inherited from
-
-`ViewportComponentAttributes.onPointerRawUpdate`
-
-***
-
-### onScrollSnapChange?
-
-> `optional` **onScrollSnapChange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:376
-
-#### Inherited from
-
-`ViewportComponentAttributes.onScrollSnapChange`
-
-***
-
-### onScrollSnapChanging?
-
-> `optional` **onScrollSnapChanging?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:378
-
-#### Inherited from
-
-`ViewportComponentAttributes.onScrollSnapChanging`
-
-***
-
-### onSecurityPolicyViolation?
-
-> `optional` **onSecurityPolicyViolation?**: `EventHandlerUnion`\<`HTMLDivElement`, `SecurityPolicyViolationEvent`, `EventHandler`\<`HTMLDivElement`, `SecurityPolicyViolationEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:379
-
-#### Inherited from
-
-`ViewportComponentAttributes.onSecurityPolicyViolation`
-
-***
-
-### onSelectionChange?
-
-> `optional` **onSelectionChange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:383
-
-#### Inherited from
-
-`ViewportComponentAttributes.onSelectionChange`
-
-***
-
-### onSelectStart?
-
-> `optional` **onSelectStart?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:384
-
-#### Inherited from
-
-`ViewportComponentAttributes.onSelectStart`
-
-***
-
-### onSlotChange?
-
-> `optional` **onSlotChange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:385
-
-#### Inherited from
-
-`ViewportComponentAttributes.onSlotChange`
 
 ***
 
@@ -3161,30 +2681,6 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:410
 
 ***
 
-### onbeforecopy?
-
-> `optional` **onbeforecopy?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:411
-
-#### Inherited from
-
-`ViewportComponentAttributes.onbeforecopy`
-
-***
-
-### onbeforecut?
-
-> `optional` **onbeforecut?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:412
-
-#### Inherited from
-
-`ViewportComponentAttributes.onbeforecut`
-
-***
-
 ### onbeforeinput?
 
 > `optional` **onbeforeinput?**: `InputEventHandlerUnion`\<`HTMLDivElement`, `InputEvent`\>
@@ -3209,18 +2705,6 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:414
 
 ***
 
-### onbeforepaste?
-
-> `optional` **onbeforepaste?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:415
-
-#### Inherited from
-
-`ViewportComponentAttributes.onbeforepaste`
-
-***
-
 ### onbeforetoggle?
 
 > `optional` **onbeforetoggle?**: `EventHandlerUnion`\<`HTMLDivElement`, `ToggleEvent`, `EventHandler`\<`HTMLDivElement`, `ToggleEvent`\>\>
@@ -3230,18 +2714,6 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:416
 #### Inherited from
 
 `ViewportComponentAttributes.onbeforetoggle`
-
-***
-
-### onbeforexrselect?
-
-> `optional` **onbeforexrselect?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:417
-
-#### Inherited from
-
-`ViewportComponentAttributes.onbeforexrselect`
 
 ***
 
@@ -3338,54 +2810,6 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:426
 #### Inherited from
 
 `ViewportComponentAttributes.oncommand`
-
-***
-
-### oncompositionend?
-
-> `optional` **oncompositionend?**: `EventHandlerUnion`\<`HTMLDivElement`, `CompositionEvent`, `EventHandler`\<`HTMLDivElement`, `CompositionEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:427
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncompositionend`
-
-***
-
-### oncompositionstart?
-
-> `optional` **oncompositionstart?**: `EventHandlerUnion`\<`HTMLDivElement`, `CompositionEvent`, `EventHandler`\<`HTMLDivElement`, `CompositionEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:428
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncompositionstart`
-
-***
-
-### oncompositionupdate?
-
-> `optional` **oncompositionupdate?**: `EventHandlerUnion`\<`HTMLDivElement`, `CompositionEvent`, `EventHandler`\<`HTMLDivElement`, `CompositionEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:429
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncompositionupdate`
-
-***
-
-### oncontentvisibilityautostatechange?
-
-> `optional` **oncontentvisibilityautostatechange?**: `EventHandlerUnion`\<`HTMLDivElement`, `ContentVisibilityAutoStateChangeEvent`, `EventHandler`\<`HTMLDivElement`, `ContentVisibilityAutoStateChangeEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:430
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncontentvisibilityautostatechange`
 
 ***
 
@@ -3509,18 +2933,6 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:442
 
 ***
 
-### ondragexit?
-
-> `optional` **ondragexit?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:443
-
-#### Inherited from
-
-`ViewportComponentAttributes.ondragexit`
-
-***
-
 ### ondragleave?
 
 > `optional` **ondragleave?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
@@ -3629,30 +3041,6 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:452
 
 ***
 
-### onfocusin?
-
-> `optional` **onfocusin?**: `FocusEventHandlerUnion`\<`HTMLDivElement`, `FocusEvent`\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:453
-
-#### Inherited from
-
-`ViewportComponentAttributes.onfocusin`
-
-***
-
-### onfocusout?
-
-> `optional` **onfocusout?**: `FocusEventHandlerUnion`\<`HTMLDivElement`, `FocusEvent`\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:454
-
-#### Inherited from
-
-`ViewportComponentAttributes.onfocusout`
-
-***
-
 ### onformdata?
 
 > `optional` **onformdata?**: `EventHandlerUnion`\<`HTMLDivElement`, `FormDataEvent`, `EventHandler`\<`HTMLDivElement`, `FormDataEvent`\>\>
@@ -3662,30 +3050,6 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:455
 #### Inherited from
 
 `ViewportComponentAttributes.onformdata`
-
-***
-
-### onfullscreenchange?
-
-> `optional` **onfullscreenchange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:456
-
-#### Inherited from
-
-`ViewportComponentAttributes.onfullscreenchange`
-
-***
-
-### onfullscreenerror?
-
-> `optional` **onfullscreenerror?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:457
-
-#### Inherited from
-
-`ViewportComponentAttributes.onfullscreenerror`
 
 ***
 
@@ -4133,30 +3497,6 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:494
 
 ***
 
-### onscrollsnapchange?
-
-> `optional` **onscrollsnapchange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:496
-
-#### Inherited from
-
-`ViewportComponentAttributes.onscrollsnapchange`
-
-***
-
-### onscrollsnapchanging?
-
-> `optional` **onscrollsnapchanging?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:498
-
-#### Inherited from
-
-`ViewportComponentAttributes.onscrollsnapchanging`
-
-***
-
 ### onsecuritypolicyviolation?
 
 > `optional` **onsecuritypolicyviolation?**: `EventHandlerUnion`\<`HTMLDivElement`, `SecurityPolicyViolationEvent`, `EventHandler`\<`HTMLDivElement`, `SecurityPolicyViolationEvent`\>\>
@@ -4430,6 +3770,666 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:521
 #### Inherited from
 
 `ViewportComponentAttributes.onwheel`
+
+***
+
+### autofocus?
+
+> `optional` **autofocus?**: `boolean`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:685
+
+#### Inherited from
+
+`ViewportComponentAttributes.autofocus`
+
+***
+
+### class?
+
+> `optional` **class?**: `string`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:686
+
+#### Inherited from
+
+`ViewportComponentAttributes.class`
+
+***
+
+### accesskey?
+
+> `optional` **accesskey?**: `string`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:1208
+
+#### Inherited from
+
+`ViewportComponentAttributes.accesskey`
+
+***
+
+### contenteditable?
+
+> `optional` **contenteditable?**: `boolean` \| `"true"` \| `"false"` \| `"inherit"` \| `"plaintext-only"`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:1211
+
+#### Inherited from
+
+`ViewportComponentAttributes.contenteditable`
+
+***
+
+### enterkeyhint?
+
+> `optional` **enterkeyhint?**: `"search"` \| `"next"` \| `"enter"` \| `"done"` \| `"go"` \| `"previous"` \| `"send"`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:1214
+
+#### Inherited from
+
+`ViewportComponentAttributes.enterkeyhint`
+
+***
+
+### inputmode?
+
+> `optional` **inputmode?**: `"search"` \| `"text"` \| `"none"` \| `"tel"` \| `"url"` \| `"email"` \| `"numeric"` \| `"decimal"`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:1218
+
+#### Inherited from
+
+`ViewportComponentAttributes.inputmode`
+
+***
+
+### exportParts?
+
+> `optional` **exportParts?**: `string`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:1239
+
+#### Inherited from
+
+`ViewportComponentAttributes.exportParts`
+
+***
+
+### itemid?
+
+> `optional` **itemid?**: `string`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:1252
+
+#### Inherited from
+
+`ViewportComponentAttributes.itemid`
+
+***
+
+### itemprop?
+
+> `optional` **itemprop?**: `string`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:1253
+
+#### Inherited from
+
+`ViewportComponentAttributes.itemprop`
+
+***
+
+### itemref?
+
+> `optional` **itemref?**: `string`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:1254
+
+#### Inherited from
+
+`ViewportComponentAttributes.itemref`
+
+***
+
+### itemscope?
+
+> `optional` **itemscope?**: `boolean`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:1255
+
+#### Inherited from
+
+`ViewportComponentAttributes.itemscope`
+
+***
+
+### itemtype?
+
+> `optional` **itemtype?**: `string`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:1256
+
+#### Inherited from
+
+`ViewportComponentAttributes.itemtype`
+
+***
+
+### itemId?
+
+> `optional` **itemId?**: `string`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:1258
+
+#### Inherited from
+
+`ViewportComponentAttributes.itemId`
+
+***
+
+### elementtiming?
+
+> `optional` **elementtiming?**: `string`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:687
+
+#### Inherited from
+
+`ViewportComponentAttributes.elementtiming`
+
+***
+
+### tabindex?
+
+> `optional` **tabindex?**: `string` \| `number`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:692
+
+#### Inherited from
+
+`ViewportComponentAttributes.tabindex`
+
+***
+
+### $ServerOnly?
+
+> `optional` **$ServerOnly?**: `boolean`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:147
+
+#### Inherited from
+
+`ViewportComponentAttributes.$ServerOnly`
+
+***
+
+### onAnimationCancel?
+
+> `optional` **onAnimationCancel?**: `EventHandlerUnion`\<`HTMLDivElement`, `AnimationEvent`, `EventHandler`\<`HTMLDivElement`, `AnimationEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:286
+
+#### Inherited from
+
+`ViewportComponentAttributes.onAnimationCancel`
+
+***
+
+### onBeforeCopy?
+
+> `optional` **onBeforeCopy?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:291
+
+#### Inherited from
+
+`ViewportComponentAttributes.onBeforeCopy`
+
+***
+
+### onBeforeCut?
+
+> `optional` **onBeforeCut?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:292
+
+#### Inherited from
+
+`ViewportComponentAttributes.onBeforeCut`
+
+***
+
+### onBeforeMatch?
+
+> `optional` **onBeforeMatch?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:294
+
+#### Inherited from
+
+`ViewportComponentAttributes.onBeforeMatch`
+
+***
+
+### onBeforePaste?
+
+> `optional` **onBeforePaste?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:295
+
+#### Inherited from
+
+`ViewportComponentAttributes.onBeforePaste`
+
+***
+
+### onBeforeXRSelect?
+
+> `optional` **onBeforeXRSelect?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:297
+
+#### Inherited from
+
+`ViewportComponentAttributes.onBeforeXRSelect`
+
+***
+
+### onCancel?
+
+> `optional` **onCancel?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:299
+
+#### Inherited from
+
+`ViewportComponentAttributes.onCancel`
+
+***
+
+### onClose?
+
+> `optional` **onClose?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:304
+
+#### Inherited from
+
+`ViewportComponentAttributes.onClose`
+
+***
+
+### onCommand?
+
+> `optional` **onCommand?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:306
+
+#### Inherited from
+
+`ViewportComponentAttributes.onCommand`
+
+***
+
+### onContentVisibilityAutoStateChange?
+
+> `optional` **onContentVisibilityAutoStateChange?**: `EventHandlerUnion`\<`HTMLDivElement`, `ContentVisibilityAutoStateChangeEvent`, `EventHandler`\<`HTMLDivElement`, `ContentVisibilityAutoStateChangeEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:310
+
+#### Inherited from
+
+`ViewportComponentAttributes.onContentVisibilityAutoStateChange`
+
+***
+
+### onContextLost?
+
+> `optional` **onContextLost?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:313
+
+#### Inherited from
+
+`ViewportComponentAttributes.onContextLost`
+
+***
+
+### onContextRestored?
+
+> `optional` **onContextRestored?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:315
+
+#### Inherited from
+
+`ViewportComponentAttributes.onContextRestored`
+
+***
+
+### onCueChange?
+
+> `optional` **onCueChange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:317
+
+#### Inherited from
+
+`ViewportComponentAttributes.onCueChange`
+
+***
+
+### onDblClick?
+
+> `optional` **onDblClick?**: `EventHandlerUnion`\<`HTMLDivElement`, `MouseEvent`, `EventHandler`\<`HTMLDivElement`, `MouseEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:319
+
+#### Inherited from
+
+`ViewportComponentAttributes.onDblClick`
+
+***
+
+### onFocusIn?
+
+> `optional` **onFocusIn?**: `FocusEventHandlerUnion`\<`HTMLDivElement`, `FocusEvent`\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:333
+
+#### Inherited from
+
+`ViewportComponentAttributes.onFocusIn`
+
+***
+
+### onFocusOut?
+
+> `optional` **onFocusOut?**: `FocusEventHandlerUnion`\<`HTMLDivElement`, `FocusEvent`\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:334
+
+#### Inherited from
+
+`ViewportComponentAttributes.onFocusOut`
+
+***
+
+### onFormData?
+
+> `optional` **onFormData?**: `EventHandlerUnion`\<`HTMLDivElement`, `FormDataEvent`, `EventHandler`\<`HTMLDivElement`, `FormDataEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:335
+
+#### Inherited from
+
+`ViewportComponentAttributes.onFormData`
+
+***
+
+### onFullscreenChange?
+
+> `optional` **onFullscreenChange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:336
+
+#### Inherited from
+
+`ViewportComponentAttributes.onFullscreenChange`
+
+***
+
+### onFullscreenError?
+
+> `optional` **onFullscreenError?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:337
+
+#### Inherited from
+
+`ViewportComponentAttributes.onFullscreenError`
+
+***
+
+### onPointerRawUpdate?
+
+> `optional` **onPointerRawUpdate?**: `EventHandlerUnion`\<`HTMLDivElement`, `PointerEvent`, `EventHandler`\<`HTMLDivElement`, `PointerEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:367
+
+#### Inherited from
+
+`ViewportComponentAttributes.onPointerRawUpdate`
+
+***
+
+### onScrollSnapChange?
+
+> `optional` **onScrollSnapChange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:376
+
+#### Inherited from
+
+`ViewportComponentAttributes.onScrollSnapChange`
+
+***
+
+### onScrollSnapChanging?
+
+> `optional` **onScrollSnapChanging?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:378
+
+#### Inherited from
+
+`ViewportComponentAttributes.onScrollSnapChanging`
+
+***
+
+### onSecurityPolicyViolation?
+
+> `optional` **onSecurityPolicyViolation?**: `EventHandlerUnion`\<`HTMLDivElement`, `SecurityPolicyViolationEvent`, `EventHandler`\<`HTMLDivElement`, `SecurityPolicyViolationEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:379
+
+#### Inherited from
+
+`ViewportComponentAttributes.onSecurityPolicyViolation`
+
+***
+
+### onSelectionChange?
+
+> `optional` **onSelectionChange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:383
+
+#### Inherited from
+
+`ViewportComponentAttributes.onSelectionChange`
+
+***
+
+### onSelectStart?
+
+> `optional` **onSelectStart?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:384
+
+#### Inherited from
+
+`ViewportComponentAttributes.onSelectStart`
+
+***
+
+### onSlotChange?
+
+> `optional` **onSlotChange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:385
+
+#### Inherited from
+
+`ViewportComponentAttributes.onSlotChange`
+
+***
+
+### onbeforecopy?
+
+> `optional` **onbeforecopy?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:411
+
+#### Inherited from
+
+`ViewportComponentAttributes.onbeforecopy`
+
+***
+
+### onbeforecut?
+
+> `optional` **onbeforecut?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:412
+
+#### Inherited from
+
+`ViewportComponentAttributes.onbeforecut`
+
+***
+
+### onbeforepaste?
+
+> `optional` **onbeforepaste?**: `EventHandlerUnion`\<`HTMLDivElement`, `ClipboardEvent`, `EventHandler`\<`HTMLDivElement`, `ClipboardEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:415
+
+#### Inherited from
+
+`ViewportComponentAttributes.onbeforepaste`
+
+***
+
+### onbeforexrselect?
+
+> `optional` **onbeforexrselect?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:417
+
+#### Inherited from
+
+`ViewportComponentAttributes.onbeforexrselect`
+
+***
+
+### oncompositionend?
+
+> `optional` **oncompositionend?**: `EventHandlerUnion`\<`HTMLDivElement`, `CompositionEvent`, `EventHandler`\<`HTMLDivElement`, `CompositionEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:427
+
+#### Inherited from
+
+`ViewportComponentAttributes.oncompositionend`
+
+***
+
+### oncompositionstart?
+
+> `optional` **oncompositionstart?**: `EventHandlerUnion`\<`HTMLDivElement`, `CompositionEvent`, `EventHandler`\<`HTMLDivElement`, `CompositionEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:428
+
+#### Inherited from
+
+`ViewportComponentAttributes.oncompositionstart`
+
+***
+
+### oncompositionupdate?
+
+> `optional` **oncompositionupdate?**: `EventHandlerUnion`\<`HTMLDivElement`, `CompositionEvent`, `EventHandler`\<`HTMLDivElement`, `CompositionEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:429
+
+#### Inherited from
+
+`ViewportComponentAttributes.oncompositionupdate`
+
+***
+
+### oncontentvisibilityautostatechange?
+
+> `optional` **oncontentvisibilityautostatechange?**: `EventHandlerUnion`\<`HTMLDivElement`, `ContentVisibilityAutoStateChangeEvent`, `EventHandler`\<`HTMLDivElement`, `ContentVisibilityAutoStateChangeEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:430
+
+#### Inherited from
+
+`ViewportComponentAttributes.oncontentvisibilityautostatechange`
+
+***
+
+### ondragexit?
+
+> `optional` **ondragexit?**: `EventHandlerUnion`\<`HTMLDivElement`, `DragEvent`, `EventHandler`\<`HTMLDivElement`, `DragEvent`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:443
+
+#### Inherited from
+
+`ViewportComponentAttributes.ondragexit`
+
+***
+
+### onfocusin?
+
+> `optional` **onfocusin?**: `FocusEventHandlerUnion`\<`HTMLDivElement`, `FocusEvent`\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:453
+
+#### Inherited from
+
+`ViewportComponentAttributes.onfocusin`
+
+***
+
+### onfocusout?
+
+> `optional` **onfocusout?**: `FocusEventHandlerUnion`\<`HTMLDivElement`, `FocusEvent`\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:454
+
+#### Inherited from
+
+`ViewportComponentAttributes.onfocusout`
+
+***
+
+### onscrollsnapchange?
+
+> `optional` **onscrollsnapchange?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:496
+
+#### Inherited from
+
+`ViewportComponentAttributes.onscrollsnapchange`
+
+***
+
+### onscrollsnapchanging?
+
+> `optional` **onscrollsnapchanging?**: `EventHandlerUnion`\<`HTMLDivElement`, `Event`, `EventHandler`\<`HTMLDivElement`, `Event`\>\>
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:498
+
+#### Inherited from
+
+`ViewportComponentAttributes.onscrollsnapchanging`
 
 ***
 
@@ -5781,7 +5781,7 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:655
 
 > `optional` **style?**: `CSSProperties`
 
-Defined in: [src/solid/types.ts:6](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/solid/types.ts#L6)
+Defined in: [src/solid/types.ts:6](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/types.ts#L6)
 
 #### Inherited from
 

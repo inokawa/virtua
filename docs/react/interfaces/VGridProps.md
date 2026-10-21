@@ -4,7 +4,7 @@
 
 # Interface: VGridProps\<R, C\>
 
-Defined in: [src/react/VGrid.tsx:126](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L126)
+Defined in: [src/react/VGrid.tsx:125](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L125)
 
 Props of [VGrid](../variables/VGrid.md).
 
@@ -28,7 +28,7 @@ Props of [VGrid](../variables/VGrid.md).
 
 > **children**: (`row`, `col`, `cell`) => `ReactNode`
 
-Defined in: [src/react/VGrid.tsx:136](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L136)
+Defined in: [src/react/VGrid.tsx:135](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L135)
 
 A function to create cell elements rendered by this component.
 
@@ -62,7 +62,7 @@ the row index and the column index of the cell
 
 > **rows**: [`GridAxis`](../../core/type-aliases/GridAxis.md)\<`R`\>
 
-Defined in: [src/react/VGrid.tsx:140](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L140)
+Defined in: [src/react/VGrid.tsx:139](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L139)
 
 The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -72,7 +72,7 @@ The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for th
 
 > **cols**: [`GridAxis`](../../core/type-aliases/GridAxis.md)\<`C`\>
 
-Defined in: [src/react/VGrid.tsx:144](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L144)
+Defined in: [src/react/VGrid.tsx:143](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L143)
 
 The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -82,7 +82,7 @@ The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for
 
 > **rowHeight**: [`GridSize`](../../core/type-aliases/GridSize.md)\<`R`\>
 
-Defined in: [src/react/VGrid.tsx:148](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L148)
+Defined in: [src/react/VGrid.tsx:147](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L147)
 
 The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -92,7 +92,7 @@ The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for
 
 > **colWidth**: [`GridSize`](../../core/type-aliases/GridSize.md)\<`C`\>
 
-Defined in: [src/react/VGrid.tsx:152](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L152)
+Defined in: [src/react/VGrid.tsx:151](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L151)
 
 The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -102,7 +102,7 @@ The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) f
 
 > `optional` **headerRows?**: `number`
 
-Defined in: [src/react/VGrid.tsx:159](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L159)
+Defined in: [src/react/VGrid.tsx:158](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L158)
 
 The number of the leading rows pinned to the start, which are the column headers (`role="columnheader"`).
 
@@ -120,7 +120,7 @@ The number of the leading rows pinned to the start, which are the column headers
 
 > `optional` **sectionRows?**: readonly `number`[]
 
-Defined in: [src/react/VGrid.tsx:165](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L165)
+Defined in: [src/react/VGrid.tsx:164](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L164)
 
 Indexes of the rows which start sections. A section lasts until the next section row or the footer rows, and its first row sticks below the header rows while the section is scrolled through.
 
@@ -132,7 +132,7 @@ Indexes of the rows which start sections. A section lasts until the next section
 
 > `optional` **footerRows?**: `number`
 
-Defined in: [src/react/VGrid.tsx:172](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L172)
+Defined in: [src/react/VGrid.tsx:171](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L171)
 
 The number of the trailing rows pinned to the end.
 
@@ -150,7 +150,7 @@ The number of the trailing rows pinned to the end.
 
 > `optional` **headerCols?**: `number`
 
-Defined in: [src/react/VGrid.tsx:179](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L179)
+Defined in: [src/react/VGrid.tsx:178](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L178)
 
 The number of the leading columns pinned to the start, the last of which is the row header (`role="rowheader"`).
 
@@ -168,7 +168,7 @@ The number of the leading columns pinned to the start, the last of which is the 
 
 > `optional` **footerCols?**: `number`
 
-Defined in: [src/react/VGrid.tsx:186](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L186)
+Defined in: [src/react/VGrid.tsx:185](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L185)
 
 The number of the trailing columns pinned to the end.
 
@@ -186,7 +186,7 @@ The number of the trailing columns pinned to the end.
 
 > `optional` **spans?**: readonly [`GridSpan`](../../core/interfaces/GridSpan.md)[]
 
-Defined in: [src/react/VGrid.tsx:192](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L192)
+Defined in: [src/react/VGrid.tsx:191](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L191)
 
 Cells merged over multiple rows and/or columns. See [GridSpan](../../core/interfaces/GridSpan.md) for the accepted values.
 
@@ -198,7 +198,7 @@ The cell at the origin is stretched over the merged area, and the other cells in
 
 > `optional` **keepMounted?**: readonly [`GridCell`](../../core/interfaces/GridCell.md)[]
 
-Defined in: [src/react/VGrid.tsx:196](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L196)
+Defined in: [src/react/VGrid.tsx:195](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L195)
 
 List of cells that should be always mounted, even when off screen.
 
@@ -208,7 +208,7 @@ List of cells that should be always mounted, even when off screen.
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/react/VGrid.tsx:201](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L201)
+Defined in: [src/react/VGrid.tsx:200](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L200)
 
 Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank cells in fast scrolling.
 
@@ -224,7 +224,7 @@ Extra space in pixels to render before/after the viewport. The default value is 
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/react/VGrid.tsx:206](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L206)
+Defined in: [src/react/VGrid.tsx:205](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L205)
 
 The gap between the rows and the columns in pixels, which is not included in the sizes. Must not be changed after mount.
 
@@ -240,7 +240,7 @@ The gap between the rows and the columns in pixels, which is not included in the
 
 > `optional` **ariaSort?**: [`GridCell`](../../core/interfaces/GridCell.md) & `object`
 
-Defined in: [src/react/VGrid.tsx:210](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L210)
+Defined in: [src/react/VGrid.tsx:209](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L209)
 
 The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
@@ -256,7 +256,7 @@ The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
 > `optional` **onVerticalScroll?**: (`offset`) => `void`
 
-Defined in: [src/react/VGrid.tsx:215](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L215)
+Defined in: [src/react/VGrid.tsx:214](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L214)
 
 Callback invoked whenever the vertical scroll offset changes.
 
@@ -278,7 +278,7 @@ Current scrollTop.
 
 > `optional` **onHorizontalScroll?**: (`offset`) => `void`
 
-Defined in: [src/react/VGrid.tsx:220](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L220)
+Defined in: [src/react/VGrid.tsx:219](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L219)
 
 Callback invoked whenever the horizontal scroll offset changes.
 
@@ -300,7 +300,7 @@ Current scrollLeft. Always positive even in RTL.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/react/VGrid.tsx:224](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L224)
+Defined in: [src/react/VGrid.tsx:223](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L223)
 
 Callback invoked when scrolling stops.
 
@@ -314,7 +314,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **onResize?**: () => `void`
 
-Defined in: [src/react/VGrid.tsx:228](https://github.com/inokawa/virtua/blob/11b11aceffe466d75e6f431f5f5a26be97be6cd0/src/react/VGrid.tsx#L228)
+Defined in: [src/react/VGrid.tsx:227](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/react/VGrid.tsx#L227)
 
 Callback invoked when the size of the viewport or the items changes.
 
