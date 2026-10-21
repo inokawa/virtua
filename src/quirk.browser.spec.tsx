@@ -9,6 +9,7 @@ import {
 import { render, rerender } from "../spec/browser/react.js";
 import { createRef, useLayoutEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
+import { flushSync } from "react-dom";
 import {
   VGrid,
   Virtualizer,
@@ -21,6 +22,7 @@ import {
   createDomRoot,
   expectVirtualized,
   expectVirtualizedAndScrollable,
+  findFirstVisibleItem,
   getItem,
   getVirtualizer,
   recordScroll,
@@ -75,6 +77,18 @@ const waitForZeroSizeNotification = (target: Element) => {
     });
     observer.observe(target);
   });
+};
+
+// Waits for the scroll event so that it is dispatched before the virtualizer starts observing
+const scrollBeforeMount = (scroller: HTMLElement, offset: number) => {
+  const scrolled = new Promise<void>((resolve) => {
+    (scroller === document.scrollingElement
+      ? window
+      : scroller
+    ).addEventListener("scroll", () => resolve(), { once: true });
+  });
+  scroller.scrollTop = offset;
+  return scrolled;
 };
 
 it("display: none (Virtualizer)", async () => {
@@ -187,6 +201,94 @@ it("detached and reattached viewport", async () => {
   await expect
     .poll(() => root.textContent)
     .toContain(`item-${Math.floor(viewport.scrollTop / ITEM_SIZE)}`);
+});
+
+it("scrolled before observing (Virtualizer)", async () => {
+  const ITEM_SIZE = 30;
+  const SCROLL = 5000;
+  // A spacer gives the scroll height before the virtualizer mounts
+  const root = flushSync(() =>
+    render(
+      <div style={{ height: 400, overflowY: "auto" }}>
+        <div style={{ height: items.length * ITEM_SIZE }} />
+      </div>,
+    ),
+  );
+  const viewport = root.firstElementChild as HTMLElement;
+  await scrollBeforeMount(viewport, SCROLL);
+
+  // The spacer is replaced in one commit, so the offset is kept
+  rerender(
+    root,
+    <div style={{ height: 400, overflowY: "auto" }}>
+      <Virtualizer data={items} itemSize={ITEM_SIZE}>
+        {(i) => (
+          <div key={i} style={{ height: ITEM_SIZE }}>
+            item-{i}
+          </div>
+        )}
+      </Virtualizer>
+    </div>,
+  );
+
+  const { container } = await getVirtualizer(root);
+  await expect
+    .poll(() => findFirstVisibleItem(container, viewport)?.textContent)
+    .toBe(`item-${Math.floor(SCROLL / ITEM_SIZE)}`);
+  expect(viewport.scrollTop).toBe(SCROLL);
+});
+
+it("scrolled before observing (WindowVirtualizer)", async () => {
+  const ITEM_SIZE = 30;
+  const HEADER_SIZE = 500;
+  const SCROLL = 5000;
+  // A spacer gives the scroll height before the virtualizer mounts
+  const root = flushSync(() =>
+    render(<div style={{ height: HEADER_SIZE + items.length * ITEM_SIZE }} />),
+  );
+  await scrollBeforeMount(document.scrollingElement as HTMLElement, SCROLL);
+
+  // The spacer is replaced in one commit, so the offset is kept
+  rerender(
+    root,
+    <>
+      {/* The start offset has to be read along with the scroll offset */}
+      <div style={{ height: HEADER_SIZE }} />
+      <WindowVirtualizer data={items} itemSize={ITEM_SIZE}>
+        {(i) => (
+          <div key={i} style={{ height: ITEM_SIZE }}>
+            item-{i}
+          </div>
+        )}
+      </WindowVirtualizer>
+    </>,
+  );
+
+  const { container, viewport } = await getVirtualizer(root);
+  const containerTop = container.getBoundingClientRect().top + window.scrollY;
+  await expect
+    .poll(() => findFirstVisibleItem(container, viewport)?.textContent)
+    .toBe(`item-${Math.floor((SCROLL - containerTop) / ITEM_SIZE)}`);
+  expect(window.scrollY).toBe(SCROLL);
+});
+
+it("no scroll end is reported on mount", async () => {
+  let scrollEnds = 0;
+  const root = render(
+    <div style={{ height: 400, overflowY: "auto" }}>
+      <Virtualizer data={items} itemSize={30} onScrollEnd={() => scrollEnds++}>
+        {(i) => (
+          <div key={i} style={{ height: 30 }}>
+            item-{i}
+          </div>
+        )}
+      </Virtualizer>
+    </div>,
+  );
+  await expectVirtualized(root, "item-0", `item-${items.length - 1}`);
+  // A scroll end would be reported 150ms after the mount
+  await delay(300);
+  expect(scrollEnds).toBe(0);
 });
 
 it("position: fixed viewport (Virtualizer)", async () => {

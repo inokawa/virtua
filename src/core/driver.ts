@@ -175,7 +175,16 @@ const createScrollObserver = (
   viewport.addEventListener("touchcancel", onTouchEnd, { passive: true });
 
   return {
-    _sync: onScroll,
+    _sync: () => {
+      // The offset may have changed while no scroll event could be observed: before observing, or while the viewport had no box
+      // https://github.com/inokawa/virtua/issues/841
+      // https://github.com/inokawa/virtua/issues/940
+      // https://github.com/inokawa/virtua/issues/1007
+      // https://github.com/inokawa/virtua/issues/1037
+      if (getScrollOffset() !== store.$getScrollOffset()) {
+        onScroll();
+      }
+    },
     _dispose: () => {
       viewport.removeEventListener("scroll", onScroll);
       viewport.removeEventListener("wheel", onWheel);
@@ -325,7 +334,6 @@ export const createContainerDriver = (
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
-  let isViewportDisplayed = true;
 
   const mountedIndexes = new WeakMap<Element, number>();
 
@@ -338,16 +346,8 @@ export const createContainerDriver = (
       if (target === viewportElement) {
         // https://github.com/inokawa/virtua/issues/964
         if (width || height) {
-          if (!isViewportDisplayed) {
-            // Scroll events can be missed while the viewport has no box, so read the offset again when its size is back
-            // https://github.com/inokawa/virtua/issues/841
-            // https://github.com/inokawa/virtua/issues/940
-            scrollObserver!._sync();
-          }
-          isViewportDisplayed = true;
+          scrollObserver!._sync();
           store.$update(ACTION_VIEWPORT_RESIZE, isHorizontal ? width : height);
-        } else {
-          isViewportDisplayed = false;
         }
         // Skip zero-sized rects that may be observed under `display: none` style
       } else if ((target as HTMLElement).offsetParent) {
@@ -444,6 +444,7 @@ export const createWindowDriver = (
       contentRect: { width, height },
     } of entries) {
       if (target === viewportElement) {
+        scrollObserver!._sync();
         // Scrollbar appearance/disappearance changes client size without firing window resize events
         onViewportResize && onViewportResize();
         // Skip zero-sized rects that may be observed under `display: none` style
@@ -598,7 +599,6 @@ export const createContainerGridDriver = (
   let rowScrollObserver: ScrollObserver | undefined;
   let colScrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
-  let isViewportDisplayed = true;
 
   const mountedRowIndexes = new WeakMap<Element, number>();
   const mountedColIndexes = new WeakMap<Element, number>();
@@ -613,18 +613,10 @@ export const createContainerGridDriver = (
       if (target === viewportElement) {
         // https://github.com/inokawa/virtua/issues/964
         if (width || height) {
-          if (!isViewportDisplayed) {
-            // Scroll events can be missed while the viewport has no box, so read the offset again when its size is back
-            // https://github.com/inokawa/virtua/issues/841
-            // https://github.com/inokawa/virtua/issues/940
-            rowScrollObserver!._sync();
-            colScrollObserver!._sync();
-          }
-          isViewportDisplayed = true;
+          rowScrollObserver!._sync();
+          colScrollObserver!._sync();
           rowStore.$update(ACTION_VIEWPORT_RESIZE, height);
           colStore.$update(ACTION_VIEWPORT_RESIZE, width);
-        } else {
-          isViewportDisplayed = false;
         }
         // Skip zero-sized rects that may be observed under `display: none` style
       } else if ((target as HTMLElement).offsetParent) {
