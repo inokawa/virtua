@@ -1,0 +1,1 @@
+import{t as e}from"./iframe-tys-BP9n.js";e();
