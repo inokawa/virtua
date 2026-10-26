@@ -207,6 +207,18 @@ export interface VGridProps<R = number, C = number> extends Omit<
    */
   bufferSize?: number;
   /**
+   * A prop for SSR. If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   *
+   * **Set `ssrColCount` too, as a cell is mounted only when both its row and its column are.**
+   */
+  ssrRowCount?: number;
+  /**
+   * A prop for SSR. If set, the specified amount of columns will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   *
+   * **Set `ssrRowCount` too, as a cell is mounted only when both its row and its column are.**
+   */
+  ssrColCount?: number;
+  /**
    * The gap between the rows and the columns in pixels, which is not included in the sizes. Must not be changed after mount.
    * @defaultValue 0
    */
@@ -360,7 +372,8 @@ export const VGrid = <R = number, C = number>(
 ): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
   const withDefaults = mergeProps({ gap: 0 }, props);
-  const { rows, cols, rowHeight, colWidth, gap } = withDefaults;
+  const { rows, cols, rowHeight, colWidth, ssrRowCount, ssrColCount, gap } =
+    withDefaults;
   const [, others] = splitProps(props, [
     "ref",
     "children",
@@ -376,6 +389,8 @@ export const VGrid = <R = number, C = number>(
     "spans",
     "keepMounted",
     "bufferSize",
+    "ssrRowCount",
+    "ssrColCount",
     "gap",
     "ariaSort",
     "onVerticalScroll",
@@ -394,8 +409,8 @@ export const VGrid = <R = number, C = number>(
     colLayout.$getSizes(props.cols, props.colWidth),
   );
   const spanIndex = createMemo(() => createGridSpanIndex(props.spans));
-  const rowStore = createVirtualStore(rowLayout);
-  const colStore = createVirtualStore(colLayout);
+  const rowStore = createVirtualStore(rowLayout, ssrRowCount);
+  const colStore = createVirtualStore(colLayout, ssrColCount);
   const driver = createContainerGridDriver(
     rowStore,
     colStore,

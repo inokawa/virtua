@@ -5,7 +5,13 @@ import {
   VMasonry,
   WindowVirtualizer,
 } from "../../src/vue/index.js";
-import type { SsrEntry, SsrFixtures, SsrProps } from "../browser/index.js";
+import type {
+  SsrEntry,
+  SsrFixtures,
+  SsrGridProps,
+  SsrMasonryProps,
+  SsrProps,
+} from "../browser/index.js";
 import { onTestFinished } from "vitest";
 import { type FunctionalComponent, createSSRApp } from "vue";
 import { renderToString } from "vue/server-renderer";
@@ -34,12 +40,14 @@ const Window = (props: SsrProps) => (
   </WindowVirtualizer>
 );
 
-const Grid = () => (
+const Grid = (props: SsrGridProps) => (
   <VGrid
     rows={1000}
     rowHeight={40}
     cols={1000}
     colWidth={100}
+    ssrRowCount={props.ssrRowCount}
+    ssrColCount={props.ssrColCount}
     style={{ width: "400px", height: "400px" }}
   >
     {{
@@ -52,9 +60,20 @@ const Grid = () => (
   </VGrid>
 );
 
-const Masonry = () => (
-  <VMasonry lanes={2} data={range(1000)} style={{ height: "400px" }}>
-    {{ default: ({ item }: { item: number }) => <div>item-{item}</div> }}
+const Masonry = (props: SsrMasonryProps) => (
+  <VMasonry
+    data={range(1000)}
+    lanes={4}
+    itemSize={100}
+    ssrCount={props.ssrCount}
+    cache={props.cache}
+    style={{ width: "400px", height: "400px" }}
+  >
+    {{
+      default: ({ item }: { item: number }) => (
+        <div style={{ height: "100px" }}>item-{item}</div>
+      ),
+    }}
   </VMasonry>
 );
 

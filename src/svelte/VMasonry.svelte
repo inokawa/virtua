@@ -37,6 +37,7 @@
     bufferSize,
     keepMounted,
     cache,
+    ssrCount,
     children,
     onscroll,
     onscrollend,
@@ -51,7 +52,7 @@
     itemSize,
     cache,
   );
-  const store = createVirtualStore(layout);
+  const store = createVirtualStore(layout, ssrCount);
   const driver = createContainerDriver(store, layout, false);
   store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
     stateVersion = store.$getStateVersion();

@@ -1,10 +1,20 @@
 <script lang="ts">
   import { range } from "../utils.js";
   import { VMasonry } from "../../src/svelte/index.js";
+  import type { SsrMasonryProps } from "../browser/index.js";
+
+  let { ssrCount, cache }: SsrMasonryProps = $props();
 </script>
 
-<VMasonry lanes={2} data={range(1000)} style="height: 400px;">
+<VMasonry
+  data={range(1000)}
+  lanes={4}
+  itemSize={100}
+  {ssrCount}
+  {cache}
+  style="width: 400px; height: 400px;"
+>
   {#snippet children(item: number)}
-    <div>item-{item}</div>
+    <div style="height: 100px;">item-{item}</div>
   {/snippet}
 </VMasonry>

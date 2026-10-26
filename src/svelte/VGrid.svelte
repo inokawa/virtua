@@ -42,6 +42,8 @@
     spans,
     keepMounted,
     bufferSize,
+    ssrRowCount,
+    ssrColCount,
     gap = 0,
     ariaSort,
     onverticalscroll,
@@ -56,8 +58,8 @@
   let rowSizes = $derived(rowLayout.$getSizes(rows, rowHeight));
   let colSizes = $derived(colLayout.$getSizes(cols, colWidth));
   let spanIndex = $derived(createGridSpanIndex(spans));
-  const rowStore = createVirtualStore(rowLayout);
-  const colStore = createVirtualStore(colLayout);
+  const rowStore = createVirtualStore(rowLayout, ssrRowCount);
+  const colStore = createVirtualStore(colLayout, ssrColCount);
   const driver = createContainerGridDriver(
     rowStore,
     colStore,
