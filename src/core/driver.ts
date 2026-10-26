@@ -470,42 +470,20 @@ export const createWindowDriver = (
       const isRtl =
         isHorizontal && getComputedStyle(viewport).direction === "rtl";
 
-      const calcOffsetToViewport = (
-        node: HTMLElement,
-        viewport: HTMLElement,
-        until: HTMLElement,
-        isHorizontal: boolean,
-        offset: number = 0,
-      ): number => {
-        // TODO calc offset only when it changes (maybe impossible)
-        const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
-        const offsetSum =
-          offset +
-          (isRtl
-            ? viewport.clientWidth - node[offsetKey] - node.offsetWidth
-            : node[offsetKey]);
-
-        const parent = node.offsetParent;
-        if (node === until || !parent) {
-          return offsetSum;
-        }
-
-        return calcOffsetToViewport(
-          parent as HTMLElement,
-          viewport,
-          until,
-          isHorizontal,
-          offsetSum,
-        );
-      };
-
+      const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
+      const body = document.body;
       const baseOffset = (getBaseOffset = () => {
-        return calcOffsetToViewport(
-          container,
-          viewport,
-          document.body,
-          isHorizontal,
-        );
+        // TODO calc offset only when it changes (maybe impossible)
+        let offset = 0;
+        let node: HTMLElement | null = container;
+        while (node) {
+          offset += isRtl
+            ? viewport.clientWidth - node[offsetKey] - node.offsetWidth
+            : node[offsetKey];
+          const parent = node.offsetParent as HTMLElement | null;
+          node = node === body ? NULL : parent;
+        }
+        return offset;
       });
 
       const onWindowResize = (onViewportResize = () => {
