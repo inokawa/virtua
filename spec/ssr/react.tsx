@@ -4,7 +4,13 @@ import {
   VMasonry,
   WindowVirtualizer,
 } from "../../src/react/index.js";
-import type { SsrEntry, SsrFixtures, SsrProps } from "../browser/index.js";
+import type {
+  SsrEntry,
+  SsrFixtures,
+  SsrGridProps,
+  SsrMasonryProps,
+  SsrProps,
+} from "../browser/index.js";
 import { onTestFinished } from "vitest";
 import type { FC } from "react";
 import { hydrateRoot } from "react-dom/client";
@@ -34,21 +40,34 @@ const Window = (props: SsrProps) => (
   </WindowVirtualizer>
 );
 
-const Grid = () => (
+const Grid = (props: SsrGridProps) => (
   <VGrid
     rows={1000}
     rowHeight={40}
     cols={1000}
     colWidth={100}
+    ssrRowCount={props.ssrRowCount}
+    ssrColCount={props.ssrColCount}
     style={{ width: 400, height: 400 }}
   >
     {(rowIndex, colIndex) => <div>{`row-${rowIndex}/col-${colIndex}`}</div>}
   </VGrid>
 );
 
-const Masonry = () => (
-  <VMasonry lanes={2} data={range(1000)} style={{ height: 400 }}>
-    {(d) => <div key={d}>item-{d}</div>}
+const Masonry = (props: SsrMasonryProps) => (
+  <VMasonry
+    data={range(1000)}
+    lanes={4}
+    itemSize={100}
+    ssrCount={props.ssrCount}
+    cache={props.cache}
+    style={{ width: 400, height: 400 }}
+  >
+    {(d) => (
+      <div key={d} style={{ height: 100 }}>
+        item-{d}
+      </div>
+    )}
   </VMasonry>
 );
 

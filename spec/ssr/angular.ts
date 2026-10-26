@@ -21,10 +21,18 @@ import {
   WindowVirtualizer,
 } from "../../src/angular/index.js";
 import { onTestFinished } from "vitest";
-import type { SsrEntry, SsrFixtures, SsrProps } from "../browser/index.js";
+import type {
+  SsrEntry,
+  SsrFixtures,
+  SsrGridProps,
+  SsrMasonryProps,
+  SsrProps,
+} from "../browser/index.js";
 import { range } from "../utils.js";
 
-const SSR_PROPS = new InjectionToken<SsrProps>("ssrProps");
+const SSR_PROPS = new InjectionToken<SsrFixtures[keyof SsrFixtures]>(
+  "ssrProps",
+);
 
 @Component({
   selector: "ssr-vlist",
@@ -44,7 +52,7 @@ const SSR_PROPS = new InjectionToken<SsrProps>("ssrProps");
   `,
 })
 class SsrVListHost {
-  protected readonly props = inject(SSR_PROPS);
+  protected readonly props = inject(SSR_PROPS) as SsrProps;
   protected readonly data = range(1000);
 }
 
@@ -65,7 +73,7 @@ class SsrVListHost {
   `,
 })
 class SsrWindowVirtualizerHost {
-  protected readonly props = inject(SSR_PROPS);
+  protected readonly props = inject(SSR_PROPS) as SsrProps;
   protected readonly data = range(1000);
 }
 
@@ -78,6 +86,8 @@ class SsrWindowVirtualizerHost {
       [rowHeight]="40"
       [cols]="1000"
       [colWidth]="100"
+      [ssrRowCount]="props.ssrRowCount"
+      [ssrColCount]="props.ssrColCount"
       style="width: 400px; height: 400px"
     >
       <ng-template let-cell="cell"
@@ -86,29 +96,39 @@ class SsrWindowVirtualizerHost {
     </virtua-vgrid>
   `,
 })
-class SsrVGridHost {}
+class SsrVGridHost {
+  protected readonly props = inject(SSR_PROPS) as SsrGridProps;
+}
 
 @Component({
   selector: "ssr-vmasonry",
   imports: [VMasonry],
   template: `
-    <virtua-vmasonry [lanes]="2" [data]="data" style="height: 400px">
+    <virtua-vmasonry
+      [data]="data"
+      [lanes]="4"
+      [itemSize]="100"
+      [ssrCount]="props.ssrCount"
+      [cache]="props.cache"
+      style="width: 400px; height: 400px"
+    >
       <ng-template let-item
-        ><div>item-{{ item }}</div></ng-template
+        ><div style="height: 100px">item-{{ item }}</div></ng-template
       >
     </virtua-vmasonry>
   `,
 })
 class SsrVMasonryHost {
+  protected readonly props = inject(SSR_PROPS) as SsrMasonryProps;
   protected readonly data = range(1000);
 }
 
-const fixtures = {
+const fixtures: Record<keyof SsrFixtures, Type<unknown>> = {
   list: SsrVListHost,
   window: SsrWindowVirtualizerHost,
   grid: SsrVGridHost,
   masonry: SsrVMasonryHost,
-} satisfies Record<keyof SsrFixtures, Type<unknown>>;
+};
 
 export const render: SsrEntry["render"] = async (name, props) => {
   const host = fixtures[name];

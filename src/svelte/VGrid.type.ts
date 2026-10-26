@@ -88,6 +88,18 @@ export interface VGridProps<R = number, C = number> extends Omit<
    */
   bufferSize?: number;
   /**
+   * A prop for SSR. If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   *
+   * **Set `ssrColCount` too, as a cell is mounted only when both its row and its column are.**
+   */
+  ssrRowCount?: number;
+  /**
+   * A prop for SSR. If set, the specified amount of columns will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   *
+   * **Set `ssrRowCount` too, as a cell is mounted only when both its row and its column are.**
+   */
+  ssrColCount?: number;
+  /**
    * The gap between the rows and the columns in pixels, which is not included in the sizes. Must not be changed after mount.
    * @defaultValue 0
    */

@@ -199,6 +199,18 @@ export interface VGridProps<R = number, C = number> extends Omit<
    */
   bufferSize?: number;
   /**
+   * A prop for SSR. If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   *
+   * **Set `ssrColCount` too, as a cell is mounted only when both its row and its column are.**
+   */
+  ssrRowCount?: number;
+  /**
+   * A prop for SSR. If set, the specified amount of columns will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   *
+   * **Set `ssrRowCount` too, as a cell is mounted only when both its row and its column are.**
+   */
+  ssrColCount?: number;
+  /**
    * The gap between the rows and the columns in pixels, which is not included in the sizes. Must not be changed after mount.
    * @defaultValue 0
    */
@@ -373,6 +385,8 @@ export const VGrid = /*#__PURE__*/ forwardRef<
       spans,
       keepMounted,
       bufferSize,
+      ssrRowCount,
+      ssrColCount,
       gap = 0,
       ariaSort,
       onVerticalScroll: onVerticalScrollProp,
@@ -396,8 +410,8 @@ export const VGrid = /*#__PURE__*/ forwardRef<
     const [rowStore, colStore, rowLayout, colLayout, driver] = useStatic(() => {
       const _rowLayout = createGridLayout(rows, rowHeight, gap);
       const _colLayout = createGridLayout(cols, colWidth, gap);
-      const _rowStore = createVirtualStore(_rowLayout);
-      const _colStore = createVirtualStore(_colLayout);
+      const _rowStore = createVirtualStore(_rowLayout, ssrRowCount);
+      const _colStore = createVirtualStore(_colLayout, ssrColCount);
       return [
         _rowStore,
         _colStore,

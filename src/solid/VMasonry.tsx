@@ -172,6 +172,12 @@ export interface VMasonryProps<T> extends ViewportComponentAttributes {
    */
   cache?: CacheSnapshot;
   /**
+   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   *
+   * **The items are hidden until they are measured in the browser, so also pass their sizes with `cache` to show them on the server.**
+   */
+  ssrCount?: number;
+  /**
    * Callback invoked whenever scroll offset changes.
    * @param offset Current scrollTop.
    */
@@ -191,7 +197,7 @@ export interface VMasonryProps<T> extends ViewportComponentAttributes {
  */
 export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const { itemSize, cache } = props;
+  const { itemSize, cache, ssrCount } = props;
   const [, others] = splitProps(props, [
     "ref",
     "data",
@@ -202,6 +208,7 @@ export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
     "bufferSize",
     "keepMounted",
     "cache",
+    "ssrCount",
     "onScroll",
     "onScrollEnd",
     "onResize",
@@ -215,7 +222,7 @@ export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
     itemSize,
     cache,
   );
-  const store = createVirtualStore(layout);
+  const store = createVirtualStore(layout, ssrCount);
   const driver = createContainerDriver(store, layout, false);
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());

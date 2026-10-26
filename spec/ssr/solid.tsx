@@ -7,7 +7,13 @@ import {
   VMasonry,
   WindowVirtualizer,
 } from "../../src/solid/index.js";
-import type { SsrEntry, SsrFixtures, SsrProps } from "../browser/index.js";
+import type {
+  SsrEntry,
+  SsrFixtures,
+  SsrGridProps,
+  SsrMasonryProps,
+  SsrProps,
+} from "../browser/index.js";
 import { onTestFinished } from "vitest";
 import type { Component } from "solid-js";
 import {
@@ -40,12 +46,14 @@ const Window = (props: SsrProps) => (
   </WindowVirtualizer>
 );
 
-const Grid = () => (
+const Grid = (props: SsrGridProps) => (
   <VGrid
     rows={1000}
     rowHeight={40}
     cols={1000}
     colWidth={100}
+    ssrRowCount={props.ssrRowCount}
+    ssrColCount={props.ssrColCount}
     style={{ width: "400px", height: "400px" }}
   >
     {(_row, _col, { rowIndex, colIndex }) => (
@@ -54,9 +62,16 @@ const Grid = () => (
   </VGrid>
 );
 
-const Masonry = () => (
-  <VMasonry lanes={2} data={range(1000)} style={{ height: "400px" }}>
-    {(d) => <div>item-{d}</div>}
+const Masonry = (props: SsrMasonryProps) => (
+  <VMasonry
+    data={range(1000)}
+    lanes={4}
+    itemSize={100}
+    ssrCount={props.ssrCount}
+    cache={props.cache}
+    style={{ width: "400px", height: "400px" }}
+  >
+    {(d) => <div style={{ height: "100px" }}>item-{d}</div>}
   </VMasonry>
 );
 

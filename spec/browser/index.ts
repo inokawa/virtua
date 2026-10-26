@@ -1,5 +1,6 @@
 import { expect, onTestFinished } from "vitest";
 import { server } from "vitest/browser";
+import type { CacheSnapshot } from "../../src/core/index.js";
 
 // Only what the tests vary crosses the command boundary
 export type SsrProps = {
@@ -8,22 +9,32 @@ export type SsrProps = {
   horizontal?: boolean;
 };
 
+export type SsrGridProps = {
+  ssrRowCount?: number;
+  ssrColCount?: number;
+};
+
+export type SsrMasonryProps = {
+  ssrCount?: number;
+  cache?: CacheSnapshot;
+};
+
 export type SsrFixtures = {
   list: SsrProps;
   window: SsrProps;
-  grid: undefined;
-  masonry: undefined;
+  grid: SsrGridProps;
+  masonry: SsrMasonryProps;
 };
 
 export type SsrEntry = {
   render: (
     name: keyof SsrFixtures,
-    props?: SsrFixtures[keyof SsrFixtures],
+    props: SsrFixtures[keyof SsrFixtures],
   ) => string | Promise<string>;
   hydrate: (
     root: HTMLElement,
     name: keyof SsrFixtures,
-    props?: SsrFixtures[keyof SsrFixtures],
+    props: SsrFixtures[keyof SsrFixtures],
   ) => void;
 };
 
@@ -32,9 +43,7 @@ declare module "vitest/internal/browser" {
     // Defined in vitest.config.ts, because only the node side can compile for the server
     ssrRender: <K extends keyof SsrFixtures>(
       name: K,
-      ...props: undefined extends SsrFixtures[K]
-        ? [props?: SsrFixtures[K]]
-        : [props: SsrFixtures[K]]
+      props: SsrFixtures[K],
     ) => Promise<string>;
   }
 }
@@ -248,21 +257,85 @@ export const expectHydrated = async (
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 };
 
-export const expectEmptyHydrated = async (
+// The range for SSR is kept until the first scroll, so the client is told to be live by nudging the scroll until it renders more than the server did.
+// The server has to render fewer than the viewport fits
+const expectSsrRangeReleased = (
+  viewport: HTMLElement,
+  container: HTMLElement,
+  ssrCount: number,
+) =>
+  expect
+    .poll(() => {
+      viewport.scrollTop = viewport.scrollTop === 1 ? 2 : 1;
+      return container.childElementCount;
+    })
+    .toBeGreaterThan(ssrCount);
+
+export const expectGridHydrated = async (
   root: Element,
-  first: string,
-  last: string,
+  ssrRowCount: number,
+  ssrColCount: number,
   hydrate: () => void,
 ) => {
-  const { container } = await getVirtualizer(root);
-  expect(container.childElementCount).toEqual(0);
+  expect(root.textContent).toContain(
+    `row-${ssrRowCount - 1}/col-${ssrColCount - 1}`,
+  );
+  expect(root.textContent).not.toContain(`row-${ssrRowCount}/col-0`);
+  expect(root.textContent).not.toContain(`row-0/col-${ssrColCount}`);
   const ssrNodes = [...root.querySelectorAll("*")];
+  const { viewport, container } = await getVirtualizer(root);
 
   hydrate();
 
-  await expectVirtualized(root, first, last);
+  // The markup of the cells is final on the server, so nothing is rewritten by the hydration
+  await expectSsrRangeReleased(viewport, container, ssrRowCount);
+  // ...keeping the server rendered elements
   for (const node of ssrNodes) {
     expect(root.contains(node)).toBe(true);
   }
-  await expectVirtualizedAndScrollable(root, first, last);
+
+  await expectVirtualizedAndScrollable(root, "row-0/col-0", "row-999/col-999");
+};
+
+export const expectMasonryHydrated = async (
+  root: Element,
+  ssrCount: number,
+  lanes: number,
+  hydrate: () => void,
+) => {
+  expect(root.textContent).toContain(`item-${ssrCount - 1}`);
+  expect(root.textContent).not.toContain(`item-${ssrCount}`);
+  const ssrNodes = [...root.querySelectorAll("*")];
+  const { viewport, container } = await getVirtualizer(root);
+  const ssrItems = [...container.children];
+  // The items are placed into the lanes and visible, as their sizes are restored from the cache
+  for (const item of ssrItems) {
+    expect(getComputedStyle(item).visibility).toBe("visible");
+  }
+  expect(
+    new Set(ssrItems.map((item) => item.getBoundingClientRect().left)).size,
+  ).toBe(lanes);
+  // Relative to the container, which moves with the nudge below
+  const getOffset = (item: Element) => {
+    const rect = item.getBoundingClientRect();
+    const base = container.getBoundingClientRect();
+    return [rect.top - base.top, rect.left - base.left] as const;
+  };
+  const ssrOffsets = ssrItems.map(getOffset);
+
+  hydrate();
+
+  // The sizes are the same as the cache, so nothing is rewritten by the hydration
+  await expectSsrRangeReleased(viewport, container, ssrCount);
+  // ...keeping the server rendered elements
+  for (const node of ssrNodes) {
+    expect(root.contains(node)).toBe(true);
+  }
+  // ...without moving them
+  for (const [i, item] of ssrItems.entries()) {
+    await expectPosition(() => getOffset(item)[0] - ssrOffsets[i]![0], 0);
+    await expectPosition(() => getOffset(item)[1] - ssrOffsets[i]![1], 0);
+  }
+
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 };

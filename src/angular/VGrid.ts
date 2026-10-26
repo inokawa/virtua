@@ -378,6 +378,18 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
    */
   readonly bufferSize = input<number>();
   /**
+   * A prop for SSR. If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   *
+   * **Set `ssrColCount` too, as a cell is mounted only when both its row and its column are.**
+   */
+  readonly ssrRowCount = input<number>();
+  /**
+   * A prop for SSR. If set, the specified amount of columns will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   *
+   * **Set `ssrRowCount` too, as a cell is mounted only when both its row and its column are.**
+   */
+  readonly ssrColCount = input<number>();
+  /**
    * The gap between the rows and the columns in pixels, which is not included in the sizes. Must not be changed after mount.
    * @defaultValue 0
    */
@@ -568,8 +580,14 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
       this.colWidth(),
       gap,
     ));
-    const rowStore = (this._rowStore = createVirtualStore(rowLayout));
-    const colStore = (this._colStore = createVirtualStore(colLayout));
+    const rowStore = (this._rowStore = createVirtualStore(
+      rowLayout,
+      this.ssrRowCount(),
+    ));
+    const colStore = (this._colStore = createVirtualStore(
+      colLayout,
+      this.ssrColCount(),
+    ));
     this.driver = createContainerGridDriver(
       rowStore,
       colStore,

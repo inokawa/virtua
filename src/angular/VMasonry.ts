@@ -217,6 +217,12 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
    * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
    */
   readonly cacheProp = input<CacheSnapshot>(undefined, { alias: "cache" });
+  /**
+   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   *
+   * **The items are hidden until they are measured in the browser, so also pass their sizes with `cache` to show them on the server.**
+   */
+  readonly ssrCount = input<number>();
 
   /**
    * Emitted whenever scroll offset changes. The value is current scrollTop.
@@ -374,7 +380,7 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
       this.itemSize(),
       this.cacheProp(),
     ));
-    const store = (this._store = createVirtualStore(layout));
+    const store = (this._store = createVirtualStore(layout, this.ssrCount()));
     this.driver = createContainerDriver(store, layout, false);
     store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
       this._stateVersion.set(store.$getStateVersion());
