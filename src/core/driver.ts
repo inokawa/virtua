@@ -477,13 +477,13 @@ export const createWindowDriver = (
         let offset = 0;
         let node: HTMLElement | null = container;
         while (node) {
-          offset += isRtl
-            ? viewport.clientWidth - node[offsetKey] - node.offsetWidth
-            : node[offsetKey];
-          const parent = node.offsetParent as HTMLElement | null;
-          node = node === body ? NULL : parent;
+          offset += node[offsetKey];
+          node =
+            node === body ? NULL : (node.offsetParent as HTMLElement | null);
         }
-        return offset;
+        return isRtl
+          ? viewport.clientWidth - offset - container.offsetWidth
+          : offset;
       });
 
       const onWindowResize = (onViewportResize = () => {
