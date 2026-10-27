@@ -411,7 +411,7 @@ export const App = () => {
 
 ### More examples
 
-See [demo](https://inokawa.github.io/virtua/) and [its source code](./stories).
+See [demo with Storybook](https://inokawa.github.io/virtua/) and [its source code](./stories).
 
 ## Documentation
 
