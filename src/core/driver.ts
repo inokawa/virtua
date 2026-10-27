@@ -212,43 +212,44 @@ const createScrollObserver = (
     },
     _fixScrollJump: () => {
       const [jump, shift] = store._flushJump();
-      if (!jump) return;
+      if (jump) {
+        if (stillMomentumScrolling && onMomentumJump) {
+          onMomentumJump();
+        }
+        stillMomentumScrolling = false;
 
-      if (stillMomentumScrolling && onMomentumJump) {
-        onMomentumJump();
-      }
-      stillMomentumScrolling = false;
+        const from = store.$getScrollOffset();
+        const to = from + jump;
+        const end =
+          store.$getStartSpacerSize() +
+          store.$getTotalSize() -
+          store.$getViewportSize();
+        if (to <= 0 || to >= end || from >= end) {
+          // Use absolute position at the edges not to exceed scrollable bounds
+          // https://github.com/inokawa/virtua/discussions/475
+          // https://github.com/inokawa/virtua/issues/983
+          scrollTo(normalizeScrollOffset(to));
+        } else {
+          // Use relative position not to overwrite concurrent scrolling
+          // https://github.com/inokawa/virtua/issues/898
+          scroller.scrollBy({
+            [scrollToKey]: normalizeScrollOffset(jump),
+            behavior: "instant",
+          });
+        }
 
-      const from = store.$getScrollOffset();
-      const to = from + jump;
-      const end =
-        store.$getStartSpacerSize() +
-        store.$getTotalSize() -
-        store.$getViewportSize();
-      if (to <= 0 || to >= end || from >= end) {
-        // Use absolute position at the edges not to exceed scrollable bounds
-        // https://github.com/inokawa/virtua/discussions/475
-        // https://github.com/inokawa/virtua/issues/983
-        scrollTo(normalizeScrollOffset(to));
-      } else {
-        // Use relative position not to overwrite concurrent scrolling
-        // https://github.com/inokawa/virtua/issues/898
-        scroller.scrollBy({
-          [scrollToKey]: normalizeScrollOffset(jump),
-          behavior: "instant",
-        });
-      }
+        if (shift) {
+          // https://github.com/inokawa/virtua/issues/357
+          cancelScroll && cancelScroll();
 
-      if (shift) {
-        // https://github.com/inokawa/virtua/issues/357
-        cancelScroll && cancelScroll();
-
-        if (store.$getViewportSize() > store.$getTotalSize()) {
-          // In this case applying jump may not cause scroll.
-          // Current logic expects scroll event occurs after applying jump so we dispatch it manually.
-          store.$update(ACTION_SCROLL, getScrollOffset());
+          if (store.$getViewportSize() > store.$getTotalSize()) {
+            // In this case applying jump may not cause scroll.
+            // Current logic expects scroll event occurs after applying jump so we dispatch it manually.
+            store.$update(ACTION_SCROLL, getScrollOffset());
+          }
         }
       }
+      return shift;
     },
     _scroll: (
       getTargetOffset: () => number,
@@ -351,11 +352,14 @@ export const createContainerDriver = (
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
+  let length = 0;
 
-  const mountedIndexes = new WeakMap<Element, number>();
+  const mountedIndexes = new Map<HTMLElement, number>();
+  const reportedIndexes = new WeakMap<Element, number | undefined>();
 
   const resizeObserver = createResizeObserver((entries) => {
     const resizes: ItemResize[] = [];
+    const reindexed: ItemResize[] = [];
     for (const {
       target,
       contentRect: { width, height },
@@ -368,14 +372,21 @@ export const createContainerDriver = (
         }
         // Skip zero-sized rects that may be observed under `display: none` style
       } else if ((target as HTMLElement).offsetParent) {
-        const index = mountedIndexes.get(target);
+        const index = mountedIndexes.get(target as HTMLElement);
+        // https://github.com/inokawa/virtua/issues/417
+        // https://github.com/inokawa/virtua/issues/885
+        const prevIndex = reportedIndexes.get(target);
+        reportedIndexes.set(target, index);
         const size = isHorizontal ? width : height;
         if (index != NULL && !layout.$isSizeEqual(index, size)) {
-          resizes.push([index, size]);
+          (prevIndex != NULL && prevIndex !== index ? reindexed : resizes).push(
+            [index, size],
+          );
         }
       }
     }
 
+    store.$update(ACTION_ITEM_RESIZE, reindexed, true);
     store.$update(ACTION_ITEM_RESIZE, resizes);
   });
 
@@ -431,7 +442,14 @@ export const createContainerDriver = (
       }
     },
     $effect() {
-      scrollObserver && scrollObserver._fixScrollJump();
+      const isShifting = scrollObserver && scrollObserver._fixScrollJump();
+      if (length !== (length = layout.$getLength()) && isShifting) {
+        // https://github.com/inokawa/virtua/issues/284
+        mountedIndexes.forEach((_, el) => {
+          resizeObserver._unobserve(el);
+          resizeObserver._observe(el);
+        });
+      }
     },
     $getBaseOffset: store.$getStartSpacerSize,
   };
@@ -451,11 +469,14 @@ export const createWindowDriver = (
   let getBaseOffset: (() => number) | undefined;
   let onViewportResize: (() => void) | undefined;
   let initialized = createPromise<boolean>();
+  let length = 0;
 
-  const mountedIndexes = new WeakMap<Element, number>();
+  const mountedIndexes = new Map<HTMLElement, number>();
+  const reportedIndexes = new WeakMap<Element, number | undefined>();
 
   const resizeObserver = createResizeObserver((entries) => {
     const resizes: ItemResize[] = [];
+    const reindexed: ItemResize[] = [];
     for (const {
       target,
       contentRect: { width, height },
@@ -466,14 +487,21 @@ export const createWindowDriver = (
         onViewportResize && onViewportResize();
         // Skip zero-sized rects that may be observed under `display: none` style
       } else if ((target as HTMLElement).offsetParent) {
-        const index = mountedIndexes.get(target);
+        const index = mountedIndexes.get(target as HTMLElement);
+        // https://github.com/inokawa/virtua/issues/417
+        // https://github.com/inokawa/virtua/issues/885
+        const prevIndex = reportedIndexes.get(target);
+        reportedIndexes.set(target, index);
         const size = isHorizontal ? width : height;
         if (index != NULL && !layout.$isSizeEqual(index, size)) {
-          resizes.push([index, size]);
+          (prevIndex != NULL && prevIndex !== index ? reindexed : resizes).push(
+            [index, size],
+          );
         }
       }
     }
 
+    store.$update(ACTION_ITEM_RESIZE, reindexed, true);
     store.$update(ACTION_ITEM_RESIZE, resizes);
   });
 
@@ -557,7 +585,14 @@ export const createWindowDriver = (
       }
     },
     $effect() {
-      scrollObserver && scrollObserver._fixScrollJump();
+      const isShifting = scrollObserver && scrollObserver._fixScrollJump();
+      if (length !== (length = layout.$getLength()) && isShifting) {
+        // https://github.com/inokawa/virtua/issues/284
+        mountedIndexes.forEach((_, el) => {
+          resizeObserver._unobserve(el);
+          resizeObserver._observe(el);
+        });
+      }
     },
     $getBaseOffset() {
       // Calculate target scroll position including container's offset from document

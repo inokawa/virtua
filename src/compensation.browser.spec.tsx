@@ -1790,3 +1790,417 @@ describe("children change", () => {
     await expectVirtualized(root, "item-0", `item-${MANY_ITEM_COUNT - 1}`);
   });
 });
+
+describe("items change", () => {
+  const HEIGHTS = [20, 40, 80, 77];
+  const heightOf = (id: number) => HEIGHTS[id % HEIGHTS.length]!;
+  const VIEWPORT_SIZE = 400;
+  const initial = range(1000);
+
+  const List = ({ items, shift }: { items: number[]; shift?: boolean }) => (
+    <div style={{ height: VIEWPORT_SIZE, overflowY: "auto" }}>
+      <Virtualizer data={items} shift={shift}>
+        {(id) => (
+          <div key={id} style={{ height: heightOf(id) }}>
+            item-{id}
+          </div>
+        )}
+      </Virtualizer>
+    </div>
+  );
+
+  const expectContiguous = (container: HTMLElement) => {
+    const items = Array.from(
+      container.children as HTMLCollectionOf<HTMLElement>,
+    );
+    for (let i = 0; i < items.length - 1; i++) {
+      expect(
+        items[i + 1]!.offsetTop,
+        `${items[i]!.textContent} -> ${items[i + 1]!.textContent}`,
+      ).toBe(items[i]!.offsetTop + items[i]!.offsetHeight);
+    }
+  };
+
+  const idOf = (item: Element) =>
+    Number(item.textContent!.slice("item-".length));
+
+  it("insert just above the viewport with shift keeps the visible items", async () => {
+    const root = render(<List items={initial} shift />);
+    const { viewport, container } = await getVirtualizer(root);
+    await settle(viewport, container);
+    viewport.scrollTop = 2000;
+    await settle(viewport, container);
+    const item = findFirstVisibleItem(container, viewport)!;
+    expect(item.previousElementSibling).not.toBeNull();
+    const top = relativeTop(viewport, item);
+
+    rerender(
+      root,
+      <List items={initial.toSpliced(idOf(item) - 1, 0, 1002)} shift />,
+    );
+    await settle(viewport, container);
+    await expectPosition(() => relativeTop(viewport, item), top);
+    expectContiguous(container);
+
+    viewport.scrollTop -= 120;
+    await settle(viewport, container);
+    expectContiguous(container);
+  });
+
+  it("remove just above the viewport with shift keeps the visible items", async () => {
+    const root = render(<List items={initial} shift />);
+    const { viewport, container } = await getVirtualizer(root);
+    await settle(viewport, container);
+    viewport.scrollTop = 2000;
+    await settle(viewport, container);
+    const item = findFirstVisibleItem(container, viewport)!;
+    expect(item.previousElementSibling).not.toBeNull();
+    const top = relativeTop(viewport, item);
+
+    rerender(root, <List items={initial.toSpliced(idOf(item) - 1, 1)} shift />);
+    await settle(viewport, container);
+    await expectPosition(() => relativeTop(viewport, item), top);
+    expectContiguous(container);
+  });
+
+  it("append with shift keeps the placements of the visible items", async () => {
+    const root = render(<List items={initial} shift />);
+    const { viewport, container } = await getVirtualizer(root);
+    await settle(viewport, container);
+    viewport.scrollTop = 2000;
+    await settle(viewport, container);
+
+    rerender(root, <List items={[...initial, 1000]} shift />);
+    await settle(viewport, container);
+    expectContiguous(container);
+  });
+
+  it("insert in the middle of the visible items with shift places the items contiguously", async () => {
+    const root = render(<List items={initial} shift />);
+    const { viewport, container } = await getVirtualizer(root);
+    await settle(viewport, container);
+    viewport.scrollTop = 2000;
+    await settle(viewport, container);
+    const at = idOf(findFirstVisibleItem(container, viewport)!) + 2;
+
+    rerender(root, <List items={initial.toSpliced(at, 0, 1002, 1003)} shift />);
+    await settle(viewport, container);
+    expectContiguous(container);
+  });
+
+  it("remove from the middle of the visible items with shift places the items contiguously", async () => {
+    const root = render(<List items={initial} shift />);
+    const { viewport, container } = await getVirtualizer(root);
+    await settle(viewport, container);
+    viewport.scrollTop = 2000;
+    await settle(viewport, container);
+    const at = idOf(findFirstVisibleItem(container, viewport)!) + 2;
+
+    rerender(root, <List items={initial.toSpliced(at, 2)} shift />);
+    await settle(viewport, container);
+    expectContiguous(container);
+  });
+
+  it("prepend with shift and the index as key measures the added items", async () => {
+    const IndexKeyedList = ({ items }: { items: number[] }) => (
+      <div style={{ height: VIEWPORT_SIZE, overflowY: "auto" }}>
+        <Virtualizer data={items} shift>
+          {(id, i) => (
+            <div key={i} style={{ height: heightOf(id) }}>
+              item-{id}
+            </div>
+          )}
+        </Virtualizer>
+      </div>
+    );
+    const root = render(<IndexKeyedList items={initial} />);
+    const { viewport, container } = await getVirtualizer(root);
+    await settle(viewport, container);
+    const top = relativeTop(viewport, getItem(container, "item-0")!);
+
+    // The added items have the same sizes as the items which were at the same indexes
+    const added = [1000, 1001, 1002, 1003];
+    rerender(root, <IndexKeyedList items={[...added, ...initial]} />);
+    await settle(viewport, container);
+
+    await expectPosition(
+      () => viewport.scrollTop,
+      added.reduce((acc, id) => acc + heightOf(id), 0),
+    );
+    await expectPosition(
+      () => relativeTop(viewport, getItem(container, "item-0")!),
+      top,
+    );
+    expectContiguous(container);
+  });
+
+  it("remove all the visible items lets the items below fill their place", async () => {
+    const root = render(<List items={initial} />);
+    const { viewport, container } = await getVirtualizer(root);
+    await settle(viewport, container);
+    viewport.scrollTop = 2000;
+    await settle(viewport, container);
+    const first = idOf(findFirstVisibleItem(container, viewport)!);
+    const last = idOf(findLastVisibleItem(container, viewport)!);
+    const top = relativeTop(viewport, getItem(container, `item-${first}`)!);
+    const below = getItem(container, `item-${last + 1}`)!;
+
+    rerender(
+      root,
+      <List items={initial.filter((id) => id < first || id > last)} />,
+    );
+    await settle(viewport, container);
+    await expectPosition(() => relativeTop(viewport, below), top);
+    expectContiguous(container);
+  });
+
+  it("remove an item just above the viewport shrunk to zero keeps the visible items", async () => {
+    const CollapsibleList = ({
+      items,
+      collapsed,
+    }: {
+      items: number[];
+      collapsed?: number;
+    }) => (
+      <div style={{ height: VIEWPORT_SIZE, overflowY: "auto" }}>
+        <Virtualizer data={items}>
+          {(id) => (
+            <div
+              key={id}
+              style={{ height: id === collapsed ? 0 : heightOf(id) }}
+            >
+              item-{id}
+            </div>
+          )}
+        </Virtualizer>
+      </div>
+    );
+    const root = render(<CollapsibleList items={initial} />);
+    const { viewport, container } = await getVirtualizer(root);
+    await settle(viewport, container);
+    viewport.scrollTop = 2000;
+    await settle(viewport, container);
+    const item = findFirstVisibleItem(container, viewport)!;
+    const collapsed = idOf(item) - 1;
+    expect(getItem(container, `item-${collapsed}`)).toBeDefined();
+
+    rerender(root, <CollapsibleList items={initial} collapsed={collapsed} />);
+    await settle(viewport, container);
+    const top = relativeTop(viewport, item);
+
+    rerender(root, <CollapsibleList items={initial.toSpliced(collapsed, 1)} />);
+    await settle(viewport, container);
+    await expectPosition(() => relativeTop(viewport, item), top);
+    expectContiguous(container);
+  });
+
+  it("remove a partially visible item shrunk to zero keeps the items below it", async () => {
+    const CollapsibleList = ({
+      items,
+      collapsed,
+    }: {
+      items: number[];
+      collapsed?: number;
+    }) => (
+      <div style={{ height: VIEWPORT_SIZE, overflowY: "auto" }}>
+        <Virtualizer data={items}>
+          {(id) => (
+            <div
+              key={id}
+              style={{ height: id === collapsed ? 0 : heightOf(id) }}
+            >
+              item-{id}
+            </div>
+          )}
+        </Virtualizer>
+      </div>
+    );
+    const root = render(<CollapsibleList items={initial} />);
+    const { viewport, container } = await getVirtualizer(root);
+    await settle(viewport, container);
+    viewport.scrollTop = 2000;
+    await settle(viewport, container);
+    const collapsed = idOf(findFirstVisibleItem(container, viewport)!);
+    const below = getItem(container, `item-${collapsed + 1}`)!;
+
+    rerender(root, <CollapsibleList items={initial} collapsed={collapsed} />);
+    await settle(viewport, container);
+    const top = relativeTop(viewport, below);
+
+    rerender(root, <CollapsibleList items={initial.toSpliced(collapsed, 1)} />);
+    await settle(viewport, container);
+    await expectPosition(() => relativeTop(viewport, below), top);
+    expectContiguous(container);
+  });
+
+  it("prepend at the start reveals the added items", async () => {
+    const root = render(<List items={initial} />);
+    const { viewport, container } = await getVirtualizer(root);
+    await settle(viewport, container);
+
+    rerender(root, <List items={[1002, 1003, ...initial]} />);
+    await settle(viewport, container);
+    await expectPosition(() => viewport.scrollTop, 0);
+    await expectPosition(
+      () => relativeTop(viewport, getItem(container, "item-1002")!),
+      0,
+    );
+    expectContiguous(container);
+  });
+
+  it("replace all the items with new ones keeps the item at the start of the viewport", async () => {
+    const root = render(<List items={initial} />);
+    const { viewport, container } = await getVirtualizer(root);
+    await settle(viewport, container);
+    viewport.scrollTop = 2000;
+    await settle(viewport, container);
+    const item = findFirstVisibleItem(container, viewport)!;
+    const top = relativeTop(viewport, item);
+
+    // The new items differ in size from the ones at the same indexes
+    const offset = 2001;
+    rerender(root, <List items={initial.map((id) => id + offset)} />);
+    await settle(viewport, container);
+    await expectPosition(
+      () =>
+        relativeTop(
+          viewport,
+          getItem(container, `item-${idOf(item) + offset}`)!,
+        ),
+      top,
+    );
+    expectContiguous(container);
+  });
+
+  it("insert in the viewport keeps the items above it", async () => {
+    const root = render(<List items={initial} />);
+    const { viewport, container } = await getVirtualizer(root);
+    await settle(viewport, container);
+    viewport.scrollTop = 2000;
+    await settle(viewport, container);
+    const item = findFirstVisibleItem(container, viewport)!;
+    const top = relativeTop(viewport, item);
+
+    rerender(
+      root,
+      <List items={initial.toSpliced(idOf(item) + 2, 0, 1002, 1003)} />,
+    );
+    await settle(viewport, container);
+    await expectPosition(() => relativeTop(viewport, item), top);
+    expectContiguous(container);
+  });
+
+  it("move a visible item below the other visible items keeps the items above it", async () => {
+    const root = render(<List items={initial} />);
+    const { viewport, container } = await getVirtualizer(root);
+    await settle(viewport, container);
+    viewport.scrollTop = 2000;
+    await settle(viewport, container);
+    const item = findFirstVisibleItem(container, viewport)!;
+    const top = relativeTop(viewport, item);
+    const from = idOf(item) + 1;
+    expect(
+      relativeTop(viewport, getItem(container, `item-${from + 3}`)!),
+    ).toBeLessThan(VIEWPORT_SIZE);
+
+    rerender(
+      root,
+      <List items={initial.toSpliced(from, 1).toSpliced(from + 3, 0, from)} />,
+    );
+    await settle(viewport, container);
+    await expectPosition(() => relativeTop(viewport, item), top);
+    expect(getItem(container, `item-${from}`)!.previousElementSibling).toBe(
+      getItem(container, `item-${from + 3}`),
+    );
+    expectContiguous(container);
+  });
+
+  it("move an item just above the viewport below the visible items moves the visible items up by its size", async () => {
+    const root = render(<List items={initial} />);
+    const { viewport, container } = await getVirtualizer(root);
+    await settle(viewport, container);
+    viewport.scrollTop = 2000;
+    await settle(viewport, container);
+    const item = findFirstVisibleItem(container, viewport)!;
+    const top = relativeTop(viewport, item);
+    const from = idOf(item) - 1;
+    expect(getItem(container, `item-${from}`)).toBeDefined();
+    const to = idOf(findLastVisibleItem(container, viewport)!);
+
+    rerender(
+      root,
+      <List items={initial.toSpliced(from, 1).toSpliced(to, 0, from)} />,
+    );
+    await settle(viewport, container);
+    await expectPosition(
+      () => relativeTop(viewport, item),
+      top - heightOf(from),
+    );
+    expectContiguous(container);
+  });
+
+  describe("WindowVirtualizer", () => {
+    it("move an item just above the viewport below the visible items moves the visible items up by its size", async () => {
+      const WindowList = ({ items }: { items: number[] }) => (
+        <WindowVirtualizer data={items}>
+          {(id) => (
+            <div key={id} style={{ height: heightOf(id) }}>
+              item-{id}
+            </div>
+          )}
+        </WindowVirtualizer>
+      );
+      const root = render(<WindowList items={initial} />);
+      const { viewport, container } = await getVirtualizer(root);
+      await settle(viewport, container);
+      viewport.scrollTop = 2000;
+      await settle(viewport, container);
+      const item = findFirstVisibleItem(container, viewport)!;
+      const top = relativeTop(viewport, item);
+      const from = idOf(item) - 1;
+      expect(getItem(container, `item-${from}`)).toBeDefined();
+      const to = idOf(findLastVisibleItem(container, viewport)!);
+
+      rerender(
+        root,
+        <WindowList
+          items={initial.toSpliced(from, 1).toSpliced(to, 0, from)}
+        />,
+      );
+      await settle(viewport, container);
+      await expectPosition(
+        () => relativeTop(viewport, item),
+        top - heightOf(from),
+      );
+      expectContiguous(container);
+    });
+
+    it("insert just above the viewport with shift keeps the visible items", async () => {
+      const WindowList = ({ items }: { items: number[] }) => (
+        <WindowVirtualizer data={items} shift>
+          {(id) => (
+            <div key={id} style={{ height: heightOf(id) }}>
+              item-{id}
+            </div>
+          )}
+        </WindowVirtualizer>
+      );
+      const root = render(<WindowList items={initial} />);
+      const { viewport, container } = await getVirtualizer(root);
+      await settle(viewport, container);
+      viewport.scrollTop = 2000;
+      await settle(viewport, container);
+      const item = findFirstVisibleItem(container, viewport)!;
+      expect(item.previousElementSibling).not.toBeNull();
+      const top = relativeTop(viewport, item);
+
+      rerender(
+        root,
+        <WindowList items={initial.toSpliced(idOf(item) - 1, 0, 1002)} />,
+      );
+      await settle(viewport, container);
+      await expectPosition(() => relativeTop(viewport, item), top);
+      expectContiguous(container);
+    });
+  });
+});
