@@ -24,18 +24,35 @@ import {
   timeout,
 } from "./utils.js";
 
-const createResizeObserver = (cb: ResizeObserverCallback) => {
+const createResizeObserver = (
+  cb: (entries: readonly ResizeObserverEntry[]) => void,
+) => {
   let ro: ResizeObserver | undefined;
+  let win: ReturnType<typeof getCurrentWindow>;
+  let delivering: readonly ResizeObserverEntry[] | null = NULL;
 
   return {
     _observe(e: HTMLElement) {
-      // Initialize ResizeObserver lazily for SSR
-      // https://www.w3.org/TR/resize-observer/#intro
-      (
-        ro ||
+      if (!ro) {
+        // Initialize ResizeObserver lazily for SSR
+        // https://www.w3.org/TR/resize-observer/#intro
         // https://bugs.chromium.org/p/chromium/issues/detail?id=1491739
-        (ro = new (getCurrentWindow(getCurrentDocument(e)).ResizeObserver)(cb))
-      ).observe(e);
+        win = getCurrentWindow(getCurrentDocument(e));
+        ro = new win.ResizeObserver((entries) => {
+          delivering = entries;
+          cb(entries);
+          delivering = NULL;
+        });
+      }
+      if (delivering && !delivering.some((en) => en.target.contains(e))) {
+        // https://www.w3.org/TR/resize-observer/#deliver-resize-error
+        // https://www.w3.org/TR/resize-observer/#html-event-loop
+        win.requestAnimationFrame(() => {
+          e.isConnected && ro!.observe(e);
+        });
+      } else {
+        ro.observe(e);
+      }
     },
     _unobserve(e: HTMLElement) {
       ro!.unobserve(e);
