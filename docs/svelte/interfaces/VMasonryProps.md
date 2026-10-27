@@ -4,7 +4,7 @@
 
 # Interface: VMasonryProps\<T\>
 
-Defined in: [src/svelte/VMasonry.type.ts:8](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VMasonry.type.ts#L8)
+Defined in: [src/svelte/VMasonry.type.ts:8](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VMasonry.type.ts#L8)
 
 Props of [VMasonry](../variables/VList.md).
 
@@ -30,7 +30,7 @@ Props of [VMasonry](../variables/VList.md).
 
 > **data**: readonly `T`[]
 
-Defined in: [src/svelte/VMasonry.type.ts:12](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VMasonry.type.ts#L12)
+Defined in: [src/svelte/VMasonry.type.ts:12](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VMasonry.type.ts#L12)
 
 The data items rendered by this component.
 
@@ -40,7 +40,7 @@ The data items rendered by this component.
 
 > **children**: `Snippet`\<\[`T`, `number`\]\>
 
-Defined in: [src/svelte/VMasonry.type.ts:16](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VMasonry.type.ts#L16)
+Defined in: [src/svelte/VMasonry.type.ts:16](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VMasonry.type.ts#L16)
 
 The elements renderer snippet.
 
@@ -50,7 +50,7 @@ The elements renderer snippet.
 
 > `optional` **getKey?**: (`data`, `index`) => `string` \| `number`
 
-Defined in: [src/svelte/VMasonry.type.ts:21](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VMasonry.type.ts#L21)
+Defined in: [src/svelte/VMasonry.type.ts:21](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VMasonry.type.ts#L21)
 
 Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
 
@@ -80,7 +80,7 @@ defaultGetKey (returns index of item)
 
 > **lanes**: `number`
 
-Defined in: [src/svelte/VMasonry.type.ts:25](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VMasonry.type.ts#L25)
+Defined in: [src/svelte/VMasonry.type.ts:25](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VMasonry.type.ts#L25)
 
 The number of lanes (columns) which items are laid out into. Each item is placed into the shortest lane in order. It must be an integer and the minimum value is 1.
 
@@ -90,7 +90,7 @@ The number of lanes (columns) which items are laid out into. Each item is placed
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/svelte/VMasonry.type.ts:30](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VMasonry.type.ts#L30)
+Defined in: [src/svelte/VMasonry.type.ts:30](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VMasonry.type.ts#L30)
 
 The gap between the items and the lanes in pixels, which is not included in the sizes.
 
@@ -106,7 +106,7 @@ The gap between the items and the lanes in pixels, which is not included in the 
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/svelte/VMasonry.type.ts:37](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VMasonry.type.ts#L37)
+Defined in: [src/svelte/VMasonry.type.ts:37](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VMasonry.type.ts#L37)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -119,7 +119,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/svelte/VMasonry.type.ts:42](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VMasonry.type.ts#L42)
+Defined in: [src/svelte/VMasonry.type.ts:42](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VMasonry.type.ts#L42)
 
 Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
 
@@ -135,7 +135,7 @@ Extra space in pixels to render before/after the viewport. The default value is 
 
 > `optional` **keepMounted?**: readonly `number`[]
 
-Defined in: [src/svelte/VMasonry.type.ts:46](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VMasonry.type.ts#L46)
+Defined in: [src/svelte/VMasonry.type.ts:46](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VMasonry.type.ts#L46)
 
 List of indexes that should be always mounted, even when off screen.
 
@@ -145,7 +145,7 @@ List of indexes that should be always mounted, even when off screen.
 
 > `optional` **cache?**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/svelte/VMasonry.type.ts:52](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VMasonry.type.ts#L52)
+Defined in: [src/svelte/VMasonry.type.ts:52](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VMasonry.type.ts#L52)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VMasonryHandle.getCache](VMasonryHandle.md#getcache).
 
@@ -153,11 +153,23 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 ***
 
+### ssrCount?
+
+> `optional` **ssrCount?**: `number`
+
+Defined in: [src/svelte/VMasonry.type.ts:58](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VMasonry.type.ts#L58)
+
+A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+
+**The items are hidden until they are measured in the browser, so also pass their sizes with `cache` to show them on the server.**
+
+***
+
 ### onscroll?
 
 > `optional` **onscroll?**: (`offset`) => `void`
 
-Defined in: [src/svelte/VMasonry.type.ts:57](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VMasonry.type.ts#L57)
+Defined in: [src/svelte/VMasonry.type.ts:63](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VMasonry.type.ts#L63)
 
 Callback invoked whenever scroll offset changes.
 
@@ -179,7 +191,7 @@ Current scrollTop.
 
 > `optional` **onscrollend?**: () => `void`
 
-Defined in: [src/svelte/VMasonry.type.ts:61](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VMasonry.type.ts#L61)
+Defined in: [src/svelte/VMasonry.type.ts:67](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VMasonry.type.ts#L67)
 
 Callback invoked when scrolling stops.
 
@@ -193,13 +205,37 @@ Callback invoked when scrolling stops.
 
 > `optional` **onresize?**: () => `void`
 
-Defined in: [src/svelte/VMasonry.type.ts:65](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VMasonry.type.ts#L65)
+Defined in: [src/svelte/VMasonry.type.ts:71](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VMasonry.type.ts#L71)
 
 Callback invoked when the size of the viewport or the items changes.
 
 #### Returns
 
 `void`
+
+***
+
+### contextmenu?
+
+> `optional` **contextmenu?**: `string` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:758
+
+#### Inherited from
+
+`ViewportComponentAttributes.contextmenu`
+
+***
+
+### hidden?
+
+> `optional` **hidden?**: `boolean` \| `""` \| `"until-found"` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:772
+
+#### Inherited from
+
+`ViewportComponentAttributes.hidden`
 
 ***
 
@@ -241,7 +277,7 @@ Defined in: node\_modules/svelte/elements.d.ts:781
 
 ### dir?
 
-> `optional` **dir?**: `"rtl"` \| `"auto"` \| `"ltr"` \| `null`
+> `optional` **dir?**: `"auto"` \| `"rtl"` \| `"ltr"` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:759
 
@@ -290,18 +326,6 @@ Defined in: node\_modules/svelte/elements.d.ts:760
 #### Inherited from
 
 `ViewportComponentAttributes.draggable`
-
-***
-
-### hidden?
-
-> `optional` **hidden?**: `boolean` \| `""` \| `"until-found"` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:772
-
-#### Inherited from
-
-`ViewportComponentAttributes.hidden`
 
 ***
 
@@ -1307,18 +1331,6 @@ Defines the human readable text alternative of aria-valuenow for a range widget.
 #### Inherited from
 
 `ViewportComponentAttributes.aria-valuetext`
-
-***
-
-### contextmenu?
-
-> `optional` **contextmenu?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:758
-
-#### Inherited from
-
-`ViewportComponentAttributes.contextmenu`
 
 ***
 

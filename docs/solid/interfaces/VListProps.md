@@ -4,7 +4,7 @@
 
 # Interface: VListProps\<T\>
 
-Defined in: [src/solid/VList.tsx:20](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/VList.tsx#L20)
+Defined in: [src/solid/VList.tsx:20](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/VList.tsx#L20)
 
 Props of [VList](../functions/VList.md).
 
@@ -20,11 +20,27 @@ Props of [VList](../functions/VList.md).
 
 ## Properties
 
+### shift?
+
+> `optional` **shift?**: `boolean`
+
+Defined in: [src/solid/Virtualizer.tsx:146](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/Virtualizer.tsx#L146)
+
+Set true only when items are added to or removed from the start of the list, such as when older items are loaded in reverse infinite scrolling. In that case, the scroll position is maintained from the end of the list instead of the start.
+
+**Do not set true in any other case, as it can cause unexpected behavior.**
+
+#### Inherited from
+
+`Pick.shift`
+
+***
+
 ### data
 
 > **data**: readonly `T`[]
 
-Defined in: [src/solid/Virtualizer.tsx:106](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/Virtualizer.tsx#L106)
+Defined in: [src/solid/Virtualizer.tsx:106](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/Virtualizer.tsx#L106)
 
 The data items rendered by this component.
 
@@ -38,7 +54,7 @@ The data items rendered by this component.
 
 > `optional` **item?**: `ValidComponent`
 
-Defined in: [src/solid/Virtualizer.tsx:125](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/Virtualizer.tsx#L125)
+Defined in: [src/solid/Virtualizer.tsx:125](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/Virtualizer.tsx#L125)
 
 Component or element type for item element.
 
@@ -58,7 +74,7 @@ Component or element type for item element.
 
 > **children**: (`data`, `index`) => `Element`
 
-Defined in: [src/solid/Virtualizer.tsx:110](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/Virtualizer.tsx#L110)
+Defined in: [src/solid/Virtualizer.tsx:110](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/Virtualizer.tsx#L110)
 
 The elements renderer function.
 
@@ -86,7 +102,7 @@ The elements renderer function.
 
 > `optional` **onScroll?**: (`offset`) => `void`
 
-Defined in: [src/solid/Virtualizer.tsx:169](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/Virtualizer.tsx#L169)
+Defined in: [src/solid/Virtualizer.tsx:169](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/Virtualizer.tsx#L169)
 
 Callback invoked whenever scroll offset changes.
 
@@ -112,7 +128,7 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/solid/Virtualizer.tsx:173](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/Virtualizer.tsx#L173)
+Defined in: [src/solid/Virtualizer.tsx:173](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/Virtualizer.tsx#L173)
 
 Callback invoked when scrolling stops.
 
@@ -130,7 +146,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **onResize?**: () => `void`
 
-Defined in: [src/solid/Virtualizer.tsx:177](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/Virtualizer.tsx#L177)
+Defined in: [src/solid/Virtualizer.tsx:177](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/Virtualizer.tsx#L177)
 
 Callback invoked when the size of the viewport or the items changes.
 
@@ -144,27 +160,11 @@ Callback invoked when the size of the viewport or the items changes.
 
 ***
 
-### shift?
-
-> `optional` **shift?**: `boolean`
-
-Defined in: [src/solid/Virtualizer.tsx:146](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/Virtualizer.tsx#L146)
-
-Set true only when items are added to or removed from the start of the list, such as when older items are loaded in reverse infinite scrolling. In that case, the scroll position is maintained from the end of the list instead of the start.
-
-**Do not set true in any other case, as it can cause unexpected behavior.**
-
-#### Inherited from
-
-`Pick.shift`
-
-***
-
 ### ref?
 
 > `optional` **ref?**: [`VirtualizerHandle`](VirtualizerHandle.md) \| ((`handle?`) => `void`)
 
-Defined in: [src/solid/Virtualizer.tsx:102](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/Virtualizer.tsx#L102)
+Defined in: [src/solid/Virtualizer.tsx:102](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/Virtualizer.tsx#L102)
 
 Get reference to [VirtualizerHandle](VirtualizerHandle.md).
 
@@ -178,7 +178,7 @@ Get reference to [VirtualizerHandle](VirtualizerHandle.md).
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/solid/Virtualizer.tsx:115](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/Virtualizer.tsx#L115)
+Defined in: [src/solid/Virtualizer.tsx:115](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/Virtualizer.tsx#L115)
 
 Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
 
@@ -198,7 +198,7 @@ Extra space in pixels to render before/after the viewport. The default value is 
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/solid/Virtualizer.tsx:136](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/Virtualizer.tsx#L136)
+Defined in: [src/solid/Virtualizer.tsx:136](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/Virtualizer.tsx#L136)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -215,7 +215,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **horizontal?**: `boolean`
 
-Defined in: [src/solid/Virtualizer.tsx:150](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/Virtualizer.tsx#L150)
+Defined in: [src/solid/Virtualizer.tsx:150](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/Virtualizer.tsx#L150)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -229,7 +229,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `optional` **keepMounted?**: readonly `number`[]
 
-Defined in: [src/solid/Virtualizer.tsx:154](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/Virtualizer.tsx#L154)
+Defined in: [src/solid/Virtualizer.tsx:154](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/Virtualizer.tsx#L154)
 
 List of indexes that should be always mounted, even when off screen.
 
@@ -243,7 +243,7 @@ List of indexes that should be always mounted, even when off screen.
 
 > `optional` **cache?**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/solid/Virtualizer.tsx:160](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/Virtualizer.tsx#L160)
+Defined in: [src/solid/Virtualizer.tsx:160](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/Virtualizer.tsx#L160)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VirtualizerHandle.cache](VListHandle.md#cache).
 
@@ -259,13 +259,39 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `optional` **ssrCount?**: `number`
 
-Defined in: [src/solid/Virtualizer.tsx:140](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/Virtualizer.tsx#L140)
+Defined in: [src/solid/Virtualizer.tsx:140](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/Virtualizer.tsx#L140)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
 #### Inherited from
 
 `Pick.ssrCount`
+
+***
+
+### ~~contextmenu?~~
+
+> `optional` **contextmenu?**: `string`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:1275
+
+#### Deprecated
+
+#### Inherited from
+
+`ViewportComponentAttributes.contextmenu`
+
+***
+
+### hidden?
+
+> `optional` **hidden?**: `boolean` \| `"hidden"` \| `"until-found"`
+
+Defined in: node\_modules/solid-js/types/jsx.d.ts:1216
+
+#### Inherited from
+
+`ViewportComponentAttributes.hidden`
 
 ***
 
@@ -391,18 +417,6 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:1213
 
 ***
 
-### hidden?
-
-> `optional` **hidden?**: `boolean` \| `"until-found"` \| `"hidden"`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:1216
-
-#### Inherited from
-
-`ViewportComponentAttributes.hidden`
-
-***
-
 ### id?
 
 > `optional` **id?**: `string`
@@ -465,7 +479,7 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:1234
 
 ### role?
 
-> `optional` **role?**: `"list"` \| `"grid"` \| `"article"` \| `"button"` \| `"dialog"` \| `"figure"` \| `"form"` \| `"img"` \| `"link"` \| `"main"` \| `"menu"` \| `"meter"` \| `"option"` \| `"search"` \| `"table"` \| `"switch"` \| `"math"` \| `"marquee"` \| `"menuitem"` \| `"cell"` \| `"columnheader"` \| `"rowheader"` \| `"none"` \| `"checkbox"` \| `"listbox"` \| `"radio"` \| `"region"` \| `"row"` \| `"listitem"` \| `"menubar"` \| `"progressbar"` \| `"separator"` \| `"tab"` \| `"tabpanel"` \| `"toolbar"` \| `"tooltip"` \| `"treeitem"` \| `"scrollbar"` \| `"alert"` \| `"alertdialog"` \| `"application"` \| `"banner"` \| `"combobox"` \| `"complementary"` \| `"contentinfo"` \| `"definition"` \| `"directory"` \| `"document"` \| `"feed"` \| `"gridcell"` \| `"group"` \| `"heading"` \| `"log"` \| `"menuitemcheckbox"` \| `"menuitemradio"` \| `"navigation"` \| `"note"` \| `"presentation"` \| `"radiogroup"` \| `"rowgroup"` \| `"searchbox"` \| `"slider"` \| `"spinbutton"` \| `"status"` \| `"tablist"` \| `"term"` \| `"textbox"` \| `"timer"` \| `"tree"` \| `"treegrid"`
+> `optional` **role?**: `"search"` \| `"link"` \| `"cell"` \| `"columnheader"` \| `"rowheader"` \| `"grid"` \| `"list"` \| `"article"` \| `"button"` \| `"dialog"` \| `"figure"` \| `"form"` \| `"img"` \| `"main"` \| `"menu"` \| `"meter"` \| `"option"` \| `"table"` \| `"switch"` \| `"math"` \| `"marquee"` \| `"menuitem"` \| `"none"` \| `"checkbox"` \| `"listbox"` \| `"radio"` \| `"region"` \| `"row"` \| `"listitem"` \| `"menubar"` \| `"progressbar"` \| `"separator"` \| `"tab"` \| `"tabpanel"` \| `"toolbar"` \| `"tooltip"` \| `"treeitem"` \| `"scrollbar"` \| `"alert"` \| `"alertdialog"` \| `"application"` \| `"banner"` \| `"combobox"` \| `"complementary"` \| `"contentinfo"` \| `"definition"` \| `"directory"` \| `"document"` \| `"feed"` \| `"gridcell"` \| `"group"` \| `"heading"` \| `"log"` \| `"menuitemcheckbox"` \| `"menuitemradio"` \| `"navigation"` \| `"note"` \| `"presentation"` \| `"radiogroup"` \| `"rowgroup"` \| `"searchbox"` \| `"slider"` \| `"spinbutton"` \| `"status"` \| `"tablist"` \| `"term"` \| `"textbox"` \| `"timer"` \| `"tree"` \| `"treegrid"`
 
 Defined in: node\_modules/solid-js/types/jsx.d.ts:1122
 
@@ -2562,20 +2576,6 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:398
 #### Inherited from
 
 `ViewportComponentAttributes.onTransitionStart`
-
-***
-
-### ~~contextmenu?~~
-
-> `optional` **contextmenu?**: `string`
-
-Defined in: node\_modules/solid-js/types/jsx.d.ts:1275
-
-#### Deprecated
-
-#### Inherited from
-
-`ViewportComponentAttributes.contextmenu`
 
 ***
 
@@ -5859,7 +5859,7 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:655
 
 > `optional` **style?**: `CSSProperties`
 
-Defined in: [src/solid/types.ts:6](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/solid/types.ts#L6)
+Defined in: [src/solid/types.ts:6](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/types.ts#L6)
 
 #### Inherited from
 

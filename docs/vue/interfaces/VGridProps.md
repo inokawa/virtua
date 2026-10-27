@@ -4,7 +4,7 @@
 
 # Interface: VGridProps\<R, C\>
 
-Defined in: [src/vue/VGrid.tsx:49](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L49)
+Defined in: [src/vue/VGrid.tsx:49](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L49)
 
 Props of [VGrid](../variables/VGrid.md).
 
@@ -28,7 +28,7 @@ Props of [VGrid](../variables/VGrid.md).
 
 > **rows**: [`GridAxis`](../../core/type-aliases/GridAxis.md)\<`R`\>
 
-Defined in: [src/vue/VGrid.tsx:53](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L53)
+Defined in: [src/vue/VGrid.tsx:53](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L53)
 
 The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -38,7 +38,7 @@ The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for th
 
 > **cols**: [`GridAxis`](../../core/type-aliases/GridAxis.md)\<`C`\>
 
-Defined in: [src/vue/VGrid.tsx:57](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L57)
+Defined in: [src/vue/VGrid.tsx:57](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L57)
 
 The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -48,7 +48,7 @@ The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for
 
 > **rowHeight**: [`GridSize`](../../core/type-aliases/GridSize.md)\<`R`\>
 
-Defined in: [src/vue/VGrid.tsx:61](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L61)
+Defined in: [src/vue/VGrid.tsx:61](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L61)
 
 The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -58,7 +58,7 @@ The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for
 
 > **colWidth**: [`GridSize`](../../core/type-aliases/GridSize.md)\<`C`\>
 
-Defined in: [src/vue/VGrid.tsx:65](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L65)
+Defined in: [src/vue/VGrid.tsx:65](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L65)
 
 The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -68,7 +68,7 @@ The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) f
 
 > `optional` **headerRows?**: `number`
 
-Defined in: [src/vue/VGrid.tsx:72](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L72)
+Defined in: [src/vue/VGrid.tsx:72](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L72)
 
 The number of the leading rows pinned to the start, which are the column headers (`role="columnheader"`).
 
@@ -86,7 +86,7 @@ The number of the leading rows pinned to the start, which are the column headers
 
 > `optional` **sectionRows?**: readonly `number`[]
 
-Defined in: [src/vue/VGrid.tsx:78](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L78)
+Defined in: [src/vue/VGrid.tsx:78](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L78)
 
 Indexes of the rows which start sections. A section lasts until the next section row or the footer rows, and its first row sticks below the header rows while the section is scrolled through.
 
@@ -98,7 +98,7 @@ Indexes of the rows which start sections. A section lasts until the next section
 
 > `optional` **footerRows?**: `number`
 
-Defined in: [src/vue/VGrid.tsx:85](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L85)
+Defined in: [src/vue/VGrid.tsx:85](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L85)
 
 The number of the trailing rows pinned to the end.
 
@@ -116,7 +116,7 @@ The number of the trailing rows pinned to the end.
 
 > `optional` **headerCols?**: `number`
 
-Defined in: [src/vue/VGrid.tsx:92](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L92)
+Defined in: [src/vue/VGrid.tsx:92](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L92)
 
 The number of the leading columns pinned to the start, the last of which is the row header (`role="rowheader"`).
 
@@ -134,7 +134,7 @@ The number of the leading columns pinned to the start, the last of which is the 
 
 > `optional` **footerCols?**: `number`
 
-Defined in: [src/vue/VGrid.tsx:99](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L99)
+Defined in: [src/vue/VGrid.tsx:99](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L99)
 
 The number of the trailing columns pinned to the end.
 
@@ -152,7 +152,7 @@ The number of the trailing columns pinned to the end.
 
 > `optional` **spans?**: readonly [`GridSpan`](../../core/interfaces/GridSpan.md)[]
 
-Defined in: [src/vue/VGrid.tsx:105](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L105)
+Defined in: [src/vue/VGrid.tsx:105](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L105)
 
 Cells merged over multiple rows and/or columns. See [GridSpan](../../core/interfaces/GridSpan.md) for the accepted values.
 
@@ -164,7 +164,7 @@ The cell at the origin is stretched over the merged area, and the other cells in
 
 > `optional` **keepMounted?**: readonly [`GridCell`](../../core/interfaces/GridCell.md)[]
 
-Defined in: [src/vue/VGrid.tsx:109](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L109)
+Defined in: [src/vue/VGrid.tsx:109](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L109)
 
 List of cells that should be always mounted, even when off screen.
 
@@ -174,7 +174,7 @@ List of cells that should be always mounted, even when off screen.
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/vue/VGrid.tsx:114](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L114)
+Defined in: [src/vue/VGrid.tsx:114](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L114)
 
 Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank cells in fast scrolling.
 
@@ -186,11 +186,35 @@ Extra space in pixels to render before/after the viewport. The default value is 
 
 ***
 
+### ssrRowCount?
+
+> `optional` **ssrRowCount?**: `number`
+
+Defined in: [src/vue/VGrid.tsx:120](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L120)
+
+A prop for SSR. If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+
+**Set `ssrColCount` too, as a cell is mounted only when both its row and its column are.**
+
+***
+
+### ssrColCount?
+
+> `optional` **ssrColCount?**: `number`
+
+Defined in: [src/vue/VGrid.tsx:126](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L126)
+
+A prop for SSR. If set, the specified amount of columns will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+
+**Set `ssrRowCount` too, as a cell is mounted only when both its row and its column are.**
+
+***
+
 ### gap?
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/vue/VGrid.tsx:119](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L119)
+Defined in: [src/vue/VGrid.tsx:131](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L131)
 
 The gap between the rows and the columns in pixels, which is not included in the sizes. Must not be changed after mount.
 
@@ -206,7 +230,7 @@ The gap between the rows and the columns in pixels, which is not included in the
 
 > `optional` **ariaSort?**: [`GridCell`](../../core/interfaces/GridCell.md) & `object`
 
-Defined in: [src/vue/VGrid.tsx:123](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L123)
+Defined in: [src/vue/VGrid.tsx:135](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L135)
 
 The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
@@ -222,7 +246,7 @@ The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
 > `optional` **onVerticalScroll?**: (`offset`) => `void`
 
-Defined in: [src/vue/VGrid.tsx:128](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L128)
+Defined in: [src/vue/VGrid.tsx:140](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L140)
 
 Callback invoked whenever the vertical scroll offset changes.
 
@@ -244,7 +268,7 @@ Current scrollTop.
 
 > `optional` **onHorizontalScroll?**: (`offset`) => `void`
 
-Defined in: [src/vue/VGrid.tsx:133](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L133)
+Defined in: [src/vue/VGrid.tsx:145](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L145)
 
 Callback invoked whenever the horizontal scroll offset changes.
 
@@ -266,7 +290,7 @@ Current scrollLeft. Always positive even in RTL.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/vue/VGrid.tsx:137](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L137)
+Defined in: [src/vue/VGrid.tsx:149](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L149)
 
 Callback invoked when scrolling stops.
 
@@ -280,7 +304,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **onResize?**: () => `void`
 
-Defined in: [src/vue/VGrid.tsx:141](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L141)
+Defined in: [src/vue/VGrid.tsx:153](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L153)
 
 Callback invoked when the size of the viewport or the items changes.
 

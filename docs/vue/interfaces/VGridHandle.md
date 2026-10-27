@@ -4,7 +4,7 @@
 
 # Interface: VGridHandle
 
-Defined in: [src/vue/VGrid.tsx:147](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L147)
+Defined in: [src/vue/VGrid.tsx:159](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L159)
 
 Methods of [VGrid](../variables/VGrid.md).
 
@@ -14,7 +14,7 @@ Methods of [VGrid](../variables/VGrid.md).
 
 > **findRowIndex**(`offset`): `number`
 
-Defined in: [src/vue/VGrid.tsx:176](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L176)
+Defined in: [src/vue/VGrid.tsx:188](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L188)
 
 Find nearest row index from offset, which is 0 if there are no rows.
 
@@ -36,7 +36,7 @@ offset in pixels from the top of the scroll container
 
 > **findColIndex**(`offset`): `number`
 
-Defined in: [src/vue/VGrid.tsx:181](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L181)
+Defined in: [src/vue/VGrid.tsx:193](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L193)
 
 Find nearest column index from offset, which is 0 if there are no columns.
 
@@ -58,7 +58,7 @@ offset in pixels from the start of the scroll container
 
 > **getRowOffset**(`index`): `number`
 
-Defined in: [src/vue/VGrid.tsx:186](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L186)
+Defined in: [src/vue/VGrid.tsx:198](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L198)
 
 Get offset of the row from the top.
 
@@ -80,7 +80,7 @@ index of row
 
 > **getColOffset**(`index`): `number`
 
-Defined in: [src/vue/VGrid.tsx:191](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L191)
+Defined in: [src/vue/VGrid.tsx:203](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L203)
 
 Get offset of the column from the start.
 
@@ -102,7 +102,7 @@ index of column
 
 > **getRowSize**(`index`): `number`
 
-Defined in: [src/vue/VGrid.tsx:196](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L196)
+Defined in: [src/vue/VGrid.tsx:208](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L208)
 
 Get size of the row.
 
@@ -124,7 +124,7 @@ index of row
 
 > **getColSize**(`index`): `number`
 
-Defined in: [src/vue/VGrid.tsx:201](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L201)
+Defined in: [src/vue/VGrid.tsx:213](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L213)
 
 Get size of the column.
 
@@ -146,7 +146,7 @@ index of column
 
 > **scrollToIndex**(`opts`): `void`
 
-Defined in: [src/vue/VGrid.tsx:206](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L206)
+Defined in: [src/vue/VGrid.tsx:218](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L218)
 
 Scroll to the cell specified by the indexes. The cell is not hidden behind the rows and the columns sticking over it.
 
@@ -168,7 +168,7 @@ the indexes of the cell and the options. See [GridScrollToIndexOpts](../../core/
 
 > **scrollTo**(`offset`): `void`
 
-Defined in: [src/vue/VGrid.tsx:211](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L211)
+Defined in: [src/vue/VGrid.tsx:223](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L223)
 
 Scroll to the given offsets from the top/start of the scroll container.
 
@@ -196,7 +196,7 @@ the offsets. The axis whose offset is omitted is not scrolled.
 
 > **scrollBy**(`offset`): `void`
 
-Defined in: [src/vue/VGrid.tsx:216](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L216)
+Defined in: [src/vue/VGrid.tsx:228](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L228)
 
 Scroll by the given offsets from the current position.
 
@@ -224,7 +224,7 @@ the offsets. The axis whose offset is omitted is not scrolled.
 
 > `readonly` **verticalScrollOffset**: `number`
 
-Defined in: [src/vue/VGrid.tsx:151](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L151)
+Defined in: [src/vue/VGrid.tsx:163](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L163)
 
 Get current scrollTop.
 
@@ -234,7 +234,7 @@ Get current scrollTop.
 
 > `readonly` **horizontalScrollOffset**: `number`
 
-Defined in: [src/vue/VGrid.tsx:155](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L155)
+Defined in: [src/vue/VGrid.tsx:167](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L167)
 
 Get current scrollLeft. Always positive even in RTL.
 
@@ -244,7 +244,7 @@ Get current scrollLeft. Always positive even in RTL.
 
 > `readonly` **scrollHeight**: `number`
 
-Defined in: [src/vue/VGrid.tsx:159](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L159)
+Defined in: [src/vue/VGrid.tsx:171](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L171)
 
 Get current scrollHeight.
 
@@ -254,7 +254,7 @@ Get current scrollHeight.
 
 > `readonly` **scrollWidth**: `number`
 
-Defined in: [src/vue/VGrid.tsx:163](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L163)
+Defined in: [src/vue/VGrid.tsx:175](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L175)
 
 Get current scrollWidth.
 
@@ -264,7 +264,7 @@ Get current scrollWidth.
 
 > `readonly` **viewportHeight**: `number`
 
-Defined in: [src/vue/VGrid.tsx:167](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L167)
+Defined in: [src/vue/VGrid.tsx:179](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L179)
 
 Get current clientHeight.
 
@@ -274,6 +274,6 @@ Get current clientHeight.
 
 > `readonly` **viewportWidth**: `number`
 
-Defined in: [src/vue/VGrid.tsx:171](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/vue/VGrid.tsx#L171)
+Defined in: [src/vue/VGrid.tsx:183](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/VGrid.tsx#L183)
 
 Get current clientWidth.

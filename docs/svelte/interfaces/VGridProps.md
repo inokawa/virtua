@@ -4,7 +4,7 @@
 
 # Interface: VGridProps\<R, C\>
 
-Defined in: [src/svelte/VGrid.type.ts:14](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L14)
+Defined in: [src/svelte/VGrid.type.ts:14](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L14)
 
 Props of [VGrid](../variables/VList.md).
 
@@ -34,7 +34,7 @@ Props of [VGrid](../variables/VList.md).
 
 > **children**: `Snippet`\<\[`R`, `C`, `Readonly`\<[`GridCell`](../../core/interfaces/GridCell.md)\>\]\>
 
-Defined in: [src/svelte/VGrid.type.ts:24](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L24)
+Defined in: [src/svelte/VGrid.type.ts:24](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L24)
 
 A snippet to create cell elements rendered by this component.
 
@@ -62,7 +62,7 @@ the row index and the column index of the cell
 
 > **rows**: [`GridAxis`](../../core/type-aliases/GridAxis.md)\<`R`\>
 
-Defined in: [src/svelte/VGrid.type.ts:28](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L28)
+Defined in: [src/svelte/VGrid.type.ts:28](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L28)
 
 The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -72,7 +72,7 @@ The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for th
 
 > **cols**: [`GridAxis`](../../core/type-aliases/GridAxis.md)\<`C`\>
 
-Defined in: [src/svelte/VGrid.type.ts:32](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L32)
+Defined in: [src/svelte/VGrid.type.ts:32](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L32)
 
 The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -82,7 +82,7 @@ The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for
 
 > **rowHeight**: [`GridSize`](../../core/type-aliases/GridSize.md)\<`R`\>
 
-Defined in: [src/svelte/VGrid.type.ts:36](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L36)
+Defined in: [src/svelte/VGrid.type.ts:36](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L36)
 
 The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -92,7 +92,7 @@ The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for
 
 > **colWidth**: [`GridSize`](../../core/type-aliases/GridSize.md)\<`C`\>
 
-Defined in: [src/svelte/VGrid.type.ts:40](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L40)
+Defined in: [src/svelte/VGrid.type.ts:40](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L40)
 
 The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -102,7 +102,7 @@ The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) f
 
 > `optional` **headerRows?**: `number`
 
-Defined in: [src/svelte/VGrid.type.ts:47](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L47)
+Defined in: [src/svelte/VGrid.type.ts:47](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L47)
 
 The number of the leading rows pinned to the start, which are the column headers (`role="columnheader"`).
 
@@ -120,7 +120,7 @@ The number of the leading rows pinned to the start, which are the column headers
 
 > `optional` **sectionRows?**: readonly `number`[]
 
-Defined in: [src/svelte/VGrid.type.ts:53](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L53)
+Defined in: [src/svelte/VGrid.type.ts:53](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L53)
 
 Indexes of the rows which start sections. A section lasts until the next section row or the footer rows, and its first row sticks below the header rows while the section is scrolled through.
 
@@ -132,7 +132,7 @@ Indexes of the rows which start sections. A section lasts until the next section
 
 > `optional` **footerRows?**: `number`
 
-Defined in: [src/svelte/VGrid.type.ts:60](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L60)
+Defined in: [src/svelte/VGrid.type.ts:60](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L60)
 
 The number of the trailing rows pinned to the end.
 
@@ -150,7 +150,7 @@ The number of the trailing rows pinned to the end.
 
 > `optional` **headerCols?**: `number`
 
-Defined in: [src/svelte/VGrid.type.ts:67](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L67)
+Defined in: [src/svelte/VGrid.type.ts:67](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L67)
 
 The number of the leading columns pinned to the start, the last of which is the row header (`role="rowheader"`).
 
@@ -168,7 +168,7 @@ The number of the leading columns pinned to the start, the last of which is the 
 
 > `optional` **footerCols?**: `number`
 
-Defined in: [src/svelte/VGrid.type.ts:74](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L74)
+Defined in: [src/svelte/VGrid.type.ts:74](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L74)
 
 The number of the trailing columns pinned to the end.
 
@@ -186,7 +186,7 @@ The number of the trailing columns pinned to the end.
 
 > `optional` **spans?**: readonly [`GridSpan`](../../core/interfaces/GridSpan.md)[]
 
-Defined in: [src/svelte/VGrid.type.ts:80](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L80)
+Defined in: [src/svelte/VGrid.type.ts:80](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L80)
 
 Cells merged over multiple rows and/or columns. See [GridSpan](../../core/interfaces/GridSpan.md) for the accepted values.
 
@@ -198,7 +198,7 @@ The cell at the origin is stretched over the merged area, and the other cells in
 
 > `optional` **keepMounted?**: readonly [`GridCell`](../../core/interfaces/GridCell.md)[]
 
-Defined in: [src/svelte/VGrid.type.ts:84](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L84)
+Defined in: [src/svelte/VGrid.type.ts:84](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L84)
 
 List of cells that should be always mounted, even when off screen.
 
@@ -208,7 +208,7 @@ List of cells that should be always mounted, even when off screen.
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/svelte/VGrid.type.ts:89](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L89)
+Defined in: [src/svelte/VGrid.type.ts:89](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L89)
 
 Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank cells in fast scrolling.
 
@@ -220,11 +220,35 @@ Extra space in pixels to render before/after the viewport. The default value is 
 
 ***
 
+### ssrRowCount?
+
+> `optional` **ssrRowCount?**: `number`
+
+Defined in: [src/svelte/VGrid.type.ts:95](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L95)
+
+A prop for SSR. If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+
+**Set `ssrColCount` too, as a cell is mounted only when both its row and its column are.**
+
+***
+
+### ssrColCount?
+
+> `optional` **ssrColCount?**: `number`
+
+Defined in: [src/svelte/VGrid.type.ts:101](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L101)
+
+A prop for SSR. If set, the specified amount of columns will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+
+**Set `ssrRowCount` too, as a cell is mounted only when both its row and its column are.**
+
+***
+
 ### gap?
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/svelte/VGrid.type.ts:94](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L94)
+Defined in: [src/svelte/VGrid.type.ts:106](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L106)
 
 The gap between the rows and the columns in pixels, which is not included in the sizes. Must not be changed after mount.
 
@@ -240,7 +264,7 @@ The gap between the rows and the columns in pixels, which is not included in the
 
 > `optional` **ariaSort?**: [`GridCell`](../../core/interfaces/GridCell.md) & `object`
 
-Defined in: [src/svelte/VGrid.type.ts:98](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L98)
+Defined in: [src/svelte/VGrid.type.ts:110](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L110)
 
 The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
@@ -256,7 +280,7 @@ The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
 > `optional` **onverticalscroll?**: (`offset`) => `void`
 
-Defined in: [src/svelte/VGrid.type.ts:103](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L103)
+Defined in: [src/svelte/VGrid.type.ts:115](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L115)
 
 Callback invoked whenever the vertical scroll offset changes.
 
@@ -278,7 +302,7 @@ Current scrollTop.
 
 > `optional` **onhorizontalscroll?**: (`offset`) => `void`
 
-Defined in: [src/svelte/VGrid.type.ts:108](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L108)
+Defined in: [src/svelte/VGrid.type.ts:120](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L120)
 
 Callback invoked whenever the horizontal scroll offset changes.
 
@@ -300,7 +324,7 @@ Current scrollLeft. Always positive even in RTL.
 
 > `optional` **onscrollend?**: () => `void`
 
-Defined in: [src/svelte/VGrid.type.ts:112](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L112)
+Defined in: [src/svelte/VGrid.type.ts:124](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L124)
 
 Callback invoked when scrolling stops.
 
@@ -314,13 +338,37 @@ Callback invoked when scrolling stops.
 
 > `optional` **onresize?**: () => `void`
 
-Defined in: [src/svelte/VGrid.type.ts:116](https://github.com/inokawa/virtua/blob/86cb5d342d2cf64adf9e5ed43bfdcc6846f4cbb4/src/svelte/VGrid.type.ts#L116)
+Defined in: [src/svelte/VGrid.type.ts:128](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/svelte/VGrid.type.ts#L128)
 
 Callback invoked when the size of the viewport or the items changes.
 
 #### Returns
 
 `void`
+
+***
+
+### contextmenu?
+
+> `optional` **contextmenu?**: `string` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:758
+
+#### Inherited from
+
+`Omit.contextmenu`
+
+***
+
+### hidden?
+
+> `optional` **hidden?**: `boolean` \| `""` \| `"until-found"` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:772
+
+#### Inherited from
+
+`Omit.hidden`
 
 ***
 
@@ -362,7 +410,7 @@ Defined in: node\_modules/svelte/elements.d.ts:781
 
 ### dir?
 
-> `optional` **dir?**: `"rtl"` \| `"auto"` \| `"ltr"` \| `null`
+> `optional` **dir?**: `"auto"` \| `"rtl"` \| `"ltr"` \| `null`
 
 Defined in: node\_modules/svelte/elements.d.ts:759
 
@@ -411,18 +459,6 @@ Defined in: node\_modules/svelte/elements.d.ts:760
 #### Inherited from
 
 `Omit.draggable`
-
-***
-
-### hidden?
-
-> `optional` **hidden?**: `boolean` \| `""` \| `"until-found"` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:772
-
-#### Inherited from
-
-`Omit.hidden`
 
 ***
 
@@ -1416,18 +1452,6 @@ Defines the human readable text alternative of aria-valuenow for a range widget.
 #### Inherited from
 
 `Omit.aria-valuetext`
-
-***
-
-### contextmenu?
-
-> `optional` **contextmenu?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:758
-
-#### Inherited from
-
-`Omit.contextmenu`
 
 ***
 
