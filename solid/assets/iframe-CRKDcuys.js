@@ -1,1 +1,0 @@
-import{t as e}from"./iframe-CIOaI-_r.js";e();
