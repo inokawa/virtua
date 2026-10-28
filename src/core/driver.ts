@@ -469,7 +469,7 @@ export const createWindowDriver = (
 ): Driver => {
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
-  let cleanupOnWindowResize: (() => void) | undefined;
+  let currentWindow: Window | undefined;
   let getBaseOffset: (() => number) | undefined;
   let onViewportResize: (() => void) | undefined;
   let initialized = createPromise<boolean>();
@@ -488,7 +488,7 @@ export const createWindowDriver = (
       if (target === viewportElement) {
         scrollObserver!._sync();
         // Scrollbar appearance/disappearance changes client size without firing window resize events
-        onViewportResize && onViewportResize();
+        onViewportResize!();
         // Skip zero-sized rects that may be observed under `display: none` style
       } else if ((target as HTMLElement).offsetParent) {
         const index = mountedIndexes.get(target as HTMLElement);
@@ -512,7 +512,7 @@ export const createWindowDriver = (
   return {
     $observe(container) {
       const document = getCurrentDocument(container);
-      const window = getCurrentWindow(document);
+      const window = (currentWindow = getCurrentWindow(document));
       const viewport = (viewportElement =
         document.scrollingElement! as HTMLElement);
       // Detect RTL document
@@ -535,20 +535,18 @@ export const createWindowDriver = (
           : offset;
       });
 
-      const onWindowResize = (onViewportResize = () => {
-        store.$update(
-          ACTION_VIEWPORT_RESIZE,
-          viewport[isHorizontal ? "clientWidth" : "clientHeight"],
-        );
-      });
-      window.addEventListener("resize", onWindowResize);
+      window.addEventListener(
+        "resize",
+        (onViewportResize = () => {
+          store.$update(
+            ACTION_VIEWPORT_RESIZE,
+            viewport[isHorizontal ? "clientWidth" : "clientHeight"],
+          );
+        }),
+      );
 
       // https://github.com/inokawa/virtua/issues/792
       resizeObserver._observe(viewport);
-
-      cleanupOnWindowResize = () => {
-        window.removeEventListener("resize", onWindowResize);
-      };
 
       // TODO support case two window scrollers exist in the same view
       scrollObserver = createScrollObserver(
@@ -565,7 +563,8 @@ export const createWindowDriver = (
       initialized[1](true);
     },
     $dispose() {
-      cleanupOnWindowResize && cleanupOnWindowResize();
+      onViewportResize &&
+        currentWindow!.removeEventListener("resize", onViewportResize);
       resizeObserver._dispose();
       scrollObserver && scrollObserver._dispose();
       initialized[1](false);

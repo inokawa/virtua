@@ -283,7 +283,6 @@ export const createVirtualStore = (
       };
     },
     $update: (type, payload, payload2?): void => {
-      let shouldFlushPendingJump: boolean | undefined;
       let shouldSync: boolean | undefined;
       let mutated = 0;
 
@@ -324,7 +323,8 @@ export const createVirtualStore = (
           //       payload - min(pendingJump, 0) >= getScrollOffsetMax()))
           // ) {
           //   // Flush if almost reached to start or end
-          //   shouldFlushPendingJump = true;
+          //   jump += pendingJump;
+          //   pendingJump = 0;
           // }
 
           isSSR = false;
@@ -349,7 +349,8 @@ export const createVirtualStore = (
         case ACTION_SCROLL_END: {
           mutated = UPDATE_SCROLL_END_EVENT;
           if (_scrollDirection !== SCROLL_IDLE) {
-            shouldFlushPendingJump = true;
+            jump += pendingJump;
+            pendingJump = 0;
             mutated += UPDATE_VIRTUAL_STATE;
           }
           _scrollDirection = SCROLL_IDLE;
@@ -430,11 +431,6 @@ export const createVirtualStore = (
 
       if (mutated) {
         stateVersion = (stateVersion & MAX_INT_32) + 1;
-
-        if (shouldFlushPendingJump && pendingJump) {
-          jump += pendingJump;
-          pendingJump = 0;
-        }
 
         subscribers.forEach(([target, cb]) => {
           // Early return to skip React's computation
