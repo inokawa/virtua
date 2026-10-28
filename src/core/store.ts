@@ -39,7 +39,7 @@ export const ACTION_MANUAL_SCROLL = 8;
 export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 9;
 
 type Actions =
-  | [type: typeof ACTION_SCROLL, offset: number]
+  | [type: typeof ACTION_SCROLL, offset: number, startOffset?: number]
   | [type: typeof ACTION_SCROLL_END, dummy?: void]
   | [
       type: typeof ACTION_ITEM_RESIZE,
@@ -232,7 +232,7 @@ export const createVirtualStore = (
         // Return previous range for consistent render until next scroll event comes in.
         [startIndex, endIndex] = _prevRange;
       } else {
-        let startOffset = max(0, getVisibleOffset());
+        let startOffset = getVisibleOffset();
         let endOffset = startOffset + viewportSize;
 
         // For faster initial render pass, returns without buffer if measurement seems to be in progress.
@@ -247,10 +247,10 @@ export const createVirtualStore = (
           }
         }
 
-        [startIndex, endIndex] = _prevRange = getRange(
-          max(0, startOffset),
-          max(0, endOffset),
-        );
+        [startIndex, endIndex] = _prevRange =
+          !_frozenRange && (endOffset <= 0 || startOffset >= getTotalSize())
+            ? [0, -1]
+            : getRange(max(0, startOffset), max(0, endOffset));
         if (_frozenRange) {
           startIndex = min(startIndex, _frozenRange[0]);
           endIndex = max(endIndex, _frozenRange[1]);
@@ -289,6 +289,9 @@ export const createVirtualStore = (
 
       switch (type) {
         case ACTION_SCROLL: {
+          if (payload2 != NULL) {
+            startSpacerSize = payload2;
+          }
           if (payload === scrollOffset && _scrollMode === SCROLL_BY_NATIVE) {
             // Ignore scroll events from different direction
             break;
@@ -329,12 +332,12 @@ export const createVirtualStore = (
           scrollOffset = payload;
           mutated = UPDATE_SCROLL_EVENT;
 
-          // Skip if offset is not changed
+          // Skip unless the viewport may reach the items by the next scroll event, moving as far as this one.
           // Scroll offset may exceed min or max especially in Safari's elastic scrolling.
           const relativeOffset = getRelativeScrollOffset();
           if (
-            relativeOffset >= -viewportSize &&
-            relativeOffset <= getTotalSize()
+            relativeOffset >= -viewportSize - distance &&
+            relativeOffset <= getTotalSize() + distance
           ) {
             mutated += UPDATE_VIRTUAL_STATE;
 
@@ -408,7 +411,10 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_START_OFFSET_CHANGE: {
-          startSpacerSize = payload;
+          if (payload !== startSpacerSize) {
+            startSpacerSize = payload;
+            mutated = UPDATE_VIRTUAL_STATE;
+          }
           break;
         }
         case ACTION_MANUAL_SCROLL: {

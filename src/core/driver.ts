@@ -139,10 +139,11 @@ const createScrollObserver = (
       stillMomentumScrolling = true;
     }
 
-    if (getStartOffset) {
-      store.$update(ACTION_START_OFFSET_CHANGE, getStartOffset());
-    }
-    store.$update(ACTION_SCROLL, getScrollOffset());
+    store.$update(
+      ACTION_SCROLL,
+      getScrollOffset(),
+      getStartOffset && getStartOffset(),
+    );
 
     scheduleScrollEnd();
   };
@@ -200,6 +201,9 @@ const createScrollObserver = (
       // https://github.com/inokawa/virtua/issues/1037
       if (getScrollOffset() !== store.$getScrollOffset()) {
         onScroll();
+      } else if (getStartOffset) {
+        // The start offset may have changed alone
+        store.$update(ACTION_START_OFFSET_CHANGE, getStartOffset());
       }
     },
     _dispose: () => {
