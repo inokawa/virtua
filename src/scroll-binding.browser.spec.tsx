@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { render } from "../spec/browser/react.js";
+import { render } from "../spec/browser/react.jsx";
 import { Virtualizer } from "./react/index.js";
 import {
   cleanupScroll,
@@ -15,56 +15,54 @@ import { range } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
 
-describe("startMargin", () => {
-  it("places the items after the header and keeps the footer at the end", async () => {
-    const HEIGHTS = [20, 40, 80, 77];
-    const items = range(1000);
-    const last = String(items.length - 1);
-    const HEADER_SIZE = 100;
-    const FOOTER_SIZE = 200;
-    const root = render(
-      <div
-        style={{
-          height: 400,
-          overflowY: "auto",
-          // opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer
-          overflowAnchor: "none",
-        }}
-      >
-        <div style={{ height: HEADER_SIZE }}>header</div>
-        <Virtualizer data={items} startMargin={HEADER_SIZE}>
-          {(i) => (
-            <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
-              {i}
-            </div>
-          )}
-        </Virtualizer>
-        <div style={{ height: FOOTER_SIZE }}>footer</div>
-      </div>,
-    );
-    const { viewport, container } = await getVirtualizer(root);
+it("places the items after the header and keeps the footer at the end", async () => {
+  const HEIGHTS = [20, 40, 80, 77];
+  const items = range(1000);
+  const last = String(items.length - 1);
+  const HEADER_SIZE = 100;
+  const FOOTER_SIZE = 200;
+  const root = render(
+    <div
+      style={{
+        height: 400,
+        overflowY: "auto",
+        // opt out browser's scroll anchoring on header/footer because it will conflict with scroll anchoring of virtualizer
+        overflowAnchor: "none",
+      }}
+    >
+      <div style={{ height: HEADER_SIZE }}>header</div>
+      <Virtualizer data={items} startMargin={HEADER_SIZE}>
+        {(i) => (
+          <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
+            {i}
+          </div>
+        )}
+      </Virtualizer>
+      <div style={{ height: FOOTER_SIZE }}>footer</div>
+    </div>,
+  );
+  const { viewport, container } = await getVirtualizer(root);
 
-    // check if start is displayed below the header
-    await expect.poll(() => getItem(container, "0")).toBeDefined();
-    await expectPosition(
-      () => relativeTop(viewport, getItem(container, "0")!),
-      HEADER_SIZE,
-    );
+  // check if start is displayed below the header
+  await expect.poll(() => getItem(container, "0")).toBeDefined();
+  await expectPosition(
+    () => relativeTop(viewport, getItem(container, "0")!),
+    HEADER_SIZE,
+  );
 
-    // scroll to the end
-    await expect
-      .poll(() => {
-        scrollToEnd(viewport);
-        return getItem(container, last);
-      })
-      .toBeDefined();
+  // scroll to the end
+  await expect
+    .poll(() => {
+      scrollToEnd(viewport);
+      return getItem(container, last);
+    })
+    .toBeDefined();
 
-    // check if the end is displayed above the footer
-    await expectPosition(
-      () => relativeBottom(viewport, getItem(container, last)!),
-      FOOTER_SIZE,
-    );
-  });
+  // check if the end is displayed above the footer
+  await expectPosition(
+    () => relativeBottom(viewport, getItem(container, last)!),
+    FOOTER_SIZE,
+  );
 });
 
 describe("nested scroll containers", () => {
