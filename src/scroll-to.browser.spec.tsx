@@ -57,7 +57,8 @@ describe("scrollToIndex", () => {
   const ITEM_COUNT = 1000;
   // An item this far from the destination is out of the rendered range
   const FAR = 50;
-  const HEIGHTS = [20, 40, 80, 77];
+  // The sizes are even so that their median, which may be the mean of two of them, is whole and the positions can be compared exactly
+  const HEIGHTS = [20, 40, 80, 76];
 
   const expectItemTop = (
     viewport: HTMLElement,

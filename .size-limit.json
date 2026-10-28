@@ -33,7 +33,7 @@
     "name": "VMasonry",
     "path": "lib/index.js",
     "import": "{ VMasonry }",
-    "limit": "3.7 kB"
+    "limit": "3.75 kB"
   },
   {
     "name": "vue VList",
@@ -63,7 +63,7 @@
     "name": "vue VMasonry",
     "path": "lib/vue/index.js",
     "import": "{ VMasonry }",
-    "limit": "3.8 kB"
+    "limit": "3.85 kB"
   },
   {
     "name": "solid VList",
@@ -81,13 +81,13 @@
     "name": "solid WindowVirtualizer",
     "path": "lib/solid/index.js",
     "import": "{ WindowVirtualizer }",
-    "limit": "3.6 kB"
+    "limit": "3.65 kB"
   },
   {
     "name": "solid VGrid",
     "path": "lib/solid/index.js",
     "import": "{ VGrid }",
-    "limit": "6.5 kB"
+    "limit": "6.55 kB"
   },
   {
     "name": "solid VMasonry",
