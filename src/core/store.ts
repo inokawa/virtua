@@ -39,7 +39,7 @@ export const ACTION_MANUAL_SCROLL = 8;
 export const ACTION_BEFORE_MANUAL_SMOOTH_SCROLL = 9;
 
 type Actions =
-  | [type: typeof ACTION_SCROLL, offset: number, startOffset: number]
+  | [type: typeof ACTION_SCROLL, offset: number, startOffset?: number]
   | [type: typeof ACTION_SCROLL_END, dummy?: void]
   | [
       type: typeof ACTION_ITEM_RESIZE,
@@ -288,7 +288,9 @@ export const createVirtualStore = (
 
       switch (type) {
         case ACTION_SCROLL: {
-          startSpacerSize = payload2;
+          if (payload2 != NULL) {
+            startSpacerSize = payload2;
+          }
           if (payload === scrollOffset && _scrollMode === SCROLL_BY_NATIVE) {
             // Ignore scroll events from different direction
             break;

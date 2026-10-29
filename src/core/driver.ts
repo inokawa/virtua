@@ -67,7 +67,7 @@ const createScrollObserver = (
   isHorizontal: boolean,
   isRtl: boolean,
   onMomentumJump?: (() => void) | null,
-  getStartOffset: () => number = store.$getStartSpacerSize,
+  getStartOffset?: () => number,
 ) => {
   let lastScrollTime = 0;
   let wheeling = false;
@@ -135,7 +135,11 @@ const createScrollObserver = (
       stillMomentumScrolling = true;
     }
 
-    store.$update(ACTION_SCROLL, getScrollOffset(), getStartOffset());
+    store.$update(
+      ACTION_SCROLL,
+      getScrollOffset(),
+      getStartOffset && getStartOffset(),
+    );
 
     scheduleScrollEnd();
   };
@@ -193,7 +197,7 @@ const createScrollObserver = (
       // https://github.com/inokawa/virtua/issues/1037
       if (getScrollOffset() !== store.$getScrollOffset()) {
         onScroll();
-      } else {
+      } else if (getStartOffset) {
         // The start offset may have changed alone
         store.$update(ACTION_START_OFFSET_CHANGE, getStartOffset());
       }
@@ -241,11 +245,7 @@ const createScrollObserver = (
           if (store.$getViewportSize() > store.$getTotalSize()) {
             // In this case applying jump may not cause scroll.
             // Current logic expects scroll event occurs after applying jump so we dispatch it manually.
-            store.$update(
-              ACTION_SCROLL,
-              getScrollOffset(),
-              store.$getStartSpacerSize(),
-            );
+            store.$update(ACTION_SCROLL, getScrollOffset());
           }
         }
       }
