@@ -1,8 +1,4 @@
-import {
-  getCurrentDocument,
-  getCurrentWindow,
-  isIOSWebKit,
-} from "./environment.js";
+import { isIOSWebKit } from "./environment.js";
 import {
   ACTION_SCROLL,
   type VirtualStore,
@@ -28,7 +24,7 @@ const createResizeObserver = (
   cb: (entries: readonly ResizeObserverEntry[]) => void,
 ) => {
   let ro: ResizeObserver | undefined;
-  let win: ReturnType<typeof getCurrentWindow>;
+  let win: Window & typeof globalThis;
   let delivering: readonly ResizeObserverEntry[] | null = NULL;
 
   return {
@@ -37,7 +33,7 @@ const createResizeObserver = (
         // Initialize ResizeObserver lazily for SSR
         // https://www.w3.org/TR/resize-observer/#intro
         // https://bugs.chromium.org/p/chromium/issues/detail?id=1491739
-        win = getCurrentWindow(getCurrentDocument(e));
+        win = e.ownerDocument!.defaultView!;
         ro = new win.ResizeObserver((entries) => {
           delivering = entries;
           cb(entries);
@@ -511,8 +507,8 @@ export const createWindowDriver = (
 
   return {
     $observe(container) {
-      const document = getCurrentDocument(container);
-      const window = (currentWindow = getCurrentWindow(document));
+      const document = container.ownerDocument!;
+      const window = (currentWindow = document.defaultView!);
       const viewport = (viewportElement =
         document.scrollingElement! as HTMLElement);
       // Detect RTL document

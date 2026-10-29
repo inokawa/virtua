@@ -5,17 +5,6 @@ import { NULL } from "./utils.js";
  */
 export const isBrowser = typeof window !== "undefined";
 
-/**
- * @internal
- */
-export const getCurrentDocument = (node: HTMLElement): Document =>
-  node.ownerDocument;
-
-/**
- * @internal
- */
-export const getCurrentWindow = (doc: Document) => doc.defaultView!;
-
 let isIOS: boolean | undefined;
 
 /**
