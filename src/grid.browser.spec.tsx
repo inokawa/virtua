@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, onTestFinished, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { server } from "vitest/browser";
 import {
   createRef,
@@ -658,19 +658,10 @@ it("a scroll is notified only to the axes which moved", async () => {
 
 it("the scroll end is notified once after both axes have ended", async () => {
   let scrollEnds = 0;
-  let scrolledAt = 0;
+  let wheeledAt = 0;
   let endedAt = 0;
+  let scrollsAfterWheel = 0;
   let onHorizontal = () => {};
-  // The clock is pinned while the wheel is dispatched, as if the wheel came a while after the scroll.
-  // It's replaced before the render, as the scroll observer takes Date.now when it's created
-  let pinnedNow: number | undefined;
-  const { now } = Date;
-  const nowSpy = vi
-    .spyOn(Date, "now")
-    .mockImplementation(() => pinnedNow ?? now());
-  onTestFinished(() => {
-    nowSpy.mockRestore();
-  });
   const root = render(
     <VGrid
       rows={ROWS}
@@ -678,11 +669,10 @@ it("the scroll end is notified once after both axes have ended", async () => {
       cols={COLS}
       colWidth={COL_WIDTH}
       style={{ height: VIEWPORT, width: VIEWPORT }}
-      onVerticalScroll={() => {
-        scrolledAt = performance.now();
-      }}
       onHorizontalScroll={() => {
-        scrolledAt = performance.now();
+        if (wheeledAt) {
+          scrollsAfterWheel++;
+        }
         onHorizontal();
       }}
       onScrollEnd={() => {
@@ -700,17 +690,24 @@ it("the scroll end is notified once after both axes have ended", async () => {
   const { viewport, container } = await getVirtualizer(root);
   await expect.poll(() => cell(container, "0 / 0")).toBeTruthy();
 
-  // a busy main thread drops the scroll events, so a wheel keeps the columns scrolling.
-  // A wheel counts only between 50ms and 150ms after the last scroll event
+  // Wheels keep only the columns scrolling, as if a busy main thread dropped their scroll events, so the end has to wait for the columns after the rows end
+  // WebKit scrolls by a synthetic wheel unless prevented
+  viewport.addEventListener("wheel", (e) => e.preventDefault());
+  const wheel = () => {
+    wheeledAt = performance.now();
+    viewport.dispatchEvent(
+      new WheelEvent("wheel", { deltaX: 10, cancelable: true }),
+    );
+  };
   onHorizontal = () => {
     onHorizontal = () => {};
-    pinnedNow = Date.now() + 75;
-    viewport.dispatchEvent(new WheelEvent("wheel", { deltaX: 10 }));
-    pinnedNow = undefined;
+    setTimeout(wheel, 75);
+    setTimeout(wheel, 200);
   };
   viewport.scrollLeft = 200;
   await expect.poll(() => scrollEnds).toBe(1);
-  expect(endedAt - scrolledAt).toBeGreaterThanOrEqual(250);
+  expect(scrollsAfterWheel).toBe(0);
+  expect(endedAt - wheeledAt).toBeGreaterThanOrEqual(140);
 
   viewport.scrollTop = 400;
   await expect.poll(() => scrollEnds).toBe(2);
