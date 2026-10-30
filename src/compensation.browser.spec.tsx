@@ -79,6 +79,17 @@ const settle = async (viewport: HTMLElement, container: HTMLElement) => {
   expect(settled).toBe(true);
 };
 
+// Resizing the DOM directly reaches the store through ResizeObserver like a real resize, and lasts as long as the item stays mounted
+const resize = (container: HTMLElement, index: number, size: number) => {
+  const item = getItem(container, String(index))!;
+  (item.firstElementChild as HTMLElement).style.height = `${size}px`;
+};
+
+const scrolled = (viewport: HTMLElement) =>
+  new Promise((resolve) =>
+    viewport.addEventListener("scroll", resolve, { once: true }),
+  );
+
 describe("jump write", () => {
   it("fast scrolling into unmeasured area does not lose scroll position", async () => {
     const HEIGHTS = [20, 40, 80, 77];
@@ -605,17 +616,6 @@ describe("resize jump compensation", () => {
         </Virtualizer>
       </div>
     );
-
-    // Resizing the DOM directly reaches the store through ResizeObserver like a real resize, and lasts as long as the item stays mounted
-    const resize = (container: HTMLElement, index: number, size: number) => {
-      const item = getItem(container, String(index))!;
-      (item.firstElementChild as HTMLElement).style.height = `${size}px`;
-    };
-
-    const scrolled = (viewport: HTMLElement) =>
-      new Promise((resolve) =>
-        viewport.addEventListener("scroll", resolve, { once: true }),
-      );
 
     describe("while idle", () => {
       it("compensates an item which is fully above the viewport", async () => {
@@ -1166,6 +1166,148 @@ describe("resize jump compensation", () => {
     // check if stable after prepending
     expect(first().textContent).toBe(FIRST);
     await expectPosition(() => relativeTop(viewport, first()), 0);
+  });
+});
+
+describe("scroll direction after the last scroll event", () => {
+  const ITEM_SIZE = 100;
+  const ITEM_COUNT = 100;
+  const HALF = ITEM_SIZE / 2;
+
+  // itemSize matches the real size, so item i sits at (i * ITEM_SIZE, (i + 1) * ITEM_SIZE)
+  const List = () => (
+    <div style={{ height: ITEM_SIZE * 4, overflowY: "auto" }}>
+      <Virtualizer data={range(ITEM_COUNT)} itemSize={ITEM_SIZE}>
+        {(i) => (
+          <div key={i} style={{ height: ITEM_SIZE }}>
+            {i}
+          </div>
+        )}
+      </Virtualizer>
+    </div>
+  );
+
+  // Item 4 of 400 to 500 straddles the viewport of 450 to 850 after scrolling down, and is compensated only while scrolling down.
+  // It is grown 350ms after the last scroll event, past the 150ms after which the scroll ends without input
+
+  it("is idle without input", async () => {
+    const root = render(<List />);
+    const { viewport, container } = await getVirtualizer(root);
+    await expect.poll(() => getItem(container, "0")).toBeDefined();
+    viewport.scrollTop = ITEM_SIZE * 4;
+    await settle(viewport, container);
+
+    viewport.scrollTop += HALF;
+    await scrolled(viewport);
+    await delay(350);
+    resize(container, 4, ITEM_SIZE * 2);
+    await settle(viewport, container);
+
+    await expectPosition(() => viewport.scrollTop, ITEM_SIZE * 4 + HALF);
+  });
+
+  it("stays down while the wheel keeps turning", async () => {
+    const root = render(<List />);
+    const { viewport, container } = await getVirtualizer(root);
+    await expect.poll(() => getItem(container, "0")).toBeDefined();
+    viewport.scrollTop = ITEM_SIZE * 4;
+    await settle(viewport, container);
+
+    viewport.scrollTop += HALF;
+    await scrolled(viewport);
+    // WebKit scrolls by a synthetic wheel unless prevented
+    viewport.addEventListener("wheel", (e) => e.preventDefault());
+    const wheeling = setInterval(() => {
+      viewport.dispatchEvent(
+        new WheelEvent("wheel", { deltaY: 10, cancelable: true }),
+      );
+    }, 100);
+    onTestFinished(() => clearInterval(wheeling));
+    await delay(350);
+    resize(container, 4, ITEM_SIZE * 2);
+    await settle(viewport, container);
+    clearInterval(wheeling);
+
+    await expectPosition(() => viewport.scrollTop, ITEM_SIZE * 5 + HALF);
+  });
+
+  it("is idle after the wheel stops", async () => {
+    const root = render(<List />);
+    const { viewport, container } = await getVirtualizer(root);
+    await expect.poll(() => getItem(container, "0")).toBeDefined();
+    viewport.scrollTop = ITEM_SIZE * 4;
+    await settle(viewport, container);
+
+    viewport.scrollTop += HALF;
+    await scrolled(viewport);
+    viewport.addEventListener("wheel", (e) => e.preventDefault());
+    const wheeling = setInterval(() => {
+      viewport.dispatchEvent(
+        new WheelEvent("wheel", { deltaY: 10, cancelable: true }),
+      );
+    }, 100);
+    onTestFinished(() => clearInterval(wheeling));
+    await delay(250);
+    clearInterval(wheeling);
+    await delay(350);
+    resize(container, 4, ITEM_SIZE * 2);
+    await settle(viewport, container);
+
+    await expectPosition(() => viewport.scrollTop, ITEM_SIZE * 4 + HALF);
+  });
+
+  it("stays down while a finger rests", async () => {
+    const root = render(<List />);
+    const { viewport, container } = await getVirtualizer(root);
+    await expect.poll(() => getItem(container, "0")).toBeDefined();
+    viewport.scrollTop = ITEM_SIZE * 4;
+    await settle(viewport, container);
+
+    viewport.scrollTop += HALF;
+    await scrolled(viewport);
+    viewport.dispatchEvent(new Event("touchstart"));
+    await delay(350);
+    resize(container, 4, ITEM_SIZE * 2);
+    await settle(viewport, container);
+    viewport.dispatchEvent(new Event("touchend"));
+
+    await expectPosition(() => viewport.scrollTop, ITEM_SIZE * 5 + HALF);
+  });
+
+  it("is idle after the finger is lifted", async () => {
+    const root = render(<List />);
+    const { viewport, container } = await getVirtualizer(root);
+    await expect.poll(() => getItem(container, "0")).toBeDefined();
+    viewport.scrollTop = ITEM_SIZE * 4;
+    await settle(viewport, container);
+
+    viewport.scrollTop += HALF;
+    await scrolled(viewport);
+    viewport.dispatchEvent(new Event("touchstart"));
+    viewport.dispatchEvent(new Event("touchend"));
+    await delay(350);
+    resize(container, 4, ITEM_SIZE * 2);
+    await settle(viewport, container);
+
+    await expectPosition(() => viewport.scrollTop, ITEM_SIZE * 4 + HALF);
+  });
+
+  it("is idle after the touch is cancelled", async () => {
+    const root = render(<List />);
+    const { viewport, container } = await getVirtualizer(root);
+    await expect.poll(() => getItem(container, "0")).toBeDefined();
+    viewport.scrollTop = ITEM_SIZE * 4;
+    await settle(viewport, container);
+
+    viewport.scrollTop += HALF;
+    await scrolled(viewport);
+    viewport.dispatchEvent(new Event("touchstart"));
+    viewport.dispatchEvent(new Event("touchcancel"));
+    await delay(350);
+    resize(container, 4, ITEM_SIZE * 2);
+    await settle(viewport, container);
+
+    await expectPosition(() => viewport.scrollTop, ITEM_SIZE * 4 + HALF);
   });
 });
 

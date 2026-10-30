@@ -69,7 +69,6 @@ const createScrollObserver = (
   onMomentumJump?: (() => void) | null,
   getStartOffset?: () => number,
 ) => {
-  let lastScrollTime = 0;
   let wheeling = false;
   let touching = false;
   let justTouchEnded = false;
@@ -78,7 +77,6 @@ const createScrollObserver = (
 
   let scrollEndTimer: ReturnType<typeof timeout> | undefined;
 
-  const now = Date.now;
   const scrollOffsetKey = isHorizontal ? "scrollLeft" : "scrollTop";
   const scrollToKey = isHorizontal ? "left" : "top";
 
@@ -116,12 +114,11 @@ const createScrollObserver = (
 
       // Wait while wheeling or touching
       scheduleScrollEnd();
-      return;
+    } else {
+      justTouchEnded = false;
+
+      store.$update(ACTION_SCROLL_END);
     }
-
-    justTouchEnded = false;
-
-    store.$update(ACTION_SCROLL_END);
   };
   const scheduleScrollEnd = () => {
     cancelTimeout(scrollEndTimer);
@@ -129,7 +126,7 @@ const createScrollObserver = (
   };
 
   const onScroll = () => {
-    lastScrollTime = now();
+    wheeling = false;
 
     if (justTouchEnded) {
       stillMomentumScrolling = true;
@@ -148,20 +145,10 @@ const createScrollObserver = (
   // Sometimes scroll events do not fire when frame dropped even if the visual have been already scrolled
   const onWheel = ((e: WheelEvent) => {
     if (
-      wheeling ||
       // Scroll start should be detected with scroll event
-      !store.$isScrolling() ||
+      store.$isScrolling() &&
       // Probably a pinch-to-zoom gesture
-      e.ctrlKey
-    ) {
-      return;
-    }
-
-    const timeDelta = now() - lastScrollTime;
-    if (
-      // Check if wheel event occurs some time after scrolling
-      150 > timeDelta &&
-      50 < timeDelta &&
+      !e.ctrlKey &&
       // Get delta before checking deltaMode for firefox behavior
       // https://github.com/w3c/uievents/issues/181#issuecomment-392648065
       // https://bugzilla.mozilla.org/show_bug.cgi?id=1392460#c34
