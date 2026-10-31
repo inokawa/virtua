@@ -23,7 +23,6 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   UPDATE_SCROLL_EVENT,
   createWindowDriver,
-  scrollToIndex,
   type ItemsRange,
   type ScrollToIndexOpts,
   type CacheSnapshot,
@@ -202,8 +201,7 @@ export const WindowVirtualizer = <T,>(
         layout.$findIndex(offset - store.$getStartSpacerSize()),
       getItemOffset: store.$getItemOffset,
       getItemSize: layout.$getItemSize,
-      scrollToIndex: (index, opts) =>
-        scrollToIndex(driver, store, layout, index, opts),
+      scrollToIndex: driver.$scroll,
     });
     onCleanup(() => ref());
   }

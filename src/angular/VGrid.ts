@@ -49,9 +49,6 @@ import {
   getAxisItem,
   getAxisLength,
   getScrollSize,
-  gridScrollBy,
-  gridScrollTo,
-  gridScrollToIndex,
 } from "../core/index.js";
 
 /**
@@ -679,15 +676,7 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
     return this._colLayout.$getItemSize(index);
   }
   scrollToIndex(opts: GridScrollToIndexOpts): void {
-    gridScrollToIndex(
-      this.driver,
-      this._rowStore,
-      this._colStore,
-      this._rowLayout,
-      this._colLayout,
-      this.sectionRows(),
-      opts,
-    );
+    this.driver.$scroll(opts, this.sectionRows());
   }
   scrollTo({
     vertical,
@@ -696,7 +685,7 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
     vertical?: number;
     horizontal?: number;
   }): void {
-    gridScrollTo(this.driver, vertical, horizontal);
+    this.driver.$scroll({ rowOffset: vertical, colOffset: horizontal });
   }
   scrollBy({
     vertical,
@@ -705,12 +694,15 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
     vertical?: number;
     horizontal?: number;
   }): void {
-    gridScrollBy(
-      this.driver,
-      this._rowStore,
-      this._colStore,
-      vertical,
-      horizontal,
-    );
+    this.driver.$scroll({
+      rowOffset:
+        vertical == null
+          ? vertical
+          : vertical + this._rowStore.$getScrollOffset(),
+      colOffset:
+        horizontal == null
+          ? horizontal
+          : horizontal + this._colStore.$getScrollOffset(),
+    });
   }
 }

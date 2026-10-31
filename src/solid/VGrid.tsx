@@ -30,9 +30,6 @@ import {
   getAxisItem,
   getAxisLength,
   getScrollSize,
-  gridScrollBy,
-  gridScrollTo,
-  gridScrollToIndex,
   type GridDriver,
   type GridScrollToIndexOpts,
   type GridAxis,
@@ -544,20 +541,20 @@ export const VGrid = <R = number, C = number>(
       getColOffset: colStore.$getItemOffset,
       getRowSize: rowLayout.$getItemSize,
       getColSize: colLayout.$getItemSize,
-      scrollToIndex: (opts) =>
-        gridScrollToIndex(
-          driver,
-          rowStore,
-          colStore,
-          rowLayout,
-          colLayout,
-          props.sectionRows,
-          opts,
-        ),
+      scrollToIndex: (opts) => driver.$scroll(opts, props.sectionRows),
       scrollTo: ({ vertical, horizontal }) =>
-        gridScrollTo(driver, vertical, horizontal),
+        driver.$scroll({ rowOffset: vertical, colOffset: horizontal }),
       scrollBy: ({ vertical, horizontal }) =>
-        gridScrollBy(driver, rowStore, colStore, vertical, horizontal),
+        driver.$scroll({
+          rowOffset:
+            vertical == null
+              ? vertical
+              : vertical + rowStore.$getScrollOffset(),
+          colOffset:
+            horizontal == null
+              ? horizontal
+              : horizontal + colStore.$getScrollOffset(),
+        }),
     });
     onCleanup(() => ref());
   }

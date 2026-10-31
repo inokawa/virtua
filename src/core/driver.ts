@@ -12,13 +12,156 @@ import {
 } from "./store.js";
 import { type ItemResize } from "./types.js";
 import type { Layout } from "./layouts/types.js";
+import { type GridLayout } from "./layouts/grid.js";
+import { getSectionIndex, getSectionStarts } from "./grid.js";
 import {
   cancelTimeout,
+  clamp,
   createPromise,
+  EMPTY,
+  max,
   microtask,
+  min,
   NULL,
   timeout,
 } from "./utils.js";
+
+/**
+ * Alignment of item in the viewport.
+ *
+ * - `start`: Align the item to the start.
+ * - `center`: Align the item to the center.
+ * - `end`: Align the item to the end.
+ * - `nearest`: If the item is already completely visible, don't scroll. Otherwise scroll until it becomes visible. That is similar behavior to [`nearest` option of scrollIntoView](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView).
+ */
+export type ScrollToIndexAlign = "start" | "center" | "end" | "nearest";
+
+export interface ScrollToIndexOpts {
+  /**
+   * Alignment of item in the viewport. See {@link ScrollToIndexAlign} for the values.
+   * @defaultValue "start"
+   */
+  align?: ScrollToIndexAlign;
+  /**
+   * If true, scrolling animates smoothly with [`behavior: smooth` of scrollTo](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTo#behavior).
+   *
+   * **Using smooth scrolling over many items can kill performance benefit of virtual scroll. Do not overuse it.**
+   */
+  smooth?: boolean;
+  /**
+   * Additional offset from the scrolled position.
+   * @defaultValue 0
+   */
+  offset?: number;
+}
+
+/**
+ * The cell to scroll to and the options of the scroll. The axis whose index is omitted is not scrolled.
+ */
+export interface GridScrollToIndexOpts {
+  /**
+   * The row index of the cell.
+   */
+  rowIndex?: number;
+  /**
+   * The column index of the cell.
+   */
+  colIndex?: number;
+  /**
+   * Alignment of the cell in the viewport, excluding the rows sticking over it. See {@link ScrollToIndexAlign} for the values.
+   * @defaultValue "start"
+   */
+  rowAlign?: ScrollToIndexAlign;
+  /**
+   * Alignment of the cell in the viewport, excluding the columns sticking over it. See {@link ScrollToIndexAlign} for the values.
+   * @defaultValue "start"
+   */
+  colAlign?: ScrollToIndexAlign;
+  /**
+   * Additional vertical offset from the scrolled position, or the scrollTop to scroll to if {@link GridScrollToIndexOpts.rowIndex} is omitted.
+   */
+  rowOffset?: number;
+  /**
+   * Additional horizontal offset from the scrolled position, or the scrollLeft to scroll to if {@link GridScrollToIndexOpts.colIndex} is omitted.
+   */
+  colOffset?: number;
+}
+
+const getGridAxisTargetOffset = (
+  store: VirtualStore,
+  layout: GridLayout,
+  sections: readonly number[],
+  index: number | undefined,
+  align: ScrollToIndexAlign | undefined,
+  offset: number | undefined,
+): (() => number) | null => {
+  if (index == NULL) {
+    return offset == NULL ? NULL : () => offset!;
+  }
+  const count = layout.$getLength();
+  const pinnedStart = layout.$getPinnedStart();
+  const trailStart = layout.$getTrailStart();
+  index = clamp(index, 0, count - 1);
+  const starts = getSectionStarts(sections, pinnedStart, trailStart);
+  const section = getSectionIndex(starts, index, trailStart);
+  const sectionHeader = section < 0 ? -1 : starts[section]!;
+  // Read when scrolling, as the pinned items may be measured after the call.
+  // The header of the section of the item sticks under the pinned items, so the item is below it unless it's the header itself.
+  const getInsetStart = (): number =>
+    layout.$getItemOffset(pinnedStart) +
+    (sectionHeader < 0 || sectionHeader === index
+      ? 0
+      : layout.$getItemOffset(sectionHeader + 1) -
+        layout.$getItemOffset(sectionHeader));
+  const getVisibleSize = (insetStart: number): number =>
+    store.$getViewportSize() -
+    insetStart -
+    (layout.$getItemOffset(count) - layout.$getItemOffset(trailStart));
+
+  if (align === "nearest") {
+    if (index < pinnedStart || index >= trailStart) {
+      // A pinned item is always visible
+      return NULL;
+    }
+    const insetStart = getInsetStart();
+    const scrollOffset = store.$getScrollOffset() + insetStart;
+    const viewportSize = getVisibleSize(insetStart);
+    const itemSize = layout.$getItemSize(index);
+    let itemOffset = store.$getItemOffset(index);
+    if (sectionHeader === index) {
+      // A section header is where it sticks, until the end of its section pushes it out
+      const lastIndex =
+        (section + 1 < starts.length ? starts[section + 1]! : trailStart) - 1;
+      itemOffset = max(
+        itemOffset,
+        min(
+          scrollOffset,
+          store.$getItemOffset(lastIndex) +
+            layout.$getItemSize(lastIndex) -
+            itemSize,
+        ),
+      );
+    }
+    if (itemOffset < scrollOffset) {
+      align = "start";
+    } else if (itemOffset + itemSize > scrollOffset + viewportSize) {
+      align = "end";
+    } else {
+      return NULL;
+    }
+  }
+
+  return () => {
+    const insetStart = getInsetStart();
+    const rest = layout.$getItemSize(index) - getVisibleSize(insetStart);
+    return (
+      (offset || 0) +
+      store.$getItemOffset(index) -
+      insetStart +
+      (align === "end" ? rest : align === "center" ? rest / 2 : 0)
+    );
+  };
+};
 
 const createResizeObserver = (
   cb: (entries: readonly ResizeObserverEntry[]) => void,
@@ -324,8 +467,7 @@ interface DriverBase {
  */
 export interface Driver extends DriverBase {
   $observeItem(el: HTMLElement, index: number): () => void;
-  $scroll(getTargetOffset: () => number, smooth?: boolean): void;
-  $getBaseOffset(): number;
+  $scroll(index: number | undefined, opts?: ScrollToIndexOpts): void;
 }
 
 /**
@@ -420,12 +562,44 @@ export const createContainerDriver = (
         resizeObserver._unobserve(el);
       };
     },
-    async $scroll(getTargetOffset, smooth) {
+    async $scroll(index, { align, smooth, offset = 0 } = {}) {
+      if (index != NULL) {
+        index = clamp(index, 0, layout.$getLength() - 1);
+        if (align === "nearest") {
+          const itemOffset = store.$getItemOffset(index);
+          const scrollOffset = store.$getScrollOffset();
+          if (itemOffset < scrollOffset) {
+            align = "start";
+          } else if (
+            itemOffset + layout.$getItemSize(index) >
+            scrollOffset + store.$getViewportSize()
+          ) {
+            align = "end";
+          } else {
+            // already completely visible
+            return;
+          }
+        }
+      }
       // Wait for element assign. The element may be undefined if scrollRef prop is used and scroll is scheduled on mount.
       // https://github.com/inokawa/virtua/pull/733
       // https://github.com/inokawa/virtua/pull/750
       if (await initialized[0]) {
-        scrollObserver!._scroll(getTargetOffset, smooth);
+        scrollObserver!._scroll(
+          () =>
+            index == NULL
+              ? offset
+              : offset +
+                store.$getStartSpacerSize() +
+                store.$getItemOffset(index) +
+                (align === "end"
+                  ? layout.$getItemSize(index) - store.$getViewportSize()
+                  : align === "center"
+                    ? (layout.$getItemSize(index) - store.$getViewportSize()) /
+                      2
+                    : 0),
+          smooth,
+        );
       }
     },
     $effect() {
@@ -438,7 +612,6 @@ export const createContainerDriver = (
         });
       }
     },
-    $getBaseOffset: store.$getStartSpacerSize,
   };
 };
 
@@ -562,12 +735,45 @@ export const createWindowDriver = (
         resizeObserver._unobserve(el);
       };
     },
-    async $scroll(getTargetOffset, smooth) {
+    async $scroll(index, { align, smooth, offset = 0 } = {}) {
+      if (index != NULL) {
+        index = clamp(index, 0, layout.$getLength() - 1);
+        if (align === "nearest") {
+          const itemOffset = store.$getItemOffset(index);
+          const scrollOffset = store.$getScrollOffset();
+          if (itemOffset < scrollOffset) {
+            align = "start";
+          } else if (
+            itemOffset + layout.$getItemSize(index) >
+            scrollOffset + store.$getViewportSize()
+          ) {
+            align = "end";
+          } else {
+            // already completely visible
+            return;
+          }
+        }
+      }
       // Wait for element assign. The element may be undefined if scroll is scheduled on mount.
       // https://github.com/inokawa/virtua/pull/733
       // https://github.com/inokawa/virtua/pull/750
       if (await initialized[0]) {
-        scrollObserver!._scroll(getTargetOffset, smooth);
+        scrollObserver!._scroll(
+          () =>
+            index == NULL
+              ? offset
+              : offset +
+                // Calculate target scroll position including container's offset from document
+                getBaseOffset!() +
+                store.$getItemOffset(index) +
+                (align === "end"
+                  ? layout.$getItemSize(index) - store.$getViewportSize()
+                  : align === "center"
+                    ? (layout.$getItemSize(index) - store.$getViewportSize()) /
+                      2
+                    : 0),
+          smooth,
+        );
       }
     },
     $effect() {
@@ -580,10 +786,6 @@ export const createWindowDriver = (
         });
       }
     },
-    $getBaseOffset() {
-      // Calculate target scroll position including container's offset from document
-      return getBaseOffset!();
-    },
   };
 };
 
@@ -591,10 +793,7 @@ export const createWindowDriver = (
  * @internal
  */
 export interface GridDriver extends DriverBase {
-  $scroll(
-    getTargetTop: (() => number) | null,
-    getTargetLeft: (() => number) | null,
-  ): void;
+  $scroll(opts: GridScrollToIndexOpts, sectionRows?: readonly number[]): void;
   $observeItem(
     el: HTMLElement,
     rowIndex: number | undefined,
@@ -608,8 +807,8 @@ export interface GridDriver extends DriverBase {
 export const createContainerGridDriver = (
   rowStore: VirtualStore,
   colStore: VirtualStore,
-  rowLayout: Layout,
-  colLayout: Layout,
+  rowLayout: GridLayout,
+  colLayout: GridLayout,
 ): GridDriver => {
   let viewportElement: HTMLElement | undefined;
   let rowScrollObserver: ScrollObserver | undefined;
@@ -652,7 +851,27 @@ export const createContainerGridDriver = (
   });
 
   return {
-    async $scroll(getTargetTop, getTargetLeft) {
+    async $scroll(
+      { rowIndex, colIndex, rowAlign, colAlign, rowOffset, colOffset },
+      sectionRows = EMPTY,
+    ) {
+      // TODO support smooth scroll, removed because scrolling both axes smoothly freezes their ranges and the page
+      const getTargetTop = getGridAxisTargetOffset(
+        rowStore,
+        rowLayout,
+        sectionRows,
+        rowIndex,
+        rowAlign,
+        rowOffset,
+      );
+      const getTargetLeft = getGridAxisTargetOffset(
+        colStore,
+        colLayout,
+        EMPTY,
+        colIndex,
+        colAlign,
+        colOffset,
+      );
       if (!getTargetTop && !getTargetLeft) {
         return;
       }

@@ -12,7 +12,6 @@
     createListLayout,
     getScrollSize as _getScrollSize,
     createWindowDriver,
-    scrollToIndex as _scrollToIndex,
     min,
   } from "../core/index.js";
   import { defaultGetKey, isSameRange, styleToString } from "./utils.js";
@@ -126,10 +125,8 @@
     store.$getItemOffset satisfies WindowVirtualizerHandle["getItemOffset"] as WindowVirtualizerHandle["getItemOffset"];
   export const getItemSize =
     layout.$getItemSize satisfies WindowVirtualizerHandle["getItemSize"] as WindowVirtualizerHandle["getItemSize"];
-  export const scrollToIndex: WindowVirtualizerHandle["scrollToIndex"] = (
-    index,
-    opts,
-  ) => _scrollToIndex(driver, store, layout, index, opts);
+  export const scrollToIndex: WindowVirtualizerHandle["scrollToIndex"] =
+    driver.$scroll;
 
   let containerStyle = $derived(
     styleToString({

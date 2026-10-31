@@ -22,9 +22,6 @@ import {
   getScrollSize,
   ACTION_START_OFFSET_CHANGE,
   createContainerDriver,
-  scrollTo,
-  scrollBy,
-  scrollToIndex,
   type ItemsRange,
   type ScrollToIndexOpts,
   sort,
@@ -297,10 +294,12 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
         layout.$findIndex(offset - store.$getStartSpacerSize()),
       getItemOffset: store.$getItemOffset,
       getItemSize: layout.$getItemSize,
-      scrollToIndex: (index, opts) =>
-        scrollToIndex(driver, store, layout, index, opts),
-      scrollTo: (offset) => scrollTo(driver, offset),
-      scrollBy: (offset) => scrollBy(driver, store, offset),
+      scrollToIndex: driver.$scroll,
+      scrollTo: (offset) => driver.$scroll(undefined, { offset }),
+      scrollBy: (offset) =>
+        driver.$scroll(undefined, {
+          offset: offset + store.$getScrollOffset(),
+        }),
     } satisfies VirtualizerHandle);
 
     return () => {

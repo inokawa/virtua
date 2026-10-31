@@ -10,9 +10,6 @@
     UPDATE_SCROLL_EVENT,
     UPDATE_VIRTUAL_STATE,
     createContainerDriver,
-    scrollTo as _scrollTo,
-    scrollBy as _scrollBy,
-    scrollToIndex as _scrollToIndex,
     createVirtualStore,
     createListLayout,
     getScrollSize as _getScrollSize,
@@ -165,14 +162,12 @@
     store.$getItemOffset satisfies VirtualizerHandle["getItemOffset"] as VirtualizerHandle["getItemOffset"];
   export const getItemSize =
     layout.$getItemSize satisfies VirtualizerHandle["getItemSize"] as VirtualizerHandle["getItemSize"];
-  export const scrollToIndex: VirtualizerHandle["scrollToIndex"] = (
-    index,
-    opts,
-  ) => _scrollToIndex(driver, store, layout, index, opts);
+  export const scrollToIndex: VirtualizerHandle["scrollToIndex"] =
+    driver.$scroll;
   export const scrollTo: VirtualizerHandle["scrollTo"] = (offset) =>
-    _scrollTo(driver, offset);
+    driver.$scroll(undefined, { offset });
   export const scrollBy: VirtualizerHandle["scrollBy"] = (offset) =>
-    _scrollBy(driver, store, offset);
+    driver.$scroll(undefined, { offset: offset + store.$getScrollOffset() });
 
   let containerStyle = $derived(
     styleToString({
