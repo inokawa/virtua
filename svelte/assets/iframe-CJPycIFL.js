@@ -1,1 +1,0 @@
-import{t as e}from"./iframe-CNQ_Zycw.js";e();
