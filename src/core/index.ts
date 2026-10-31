@@ -41,15 +41,10 @@ export {
   createContainerGridDriver,
 } from "./driver.js";
 export {
-  scrollTo,
-  scrollBy,
-  scrollToIndex,
-  gridScrollTo,
-  gridScrollBy,
-  gridScrollToIndex,
+  type ScrollToIndexAlign,
   type ScrollToIndexOpts,
   type GridScrollToIndexOpts,
-} from "./scroll-to.js";
+} from "./driver.js";
 export { isBrowser } from "./environment.js";
 export { microtask, min, sort } from "./utils.js";
 export type { CacheSnapshot, ItemsRange } from "./types.js";

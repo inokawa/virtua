@@ -37,9 +37,6 @@ import {
   relayout,
   createVirtualStore,
   getScrollSize,
-  scrollBy,
-  scrollTo,
-  scrollToIndex,
   sort,
 } from "../core/index.js";
 import { defaultGetKey, type ItemContext } from "./utils.js";
@@ -421,12 +418,14 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
     return this._layout.$getItemSize(index);
   }
   scrollToIndex(index: number, opts?: ScrollToIndexOpts): void {
-    scrollToIndex(this.driver, this._store, this._layout, index, opts);
+    this.driver.$scroll(index, opts);
   }
   scrollTo(offset: number): void {
-    scrollTo(this.driver, offset);
+    this.driver.$scroll(undefined, { offset });
   }
   scrollBy(offset: number): void {
-    scrollBy(this.driver, this._store, offset);
+    this.driver.$scroll(undefined, {
+      offset: offset + this._store.$getScrollOffset(),
+    });
   }
 }

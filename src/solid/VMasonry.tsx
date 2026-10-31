@@ -27,9 +27,6 @@ import {
   createMasonryLayout,
   ACTION_ITEMS_LENGTH_CHANGE,
   relayout,
-  scrollTo,
-  scrollBy,
-  scrollToIndex,
   sort,
   type Driver,
   type ItemsRange,
@@ -279,10 +276,12 @@ export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
       },
       getItemOffset: store.$getItemOffset,
       getItemSize: layout.$getItemSize,
-      scrollToIndex: (index, opts) =>
-        scrollToIndex(driver, store, layout, index, opts),
-      scrollTo: (offset) => scrollTo(driver, offset),
-      scrollBy: (offset) => scrollBy(driver, store, offset),
+      scrollToIndex: driver.$scroll,
+      scrollTo: (offset) => driver.$scroll(undefined, { offset }),
+      scrollBy: (offset) =>
+        driver.$scroll(undefined, {
+          offset: offset + store.$getScrollOffset(),
+        }),
     });
     onCleanup(() => ref());
   }

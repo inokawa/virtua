@@ -27,9 +27,6 @@ import {
   getAxisItem,
   getAxisLength,
   getScrollSize,
-  gridScrollBy,
-  gridScrollTo,
-  gridScrollToIndex,
   type GridDriver,
   type GridScrollToIndexOpts,
   createGridPlan,
@@ -467,15 +464,7 @@ export const VGrid = /*#__PURE__*/ forwardRef<
       ariaSort,
     );
     const scrollToIndex = useLatestRef((opts: GridScrollToIndexOpts) =>
-      gridScrollToIndex(
-        driver,
-        rowStore,
-        colStore,
-        rowLayout,
-        colLayout,
-        sectionRows,
-        opts,
-      ),
+      driver.$scroll(opts, sectionRows),
     );
 
     useIsomorphicLayoutEffect(() => {
@@ -564,9 +553,18 @@ export const VGrid = /*#__PURE__*/ forwardRef<
         getColSize: colLayout.$getItemSize,
         scrollToIndex: (opts) => scrollToIndex.current(opts),
         scrollTo: ({ vertical, horizontal }) =>
-          gridScrollTo(driver, vertical, horizontal),
+          driver.$scroll({ rowOffset: vertical, colOffset: horizontal }),
         scrollBy: ({ vertical, horizontal }) =>
-          gridScrollBy(driver, rowStore, colStore, vertical, horizontal),
+          driver.$scroll({
+            rowOffset:
+              vertical == null
+                ? vertical
+                : vertical + rowStore.$getScrollOffset(),
+            colOffset:
+              horizontal == null
+                ? horizontal
+                : horizontal + colStore.$getScrollOffset(),
+          }),
       };
     }, []);
 

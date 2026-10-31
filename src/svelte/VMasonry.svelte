@@ -13,9 +13,6 @@
     relayout,
     createVirtualStore,
     getScrollSize as _getScrollSize,
-    scrollTo as _scrollTo,
-    scrollBy as _scrollBy,
-    scrollToIndex as _scrollToIndex,
     min,
     sort,
   } from "../core/index.js";
@@ -151,12 +148,11 @@
     store.$getItemOffset satisfies VMasonryHandle["getItemOffset"] as VMasonryHandle["getItemOffset"];
   export const getItemSize =
     layout.$getItemSize satisfies VMasonryHandle["getItemSize"] as VMasonryHandle["getItemSize"];
-  export const scrollToIndex: VMasonryHandle["scrollToIndex"] = (index, opts) =>
-    _scrollToIndex(driver, store, layout, index, opts);
+  export const scrollToIndex: VMasonryHandle["scrollToIndex"] = driver.$scroll;
   export const scrollTo: VMasonryHandle["scrollTo"] = (offset) =>
-    _scrollTo(driver, offset);
+    driver.$scroll(undefined, { offset });
   export const scrollBy: VMasonryHandle["scrollBy"] = (offset) =>
-    _scrollBy(driver, store, offset);
+    driver.$scroll(undefined, { offset: offset + store.$getScrollOffset() });
 
   const viewportStyle = styleToString({
     display: "block",

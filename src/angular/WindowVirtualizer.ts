@@ -31,7 +31,6 @@ import {
   createListLayout,
   createWindowDriver,
   type Driver,
-  scrollToIndex,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
 import { defaultGetKey, type ItemContext } from "./utils.js";
@@ -307,6 +306,6 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
     return this._layout.$getItemSize(index);
   }
   scrollToIndex(index: number, opts?: ScrollToIndexOpts): void {
-    scrollToIndex(this.driver, this._store, this._layout, index, opts);
+    this.driver.$scroll(index, opts);
   }
 }

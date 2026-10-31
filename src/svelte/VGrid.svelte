@@ -17,9 +17,6 @@
     getAxisItem,
     getAxisLength,
     getScrollSize,
-    gridScrollBy,
-    gridScrollTo,
-    gridScrollToIndex,
   } from "../core/index.js";
   import { styleToString } from "./utils.js";
   import GridRow from "./GridRow.svelte";
@@ -176,19 +173,18 @@
   export const getRowSize: VGridHandle["getRowSize"] = rowLayout.$getItemSize;
   export const getColSize: VGridHandle["getColSize"] = colLayout.$getItemSize;
   export const scrollToIndex: VGridHandle["scrollToIndex"] = (opts) =>
-    gridScrollToIndex(
-      driver,
-      rowStore,
-      colStore,
-      rowLayout,
-      colLayout,
-      sectionRows,
-      opts,
-    );
+    driver.$scroll(opts, sectionRows);
   export const scrollTo: VGridHandle["scrollTo"] = ({ vertical, horizontal }) =>
-    gridScrollTo(driver, vertical, horizontal);
+    driver.$scroll({ rowOffset: vertical, colOffset: horizontal });
   export const scrollBy: VGridHandle["scrollBy"] = ({ vertical, horizontal }) =>
-    gridScrollBy(driver, rowStore, colStore, vertical, horizontal);
+    driver.$scroll({
+      rowOffset:
+        vertical == null ? vertical : vertical + rowStore.$getScrollOffset(),
+      colOffset:
+        horizontal == null
+          ? horizontal
+          : horizontal + colStore.$getScrollOffset(),
+    });
 
   const viewportStyle = styleToString({
     overflow: "auto",

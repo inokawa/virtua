@@ -17,7 +17,6 @@ import {
   UPDATE_SIZE_EVENT,
   UPDATE_SCROLL_EVENT,
   createWindowDriver,
-  scrollToIndex,
   type CacheSnapshot,
   type ScrollToIndexOpts,
 } from "../core/index.js";
@@ -257,8 +256,7 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
           layout.$findIndex(offset - store.$getStartSpacerSize()),
         getItemOffset: store.$getItemOffset,
         getItemSize: layout.$getItemSize,
-        scrollToIndex: (index, opts) =>
-          scrollToIndex(driver, store, layout, index, opts),
+        scrollToIndex: driver.$scroll,
       };
     }, []);
 
