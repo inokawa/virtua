@@ -367,11 +367,11 @@ export const VMasonry = /*#__PURE__*/ defineComponent({
         for (let [i, j] = range.value; i <= j; i++) {
           mounted.add(i);
         }
-        sort([...mounted]).forEach((index) => {
+        for (const index of sort([...mounted])) {
           if (index < len) {
             items.push(renderItem(index));
           }
-        });
+        }
       } else {
         for (let [i, j] = range.value; i <= j; i++) {
           items.push(renderItem(i));

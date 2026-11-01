@@ -314,12 +314,12 @@ export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
       for (let [i, j] = range(); i <= j; i++) {
         mounted.add(i);
       }
-      sort([...mounted]).forEach((index) => {
+      for (const index of sort([...mounted])) {
         if (index < count) {
           items.push(props.data[index]!);
           indexes.push(index);
         }
-      });
+      }
     } else {
       for (let [i, j] = range(); i <= j; i++) {
         items.push(props.data[i]!);

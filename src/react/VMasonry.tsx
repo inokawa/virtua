@@ -229,9 +229,12 @@ export const VMasonry = /*#__PURE__*/ forwardRef<
     const onScrollEnd = useLatestRef(onScrollEndProp);
     const onResize = useLatestRef(onResizeProp);
 
+    // https://github.com/inokawa/virtua/issues/1030
+    const count = data.length;
+
     const [store, layout, driver] = useStatic(() => {
       const _layout = createMasonryLayout(
-        data.length,
+        count,
         lanesProp,
         gapProp,
         itemSize,
@@ -241,7 +244,7 @@ export const VMasonry = /*#__PURE__*/ forwardRef<
       return [_store, _layout, createContainerDriver(_store, _layout, false)];
     });
 
-    store.$update(ACTION_ITEMS_LENGTH_CHANGE, data.length);
+    store.$update(ACTION_ITEMS_LENGTH_CHANGE, count);
     relayout(store, layout, lanesProp, gapProp);
 
     const [stateVersion, rerender] = useReducer(
@@ -314,10 +317,27 @@ export const VMasonry = /*#__PURE__*/ forwardRef<
     const gap = layout.$getGap();
     // The lanes share the width left by the gaps between them
     const crossSize = toCrossValue(1 / lanes, gap / lanes - gap);
-    const renderItem = (i: number) => {
+
+    const indexes: number[] = [];
+    if (keepMounted) {
+      const mounted = new Set(keepMounted);
+      for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
+        mounted.add(i);
+      }
+      for (const index of sort([...mounted])) {
+        if (index < count) {
+          indexes.push(index);
+        }
+      }
+    } else {
+      for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
+        indexes.push(i);
+      }
+    }
+    for (const i of indexes) {
       const e = children(data[i]!, i);
       const lane = layout.$getItemLane(i);
-      return (
+      items.push(
         <MasonryItem
           key={getKey(e, i)}
           _resizer={driver.$observeItem}
@@ -327,24 +347,8 @@ export const VMasonry = /*#__PURE__*/ forwardRef<
           _crossSize={crossSize}
           _hide={layout.$isSizeEqual(i)}
           _children={e}
-        />
+        />,
       );
-    };
-
-    if (keepMounted) {
-      const mounted = new Set(keepMounted);
-      for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
-        mounted.add(i);
-      }
-      sort([...mounted]).forEach((index) => {
-        if (index < data.length) {
-          items.push(renderItem(index));
-        }
-      });
-    } else {
-      for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
-        items.push(renderItem(i));
-      }
     }
 
     return (

@@ -172,6 +172,7 @@ export const WindowVirtualizer = /*#__PURE__*/ forwardRef<
 
     Element = Element as "div";
 
+    // https://github.com/inokawa/virtua/issues/1030
     const [renderElement, count] = useChildren(children, data);
 
     const containerRef = useRef<HTMLDivElement>(null);
