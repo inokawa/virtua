@@ -1,0 +1,1 @@
+import{t as e}from"./iframe-BLrltX_6.js";e();
