@@ -16,6 +16,7 @@
 - [GridAxis](type-aliases/GridAxis.md)
 - [GridTrackSize](type-aliases/GridTrackSize.md)
 - [GridSize](type-aliases/GridSize.md)
+- [ScrollToIndexAlign](type-aliases/ScrollToIndexAlign.md)
 - [CacheSnapshot](type-aliases/CacheSnapshot.md)
 
 ## Variables

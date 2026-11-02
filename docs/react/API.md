@@ -27,6 +27,12 @@ Re-exports [CacheSnapshot](../core/type-aliases/CacheSnapshot.md)
 
 ***
 
+### ScrollToIndexAlign
+
+Re-exports [ScrollToIndexAlign](../core/type-aliases/ScrollToIndexAlign.md)
+
+***
+
 ### ScrollToIndexOpts
 
 Re-exports [ScrollToIndexOpts](../core/interfaces/ScrollToIndexOpts.md)
@@ -48,7 +54,6 @@ Re-exports [GridSpan](../core/interfaces/GridSpan.md)
 - [ViewportComponentAttributes](type-aliases/ViewportComponentAttributes.md)
 - [CustomContainerComponent](type-aliases/CustomContainerComponent.md)
 - [CustomItemComponent](type-aliases/CustomItemComponent.md)
-- [ScrollToIndexAlign](type-aliases/ScrollToIndexAlign.md)
 
 ## Variables
 

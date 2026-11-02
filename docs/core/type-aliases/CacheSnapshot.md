@@ -6,7 +6,7 @@
 
 > **CacheSnapshot** = \[`number`[], `number`\]
 
-Defined in: [src/core/types.ts:11](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/core/types.ts#L11)
+Defined in: [src/core/types.ts:11](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/core/types.ts#L11)
 
 Serializable cache snapshot.
 

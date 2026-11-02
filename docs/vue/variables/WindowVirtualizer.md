@@ -6,7 +6,7 @@
 
 > `const` **WindowVirtualizer**: \<`T`\>(`props`) => `WindowVirtualizerInstance`\<`T`\>
 
-Defined in: [src/vue/WindowVirtualizer.tsx:144](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/vue/WindowVirtualizer.tsx#L144)
+Defined in: [src/vue/WindowVirtualizer.tsx:143](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/vue/WindowVirtualizer.tsx#L143)
 
 [Virtualizer](Virtualizer.md) controlled by the window scrolling. See [WindowVirtualizerProps](../interfaces/WindowVirtualizerProps.md) and [WindowVirtualizerHandle](../interfaces/WindowVirtualizerHandle.md).
 

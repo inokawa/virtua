@@ -4,7 +4,7 @@
 
 # Interface: VMasonryProps\<T\>
 
-Defined in: [src/react/VMasonry.tsx:138](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/react/VMasonry.tsx#L138)
+Defined in: [src/react/VMasonry.tsx:135](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/react/VMasonry.tsx#L135)
 
 Props of [VMasonry](../variables/VMasonry.md).
 
@@ -24,7 +24,7 @@ Props of [VMasonry](../variables/VMasonry.md).
 
 > **children**: (`data`, `index`) => `ReactElement`
 
-Defined in: [src/react/VMasonry.tsx:142](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/react/VMasonry.tsx#L142)
+Defined in: [src/react/VMasonry.tsx:139](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/react/VMasonry.tsx#L139)
 
 The elements renderer function.
 
@@ -48,7 +48,7 @@ The elements renderer function.
 
 > **data**: `ArrayLike`\<`T`\>
 
-Defined in: [src/react/VMasonry.tsx:146](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/react/VMasonry.tsx#L146)
+Defined in: [src/react/VMasonry.tsx:143](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/react/VMasonry.tsx#L143)
 
 The data items rendered by this component.
 
@@ -58,7 +58,7 @@ The data items rendered by this component.
 
 > **lanes**: `number`
 
-Defined in: [src/react/VMasonry.tsx:150](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/react/VMasonry.tsx#L150)
+Defined in: [src/react/VMasonry.tsx:147](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/react/VMasonry.tsx#L147)
 
 The number of lanes (columns) which items are laid out into. Each item is placed into the shortest lane in order. It must be an integer and the minimum value is 1.
 
@@ -68,7 +68,7 @@ The number of lanes (columns) which items are laid out into. Each item is placed
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/react/VMasonry.tsx:155](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/react/VMasonry.tsx#L155)
+Defined in: [src/react/VMasonry.tsx:152](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/react/VMasonry.tsx#L152)
 
 The gap between the items and the lanes in pixels, which is not included in the sizes.
 
@@ -84,7 +84,7 @@ The gap between the items and the lanes in pixels, which is not included in the 
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/react/VMasonry.tsx:162](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/react/VMasonry.tsx#L162)
+Defined in: [src/react/VMasonry.tsx:159](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/react/VMasonry.tsx#L159)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -97,7 +97,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/react/VMasonry.tsx:167](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/react/VMasonry.tsx#L167)
+Defined in: [src/react/VMasonry.tsx:164](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/react/VMasonry.tsx#L164)
 
 Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
 
@@ -113,7 +113,7 @@ Extra space in pixels to render before/after the viewport. The default value is 
 
 > `optional` **keepMounted?**: readonly `number`[]
 
-Defined in: [src/react/VMasonry.tsx:171](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/react/VMasonry.tsx#L171)
+Defined in: [src/react/VMasonry.tsx:168](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/react/VMasonry.tsx#L168)
 
 List of indexes that should be always mounted, even when off screen.
 
@@ -123,7 +123,7 @@ List of indexes that should be always mounted, even when off screen.
 
 > `optional` **cache?**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/react/VMasonry.tsx:177](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/react/VMasonry.tsx#L177)
+Defined in: [src/react/VMasonry.tsx:174](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/react/VMasonry.tsx#L174)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VMasonryHandle.cache](VMasonryHandle.md#cache).
 
@@ -135,7 +135,7 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `optional` **ssrCount?**: `number`
 
-Defined in: [src/react/VMasonry.tsx:183](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/react/VMasonry.tsx#L183)
+Defined in: [src/react/VMasonry.tsx:180](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/react/VMasonry.tsx#L180)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -147,7 +147,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `optional` **onScroll?**: (`offset`) => `void`
 
-Defined in: [src/react/VMasonry.tsx:188](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/react/VMasonry.tsx#L188)
+Defined in: [src/react/VMasonry.tsx:185](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/react/VMasonry.tsx#L185)
 
 Callback invoked whenever scroll offset changes.
 
@@ -169,7 +169,7 @@ Current scrollTop.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/react/VMasonry.tsx:192](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/react/VMasonry.tsx#L192)
+Defined in: [src/react/VMasonry.tsx:189](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/react/VMasonry.tsx#L189)
 
 Callback invoked when scrolling stops.
 
@@ -183,7 +183,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **onResize?**: () => `void`
 
-Defined in: [src/react/VMasonry.tsx:196](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/react/VMasonry.tsx#L196)
+Defined in: [src/react/VMasonry.tsx:193](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/react/VMasonry.tsx#L193)
 
 Callback invoked when the size of the viewport or the items changes.
 

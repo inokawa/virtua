@@ -4,7 +4,7 @@
 
 # Interface: VMasonryProps\<T\>
 
-Defined in: [src/solid/VMasonry.tsx:130](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/VMasonry.tsx#L130)
+Defined in: [src/solid/VMasonry.tsx:127](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/solid/VMasonry.tsx#L127)
 
 Props of [VMasonry](../functions/VMasonry.md).
 
@@ -24,7 +24,7 @@ Props of [VMasonry](../functions/VMasonry.md).
 
 > `optional` **ref?**: [`VMasonryHandle`](VMasonryHandle.md) \| ((`handle?`) => `void`)
 
-Defined in: [src/solid/VMasonry.tsx:134](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/VMasonry.tsx#L134)
+Defined in: [src/solid/VMasonry.tsx:131](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/solid/VMasonry.tsx#L131)
 
 Get reference to [VMasonryHandle](VMasonryHandle.md).
 
@@ -34,7 +34,7 @@ Get reference to [VMasonryHandle](VMasonryHandle.md).
 
 > **data**: readonly `T`[]
 
-Defined in: [src/solid/VMasonry.tsx:138](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/VMasonry.tsx#L138)
+Defined in: [src/solid/VMasonry.tsx:135](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/solid/VMasonry.tsx#L135)
 
 The data items rendered by this component.
 
@@ -44,7 +44,7 @@ The data items rendered by this component.
 
 > **children**: (`data`, `index`) => `Element`
 
-Defined in: [src/solid/VMasonry.tsx:142](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/VMasonry.tsx#L142)
+Defined in: [src/solid/VMasonry.tsx:139](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/solid/VMasonry.tsx#L139)
 
 The elements renderer function.
 
@@ -68,7 +68,7 @@ The elements renderer function.
 
 > **lanes**: `number`
 
-Defined in: [src/solid/VMasonry.tsx:146](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/VMasonry.tsx#L146)
+Defined in: [src/solid/VMasonry.tsx:143](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/solid/VMasonry.tsx#L143)
 
 The number of lanes (columns) which items are laid out into. Each item is placed into the shortest lane in order. It must be an integer and the minimum value is 1.
 
@@ -78,7 +78,7 @@ The number of lanes (columns) which items are laid out into. Each item is placed
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/solid/VMasonry.tsx:151](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/VMasonry.tsx#L151)
+Defined in: [src/solid/VMasonry.tsx:148](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/solid/VMasonry.tsx#L148)
 
 The gap between the items and the lanes in pixels, which is not included in the sizes.
 
@@ -94,7 +94,7 @@ The gap between the items and the lanes in pixels, which is not included in the 
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/solid/VMasonry.tsx:158](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/VMasonry.tsx#L158)
+Defined in: [src/solid/VMasonry.tsx:155](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/solid/VMasonry.tsx#L155)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -107,7 +107,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/solid/VMasonry.tsx:163](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/VMasonry.tsx#L163)
+Defined in: [src/solid/VMasonry.tsx:160](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/solid/VMasonry.tsx#L160)
 
 Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
 
@@ -123,7 +123,7 @@ Extra space in pixels to render before/after the viewport. The default value is 
 
 > `optional` **keepMounted?**: readonly `number`[]
 
-Defined in: [src/solid/VMasonry.tsx:167](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/VMasonry.tsx#L167)
+Defined in: [src/solid/VMasonry.tsx:164](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/solid/VMasonry.tsx#L164)
 
 List of indexes that should be always mounted, even when off screen.
 
@@ -133,7 +133,7 @@ List of indexes that should be always mounted, even when off screen.
 
 > `optional` **cache?**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/solid/VMasonry.tsx:173](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/VMasonry.tsx#L173)
+Defined in: [src/solid/VMasonry.tsx:170](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/solid/VMasonry.tsx#L170)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VMasonryHandle.cache](VMasonryHandle.md#cache).
 
@@ -145,7 +145,7 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `optional` **ssrCount?**: `number`
 
-Defined in: [src/solid/VMasonry.tsx:179](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/VMasonry.tsx#L179)
+Defined in: [src/solid/VMasonry.tsx:176](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/solid/VMasonry.tsx#L176)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -157,7 +157,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `optional` **onScroll?**: (`offset`) => `void`
 
-Defined in: [src/solid/VMasonry.tsx:184](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/VMasonry.tsx#L184)
+Defined in: [src/solid/VMasonry.tsx:181](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/solid/VMasonry.tsx#L181)
 
 Callback invoked whenever scroll offset changes.
 
@@ -179,7 +179,7 @@ Current scrollTop.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/solid/VMasonry.tsx:188](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/VMasonry.tsx#L188)
+Defined in: [src/solid/VMasonry.tsx:185](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/solid/VMasonry.tsx#L185)
 
 Callback invoked when scrolling stops.
 
@@ -193,7 +193,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **onResize?**: () => `void`
 
-Defined in: [src/solid/VMasonry.tsx:192](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/VMasonry.tsx#L192)
+Defined in: [src/solid/VMasonry.tsx:189](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/solid/VMasonry.tsx#L189)
 
 Callback invoked when the size of the viewport or the items changes.
 
@@ -5793,7 +5793,7 @@ Defined in: node\_modules/solid-js/types/jsx.d.ts:655
 
 > `optional` **style?**: `CSSProperties`
 
-Defined in: [src/solid/types.ts:6](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/types.ts#L6)
+Defined in: [src/solid/types.ts:6](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/solid/types.ts#L6)
 
 #### Inherited from
 

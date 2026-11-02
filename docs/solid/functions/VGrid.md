@@ -6,7 +6,7 @@
 
 > **VGrid**\<`R`, `C`\>(`props`): `Element`
 
-Defined in: [src/solid/VGrid.tsx:370](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/solid/VGrid.tsx#L370)
+Defined in: [src/solid/VGrid.tsx:367](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/solid/VGrid.tsx#L367)
 
 Virtualized grid component for tabular data. See [VGridProps](../interfaces/VGridProps.md) and [VGridHandle](../interfaces/VGridHandle.md).
 

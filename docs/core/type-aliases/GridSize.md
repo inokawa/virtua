@@ -6,7 +6,7 @@
 
 > **GridSize**\<`T`\> = [`GridTrackSize`](GridTrackSize.md) \| `GridSizeKey`\<`T`\>
 
-Defined in: [src/core/layouts/grid.ts:37](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/core/layouts/grid.ts#L37)
+Defined in: [src/core/layouts/grid.ts:37](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/core/layouts/grid.ts#L37)
 
 The sizes of the rows or the columns in pixels.
 

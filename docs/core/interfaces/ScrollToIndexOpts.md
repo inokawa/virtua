@@ -4,17 +4,17 @@
 
 # Interface: ScrollToIndexOpts
 
-Defined in: [src/core/scroll-to.ts:18](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/core/scroll-to.ts#L18)
+Defined in: [src/core/driver.ts:39](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/core/driver.ts#L39)
 
 ## Properties
 
 ### align?
 
-> `optional` **align?**: [`ScrollToIndexAlign`](../../react/type-aliases/ScrollToIndexAlign.md)
+> `optional` **align?**: [`ScrollToIndexAlign`](../type-aliases/ScrollToIndexAlign.md)
 
-Defined in: [src/core/scroll-to.ts:23](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/core/scroll-to.ts#L23)
+Defined in: [src/core/driver.ts:44](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/core/driver.ts#L44)
 
-Alignment of item in the viewport. See [ScrollToIndexAlign](../../react/type-aliases/ScrollToIndexAlign.md) for the values.
+Alignment of item in the viewport. See [ScrollToIndexAlign](../type-aliases/ScrollToIndexAlign.md) for the values.
 
 #### Default Value
 
@@ -28,7 +28,7 @@ Alignment of item in the viewport. See [ScrollToIndexAlign](../../react/type-ali
 
 > `optional` **smooth?**: `boolean`
 
-Defined in: [src/core/scroll-to.ts:29](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/core/scroll-to.ts#L29)
+Defined in: [src/core/driver.ts:50](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/core/driver.ts#L50)
 
 If true, scrolling animates smoothly with [`behavior: smooth` of scrollTo](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTo#behavior).
 
@@ -40,7 +40,7 @@ If true, scrolling animates smoothly with [`behavior: smooth` of scrollTo](https
 
 > `optional` **offset?**: `number`
 
-Defined in: [src/core/scroll-to.ts:34](https://github.com/inokawa/virtua/blob/33a84f7f4040b7ca71a6e3142021833e1b90de99/src/core/scroll-to.ts#L34)
+Defined in: [src/core/driver.ts:55](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/core/driver.ts#L55)
 
 Additional offset from the scrolled position.
 
