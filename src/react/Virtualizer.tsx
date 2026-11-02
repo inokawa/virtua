@@ -207,6 +207,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
 
     Element = Element as "div";
 
+    // https://github.com/inokawa/virtua/issues/1030
     const [renderElement, count] = useChildren(children, data);
 
     const containerRef = useRef<HTMLDivElement>(null);
@@ -243,24 +244,6 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     const totalSize = store.$getTotalSize();
 
     const items: ReactElement[] = [];
-
-    const renderItem = (index: number) => {
-      const e = renderElement(index);
-
-      return (
-        <ListItem
-          key={getKey(e, index)}
-          _resizer={driver.$observeItem}
-          _index={index}
-          _offset={store.$getItemOffset(index)}
-          _hide={layout.$isSizeEqual(index)}
-          _as={ItemElement as "div"}
-          _children={e}
-          _isHorizontal={isHorizontal}
-          _isSSR={isSSR.current}
-        />
-      );
-    };
 
     useIsomorphicLayoutEffect(() => {
       isSSR.current = false;
@@ -332,20 +315,37 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
       };
     }, []);
 
+    const indexes: number[] = [];
     if (keepMounted) {
       const mounted = new Set(keepMounted);
       for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
         mounted.add(i);
       }
-      sort([...mounted]).forEach((index) => {
+      for (const index of sort([...mounted])) {
         if (index < count) {
-          items.push(renderItem(index));
+          indexes.push(index);
         }
-      });
+      }
     } else {
       for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
-        items.push(renderItem(i));
+        indexes.push(i);
       }
+    }
+    for (const index of indexes) {
+      const e = renderElement(index);
+      items.push(
+        <ListItem
+          key={getKey(e, index)}
+          _resizer={driver.$observeItem}
+          _index={index}
+          _offset={store.$getItemOffset(index)}
+          _hide={layout.$isSizeEqual(index)}
+          _as={ItemElement as "div"}
+          _children={e}
+          _isHorizontal={isHorizontal}
+          _isSSR={isSSR.current}
+        />,
+      );
     }
 
     return (
