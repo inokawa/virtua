@@ -343,11 +343,27 @@ export const VMasonry = /*#__PURE__*/ defineComponent({
     return () => {
       const total = totalSize.value;
 
+      const indexes: number[] = [];
+      if (props.keepMounted) {
+        const len = props.data.length;
+        const mounted = new Set(props.keepMounted);
+        for (let [i, j] = range.value; i <= j; i++) {
+          mounted.add(i);
+        }
+        for (const index of sort([...mounted])) {
+          if (index < len) {
+            indexes.push(index);
+          }
+        }
+      } else {
+        for (let [i, j] = range.value; i <= j; i++) {
+          indexes.push(i);
+        }
+      }
       const items: VNode[] = [];
-
-      const renderItem = (i: number) => {
+      for (const i of indexes) {
         const e = slots["default"]!({ item: props.data![i]!, index: i });
-        return (
+        items.push(
           <MasonryItem
             key={getKey(e, i)}
             _stateVersion={stateVersion}
@@ -357,25 +373,8 @@ export const VMasonry = /*#__PURE__*/ defineComponent({
             _item={props.data![i]!}
             _resizer={driver.$observeItem}
             _index={i}
-          />
+          />,
         );
-      };
-
-      if (props.keepMounted) {
-        const len = props.data.length;
-        const mounted = new Set(props.keepMounted);
-        for (let [i, j] = range.value; i <= j; i++) {
-          mounted.add(i);
-        }
-        for (const index of sort([...mounted])) {
-          if (index < len) {
-            items.push(renderItem(index));
-          }
-        }
-      } else {
-        for (let [i, j] = range.value; i <= j; i++) {
-          items.push(renderItem(i));
-        }
       }
 
       return (

@@ -302,33 +302,6 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     return { _items: items, _indexes: indexes };
   });
 
-  const renderItem = (data: T, index: Accessor<number>) => {
-    const offset = createMemo(() => {
-      stateVersion();
-      return store.$getItemOffset(index());
-    });
-    const hide = createMemo(() => {
-      stateVersion();
-      return layout.$isSizeEqual(index());
-    });
-    const children = createMemo(() => {
-      return untrack(() => props.children(data, index));
-    });
-
-    return (
-      <ListItem
-        _as={props.item}
-        _index={index()}
-        _resizer={driver.$observeItem}
-        _offset={offset()}
-        _hide={hide()}
-        _children={children()}
-        _isHorizontal={horizontal}
-        _isSSR={isSSR()}
-      />
-    );
-  };
-
   return (
     <Dynamic
       component={props.as}
@@ -346,8 +319,30 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
       <For each={dataSlice()._items}>
         {(data, index) => {
           const itemIndex = createMemo(() => dataSlice()._indexes[index()]!);
-          // eslint-disable-next-line solid/reactivity
-          return renderItem(data, itemIndex);
+          const offset = createMemo(() => {
+            stateVersion();
+            return store.$getItemOffset(itemIndex());
+          });
+          const hide = createMemo(() => {
+            stateVersion();
+            return layout.$isSizeEqual(itemIndex());
+          });
+          const children = createMemo(() => {
+            return untrack(() => props.children(data, itemIndex));
+          });
+
+          return (
+            <ListItem
+              _as={props.item}
+              _index={itemIndex()}
+              _resizer={driver.$observeItem}
+              _offset={offset()}
+              _hide={hide()}
+              _children={children()}
+              _isHorizontal={horizontal}
+              _isSSR={isSSR()}
+            />
+          );
         }}
       </For>
     </Dynamic>

@@ -330,39 +330,6 @@ export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
     return { _items: items, _indexes: indexes };
   });
 
-  const renderItem = (data: T, index: Accessor<number>) => {
-    const offset = createMemo(() => {
-      stateVersion();
-      return store.$getItemOffset(index());
-    });
-    const lane = createMemo(() => {
-      stateVersion();
-      return layout.$getItemLane(index());
-    });
-    const hide = createMemo(() => {
-      stateVersion();
-      return layout.$isSizeEqual(index());
-    });
-    const children = createMemo(() => {
-      return untrack(() => props.children(data, index));
-    });
-
-    return (
-      <MasonryItem
-        _index={index()}
-        _resizer={driver.$observeItem}
-        _offset={offset()}
-        _crossOffset={toCrossValue(
-          lane() / lanes(),
-          (lane() * gap()) / lanes(),
-        )}
-        _crossSize={crossSize()}
-        _hide={hide()}
-        _children={children()}
-      />
-    );
-  };
-
   return (
     <div
       {...others}
@@ -390,8 +357,36 @@ export const VMasonry = <T,>(props: VMasonryProps<T>): JSX.Element => {
         <For each={dataSlice()._items}>
           {(data, index) => {
             const itemIndex = createMemo(() => dataSlice()._indexes[index()]!);
-            // eslint-disable-next-line solid/reactivity
-            return renderItem(data, itemIndex);
+            const offset = createMemo(() => {
+              stateVersion();
+              return store.$getItemOffset(itemIndex());
+            });
+            const lane = createMemo(() => {
+              stateVersion();
+              return layout.$getItemLane(itemIndex());
+            });
+            const hide = createMemo(() => {
+              stateVersion();
+              return layout.$isSizeEqual(itemIndex());
+            });
+            const children = createMemo(() => {
+              return untrack(() => props.children(data, itemIndex));
+            });
+
+            return (
+              <MasonryItem
+                _index={itemIndex()}
+                _resizer={driver.$observeItem}
+                _offset={offset()}
+                _crossOffset={toCrossValue(
+                  lane() / lanes(),
+                  (lane() * gap()) / lanes(),
+                )}
+                _crossSize={crossSize()}
+                _hide={hide()}
+                _children={children()}
+              />
+            );
           }}
         </For>
       </div>
