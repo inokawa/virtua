@@ -344,6 +344,7 @@ export const VMasonry = /*#__PURE__*/ defineComponent({
       const total = totalSize.value;
 
       const indexes: number[] = [];
+      const items: VNode[] = [];
       if (props.keepMounted) {
         const len = props.data.length;
         const mounted = new Set(props.keepMounted);
@@ -360,7 +361,6 @@ export const VMasonry = /*#__PURE__*/ defineComponent({
           indexes.push(i);
         }
       }
-      const items: VNode[] = [];
       for (const i of indexes) {
         const e = slots["default"]!({ item: props.data![i]!, index: i });
         items.push(
