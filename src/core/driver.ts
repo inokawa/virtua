@@ -740,7 +740,8 @@ export const createWindowDriver = (
         index = clamp(index, 0, layout.$getLength() - 1);
         if (align === "nearest") {
           const itemOffset = store.$getItemOffset(index);
-          const scrollOffset = store.$getScrollOffset();
+          const scrollOffset =
+            store.$getScrollOffset() - store.$getStartSpacerSize();
           if (itemOffset < scrollOffset) {
             align = "start";
           } else if (
