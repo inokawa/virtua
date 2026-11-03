@@ -180,3 +180,21 @@ describe("VMasonry", () => {
     );
   });
 });
+
+describe("WindowMasonry", () => {
+  it("should hydrate cached items while scrolling the window", async () => {
+    const COUNT = 16;
+    const CACHE: CacheSnapshot = [range(1000).map(() => 100), 100];
+    const props = { ssrCount: COUNT, cache: CACHE };
+    const html = await commands.ssrRender("windowMasonry", props);
+    const root = mountSsr(html);
+    const { viewport, container } = await getVirtualizer(root);
+    expect(viewport).toBe(document.scrollingElement);
+    expect(container.parentElement!.style.height).toBe("");
+    expect(container.childElementCount).toBe(COUNT);
+
+    await expectMasonryHydrated(root, COUNT, 4, () =>
+      hydrate(root, "windowMasonry", props),
+    );
+  });
+});

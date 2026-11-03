@@ -36,7 +36,8 @@ import {
 import { isSameRange } from "./utils.js";
 import { type ViewportComponentAttributes } from "./types.js";
 
-const toCrossValue = (fraction: number, px: number): string =>
+/** @internal */
+export const toCrossValue = (fraction: number, px: number): string =>
   px ? `calc(${fraction * 100}% + ${px}px)` : fraction * 100 + "%";
 
 interface MasonryItemProps {
@@ -49,7 +50,8 @@ interface MasonryItemProps {
   _hide: boolean;
 }
 
-const MasonryItem = (props: MasonryItemProps): JSX.Element => {
+/** @internal */
+export const MasonryItem = (props: MasonryItemProps): JSX.Element => {
   let elementRef: HTMLDivElement | undefined;
   // The index may be changed if elements are inserted to or removed from the start of data
   createEffect(() => {

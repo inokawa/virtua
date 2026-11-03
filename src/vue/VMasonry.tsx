@@ -48,7 +48,8 @@ interface MasonryItemProps {
   _index: number;
 }
 
-const MasonryItem = /*#__PURE__*/ defineComponent(
+/** @internal */
+export const MasonryItem = /*#__PURE__*/ defineComponent(
   (props: MasonryItemProps) => {
     const elementRef = ref<HTMLDivElement>();
 

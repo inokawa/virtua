@@ -1,0 +1,120 @@
+import type { Snippet } from "svelte";
+import type { CacheSnapshot, ScrollToIndexOpts } from "../core/index.js";
+import type { ViewportComponentAttributes } from "./types.js";
+
+/**
+ * Props of {@link WindowMasonry}.
+ */
+export interface WindowMasonryProps<T> extends ViewportComponentAttributes {
+  /**
+   * The data items rendered by this component.
+   */
+  data: readonly T[];
+  /**
+   * The elements renderer snippet.
+   */
+  children: Snippet<[item: T, index: number]>;
+  /**
+   * Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
+   * @default defaultGetKey (returns index of item)
+   */
+  getKey?: (data: T, index: number) => string | number;
+  /**
+   * The number of lanes (columns) which items are laid out into. Each item is placed into the shortest lane in order. It must be an integer and the minimum value is 1.
+   */
+  lanes: number;
+  /**
+   * The gap between the items and the lanes in pixels, which is not included in the sizes.
+   * @defaultValue 0
+   */
+  gap?: number;
+  /**
+   * Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
+   *
+   * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
+   * - If set, you can opt out estimation and use the value as initial item size.
+   */
+  itemSize?: number;
+  /**
+   * Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
+   * @defaultValue 200
+   */
+  bufferSize?: number;
+  /**
+   * List of indexes that should be always mounted, even when off screen.
+   */
+  keepMounted?: readonly number[];
+  /**
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowMasonryHandle.getCache}.
+   *
+   * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
+   */
+  cache?: CacheSnapshot;
+  /**
+   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   *
+   * **The items are hidden until they are measured in the browser, so also pass their sizes with `cache` to show them on the server.**
+   */
+  ssrCount?: number;
+  /**
+   * Callback invoked whenever scroll offset changes.
+   * @param offset Current document scrollTop.
+   */
+  onscroll?: (offset: number) => void;
+  /**
+   * Callback invoked when scrolling stops.
+   */
+  onscrollend?: () => void;
+  /**
+   * Callback invoked when the size of the viewport or the items changes.
+   */
+  onresize?: () => void;
+}
+
+/**
+ * Methods of {@link WindowMasonry}.
+ */
+export interface WindowMasonryHandle {
+  /**
+   * Get current {@link CacheSnapshot}.
+   */
+  getCache: () => CacheSnapshot;
+  /**
+   * Get current document scrollTop.
+   */
+  getScrollOffset: () => number;
+  /**
+   * Get the masonry's total height, at least the document viewport height. This is the masonry extent, rather than the document's scrollHeight.
+   */
+  getScrollSize: () => number;
+  /**
+   * Get current clientHeight of the document.
+   */
+  getViewportSize: () => number;
+  /**
+   * Get item offset from start.
+   * @param index index of item
+   */
+  getItemOffset(index: number): number;
+  /**
+   * Get item size.
+   * @param index index of item
+   */
+  getItemSize(index: number): number;
+  /**
+   * Scroll to the item specified by index.
+   * @param index index of item
+   * @param opts options
+   */
+  scrollToIndex(index: number, opts?: ScrollToIndexOpts): void;
+  /**
+   * Scroll to the given offset.
+   * @param offset offset from the document start
+   */
+  scrollTo(offset: number): void;
+  /**
+   * Scroll by the given offset.
+   * @param offset offset from current position
+   */
+  scrollBy(offset: number): void;
+}

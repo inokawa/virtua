@@ -2,6 +2,7 @@ import {
   VGrid,
   VList,
   VMasonry,
+  WindowMasonry,
   WindowVirtualizer,
 } from "../../src/react/index.js";
 import type {
@@ -71,12 +72,30 @@ const Masonry = (props: SsrMasonryProps) => (
   </VMasonry>
 );
 
+const WindowMasonryFixture = (props: SsrMasonryProps) => (
+  <WindowMasonry
+    data={range(1000)}
+    lanes={4}
+    itemSize={100}
+    ssrCount={props.ssrCount}
+    cache={props.cache}
+    style={{ width: 400 }}
+  >
+    {(d) => (
+      <div key={d} style={{ height: 100 }}>
+        item-{d}
+      </div>
+    )}
+  </WindowMasonry>
+);
+
 // TypeScript cannot relate the props to the fixture chosen by the name
 const fixtures: Record<keyof SsrFixtures, FC<any>> = {
   list: List,
   window: Window,
   grid: Grid,
   masonry: Masonry,
+  windowMasonry: WindowMasonryFixture,
 };
 
 export const render: SsrEntry["render"] = (name, props) => {

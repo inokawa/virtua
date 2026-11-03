@@ -5,6 +5,7 @@ import List from "./svelte-list.svelte";
 import Window from "./svelte-window.svelte";
 import Grid from "./svelte-grid.svelte";
 import Masonry from "./svelte-masonry.svelte";
+import WindowMasonry from "./svelte-window-masonry.svelte";
 import type { SsrEntry, SsrFixtures } from "../browser/index.js";
 
 // TypeScript cannot relate the props to the fixture chosen by the name
@@ -13,6 +14,7 @@ const fixtures: Record<keyof SsrFixtures, Component<any>> = {
   window: Window,
   grid: Grid,
   masonry: Masonry,
+  windowMasonry: WindowMasonry,
 };
 
 export const render: SsrEntry["render"] = (name, props) =>

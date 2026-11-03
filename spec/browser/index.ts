@@ -24,6 +24,7 @@ export type SsrFixtures = {
   window: SsrProps;
   grid: SsrGridProps;
   masonry: SsrMasonryProps;
+  windowMasonry: SsrMasonryProps;
 };
 
 export type SsrEntry = {

@@ -11,6 +11,7 @@
 - [WindowVirtualizer](functions/WindowVirtualizer.md)
 - [VGrid](functions/VGrid.md)
 - [VMasonry](functions/VMasonry.md)
+- [WindowMasonry](functions/WindowMasonry.md)
 
 ## Interfaces
 
@@ -26,6 +27,8 @@
 - [VGridHandle](interfaces/VGridHandle.md)
 - [VMasonryProps](interfaces/VMasonryProps.md)
 - [VMasonryHandle](interfaces/VMasonryHandle.md)
+- [WindowMasonryProps](interfaces/WindowMasonryProps.md)
+- [WindowMasonryHandle](interfaces/WindowMasonryHandle.md)
 
 ## References
 

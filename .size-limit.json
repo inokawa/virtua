@@ -36,6 +36,12 @@
     "limit": "3.75 kB"
   },
   {
+    "name": "WindowMasonry",
+    "path": "lib/index.js",
+    "import": "{ WindowMasonry }",
+    "limit": "3.75 kB"
+  },
+  {
     "name": "vue VList",
     "path": "lib/vue/index.js",
     "import": "{ VList }",
@@ -66,6 +72,12 @@
     "limit": "3.85 kB"
   },
   {
+    "name": "vue WindowMasonry",
+    "path": "lib/vue/index.js",
+    "import": "{ WindowMasonry }",
+    "limit": "3.85 kB"
+  },
+  {
     "name": "solid VList",
     "path": "lib/solid/index.js",
     "import": "{ VList }",
@@ -93,6 +105,12 @@
     "name": "solid VMasonry",
     "path": "lib/solid/index.js",
     "import": "{ VMasonry }",
+    "limit": "3.95 kB"
+  },
+  {
+    "name": "solid WindowMasonry",
+    "path": "lib/solid/index.js",
+    "import": "{ WindowMasonry }",
     "limit": "3.95 kB"
   },
   {

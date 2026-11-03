@@ -180,3 +180,21 @@ describe("VMasonry", () => {
     );
   });
 });
+
+describe("WindowMasonry", () => {
+  it("should render and hydrate cached items", async () => {
+    const COUNT = 16;
+    const CACHE: CacheSnapshot = [range(1000).map(() => 100), 100];
+    const props = { ssrCount: COUNT, cache: CACHE };
+    const html = await commands.ssrRender("windowMasonry", props);
+    const root = mountSsr(html);
+    const masonry = root.querySelector("virtua-window-masonry") as HTMLElement;
+    expect(masonry.style.overflowY).toBe("");
+    expect(masonry.style.contain).toBe("");
+    expect(masonry.firstElementChild!.childElementCount).toBe(COUNT);
+
+    await expectMasonryHydrated(root, COUNT, 4, () =>
+      hydrate(root, "windowMasonry", props),
+    );
+  });
+});

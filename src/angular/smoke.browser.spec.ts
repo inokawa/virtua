@@ -1,6 +1,6 @@
-import { afterEach, it } from "vitest";
+import { afterEach, expect, it } from "vitest";
 import { render } from "../../spec/browser/angular.js";
-import { Component } from "@angular/core";
+import { Component, viewChild } from "@angular/core";
 import { VList } from "./VList.js";
 import { Virtualizer } from "./Virtualizer.js";
 import { WindowVirtualizer } from "./WindowVirtualizer.js";
@@ -11,6 +11,7 @@ import {
 import { VGrid } from "./VGrid.js";
 import { range } from "../../spec/utils.js";
 import { VMasonry } from "./VMasonry.js";
+import { WindowMasonry } from "./WindowMasonry.js";
 
 afterEach(cleanupScroll);
 
@@ -148,6 +149,26 @@ class VMasonryHost {
   readonly data = range(1000);
 }
 
+@Component({
+  selector: "smoke-window-masonry",
+  imports: [WindowMasonry],
+  template: `
+    <div style="padding-top: 160px">
+      <button (click)="masonry().scrollTo(200)">scroll to offset</button>
+      <button (click)="masonry().scrollBy(50)">scroll by offset</button>
+      <virtua-window-masonry [lanes]="2" [data]="data">
+        <ng-template let-item
+          ><div style="height: 50px">item-{{ item }}</div></ng-template
+        >
+      </virtua-window-masonry>
+    </div>
+  `,
+})
+class WindowMasonryHost {
+  readonly data = range(1000);
+  readonly masonry = viewChild.required(WindowMasonry);
+}
+
 it("VList", async () => {
   const root = render(VListHost);
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
@@ -186,4 +207,31 @@ it("VGrid", async () => {
 it("VMasonry", async () => {
   const root = render(VMasonryHost);
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
+it("WindowMasonry", async () => {
+  const root = render(WindowMasonryHost);
+  const masonry = root.querySelector("virtua-window-masonry") as HTMLElement;
+  await expect.poll(() => masonry.textContent).toContain("item-0");
+  expect(masonry.querySelectorAll("[virtuaMasonryItem]").length).toBeLessThan(
+    1000,
+  );
+
+  await expect
+    .poll(() => {
+      window.scrollTo(0, document.documentElement.scrollHeight);
+      return masonry.textContent;
+    })
+    .toContain("item-999");
+  expect(window.scrollY).toBeGreaterThan(160);
+  expect(masonry.scrollTop).toBe(0);
+  expect(masonry.textContent).not.toContain("item-0");
+
+  const buttons = root.querySelectorAll("button");
+  buttons[0]!.click();
+  await expect.poll(() => window.scrollY).toBe(200);
+  // Native scrolling updates the offset before its scroll event reaches the virtualizer.
+  await expect.poll(() => masonry.textContent).toContain("item-0");
+  buttons[1]!.click();
+  await expect.poll(() => window.scrollY).toBe(250);
 });

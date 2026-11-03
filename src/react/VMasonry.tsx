@@ -46,7 +46,8 @@ interface MasonryItemProps {
   _hide: boolean;
 }
 
-const MasonryItem = /*#__PURE__*/ memo(
+/** @internal */
+export const MasonryItem = /*#__PURE__*/ memo(
   ({
     _children: children,
     _resizer: resizer,

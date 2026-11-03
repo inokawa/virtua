@@ -1,0 +1,315 @@
+/** @jsxImportSource vue */
+import {
+  ref,
+  onMounted,
+  defineComponent,
+  onUnmounted,
+  type VNode,
+  watch,
+  watchEffect,
+  type PublicProps,
+  type PropType,
+  computed,
+} from "vue";
+import {
+  UPDATE_SCROLL_EVENT,
+  UPDATE_SCROLL_END_EVENT,
+  UPDATE_SIZE_EVENT,
+  UPDATE_VIRTUAL_STATE,
+  createVirtualStore,
+  getScrollSize,
+  createWindowDriver,
+  createMasonryLayout,
+  ACTION_ITEMS_LENGTH_CHANGE,
+  relayout,
+  sort,
+  type ItemsRange,
+  type ScrollToIndexOpts,
+  type CacheSnapshot,
+} from "../core/index.js";
+import { getKey, isSameRange } from "./utils.js";
+import { MasonryItem } from "./VMasonry.js";
+
+/**
+ * Methods of {@link WindowMasonry}.
+ */
+export interface WindowMasonryHandle {
+  /**
+   * Get current {@link CacheSnapshot}.
+   */
+  readonly cache: CacheSnapshot;
+  /**
+   * Get current scrollTop. This is the document offset.
+   */
+  readonly scrollOffset: number;
+  /**
+   * Get the masonry scroll extent, at least the viewport size. This does not include the rest of the document.
+   */
+  readonly scrollSize: number;
+  /**
+   * Get the document viewport height.
+   */
+  readonly viewportSize: number;
+  /**
+   * Get item offset from the start of the masonry.
+   * @param index index of item
+   */
+  getItemOffset(index: number): number;
+  /**
+   * Get item size.
+   * @param index index of item
+   */
+  getItemSize(index: number): number;
+  /**
+   * Scroll to the item specified by index.
+   * @param index index of item
+   * @param opts options
+   */
+  scrollToIndex(index: number, opts?: ScrollToIndexOpts): void;
+  /**
+   * Scroll to the given offset.
+   * @param offset offset from the start of the document
+   */
+  scrollTo(offset: number): void;
+  /**
+   * Scroll by the given offset.
+   * @param offset offset from current position
+   */
+  scrollBy(offset: number): void;
+}
+
+/**
+ * Props of {@link WindowMasonry}.
+ */
+export interface WindowMasonryProps<T> extends PublicProps {
+  /**
+   * The data items rendered by this component.
+   */
+  data: T[];
+  /**
+   * The number of lanes (columns) which items are laid out into. Each item is placed into the shortest lane in order. It must be an integer and the minimum value is 1.
+   */
+  lanes: number;
+  /**
+   * The gap between the items and the lanes in pixels, which is not included in the sizes.
+   * @defaultValue 0
+   */
+  gap?: number;
+  /**
+   * Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
+   *
+   * - If not set, initial item sizes will be automatically estimated from measured sizes. This is recommended for most cases.
+   * - If set, you can opt out estimation and use the value as initial item size.
+   */
+  itemSize?: number;
+  /**
+   * Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
+   * @defaultValue 200
+   */
+  bufferSize?: number;
+  /**
+   * List of indexes that should be always mounted, even when off screen.
+   */
+  keepMounted?: readonly number[];
+  /**
+   * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowMasonryHandle.cache}.
+   *
+   * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
+   */
+  cache?: CacheSnapshot;
+  /**
+   * A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
+   *
+   * **The items are hidden until they are measured in the browser, so also pass their sizes with `cache` to show them on the server.**
+   */
+  ssrCount?: number;
+  /**
+   * Callback invoked whenever scroll offset changes.
+   * @param offset Current scrollTop.
+   */
+  onScroll?: (offset: number) => void;
+  /**
+   * Callback invoked when scrolling stops.
+   */
+  onScrollEnd?: () => void;
+  /**
+   * Callback invoked when the size of the viewport or the items changes.
+   */
+  onResize?: () => void;
+}
+
+interface WindowMasonryInstance<T> extends WindowMasonryHandle {
+  $props: WindowMasonryProps<T>;
+  $slots: { default: (arg: { item: T; index: number }) => VNode[] };
+}
+
+/**
+ * Virtualized masonry controlled by window scrolling. See {@link WindowMasonryProps} and {@link WindowMasonryHandle}.
+ */
+export const WindowMasonry = /*#__PURE__*/ defineComponent({
+  props: {
+    data: { type: Array, required: true },
+    lanes: {
+      type: Number,
+      required: true,
+    },
+    gap: Number,
+    itemSize: Number,
+    bufferSize: Number,
+    keepMounted: Array as PropType<WindowMasonryProps<unknown>["keepMounted"]>,
+    cache: Object as PropType<WindowMasonryProps<unknown>["cache"]>,
+    ssrCount: Number,
+  },
+  emits: ["scroll", "scrollEnd", "resize"],
+  setup(props, { emit, expose, slots }) {
+    const containerRef = ref<HTMLDivElement>();
+    const layout = createMasonryLayout(
+      props.data.length,
+      props.lanes,
+      props.gap,
+      props.itemSize,
+      props.cache,
+    );
+    const store = createVirtualStore(layout, props.ssrCount);
+    const driver = createWindowDriver(store, layout, false);
+
+    const stateVersion = ref(store.$getStateVersion());
+    store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
+      stateVersion.value = store.$getStateVersion();
+    });
+    store.$subscribe(UPDATE_SCROLL_EVENT, () => {
+      emit("scroll", store.$getScrollOffset());
+    });
+    store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
+      emit("scrollEnd");
+    });
+    store.$subscribe(UPDATE_SIZE_EVENT, () => {
+      emit("resize");
+    });
+
+    const range = computed<ItemsRange>((prev) => {
+      stateVersion.value;
+      const next = store.$getRange(props.bufferSize);
+      if (prev && isSameRange(prev, next)) {
+        return prev;
+      }
+      return next;
+    });
+    const isScrolling = computed(
+      () => stateVersion.value && store.$isScrolling(),
+    );
+    const totalSize = computed(
+      () => stateVersion.value && store.$getTotalSize(),
+    );
+
+    onMounted(() => {
+      driver.$observe(containerRef.value!);
+    });
+    onUnmounted(() => {
+      store.$dispose();
+      driver.$dispose();
+    });
+
+    watchEffect(() => {
+      store.$update(ACTION_ITEMS_LENGTH_CHANGE, props.data.length);
+    });
+    watchEffect(() => {
+      relayout(store, layout, props.lanes, props.gap);
+    });
+
+    watch(
+      [stateVersion],
+      () => {
+        driver.$effect();
+      },
+      { flush: "post" },
+    );
+
+    expose({
+      get cache() {
+        return layout.$snapshot();
+      },
+      get scrollOffset() {
+        return store.$getScrollOffset();
+      },
+      get scrollSize() {
+        return getScrollSize(store);
+      },
+      get viewportSize() {
+        return store.$getViewportSize();
+      },
+      getItemOffset: store.$getItemOffset,
+      getItemSize: layout.$getItemSize,
+      scrollToIndex: driver.$scroll,
+      scrollTo: (offset) => driver.$scroll(undefined, { offset }),
+      scrollBy: (offset) =>
+        driver.$scroll(undefined, {
+          offset: offset + store.$getScrollOffset(),
+        }),
+    } satisfies WindowMasonryHandle);
+
+    return () => {
+      const total = totalSize.value;
+
+      const indexes: number[] = [];
+      const items: VNode[] = [];
+      if (props.keepMounted) {
+        const len = props.data.length;
+        const mounted = new Set(props.keepMounted);
+        for (let [i, j] = range.value; i <= j; i++) {
+          mounted.add(i);
+        }
+        for (const index of sort([...mounted])) {
+          if (index < len) {
+            indexes.push(index);
+          }
+        }
+      } else {
+        for (let [i, j] = range.value; i <= j; i++) {
+          indexes.push(i);
+        }
+      }
+      for (const i of indexes) {
+        const e = slots["default"]!({ item: props.data![i]!, index: i });
+        items.push(
+          <MasonryItem
+            key={getKey(e, i)}
+            _stateVersion={stateVersion}
+            _store={store}
+            _layout={layout}
+            _slot={slots["default"]!}
+            _item={props.data![i]!}
+            _resizer={driver.$observeItem}
+            _index={i}
+          />,
+        );
+      }
+
+      return (
+        <div
+          style={{
+            display: "block",
+            width: "100%",
+          }}
+        >
+          <div
+            ref={containerRef}
+            style={{
+              contain: "size style", // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
+              overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict with scroll anchoring of virtualizer
+              flex: "none", // flex style can break layout
+              position: "relative",
+              width: "100%",
+              height: total + "px",
+              pointerEvents: isScrolling.value ? "none" : undefined,
+            }}
+          >
+            {items}
+          </div>
+        </div>
+      );
+    };
+  },
+}) as unknown as {
+  new <T>(props: WindowMasonryProps<T>): WindowMasonryInstance<T>;
+};

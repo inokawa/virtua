@@ -180,3 +180,30 @@ describe("VMasonry", () => {
     );
   });
 });
+
+describe("WindowMasonry", () => {
+  it("renders no items without ssrCount", async () => {
+    const html = await commands.ssrRender("windowMasonry", {});
+    const root = mountSsr(html);
+    const { viewport, container } = await getVirtualizer(root);
+    expect(viewport).toBe(document.scrollingElement);
+    expect(container.childElementCount).toBe(0);
+  });
+
+  it("renders and hydrates cached items with document scrolling", async () => {
+    const COUNT = 16;
+    const LANES = 4;
+    const props = {
+      ssrCount: COUNT,
+      cache: [range(1000).map(() => 100), 100] as CacheSnapshot,
+    };
+    const html = await commands.ssrRender("windowMasonry", props);
+    const root = mountSsr(html);
+    const { viewport, container } = await getVirtualizer(root);
+    expect(viewport).toBe(document.scrollingElement);
+    expect(container.childElementCount).toBe(COUNT);
+    await expectMasonryHydrated(root, COUNT, LANES, () =>
+      hydrate(root, "windowMasonry", props),
+    );
+  });
+});
