@@ -798,7 +798,7 @@ export interface GridDriver extends DriverBase {
     el: HTMLElement,
     rowIndex: number | undefined,
     colIndex: number | undefined,
-  ): () => void;
+  ): (() => void) | void;
 }
 
 /**
@@ -815,8 +815,7 @@ export const createContainerGridDriver = (
   let colScrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
 
-  const mountedRowIndexes = new WeakMap<Element, number>();
-  const mountedColIndexes = new WeakMap<Element, number>();
+  const mountedIndexes = new WeakMap<Element, [number?, number?]>();
 
   const resizeObserver = createResizeObserver((entries) => {
     const rowResizes: ItemResize[] = [];
@@ -835,13 +834,15 @@ export const createContainerGridDriver = (
         }
         // Skip zero-sized rects that may be observed under `display: none` style
       } else if ((target as HTMLElement).offsetParent) {
-        const rowIndex = mountedRowIndexes.get(target);
-        const colIndex = mountedColIndexes.get(target);
-        if (rowIndex != NULL && !rowLayout.$isSizeEqual(rowIndex, height)) {
-          rowResizes.push([rowIndex, height]);
-        }
-        if (colIndex != NULL && !colLayout.$isSizeEqual(colIndex, width)) {
-          colResizes.push([colIndex, width]);
+        const index = mountedIndexes.get(target);
+        if (index) {
+          const [rowIndex, colIndex] = index;
+          if (rowIndex != NULL && !rowLayout.$isSizeEqual(rowIndex, height)) {
+            rowResizes.push([rowIndex, height]);
+          }
+          if (colIndex != NULL && !colLayout.$isSizeEqual(colIndex, width)) {
+            colResizes.push([colIndex, width]);
+          }
         }
       }
     }
@@ -942,17 +943,14 @@ export const createContainerGridDriver = (
       initialized = createPromise();
     },
     $observeItem(el, rowIndex, colIndex) {
+      if (rowIndex == null && colIndex == null) {
+        return;
+      }
       // An undefined index skips reporting the size of that axis, for cells whose row/column size is given instead of measured.
-      if (rowIndex != NULL) {
-        mountedRowIndexes.set(el, rowIndex);
-      }
-      if (colIndex != NULL) {
-        mountedColIndexes.set(el, colIndex);
-      }
+      mountedIndexes.set(el, [rowIndex, colIndex]);
       resizeObserver._observe(el);
       return () => {
-        mountedRowIndexes.delete(el);
-        mountedColIndexes.delete(el);
+        mountedIndexes.delete(el);
         resizeObserver._unobserve(el);
       };
     },

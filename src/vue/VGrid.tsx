@@ -256,8 +256,9 @@ const GridCell = /*#__PURE__*/ defineComponent(
         () => props._state.$measureCol,
       ],
       ([element, rowIndex, colIndex], _, onCleanup) => {
-        if (!element || (rowIndex == null && colIndex == null)) return;
-        onCleanup(props._resizer(element, rowIndex, colIndex));
+        if (!element) return;
+        const cleanup = props._resizer(element, rowIndex, colIndex);
+        if (cleanup) onCleanup(cleanup);
       },
       { flush: "post" },
     );

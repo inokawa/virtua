@@ -277,8 +277,9 @@ const GridCell = <R, C>(props: GridCellProps<R, C>): JSX.Element => {
 
   createEffect(
     on([measureRowIndex, measureColIndex], ([rowIndex, colIndex]) => {
-      if (!elementRef || (rowIndex == null && colIndex == null)) return;
-      onCleanup(props._resizer(elementRef, rowIndex, colIndex));
+      if (!elementRef) return;
+      const cleanup = props._resizer(elementRef, rowIndex, colIndex);
+      if (cleanup) onCleanup(cleanup);
     }),
   );
 

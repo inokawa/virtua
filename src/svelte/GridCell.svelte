@@ -24,7 +24,6 @@
   let measureRowIndex = $derived(state.$measureRow);
   let measureColIndex = $derived(state.$measureCol);
   $effect(() => {
-    if (measureRowIndex == null && measureColIndex == null) return;
     return resizer(elementRef, measureRowIndex, measureColIndex);
   });
 

@@ -170,16 +170,13 @@ export class GridCell {
     const measureRowIndex = computed(() => this.state().$measureRow);
     const measureColIndex = computed(() => this.state().$measureCol);
     // afterRenderEffect instead of effect, because ResizeObserver doesn't exist on the server.
-    let cleanupResizer: (() => void) | undefined;
+    let cleanupResizer: (() => void) | void;
     afterRenderEffect({
       read: () => {
         const rowIndex = measureRowIndex();
         const colIndex = measureColIndex();
         if (cleanupResizer) cleanupResizer();
-        cleanupResizer =
-          rowIndex == null && colIndex == null
-            ? undefined
-            : untracked(this.resizer)(element, rowIndex, colIndex);
+        cleanupResizer = untracked(this.resizer)(element, rowIndex, colIndex);
       },
     });
 

@@ -270,7 +270,6 @@ const GridCell = /*#__PURE__*/ memo(
     const ref = useRef<HTMLDivElement>(null);
 
     useIsomorphicLayoutEffect(() => {
-      if (measureRowIndex == null && measureColIndex == null) return;
       return resizer(ref.current!, measureRowIndex, measureColIndex);
     }, [measureRowIndex, measureColIndex, resizer]);
 
