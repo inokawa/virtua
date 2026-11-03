@@ -901,7 +901,6 @@ export const createContainerGridDriver = (
     },
     $observe(containerElement, viewport = containerElement.parentElement!) {
       resizeObserver._observe((viewportElement = viewport));
-      const isRtl = getComputedStyle(viewport).direction === "rtl";
 
       const observe = (
         store: VirtualStore,
@@ -914,7 +913,7 @@ export const createContainerGridDriver = (
           viewport,
           viewport,
           isHorizontal,
-          isHorizontal && isRtl,
+          isHorizontal && getComputedStyle(viewport).direction === "rtl",
           () => {
             const overflowKey = isHorizontal ? "overflowX" : "overflowY";
             // If we update scroll position while touching on iOS, the position will be reverted.
