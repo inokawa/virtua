@@ -943,10 +943,10 @@ export const createContainerGridDriver = (
       initialized = createPromise();
     },
     $observeItem(el, rowIndex, colIndex) {
+      // An undefined index skips reporting the size of that axis, for cells whose row/column size is given instead of measured.
       if (rowIndex == null && colIndex == null) {
         return;
       }
-      // An undefined index skips reporting the size of that axis, for cells whose row/column size is given instead of measured.
       mountedIndexes.set(el, [rowIndex, colIndex]);
       resizeObserver._observe(el);
       return () => {
