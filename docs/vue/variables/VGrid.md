@@ -6,7 +6,7 @@
 
 > `const` **VGrid**: \<`R`, `C`\>(`props`) => `VGridInstance`\<`R`, `C`\>
 
-Defined in: [src/vue/VGrid.tsx:403](https://github.com/inokawa/virtua/blob/3f6c3167db43f53d99aec3cdb031925569fe1cdd/src/vue/VGrid.tsx#L403)
+Defined in: [src/vue/VGrid.tsx:404](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/VGrid.tsx#L404)
 
 Virtualized grid component for tabular data. See [VGridProps](../interfaces/VGridProps.md) and [VGridHandle](../interfaces/VGridHandle.md).
 
