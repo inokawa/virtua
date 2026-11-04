@@ -155,6 +155,26 @@
         "message": "No component file found for the \"VMasonry\" component."
       }
     },
+    "basics-windowmasonry": {
+      "id": "basics-windowmasonry",
+      "name": "WindowMasonry",
+      "path": "./stories/solid/basics/WindowMasonry.stories.tsx",
+      "stories": [
+        {
+          "id": "basics-windowmasonry--default",
+          "name": "Default",
+          "snippet": "const Default = () => {\n  return (\n    <div style={{ padding: \"200px 100px\" }}>\n      <WindowMasonry lanes={3} data={data1000}>\n        {(i) => <div style={itemStyle(i)}>{i}</div>}\n      </WindowMasonry>\n    </div>\n  );\n};",
+          "description": ""
+        }
+      ],
+      "import": "import { WindowMasonry } from \"../../../src/solid\";",
+      "jsDocTags": {},
+      "subcomponents": {},
+      "error": {
+        "name": "No component import found",
+        "message": "No component file found for the \"WindowMasonry\" component."
+      }
+    },
     "advanced-chat": {
       "id": "advanced-chat",
       "name": "Virtualizer",
@@ -198,7 +218,7 @@
   },
   "meta": {
     "docgen": "react-component-meta",
-    "durationMs": 115,
+    "durationMs": 110,
     "engine": "solid-component-meta"
   }
 }
