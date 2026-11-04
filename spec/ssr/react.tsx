@@ -79,7 +79,6 @@ const WindowMasonryFixture = (props: SsrMasonryProps) => (
     itemSize={100}
     ssrCount={props.ssrCount}
     cache={props.cache}
-    style={{ width: 400 }}
   >
     {(d) => (
       <div key={d} style={{ height: 100 }}>

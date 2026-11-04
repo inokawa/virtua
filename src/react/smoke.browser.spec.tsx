@@ -10,6 +10,7 @@ import {
 } from "../../spec/browser/index.js";
 import { range } from "../../spec/utils.js";
 import { VMasonry } from "./VMasonry.js";
+import { WindowMasonry } from "./WindowMasonry.js";
 
 afterEach(cleanupScroll);
 
@@ -97,6 +98,15 @@ it("VMasonry", async () => {
     <VMasonry lanes={2} data={range(1000)} style={{ height: 400 }}>
       {(d) => <div key={d}>item-{d}</div>}
     </VMasonry>,
+  );
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
+it("WindowMasonry", async () => {
+  const root = render(
+    <WindowMasonry lanes={2} data={range(1000)}>
+      {(d) => <div key={d}>item-{d}</div>}
+    </WindowMasonry>,
   );
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });

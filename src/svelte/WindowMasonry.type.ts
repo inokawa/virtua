@@ -1,11 +1,10 @@
 import type { Snippet } from "svelte";
 import type { CacheSnapshot, ScrollToIndexOpts } from "../core/index.js";
-import type { ViewportComponentAttributes } from "./types.js";
 
 /**
  * Props of {@link WindowMasonry}.
  */
-export interface WindowMasonryProps<T> extends ViewportComponentAttributes {
+export interface WindowMasonryProps<T> {
   /**
    * The data items rendered by this component.
    */
@@ -41,10 +40,6 @@ export interface WindowMasonryProps<T> extends ViewportComponentAttributes {
    */
   bufferSize?: number;
   /**
-   * List of indexes that should be always mounted, even when off screen.
-   */
-  keepMounted?: readonly number[];
-  /**
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowMasonryHandle.getCache}.
    *
    * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
@@ -58,9 +53,8 @@ export interface WindowMasonryProps<T> extends ViewportComponentAttributes {
   ssrCount?: number;
   /**
    * Callback invoked whenever scroll offset changes.
-   * @param offset Current document scrollTop.
    */
-  onscroll?: (offset: number) => void;
+  onscroll?: () => void;
   /**
    * Callback invoked when scrolling stops.
    */
@@ -80,13 +74,9 @@ export interface WindowMasonryHandle {
    */
   getCache: () => CacheSnapshot;
   /**
-   * Get current document scrollTop.
+   * Get current scrollTop.
    */
   getScrollOffset: () => number;
-  /**
-   * Get the masonry's total height, at least the document viewport height. This is the masonry extent, rather than the document's scrollHeight.
-   */
-  getScrollSize: () => number;
   /**
    * Get current clientHeight of the document.
    */
@@ -107,14 +97,4 @@ export interface WindowMasonryHandle {
    * @param opts options
    */
   scrollToIndex(index: number, opts?: ScrollToIndexOpts): void;
-  /**
-   * Scroll to the given offset.
-   * @param offset offset from the document start
-   */
-  scrollTo(offset: number): void;
-  /**
-   * Scroll by the given offset.
-   * @param offset offset from current position
-   */
-  scrollBy(offset: number): void;
 }

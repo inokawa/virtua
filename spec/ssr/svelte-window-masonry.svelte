@@ -6,14 +6,7 @@
   let { ssrCount, cache }: SsrMasonryProps = $props();
 </script>
 
-<WindowMasonry
-  data={range(1000)}
-  lanes={4}
-  itemSize={100}
-  {ssrCount}
-  {cache}
-  style="width: 400px;"
->
+<WindowMasonry data={range(1000)} lanes={4} itemSize={100} {ssrCount} {cache}>
   {#snippet children(item: number)}
     <div style="height: 100px;">item-{item}</div>
   {/snippet}

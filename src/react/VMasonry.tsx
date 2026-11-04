@@ -1,12 +1,8 @@
 import {
-  type CSSProperties,
   type ReactElement,
-  type ReactNode,
   type Ref,
   forwardRef,
-  memo,
   useImperativeHandle,
-  useMemo,
   useReducer,
   useRef,
 } from "react";
@@ -23,7 +19,6 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   relayout,
   sort,
-  type Driver,
   type CacheSnapshot,
   type ScrollToIndexOpts,
 } from "../core/index.js";
@@ -32,55 +27,10 @@ import { getKey } from "./utils.js";
 import { useStatic } from "./useStatic.js";
 import { useLatestRef } from "./useLatestRef.js";
 import { type ViewportComponentAttributes } from "./types.js";
+import { MasonryItem } from "./MasonryItem.js";
 
 const toCrossValue = (fraction: number, px: number): string =>
   px ? `calc(${fraction * 100}% + ${px}px)` : fraction * 100 + "%";
-
-interface MasonryItemProps {
-  _children: ReactNode;
-  _resizer: Driver["$observeItem"];
-  _index: number;
-  _offset: number;
-  _crossOffset: string;
-  _crossSize: string;
-  _hide: boolean;
-}
-
-/** @internal */
-export const MasonryItem = /*#__PURE__*/ memo(
-  ({
-    _children: children,
-    _resizer: resizer,
-    _index: index,
-    _offset: offset,
-    _crossOffset: crossOffset,
-    _crossSize: crossSize,
-    _hide: hide,
-  }: MasonryItemProps): ReactElement => {
-    const ref = useRef<HTMLDivElement>(null);
-
-    // The index may be changed if elements are inserted to or removed from the start of data
-    useIsomorphicLayoutEffect(() => resizer(ref.current!, index), [index]);
-
-    const style = useMemo(
-      (): CSSProperties => ({
-        contain: "layout style",
-        position: "absolute",
-        top: offset,
-        insetInlineStart: crossOffset,
-        width: crossSize,
-        visibility: hide ? "hidden" : undefined,
-      }),
-      [offset, crossOffset, crossSize, hide],
-    );
-
-    return (
-      <div ref={ref} style={style}>
-        {children}
-      </div>
-    );
-  },
-);
 
 /**
  * Methods of {@link VMasonry}.

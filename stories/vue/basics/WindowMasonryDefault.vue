@@ -16,22 +16,24 @@ const data = Array.from({ length: 1000 }).map((_, i) => i);
 </script>
 
 <template>
-  <WindowMasonry :lanes="3" :data="data">
-    <template #default="{ item }">
-      <div
-        :style="{
-          height: heights[(item * 2654435761) % 7] + 'px',
-          border: 'solid 1px #ccc',
-          padding: '4px',
-          background: colors[item % colors.length],
-          color: 'white',
-          textShadow: '0 0 2px rgba(0, 0, 0, 0.6)',
-        }"
-      >
-        {{ item }}
-      </div>
-    </template>
-  </WindowMasonry>
+  <div :style="{ padding: '200px 100px' }">
+    <WindowMasonry :lanes="3" :data="data">
+      <template #default="{ item }">
+        <div
+          :style="{
+            height: heights[(item * 2654435761) % 7] + 'px',
+            border: 'solid 1px #ccc',
+            padding: '4px',
+            background: colors[item % colors.length],
+            color: 'white',
+            textShadow: '0 0 2px rgba(0, 0, 0, 0.6)',
+          }"
+        >
+          {{ item }}
+        </div>
+      </template>
+    </WindowMasonry>
+  </div>
 </template>
 
 <style scoped>

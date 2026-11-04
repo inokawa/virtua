@@ -182,28 +182,33 @@ describe("VMasonry", () => {
 });
 
 describe("WindowMasonry", () => {
-  it("renders no items without ssrCount", async () => {
+  it("should render nothing", async () => {
     const html = await commands.ssrRender("windowMasonry", {});
+    expect(html).toMatchSnapshot();
+
     const root = mountSsr(html);
-    const { viewport, container } = await getVirtualizer(root);
-    expect(viewport).toBe(document.scrollingElement);
-    expect(container.childElementCount).toBe(0);
+    const { container } = await getVirtualizer(root);
+    expect(container.childElementCount).toEqual(0);
   });
 
-  it("renders and hydrates cached items with document scrolling", async () => {
+  it("should render and hydrate items with the cache", async () => {
+    // 4 rows of the lanes, fewer than the window fits
     const COUNT = 16;
+    const ITEM_SIZE = 100;
     const LANES = 4;
-    const props = {
+    const CACHE: CacheSnapshot = [range(1000).map(() => ITEM_SIZE), ITEM_SIZE];
+    const html = await commands.ssrRender("windowMasonry", {
       ssrCount: COUNT,
-      cache: [range(1000).map(() => 100), 100] as CacheSnapshot,
-    };
-    const html = await commands.ssrRender("windowMasonry", props);
+      cache: CACHE,
+    });
+    expect(html).toMatchSnapshot();
+
     const root = mountSsr(html);
-    const { viewport, container } = await getVirtualizer(root);
-    expect(viewport).toBe(document.scrollingElement);
-    expect(container.childElementCount).toBe(COUNT);
+    const { container } = await getVirtualizer(root);
+    expect(container.childElementCount).toEqual(COUNT);
+
     await expectMasonryHydrated(root, COUNT, LANES, () =>
-      hydrate(root, "windowMasonry", props),
+      hydrate(root, "windowMasonry", { ssrCount: COUNT, cache: CACHE }),
     );
   });
 });

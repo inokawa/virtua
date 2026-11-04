@@ -16,7 +16,6 @@ import {
   output,
   signal,
   untracked,
-  viewChild,
 } from "@angular/core";
 import { NgTemplateOutlet } from "@angular/common";
 import {
@@ -35,11 +34,9 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   relayout,
   createVirtualStore,
-  getScrollSize,
-  sort,
 } from "../core/index.js";
 import { defaultGetKey, type ItemContext } from "./utils.js";
-import { MasonryItem } from "./VMasonry.js";
+import { MasonryItem } from "./MasonryItem.js";
 
 const toCrossValue = (fraction: number, px: number): string =>
   px ? `calc(${fraction * 100}% + ${px}px)` : fraction * 100 + "%";
@@ -53,19 +50,15 @@ export interface WindowMasonryHandle {
    */
   readonly cache: CacheSnapshot;
   /**
-   * Get current scrollTop of the document.
+   * Get current scrollTop.
    */
   readonly scrollOffset: number;
-  /**
-   * Get the virtual masonry extent, at least the document viewport height. This does not include other document content.
-   */
-  readonly scrollSize: number;
   /**
    * Get current clientHeight of the document.
    */
   readonly viewportSize: number;
   /**
-   * Get item offset from the start of the masonry, excluding its document offset.
+   * Get item offset from start.
    * @param index index of item
    */
   getItemOffset(index: number): number;
@@ -80,49 +73,40 @@ export interface WindowMasonryHandle {
    * @param opts options
    */
   scrollToIndex(index: number, opts?: ScrollToIndexOpts): void;
-  /**
-   * Scroll to the given offset.
-   * @param offset offset from the start of the document
-   */
-  scrollTo(offset: number): void;
-  /**
-   * Scroll by the given offset.
-   * @param offset offset from current position
-   */
-  scrollBy(offset: number): void;
 }
 
 /**
- * Virtualized masonry component controlled by window scrolling. See {@link WindowMasonryHandle}.
+ * {@link VMasonry} controlled by the window scrolling. See {@link WindowMasonryHandle}.
  *
- * The host element grows with its content. Do not give it a fixed height or scrollable overflow.
+ * The host element is the container of the items.
  */
 @Component({
   selector: "virtua-window-masonry",
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MasonryItem, NgTemplateOutlet],
+  host: {
+    "[style]": "containerStyle()",
+  },
   template: `
-    <div #container [style]="containerStyle()">
-      @for (item of items(); track item.key) {
-        <div
-          virtuaMasonryItem
-          [index]="item.index"
-          [offset]="item.offset"
-          [crossOffset]="item.crossOffset"
-          [crossSize]="item.crossSize"
-          [hide]="item.hide"
-          [resizer]="driver.$observeItem"
-        >
-          <ng-container
-            [ngTemplateOutlet]="template()"
-            [ngTemplateOutletContext]="{
-              $implicit: item.data,
-              index: item.index,
-            }"
-          />
-        </div>
-      }
-    </div>
+    @for (item of items(); track item.key) {
+      <div
+        virtuaMasonryItem
+        [index]="item.index"
+        [offset]="item.offset"
+        [crossOffset]="item.crossOffset"
+        [crossSize]="item.crossSize"
+        [hide]="item.hide"
+        [resizer]="driver.$observeItem"
+      >
+        <ng-container
+          [ngTemplateOutlet]="template()"
+          [ngTemplateOutletContext]="{
+            $implicit: item.data,
+            index: item.index,
+          }"
+        />
+      </div>
+    }
   `,
 })
 export class WindowMasonry<T> implements OnInit, WindowMasonryHandle {
@@ -158,10 +142,6 @@ export class WindowMasonry<T> implements OnInit, WindowMasonryHandle {
    */
   readonly bufferSize = input<number>();
   /**
-   * List of indexes that should be always mounted, even when off screen.
-   */
-  readonly keepMounted = input<readonly number[]>();
-  /**
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowMasonryHandle.cache}.
    *
    * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
@@ -175,9 +155,10 @@ export class WindowMasonry<T> implements OnInit, WindowMasonryHandle {
   readonly ssrCount = input<number>();
 
   /**
-   * Emitted whenever scroll offset changes. The value is current document scrollTop.
+   * Emitted whenever scroll offset changes.
    */
-  readonly scrolled = output<number>();
+  // https://github.com/inokawa/virtua/discussions/580
+  readonly scrolled = output<void>();
   /**
    * Emitted when scrolling stops.
    */
@@ -190,10 +171,6 @@ export class WindowMasonry<T> implements OnInit, WindowMasonryHandle {
   /** @internal */
   protected template =
     contentChild.required<TemplateRef<ItemContext<T>>>(TemplateRef);
-  // not _ prefixed, because the mangler does not rename the property name kept
-  // as a string in the partial compilation output
-  /** @internal */
-  private container = viewChild.required<ElementRef<HTMLElement>>("container");
 
   /** @internal */
   private _store!: VirtualStore;
@@ -208,31 +185,6 @@ export class WindowMasonry<T> implements OnInit, WindowMasonryHandle {
   /** @internal */
   private _stateVersion = signal<StateVersion>(undefined!);
 
-  private _indexes = computed(() => {
-    this._stateVersion(); // the store is not a signal, so depend on its version
-    const len = this.data().length;
-
-    const [start, end] = this._store.$getRange(this.bufferSize());
-    const keepMounted = this.keepMounted();
-    const arr: number[] = [];
-    if (keepMounted) {
-      const mounted = new Set(keepMounted);
-      for (let i = start; i <= end; i++) {
-        mounted.add(i);
-      }
-      for (const index of sort([...mounted])) {
-        if (index < len) {
-          arr.push(index);
-        }
-      }
-    } else {
-      for (let i = start; i <= end; i++) {
-        arr.push(i);
-      }
-    }
-    return arr;
-  });
-
   /** @internal */
   protected items = computed(() => {
     this._stateVersion(); // the store is not a signal, so depend on its version
@@ -244,8 +196,9 @@ export class WindowMasonry<T> implements OnInit, WindowMasonryHandle {
     const lanes = layout.$getLanes();
     // The lanes share the width left by the gaps between them
     const crossSize = toCrossValue(1 / lanes, gap / lanes - gap);
+    const [start, end] = store.$getRange(this.bufferSize());
     const items = [];
-    for (const i of this._indexes()) {
+    for (let i = start; i <= end; i++) {
       const item = data[i]!;
       const lane = layout.$getItemLane(i);
       items.push({
@@ -266,6 +219,7 @@ export class WindowMasonry<T> implements OnInit, WindowMasonryHandle {
     this._stateVersion(); // the store is not a signal, so depend on its version
     const totalSize = this._store.$getTotalSize();
     return {
+      display: "block", // host of a custom element is inline by default
       contain: "size style", // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
       "overflow-anchor": "none", // opt out browser's scroll anchoring because it will conflict with scroll anchoring of virtualizer
       flex: "none", // flex style can break layout
@@ -296,7 +250,7 @@ export class WindowMasonry<T> implements OnInit, WindowMasonryHandle {
 
     afterNextRender({
       read: () => {
-        this.driver.$observe(this.container().nativeElement);
+        this.driver.$observe(this._element);
       },
     });
 
@@ -314,14 +268,6 @@ export class WindowMasonry<T> implements OnInit, WindowMasonryHandle {
   }
 
   ngOnInit(): void {
-    // Written once because it never changes. A host style binding can't be used
-    // here, because it would win over the styles set by the user.
-    const element = this._element;
-    element.setAttribute(
-      "style",
-      "display:block;width:100%;" + (element.getAttribute("style") || ""),
-    );
-
     const layout = (this._layout = createMasonryLayout(
       this.data().length,
       this.lanes(),
@@ -340,7 +286,7 @@ export class WindowMasonry<T> implements OnInit, WindowMasonryHandle {
       }
     });
     store.$subscribe(UPDATE_SCROLL_EVENT, () => {
-      this.scrolled.emit(store.$getScrollOffset());
+      this.scrolled.emit();
     });
     store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
       this.scrollEnded.emit();
@@ -357,9 +303,6 @@ export class WindowMasonry<T> implements OnInit, WindowMasonryHandle {
   get scrollOffset(): number {
     return this._store.$getScrollOffset();
   }
-  get scrollSize(): number {
-    return getScrollSize(this._store);
-  }
   get viewportSize(): number {
     return this._store.$getViewportSize();
   }
@@ -371,13 +314,5 @@ export class WindowMasonry<T> implements OnInit, WindowMasonryHandle {
   }
   scrollToIndex(index: number, opts?: ScrollToIndexOpts): void {
     this.driver.$scroll(index, opts);
-  }
-  scrollTo(offset: number): void {
-    this.driver.$scroll(undefined, { offset });
-  }
-  scrollBy(offset: number): void {
-    this.driver.$scroll(undefined, {
-      offset: offset + this._store.$getScrollOffset(),
-    });
   }
 }

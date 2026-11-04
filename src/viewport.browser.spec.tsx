@@ -5,6 +5,7 @@ import {
   Virtualizer,
   type VirtualizerHandle,
   WindowVirtualizer,
+  WindowMasonry,
 } from "./react/index.js";
 import {
   cleanupScroll,
@@ -132,6 +133,26 @@ it("renders nothing while the viewport is entirely before or after the items (Wi
           </div>
         )}
       </WindowVirtualizer>
+      <div style={{ height: SURROUNDING_SIZE }}>footer</div>
+    </div>,
+  );
+  const { viewport, container } = await getVirtualizer(root);
+  await expectNothingRenderedOutside(viewport, container, SURROUNDING_SIZE);
+});
+
+it("renders nothing while the viewport is entirely before or after the items (WindowMasonry)", async () => {
+  const ITEM_SIZE = 40;
+  const SURROUNDING_SIZE = window.innerHeight * 2;
+  const root = render(
+    <div>
+      <div style={{ height: SURROUNDING_SIZE }}>header</div>
+      <WindowMasonry lanes={3} data={range(100)}>
+        {(i) => (
+          <div key={i} style={{ height: ITEM_SIZE }}>
+            {i}
+          </div>
+        )}
+      </WindowMasonry>
       <div style={{ height: SURROUNDING_SIZE }}>footer</div>
     </div>,
   );

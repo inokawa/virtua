@@ -9,7 +9,6 @@ export default {
 export const Default: StoryObj = {
   render: () => ({
     components: { Component: DefaultComponent },
-    template:
-      "<header style='padding: 32px'>Window-scrolled masonry</header><Component />",
+    template: "<Component />",
   }),
 };

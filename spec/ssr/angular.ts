@@ -134,7 +134,6 @@ class SsrVMasonryHost {
       [itemSize]="100"
       [ssrCount]="props.ssrCount"
       [cache]="props.cache"
-      style="width: 400px"
     >
       <ng-template let-item
         ><div style="height: 100px">item-{{ item }}</div></ng-template

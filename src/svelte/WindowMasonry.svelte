@@ -12,9 +12,7 @@
     ACTION_ITEMS_LENGTH_CHANGE,
     relayout,
     createVirtualStore,
-    getScrollSize as _getScrollSize,
     min,
-    sort,
   } from "../core/index.js";
   import { defaultGetKey, isSameRange, styleToString } from "./utils.js";
   import MasonryItem from "./MasonryItem.svelte";
@@ -35,14 +33,12 @@
     gap: gapProp,
     itemSize,
     bufferSize,
-    keepMounted,
     cache,
     ssrCount,
     children,
     onscroll,
     onscrollend,
     onresize,
-    ...rest
   }: Props = $props();
 
   const layout = createMasonryLayout(
@@ -58,7 +54,8 @@
     stateVersion = store.$getStateVersion();
   });
   store.$subscribe(UPDATE_SCROLL_EVENT, () => {
-    onscroll && onscroll(store.$getScrollOffset());
+    // https://github.com/inokawa/virtua/discussions/580
+    onscroll && onscroll();
   });
   store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
     onscrollend && onscrollend();
@@ -95,21 +92,9 @@
     const len = stateVersion && min(data.length, layout.$getLength());
     const [start, end] = range;
     const arr: number[] = [];
-    if (keepMounted) {
-      const mounted = new Set(keepMounted);
-      for (let i = start; i <= end; i++) {
-        mounted.add(i);
-      }
-      for (const index of sort([...mounted])) {
-        if (index < len) {
-          arr.push(index);
-        }
-      }
-    } else {
-      for (let i = start; i <= end; i++) {
-        if (i < len) {
-          arr.push(i);
-        }
+    for (let i = start; i <= end; i++) {
+      if (i < len) {
+        arr.push(i);
       }
     }
     return arr;
@@ -141,10 +126,6 @@
     layout.$snapshot satisfies WindowMasonryHandle["getCache"] as WindowMasonryHandle["getCache"];
   export const getScrollOffset =
     store.$getScrollOffset satisfies WindowMasonryHandle["getScrollOffset"] as WindowMasonryHandle["getScrollOffset"];
-  export const getScrollSize = (() =>
-    _getScrollSize(
-      store,
-    )) satisfies WindowMasonryHandle["getScrollSize"] as WindowMasonryHandle["getScrollSize"];
   export const getViewportSize =
     store.$getViewportSize satisfies WindowMasonryHandle["getViewportSize"] as WindowMasonryHandle["getViewportSize"];
   export const getItemOffset =
@@ -153,15 +134,7 @@
     layout.$getItemSize satisfies WindowMasonryHandle["getItemSize"] as WindowMasonryHandle["getItemSize"];
   export const scrollToIndex: WindowMasonryHandle["scrollToIndex"] =
     driver.$scroll;
-  export const scrollTo: WindowMasonryHandle["scrollTo"] = (offset) =>
-    driver.$scroll(undefined, { offset });
-  export const scrollBy: WindowMasonryHandle["scrollBy"] = (offset) =>
-    driver.$scroll(undefined, { offset: offset + store.$getScrollOffset() });
 
-  const viewportStyle = styleToString({
-    display: "block",
-    width: "100%",
-  });
   let containerStyle = $derived(
     styleToString({
       contain: "size style", // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
@@ -177,23 +150,21 @@
 
 <!--
   @component
-  Virtualized masonry component controlled by window scrolling. See {@link WindowMasonryProps} and {@link WindowMasonryHandle}.
+  {@link VMasonry} controlled by the window scrolling. See {@link WindowMasonryProps} and {@link WindowMasonryHandle}.
 -->
-<div {...rest} style="{viewportStyle} {rest.style || ''}">
-  <div bind:this={containerRef} style={containerStyle}>
-    {#each indexes as index (getKey(data[index]!, index))}
-      {@const item = data[index]!}
-      {@const lane = stateVersion && layout.$getItemLane(index)}
-      <MasonryItem
-        {children}
-        {item}
-        {index}
-        offset={stateVersion && store.$getItemOffset(index)}
-        crossOffset={toCrossValue(lane / lanes, (lane * gap) / lanes)}
-        {crossSize}
-        hide={stateVersion && layout.$isSizeEqual(index)}
-        resizer={driver.$observeItem}
-      />
-    {/each}
-  </div>
+<div bind:this={containerRef} style={containerStyle}>
+  {#each indexes as index (getKey(data[index]!, index))}
+    {@const item = data[index]!}
+    {@const lane = stateVersion && layout.$getItemLane(index)}
+    <MasonryItem
+      {children}
+      {item}
+      {index}
+      offset={stateVersion && store.$getItemOffset(index)}
+      crossOffset={toCrossValue(lane / lanes, (lane * gap) / lanes)}
+      {crossSize}
+      hide={stateVersion && layout.$isSizeEqual(index)}
+      resizer={driver.$observeItem}
+    />
+  {/each}
 </div>

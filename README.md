@@ -377,7 +377,7 @@ export const App = () => {
 
 ### Masonry
 
-For items with different heights laid out in columns such as a gallery, use `VMasonry`.
+For items with different heights laid out in columns such as a gallery, use `VMasonry`, or `WindowMasonry` for window scroll.
 
 ```tsx
 import { VMasonry } from "virtua";
@@ -408,22 +408,6 @@ export const App = () => {
   );
 };
 ```
-
-Use `WindowMasonry` when the gallery should share the document scrollbar with the rest of the page. It accepts the same masonry options and scroll methods as `VMasonry`, and grows with its content, so omit a fixed height and scrollable overflow:
-
-```tsx
-import { WindowMasonry } from "virtua";
-
-<WindowMasonry data={data} lanes={3} gap={8}>
-  {(item) => (
-    <div key={item.id} style={{ height: item.size }}>
-      {item.id}
-    </div>
-  )}
-</WindowMasonry>;
-```
-
-`WindowMasonry` uses document coordinates for `scrollOffset`, `scrollTo`, and `scrollBy`; `scrollToIndex` accounts for the gallery's position in the document. `scrollSize` describes the masonry's extent, at least the viewport height, excluding other page content.
 
 ### More examples
 

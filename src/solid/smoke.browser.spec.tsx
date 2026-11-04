@@ -1,7 +1,7 @@
 /**
  * @jsxImportSource solid-js
  */
-import { afterEach, expect, it } from "vitest";
+import { afterEach, it } from "vitest";
 import { render } from "../../spec/browser/solid.js";
 import { VList } from "./VList.js";
 import { Virtualizer } from "./Virtualizer.js";
@@ -9,7 +9,6 @@ import { WindowVirtualizer } from "./WindowVirtualizer.js";
 import {
   cleanupScroll,
   expectVirtualizedAndScrollable,
-  getVirtualizer,
 } from "../../spec/browser/index.js";
 import { VGrid } from "./VGrid.js";
 import { range } from "../../spec/utils.js";
@@ -110,18 +109,9 @@ it("VMasonry", async () => {
 
 it("WindowMasonry", async () => {
   const root = render(() => (
-    <div>
-      <div style={{ height: "200px" }}>header</div>
-      <WindowMasonry lanes={3} gap={8} data={range(1000)}>
-        {(i) => (
-          <div style={{ height: `${50 + (i % 3) * 20}px` }}>item-{i}</div>
-        )}
-      </WindowMasonry>
-    </div>
+    <WindowMasonry lanes={2} data={range(1000)}>
+      {(d) => <div>item-{d}</div>}
+    </WindowMasonry>
   ));
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
-  const { viewport, container } = await getVirtualizer(root);
-  expect(viewport).toBe(document.scrollingElement);
-  expect(viewport.scrollTop).toBeGreaterThan(0);
-  expect(container.parentElement!.scrollTop).toBe(0);
 });

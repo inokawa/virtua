@@ -16,8 +16,6 @@
 - [VGridHandle](interfaces/VGridHandle.md)
 - [VMasonryProps](interfaces/VMasonryProps.md)
 - [VMasonryHandle](interfaces/VMasonryHandle.md)
-- [WindowMasonryProps](interfaces/WindowMasonryProps.md)
-- [WindowMasonryHandle](interfaces/WindowMasonryHandle.md)
 
 ## References
 
@@ -38,4 +36,3 @@ Re-exports [GridSpan](../core/interfaces/GridSpan.md)
 - [WindowVirtualizer](variables/WindowVirtualizer.md)
 - [VGrid](variables/VGrid.md)
 - [VMasonry](variables/VMasonry.md)
-- [WindowMasonry](variables/WindowMasonry.md)

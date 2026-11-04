@@ -13,12 +13,10 @@ import {
   UPDATE_VIRTUAL_STATE,
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SIZE_EVENT,
-  getScrollSize,
   createWindowDriver,
   createMasonryLayout,
   ACTION_ITEMS_LENGTH_CHANGE,
   relayout,
-  sort,
   type CacheSnapshot,
   type ScrollToIndexOpts,
 } from "../core/index.js";
@@ -26,8 +24,7 @@ import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
 import { getKey } from "./utils.js";
 import { useStatic } from "./useStatic.js";
 import { useLatestRef } from "./useLatestRef.js";
-import { type ViewportComponentAttributes } from "./types.js";
-import { MasonryItem } from "./VMasonry.js";
+import { MasonryItem } from "./MasonryItem.js";
 
 const toCrossValue = (fraction: number, px: number): string =>
   px ? `calc(${fraction * 100}% + ${px}px)` : fraction * 100 + "%";
@@ -41,15 +38,11 @@ export interface WindowMasonryHandle {
    */
   readonly cache: CacheSnapshot;
   /**
-   * Get current document scrollTop.
+   * Get current scrollTop.
    */
   readonly scrollOffset: number;
   /**
-   * Get the masonry's total scrollable size, at least the viewport height. This does not include other document content.
-   */
-  readonly scrollSize: number;
-  /**
-   * Get current document clientHeight.
+   * Get current clientHeight of the document.
    */
   readonly viewportSize: number;
   /**
@@ -68,22 +61,12 @@ export interface WindowMasonryHandle {
    * @param opts options
    */
   scrollToIndex(index: number, opts?: ScrollToIndexOpts): void;
-  /**
-   * Scroll to the given offset.
-   * @param offset offset from start of the document
-   */
-  scrollTo(offset: number): void;
-  /**
-   * Scroll by the given offset.
-   * @param offset offset from current position
-   */
-  scrollBy(offset: number): void;
 }
 
 /**
  * Props of {@link WindowMasonry}.
  */
-export interface WindowMasonryProps<T> extends ViewportComponentAttributes {
+export interface WindowMasonryProps<T> {
   /**
    * The elements renderer function.
    */
@@ -114,10 +97,6 @@ export interface WindowMasonryProps<T> extends ViewportComponentAttributes {
    */
   bufferSize?: number;
   /**
-   * List of indexes that should be always mounted, even when off screen.
-   */
-  keepMounted?: readonly number[];
-  /**
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowMasonryHandle.cache}.
    *
    * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
@@ -131,9 +110,8 @@ export interface WindowMasonryProps<T> extends ViewportComponentAttributes {
   ssrCount?: number;
   /**
    * Callback invoked whenever scroll offset changes.
-   * @param offset Current scrollTop.
    */
-  onScroll?: (offset: number) => void;
+  onScroll?: () => void;
   /**
    * Callback invoked when scrolling stops.
    */
@@ -145,7 +123,7 @@ export interface WindowMasonryProps<T> extends ViewportComponentAttributes {
 }
 
 /**
- * Virtualized masonry controlled by window scrolling. The outer element grows with its content; do not give it a fixed height or scrollable overflow. See {@link WindowMasonryProps} and {@link WindowMasonryHandle}.
+ * {@link VMasonry} controlled by the window scrolling. See {@link WindowMasonryProps} and {@link WindowMasonryHandle}.
  */
 export const WindowMasonry = /*#__PURE__*/ forwardRef<
   WindowMasonryHandle,
@@ -159,14 +137,11 @@ export const WindowMasonry = /*#__PURE__*/ forwardRef<
       gap: gapProp,
       itemSize,
       bufferSize,
-      keepMounted,
       cache,
       ssrCount,
       onScroll: onScrollProp,
       onScrollEnd: onScrollEndProp,
       onResize: onResizeProp,
-      style,
-      ...attrs
     },
     ref,
   ): ReactElement => {
@@ -217,7 +192,8 @@ export const WindowMasonry = /*#__PURE__*/ forwardRef<
         }
       });
       store.$subscribe(UPDATE_SCROLL_EVENT, () => {
-        onScroll.current && onScroll.current(store.$getScrollOffset());
+        // https://github.com/inokawa/virtua/discussions/580
+        onScroll.current && onScroll.current();
       });
       store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
         onScrollEnd.current && onScrollEnd.current();
@@ -246,20 +222,12 @@ export const WindowMasonry = /*#__PURE__*/ forwardRef<
         get scrollOffset() {
           return store.$getScrollOffset();
         },
-        get scrollSize() {
-          return getScrollSize(store);
-        },
         get viewportSize() {
           return store.$getViewportSize();
         },
         getItemOffset: store.$getItemOffset,
         getItemSize: layout.$getItemSize,
         scrollToIndex: driver.$scroll,
-        scrollTo: (offset) => driver.$scroll(undefined, { offset }),
-        scrollBy: (offset) =>
-          driver.$scroll(undefined, {
-            offset: offset + store.$getScrollOffset(),
-          }),
       };
     }, []);
 
@@ -269,23 +237,7 @@ export const WindowMasonry = /*#__PURE__*/ forwardRef<
     // The lanes share the width left by the gaps between them
     const crossSize = toCrossValue(1 / lanes, gap / lanes - gap);
 
-    const indexes: number[] = [];
-    if (keepMounted) {
-      const mounted = new Set(keepMounted);
-      for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
-        mounted.add(i);
-      }
-      for (const index of sort([...mounted])) {
-        if (index < count) {
-          indexes.push(index);
-        }
-      }
-    } else {
-      for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
-        indexes.push(i);
-      }
-    }
-    for (const i of indexes) {
+    for (let [i, j] = store.$getRange(bufferSize); i <= j; i++) {
       const e = children(data[i]!, i);
       const lane = layout.$getItemLane(i);
       items.push(
@@ -304,27 +256,18 @@ export const WindowMasonry = /*#__PURE__*/ forwardRef<
 
     return (
       <div
-        {...attrs}
+        ref={containerRef}
         style={{
-          display: "block",
+          contain: "size style", // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
+          overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict with scroll anchoring of virtualizer
+          flex: "none", // flex style can break layout
+          position: "relative",
           width: "100%",
-          ...style,
+          height: totalSize,
+          pointerEvents: isScrolling ? "none" : undefined,
         }}
       >
-        <div
-          ref={containerRef}
-          style={{
-            contain: "size style", // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
-            overflowAnchor: "none", // opt out browser's scroll anchoring because it will conflict with scroll anchoring of virtualizer
-            flex: "none", // flex style can break layout
-            position: "relative",
-            width: "100%",
-            height: totalSize,
-            pointerEvents: isScrolling ? "none" : undefined,
-          }}
-        >
-          {items}
-        </div>
+        {items}
       </div>
     );
   },

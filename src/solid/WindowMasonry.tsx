@@ -10,7 +10,6 @@ import {
   createMemo,
   type JSX,
   on,
-  splitProps,
   For,
   type Accessor,
   untrack,
@@ -22,19 +21,19 @@ import {
   UPDATE_SIZE_EVENT,
   UPDATE_VIRTUAL_STATE,
   createVirtualStore,
-  getScrollSize,
   createWindowDriver,
   createMasonryLayout,
   ACTION_ITEMS_LENGTH_CHANGE,
   relayout,
-  sort,
   type ItemsRange,
   type ScrollToIndexOpts,
   type CacheSnapshot,
 } from "../core/index.js";
 import { isSameRange } from "./utils.js";
-import { MasonryItem, toCrossValue } from "./VMasonry.js";
-import { type ViewportComponentAttributes } from "./types.js";
+import { MasonryItem } from "./MasonryItem.js";
+
+const toCrossValue = (fraction: number, px: number): string =>
+  px ? `calc(${fraction * 100}% + ${px}px)` : fraction * 100 + "%";
 
 /**
  * Methods of {@link WindowMasonry}.
@@ -45,19 +44,15 @@ export interface WindowMasonryHandle {
    */
   readonly cache: CacheSnapshot;
   /**
-   * Get current scrollTop. This is the document offset.
+   * Get current scrollTop.
    */
   readonly scrollOffset: number;
   /**
-   * Get the masonry scroll extent, at least the viewport size. This does not include the rest of the document.
-   */
-  readonly scrollSize: number;
-  /**
-   * Get the document viewport height.
+   * Get current clientHeight of the document.
    */
   readonly viewportSize: number;
   /**
-   * Get item offset from the start of the masonry.
+   * Get item offset from start.
    * @param index index of item
    */
   getItemOffset(index: number): number;
@@ -72,22 +67,12 @@ export interface WindowMasonryHandle {
    * @param opts options
    */
   scrollToIndex(index: number, opts?: ScrollToIndexOpts): void;
-  /**
-   * Scroll to the given offset.
-   * @param offset offset from the start of the document
-   */
-  scrollTo(offset: number): void;
-  /**
-   * Scroll by the given offset.
-   * @param offset offset from current position
-   */
-  scrollBy(offset: number): void;
 }
 
 /**
  * Props of {@link WindowMasonry}.
  */
-export interface WindowMasonryProps<T> extends ViewportComponentAttributes {
+export interface WindowMasonryProps<T> {
   /**
    * Get reference to {@link WindowMasonryHandle}.
    */
@@ -122,10 +107,6 @@ export interface WindowMasonryProps<T> extends ViewportComponentAttributes {
    */
   bufferSize?: number;
   /**
-   * List of indexes that should be always mounted, even when off screen.
-   */
-  keepMounted?: readonly number[];
-  /**
    * You can restore cache by passing a {@link CacheSnapshot} on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from {@link WindowMasonryHandle.cache}.
    *
    * **The length of items should be the same as when you take the snapshot, otherwise restoration may not work as expected.**
@@ -139,9 +120,8 @@ export interface WindowMasonryProps<T> extends ViewportComponentAttributes {
   ssrCount?: number;
   /**
    * Callback invoked whenever scroll offset changes.
-   * @param offset Current scrollTop.
    */
-  onScroll?: (offset: number) => void;
+  onScroll?: () => void;
   /**
    * Callback invoked when scrolling stops.
    */
@@ -153,29 +133,13 @@ export interface WindowMasonryProps<T> extends ViewportComponentAttributes {
 }
 
 /**
- * Virtualized masonry controlled by window scrolling. See {@link WindowMasonryProps} and {@link WindowMasonryHandle}.
+ * {@link VMasonry} controlled by the window scrolling. See {@link WindowMasonryProps} and {@link WindowMasonryHandle}.
  */
 export const WindowMasonry = <T,>(
   props: WindowMasonryProps<T>,
 ): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
   const { itemSize, cache, ssrCount } = props;
-  const [, others] = splitProps(props, [
-    "ref",
-    "data",
-    "children",
-    "lanes",
-    "gap",
-    "itemSize",
-    "bufferSize",
-    "keepMounted",
-    "cache",
-    "ssrCount",
-    "onScroll",
-    "onScrollEnd",
-    "onResize",
-    "style",
-  ]);
 
   const layout = createMasonryLayout(
     props.data.length,
@@ -193,7 +157,8 @@ export const WindowMasonry = <T,>(
     setRerender(store.$getStateVersion());
   });
   store.$subscribe(UPDATE_SCROLL_EVENT, () => {
-    props.onScroll?.(store.$getScrollOffset());
+    // https://github.com/inokawa/virtua/discussions/580
+    props.onScroll?.();
   });
   store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
     props.onScrollEnd?.();
@@ -233,20 +198,12 @@ export const WindowMasonry = <T,>(
       get scrollOffset() {
         return store.$getScrollOffset();
       },
-      get scrollSize() {
-        return getScrollSize(store);
-      },
       get viewportSize() {
         return store.$getViewportSize();
       },
       getItemOffset: store.$getItemOffset,
       getItemSize: layout.$getItemSize,
       scrollToIndex: driver.$scroll,
-      scrollTo: (offset) => driver.$scroll(undefined, { offset }),
-      scrollBy: (offset) =>
-        driver.$scroll(undefined, {
-          offset: offset + store.$getScrollOffset(),
-        }),
     });
     onCleanup(() => ref());
   }
@@ -266,92 +223,66 @@ export const WindowMasonry = <T,>(
     }),
   );
 
-  const dataSlice = createMemo(() => {
+  const dataSlice = createMemo<T[]>(() => {
     const count = props.data.length;
     untrack(() => {
       store.$update(ACTION_ITEMS_LENGTH_CHANGE, count);
     });
     const items: T[] = [];
-    const indexes: number[] = [];
-
-    if (props.keepMounted) {
-      const mounted = new Set(props.keepMounted);
-      for (let [i, j] = range(); i <= j; i++) {
-        mounted.add(i);
-      }
-      for (const index of sort([...mounted])) {
-        if (index < count) {
-          items.push(props.data[index]!);
-          indexes.push(index);
-        }
-      }
-    } else {
-      for (let [i, j] = range(); i <= j; i++) {
-        items.push(props.data[i]!);
-        indexes.push(i);
-      }
+    for (let [i, j] = range(); i <= j; i++) {
+      items.push(props.data[i]!);
     }
-
-    return { _items: items, _indexes: indexes };
+    return items;
   });
 
   return (
     <div
-      {...others}
+      ref={containerRef}
       style={{
-        display: "block",
+        contain: "size style", // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
+        "overflow-anchor": "none", // opt out browser's scroll anchoring because it will conflict with scroll anchoring of virtualizer
+        flex: "none", // flex style can break layout
+        position: "relative",
         width: "100%",
-        ...props.style,
+        height: totalSize() + "px",
+        "pointer-events": isScrolling() ? "none" : undefined,
       }}
     >
-      <div
-        ref={containerRef}
-        style={{
-          contain: "size style", // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
-          "overflow-anchor": "none", // opt out browser's scroll anchoring because it will conflict with scroll anchoring of virtualizer
-          flex: "none", // flex style can break layout
-          position: "relative",
-          width: "100%",
-          height: totalSize() + "px",
-          "pointer-events": isScrolling() ? "none" : undefined,
-        }}
-      >
-        <For each={dataSlice()._items}>
-          {(data, index) => {
-            const itemIndex = createMemo(() => dataSlice()._indexes[index()]!);
-            const offset = createMemo(() => {
-              stateVersion();
-              return store.$getItemOffset(itemIndex());
-            });
-            const lane = createMemo(() => {
-              stateVersion();
-              return layout.$getItemLane(itemIndex());
-            });
-            const hide = createMemo(() => {
-              stateVersion();
-              return layout.$isSizeEqual(itemIndex());
-            });
-            const children = createMemo(() => {
-              return untrack(() => props.children(data, itemIndex));
-            });
+      <For each={dataSlice()}>
+        {(data, index) => {
+          const itemIndex = createMemo(() => range()[0] + index());
+          const offset = createMemo(() => {
+            stateVersion();
+            return store.$getItemOffset(itemIndex());
+          });
+          const lane = createMemo(() => {
+            stateVersion();
+            return layout.$getItemLane(itemIndex());
+          });
+          const hide = createMemo(() => {
+            stateVersion();
+            return layout.$isSizeEqual(itemIndex());
+          });
+          const children = createMemo(() => {
+            return untrack(() => props.children(data, itemIndex));
+          });
 
-            return (
-              <MasonryItem
-                _index={itemIndex()}
-                _resizer={driver.$observeItem}
-                _offset={offset()}
-                _crossOffset={toCrossValue(
-                  lane() / lanes(),
-                  (lane() * gap()) / lanes(),
-                )}
-                _crossSize={crossSize()}
-                _hide={hide()}
-                _children={children()}
-              />
-            );
-          }}
-        </For>
-      </div>
+          return (
+            <MasonryItem
+              _index={itemIndex()}
+              _resizer={driver.$observeItem}
+              _offset={offset()}
+              _crossOffset={toCrossValue(
+                lane() / lanes(),
+                (lane() * gap()) / lanes(),
+              )}
+              _crossSize={crossSize()}
+              _hide={hide()}
+              _children={children()}
+            />
+          );
+        }}
+      </For>
     </div>
   );
 };

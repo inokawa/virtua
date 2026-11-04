@@ -16,7 +16,7 @@ const colors = [
   selector: "story-window-masonry-default",
   imports: [WindowMasonry],
   template: `
-    <div style="padding: 160px 24px;">
+    <div style="padding: 200px 100px;">
       <virtua-window-masonry [lanes]="3" [data]="data">
         <ng-template let-item>
           <div [style]="itemStyle(item)">{{ item }}</div>

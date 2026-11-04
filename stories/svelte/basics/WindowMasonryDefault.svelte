@@ -14,10 +14,8 @@
   const data = Array.from({ length: 1000 }).map((_, i) => i);
 </script>
 
-<div style="padding: 100px 24px;">
-  <h1>Masonry with window scrolling</h1>
-  <p>The page scrolls through the masonry below.</p>
-  <WindowMasonry lanes={3} gap={8} {data}>
+<div style="padding: 200px 100px;">
+  <WindowMasonry lanes={3} {data}>
     {#snippet children(i)}
       {@const hash = (i * 2654435761) % 7}
       <div
@@ -31,5 +29,4 @@
       </div>
     {/snippet}
   </WindowMasonry>
-  <p>End of the masonry.</p>
 </div>
