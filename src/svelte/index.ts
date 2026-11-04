@@ -18,3 +18,8 @@ export type { VGridProps, VGridHandle } from "./VGrid.type.js";
 export type { GridSize, GridSpan } from "../core/index.js";
 export { default as VMasonry } from "./VMasonry.svelte";
 export type { VMasonryProps, VMasonryHandle } from "./VMasonry.type.js";
+export { default as WindowMasonry } from "./WindowMasonry.svelte";
+export type {
+  WindowMasonryProps,
+  WindowMasonryHandle,
+} from "./WindowMasonry.type.js";

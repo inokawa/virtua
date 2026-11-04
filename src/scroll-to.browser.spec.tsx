@@ -25,8 +25,9 @@ import {
   recordScroll,
   relativeBottom,
   relativeTop,
+  setRTL,
 } from "../spec/browser/index.js";
-import { range } from "../spec/utils.js";
+import { nextFrame, range } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
 
@@ -489,6 +490,82 @@ describe("scrollToIndex", () => {
           )}
         </WindowVirtualizer>
       </div>
+    );
+
+    it.each([
+      { name: "vertical", horizontal: false, rtl: false },
+      { name: "horizontal", horizontal: true, rtl: false },
+      { name: "horizontal RTL", horizontal: true, rtl: true },
+    ])(
+      "align nearest accounts for the document offset ($name)",
+      async ({ horizontal, rtl }) => {
+        if (rtl) setRTL();
+        const ref = createRef<WindowVirtualizerHandle>();
+        const root = render(
+          <div
+            style={
+              horizontal
+                ? {
+                    display: "inline-block",
+                    height: 200,
+                    paddingInlineStart: 1000,
+                  }
+                : { paddingTop: 1000 }
+            }
+          >
+            <WindowVirtualizer
+              ref={ref}
+              data={range(ITEM_COUNT)}
+              itemSize={100}
+              horizontal={horizontal}
+            >
+              {(i) => (
+                <div
+                  key={i}
+                  style={horizontal ? { width: 100 } : { height: 100 }}
+                >
+                  {i}
+                </div>
+              )}
+            </WindowVirtualizer>
+          </div>,
+        );
+        const { viewport, container } = await getVirtualizer(root);
+        await expect.poll(() => ref.current!.viewportSize).toBeGreaterThan(0);
+        ref.current!.scrollToIndex(10);
+        await expect
+          .poll(() => ref.current!.scrollOffset)
+          .toBeGreaterThan(1000);
+        await expect.poll(() => getItem(container, "11")).toBeDefined();
+
+        const readOffset = () =>
+          Math.abs(viewport[horizontal ? "scrollLeft" : "scrollTop"]);
+        const initialOffset = readOffset();
+        const visible = getItem(container, "11")!.getBoundingClientRect();
+        const viewportSize = ref.current!.viewportSize;
+        expect(horizontal ? visible.left : visible.top).toBeGreaterThan(0);
+        expect(horizontal ? visible.right : visible.bottom).toBeLessThan(
+          viewportSize,
+        );
+
+        ref.current!.scrollToIndex(11, { align: "nearest" });
+        await nextFrame();
+        await nextFrame();
+        expect(readOffset()).toBe(initialOffset);
+
+        const outsideIndex = 10 + Math.ceil(viewportSize / 100) + 1;
+        ref.current!.scrollToIndex(outsideIndex, { align: "nearest" });
+        await expectPosition(
+          () => {
+            const rect = getItem(
+              container,
+              String(outsideIndex),
+            )!.getBoundingClientRect();
+            return horizontal ? (rtl ? rect.left : rect.right) : rect.bottom;
+          },
+          horizontal && rtl ? 0 : viewportSize,
+        );
+      },
     );
 
     describe("align start", () => {

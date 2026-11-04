@@ -377,7 +377,7 @@ export const App = () => {
 
 ### Masonry
 
-For items with different heights laid out in columns such as a gallery, use `VMasonry`.
+For items with different heights laid out in columns such as a gallery, use `VMasonry`, or `WindowMasonry` for window scroll.
 
 ```tsx
 import { VMasonry } from "virtua";

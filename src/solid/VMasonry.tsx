@@ -28,50 +28,16 @@ import {
   ACTION_ITEMS_LENGTH_CHANGE,
   relayout,
   sort,
-  type Driver,
   type ItemsRange,
   type ScrollToIndexOpts,
   type CacheSnapshot,
 } from "../core/index.js";
 import { isSameRange } from "./utils.js";
 import { type ViewportComponentAttributes } from "./types.js";
+import { MasonryItem } from "./MasonryItem.js";
 
 const toCrossValue = (fraction: number, px: number): string =>
   px ? `calc(${fraction * 100}% + ${px}px)` : fraction * 100 + "%";
-
-interface MasonryItemProps {
-  _children: JSX.Element;
-  _resizer: Driver["$observeItem"];
-  _index: number;
-  _offset: number;
-  _crossOffset: string;
-  _crossSize: string;
-  _hide: boolean;
-}
-
-const MasonryItem = (props: MasonryItemProps): JSX.Element => {
-  let elementRef: HTMLDivElement | undefined;
-  // The index may be changed if elements are inserted to or removed from the start of data
-  createEffect(() => {
-    if (!elementRef) return;
-    onCleanup(props._resizer(elementRef, props._index));
-  });
-
-  const style = createMemo((): JSX.CSSProperties => ({
-    contain: "layout style",
-    position: "absolute",
-    top: props._offset + "px",
-    "inset-inline-start": props._crossOffset,
-    width: props._crossSize,
-    visibility: props._hide ? "hidden" : undefined,
-  }));
-
-  return (
-    <div ref={elementRef} style={style()}>
-      {props._children}
-    </div>
-  );
-};
 
 /**
  * Methods of {@link VMasonry}.

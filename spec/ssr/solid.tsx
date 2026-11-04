@@ -6,6 +6,7 @@ import {
   VList,
   VMasonry,
   WindowVirtualizer,
+  WindowMasonry,
 } from "../../src/solid/index.js";
 import type {
   SsrEntry,
@@ -75,12 +76,25 @@ const Masonry = (props: SsrMasonryProps) => (
   </VMasonry>
 );
 
+const WindowMasonryFixture = (props: SsrMasonryProps) => (
+  <WindowMasonry
+    data={range(1000)}
+    lanes={4}
+    itemSize={100}
+    ssrCount={props.ssrCount}
+    cache={props.cache}
+  >
+    {(d) => <div style={{ height: "100px" }}>item-{d}</div>}
+  </WindowMasonry>
+);
+
 // TypeScript cannot relate the props to the fixture chosen by the name
 const fixtures: Record<keyof SsrFixtures, Component<any>> = {
   list: List,
   window: Window,
   grid: Grid,
   masonry: Masonry,
+  windowMasonry: WindowMasonryFixture,
 };
 
 export const render: SsrEntry["render"] = (name, props) => {

@@ -10,3 +10,4 @@ export {
 export { VGrid, type VGridHandle } from "./VGrid.js";
 export type { GridSize, GridSpan } from "../core/index.js";
 export { VMasonry, type VMasonryHandle } from "./VMasonry.js";
+export { WindowMasonry, type WindowMasonryHandle } from "./WindowMasonry.js";

@@ -11,6 +11,7 @@ import {
 import VGrid from "./VGrid.svelte";
 import { range } from "../../spec/utils.js";
 import VMasonry from "./VMasonry.svelte";
+import WindowMasonry from "./WindowMasonry.svelte";
 
 afterEach(cleanupScroll);
 
@@ -103,6 +104,15 @@ it("VMasonry", async () => {
     lanes: 2,
     data: range(1000),
     style: "height: 400px;",
+    children: itemSnippet,
+  });
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
+it("WindowMasonry", async () => {
+  const root = render(WindowMasonry, {
+    lanes: 2,
+    data: range(1000),
     children: itemSnippet,
   });
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");

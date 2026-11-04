@@ -6,6 +6,8 @@ import {
   VMasonry,
   type VMasonryHandle,
   type VMasonryProps,
+  WindowMasonry,
+  type WindowMasonryHandle,
 } from "./react/index.js";
 import { createMasonryLayout, type MasonryLayout } from "./core/index.js";
 import {
@@ -79,7 +81,10 @@ const getGeometryErrors = (
       }
     }
   }
-  const scroll = viewport.scrollTop;
+  const scroll =
+    viewport === container.ownerDocument.scrollingElement
+      ? -rect.top
+      : viewport.scrollTop;
   const client = viewport.clientHeight;
   for (let i = 0; i < layout.$getLength(); i++) {
     const offset = layout.$getItemOffset(i);
@@ -97,7 +102,7 @@ const getGeometryErrors = (
 // The layout is tested with numbers, so this checks that the masonry renders what its layout computes, for the items in the viewport
 const expectGeometry = async (
   root: Element,
-  handle: VMasonryHandle,
+  handle: Pick<VMasonryHandle, "cache">,
   { lanes, gap = 0, itemSize }: ItemProps,
   length = COUNT,
 ) => {
@@ -633,4 +638,145 @@ it("lays out the appended items after the existing ones", async () => {
   rerender(root, <Masonry count={COUNT} />);
   await scrollToLast(root, COUNT - 1);
   await expectGeometry(root, ref.current!, { lanes: 3 });
+});
+
+describe("WindowMasonry", () => {
+  // The masonry starts below other content, so the layout has to account for the base offset
+  const PADDING = 100;
+
+  for (const ratio of [false, true]) {
+    for (const gap of [0, 8]) {
+      for (const rtl of [false, true]) {
+        it(`renders the items where the layout places them from the start to the end (${ratio ? "aspect ratio" : "fixed"} sizes, gap: ${gap}, ${rtl ? "RTL" : "LTR"})`, async () => {
+          if (rtl) {
+            setRTL();
+          }
+          const ref = createRef<WindowMasonryHandle>();
+          const root = render(
+            <div style={{ width: VIEWPORT, padding: PADDING }}>
+              <WindowMasonry ref={ref} lanes={3} gap={gap} data={data}>
+                {(i) => (
+                  <div
+                    style={
+                      ratio
+                        ? { aspectRatio: getRatio(i) }
+                        : { height: getSize(i) }
+                    }
+                  >
+                    item-{i}
+                  </div>
+                )}
+              </WindowMasonry>
+            </div>,
+          );
+          // check if start is displayed
+          await expectVirtualized(root, "item-0", `item-${COUNT - 1}`);
+          await expectGeometry(root, ref.current!, { lanes: 3, gap });
+
+          await scrollToLast(root, COUNT - 1);
+          await expectGeometry(root, ref.current!, { lanes: 3, gap });
+        });
+      }
+    }
+  }
+
+  describe("scrollToIndex", () => {
+    const TARGET_INDEX = 500;
+
+    const Masonry = ({ handle }: { handle: Ref<WindowMasonryHandle> }) => (
+      <div style={{ padding: PADDING }}>
+        <WindowMasonry ref={handle} lanes={3} data={data}>
+          {(i) => <div style={{ height: getSize(i) }}>item-{i}</div>}
+        </WindowMasonry>
+      </div>
+    );
+
+    it("align start", async () => {
+      const ref = createRef<WindowMasonryHandle>();
+      const root = render(<Masonry handle={ref} />);
+      // check if start is displayed
+      await expectVirtualized(root, "item-0", `item-${COUNT - 1}`);
+      const { viewport, container } = await getVirtualizer(root);
+
+      ref.current!.scrollToIndex(TARGET_INDEX);
+      await expectPosition(
+        () =>
+          relativeTop(viewport, getItem(container, `item-${TARGET_INDEX}`)!),
+        0,
+      );
+    });
+
+    it("align end", async () => {
+      const ref = createRef<WindowMasonryHandle>();
+      const root = render(<Masonry handle={ref} />);
+      // check if start is displayed
+      await expectVirtualized(root, "item-0", `item-${COUNT - 1}`);
+      const { viewport, container } = await getVirtualizer(root);
+
+      ref.current!.scrollToIndex(TARGET_INDEX, { align: "end" });
+      await expectPosition(
+        () =>
+          relativeBottom(viewport, getItem(container, `item-${TARGET_INDEX}`)!),
+        0,
+      );
+    });
+  });
+
+  it("lays out the items again with the new lanes and gap, keeping the item at the start of the viewport", async () => {
+    // Items are not measured again in the new lanes, so that the relayout alone moves them
+    const ITEM_SIZE = 50;
+    const ref = createRef<WindowMasonryHandle>();
+    let scrollEnded = false;
+    const Masonry = ({ lanes, gap }: ItemProps) => (
+      <div style={{ padding: PADDING }}>
+        <WindowMasonry
+          ref={ref}
+          lanes={lanes}
+          gap={gap}
+          itemSize={ITEM_SIZE}
+          data={data}
+          onScrollEnd={() => {
+            scrollEnded = true;
+          }}
+        >
+          {(i) => <div style={{ height: ITEM_SIZE }}>item-{i}</div>}
+        </WindowMasonry>
+      </div>
+    );
+    const root = render(<Masonry lanes={3} />);
+    await expectVirtualized(root, "item-0", `item-${COUNT - 1}`);
+    const { viewport, container } = await getVirtualizer(root);
+
+    // In the middle of a row, so that the item at the offset doesn't depend on rounding of the offset
+    viewport.scrollTop = PADDING + ITEM_SIZE * 60.5;
+    // Change the lanes at rest, not while the scroll event is pending
+    await expect.poll(() => scrollEnded).toBe(true);
+    await expectGeometry(root, ref.current!, {
+      lanes: 3,
+      itemSize: ITEM_SIZE,
+    });
+    // The first item which ends after the scroll offset
+    const anchor = [...container.children]
+      .filter((item) => relativeBottom(viewport, item) < viewport.clientHeight)
+      .sort((a, b) => getItemIndex(a) - getItemIndex(b))[0]!;
+    const top = relativeTop(viewport, anchor);
+
+    for (const props of [
+      { lanes: 2 },
+      { lanes: 2, gap: 16 },
+      { lanes: 4, gap: 16 },
+    ] satisfies ItemProps[]) {
+      // Change the lanes after the scroll by the previous change is observed
+      await expect
+        .poll(() => ref.current!.scrollOffset)
+        .toBe(viewport.scrollTop);
+      rerender(root, <Masonry {...props} />);
+      await expectGeometry(root, ref.current!, {
+        ...props,
+        itemSize: ITEM_SIZE,
+      });
+      expect(container.contains(anchor)).toBe(true);
+      await expectPosition(() => relativeTop(viewport, anchor), top);
+    }
+  });
 });

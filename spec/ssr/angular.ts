@@ -18,6 +18,7 @@ import {
   VGrid,
   VList,
   VMasonry,
+  WindowMasonry,
   WindowVirtualizer,
 } from "../../src/angular/index.js";
 import { onTestFinished } from "vitest";
@@ -123,11 +124,34 @@ class SsrVMasonryHost {
   protected readonly data = range(1000);
 }
 
+@Component({
+  selector: "ssr-window-masonry",
+  imports: [WindowMasonry],
+  template: `
+    <virtua-window-masonry
+      [data]="data"
+      [lanes]="4"
+      [itemSize]="100"
+      [ssrCount]="props.ssrCount"
+      [cache]="props.cache"
+    >
+      <ng-template let-item
+        ><div style="height: 100px">item-{{ item }}</div></ng-template
+      >
+    </virtua-window-masonry>
+  `,
+})
+class SsrWindowMasonryHost {
+  protected readonly props = inject(SSR_PROPS) as SsrMasonryProps;
+  protected readonly data = range(1000);
+}
+
 const fixtures: Record<keyof SsrFixtures, Type<unknown>> = {
   list: SsrVListHost,
   window: SsrWindowVirtualizerHost,
   grid: SsrVGridHost,
   masonry: SsrVMasonryHost,
+  windowMasonry: SsrWindowMasonryHost,
 };
 
 export const render: SsrEntry["render"] = async (name, props) => {

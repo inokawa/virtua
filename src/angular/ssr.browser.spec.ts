@@ -180,3 +180,35 @@ describe("VMasonry", () => {
     );
   });
 });
+
+describe("WindowMasonry", () => {
+  it("should render nothing", async () => {
+    const html = await commands.ssrRender("windowMasonry", {});
+    expect(html).toMatchSnapshot();
+
+    const root = mountSsr(html);
+    const { container } = await getVirtualizer(root);
+    expect(container.childElementCount).toEqual(0);
+  });
+
+  it("should render and hydrate items with the cache", async () => {
+    // 4 rows of the lanes, fewer than the window fits
+    const COUNT = 16;
+    const ITEM_SIZE = 100;
+    const LANES = 4;
+    const CACHE: CacheSnapshot = [range(1000).map(() => ITEM_SIZE), ITEM_SIZE];
+    const html = await commands.ssrRender("windowMasonry", {
+      ssrCount: COUNT,
+      cache: CACHE,
+    });
+    expect(html).toMatchSnapshot();
+
+    const root = mountSsr(html);
+    const { container } = await getVirtualizer(root);
+    expect(container.childElementCount).toEqual(COUNT);
+
+    await expectMasonryHydrated(root, COUNT, LANES, () =>
+      hydrate(root, "windowMasonry", { ssrCount: COUNT, cache: CACHE }),
+    );
+  });
+});

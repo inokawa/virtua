@@ -11,6 +11,7 @@ import {
 import { VGrid } from "./VGrid.js";
 import { range } from "../../spec/utils.js";
 import { VMasonry } from "./VMasonry.js";
+import { WindowMasonry } from "./WindowMasonry.js";
 
 afterEach(cleanupScroll);
 
@@ -148,6 +149,21 @@ class VMasonryHost {
   readonly data = range(1000);
 }
 
+@Component({
+  selector: "smoke-window-masonry",
+  imports: [WindowMasonry],
+  template: `
+    <virtua-window-masonry [lanes]="2" [data]="data">
+      <ng-template let-item
+        ><div>item-{{ item }}</div></ng-template
+      >
+    </virtua-window-masonry>
+  `,
+})
+class WindowMasonryHost {
+  readonly data = range(1000);
+}
+
 it("VList", async () => {
   const root = render(VListHost);
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
@@ -185,5 +201,10 @@ it("VGrid", async () => {
 
 it("VMasonry", async () => {
   const root = render(VMasonryHost);
+  await expectVirtualizedAndScrollable(root, "item-0", "item-999");
+});
+
+it("WindowMasonry", async () => {
+  const root = render(WindowMasonryHost);
   await expectVirtualizedAndScrollable(root, "item-0", "item-999");
 });
