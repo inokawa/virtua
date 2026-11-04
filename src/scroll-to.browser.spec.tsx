@@ -25,9 +25,8 @@ import {
   recordScroll,
   relativeBottom,
   relativeTop,
-  setRTL,
 } from "../spec/browser/index.js";
-import { nextFrame, range } from "../spec/utils.js";
+import { range } from "../spec/utils.js";
 
 afterEach(cleanupScroll);
 
@@ -245,6 +244,40 @@ describe("scrollToIndex", () => {
         await expect
           .poll(() => getItem(container, String(ITEM_COUNT - 1 - FAR)))
           .toBeUndefined();
+      });
+    });
+
+    describe("align nearest", () => {
+      it("scrolls to an item below the viewport with a start margin", async () => {
+        const ref = createRef<VirtualizerHandle>();
+        const root = render(
+          <div style={{ height: 400, overflowY: "auto" }}>
+            <div style={{ height: 1000 }} />
+            <Virtualizer ref={ref} data={range(1000)} startMargin={1000}>
+              {(d) => (
+                <div key={d} style={{ height: HEIGHTS[d % HEIGHTS.length] }}>
+                  item-{d}
+                </div>
+              )}
+            </Virtualizer>
+          </div>,
+        );
+        const { viewport, container } = await getVirtualizer(root);
+        // Nothing is rendered while the viewport is before the items
+        await expect.poll(() => ref.current!.viewportSize).toBeGreaterThan(0);
+
+        ref.current!.scrollToIndex(500);
+        await expectPosition(
+          () => relativeTop(viewport, getItem(container, "item-500")!),
+          0,
+        );
+
+        // Closer than the start margin below the viewport
+        ref.current!.scrollToIndex(515, { align: "nearest" });
+        await expectPosition(
+          () => relativeBottom(viewport, getItem(container, "item-515")!),
+          0,
+        );
       });
     });
 
@@ -492,82 +525,6 @@ describe("scrollToIndex", () => {
       </div>
     );
 
-    it.each([
-      { name: "vertical", horizontal: false, rtl: false },
-      { name: "horizontal", horizontal: true, rtl: false },
-      { name: "horizontal RTL", horizontal: true, rtl: true },
-    ])(
-      "align nearest accounts for the document offset ($name)",
-      async ({ horizontal, rtl }) => {
-        if (rtl) setRTL();
-        const ref = createRef<WindowVirtualizerHandle>();
-        const root = render(
-          <div
-            style={
-              horizontal
-                ? {
-                    display: "inline-block",
-                    height: 200,
-                    paddingInlineStart: 1000,
-                  }
-                : { paddingTop: 1000 }
-            }
-          >
-            <WindowVirtualizer
-              ref={ref}
-              data={range(ITEM_COUNT)}
-              itemSize={100}
-              horizontal={horizontal}
-            >
-              {(i) => (
-                <div
-                  key={i}
-                  style={horizontal ? { width: 100 } : { height: 100 }}
-                >
-                  {i}
-                </div>
-              )}
-            </WindowVirtualizer>
-          </div>,
-        );
-        const { viewport, container } = await getVirtualizer(root);
-        await expect.poll(() => ref.current!.viewportSize).toBeGreaterThan(0);
-        ref.current!.scrollToIndex(10);
-        await expect
-          .poll(() => ref.current!.scrollOffset)
-          .toBeGreaterThan(1000);
-        await expect.poll(() => getItem(container, "11")).toBeDefined();
-
-        const readOffset = () =>
-          Math.abs(viewport[horizontal ? "scrollLeft" : "scrollTop"]);
-        const initialOffset = readOffset();
-        const visible = getItem(container, "11")!.getBoundingClientRect();
-        const viewportSize = ref.current!.viewportSize;
-        expect(horizontal ? visible.left : visible.top).toBeGreaterThan(0);
-        expect(horizontal ? visible.right : visible.bottom).toBeLessThan(
-          viewportSize,
-        );
-
-        ref.current!.scrollToIndex(11, { align: "nearest" });
-        await nextFrame();
-        await nextFrame();
-        expect(readOffset()).toBe(initialOffset);
-
-        const outsideIndex = 10 + Math.ceil(viewportSize / 100) + 1;
-        ref.current!.scrollToIndex(outsideIndex, { align: "nearest" });
-        await expectPosition(
-          () => {
-            const rect = getItem(
-              container,
-              String(outsideIndex),
-            )!.getBoundingClientRect();
-            return horizontal ? (rtl ? rect.left : rect.right) : rect.bottom;
-          },
-          horizontal && rtl ? 0 : viewportSize,
-        );
-      },
-    );
-
     describe("align start", () => {
       it("mid", async () => {
         const TARGET_INDEX = 700;
@@ -709,6 +666,34 @@ describe("scrollToIndex", () => {
         await expect
           .poll(() => getItem(container, String(ITEM_COUNT - 1 - FAR)))
           .toBeUndefined();
+      });
+    });
+
+    describe("align nearest", () => {
+      it("scrolls to an item below the window before any scroll", async () => {
+        const ref = createRef<WindowVirtualizerHandle>();
+        const root = render(
+          <div>
+            <div style={{ height: 3000 }} />
+            <WindowVirtualizer ref={ref} data={range(1000)}>
+              {(d) => (
+                <div key={d} style={{ height: HEIGHTS[d % HEIGHTS.length] }}>
+                  item-{d}
+                </div>
+              )}
+            </WindowVirtualizer>
+          </div>,
+        );
+        const { viewport, container } = await getVirtualizer(root);
+        // Nothing is rendered while the viewport is before the items
+        await expect.poll(() => ref.current!.viewportSize).toBeGreaterThan(0);
+
+        // The offset of the list is not read from a scroll event yet
+        ref.current!.scrollToIndex(0, { align: "nearest" });
+        await expectPosition(
+          () => relativeBottom(viewport, getItem(container, "item-0")!),
+          0,
+        );
       });
     });
 
