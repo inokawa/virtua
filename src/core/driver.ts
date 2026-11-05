@@ -678,7 +678,7 @@ export const createWindowDriver = (
 
       const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
       const body = document.body;
-      const baseOffset = (readBaseOffset = () => {
+      readBaseOffset = () => {
         // TODO calc offset only when it changes (maybe impossible)
         let offset = 0;
         let node: HTMLElement | null = container;
@@ -690,7 +690,7 @@ export const createWindowDriver = (
         return isRtl
           ? viewport.clientWidth - offset - container.offsetWidth
           : offset;
-      });
+      };
 
       window.addEventListener(
         "resize",
@@ -714,7 +714,7 @@ export const createWindowDriver = (
         isHorizontal,
         isRtl,
         NULL,
-        baseOffset,
+        readBaseOffset,
       );
 
       initialized[1](true);
