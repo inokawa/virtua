@@ -351,7 +351,7 @@ const createScrollObserver = (
         const from = store.$getScrollOffset();
         const to = from + jump;
         const end =
-          store.$getStartSpacerSize() +
+          store.$getBaseOffset() +
           store.$getTotalSize() -
           store.$getViewportSize();
         if (to <= 0 || to >= end || from >= end) {
@@ -568,7 +568,7 @@ export const createContainerDriver = (
         if (align === "nearest") {
           const itemOffset = store.$getItemOffset(index);
           const scrollOffset =
-            store.$getScrollOffset() - store.$getStartSpacerSize();
+            store.$getScrollOffset() - store.$getBaseOffset();
           if (itemOffset < scrollOffset) {
             align = "start";
           } else if (
@@ -591,7 +591,7 @@ export const createContainerDriver = (
             index == NULL
               ? offset
               : offset +
-                store.$getStartSpacerSize() +
+                store.$getBaseOffset() +
                 store.$getItemOffset(index) +
                 (align === "end"
                   ? layout.$getItemSize(index) - store.$getViewportSize()
@@ -742,7 +742,7 @@ export const createWindowDriver = (
         if (align === "nearest") {
           const itemOffset = store.$getItemOffset(index);
           const scrollOffset =
-            store.$getScrollOffset() - store.$getStartSpacerSize();
+            store.$getScrollOffset() - store.$getBaseOffset();
           if (itemOffset < scrollOffset) {
             align = "start";
           } else if (

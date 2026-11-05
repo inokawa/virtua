@@ -297,7 +297,7 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
     return this._store.$getViewportSize();
   }
   findItemIndex(offset: number): number {
-    return this._layout.$findIndex(offset - this._store.$getStartSpacerSize());
+    return this._layout.$findIndex(offset - this._store.$getBaseOffset());
   }
   getItemOffset(index: number): number {
     return this._store.$getItemOffset(index);

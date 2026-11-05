@@ -156,7 +156,7 @@
     store.$getViewportSize satisfies VirtualizerHandle["getViewportSize"] as VirtualizerHandle["getViewportSize"];
   export const findItemIndex = ((offset) =>
     layout.$findIndex(
-      offset - store.$getStartSpacerSize(),
+      offset - store.$getBaseOffset(),
     )) satisfies VirtualizerHandle["findItemIndex"] as VirtualizerHandle["findItemIndex"];
   export const getItemOffset =
     store.$getItemOffset satisfies VirtualizerHandle["getItemOffset"] as VirtualizerHandle["getItemOffset"];

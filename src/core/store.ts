@@ -113,7 +113,7 @@ export type VirtualStore = {
   $getScrollOffset(): number;
   $isScrolling(): boolean;
   $getViewportSize(): number;
-  $getStartSpacerSize(): number;
+  $getBaseOffset(): number;
   $getTotalSize(): number;
   _flushJump(): [number, boolean];
   $subscribe(target: number, cb: Subscriber): () => void;
@@ -140,7 +140,7 @@ export const createVirtualStore = (
   let isSSR = !!ssrCount;
   let stateVersion: StateVersion = 1;
   let viewportSize = 0;
-  let startSpacerSize = 0;
+  let baseOffset = 0;
   let scrollOffset = 0;
   let jump = 0;
   let pendingJump = 0;
@@ -152,7 +152,7 @@ export const createVirtualStore = (
   let _isViewportMeasured = false;
 
   const subscribers = new Set<[number, Subscriber]>();
-  const getRelativeScrollOffset = () => scrollOffset - startSpacerSize;
+  const getRelativeScrollOffset = () => scrollOffset - baseOffset;
   const getVisibleOffset = () => getRelativeScrollOffset() + pendingJump + jump;
 
   const shouldKeep = (index: number, start: number): boolean => {
@@ -268,7 +268,7 @@ export const createVirtualStore = (
     $getScrollOffset: () => scrollOffset,
     $isScrolling: () => _scrollDirection !== SCROLL_IDLE,
     $getViewportSize: () => viewportSize,
-    $getStartSpacerSize: () => startSpacerSize,
+    $getBaseOffset: () => baseOffset,
     $getTotalSize: getTotalSize,
     _flushJump: () => {
       _flushedJump = jump;
@@ -289,7 +289,7 @@ export const createVirtualStore = (
       switch (type) {
         case ACTION_SCROLL: {
           if (payload2 != NULL) {
-            startSpacerSize = payload2;
+            baseOffset = payload2;
           }
           if (payload === scrollOffset && _scrollMode === SCROLL_BY_NATIVE) {
             // Ignore scroll events from different direction
@@ -412,8 +412,8 @@ export const createVirtualStore = (
           break;
         }
         case ACTION_START_OFFSET_CHANGE: {
-          if (payload !== startSpacerSize) {
-            startSpacerSize = payload;
+          if (payload !== baseOffset) {
+            baseOffset = payload;
             mutated = UPDATE_VIRTUAL_STATE;
           }
           break;

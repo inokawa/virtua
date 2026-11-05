@@ -303,7 +303,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
           return store.$getViewportSize();
         },
         findItemIndex: (offset) =>
-          layout.$findIndex(offset - store.$getStartSpacerSize()),
+          layout.$findIndex(offset - store.$getBaseOffset()),
         getItemOffset: store.$getItemOffset,
         getItemSize: layout.$getItemSize,
         scrollToIndex: driver.$scroll,

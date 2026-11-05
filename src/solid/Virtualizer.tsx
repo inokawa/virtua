@@ -234,7 +234,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         return store.$getViewportSize();
       },
       findItemIndex: (offset) =>
-        layout.$findIndex(offset - store.$getStartSpacerSize()),
+        layout.$findIndex(offset - store.$getBaseOffset()),
       getItemOffset: store.$getItemOffset,
       getItemSize: layout.$getItemSize,
       scrollToIndex: driver.$scroll,
