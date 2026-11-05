@@ -456,7 +456,7 @@ const createScrollObserver = (
 
 type ScrollObserver = ReturnType<typeof createScrollObserver>;
 
-interface DriverBase {
+interface Driver {
   $observe(containerElement: HTMLElement, viewport?: HTMLElement): void;
   $dispose(): void;
   $effect(): void;
@@ -465,7 +465,7 @@ interface DriverBase {
 /**
  * @internal
  */
-export interface Driver extends DriverBase {
+export interface ListDriver extends Driver {
   $observeItem(el: HTMLElement, index: number): () => void;
   $scroll(index: number | undefined, opts?: ScrollToIndexOpts): void;
 }
@@ -477,7 +477,7 @@ export const createContainerDriver = (
   store: VirtualStore,
   layout: Layout,
   isHorizontal: boolean,
-): Driver => {
+): ListDriver => {
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let initialized = createPromise<boolean>();
@@ -623,7 +623,7 @@ export const createWindowDriver = (
   store: VirtualStore,
   layout: Layout,
   isHorizontal: boolean,
-): Driver => {
+): ListDriver => {
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let currentWindow: Window | undefined;
@@ -794,7 +794,7 @@ export const createWindowDriver = (
 /**
  * @internal
  */
-export interface GridDriver extends DriverBase {
+export interface GridDriver extends Driver {
   $scroll(opts: GridScrollToIndexOpts, sectionRows?: readonly number[]): void;
   $observeItem(
     el: HTMLElement,
