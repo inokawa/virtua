@@ -13,7 +13,7 @@
     row: R;
     col: C;
     rowIndex: number;
-    resizer: GridDriver["$observeItem"];
+    resizer: GridDriver["$observeCell"];
   }
 
   let { state, children, row, col, rowIndex, resizer }: Props = $props();

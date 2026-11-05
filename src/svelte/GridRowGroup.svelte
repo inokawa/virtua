@@ -16,7 +16,7 @@
     children: Snippet<[row: R, col: C, cell: Readonly<GridCell>]>;
     rows: GridAxis<R>;
     cols: GridAxis<C>;
-    resizer: GridDriver["$observeItem"];
+    resizer: GridDriver["$observeCell"];
   }
 
   let { state, children, rows, cols, resizer }: Props = $props();
