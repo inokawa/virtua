@@ -237,7 +237,7 @@
           {children}
           {rows}
           {cols}
-          resizer={driver.$observeItem}
+          resizer={driver.$observeCell}
         />
       {:else}
         <!-- The each block runs before $effect.pre with experimental.async, so the store may still have the length before the update -->
@@ -250,7 +250,7 @@
             {children}
             row={getAxisItem(rows, state.$row)}
             {cols}
-            resizer={driver.$observeItem}
+            resizer={driver.$observeCell}
           />
         {/if}
       {/if}

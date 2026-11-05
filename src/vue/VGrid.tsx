@@ -242,7 +242,7 @@ interface GridCellProps {
   _row: unknown;
   _col: unknown;
   _rowIndex: number;
-  _resizer: GridDriver["$observeItem"];
+  _resizer: GridDriver["$observeCell"];
 }
 
 const GridCell = /*#__PURE__*/ defineComponent(
@@ -313,7 +313,7 @@ interface GridRowProps {
   }) => VNode[];
   _row: unknown;
   _cols: GridAxis<unknown>;
-  _resizer: GridDriver["$observeItem"];
+  _resizer: GridDriver["$observeCell"];
 }
 
 const GridRow = /*#__PURE__*/ defineComponent(
@@ -362,7 +362,7 @@ interface GridRowGroupProps {
   }) => VNode[];
   _rows: GridAxis<unknown>;
   _cols: GridAxis<unknown>;
-  _resizer: GridDriver["$observeItem"];
+  _resizer: GridDriver["$observeCell"];
 }
 
 const GridRowGroup = /*#__PURE__*/ defineComponent(
@@ -636,7 +636,7 @@ export const VGrid = /*#__PURE__*/ defineComponent({
                   _slot={slots["default"]!}
                   _rows={props.rows}
                   _cols={props.cols}
-                  _resizer={driver.$observeItem}
+                  _resizer={driver.$observeCell}
                 />
               ) : (
                 <GridRow
@@ -645,7 +645,7 @@ export const VGrid = /*#__PURE__*/ defineComponent({
                   _slot={slots["default"]!}
                   _row={getAxisItem(props.rows, state.$row)}
                   _cols={props.cols}
-                  _resizer={driver.$observeItem}
+                  _resizer={driver.$observeCell}
                 />
               ),
             )}

@@ -161,7 +161,7 @@ export type CellContext<R = number, C = number> = {
 })
 export class GridCell {
   readonly state = input.required<GridCellState>();
-  readonly resizer = input.required<GridDriver["$observeItem"]>();
+  readonly resizer = input.required<GridDriver["$observeCell"]>();
 
   constructor() {
     const element: HTMLElement = inject(ElementRef).nativeElement;
@@ -216,7 +216,7 @@ export class GridRow<R, C> {
   readonly template = input.required<TemplateRef<CellContext<R, C>>>();
   readonly row = input.required<R>();
   readonly cols = input.required<GridAxis<C>>();
-  readonly resizer = input.required<GridDriver["$observeItem"]>();
+  readonly resizer = input.required<GridDriver["$observeCell"]>();
 
   /** @internal */
   protected colItem(index: number): C {
@@ -251,7 +251,7 @@ export class GridRowGroup<R, C> {
   readonly template = input.required<TemplateRef<CellContext<R, C>>>();
   readonly rows = input.required<GridAxis<R>>();
   readonly cols = input.required<GridAxis<C>>();
-  readonly resizer = input.required<GridDriver["$observeItem"]>();
+  readonly resizer = input.required<GridDriver["$observeCell"]>();
 
   /** @internal */
   protected rowItem(index: number): R {
@@ -289,7 +289,7 @@ export class GridRowGroup<R, C> {
             [template]="template()"
             [rows]="rows()"
             [cols]="cols()"
-            [resizer]="driver.$observeItem"
+            [resizer]="driver.$observeCell"
           ></div>
         } @else {
           <div
@@ -298,7 +298,7 @@ export class GridRowGroup<R, C> {
             [template]="template()"
             [row]="rowItem(state.$row)"
             [cols]="cols()"
-            [resizer]="driver.$observeItem"
+            [resizer]="driver.$observeCell"
           ></div>
         }
       }

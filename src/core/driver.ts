@@ -796,7 +796,7 @@ export const createWindowDriver = (
  */
 export interface GridDriver extends Driver {
   $scroll(opts: GridScrollToIndexOpts, sectionRows?: readonly number[]): void;
-  $observeItem(
+  $observeCell(
     el: HTMLElement,
     rowIndex: number | undefined,
     colIndex: number | undefined,
@@ -944,7 +944,7 @@ export const createContainerGridDriver = (
       // https://github.com/inokawa/virtua/pull/765
       initialized = createPromise();
     },
-    $observeItem(el, rowIndex, colIndex) {
+    $observeCell(el, rowIndex, colIndex) {
       // An undefined index skips reporting the size of that axis, for cells whose row/column size is given instead of measured.
       if (rowIndex == null && colIndex == null) {
         return;

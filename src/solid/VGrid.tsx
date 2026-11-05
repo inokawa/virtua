@@ -250,7 +250,7 @@ interface GridCellProps<R, C> {
   _row: R;
   _col: C;
   _rowIndex: number;
-  _resizer: GridDriver["$observeItem"];
+  _resizer: GridDriver["$observeCell"];
 }
 
 const GridCell = <R, C>(props: GridCellProps<R, C>): JSX.Element => {
@@ -305,7 +305,7 @@ interface GridRowProps<R, C> {
   _children: (row: R, col: C, cell: Readonly<GridCellType>) => JSX.Element;
   _row: R;
   _cols: GridAxis<C>;
-  _resizer: GridDriver["$observeItem"];
+  _resizer: GridDriver["$observeCell"];
 }
 
 const GridRow = <R, C>(props: GridRowProps<R, C>): JSX.Element => {
@@ -337,7 +337,7 @@ interface GridRowGroupProps<R, C> {
   _children: (row: R, col: C, cell: Readonly<GridCellType>) => JSX.Element;
   _rows: GridAxis<R>;
   _cols: GridAxis<C>;
-  _resizer: GridDriver["$observeItem"];
+  _resizer: GridDriver["$observeCell"];
 }
 
 const GridRowGroup = <R, C>(props: GridRowGroupProps<R, C>): JSX.Element => {
@@ -602,7 +602,7 @@ export const VGrid = <R = number, C = number>(
                 _children={props.children}
                 _rows={props.rows}
                 _cols={props.cols}
-                _resizer={driver.$observeItem}
+                _resizer={driver.$observeCell}
               />
             ) : (
               <GridRow
@@ -610,7 +610,7 @@ export const VGrid = <R = number, C = number>(
                 _children={props.children}
                 _row={getAxisItem(props.rows, key)}
                 _cols={props.cols}
-                _resizer={driver.$observeItem}
+                _resizer={driver.$observeCell}
               />
             )
           }

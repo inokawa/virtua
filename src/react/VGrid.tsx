@@ -246,7 +246,7 @@ interface GridCellProps {
   _row: unknown;
   _col: unknown;
   _rowIndex: number;
-  _resizer: GridDriver["$observeItem"];
+  _resizer: GridDriver["$observeCell"];
 }
 
 const GridCell = /*#__PURE__*/ memo(
@@ -298,7 +298,7 @@ interface GridRowProps {
   ) => ReactNode;
   _row: unknown;
   _cols: GridAxis<unknown>;
-  _resizer: GridDriver["$observeItem"];
+  _resizer: GridDriver["$observeCell"];
 }
 
 const GridRow = /*#__PURE__*/ memo(
@@ -334,7 +334,7 @@ interface GridRowGroupProps {
   ) => ReactNode;
   _rows: GridAxis<unknown>;
   _cols: GridAxis<unknown>;
-  _resizer: GridDriver["$observeItem"];
+  _resizer: GridDriver["$observeCell"];
 }
 
 const GridRowGroup = ({
@@ -609,7 +609,7 @@ export const VGrid = /*#__PURE__*/ forwardRef<
                 _children={children}
                 _rows={rows}
                 _cols={cols}
-                _resizer={driver.$observeItem}
+                _resizer={driver.$observeCell}
               />
             ) : (
               <GridRow
@@ -618,7 +618,7 @@ export const VGrid = /*#__PURE__*/ forwardRef<
                 _children={children}
                 _row={getAxisItem(rows, state.$row)}
                 _cols={cols}
-                _resizer={driver.$observeItem}
+                _resizer={driver.$observeCell}
               />
             ),
           )}
