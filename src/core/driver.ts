@@ -238,7 +238,7 @@ const createScrollObserver = (
     return isRtl ? -offset : offset;
   };
 
-  const getScrollOffset = () =>
+  const readScrollOffset = () =>
     normalizeScrollOffset(scroller[scrollOffsetKey]);
 
   // The given offset will be clamped by browser
@@ -277,7 +277,7 @@ const createScrollObserver = (
 
     store.$update(
       ACTION_SCROLL,
-      getScrollOffset(),
+      readScrollOffset(),
       getStartOffset && getStartOffset(),
     );
 
@@ -325,7 +325,7 @@ const createScrollObserver = (
       // https://github.com/inokawa/virtua/issues/940
       // https://github.com/inokawa/virtua/issues/1007
       // https://github.com/inokawa/virtua/issues/1037
-      if (getScrollOffset() !== store.$getScrollOffset()) {
+      if (readScrollOffset() !== store.$getScrollOffset()) {
         onScroll();
       } else if (getStartOffset) {
         // The start offset may have changed alone
@@ -375,7 +375,7 @@ const createScrollObserver = (
           if (store.$getViewportSize() > store.$getTotalSize()) {
             // In this case applying jump may not cause scroll.
             // Current logic expects scroll event occurs after applying jump so we dispatch it manually.
-            store.$update(ACTION_SCROLL, getScrollOffset());
+            store.$update(ACTION_SCROLL, readScrollOffset());
           }
         }
       }
@@ -627,7 +627,7 @@ export const createWindowDriver = (
   let viewportElement: HTMLElement | undefined;
   let scrollObserver: ScrollObserver | undefined;
   let currentWindow: Window | undefined;
-  let getBaseOffset: (() => number) | undefined;
+  let readBaseOffset: (() => number) | undefined;
   let onViewportResize: (() => void) | undefined;
   let initialized = createPromise<boolean>();
   let length = 0;
@@ -678,7 +678,7 @@ export const createWindowDriver = (
 
       const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
       const body = document.body;
-      const baseOffset = (getBaseOffset = () => {
+      const baseOffset = (readBaseOffset = () => {
         // TODO calc offset only when it changes (maybe impossible)
         let offset = 0;
         let node: HTMLElement | null = container;
@@ -766,7 +766,7 @@ export const createWindowDriver = (
               ? offset
               : offset +
                 // Calculate target scroll position including container's offset from document
-                getBaseOffset!() +
+                readBaseOffset!() +
                 store.$getItemOffset(index) +
                 (align === "end"
                   ? layout.$getItemSize(index) - store.$getViewportSize()
