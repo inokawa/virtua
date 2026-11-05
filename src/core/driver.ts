@@ -176,7 +176,7 @@ const createResizeObserver = (
         // Initialize ResizeObserver lazily for SSR
         // https://www.w3.org/TR/resize-observer/#intro
         // https://bugs.chromium.org/p/chromium/issues/detail?id=1491739
-        win = e.ownerDocument!.defaultView!;
+        win = e.ownerDocument.defaultView!;
         ro = new win.ResizeObserver((entries) => {
           delivering = entries;
           cb(entries);
@@ -668,7 +668,7 @@ export const createWindowDriver = (
 
   return {
     $observe(container) {
-      const document = container.ownerDocument!;
+      const document = container.ownerDocument;
       const window = (currentWindow = document.defaultView!);
       const viewport = (viewportElement =
         document.scrollingElement! as HTMLElement);
