@@ -159,18 +159,20 @@ export const WindowVirtualizer = <T,>(
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
-  store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
-    setRerender(store.$getStateVersion());
-  });
-  store.$subscribe(UPDATE_SCROLL_EVENT, () => {
-    // https://github.com/inokawa/virtua/discussions/580
-    props.onScroll?.();
-  });
-  store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
-    props.onScrollEnd?.();
-  });
-  store.$subscribe(UPDATE_SIZE_EVENT, () => {
-    props.onResize?.();
+  const unsubscribe = store.$subscribe((mutated) => {
+    if (mutated & UPDATE_VIRTUAL_STATE) {
+      setRerender(store.$getStateVersion());
+    }
+    if (mutated & UPDATE_SCROLL_EVENT) {
+      // https://github.com/inokawa/virtua/discussions/580
+      props.onScroll?.();
+    }
+    if (mutated & UPDATE_SCROLL_END_EVENT) {
+      props.onScrollEnd?.();
+    }
+    if (mutated & UPDATE_SIZE_EVENT) {
+      props.onResize?.();
+    }
   });
 
   const range = createMemo<ItemsRange>((prev) => {
@@ -212,7 +214,7 @@ export const WindowVirtualizer = <T,>(
     driver.$observe(containerRef!);
 
     onCleanup(() => {
-      store.$dispose();
+      unsubscribe();
       driver.$dispose();
     });
   });

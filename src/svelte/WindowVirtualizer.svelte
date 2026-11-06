@@ -41,18 +41,20 @@
   const layout = createListLayout(data.length, itemSize, cache);
   const store = createVirtualStore(layout, ssrCount);
   const driver = createWindowDriver(store, layout, horizontal);
-  store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
-    stateVersion = store.$getStateVersion();
-  });
-  store.$subscribe(UPDATE_SCROLL_EVENT, () => {
-    // https://github.com/inokawa/virtua/discussions/580
-    onscroll && onscroll();
-  });
-  store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
-    onscrollend && onscrollend();
-  });
-  store.$subscribe(UPDATE_SIZE_EVENT, () => {
-    onresize && onresize();
+  const unsubscribe = store.$subscribe((mutated) => {
+    if (mutated & UPDATE_VIRTUAL_STATE) {
+      stateVersion = store.$getStateVersion();
+    }
+    if (mutated & UPDATE_SCROLL_EVENT) {
+      // https://github.com/inokawa/virtua/discussions/580
+      onscroll && onscroll();
+    }
+    if (mutated & UPDATE_SCROLL_END_EVENT) {
+      onscrollend && onscrollend();
+    }
+    if (mutated & UPDATE_SIZE_EVENT) {
+      onresize && onresize();
+    }
   });
 
   let isSSR = $state(!!ssrCount);
@@ -96,7 +98,7 @@
     driver.$observe(containerRef!);
   });
   onDestroy(() => {
-    store.$dispose();
+    unsubscribe();
     driver.$dispose();
   });
 

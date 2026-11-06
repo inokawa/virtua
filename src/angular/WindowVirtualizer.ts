@@ -173,6 +173,7 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
 
   /** @internal */
   private _store!: ReturnType<typeof createVirtualStore>;
+  private _unsubscribe?: () => void;
   /** @internal */
   private _layout!: ReturnType<typeof createListLayout>;
   /** @internal */
@@ -251,7 +252,7 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
     });
 
     inject(DestroyRef).onDestroy(() => {
-      this._store?.$dispose();
+      this._unsubscribe?.();
       this.driver?.$dispose();
     });
   }
@@ -267,22 +268,24 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
     ));
     const store = (this._store = createVirtualStore(layout, ssrCount));
     this.driver = createWindowDriver(store, layout, this.horizontal());
-    store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
-      this._stateVersion.set(store.$getStateVersion());
-      if (sync) {
-        // The store requires the DOM to be updated synchronously, otherwise
-        // imperative scroll may be clamped by the stale container size.
-        this._appRef.tick();
+    this._unsubscribe = store.$subscribe((mutated, sync) => {
+      if (mutated & UPDATE_VIRTUAL_STATE) {
+        this._stateVersion.set(store.$getStateVersion());
+        if (sync) {
+          // The store requires the DOM to be updated synchronously, otherwise
+          // imperative scroll may be clamped by the stale container size.
+          this._appRef.tick();
+        }
       }
-    });
-    store.$subscribe(UPDATE_SCROLL_EVENT, () => {
-      this.scrolled.emit();
-    });
-    store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
-      this.scrollEnded.emit();
-    });
-    store.$subscribe(UPDATE_SIZE_EVENT, () => {
-      this.resized.emit();
+      if (mutated & UPDATE_SCROLL_EVENT) {
+        this.scrolled.emit();
+      }
+      if (mutated & UPDATE_SCROLL_END_EVENT) {
+        this.scrollEnded.emit();
+      }
+      if (mutated & UPDATE_SIZE_EVENT) {
+        this.resized.emit();
+      }
     });
     this._stateVersion.set(store.$getStateVersion());
   }

@@ -174,17 +174,19 @@ export const VMasonry = /*#__PURE__*/ defineComponent({
     const driver = createContainerDriver(store, layout, false);
 
     const stateVersion = ref(store.$getStateVersion());
-    store.$subscribe(UPDATE_VIRTUAL_STATE, () => {
-      stateVersion.value = store.$getStateVersion();
-    });
-    store.$subscribe(UPDATE_SCROLL_EVENT, () => {
-      emit("scroll", store.$getScrollOffset());
-    });
-    store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
-      emit("scrollEnd");
-    });
-    store.$subscribe(UPDATE_SIZE_EVENT, () => {
-      emit("resize");
+    const unsubscribe = store.$subscribe((mutated) => {
+      if (mutated & UPDATE_VIRTUAL_STATE) {
+        stateVersion.value = store.$getStateVersion();
+      }
+      if (mutated & UPDATE_SCROLL_EVENT) {
+        emit("scroll", store.$getScrollOffset());
+      }
+      if (mutated & UPDATE_SCROLL_END_EVENT) {
+        emit("scrollEnd");
+      }
+      if (mutated & UPDATE_SIZE_EVENT) {
+        emit("resize");
+      }
     });
 
     const range = computed<ItemsRange>((prev) => {
@@ -206,7 +208,7 @@ export const VMasonry = /*#__PURE__*/ defineComponent({
       driver.$observe(containerRef.value!);
     });
     onUnmounted(() => {
-      store.$dispose();
+      unsubscribe();
       driver.$dispose();
     });
 
