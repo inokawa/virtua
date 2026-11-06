@@ -153,18 +153,18 @@ export const WindowMasonry = <T,>(
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
-  const unsubscribe = store.$subscribe((mutated) => {
-    if (mutated & UPDATE_VIRTUAL_STATE) {
+  const unsubscribe = store.$subscribe((flag) => {
+    if (flag & UPDATE_VIRTUAL_STATE) {
       setRerender(store.$getStateVersion());
     }
-    if (mutated & UPDATE_SCROLL_EVENT) {
+    if (flag & UPDATE_SCROLL_EVENT) {
       // https://github.com/inokawa/virtua/discussions/580
       props.onScroll?.();
     }
-    if (mutated & UPDATE_SCROLL_END_EVENT) {
+    if (flag & UPDATE_SCROLL_END_EVENT) {
       props.onScrollEnd?.();
     }
-    if (mutated & UPDATE_SIZE_EVENT) {
+    if (flag & UPDATE_SIZE_EVENT) {
       props.onResize?.();
     }
   });

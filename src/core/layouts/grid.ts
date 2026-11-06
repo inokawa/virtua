@@ -95,7 +95,7 @@ export const createGridLayout = (
   const sizes: number[] = [];
   // The offsets are filled as far as they are computed.
   const offsets: number[] = [];
-  // Whether each item was auto when the axis was set, as the items may be mutated after that.
+  // Whether each item was auto when the axis was set, as the items may be flag after that.
   const autos: boolean[] = [];
 
   const isMeasurable = (index: number): boolean => isAuto || !!autos[index];

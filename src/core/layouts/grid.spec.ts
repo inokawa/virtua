@@ -211,7 +211,7 @@ describe("relayout", () => {
       );
     });
 
-    it("should read the items mutated in place when the sizes are made again", () => {
+    it("should read the items flag in place when the sizes are made again", () => {
       const list = items(100, "auto", 300);
       const layout = createGridLayout(list, "s");
       layout.$relayout(layout.$getSizes(list, "s"));

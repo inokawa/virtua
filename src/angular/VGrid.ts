@@ -621,33 +621,33 @@ export class VGrid<R = number, C = number> implements OnInit, VGridHandle {
         });
       }
     };
-    this._unsubscribeRow = rowStore.$subscribe((mutated, sync) => {
-      if (mutated & UPDATE_VIRTUAL_STATE) {
+    this._unsubscribeRow = rowStore.$subscribe((flag, sync) => {
+      if (flag & UPDATE_VIRTUAL_STATE) {
         rerender(sync);
       }
-      if (mutated & UPDATE_SCROLL_EVENT) {
+      if (flag & UPDATE_SCROLL_EVENT) {
         scrolled = true;
         this.verticalScrolled.emit(rowStore.$getScrollOffset());
       }
-      if (mutated & UPDATE_SCROLL_END_EVENT) {
+      if (flag & UPDATE_SCROLL_END_EVENT) {
         notifyScrollEnd();
       }
-      if (mutated & UPDATE_SIZE_EVENT) {
+      if (flag & UPDATE_SIZE_EVENT) {
         notifyResize();
       }
     });
-    this._unsubscribeCol = colStore.$subscribe((mutated, sync) => {
-      if (mutated & UPDATE_VIRTUAL_STATE) {
+    this._unsubscribeCol = colStore.$subscribe((flag, sync) => {
+      if (flag & UPDATE_VIRTUAL_STATE) {
         rerender(sync);
       }
-      if (mutated & UPDATE_SCROLL_EVENT) {
+      if (flag & UPDATE_SCROLL_EVENT) {
         scrolled = true;
         this.horizontalScrolled.emit(colStore.$getScrollOffset());
       }
-      if (mutated & UPDATE_SCROLL_END_EVENT) {
+      if (flag & UPDATE_SCROLL_END_EVENT) {
         notifyScrollEnd();
       }
-      if (mutated & UPDATE_SIZE_EVENT) {
+      if (flag & UPDATE_SIZE_EVENT) {
         notifyResize();
       }
     });

@@ -107,7 +107,7 @@ const getContainerStyle = () =>
     .querySelector('[style*="grid-template-rows"]')!
     .getAttribute("style");
 
-it("should follow the sizes mutated in place", async () => {
+it("should follow the sizes flag in place", async () => {
   const rows = reactive([{ h: 40 }, { h: 40 }]);
   const Host = defineComponent(
     () => () =>

@@ -152,18 +152,18 @@ export const WindowMasonry = /*#__PURE__*/ defineComponent({
     const driver = createWindowDriver(store, layout, false);
 
     const stateVersion = ref(store.$getStateVersion());
-    const unsubscribe = store.$subscribe((mutated) => {
-      if (mutated & UPDATE_VIRTUAL_STATE) {
+    const unsubscribe = store.$subscribe((flag) => {
+      if (flag & UPDATE_VIRTUAL_STATE) {
         stateVersion.value = store.$getStateVersion();
       }
-      if (mutated & UPDATE_SCROLL_EVENT) {
+      if (flag & UPDATE_SCROLL_EVENT) {
         // https://github.com/inokawa/virtua/discussions/580
         emit("scroll");
       }
-      if (mutated & UPDATE_SCROLL_END_EVENT) {
+      if (flag & UPDATE_SCROLL_END_EVENT) {
         emit("scrollEnd");
       }
-      if (mutated & UPDATE_SIZE_EVENT) {
+      if (flag & UPDATE_SIZE_EVENT) {
         emit("resize");
       }
     });

@@ -495,35 +495,35 @@ export const VGrid = /*#__PURE__*/ forwardRef<
         }
       };
       // store must be subscribed first because others may dispatch update on init depending on implementation
-      const unsubscribeRow = rowStore.$subscribe((mutated, sync) => {
-        if (mutated & UPDATE_VIRTUAL_STATE) {
+      const unsubscribeRow = rowStore.$subscribe((flag, sync) => {
+        if (flag & UPDATE_VIRTUAL_STATE) {
           onUpdate(sync);
         }
-        if (mutated & UPDATE_SCROLL_EVENT) {
+        if (flag & UPDATE_SCROLL_EVENT) {
           scrolled = true;
           onVerticalScroll.current &&
             onVerticalScroll.current(rowStore.$getScrollOffset());
         }
-        if (mutated & UPDATE_SCROLL_END_EVENT) {
+        if (flag & UPDATE_SCROLL_END_EVENT) {
           notifyScrollEnd();
         }
-        if (mutated & UPDATE_SIZE_EVENT) {
+        if (flag & UPDATE_SIZE_EVENT) {
           notifyResize();
         }
       });
-      const unsubscribeCol = colStore.$subscribe((mutated, sync) => {
-        if (mutated & UPDATE_VIRTUAL_STATE) {
+      const unsubscribeCol = colStore.$subscribe((flag, sync) => {
+        if (flag & UPDATE_VIRTUAL_STATE) {
           onUpdate(sync);
         }
-        if (mutated & UPDATE_SCROLL_EVENT) {
+        if (flag & UPDATE_SCROLL_EVENT) {
           scrolled = true;
           onHorizontalScroll.current &&
             onHorizontalScroll.current(colStore.$getScrollOffset());
         }
-        if (mutated & UPDATE_SCROLL_END_EVENT) {
+        if (flag & UPDATE_SCROLL_END_EVENT) {
           notifyScrollEnd();
         }
-        if (mutated & UPDATE_SIZE_EVENT) {
+        if (flag & UPDATE_SIZE_EVENT) {
           notifyResize();
         }
       });

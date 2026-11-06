@@ -268,8 +268,8 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
     ));
     const store = (this._store = createVirtualStore(layout, ssrCount));
     this.driver = createWindowDriver(store, layout, this.horizontal());
-    this._unsubscribe = store.$subscribe((mutated, sync) => {
-      if (mutated & UPDATE_VIRTUAL_STATE) {
+    this._unsubscribe = store.$subscribe((flag, sync) => {
+      if (flag & UPDATE_VIRTUAL_STATE) {
         this._stateVersion.set(store.$getStateVersion());
         if (sync) {
           // The store requires the DOM to be updated synchronously, otherwise
@@ -277,13 +277,13 @@ export class WindowVirtualizer<T> implements OnInit, WindowVirtualizerHandle {
           this._appRef.tick();
         }
       }
-      if (mutated & UPDATE_SCROLL_EVENT) {
+      if (flag & UPDATE_SCROLL_EVENT) {
         this.scrolled.emit();
       }
-      if (mutated & UPDATE_SCROLL_END_EVENT) {
+      if (flag & UPDATE_SCROLL_END_EVENT) {
         this.scrollEnded.emit();
       }
-      if (mutated & UPDATE_SIZE_EVENT) {
+      if (flag & UPDATE_SIZE_EVENT) {
         this.resized.emit();
       }
     });

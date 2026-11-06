@@ -184,22 +184,22 @@ export const WindowMasonry = /*#__PURE__*/ forwardRef<
 
     useIsomorphicLayoutEffect(() => {
       // store must be subscribed first because others may dispatch update on init depending on implementation
-      const unsubscribe = store.$subscribe((mutated, sync) => {
-        if (mutated & UPDATE_VIRTUAL_STATE) {
+      const unsubscribe = store.$subscribe((flag, sync) => {
+        if (flag & UPDATE_VIRTUAL_STATE) {
           if (sync) {
             flushSync(rerender);
           } else {
             rerender();
           }
         }
-        if (mutated & UPDATE_SCROLL_EVENT) {
+        if (flag & UPDATE_SCROLL_EVENT) {
           // https://github.com/inokawa/virtua/discussions/580
           onScroll.current && onScroll.current();
         }
-        if (mutated & UPDATE_SCROLL_END_EVENT) {
+        if (flag & UPDATE_SCROLL_END_EVENT) {
           onScrollEnd.current && onScrollEnd.current();
         }
-        if (mutated & UPDATE_SIZE_EVENT) {
+        if (flag & UPDATE_SIZE_EVENT) {
           onResize.current && onResize.current();
         }
       });

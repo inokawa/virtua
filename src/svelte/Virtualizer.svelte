@@ -49,17 +49,17 @@
   const layout = createListLayout(data.length, itemSize, cache);
   const store = createVirtualStore(layout, ssrCount);
   const driver = createContainerDriver(store, layout, horizontal);
-  const unsubscribe = store.$subscribe((mutated) => {
-    if (mutated & UPDATE_VIRTUAL_STATE) {
+  const unsubscribe = store.$subscribe((flag) => {
+    if (flag & UPDATE_VIRTUAL_STATE) {
       stateVersion = store.$getStateVersion();
     }
-    if (mutated & UPDATE_SCROLL_EVENT) {
+    if (flag & UPDATE_SCROLL_EVENT) {
       onscroll && onscroll(store.$getScrollOffset());
     }
-    if (mutated & UPDATE_SCROLL_END_EVENT) {
+    if (flag & UPDATE_SCROLL_END_EVENT) {
       onscrollend && onscrollend();
     }
-    if (mutated & UPDATE_SIZE_EVENT) {
+    if (flag & UPDATE_SIZE_EVENT) {
       onresize && onresize();
     }
   });

@@ -107,7 +107,7 @@ const getContainerStyle = () =>
     .querySelector('[style*="grid-template-rows"]')!
     .getAttribute("style");
 
-it("should follow the sizes mutated in place", () => {
+it("should follow the sizes flag in place", () => {
   const [rows, setRows] = createStore([{ h: 40 }, { h: 40 }]);
   render(() => (
     <VGrid rows={rows} rowHeight="h" cols={1} colWidth={100}>

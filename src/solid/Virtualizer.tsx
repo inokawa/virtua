@@ -193,17 +193,17 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
 
   const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
 
-  const unsubscribe = store.$subscribe((mutated) => {
-    if (mutated & UPDATE_VIRTUAL_STATE) {
+  const unsubscribe = store.$subscribe((flag) => {
+    if (flag & UPDATE_VIRTUAL_STATE) {
       setRerender(store.$getStateVersion());
     }
-    if (mutated & UPDATE_SCROLL_EVENT) {
+    if (flag & UPDATE_SCROLL_EVENT) {
       props.onScroll?.(store.$getScrollOffset());
     }
-    if (mutated & UPDATE_SCROLL_END_EVENT) {
+    if (flag & UPDATE_SCROLL_END_EVENT) {
       props.onScrollEnd?.();
     }
-    if (mutated & UPDATE_SIZE_EVENT) {
+    if (flag & UPDATE_SIZE_EVENT) {
       props.onResize?.();
     }
   });

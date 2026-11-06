@@ -439,8 +439,8 @@ const createScrollObserver = (
       if (!stopped) {
         // Batch the measurements in the same task to scroll only once
         let queued: boolean | undefined;
-        unsubscribe = store.$subscribe((mutated) => {
-          if (!(mutated & UPDATE_SIZE_EVENT) || queued) {
+        unsubscribe = store.$subscribe((flag) => {
+          if (!(flag & UPDATE_SIZE_EVENT) || queued) {
             return;
           }
           queued = true;

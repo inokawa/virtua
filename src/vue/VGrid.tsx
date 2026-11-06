@@ -481,33 +481,33 @@ export const VGrid = /*#__PURE__*/ defineComponent({
         });
       }
     };
-    const unsubscribeRow = rowStore.$subscribe((mutated) => {
-      if (mutated & UPDATE_VIRTUAL_STATE) {
+    const unsubscribeRow = rowStore.$subscribe((flag) => {
+      if (flag & UPDATE_VIRTUAL_STATE) {
         rerender();
       }
-      if (mutated & UPDATE_SCROLL_EVENT) {
+      if (flag & UPDATE_SCROLL_EVENT) {
         scrolled = true;
         emit("verticalScroll", rowStore.$getScrollOffset());
       }
-      if (mutated & UPDATE_SCROLL_END_EVENT) {
+      if (flag & UPDATE_SCROLL_END_EVENT) {
         notifyScrollEnd();
       }
-      if (mutated & UPDATE_SIZE_EVENT) {
+      if (flag & UPDATE_SIZE_EVENT) {
         notifyResize();
       }
     });
-    const unsubscribeCol = colStore.$subscribe((mutated) => {
-      if (mutated & UPDATE_VIRTUAL_STATE) {
+    const unsubscribeCol = colStore.$subscribe((flag) => {
+      if (flag & UPDATE_VIRTUAL_STATE) {
         rerender();
       }
-      if (mutated & UPDATE_SCROLL_EVENT) {
+      if (flag & UPDATE_SCROLL_EVENT) {
         scrolled = true;
         emit("horizontalScroll", colStore.$getScrollOffset());
       }
-      if (mutated & UPDATE_SCROLL_END_EVENT) {
+      if (flag & UPDATE_SCROLL_END_EVENT) {
         notifyScrollEnd();
       }
-      if (mutated & UPDATE_SIZE_EVENT) {
+      if (flag & UPDATE_SIZE_EVENT) {
         notifyResize();
       }
     });

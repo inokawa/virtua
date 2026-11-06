@@ -95,7 +95,7 @@ export const relayout = <A, B>(
   }
 };
 
-type Subscriber = (mutated: number, sync?: boolean) => void;
+type Subscriber = (flag: number, sync?: boolean) => void;
 
 /** @internal */
 export type StateVersion =

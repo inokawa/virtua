@@ -333,8 +333,8 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
     ));
     const store = (this._store = createVirtualStore(layout, this.ssrCount()));
     this.driver = createContainerDriver(store, layout, false);
-    this._unsubscribe = store.$subscribe((mutated, sync) => {
-      if (mutated & UPDATE_VIRTUAL_STATE) {
+    this._unsubscribe = store.$subscribe((flag, sync) => {
+      if (flag & UPDATE_VIRTUAL_STATE) {
         this._stateVersion.set(store.$getStateVersion());
         if (sync) {
           // The store requires the DOM to be updated synchronously, otherwise
@@ -342,13 +342,13 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
           this._appRef.tick();
         }
       }
-      if (mutated & UPDATE_SCROLL_EVENT) {
+      if (flag & UPDATE_SCROLL_EVENT) {
         this.scrolled.emit(store.$getScrollOffset());
       }
-      if (mutated & UPDATE_SCROLL_END_EVENT) {
+      if (flag & UPDATE_SCROLL_END_EVENT) {
         this.scrollEnded.emit();
       }
-      if (mutated & UPDATE_SIZE_EVENT) {
+      if (flag & UPDATE_SIZE_EVENT) {
         this.resized.emit();
       }
     });
