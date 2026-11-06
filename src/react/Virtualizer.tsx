@@ -249,21 +249,23 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
       isSSR.current = false;
 
       // store must be subscribed first because others may dispatch update on init depending on implementation
-      store.$subscribe(UPDATE_VIRTUAL_STATE, (sync) => {
-        if (sync) {
-          flushSync(rerender);
-        } else {
-          rerender();
+      const unsubscribe = store.$subscribe((mutated, sync) => {
+        if (mutated & UPDATE_VIRTUAL_STATE) {
+          if (sync) {
+            flushSync(rerender);
+          } else {
+            rerender();
+          }
         }
-      });
-      store.$subscribe(UPDATE_SCROLL_EVENT, () => {
-        onScroll.current && onScroll.current(store.$getScrollOffset());
-      });
-      store.$subscribe(UPDATE_SCROLL_END_EVENT, () => {
-        onScrollEnd.current && onScrollEnd.current();
-      });
-      store.$subscribe(UPDATE_SIZE_EVENT, () => {
-        onResize.current && onResize.current();
+        if (mutated & UPDATE_SCROLL_EVENT) {
+          onScroll.current && onScroll.current(store.$getScrollOffset());
+        }
+        if (mutated & UPDATE_SCROLL_END_EVENT) {
+          onScrollEnd.current && onScrollEnd.current();
+        }
+        if (mutated & UPDATE_SIZE_EVENT) {
+          onResize.current && onResize.current();
+        }
       });
       const container = containerRef.current!;
       if (scrollRef) {
@@ -279,7 +281,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
       }
 
       return () => {
-        store.$dispose();
+        unsubscribe();
         driver.$dispose();
       };
     }, []);

@@ -474,30 +474,15 @@ export const VGrid = /*#__PURE__*/ forwardRef<
           rerender();
         }
       };
-      // store must be subscribed first because others may dispatch update on init depending on implementation
-      rowStore.$subscribe(UPDATE_VIRTUAL_STATE, onUpdate);
-      colStore.$subscribe(UPDATE_VIRTUAL_STATE, onUpdate);
 
       // Both stores observe both axes, so the end is notified once after both have ended.
       let scrolled = false;
-      rowStore.$subscribe(UPDATE_SCROLL_EVENT, () => {
-        scrolled = true;
-        onVerticalScroll.current &&
-          onVerticalScroll.current(rowStore.$getScrollOffset());
-      });
-      colStore.$subscribe(UPDATE_SCROLL_EVENT, () => {
-        scrolled = true;
-        onHorizontalScroll.current &&
-          onHorizontalScroll.current(colStore.$getScrollOffset());
-      });
       const notifyScrollEnd = () => {
         if (scrolled && !rowStore.$isScrolling() && !colStore.$isScrolling()) {
           scrolled = false;
           onScrollEnd.current && onScrollEnd.current();
         }
       };
-      rowStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
-      colStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
       // Notify once after both stores are updated with the sizes observed together
       let resized: boolean | undefined;
       const notifyResize = () => {
@@ -509,13 +494,44 @@ export const VGrid = /*#__PURE__*/ forwardRef<
           });
         }
       };
-      rowStore.$subscribe(UPDATE_SIZE_EVENT, notifyResize);
-      colStore.$subscribe(UPDATE_SIZE_EVENT, notifyResize);
+      // store must be subscribed first because others may dispatch update on init depending on implementation
+      const unsubscribeRow = rowStore.$subscribe((mutated, sync) => {
+        if (mutated & UPDATE_VIRTUAL_STATE) {
+          onUpdate(sync);
+        }
+        if (mutated & UPDATE_SCROLL_EVENT) {
+          scrolled = true;
+          onVerticalScroll.current &&
+            onVerticalScroll.current(rowStore.$getScrollOffset());
+        }
+        if (mutated & UPDATE_SCROLL_END_EVENT) {
+          notifyScrollEnd();
+        }
+        if (mutated & UPDATE_SIZE_EVENT) {
+          notifyResize();
+        }
+      });
+      const unsubscribeCol = colStore.$subscribe((mutated, sync) => {
+        if (mutated & UPDATE_VIRTUAL_STATE) {
+          onUpdate(sync);
+        }
+        if (mutated & UPDATE_SCROLL_EVENT) {
+          scrolled = true;
+          onHorizontalScroll.current &&
+            onHorizontalScroll.current(colStore.$getScrollOffset());
+        }
+        if (mutated & UPDATE_SCROLL_END_EVENT) {
+          notifyScrollEnd();
+        }
+        if (mutated & UPDATE_SIZE_EVENT) {
+          notifyResize();
+        }
+      });
 
       driver.$observe(containerRef.current!);
       return () => {
-        rowStore.$dispose();
-        colStore.$dispose();
+        unsubscribeRow();
+        unsubscribeCol();
         driver.$dispose();
       };
     }, []);

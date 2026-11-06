@@ -95,7 +95,7 @@ export const relayout = <A, B>(
   }
 };
 
-type Subscriber = (sync?: boolean) => void;
+type Subscriber = (mutated: number, sync?: boolean) => void;
 
 /** @internal */
 export type StateVersion =
@@ -105,7 +105,6 @@ export type StateVersion =
  * @internal
  */
 export type VirtualStore = {
-  $dispose(): void;
   $getStateVersion(): StateVersion;
   $getRange(bufferSize?: number): ItemsRange;
   _getAnchorIndex(): number;
@@ -116,7 +115,7 @@ export type VirtualStore = {
   $getBaseOffset(): number;
   $getTotalSize(): number;
   _flushJump(): [number, boolean];
-  $subscribe(target: number, cb: Subscriber): () => void;
+  $subscribe(cb: Subscriber): () => void;
   $update(...action: Actions): void;
 };
 
@@ -151,7 +150,7 @@ export const createVirtualStore = (
   let _prevRange: ItemsRange = [0, isSSR ? max(ssrCount - 1, 0) : -1];
   let _isViewportMeasured = false;
 
-  const subscribers = new Set<[number, Subscriber]>();
+  const subscribers = new Set<Subscriber>();
   const getRelativeScrollOffset = () => scrollOffset - baseOffset;
   const getVisibleOffset = () => getRelativeScrollOffset() + pendingJump + jump;
 
@@ -217,9 +216,6 @@ export const createVirtualStore = (
   };
 
   return {
-    $dispose: () => {
-      subscribers.clear();
-    },
     $getStateVersion: () => stateVersion,
     $getRange: (bufferSize = 200) => {
       let startIndex: number;
@@ -275,11 +271,10 @@ export const createVirtualStore = (
       jump = 0;
       return [_flushedJump, _scrollMode === SCROLL_BY_SHIFT];
     },
-    $subscribe: (target, cb) => {
-      const sub: [number, Subscriber] = [target, cb];
-      subscribers.add(sub);
+    $subscribe: (cb) => {
+      subscribers.add(cb);
       return () => {
-        subscribers.delete(sub);
+        subscribers.delete(cb);
       };
     },
     $update: (type, payload, payload2?): void => {
@@ -432,14 +427,10 @@ export const createVirtualStore = (
       if (mutated) {
         stateVersion = (stateVersion & MAX_INT_32) + 1;
 
-        subscribers.forEach(([target, cb]) => {
-          // Early return to skip React's computation
-          if (!(mutated & target)) {
-            return;
-          }
+        subscribers.forEach((cb) => {
           // https://github.com/facebook/react/issues/25191
           // https://github.com/facebook/react/blob/a5fc797db14c6e05d4d5c4dbb22a0dd70d41f5d5/packages/react-reconciler/src/ReactFiberWorkLoop.js#L1443-L1447
-          cb(shouldSync);
+          cb(mutated, shouldSync);
         });
       }
     },

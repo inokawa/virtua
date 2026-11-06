@@ -339,6 +339,7 @@ const createScrollObserver = (
       viewport.removeEventListener("touchend", onTouchEnd);
       viewport.removeEventListener("touchcancel", onTouchEnd);
       cancelTimeout(scrollEndTimer);
+      cancelScroll && cancelScroll();
     },
     _fixScrollJump: () => {
       const [jump, shift] = store._flushJump();
@@ -438,8 +439,8 @@ const createScrollObserver = (
       if (!stopped) {
         // Batch the measurements in the same task to scroll only once
         let queued: boolean | undefined;
-        unsubscribe = store.$subscribe(UPDATE_SIZE_EVENT, () => {
-          if (queued) {
+        unsubscribe = store.$subscribe((mutated) => {
+          if (!(mutated & UPDATE_SIZE_EVENT) || queued) {
             return;
           }
           queued = true;

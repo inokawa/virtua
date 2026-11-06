@@ -420,29 +420,15 @@ export const VGrid = <R = number, C = number>(
     rowStore.$getStateVersion() + colStore.$getStateVersion();
   const [stateVersion, setRerender] = createSignal(getStateVersion());
   const rerender = () => setRerender(getStateVersion());
-  rowStore.$subscribe(UPDATE_VIRTUAL_STATE, rerender);
-  colStore.$subscribe(UPDATE_VIRTUAL_STATE, rerender);
 
   // Both stores observe both axes, so the end is notified once after both have ended.
   let scrolled = false;
-  rowStore.$subscribe(UPDATE_SCROLL_EVENT, () => {
-    scrolled = true;
-    props.onVerticalScroll &&
-      props.onVerticalScroll(rowStore.$getScrollOffset());
-  });
-  colStore.$subscribe(UPDATE_SCROLL_EVENT, () => {
-    scrolled = true;
-    props.onHorizontalScroll &&
-      props.onHorizontalScroll(colStore.$getScrollOffset());
-  });
   const notifyScrollEnd = () => {
     if (scrolled && !rowStore.$isScrolling() && !colStore.$isScrolling()) {
       scrolled = false;
       props.onScrollEnd && props.onScrollEnd();
     }
   };
-  rowStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
-  colStore.$subscribe(UPDATE_SCROLL_END_EVENT, notifyScrollEnd);
   // Notify once after both stores are updated with the sizes observed together
   let resized: boolean | undefined;
   const notifyResize = () => {
@@ -454,8 +440,38 @@ export const VGrid = <R = number, C = number>(
       });
     }
   };
-  rowStore.$subscribe(UPDATE_SIZE_EVENT, notifyResize);
-  colStore.$subscribe(UPDATE_SIZE_EVENT, notifyResize);
+  const unsubscribeRow = rowStore.$subscribe((mutated) => {
+    if (mutated & UPDATE_VIRTUAL_STATE) {
+      rerender();
+    }
+    if (mutated & UPDATE_SCROLL_EVENT) {
+      scrolled = true;
+      props.onVerticalScroll &&
+        props.onVerticalScroll(rowStore.$getScrollOffset());
+    }
+    if (mutated & UPDATE_SCROLL_END_EVENT) {
+      notifyScrollEnd();
+    }
+    if (mutated & UPDATE_SIZE_EVENT) {
+      notifyResize();
+    }
+  });
+  const unsubscribeCol = colStore.$subscribe((mutated) => {
+    if (mutated & UPDATE_VIRTUAL_STATE) {
+      rerender();
+    }
+    if (mutated & UPDATE_SCROLL_EVENT) {
+      scrolled = true;
+      props.onHorizontalScroll &&
+        props.onHorizontalScroll(colStore.$getScrollOffset());
+    }
+    if (mutated & UPDATE_SCROLL_END_EVENT) {
+      notifyScrollEnd();
+    }
+    if (mutated & UPDATE_SIZE_EVENT) {
+      notifyResize();
+    }
+  });
 
   createComputed(() => {
     rowLayout.$setPinned(props.headerRows, props.footerRows);
@@ -564,8 +580,8 @@ export const VGrid = <R = number, C = number>(
     driver.$observe(containerRef!);
 
     onCleanup(() => {
-      rowStore.$dispose();
-      colStore.$dispose();
+      unsubscribeRow();
+      unsubscribeCol();
       driver.$dispose();
     });
   });
