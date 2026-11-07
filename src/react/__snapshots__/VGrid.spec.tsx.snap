@@ -13,17 +13,17 @@ exports[`should pass attributes to element 1`] = `
     tabindex="0"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2] 40px [l3] 40px [l4] 40px [l5] 40px [l6] 40px [l7] 40px [l8] 40px [l9] 40px [l10] 40px [l11] 40px [l12] 40px [l13] 40px [l14] 40px [l15] 40px [l16] 40px [l17] 40px [l18] minmax(3280px,auto) [l100]; grid-template-columns: [l0] 100px [l1] 100px [l2] 100px [l3] 100px [l4] minmax(9600px,auto) [l100]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 4000px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2] 40px [l3] 40px [l4] 40px [l5] 40px [l6] 40px [l7] 40px [l8] 40px [l9] 40px [l10] 40px [l11] 40px [l12] 40px [l13] 40px [l14] 40px [l15] 40px [l16] 40px [l17] 40px [l18] minmax(3280px, auto) [l100]; grid-template-columns: [l0] 100px [l1] 100px [l2] 100px [l3] 100px [l4] minmax(9600px, auto) [l100]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 4000px;"
     >
       <div
         aria-rowindex="1"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l0/l1;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             0 / 0
@@ -32,7 +32,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             0 / 1
@@ -41,7 +41,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             0 / 2
@@ -50,7 +50,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             0 / 3
@@ -60,12 +60,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="2"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l1/l2;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l1 / 1 / l2 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             1 / 0
@@ -74,7 +74,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             1 / 1
@@ -83,7 +83,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             1 / 2
@@ -92,7 +92,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             1 / 3
@@ -102,12 +102,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="3"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l2/l3;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l2 / 1 / l3 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             2 / 0
@@ -116,7 +116,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             2 / 1
@@ -125,7 +125,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             2 / 2
@@ -134,7 +134,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             2 / 3
@@ -144,12 +144,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="4"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l3/l4;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l3 / 1 / l4 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             3 / 0
@@ -158,7 +158,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             3 / 1
@@ -167,7 +167,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             3 / 2
@@ -176,7 +176,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             3 / 3
@@ -186,12 +186,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="5"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l4/l5;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l4 / 1 / l5 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             4 / 0
@@ -200,7 +200,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             4 / 1
@@ -209,7 +209,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             4 / 2
@@ -218,7 +218,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             4 / 3
@@ -228,12 +228,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="6"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l5/l6;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l5 / 1 / l6 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             5 / 0
@@ -242,7 +242,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             5 / 1
@@ -251,7 +251,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             5 / 2
@@ -260,7 +260,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             5 / 3
@@ -270,12 +270,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="7"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l6/l7;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l6 / 1 / l7 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             6 / 0
@@ -284,7 +284,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             6 / 1
@@ -293,7 +293,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             6 / 2
@@ -302,7 +302,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             6 / 3
@@ -312,12 +312,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="8"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l7/l8;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l7 / 1 / l8 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             7 / 0
@@ -326,7 +326,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             7 / 1
@@ -335,7 +335,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             7 / 2
@@ -344,7 +344,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             7 / 3
@@ -354,12 +354,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="9"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l8/l9;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l8 / 1 / l9 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             8 / 0
@@ -368,7 +368,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             8 / 1
@@ -377,7 +377,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             8 / 2
@@ -386,7 +386,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             8 / 3
@@ -396,12 +396,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="10"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l9/l10;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l9 / 1 / l10 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             9 / 0
@@ -410,7 +410,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             9 / 1
@@ -419,7 +419,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             9 / 2
@@ -428,7 +428,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             9 / 3
@@ -438,12 +438,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="11"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l10/l11;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l10 / 1 / l11 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             10 / 0
@@ -452,7 +452,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             10 / 1
@@ -461,7 +461,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             10 / 2
@@ -470,7 +470,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             10 / 3
@@ -480,12 +480,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="12"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l11/l12;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l11 / 1 / l12 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             11 / 0
@@ -494,7 +494,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             11 / 1
@@ -503,7 +503,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             11 / 2
@@ -512,7 +512,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             11 / 3
@@ -522,12 +522,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="13"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l12/l13;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l12 / 1 / l13 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             12 / 0
@@ -536,7 +536,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             12 / 1
@@ -545,7 +545,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             12 / 2
@@ -554,7 +554,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             12 / 3
@@ -564,12 +564,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="14"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l13/l14;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l13 / 1 / l14 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             13 / 0
@@ -578,7 +578,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             13 / 1
@@ -587,7 +587,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             13 / 2
@@ -596,7 +596,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             13 / 3
@@ -606,12 +606,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="15"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l14/l15;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l14 / 1 / l15 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             14 / 0
@@ -620,7 +620,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             14 / 1
@@ -629,7 +629,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             14 / 2
@@ -638,7 +638,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             14 / 3
@@ -648,12 +648,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="16"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l15/l16;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l15 / 1 / l16 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             15 / 0
@@ -662,7 +662,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             15 / 1
@@ -671,7 +671,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             15 / 2
@@ -680,7 +680,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             15 / 3
@@ -690,12 +690,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="17"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l16/l17;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l16 / 1 / l17 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             16 / 0
@@ -704,7 +704,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             16 / 1
@@ -713,7 +713,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             16 / 2
@@ -722,7 +722,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             16 / 3
@@ -732,12 +732,12 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="18"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l17/l18;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l17 / 1 / l18 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             17 / 0
@@ -746,7 +746,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             17 / 1
@@ -755,7 +755,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             17 / 2
@@ -764,7 +764,7 @@ exports[`should pass attributes to element 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             17 / 3
@@ -805,17 +805,17 @@ exports[`should render 4x4 children 1`] = `
     >
       <div
         role="rowgroup"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l0/l1; position: sticky; top: 0px; z-index: 4;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1; position: sticky; top: 0px; z-index: 4;"
       >
         <div
           aria-rowindex="1"
           role="row"
-          style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l0/l1;"
+          style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1;"
         >
           <div
             aria-colindex="1"
             role="columnheader"
-            style="contain: layout style; display: grid; grid-area: 1/l0; inset-inline-start: 0px; position: sticky; z-index: 2;"
+            style="contain: layout style; display: grid; grid-area: 1 / l0; inset-inline-start: 0px; position: sticky; z-index: 2;"
           >
             <div>
               aw 0 / 0
@@ -825,7 +825,7 @@ exports[`should render 4x4 children 1`] = `
             aria-colindex="2"
             aria-sort="ascending"
             role="columnheader"
-            style="contain: layout style; display: grid; grid-area: 1/l1;"
+            style="contain: layout style; display: grid; grid-area: 1 / l1;"
           >
             <div>
               ax 0 / 1
@@ -834,7 +834,7 @@ exports[`should render 4x4 children 1`] = `
           <div
             aria-colindex="3"
             role="columnheader"
-            style="contain: layout style; display: grid; grid-area: 1/l2;"
+            style="contain: layout style; display: grid; grid-area: 1 / l2;"
           >
             <div>
               ay 0 / 2
@@ -843,7 +843,7 @@ exports[`should render 4x4 children 1`] = `
           <div
             aria-colindex="4"
             role="columnheader"
-            style="contain: layout style; display: grid; grid-area: 1/l3;"
+            style="contain: layout style; display: grid; grid-area: 1 / l3;"
           >
             <div>
               az 0 / 3
@@ -854,12 +854,12 @@ exports[`should render 4x4 children 1`] = `
       <div
         aria-rowindex="2"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l1/l2;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l1 / 1 / l2 / -1;"
       >
         <div
           aria-colindex="1"
           role="rowheader"
-          style="contain: layout style; display: grid; grid-area: 1/l0; inset-inline-start: 0px; position: sticky; z-index: 2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0; inset-inline-start: 0px; position: sticky; z-index: 2;"
         >
           <div>
             bw 1 / 0
@@ -870,7 +870,7 @@ exports[`should render 4x4 children 1`] = `
           aria-colspan="2"
           aria-rowspan="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1/l2/l3; width: 0px; min-width: 100%;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1 / l2 / l3; width: 0px; min-width: 100%;"
         >
           <div>
             bx 1 / 1
@@ -879,7 +879,7 @@ exports[`should render 4x4 children 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             bz 1 / 3
@@ -889,14 +889,14 @@ exports[`should render 4x4 children 1`] = `
       <div
         aria-rowindex="3"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l2/l4;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l2 / 1 / l4 / -1;"
       >
         <div
           aria-colindex="1"
           aria-colspan="1"
           aria-rowspan="2"
           role="rowheader"
-          style="contain: layout style; display: grid; grid-area: 1/l0/l4/l1; height: 0px; min-height: 100%; z-index: 2; inset-inline-start: 0px; position: sticky;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0 / l4 / l1; height: 0px; min-height: 100%; z-index: 2; inset-inline-start: 0px; position: sticky;"
         >
           <div>
             cw 2 / 0
@@ -905,7 +905,7 @@ exports[`should render 4x4 children 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             cx 2 / 1
@@ -914,7 +914,7 @@ exports[`should render 4x4 children 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             cy 2 / 2
@@ -923,7 +923,7 @@ exports[`should render 4x4 children 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             cz 2 / 3
@@ -933,12 +933,12 @@ exports[`should render 4x4 children 1`] = `
       <div
         aria-rowindex="4"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l3/l4;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l3 / 1 / l4 / -1;"
       >
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             dx 3 / 1
@@ -947,7 +947,7 @@ exports[`should render 4x4 children 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             dy 3 / 2
@@ -956,7 +956,7 @@ exports[`should render 4x4 children 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             dz 3 / 3
@@ -977,17 +977,17 @@ exports[`should render component 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2] 40px [l3] 40px [l4] 40px [l5] 40px [l6] 40px [l7] 40px [l8] 40px [l9] 40px [l10] 40px [l11] 40px [l12] 40px [l13] 40px [l14] 40px [l15] 40px [l16] 40px [l17] 40px [l18] minmax(3280px,auto) [l100]; grid-template-columns: [l0] 100px [l1] 100px [l2] 100px [l3] 100px [l4] minmax(9600px,auto) [l100]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 4000px;"
+      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2] 40px [l3] 40px [l4] 40px [l5] 40px [l6] 40px [l7] 40px [l8] 40px [l9] 40px [l10] 40px [l11] 40px [l12] 40px [l13] 40px [l14] 40px [l15] 40px [l16] 40px [l17] 40px [l18] minmax(3280px, auto) [l100]; grid-template-columns: [l0] 100px [l1] 100px [l2] 100px [l3] 100px [l4] minmax(9600px, auto) [l100]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 4000px;"
     >
       <div
         aria-rowindex="1"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l0/l1;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             0 / 0
@@ -996,7 +996,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             0 / 1
@@ -1005,7 +1005,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             0 / 2
@@ -1014,7 +1014,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             0 / 3
@@ -1024,12 +1024,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="2"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l1/l2;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l1 / 1 / l2 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             1 / 0
@@ -1038,7 +1038,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             1 / 1
@@ -1047,7 +1047,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             1 / 2
@@ -1056,7 +1056,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             1 / 3
@@ -1066,12 +1066,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="3"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l2/l3;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l2 / 1 / l3 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             2 / 0
@@ -1080,7 +1080,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             2 / 1
@@ -1089,7 +1089,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             2 / 2
@@ -1098,7 +1098,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             2 / 3
@@ -1108,12 +1108,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="4"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l3/l4;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l3 / 1 / l4 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             3 / 0
@@ -1122,7 +1122,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             3 / 1
@@ -1131,7 +1131,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             3 / 2
@@ -1140,7 +1140,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             3 / 3
@@ -1150,12 +1150,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="5"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l4/l5;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l4 / 1 / l5 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             4 / 0
@@ -1164,7 +1164,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             4 / 1
@@ -1173,7 +1173,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             4 / 2
@@ -1182,7 +1182,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             4 / 3
@@ -1192,12 +1192,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="6"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l5/l6;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l5 / 1 / l6 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             5 / 0
@@ -1206,7 +1206,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             5 / 1
@@ -1215,7 +1215,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             5 / 2
@@ -1224,7 +1224,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             5 / 3
@@ -1234,12 +1234,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="7"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l6/l7;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l6 / 1 / l7 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             6 / 0
@@ -1248,7 +1248,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             6 / 1
@@ -1257,7 +1257,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             6 / 2
@@ -1266,7 +1266,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             6 / 3
@@ -1276,12 +1276,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="8"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l7/l8;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l7 / 1 / l8 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             7 / 0
@@ -1290,7 +1290,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             7 / 1
@@ -1299,7 +1299,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             7 / 2
@@ -1308,7 +1308,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             7 / 3
@@ -1318,12 +1318,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="9"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l8/l9;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l8 / 1 / l9 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             8 / 0
@@ -1332,7 +1332,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             8 / 1
@@ -1341,7 +1341,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             8 / 2
@@ -1350,7 +1350,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             8 / 3
@@ -1360,12 +1360,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="10"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l9/l10;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l9 / 1 / l10 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             9 / 0
@@ -1374,7 +1374,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             9 / 1
@@ -1383,7 +1383,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             9 / 2
@@ -1392,7 +1392,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             9 / 3
@@ -1402,12 +1402,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="11"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l10/l11;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l10 / 1 / l11 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             10 / 0
@@ -1416,7 +1416,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             10 / 1
@@ -1425,7 +1425,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             10 / 2
@@ -1434,7 +1434,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             10 / 3
@@ -1444,12 +1444,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="12"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l11/l12;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l11 / 1 / l12 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             11 / 0
@@ -1458,7 +1458,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             11 / 1
@@ -1467,7 +1467,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             11 / 2
@@ -1476,7 +1476,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             11 / 3
@@ -1486,12 +1486,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="13"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l12/l13;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l12 / 1 / l13 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             12 / 0
@@ -1500,7 +1500,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             12 / 1
@@ -1509,7 +1509,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             12 / 2
@@ -1518,7 +1518,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             12 / 3
@@ -1528,12 +1528,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="14"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l13/l14;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l13 / 1 / l14 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             13 / 0
@@ -1542,7 +1542,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             13 / 1
@@ -1551,7 +1551,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             13 / 2
@@ -1560,7 +1560,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             13 / 3
@@ -1570,12 +1570,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="15"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l14/l15;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l14 / 1 / l15 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             14 / 0
@@ -1584,7 +1584,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             14 / 1
@@ -1593,7 +1593,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             14 / 2
@@ -1602,7 +1602,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             14 / 3
@@ -1612,12 +1612,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="16"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l15/l16;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l15 / 1 / l16 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             15 / 0
@@ -1626,7 +1626,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             15 / 1
@@ -1635,7 +1635,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             15 / 2
@@ -1644,7 +1644,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             15 / 3
@@ -1654,12 +1654,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="17"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l16/l17;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l16 / 1 / l17 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             16 / 0
@@ -1668,7 +1668,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             16 / 1
@@ -1677,7 +1677,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             16 / 2
@@ -1686,7 +1686,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             16 / 3
@@ -1696,12 +1696,12 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="18"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l17/l18;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l17 / 1 / l18 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             17 / 0
@@ -1710,7 +1710,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="2"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l1;"
+          style="contain: layout style; display: grid; grid-area: 1 / l1;"
         >
           <div>
             17 / 1
@@ -1719,7 +1719,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="3"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l2;"
+          style="contain: layout style; display: grid; grid-area: 1 / l2;"
         >
           <div>
             17 / 2
@@ -1728,7 +1728,7 @@ exports[`should render component 1`] = `
         <div
           aria-colindex="4"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l3;"
+          style="contain: layout style; display: grid; grid-area: 1 / l3;"
         >
           <div>
             17 / 3
@@ -1754,12 +1754,12 @@ exports[`should render fragments 1`] = `
       <div
         aria-rowindex="1"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l0/l1;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             fragment
@@ -1775,12 +1775,12 @@ exports[`should render fragments 1`] = `
       <div
         aria-rowindex="2"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l1/l2;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l1 / 1 / l2 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           <div>
             fragment
@@ -1806,12 +1806,12 @@ exports[`should render non elements 1`] = `
       <div
         aria-rowindex="1"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l0/l1;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           string
         </div>
@@ -1819,56 +1819,56 @@ exports[`should render non elements 1`] = `
       <div
         aria-rowindex="2"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l1/l2;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l1 / 1 / l2 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         />
       </div>
       <div
         aria-rowindex="3"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l2/l3;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l2 / 1 / l3 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         />
       </div>
       <div
         aria-rowindex="4"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l3/l4;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l3 / 1 / l4 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         />
       </div>
       <div
         aria-rowindex="5"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l4/l5;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l4 / 1 / l5 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         />
       </div>
       <div
         aria-rowindex="6"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-column: 1/-1; grid-row: l5/l6;"
+        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l5 / 1 / l6 / -1;"
       >
         <div
           aria-colindex="1"
           role="cell"
-          style="contain: layout style; display: grid; grid-area: 1/l0;"
+          style="contain: layout style; display: grid; grid-area: 1 / l0;"
         >
           123
         </div>
