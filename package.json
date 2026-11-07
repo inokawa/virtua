@@ -129,6 +129,7 @@
     "react-dom": "^19.3.1",
     "react-is": "^19.3.1",
     "react-virtualized": "^10.0.0",
+    "react-virtualized-auto-sizer": "^2.0.4",
     "react-virtuoso": "^4.18.20",
     "react-window": "^2.5.3",
     "rimraf": "^6.1.4",
