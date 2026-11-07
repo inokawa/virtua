@@ -1,1 +1,0 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{d as t,vt as n}from"./core-CRrU-cqh.js";var r,i;function a(){return(a=e((()=>{t(),r=(e,t)=>`_`+t,i=new n(`virtua-item-template`)})))()}export{r as n,a as r,i as t};
