@@ -270,6 +270,17 @@ export const ScrollTo: StoryObj = {
             />
             end
           </label>
+          <label style={{ marginLeft: 4 }}>
+            <input
+              type="radio"
+              style={{ marginLeft: 4 }}
+              checked={scrollIndexAlign === "nearest"}
+              onChange={() => {
+                setScrollToIndexAlign("nearest");
+              }}
+            />
+            nearest
+          </label>
 
           <label style={{ marginLeft: 4 }}>
             <input
