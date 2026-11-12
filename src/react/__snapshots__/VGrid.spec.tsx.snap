@@ -13,12 +13,12 @@ exports[`should pass attributes to element 1`] = `
     tabindex="0"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2] 40px [l3] 40px [l4] 40px [l5] 40px [l6] 40px [l7] 40px [l8] 40px [l9] 40px [l10] 40px [l11] 40px [l12] 40px [l13] 40px [l14] 40px [l15] 40px [l16] 40px [l17] 40px [l18] minmax(3280px, auto) [l100]; grid-template-columns: [l0] 100px [l1] 100px [l2] 100px [l3] 100px [l4] minmax(9600px, auto) [l100]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 4000px;"
+      style="contain: size style; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2] 40px [l3] 40px [l4] 40px [l5] 40px [l6] 40px [l7] 40px [l8] 40px [l9] 40px [l10] 40px [l11] 40px [l12] 40px [l13] 40px [l14] 40px [l15] 40px [l16] 40px [l17] 40px [l18] minmax(3280px, auto) [l100]; grid-template-columns: [l0] 100px [l1] 100px [l2] 100px [l3] 100px [l4] minmax(9600px, auto) [l100]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 4000px;"
     >
       <div
         aria-rowindex="1"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1;"
       >
         <div
           aria-colindex="1"
@@ -60,7 +60,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="2"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l1 / 1 / l2 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l1 / 1 / l2 / -1;"
       >
         <div
           aria-colindex="1"
@@ -102,7 +102,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="3"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l2 / 1 / l3 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l2 / 1 / l3 / -1;"
       >
         <div
           aria-colindex="1"
@@ -144,7 +144,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="4"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l3 / 1 / l4 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l3 / 1 / l4 / -1;"
       >
         <div
           aria-colindex="1"
@@ -186,7 +186,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="5"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l4 / 1 / l5 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l4 / 1 / l5 / -1;"
       >
         <div
           aria-colindex="1"
@@ -228,7 +228,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="6"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l5 / 1 / l6 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l5 / 1 / l6 / -1;"
       >
         <div
           aria-colindex="1"
@@ -270,7 +270,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="7"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l6 / 1 / l7 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l6 / 1 / l7 / -1;"
       >
         <div
           aria-colindex="1"
@@ -312,7 +312,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="8"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l7 / 1 / l8 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l7 / 1 / l8 / -1;"
       >
         <div
           aria-colindex="1"
@@ -354,7 +354,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="9"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l8 / 1 / l9 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l8 / 1 / l9 / -1;"
       >
         <div
           aria-colindex="1"
@@ -396,7 +396,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="10"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l9 / 1 / l10 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l9 / 1 / l10 / -1;"
       >
         <div
           aria-colindex="1"
@@ -438,7 +438,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="11"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l10 / 1 / l11 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l10 / 1 / l11 / -1;"
       >
         <div
           aria-colindex="1"
@@ -480,7 +480,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="12"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l11 / 1 / l12 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l11 / 1 / l12 / -1;"
       >
         <div
           aria-colindex="1"
@@ -522,7 +522,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="13"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l12 / 1 / l13 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l12 / 1 / l13 / -1;"
       >
         <div
           aria-colindex="1"
@@ -564,7 +564,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="14"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l13 / 1 / l14 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l13 / 1 / l14 / -1;"
       >
         <div
           aria-colindex="1"
@@ -606,7 +606,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="15"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l14 / 1 / l15 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l14 / 1 / l15 / -1;"
       >
         <div
           aria-colindex="1"
@@ -648,7 +648,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="16"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l15 / 1 / l16 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l15 / 1 / l16 / -1;"
       >
         <div
           aria-colindex="1"
@@ -690,7 +690,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="17"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l16 / 1 / l17 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l16 / 1 / l17 / -1;"
       >
         <div
           aria-colindex="1"
@@ -732,7 +732,7 @@ exports[`should pass attributes to element 1`] = `
       <div
         aria-rowindex="18"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l17 / 1 / l18 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l17 / 1 / l18 / -1;"
       >
         <div
           aria-colindex="1"
@@ -785,7 +785,7 @@ exports[`should render 0 children 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 500px;"
+      style="contain: size style; flex: 0 0 auto; display: grid; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 500px;"
     />
   </div>
 </DocumentFragment>
@@ -801,16 +801,16 @@ exports[`should render 4x4 children 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2] 40px [l3] 40px [l4]; grid-template-columns: [l0] 100px [l1] 100px [l2] 100px [l3] 100px [l4]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 500px;"
+      style="contain: size style; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2] 40px [l3] 40px [l4]; grid-template-columns: [l0] 100px [l1] 100px [l2] 100px [l3] 100px [l4]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 500px;"
     >
       <div
         role="rowgroup"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1; position: sticky; top: 0px; z-index: 4;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1; position: sticky; top: 0px; z-index: 4;"
       >
         <div
           aria-rowindex="1"
           role="row"
-          style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1;"
+          style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1;"
         >
           <div
             aria-colindex="1"
@@ -854,7 +854,7 @@ exports[`should render 4x4 children 1`] = `
       <div
         aria-rowindex="2"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l1 / 1 / l2 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l1 / 1 / l2 / -1;"
       >
         <div
           aria-colindex="1"
@@ -889,7 +889,7 @@ exports[`should render 4x4 children 1`] = `
       <div
         aria-rowindex="3"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l2 / 1 / l4 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l2 / 1 / l4 / -1;"
       >
         <div
           aria-colindex="1"
@@ -933,7 +933,7 @@ exports[`should render 4x4 children 1`] = `
       <div
         aria-rowindex="4"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l3 / 1 / l4 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l3 / 1 / l4 / -1;"
       >
         <div
           aria-colindex="2"
@@ -977,12 +977,12 @@ exports[`should render component 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2] 40px [l3] 40px [l4] 40px [l5] 40px [l6] 40px [l7] 40px [l8] 40px [l9] 40px [l10] 40px [l11] 40px [l12] 40px [l13] 40px [l14] 40px [l15] 40px [l16] 40px [l17] 40px [l18] minmax(3280px, auto) [l100]; grid-template-columns: [l0] 100px [l1] 100px [l2] 100px [l3] 100px [l4] minmax(9600px, auto) [l100]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 4000px;"
+      style="contain: size style; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2] 40px [l3] 40px [l4] 40px [l5] 40px [l6] 40px [l7] 40px [l8] 40px [l9] 40px [l10] 40px [l11] 40px [l12] 40px [l13] 40px [l14] 40px [l15] 40px [l16] 40px [l17] 40px [l18] minmax(3280px, auto) [l100]; grid-template-columns: [l0] 100px [l1] 100px [l2] 100px [l3] 100px [l4] minmax(9600px, auto) [l100]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 4000px;"
     >
       <div
         aria-rowindex="1"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1024,7 +1024,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="2"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l1 / 1 / l2 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l1 / 1 / l2 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1066,7 +1066,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="3"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l2 / 1 / l3 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l2 / 1 / l3 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1108,7 +1108,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="4"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l3 / 1 / l4 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l3 / 1 / l4 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1150,7 +1150,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="5"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l4 / 1 / l5 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l4 / 1 / l5 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1192,7 +1192,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="6"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l5 / 1 / l6 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l5 / 1 / l6 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1234,7 +1234,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="7"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l6 / 1 / l7 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l6 / 1 / l7 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1276,7 +1276,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="8"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l7 / 1 / l8 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l7 / 1 / l8 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1318,7 +1318,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="9"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l8 / 1 / l9 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l8 / 1 / l9 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1360,7 +1360,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="10"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l9 / 1 / l10 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l9 / 1 / l10 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1402,7 +1402,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="11"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l10 / 1 / l11 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l10 / 1 / l11 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1444,7 +1444,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="12"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l11 / 1 / l12 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l11 / 1 / l12 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1486,7 +1486,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="13"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l12 / 1 / l13 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l12 / 1 / l13 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1528,7 +1528,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="14"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l13 / 1 / l14 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l13 / 1 / l14 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1570,7 +1570,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="15"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l14 / 1 / l15 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l14 / 1 / l15 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1612,7 +1612,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="16"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l15 / 1 / l16 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l15 / 1 / l16 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1654,7 +1654,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="17"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l16 / 1 / l17 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l16 / 1 / l17 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1696,7 +1696,7 @@ exports[`should render component 1`] = `
       <div
         aria-rowindex="18"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l17 / 1 / l18 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l17 / 1 / l18 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1749,12 +1749,12 @@ exports[`should render fragments 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2]; grid-template-columns: [l0] 100px [l1]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 500px;"
+      style="contain: size style; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2]; grid-template-columns: [l0] 100px [l1]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 500px;"
     >
       <div
         aria-rowindex="1"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1775,7 +1775,7 @@ exports[`should render fragments 1`] = `
       <div
         aria-rowindex="2"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l1 / 1 / l2 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l1 / 1 / l2 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1801,12 +1801,12 @@ exports[`should render non elements 1`] = `
     style="overflow: auto; contain: strict; width: 100%; height: 100%;"
   >
     <div
-      style="contain: size style; overflow-anchor: none; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2] 40px [l3] 40px [l4] 40px [l5] 40px [l6]; grid-template-columns: [l0] 100px [l1]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 500px;"
+      style="contain: size style; flex: 0 0 auto; display: grid; grid-template-rows: [l0] 40px [l1] 40px [l2] 40px [l3] 40px [l4] 40px [l5] 40px [l6]; grid-template-columns: [l0] 100px [l1]; gap: 0px; margin-top: 0px; margin-inline-start: 0px; height: 500px;"
     >
       <div
         aria-rowindex="1"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l0 / 1 / l1 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1819,7 +1819,7 @@ exports[`should render non elements 1`] = `
       <div
         aria-rowindex="2"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l1 / 1 / l2 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l1 / 1 / l2 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1830,7 +1830,7 @@ exports[`should render non elements 1`] = `
       <div
         aria-rowindex="3"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l2 / 1 / l3 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l2 / 1 / l3 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1841,7 +1841,7 @@ exports[`should render non elements 1`] = `
       <div
         aria-rowindex="4"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l3 / 1 / l4 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l3 / 1 / l4 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1852,7 +1852,7 @@ exports[`should render non elements 1`] = `
       <div
         aria-rowindex="5"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l4 / 1 / l5 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l4 / 1 / l5 / -1;"
       >
         <div
           aria-colindex="1"
@@ -1863,7 +1863,7 @@ exports[`should render non elements 1`] = `
       <div
         aria-rowindex="6"
         role="row"
-        style="display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l5 / 1 / l6 / -1;"
+        style="overflow-anchor: none; display: grid; grid-template-rows: subgrid; grid-template-columns: subgrid; grid-area: l5 / 1 / l6 / -1;"
       >
         <div
           aria-colindex="1"

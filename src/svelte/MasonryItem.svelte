@@ -35,6 +35,7 @@
   let style: string = $derived(
     styleToString({
       contain: "layout style",
+      "overflow-anchor": "none", // https://drafts.csswg.org/css-scroll-anchoring/#candidate-examination
       position: "absolute",
       top: offset + "px",
       "inset-inline-start": crossOffset,

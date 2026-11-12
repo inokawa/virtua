@@ -27,6 +27,7 @@ export const MasonryItem = (props: MasonryItemProps): JSX.Element => {
 
   const style = createMemo((): JSX.CSSProperties => ({
     contain: "layout style",
+    "overflow-anchor": "none", // https://drafts.csswg.org/css-scroll-anchoring/#candidate-examination
     position: "absolute",
     top: props._offset + "px",
     "inset-inline-start": props._crossOffset,
