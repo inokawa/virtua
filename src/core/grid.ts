@@ -665,6 +665,7 @@ const getBoxStyle = (
   zIndex: number,
 ): GridStyle => {
   const style: Record<string, string | number> = {
+    overflowAnchor: "none", // https://drafts.csswg.org/css-scroll-anchoring/#candidate-examination
     display: "grid",
     gridTemplateRows: "subgrid",
     gridTemplateColumns: "subgrid",

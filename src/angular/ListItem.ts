@@ -38,6 +38,7 @@ export class ListItem {
     const isSSR = this.isSSR();
     const style: Record<string, string | undefined> = {
       contain: "layout style",
+      "overflow-anchor": "none", // https://drafts.csswg.org/css-scroll-anchoring/#candidate-examination
       position: hide && isSSR ? undefined : "absolute",
       [horizontal ? "height" : "width"]: "100%",
       [horizontal ? "top" : "left"]: "0px",

@@ -140,7 +140,6 @@
   let containerStyle = $derived(
     styleToString({
       contain: "size style", // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
-      "overflow-anchor": "none", // opt out browser's scroll anchoring because it will conflict with scroll anchoring of virtualizer
       flex: "none", // flex style can break layout
       position: "relative",
       width: "100%",

@@ -47,6 +47,7 @@
   let style: string = $derived.by(() => {
     const _style: Record<string, string | undefined> = {
       contain: "layout style",
+      "overflow-anchor": "none", // https://drafts.csswg.org/css-scroll-anchoring/#candidate-examination
       position: hide && isSSR ? undefined : "absolute",
       [horizontal ? "height" : "width"]: "100%",
       [horizontal ? "top" : "left"]: "0px",

@@ -40,6 +40,7 @@ export const MasonryItem = /*#__PURE__*/ memo(
     const style = useMemo(
       (): CSSProperties => ({
         contain: "layout style",
+        overflowAnchor: "none", // https://drafts.csswg.org/css-scroll-anchoring/#candidate-examination
         position: "absolute",
         top: offset,
         insetInlineStart: crossOffset,

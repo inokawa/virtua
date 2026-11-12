@@ -76,6 +76,7 @@ export const ListItem = /*#__PURE__*/ defineComponent(
 
       const style: StyleValue = {
         contain: "layout style",
+        overflowAnchor: "none", // https://drafts.csswg.org/css-scroll-anchoring/#candidate-examination
         position: isHide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
         [isHorizontal ? "top" : "left"]: "0px",

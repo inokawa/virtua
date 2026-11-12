@@ -46,6 +46,7 @@ export const ListItem: Component<ListItemProps> = (props) => {
     const isSSR = props._isSSR;
     const style: JSX.CSSProperties = {
       contain: "layout style",
+      "overflow-anchor": "none", // https://drafts.csswg.org/css-scroll-anchoring/#candidate-examination
       position: hide && isSSR ? undefined : "absolute",
       [isHorizontal ? "height" : "width"]: "100%",
       [isHorizontal ? "top" : "left"]: "0px",

@@ -43,6 +43,7 @@ export const ListItem = /*#__PURE__*/ memo(
     const style = useMemo((): CSSProperties => {
       const style: CSSProperties = {
         contain: "layout style",
+        overflowAnchor: "none", // https://drafts.csswg.org/css-scroll-anchoring/#candidate-examination
         position: hide && isSSR ? undefined : "absolute",
         [isHorizontal ? "height" : "width"]: "100%",
         [isHorizontal ? "top" : "left"]: 0,

@@ -30,6 +30,7 @@ export class MasonryItem {
   /** @internal */
   protected style = computed(() => ({
     contain: "layout style",
+    "overflow-anchor": "none", // https://drafts.csswg.org/css-scroll-anchoring/#candidate-examination
     position: "absolute",
     top: this.offset() + "px",
     "inset-inline-start": this.crossOffset(),

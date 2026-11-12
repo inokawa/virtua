@@ -77,6 +77,7 @@ export const MasonryItem = /*#__PURE__*/ defineComponent(
     return () => {
       const style: StyleValue = {
         contain: "layout style",
+        overflowAnchor: "none", // https://drafts.csswg.org/css-scroll-anchoring/#candidate-examination
         position: "absolute",
         top: offset.value + "px",
         insetInlineStart: crossOffset.value,
