@@ -68,19 +68,19 @@ describe.each<{
   describe("getRange", () => {
     const CACHE_LENGTH = 10;
 
-    // Moves the search cursor by computing a range which starts at the index
-    const initWithCursorAt = (sizes: readonly number[], index: number) => {
-      const layout = initWithOffsets(sizes);
-      const offset = sum(sizes.slice(0, index));
-      layout.$getRange(offset, offset);
-      return layout;
-    };
-
     describe.each([
       [0], // start
       [Math.floor(CACHE_LENGTH / 2)], // mid
       [CACHE_LENGTH - 1], // end
     ])("start from %i", (initialIndex) => {
+      // Moves the search cursor by computing a range which starts at the index
+      const initWithCursorAt = (sizes: readonly number[], index: number) => {
+        const layout = initWithOffsets(sizes);
+        const offset = sum(sizes.slice(0, index));
+        layout.$getRange(offset, offset);
+        return layout;
+      };
+
       it("should get start if offset is at start", () => {
         const layout = initWithCursorAt(
           range(CACHE_LENGTH, () => 20),
