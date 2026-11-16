@@ -248,7 +248,7 @@ export class Virtualizer<T> implements OnInit, VirtualizerHandle {
         mounted.add(i);
       }
       for (const index of sort([...mounted])) {
-        if (index < len) {
+        if (index >= 0 && index < len) {
           arr.push(index);
         }
       }

@@ -27,11 +27,11 @@ export const findIndex = (
   getOffset: (index: number) => number,
   length: number,
   offset: number,
-  low: number = 0,
-  high: number = length - 1,
 ): number => {
   // Find with binary search
-  let found: number = low;
+  let low = 0;
+  let high = length - 1;
+  let found = 0;
   while (low <= high) {
     const mid = floor((low + high) / 2);
     if (getOffset(mid) <= offset) {

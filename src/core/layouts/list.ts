@@ -1,7 +1,7 @@
 import { UNCACHED, fill, findIndex } from "../cache.js";
 import type { Layout } from "./types.js";
 import type { CacheSnapshot } from "../types.js";
-import { clamp, min, sort } from "../utils.js";
+import { sort } from "../utils.js";
 /**
  * @internal
  */
@@ -19,17 +19,35 @@ export const createListLayout = (
 ): ListLayout => {
   let defaultItemSize = (snapshot && snapshot[1]) || itemSize || 40;
 
-  let computedOffsetIndex = -1;
   let _totalMeasuredSize = 0;
   let shouldAutoEstimateItemSize = !itemSize;
-  let prevStartIndex = 0;
 
   const sizes: number[] = snapshot
     ? // https://github.com/inokawa/virtua/issues/441
       snapshot[0].slice(0, length)
     : [];
   fill(sizes, length - sizes.length);
-  const offsets: number[] = fill([], length + 1);
+  // A 1-indexed tree of the sizes, which offsets[0] only pads.
+  // https://en.wikipedia.org/wiki/Fenwick_tree
+  const offsets: number[] = [0];
+
+  const buildOffsets = (start: number) => {
+    const end = sizes.length + 1;
+    // The nodes before the start are kept, as a node depends only on the items up to it.
+    for (let i = start; i < end; i++) {
+      let sum = sizes[i - 1]!;
+      if (sum === UNCACHED) {
+        sum = defaultItemSize;
+      }
+      for (let j = 1; j < (i & -i); j <<= 1) {
+        sum += offsets[i - j]!;
+      }
+      offsets[i] = sum;
+    }
+    // Truncated after the loop, as growing by setting at the length keeps the array packed.
+    offsets.length = end;
+  };
+  buildOffsets(1);
 
   const getSize = (index: number): number => {
     const size = sizes[index]!;
@@ -38,66 +56,30 @@ export const createListLayout = (
 
   const getOffset = (index: number): number => {
     if (!length) return 0;
-    if (computedOffsetIndex >= index) {
-      return offsets[index]!;
+    let sum = 0;
+    for (; index > 0; index -= index & -index) {
+      sum += offsets[index]!;
     }
-
-    if (computedOffsetIndex < 0) {
-      // first offset must be 0 to avoid returning NaN, which can cause infinite rerender.
-      // https://github.com/inokawa/virtua/pull/160
-      offsets[0] = 0;
-      computedOffsetIndex = 0;
-    }
-    let i = computedOffsetIndex;
-    let top = offsets[i]!;
-    while (i < index) {
-      top += getSize(i);
-      offsets[++i] = top;
-    }
-    // mark as measured
-    computedOffsetIndex = index;
-    return top;
+    return sum;
   };
 
-  return {
-    $getRange: (startOffset, endOffset) => {
-      // Clamp because prevStartIndex may exceed the limit when children decreased a lot after scrolling
-      prevStartIndex = clamp(prevStartIndex, 0, length - 1);
+  const find = (offset: number): number => findIndex(getOffset, length, offset);
 
-      let start: number;
-      let end: number;
-      if (getOffset(prevStartIndex) <= startOffset) {
-        // search forward
-        // start <= end, prevStartIndex <= start
-        end = findIndex(getOffset, length, endOffset, prevStartIndex);
-        start = findIndex(getOffset, length, startOffset, prevStartIndex, end);
-      } else {
-        // search backward
-        // start <= end, start <= prevStartIndex
-        start = findIndex(
-          getOffset,
-          length,
-          startOffset,
-          undefined,
-          prevStartIndex,
-        );
-        end = findIndex(getOffset, length, endOffset, start);
-      }
-      prevStartIndex = start;
-      return [start, end];
-    },
-    $findIndex: (offset) => findIndex(getOffset, length, offset),
+  return {
+    $getRange: (startOffset, endOffset) => [find(startOffset), find(endOffset)],
+    $findIndex: find,
     $getItemOffset: getOffset,
     $getItemSize: getSize,
     $isSizeEqual: (index, size = UNCACHED) => sizes[index] === size,
     $setItemSizes: (resizes, viewportSize) => {
       // Update item sizes
       for (const [index, size] of resizes) {
-        _totalMeasuredSize +=
-          sizes[index] === UNCACHED ? size : size - getSize(index);
+        const diff = size - getSize(index);
+        _totalMeasuredSize += sizes[index] === UNCACHED ? size : diff;
         sizes[index] = size;
-        // mark as dirty
-        computedOffsetIndex = min(index, computedOffsetIndex);
+        for (let i = index + 1; i < offsets.length; i += i & -i) {
+          offsets[i]! += diff;
+        }
       }
       // Estimate initial item size from measured sizes
       if (
@@ -112,9 +94,6 @@ export const createListLayout = (
           sizes.filter((s) => s !== UNCACHED && s),
         );
 
-        // Discard cache for now
-        computedOffsetIndex = -1;
-
         // Calculate median
         const len = measuredSizes.length;
         const mid = (len / 2) | 0;
@@ -122,6 +101,8 @@ export const createListLayout = (
           len % 2 === 0
             ? (measuredSizes[mid - 1]! + measuredSizes[mid]!) / 2
             : measuredSizes[mid]!;
+        // The unmeasured items take the new default size.
+        buildOffsets(1);
         shouldAutoEstimateItemSize = false;
       }
     },
@@ -129,22 +110,17 @@ export const createListLayout = (
     $getLength: () => length,
     $setLength: (nextLength, isShift) => {
       const diff = nextLength - length;
-
-      computedOffsetIndex = isShift
-        ? // Discard cache for now
-          -1
-        : min(nextLength - 1, computedOffsetIndex);
       length = nextLength;
 
       if (diff >= 0) {
         // Added
-        fill(offsets, diff);
         fill(sizes, diff, isShift);
       } else {
         // Removed
-        offsets.splice(diff);
         sizes.splice(isShift ? 0 : diff, -diff);
       }
+      // offsets still ends at the old length here, and a shift moves all the items.
+      buildOffsets(isShift ? 1 : offsets.length);
     },
     $isEstimating: () => shouldAutoEstimateItemSize,
     $snapshot: () => [sizes.slice(), defaultItemSize],

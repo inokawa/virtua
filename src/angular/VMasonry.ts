@@ -222,7 +222,7 @@ export class VMasonry<T> implements OnInit, VMasonryHandle {
         mounted.add(i);
       }
       for (const index of sort([...mounted])) {
-        if (index < len) {
+        if (index >= 0 && index < len) {
           arr.push(index);
         }
       }
