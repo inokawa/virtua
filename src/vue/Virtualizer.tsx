@@ -319,7 +319,7 @@ export const Virtualizer = /*#__PURE__*/ defineComponent({
           mounted.add(i);
         }
         for (const index of sort([...mounted])) {
-          if (index < len) {
+          if (index >= 0 && index < len) {
             indexes.push(index);
           }
         }

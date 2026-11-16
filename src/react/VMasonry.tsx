@@ -278,7 +278,7 @@ export const VMasonry = /*#__PURE__*/ forwardRef<
         mounted.add(i);
       }
       for (const index of sort([...mounted])) {
-        if (index < count) {
+        if (index >= 0 && index < count) {
           indexes.push(index);
         }
       }

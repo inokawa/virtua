@@ -289,7 +289,7 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
         mounted.add(i);
       }
       for (const index of sort([...mounted])) {
-        if (index < count) {
+        if (index >= 0 && index < count) {
           items.push(props.data[index]!);
           indexes.push(index);
         }

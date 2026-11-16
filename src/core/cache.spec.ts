@@ -91,12 +91,8 @@ const offsetGetterOf = (cache: TestCache) => {
   return (index: number) => offsets[index]!;
 };
 
-const findIndexInCache = (
-  cache: TestCache,
-  offset: number,
-  low?: number,
-  high?: number,
-) => findIndex(offsetGetterOf(cache), cache._length, offset, low, high);
+const findIndexInCache = (cache: TestCache, offset: number) =>
+  findIndex(offsetGetterOf(cache), cache._length, offset);
 
 describe(findIndex.name, () => {
   const CACHE_LENGTH = 10;
