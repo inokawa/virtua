@@ -246,6 +246,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     const items: ReactElement[] = [];
 
     useIsomorphicLayoutEffect(() => {
+      let disposed = false;
       isSSR.current = false;
 
       // store must be subscribed first because others may dispatch update on init depending on implementation
@@ -272,7 +273,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
         // parent's ref doesn't exist when useLayoutEffect is called
         microtask(() => {
           // https://github.com/inokawa/virtua/pull/733
-          if (scrollRef.current) {
+          if (!disposed && scrollRef.current) {
             driver.$observe(container, scrollRef.current);
           }
         });
@@ -281,6 +282,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
       }
 
       return () => {
+        disposed = true;
         unsubscribe();
         driver.$dispose();
       };
