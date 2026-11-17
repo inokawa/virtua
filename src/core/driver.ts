@@ -678,6 +678,7 @@ export const createWindowDriver = (
         isHorizontal && getComputedStyle(viewport).direction === "rtl";
 
       const offsetKey = isHorizontal ? "offsetLeft" : "offsetTop";
+      const clientKey = isHorizontal ? "clientLeft" : "clientTop";
       const body = document.body;
       readBaseOffset = () => {
         // TODO calc offset only when it changes (maybe impossible)
@@ -687,6 +688,11 @@ export const createWindowDriver = (
           offset += node[offsetKey];
           node =
             node === body ? NULL : (node.offsetParent as HTMLElement | null);
+          // Offset coordinates start at the parent's padding edge. Keep the
+          // body's special document-relative offset handling.
+          if (node && node !== body) {
+            offset += node[clientKey];
+          }
         }
         return isRtl
           ? viewport.clientWidth - offset - container.offsetWidth

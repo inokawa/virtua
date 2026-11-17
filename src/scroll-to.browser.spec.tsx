@@ -24,7 +24,10 @@ import {
   getVirtualizer,
   recordScroll,
   relativeBottom,
+  relativeLeft,
+  relativeRight,
   relativeTop,
+  setRTL,
 } from "../spec/browser/index.js";
 import { range } from "../spec/utils.js";
 
@@ -523,6 +526,58 @@ describe("scrollToIndex", () => {
           )}
         </WindowVirtualizer>
       </div>
+    );
+
+    it.each(["vertical", "horizontal LTR", "horizontal RTL"] as const)(
+      "accounts for positioned ancestor borders (%s)",
+      async (direction) => {
+        const horizontal = direction !== "vertical";
+        const rtl = direction === "horizontal RTL";
+        if (rtl) setRTL();
+
+        const TARGET_INDEX = 25;
+        const ITEM_SIZE = 40;
+        const ref = createRef<WindowVirtualizerHandle>();
+        const root = render(
+          <div
+            style={{
+              display: horizontal ? "inline-block" : "block",
+              position: "relative",
+              border: "solid",
+              borderWidth: "16px 13px 0 19px",
+            }}
+          >
+            <div style={{ position: "relative", border: "32px solid" }}>
+              <WindowVirtualizer
+                ref={ref}
+                data={range(ITEM_COUNT)}
+                horizontal={horizontal}
+                itemSize={ITEM_SIZE}
+              >
+                {(i) => (
+                  <div key={i} style={{ width: ITEM_SIZE, height: ITEM_SIZE }}>
+                    {i}
+                  </div>
+                )}
+              </WindowVirtualizer>
+            </div>
+          </div>,
+        );
+        const { viewport, container } = await getVirtualizer(root);
+        await expect.poll(() => getItem(container, "0")).toBeDefined();
+
+        ref.current!.scrollToIndex(TARGET_INDEX, { align: "start" });
+
+        const position = horizontal
+          ? rtl
+            ? relativeRight
+            : relativeLeft
+          : relativeTop;
+        await expectPosition(
+          () => position(viewport, getItem(container, String(TARGET_INDEX))!),
+          0,
+        );
+      },
     );
 
     describe("align start", () => {
