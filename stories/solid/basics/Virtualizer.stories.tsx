@@ -1,8 +1,8 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
-import { onMount } from "solid-js";
+import { onSettled } from "solid-js";
 import { Virtualizer, type VirtualizerHandle } from "../../../src/solid";
 
 export default {
@@ -111,7 +111,7 @@ export const Reverse: StoryObj = {
   render: () => {
     const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]!);
     let ref: VirtualizerHandle | undefined;
-    onMount(() => {
+    onSettled(() => {
       ref?.scrollToIndex(999);
     });
     return (

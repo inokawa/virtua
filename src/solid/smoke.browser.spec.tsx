@@ -1,5 +1,5 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import { afterEach, it } from "vitest";
 import { render } from "../../spec/browser/solid.js";

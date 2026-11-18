@@ -1,19 +1,17 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import {
-  onMount,
+  onSettled,
   onCleanup,
   createEffect,
   createSignal,
   createMemo,
-  type JSX,
   type Accessor,
-  on,
   For,
   untrack,
 } from "solid-js";
-import { isServer } from "solid-js/web";
+import { isServer, type JSX } from "@solidjs/web";
 import {
   UPDATE_SCROLL_END_EVENT,
   UPDATE_SIZE_EVENT,
@@ -76,7 +74,7 @@ export interface WindowVirtualizerProps<T> {
   /**
    * Get reference to {@link WindowVirtualizerHandle}.
    */
-  ref?: WindowVirtualizerHandle | ((handle?: WindowVirtualizerHandle) => void);
+  ref?: WindowVirtualizerHandle;
   /**
    * The data items rendered by this component.
    */
@@ -139,25 +137,28 @@ export const WindowVirtualizer = <T,>(
 ): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
 
-  const {
-    ref: _ref,
-    data: _data,
-    children: _children,
-    itemSize,
-    ssrCount,
-    shift: _shift,
-    horizontal = false,
-    cache,
-    onScrollEnd: _onScrollEnd,
-  } = props;
+  const horizontal = untrack(() => props.horizontal ?? false);
+  const ssrCount = untrack(() => props.ssrCount);
 
   const [isSSR, setIsSSR] = createSignal(!!ssrCount);
 
-  const layout = createListLayout(props.data.length, itemSize, cache);
+  const layout = untrack(() =>
+    createListLayout(props.data.length, props.itemSize, props.cache),
+  );
   const store = createVirtualStore(layout, ssrCount);
   const driver = createWindowDriver(store, layout, horizontal);
 
-  const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
+  // Syncs the props before the version is read, and ownedWrite allows the subscriber to write it during the sync
+  const [stateVersion, setRerender] = createSignal(
+    () => {
+      const count = props.data.length;
+      untrack(() => {
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, count, props.shift);
+      });
+      return store.$getStateVersion();
+    },
+    { ownedWrite: true },
+  );
 
   const unsubscribe = store.$subscribe((flag) => {
     if (flag & UPDATE_VIRTUAL_STATE) {
@@ -175,19 +176,19 @@ export const WindowVirtualizer = <T,>(
     }
   });
 
-  const range = createMemo<ItemsRange>((prev) => {
-    stateVersion();
-    const next = store.$getRange(props.bufferSize);
-    if (prev && isSameRange(prev, next)) {
-      return prev;
-    }
-    return next;
-  });
+  const range = createMemo(
+    (): ItemsRange => {
+      stateVersion();
+      return store.$getRange(props.bufferSize);
+    },
+    { equals: isSameRange },
+  );
   const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
   const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
 
-  // eslint-disable-next-line solid/reactivity
-  const ref = props.ref as Exclude<typeof props.ref, WindowVirtualizerHandle>;
+  // The compiler turns `ref={handle}` into a function that assigns the handle
+  const ref = untrack(() => props.ref) as unknown as
+    ((handle?: WindowVirtualizerHandle) => void) | undefined;
   if (!isServer && ref) {
     ref({
       get cache() {
@@ -208,28 +209,20 @@ export const WindowVirtualizer = <T,>(
     onCleanup(() => ref());
   }
 
-  onMount(() => {
+  onSettled(() => {
     setIsSSR(false);
 
     driver.$observe(containerRef!);
 
-    onCleanup(() => {
+    return () => {
       unsubscribe();
       driver.$dispose();
-    });
+    };
   });
 
-  createEffect(
-    on(stateVersion, () => {
-      driver.$effect();
-    }),
-  );
+  createEffect(stateVersion, driver.$effect);
 
   const dataSlice = createMemo<T[]>(() => {
-    const count = props.data.length;
-    untrack(() => {
-      store.$update(ACTION_ITEMS_LENGTH_CHANGE, count, props.shift);
-    });
     const items: T[] = [];
     for (let [i, j] = range(); i <= j; i++) {
       items.push(props.data[i]!);
@@ -260,17 +253,16 @@ export const WindowVirtualizer = <T,>(
             stateVersion();
             return layout.$isSizeEqual(itemIndex());
           });
-          const children = createMemo(() => {
-            return untrack(() => props.children(data, itemIndex));
-          });
+          const children = untrack(() => props.children(data, itemIndex));
 
           return (
             <ListItem
+              _as="div"
               _index={itemIndex()}
               _resizer={driver.$observeItem}
               _offset={offset()}
               _hide={hide()}
-              _children={children()}
+              _children={children}
               _isHorizontal={horizontal}
               _isSSR={isSSR()}
             />

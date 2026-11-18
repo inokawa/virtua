@@ -1,7 +1,7 @@
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import vueJsx from "@vitejs/plugin-vue-jsx";
-import solid from "vite-plugin-solid";
+import solid from "@solidjs/vite-plugin";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import angular from "@analogjs/vite-plugin-angular";
 import { playwright } from "@vitest/browser-playwright";
@@ -132,10 +132,14 @@ export default defineConfig({
         },
       },
       {
-        // ssr:true also makes the client build hydratable
-        plugins: [solid({ ssr: true })],
+        plugins: [
+          // The plugin compiles non-hydratable under vitest, but these specs hydrate the SSR HTML.
+          solid({ solid: { hydratable: true } }),
+        ],
         test: {
           name: "browser-solid",
+          // Makes the plugin resolve the server build for the SSR entry. The tests themselves run in the browser.
+          environment: "node",
           expect: browserPoll,
           include: ["src/solid/*.browser.spec.tsx"],
           browser: {

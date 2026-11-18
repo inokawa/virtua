@@ -1,10 +1,10 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import { it, expect, describe } from "vitest";
 import { Virtualizer } from "./Virtualizer.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
-import { type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
 import { render } from "../../spec/jsdom/solid.js";
 import { range } from "../../spec/utils.js";
 

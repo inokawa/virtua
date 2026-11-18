@@ -1,5 +1,5 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import {
   VGrid,
@@ -21,7 +21,7 @@ import {
   generateHydrationScript,
   hydrate as hydrateSolid,
   renderToString,
-} from "solid-js/web";
+} from "@solidjs/web";
 import { range } from "../utils.js";
 
 const List = (props: SsrProps) => (
@@ -107,6 +107,10 @@ export const render: SsrEntry["render"] = (name, props) => {
 export const hydrate: SsrEntry["hydrate"] = (root, name, props) => {
   // solid needs its hydration script, which is inert when set with innerHTML
   new Function(root.querySelector("script")!.textContent!)();
+  // The script keeps the hydration state on window for the page, so it is dropped for the next test
+  onTestFinished(() => {
+    delete (window as { _$HY?: unknown })._$HY;
+  });
   const Fixture = fixtures[name];
   onTestFinished(hydrateSolid(() => <Fixture {...props} />, root));
 };

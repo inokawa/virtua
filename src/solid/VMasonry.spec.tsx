@@ -1,5 +1,5 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import { it, expect, vi } from "vitest";
 import { createSignal } from "solid-js";
@@ -25,7 +25,7 @@ it("should pass attributes to element", () => {
       data={range(1)}
       id="id"
       class="class"
-      tabIndex={0}
+      tabindex={0}
       role="list"
       aria-label="test"
       style={{ background: "red" }}

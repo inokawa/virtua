@@ -1,20 +1,17 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import {
-  onMount,
+  onSettled,
   onCleanup,
   createEffect,
-  createComputed,
   createSignal,
   createMemo,
-  type JSX,
-  on,
   For,
   type Accessor,
   untrack,
 } from "solid-js";
-import { isServer } from "solid-js/web";
+import { isServer, type JSX } from "@solidjs/web";
 import {
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
@@ -76,7 +73,7 @@ export interface WindowMasonryProps<T> {
   /**
    * Get reference to {@link WindowMasonryHandle}.
    */
-  ref?: WindowMasonryHandle | ((handle?: WindowMasonryHandle) => void);
+  ref?: WindowMasonryHandle;
   /**
    * The data items rendered by this component.
    */
@@ -139,19 +136,35 @@ export const WindowMasonry = <T,>(
   props: WindowMasonryProps<T>,
 ): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const { itemSize, cache, ssrCount } = props;
+  const ssrCount = untrack(() => props.ssrCount);
 
-  const layout = createMasonryLayout(
-    props.data.length,
-    props.lanes,
-    props.gap,
-    itemSize,
-    cache,
+  const layout = untrack(() =>
+    createMasonryLayout(
+      props.data.length,
+      props.lanes,
+      props.gap,
+      props.itemSize,
+      props.cache,
+    ),
   );
+
   const store = createVirtualStore(layout, ssrCount);
   const driver = createWindowDriver(store, layout, false);
 
-  const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
+  // Syncs the props before the version is read, and ownedWrite allows the subscriber to write it during the sync
+  const [stateVersion, setRerender] = createSignal(
+    () => {
+      const nextLanes = props.lanes;
+      const nextGap = props.gap;
+      const count = props.data.length;
+      untrack(() => {
+        relayout(store, layout, nextLanes, nextGap);
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, count);
+      });
+      return store.$getStateVersion();
+    },
+    { ownedWrite: true },
+  );
 
   const unsubscribe = store.$subscribe((flag) => {
     if (flag & UPDATE_VIRTUAL_STATE) {
@@ -169,18 +182,13 @@ export const WindowMasonry = <T,>(
     }
   });
 
-  createComputed(() => {
-    relayout(store, layout, props.lanes, props.gap);
-  });
-
-  const range = createMemo<ItemsRange>((prev) => {
-    stateVersion();
-    const next = store.$getRange(props.bufferSize);
-    if (prev && isSameRange(prev, next)) {
-      return prev;
-    }
-    return next;
-  });
+  const range = createMemo(
+    (): ItemsRange => {
+      stateVersion();
+      return store.$getRange(props.bufferSize);
+    },
+    { equals: isSameRange },
+  );
   const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
   const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
   const lanes = createMemo(() => stateVersion() && layout.$getLanes());
@@ -190,8 +198,9 @@ export const WindowMasonry = <T,>(
     toCrossValue(1 / lanes(), gap() / lanes() - gap()),
   );
 
-  // eslint-disable-next-line solid/reactivity
-  const ref = props.ref as Exclude<typeof props.ref, WindowMasonryHandle>;
+  // The compiler turns `ref={handle}` into a function that assigns the handle
+  const ref = untrack(() => props.ref) as unknown as
+    ((handle?: WindowMasonryHandle) => void) | undefined;
   if (!isServer && ref) {
     ref({
       get cache() {
@@ -210,26 +219,18 @@ export const WindowMasonry = <T,>(
     onCleanup(() => ref());
   }
 
-  onMount(() => {
+  onSettled(() => {
     driver.$observe(containerRef!);
 
-    onCleanup(() => {
+    return () => {
       unsubscribe();
       driver.$dispose();
-    });
+    };
   });
 
-  createEffect(
-    on(stateVersion, () => {
-      driver.$effect();
-    }),
-  );
+  createEffect(stateVersion, driver.$effect);
 
   const dataSlice = createMemo<T[]>(() => {
-    const count = props.data.length;
-    untrack(() => {
-      store.$update(ACTION_ITEMS_LENGTH_CHANGE, count);
-    });
     const items: T[] = [];
     for (let [i, j] = range(); i <= j; i++) {
       items.push(props.data[i]!);
@@ -264,9 +265,7 @@ export const WindowMasonry = <T,>(
             stateVersion();
             return layout.$isSizeEqual(itemIndex());
           });
-          const children = createMemo(() => {
-            return untrack(() => props.children(data, itemIndex));
-          });
+          const children = untrack(() => props.children(data, itemIndex));
 
           return (
             <MasonryItem
@@ -279,7 +278,7 @@ export const WindowMasonry = <T,>(
               )}
               _crossSize={crossSize()}
               _hide={hide()}
-              _children={children()}
+              _children={children}
             />
           );
         }}

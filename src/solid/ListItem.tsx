@@ -1,17 +1,10 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
-import {
-  type Component,
-  type JSX,
-  createEffect,
-  createMemo,
-  mergeProps,
-  onCleanup,
-  type ValidComponent,
-} from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { type Component, createEffect, createMemo } from "solid-js";
+import { dynamic, type JSX } from "@solidjs/web";
 import { type Driver } from "../core/index.js";
+import { type CustomItemComponent } from "./types.js";
 
 interface ListItemProps {
   _children: JSX.Element;
@@ -21,24 +14,21 @@ interface ListItemProps {
   _hide: boolean;
   _isHorizontal: boolean;
   _isSSR?: boolean;
-  _as?: ValidComponent;
+  _as: keyof JSX.IntrinsicElements | CustomItemComponent;
 }
 
 /**
  * @internal
  */
 export const ListItem: Component<ListItemProps> = (props) => {
-  let elementRef: HTMLDivElement | undefined;
-  props = mergeProps<[Partial<ListItemProps>, ListItemProps]>(
-    { _as: "div" },
-    props,
-  );
+  let elementRef!: HTMLDivElement;
+  const Item = dynamic(() => props._as);
 
   // The index may be changed if elements are inserted to or removed from the start of props.children
-  createEffect(() => {
-    if (!elementRef) return;
-    onCleanup(props._resizer(elementRef, props._index));
-  });
+  createEffect(
+    () => props._index,
+    (index) => props._resizer(elementRef, index),
+  );
 
   const style = createMemo(() => {
     const isHorizontal = props._isHorizontal;
@@ -60,13 +50,12 @@ export const ListItem: Component<ListItemProps> = (props) => {
   });
 
   return (
-    <Dynamic
-      component={props._as}
+    <Item
       index={typeof props._as === "string" ? undefined : props._index}
       ref={elementRef}
       style={style()}
     >
       {props._children}
-    </Dynamic>
+    </Item>
   );
 };

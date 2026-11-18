@@ -1,7 +1,8 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
-import { type JSX, splitProps } from "solid-js";
+import { omit } from "solid-js";
+import { type JSX } from "@solidjs/web";
 import { type ViewportComponentAttributes } from "./types.js";
 import {
   Virtualizer,
@@ -42,7 +43,8 @@ export interface VListProps<T>
  * Virtualized list component. See {@link VListProps} and {@link VListHandle}.
  */
 export const VList = <T,>(props: VListProps<T>): JSX.Element => {
-  const [local, others] = splitProps(props, [
+  const others = omit(
+    props,
     "ref",
     "data",
     "children",
@@ -58,36 +60,36 @@ export const VList = <T,>(props: VListProps<T>): JSX.Element => {
     "onScrollEnd",
     "onResize",
     "style",
-  ]);
+  );
 
   return (
     <div
       {...others}
       style={{
         display: "block",
-        [local.horizontal ? "overflow-x" : "overflow-y"]: "auto",
+        [props.horizontal ? "overflow-x" : "overflow-y"]: "auto",
         contain: "strict",
         width: "100%",
         height: "100%",
-        ...local.style,
+        ...props.style,
       }}
     >
       <Virtualizer
-        ref={local.ref}
-        data={local.data}
-        bufferSize={local.bufferSize}
-        itemSize={local.itemSize}
-        ssrCount={local.ssrCount}
-        shift={local.shift}
-        horizontal={local.horizontal}
-        keepMounted={local.keepMounted}
-        cache={local.cache}
-        item={local.item}
-        onScroll={local.onScroll}
-        onScrollEnd={local.onScrollEnd}
-        onResize={local.onResize}
+        ref={props.ref}
+        data={props.data}
+        bufferSize={props.bufferSize}
+        itemSize={props.itemSize}
+        ssrCount={props.ssrCount}
+        shift={props.shift}
+        horizontal={props.horizontal}
+        keepMounted={props.keepMounted}
+        cache={props.cache}
+        item={props.item}
+        onScroll={props.onScroll}
+        onScrollEnd={props.onScrollEnd}
+        onResize={props.onResize}
       >
-        {local.children}
+        {props.children}
       </Virtualizer>
     </div>
   );

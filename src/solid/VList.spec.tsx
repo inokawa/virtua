@@ -1,5 +1,5 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import { it, expect, describe } from "vitest";
 import { VList } from "./VList.js";

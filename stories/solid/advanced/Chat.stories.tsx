@@ -1,9 +1,9 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { Virtualizer, VirtualizerHandle } from "../../../src/solid";
-import { createSignal, createEffect, onCleanup, onMount } from "solid-js";
+import { createSignal, createEffect, onSettled } from "solid-js";
 import { faker } from "@faker-js/faker";
 
 export default {
@@ -97,23 +97,30 @@ export const Default: StoryObj = {
     const [value, setValue] = createSignal("Hello world!");
     const [fetching, setFetching] = createSignal(false);
 
-    createEffect(() => {
-      items();
-      setIsPrepend(false);
-    });
+    createEffect(
+      () => items(),
+      () => {
+        setIsPrepend(false);
+      },
+    );
 
-    const stickToBottom = () => {
-      if (virtualizerHandle && shouldStickToBottom()) {
-        virtualizerHandle.scrollToIndex(items().length - 1, { align: "end" });
+    const scrollToBottom = (length: number, shouldStick: boolean) => {
+      if (virtualizerHandle && shouldStick) {
+        virtualizerHandle.scrollToIndex(length - 1, { align: "end" });
       }
     };
+    const stickToBottom = () => {
+      scrollToBottom(items().length, shouldStickToBottom());
+    };
 
-    createEffect(() => {
-      items();
-      stickToBottom();
-    });
+    createEffect(
+      () => [items(), shouldStickToBottom()] as const,
+      ([items, shouldStick]) => {
+        scrollToBottom(items.length, shouldStick);
+      },
+    );
 
-    onMount(() => {
+    onSettled(() => {
       let canceled = false;
       let timer: ReturnType<typeof setTimeout> | null = null;
       const setTimer = () => {
@@ -124,10 +131,10 @@ export const Default: StoryObj = {
         }, 5000);
       };
       setTimer();
-      onCleanup(() => {
+      return () => {
         canceled = true;
         if (timer) clearTimeout(timer);
-      });
+      };
     });
 
     const disabled = () => !value().length;
