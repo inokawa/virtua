@@ -510,11 +510,18 @@ describe("scrollToIndex", () => {
   });
 
   describe("WindowVirtualizer", () => {
-    // The list starts below other content, so scrolling to an index has to account for the base offset
+    // The list starts below other content inside a positioned ancestor with borders, so scrolling to an index has to account for the base offset
     const PADDING = 100;
+    const BORDER = 30;
 
     const List = ({ handle }: { handle: Ref<WindowVirtualizerHandle> }) => (
-      <div style={{ padding: PADDING }}>
+      <div
+        style={{
+          position: "relative",
+          padding: PADDING,
+          border: `${BORDER}px solid`,
+        }}
+      >
         <WindowVirtualizer ref={handle} data={range(ITEM_COUNT)}>
           {(i) => (
             <div key={i} style={{ height: HEIGHTS[i % HEIGHTS.length] }}>
@@ -585,9 +592,9 @@ describe("scrollToIndex", () => {
 
         ref.current!.scrollToIndex(ITEM_COUNT - 1);
 
-        // Check if scrolled precisely. The document can not scroll past its end, so the padding below the list stays visible
+        // Check if scrolled precisely. The document can not scroll past its end, so the padding and the border below the list stay visible
         await expectItemBottom(viewport, container, ITEM_COUNT - 1, {
-          distance: PADDING,
+          distance: PADDING + BORDER,
         });
 
         // Check if unnecessary items are not rendered
@@ -638,9 +645,9 @@ describe("scrollToIndex", () => {
 
         ref.current!.scrollToIndex(TARGET_INDEX, { align: "end" });
 
-        // Check if scrolled precisely. The document can not scroll past its start, so the padding above the list stays visible
+        // Check if scrolled precisely. The document can not scroll past its start, so the padding and the border above the list stay visible
         await expectItemTop(viewport, container, TARGET_INDEX, {
-          distance: PADDING,
+          distance: PADDING + BORDER,
         });
 
         // Check if unnecessary items are not rendered
