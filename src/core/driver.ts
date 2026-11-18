@@ -688,8 +688,6 @@ export const createWindowDriver = (
           offset += node[offsetKey];
           node =
             node === body ? NULL : (node.offsetParent as HTMLElement | null);
-          // Offset coordinates start at the parent's padding edge. Keep the
-          // body's special document-relative offset handling.
           if (node && node !== body) {
             offset += node[clientKey];
           }
