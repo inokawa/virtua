@@ -4,9 +4,9 @@
 
 # Type Alias: CacheSnapshot
 
-> **CacheSnapshot** = \[`number`[], `number`\]
+> **CacheSnapshot** = \[`sizes`: `number`[], `defaultSize?`: `number`\]
 
-Defined in: [src/core/types.ts:11](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/core/types.ts#L11)
+Defined in: [src/core/types.ts:11](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/core/types.ts#L11)
 
 Serializable cache snapshot.
 

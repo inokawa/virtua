@@ -4,13 +4,14 @@
 
 # Interface: VListProps\<T\>
 
-Defined in: [src/vue/VList.tsx:23](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/VList.tsx#L23)
+Defined in: [src/vue/VList.tsx:23](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/VList.tsx#L23)
 
 Props of [VList](../variables/VList.md).
 
 ## Extends
 
-- `PublicProps`.`Pick`\<[`VirtualizerProps`](VirtualizerProps.md)\<`T`\>, `"data"` \| `"bufferSize"` \| `"itemSize"` \| `"shift"` \| `"horizontal"` \| `"cache"` \| `"ssrCount"` \| `"itemProps"` \| `"onScroll"` \| `"onScrollEnd"` \| `"onResize"` \| `"keepMounted"`\>
+- `PublicProps`
+- `Pick`\<[`VirtualizerProps`](VirtualizerProps.md)\<`T`\>, `"data"` \| `"bufferSize"` \| `"itemSize"` \| `"shift"` \| `"horizontal"` \| `"cache"` \| `"ssrCount"` \| `"itemProps"` \| `"onScroll"` \| `"onScrollEnd"` \| `"onResize"` \| `"keepMounted"`\>
 
 ## Type Parameters
 
@@ -24,7 +25,7 @@ Props of [VList](../variables/VList.md).
 
 > `optional` **key?**: `PropertyKey`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1213
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1225
 
 #### Inherited from
 
@@ -36,7 +37,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1213
 
 > `optional` **ref?**: `VNodeRef`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1214
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1226
 
 #### Inherited from
 
@@ -48,7 +49,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1214
 
 > `optional` **ref\_for?**: `boolean`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1215
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1227
 
 #### Inherited from
 
@@ -60,7 +61,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1215
 
 > `optional` **ref\_key?**: `string`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1216
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1228
 
 #### Inherited from
 
@@ -72,7 +73,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1216
 
 > `optional` **onVnodeBeforeMount?**: `VNodeMountHook` \| `VNodeMountHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1217
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1229
 
 #### Inherited from
 
@@ -84,7 +85,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1217
 
 > `optional` **onVnodeMounted?**: `VNodeMountHook` \| `VNodeMountHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1218
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1230
 
 #### Inherited from
 
@@ -96,7 +97,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1218
 
 > `optional` **onVnodeBeforeUpdate?**: `VNodeUpdateHook` \| `VNodeUpdateHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1219
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1231
 
 #### Inherited from
 
@@ -108,7 +109,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1219
 
 > `optional` **onVnodeUpdated?**: `VNodeUpdateHook` \| `VNodeUpdateHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1220
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1232
 
 #### Inherited from
 
@@ -120,7 +121,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1220
 
 > `optional` **onVnodeBeforeUnmount?**: `VNodeMountHook` \| `VNodeMountHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1221
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1233
 
 #### Inherited from
 
@@ -132,7 +133,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1221
 
 > `optional` **onVnodeUnmounted?**: `VNodeMountHook` \| `VNodeMountHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1222
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1234
 
 #### Inherited from
 
@@ -144,7 +145,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1222
 
 > `optional` **class?**: `unknown`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1401
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1413
 
 #### Inherited from
 
@@ -156,7 +157,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1401
 
 > `optional` **style?**: `unknown`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1402
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1414
 
 #### Inherited from
 
@@ -168,7 +169,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1402
 
 > `optional` **shift?**: `boolean`
 
-Defined in: [src/vue/Virtualizer.tsx:58](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/Virtualizer.tsx#L58)
+Defined in: [src/vue/Virtualizer.tsx:58](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/Virtualizer.tsx#L58)
 
 Set true only when items are added to or removed from the start of the list, such as when older items are loaded in reverse infinite scrolling. In that case, the scroll position is maintained from the end of the list instead of the start.
 
@@ -184,7 +185,7 @@ Set true only when items are added to or removed from the start of the list, suc
 
 > **data**: `T`[]
 
-Defined in: [src/vue/Virtualizer.tsx:40](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/Virtualizer.tsx#L40)
+Defined in: [src/vue/Virtualizer.tsx:40](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/Virtualizer.tsx#L40)
 
 The data items rendered by this component.
 
@@ -198,7 +199,7 @@ The data items rendered by this component.
 
 > `optional` **onScroll?**: (`offset`) => `void`
 
-Defined in: [src/vue/Virtualizer.tsx:105](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/Virtualizer.tsx#L105)
+Defined in: [src/vue/Virtualizer.tsx:105](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/Virtualizer.tsx#L105)
 
 Callback invoked whenever scroll offset changes.
 
@@ -224,7 +225,7 @@ Current scrollTop, or scrollLeft if horizontal: true.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/vue/Virtualizer.tsx:109](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/Virtualizer.tsx#L109)
+Defined in: [src/vue/Virtualizer.tsx:109](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/Virtualizer.tsx#L109)
 
 Callback invoked when scrolling stops.
 
@@ -242,7 +243,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **onResize?**: () => `void`
 
-Defined in: [src/vue/Virtualizer.tsx:113](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/Virtualizer.tsx#L113)
+Defined in: [src/vue/Virtualizer.tsx:113](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/Virtualizer.tsx#L113)
 
 Callback invoked when the size of the viewport or the items changes.
 
@@ -260,7 +261,7 @@ Callback invoked when the size of the viewport or the items changes.
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/vue/Virtualizer.tsx:45](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/Virtualizer.tsx#L45)
+Defined in: [src/vue/Virtualizer.tsx:45](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/Virtualizer.tsx#L45)
 
 Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
 
@@ -280,7 +281,7 @@ Extra space in pixels to render before/after the viewport. The default value is 
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/vue/Virtualizer.tsx:52](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/Virtualizer.tsx#L52)
+Defined in: [src/vue/Virtualizer.tsx:52](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/Virtualizer.tsx#L52)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -297,7 +298,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **horizontal?**: `boolean`
 
-Defined in: [src/vue/Virtualizer.tsx:62](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/Virtualizer.tsx#L62)
+Defined in: [src/vue/Virtualizer.tsx:62](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/Virtualizer.tsx#L62)
 
 If true, rendered as a horizontally scrollable list. Otherwise rendered as a vertically scrollable list.
 
@@ -311,7 +312,7 @@ If true, rendered as a horizontally scrollable list. Otherwise rendered as a ver
 
 > `optional` **keepMounted?**: readonly `number`[]
 
-Defined in: [src/vue/Virtualizer.tsx:94](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/Virtualizer.tsx#L94)
+Defined in: [src/vue/Virtualizer.tsx:94](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/Virtualizer.tsx#L94)
 
 List of indexes that should be always mounted, even when off screen.
 
@@ -325,7 +326,7 @@ List of indexes that should be always mounted, even when off screen.
 
 > `optional` **cache?**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/vue/Virtualizer.tsx:100](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/Virtualizer.tsx#L100)
+Defined in: [src/vue/Virtualizer.tsx:100](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/Virtualizer.tsx#L100)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VirtualizerHandle.cache](VListHandle.md#cache).
 
@@ -341,7 +342,7 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `optional` **ssrCount?**: `number`
 
-Defined in: [src/vue/Virtualizer.tsx:70](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/Virtualizer.tsx#L70)
+Defined in: [src/vue/Virtualizer.tsx:70](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/Virtualizer.tsx#L70)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -355,7 +356,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `optional` **itemProps?**: `ItemProps`\<`T`\>
 
-Defined in: [src/vue/Virtualizer.tsx:90](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/Virtualizer.tsx#L90)
+Defined in: [src/vue/Virtualizer.tsx:90](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/Virtualizer.tsx#L90)
 
 A function that provides properties/attributes for item element
 

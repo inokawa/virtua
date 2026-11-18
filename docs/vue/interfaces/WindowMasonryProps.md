@@ -4,7 +4,7 @@
 
 # Interface: WindowMasonryProps\<T\>
 
-Defined in: [src/vue/WindowMasonry.tsx:68](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/WindowMasonry.tsx#L68)
+Defined in: [src/vue/WindowMasonry.tsx:68](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L68)
 
 Props of [WindowMasonry](../variables/WindowMasonry.md).
 
@@ -24,7 +24,7 @@ Props of [WindowMasonry](../variables/WindowMasonry.md).
 
 > **data**: `T`[]
 
-Defined in: [src/vue/WindowMasonry.tsx:72](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/WindowMasonry.tsx#L72)
+Defined in: [src/vue/WindowMasonry.tsx:72](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L72)
 
 The data items rendered by this component.
 
@@ -34,7 +34,7 @@ The data items rendered by this component.
 
 > **lanes**: `number`
 
-Defined in: [src/vue/WindowMasonry.tsx:76](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/WindowMasonry.tsx#L76)
+Defined in: [src/vue/WindowMasonry.tsx:76](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L76)
 
 The number of lanes (columns) which items are laid out into. Each item is placed into the shortest lane in order. It must be an integer and the minimum value is 1.
 
@@ -44,7 +44,7 @@ The number of lanes (columns) which items are laid out into. Each item is placed
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/vue/WindowMasonry.tsx:81](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/WindowMasonry.tsx#L81)
+Defined in: [src/vue/WindowMasonry.tsx:81](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L81)
 
 The gap between the items and the lanes in pixels, which is not included in the sizes.
 
@@ -60,7 +60,7 @@ The gap between the items and the lanes in pixels, which is not included in the 
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/vue/WindowMasonry.tsx:88](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/WindowMasonry.tsx#L88)
+Defined in: [src/vue/WindowMasonry.tsx:88](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L88)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -73,7 +73,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/vue/WindowMasonry.tsx:93](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/WindowMasonry.tsx#L93)
+Defined in: [src/vue/WindowMasonry.tsx:93](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L93)
 
 Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
 
@@ -89,7 +89,7 @@ Extra space in pixels to render before/after the viewport. The default value is 
 
 > `optional` **cache?**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/vue/WindowMasonry.tsx:99](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/WindowMasonry.tsx#L99)
+Defined in: [src/vue/WindowMasonry.tsx:99](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L99)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [WindowMasonryHandle.cache](WindowMasonryHandle.md#cache).
 
@@ -101,7 +101,7 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `optional` **ssrCount?**: `number`
 
-Defined in: [src/vue/WindowMasonry.tsx:105](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/WindowMasonry.tsx#L105)
+Defined in: [src/vue/WindowMasonry.tsx:105](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L105)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -113,7 +113,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `optional` **onScroll?**: () => `void`
 
-Defined in: [src/vue/WindowMasonry.tsx:109](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/WindowMasonry.tsx#L109)
+Defined in: [src/vue/WindowMasonry.tsx:109](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L109)
 
 Callback invoked whenever scroll offset changes.
 
@@ -127,7 +127,7 @@ Callback invoked whenever scroll offset changes.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/vue/WindowMasonry.tsx:113](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/WindowMasonry.tsx#L113)
+Defined in: [src/vue/WindowMasonry.tsx:113](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L113)
 
 Callback invoked when scrolling stops.
 
@@ -141,7 +141,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **onResize?**: () => `void`
 
-Defined in: [src/vue/WindowMasonry.tsx:117](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/vue/WindowMasonry.tsx#L117)
+Defined in: [src/vue/WindowMasonry.tsx:117](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L117)
 
 Callback invoked when the size of the viewport or the items changes.
 
@@ -155,7 +155,7 @@ Callback invoked when the size of the viewport or the items changes.
 
 > `optional` **key?**: `PropertyKey`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1213
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1225
 
 #### Inherited from
 
@@ -167,7 +167,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1213
 
 > `optional` **ref?**: `VNodeRef`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1214
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1226
 
 #### Inherited from
 
@@ -179,7 +179,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1214
 
 > `optional` **ref\_for?**: `boolean`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1215
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1227
 
 #### Inherited from
 
@@ -191,7 +191,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1215
 
 > `optional` **ref\_key?**: `string`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1216
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1228
 
 #### Inherited from
 
@@ -203,7 +203,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1216
 
 > `optional` **onVnodeBeforeMount?**: `VNodeMountHook` \| `VNodeMountHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1217
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1229
 
 #### Inherited from
 
@@ -215,7 +215,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1217
 
 > `optional` **onVnodeMounted?**: `VNodeMountHook` \| `VNodeMountHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1218
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1230
 
 #### Inherited from
 
@@ -227,7 +227,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1218
 
 > `optional` **onVnodeBeforeUpdate?**: `VNodeUpdateHook` \| `VNodeUpdateHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1219
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1231
 
 #### Inherited from
 
@@ -239,7 +239,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1219
 
 > `optional` **onVnodeUpdated?**: `VNodeUpdateHook` \| `VNodeUpdateHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1220
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1232
 
 #### Inherited from
 
@@ -251,7 +251,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1220
 
 > `optional` **onVnodeBeforeUnmount?**: `VNodeMountHook` \| `VNodeMountHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1221
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1233
 
 #### Inherited from
 
@@ -263,7 +263,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1221
 
 > `optional` **onVnodeUnmounted?**: `VNodeMountHook` \| `VNodeMountHook`[]
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1222
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1234
 
 #### Inherited from
 
@@ -275,7 +275,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1222
 
 > `optional` **class?**: `unknown`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1401
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1413
 
 #### Inherited from
 
@@ -287,7 +287,7 @@ Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1401
 
 > `optional` **style?**: `unknown`
 
-Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1402
+Defined in: node\_modules/@vue/runtime-core/dist/runtime-core.d.ts:1414
 
 #### Inherited from
 

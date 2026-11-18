@@ -4,7 +4,7 @@
 
 # Class: WindowMasonry\<T\>
 
-Defined in: [src/angular/WindowMasonry.ts:112](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L112)
+Defined in: [src/angular/WindowMasonry.ts:112](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L112)
 
 [VMasonry](VMasonry.md) controlled by the window scrolling. See [WindowMasonryHandle](../interfaces/WindowMasonryHandle.md).
 
@@ -29,7 +29,7 @@ The host element is the container of the items.
 
 > **get** **cache**(): [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/angular/WindowMasonry.ts:300](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L300)
+Defined in: [src/angular/WindowMasonry.ts:302](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L302)
 
 Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
@@ -51,7 +51,7 @@ Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
 > **get** **scrollOffset**(): `number`
 
-Defined in: [src/angular/WindowMasonry.ts:303](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L303)
+Defined in: [src/angular/WindowMasonry.ts:305](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L305)
 
 Get current scrollTop.
 
@@ -73,7 +73,7 @@ Get current scrollTop.
 
 > **get** **viewportSize**(): `number`
 
-Defined in: [src/angular/WindowMasonry.ts:306](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L306)
+Defined in: [src/angular/WindowMasonry.ts:308](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L308)
 
 Get current clientHeight of the document.
 
@@ -93,7 +93,7 @@ Get current clientHeight of the document.
 
 > **new WindowMasonry**\<`T`\>(): `WindowMasonry`\<`T`\>
 
-Defined in: [src/angular/WindowMasonry.ts:233](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L233)
+Defined in: [src/angular/WindowMasonry.ts:233](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L233)
 
 #### Returns
 
@@ -105,7 +105,7 @@ Defined in: [src/angular/WindowMasonry.ts:233](https://github.com/inokawa/virtua
 
 > **ngOnInit**(): `void`
 
-Defined in: [src/angular/WindowMasonry.ts:270](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L270)
+Defined in: [src/angular/WindowMasonry.ts:270](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L270)
 
 A callback method that is invoked immediately after the
 default change detector has checked the directive's
@@ -127,7 +127,7 @@ It is invoked only once when the directive is instantiated.
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/angular/WindowMasonry.ts:309](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L309)
+Defined in: [src/angular/WindowMasonry.ts:311](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L311)
 
 Get item offset from start.
 
@@ -153,7 +153,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/angular/WindowMasonry.ts:312](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L312)
+Defined in: [src/angular/WindowMasonry.ts:314](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L314)
 
 Get item size.
 
@@ -179,7 +179,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/angular/WindowMasonry.ts:315](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L315)
+Defined in: [src/angular/WindowMasonry.ts:317](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L317)
 
 Scroll to the item specified by index.
 
@@ -211,7 +211,7 @@ options
 
 > `readonly` **data**: `InputSignal`\<readonly `T`[]\>
 
-Defined in: [src/angular/WindowMasonry.ts:116](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L116)
+Defined in: [src/angular/WindowMasonry.ts:116](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L116)
 
 The data items rendered by this component.
 
@@ -221,7 +221,7 @@ The data items rendered by this component.
 
 > `readonly` **getKey**: `InputSignal`\<(`data`, `index`) => `string` \| `number`\>
 
-Defined in: [src/angular/WindowMasonry.ts:121](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L121)
+Defined in: [src/angular/WindowMasonry.ts:121](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L121)
 
 Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
 
@@ -237,7 +237,7 @@ defaultGetKey (returns index of item)
 
 > `readonly` **lanes**: `InputSignal`\<`number`\>
 
-Defined in: [src/angular/WindowMasonry.ts:126](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L126)
+Defined in: [src/angular/WindowMasonry.ts:126](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L126)
 
 The number of lanes (columns) which items are laid out into. Each item is placed into the shortest lane in order. It must be an integer and the minimum value is 1.
 
@@ -247,7 +247,7 @@ The number of lanes (columns) which items are laid out into. Each item is placed
 
 > `readonly` **gap**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/WindowMasonry.ts:131](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L131)
+Defined in: [src/angular/WindowMasonry.ts:131](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L131)
 
 The gap between the items and the lanes in pixels, which is not included in the sizes.
 
@@ -263,7 +263,7 @@ The gap between the items and the lanes in pixels, which is not included in the 
 
 > `readonly` **itemSize**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/WindowMasonry.ts:138](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L138)
+Defined in: [src/angular/WindowMasonry.ts:138](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L138)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -276,7 +276,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `readonly` **bufferSize**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/WindowMasonry.ts:143](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L143)
+Defined in: [src/angular/WindowMasonry.ts:143](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L143)
 
 Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
 
@@ -292,7 +292,7 @@ Extra space in pixels to render before/after the viewport. The default value is 
 
 > `readonly` **cacheProp**: `InputSignal`\<[`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md) \| `undefined`\>
 
-Defined in: [src/angular/WindowMasonry.ts:149](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L149)
+Defined in: [src/angular/WindowMasonry.ts:149](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L149)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [WindowMasonryHandle.cache](../interfaces/WindowMasonryHandle.md#cache).
 
@@ -304,7 +304,7 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `readonly` **ssrCount**: `InputSignal`\<`number` \| `undefined`\>
 
-Defined in: [src/angular/WindowMasonry.ts:155](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L155)
+Defined in: [src/angular/WindowMasonry.ts:155](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L155)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -316,7 +316,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `readonly` **scrolled**: `OutputEmitterRef`\<`void`\>
 
-Defined in: [src/angular/WindowMasonry.ts:161](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L161)
+Defined in: [src/angular/WindowMasonry.ts:161](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L161)
 
 Emitted whenever scroll offset changes.
 
@@ -326,7 +326,7 @@ Emitted whenever scroll offset changes.
 
 > `readonly` **scrollEnded**: `OutputEmitterRef`\<`void`\>
 
-Defined in: [src/angular/WindowMasonry.ts:165](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L165)
+Defined in: [src/angular/WindowMasonry.ts:165](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L165)
 
 Emitted when scrolling stops.
 
@@ -336,6 +336,6 @@ Emitted when scrolling stops.
 
 > `readonly` **resized**: `OutputEmitterRef`\<`void`\>
 
-Defined in: [src/angular/WindowMasonry.ts:169](https://github.com/inokawa/virtua/blob/a222bccde53f570ca5f937d4f2e857f1fe69bb2c/src/angular/WindowMasonry.ts#L169)
+Defined in: [src/angular/WindowMasonry.ts:169](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L169)
 
 Emitted when the size of the viewport or the items changes.
