@@ -246,6 +246,7 @@ export const Virtualizer = /*#__PURE__*/ forwardRef<
     const items: ReactElement[] = [];
 
     useIsomorphicLayoutEffect(() => {
+      // https://github.com/inokawa/virtua/pull/1058
       let disposed = false;
       isSSR.current = false;
 

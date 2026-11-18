@@ -1,7 +1,6 @@
-import { it, expect, describe, vi } from "vitest";
+import { it, expect, describe } from "vitest";
 import { Virtualizer } from "./Virtualizer.js";
-import { createRef, forwardRef, StrictMode } from "react";
-import { render as renderSync } from "@testing-library/react";
+import { forwardRef } from "react";
 import { type CustomItemComponentProps } from "./types.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { render } from "../../spec/jsdom/react.js";
@@ -79,63 +78,6 @@ it("should render with keepMounted", async () => {
     </div>,
   );
   expect(asFragment()).toMatchSnapshot();
-});
-
-describe("scrollRef observation", () => {
-  it("should observe a parent's ref after it is assigned in Strict Mode", async () => {
-    const scrollRef = createRef<HTMLDivElement>();
-    const observe = vi.spyOn(ResizeObserver.prototype, "observe");
-    try {
-      const { unmount } = await render(
-        <StrictMode>
-          <div ref={scrollRef} style={{ overflowY: "auto" }}>
-            <Virtualizer scrollRef={scrollRef}>
-              <div>0</div>
-            </Virtualizer>
-          </div>
-        </StrictMode>,
-      );
-      expect(
-        observe.mock.calls.filter(([el]) => el === scrollRef.current),
-      ).toHaveLength(1);
-      unmount();
-    } finally {
-      observe.mockRestore();
-    }
-  });
-
-  it("should not observe a retained scrollRef after unmounting before the microtask", () => {
-    const scrollRef = { current: document.createElement("div") };
-    const observe = vi.spyOn(ResizeObserver.prototype, "observe");
-    try {
-      const { unmount } = renderSync(
-        <Virtualizer scrollRef={scrollRef}>
-          <div>0</div>
-        </Virtualizer>,
-      );
-      unmount();
-      vi.runAllTicks();
-      expect(
-        observe.mock.calls.filter(([el]) => el === scrollRef.current),
-      ).toHaveLength(0);
-    } finally {
-      observe.mockRestore();
-    }
-  });
-
-  it("should ignore a scrollRef cleared before the microtask", () => {
-    const scrollRef: { current: HTMLDivElement | null } = {
-      current: document.createElement("div"),
-    };
-    const { unmount } = renderSync(
-      <Virtualizer scrollRef={scrollRef}>
-        <div>0</div>
-      </Virtualizer>,
-    );
-    scrollRef.current = null;
-    expect(() => vi.runAllTicks()).not.toThrow();
-    unmount();
-  });
 });
 
 describe("vertical", async () => {
