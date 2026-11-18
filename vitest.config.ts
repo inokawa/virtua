@@ -72,15 +72,6 @@ export default defineConfig({
           include: ["src/solid/**/!(*.browser).spec.tsx"],
           environment: "jsdom",
           setupFiles: ["./spec/jsdom/setup.ts"],
-          server: {
-            deps: {
-              // https://github.com/solidjs/vite-plugin-solid/issues/102#issuecomment-2363242031
-              inline: true,
-            },
-          },
-        },
-        resolve: {
-          conditions: ["development", "browser"],
         },
       },
       {
