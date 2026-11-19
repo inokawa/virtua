@@ -58,7 +58,7 @@ export default defineConfig({
         plugins: [vueJsx()],
         test: {
           name: "vue",
-          include: ["src/vue/**/!(*.browser).spec.ts"],
+          include: ["src/vue/**/!(*.browser).spec.tsx"],
           environment: "jsdom",
           // https://github.com/testing-library/vue-testing-library/issues/296
           globals: true,

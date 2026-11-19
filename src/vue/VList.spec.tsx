@@ -1,5 +1,5 @@
+/** @jsxImportSource vue */
 import { it, expect, describe } from "vitest";
-import { h } from "vue";
 import { VList } from "./VList.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { render, SlotType } from "../../spec/jsdom/vue.js";
@@ -24,8 +24,9 @@ const attrs = {
 };
 
 const slots = {
-  default: ({ item: data }: SlotType<typeof VList<number>>) =>
-    h("div", { key: data }, data),
+  default: ({ item: data }: SlotType<typeof VList<number>>) => (
+    <div key={data}>{data}</div>
+  ),
 };
 
 describe("vertical", async () => {

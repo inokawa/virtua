@@ -1,5 +1,5 @@
+/** @jsxImportSource vue */
 import { it, expect } from "vitest";
-import { h } from "vue";
 import { VMasonry } from "./VMasonry.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { render } from "../../spec/jsdom/vue.js";
@@ -16,7 +16,7 @@ setupResizeJsDom({
 });
 
 const slots = {
-  default: ({ item }: { item: number }) => h("div", item),
+  default: ({ item }: { item: number }) => <div>{item}</div>,
 };
 
 it("should pass attributes to element", async () => {

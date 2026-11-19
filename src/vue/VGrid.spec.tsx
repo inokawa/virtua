@@ -1,5 +1,6 @@
+/** @jsxImportSource vue */
 import { it, expect, vi } from "vitest";
-import { defineComponent, h, reactive } from "vue";
+import { defineComponent, reactive } from "vue";
 import { VGrid } from "./VGrid.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { delay } from "../../spec/utils.js";
@@ -18,7 +19,7 @@ const cell = ({
   cell: { rowIndex, colIndex },
 }: {
   cell: { rowIndex: number; colIndex: number };
-}) => h("div", `${rowIndex} / ${colIndex}`);
+}) => <div>{`${rowIndex} / ${colIndex}`}</div>;
 
 it("should pass attributes to element", async () => {
   const wrapper = await render(VGrid, {
@@ -71,7 +72,7 @@ it("should render 4x4 cells", async () => {
         row: { id: string };
         col: { id: string };
         cell: { rowIndex: number; colIndex: number };
-      }) => h("div", `${row.id + col.id} ${rowIndex} / ${colIndex}`),
+      }) => <div>{`${row.id + col.id} ${rowIndex} / ${colIndex}`}</div>,
     },
   });
   expect(wrapper.html()).toMatchSnapshot();
@@ -80,19 +81,16 @@ it("should render 4x4 cells", async () => {
 it("should not render the existing cells again when a row is added", async () => {
   let calls = 0;
   const rows = reactive<object[]>([{}, {}, {}]);
-  const Host = defineComponent(
-    () => () =>
-      h(
-        VGrid,
-        { rows, rowHeight: 40, cols: 4, colWidth: 100 },
-        {
-          default: (arg: { cell: { rowIndex: number; colIndex: number } }) => {
-            calls++;
-            return cell(arg);
-          },
+  const Host = defineComponent(() => () => (
+    <VGrid rows={rows} rowHeight={40} cols={4} colWidth={100}>
+      {{
+        default: (arg: { cell: { rowIndex: number; colIndex: number } }) => {
+          calls++;
+          return cell(arg);
         },
-      ),
-  );
+      }}
+    </VGrid>
+  ));
   await render(Host);
   expect(calls).toBe(12);
 
@@ -109,14 +107,11 @@ const getContainerStyle = () =>
 
 it("should follow the sizes flag in place", async () => {
   const rows = reactive([{ h: 40 }, { h: 40 }]);
-  const Host = defineComponent(
-    () => () =>
-      h(
-        VGrid,
-        { rows, rowHeight: "h" as never, cols: 1, colWidth: 100 },
-        { default: () => h("div") },
-      ),
-  );
+  const Host = defineComponent(() => () => (
+    <VGrid rows={rows} rowHeight={"h" as never} cols={1} colWidth={100}>
+      {{ default: () => <div /> }}
+    </VGrid>
+  ));
   await render(Host);
   expect(getContainerStyle()).toContain("[l0] 40px [l1]");
 
