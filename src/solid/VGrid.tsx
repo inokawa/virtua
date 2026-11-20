@@ -1,21 +1,17 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import {
   For,
-  mergeProps,
-  createComputed,
   createMemo,
   createSignal,
   onCleanup,
-  onMount,
+  onSettled,
   createEffect,
-  on,
-  splitProps,
+  omit,
   untrack,
-  type JSX,
 } from "solid-js";
-import { isServer } from "solid-js/web";
+import { isServer, type JSX } from "@solidjs/web";
 import {
   ACTION_ITEMS_LENGTH_CHANGE,
   relayout,
@@ -130,7 +126,7 @@ export interface VGridProps<R = number, C = number> extends Omit<
   /**
    * Get reference to {@link VGridHandle}.
    */
-  ref?: VGridHandle | ((handle?: VGridHandle) => void);
+  ref?: VGridHandle;
   /**
    * A function to create cell elements rendered by this component.
    * @param row the item of {@link VGridProps.rows} at the row of the cell, or the row index if {@link VGridProps.rows} is a number
@@ -254,11 +250,10 @@ interface GridCellProps<R, C> {
 }
 
 const GridCell = <R, C>(props: GridCellProps<R, C>): JSX.Element => {
-  let elementRef: HTMLDivElement | undefined;
+  let elementRef!: HTMLDivElement;
 
-  // Written only when the state changes, so that the computations of the cell are not checked for every plan.
-  const [state, setState] = createSignal<GridCellState>(undefined!);
-  createComputed(() => setState(props._state));
+  // Notified only when the state changes, so that the computations of the cell are not checked for every plan.
+  const state = createMemo(() => props._state);
   const measureRowIndex = createMemo(() => state().$measureRow);
   const measureColIndex = createMemo(() => state().$measureCol);
   const row = createMemo(() => props._row);
@@ -276,11 +271,8 @@ const GridCell = <R, C>(props: GridCellProps<R, C>): JSX.Element => {
   });
 
   createEffect(
-    on([measureRowIndex, measureColIndex], ([rowIndex, colIndex]) => {
-      if (!elementRef) return;
-      const cleanup = props._resizer(elementRef, rowIndex, colIndex);
-      if (cleanup) onCleanup(cleanup);
-    }),
+    () => [measureRowIndex(), measureColIndex()] as const,
+    ([rowIndex, colIndex]) => props._resizer(elementRef, rowIndex, colIndex),
   );
 
   const style = createMemo(() => gridStyleToString(state().$style));
@@ -369,10 +361,11 @@ export const VGrid = <R = number, C = number>(
   props: VGridProps<R, C>,
 ): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const withDefaults = mergeProps({ gap: 0 }, props);
-  const { rows, cols, rowHeight, colWidth, ssrRowCount, ssrColCount, gap } =
-    withDefaults;
-  const [, others] = splitProps(props, [
+  const ssrRowCount = untrack(() => props.ssrRowCount);
+  const ssrColCount = untrack(() => props.ssrColCount);
+  const gap = untrack(() => props.gap ?? 0);
+  const others = omit(
+    props,
     "ref",
     "children",
     "rows",
@@ -396,10 +389,14 @@ export const VGrid = <R = number, C = number>(
     "onScrollEnd",
     "onResize",
     "style",
-  ]);
+  );
 
-  const rowLayout = createGridLayout(rows, rowHeight, gap);
-  const colLayout = createGridLayout(cols, colWidth, gap);
+  const rowLayout = untrack(() =>
+    createGridLayout(props.rows, props.rowHeight, gap),
+  );
+  const colLayout = untrack(() =>
+    createGridLayout(props.cols, props.colWidth, gap),
+  );
   const rowSizes = createMemo(() =>
     rowLayout.$getSizes(props.rows, props.rowHeight),
   );
@@ -418,7 +415,29 @@ export const VGrid = <R = number, C = number>(
 
   const getStateVersion = () =>
     rowStore.$getStateVersion() + colStore.$getStateVersion();
-  const [stateVersion, setRerender] = createSignal(getStateVersion());
+  // Syncs the props before the version is read, and ownedWrite allows the subscriber to write it during the sync
+  const [stateVersion, setRerender] = createSignal(
+    () => {
+      const headerRows = props.headerRows;
+      const footerRows = props.footerRows;
+      const headerCols = props.headerCols;
+      const footerCols = props.footerCols;
+      const rowLength = getAxisLength(props.rows);
+      const colLength = getAxisLength(props.cols);
+      const nextRowSizes = rowSizes();
+      const nextColSizes = colSizes();
+      untrack(() => {
+        rowLayout.$setPinned(headerRows, footerRows);
+        colLayout.$setPinned(headerCols, footerCols);
+        rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, rowLength);
+        colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, colLength);
+        relayout(rowStore, rowLayout, nextRowSizes);
+        relayout(colStore, colLayout, nextColSizes);
+      });
+      return getStateVersion();
+    },
+    { ownedWrite: true },
+  );
   const rerender = () => setRerender(getStateVersion());
 
   // Both stores observe both axes, so the end is notified once after both have ended.
@@ -473,17 +492,6 @@ export const VGrid = <R = number, C = number>(
     }
   });
 
-  createComputed(() => {
-    rowLayout.$setPinned(props.headerRows, props.footerRows);
-    colLayout.$setPinned(props.headerCols, props.footerCols);
-    const rowLength = getAxisLength(props.rows);
-    const colLength = getAxisLength(props.cols);
-    rowStore.$update(ACTION_ITEMS_LENGTH_CHANGE, rowLength);
-    colStore.$update(ACTION_ITEMS_LENGTH_CHANGE, colLength);
-    relayout(rowStore, rowLayout, rowSizes());
-    relayout(colStore, colLayout, colSizes());
-  });
-
   const rowCount = createMemo(() => stateVersion() && rowLayout.$getLength());
   const colCount = createMemo(() => stateVersion() && colLayout.$getLength());
   const plan = createMemo(() => {
@@ -520,7 +528,7 @@ export const VGrid = <R = number, C = number>(
       display: "grid",
       "grid-template-rows": $rowTemplate,
       "grid-template-columns": $colTemplate,
-      gap: withDefaults.gap + "px",
+      gap: gap + "px",
       "margin-top": marginTop + "px",
       "margin-inline-start": marginInlineStart + "px",
       // The width is left to the viewport, so the auto columns fill it as the columns of a table.
@@ -529,8 +537,9 @@ export const VGrid = <R = number, C = number>(
     };
   });
 
-  // eslint-disable-next-line solid/reactivity
-  const ref = props.ref as Exclude<typeof props.ref, VGridHandle>;
+  // The compiler turns `ref={handle}` into a function that assigns the handle
+  const ref = untrack(() => props.ref) as unknown as
+    ((handle?: VGridHandle) => void) | undefined;
   if (!isServer && ref) {
     ref({
       get verticalScrollOffset() {
@@ -575,21 +584,17 @@ export const VGrid = <R = number, C = number>(
     onCleanup(() => ref());
   }
 
-  onMount(() => {
+  onSettled(() => {
     driver.$observe(containerRef!);
 
-    onCleanup(() => {
+    return () => {
       unsubscribeRow();
       unsubscribeCol();
       driver.$dispose();
-    });
+    };
   });
 
-  createEffect(
-    on(stateVersion, () => {
-      driver.$effect();
-    }),
-  );
+  createEffect(stateVersion, driver.$effect);
 
   return (
     <div

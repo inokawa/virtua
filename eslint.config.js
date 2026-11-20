@@ -4,7 +4,7 @@ import pluginImport from "eslint-plugin-import";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginVue from "eslint-plugin-vue";
-import solid from "eslint-plugin-solid/configs/typescript";
+import solid from "eslint-plugin-solid/configs/v2";
 
 // eslint-plugin-react's `version: "detect"` crashes on eslint 10, because its version
 // detection calls the removed `context.getFilename()`. Resolve the version ourselves,
@@ -110,8 +110,8 @@ export default [
     languageOptions,
   })),
   {
+    ...solid,
     files: ["src/solid/**/*.{js,jsx,ts,tsx}"],
     languageOptions,
-    ...solid,
   },
 ];
