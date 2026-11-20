@@ -27,13 +27,17 @@
     <button
       onclick={() => {
         ref?.scrollToIndex(scrollIndex, { align, smooth });
-      }}>scroll to index</button
+      }}
     >
+      scroll to index
+    </button>
     <button
       onclick={() => {
         scrollIndex = Math.round(LENGTH * Math.random());
-      }}>randomize</button
+      }}
     >
+      randomize
+    </button>
     {#each aligns as a (a)}
       <label style="margin-left: 4px;">
         <input type="radio" bind:group={align} value={a} />

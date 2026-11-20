@@ -26,8 +26,10 @@
     <button
       onclick={() => {
         ref.scrollToIndex(scrollTarget);
-      }}>scrollToIndex</button
+      }}
     >
+      scrollToIndex
+    </button>
   </div>
   <div>
     <button
@@ -36,8 +38,10 @@
           createItem(i + data.length),
         );
         data = prepend ? [...items, ...data] : [...data, ...items];
-      }}>append</button
+      }}
     >
+      append
+    </button>
     <label>
       <input
         type="checkbox"
@@ -53,8 +57,10 @@
         const items = [...data];
         items.pop();
         data = items;
-      }}>pop</button
+      }}
     >
+      pop
+    </button>
   </div>
   <VList
     bind:this={ref}

@@ -22,14 +22,18 @@
     <button
       onclick={() => {
         ref?.scrollToIndex({ rowIndex, colIndex });
-      }}>scroll to index</button
+      }}
     >
+      scroll to index
+    </button>
     <button
       onclick={() => {
         colIndex = Math.floor(LENGTH * Math.random());
         rowIndex = Math.floor(LENGTH * Math.random());
-      }}>randomize</button
+      }}
     >
+      randomize
+    </button>
   </div>
   <div>
     <label>
@@ -43,13 +47,17 @@
     <button
       onclick={() => {
         ref?.scrollTo({ vertical, horizontal });
-      }}>scroll to offset</button
+      }}
     >
+      scroll to offset
+    </button>
     <button
       onclick={() => {
         ref?.scrollBy({ vertical, horizontal });
-      }}>scroll by offset</button
+      }}
     >
+      scroll by offset
+    </button>
   </div>
   <VGrid
     bind:this={ref}
