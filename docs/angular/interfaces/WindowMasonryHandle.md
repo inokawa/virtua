@@ -4,7 +4,7 @@
 
 # Interface: WindowMasonryHandle
 
-Defined in: [src/angular/WindowMasonry.ts:47](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L47)
+Defined in: [src/angular/WindowMasonry.ts:47](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/angular/WindowMasonry.ts#L47)
 
 Methods of [WindowMasonry](../classes/WindowMasonry.md).
 
@@ -14,7 +14,7 @@ Methods of [WindowMasonry](../classes/WindowMasonry.md).
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/angular/WindowMasonry.ts:64](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L64)
+Defined in: [src/angular/WindowMasonry.ts:64](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/angular/WindowMasonry.ts#L64)
 
 Get item offset from start.
 
@@ -36,7 +36,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/angular/WindowMasonry.ts:69](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L69)
+Defined in: [src/angular/WindowMasonry.ts:69](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/angular/WindowMasonry.ts#L69)
 
 Get item size.
 
@@ -58,7 +58,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/angular/WindowMasonry.ts:75](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L75)
+Defined in: [src/angular/WindowMasonry.ts:75](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/angular/WindowMasonry.ts#L75)
 
 Scroll to the item specified by index.
 
@@ -86,7 +86,7 @@ options
 
 > `readonly` **cache**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/angular/WindowMasonry.ts:51](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L51)
+Defined in: [src/angular/WindowMasonry.ts:51](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/angular/WindowMasonry.ts#L51)
 
 Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
@@ -96,7 +96,7 @@ Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
 > `readonly` **scrollOffset**: `number`
 
-Defined in: [src/angular/WindowMasonry.ts:55](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L55)
+Defined in: [src/angular/WindowMasonry.ts:55](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/angular/WindowMasonry.ts#L55)
 
 Get current scrollTop.
 
@@ -106,6 +106,6 @@ Get current scrollTop.
 
 > `readonly` **viewportSize**: `number`
 
-Defined in: [src/angular/WindowMasonry.ts:59](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/angular/WindowMasonry.ts#L59)
+Defined in: [src/angular/WindowMasonry.ts:59](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/angular/WindowMasonry.ts#L59)
 
 Get current clientHeight of the document.

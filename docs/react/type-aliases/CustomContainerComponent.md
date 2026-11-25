@@ -6,4 +6,4 @@
 
 > **CustomContainerComponent** = `ComponentType`\<[`CustomContainerComponentProps`](../interfaces/CustomContainerComponentProps.md)\>
 
-Defined in: [src/react/types.ts:17](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/react/types.ts#L17)
+Defined in: [src/react/types.ts:17](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/react/types.ts#L17)

@@ -6,7 +6,7 @@
 
 > `const` **VList**: new \<`T`\>(`props`) => `VListInstance`\<`T`\>
 
-Defined in: [src/vue/VList.tsx:50](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/VList.tsx#L50)
+Defined in: [src/vue/VList.tsx:50](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/VList.tsx#L50)
 
 Virtualized list component. See [VListProps](../interfaces/VListProps.md) and [VListHandle](../interfaces/VListHandle.md).
 

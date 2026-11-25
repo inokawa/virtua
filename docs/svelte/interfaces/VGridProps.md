@@ -4,7 +4,7 @@
 
 # Interface: VGridProps\<R, C\>
 
-Defined in: [src/svelte/VGrid.type.ts:14](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L14)
+Defined in: [src/svelte/VGrid.type.ts:14](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L14)
 
 Props of [VGrid](../variables/VList.md).
 
@@ -34,7 +34,7 @@ Props of [VGrid](../variables/VList.md).
 
 > **children**: `Snippet`\<\[`row`: `R`, `col`: `C`, `cell`: `Readonly`\<[`GridCell`](../../core/interfaces/GridCell.md)\>\]\>
 
-Defined in: [src/svelte/VGrid.type.ts:24](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L24)
+Defined in: [src/svelte/VGrid.type.ts:24](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L24)
 
 A snippet to create cell elements rendered by this component.
 
@@ -62,7 +62,7 @@ the row index and the column index of the cell
 
 > **rows**: [`GridAxis`](../../core/type-aliases/GridAxis.md)\<`R`\>
 
-Defined in: [src/svelte/VGrid.type.ts:28](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L28)
+Defined in: [src/svelte/VGrid.type.ts:28](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L28)
 
 The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -72,7 +72,7 @@ The rows of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for th
 
 > **cols**: [`GridAxis`](../../core/type-aliases/GridAxis.md)\<`C`\>
 
-Defined in: [src/svelte/VGrid.type.ts:32](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L32)
+Defined in: [src/svelte/VGrid.type.ts:32](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L32)
 
 The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for the accepted values.
 
@@ -82,7 +82,7 @@ The columns of the grid. See [GridAxis](../../core/type-aliases/GridAxis.md) for
 
 > **rowHeight**: [`GridSize`](../../core/type-aliases/GridSize.md)\<`R`\>
 
-Defined in: [src/svelte/VGrid.type.ts:36](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L36)
+Defined in: [src/svelte/VGrid.type.ts:36](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L36)
 
 The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -92,7 +92,7 @@ The heights of the rows. See [GridSize](../../core/type-aliases/GridSize.md) for
 
 > **colWidth**: [`GridSize`](../../core/type-aliases/GridSize.md)\<`C`\>
 
-Defined in: [src/svelte/VGrid.type.ts:40](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L40)
+Defined in: [src/svelte/VGrid.type.ts:40](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L40)
 
 The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) for the accepted values.
 
@@ -102,7 +102,7 @@ The widths of the columns. See [GridSize](../../core/type-aliases/GridSize.md) f
 
 > `optional` **headerRows?**: `number`
 
-Defined in: [src/svelte/VGrid.type.ts:47](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L47)
+Defined in: [src/svelte/VGrid.type.ts:47](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L47)
 
 The number of the leading rows pinned to the start, which are the column headers (`role="columnheader"`).
 
@@ -120,7 +120,7 @@ The number of the leading rows pinned to the start, which are the column headers
 
 > `optional` **sectionRows?**: readonly `number`[]
 
-Defined in: [src/svelte/VGrid.type.ts:53](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L53)
+Defined in: [src/svelte/VGrid.type.ts:53](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L53)
 
 Indexes of the rows which start sections. A section lasts until the next section row or the footer rows, and its first row sticks below the header rows while the section is scrolled through.
 
@@ -132,7 +132,7 @@ Indexes of the rows which start sections. A section lasts until the next section
 
 > `optional` **footerRows?**: `number`
 
-Defined in: [src/svelte/VGrid.type.ts:60](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L60)
+Defined in: [src/svelte/VGrid.type.ts:60](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L60)
 
 The number of the trailing rows pinned to the end.
 
@@ -150,7 +150,7 @@ The number of the trailing rows pinned to the end.
 
 > `optional` **headerCols?**: `number`
 
-Defined in: [src/svelte/VGrid.type.ts:67](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L67)
+Defined in: [src/svelte/VGrid.type.ts:67](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L67)
 
 The number of the leading columns pinned to the start, the last of which is the row header (`role="rowheader"`).
 
@@ -168,7 +168,7 @@ The number of the leading columns pinned to the start, the last of which is the 
 
 > `optional` **footerCols?**: `number`
 
-Defined in: [src/svelte/VGrid.type.ts:74](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L74)
+Defined in: [src/svelte/VGrid.type.ts:74](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L74)
 
 The number of the trailing columns pinned to the end.
 
@@ -186,7 +186,7 @@ The number of the trailing columns pinned to the end.
 
 > `optional` **spans?**: readonly [`GridSpan`](../../core/interfaces/GridSpan.md)[]
 
-Defined in: [src/svelte/VGrid.type.ts:80](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L80)
+Defined in: [src/svelte/VGrid.type.ts:80](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L80)
 
 Cells merged over multiple rows and/or columns. See [GridSpan](../../core/interfaces/GridSpan.md) for the accepted values.
 
@@ -198,7 +198,7 @@ The cell at the origin is stretched over the merged area, and the other cells in
 
 > `optional` **keepMounted?**: readonly [`GridCell`](../../core/interfaces/GridCell.md)[]
 
-Defined in: [src/svelte/VGrid.type.ts:84](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L84)
+Defined in: [src/svelte/VGrid.type.ts:84](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L84)
 
 List of cells that should be always mounted, even when off screen.
 
@@ -208,7 +208,7 @@ List of cells that should be always mounted, even when off screen.
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/svelte/VGrid.type.ts:89](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L89)
+Defined in: [src/svelte/VGrid.type.ts:89](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L89)
 
 Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank cells in fast scrolling.
 
@@ -224,7 +224,7 @@ Extra space in pixels to render before/after the viewport. The default value is 
 
 > `optional` **ssrRowCount?**: `number`
 
-Defined in: [src/svelte/VGrid.type.ts:95](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L95)
+Defined in: [src/svelte/VGrid.type.ts:95](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L95)
 
 A prop for SSR. If set, the specified amount of rows will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -236,7 +236,7 @@ A prop for SSR. If set, the specified amount of rows will be mounted in the init
 
 > `optional` **ssrColCount?**: `number`
 
-Defined in: [src/svelte/VGrid.type.ts:101](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L101)
+Defined in: [src/svelte/VGrid.type.ts:101](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L101)
 
 A prop for SSR. If set, the specified amount of columns will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -248,7 +248,7 @@ A prop for SSR. If set, the specified amount of columns will be mounted in the i
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/svelte/VGrid.type.ts:106](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L106)
+Defined in: [src/svelte/VGrid.type.ts:106](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L106)
 
 The gap between the rows and the columns in pixels, which is not included in the sizes. Must not be changed after mount.
 
@@ -264,7 +264,7 @@ The gap between the rows and the columns in pixels, which is not included in the
 
 > `optional` **ariaSort?**: [`GridCell`](../../core/interfaces/GridCell.md) & `object`
 
-Defined in: [src/svelte/VGrid.type.ts:110](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L110)
+Defined in: [src/svelte/VGrid.type.ts:110](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L110)
 
 The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
@@ -280,7 +280,7 @@ The header cell of the sorted column or row, and the sort order (`aria-sort`).
 
 > `optional` **onverticalscroll?**: (`offset`) => `void`
 
-Defined in: [src/svelte/VGrid.type.ts:115](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L115)
+Defined in: [src/svelte/VGrid.type.ts:115](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L115)
 
 Callback invoked whenever the vertical scroll offset changes.
 
@@ -302,7 +302,7 @@ Current scrollTop.
 
 > `optional` **onhorizontalscroll?**: (`offset`) => `void`
 
-Defined in: [src/svelte/VGrid.type.ts:120](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L120)
+Defined in: [src/svelte/VGrid.type.ts:120](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L120)
 
 Callback invoked whenever the horizontal scroll offset changes.
 
@@ -324,7 +324,7 @@ Current scrollLeft. Always positive even in RTL.
 
 > `optional` **onscrollend?**: () => `void`
 
-Defined in: [src/svelte/VGrid.type.ts:124](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L124)
+Defined in: [src/svelte/VGrid.type.ts:124](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L124)
 
 Callback invoked when scrolling stops.
 
@@ -338,7 +338,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **onresize?**: () => `void`
 
-Defined in: [src/svelte/VGrid.type.ts:128](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VGrid.type.ts#L128)
+Defined in: [src/svelte/VGrid.type.ts:128](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VGrid.type.ts#L128)
 
 Callback invoked when the size of the viewport or the items changes.
 
@@ -352,7 +352,7 @@ Callback invoked when the size of the viewport or the items changes.
 
 > `optional` **contextmenu?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:758
+Defined in: node\_modules/svelte/elements.d.ts:759
 
 #### Inherited from
 
@@ -364,7 +364,7 @@ Defined in: node\_modules/svelte/elements.d.ts:758
 
 > `optional` **hidden?**: `boolean` \| `""` \| `"until-found"` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:772
+Defined in: node\_modules/svelte/elements.d.ts:773
 
 #### Inherited from
 
@@ -376,7 +376,7 @@ Defined in: node\_modules/svelte/elements.d.ts:772
 
 > `optional` **slot?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:777
+Defined in: node\_modules/svelte/elements.d.ts:778
 
 #### Inherited from
 
@@ -388,7 +388,7 @@ Defined in: node\_modules/svelte/elements.d.ts:777
 
 > `optional` **style?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:779
+Defined in: node\_modules/svelte/elements.d.ts:780
 
 #### Inherited from
 
@@ -400,7 +400,7 @@ Defined in: node\_modules/svelte/elements.d.ts:779
 
 > `optional` **title?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:781
+Defined in: node\_modules/svelte/elements.d.ts:782
 
 #### Inherited from
 
@@ -412,7 +412,7 @@ Defined in: node\_modules/svelte/elements.d.ts:781
 
 > `optional` **dir?**: `"auto"` \| `"rtl"` \| `"ltr"` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:759
+Defined in: node\_modules/svelte/elements.d.ts:760
 
 #### Inherited from
 
@@ -424,7 +424,7 @@ Defined in: node\_modules/svelte/elements.d.ts:759
 
 > `optional` **property?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:798
+Defined in: node\_modules/svelte/elements.d.ts:799
 
 #### Inherited from
 
@@ -436,7 +436,7 @@ Defined in: node\_modules/svelte/elements.d.ts:798
 
 > `optional` **is?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:835
+Defined in: node\_modules/svelte/elements.d.ts:836
 
 Specify that a standard HTML element should behave like a defined custom built-in element
 
@@ -454,7 +454,7 @@ https://html.spec.whatwg.org/multipage/custom-elements.html#attr-is
 
 > `optional` **draggable?**: `Booleanish` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:760
+Defined in: node\_modules/svelte/elements.d.ts:761
 
 #### Inherited from
 
@@ -466,7 +466,7 @@ Defined in: node\_modules/svelte/elements.d.ts:760
 
 > `optional` **id?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:773
+Defined in: node\_modules/svelte/elements.d.ts:774
 
 #### Inherited from
 
@@ -478,7 +478,7 @@ Defined in: node\_modules/svelte/elements.d.ts:773
 
 > `optional` **lang?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:774
+Defined in: node\_modules/svelte/elements.d.ts:775
 
 #### Inherited from
 
@@ -490,7 +490,7 @@ Defined in: node\_modules/svelte/elements.d.ts:774
 
 > `optional` **translate?**: `""` \| `"yes"` \| `"no"` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:782
+Defined in: node\_modules/svelte/elements.d.ts:783
 
 #### Inherited from
 
@@ -502,7 +502,7 @@ Defined in: node\_modules/svelte/elements.d.ts:782
 
 > `optional` **about?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:794
+Defined in: node\_modules/svelte/elements.d.ts:795
 
 #### Inherited from
 
@@ -514,7 +514,7 @@ Defined in: node\_modules/svelte/elements.d.ts:794
 
 > `optional` **datatype?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:795
+Defined in: node\_modules/svelte/elements.d.ts:796
 
 #### Inherited from
 
@@ -526,7 +526,7 @@ Defined in: node\_modules/svelte/elements.d.ts:795
 
 > `optional` **inlist?**: `any`
 
-Defined in: node\_modules/svelte/elements.d.ts:796
+Defined in: node\_modules/svelte/elements.d.ts:797
 
 #### Inherited from
 
@@ -538,7 +538,7 @@ Defined in: node\_modules/svelte/elements.d.ts:796
 
 > `optional` **prefix?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:797
+Defined in: node\_modules/svelte/elements.d.ts:798
 
 #### Inherited from
 
@@ -550,7 +550,7 @@ Defined in: node\_modules/svelte/elements.d.ts:797
 
 > `optional` **resource?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:799
+Defined in: node\_modules/svelte/elements.d.ts:800
 
 #### Inherited from
 
@@ -562,7 +562,7 @@ Defined in: node\_modules/svelte/elements.d.ts:799
 
 > `optional` **typeof?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:800
+Defined in: node\_modules/svelte/elements.d.ts:801
 
 #### Inherited from
 
@@ -574,7 +574,7 @@ Defined in: node\_modules/svelte/elements.d.ts:800
 
 > `optional` **vocab?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:801
+Defined in: node\_modules/svelte/elements.d.ts:802
 
 #### Inherited from
 
@@ -586,7 +586,7 @@ Defined in: node\_modules/svelte/elements.d.ts:801
 
 > `optional` **color?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:805
+Defined in: node\_modules/svelte/elements.d.ts:806
 
 #### Inherited from
 
@@ -598,7 +598,7 @@ Defined in: node\_modules/svelte/elements.d.ts:805
 
 > `optional` **results?**: `number` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:811
+Defined in: node\_modules/svelte/elements.d.ts:812
 
 #### Inherited from
 
@@ -610,7 +610,7 @@ Defined in: node\_modules/svelte/elements.d.ts:811
 
 > `optional` **security?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:812
+Defined in: node\_modules/svelte/elements.d.ts:813
 
 #### Inherited from
 
@@ -622,7 +622,7 @@ Defined in: node\_modules/svelte/elements.d.ts:812
 
 > `optional` **unselectable?**: `"off"` \| `"on"` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:813
+Defined in: node\_modules/svelte/elements.d.ts:814
 
 #### Inherited from
 
@@ -634,7 +634,7 @@ Defined in: node\_modules/svelte/elements.d.ts:813
 
 > `optional` **popover?**: `""` \| `"auto"` \| `"manual"` \| `"hint"` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:784
+Defined in: node\_modules/svelte/elements.d.ts:785
 
 #### Inherited from
 
@@ -646,7 +646,7 @@ Defined in: node\_modules/svelte/elements.d.ts:784
 
 > `optional` **inert?**: `boolean` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:783
+Defined in: node\_modules/svelte/elements.d.ts:784
 
 #### Inherited from
 
@@ -658,7 +658,7 @@ Defined in: node\_modules/svelte/elements.d.ts:783
 
 > `optional` **part?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:775
+Defined in: node\_modules/svelte/elements.d.ts:776
 
 #### Inherited from
 
@@ -1459,7 +1459,7 @@ Defines the human readable text alternative of aria-valuenow for a range widget.
 
 > `optional` **radiogroup?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:788
+Defined in: node\_modules/svelte/elements.d.ts:789
 
 #### Inherited from
 
@@ -1479,11 +1479,23 @@ Defined in: node\_modules/svelte/elements.d.ts:754
 
 ***
 
+### autocorrect?
+
+> `optional` **autocorrect?**: `""` \| `"off"` \| `"on"` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:755
+
+#### Inherited from
+
+`Omit.autocorrect`
+
+***
+
 ### spellcheck?
 
 > `optional` **spellcheck?**: `Booleanish` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:778
+Defined in: node\_modules/svelte/elements.d.ts:779
 
 #### Inherited from
 
@@ -2563,7 +2575,7 @@ Defined in: node\_modules/svelte/elements.d.ts:395
 
 > `optional` **autofocus?**: `boolean` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:755
+Defined in: node\_modules/svelte/elements.d.ts:756
 
 #### Inherited from
 
@@ -2575,7 +2587,7 @@ Defined in: node\_modules/svelte/elements.d.ts:755
 
 > `optional` **class?**: `ClassValue` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:756
+Defined in: node\_modules/svelte/elements.d.ts:757
 
 #### Inherited from
 
@@ -2599,7 +2611,7 @@ Defined in: node\_modules/svelte/elements.d.ts:753
 
 > `optional` **contenteditable?**: `"inherit"` \| `"plaintext-only"` \| `Booleanish` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:757
+Defined in: node\_modules/svelte/elements.d.ts:758
 
 #### Inherited from
 
@@ -2611,7 +2623,7 @@ Defined in: node\_modules/svelte/elements.d.ts:757
 
 > `optional` **enterkeyhint?**: `"search"` \| `"next"` \| `"enter"` \| `"done"` \| `"go"` \| `"previous"` \| `"send"` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:762
+Defined in: node\_modules/svelte/elements.d.ts:763
 
 #### Inherited from
 
@@ -2623,7 +2635,7 @@ Defined in: node\_modules/svelte/elements.d.ts:762
 
 > `optional` **inputmode?**: `"search"` \| `"none"` \| `"text"` \| `"tel"` \| `"url"` \| `"email"` \| `"numeric"` \| `"decimal"` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:820
+Defined in: node\_modules/svelte/elements.d.ts:821
 
 Hints at the type of data that might be entered by the user while editing the element or its contents
 
@@ -2637,11 +2649,23 @@ https://html.spec.whatwg.org/multipage/interaction.html#input-modalities:-the-in
 
 ***
 
+### writingsuggestions?
+
+> `optional` **writingsuggestions?**: `Booleanish` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:786
+
+#### Inherited from
+
+`Omit.writingsuggestions`
+
+***
+
 ### itemid?
 
 > `optional` **itemid?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:809
+Defined in: node\_modules/svelte/elements.d.ts:810
 
 #### Inherited from
 
@@ -2653,7 +2677,7 @@ Defined in: node\_modules/svelte/elements.d.ts:809
 
 > `optional` **itemprop?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:806
+Defined in: node\_modules/svelte/elements.d.ts:807
 
 #### Inherited from
 
@@ -2665,7 +2689,7 @@ Defined in: node\_modules/svelte/elements.d.ts:806
 
 > `optional` **itemref?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:810
+Defined in: node\_modules/svelte/elements.d.ts:811
 
 #### Inherited from
 
@@ -2677,7 +2701,7 @@ Defined in: node\_modules/svelte/elements.d.ts:810
 
 > `optional` **itemscope?**: `boolean` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:807
+Defined in: node\_modules/svelte/elements.d.ts:808
 
 #### Inherited from
 
@@ -2689,7 +2713,7 @@ Defined in: node\_modules/svelte/elements.d.ts:807
 
 > `optional` **itemtype?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:808
+Defined in: node\_modules/svelte/elements.d.ts:809
 
 #### Inherited from
 
@@ -2701,7 +2725,7 @@ Defined in: node\_modules/svelte/elements.d.ts:808
 
 > `optional` **elementtiming?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:761
+Defined in: node\_modules/svelte/elements.d.ts:762
 
 #### Inherited from
 
@@ -2713,7 +2737,7 @@ Defined in: node\_modules/svelte/elements.d.ts:761
 
 > `optional` **tabindex?**: `number` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:780
+Defined in: node\_modules/svelte/elements.d.ts:781
 
 #### Inherited from
 
@@ -2721,327 +2745,189 @@ Defined in: node\_modules/svelte/elements.d.ts:780
 
 ***
 
-### oncompositionend?
+### onvisibilitychange?
 
-> `optional` **oncompositionend?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **onvisibilitychange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:103
+Defined in: node\_modules/svelte/elements.d.ts:447
 
 #### Inherited from
 
-`Omit.oncompositionend`
+`Omit.onvisibilitychange`
 
 ***
 
-### oncompositionstart?
+### ongamepadconnected?
 
-> `optional` **oncompositionstart?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **ongamepadconnected?**: `GamepadEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:106
+Defined in: node\_modules/svelte/elements.d.ts:378
 
 #### Inherited from
 
-`Omit.oncompositionstart`
+`Omit.ongamepadconnected`
 
 ***
 
-### oncompositionupdate?
+### ongamepaddisconnected?
 
-> `optional` **oncompositionupdate?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **ongamepaddisconnected?**: `GamepadEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:109
+Defined in: node\_modules/svelte/elements.d.ts:380
 
 #### Inherited from
 
-`Omit.oncompositionupdate`
+`Omit.ongamepaddisconnected`
 
 ***
 
-### oncontentvisibilityautostatechange?
+### onmessage?
 
-> `optional` **oncontentvisibilityautostatechange?**: `ContentVisibilityAutoStateChangeEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **onmessage?**: `MessageEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:171
+Defined in: node\_modules/svelte/elements.d.ts:439
 
 #### Inherited from
 
-`Omit.oncontentvisibilityautostatechange`
+`Omit.onmessage`
 
 ***
 
-### ondragexit?
+### onmessageerror?
 
-> `optional` **ondragexit?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **onmessageerror?**: `MessageEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:285
+Defined in: node\_modules/svelte/elements.d.ts:442
 
 #### Inherited from
 
-`Omit.ondragexit`
+`Omit.onmessageerror`
 
 ***
 
-### onfocusin?
+### placeholder?
 
-> `optional` **onfocusin?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **placeholder?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:117
+Defined in: node\_modules/svelte/elements.d.ts:777
 
 #### Inherited from
 
-`Omit.onfocusin`
+`Omit.placeholder`
 
 ***
 
-### onfocusout?
+### onencrypted?
 
-> `optional` **onfocusout?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **onencrypted?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:120
+Defined in: node\_modules/svelte/elements.d.ts:211
 
 #### Inherited from
 
-`Omit.onfocusout`
+`Omit.onencrypted`
 
 ***
 
-### on:abort?
+### xmlns?
 
-> `optional` **on:abort?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+> `optional` **xmlns?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:192
+Defined in: node\_modules/svelte/elements.d.ts:475
 
 #### Inherited from
 
-`Omit.on:abort`
+`Omit.xmlns`
 
 ***
 
-### on:animationend?
+### autosave?
 
-> `optional` **on:animationend?**: `AnimationEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **autosave?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:402
+Defined in: node\_modules/svelte/elements.d.ts:805
 
 #### Inherited from
 
-`Omit.on:animationend`
+`Omit.autosave`
 
 ***
 
-### on:animationiteration?
+### bind:innerHTML?
 
-> `optional` **on:animationiteration?**: `AnimationEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **bind:innerHTML?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:405
+Defined in: node\_modules/svelte/elements.d.ts:841
+
+Elements with the contenteditable attribute support `innerHTML`, `textContent` and `innerText` bindings.
 
 #### Inherited from
 
-`Omit.on:animationiteration`
+`Omit.bind:innerHTML`
 
 ***
 
-### on:animationstart?
+### bind:textContent?
 
-> `optional` **on:animationstart?**: `AnimationEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **bind:textContent?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:399
+Defined in: node\_modules/svelte/elements.d.ts:845
+
+Elements with the contenteditable attribute support `innerHTML`, `textContent` and `innerText` bindings.
 
 #### Inherited from
 
-`Omit.on:animationstart`
+`Omit.bind:textContent`
 
 ***
 
-### on:auxclick?
+### bind:innerText?
 
-> `optional` **on:auxclick?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **bind:innerText?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:263
+Defined in: node\_modules/svelte/elements.d.ts:849
+
+Elements with the contenteditable attribute support `innerHTML`, `textContent` and `innerText` bindings.
 
 #### Inherited from
 
-`Omit.on:auxclick`
+`Omit.bind:innerText`
 
 ***
 
-### on:beforeinput?
+### bind:focused?
 
-> `optional` **on:beforeinput?**: `EventHandler`\<`InputEvent`, `HTMLDivElement`\> \| `null`
+> `readonly` `optional` **bind:focused?**: `boolean` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:130
+Defined in: node\_modules/svelte/elements.d.ts:851
 
 #### Inherited from
 
-`Omit.on:beforeinput`
+`Omit.bind:focused`
 
 ***
 
-### on:beforematch?
+### bind:offsetWidth?
 
-> `optional` **on:beforematch?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+> `readonly` `optional` **bind:offsetWidth?**: `number` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:451
+Defined in: node\_modules/svelte/elements.d.ts:852
 
 #### Inherited from
 
-`Omit.on:beforematch`
+`Omit.bind:offsetWidth`
 
 ***
 
-### on:beforetoggle?
+### bind:offsetHeight?
 
-> `optional` **on:beforetoggle?**: `ToggleEventHandler`\<`HTMLDivElement`\> \| `null`
+> `readonly` `optional` **bind:offsetHeight?**: `number` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:159
-
-#### Inherited from
-
-`Omit.on:beforetoggle`
-
-***
-
-### on:blur?
-
-> `optional` **on:blur?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:122
+Defined in: node\_modules/svelte/elements.d.ts:853
 
 #### Inherited from
 
-`Omit.on:blur`
-
-***
-
-### on:cancel?
-
-> `optional` **on:cancel?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:454
-
-#### Inherited from
-
-`Omit.on:cancel`
-
-***
-
-### on:canplay?
-
-> `optional` **on:canplay?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:195
-
-#### Inherited from
-
-`Omit.on:canplay`
-
-***
-
-### on:canplaythrough?
-
-> `optional` **on:canplaythrough?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:198
-
-#### Inherited from
-
-`Omit.on:canplaythrough`
-
-***
-
-### on:change?
-
-> `optional` **on:change?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:127
-
-#### Inherited from
-
-`Omit.on:change`
-
-***
-
-### on:click?
-
-> `optional` **on:click?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:266
-
-#### Inherited from
-
-`Omit.on:click`
-
-***
-
-### on:close?
-
-> `optional` **on:close?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:457
-
-#### Inherited from
-
-`Omit.on:close`
-
-***
-
-### on:compositionend?
-
-> `optional` **on:compositionend?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:102
-
-#### Inherited from
-
-`Omit.on:compositionend`
-
-***
-
-### on:compositionstart?
-
-> `optional` **on:compositionstart?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:105
-
-#### Inherited from
-
-`Omit.on:compositionstart`
-
-***
-
-### on:compositionupdate?
-
-> `optional` **on:compositionupdate?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:108
-
-#### Inherited from
-
-`Omit.on:compositionupdate`
-
-***
-
-### on:contentvisibilityautostatechange?
-
-> `optional` **on:contentvisibilityautostatechange?**: `ContentVisibilityAutoStateChangeEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:167
-
-#### Inherited from
-
-`Omit.on:contentvisibilityautostatechange`
-
-***
-
-### on:contextmenu?
-
-> `optional` **on:contextmenu?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:269
-
-#### Inherited from
-
-`Omit.on:contextmenu`
+`Omit.bind:offsetHeight`
 
 ***
 
@@ -3057,15 +2943,15 @@ Defined in: node\_modules/svelte/elements.d.ts:91
 
 ***
 
-### on:cuechange?
+### oncopycapture?
 
-> `optional` **on:cuechange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+> `optional` **oncopycapture?**: `ClipboardEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:201
+Defined in: node\_modules/svelte/elements.d.ts:93
 
 #### Inherited from
 
-`Omit.on:cuechange`
+`Omit.oncopycapture`
 
 ***
 
@@ -3081,159 +2967,147 @@ Defined in: node\_modules/svelte/elements.d.ts:94
 
 ***
 
-### on:dblclick?
+### oncutcapture?
 
-> `optional` **on:dblclick?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **oncutcapture?**: `ClipboardEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:272
+Defined in: node\_modules/svelte/elements.d.ts:96
 
 #### Inherited from
 
-`Omit.on:dblclick`
+`Omit.oncutcapture`
 
 ***
 
-### on:drag?
+### on:paste?
 
-> `optional` **on:drag?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **on:paste?**: `ClipboardEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:275
+Defined in: node\_modules/svelte/elements.d.ts:97
 
 #### Inherited from
 
-`Omit.on:drag`
+`Omit.on:paste`
 
 ***
 
-### on:dragend?
+### onpastecapture?
 
-> `optional` **on:dragend?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **onpastecapture?**: `ClipboardEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:278
+Defined in: node\_modules/svelte/elements.d.ts:99
 
 #### Inherited from
 
-`Omit.on:dragend`
+`Omit.onpastecapture`
 
 ***
 
-### on:dragenter?
+### on:compositionend?
 
-> `optional` **on:dragenter?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **on:compositionend?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:281
+Defined in: node\_modules/svelte/elements.d.ts:102
 
 #### Inherited from
 
-`Omit.on:dragenter`
+`Omit.on:compositionend`
 
 ***
 
-### on:dragexit?
+### oncompositionend?
 
-> `optional` **on:dragexit?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **oncompositionend?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:284
+Defined in: node\_modules/svelte/elements.d.ts:103
 
 #### Inherited from
 
-`Omit.on:dragexit`
+`Omit.oncompositionend`
 
 ***
 
-### on:dragleave?
+### oncompositionendcapture?
 
-> `optional` **on:dragleave?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **oncompositionendcapture?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:287
+Defined in: node\_modules/svelte/elements.d.ts:104
 
 #### Inherited from
 
-`Omit.on:dragleave`
+`Omit.oncompositionendcapture`
 
 ***
 
-### on:dragover?
+### on:compositionstart?
 
-> `optional` **on:dragover?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **on:compositionstart?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:290
+Defined in: node\_modules/svelte/elements.d.ts:105
 
 #### Inherited from
 
-`Omit.on:dragover`
+`Omit.on:compositionstart`
 
 ***
 
-### on:dragstart?
+### oncompositionstart?
 
-> `optional` **on:dragstart?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **oncompositionstart?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:293
+Defined in: node\_modules/svelte/elements.d.ts:106
 
 #### Inherited from
 
-`Omit.on:dragstart`
+`Omit.oncompositionstart`
 
 ***
 
-### on:drop?
+### oncompositionstartcapture?
 
-> `optional` **on:drop?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **oncompositionstartcapture?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:296
+Defined in: node\_modules/svelte/elements.d.ts:107
 
 #### Inherited from
 
-`Omit.on:drop`
+`Omit.oncompositionstartcapture`
 
 ***
 
-### on:durationchange?
+### on:compositionupdate?
 
-> `optional` **on:durationchange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+> `optional` **on:compositionupdate?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:204
+Defined in: node\_modules/svelte/elements.d.ts:108
 
 #### Inherited from
 
-`Omit.on:durationchange`
+`Omit.on:compositionupdate`
 
 ***
 
-### on:emptied?
+### oncompositionupdate?
 
-> `optional` **on:emptied?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+> `optional` **oncompositionupdate?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:207
+Defined in: node\_modules/svelte/elements.d.ts:109
 
 #### Inherited from
 
-`Omit.on:emptied`
+`Omit.oncompositionupdate`
 
 ***
 
-### on:ended?
+### oncompositionupdatecapture?
 
-> `optional` **on:ended?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+> `optional` **oncompositionupdatecapture?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:213
-
-#### Inherited from
-
-`Omit.on:ended`
-
-***
-
-### on:error?
-
-> `optional` **on:error?**: `EventHandler`\<`Event`, `Element`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:154
+Defined in: node\_modules/svelte/elements.d.ts:110
 
 #### Inherited from
 
-`Omit.on:error`
+`Omit.oncompositionupdatecapture`
 
 ***
 
@@ -3249,6 +3123,18 @@ Defined in: node\_modules/svelte/elements.d.ts:113
 
 ***
 
+### onfocuscapture?
+
+> `optional` **onfocuscapture?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:115
+
+#### Inherited from
+
+`Omit.onfocuscapture`
+
+***
+
 ### on:focusin?
 
 > `optional` **on:focusin?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -3258,6 +3144,30 @@ Defined in: node\_modules/svelte/elements.d.ts:116
 #### Inherited from
 
 `Omit.on:focusin`
+
+***
+
+### onfocusin?
+
+> `optional` **onfocusin?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:117
+
+#### Inherited from
+
+`Omit.onfocusin`
+
+***
+
+### onfocusincapture?
+
+> `optional` **onfocusincapture?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:118
+
+#### Inherited from
+
+`Omit.onfocusincapture`
 
 ***
 
@@ -3273,51 +3183,99 @@ Defined in: node\_modules/svelte/elements.d.ts:119
 
 ***
 
-### on:formdata?
+### onfocusout?
 
-> `optional` **on:formdata?**: `EventHandler`\<`FormDataEvent`, `HTMLDivElement`\> \| `null`
+> `optional` **onfocusout?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:146
+Defined in: node\_modules/svelte/elements.d.ts:120
 
 #### Inherited from
 
-`Omit.on:formdata`
+`Omit.onfocusout`
 
 ***
 
-### on:fullscreenchange?
+### onfocusoutcapture?
 
-> `optional` **on:fullscreenchange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+> `optional` **onfocusoutcapture?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:460
+Defined in: node\_modules/svelte/elements.d.ts:121
 
 #### Inherited from
 
-`Omit.on:fullscreenchange`
+`Omit.onfocusoutcapture`
 
 ***
 
-### on:fullscreenerror?
+### on:blur?
 
-> `optional` **on:fullscreenerror?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+> `optional` **on:blur?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:463
+Defined in: node\_modules/svelte/elements.d.ts:122
 
 #### Inherited from
 
-`Omit.on:fullscreenerror`
+`Omit.on:blur`
 
 ***
 
-### on:gotpointercapture?
+### onblurcapture?
 
-> `optional` **on:gotpointercapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **onblurcapture?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:345
+Defined in: node\_modules/svelte/elements.d.ts:124
 
 #### Inherited from
 
-`Omit.on:gotpointercapture`
+`Omit.onblurcapture`
+
+***
+
+### on:change?
+
+> `optional` **on:change?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:127
+
+#### Inherited from
+
+`Omit.on:change`
+
+***
+
+### onchangecapture?
+
+> `optional` **onchangecapture?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:129
+
+#### Inherited from
+
+`Omit.onchangecapture`
+
+***
+
+### on:beforeinput?
+
+> `optional` **on:beforeinput?**: `EventHandler`\<`InputEvent`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:130
+
+#### Inherited from
+
+`Omit.on:beforeinput`
+
+***
+
+### onbeforeinputcapture?
+
+> `optional` **onbeforeinputcapture?**: `EventHandler`\<`InputEvent`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:132
+
+#### Inherited from
+
+`Omit.onbeforeinputcapture`
 
 ***
 
@@ -3333,6 +3291,66 @@ Defined in: node\_modules/svelte/elements.d.ts:134
 
 ***
 
+### oninputcapture?
+
+> `optional` **oninputcapture?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:136
+
+#### Inherited from
+
+`Omit.oninputcapture`
+
+***
+
+### on:reset?
+
+> `optional` **on:reset?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:137
+
+#### Inherited from
+
+`Omit.on:reset`
+
+***
+
+### onresetcapture?
+
+> `optional` **onresetcapture?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:139
+
+#### Inherited from
+
+`Omit.onresetcapture`
+
+***
+
+### on:submit?
+
+> `optional` **on:submit?**: `EventHandler`\<`SubmitEvent`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:140
+
+#### Inherited from
+
+`Omit.on:submit`
+
+***
+
+### onsubmitcapture?
+
+> `optional` **onsubmitcapture?**: `EventHandler`\<`SubmitEvent`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:142
+
+#### Inherited from
+
+`Omit.onsubmitcapture`
+
+***
+
 ### on:invalid?
 
 > `optional` **on:invalid?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -3345,39 +3363,39 @@ Defined in: node\_modules/svelte/elements.d.ts:143
 
 ***
 
-### on:keydown?
+### oninvalidcapture?
 
-> `optional` **on:keydown?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **oninvalidcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:181
+Defined in: node\_modules/svelte/elements.d.ts:145
 
 #### Inherited from
 
-`Omit.on:keydown`
+`Omit.oninvalidcapture`
 
 ***
 
-### on:keypress?
+### on:formdata?
 
-> `optional` **on:keypress?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **on:formdata?**: `EventHandler`\<`FormDataEvent`, `HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:184
+Defined in: node\_modules/svelte/elements.d.ts:146
 
 #### Inherited from
 
-`Omit.on:keypress`
+`Omit.on:formdata`
 
 ***
 
-### on:keyup?
+### onformdatacapture?
 
-> `optional` **on:keyup?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **onformdatacapture?**: `EventHandler`\<`FormDataEvent`, `HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:187
+Defined in: node\_modules/svelte/elements.d.ts:148
 
 #### Inherited from
 
-`Omit.on:keyup`
+`Omit.onformdatacapture`
 
 ***
 
@@ -3393,6 +3411,390 @@ Defined in: node\_modules/svelte/elements.d.ts:151
 
 ***
 
+### onloadcapture?
+
+> `optional` **onloadcapture?**: `EventHandler`\<`Event`, `Element`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:153
+
+#### Inherited from
+
+`Omit.onloadcapture`
+
+***
+
+### on:error?
+
+> `optional` **on:error?**: `EventHandler`\<`Event`, `Element`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:154
+
+#### Inherited from
+
+`Omit.on:error`
+
+***
+
+### onerrorcapture?
+
+> `optional` **onerrorcapture?**: `EventHandler`\<`Event`, `Element`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:156
+
+#### Inherited from
+
+`Omit.onerrorcapture`
+
+***
+
+### on:beforetoggle?
+
+> `optional` **on:beforetoggle?**: `ToggleEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:159
+
+#### Inherited from
+
+`Omit.on:beforetoggle`
+
+***
+
+### onbeforetogglecapture?
+
+> `optional` **onbeforetogglecapture?**: `ToggleEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:161
+
+#### Inherited from
+
+`Omit.onbeforetogglecapture`
+
+***
+
+### on:toggle?
+
+> `optional` **on:toggle?**: `ToggleEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:162
+
+#### Inherited from
+
+`Omit.on:toggle`
+
+***
+
+### ontogglecapture?
+
+> `optional` **ontogglecapture?**: `ToggleEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:164
+
+#### Inherited from
+
+`Omit.ontogglecapture`
+
+***
+
+### on:contentvisibilityautostatechange?
+
+> `optional` **on:contentvisibilityautostatechange?**: `ContentVisibilityAutoStateChangeEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:167
+
+#### Inherited from
+
+`Omit.on:contentvisibilityautostatechange`
+
+***
+
+### oncontentvisibilityautostatechange?
+
+> `optional` **oncontentvisibilityautostatechange?**: `ContentVisibilityAutoStateChangeEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:171
+
+#### Inherited from
+
+`Omit.oncontentvisibilityautostatechange`
+
+***
+
+### oncontentvisibilityautostatechangecapture?
+
+> `optional` **oncontentvisibilityautostatechangecapture?**: `ContentVisibilityAutoStateChangeEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:175
+
+#### Inherited from
+
+`Omit.oncontentvisibilityautostatechangecapture`
+
+***
+
+### on:keydown?
+
+> `optional` **on:keydown?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:181
+
+#### Inherited from
+
+`Omit.on:keydown`
+
+***
+
+### onkeydowncapture?
+
+> `optional` **onkeydowncapture?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:183
+
+#### Inherited from
+
+`Omit.onkeydowncapture`
+
+***
+
+### on:keypress?
+
+> `optional` **on:keypress?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:184
+
+#### Inherited from
+
+`Omit.on:keypress`
+
+***
+
+### onkeypresscapture?
+
+> `optional` **onkeypresscapture?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:186
+
+#### Inherited from
+
+`Omit.onkeypresscapture`
+
+***
+
+### on:keyup?
+
+> `optional` **on:keyup?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:187
+
+#### Inherited from
+
+`Omit.on:keyup`
+
+***
+
+### onkeyupcapture?
+
+> `optional` **onkeyupcapture?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:189
+
+#### Inherited from
+
+`Omit.onkeyupcapture`
+
+***
+
+### on:abort?
+
+> `optional` **on:abort?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:192
+
+#### Inherited from
+
+`Omit.on:abort`
+
+***
+
+### onabortcapture?
+
+> `optional` **onabortcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:194
+
+#### Inherited from
+
+`Omit.onabortcapture`
+
+***
+
+### on:canplay?
+
+> `optional` **on:canplay?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:195
+
+#### Inherited from
+
+`Omit.on:canplay`
+
+***
+
+### oncanplaycapture?
+
+> `optional` **oncanplaycapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:197
+
+#### Inherited from
+
+`Omit.oncanplaycapture`
+
+***
+
+### on:canplaythrough?
+
+> `optional` **on:canplaythrough?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:198
+
+#### Inherited from
+
+`Omit.on:canplaythrough`
+
+***
+
+### oncanplaythroughcapture?
+
+> `optional` **oncanplaythroughcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:200
+
+#### Inherited from
+
+`Omit.oncanplaythroughcapture`
+
+***
+
+### on:cuechange?
+
+> `optional` **on:cuechange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:201
+
+#### Inherited from
+
+`Omit.on:cuechange`
+
+***
+
+### oncuechangecapture?
+
+> `optional` **oncuechangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:203
+
+#### Inherited from
+
+`Omit.oncuechangecapture`
+
+***
+
+### on:durationchange?
+
+> `optional` **on:durationchange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:204
+
+#### Inherited from
+
+`Omit.on:durationchange`
+
+***
+
+### ondurationchangecapture?
+
+> `optional` **ondurationchangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:206
+
+#### Inherited from
+
+`Omit.ondurationchangecapture`
+
+***
+
+### on:emptied?
+
+> `optional` **on:emptied?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:207
+
+#### Inherited from
+
+`Omit.on:emptied`
+
+***
+
+### onemptiedcapture?
+
+> `optional` **onemptiedcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:209
+
+#### Inherited from
+
+`Omit.onemptiedcapture`
+
+***
+
+### on:encrypted?
+
+> `optional` **on:encrypted?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:210
+
+#### Inherited from
+
+`Omit.on:encrypted`
+
+***
+
+### onencryptedcapture?
+
+> `optional` **onencryptedcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:212
+
+#### Inherited from
+
+`Omit.onencryptedcapture`
+
+***
+
+### on:ended?
+
+> `optional` **on:ended?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:213
+
+#### Inherited from
+
+`Omit.on:ended`
+
+***
+
+### onendedcapture?
+
+> `optional` **onendedcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:215
+
+#### Inherited from
+
+`Omit.onendedcapture`
+
+***
+
 ### on:loadeddata?
 
 > `optional` **on:loadeddata?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -3402,6 +3804,18 @@ Defined in: node\_modules/svelte/elements.d.ts:216
 #### Inherited from
 
 `Omit.on:loadeddata`
+
+***
+
+### onloadeddatacapture?
+
+> `optional` **onloadeddatacapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:218
+
+#### Inherited from
+
+`Omit.onloadeddatacapture`
 
 ***
 
@@ -3417,6 +3831,18 @@ Defined in: node\_modules/svelte/elements.d.ts:219
 
 ***
 
+### onloadedmetadatacapture?
+
+> `optional` **onloadedmetadatacapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:221
+
+#### Inherited from
+
+`Omit.onloadedmetadatacapture`
+
+***
+
 ### on:loadstart?
 
 > `optional` **on:loadstart?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -3429,15 +3855,603 @@ Defined in: node\_modules/svelte/elements.d.ts:222
 
 ***
 
-### on:lostpointercapture?
+### onloadstartcapture?
 
-> `optional` **on:lostpointercapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **onloadstartcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:372
+Defined in: node\_modules/svelte/elements.d.ts:224
 
 #### Inherited from
 
-`Omit.on:lostpointercapture`
+`Omit.onloadstartcapture`
+
+***
+
+### on:pause?
+
+> `optional` **on:pause?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:225
+
+#### Inherited from
+
+`Omit.on:pause`
+
+***
+
+### onpausecapture?
+
+> `optional` **onpausecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:227
+
+#### Inherited from
+
+`Omit.onpausecapture`
+
+***
+
+### on:play?
+
+> `optional` **on:play?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:228
+
+#### Inherited from
+
+`Omit.on:play`
+
+***
+
+### onplaycapture?
+
+> `optional` **onplaycapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:230
+
+#### Inherited from
+
+`Omit.onplaycapture`
+
+***
+
+### on:playing?
+
+> `optional` **on:playing?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:231
+
+#### Inherited from
+
+`Omit.on:playing`
+
+***
+
+### onplayingcapture?
+
+> `optional` **onplayingcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:233
+
+#### Inherited from
+
+`Omit.onplayingcapture`
+
+***
+
+### on:progress?
+
+> `optional` **on:progress?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:234
+
+#### Inherited from
+
+`Omit.on:progress`
+
+***
+
+### onprogresscapture?
+
+> `optional` **onprogresscapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:236
+
+#### Inherited from
+
+`Omit.onprogresscapture`
+
+***
+
+### on:ratechange?
+
+> `optional` **on:ratechange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:237
+
+#### Inherited from
+
+`Omit.on:ratechange`
+
+***
+
+### onratechangecapture?
+
+> `optional` **onratechangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:239
+
+#### Inherited from
+
+`Omit.onratechangecapture`
+
+***
+
+### on:seeked?
+
+> `optional` **on:seeked?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:240
+
+#### Inherited from
+
+`Omit.on:seeked`
+
+***
+
+### onseekedcapture?
+
+> `optional` **onseekedcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:242
+
+#### Inherited from
+
+`Omit.onseekedcapture`
+
+***
+
+### on:seeking?
+
+> `optional` **on:seeking?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:243
+
+#### Inherited from
+
+`Omit.on:seeking`
+
+***
+
+### onseekingcapture?
+
+> `optional` **onseekingcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:245
+
+#### Inherited from
+
+`Omit.onseekingcapture`
+
+***
+
+### on:stalled?
+
+> `optional` **on:stalled?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:246
+
+#### Inherited from
+
+`Omit.on:stalled`
+
+***
+
+### onstalledcapture?
+
+> `optional` **onstalledcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:248
+
+#### Inherited from
+
+`Omit.onstalledcapture`
+
+***
+
+### on:suspend?
+
+> `optional` **on:suspend?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:249
+
+#### Inherited from
+
+`Omit.on:suspend`
+
+***
+
+### onsuspendcapture?
+
+> `optional` **onsuspendcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:251
+
+#### Inherited from
+
+`Omit.onsuspendcapture`
+
+***
+
+### on:timeupdate?
+
+> `optional` **on:timeupdate?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:252
+
+#### Inherited from
+
+`Omit.on:timeupdate`
+
+***
+
+### ontimeupdatecapture?
+
+> `optional` **ontimeupdatecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:254
+
+#### Inherited from
+
+`Omit.ontimeupdatecapture`
+
+***
+
+### on:volumechange?
+
+> `optional` **on:volumechange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:255
+
+#### Inherited from
+
+`Omit.on:volumechange`
+
+***
+
+### onvolumechangecapture?
+
+> `optional` **onvolumechangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:257
+
+#### Inherited from
+
+`Omit.onvolumechangecapture`
+
+***
+
+### on:waiting?
+
+> `optional` **on:waiting?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:258
+
+#### Inherited from
+
+`Omit.on:waiting`
+
+***
+
+### onwaitingcapture?
+
+> `optional` **onwaitingcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:260
+
+#### Inherited from
+
+`Omit.onwaitingcapture`
+
+***
+
+### on:auxclick?
+
+> `optional` **on:auxclick?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:263
+
+#### Inherited from
+
+`Omit.on:auxclick`
+
+***
+
+### onauxclickcapture?
+
+> `optional` **onauxclickcapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:265
+
+#### Inherited from
+
+`Omit.onauxclickcapture`
+
+***
+
+### on:click?
+
+> `optional` **on:click?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:266
+
+#### Inherited from
+
+`Omit.on:click`
+
+***
+
+### onclickcapture?
+
+> `optional` **onclickcapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:268
+
+#### Inherited from
+
+`Omit.onclickcapture`
+
+***
+
+### on:contextmenu?
+
+> `optional` **on:contextmenu?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:269
+
+#### Inherited from
+
+`Omit.on:contextmenu`
+
+***
+
+### oncontextmenucapture?
+
+> `optional` **oncontextmenucapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:271
+
+#### Inherited from
+
+`Omit.oncontextmenucapture`
+
+***
+
+### on:dblclick?
+
+> `optional` **on:dblclick?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:272
+
+#### Inherited from
+
+`Omit.on:dblclick`
+
+***
+
+### ondblclickcapture?
+
+> `optional` **ondblclickcapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:274
+
+#### Inherited from
+
+`Omit.ondblclickcapture`
+
+***
+
+### on:drag?
+
+> `optional` **on:drag?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:275
+
+#### Inherited from
+
+`Omit.on:drag`
+
+***
+
+### ondragcapture?
+
+> `optional` **ondragcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:277
+
+#### Inherited from
+
+`Omit.ondragcapture`
+
+***
+
+### on:dragend?
+
+> `optional` **on:dragend?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:278
+
+#### Inherited from
+
+`Omit.on:dragend`
+
+***
+
+### ondragendcapture?
+
+> `optional` **ondragendcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:280
+
+#### Inherited from
+
+`Omit.ondragendcapture`
+
+***
+
+### on:dragenter?
+
+> `optional` **on:dragenter?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:281
+
+#### Inherited from
+
+`Omit.on:dragenter`
+
+***
+
+### ondragentercapture?
+
+> `optional` **ondragentercapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:283
+
+#### Inherited from
+
+`Omit.ondragentercapture`
+
+***
+
+### on:dragexit?
+
+> `optional` **on:dragexit?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:284
+
+#### Inherited from
+
+`Omit.on:dragexit`
+
+***
+
+### ondragexit?
+
+> `optional` **ondragexit?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:285
+
+#### Inherited from
+
+`Omit.ondragexit`
+
+***
+
+### ondragexitcapture?
+
+> `optional` **ondragexitcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:286
+
+#### Inherited from
+
+`Omit.ondragexitcapture`
+
+***
+
+### on:dragleave?
+
+> `optional` **on:dragleave?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:287
+
+#### Inherited from
+
+`Omit.on:dragleave`
+
+***
+
+### ondragleavecapture?
+
+> `optional` **ondragleavecapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:289
+
+#### Inherited from
+
+`Omit.ondragleavecapture`
+
+***
+
+### on:dragover?
+
+> `optional` **on:dragover?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:290
+
+#### Inherited from
+
+`Omit.on:dragover`
+
+***
+
+### ondragovercapture?
+
+> `optional` **ondragovercapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:292
+
+#### Inherited from
+
+`Omit.ondragovercapture`
+
+***
+
+### on:dragstart?
+
+> `optional` **on:dragstart?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:293
+
+#### Inherited from
+
+`Omit.on:dragstart`
+
+***
+
+### ondragstartcapture?
+
+> `optional` **ondragstartcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:295
+
+#### Inherited from
+
+`Omit.ondragstartcapture`
+
+***
+
+### on:drop?
+
+> `optional` **on:drop?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:296
+
+#### Inherited from
+
+`Omit.on:drop`
+
+***
+
+### ondropcapture?
+
+> `optional` **ondropcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:298
+
+#### Inherited from
+
+`Omit.ondropcapture`
 
 ***
 
@@ -3450,6 +4464,18 @@ Defined in: node\_modules/svelte/elements.d.ts:299
 #### Inherited from
 
 `Omit.on:mousedown`
+
+***
+
+### onmousedowncapture?
+
+> `optional` **onmousedowncapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:301
+
+#### Inherited from
+
+`Omit.onmousedowncapture`
 
 ***
 
@@ -3489,1380 +4515,6 @@ Defined in: node\_modules/svelte/elements.d.ts:306
 
 ***
 
-### on:mouseout?
-
-> `optional` **on:mouseout?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:309
-
-#### Inherited from
-
-`Omit.on:mouseout`
-
-***
-
-### on:mouseover?
-
-> `optional` **on:mouseover?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:312
-
-#### Inherited from
-
-`Omit.on:mouseover`
-
-***
-
-### on:mouseup?
-
-> `optional` **on:mouseup?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:315
-
-#### Inherited from
-
-`Omit.on:mouseup`
-
-***
-
-### on:paste?
-
-> `optional` **on:paste?**: `ClipboardEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:97
-
-#### Inherited from
-
-`Omit.on:paste`
-
-***
-
-### on:pause?
-
-> `optional` **on:pause?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:225
-
-#### Inherited from
-
-`Omit.on:pause`
-
-***
-
-### on:play?
-
-> `optional` **on:play?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:228
-
-#### Inherited from
-
-`Omit.on:play`
-
-***
-
-### on:playing?
-
-> `optional` **on:playing?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:231
-
-#### Inherited from
-
-`Omit.on:playing`
-
-***
-
-### on:pointercancel?
-
-> `optional` **on:pointercancel?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:348
-
-#### Inherited from
-
-`Omit.on:pointercancel`
-
-***
-
-### on:pointerdown?
-
-> `optional` **on:pointerdown?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:351
-
-#### Inherited from
-
-`Omit.on:pointerdown`
-
-***
-
-### on:pointerenter?
-
-> `optional` **on:pointerenter?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:354
-
-#### Inherited from
-
-`Omit.on:pointerenter`
-
-***
-
-### on:pointerleave?
-
-> `optional` **on:pointerleave?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:357
-
-#### Inherited from
-
-`Omit.on:pointerleave`
-
-***
-
-### on:pointermove?
-
-> `optional` **on:pointermove?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:360
-
-#### Inherited from
-
-`Omit.on:pointermove`
-
-***
-
-### on:pointerout?
-
-> `optional` **on:pointerout?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:363
-
-#### Inherited from
-
-`Omit.on:pointerout`
-
-***
-
-### on:pointerover?
-
-> `optional` **on:pointerover?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:366
-
-#### Inherited from
-
-`Omit.on:pointerover`
-
-***
-
-### on:pointerup?
-
-> `optional` **on:pointerup?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:369
-
-#### Inherited from
-
-`Omit.on:pointerup`
-
-***
-
-### on:progress?
-
-> `optional` **on:progress?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:234
-
-#### Inherited from
-
-`Omit.on:progress`
-
-***
-
-### on:ratechange?
-
-> `optional` **on:ratechange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:237
-
-#### Inherited from
-
-`Omit.on:ratechange`
-
-***
-
-### on:reset?
-
-> `optional` **on:reset?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:137
-
-#### Inherited from
-
-`Omit.on:reset`
-
-***
-
-### on:resize?
-
-> `optional` **on:resize?**: `UIEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:389
-
-#### Inherited from
-
-`Omit.on:resize`
-
-***
-
-### on:scroll?
-
-> `optional` **on:scroll?**: `UIEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:383
-
-#### Inherited from
-
-`Omit.on:scroll`
-
-***
-
-### on:scrollend?
-
-> `optional` **on:scrollend?**: `UIEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:386
-
-#### Inherited from
-
-`Omit.on:scrollend`
-
-***
-
-### on:seeked?
-
-> `optional` **on:seeked?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:240
-
-#### Inherited from
-
-`Omit.on:seeked`
-
-***
-
-### on:seeking?
-
-> `optional` **on:seeking?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:243
-
-#### Inherited from
-
-`Omit.on:seeking`
-
-***
-
-### on:select?
-
-> `optional` **on:select?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:320
-
-#### Inherited from
-
-`Omit.on:select`
-
-***
-
-### on:selectionchange?
-
-> `optional` **on:selectionchange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:323
-
-#### Inherited from
-
-`Omit.on:selectionchange`
-
-***
-
-### on:selectstart?
-
-> `optional` **on:selectstart?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:326
-
-#### Inherited from
-
-`Omit.on:selectstart`
-
-***
-
-### on:stalled?
-
-> `optional` **on:stalled?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:246
-
-#### Inherited from
-
-`Omit.on:stalled`
-
-***
-
-### on:submit?
-
-> `optional` **on:submit?**: `EventHandler`\<`SubmitEvent`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:140
-
-#### Inherited from
-
-`Omit.on:submit`
-
-***
-
-### on:suspend?
-
-> `optional` **on:suspend?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:249
-
-#### Inherited from
-
-`Omit.on:suspend`
-
-***
-
-### on:timeupdate?
-
-> `optional` **on:timeupdate?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:252
-
-#### Inherited from
-
-`Omit.on:timeupdate`
-
-***
-
-### on:toggle?
-
-> `optional` **on:toggle?**: `ToggleEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:162
-
-#### Inherited from
-
-`Omit.on:toggle`
-
-***
-
-### on:touchcancel?
-
-> `optional` **on:touchcancel?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:331
-
-#### Inherited from
-
-`Omit.on:touchcancel`
-
-***
-
-### on:touchend?
-
-> `optional` **on:touchend?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:334
-
-#### Inherited from
-
-`Omit.on:touchend`
-
-***
-
-### on:touchmove?
-
-> `optional` **on:touchmove?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:337
-
-#### Inherited from
-
-`Omit.on:touchmove`
-
-***
-
-### on:touchstart?
-
-> `optional` **on:touchstart?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:340
-
-#### Inherited from
-
-`Omit.on:touchstart`
-
-***
-
-### on:transitioncancel?
-
-> `optional` **on:transitioncancel?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:419
-
-#### Inherited from
-
-`Omit.on:transitioncancel`
-
-***
-
-### on:transitionend?
-
-> `optional` **on:transitionend?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:416
-
-#### Inherited from
-
-`Omit.on:transitionend`
-
-***
-
-### on:transitionrun?
-
-> `optional` **on:transitionrun?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:413
-
-#### Inherited from
-
-`Omit.on:transitionrun`
-
-***
-
-### on:transitionstart?
-
-> `optional` **on:transitionstart?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:410
-
-#### Inherited from
-
-`Omit.on:transitionstart`
-
-***
-
-### on:volumechange?
-
-> `optional` **on:volumechange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:255
-
-#### Inherited from
-
-`Omit.on:volumechange`
-
-***
-
-### on:waiting?
-
-> `optional` **on:waiting?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:258
-
-#### Inherited from
-
-`Omit.on:waiting`
-
-***
-
-### on:wheel?
-
-> `optional` **on:wheel?**: `WheelEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:394
-
-#### Inherited from
-
-`Omit.on:wheel`
-
-***
-
-### placeholder?
-
-> `optional` **placeholder?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:776
-
-#### Inherited from
-
-`Omit.placeholder`
-
-***
-
-### writingsuggestions?
-
-> `optional` **writingsuggestions?**: `Booleanish` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:785
-
-#### Inherited from
-
-`Omit.writingsuggestions`
-
-***
-
-### autosave?
-
-> `optional` **autosave?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:804
-
-#### Inherited from
-
-`Omit.autosave`
-
-***
-
-### bind:innerHTML?
-
-> `optional` **bind:innerHTML?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:840
-
-Elements with the contenteditable attribute support `innerHTML`, `textContent` and `innerText` bindings.
-
-#### Inherited from
-
-`Omit.bind:innerHTML`
-
-***
-
-### bind:textContent?
-
-> `optional` **bind:textContent?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:844
-
-Elements with the contenteditable attribute support `innerHTML`, `textContent` and `innerText` bindings.
-
-#### Inherited from
-
-`Omit.bind:textContent`
-
-***
-
-### bind:innerText?
-
-> `optional` **bind:innerText?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:848
-
-Elements with the contenteditable attribute support `innerHTML`, `textContent` and `innerText` bindings.
-
-#### Inherited from
-
-`Omit.bind:innerText`
-
-***
-
-### bind:focused?
-
-> `readonly` `optional` **bind:focused?**: `boolean` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:850
-
-#### Inherited from
-
-`Omit.bind:focused`
-
-***
-
-### bind:offsetWidth?
-
-> `readonly` `optional` **bind:offsetWidth?**: `number` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:851
-
-#### Inherited from
-
-`Omit.bind:offsetWidth`
-
-***
-
-### bind:offsetHeight?
-
-> `readonly` `optional` **bind:offsetHeight?**: `number` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:852
-
-#### Inherited from
-
-`Omit.bind:offsetHeight`
-
-***
-
-### oncopycapture?
-
-> `optional` **oncopycapture?**: `ClipboardEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:93
-
-#### Inherited from
-
-`Omit.oncopycapture`
-
-***
-
-### oncutcapture?
-
-> `optional` **oncutcapture?**: `ClipboardEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:96
-
-#### Inherited from
-
-`Omit.oncutcapture`
-
-***
-
-### onpastecapture?
-
-> `optional` **onpastecapture?**: `ClipboardEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:99
-
-#### Inherited from
-
-`Omit.onpastecapture`
-
-***
-
-### oncompositionendcapture?
-
-> `optional` **oncompositionendcapture?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:104
-
-#### Inherited from
-
-`Omit.oncompositionendcapture`
-
-***
-
-### oncompositionstartcapture?
-
-> `optional` **oncompositionstartcapture?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:107
-
-#### Inherited from
-
-`Omit.oncompositionstartcapture`
-
-***
-
-### oncompositionupdatecapture?
-
-> `optional` **oncompositionupdatecapture?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:110
-
-#### Inherited from
-
-`Omit.oncompositionupdatecapture`
-
-***
-
-### onfocuscapture?
-
-> `optional` **onfocuscapture?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:115
-
-#### Inherited from
-
-`Omit.onfocuscapture`
-
-***
-
-### onfocusincapture?
-
-> `optional` **onfocusincapture?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:118
-
-#### Inherited from
-
-`Omit.onfocusincapture`
-
-***
-
-### onfocusoutcapture?
-
-> `optional` **onfocusoutcapture?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:121
-
-#### Inherited from
-
-`Omit.onfocusoutcapture`
-
-***
-
-### onblurcapture?
-
-> `optional` **onblurcapture?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:124
-
-#### Inherited from
-
-`Omit.onblurcapture`
-
-***
-
-### onchangecapture?
-
-> `optional` **onchangecapture?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:129
-
-#### Inherited from
-
-`Omit.onchangecapture`
-
-***
-
-### onbeforeinputcapture?
-
-> `optional` **onbeforeinputcapture?**: `EventHandler`\<`InputEvent`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:132
-
-#### Inherited from
-
-`Omit.onbeforeinputcapture`
-
-***
-
-### oninputcapture?
-
-> `optional` **oninputcapture?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:136
-
-#### Inherited from
-
-`Omit.oninputcapture`
-
-***
-
-### onresetcapture?
-
-> `optional` **onresetcapture?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:139
-
-#### Inherited from
-
-`Omit.onresetcapture`
-
-***
-
-### onsubmitcapture?
-
-> `optional` **onsubmitcapture?**: `EventHandler`\<`SubmitEvent`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:142
-
-#### Inherited from
-
-`Omit.onsubmitcapture`
-
-***
-
-### oninvalidcapture?
-
-> `optional` **oninvalidcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:145
-
-#### Inherited from
-
-`Omit.oninvalidcapture`
-
-***
-
-### onformdatacapture?
-
-> `optional` **onformdatacapture?**: `EventHandler`\<`FormDataEvent`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:148
-
-#### Inherited from
-
-`Omit.onformdatacapture`
-
-***
-
-### onloadcapture?
-
-> `optional` **onloadcapture?**: `EventHandler`\<`Event`, `Element`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:153
-
-#### Inherited from
-
-`Omit.onloadcapture`
-
-***
-
-### onerrorcapture?
-
-> `optional` **onerrorcapture?**: `EventHandler`\<`Event`, `Element`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:156
-
-#### Inherited from
-
-`Omit.onerrorcapture`
-
-***
-
-### onbeforetogglecapture?
-
-> `optional` **onbeforetogglecapture?**: `ToggleEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:161
-
-#### Inherited from
-
-`Omit.onbeforetogglecapture`
-
-***
-
-### ontogglecapture?
-
-> `optional` **ontogglecapture?**: `ToggleEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:164
-
-#### Inherited from
-
-`Omit.ontogglecapture`
-
-***
-
-### oncontentvisibilityautostatechangecapture?
-
-> `optional` **oncontentvisibilityautostatechangecapture?**: `ContentVisibilityAutoStateChangeEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:175
-
-#### Inherited from
-
-`Omit.oncontentvisibilityautostatechangecapture`
-
-***
-
-### onkeydowncapture?
-
-> `optional` **onkeydowncapture?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:183
-
-#### Inherited from
-
-`Omit.onkeydowncapture`
-
-***
-
-### onkeypresscapture?
-
-> `optional` **onkeypresscapture?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:186
-
-#### Inherited from
-
-`Omit.onkeypresscapture`
-
-***
-
-### onkeyupcapture?
-
-> `optional` **onkeyupcapture?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:189
-
-#### Inherited from
-
-`Omit.onkeyupcapture`
-
-***
-
-### onabortcapture?
-
-> `optional` **onabortcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:194
-
-#### Inherited from
-
-`Omit.onabortcapture`
-
-***
-
-### oncanplaycapture?
-
-> `optional` **oncanplaycapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:197
-
-#### Inherited from
-
-`Omit.oncanplaycapture`
-
-***
-
-### oncanplaythroughcapture?
-
-> `optional` **oncanplaythroughcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:200
-
-#### Inherited from
-
-`Omit.oncanplaythroughcapture`
-
-***
-
-### oncuechangecapture?
-
-> `optional` **oncuechangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:203
-
-#### Inherited from
-
-`Omit.oncuechangecapture`
-
-***
-
-### ondurationchangecapture?
-
-> `optional` **ondurationchangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:206
-
-#### Inherited from
-
-`Omit.ondurationchangecapture`
-
-***
-
-### onemptiedcapture?
-
-> `optional` **onemptiedcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:209
-
-#### Inherited from
-
-`Omit.onemptiedcapture`
-
-***
-
-### on:encrypted?
-
-> `optional` **on:encrypted?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:210
-
-#### Inherited from
-
-`Omit.on:encrypted`
-
-***
-
-### onencrypted?
-
-> `optional` **onencrypted?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:211
-
-#### Inherited from
-
-`Omit.onencrypted`
-
-***
-
-### onencryptedcapture?
-
-> `optional` **onencryptedcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:212
-
-#### Inherited from
-
-`Omit.onencryptedcapture`
-
-***
-
-### onendedcapture?
-
-> `optional` **onendedcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:215
-
-#### Inherited from
-
-`Omit.onendedcapture`
-
-***
-
-### onloadeddatacapture?
-
-> `optional` **onloadeddatacapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:218
-
-#### Inherited from
-
-`Omit.onloadeddatacapture`
-
-***
-
-### onloadedmetadatacapture?
-
-> `optional` **onloadedmetadatacapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:221
-
-#### Inherited from
-
-`Omit.onloadedmetadatacapture`
-
-***
-
-### onloadstartcapture?
-
-> `optional` **onloadstartcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:224
-
-#### Inherited from
-
-`Omit.onloadstartcapture`
-
-***
-
-### onpausecapture?
-
-> `optional` **onpausecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:227
-
-#### Inherited from
-
-`Omit.onpausecapture`
-
-***
-
-### onplaycapture?
-
-> `optional` **onplaycapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:230
-
-#### Inherited from
-
-`Omit.onplaycapture`
-
-***
-
-### onplayingcapture?
-
-> `optional` **onplayingcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:233
-
-#### Inherited from
-
-`Omit.onplayingcapture`
-
-***
-
-### onprogresscapture?
-
-> `optional` **onprogresscapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:236
-
-#### Inherited from
-
-`Omit.onprogresscapture`
-
-***
-
-### onratechangecapture?
-
-> `optional` **onratechangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:239
-
-#### Inherited from
-
-`Omit.onratechangecapture`
-
-***
-
-### onseekedcapture?
-
-> `optional` **onseekedcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:242
-
-#### Inherited from
-
-`Omit.onseekedcapture`
-
-***
-
-### onseekingcapture?
-
-> `optional` **onseekingcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:245
-
-#### Inherited from
-
-`Omit.onseekingcapture`
-
-***
-
-### onstalledcapture?
-
-> `optional` **onstalledcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:248
-
-#### Inherited from
-
-`Omit.onstalledcapture`
-
-***
-
-### onsuspendcapture?
-
-> `optional` **onsuspendcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:251
-
-#### Inherited from
-
-`Omit.onsuspendcapture`
-
-***
-
-### ontimeupdatecapture?
-
-> `optional` **ontimeupdatecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:254
-
-#### Inherited from
-
-`Omit.ontimeupdatecapture`
-
-***
-
-### onvolumechangecapture?
-
-> `optional` **onvolumechangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:257
-
-#### Inherited from
-
-`Omit.onvolumechangecapture`
-
-***
-
-### onwaitingcapture?
-
-> `optional` **onwaitingcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:260
-
-#### Inherited from
-
-`Omit.onwaitingcapture`
-
-***
-
-### onauxclickcapture?
-
-> `optional` **onauxclickcapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:265
-
-#### Inherited from
-
-`Omit.onauxclickcapture`
-
-***
-
-### onclickcapture?
-
-> `optional` **onclickcapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:268
-
-#### Inherited from
-
-`Omit.onclickcapture`
-
-***
-
-### oncontextmenucapture?
-
-> `optional` **oncontextmenucapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:271
-
-#### Inherited from
-
-`Omit.oncontextmenucapture`
-
-***
-
-### ondblclickcapture?
-
-> `optional` **ondblclickcapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:274
-
-#### Inherited from
-
-`Omit.ondblclickcapture`
-
-***
-
-### ondragcapture?
-
-> `optional` **ondragcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:277
-
-#### Inherited from
-
-`Omit.ondragcapture`
-
-***
-
-### ondragendcapture?
-
-> `optional` **ondragendcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:280
-
-#### Inherited from
-
-`Omit.ondragendcapture`
-
-***
-
-### ondragentercapture?
-
-> `optional` **ondragentercapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:283
-
-#### Inherited from
-
-`Omit.ondragentercapture`
-
-***
-
-### ondragexitcapture?
-
-> `optional` **ondragexitcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:286
-
-#### Inherited from
-
-`Omit.ondragexitcapture`
-
-***
-
-### ondragleavecapture?
-
-> `optional` **ondragleavecapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:289
-
-#### Inherited from
-
-`Omit.ondragleavecapture`
-
-***
-
-### ondragovercapture?
-
-> `optional` **ondragovercapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:292
-
-#### Inherited from
-
-`Omit.ondragovercapture`
-
-***
-
-### ondragstartcapture?
-
-> `optional` **ondragstartcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:295
-
-#### Inherited from
-
-`Omit.ondragstartcapture`
-
-***
-
-### ondropcapture?
-
-> `optional` **ondropcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:298
-
-#### Inherited from
-
-`Omit.ondropcapture`
-
-***
-
-### onmousedowncapture?
-
-> `optional` **onmousedowncapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:301
-
-#### Inherited from
-
-`Omit.onmousedowncapture`
-
-***
-
 ### onmousemovecapture?
 
 > `optional` **onmousemovecapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -4872,6 +4524,18 @@ Defined in: node\_modules/svelte/elements.d.ts:308
 #### Inherited from
 
 `Omit.onmousemovecapture`
+
+***
+
+### on:mouseout?
+
+> `optional` **on:mouseout?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:309
+
+#### Inherited from
+
+`Omit.on:mouseout`
 
 ***
 
@@ -4887,6 +4551,18 @@ Defined in: node\_modules/svelte/elements.d.ts:311
 
 ***
 
+### on:mouseover?
+
+> `optional` **on:mouseover?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:312
+
+#### Inherited from
+
+`Omit.on:mouseover`
+
+***
+
 ### onmouseovercapture?
 
 > `optional` **onmouseovercapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -4896,6 +4572,18 @@ Defined in: node\_modules/svelte/elements.d.ts:314
 #### Inherited from
 
 `Omit.onmouseovercapture`
+
+***
+
+### on:mouseup?
+
+> `optional` **on:mouseup?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:315
+
+#### Inherited from
+
+`Omit.on:mouseup`
 
 ***
 
@@ -4911,6 +4599,18 @@ Defined in: node\_modules/svelte/elements.d.ts:317
 
 ***
 
+### on:select?
+
+> `optional` **on:select?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:320
+
+#### Inherited from
+
+`Omit.on:select`
+
+***
+
 ### onselectcapture?
 
 > `optional` **onselectcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -4920,6 +4620,18 @@ Defined in: node\_modules/svelte/elements.d.ts:322
 #### Inherited from
 
 `Omit.onselectcapture`
+
+***
+
+### on:selectionchange?
+
+> `optional` **on:selectionchange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:323
+
+#### Inherited from
+
+`Omit.on:selectionchange`
 
 ***
 
@@ -4935,6 +4647,18 @@ Defined in: node\_modules/svelte/elements.d.ts:325
 
 ***
 
+### on:selectstart?
+
+> `optional` **on:selectstart?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:326
+
+#### Inherited from
+
+`Omit.on:selectstart`
+
+***
+
 ### onselectstartcapture?
 
 > `optional` **onselectstartcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -4944,6 +4668,18 @@ Defined in: node\_modules/svelte/elements.d.ts:328
 #### Inherited from
 
 `Omit.onselectstartcapture`
+
+***
+
+### on:touchcancel?
+
+> `optional` **on:touchcancel?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:331
+
+#### Inherited from
+
+`Omit.on:touchcancel`
 
 ***
 
@@ -4959,6 +4695,18 @@ Defined in: node\_modules/svelte/elements.d.ts:333
 
 ***
 
+### on:touchend?
+
+> `optional` **on:touchend?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:334
+
+#### Inherited from
+
+`Omit.on:touchend`
+
+***
+
 ### ontouchendcapture?
 
 > `optional` **ontouchendcapture?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -4968,6 +4716,18 @@ Defined in: node\_modules/svelte/elements.d.ts:336
 #### Inherited from
 
 `Omit.ontouchendcapture`
+
+***
+
+### on:touchmove?
+
+> `optional` **on:touchmove?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:337
+
+#### Inherited from
+
+`Omit.on:touchmove`
 
 ***
 
@@ -4983,6 +4743,18 @@ Defined in: node\_modules/svelte/elements.d.ts:339
 
 ***
 
+### on:touchstart?
+
+> `optional` **on:touchstart?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:340
+
+#### Inherited from
+
+`Omit.on:touchstart`
+
+***
+
 ### ontouchstartcapture?
 
 > `optional` **ontouchstartcapture?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -4992,6 +4764,18 @@ Defined in: node\_modules/svelte/elements.d.ts:342
 #### Inherited from
 
 `Omit.ontouchstartcapture`
+
+***
+
+### on:gotpointercapture?
+
+> `optional` **on:gotpointercapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:345
+
+#### Inherited from
+
+`Omit.on:gotpointercapture`
 
 ***
 
@@ -5007,6 +4791,18 @@ Defined in: node\_modules/svelte/elements.d.ts:347
 
 ***
 
+### on:pointercancel?
+
+> `optional` **on:pointercancel?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:348
+
+#### Inherited from
+
+`Omit.on:pointercancel`
+
+***
+
 ### onpointercancelcapture?
 
 > `optional` **onpointercancelcapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5016,6 +4812,18 @@ Defined in: node\_modules/svelte/elements.d.ts:350
 #### Inherited from
 
 `Omit.onpointercancelcapture`
+
+***
+
+### on:pointerdown?
+
+> `optional` **on:pointerdown?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:351
+
+#### Inherited from
+
+`Omit.on:pointerdown`
 
 ***
 
@@ -5031,6 +4839,18 @@ Defined in: node\_modules/svelte/elements.d.ts:353
 
 ***
 
+### on:pointerenter?
+
+> `optional` **on:pointerenter?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:354
+
+#### Inherited from
+
+`Omit.on:pointerenter`
+
+***
+
 ### onpointerentercapture?
 
 > `optional` **onpointerentercapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5040,6 +4860,18 @@ Defined in: node\_modules/svelte/elements.d.ts:356
 #### Inherited from
 
 `Omit.onpointerentercapture`
+
+***
+
+### on:pointerleave?
+
+> `optional` **on:pointerleave?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:357
+
+#### Inherited from
+
+`Omit.on:pointerleave`
 
 ***
 
@@ -5055,6 +4887,18 @@ Defined in: node\_modules/svelte/elements.d.ts:359
 
 ***
 
+### on:pointermove?
+
+> `optional` **on:pointermove?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:360
+
+#### Inherited from
+
+`Omit.on:pointermove`
+
+***
+
 ### onpointermovecapture?
 
 > `optional` **onpointermovecapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5064,6 +4908,18 @@ Defined in: node\_modules/svelte/elements.d.ts:362
 #### Inherited from
 
 `Omit.onpointermovecapture`
+
+***
+
+### on:pointerout?
+
+> `optional` **on:pointerout?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:363
+
+#### Inherited from
+
+`Omit.on:pointerout`
 
 ***
 
@@ -5079,6 +4935,18 @@ Defined in: node\_modules/svelte/elements.d.ts:365
 
 ***
 
+### on:pointerover?
+
+> `optional` **on:pointerover?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:366
+
+#### Inherited from
+
+`Omit.on:pointerover`
+
+***
+
 ### onpointerovercapture?
 
 > `optional` **onpointerovercapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5091,6 +4959,18 @@ Defined in: node\_modules/svelte/elements.d.ts:368
 
 ***
 
+### on:pointerup?
+
+> `optional` **on:pointerup?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:369
+
+#### Inherited from
+
+`Omit.on:pointerup`
+
+***
+
 ### onpointerupcapture?
 
 > `optional` **onpointerupcapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5100,6 +4980,18 @@ Defined in: node\_modules/svelte/elements.d.ts:371
 #### Inherited from
 
 `Omit.onpointerupcapture`
+
+***
+
+### on:lostpointercapture?
+
+> `optional` **on:lostpointercapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:372
+
+#### Inherited from
+
+`Omit.on:lostpointercapture`
 
 ***
 
@@ -5127,18 +5019,6 @@ Defined in: node\_modules/svelte/elements.d.ts:377
 
 ***
 
-### ongamepadconnected?
-
-> `optional` **ongamepadconnected?**: `GamepadEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:378
-
-#### Inherited from
-
-`Omit.ongamepadconnected`
-
-***
-
 ### on:gamepaddisconnected?
 
 > `optional` **on:gamepaddisconnected?**: `GamepadEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5151,15 +5031,15 @@ Defined in: node\_modules/svelte/elements.d.ts:379
 
 ***
 
-### ongamepaddisconnected?
+### on:scroll?
 
-> `optional` **ongamepaddisconnected?**: `GamepadEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **on:scroll?**: `UIEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:380
+Defined in: node\_modules/svelte/elements.d.ts:383
 
 #### Inherited from
 
-`Omit.ongamepaddisconnected`
+`Omit.on:scroll`
 
 ***
 
@@ -5175,6 +5055,18 @@ Defined in: node\_modules/svelte/elements.d.ts:385
 
 ***
 
+### on:scrollend?
+
+> `optional` **on:scrollend?**: `UIEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:386
+
+#### Inherited from
+
+`Omit.on:scrollend`
+
+***
+
 ### onscrollendcapture?
 
 > `optional` **onscrollendcapture?**: `UIEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5184,6 +5076,18 @@ Defined in: node\_modules/svelte/elements.d.ts:388
 #### Inherited from
 
 `Omit.onscrollendcapture`
+
+***
+
+### on:resize?
+
+> `optional` **on:resize?**: `UIEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:389
+
+#### Inherited from
+
+`Omit.on:resize`
 
 ***
 
@@ -5199,6 +5103,18 @@ Defined in: node\_modules/svelte/elements.d.ts:391
 
 ***
 
+### on:wheel?
+
+> `optional` **on:wheel?**: `WheelEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:394
+
+#### Inherited from
+
+`Omit.on:wheel`
+
+***
+
 ### onwheelcapture?
 
 > `optional` **onwheelcapture?**: `WheelEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5208,6 +5124,18 @@ Defined in: node\_modules/svelte/elements.d.ts:396
 #### Inherited from
 
 `Omit.onwheelcapture`
+
+***
+
+### on:animationstart?
+
+> `optional` **on:animationstart?**: `AnimationEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:399
+
+#### Inherited from
+
+`Omit.on:animationstart`
 
 ***
 
@@ -5223,6 +5151,18 @@ Defined in: node\_modules/svelte/elements.d.ts:401
 
 ***
 
+### on:animationend?
+
+> `optional` **on:animationend?**: `AnimationEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:402
+
+#### Inherited from
+
+`Omit.on:animationend`
+
+***
+
 ### onanimationendcapture?
 
 > `optional` **onanimationendcapture?**: `AnimationEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5232,6 +5172,18 @@ Defined in: node\_modules/svelte/elements.d.ts:404
 #### Inherited from
 
 `Omit.onanimationendcapture`
+
+***
+
+### on:animationiteration?
+
+> `optional` **on:animationiteration?**: `AnimationEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:405
+
+#### Inherited from
+
+`Omit.on:animationiteration`
 
 ***
 
@@ -5247,6 +5199,18 @@ Defined in: node\_modules/svelte/elements.d.ts:407
 
 ***
 
+### on:transitionstart?
+
+> `optional` **on:transitionstart?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:410
+
+#### Inherited from
+
+`Omit.on:transitionstart`
+
+***
+
 ### ontransitionstartcapture?
 
 > `optional` **ontransitionstartcapture?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5256,6 +5220,18 @@ Defined in: node\_modules/svelte/elements.d.ts:412
 #### Inherited from
 
 `Omit.ontransitionstartcapture`
+
+***
+
+### on:transitionrun?
+
+> `optional` **on:transitionrun?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:413
+
+#### Inherited from
+
+`Omit.on:transitionrun`
 
 ***
 
@@ -5271,6 +5247,18 @@ Defined in: node\_modules/svelte/elements.d.ts:415
 
 ***
 
+### on:transitionend?
+
+> `optional` **on:transitionend?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:416
+
+#### Inherited from
+
+`Omit.on:transitionend`
+
+***
+
 ### ontransitionendcapture?
 
 > `optional` **ontransitionendcapture?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5280,6 +5268,18 @@ Defined in: node\_modules/svelte/elements.d.ts:418
 #### Inherited from
 
 `Omit.ontransitionendcapture`
+
+***
+
+### on:transitioncancel?
+
+> `optional` **on:transitioncancel?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:419
+
+#### Inherited from
+
+`Omit.on:transitioncancel`
 
 ***
 
@@ -5451,18 +5451,6 @@ Defined in: node\_modules/svelte/elements.d.ts:438
 
 ***
 
-### onmessage?
-
-> `optional` **onmessage?**: `MessageEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:439
-
-#### Inherited from
-
-`Omit.onmessage`
-
-***
-
 ### onmessagecapture?
 
 > `optional` **onmessagecapture?**: `MessageEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5484,18 +5472,6 @@ Defined in: node\_modules/svelte/elements.d.ts:441
 #### Inherited from
 
 `Omit.on:messageerror`
-
-***
-
-### onmessageerror?
-
-> `optional` **onmessageerror?**: `MessageEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:442
-
-#### Inherited from
-
-`Omit.onmessageerror`
 
 ***
 
@@ -5523,18 +5499,6 @@ Defined in: node\_modules/svelte/elements.d.ts:446
 
 ***
 
-### onvisibilitychange?
-
-> `optional` **onvisibilitychange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:447
-
-#### Inherited from
-
-`Omit.onvisibilitychange`
-
-***
-
 ### onvisibilitychangecapture?
 
 > `optional` **onvisibilitychangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -5544,6 +5508,18 @@ Defined in: node\_modules/svelte/elements.d.ts:448
 #### Inherited from
 
 `Omit.onvisibilitychangecapture`
+
+***
+
+### on:beforematch?
+
+> `optional` **on:beforematch?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:451
+
+#### Inherited from
+
+`Omit.on:beforematch`
 
 ***
 
@@ -5559,6 +5535,18 @@ Defined in: node\_modules/svelte/elements.d.ts:453
 
 ***
 
+### on:cancel?
+
+> `optional` **on:cancel?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:454
+
+#### Inherited from
+
+`Omit.on:cancel`
+
+***
+
 ### oncancelcapture?
 
 > `optional` **oncancelcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -5568,6 +5556,18 @@ Defined in: node\_modules/svelte/elements.d.ts:456
 #### Inherited from
 
 `Omit.oncancelcapture`
+
+***
+
+### on:close?
+
+> `optional` **on:close?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:457
+
+#### Inherited from
+
+`Omit.on:close`
 
 ***
 
@@ -5583,6 +5583,18 @@ Defined in: node\_modules/svelte/elements.d.ts:459
 
 ***
 
+### on:fullscreenchange?
+
+> `optional` **on:fullscreenchange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:460
+
+#### Inherited from
+
+`Omit.on:fullscreenchange`
+
+***
+
 ### onfullscreenchangecapture?
 
 > `optional` **onfullscreenchangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -5592,6 +5604,18 @@ Defined in: node\_modules/svelte/elements.d.ts:462
 #### Inherited from
 
 `Omit.onfullscreenchangecapture`
+
+***
+
+### on:fullscreenerror?
+
+> `optional` **on:fullscreenerror?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:463
+
+#### Inherited from
+
+`Omit.on:fullscreenerror`
 
 ***
 
@@ -5676,15 +5700,3 @@ Defined in: node\_modules/svelte/elements.d.ts:473
 #### Inherited from
 
 `Omit.bind:clientHeight`
-
-***
-
-### xmlns?
-
-> `optional` **xmlns?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:475
-
-#### Inherited from
-
-`Omit.xmlns`

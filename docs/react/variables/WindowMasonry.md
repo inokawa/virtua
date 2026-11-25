@@ -6,7 +6,7 @@
 
 > `const` **WindowMasonry**: \<`T`\>(`props`) => `ReactElement`
 
-Defined in: [src/react/WindowMasonry.tsx:128](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/react/WindowMasonry.tsx#L128)
+Defined in: [src/react/WindowMasonry.tsx:128](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/react/WindowMasonry.tsx#L128)
 
 [VMasonry](VMasonry.md) controlled by the window scrolling. See [WindowMasonryProps](../interfaces/WindowMasonryProps.md) and [WindowMasonryHandle](../interfaces/WindowMasonryHandle.md).
 

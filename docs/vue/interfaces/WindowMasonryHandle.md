@@ -4,7 +4,7 @@
 
 # Interface: WindowMasonryHandle
 
-Defined in: [src/vue/WindowMasonry.tsx:34](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L34)
+Defined in: [src/vue/WindowMasonry.tsx:34](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L34)
 
 Methods of [WindowMasonry](../variables/WindowMasonry.md).
 
@@ -14,7 +14,7 @@ Methods of [WindowMasonry](../variables/WindowMasonry.md).
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/vue/WindowMasonry.tsx:51](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L51)
+Defined in: [src/vue/WindowMasonry.tsx:51](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L51)
 
 Get item offset from start.
 
@@ -36,7 +36,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/vue/WindowMasonry.tsx:56](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L56)
+Defined in: [src/vue/WindowMasonry.tsx:56](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L56)
 
 Get item size.
 
@@ -58,7 +58,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/vue/WindowMasonry.tsx:62](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L62)
+Defined in: [src/vue/WindowMasonry.tsx:62](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L62)
 
 Scroll to the item specified by index.
 
@@ -86,7 +86,7 @@ options
 
 > `readonly` **cache**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/vue/WindowMasonry.tsx:38](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L38)
+Defined in: [src/vue/WindowMasonry.tsx:38](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L38)
 
 Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
@@ -96,7 +96,7 @@ Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
 > `readonly` **scrollOffset**: `number`
 
-Defined in: [src/vue/WindowMasonry.tsx:42](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L42)
+Defined in: [src/vue/WindowMasonry.tsx:42](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L42)
 
 Get current scrollTop.
 
@@ -106,6 +106,6 @@ Get current scrollTop.
 
 > `readonly` **viewportSize**: `number`
 
-Defined in: [src/vue/WindowMasonry.tsx:46](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L46)
+Defined in: [src/vue/WindowMasonry.tsx:46](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L46)
 
 Get current clientHeight of the document.

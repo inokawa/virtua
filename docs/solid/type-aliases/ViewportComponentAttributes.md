@@ -6,7 +6,7 @@
 
 > **ViewportComponentAttributes** = `Omit`\<`JSX.HTMLAttributes`\<`HTMLDivElement`\>, `"ref"` \| `"children"` \| `"style"` \| `"onScroll"` \| `"onScrollEnd"` \| `"onResize"`\> & `object`
 
-Defined in: [src/solid/types.ts:3](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/types.ts#L3)
+Defined in: [src/solid/types.ts:4](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/types.ts#L4)
 
 ## Type Declaration
 

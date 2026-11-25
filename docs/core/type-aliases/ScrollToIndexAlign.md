@@ -6,7 +6,7 @@
 
 > **ScrollToIndexAlign** = `"start"` \| `"center"` \| `"end"` \| `"nearest"`
 
-Defined in: [src/core/driver.ts:37](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/core/driver.ts#L37)
+Defined in: [src/core/driver.ts:37](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/core/driver.ts#L37)
 
 Alignment of item in the viewport.
 

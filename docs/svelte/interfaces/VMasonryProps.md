@@ -4,7 +4,7 @@
 
 # Interface: VMasonryProps\<T\>
 
-Defined in: [src/svelte/VMasonry.type.ts:8](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VMasonry.type.ts#L8)
+Defined in: [src/svelte/VMasonry.type.ts:8](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VMasonry.type.ts#L8)
 
 Props of [VMasonry](../variables/VList.md).
 
@@ -30,7 +30,7 @@ Props of [VMasonry](../variables/VList.md).
 
 > **data**: readonly `T`[]
 
-Defined in: [src/svelte/VMasonry.type.ts:12](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VMasonry.type.ts#L12)
+Defined in: [src/svelte/VMasonry.type.ts:12](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VMasonry.type.ts#L12)
 
 The data items rendered by this component.
 
@@ -40,7 +40,7 @@ The data items rendered by this component.
 
 > **children**: `Snippet`\<\[`item`: `T`, `index`: `number`\]\>
 
-Defined in: [src/svelte/VMasonry.type.ts:16](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VMasonry.type.ts#L16)
+Defined in: [src/svelte/VMasonry.type.ts:16](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VMasonry.type.ts#L16)
 
 The elements renderer snippet.
 
@@ -50,7 +50,7 @@ The elements renderer snippet.
 
 > `optional` **getKey?**: (`data`, `index`) => `string` \| `number`
 
-Defined in: [src/svelte/VMasonry.type.ts:21](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VMasonry.type.ts#L21)
+Defined in: [src/svelte/VMasonry.type.ts:21](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VMasonry.type.ts#L21)
 
 Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
 
@@ -80,7 +80,7 @@ defaultGetKey (returns index of item)
 
 > **lanes**: `number`
 
-Defined in: [src/svelte/VMasonry.type.ts:25](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VMasonry.type.ts#L25)
+Defined in: [src/svelte/VMasonry.type.ts:25](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VMasonry.type.ts#L25)
 
 The number of lanes (columns) which items are laid out into. Each item is placed into the shortest lane in order. It must be an integer and the minimum value is 1.
 
@@ -90,7 +90,7 @@ The number of lanes (columns) which items are laid out into. Each item is placed
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/svelte/VMasonry.type.ts:30](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VMasonry.type.ts#L30)
+Defined in: [src/svelte/VMasonry.type.ts:30](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VMasonry.type.ts#L30)
 
 The gap between the items and the lanes in pixels, which is not included in the sizes.
 
@@ -106,7 +106,7 @@ The gap between the items and the lanes in pixels, which is not included in the 
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/svelte/VMasonry.type.ts:37](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VMasonry.type.ts#L37)
+Defined in: [src/svelte/VMasonry.type.ts:37](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VMasonry.type.ts#L37)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -119,7 +119,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/svelte/VMasonry.type.ts:42](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VMasonry.type.ts#L42)
+Defined in: [src/svelte/VMasonry.type.ts:42](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VMasonry.type.ts#L42)
 
 Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
 
@@ -135,7 +135,7 @@ Extra space in pixels to render before/after the viewport. The default value is 
 
 > `optional` **keepMounted?**: readonly `number`[]
 
-Defined in: [src/svelte/VMasonry.type.ts:46](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VMasonry.type.ts#L46)
+Defined in: [src/svelte/VMasonry.type.ts:46](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VMasonry.type.ts#L46)
 
 List of indexes that should be always mounted, even when off screen.
 
@@ -145,7 +145,7 @@ List of indexes that should be always mounted, even when off screen.
 
 > `optional` **cache?**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/svelte/VMasonry.type.ts:52](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VMasonry.type.ts#L52)
+Defined in: [src/svelte/VMasonry.type.ts:52](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VMasonry.type.ts#L52)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [VMasonryHandle.getCache](VMasonryHandle.md#getcache).
 
@@ -157,7 +157,7 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `optional` **ssrCount?**: `number`
 
-Defined in: [src/svelte/VMasonry.type.ts:58](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VMasonry.type.ts#L58)
+Defined in: [src/svelte/VMasonry.type.ts:58](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VMasonry.type.ts#L58)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -169,7 +169,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `optional` **onscroll?**: (`offset`) => `void`
 
-Defined in: [src/svelte/VMasonry.type.ts:63](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VMasonry.type.ts#L63)
+Defined in: [src/svelte/VMasonry.type.ts:63](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VMasonry.type.ts#L63)
 
 Callback invoked whenever scroll offset changes.
 
@@ -191,7 +191,7 @@ Current scrollTop.
 
 > `optional` **onscrollend?**: () => `void`
 
-Defined in: [src/svelte/VMasonry.type.ts:67](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VMasonry.type.ts#L67)
+Defined in: [src/svelte/VMasonry.type.ts:67](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VMasonry.type.ts#L67)
 
 Callback invoked when scrolling stops.
 
@@ -205,7 +205,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **onresize?**: () => `void`
 
-Defined in: [src/svelte/VMasonry.type.ts:71](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/VMasonry.type.ts#L71)
+Defined in: [src/svelte/VMasonry.type.ts:71](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/VMasonry.type.ts#L71)
 
 Callback invoked when the size of the viewport or the items changes.
 
@@ -219,7 +219,7 @@ Callback invoked when the size of the viewport or the items changes.
 
 > `optional` **contextmenu?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:758
+Defined in: node\_modules/svelte/elements.d.ts:759
 
 #### Inherited from
 
@@ -231,7 +231,7 @@ Defined in: node\_modules/svelte/elements.d.ts:758
 
 > `optional` **hidden?**: `boolean` \| `""` \| `"until-found"` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:772
+Defined in: node\_modules/svelte/elements.d.ts:773
 
 #### Inherited from
 
@@ -243,7 +243,7 @@ Defined in: node\_modules/svelte/elements.d.ts:772
 
 > `optional` **slot?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:777
+Defined in: node\_modules/svelte/elements.d.ts:778
 
 #### Inherited from
 
@@ -255,7 +255,7 @@ Defined in: node\_modules/svelte/elements.d.ts:777
 
 > `optional` **style?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:779
+Defined in: node\_modules/svelte/elements.d.ts:780
 
 #### Inherited from
 
@@ -267,7 +267,7 @@ Defined in: node\_modules/svelte/elements.d.ts:779
 
 > `optional` **title?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:781
+Defined in: node\_modules/svelte/elements.d.ts:782
 
 #### Inherited from
 
@@ -279,7 +279,7 @@ Defined in: node\_modules/svelte/elements.d.ts:781
 
 > `optional` **dir?**: `"auto"` \| `"rtl"` \| `"ltr"` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:759
+Defined in: node\_modules/svelte/elements.d.ts:760
 
 #### Inherited from
 
@@ -291,7 +291,7 @@ Defined in: node\_modules/svelte/elements.d.ts:759
 
 > `optional` **property?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:798
+Defined in: node\_modules/svelte/elements.d.ts:799
 
 #### Inherited from
 
@@ -303,7 +303,7 @@ Defined in: node\_modules/svelte/elements.d.ts:798
 
 > `optional` **is?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:835
+Defined in: node\_modules/svelte/elements.d.ts:836
 
 Specify that a standard HTML element should behave like a defined custom built-in element
 
@@ -321,7 +321,7 @@ https://html.spec.whatwg.org/multipage/custom-elements.html#attr-is
 
 > `optional` **draggable?**: `Booleanish` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:760
+Defined in: node\_modules/svelte/elements.d.ts:761
 
 #### Inherited from
 
@@ -333,7 +333,7 @@ Defined in: node\_modules/svelte/elements.d.ts:760
 
 > `optional` **id?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:773
+Defined in: node\_modules/svelte/elements.d.ts:774
 
 #### Inherited from
 
@@ -345,7 +345,7 @@ Defined in: node\_modules/svelte/elements.d.ts:773
 
 > `optional` **lang?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:774
+Defined in: node\_modules/svelte/elements.d.ts:775
 
 #### Inherited from
 
@@ -357,7 +357,7 @@ Defined in: node\_modules/svelte/elements.d.ts:774
 
 > `optional` **translate?**: `""` \| `"yes"` \| `"no"` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:782
+Defined in: node\_modules/svelte/elements.d.ts:783
 
 #### Inherited from
 
@@ -369,7 +369,7 @@ Defined in: node\_modules/svelte/elements.d.ts:782
 
 > `optional` **role?**: `AriaRole` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:791
+Defined in: node\_modules/svelte/elements.d.ts:792
 
 #### Inherited from
 
@@ -381,7 +381,7 @@ Defined in: node\_modules/svelte/elements.d.ts:791
 
 > `optional` **about?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:794
+Defined in: node\_modules/svelte/elements.d.ts:795
 
 #### Inherited from
 
@@ -393,7 +393,7 @@ Defined in: node\_modules/svelte/elements.d.ts:794
 
 > `optional` **datatype?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:795
+Defined in: node\_modules/svelte/elements.d.ts:796
 
 #### Inherited from
 
@@ -405,7 +405,7 @@ Defined in: node\_modules/svelte/elements.d.ts:795
 
 > `optional` **inlist?**: `any`
 
-Defined in: node\_modules/svelte/elements.d.ts:796
+Defined in: node\_modules/svelte/elements.d.ts:797
 
 #### Inherited from
 
@@ -417,7 +417,7 @@ Defined in: node\_modules/svelte/elements.d.ts:796
 
 > `optional` **prefix?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:797
+Defined in: node\_modules/svelte/elements.d.ts:798
 
 #### Inherited from
 
@@ -429,7 +429,7 @@ Defined in: node\_modules/svelte/elements.d.ts:797
 
 > `optional` **resource?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:799
+Defined in: node\_modules/svelte/elements.d.ts:800
 
 #### Inherited from
 
@@ -441,7 +441,7 @@ Defined in: node\_modules/svelte/elements.d.ts:799
 
 > `optional` **typeof?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:800
+Defined in: node\_modules/svelte/elements.d.ts:801
 
 #### Inherited from
 
@@ -453,7 +453,7 @@ Defined in: node\_modules/svelte/elements.d.ts:800
 
 > `optional` **vocab?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:801
+Defined in: node\_modules/svelte/elements.d.ts:802
 
 #### Inherited from
 
@@ -465,7 +465,7 @@ Defined in: node\_modules/svelte/elements.d.ts:801
 
 > `optional` **color?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:805
+Defined in: node\_modules/svelte/elements.d.ts:806
 
 #### Inherited from
 
@@ -477,7 +477,7 @@ Defined in: node\_modules/svelte/elements.d.ts:805
 
 > `optional` **results?**: `number` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:811
+Defined in: node\_modules/svelte/elements.d.ts:812
 
 #### Inherited from
 
@@ -489,7 +489,7 @@ Defined in: node\_modules/svelte/elements.d.ts:811
 
 > `optional` **security?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:812
+Defined in: node\_modules/svelte/elements.d.ts:813
 
 #### Inherited from
 
@@ -501,7 +501,7 @@ Defined in: node\_modules/svelte/elements.d.ts:812
 
 > `optional` **unselectable?**: `"off"` \| `"on"` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:813
+Defined in: node\_modules/svelte/elements.d.ts:814
 
 #### Inherited from
 
@@ -513,7 +513,7 @@ Defined in: node\_modules/svelte/elements.d.ts:813
 
 > `optional` **popover?**: `""` \| `"auto"` \| `"manual"` \| `"hint"` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:784
+Defined in: node\_modules/svelte/elements.d.ts:785
 
 #### Inherited from
 
@@ -525,7 +525,7 @@ Defined in: node\_modules/svelte/elements.d.ts:784
 
 > `optional` **inert?**: `boolean` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:783
+Defined in: node\_modules/svelte/elements.d.ts:784
 
 #### Inherited from
 
@@ -537,7 +537,7 @@ Defined in: node\_modules/svelte/elements.d.ts:783
 
 > `optional` **part?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:775
+Defined in: node\_modules/svelte/elements.d.ts:776
 
 #### Inherited from
 
@@ -1338,7 +1338,7 @@ Defines the human readable text alternative of aria-valuenow for a range widget.
 
 > `optional` **radiogroup?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:788
+Defined in: node\_modules/svelte/elements.d.ts:789
 
 #### Inherited from
 
@@ -1358,11 +1358,23 @@ Defined in: node\_modules/svelte/elements.d.ts:754
 
 ***
 
+### autocorrect?
+
+> `optional` **autocorrect?**: `""` \| `"off"` \| `"on"` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:755
+
+#### Inherited from
+
+`ViewportComponentAttributes.autocorrect`
+
+***
+
 ### spellcheck?
 
 > `optional` **spellcheck?**: `Booleanish` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:778
+Defined in: node\_modules/svelte/elements.d.ts:779
 
 #### Inherited from
 
@@ -2442,7 +2454,7 @@ Defined in: node\_modules/svelte/elements.d.ts:395
 
 > `optional` **autofocus?**: `boolean` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:755
+Defined in: node\_modules/svelte/elements.d.ts:756
 
 #### Inherited from
 
@@ -2454,7 +2466,7 @@ Defined in: node\_modules/svelte/elements.d.ts:755
 
 > `optional` **class?**: `ClassValue` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:756
+Defined in: node\_modules/svelte/elements.d.ts:757
 
 #### Inherited from
 
@@ -2478,7 +2490,7 @@ Defined in: node\_modules/svelte/elements.d.ts:753
 
 > `optional` **contenteditable?**: `"inherit"` \| `"plaintext-only"` \| `Booleanish` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:757
+Defined in: node\_modules/svelte/elements.d.ts:758
 
 #### Inherited from
 
@@ -2490,7 +2502,7 @@ Defined in: node\_modules/svelte/elements.d.ts:757
 
 > `optional` **enterkeyhint?**: `"search"` \| `"next"` \| `"enter"` \| `"done"` \| `"go"` \| `"previous"` \| `"send"` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:762
+Defined in: node\_modules/svelte/elements.d.ts:763
 
 #### Inherited from
 
@@ -2502,7 +2514,7 @@ Defined in: node\_modules/svelte/elements.d.ts:762
 
 > `optional` **inputmode?**: `"search"` \| `"none"` \| `"text"` \| `"tel"` \| `"url"` \| `"email"` \| `"numeric"` \| `"decimal"` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:820
+Defined in: node\_modules/svelte/elements.d.ts:821
 
 Hints at the type of data that might be entered by the user while editing the element or its contents
 
@@ -2516,11 +2528,23 @@ https://html.spec.whatwg.org/multipage/interaction.html#input-modalities:-the-in
 
 ***
 
+### writingsuggestions?
+
+> `optional` **writingsuggestions?**: `Booleanish` \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:786
+
+#### Inherited from
+
+`ViewportComponentAttributes.writingsuggestions`
+
+***
+
 ### itemid?
 
 > `optional` **itemid?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:809
+Defined in: node\_modules/svelte/elements.d.ts:810
 
 #### Inherited from
 
@@ -2532,7 +2556,7 @@ Defined in: node\_modules/svelte/elements.d.ts:809
 
 > `optional` **itemprop?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:806
+Defined in: node\_modules/svelte/elements.d.ts:807
 
 #### Inherited from
 
@@ -2544,7 +2568,7 @@ Defined in: node\_modules/svelte/elements.d.ts:806
 
 > `optional` **itemref?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:810
+Defined in: node\_modules/svelte/elements.d.ts:811
 
 #### Inherited from
 
@@ -2556,7 +2580,7 @@ Defined in: node\_modules/svelte/elements.d.ts:810
 
 > `optional` **itemscope?**: `boolean` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:807
+Defined in: node\_modules/svelte/elements.d.ts:808
 
 #### Inherited from
 
@@ -2568,7 +2592,7 @@ Defined in: node\_modules/svelte/elements.d.ts:807
 
 > `optional` **itemtype?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:808
+Defined in: node\_modules/svelte/elements.d.ts:809
 
 #### Inherited from
 
@@ -2580,7 +2604,7 @@ Defined in: node\_modules/svelte/elements.d.ts:808
 
 > `optional` **elementtiming?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:761
+Defined in: node\_modules/svelte/elements.d.ts:762
 
 #### Inherited from
 
@@ -2592,7 +2616,7 @@ Defined in: node\_modules/svelte/elements.d.ts:761
 
 > `optional` **tabindex?**: `number` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:780
+Defined in: node\_modules/svelte/elements.d.ts:781
 
 #### Inherited from
 
@@ -2600,327 +2624,189 @@ Defined in: node\_modules/svelte/elements.d.ts:780
 
 ***
 
-### oncompositionend?
+### onvisibilitychange?
 
-> `optional` **oncompositionend?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **onvisibilitychange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:103
+Defined in: node\_modules/svelte/elements.d.ts:447
 
 #### Inherited from
 
-`ViewportComponentAttributes.oncompositionend`
+`ViewportComponentAttributes.onvisibilitychange`
 
 ***
 
-### oncompositionstart?
+### ongamepadconnected?
 
-> `optional` **oncompositionstart?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **ongamepadconnected?**: `GamepadEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:106
+Defined in: node\_modules/svelte/elements.d.ts:378
 
 #### Inherited from
 
-`ViewportComponentAttributes.oncompositionstart`
+`ViewportComponentAttributes.ongamepadconnected`
 
 ***
 
-### oncompositionupdate?
+### ongamepaddisconnected?
 
-> `optional` **oncompositionupdate?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **ongamepaddisconnected?**: `GamepadEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:109
+Defined in: node\_modules/svelte/elements.d.ts:380
 
 #### Inherited from
 
-`ViewportComponentAttributes.oncompositionupdate`
+`ViewportComponentAttributes.ongamepaddisconnected`
 
 ***
 
-### oncontentvisibilityautostatechange?
+### onmessage?
 
-> `optional` **oncontentvisibilityautostatechange?**: `ContentVisibilityAutoStateChangeEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **onmessage?**: `MessageEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:171
+Defined in: node\_modules/svelte/elements.d.ts:439
 
 #### Inherited from
 
-`ViewportComponentAttributes.oncontentvisibilityautostatechange`
+`ViewportComponentAttributes.onmessage`
 
 ***
 
-### ondragexit?
+### onmessageerror?
 
-> `optional` **ondragexit?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **onmessageerror?**: `MessageEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:285
+Defined in: node\_modules/svelte/elements.d.ts:442
 
 #### Inherited from
 
-`ViewportComponentAttributes.ondragexit`
+`ViewportComponentAttributes.onmessageerror`
 
 ***
 
-### onfocusin?
+### placeholder?
 
-> `optional` **onfocusin?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **placeholder?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:117
+Defined in: node\_modules/svelte/elements.d.ts:777
 
 #### Inherited from
 
-`ViewportComponentAttributes.onfocusin`
+`ViewportComponentAttributes.placeholder`
 
 ***
 
-### onfocusout?
+### onencrypted?
 
-> `optional` **onfocusout?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **onencrypted?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:120
+Defined in: node\_modules/svelte/elements.d.ts:211
 
 #### Inherited from
 
-`ViewportComponentAttributes.onfocusout`
+`ViewportComponentAttributes.onencrypted`
 
 ***
 
-### on:abort?
+### xmlns?
 
-> `optional` **on:abort?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+> `optional` **xmlns?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:192
+Defined in: node\_modules/svelte/elements.d.ts:475
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:abort`
+`ViewportComponentAttributes.xmlns`
 
 ***
 
-### on:animationend?
+### autosave?
 
-> `optional` **on:animationend?**: `AnimationEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **autosave?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:402
+Defined in: node\_modules/svelte/elements.d.ts:805
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:animationend`
+`ViewportComponentAttributes.autosave`
 
 ***
 
-### on:animationiteration?
+### bind:innerHTML?
 
-> `optional` **on:animationiteration?**: `AnimationEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **bind:innerHTML?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:405
+Defined in: node\_modules/svelte/elements.d.ts:841
+
+Elements with the contenteditable attribute support `innerHTML`, `textContent` and `innerText` bindings.
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:animationiteration`
+`ViewportComponentAttributes.bind:innerHTML`
 
 ***
 
-### on:animationstart?
+### bind:textContent?
 
-> `optional` **on:animationstart?**: `AnimationEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **bind:textContent?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:399
+Defined in: node\_modules/svelte/elements.d.ts:845
+
+Elements with the contenteditable attribute support `innerHTML`, `textContent` and `innerText` bindings.
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:animationstart`
+`ViewportComponentAttributes.bind:textContent`
 
 ***
 
-### on:auxclick?
+### bind:innerText?
 
-> `optional` **on:auxclick?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **bind:innerText?**: `string` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:263
+Defined in: node\_modules/svelte/elements.d.ts:849
+
+Elements with the contenteditable attribute support `innerHTML`, `textContent` and `innerText` bindings.
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:auxclick`
+`ViewportComponentAttributes.bind:innerText`
 
 ***
 
-### on:beforeinput?
+### bind:focused?
 
-> `optional` **on:beforeinput?**: `EventHandler`\<`InputEvent`, `HTMLDivElement`\> \| `null`
+> `readonly` `optional` **bind:focused?**: `boolean` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:130
+Defined in: node\_modules/svelte/elements.d.ts:851
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:beforeinput`
+`ViewportComponentAttributes.bind:focused`
 
 ***
 
-### on:beforematch?
+### bind:offsetWidth?
 
-> `optional` **on:beforematch?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+> `readonly` `optional` **bind:offsetWidth?**: `number` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:451
+Defined in: node\_modules/svelte/elements.d.ts:852
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:beforematch`
+`ViewportComponentAttributes.bind:offsetWidth`
 
 ***
 
-### on:beforetoggle?
+### bind:offsetHeight?
 
-> `optional` **on:beforetoggle?**: `ToggleEventHandler`\<`HTMLDivElement`\> \| `null`
+> `readonly` `optional` **bind:offsetHeight?**: `number` \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:159
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:beforetoggle`
-
-***
-
-### on:blur?
-
-> `optional` **on:blur?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:122
+Defined in: node\_modules/svelte/elements.d.ts:853
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:blur`
-
-***
-
-### on:cancel?
-
-> `optional` **on:cancel?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:454
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:cancel`
-
-***
-
-### on:canplay?
-
-> `optional` **on:canplay?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:195
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:canplay`
-
-***
-
-### on:canplaythrough?
-
-> `optional` **on:canplaythrough?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:198
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:canplaythrough`
-
-***
-
-### on:change?
-
-> `optional` **on:change?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:127
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:change`
-
-***
-
-### on:click?
-
-> `optional` **on:click?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:266
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:click`
-
-***
-
-### on:close?
-
-> `optional` **on:close?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:457
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:close`
-
-***
-
-### on:compositionend?
-
-> `optional` **on:compositionend?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:102
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:compositionend`
-
-***
-
-### on:compositionstart?
-
-> `optional` **on:compositionstart?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:105
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:compositionstart`
-
-***
-
-### on:compositionupdate?
-
-> `optional` **on:compositionupdate?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:108
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:compositionupdate`
-
-***
-
-### on:contentvisibilityautostatechange?
-
-> `optional` **on:contentvisibilityautostatechange?**: `ContentVisibilityAutoStateChangeEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:167
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:contentvisibilityautostatechange`
-
-***
-
-### on:contextmenu?
-
-> `optional` **on:contextmenu?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:269
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:contextmenu`
+`ViewportComponentAttributes.bind:offsetHeight`
 
 ***
 
@@ -2936,15 +2822,15 @@ Defined in: node\_modules/svelte/elements.d.ts:91
 
 ***
 
-### on:cuechange?
+### oncopycapture?
 
-> `optional` **on:cuechange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+> `optional` **oncopycapture?**: `ClipboardEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:201
+Defined in: node\_modules/svelte/elements.d.ts:93
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:cuechange`
+`ViewportComponentAttributes.oncopycapture`
 
 ***
 
@@ -2960,159 +2846,147 @@ Defined in: node\_modules/svelte/elements.d.ts:94
 
 ***
 
-### on:dblclick?
+### oncutcapture?
 
-> `optional` **on:dblclick?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **oncutcapture?**: `ClipboardEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:272
+Defined in: node\_modules/svelte/elements.d.ts:96
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:dblclick`
+`ViewportComponentAttributes.oncutcapture`
 
 ***
 
-### on:drag?
+### on:paste?
 
-> `optional` **on:drag?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **on:paste?**: `ClipboardEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:275
+Defined in: node\_modules/svelte/elements.d.ts:97
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:drag`
+`ViewportComponentAttributes.on:paste`
 
 ***
 
-### on:dragend?
+### onpastecapture?
 
-> `optional` **on:dragend?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **onpastecapture?**: `ClipboardEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:278
+Defined in: node\_modules/svelte/elements.d.ts:99
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:dragend`
+`ViewportComponentAttributes.onpastecapture`
 
 ***
 
-### on:dragenter?
+### on:compositionend?
 
-> `optional` **on:dragenter?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **on:compositionend?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:281
+Defined in: node\_modules/svelte/elements.d.ts:102
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:dragenter`
+`ViewportComponentAttributes.on:compositionend`
 
 ***
 
-### on:dragexit?
+### oncompositionend?
 
-> `optional` **on:dragexit?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **oncompositionend?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:284
+Defined in: node\_modules/svelte/elements.d.ts:103
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:dragexit`
+`ViewportComponentAttributes.oncompositionend`
 
 ***
 
-### on:dragleave?
+### oncompositionendcapture?
 
-> `optional` **on:dragleave?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **oncompositionendcapture?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:287
+Defined in: node\_modules/svelte/elements.d.ts:104
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:dragleave`
+`ViewportComponentAttributes.oncompositionendcapture`
 
 ***
 
-### on:dragover?
+### on:compositionstart?
 
-> `optional` **on:dragover?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **on:compositionstart?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:290
+Defined in: node\_modules/svelte/elements.d.ts:105
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:dragover`
+`ViewportComponentAttributes.on:compositionstart`
 
 ***
 
-### on:dragstart?
+### oncompositionstart?
 
-> `optional` **on:dragstart?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **oncompositionstart?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:293
+Defined in: node\_modules/svelte/elements.d.ts:106
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:dragstart`
+`ViewportComponentAttributes.oncompositionstart`
 
 ***
 
-### on:drop?
+### oncompositionstartcapture?
 
-> `optional` **on:drop?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **oncompositionstartcapture?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:296
+Defined in: node\_modules/svelte/elements.d.ts:107
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:drop`
+`ViewportComponentAttributes.oncompositionstartcapture`
 
 ***
 
-### on:durationchange?
+### on:compositionupdate?
 
-> `optional` **on:durationchange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+> `optional` **on:compositionupdate?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:204
+Defined in: node\_modules/svelte/elements.d.ts:108
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:durationchange`
+`ViewportComponentAttributes.on:compositionupdate`
 
 ***
 
-### on:emptied?
+### oncompositionupdate?
 
-> `optional` **on:emptied?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+> `optional` **oncompositionupdate?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:207
+Defined in: node\_modules/svelte/elements.d.ts:109
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:emptied`
+`ViewportComponentAttributes.oncompositionupdate`
 
 ***
 
-### on:ended?
+### oncompositionupdatecapture?
 
-> `optional` **on:ended?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+> `optional` **oncompositionupdatecapture?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:213
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:ended`
-
-***
-
-### on:error?
-
-> `optional` **on:error?**: `EventHandler`\<`Event`, `Element`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:154
+Defined in: node\_modules/svelte/elements.d.ts:110
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:error`
+`ViewportComponentAttributes.oncompositionupdatecapture`
 
 ***
 
@@ -3128,6 +3002,18 @@ Defined in: node\_modules/svelte/elements.d.ts:113
 
 ***
 
+### onfocuscapture?
+
+> `optional` **onfocuscapture?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:115
+
+#### Inherited from
+
+`ViewportComponentAttributes.onfocuscapture`
+
+***
+
 ### on:focusin?
 
 > `optional` **on:focusin?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -3137,6 +3023,30 @@ Defined in: node\_modules/svelte/elements.d.ts:116
 #### Inherited from
 
 `ViewportComponentAttributes.on:focusin`
+
+***
+
+### onfocusin?
+
+> `optional` **onfocusin?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:117
+
+#### Inherited from
+
+`ViewportComponentAttributes.onfocusin`
+
+***
+
+### onfocusincapture?
+
+> `optional` **onfocusincapture?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:118
+
+#### Inherited from
+
+`ViewportComponentAttributes.onfocusincapture`
 
 ***
 
@@ -3152,51 +3062,99 @@ Defined in: node\_modules/svelte/elements.d.ts:119
 
 ***
 
-### on:formdata?
+### onfocusout?
 
-> `optional` **on:formdata?**: `EventHandler`\<`FormDataEvent`, `HTMLDivElement`\> \| `null`
+> `optional` **onfocusout?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:146
+Defined in: node\_modules/svelte/elements.d.ts:120
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:formdata`
+`ViewportComponentAttributes.onfocusout`
 
 ***
 
-### on:fullscreenchange?
+### onfocusoutcapture?
 
-> `optional` **on:fullscreenchange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+> `optional` **onfocusoutcapture?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:460
+Defined in: node\_modules/svelte/elements.d.ts:121
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:fullscreenchange`
+`ViewportComponentAttributes.onfocusoutcapture`
 
 ***
 
-### on:fullscreenerror?
+### on:blur?
 
-> `optional` **on:fullscreenerror?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+> `optional` **on:blur?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:463
+Defined in: node\_modules/svelte/elements.d.ts:122
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:fullscreenerror`
+`ViewportComponentAttributes.on:blur`
 
 ***
 
-### on:gotpointercapture?
+### onblurcapture?
 
-> `optional` **on:gotpointercapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **onblurcapture?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:345
+Defined in: node\_modules/svelte/elements.d.ts:124
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:gotpointercapture`
+`ViewportComponentAttributes.onblurcapture`
+
+***
+
+### on:change?
+
+> `optional` **on:change?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:127
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:change`
+
+***
+
+### onchangecapture?
+
+> `optional` **onchangecapture?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:129
+
+#### Inherited from
+
+`ViewportComponentAttributes.onchangecapture`
+
+***
+
+### on:beforeinput?
+
+> `optional` **on:beforeinput?**: `EventHandler`\<`InputEvent`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:130
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:beforeinput`
+
+***
+
+### onbeforeinputcapture?
+
+> `optional` **onbeforeinputcapture?**: `EventHandler`\<`InputEvent`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:132
+
+#### Inherited from
+
+`ViewportComponentAttributes.onbeforeinputcapture`
 
 ***
 
@@ -3212,6 +3170,66 @@ Defined in: node\_modules/svelte/elements.d.ts:134
 
 ***
 
+### oninputcapture?
+
+> `optional` **oninputcapture?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:136
+
+#### Inherited from
+
+`ViewportComponentAttributes.oninputcapture`
+
+***
+
+### on:reset?
+
+> `optional` **on:reset?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:137
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:reset`
+
+***
+
+### onresetcapture?
+
+> `optional` **onresetcapture?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:139
+
+#### Inherited from
+
+`ViewportComponentAttributes.onresetcapture`
+
+***
+
+### on:submit?
+
+> `optional` **on:submit?**: `EventHandler`\<`SubmitEvent`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:140
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:submit`
+
+***
+
+### onsubmitcapture?
+
+> `optional` **onsubmitcapture?**: `EventHandler`\<`SubmitEvent`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:142
+
+#### Inherited from
+
+`ViewportComponentAttributes.onsubmitcapture`
+
+***
+
 ### on:invalid?
 
 > `optional` **on:invalid?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -3224,39 +3242,39 @@ Defined in: node\_modules/svelte/elements.d.ts:143
 
 ***
 
-### on:keydown?
+### oninvalidcapture?
 
-> `optional` **on:keydown?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **oninvalidcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:181
+Defined in: node\_modules/svelte/elements.d.ts:145
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:keydown`
+`ViewportComponentAttributes.oninvalidcapture`
 
 ***
 
-### on:keypress?
+### on:formdata?
 
-> `optional` **on:keypress?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **on:formdata?**: `EventHandler`\<`FormDataEvent`, `HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:184
+Defined in: node\_modules/svelte/elements.d.ts:146
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:keypress`
+`ViewportComponentAttributes.on:formdata`
 
 ***
 
-### on:keyup?
+### onformdatacapture?
 
-> `optional` **on:keyup?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **onformdatacapture?**: `EventHandler`\<`FormDataEvent`, `HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:187
+Defined in: node\_modules/svelte/elements.d.ts:148
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:keyup`
+`ViewportComponentAttributes.onformdatacapture`
 
 ***
 
@@ -3272,6 +3290,390 @@ Defined in: node\_modules/svelte/elements.d.ts:151
 
 ***
 
+### onloadcapture?
+
+> `optional` **onloadcapture?**: `EventHandler`\<`Event`, `Element`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:153
+
+#### Inherited from
+
+`ViewportComponentAttributes.onloadcapture`
+
+***
+
+### on:error?
+
+> `optional` **on:error?**: `EventHandler`\<`Event`, `Element`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:154
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:error`
+
+***
+
+### onerrorcapture?
+
+> `optional` **onerrorcapture?**: `EventHandler`\<`Event`, `Element`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:156
+
+#### Inherited from
+
+`ViewportComponentAttributes.onerrorcapture`
+
+***
+
+### on:beforetoggle?
+
+> `optional` **on:beforetoggle?**: `ToggleEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:159
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:beforetoggle`
+
+***
+
+### onbeforetogglecapture?
+
+> `optional` **onbeforetogglecapture?**: `ToggleEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:161
+
+#### Inherited from
+
+`ViewportComponentAttributes.onbeforetogglecapture`
+
+***
+
+### on:toggle?
+
+> `optional` **on:toggle?**: `ToggleEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:162
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:toggle`
+
+***
+
+### ontogglecapture?
+
+> `optional` **ontogglecapture?**: `ToggleEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:164
+
+#### Inherited from
+
+`ViewportComponentAttributes.ontogglecapture`
+
+***
+
+### on:contentvisibilityautostatechange?
+
+> `optional` **on:contentvisibilityautostatechange?**: `ContentVisibilityAutoStateChangeEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:167
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:contentvisibilityautostatechange`
+
+***
+
+### oncontentvisibilityautostatechange?
+
+> `optional` **oncontentvisibilityautostatechange?**: `ContentVisibilityAutoStateChangeEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:171
+
+#### Inherited from
+
+`ViewportComponentAttributes.oncontentvisibilityautostatechange`
+
+***
+
+### oncontentvisibilityautostatechangecapture?
+
+> `optional` **oncontentvisibilityautostatechangecapture?**: `ContentVisibilityAutoStateChangeEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:175
+
+#### Inherited from
+
+`ViewportComponentAttributes.oncontentvisibilityautostatechangecapture`
+
+***
+
+### on:keydown?
+
+> `optional` **on:keydown?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:181
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:keydown`
+
+***
+
+### onkeydowncapture?
+
+> `optional` **onkeydowncapture?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:183
+
+#### Inherited from
+
+`ViewportComponentAttributes.onkeydowncapture`
+
+***
+
+### on:keypress?
+
+> `optional` **on:keypress?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:184
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:keypress`
+
+***
+
+### onkeypresscapture?
+
+> `optional` **onkeypresscapture?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:186
+
+#### Inherited from
+
+`ViewportComponentAttributes.onkeypresscapture`
+
+***
+
+### on:keyup?
+
+> `optional` **on:keyup?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:187
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:keyup`
+
+***
+
+### onkeyupcapture?
+
+> `optional` **onkeyupcapture?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:189
+
+#### Inherited from
+
+`ViewportComponentAttributes.onkeyupcapture`
+
+***
+
+### on:abort?
+
+> `optional` **on:abort?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:192
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:abort`
+
+***
+
+### onabortcapture?
+
+> `optional` **onabortcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:194
+
+#### Inherited from
+
+`ViewportComponentAttributes.onabortcapture`
+
+***
+
+### on:canplay?
+
+> `optional` **on:canplay?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:195
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:canplay`
+
+***
+
+### oncanplaycapture?
+
+> `optional` **oncanplaycapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:197
+
+#### Inherited from
+
+`ViewportComponentAttributes.oncanplaycapture`
+
+***
+
+### on:canplaythrough?
+
+> `optional` **on:canplaythrough?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:198
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:canplaythrough`
+
+***
+
+### oncanplaythroughcapture?
+
+> `optional` **oncanplaythroughcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:200
+
+#### Inherited from
+
+`ViewportComponentAttributes.oncanplaythroughcapture`
+
+***
+
+### on:cuechange?
+
+> `optional` **on:cuechange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:201
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:cuechange`
+
+***
+
+### oncuechangecapture?
+
+> `optional` **oncuechangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:203
+
+#### Inherited from
+
+`ViewportComponentAttributes.oncuechangecapture`
+
+***
+
+### on:durationchange?
+
+> `optional` **on:durationchange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:204
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:durationchange`
+
+***
+
+### ondurationchangecapture?
+
+> `optional` **ondurationchangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:206
+
+#### Inherited from
+
+`ViewportComponentAttributes.ondurationchangecapture`
+
+***
+
+### on:emptied?
+
+> `optional` **on:emptied?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:207
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:emptied`
+
+***
+
+### onemptiedcapture?
+
+> `optional` **onemptiedcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:209
+
+#### Inherited from
+
+`ViewportComponentAttributes.onemptiedcapture`
+
+***
+
+### on:encrypted?
+
+> `optional` **on:encrypted?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:210
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:encrypted`
+
+***
+
+### onencryptedcapture?
+
+> `optional` **onencryptedcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:212
+
+#### Inherited from
+
+`ViewportComponentAttributes.onencryptedcapture`
+
+***
+
+### on:ended?
+
+> `optional` **on:ended?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:213
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:ended`
+
+***
+
+### onendedcapture?
+
+> `optional` **onendedcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:215
+
+#### Inherited from
+
+`ViewportComponentAttributes.onendedcapture`
+
+***
+
 ### on:loadeddata?
 
 > `optional` **on:loadeddata?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -3281,6 +3683,18 @@ Defined in: node\_modules/svelte/elements.d.ts:216
 #### Inherited from
 
 `ViewportComponentAttributes.on:loadeddata`
+
+***
+
+### onloadeddatacapture?
+
+> `optional` **onloadeddatacapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:218
+
+#### Inherited from
+
+`ViewportComponentAttributes.onloadeddatacapture`
 
 ***
 
@@ -3296,6 +3710,18 @@ Defined in: node\_modules/svelte/elements.d.ts:219
 
 ***
 
+### onloadedmetadatacapture?
+
+> `optional` **onloadedmetadatacapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:221
+
+#### Inherited from
+
+`ViewportComponentAttributes.onloadedmetadatacapture`
+
+***
+
 ### on:loadstart?
 
 > `optional` **on:loadstart?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -3308,15 +3734,603 @@ Defined in: node\_modules/svelte/elements.d.ts:222
 
 ***
 
-### on:lostpointercapture?
+### onloadstartcapture?
 
-> `optional` **on:lostpointercapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **onloadstartcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:372
+Defined in: node\_modules/svelte/elements.d.ts:224
 
 #### Inherited from
 
-`ViewportComponentAttributes.on:lostpointercapture`
+`ViewportComponentAttributes.onloadstartcapture`
+
+***
+
+### on:pause?
+
+> `optional` **on:pause?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:225
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:pause`
+
+***
+
+### onpausecapture?
+
+> `optional` **onpausecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:227
+
+#### Inherited from
+
+`ViewportComponentAttributes.onpausecapture`
+
+***
+
+### on:play?
+
+> `optional` **on:play?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:228
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:play`
+
+***
+
+### onplaycapture?
+
+> `optional` **onplaycapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:230
+
+#### Inherited from
+
+`ViewportComponentAttributes.onplaycapture`
+
+***
+
+### on:playing?
+
+> `optional` **on:playing?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:231
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:playing`
+
+***
+
+### onplayingcapture?
+
+> `optional` **onplayingcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:233
+
+#### Inherited from
+
+`ViewportComponentAttributes.onplayingcapture`
+
+***
+
+### on:progress?
+
+> `optional` **on:progress?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:234
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:progress`
+
+***
+
+### onprogresscapture?
+
+> `optional` **onprogresscapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:236
+
+#### Inherited from
+
+`ViewportComponentAttributes.onprogresscapture`
+
+***
+
+### on:ratechange?
+
+> `optional` **on:ratechange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:237
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:ratechange`
+
+***
+
+### onratechangecapture?
+
+> `optional` **onratechangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:239
+
+#### Inherited from
+
+`ViewportComponentAttributes.onratechangecapture`
+
+***
+
+### on:seeked?
+
+> `optional` **on:seeked?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:240
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:seeked`
+
+***
+
+### onseekedcapture?
+
+> `optional` **onseekedcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:242
+
+#### Inherited from
+
+`ViewportComponentAttributes.onseekedcapture`
+
+***
+
+### on:seeking?
+
+> `optional` **on:seeking?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:243
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:seeking`
+
+***
+
+### onseekingcapture?
+
+> `optional` **onseekingcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:245
+
+#### Inherited from
+
+`ViewportComponentAttributes.onseekingcapture`
+
+***
+
+### on:stalled?
+
+> `optional` **on:stalled?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:246
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:stalled`
+
+***
+
+### onstalledcapture?
+
+> `optional` **onstalledcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:248
+
+#### Inherited from
+
+`ViewportComponentAttributes.onstalledcapture`
+
+***
+
+### on:suspend?
+
+> `optional` **on:suspend?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:249
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:suspend`
+
+***
+
+### onsuspendcapture?
+
+> `optional` **onsuspendcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:251
+
+#### Inherited from
+
+`ViewportComponentAttributes.onsuspendcapture`
+
+***
+
+### on:timeupdate?
+
+> `optional` **on:timeupdate?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:252
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:timeupdate`
+
+***
+
+### ontimeupdatecapture?
+
+> `optional` **ontimeupdatecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:254
+
+#### Inherited from
+
+`ViewportComponentAttributes.ontimeupdatecapture`
+
+***
+
+### on:volumechange?
+
+> `optional` **on:volumechange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:255
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:volumechange`
+
+***
+
+### onvolumechangecapture?
+
+> `optional` **onvolumechangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:257
+
+#### Inherited from
+
+`ViewportComponentAttributes.onvolumechangecapture`
+
+***
+
+### on:waiting?
+
+> `optional` **on:waiting?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:258
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:waiting`
+
+***
+
+### onwaitingcapture?
+
+> `optional` **onwaitingcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:260
+
+#### Inherited from
+
+`ViewportComponentAttributes.onwaitingcapture`
+
+***
+
+### on:auxclick?
+
+> `optional` **on:auxclick?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:263
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:auxclick`
+
+***
+
+### onauxclickcapture?
+
+> `optional` **onauxclickcapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:265
+
+#### Inherited from
+
+`ViewportComponentAttributes.onauxclickcapture`
+
+***
+
+### on:click?
+
+> `optional` **on:click?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:266
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:click`
+
+***
+
+### onclickcapture?
+
+> `optional` **onclickcapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:268
+
+#### Inherited from
+
+`ViewportComponentAttributes.onclickcapture`
+
+***
+
+### on:contextmenu?
+
+> `optional` **on:contextmenu?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:269
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:contextmenu`
+
+***
+
+### oncontextmenucapture?
+
+> `optional` **oncontextmenucapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:271
+
+#### Inherited from
+
+`ViewportComponentAttributes.oncontextmenucapture`
+
+***
+
+### on:dblclick?
+
+> `optional` **on:dblclick?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:272
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:dblclick`
+
+***
+
+### ondblclickcapture?
+
+> `optional` **ondblclickcapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:274
+
+#### Inherited from
+
+`ViewportComponentAttributes.ondblclickcapture`
+
+***
+
+### on:drag?
+
+> `optional` **on:drag?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:275
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:drag`
+
+***
+
+### ondragcapture?
+
+> `optional` **ondragcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:277
+
+#### Inherited from
+
+`ViewportComponentAttributes.ondragcapture`
+
+***
+
+### on:dragend?
+
+> `optional` **on:dragend?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:278
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:dragend`
+
+***
+
+### ondragendcapture?
+
+> `optional` **ondragendcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:280
+
+#### Inherited from
+
+`ViewportComponentAttributes.ondragendcapture`
+
+***
+
+### on:dragenter?
+
+> `optional` **on:dragenter?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:281
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:dragenter`
+
+***
+
+### ondragentercapture?
+
+> `optional` **ondragentercapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:283
+
+#### Inherited from
+
+`ViewportComponentAttributes.ondragentercapture`
+
+***
+
+### on:dragexit?
+
+> `optional` **on:dragexit?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:284
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:dragexit`
+
+***
+
+### ondragexit?
+
+> `optional` **ondragexit?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:285
+
+#### Inherited from
+
+`ViewportComponentAttributes.ondragexit`
+
+***
+
+### ondragexitcapture?
+
+> `optional` **ondragexitcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:286
+
+#### Inherited from
+
+`ViewportComponentAttributes.ondragexitcapture`
+
+***
+
+### on:dragleave?
+
+> `optional` **on:dragleave?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:287
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:dragleave`
+
+***
+
+### ondragleavecapture?
+
+> `optional` **ondragleavecapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:289
+
+#### Inherited from
+
+`ViewportComponentAttributes.ondragleavecapture`
+
+***
+
+### on:dragover?
+
+> `optional` **on:dragover?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:290
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:dragover`
+
+***
+
+### ondragovercapture?
+
+> `optional` **ondragovercapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:292
+
+#### Inherited from
+
+`ViewportComponentAttributes.ondragovercapture`
+
+***
+
+### on:dragstart?
+
+> `optional` **on:dragstart?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:293
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:dragstart`
+
+***
+
+### ondragstartcapture?
+
+> `optional` **ondragstartcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:295
+
+#### Inherited from
+
+`ViewportComponentAttributes.ondragstartcapture`
+
+***
+
+### on:drop?
+
+> `optional` **on:drop?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:296
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:drop`
+
+***
+
+### ondropcapture?
+
+> `optional` **ondropcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:298
+
+#### Inherited from
+
+`ViewportComponentAttributes.ondropcapture`
 
 ***
 
@@ -3329,6 +4343,18 @@ Defined in: node\_modules/svelte/elements.d.ts:299
 #### Inherited from
 
 `ViewportComponentAttributes.on:mousedown`
+
+***
+
+### onmousedowncapture?
+
+> `optional` **onmousedowncapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:301
+
+#### Inherited from
+
+`ViewportComponentAttributes.onmousedowncapture`
 
 ***
 
@@ -3368,1380 +4394,6 @@ Defined in: node\_modules/svelte/elements.d.ts:306
 
 ***
 
-### on:mouseout?
-
-> `optional` **on:mouseout?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:309
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:mouseout`
-
-***
-
-### on:mouseover?
-
-> `optional` **on:mouseover?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:312
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:mouseover`
-
-***
-
-### on:mouseup?
-
-> `optional` **on:mouseup?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:315
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:mouseup`
-
-***
-
-### on:paste?
-
-> `optional` **on:paste?**: `ClipboardEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:97
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:paste`
-
-***
-
-### on:pause?
-
-> `optional` **on:pause?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:225
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:pause`
-
-***
-
-### on:play?
-
-> `optional` **on:play?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:228
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:play`
-
-***
-
-### on:playing?
-
-> `optional` **on:playing?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:231
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:playing`
-
-***
-
-### on:pointercancel?
-
-> `optional` **on:pointercancel?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:348
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:pointercancel`
-
-***
-
-### on:pointerdown?
-
-> `optional` **on:pointerdown?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:351
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:pointerdown`
-
-***
-
-### on:pointerenter?
-
-> `optional` **on:pointerenter?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:354
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:pointerenter`
-
-***
-
-### on:pointerleave?
-
-> `optional` **on:pointerleave?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:357
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:pointerleave`
-
-***
-
-### on:pointermove?
-
-> `optional` **on:pointermove?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:360
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:pointermove`
-
-***
-
-### on:pointerout?
-
-> `optional` **on:pointerout?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:363
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:pointerout`
-
-***
-
-### on:pointerover?
-
-> `optional` **on:pointerover?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:366
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:pointerover`
-
-***
-
-### on:pointerup?
-
-> `optional` **on:pointerup?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:369
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:pointerup`
-
-***
-
-### on:progress?
-
-> `optional` **on:progress?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:234
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:progress`
-
-***
-
-### on:ratechange?
-
-> `optional` **on:ratechange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:237
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:ratechange`
-
-***
-
-### on:reset?
-
-> `optional` **on:reset?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:137
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:reset`
-
-***
-
-### on:resize?
-
-> `optional` **on:resize?**: `UIEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:389
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:resize`
-
-***
-
-### on:scroll?
-
-> `optional` **on:scroll?**: `UIEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:383
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:scroll`
-
-***
-
-### on:scrollend?
-
-> `optional` **on:scrollend?**: `UIEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:386
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:scrollend`
-
-***
-
-### on:seeked?
-
-> `optional` **on:seeked?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:240
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:seeked`
-
-***
-
-### on:seeking?
-
-> `optional` **on:seeking?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:243
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:seeking`
-
-***
-
-### on:select?
-
-> `optional` **on:select?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:320
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:select`
-
-***
-
-### on:selectionchange?
-
-> `optional` **on:selectionchange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:323
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:selectionchange`
-
-***
-
-### on:selectstart?
-
-> `optional` **on:selectstart?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:326
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:selectstart`
-
-***
-
-### on:stalled?
-
-> `optional` **on:stalled?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:246
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:stalled`
-
-***
-
-### on:submit?
-
-> `optional` **on:submit?**: `EventHandler`\<`SubmitEvent`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:140
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:submit`
-
-***
-
-### on:suspend?
-
-> `optional` **on:suspend?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:249
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:suspend`
-
-***
-
-### on:timeupdate?
-
-> `optional` **on:timeupdate?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:252
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:timeupdate`
-
-***
-
-### on:toggle?
-
-> `optional` **on:toggle?**: `ToggleEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:162
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:toggle`
-
-***
-
-### on:touchcancel?
-
-> `optional` **on:touchcancel?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:331
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:touchcancel`
-
-***
-
-### on:touchend?
-
-> `optional` **on:touchend?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:334
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:touchend`
-
-***
-
-### on:touchmove?
-
-> `optional` **on:touchmove?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:337
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:touchmove`
-
-***
-
-### on:touchstart?
-
-> `optional` **on:touchstart?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:340
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:touchstart`
-
-***
-
-### on:transitioncancel?
-
-> `optional` **on:transitioncancel?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:419
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:transitioncancel`
-
-***
-
-### on:transitionend?
-
-> `optional` **on:transitionend?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:416
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:transitionend`
-
-***
-
-### on:transitionrun?
-
-> `optional` **on:transitionrun?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:413
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:transitionrun`
-
-***
-
-### on:transitionstart?
-
-> `optional` **on:transitionstart?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:410
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:transitionstart`
-
-***
-
-### on:volumechange?
-
-> `optional` **on:volumechange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:255
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:volumechange`
-
-***
-
-### on:waiting?
-
-> `optional` **on:waiting?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:258
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:waiting`
-
-***
-
-### on:wheel?
-
-> `optional` **on:wheel?**: `WheelEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:394
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:wheel`
-
-***
-
-### placeholder?
-
-> `optional` **placeholder?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:776
-
-#### Inherited from
-
-`ViewportComponentAttributes.placeholder`
-
-***
-
-### writingsuggestions?
-
-> `optional` **writingsuggestions?**: `Booleanish` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:785
-
-#### Inherited from
-
-`ViewportComponentAttributes.writingsuggestions`
-
-***
-
-### autosave?
-
-> `optional` **autosave?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:804
-
-#### Inherited from
-
-`ViewportComponentAttributes.autosave`
-
-***
-
-### bind:innerHTML?
-
-> `optional` **bind:innerHTML?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:840
-
-Elements with the contenteditable attribute support `innerHTML`, `textContent` and `innerText` bindings.
-
-#### Inherited from
-
-`ViewportComponentAttributes.bind:innerHTML`
-
-***
-
-### bind:textContent?
-
-> `optional` **bind:textContent?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:844
-
-Elements with the contenteditable attribute support `innerHTML`, `textContent` and `innerText` bindings.
-
-#### Inherited from
-
-`ViewportComponentAttributes.bind:textContent`
-
-***
-
-### bind:innerText?
-
-> `optional` **bind:innerText?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:848
-
-Elements with the contenteditable attribute support `innerHTML`, `textContent` and `innerText` bindings.
-
-#### Inherited from
-
-`ViewportComponentAttributes.bind:innerText`
-
-***
-
-### bind:focused?
-
-> `readonly` `optional` **bind:focused?**: `boolean` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:850
-
-#### Inherited from
-
-`ViewportComponentAttributes.bind:focused`
-
-***
-
-### bind:offsetWidth?
-
-> `readonly` `optional` **bind:offsetWidth?**: `number` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:851
-
-#### Inherited from
-
-`ViewportComponentAttributes.bind:offsetWidth`
-
-***
-
-### bind:offsetHeight?
-
-> `readonly` `optional` **bind:offsetHeight?**: `number` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:852
-
-#### Inherited from
-
-`ViewportComponentAttributes.bind:offsetHeight`
-
-***
-
-### oncopycapture?
-
-> `optional` **oncopycapture?**: `ClipboardEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:93
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncopycapture`
-
-***
-
-### oncutcapture?
-
-> `optional` **oncutcapture?**: `ClipboardEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:96
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncutcapture`
-
-***
-
-### onpastecapture?
-
-> `optional` **onpastecapture?**: `ClipboardEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:99
-
-#### Inherited from
-
-`ViewportComponentAttributes.onpastecapture`
-
-***
-
-### oncompositionendcapture?
-
-> `optional` **oncompositionendcapture?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:104
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncompositionendcapture`
-
-***
-
-### oncompositionstartcapture?
-
-> `optional` **oncompositionstartcapture?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:107
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncompositionstartcapture`
-
-***
-
-### oncompositionupdatecapture?
-
-> `optional` **oncompositionupdatecapture?**: `CompositionEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:110
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncompositionupdatecapture`
-
-***
-
-### onfocuscapture?
-
-> `optional` **onfocuscapture?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:115
-
-#### Inherited from
-
-`ViewportComponentAttributes.onfocuscapture`
-
-***
-
-### onfocusincapture?
-
-> `optional` **onfocusincapture?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:118
-
-#### Inherited from
-
-`ViewportComponentAttributes.onfocusincapture`
-
-***
-
-### onfocusoutcapture?
-
-> `optional` **onfocusoutcapture?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:121
-
-#### Inherited from
-
-`ViewportComponentAttributes.onfocusoutcapture`
-
-***
-
-### onblurcapture?
-
-> `optional` **onblurcapture?**: `FocusEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:124
-
-#### Inherited from
-
-`ViewportComponentAttributes.onblurcapture`
-
-***
-
-### onchangecapture?
-
-> `optional` **onchangecapture?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:129
-
-#### Inherited from
-
-`ViewportComponentAttributes.onchangecapture`
-
-***
-
-### onbeforeinputcapture?
-
-> `optional` **onbeforeinputcapture?**: `EventHandler`\<`InputEvent`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:132
-
-#### Inherited from
-
-`ViewportComponentAttributes.onbeforeinputcapture`
-
-***
-
-### oninputcapture?
-
-> `optional` **oninputcapture?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:136
-
-#### Inherited from
-
-`ViewportComponentAttributes.oninputcapture`
-
-***
-
-### onresetcapture?
-
-> `optional` **onresetcapture?**: `FormEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:139
-
-#### Inherited from
-
-`ViewportComponentAttributes.onresetcapture`
-
-***
-
-### onsubmitcapture?
-
-> `optional` **onsubmitcapture?**: `EventHandler`\<`SubmitEvent`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:142
-
-#### Inherited from
-
-`ViewportComponentAttributes.onsubmitcapture`
-
-***
-
-### oninvalidcapture?
-
-> `optional` **oninvalidcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:145
-
-#### Inherited from
-
-`ViewportComponentAttributes.oninvalidcapture`
-
-***
-
-### onformdatacapture?
-
-> `optional` **onformdatacapture?**: `EventHandler`\<`FormDataEvent`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:148
-
-#### Inherited from
-
-`ViewportComponentAttributes.onformdatacapture`
-
-***
-
-### onloadcapture?
-
-> `optional` **onloadcapture?**: `EventHandler`\<`Event`, `Element`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:153
-
-#### Inherited from
-
-`ViewportComponentAttributes.onloadcapture`
-
-***
-
-### onerrorcapture?
-
-> `optional` **onerrorcapture?**: `EventHandler`\<`Event`, `Element`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:156
-
-#### Inherited from
-
-`ViewportComponentAttributes.onerrorcapture`
-
-***
-
-### onbeforetogglecapture?
-
-> `optional` **onbeforetogglecapture?**: `ToggleEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:161
-
-#### Inherited from
-
-`ViewportComponentAttributes.onbeforetogglecapture`
-
-***
-
-### ontogglecapture?
-
-> `optional` **ontogglecapture?**: `ToggleEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:164
-
-#### Inherited from
-
-`ViewportComponentAttributes.ontogglecapture`
-
-***
-
-### oncontentvisibilityautostatechangecapture?
-
-> `optional` **oncontentvisibilityautostatechangecapture?**: `ContentVisibilityAutoStateChangeEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:175
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncontentvisibilityautostatechangecapture`
-
-***
-
-### onkeydowncapture?
-
-> `optional` **onkeydowncapture?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:183
-
-#### Inherited from
-
-`ViewportComponentAttributes.onkeydowncapture`
-
-***
-
-### onkeypresscapture?
-
-> `optional` **onkeypresscapture?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:186
-
-#### Inherited from
-
-`ViewportComponentAttributes.onkeypresscapture`
-
-***
-
-### onkeyupcapture?
-
-> `optional` **onkeyupcapture?**: `KeyboardEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:189
-
-#### Inherited from
-
-`ViewportComponentAttributes.onkeyupcapture`
-
-***
-
-### onabortcapture?
-
-> `optional` **onabortcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:194
-
-#### Inherited from
-
-`ViewportComponentAttributes.onabortcapture`
-
-***
-
-### oncanplaycapture?
-
-> `optional` **oncanplaycapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:197
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncanplaycapture`
-
-***
-
-### oncanplaythroughcapture?
-
-> `optional` **oncanplaythroughcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:200
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncanplaythroughcapture`
-
-***
-
-### oncuechangecapture?
-
-> `optional` **oncuechangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:203
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncuechangecapture`
-
-***
-
-### ondurationchangecapture?
-
-> `optional` **ondurationchangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:206
-
-#### Inherited from
-
-`ViewportComponentAttributes.ondurationchangecapture`
-
-***
-
-### onemptiedcapture?
-
-> `optional` **onemptiedcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:209
-
-#### Inherited from
-
-`ViewportComponentAttributes.onemptiedcapture`
-
-***
-
-### on:encrypted?
-
-> `optional` **on:encrypted?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:210
-
-#### Inherited from
-
-`ViewportComponentAttributes.on:encrypted`
-
-***
-
-### onencrypted?
-
-> `optional` **onencrypted?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:211
-
-#### Inherited from
-
-`ViewportComponentAttributes.onencrypted`
-
-***
-
-### onencryptedcapture?
-
-> `optional` **onencryptedcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:212
-
-#### Inherited from
-
-`ViewportComponentAttributes.onencryptedcapture`
-
-***
-
-### onendedcapture?
-
-> `optional` **onendedcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:215
-
-#### Inherited from
-
-`ViewportComponentAttributes.onendedcapture`
-
-***
-
-### onloadeddatacapture?
-
-> `optional` **onloadeddatacapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:218
-
-#### Inherited from
-
-`ViewportComponentAttributes.onloadeddatacapture`
-
-***
-
-### onloadedmetadatacapture?
-
-> `optional` **onloadedmetadatacapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:221
-
-#### Inherited from
-
-`ViewportComponentAttributes.onloadedmetadatacapture`
-
-***
-
-### onloadstartcapture?
-
-> `optional` **onloadstartcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:224
-
-#### Inherited from
-
-`ViewportComponentAttributes.onloadstartcapture`
-
-***
-
-### onpausecapture?
-
-> `optional` **onpausecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:227
-
-#### Inherited from
-
-`ViewportComponentAttributes.onpausecapture`
-
-***
-
-### onplaycapture?
-
-> `optional` **onplaycapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:230
-
-#### Inherited from
-
-`ViewportComponentAttributes.onplaycapture`
-
-***
-
-### onplayingcapture?
-
-> `optional` **onplayingcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:233
-
-#### Inherited from
-
-`ViewportComponentAttributes.onplayingcapture`
-
-***
-
-### onprogresscapture?
-
-> `optional` **onprogresscapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:236
-
-#### Inherited from
-
-`ViewportComponentAttributes.onprogresscapture`
-
-***
-
-### onratechangecapture?
-
-> `optional` **onratechangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:239
-
-#### Inherited from
-
-`ViewportComponentAttributes.onratechangecapture`
-
-***
-
-### onseekedcapture?
-
-> `optional` **onseekedcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:242
-
-#### Inherited from
-
-`ViewportComponentAttributes.onseekedcapture`
-
-***
-
-### onseekingcapture?
-
-> `optional` **onseekingcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:245
-
-#### Inherited from
-
-`ViewportComponentAttributes.onseekingcapture`
-
-***
-
-### onstalledcapture?
-
-> `optional` **onstalledcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:248
-
-#### Inherited from
-
-`ViewportComponentAttributes.onstalledcapture`
-
-***
-
-### onsuspendcapture?
-
-> `optional` **onsuspendcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:251
-
-#### Inherited from
-
-`ViewportComponentAttributes.onsuspendcapture`
-
-***
-
-### ontimeupdatecapture?
-
-> `optional` **ontimeupdatecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:254
-
-#### Inherited from
-
-`ViewportComponentAttributes.ontimeupdatecapture`
-
-***
-
-### onvolumechangecapture?
-
-> `optional` **onvolumechangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:257
-
-#### Inherited from
-
-`ViewportComponentAttributes.onvolumechangecapture`
-
-***
-
-### onwaitingcapture?
-
-> `optional` **onwaitingcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:260
-
-#### Inherited from
-
-`ViewportComponentAttributes.onwaitingcapture`
-
-***
-
-### onauxclickcapture?
-
-> `optional` **onauxclickcapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:265
-
-#### Inherited from
-
-`ViewportComponentAttributes.onauxclickcapture`
-
-***
-
-### onclickcapture?
-
-> `optional` **onclickcapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:268
-
-#### Inherited from
-
-`ViewportComponentAttributes.onclickcapture`
-
-***
-
-### oncontextmenucapture?
-
-> `optional` **oncontextmenucapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:271
-
-#### Inherited from
-
-`ViewportComponentAttributes.oncontextmenucapture`
-
-***
-
-### ondblclickcapture?
-
-> `optional` **ondblclickcapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:274
-
-#### Inherited from
-
-`ViewportComponentAttributes.ondblclickcapture`
-
-***
-
-### ondragcapture?
-
-> `optional` **ondragcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:277
-
-#### Inherited from
-
-`ViewportComponentAttributes.ondragcapture`
-
-***
-
-### ondragendcapture?
-
-> `optional` **ondragendcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:280
-
-#### Inherited from
-
-`ViewportComponentAttributes.ondragendcapture`
-
-***
-
-### ondragentercapture?
-
-> `optional` **ondragentercapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:283
-
-#### Inherited from
-
-`ViewportComponentAttributes.ondragentercapture`
-
-***
-
-### ondragexitcapture?
-
-> `optional` **ondragexitcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:286
-
-#### Inherited from
-
-`ViewportComponentAttributes.ondragexitcapture`
-
-***
-
-### ondragleavecapture?
-
-> `optional` **ondragleavecapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:289
-
-#### Inherited from
-
-`ViewportComponentAttributes.ondragleavecapture`
-
-***
-
-### ondragovercapture?
-
-> `optional` **ondragovercapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:292
-
-#### Inherited from
-
-`ViewportComponentAttributes.ondragovercapture`
-
-***
-
-### ondragstartcapture?
-
-> `optional` **ondragstartcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:295
-
-#### Inherited from
-
-`ViewportComponentAttributes.ondragstartcapture`
-
-***
-
-### ondropcapture?
-
-> `optional` **ondropcapture?**: `DragEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:298
-
-#### Inherited from
-
-`ViewportComponentAttributes.ondropcapture`
-
-***
-
-### onmousedowncapture?
-
-> `optional` **onmousedowncapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:301
-
-#### Inherited from
-
-`ViewportComponentAttributes.onmousedowncapture`
-
-***
-
 ### onmousemovecapture?
 
 > `optional` **onmousemovecapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -4751,6 +4403,18 @@ Defined in: node\_modules/svelte/elements.d.ts:308
 #### Inherited from
 
 `ViewportComponentAttributes.onmousemovecapture`
+
+***
+
+### on:mouseout?
+
+> `optional` **on:mouseout?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:309
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:mouseout`
 
 ***
 
@@ -4766,6 +4430,18 @@ Defined in: node\_modules/svelte/elements.d.ts:311
 
 ***
 
+### on:mouseover?
+
+> `optional` **on:mouseover?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:312
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:mouseover`
+
+***
+
 ### onmouseovercapture?
 
 > `optional` **onmouseovercapture?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -4775,6 +4451,18 @@ Defined in: node\_modules/svelte/elements.d.ts:314
 #### Inherited from
 
 `ViewportComponentAttributes.onmouseovercapture`
+
+***
+
+### on:mouseup?
+
+> `optional` **on:mouseup?**: `MouseEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:315
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:mouseup`
 
 ***
 
@@ -4790,6 +4478,18 @@ Defined in: node\_modules/svelte/elements.d.ts:317
 
 ***
 
+### on:select?
+
+> `optional` **on:select?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:320
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:select`
+
+***
+
 ### onselectcapture?
 
 > `optional` **onselectcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -4799,6 +4499,18 @@ Defined in: node\_modules/svelte/elements.d.ts:322
 #### Inherited from
 
 `ViewportComponentAttributes.onselectcapture`
+
+***
+
+### on:selectionchange?
+
+> `optional` **on:selectionchange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:323
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:selectionchange`
 
 ***
 
@@ -4814,6 +4526,18 @@ Defined in: node\_modules/svelte/elements.d.ts:325
 
 ***
 
+### on:selectstart?
+
+> `optional` **on:selectstart?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:326
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:selectstart`
+
+***
+
 ### onselectstartcapture?
 
 > `optional` **onselectstartcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -4823,6 +4547,18 @@ Defined in: node\_modules/svelte/elements.d.ts:328
 #### Inherited from
 
 `ViewportComponentAttributes.onselectstartcapture`
+
+***
+
+### on:touchcancel?
+
+> `optional` **on:touchcancel?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:331
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:touchcancel`
 
 ***
 
@@ -4838,6 +4574,18 @@ Defined in: node\_modules/svelte/elements.d.ts:333
 
 ***
 
+### on:touchend?
+
+> `optional` **on:touchend?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:334
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:touchend`
+
+***
+
 ### ontouchendcapture?
 
 > `optional` **ontouchendcapture?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -4847,6 +4595,18 @@ Defined in: node\_modules/svelte/elements.d.ts:336
 #### Inherited from
 
 `ViewportComponentAttributes.ontouchendcapture`
+
+***
+
+### on:touchmove?
+
+> `optional` **on:touchmove?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:337
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:touchmove`
 
 ***
 
@@ -4862,6 +4622,18 @@ Defined in: node\_modules/svelte/elements.d.ts:339
 
 ***
 
+### on:touchstart?
+
+> `optional` **on:touchstart?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:340
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:touchstart`
+
+***
+
 ### ontouchstartcapture?
 
 > `optional` **ontouchstartcapture?**: `TouchEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -4871,6 +4643,18 @@ Defined in: node\_modules/svelte/elements.d.ts:342
 #### Inherited from
 
 `ViewportComponentAttributes.ontouchstartcapture`
+
+***
+
+### on:gotpointercapture?
+
+> `optional` **on:gotpointercapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:345
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:gotpointercapture`
 
 ***
 
@@ -4886,6 +4670,18 @@ Defined in: node\_modules/svelte/elements.d.ts:347
 
 ***
 
+### on:pointercancel?
+
+> `optional` **on:pointercancel?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:348
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:pointercancel`
+
+***
+
 ### onpointercancelcapture?
 
 > `optional` **onpointercancelcapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -4895,6 +4691,18 @@ Defined in: node\_modules/svelte/elements.d.ts:350
 #### Inherited from
 
 `ViewportComponentAttributes.onpointercancelcapture`
+
+***
+
+### on:pointerdown?
+
+> `optional` **on:pointerdown?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:351
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:pointerdown`
 
 ***
 
@@ -4910,6 +4718,18 @@ Defined in: node\_modules/svelte/elements.d.ts:353
 
 ***
 
+### on:pointerenter?
+
+> `optional` **on:pointerenter?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:354
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:pointerenter`
+
+***
+
 ### onpointerentercapture?
 
 > `optional` **onpointerentercapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -4919,6 +4739,18 @@ Defined in: node\_modules/svelte/elements.d.ts:356
 #### Inherited from
 
 `ViewportComponentAttributes.onpointerentercapture`
+
+***
+
+### on:pointerleave?
+
+> `optional` **on:pointerleave?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:357
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:pointerleave`
 
 ***
 
@@ -4934,6 +4766,18 @@ Defined in: node\_modules/svelte/elements.d.ts:359
 
 ***
 
+### on:pointermove?
+
+> `optional` **on:pointermove?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:360
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:pointermove`
+
+***
+
 ### onpointermovecapture?
 
 > `optional` **onpointermovecapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -4943,6 +4787,18 @@ Defined in: node\_modules/svelte/elements.d.ts:362
 #### Inherited from
 
 `ViewportComponentAttributes.onpointermovecapture`
+
+***
+
+### on:pointerout?
+
+> `optional` **on:pointerout?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:363
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:pointerout`
 
 ***
 
@@ -4958,6 +4814,18 @@ Defined in: node\_modules/svelte/elements.d.ts:365
 
 ***
 
+### on:pointerover?
+
+> `optional` **on:pointerover?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:366
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:pointerover`
+
+***
+
 ### onpointerovercapture?
 
 > `optional` **onpointerovercapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -4970,6 +4838,18 @@ Defined in: node\_modules/svelte/elements.d.ts:368
 
 ***
 
+### on:pointerup?
+
+> `optional` **on:pointerup?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:369
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:pointerup`
+
+***
+
 ### onpointerupcapture?
 
 > `optional` **onpointerupcapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -4979,6 +4859,18 @@ Defined in: node\_modules/svelte/elements.d.ts:371
 #### Inherited from
 
 `ViewportComponentAttributes.onpointerupcapture`
+
+***
+
+### on:lostpointercapture?
+
+> `optional` **on:lostpointercapture?**: `PointerEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:372
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:lostpointercapture`
 
 ***
 
@@ -5006,18 +4898,6 @@ Defined in: node\_modules/svelte/elements.d.ts:377
 
 ***
 
-### ongamepadconnected?
-
-> `optional` **ongamepadconnected?**: `GamepadEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:378
-
-#### Inherited from
-
-`ViewportComponentAttributes.ongamepadconnected`
-
-***
-
 ### on:gamepaddisconnected?
 
 > `optional` **on:gamepaddisconnected?**: `GamepadEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5030,15 +4910,15 @@ Defined in: node\_modules/svelte/elements.d.ts:379
 
 ***
 
-### ongamepaddisconnected?
+### on:scroll?
 
-> `optional` **ongamepaddisconnected?**: `GamepadEventHandler`\<`HTMLDivElement`\> \| `null`
+> `optional` **on:scroll?**: `UIEventHandler`\<`HTMLDivElement`\> \| `null`
 
-Defined in: node\_modules/svelte/elements.d.ts:380
+Defined in: node\_modules/svelte/elements.d.ts:383
 
 #### Inherited from
 
-`ViewportComponentAttributes.ongamepaddisconnected`
+`ViewportComponentAttributes.on:scroll`
 
 ***
 
@@ -5054,6 +4934,18 @@ Defined in: node\_modules/svelte/elements.d.ts:385
 
 ***
 
+### on:scrollend?
+
+> `optional` **on:scrollend?**: `UIEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:386
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:scrollend`
+
+***
+
 ### onscrollendcapture?
 
 > `optional` **onscrollendcapture?**: `UIEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5063,6 +4955,18 @@ Defined in: node\_modules/svelte/elements.d.ts:388
 #### Inherited from
 
 `ViewportComponentAttributes.onscrollendcapture`
+
+***
+
+### on:resize?
+
+> `optional` **on:resize?**: `UIEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:389
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:resize`
 
 ***
 
@@ -5078,6 +4982,18 @@ Defined in: node\_modules/svelte/elements.d.ts:391
 
 ***
 
+### on:wheel?
+
+> `optional` **on:wheel?**: `WheelEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:394
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:wheel`
+
+***
+
 ### onwheelcapture?
 
 > `optional` **onwheelcapture?**: `WheelEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5087,6 +5003,18 @@ Defined in: node\_modules/svelte/elements.d.ts:396
 #### Inherited from
 
 `ViewportComponentAttributes.onwheelcapture`
+
+***
+
+### on:animationstart?
+
+> `optional` **on:animationstart?**: `AnimationEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:399
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:animationstart`
 
 ***
 
@@ -5102,6 +5030,18 @@ Defined in: node\_modules/svelte/elements.d.ts:401
 
 ***
 
+### on:animationend?
+
+> `optional` **on:animationend?**: `AnimationEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:402
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:animationend`
+
+***
+
 ### onanimationendcapture?
 
 > `optional` **onanimationendcapture?**: `AnimationEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5111,6 +5051,18 @@ Defined in: node\_modules/svelte/elements.d.ts:404
 #### Inherited from
 
 `ViewportComponentAttributes.onanimationendcapture`
+
+***
+
+### on:animationiteration?
+
+> `optional` **on:animationiteration?**: `AnimationEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:405
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:animationiteration`
 
 ***
 
@@ -5126,6 +5078,18 @@ Defined in: node\_modules/svelte/elements.d.ts:407
 
 ***
 
+### on:transitionstart?
+
+> `optional` **on:transitionstart?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:410
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:transitionstart`
+
+***
+
 ### ontransitionstartcapture?
 
 > `optional` **ontransitionstartcapture?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5135,6 +5099,18 @@ Defined in: node\_modules/svelte/elements.d.ts:412
 #### Inherited from
 
 `ViewportComponentAttributes.ontransitionstartcapture`
+
+***
+
+### on:transitionrun?
+
+> `optional` **on:transitionrun?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:413
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:transitionrun`
 
 ***
 
@@ -5150,6 +5126,18 @@ Defined in: node\_modules/svelte/elements.d.ts:415
 
 ***
 
+### on:transitionend?
+
+> `optional` **on:transitionend?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:416
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:transitionend`
+
+***
+
 ### ontransitionendcapture?
 
 > `optional` **ontransitionendcapture?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5159,6 +5147,18 @@ Defined in: node\_modules/svelte/elements.d.ts:418
 #### Inherited from
 
 `ViewportComponentAttributes.ontransitionendcapture`
+
+***
+
+### on:transitioncancel?
+
+> `optional` **on:transitioncancel?**: `TransitionEventHandler`\<`HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:419
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:transitioncancel`
 
 ***
 
@@ -5330,18 +5330,6 @@ Defined in: node\_modules/svelte/elements.d.ts:438
 
 ***
 
-### onmessage?
-
-> `optional` **onmessage?**: `MessageEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:439
-
-#### Inherited from
-
-`ViewportComponentAttributes.onmessage`
-
-***
-
 ### onmessagecapture?
 
 > `optional` **onmessagecapture?**: `MessageEventHandler`\<`HTMLDivElement`\> \| `null`
@@ -5363,18 +5351,6 @@ Defined in: node\_modules/svelte/elements.d.ts:441
 #### Inherited from
 
 `ViewportComponentAttributes.on:messageerror`
-
-***
-
-### onmessageerror?
-
-> `optional` **onmessageerror?**: `MessageEventHandler`\<`HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:442
-
-#### Inherited from
-
-`ViewportComponentAttributes.onmessageerror`
 
 ***
 
@@ -5402,18 +5378,6 @@ Defined in: node\_modules/svelte/elements.d.ts:446
 
 ***
 
-### onvisibilitychange?
-
-> `optional` **onvisibilitychange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:447
-
-#### Inherited from
-
-`ViewportComponentAttributes.onvisibilitychange`
-
-***
-
 ### onvisibilitychangecapture?
 
 > `optional` **onvisibilitychangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -5423,6 +5387,18 @@ Defined in: node\_modules/svelte/elements.d.ts:448
 #### Inherited from
 
 `ViewportComponentAttributes.onvisibilitychangecapture`
+
+***
+
+### on:beforematch?
+
+> `optional` **on:beforematch?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:451
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:beforematch`
 
 ***
 
@@ -5438,6 +5414,18 @@ Defined in: node\_modules/svelte/elements.d.ts:453
 
 ***
 
+### on:cancel?
+
+> `optional` **on:cancel?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:454
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:cancel`
+
+***
+
 ### oncancelcapture?
 
 > `optional` **oncancelcapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -5447,6 +5435,18 @@ Defined in: node\_modules/svelte/elements.d.ts:456
 #### Inherited from
 
 `ViewportComponentAttributes.oncancelcapture`
+
+***
+
+### on:close?
+
+> `optional` **on:close?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:457
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:close`
 
 ***
 
@@ -5462,6 +5462,18 @@ Defined in: node\_modules/svelte/elements.d.ts:459
 
 ***
 
+### on:fullscreenchange?
+
+> `optional` **on:fullscreenchange?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:460
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:fullscreenchange`
+
+***
+
 ### onfullscreenchangecapture?
 
 > `optional` **onfullscreenchangecapture?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
@@ -5471,6 +5483,18 @@ Defined in: node\_modules/svelte/elements.d.ts:462
 #### Inherited from
 
 `ViewportComponentAttributes.onfullscreenchangecapture`
+
+***
+
+### on:fullscreenerror?
+
+> `optional` **on:fullscreenerror?**: `EventHandler`\<`Event`, `HTMLDivElement`\> \| `null`
+
+Defined in: node\_modules/svelte/elements.d.ts:463
+
+#### Inherited from
+
+`ViewportComponentAttributes.on:fullscreenerror`
 
 ***
 
@@ -5555,15 +5579,3 @@ Defined in: node\_modules/svelte/elements.d.ts:473
 #### Inherited from
 
 `ViewportComponentAttributes.bind:clientHeight`
-
-***
-
-### xmlns?
-
-> `optional` **xmlns?**: `string` \| `null`
-
-Defined in: node\_modules/svelte/elements.d.ts:475
-
-#### Inherited from
-
-`ViewportComponentAttributes.xmlns`

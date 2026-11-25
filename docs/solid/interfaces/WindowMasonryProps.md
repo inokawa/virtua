@@ -4,7 +4,7 @@
 
 # Interface: WindowMasonryProps\<T\>
 
-Defined in: [src/solid/WindowMasonry.tsx:75](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/WindowMasonry.tsx#L75)
+Defined in: [src/solid/WindowMasonry.tsx:72](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/WindowMasonry.tsx#L72)
 
 Props of [WindowMasonry](../functions/WindowMasonry.md).
 
@@ -18,9 +18,9 @@ Props of [WindowMasonry](../functions/WindowMasonry.md).
 
 ### ref?
 
-> `optional` **ref?**: [`WindowMasonryHandle`](WindowMasonryHandle.md) \| ((`handle?`) => `void`)
+> `optional` **ref?**: [`WindowMasonryHandle`](WindowMasonryHandle.md)
 
-Defined in: [src/solid/WindowMasonry.tsx:79](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/WindowMasonry.tsx#L79)
+Defined in: [src/solid/WindowMasonry.tsx:76](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/WindowMasonry.tsx#L76)
 
 Get reference to [WindowMasonryHandle](WindowMasonryHandle.md).
 
@@ -30,7 +30,7 @@ Get reference to [WindowMasonryHandle](WindowMasonryHandle.md).
 
 > **data**: readonly `T`[]
 
-Defined in: [src/solid/WindowMasonry.tsx:83](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/WindowMasonry.tsx#L83)
+Defined in: [src/solid/WindowMasonry.tsx:80](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/WindowMasonry.tsx#L80)
 
 The data items rendered by this component.
 
@@ -40,7 +40,7 @@ The data items rendered by this component.
 
 > **children**: (`data`, `index`) => `Element`
 
-Defined in: [src/solid/WindowMasonry.tsx:87](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/WindowMasonry.tsx#L87)
+Defined in: [src/solid/WindowMasonry.tsx:84](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/WindowMasonry.tsx#L84)
 
 The elements renderer function.
 
@@ -64,7 +64,7 @@ The elements renderer function.
 
 > **lanes**: `number`
 
-Defined in: [src/solid/WindowMasonry.tsx:91](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/WindowMasonry.tsx#L91)
+Defined in: [src/solid/WindowMasonry.tsx:88](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/WindowMasonry.tsx#L88)
 
 The number of lanes (columns) which items are laid out into. Each item is placed into the shortest lane in order. It must be an integer and the minimum value is 1.
 
@@ -74,7 +74,7 @@ The number of lanes (columns) which items are laid out into. Each item is placed
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/solid/WindowMasonry.tsx:96](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/WindowMasonry.tsx#L96)
+Defined in: [src/solid/WindowMasonry.tsx:93](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/WindowMasonry.tsx#L93)
 
 The gap between the items and the lanes in pixels, which is not included in the sizes.
 
@@ -90,7 +90,7 @@ The gap between the items and the lanes in pixels, which is not included in the 
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/solid/WindowMasonry.tsx:103](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/WindowMasonry.tsx#L103)
+Defined in: [src/solid/WindowMasonry.tsx:100](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/WindowMasonry.tsx#L100)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -103,7 +103,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/solid/WindowMasonry.tsx:108](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/WindowMasonry.tsx#L108)
+Defined in: [src/solid/WindowMasonry.tsx:105](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/WindowMasonry.tsx#L105)
 
 Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
 
@@ -119,7 +119,7 @@ Extra space in pixels to render before/after the viewport. The default value is 
 
 > `optional` **cache?**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/solid/WindowMasonry.tsx:114](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/WindowMasonry.tsx#L114)
+Defined in: [src/solid/WindowMasonry.tsx:111](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/WindowMasonry.tsx#L111)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [WindowMasonryHandle.cache](WindowMasonryHandle.md#cache).
 
@@ -131,7 +131,7 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `optional` **ssrCount?**: `number`
 
-Defined in: [src/solid/WindowMasonry.tsx:120](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/WindowMasonry.tsx#L120)
+Defined in: [src/solid/WindowMasonry.tsx:117](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/WindowMasonry.tsx#L117)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -143,7 +143,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `optional` **onScroll?**: () => `void`
 
-Defined in: [src/solid/WindowMasonry.tsx:124](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/WindowMasonry.tsx#L124)
+Defined in: [src/solid/WindowMasonry.tsx:121](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/WindowMasonry.tsx#L121)
 
 Callback invoked whenever scroll offset changes.
 
@@ -157,7 +157,7 @@ Callback invoked whenever scroll offset changes.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/solid/WindowMasonry.tsx:128](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/WindowMasonry.tsx#L128)
+Defined in: [src/solid/WindowMasonry.tsx:125](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/WindowMasonry.tsx#L125)
 
 Callback invoked when scrolling stops.
 
@@ -171,7 +171,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **onResize?**: () => `void`
 
-Defined in: [src/solid/WindowMasonry.tsx:132](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/WindowMasonry.tsx#L132)
+Defined in: [src/solid/WindowMasonry.tsx:129](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/WindowMasonry.tsx#L129)
 
 Callback invoked when the size of the viewport or the items changes.
 

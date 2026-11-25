@@ -4,7 +4,7 @@
 
 # Interface: WindowMasonryProps\<T\>
 
-Defined in: [src/vue/WindowMasonry.tsx:68](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L68)
+Defined in: [src/vue/WindowMasonry.tsx:68](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L68)
 
 Props of [WindowMasonry](../variables/WindowMasonry.md).
 
@@ -24,7 +24,7 @@ Props of [WindowMasonry](../variables/WindowMasonry.md).
 
 > **data**: `T`[]
 
-Defined in: [src/vue/WindowMasonry.tsx:72](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L72)
+Defined in: [src/vue/WindowMasonry.tsx:72](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L72)
 
 The data items rendered by this component.
 
@@ -34,7 +34,7 @@ The data items rendered by this component.
 
 > **lanes**: `number`
 
-Defined in: [src/vue/WindowMasonry.tsx:76](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L76)
+Defined in: [src/vue/WindowMasonry.tsx:76](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L76)
 
 The number of lanes (columns) which items are laid out into. Each item is placed into the shortest lane in order. It must be an integer and the minimum value is 1.
 
@@ -44,7 +44,7 @@ The number of lanes (columns) which items are laid out into. Each item is placed
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/vue/WindowMasonry.tsx:81](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L81)
+Defined in: [src/vue/WindowMasonry.tsx:81](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L81)
 
 The gap between the items and the lanes in pixels, which is not included in the sizes.
 
@@ -60,7 +60,7 @@ The gap between the items and the lanes in pixels, which is not included in the 
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/vue/WindowMasonry.tsx:88](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L88)
+Defined in: [src/vue/WindowMasonry.tsx:88](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L88)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -73,7 +73,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/vue/WindowMasonry.tsx:93](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L93)
+Defined in: [src/vue/WindowMasonry.tsx:93](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L93)
 
 Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
 
@@ -89,7 +89,7 @@ Extra space in pixels to render before/after the viewport. The default value is 
 
 > `optional` **cache?**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/vue/WindowMasonry.tsx:99](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L99)
+Defined in: [src/vue/WindowMasonry.tsx:99](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L99)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [WindowMasonryHandle.cache](WindowMasonryHandle.md#cache).
 
@@ -101,7 +101,7 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `optional` **ssrCount?**: `number`
 
-Defined in: [src/vue/WindowMasonry.tsx:105](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L105)
+Defined in: [src/vue/WindowMasonry.tsx:105](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L105)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -113,7 +113,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `optional` **onScroll?**: () => `void`
 
-Defined in: [src/vue/WindowMasonry.tsx:109](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L109)
+Defined in: [src/vue/WindowMasonry.tsx:109](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L109)
 
 Callback invoked whenever scroll offset changes.
 
@@ -127,7 +127,7 @@ Callback invoked whenever scroll offset changes.
 
 > `optional` **onScrollEnd?**: () => `void`
 
-Defined in: [src/vue/WindowMasonry.tsx:113](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L113)
+Defined in: [src/vue/WindowMasonry.tsx:113](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L113)
 
 Callback invoked when scrolling stops.
 
@@ -141,7 +141,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **onResize?**: () => `void`
 
-Defined in: [src/vue/WindowMasonry.tsx:117](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/vue/WindowMasonry.tsx#L117)
+Defined in: [src/vue/WindowMasonry.tsx:117](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/vue/WindowMasonry.tsx#L117)
 
 Callback invoked when the size of the viewport or the items changes.
 

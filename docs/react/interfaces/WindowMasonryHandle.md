@@ -4,7 +4,7 @@
 
 # Interface: WindowMasonryHandle
 
-Defined in: [src/react/WindowMasonry.tsx:35](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/react/WindowMasonry.tsx#L35)
+Defined in: [src/react/WindowMasonry.tsx:35](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/react/WindowMasonry.tsx#L35)
 
 Methods of [WindowMasonry](../variables/WindowMasonry.md).
 
@@ -14,7 +14,7 @@ Methods of [WindowMasonry](../variables/WindowMasonry.md).
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/react/WindowMasonry.tsx:52](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/react/WindowMasonry.tsx#L52)
+Defined in: [src/react/WindowMasonry.tsx:52](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/react/WindowMasonry.tsx#L52)
 
 Get item offset from start.
 
@@ -36,7 +36,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/react/WindowMasonry.tsx:57](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/react/WindowMasonry.tsx#L57)
+Defined in: [src/react/WindowMasonry.tsx:57](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/react/WindowMasonry.tsx#L57)
 
 Get item size.
 
@@ -58,7 +58,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/react/WindowMasonry.tsx:63](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/react/WindowMasonry.tsx#L63)
+Defined in: [src/react/WindowMasonry.tsx:63](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/react/WindowMasonry.tsx#L63)
 
 Scroll to the item specified by index.
 
@@ -86,7 +86,7 @@ options
 
 > `readonly` **cache**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/react/WindowMasonry.tsx:39](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/react/WindowMasonry.tsx#L39)
+Defined in: [src/react/WindowMasonry.tsx:39](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/react/WindowMasonry.tsx#L39)
 
 Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
@@ -96,7 +96,7 @@ Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
 > `readonly` **scrollOffset**: `number`
 
-Defined in: [src/react/WindowMasonry.tsx:43](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/react/WindowMasonry.tsx#L43)
+Defined in: [src/react/WindowMasonry.tsx:43](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/react/WindowMasonry.tsx#L43)
 
 Get current scrollTop.
 
@@ -106,6 +106,6 @@ Get current scrollTop.
 
 > `readonly` **viewportSize**: `number`
 
-Defined in: [src/react/WindowMasonry.tsx:47](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/react/WindowMasonry.tsx#L47)
+Defined in: [src/react/WindowMasonry.tsx:47](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/react/WindowMasonry.tsx#L47)
 
 Get current clientHeight of the document.

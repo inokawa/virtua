@@ -4,7 +4,7 @@
 
 # Interface: WindowMasonryProps\<T\>
 
-Defined in: [src/svelte/WindowMasonry.type.ts:7](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/WindowMasonry.type.ts#L7)
+Defined in: [src/svelte/WindowMasonry.type.ts:7](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/WindowMasonry.type.ts#L7)
 
 Props of [WindowMasonry](../variables/VList.md).
 
@@ -20,7 +20,7 @@ Props of [WindowMasonry](../variables/VList.md).
 
 > **data**: readonly `T`[]
 
-Defined in: [src/svelte/WindowMasonry.type.ts:11](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/WindowMasonry.type.ts#L11)
+Defined in: [src/svelte/WindowMasonry.type.ts:11](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/WindowMasonry.type.ts#L11)
 
 The data items rendered by this component.
 
@@ -30,7 +30,7 @@ The data items rendered by this component.
 
 > **children**: `Snippet`\<\[`item`: `T`, `index`: `number`\]\>
 
-Defined in: [src/svelte/WindowMasonry.type.ts:15](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/WindowMasonry.type.ts#L15)
+Defined in: [src/svelte/WindowMasonry.type.ts:15](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/WindowMasonry.type.ts#L15)
 
 The elements renderer snippet.
 
@@ -40,7 +40,7 @@ The elements renderer snippet.
 
 > `optional` **getKey?**: (`data`, `index`) => `string` \| `number`
 
-Defined in: [src/svelte/WindowMasonry.type.ts:20](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/WindowMasonry.type.ts#L20)
+Defined in: [src/svelte/WindowMasonry.type.ts:20](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/WindowMasonry.type.ts#L20)
 
 Function that returns the key of an item in the list. It's recommended to specify whenever possible for performance.
 
@@ -70,7 +70,7 @@ defaultGetKey (returns index of item)
 
 > **lanes**: `number`
 
-Defined in: [src/svelte/WindowMasonry.type.ts:24](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/WindowMasonry.type.ts#L24)
+Defined in: [src/svelte/WindowMasonry.type.ts:24](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/WindowMasonry.type.ts#L24)
 
 The number of lanes (columns) which items are laid out into. Each item is placed into the shortest lane in order. It must be an integer and the minimum value is 1.
 
@@ -80,7 +80,7 @@ The number of lanes (columns) which items are laid out into. Each item is placed
 
 > `optional` **gap?**: `number`
 
-Defined in: [src/svelte/WindowMasonry.type.ts:29](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/WindowMasonry.type.ts#L29)
+Defined in: [src/svelte/WindowMasonry.type.ts:29](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/WindowMasonry.type.ts#L29)
 
 The gap between the items and the lanes in pixels, which is not included in the sizes.
 
@@ -96,7 +96,7 @@ The gap between the items and the lanes in pixels, which is not included in the 
 
 > `optional` **itemSize?**: `number`
 
-Defined in: [src/svelte/WindowMasonry.type.ts:36](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/WindowMasonry.type.ts#L36)
+Defined in: [src/svelte/WindowMasonry.type.ts:36](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/WindowMasonry.type.ts#L36)
 
 Item size hint for unmeasured items in pixels. It will help to reduce scroll jump when items are measured if used properly.
 
@@ -109,7 +109,7 @@ Item size hint for unmeasured items in pixels. It will help to reduce scroll jum
 
 > `optional` **bufferSize?**: `number`
 
-Defined in: [src/svelte/WindowMasonry.type.ts:41](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/WindowMasonry.type.ts#L41)
+Defined in: [src/svelte/WindowMasonry.type.ts:41](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/WindowMasonry.type.ts#L41)
 
 Extra space in pixels to render before/after the viewport. The default value is recommended for most cases. A smaller value gives better performance, and a larger value avoids showing blank items in fast scrolling.
 
@@ -125,7 +125,7 @@ Extra space in pixels to render before/after the viewport. The default value is 
 
 > `optional` **cache?**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/svelte/WindowMasonry.type.ts:47](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/WindowMasonry.type.ts#L47)
+Defined in: [src/svelte/WindowMasonry.type.ts:47](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/WindowMasonry.type.ts#L47)
 
 You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md) on mount. This is useful when you want to restore scroll position after navigation. The snapshot can be obtained from [WindowMasonryHandle.getCache](WindowMasonryHandle.md#getcache).
 
@@ -137,7 +137,7 @@ You can restore cache by passing a [CacheSnapshot](../../core/type-aliases/Cache
 
 > `optional` **ssrCount?**: `number`
 
-Defined in: [src/svelte/WindowMasonry.type.ts:53](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/WindowMasonry.type.ts#L53)
+Defined in: [src/svelte/WindowMasonry.type.ts:53](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/WindowMasonry.type.ts#L53)
 
 A prop for SSR. If set, the specified amount of items will be mounted in the initial rendering regardless of the container size until hydrated. The minimum value is 0.
 
@@ -149,7 +149,7 @@ A prop for SSR. If set, the specified amount of items will be mounted in the ini
 
 > `optional` **onscroll?**: () => `void`
 
-Defined in: [src/svelte/WindowMasonry.type.ts:57](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/WindowMasonry.type.ts#L57)
+Defined in: [src/svelte/WindowMasonry.type.ts:57](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/WindowMasonry.type.ts#L57)
 
 Callback invoked whenever scroll offset changes.
 
@@ -163,7 +163,7 @@ Callback invoked whenever scroll offset changes.
 
 > `optional` **onscrollend?**: () => `void`
 
-Defined in: [src/svelte/WindowMasonry.type.ts:61](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/WindowMasonry.type.ts#L61)
+Defined in: [src/svelte/WindowMasonry.type.ts:61](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/WindowMasonry.type.ts#L61)
 
 Callback invoked when scrolling stops.
 
@@ -177,7 +177,7 @@ Callback invoked when scrolling stops.
 
 > `optional` **onresize?**: () => `void`
 
-Defined in: [src/svelte/WindowMasonry.type.ts:65](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/svelte/WindowMasonry.type.ts#L65)
+Defined in: [src/svelte/WindowMasonry.type.ts:65](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/svelte/WindowMasonry.type.ts#L65)
 
 Callback invoked when the size of the viewport or the items changes.
 

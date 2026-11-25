@@ -4,7 +4,7 @@
 
 # Interface: GridScrollToIndexOpts
 
-Defined in: [src/core/driver.ts:61](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/core/driver.ts#L61)
+Defined in: [src/core/driver.ts:61](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/core/driver.ts#L61)
 
 The cell to scroll to and the options of the scroll. The axis whose index is omitted is not scrolled.
 
@@ -14,7 +14,7 @@ The cell to scroll to and the options of the scroll. The axis whose index is omi
 
 > `optional` **rowIndex?**: `number`
 
-Defined in: [src/core/driver.ts:65](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/core/driver.ts#L65)
+Defined in: [src/core/driver.ts:65](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/core/driver.ts#L65)
 
 The row index of the cell.
 
@@ -24,7 +24,7 @@ The row index of the cell.
 
 > `optional` **colIndex?**: `number`
 
-Defined in: [src/core/driver.ts:69](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/core/driver.ts#L69)
+Defined in: [src/core/driver.ts:69](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/core/driver.ts#L69)
 
 The column index of the cell.
 
@@ -34,7 +34,7 @@ The column index of the cell.
 
 > `optional` **rowAlign?**: [`ScrollToIndexAlign`](../type-aliases/ScrollToIndexAlign.md)
 
-Defined in: [src/core/driver.ts:74](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/core/driver.ts#L74)
+Defined in: [src/core/driver.ts:74](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/core/driver.ts#L74)
 
 Alignment of the cell in the viewport, excluding the rows sticking over it. See [ScrollToIndexAlign](../type-aliases/ScrollToIndexAlign.md) for the values.
 
@@ -50,7 +50,7 @@ Alignment of the cell in the viewport, excluding the rows sticking over it. See 
 
 > `optional` **colAlign?**: [`ScrollToIndexAlign`](../type-aliases/ScrollToIndexAlign.md)
 
-Defined in: [src/core/driver.ts:79](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/core/driver.ts#L79)
+Defined in: [src/core/driver.ts:79](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/core/driver.ts#L79)
 
 Alignment of the cell in the viewport, excluding the columns sticking over it. See [ScrollToIndexAlign](../type-aliases/ScrollToIndexAlign.md) for the values.
 
@@ -66,7 +66,7 @@ Alignment of the cell in the viewport, excluding the columns sticking over it. S
 
 > `optional` **rowOffset?**: `number`
 
-Defined in: [src/core/driver.ts:83](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/core/driver.ts#L83)
+Defined in: [src/core/driver.ts:83](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/core/driver.ts#L83)
 
 Additional vertical offset from the scrolled position, or the scrollTop to scroll to if [GridScrollToIndexOpts.rowIndex](#rowindex) is omitted.
 
@@ -76,6 +76,6 @@ Additional vertical offset from the scrolled position, or the scrollTop to scrol
 
 > `optional` **colOffset?**: `number`
 
-Defined in: [src/core/driver.ts:87](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/core/driver.ts#L87)
+Defined in: [src/core/driver.ts:87](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/core/driver.ts#L87)
 
 Additional horizontal offset from the scrolled position, or the scrollLeft to scroll to if [GridScrollToIndexOpts.colIndex](#colindex) is omitted.

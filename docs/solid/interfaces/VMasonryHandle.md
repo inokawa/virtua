@@ -4,7 +4,7 @@
 
 # Interface: VMasonryHandle
 
-Defined in: [src/solid/VMasonry.tsx:45](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/VMasonry.tsx#L45)
+Defined in: [src/solid/VMasonry.tsx:42](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/VMasonry.tsx#L42)
 
 Methods of [VMasonry](../functions/VMasonry.md).
 
@@ -14,7 +14,7 @@ Methods of [VMasonry](../functions/VMasonry.md).
 
 > **getItemOffset**(`index`): `number`
 
-Defined in: [src/solid/VMasonry.tsx:66](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/VMasonry.tsx#L66)
+Defined in: [src/solid/VMasonry.tsx:63](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/VMasonry.tsx#L63)
 
 Get item offset from start.
 
@@ -36,7 +36,7 @@ index of item
 
 > **getItemSize**(`index`): `number`
 
-Defined in: [src/solid/VMasonry.tsx:71](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/VMasonry.tsx#L71)
+Defined in: [src/solid/VMasonry.tsx:68](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/VMasonry.tsx#L68)
 
 Get item size.
 
@@ -58,7 +58,7 @@ index of item
 
 > **scrollToIndex**(`index`, `opts?`): `void`
 
-Defined in: [src/solid/VMasonry.tsx:77](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/VMasonry.tsx#L77)
+Defined in: [src/solid/VMasonry.tsx:74](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/VMasonry.tsx#L74)
 
 Scroll to the item specified by index.
 
@@ -86,7 +86,7 @@ options
 
 > **scrollTo**(`offset`): `void`
 
-Defined in: [src/solid/VMasonry.tsx:82](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/VMasonry.tsx#L82)
+Defined in: [src/solid/VMasonry.tsx:79](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/VMasonry.tsx#L79)
 
 Scroll to the given offset.
 
@@ -108,7 +108,7 @@ offset from start
 
 > **scrollBy**(`offset`): `void`
 
-Defined in: [src/solid/VMasonry.tsx:87](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/VMasonry.tsx#L87)
+Defined in: [src/solid/VMasonry.tsx:84](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/VMasonry.tsx#L84)
 
 Scroll by the given offset.
 
@@ -130,7 +130,7 @@ offset from current position
 
 > `readonly` **cache**: [`CacheSnapshot`](../../core/type-aliases/CacheSnapshot.md)
 
-Defined in: [src/solid/VMasonry.tsx:49](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/VMasonry.tsx#L49)
+Defined in: [src/solid/VMasonry.tsx:46](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/VMasonry.tsx#L46)
 
 Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
@@ -140,7 +140,7 @@ Get current [CacheSnapshot](../../core/type-aliases/CacheSnapshot.md).
 
 > `readonly` **scrollOffset**: `number`
 
-Defined in: [src/solid/VMasonry.tsx:53](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/VMasonry.tsx#L53)
+Defined in: [src/solid/VMasonry.tsx:50](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/VMasonry.tsx#L50)
 
 Get current scrollTop.
 
@@ -150,7 +150,7 @@ Get current scrollTop.
 
 > `readonly` **scrollSize**: `number`
 
-Defined in: [src/solid/VMasonry.tsx:57](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/VMasonry.tsx#L57)
+Defined in: [src/solid/VMasonry.tsx:54](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/VMasonry.tsx#L54)
 
 Get current scrollHeight.
 
@@ -160,6 +160,6 @@ Get current scrollHeight.
 
 > `readonly` **viewportSize**: `number`
 
-Defined in: [src/solid/VMasonry.tsx:61](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/VMasonry.tsx#L61)
+Defined in: [src/solid/VMasonry.tsx:58](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/VMasonry.tsx#L58)
 
 Get current clientHeight.

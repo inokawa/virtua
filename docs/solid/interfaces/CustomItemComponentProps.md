@@ -4,7 +4,7 @@
 
 # Interface: CustomItemComponentProps
 
-Defined in: [src/solid/types.ts:20](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/types.ts#L20)
+Defined in: [src/solid/types.ts:21](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/types.ts#L21)
 
 Props of customized item component for [Virtualizer](../functions/Virtualizer.md) or [WindowVirtualizer](../functions/WindowVirtualizer.md).
 
@@ -14,7 +14,7 @@ Props of customized item component for [Virtualizer](../functions/Virtualizer.md
 
 > **style**: `CSSProperties`
 
-Defined in: [src/solid/types.ts:21](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/types.ts#L21)
+Defined in: [src/solid/types.ts:22](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/types.ts#L22)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [src/solid/types.ts:21](https://github.com/inokawa/virtua/blob/cc101
 
 > **index**: `number`
 
-Defined in: [src/solid/types.ts:22](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/types.ts#L22)
+Defined in: [src/solid/types.ts:23](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/types.ts#L23)
 
 ***
 
@@ -30,12 +30,12 @@ Defined in: [src/solid/types.ts:22](https://github.com/inokawa/virtua/blob/cc101
 
 > **children**: `Element`
 
-Defined in: [src/solid/types.ts:23](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/types.ts#L23)
+Defined in: [src/solid/types.ts:24](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/types.ts#L24)
 
 ***
 
 ### ref?
 
-> `optional` **ref?**: `any`
+> `optional` **ref?**: `Ref`\<`HTMLElement`\>
 
-Defined in: [src/solid/types.ts:24](https://github.com/inokawa/virtua/blob/cc1019763046a65e7a5fbfa4f30e1b58c75a7aeb/src/solid/types.ts#L24)
+Defined in: [src/solid/types.ts:25](https://github.com/inokawa/virtua/blob/4504b7c23d500b443f9928025de6f1c2efdb737f/src/solid/types.ts#L25)
