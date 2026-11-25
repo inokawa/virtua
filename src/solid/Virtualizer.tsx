@@ -1,22 +1,17 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import {
-  onMount,
+  onSettled,
   onCleanup,
   createEffect,
   createSignal,
   createMemo,
-  type JSX,
-  on,
-  createComputed,
-  type ValidComponent,
-  mergeProps,
   For,
   type Accessor,
   untrack,
 } from "solid-js";
-import { Dynamic, isServer } from "solid-js/web";
+import { dynamic, isServer, type JSX } from "@solidjs/web";
 import {
   UPDATE_SCROLL_EVENT,
   UPDATE_SCROLL_END_EVENT,
@@ -34,6 +29,11 @@ import {
   sort,
 } from "../core/index.js";
 import { ListItem } from "./ListItem.js";
+import {
+  type CustomContainerComponent,
+  type CustomItemComponent,
+  type CustomItemComponentProps,
+} from "./types.js";
 import { isSameRange } from "./utils.js";
 
 /**
@@ -96,7 +96,7 @@ export interface VirtualizerProps<T> {
   /**
    * Get reference to {@link VirtualizerHandle}.
    */
-  ref?: VirtualizerHandle | ((handle?: VirtualizerHandle) => void);
+  ref?: VirtualizerHandle;
   /**
    * The data items rendered by this component.
    */
@@ -114,12 +114,12 @@ export interface VirtualizerProps<T> {
    * Component or element type for container element.
    * @defaultValue "div"
    */
-  as?: ValidComponent;
+  as?: keyof JSX.IntrinsicElements | CustomContainerComponent;
   /**
-   * Component or element type for item element.
+   * Component or element type for item element. This component will get {@link CustomItemComponentProps} as props.
    * @defaultValue "div"
    */
-  item?: ValidComponent;
+  item?: keyof JSX.IntrinsicElements | CustomItemComponent;
   /**
    * Reference to the scrollable element. The default will get the direct parent element of virtualizer.
    */
@@ -179,19 +179,30 @@ export interface VirtualizerProps<T> {
  */
 export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
   let containerRef: HTMLDivElement | undefined;
-  const { itemSize, horizontal = false, cache, ssrCount } = props;
-  props = mergeProps<[Partial<VirtualizerProps<T>>, VirtualizerProps<T>]>(
-    { as: "div" },
-    props,
-  );
+  const horizontal = untrack(() => props.horizontal ?? false);
+  const ssrCount = untrack(() => props.ssrCount);
 
   const [isSSR, setIsSSR] = createSignal(!!ssrCount);
 
-  const layout = createListLayout(props.data.length, itemSize, cache);
+  const layout = untrack(() =>
+    createListLayout(props.data.length, props.itemSize, props.cache),
+  );
   const store = createVirtualStore(layout, ssrCount);
   const driver = createContainerDriver(store, layout, horizontal);
 
-  const [stateVersion, setRerender] = createSignal(store.$getStateVersion());
+  // Syncs the props before the version is read, and ownedWrite allows the subscriber to write it during the sync
+  const [stateVersion, setRerender] = createSignal(
+    () => {
+      const startMargin = props.startMargin || 0;
+      const count = props.data.length;
+      untrack(() => {
+        store.$update(ACTION_START_OFFSET_CHANGE, startMargin);
+        store.$update(ACTION_ITEMS_LENGTH_CHANGE, count, props.shift);
+      });
+      return store.$getStateVersion();
+    },
+    { ownedWrite: true },
+  );
 
   const unsubscribe = store.$subscribe((flag) => {
     if (flag & UPDATE_VIRTUAL_STATE) {
@@ -208,19 +219,19 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     }
   });
 
-  const range = createMemo<ItemsRange>((prev) => {
-    stateVersion();
-    const next = store.$getRange(props.bufferSize);
-    if (prev && isSameRange(prev, next)) {
-      return prev;
-    }
-    return next;
-  });
+  const range = createMemo(
+    (): ItemsRange => {
+      stateVersion();
+      return store.$getRange(props.bufferSize);
+    },
+    { equals: isSameRange },
+  );
   const isScrolling = createMemo(() => stateVersion() && store.$isScrolling());
   const totalSize = createMemo(() => stateVersion() && store.$getTotalSize());
 
-  // eslint-disable-next-line solid/reactivity
-  const ref = props.ref as Exclude<typeof props.ref, VirtualizerHandle>;
+  // The compiler turns `ref={handle}` into a function that assigns the handle
+  const ref = untrack(() => props.ref) as unknown as
+    ((handle?: VirtualizerHandle) => void) | undefined;
   if (!isServer && ref) {
     ref({
       get cache() {
@@ -249,37 +260,21 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     onCleanup(() => ref());
   }
 
-  onMount(() => {
+  onSettled(() => {
     setIsSSR(false);
 
     driver.$observe(containerRef!, props.scrollRef);
 
-    onCleanup(() => {
+    return () => {
       unsubscribe();
       driver.$dispose();
-    });
+    };
   });
 
-  createComputed(
-    on(
-      () => props.startMargin || 0,
-      (value) => {
-        store.$update(ACTION_START_OFFSET_CHANGE, value);
-      },
-    ),
-  );
-
-  createEffect(
-    on(stateVersion, () => {
-      driver.$effect();
-    }),
-  );
+  createEffect(stateVersion, driver.$effect);
 
   const dataSlice = createMemo(() => {
     const count = props.data.length;
-    untrack(() => {
-      store.$update(ACTION_ITEMS_LENGTH_CHANGE, count, props.shift);
-    });
     const items: T[] = [];
     const indexes: number[] = [];
 
@@ -304,9 +299,10 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
     return { _items: items, _indexes: indexes };
   });
 
+  const Container = dynamic(() => props.as ?? "div");
+
   return (
-    <Dynamic
-      component={props.as}
+    <Container
       ref={containerRef}
       style={{
         contain: "size style", // https://github.com/inokawa/virtua/pull/775 https://github.com/inokawa/virtua/issues/800
@@ -328,24 +324,22 @@ export const Virtualizer = <T,>(props: VirtualizerProps<T>): JSX.Element => {
             stateVersion();
             return layout.$isSizeEqual(itemIndex());
           });
-          const children = createMemo(() => {
-            return untrack(() => props.children(data, itemIndex));
-          });
+          const children = untrack(() => props.children(data, itemIndex));
 
           return (
             <ListItem
-              _as={props.item}
+              _as={props.item ?? "div"}
               _index={itemIndex()}
               _resizer={driver.$observeItem}
               _offset={offset()}
               _hide={hide()}
-              _children={children()}
+              _children={children}
               _isHorizontal={horizontal}
               _isSSR={isSSR()}
             />
           );
         }}
       </For>
-    </Dynamic>
+    </Container>
   );
 };

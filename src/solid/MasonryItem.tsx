@@ -1,7 +1,8 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
-import { type JSX, createEffect, createMemo, onCleanup } from "solid-js";
+import { createEffect, createMemo } from "solid-js";
+import { type JSX } from "@solidjs/web";
 import { type Driver } from "../core/index.js";
 
 interface MasonryItemProps {
@@ -18,12 +19,12 @@ interface MasonryItemProps {
  * @internal
  */
 export const MasonryItem = (props: MasonryItemProps): JSX.Element => {
-  let elementRef: HTMLDivElement | undefined;
+  let elementRef!: HTMLDivElement;
   // The index may be changed if elements are inserted to or removed from the start of data
-  createEffect(() => {
-    if (!elementRef) return;
-    onCleanup(props._resizer(elementRef, props._index));
-  });
+  createEffect(
+    () => props._index,
+    (index) => props._resizer(elementRef, index),
+  );
 
   const style = createMemo((): JSX.CSSProperties => ({
     contain: "layout style",

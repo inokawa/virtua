@@ -1,5 +1,5 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import { VList, VListHandle } from "../../../src/solid";
@@ -119,14 +119,14 @@ export const Controlls: StoryObj = {
             <input
               type="checkbox"
               checked={prepend()}
-              onchange={() => {
+              onChange={() => {
                 setPrepend((prev) => !prev);
               }}
             />
             prepend
           </label>
           <button
-            onclick={() => {
+            onClick={() => {
               setData((prev) => {
                 const items = [...prev];
                 items.pop();

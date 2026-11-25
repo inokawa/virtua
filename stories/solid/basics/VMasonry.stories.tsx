@@ -1,8 +1,9 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
-import { createSignal, For, onCleanup, type JSX } from "solid-js";
+import { createSignal, For, onSettled } from "solid-js";
+import { type JSX } from "@solidjs/web";
 import { VMasonry, type VMasonryHandle } from "../../../src/solid";
 
 export default {
@@ -70,10 +71,12 @@ export const Responsive: StoryObj = {
     const onChange = () => {
       setLanes(getLanesByMediaQuery());
     };
-    const lists = BREAKPOINTS.map(([query]) => window.matchMedia(query));
-    lists.forEach((list) => list.addEventListener("change", onChange));
-    onCleanup(() => {
-      lists.forEach((list) => list.removeEventListener("change", onChange));
+    onSettled(() => {
+      const lists = BREAKPOINTS.map(([query]) => window.matchMedia(query));
+      lists.forEach((list) => list.addEventListener("change", onChange));
+      return () => {
+        lists.forEach((list) => list.removeEventListener("change", onChange));
+      };
     });
     return (
       <VMasonry

@@ -1,9 +1,8 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import { it, expect, vi } from "vitest";
-import { createSignal } from "solid-js";
-import { createStore } from "solid-js/store";
+import { createSignal, createStore } from "solid-js";
 import { VGrid } from "./VGrid.js";
 import { setupResizeJsDom } from "../../spec/jsdom/dom.js";
 import { render } from "../../spec/jsdom/solid.js";
@@ -28,7 +27,7 @@ it("should pass attributes to element", () => {
     <VGrid
       id="id"
       class="class"
-      tabIndex={0}
+      tabindex={0}
       aria-label="test"
       style={{ background: "red" }}
       rows={100}
@@ -116,12 +115,14 @@ it("should follow the sizes flag in place", () => {
   ));
   expect(getContainerStyle()).toContain("[l0] 40px [l1]");
 
-  setRows(0, "h", 80);
+  setRows((s) => {
+    s[0]!.h = 80;
+  });
   vi.runAllTicks();
   expect(getContainerStyle()).toContain("[l0] 80px [l1]");
 
-  // a new array is merged into the same store
-  setRows([{ h: 120 }, { h: 40 }]);
+  // a new array replaces the contents of the same store
+  setRows(() => [{ h: 120 }, { h: 40 }]);
   vi.runAllTicks();
   expect(getContainerStyle()).toContain("[l0] 120px [l1]");
 });

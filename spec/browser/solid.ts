@@ -1,6 +1,5 @@
 import { onTestFinished } from "vitest";
-import { type JSX } from "solid-js";
-import { render as renderTo } from "solid-js/web";
+import { type JSX, render as renderTo } from "@solidjs/web";
 import { createDomRoot } from "./index.js";
 
 export const render = (node: () => JSX.Element) => {

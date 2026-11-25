@@ -1,5 +1,5 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import { it, expect, vi } from "vitest";
 import { createSignal } from "solid-js";

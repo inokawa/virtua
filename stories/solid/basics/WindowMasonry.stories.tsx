@@ -1,8 +1,8 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
-import { type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
 import { WindowMasonry } from "../../../src/solid";
 
 export default {

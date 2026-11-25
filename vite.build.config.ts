@@ -2,7 +2,7 @@ import { defineConfig, type Plugin, type UserConfig, Visitor } from "vite";
 import * as path from "node:path";
 import { globSync, cpSync, mkdirSync } from "node:fs";
 import dts from "vite-plugin-dts";
-import solid from "vite-plugin-solid";
+import solid from "@solidjs/vite-plugin";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import angular from "@analogjs/vite-plugin-angular";
 import pkg from "./package.json" with { type: "json" };

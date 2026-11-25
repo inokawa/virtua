@@ -108,7 +108,7 @@ const data = Array.from({ length: 1000 }).map((_, i) => ({
 
 ### Solid
 
-`solid-js >= 1.0` is required.
+`solid-js >= 2.0` is required.
 
 ```tsx
 import { VList } from "virtua/solid";

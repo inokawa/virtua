@@ -1,5 +1,5 @@
 /**
- * @jsxImportSource solid-js
+ * @jsxImportSource @solidjs/web
  */
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import {
@@ -70,7 +70,7 @@ export const Default: StoryObj = {
     let ref: VListHandle | undefined;
     const [activeIndex, setActiveIndex] = createSignal(0);
     return (
-      <StickyIndexContext.Provider value={[activeIndex, setActiveIndex]}>
+      <StickyIndexContext value={[activeIndex, setActiveIndex]}>
         <VList
           ref={ref}
           style={{
@@ -123,7 +123,7 @@ export const Default: StoryObj = {
             )
           }
         </VList>
-      </StickyIndexContext.Provider>
+      </StickyIndexContext>
     );
   },
 };

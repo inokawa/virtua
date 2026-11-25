@@ -1,4 +1,5 @@
-import type { JSX, ParentComponent } from "solid-js";
+import type { ParentComponent, Ref } from "solid-js";
+import type { JSX } from "@solidjs/web";
 
 export type ViewportComponentAttributes = Omit<
   JSX.HTMLAttributes<HTMLDivElement>,
@@ -8,7 +9,7 @@ export type ViewportComponentAttributes = Omit<
 export interface CustomContainerComponentProps {
   style: JSX.CSSProperties;
   children: JSX.Element;
-  ref?: any | (() => any);
+  ref?: Ref<HTMLElement>;
 }
 
 export type CustomContainerComponent =
@@ -21,7 +22,7 @@ export interface CustomItemComponentProps {
   style: JSX.CSSProperties;
   index: number;
   children: JSX.Element;
-  ref?: any | (() => any);
+  ref?: Ref<HTMLElement>;
 }
 
 export type CustomItemComponent = ParentComponent<CustomItemComponentProps>;
