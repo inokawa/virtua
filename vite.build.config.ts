@@ -179,7 +179,6 @@ export default defineConfig(({ mode }): UserConfig => {
           },
           rolldownOptions: {
             external,
-            transform: { jsx: "preserve" },
             treeshake: false,
             output: {
               // `build.minify: false` maps to rolldown's "dce-only", which drops the
