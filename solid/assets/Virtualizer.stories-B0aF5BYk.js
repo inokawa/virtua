@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{T as t,a as n,c as r,d as i,f as a,i as o,m as s,x as c}from"./iframe-BkrVyQMz.js";import{n as l,t as u}from"./Virtualizer-C73t6OIE.js";var d,f,p,m,h,g,_,v,y,b;function x(){return(x=e((()=>{o(),c(),l(),d=i(`<div style=width:100%;height:100vh;overflow-y:auto;overflow-anchor:none><div style=background-color:burlywood;height:400px>header</div><div style=background-color:steelblue;height:600px>footer`),f=i(`<div style="background:white;border-bottom:solid 1px #ccc">`),p=i(`<div style=width:100%;height:100vh;overflow-y:auto;overflow-anchor:none><div style=background-color:burlywood;padding:40px><div style=background-color:steelblue;padding:60px>`),m=i(`<div style=height:100vh;overflow-y:auto;overflow-anchor:none;display:flex;flex-direction:column><div style=flex-grow:1>`),h={component:u},g=[20,40,80,77],_={render:()=>{let e=Array.from({length:1e3}).map((e,t)=>g[t%4]);return(()=>{var t=d(),i=t.firstChild.nextSibling;return n(t,s(u,{data:e,startMargin:400,children:(e,t)=>(()=>{var i=f();return r(i,`height`,e+`px`),n(i,t),i})()}),i),t})()}},v={render:()=>{let e=Array.from({length:1e3}).map((e,t)=>g[t%4]),t;return(()=>{var i=p(),o=i.firstChild.firstChild,c=t;return typeof c==`function`?a(c,i):t=i,n(o,s(u,{data:e,scrollRef:t,startMargin:100,children:(e,t)=>(()=>{var i=f();return r(i,`height`,e+`px`),n(i,t),i})()})),i})()}},y={render:()=>{let e=Array.from({length:1e3}).map((e,t)=>g[t%4]),i;return t(()=>{i?.scrollToIndex(999)}),(()=>{var t=m();return t.firstChild,n(t,s(u,{ref(e){var t=i;typeof t==`function`?t(e):i=e},data:e,children:(e,t)=>(()=>{var i=f();return r(i,`height`,e+`px`),n(i,t),i})()}),null),t})()}},b=[`HeaderAndFooter`,`Nested`,`Reverse`],_.parameters={..._.parameters,docs:{..._.parameters?.docs,source:{code:`const HeaderAndFooter = () => {
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{f as t,h as n,k as r,n as i,o as a,s as o,u as s,w as c,y as l}from"./iframe-aBDkq7kk.js";import{n as u,t as d}from"./Virtualizer-B_Kpmyxh.js";var f,p,m,h,g,_,v,y,b,x;function S(){return(S=e((()=>{a(),c(),u(),f=n(`<div style=width:100%;height:100vh;overflow-y:auto;overflow-anchor:none><div style=background-color:burlywood;height:400px>header</div><div style=background-color:steelblue;height:600px>footer`),p=n(`<div style="background:white;border-bottom:solid 1px #ccc">`),m=n(`<div style=width:100%;height:100vh;overflow-y:auto;overflow-anchor:none><div style=background-color:burlywood;padding:40px><div style=background-color:steelblue;padding:60px>`),h=n(`<div style=height:100vh;overflow-y:auto;overflow-anchor:none;display:flex;flex-direction:column><div style=flex-grow:1>`),g={component:d},_=[20,40,80,77],v={render:()=>{let e=Array.from({length:1e3}).map((e,t)=>_[t%4]);var n=f(),r=n.firstChild.nextSibling;return o(n,l(d,{data:e,startMargin:400,children:(e,n)=>(()=>{var r=p();return t(r,`height`,e+`px`),o(r,n),r})()}),r),n}},y={render:()=>{let e=Array.from({length:1e3}).map((e,t)=>_[t%4]),n;var r=m(),i=r.firstChild.firstChild,a=n;return typeof a==`function`||Array.isArray(a)?s(()=>a,r):n=r,o(i,l(d,{data:e,scrollRef:n,startMargin:100,children:(e,n)=>(()=>{var r=p();return t(r,`height`,e+`px`),o(r,n),r})()})),r}},b={render:()=>{let e=Array.from({length:1e3}).map((e,t)=>_[t%4]),n;r(()=>{n?.scrollToIndex(999)});var a=h();return o(a,l(d,{ref(e){var t=n;typeof t==`function`||Array.isArray(t)?i(t,e):n=e},data:e,children:(e,n)=>(()=>{var r=p();return t(r,`height`,e+`px`),o(r,n),r})()}),null),a}},x=[`HeaderAndFooter`,`Nested`,`Reverse`],v.parameters={...v.parameters,docs:{...v.parameters?.docs,source:{code:`const HeaderAndFooter = () => {
   const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]!);
   const headerHeight = 400;
   return (
@@ -38,7 +38,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{T as t,a as n,c as r,d
     </div>
   );
 };
-`,..._.parameters?.docs?.source}}},v.parameters={...v.parameters,docs:{...v.parameters?.docs,source:{code:`const Nested = () => {
+`,...v.parameters?.docs?.source}}},y.parameters={...y.parameters,docs:{...y.parameters?.docs,source:{code:`const Nested = () => {
   const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]!);
   const outerPadding = 40;
   const innerPadding = 60;
@@ -88,10 +88,10 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{T as t,a as n,c as r,d
     </div>
   );
 };
-`,...v.parameters?.docs?.source}}},y.parameters={...y.parameters,docs:{...y.parameters?.docs,source:{code:`const Reverse = () => {
+`,...y.parameters?.docs?.source}}},b.parameters={...b.parameters,docs:{...b.parameters?.docs,source:{code:`const Reverse = () => {
   const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]!);
   let ref: VirtualizerHandle | undefined;
-  onMount(() => {
+  onSettled(() => {
     ref?.scrollToIndex(999);
   });
   return (
@@ -128,7 +128,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{T as t,a as n,c as r,d
     </div>
   );
 };
-`,...y.parameters?.docs?.source}}},_.parameters={..._.parameters,docs:{..._.parameters?.docs,source:{originalSource:`{
+`,...b.parameters?.docs?.source}}},v.parameters={...v.parameters,docs:{...v.parameters?.docs,source:{originalSource:`{
   render: () => {
     const data = Array.from({
       length: 1000
@@ -164,7 +164,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{T as t,a as n,c as r,d
         </div>
       </div>;
   }
-}`,..._.parameters?.docs?.source}}},v.parameters={...v.parameters,docs:{...v.parameters?.docs,source:{originalSource:`{
+}`,...v.parameters?.docs?.source}}},y.parameters={...y.parameters,docs:{...y.parameters?.docs,source:{originalSource:`{
   render: () => {
     const data = Array.from({
       length: 1000
@@ -200,13 +200,13 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{T as t,a as n,c as r,d
         </div>
       </div>;
   }
-}`,...v.parameters?.docs?.source}}},y.parameters={...y.parameters,docs:{...y.parameters?.docs,source:{originalSource:`{
+}`,...y.parameters?.docs?.source}}},b.parameters={...b.parameters,docs:{...b.parameters?.docs,source:{originalSource:`{
   render: () => {
     const data = Array.from({
       length: 1000
     }).map((_, i) => sizes[i % 4]!);
     let ref: VirtualizerHandle | undefined;
-    onMount(() => {
+    onSettled(() => {
       ref?.scrollToIndex(999);
     });
     return <div style={{
@@ -233,4 +233,4 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{T as t,a as n,c as r,d
         </Virtualizer>
       </div>;
   }
-}`,...y.parameters?.docs?.source}}}})))()}x();export{_ as HeaderAndFooter,v as Nested,y as Reverse,b as __namedExportsOrder,h as default};
+}`,...b.parameters?.docs?.source}}}})))()}S();export{v as HeaderAndFooter,y as Nested,b as Reverse,x as __namedExportsOrder,g as default};

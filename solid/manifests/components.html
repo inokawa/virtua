@@ -1163,7 +1163,7 @@
               <pre><code>const Reverse = () =&gt; {
   const data = Array.from({ length: 1000 }).map((_, i) =&gt; sizes[i % 4]!);
   let ref: VirtualizerHandle | undefined;
-  onMount(() =&gt; {
+  onSettled(() =&gt; {
     ref?.scrollToIndex(999);
   });
   return (
@@ -1300,23 +1300,30 @@
   const [value, setValue] = createSignal(&quot;Hello world!&quot;);
   const [fetching, setFetching] = createSignal(false);
 
-  createEffect(() =&gt; {
-    items();
-    setIsPrepend(false);
-  });
+  createEffect(
+    () =&gt; items(),
+    () =&gt; {
+      setIsPrepend(false);
+    },
+  );
 
-  const stickToBottom = () =&gt; {
-    if (virtualizerHandle &amp;&amp; shouldStickToBottom()) {
-      virtualizerHandle.scrollToIndex(items().length - 1, { align: &quot;end&quot; });
+  const scrollToBottom = (length: number, shouldStick: boolean) =&gt; {
+    if (virtualizerHandle &amp;&amp; shouldStick) {
+      virtualizerHandle.scrollToIndex(length - 1, { align: &quot;end&quot; });
     }
   };
+  const stickToBottom = () =&gt; {
+    scrollToBottom(items().length, shouldStickToBottom());
+  };
 
-  createEffect(() =&gt; {
-    items();
-    stickToBottom();
-  });
+  createEffect(
+    () =&gt; [items(), shouldStickToBottom()] as const,
+    ([items, shouldStick]) =&gt; {
+      scrollToBottom(items.length, shouldStick);
+    },
+  );
 
-  onMount(() =&gt; {
+  onSettled(() =&gt; {
     let canceled = false;
     let timer: ReturnType&lt;typeof setTimeout&gt; | null = null;
     const setTimer = () =&gt; {
@@ -1327,10 +1334,10 @@
       }, 5000);
     };
     setTimer();
-    onCleanup(() =&gt; {
+    return () =&gt; {
       canceled = true;
       if (timer) clearTimeout(timer);
-    });
+    };
   });
 
   const disabled = () =&gt; !value().length;
@@ -1641,14 +1648,14 @@
           &lt;input
             type=&quot;checkbox&quot;
             checked={prepend()}
-            onchange={() =&gt; {
+            onChange={() =&gt; {
               setPrepend((prev) =&gt; !prev);
             }}
           /&gt;
           prepend
         &lt;/label&gt;
         &lt;button
-          onclick={() =&gt; {
+          onClick={() =&gt; {
             setData((prev) =&gt; {
               const items = [...prev];
               items.pop();
@@ -1772,7 +1779,7 @@
   let ref: VListHandle | undefined;
   const [activeIndex, setActiveIndex] = createSignal(0);
   return (
-    &lt;StickyIndexContext.Provider value={[activeIndex, setActiveIndex]}&gt;
+    &lt;StickyIndexContext value={[activeIndex, setActiveIndex]}&gt;
       &lt;VList
         ref={ref}
         style={{
@@ -1825,7 +1832,7 @@
           )
         }
       &lt;/VList&gt;
-    &lt;/StickyIndexContext.Provider&gt;
+    &lt;/StickyIndexContext&gt;
   );
 };</code></pre>
               
@@ -1930,10 +1937,12 @@
   const onChange = () =&gt; {
     setLanes(getLanesByMediaQuery());
   };
-  const lists = BREAKPOINTS.map(([query]) =&gt; window.matchMedia(query));
-  lists.forEach((list) =&gt; list.addEventListener(&quot;change&quot;, onChange));
-  onCleanup(() =&gt; {
-    lists.forEach((list) =&gt; list.removeEventListener(&quot;change&quot;, onChange));
+  onSettled(() =&gt; {
+    const lists = BREAKPOINTS.map(([query]) =&gt; window.matchMedia(query));
+    lists.forEach((list) =&gt; list.addEventListener(&quot;change&quot;, onChange));
+    return () =&gt; {
+      lists.forEach((list) =&gt; list.removeEventListener(&quot;change&quot;, onChange));
+    };
   });
   return (
     &lt;VMasonry
@@ -2765,7 +2774,7 @@
               <pre><code>const Reverse = () =&gt; {
   const data = Array.from({ length: 1000 }).map((_, i) =&gt; sizes[i % 4]!);
   let ref: VirtualizerHandle | undefined;
-  onMount(() =&gt; {
+  onSettled(() =&gt; {
     ref?.scrollToIndex(999);
   });
   return (
@@ -2902,23 +2911,30 @@
   const [value, setValue] = createSignal(&quot;Hello world!&quot;);
   const [fetching, setFetching] = createSignal(false);
 
-  createEffect(() =&gt; {
-    items();
-    setIsPrepend(false);
-  });
+  createEffect(
+    () =&gt; items(),
+    () =&gt; {
+      setIsPrepend(false);
+    },
+  );
 
-  const stickToBottom = () =&gt; {
-    if (virtualizerHandle &amp;&amp; shouldStickToBottom()) {
-      virtualizerHandle.scrollToIndex(items().length - 1, { align: &quot;end&quot; });
+  const scrollToBottom = (length: number, shouldStick: boolean) =&gt; {
+    if (virtualizerHandle &amp;&amp; shouldStick) {
+      virtualizerHandle.scrollToIndex(length - 1, { align: &quot;end&quot; });
     }
   };
+  const stickToBottom = () =&gt; {
+    scrollToBottom(items().length, shouldStickToBottom());
+  };
 
-  createEffect(() =&gt; {
-    items();
-    stickToBottom();
-  });
+  createEffect(
+    () =&gt; [items(), shouldStickToBottom()] as const,
+    ([items, shouldStick]) =&gt; {
+      scrollToBottom(items.length, shouldStick);
+    },
+  );
 
-  onMount(() =&gt; {
+  onSettled(() =&gt; {
     let canceled = false;
     let timer: ReturnType&lt;typeof setTimeout&gt; | null = null;
     const setTimer = () =&gt; {
@@ -2929,10 +2945,10 @@
       }, 5000);
     };
     setTimer();
-    onCleanup(() =&gt; {
+    return () =&gt; {
       canceled = true;
       if (timer) clearTimeout(timer);
-    });
+    };
   });
 
   const disabled = () =&gt; !value().length;
@@ -3243,14 +3259,14 @@
           &lt;input
             type=&quot;checkbox&quot;
             checked={prepend()}
-            onchange={() =&gt; {
+            onChange={() =&gt; {
               setPrepend((prev) =&gt; !prev);
             }}
           /&gt;
           prepend
         &lt;/label&gt;
         &lt;button
-          onclick={() =&gt; {
+          onClick={() =&gt; {
             setData((prev) =&gt; {
               const items = [...prev];
               items.pop();
@@ -3374,7 +3390,7 @@
   let ref: VListHandle | undefined;
   const [activeIndex, setActiveIndex] = createSignal(0);
   return (
-    &lt;StickyIndexContext.Provider value={[activeIndex, setActiveIndex]}&gt;
+    &lt;StickyIndexContext value={[activeIndex, setActiveIndex]}&gt;
       &lt;VList
         ref={ref}
         style={{
@@ -3427,7 +3443,7 @@
           )
         }
       &lt;/VList&gt;
-    &lt;/StickyIndexContext.Provider&gt;
+    &lt;/StickyIndexContext&gt;
   );
 };</code></pre>
               
@@ -3532,10 +3548,12 @@
   const onChange = () =&gt; {
     setLanes(getLanesByMediaQuery());
   };
-  const lists = BREAKPOINTS.map(([query]) =&gt; window.matchMedia(query));
-  lists.forEach((list) =&gt; list.addEventListener(&quot;change&quot;, onChange));
-  onCleanup(() =&gt; {
-    lists.forEach((list) =&gt; list.removeEventListener(&quot;change&quot;, onChange));
+  onSettled(() =&gt; {
+    const lists = BREAKPOINTS.map(([query]) =&gt; window.matchMedia(query));
+    lists.forEach((list) =&gt; list.addEventListener(&quot;change&quot;, onChange));
+    return () =&gt; {
+      lists.forEach((list) =&gt; list.removeEventListener(&quot;change&quot;, onChange));
+    };
   });
   return (
     &lt;VMasonry

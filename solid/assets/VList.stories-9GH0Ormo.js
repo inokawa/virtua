@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{a as t,b as n,c as r,d as i,i as a,m as o,r as s,x as c,y as l}from"./iframe-BkrVyQMz.js";import{n as u,t as d}from"./VList-V-W2Z8NX.js";var f,p,m,h,g,_,v,y,b;function x(){return(x=e((()=>{a(),u(),c(),f=i(`<div style="border-bottom:solid 1px #ccc;background:#fff">`),p=i(`<div style=padding:10px>`),m=i(`<div style="border-right:solid 1px #ccc;background:#fff">`),h=i(`<div style=height:100%;display:flex;flex-direction:column><div>offset: </div><div>scrolling: </div><div><input type=number><button>scrollToIndex</button></div><div><button>append</button><label><input type=checkbox>prepend</label><button>pop`),g={component:d},_={render:()=>{let e=[20,40,80,77],n=Array.from({length:1e3}).map((t,n)=>e[n%4]);return o(d,{data:n,style:{height:`100vh`},children:(e,n)=>(()=>{var i=f();return r(i,`height`,e+`px`),t(i,n),i})()})}},v={render:()=>{let e=[40,180,77],n=Array.from({length:1e3}).map((t,n)=>e[n%3]);return(()=>{var e=p();return t(e,o(d,{data:n,style:{width:`100%`,height:`200px`},horizontal:!0,children:(e,n)=>(()=>{var i=m();return r(i,`width`,e+`px`),t(i,n),i})()})),e})()}},y={render:()=>{let e=[20,40,180,77],i=t=>({index:t,height:e[t%4]}),[a,s]=n(Array.from({length:1e3}).map((e,t)=>i(t))),[c,u]=n(0),[p,m]=n(!1),[g,_]=n(567),[v,y]=n(!1),b;return(()=>{var e=h(),n=e.firstChild;n.firstChild;var x=n.nextSibling;x.firstChild;var S=x.nextSibling,C=S.firstChild,w=C.nextSibling,T=S.nextSibling.firstChild,E=T.nextSibling,D=E.firstChild,O=E.nextSibling;return t(n,c,null),t(x,()=>String(p()),null),C.$$input=e=>{_(Number(e.target.value))},w.$$click=()=>{b?.scrollToIndex(g())},T.$$click=()=>{s(e=>{let t=Array.from({length:100}).map((t,n)=>i(n+e.length));return v()?[...t,...e]:[...e,...t]})},D.addEventListener(`change`,()=>{y(e=>!e)}),O.$$click=()=>{s(e=>{let t=[...e];return t.pop(),t})},t(e,o(d,{ref(e){var t=b;typeof t==`function`?t(e):b=e},get data(){return a()},get shift(){return v()},style:{height:`100vh`},onScroll:e=>{u(e),m(!0)},onScrollEnd:()=>{m(!1)},children:e=>(()=>{var n=f();return t(n,()=>e.index),l(t=>r(n,`height`,e.height+`px`)),n})()}),null),l(()=>C.value=g()),l(()=>D.checked=v()),e})()}},s([`input`,`click`]),b=[`Default`,`Horizontal`,`Controlls`],_.parameters={..._.parameters,docs:{..._.parameters?.docs,source:{code:`const Default = () => {
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{C as t,a as n,f as r,g as i,h as a,n as o,o as s,r as c,s as l,w as u,y as d}from"./iframe-aBDkq7kk.js";import{n as f,t as p}from"./VList-CUhGT_bH.js";var m,h,g,_,v,y,b,x,S;function C(){return(C=e((()=>{s(),f(),u(),m=a(`<div style="border-bottom:solid 1px #ccc;background:#fff">`),h=a(`<div style=padding:10px>`),g=a(`<div style="border-right:solid 1px #ccc;background:#fff">`),_=a(`<div style=height:100%;display:flex;flex-direction:column><div>offset: </div><div>scrolling: </div><div><input type=number><button>scrollToIndex</button></div><div><button>append</button><label><input type=checkbox>prepend</label><button>pop`),v={component:p},y={render:()=>{let e=[20,40,80,77],t=Array.from({length:1e3}).map((t,n)=>e[n%4]);return d(p,{data:t,style:{height:`100vh`},children:(e,t)=>(()=>{var n=m();return r(n,`height`,e+`px`),l(n,t),n})()})}},b={render:()=>{let e=[40,180,77],t=Array.from({length:1e3}).map((t,n)=>e[n%3]);var n=h();return l(n,d(p,{data:t,style:{width:`100%`,height:`200px`},horizontal:!0,children:(e,t)=>(()=>{var n=g();return r(n,`width`,e+`px`),l(n,t),n})()})),n}},x={render:()=>{let e=[20,40,180,77],a=t=>({index:t,height:e[t%4]}),[s,c]=t(Array.from({length:1e3}).map((e,t)=>a(t))),[u,f]=t(0),[h,g]=t(!1),[v,y]=t(567),[b,x]=t(!1),S;var C=_(),w=C.firstChild,T=w.nextSibling,E=T.nextSibling,D=E.firstChild,O=D.nextSibling,k=E.nextSibling.firstChild,A=k.nextSibling,j=A.firstChild,M=A.nextSibling;return l(w,u,null),l(T,()=>String(h()),null),D._$$input=e=>{y(Number(e.target.value))},O._$$click=()=>{S?.scrollToIndex(v())},k._$$click=()=>{c(e=>{let t=Array.from({length:100}).map((t,n)=>a(n+e.length));return b()?[...t,...e]:[...e,...t]})},j.addEventListener(`change`,()=>{x(e=>!e)}),M._$$click=()=>{c(e=>{let t=[...e];return t.pop(),t})},l(C,d(p,{ref(e){var t=S;typeof t==`function`||Array.isArray(t)?o(t,e):S=e},get data(){return s()},get shift(){return b()},style:{height:`100vh`},onScroll:e=>{f(e),g(!0)},onScrollEnd:()=>{g(!1)},children:e=>(()=>{var t=m();return l(t,()=>e.index),n(()=>e.height+`px`,e=>{r(t,`height`,e)}),t})()}),null),n(()=>({e:v(),t:b(),a:i()}),({e,t,a:n},r)=>{e===r?.e&&n||(D.value=e??``),t===r?.t&&n||(j.checked=t)}),C}},c([`input`,`click`]),S=[`Default`,`Horizontal`,`Controlls`],y.parameters={...y.parameters,docs:{...y.parameters?.docs,source:{code:`const Default = () => {
   const sizes = [20, 40, 80, 77];
   const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 4]);
 
@@ -18,7 +18,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{a as t,b as n,c as r,d
     </VList>
   );
 };
-`,..._.parameters?.docs?.source}}},v.parameters={...v.parameters,docs:{...v.parameters?.docs,source:{code:`const Horizontal = () => {
+`,...y.parameters?.docs?.source}}},b.parameters={...b.parameters,docs:{...b.parameters?.docs,source:{code:`const Horizontal = () => {
   const sizes = [40, 180, 77];
   const data = Array.from({ length: 1000 }).map((_, i) => sizes[i % 3]);
 
@@ -40,7 +40,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{a as t,b as n,c as r,d
     </div>
   );
 };
-`,...v.parameters?.docs?.source}}},y.parameters={...y.parameters,docs:{...y.parameters?.docs,source:{code:`const Controlls = () => {
+`,...b.parameters?.docs?.source}}},x.parameters={...x.parameters,docs:{...x.parameters?.docs,source:{code:`const Controlls = () => {
   const heights = [20, 40, 180, 77];
   const createItem = (i: number) => ({
     index: i,
@@ -97,14 +97,14 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{a as t,b as n,c as r,d
           <input
             type="checkbox"
             checked={prepend()}
-            onchange={() => {
+            onChange={() => {
               setPrepend((prev) => !prev);
             }}
           />
           prepend
         </label>
         <button
-          onclick={() => {
+          onClick={() => {
             setData((prev) => {
               const items = [...prev];
               items.pop();
@@ -143,7 +143,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{a as t,b as n,c as r,d
     </div>
   );
 };
-`,...y.parameters?.docs?.source}}},_.parameters={..._.parameters,docs:{..._.parameters?.docs,source:{originalSource:`{
+`,...x.parameters?.docs?.source}}},y.parameters={...y.parameters,docs:{...y.parameters?.docs,source:{originalSource:`{
   render: () => {
     const sizes = [20, 40, 80, 77];
     const data = Array.from({
@@ -161,7 +161,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{a as t,b as n,c as r,d
           </div>}
       </VList>;
   }
-}`,..._.parameters?.docs?.source}}},v.parameters={...v.parameters,docs:{...v.parameters?.docs,source:{originalSource:`{
+}`,...y.parameters?.docs?.source}}},b.parameters={...b.parameters,docs:{...b.parameters?.docs,source:{originalSource:`{
   render: () => {
     const sizes = [40, 180, 77];
     const data = Array.from({
@@ -184,7 +184,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{a as t,b as n,c as r,d
         </VList>
       </div>;
   }
-}`,...v.parameters?.docs?.source}}},y.parameters={...y.parameters,docs:{...y.parameters?.docs,source:{originalSource:`{
+}`,...b.parameters?.docs?.source}}},x.parameters={...x.parameters,docs:{...x.parameters?.docs,source:{originalSource:`{
   render: () => {
     const heights = [20, 40, 180, 77];
     const createItem = (i: number) => ({
@@ -228,12 +228,12 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{a as t,b as n,c as r,d
             append
           </button>
           <label>
-            <input type="checkbox" checked={prepend()} onchange={() => {
+            <input type="checkbox" checked={prepend()} onChange={() => {
             setPrepend(prev => !prev);
           }} />
             prepend
           </label>
-          <button onclick={() => {
+          <button onClick={() => {
           setData(prev => {
             const items = [...prev];
             items.pop();
@@ -261,4 +261,4 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{a as t,b as n,c as r,d
         </VList>
       </div>;
   }
-}`,...y.parameters?.docs?.source}}}})))()}x();export{y as Controlls,_ as Default,v as Horizontal,b as __namedExportsOrder,g as default};
+}`,...x.parameters?.docs?.source}}}})))()}C();export{x as Controlls,y as Default,b as Horizontal,S as __namedExportsOrder,v as default};

@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{T as t,_ as n,a as r,b as i,c as a,d as o,i as s,m as c,r as l,u,w as d,x as f,y as p}from"./iframe-BkrVyQMz.js";import{n as m,t as h}from"./Virtualizer-C73t6OIE.js";import{n as g,t as _}from"./en-uMSCgswj.js";function v(e){return[(()=>{var t=b();return p(n=>a(t,`visibility`,e.visible?`visible`:`hidden`)),t})(),x()]}function y(e){return(()=>{var t=S();return r(t,()=>e.children),p(n=>u(t,{...T,...e.me?{background:`lightyellow`,"margin-left":`160px`}:{"margin-right":`160px`}},n)),t})()}var b,x,S,C,w,T,E,D,O;function k(){return(k=e((()=>{s(),m(),f(),_(),b=o(`<div style=flex:none;height:48px;display:flex;align-items:center;justify-content:center><span class=loader>`),x=o(`<style>
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{C as t,a as n,d as r,f as i,g as a,h as o,k as s,m as c,n as l,o as u,r as d,s as f,w as p,x as m,y as h}from"./iframe-aBDkq7kk.js";import{n as g,t as _}from"./Virtualizer-B_Kpmyxh.js";import{n as v,t as y}from"./en-uMSCgswj.js";function b(e){return[(()=>{var t=S();return n(()=>e.visible?`visible`:`hidden`,e=>{i(t,`visibility`,e)}),t})(),C()]}function x(e){var t=w();return f(t,()=>e.children),n(()=>({...D,...e.me?{background:`lightyellow`,"margin-left":`160px`}:{"margin-right":`160px`}}),(e,n)=>{c(t,e,n)}),t}var S,C,w,T,E,D,O,k,A;function j(){return(j=e((()=>{u(),g(),p(),y(),S=o(`<div style=flex:none;height:48px;display:flex;align-items:center;justify-content:center><span class=loader>`),C=o(`<style>
       .loader {
         width: 24px;
         height: 24px;
@@ -10,7 +10,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{T as t,_ as n,a as r,b
 
       @keyframes rotate {
         100% {transform: rotate(360deg)}
-      }`),S=o(`<div>`),C=o(`<div style=width:100vw;height:100vh;display:flex;flex-direction:column><div style=overflow-y:auto;flex:1;overflow-anchor:none;display:flex;flex-direction:column><div style=flex-grow:1></div></div><form style=display:flex;flex-direction:column;margin:10px><textarea rows=6 style=flex:1></textarea><div style=display:flex;flex-direction:row;gap:8px;justify-content:flex-end><button type=submit>submit`),w={component:h},T={border:`solid 1px #ccc`,background:`#fff`,margin:`10px`,padding:`10px`,"border-radius":`8px`,"white-space":`pre-wrap`},E=48,D={name:`Chat`,render:()=>{let e=0,a=({value:t=g.lorem.paragraphs(1),me:n}={})=>({id:e++,value:t,me:n}),[o,s]=i(Array.from({length:100}).map(()=>a())),l,[u,f]=i(!1),[m,_]=i(!0),[b,x]=i(`Hello world!`),[S,w]=i(!1);n(()=>{o(),f(!1)});let T=()=>{l&&m()&&l.scrollToIndex(o().length-1,{align:`end`})};n(()=>{o(),T()}),t(()=>{let e=!1,t=null,n=()=>{t=setTimeout(()=>{e||(s(e=>[...e,a()]),n())},5e3)};n(),d(()=>{e=!0,t&&clearTimeout(t)})});let D=()=>!b().length,O=()=>{D()||(_(!0),s(e=>[...e,a({value:b(),me:!0})]),x(``))};return(()=>{var e=C(),t=e.firstChild;t.firstChild;var n=t.nextSibling,i=n.firstChild,d=i.nextSibling.firstChild;return r(t,c(v,{get visible(){return S()}}),null),r(t,c(h,{ref(e){var t=l;typeof t==`function`?t(e):l=e},get data(){return o()},get shift(){return u()},startMargin:E,onResize:T,onScroll:async e=>{let t=l;t&&(_(e-E-t.scrollSize+t.viewportSize>=-1.5),e<148&&!S()&&(w(!0),await new Promise(e=>setTimeout(e,1e3)),f(!0),s(e=>[...Array.from({length:100}).map(()=>a()),...e]),w(!1)))},children:e=>c(y,{get me(){return e.me},get children(){return e.value}})}),null),n.addEventListener(`submit`,e=>{e.preventDefault(),e.stopPropagation(),O()}),i.$$keydown=e=>{e.code===`Enter`&&(e.ctrlKey||e.metaKey)&&(O(),e.preventDefault())},i.$$input=e=>x(e.currentTarget.value),p(()=>d.disabled=D()),p(()=>i.value=b()),e})()}},l([`input`,`keydown`]),O=[`Default`],D.parameters={...D.parameters,docs:{...D.parameters?.docs,source:{code:`const Default = () => {
+      }`),w=o(`<div>`),T=o(`<div style=width:100vw;height:100vh;display:flex;flex-direction:column><div style=overflow-y:auto;flex:1;overflow-anchor:none;display:flex;flex-direction:column><div style=flex-grow:1></div><!><!></div><form style=display:flex;flex-direction:column;margin:10px><textarea rows=6 style=flex:1></textarea><div style=display:flex;flex-direction:row;gap:8px;justify-content:flex-end><button type=submit>submit`),E={component:_},D={border:`solid 1px #ccc`,background:`#fff`,margin:`10px`,padding:`10px`,"border-radius":`8px`,"white-space":`pre-wrap`},O=48,k={name:`Chat`,render:()=>{let e=0,i=({value:t=v.lorem.paragraphs(1),me:n}={})=>({id:e++,value:t,me:n}),[o,c]=t(Array.from({length:100}).map(()=>i())),u,[d,p]=t(!1),[g,y]=t(!0),[S,C]=t(`Hello world!`),[w,E]=t(!1);m(()=>o(),()=>{p(!1)});let D=(e,t)=>{u&&t&&u.scrollToIndex(e-1,{align:`end`})},k=()=>{D(o().length,g())};m(()=>[o(),g()],([e,t])=>{D(e.length,t)}),s(()=>{let e=!1,t=null,n=()=>{t=setTimeout(()=>{e||(c(e=>[...e,i()]),n())},5e3)};return n(),()=>{e=!0,t&&clearTimeout(t)}});let A=()=>!S().length,j=()=>{A()||(y(!0),c(e=>[...e,i({value:S(),me:!0})]),C(``))};var M=T(),N=M.firstChild,P=N.firstChild.nextSibling,F=P.nextSibling,I=N.nextSibling,L=I.firstChild,R=L.nextSibling.firstChild;return f(N,h(b,{get visible(){return w()}}),P),f(N,h(_,{ref(e){var t=u;typeof t==`function`||Array.isArray(t)?l(t,e):u=e},get data(){return o()},get shift(){return d()},startMargin:O,onResize:k,onScroll:async e=>{let t=u;t&&(y(e-O-t.scrollSize+t.viewportSize>=-1.5),e<148&&!w()&&(E(!0),await new Promise(e=>setTimeout(e,1e3)),p(!0),c(e=>[...Array.from({length:100}).map(()=>i()),...e]),E(!1)))},children:e=>h(x,{get me(){return e.me},get children(){return e.value}})}),F),I.addEventListener(`submit`,e=>{e.preventDefault(),e.stopPropagation(),j()}),L._$$keydown=e=>{e.code===`Enter`&&(e.ctrlKey||e.metaKey)&&(j(),e.preventDefault())},L._$$input=e=>C(e.currentTarget.value),n(()=>({e:S(),t:A(),a:a()}),({e,t,a:n},i)=>{e===i?.e&&n||(L.value=e??``),t!==i?.t&&r(R,`disabled`,t)}),M}},d([`input`,`keydown`]),A=[`Default`],k.parameters={...k.parameters,docs:{...k.parameters?.docs,source:{code:`const Default = () => {
   let id = 0;
   const createItem = ({
     value = faker.lorem.paragraphs(1),
@@ -29,23 +29,30 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{T as t,_ as n,a as r,b
   const [value, setValue] = createSignal("Hello world!");
   const [fetching, setFetching] = createSignal(false);
 
-  createEffect(() => {
-    items();
-    setIsPrepend(false);
-  });
+  createEffect(
+    () => items(),
+    () => {
+      setIsPrepend(false);
+    },
+  );
 
-  const stickToBottom = () => {
-    if (virtualizerHandle && shouldStickToBottom()) {
-      virtualizerHandle.scrollToIndex(items().length - 1, { align: "end" });
+  const scrollToBottom = (length: number, shouldStick: boolean) => {
+    if (virtualizerHandle && shouldStick) {
+      virtualizerHandle.scrollToIndex(length - 1, { align: "end" });
     }
   };
+  const stickToBottom = () => {
+    scrollToBottom(items().length, shouldStickToBottom());
+  };
 
-  createEffect(() => {
-    items();
-    stickToBottom();
-  });
+  createEffect(
+    () => [items(), shouldStickToBottom()] as const,
+    ([items, shouldStick]) => {
+      scrollToBottom(items.length, shouldStick);
+    },
+  );
 
-  onMount(() => {
+  onSettled(() => {
     let canceled = false;
     let timer: ReturnType<typeof setTimeout> | null = null;
     const setTimer = () => {
@@ -56,10 +63,10 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{T as t,_ as n,a as r,b
       }, 5000);
     };
     setTimer();
-    onCleanup(() => {
+    return () => {
       canceled = true;
       if (timer) clearTimeout(timer);
-    });
+    };
   });
 
   const disabled = () => !value().length;
@@ -168,7 +175,7 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{T as t,_ as n,a as r,b
     </div>
   );
 };
-`,...D.parameters?.docs?.source}}},D.parameters={...D.parameters,docs:{...D.parameters?.docs,source:{originalSource:`{
+`,...k.parameters?.docs?.source}}},k.parameters={...k.parameters,docs:{...k.parameters?.docs,source:{originalSource:`{
   name: "Chat",
   render: () => {
     let id = 0;
@@ -191,22 +198,23 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{T as t,_ as n,a as r,b
     const [shouldStickToBottom, setShouldStickToBottom] = createSignal(true);
     const [value, setValue] = createSignal("Hello world!");
     const [fetching, setFetching] = createSignal(false);
-    createEffect(() => {
-      items();
+    createEffect(() => items(), () => {
       setIsPrepend(false);
     });
-    const stickToBottom = () => {
-      if (virtualizerHandle && shouldStickToBottom()) {
-        virtualizerHandle.scrollToIndex(items().length - 1, {
+    const scrollToBottom = (length: number, shouldStick: boolean) => {
+      if (virtualizerHandle && shouldStick) {
+        virtualizerHandle.scrollToIndex(length - 1, {
           align: "end"
         });
       }
     };
-    createEffect(() => {
-      items();
-      stickToBottom();
+    const stickToBottom = () => {
+      scrollToBottom(items().length, shouldStickToBottom());
+    };
+    createEffect(() => [items(), shouldStickToBottom()] as const, ([items, shouldStick]) => {
+      scrollToBottom(items.length, shouldStick);
     });
-    onMount(() => {
+    onSettled(() => {
       let canceled = false;
       let timer: ReturnType<typeof setTimeout> | null = null;
       const setTimer = () => {
@@ -217,10 +225,10 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{T as t,_ as n,a as r,b
         }, 5000);
       };
       setTimer();
-      onCleanup(() => {
+      return () => {
         canceled = true;
         if (timer) clearTimeout(timer);
-      });
+      };
     });
     const disabled = () => !value().length;
     const submit = () => {
@@ -299,4 +307,4 @@ import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{T as t,_ as n,a as r,b
         </form>
       </div>;
   }
-}`,...D.parameters?.docs?.source}}}})))()}k();export{D as Default,O as __namedExportsOrder,w as default};
+}`,...k.parameters?.docs?.source}}}})))()}j();export{k as Default,A as __namedExportsOrder,E as default};
